@@ -60,15 +60,7 @@ namespace sequencergui
 class WorkspaceSynchronizerSoftiocTest : public ::testing::Test
 {
 public:
-  WorkspaceSynchronizerSoftiocTest() { m_model.InsertItem<WorkspaceItem>(); }
-
-  //! Creates synchronizer for testing.
-  std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
-  {
-    // populate sequencer workspace so it match WorkspaceItem
-    PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
-    return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
-  }
+  WorkspaceSynchronizerSoftiocTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
   //! Disables all tests in the fixture if ChannelAccess is not available
   void SetUp() override
@@ -79,7 +71,16 @@ public:
     }
   }
 
+  //! Creates synchronizer for testing.
+  std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
+  {
+    // populate sequencer workspace so it match WorkspaceItem
+    PopulateDomainWorkspace(*m_workspace_item, m_workspace);
+    return std::make_unique<WorkspaceSynchronizer>(m_workspace_item, &m_workspace);
+  }
+
   MonitorModel m_model;
+  WorkspaceItem* m_workspace_item{nullptr};
   sup::sequencer::Workspace m_workspace;
 };
 
@@ -97,7 +98,7 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
 
   // creating ChannelAccessVariableItem
   auto variable_item =
-      m_model.GetWorkspaceItem()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
+      m_model.InsertItem<ChannelAccessVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
   const sup::dto::AnyValue initial_value({{"value", {sup::dto::UnsignedInteger32Type, 0}},
@@ -105,13 +106,11 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   SetAnyValue(initial_value, *variable_item);
   EXPECT_FALSE(variable_item->IsAvailable());
 
-  // creating synchronizer (and underlying domain  workspace)
+  // creating synchronizer
   auto synchronizer = CreateSynchronizer();
 
   // Creating listeners and setting callback expectations.
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
-
-  // WorkspaceSynchronizer::Start method below will cause DataChangedEvents
 
   // expecting an event about IsAvailable status change
   auto is_available_property = GetIsAvailableItem(*variable_item);
@@ -123,17 +122,12 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   auto expected_event2 = mvvm::DataChangedEvent{connected_field_item, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
 
-  // expecting event with appearance change (gray rectangle is getting green)
-  auto channel_property = variable_item->GetItem(domainconstants::kChannelAttribute);
-  auto expected_event3 = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event3)).Times(1);
-
   // expecting event with value of scalar change
   auto value_field_item = variable_item->GetAnyValueItem()->GetChildren().at(0);
   auto expected_event4 = mvvm::DataChangedEvent{value_field_item, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event4)).Times(1);
 
-  synchronizer->Start();
+  m_workspace.Setup();
 
   // waiting for domain workspace noticing SoftIoc variable
   EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 10.0));
@@ -143,8 +137,8 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   m_workspace.GetValue(var_name, domain_value);
   EXPECT_EQ(domain_value, softioc_initial_value);
 
-  // queued signals need special waiting to fly to the GUI side
-  QTest::qWait(100);
+  auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
 
   // checking the value on GUI side
   EXPECT_TRUE(variable_item->IsAvailable());

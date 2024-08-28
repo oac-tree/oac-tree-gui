@@ -32,9 +32,9 @@ namespace sequencergui
 {
 
 class WorkspaceItem;
-class SequencerWorkspaceListener;
-class WorkspaceItemController;
-class WorkspaceEvent;
+class DomainWorkspaceListener;
+class WorkspaceItemListener;
+class VariableUpdatedEvent;
 
 /**
  * @brief The WorkspaceSynchronizer class provides data synchronization between WorkspaceItem and
@@ -42,72 +42,38 @@ class WorkspaceEvent;
  *
  * All AnyValue updates in domain Workspace will be propagated to WorkspaceItem. Similarly, all
  * DataChangedEvent on GUI model side will be propagated to Sequencer Workspace. The number of
- * variables in both workspaces, as well as their names, should coincide. There are two ways to use
- * the controller.
+ * variables in both workspaces, as well as their names, should coincide.
  *
- * @code
-    // When the domain and the GUI workspaces are known upfront:
-    WorkspaceSynchronizer synchronizer(workspace, workspace_item);
-    syncronizer->Start();
-
-    // When the GUI workspace was generated after the domain worspace.
-    WorkspaceSynchronizer synchronizer(workspace);
-    workspace->Setup();
-    synchronizer->SetWorkspaceItem(workspace_item);
-    synchronizer->Start();
- * @endcode
+ * Domain workspace should outlive WorkspaceSynchronizer.
  */
-class WorkspaceSynchronizer : public QObject
+class WorkspaceSynchronizer
 {
-  Q_OBJECT
-
 public:
-  /**
-   * @brief Main c-tor when domain workspace is known upfront.
-   *
-   * @details This c-tor requires that the WorkspaceItem should be set after.
-   */
-  explicit WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace,
-                                 QObject* parent = nullptr);
-
   /**
    * @brief Main c-tor when domain workspace and GUI workspace are known upfront.
    */
-  WorkspaceSynchronizer(WorkspaceItem* workspace_item, sup::sequencer::Workspace* domain_workspace,
-                        QObject* parent = nullptr);
+  WorkspaceSynchronizer(WorkspaceItem* workspace_item, sup::sequencer::Workspace* domain_workspace);
 
-  ~WorkspaceSynchronizer() override;
-
-  void SetWorkspaceItem(WorkspaceItem* workspace_item);
+  ~WorkspaceSynchronizer();
 
   /**
-   * @brief Returns true if syncronizer has been already started.
+   * @brief Checks if domain queue is empty.
+   *
+   * To test if all queued connection events from the domain has ended up in a GUI. For testing
+   * purposes.
    */
-  bool HasStarted() const;
-
-  /**
-   * @brief Start domain/GUI workspace syncronization.
-   */
-  void Start();
-
-  /**
-   * @brief Stop workspace syncronization.
-   */
-  void Shutdown();
-
-  sup::sequencer::Workspace* GetWorkspace() const;
-
-  WorkspaceItem* GetWorkspaceItem() const;
+  bool IsEmptyQueue() const;
 
 private:
-  void OnDomainVariableUpdated();
-  void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
+  /**
+   * @brief Returns a callback to update WorkspaceItem.
+   */
+  std::function<void(const VariableUpdatedEvent& event)> CreateUpdateGUICallback() const;
 
-  std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;
-  std::unique_ptr<WorkspaceItemController> m_workspace_item_controller;
-  sup::sequencer::Workspace* m_workspace{nullptr};
   WorkspaceItem* m_workspace_item{nullptr};
-  bool m_started{false};
+  sup::sequencer::Workspace* m_domain_workspace{nullptr};
+  std::unique_ptr<DomainWorkspaceListener> m_domain_workspace_listener;
+  std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
 };
 
 }  // namespace sequencergui
