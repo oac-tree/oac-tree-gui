@@ -38,7 +38,7 @@ class MonitorWidgetTest : public ::testing::Test
 {
 };
 
-TEST_F(MonitorWidgetTest, DISABLED_StartStopStart)
+TEST_F(MonitorWidgetTest, StartStopStart)
 {
   MonitorModel model;
 

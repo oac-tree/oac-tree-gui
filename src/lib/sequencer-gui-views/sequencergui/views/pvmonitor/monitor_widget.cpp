@@ -99,7 +99,8 @@ void MonitorWidget::OnStartMonitoringRequest()
 
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
-    // m_workspace_synchronizer->Start();
+
+    m_workspace->Setup();
     SetIsRunning(true);
   }
   catch (std::exception &ex)
@@ -111,8 +112,10 @@ void MonitorWidget::OnStartMonitoringRequest()
 
 void MonitorWidget::OnStopMonitoringRequest()
 {
-  // m_workspace_synchronizer->Shutdown();
   SetIsRunning(false);
+   // first synchronizer to unsubscribe drom domain
+  m_workspace_synchronizer.reset();
+  m_workspace.reset();
 }
 
 QList<QAction *> MonitorWidget::GetEditorActions()
