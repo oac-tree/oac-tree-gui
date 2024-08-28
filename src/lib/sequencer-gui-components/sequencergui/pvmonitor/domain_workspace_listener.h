@@ -57,13 +57,6 @@ public:
   ~DomainWorkspaceListener() override;
 
   /**
-   * @brief Starts listening for workspace notifications.
-   *
-   * Should be called before domain workspace setup. Will stop listening on own destruction.
-   */
-  void StartListening();
-
-  /**
    * @brief Returns number of events in a queue.
    */
   int GetEventCount() const;
@@ -81,6 +74,13 @@ signals:
   void VariabledUpdated();
 
 private:
+  /**
+   * @brief Starts listening for workspace notifications.
+   *
+   * Should be called before domain workspace setup. Will stop listening on own destruction.
+   */
+  void StartListening();
+
   /**
    * @brief Takes a workspace event from the queue and returns it to the user. Intended for call
    * from the GUI thread.

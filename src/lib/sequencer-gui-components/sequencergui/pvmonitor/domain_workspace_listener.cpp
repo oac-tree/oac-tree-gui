@@ -120,6 +120,7 @@ DomainWorkspaceListener::DomainWorkspaceListener(WorkspaceItem *workspace_item,
     : QObject(parent)
     , p_impl(std::make_unique<DomainWorkspaceListenerImpl>(this, workspace_item, domain_workspace))
 {
+  StartListening();
 }
 
 DomainWorkspaceListener::~DomainWorkspaceListener() = default;

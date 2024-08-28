@@ -167,8 +167,6 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
   DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
-  listener.StartListening();
-
   EXPECT_FALSE(variable_item->IsAvailable());
 
   // setting up expectations for the model

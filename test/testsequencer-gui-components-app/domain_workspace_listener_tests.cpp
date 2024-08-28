@@ -87,7 +87,6 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
 
   mock_listener_t model_listener(&m_model);
 
-  listener.StartListening();
   m_workspace.Setup();
 
   // This is an event from domain that variable has changed. It is not processed yet by the
@@ -122,7 +121,6 @@ TEST_F(DomainWorkspaceListenerTest, ChangeLocalVariable)
 
   mock_listener_t model_listener(&m_model);
 
-  listener.StartListening();
   m_workspace.Setup();
 
   // This is an event from domain that variable has changed. It is not processed yet by the
@@ -166,7 +164,6 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
 
   mock_listener_t model_listener(&m_model);
 
-  listener->StartListening();
   m_workspace.Setup();
 
   // let event loop do its job
@@ -207,8 +204,6 @@ TEST_F(DomainWorkspaceListenerTest, EmptyLocalVariableInWorkspace)
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   mock_listener_t model_listener(&m_model);
-
-  listener.StartListening();
 
   // expecting two signals for creating of the new AnyValueItem
   EXPECT_CALL(model_listener, OnAboutToInsertItem(_)).Times(1);
