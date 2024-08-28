@@ -21,8 +21,6 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_events.h>
-#include <sequencergui/model/variable_item.h>
-#include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_utils.h>
@@ -41,50 +39,43 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
   using callback_guard_t = sup::sequencer::ScopeGuard;
 
   DomainWorkspaceListener *m_impl_owner{nullptr};
-  WorkspaceItem *m_workspace_item{nullptr};
   workspace_t *m_domain_workspace{nullptr};
+  const std::function<void(const VariableUpdatedEvent &event)> m_update_item_callback;
 
-  std::vector<VariableItem *> m_index_to_variable_item;
   std::map<std::string, size_t> m_name_to_index;
 
   callback_guard_t m_guard;
   mvvm::threadsafe_queue<VariableUpdatedEvent> m_workspace_events;
 
-  DomainWorkspaceListenerImpl(DomainWorkspaceListener *impl_owner, WorkspaceItem *workspace_item,
-                              sup::sequencer::Workspace *domain_workspace)
+  DomainWorkspaceListenerImpl(
+      DomainWorkspaceListener *impl_owner, sup::sequencer::Workspace *domain_workspace,
+      const std::function<void(const VariableUpdatedEvent &event)> &callback)
       : m_impl_owner(impl_owner)
-      , m_workspace_item(workspace_item)
       , m_domain_workspace(domain_workspace)
+      , m_update_item_callback(callback)
   {
-    ValidateWorkspaces();
+    ValidateParameters();
 
     auto variables = m_domain_workspace->GetVariables();
     for (size_t index = 0; index < variables.size(); ++index)
     {
       m_name_to_index[variables[index]->GetName()] = index;
     }
-
-    m_index_to_variable_item = m_workspace_item->GetVariables();
   };
 
   /**
-   * @brief Validates if two workspace match.
+   * @brief Validates input parameters.
    */
-  void ValidateWorkspaces() const
+  void ValidateParameters() const
   {
     if (!m_domain_workspace)
     {
       throw RuntimeException("Not initialised workspace");
     }
 
-    if (!m_workspace_item)
+    if (!m_update_item_callback)
     {
-      throw RuntimeException("Not initialised workspace item");
-    }
-
-    if (!AreMatchingWorkspaces(*m_workspace_item, *m_domain_workspace))
-    {
-      throw RuntimeException("Domain and GUI workspace do not match");
+      throw RuntimeException("Not initialised callback");
     }
 
     if (m_domain_workspace->IsSuccessfullySetup())
@@ -114,11 +105,11 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
   }
 };
 
-DomainWorkspaceListener::DomainWorkspaceListener(WorkspaceItem *workspace_item,
-                                                 sup::sequencer::Workspace *domain_workspace,
-                                                 QObject *parent)
+DomainWorkspaceListener::DomainWorkspaceListener(
+    sup::sequencer::Workspace *domain_workspace,
+    const std::function<void(const VariableUpdatedEvent &event)> &callback, QObject *parent)
     : QObject(parent)
-    , p_impl(std::make_unique<DomainWorkspaceListenerImpl>(this, workspace_item, domain_workspace))
+    , p_impl(std::make_unique<DomainWorkspaceListenerImpl>(this, domain_workspace, callback))
 {
   StartListening();
 }
@@ -144,12 +135,6 @@ int DomainWorkspaceListener::GetEventCount() const
   return static_cast<int>(p_impl->m_workspace_events.size());
 }
 
-VariableItem *DomainWorkspaceListener::GetVariableItem(size_t index) const
-{
-  return index < p_impl->m_index_to_variable_item.size() ? p_impl->m_index_to_variable_item[index]
-                                                         : nullptr;
-}
-
 VariableUpdatedEvent DomainWorkspaceListener::PopEvent() const
 {
   VariableUpdatedEvent result;
@@ -160,9 +145,7 @@ VariableUpdatedEvent DomainWorkspaceListener::PopEvent() const
 void DomainWorkspaceListener::OnDomainVariableUpdated()
 {
   auto event = PopEvent();
-  auto item = GetVariableItem(event.index);
-  assert(item);
-  UpdateVariableFromEvent(event, *item);
+  p_impl->m_update_item_callback(event);
 }
 
 }  // namespace sequencergui

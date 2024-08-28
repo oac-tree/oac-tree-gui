@@ -37,9 +37,17 @@ class VariableItem;
 
 /**
  * @brief The DomainWorkspaceListener class propagates sequencer domain Workspace events to
- * WorkspaceItem.
+ * user-provided callback.
  *
- * It collects variable updates in an event queue and updates WorkspaceItem via queued connection.
+ * Its main purpose is to disentangle the domain thread from the GUI thread. The
+ * DomainWorkspaceListener collects variable updates in an event queue and calls a callback via
+ * queued connection, thus making a callback to be executed in a GUI thread.
+ *
+ * The class will start listening to the domain on the construction, and stop listening when
+ * destructed.
+ *
+ * It is intended to work in pairs with WorkspaceItemListener::ProcessEventFromDomain
+ * method. The latter will not propagate GUI model-changed events back into the domain.
  */
 class DomainWorkspaceListener : public QObject
 {
@@ -49,22 +57,21 @@ public:
   /**
    * @brief Main c-tor.
    *
-   * Should be used before domain workspace setup.
+   * Should be used before domain workspace setup. Provided callback will be executed on GUI side.
+   *
+   * @param domain_workspace Sequencer domain workspace.
+   * @param callback A callback to change VariableItem.
+   * @param parent Qt parent.
    */
-  DomainWorkspaceListener(WorkspaceItem* workspace_item,
-                               sup::sequencer::Workspace* domain_workspace,
-                               QObject* parent = nullptr);
+  DomainWorkspaceListener(sup::sequencer::Workspace* domain_workspace,
+                          const std::function<void(const VariableUpdatedEvent& event)>& callback,
+                          QObject* parent = nullptr);
   ~DomainWorkspaceListener() override;
 
   /**
    * @brief Returns number of events in a queue.
    */
   int GetEventCount() const;
-
-  /**
-   * @brief Returns item for given index.
-   */
-  VariableItem* GetVariableItem(size_t index) const;
 
 signals:
   /**
@@ -76,8 +83,6 @@ signals:
 private:
   /**
    * @brief Starts listening for workspace notifications.
-   *
-   * Should be called before domain workspace setup. Will stop listening on own destruction.
    */
   void StartListening();
 

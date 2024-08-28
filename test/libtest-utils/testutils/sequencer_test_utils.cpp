@@ -123,6 +123,14 @@ std::unique_ptr<variable_t> CreatePVAccessServerVariable(const std::string &name
                         initial_value, channel_name);
 }
 
+std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string &name,
+                                                        const sup::dto::AnyValue &initial_value,
+                                                        const std::string &channel_name)
+{
+  return CreateVariable(sequencergui::domainconstants::kChannelAccessVariableType, name,
+                        initial_value, channel_name);
+}
+
 sup::auto_server::JobInfo CreateJobInfo(const std::string &procedure_text)
 {
   const std::string prefix = "JobInfoTest:FromProcedure:";

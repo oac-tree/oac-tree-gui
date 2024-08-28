@@ -61,6 +61,13 @@ std::unique_ptr<variable_t> CreatePVAccessServerVariable(const std::string& name
                                                          const std::string& channel_name);
 
 /**
+ * @brief Creates ChannelAccessVariable with given parameters.
+ */
+std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string& name,
+                                                        const sup::dto::AnyValue& initial_value,
+                                                        const std::string& channel_name);
+
+/**
  * @brief Helper method to create JobInfo from procedure text body.
  */
 sup::auto_server::JobInfo CreateJobInfo(const std::string& procedure_text);
