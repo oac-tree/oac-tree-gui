@@ -50,6 +50,7 @@
 
 namespace
 {
+
 const QString kHeaderStateSettingName("WorkspaceEditorWidget/header_state");
 const std::vector<int> kDefaultColumnStretch({3, 2, 2});
 
@@ -197,7 +198,7 @@ void WorkspaceEditorWidget::SetupConnections()
   {
     m_component_provider->SetSelectedItem(item);
 
-    auto index_of_inserted = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
+    auto index_of_inserted = m_component_provider->GetViewIndexes(item);
     if (!index_of_inserted.empty())
     {
       m_tree_view->setExpanded(index_of_inserted.front(), true);
