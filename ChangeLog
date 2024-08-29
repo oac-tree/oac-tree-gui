@@ -1,6 +1,8 @@
 Changes for 1.5.0:
 
 - COA Release v2.2, August 2024
+- Refactor WorkspaceSynchronizer and sequencer variable update mechanism
+- Prototype of sequencer-remote application with sup-auto server support
 - Prototype of flatpack machinery
 - Implement a button for easy XML export
 - Restructure folders for better separation of testable and non-testable code
