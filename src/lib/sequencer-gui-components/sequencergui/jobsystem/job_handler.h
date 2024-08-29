@@ -194,7 +194,7 @@ private:
   //!< main runner to start/stop jobs
   std::unique_ptr<DomainRunnerService> m_domain_runner_service;
 
-  //!< dedicated listener to provide communication bween domain/GUI workspace variables
+  //!< dedicated listener to provide communication between domain/GUI workspace variables
   std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
 
   //!< main controller to handle breakpoints toggling

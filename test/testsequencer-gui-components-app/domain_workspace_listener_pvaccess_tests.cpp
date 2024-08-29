@@ -85,7 +85,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
   // See COA-1065. There is a feature, than on the first update pvxs reports a value wrapped in a
   // struct. Let's confirm this behavior here. Will be changed after COA-1065 is resolved.
   const sup::dto::AnyValue expected_initial_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
-  VariableUpdatedEvent expected_event1{0, expected_initial_value, true};
+  const VariableUpdatedEvent expected_event1{0, expected_initial_value, true};
   EXPECT_CALL(mock_client, Call(expected_event1)).Times(1);
 
   // let event loop do its job and trigger expectations
@@ -96,7 +96,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
   // preparing new expectations
   // See COA-1065. Interesting that after changing the value, struct will turn back to the scalar.
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
-  VariableUpdatedEvent expected_event2{0, new_value, true};
+  const VariableUpdatedEvent expected_event2{0, new_value, true};
   EXPECT_CALL(mock_client, Call(expected_event2)).Times(1);
 
   EXPECT_TRUE(m_workspace.SetValue(var_name, new_value));
@@ -130,7 +130,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // preparing expectations
-  VariableUpdatedEvent expected_event1{0, initial_value, true};
+  const VariableUpdatedEvent expected_event1{0, initial_value, true};
   EXPECT_CALL(mock_client, Call(expected_event1)).Times(1);
 
   // let event loop do its job and trigger expectations
@@ -140,7 +140,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
 
   // preparing new expectations
   const sup::dto::AnyValue new_value({{"value", {sup::dto::SignedInteger32Type, 43}}});
-  VariableUpdatedEvent expected_event2{0, new_value, true};
+  const VariableUpdatedEvent expected_event2{0, new_value, true};
   EXPECT_CALL(mock_client, Call(expected_event2)).Times(1);
 
   EXPECT_TRUE(m_workspace.SetValue(var_name, new_value));

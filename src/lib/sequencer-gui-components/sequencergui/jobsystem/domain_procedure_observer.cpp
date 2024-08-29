@@ -67,12 +67,6 @@ void DomainProcedureObserver::UpdateInstructionStatus(
 void DomainProcedureObserver::VariableUpdated(const std::string &name,
                                               const sup::dto::AnyValue &value, bool connected)
 {
-  // auto value_string = sup::gui::ValuesToJSONString(value);
-  // std::ostringstream ostr;
-  // ostr << "Update in variable [" << name << "], value [" << value_string << "]";
-  // ostr << " "
-  //      << "connected: " << mvvm::utils::FromBool(connected);
-  // m_post_event_callback(CreateLogEvent(Severity::kDebug, ostr.str()));
   m_post_event_callback(WorkspaceEvent{name, value, connected});
 }
 
