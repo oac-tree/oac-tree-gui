@@ -223,11 +223,8 @@ void JobHandler::SetupExpandedProcedureItem()
   m_breakpoint_controller->PropagateBreakpointsToDomain(
       *expanded_procedure_ptr, *m_domain_runner_service->GetJobController());
 
-  if (!m_domain_procedure->GetWorkspace().GetVariables().empty())
-  {
-    m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
-        expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());
-  }
+  m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
+      expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());
 }
 
 void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_time_msec)
