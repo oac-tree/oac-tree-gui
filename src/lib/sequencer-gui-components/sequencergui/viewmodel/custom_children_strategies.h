@@ -29,19 +29,6 @@ namespace sequencergui
 {
 
 /**
- * @brief The VariableChildrenStrategy class reports which items should be in the tree representing
- * WorkspaceItem.
- *
- * It allows all children items to appear in the tree, except PropertyItem representing the name and
- * IsAvailable status.
- */
-class VariableChildrenStrategy : public mvvm::IChildrenStrategy
-{
-public:
-  std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
-};
-
-/**
  * @brief The VariableTableChildrenStrategy class reports which items should be in the tree
  * representing WorkspaceItem.
  *

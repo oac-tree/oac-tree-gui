@@ -40,41 +40,7 @@ class CustomChildrenStrategiesTest : public ::testing::Test
 public:
 };
 
-//! Testing VariableChildrenStrategy.
-
-TEST_F(CustomChildrenStrategiesTest, VariableChildrenStrategy)
-{
-  {  // workspace with single variable
-    WorkspaceItem workspace;
-    auto variable0 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-    auto variable1 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-
-    VariableChildrenStrategy strategy;
-    auto children = strategy.GetChildren(&workspace);
-    EXPECT_EQ(children, std::vector<mvvm::SessionItem*>({variable0, variable1}));
-  }
-
-  {  // single local variable
-    LocalVariableItem item;
-
-    const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-    SetAnyValue(anyvalue, item);
-    item.SetName("abc");
-    item.SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
-
-    VariableChildrenStrategy strategy;
-    auto children = strategy.GetChildren(&item);
-
-    // row of children has two items looking at dynamicType property and scalar value
-    ASSERT_EQ(children.size(), 2);
-    EXPECT_EQ(children.at(0)->GetDisplayName(),
-              std::string(domainconstants::kDynamicTypeAttribute));
-    EXPECT_EQ(children.at(1)->GetDisplayName(), sup::gui::constants::kScalarTypeName);
-  }
-}
-
 //! Testing VariableTableChildrenStrategy.
-
 TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
 {
   {  // workspace with single variable

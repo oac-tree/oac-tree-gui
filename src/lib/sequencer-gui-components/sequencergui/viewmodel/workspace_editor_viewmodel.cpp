@@ -19,9 +19,9 @@
 
 #include "workspace_editor_viewmodel.h"
 
-#include "custom_children_strategies.h"
 #include "custom_row_strategies.h"
 
+#include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewmodel_controller_factory.h>
 
 namespace sequencergui
@@ -31,7 +31,8 @@ WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, Q
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<VariableChildrenStrategy, VariableRowStrategy>(model, this));
+      mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(model,
+                                                                                             this));
 }
 
 int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const

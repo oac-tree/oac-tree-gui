@@ -29,53 +29,8 @@
 
 #include <algorithm>
 
-namespace
-{
-
-/**
- * @brief Returns copy of container, without elements in the exclude list.
- */
-
-template <typename T, typename F>
-T FilterElements(const T &container, const F &to_exclude)
-{
-  T result;
-
-  auto not_in_exclude_list = [&to_exclude](const auto &x)
-  { return !mvvm::utils::Contains(to_exclude, x); };
-
-  std::copy_if(container.begin(), container.end(), std::back_inserter(result), not_in_exclude_list);
-
-  return result;
-}
-
-}  // namespace
-
 namespace sequencergui
 {
-
-//! ---------------------------------------------------------------------------
-//! VariableChildrenStrategy
-//! ---------------------------------------------------------------------------
-
-std::vector<mvvm::SessionItem *> VariableChildrenStrategy::GetChildren(
-    const mvvm::SessionItem *item) const
-{
-  if (!item)
-  {
-    return {};
-  }
-
-  const std::vector<mvvm::SessionItem *> to_exclude = {GetIsAvailableItem(*item)};
-
-  auto result = FilterElements(item->GetAllItems(), to_exclude);
-
-  return result;
-}
-
-//! ---------------------------------------------------------------------------
-//! VariableTableChildrenStrategy
-//! ---------------------------------------------------------------------------
 
 std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
     const mvvm::SessionItem *item) const
