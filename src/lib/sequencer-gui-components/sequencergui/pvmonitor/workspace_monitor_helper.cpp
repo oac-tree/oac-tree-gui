@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
@@ -91,6 +92,10 @@ void SetupNewVariable(VariableItem *item, int total_variable_count)
   else
   {
     SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
+  }
+  if (auto available_item = GetIsAvailableItem(*item); available_item)
+  {
+    available_item->SetVisible(false);
   }
   item->GetAnyValueItem()->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
 }

@@ -24,6 +24,7 @@
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
@@ -119,7 +120,6 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
 }
 
 //! Validating helper method SetupNewVariable.
-
 TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
 {
   WorkspaceItem workspace_item;
@@ -149,7 +149,11 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   }
 
   auto var_item2 = workspace_item.InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
+  EXPECT_TRUE(GetIsAvailableItem(*var_item2)->IsVisible());
   SetupNewVariable(var_item2, workspace_item.GetVariableCount());
+
+  // "connected" property should be invisible, when variable is constructed via editor
+  EXPECT_FALSE(GetIsAvailableItem(*var_item2)->IsVisible());
 
   // PvAccessClient variable is different, it shouldn't have just empty AnyValue
   EXPECT_EQ(var_item2->GetName(), "var3");
