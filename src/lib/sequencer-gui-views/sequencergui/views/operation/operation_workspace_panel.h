@@ -22,8 +22,6 @@
 
 #include <QWidget>
 
-class QLineEdit;
-
 namespace sup::gui
 {
 class ItemStackWidget;
@@ -32,8 +30,8 @@ class ItemStackWidget;
 namespace sequencergui
 {
 
-class OperationWorkspaceWidget;
 class ProcedureItem;
+class WorkspaceEditorWidget;
 
 /**
  * @brief The OperationWorkspacePanel class represents vertical panel on the right part of
@@ -57,9 +55,8 @@ private:
   void WriteSettings();
 
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
-  OperationWorkspaceWidget* m_workspace_tree_widget{nullptr};
-  OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
-  QLineEdit* m_line_edit{nullptr};
+  WorkspaceEditorWidget* m_workspace_tree_widget{nullptr};
+  WorkspaceEditorWidget* m_workspace_table_widget{nullptr};
 };
 
 }  // namespace sequencergui

@@ -19,12 +19,10 @@
 
 #include "operation_workspace_panel.h"
 
-#include "operation_workspace_widget.h"
-
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/views/composer/workspace_editor_widget.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
-#include <QLineEdit>
 #include <QSettings>
 #include <QVBoxLayout>
 
@@ -41,32 +39,22 @@ namespace sequencergui
 OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
     : QWidget(parent)
     , m_stack_widget(new sup::gui::ItemStackWidget)
-    , m_workspace_tree_widget(
-          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTree))
+    , m_workspace_tree_widget(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table_widget(
-          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTable))
-    , m_line_edit(new QLineEdit)
+          new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTable))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
 
+  m_workspace_tree_widget->setWindowTitle("Workspace Tree");
+  m_workspace_table_widget->setWindowTitle("Workspace Table");
+
   m_stack_widget->AddWidget(m_workspace_tree_widget);
   m_stack_widget->AddWidget(m_workspace_table_widget);
 
-  m_line_edit->setClearButtonEnabled(true);
-  m_line_edit->setPlaceholderText("Filter pattern");
-
   layout->addWidget(m_stack_widget);
-  layout->addWidget(m_line_edit);
 
   ReadSettings();
-
-  auto on_text = [this]()
-  {
-    m_workspace_tree_widget->SetFilterPattern(m_line_edit->text());
-    m_workspace_table_widget->SetFilterPattern(m_line_edit->text());
-  };
-  connect(m_line_edit, &QLineEdit::textChanged, this, on_text);
 }
 
 OperationWorkspacePanel::~OperationWorkspacePanel()

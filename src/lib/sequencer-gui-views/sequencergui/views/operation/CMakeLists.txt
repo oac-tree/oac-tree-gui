@@ -19,8 +19,6 @@ target_sources(${library_name} PRIVATE
   operation_realtime_panel.h
   operation_workspace_panel.cpp
   operation_workspace_panel.h
-  operation_workspace_widget.cpp
-  operation_workspace_widget.h
   operation_action_handler.cpp
   operation_action_handler.h
   realtime_instruction_tree_widget.cpp
