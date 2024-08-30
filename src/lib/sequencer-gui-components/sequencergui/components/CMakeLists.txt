@@ -5,6 +5,7 @@ target_sources(${library_name} PRIVATE
   app_constants.h
   app_settings.cpp
   app_settings.h
+  app_types.h
   custom_meta_types.cpp
   custom_meta_types.h
 )
