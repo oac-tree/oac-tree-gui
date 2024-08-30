@@ -42,8 +42,9 @@ class SettingsView;
 class SequencerMainWindowActions;
 class ApplicationModels;
 
-//! The main window of this application.
-
+/**
+ * @brief The SequencerMainWindow class is the main window of sequencer-gui application.
+ */
 class SequencerMainWindow : public QMainWindow
 {
   Q_OBJECT

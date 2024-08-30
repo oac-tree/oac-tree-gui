@@ -32,8 +32,9 @@ class MonitorWidget;
 class MonitorModel;
 class MonitorMainWindowActions;
 
-//! The main window of this application.
-
+/**
+ * @brief The SequencerMainWindow class is the main window of sup-pvmonitor application.
+ */
 class PvMonitorMainWindow : public QMainWindow
 {
   Q_OBJECT

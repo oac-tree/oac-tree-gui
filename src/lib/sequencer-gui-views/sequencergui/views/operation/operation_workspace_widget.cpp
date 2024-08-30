@@ -23,13 +23,13 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/operation/workspace_view_component_provider.h>
+#include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
 #include <sequencergui/viewmodel/workspace_operation_viewmodel.h>
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
-#include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QSettings>
@@ -61,7 +61,7 @@ OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
   {
     setWindowTitle("Variable Tree");
     m_component_provider = std::make_unique<WorkspaceViewComponentProvider>(
-        std::make_unique<mvvm::AllItemsViewModel>(nullptr), m_tree_view);
+        std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view);
   }
   else
   {
