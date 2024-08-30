@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 #define SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
+#include "sequencergui/components/app_types.h"
 #include "sequencergui/model/procedure_item.h"
 
 #include <QWidget>
@@ -55,7 +56,7 @@ class WorkspaceEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorWidget(QWidget* parent = nullptr);
+  explicit WorkspaceEditorWidget(WorkspacePresentationType presentation, QWidget* parent = nullptr);
   ~WorkspaceEditorWidget() override;
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);

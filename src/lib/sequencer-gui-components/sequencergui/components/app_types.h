@@ -23,7 +23,7 @@
 //! @file
 //! Common types for application widgets.
 
-namespace sequencergui::app
+namespace sequencergui
 {
 
 enum class WorkspacePresentationType
@@ -32,6 +32,6 @@ enum class WorkspacePresentationType
   kWorkspaceTable  //!< experimental table with workspace variables
 };
 
-}  // namespace sequencergui::app
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPONENTS_APP_TYPES_H_

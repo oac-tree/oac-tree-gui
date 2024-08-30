@@ -53,7 +53,8 @@ class WorkspaceViewComponentProvider;
 class WorkspaceEditor : public QObject
 {
 public:
-  explicit WorkspaceEditor(QTreeView* tree, QWidget* parent = nullptr);
+  explicit WorkspaceEditor(WorkspacePresentationType presentation, QTreeView* tree,
+                           QWidget* parent = nullptr);
   ~WorkspaceEditor() override;
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
@@ -70,19 +71,27 @@ public:
   void SetupContextMenu(QMenu& menu);
 
 private:
+  /**
+   * @brief Creates tree component provider for given type of workspace presentation.
+   *
+   * Tree will be equipped with the model, generating either variable tree, or variable table.
+   */
+  std::unique_ptr<WorkspaceViewComponentProvider> CreateProvider(
+      WorkspacePresentationType presentation) const;
+
   void SetupConnections();
 
   WorkspaceEditorContext CreateWorkspaceEditorContext();
 
   AttributeEditorContext CreateAttributeEditorContext();
 
+  QTreeView* m_tree_view{nullptr};
   std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
   WorkspaceItem* m_workspace_item{nullptr};
   WorkspaceEditorActionHandler* m_action_handler{nullptr};
   WorkspaceEditorActions* m_editor_actions{nullptr};
   AttributeEditorActionHandler* m_attribute_action_handler{nullptr};
   AttributeEditorActions* m_attribute_actions{nullptr};
-  QTreeView* m_tree_view{nullptr};
 };
 
 }  // namespace sequencergui

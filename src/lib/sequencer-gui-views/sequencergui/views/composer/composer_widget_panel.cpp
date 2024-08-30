@@ -36,7 +36,8 @@ namespace sequencergui
 ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent)
     : QWidget(parent)
     , m_instruction_editor_widget(new InstructionEditorWidget)
-    , m_workspace_editor_widget(new WorkspaceEditorWidget)
+    , m_workspace_editor_widget(
+          new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
     , m_node_editor(new NodeEditor)
     , m_xml_panel(new XmlPanel)
     , m_stack_widget(new sup::gui::ItemStackWidget)

@@ -27,6 +27,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/operation/workspace_view_component_provider.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
+#include <sequencergui/viewmodel/workspace_operation_viewmodel.h>
 #include <sequencergui/views/composer/workspace_editor_actions.h>
 #include <sequencergui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <sup/gui/app/app_action_helper.h>
@@ -35,21 +36,22 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QMenu>
+#include <QMimeData>
 #include <QTreeView>
 
 namespace sequencergui
 {
 
-WorkspaceEditor::WorkspaceEditor(QTreeView *tree, QWidget *parent)
+WorkspaceEditor::WorkspaceEditor(WorkspacePresentationType presentation, QTreeView *tree,
+                                 QWidget *parent)
     : QObject(parent)
-    , m_component_provider(std::make_unique<WorkspaceViewComponentProvider>(
-          std::make_unique<WorkspaceEditorViewModel>(nullptr), tree))
+    , m_tree_view(tree)
+    , m_component_provider(CreateProvider(presentation))
     , m_action_handler(new WorkspaceEditorActionHandler(CreateWorkspaceEditorContext(), this))
     , m_editor_actions(new WorkspaceEditorActions(this))
     , m_attribute_action_handler(
           new AttributeEditorActionHandler(CreateAttributeEditorContext(), this))
     , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler, this))
-    , m_tree_view(tree)
 {
   SetupConnections();
 
@@ -89,11 +91,28 @@ void WorkspaceEditor::SetupContextMenu(QMenu &menu)
   // populate cut/copy/paste menu
   m_editor_actions->SetupMenu(menu, m_action_handler);
 
-          // populate attribute menu
+  // populate attribute menu
   menu.addSeparator();
   auto attribute_menu = menu.addMenu("Modify attribute");
   m_attribute_actions->SetupMenu(*attribute_menu);
+}
 
+std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceEditor::CreateProvider(
+    WorkspacePresentationType presentation) const
+{
+  std::unique_ptr<WorkspaceViewComponentProvider> result;
+
+  if (presentation == WorkspacePresentationType::kWorkspaceTree)
+  {
+    result = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view);
+  }
+  else
+  {
+    result = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<WorkspaceOperationViewModel>(nullptr), m_tree_view);
+  }
+  return result;
 }
 
 void WorkspaceEditor::SetupConnections()

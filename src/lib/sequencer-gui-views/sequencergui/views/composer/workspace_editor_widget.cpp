@@ -45,13 +45,14 @@ const std::vector<int> kDefaultColumnStretch({3, 2, 2});
 namespace sequencergui
 {
 
-WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
+WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentation,
+                                             QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_line_edit(new QLineEdit)
-    , m_editor(new WorkspaceEditor(m_tree_view, this))
+    , m_editor(new WorkspaceEditor(presentation, m_tree_view, this))
 {
   setWindowTitle("Workspace");
 
