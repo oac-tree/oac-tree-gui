@@ -27,6 +27,8 @@ target_sources(${library_name} PRIVATE
   sequencer_composer_actions.h
   sequencer_composer_view.cpp
   sequencer_composer_view.h
+  workspace_editor.cpp
+  workspace_editor.h
   workspace_editor_actions.cpp
   workspace_editor_actions.h
   workspace_editor_widget.cpp

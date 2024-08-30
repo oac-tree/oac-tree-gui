@@ -23,7 +23,6 @@
 #include "sequencergui/model/procedure_item.h"
 
 #include <QWidget>
-#include <memory>
 
 class QTreeView;
 class QLineEdit;
@@ -43,14 +42,7 @@ namespace sequencergui
 {
 
 class WorkspaceItem;
-class VariableItem;
-class WorkspaceEditorContext;
-class WorkspaceEditorActionHandler;
-class WorkspaceEditorActions;
-class AttributeEditorContext;
-class AttributeEditorActions;
-class AttributeEditorActionHandler;
-class WorkspaceViewComponentProvider;
+class WorkspaceEditor;
 
 /**
  * @brief The WorkspaceEditorWidget class is intended for editing of workspace variables.
@@ -81,23 +73,13 @@ private:
 
   void SetWorkspaceItemIntern(WorkspaceItem* workspace_item);
 
-  void SetupConnections();
-  WorkspaceEditorContext CreateWorkspaceEditorContext();
-  AttributeEditorContext CreateAttributeEditorContext();
-
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
-  std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
-  WorkspaceItem* m_workspace_item{nullptr};
-
-  WorkspaceEditorActionHandler* m_action_handler{nullptr};
-  WorkspaceEditorActions* m_editor_actions{nullptr};
-
-  AttributeEditorActionHandler* m_attribute_action_handler{nullptr};
-  AttributeEditorActions* m_attribute_actions{nullptr};
-
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
   QLineEdit* m_line_edit{nullptr};
+  WorkspaceEditor* m_editor{nullptr};
+
+  WorkspaceItem* m_workspace_item{nullptr};
 };
 
 }  // namespace sequencergui

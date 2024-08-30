@@ -21,7 +21,6 @@
 
 #include "monitor_widget_actions.h"
 
-#include <sequencergui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/composer/workspace_editor_context.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
@@ -30,6 +29,8 @@
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/views/composer/workspace_editor_widget.h>
+#include <sequencergui/views/editors/anyvalue_editor_dialog_factory.h>
+#include <sequencergui/views/operation/operation_workspace_widget.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
 
@@ -61,6 +62,8 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     , m_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_editor(new WorkspaceEditorWidget)
+    , m_workspace_table_widget(
+          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTable))
 
 {
   auto layout = new QVBoxLayout(this);
@@ -69,6 +72,7 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
   m_workspace_editor->setWindowTitle("Variable Tree");
 
   m_stack_widget->AddWidget(m_workspace_editor, GetEditorActions() + GetControlActions());
+  m_stack_widget->AddWidget(m_workspace_table_widget, GetEditorActions() + GetControlActions());
 
   SetupConnections();  // should be after tree view got its model
 }
@@ -78,6 +82,7 @@ MonitorWidget::~MonitorWidget() = default;
 void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
 {
   m_workspace_editor->SetWorkspaceItem(item);
+  m_workspace_table_widget->SetWorkspaceItem(item);
 }
 
 void MonitorWidget::SetupConnections()
@@ -113,7 +118,7 @@ void MonitorWidget::OnStartMonitoringRequest()
 void MonitorWidget::OnStopMonitoringRequest()
 {
   SetIsRunning(false);
-   // first synchronizer to unsubscribe drom domain
+  // first synchronizer to unsubscribe drom domain
   m_workspace_synchronizer.reset();
   m_workspace.reset();
 }

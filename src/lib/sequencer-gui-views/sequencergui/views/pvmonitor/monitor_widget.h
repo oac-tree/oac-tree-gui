@@ -40,6 +40,7 @@ class WorkspaceEditorContext;
 class WorkspaceItem;
 class MonitorWidgetActions;
 class WorkspaceEditorWidget;
+class OperationWorkspaceWidget;
 
 class MonitorWidget : public QWidget
 {
@@ -73,6 +74,7 @@ private:
   MonitorWidgetActions* m_actions{nullptr};
 
   WorkspaceEditorWidget* m_workspace_editor{nullptr};
+  OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 
