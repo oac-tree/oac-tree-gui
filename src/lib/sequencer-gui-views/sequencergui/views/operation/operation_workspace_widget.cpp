@@ -82,9 +82,9 @@ OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
-  auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
+  auto on_subscribe = [this]() { SetWorkspaceItemIntern(m_workspace_item); };
 
-  auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
+  auto on_unsubscribe = [this]() { SetWorkspaceItemIntern(nullptr); };
 
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
@@ -92,18 +92,18 @@ OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
 
 OperationWorkspaceWidget::~OperationWorkspaceWidget() = default;
 
-void OperationWorkspaceWidget::SetProcedure(ProcedureItem *procedure)
+void OperationWorkspaceWidget::SetWorkspaceItem(WorkspaceItem *workspace_item)
 {
-  if (procedure == m_procedure)
+  if (workspace_item == m_workspace_item)
   {
     return;
   }
 
-  m_procedure = procedure;
+  m_workspace_item = workspace_item;
 
-  if (m_procedure && isVisible())
+  if (m_workspace_item && isVisible())
   {
-    SetProcedureIntern(m_procedure);
+    SetWorkspaceItemIntern(m_workspace_item);
   }
 }
 
@@ -118,11 +118,11 @@ void OperationWorkspaceWidget::AdjustTreeAppearance()
   m_custom_header->AdjustColumnsWidth();
 }
 
-void OperationWorkspaceWidget::SetProcedureIntern(ProcedureItem *procedure)
+void OperationWorkspaceWidget::SetWorkspaceItemIntern(WorkspaceItem *workspace_item)
 {
-  m_component_provider->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
+  m_component_provider->SetItem(workspace_item);
 
-  if (procedure)
+  if (workspace_item)
   {
     AdjustTreeAppearance();
   }

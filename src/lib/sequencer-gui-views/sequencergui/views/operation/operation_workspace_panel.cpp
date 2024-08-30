@@ -76,8 +76,9 @@ OperationWorkspacePanel::~OperationWorkspacePanel()
 
 void OperationWorkspacePanel::SetProcedure(ProcedureItem *item)
 {
-  m_workspace_tree_widget->SetProcedure(item);
-  m_workspace_table_widget->SetProcedure(item);
+  auto workspace_item = item ? item->GetWorkspace() : nullptr;
+  m_workspace_tree_widget->SetWorkspaceItem(workspace_item);
+  m_workspace_table_widget->SetWorkspaceItem(workspace_item);
 }
 
 void OperationWorkspacePanel::ReadSettings()

@@ -39,7 +39,7 @@ class VisibilityAgentBase;
 namespace sequencergui
 {
 class SequencerModel;
-class ProcedureItem;
+class WorkspaceItem;
 class InstructionItem;
 class WorkspaceViewComponentProvider;
 
@@ -66,19 +66,19 @@ public:
   explicit OperationWorkspaceWidget(Mode mode, QWidget* parent = nullptr);
   ~OperationWorkspaceWidget() override;
 
-  void SetProcedure(ProcedureItem* procedure_item);
+  void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
   void SetFilterPattern(const QString& pattern);
 
 private:
   void AdjustTreeAppearance();
-  void SetProcedureIntern(ProcedureItem* procedure);
+  void SetWorkspaceItemIntern(WorkspaceItem* workspace_item);
 
   Mode m_mode;
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
-  ProcedureItem* m_procedure{nullptr};
+  WorkspaceItem* m_workspace_item{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
