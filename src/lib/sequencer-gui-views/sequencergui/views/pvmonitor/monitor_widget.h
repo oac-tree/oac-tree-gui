@@ -40,7 +40,6 @@ class WorkspaceEditorContext;
 class WorkspaceItem;
 class MonitorWidgetActions;
 class WorkspaceEditorWidget;
-class OperationWorkspaceWidget;
 
 class MonitorWidget : public QWidget
 {
@@ -65,16 +64,14 @@ private:
    */
   void SetIsRunning(bool is_running);
 
-  WorkspaceEditorContext CreateContext();
-
   MonitorModel* m_model{nullptr};
   std::unique_ptr<workspace_t> m_workspace;
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 
   MonitorWidgetActions* m_actions{nullptr};
 
-  WorkspaceEditorWidget* m_workspace_editor{nullptr};
-  OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
+  WorkspaceEditorWidget* m_workspace_tree{nullptr};
+  WorkspaceEditorWidget* m_workspace_table{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 

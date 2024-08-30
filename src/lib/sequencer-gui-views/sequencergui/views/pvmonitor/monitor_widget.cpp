@@ -21,16 +21,11 @@
 
 #include "monitor_widget_actions.h"
 
-#include <sequencergui/composer/workspace_editor_context.h>
-#include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
-#include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/views/composer/workspace_editor_widget.h>
-#include <sequencergui/views/editors/anyvalue_editor_dialog_factory.h>
-#include <sequencergui/views/operation/operation_workspace_widget.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
 
@@ -61,18 +56,17 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     , m_model(model)
     , m_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
-    , m_workspace_editor(new WorkspaceEditorWidget)
-    , m_workspace_table_widget(
-          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTable))
-
+    , m_workspace_tree(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
+    , m_workspace_table(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTable))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_stack_widget);
 
-  m_workspace_editor->setWindowTitle("Variable Tree");
+  m_workspace_tree->setWindowTitle("Workspace Tree");
+  m_workspace_table->setWindowTitle("Workspace Table");
 
-  m_stack_widget->AddWidget(m_workspace_editor, GetEditorActions() + GetControlActions());
-  m_stack_widget->AddWidget(m_workspace_table_widget, GetEditorActions() + GetControlActions());
+  m_stack_widget->AddWidget(m_workspace_tree, m_workspace_tree->actions() + GetControlActions());
+  m_stack_widget->AddWidget(m_workspace_table, m_workspace_table->actions());
 
   SetupConnections();  // should be after tree view got its model
 }
@@ -81,8 +75,8 @@ MonitorWidget::~MonitorWidget() = default;
 
 void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
 {
-  m_workspace_editor->SetWorkspaceItem(item);
-  m_workspace_table_widget->SetWorkspaceItem(item);
+  m_workspace_tree->SetWorkspaceItem(item);
+  m_workspace_table->SetWorkspaceItem(item);
 }
 
 void MonitorWidget::SetupConnections()
@@ -125,7 +119,7 @@ void MonitorWidget::OnStopMonitoringRequest()
 
 QList<QAction *> MonitorWidget::GetEditorActions()
 {
-  return m_workspace_editor->actions();
+  return m_workspace_tree->actions();
 }
 
 QList<QAction *> MonitorWidget::GetControlActions()
@@ -140,16 +134,4 @@ void MonitorWidget::SetIsRunning(bool is_running)
   SetEnabled(GetEditorActions(), !is_running);
   m_actions->SetIsRunning(is_running);
 }
-
-WorkspaceEditorContext MonitorWidget::CreateContext()
-{
-  WorkspaceEditorContext result;
-  result.selected_workspace_callback = [this]() { return m_model->GetWorkspaceItem(); };
-  result.selected_item_callback = [this]() { return m_workspace_editor->GetSelectedItem(); };
-  result.send_message_callback = [](const auto &event)
-  { return sup::gui::SendWarningMessage(event); };
-  result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
-  return result;
-}
-
 }  // namespace sequencergui
