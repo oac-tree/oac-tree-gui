@@ -191,7 +191,7 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
   QSignalSpy spy_data_changed(&viewmodel, &WorkspaceOperationViewModel::dataChanged);
   variable_item->SetIsAvailable(false);
 
-  ASSERT_EQ(spy_data_changed.count(), 1);  // <-- failing here with 0 instead of 1
+  ASSERT_EQ(spy_data_changed.count(), 1);
   QList<QVariant> arguments = spy_data_changed.takeFirst();
   EXPECT_EQ(arguments.size(), 3);  // QModelIndex left, QModelIndex right, QVector<int> roles
   EXPECT_EQ(arguments.at(0).value<QModelIndex>(), variable_channel_index);

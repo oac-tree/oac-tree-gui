@@ -43,6 +43,8 @@ public:
 
   bool SetData(const QVariant& data, int qt_role) override;
 
+  virtual QVector<int> GetQtRoles(int data_role) const override;
+
 private:
   QString m_channel_name;
 };

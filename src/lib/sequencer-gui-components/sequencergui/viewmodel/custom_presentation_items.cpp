@@ -55,4 +55,13 @@ bool ChannelPresentationItem::SetData(const QVariant &data, int qt_role)
   return false;
 }
 
+QVector<int> ChannelPresentationItem::GetQtRoles(int data_role) const
+{
+  auto result = mvvm::DataPresentationItem::GetQtRoles(data_role);
+  // When IsAvailable status changes, the decoration role (green/gray box rectangle) should be
+  // reported too
+  result.push_back(Qt::DecorationRole);
+  return result;
+}
+
 }  // namespace sequencergui

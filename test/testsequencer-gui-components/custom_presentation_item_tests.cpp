@@ -58,4 +58,7 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   // changing IsAvailable status should change the color of the rectangle
   item.SetProperty(TestItem::kIsAvailable, false);
   EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetDisonnectedVariableColor());
+
+  EXPECT_EQ(presentation.GetQtRoles(mvvm::DataRole::kDisplay),
+            QVector<int>({Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole}));
 }
