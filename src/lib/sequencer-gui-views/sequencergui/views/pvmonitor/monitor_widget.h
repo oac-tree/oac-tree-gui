@@ -25,6 +25,9 @@
 #include <QWidget>
 #include <memory>
 
+class QTabWidget;
+class QToolBar;
+
 namespace sup::gui
 {
 class ItemStackWidget;
@@ -68,11 +71,13 @@ private:
   std::unique_ptr<workspace_t> m_workspace;
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 
-  MonitorWidgetActions* m_actions{nullptr};
+  MonitorWidgetActions* m_monitor_actions{nullptr};
 
   WorkspaceEditorWidget* m_workspace_tree{nullptr};
   WorkspaceEditorWidget* m_workspace_table{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
+  QToolBar* m_tool_bar{nullptr};
+  QTabWidget* m_tab_widget{nullptr};
 };
 
 }  // namespace sequencergui

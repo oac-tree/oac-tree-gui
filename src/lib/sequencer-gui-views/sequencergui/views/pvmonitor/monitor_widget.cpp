@@ -28,9 +28,12 @@
 #include <sequencergui/views/composer/workspace_editor_widget.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <sup/sequencer/workspace.h>
 
+#include <QTabWidget>
+#include <QToolBar>
 #include <QVBoxLayout>
 
 namespace
@@ -54,18 +57,26 @@ namespace sequencergui
 MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     : QWidget(parent)
     , m_model(model)
-    , m_actions(new MonitorWidgetActions(this))
+    , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_tree(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTable))
+    , m_tool_bar(new QToolBar)
+    , m_tab_widget(new QTabWidget)
 {
   auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_stack_widget);
+  layout->addWidget(m_tool_bar);
+  layout->addWidget(m_tab_widget);
+  m_tab_widget->addTab(m_stack_widget, "Workspace");
+
+  m_tool_bar->addActions(GetControlActions());
+  m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_tool_bar->setIconSize(sup::gui::utils::ToolBarIconSize());
 
   m_workspace_tree->setWindowTitle("Workspace Tree");
   m_workspace_table->setWindowTitle("Workspace Table");
 
-  m_stack_widget->AddWidget(m_workspace_tree, m_workspace_tree->actions() + GetControlActions());
+  m_stack_widget->AddWidget(m_workspace_tree, m_workspace_tree->actions());
   m_stack_widget->AddWidget(m_workspace_table, m_workspace_table->actions());
 
   SetupConnections();  // should be after tree view got its model
@@ -81,10 +92,10 @@ void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
 
 void MonitorWidget::SetupConnections()
 {
-  connect(m_actions, &MonitorWidgetActions::StartMonitoringRequest, this,
+  connect(m_monitor_actions, &MonitorWidgetActions::StartMonitoringRequest, this,
           &MonitorWidget::OnStartMonitoringRequest);
 
-  connect(m_actions, &MonitorWidgetActions::StopMonitoringRequest, this,
+  connect(m_monitor_actions, &MonitorWidgetActions::StopMonitoringRequest, this,
           &MonitorWidget::OnStopMonitoringRequest);
 }
 
@@ -124,14 +135,15 @@ QList<QAction *> MonitorWidget::GetEditorActions()
 
 QList<QAction *> MonitorWidget::GetControlActions()
 {
-  return m_actions->GetActions({MonitorWidgetActions::ActionKey::kStartWorkspace,
-                                MonitorWidgetActions::ActionKey::kStopWorkspace});
+  return m_monitor_actions->GetActions({MonitorWidgetActions::ActionKey::kStartWorkspace,
+                                        MonitorWidgetActions::ActionKey::kStopWorkspace});
 }
 
 void MonitorWidget::SetIsRunning(bool is_running)
 {
   // when running, disable editor actions, and enable control actions
-  SetEnabled(GetEditorActions(), !is_running);
-  m_actions->SetIsRunning(is_running);
+  SetEnabled(m_workspace_tree->actions(), !is_running);
+  SetEnabled(m_workspace_table->actions(), !is_running);
+  m_monitor_actions->SetIsRunning(is_running);
 }
 }  // namespace sequencergui
