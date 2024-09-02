@@ -28,8 +28,9 @@ namespace sequencergui
 
 enum class WorkspacePresentationType
 {
-  kWorkspaceTree,  //!< full tree with workspace variables
-  kWorkspaceTable  //!< experimental table with workspace variables
+  kWorkspaceTree,      //!< full tree with workspace variables, connection status hidded
+  kWorkspaceTechTree,  //!< full tree with workspace variables, connection status shown
+  kWorkspaceTable      //!< experimental table with workspace variables
 };
 
 }  // namespace sequencergui

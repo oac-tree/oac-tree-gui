@@ -27,12 +27,21 @@
 namespace sequencergui
 {
 
-WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
+WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, bool show_hidden,
+                                                   QObject *parent)
     : ViewModel(parent)
 {
-  SetController(
-      mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(model,
-                                                                                             this));
+  if (show_hidden)
+  {
+    SetController(mvvm::factory::CreateController<mvvm::AllChildrenStrategy, VariableRowStrategy>(
+        model, this));
+  }
+  else
+  {
+    SetController(
+        mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(
+            model, this));
+  }
 }
 
 int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const

@@ -24,6 +24,7 @@
 #include <sequencergui/composer/attribute_editor_action_handler.h>
 #include <sequencergui/composer/workspace_editor_action_handler.h>
 #include <sequencergui/composer/workspace_editor_context.h>
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/operation/workspace_view_component_provider.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
@@ -107,10 +108,19 @@ std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceEditor::CreateProvider(
     result = std::make_unique<WorkspaceViewComponentProvider>(
         std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view);
   }
-  else
+  else if (presentation == WorkspacePresentationType::kWorkspaceTechTree)
+  {
+    result = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<WorkspaceEditorViewModel>(nullptr, /*show_hidded*/ true), m_tree_view);
+  }
+  else if (presentation == WorkspacePresentationType::kWorkspaceTable)
   {
     result = std::make_unique<WorkspaceViewComponentProvider>(
         std::make_unique<WorkspaceOperationViewModel>(nullptr), m_tree_view);
+  }
+  else
+  {
+    throw RuntimeException("Unknown presentation");
   }
   return result;
 }
