@@ -58,9 +58,9 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item)
 {
   static const auto attributes = GetVariableReadonlyAttributesWhenRunning();
 
-  for (const auto &attr : attributes)
+  for (auto variable : item.GetVariables())
   {
-    for (auto variable : item.GetVariables())
+    for (const auto &attr : attributes)
     {
       if (mvvm::utils::HasTag(*variable, attr))
       {

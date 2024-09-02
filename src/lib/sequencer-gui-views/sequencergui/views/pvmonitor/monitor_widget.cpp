@@ -111,12 +111,12 @@ void MonitorWidget::OnStartMonitoringRequest()
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
 
     m_workspace->Setup();
+
     SetIsRunning(true);
   }
   catch (std::exception &ex)
   {
     sup::gui::SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
-    UpdateVariableEditableProperty(false, *m_model->GetWorkspaceItem());
     OnStopMonitoringRequest();
   }
 }
@@ -146,5 +146,6 @@ void MonitorWidget::SetIsRunning(bool is_running)
   SetEnabled(m_workspace_tree->actions(), !is_running);
   SetEnabled(m_workspace_table->actions(), !is_running);
   m_monitor_actions->SetIsRunning(is_running);
+  UpdateVariableEditableProperty(is_running, *m_model->GetWorkspaceItem());
 }
 }  // namespace sequencergui
