@@ -46,7 +46,6 @@ public:
 
 //! Validating view item presenting channel and is_available status for LocalVariable.
 //! It should be just empty non-editable placeholder.
-
 TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForLocalVariable)
 {
   LocalVariableItem item;
@@ -65,18 +64,18 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForLocalVariable)
 
 //! Validating view item presenting channel and is_available status for LocalVariable.
 //! It should be just empty non-editable placeholder.
-
 TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
 {
+  const std::string channel_name("CHANNEL");
   TestVariableItem item;
-  item.SetChannel("CHANNEL");
+  item.SetChannel(channel_name);
   item.SetIsAvailable(true);
 
   auto viewitem = CreateChannelPresentationViewItem(item);
 
   EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
   EXPECT_TRUE(viewitem->Data(Qt::DisplayRole).isValid());
-  EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString("CHANNEL"));
+  EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString::fromStdString(channel_name));
   EXPECT_TRUE(viewitem->Data(Qt::DecorationRole).isValid());
   EXPECT_EQ(viewitem->Data(Qt::DecorationRole).value<QColor>(), GetConnectedVariableColor());
 

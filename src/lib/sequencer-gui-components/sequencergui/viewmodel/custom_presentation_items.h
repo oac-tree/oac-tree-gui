@@ -29,7 +29,6 @@ namespace sequencergui
  * @brief The ChannelPresentationItem class is used to show IsAvailable status of InstructionItem
  * together with channel name.
  */
-
 class MVVM_VIEWMODEL_EXPORT ChannelPresentationItem : public mvvm::DataPresentationItem
 {
 public:

@@ -19,6 +19,7 @@
 
 #include "sequencergui/viewmodel/workspace_operation_viewmodel.h"
 
+#include <sequencergui/components/app_settings.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
@@ -35,13 +36,11 @@
 using namespace sequencergui;
 
 //! Tests for WorkspaceOperationViewModel class.
-
 class WorkspaceOperationViewModelTest : public ::testing::Test
 {
 };
 
 //! Testing model layout when there is LocalVariable without AnyValueItem on board.
-
 TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithoutAnyValue)
 {
   mvvm::ApplicationModel model;
@@ -76,7 +75,6 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithoutAnyValue)
 }
 
 //! Testing model layout when there is LocalVariable with scalar AnyValueItem on board.
-
 TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValue)
 {
   mvvm::ApplicationModel model;
@@ -114,7 +112,6 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValue)
 
 //! Testing model layout when there is LocalVariable initially without any AnyValueItem on board.
 //! Then we check if row is regenerated correctly.
-
 TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 {
   mvvm::ApplicationModel model;
@@ -151,4 +148,57 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 
   EXPECT_EQ(viewmodel.data(variable_type_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Local"));
+}
+
+//! Validating how IsAvailable status change is notified. 4th column in a model is a tricky one, it
+//! contains the channel name and green/gray color box, denoting IsAvailable status. This test
+//! checks, that the model emits dataChanged event on corresponding changes.
+TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
+{
+  const std::string channel_name("CHANNEL");
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+
+  auto variable_item = model.InsertItem<ChannelAccessVariableItem>(workspace_item);
+  variable_item->SetName("abc");
+  variable_item->SetChannel(channel_name);
+  variable_item->SetIsAvailable(true);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+  EXPECT_EQ(viewmodel.rowCount(), 1);
+  EXPECT_EQ(viewmodel.columnCount(), 4);
+
+  // setting AnyValue
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  SetAnyValue(anyvalue, *variable_item);
+
+  // checking viewmodel layout
+  EXPECT_EQ(viewmodel.rowCount(), 1);
+  EXPECT_EQ(viewmodel.columnCount(), 4);
+
+  // reading data from cell
+  auto variable_channel_index = viewmodel.index(0, 3);
+  EXPECT_FALSE(viewmodel.data(variable_channel_index, Qt::EditRole).isValid());
+  EXPECT_TRUE(viewmodel.data(variable_channel_index, Qt::DisplayRole).isValid());
+  EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DisplayRole).toString(),
+            QString::fromStdString(channel_name));
+  EXPECT_TRUE(viewmodel.data(variable_channel_index, Qt::DecorationRole).isValid());
+  EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DecorationRole).value<QColor>(),
+            GetConnectedVariableColor());
+
+  QSignalSpy spy_data_changed(&viewmodel, &WorkspaceOperationViewModel::dataChanged);
+  variable_item->SetIsAvailable(false);
+
+  ASSERT_EQ(spy_data_changed.count(), 1);  // <-- failing here with 0 instead of 1
+  QList<QVariant> arguments = spy_data_changed.takeFirst();
+  EXPECT_EQ(arguments.size(), 3);  // QModelIndex left, QModelIndex right, QVector<int> roles
+  EXPECT_EQ(arguments.at(0).value<QModelIndex>(), variable_channel_index);
+  EXPECT_EQ(arguments.at(1).value<QModelIndex>(), variable_channel_index);
+  QVector<int> expectedRoles = {Qt::DecorationRole};
+  EXPECT_EQ(arguments.at(2).value<QVector<int>>(), expectedRoles);
+
+  EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DecorationRole).value<QColor>(),
+            GetDisonnectedVariableColor());
 }
