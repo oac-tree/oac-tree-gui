@@ -117,6 +117,7 @@ void MonitorWidget::OnStartMonitoringRequest()
   {
     sup::gui::SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
     UpdateVariableEditableProperty(false, *m_model->GetWorkspaceItem());
+    OnStopMonitoringRequest();
   }
 }
 
