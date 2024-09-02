@@ -82,10 +82,8 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
   // workspace listener, since connection is queued.
   EXPECT_EQ(listener.GetEventCount(), 1);
 
-  // See COA-1065. There is a feature, than on the first update pvxs reports a value wrapped in a
-  // struct. Let's confirm this behavior here. Will be changed after COA-1065 is resolved.
-  const sup::dto::AnyValue expected_initial_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
-  const VariableUpdatedEvent expected_event1{0, expected_initial_value, true};
+  // preparing expectations
+  const VariableUpdatedEvent expected_event1{0, value, true};
   EXPECT_CALL(mock_client, Call(expected_event1)).Times(1);
 
   // let event loop do its job and trigger expectations
@@ -94,7 +92,6 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   // preparing new expectations
-  // See COA-1065. Interesting that after changing the value, struct will turn back to the scalar.
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   const VariableUpdatedEvent expected_event2{0, new_value, true};
   EXPECT_CALL(mock_client, Call(expected_event2)).Times(1);
