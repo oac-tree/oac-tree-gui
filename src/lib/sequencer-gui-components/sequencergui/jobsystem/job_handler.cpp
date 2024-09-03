@@ -61,7 +61,7 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
     throw RuntimeException("Procedure doesn't exist");
   }
 
-  m_property_listener = std::make_unique<mvvm::ItemListener<JobItem>>(job_item);
+  m_property_listener = std::make_unique<mvvm::ItemListener>(job_item);
   auto on_event = [this](const mvvm::PropertyChangedEvent &event)
   {
     if (event.m_name == itemconstants::kTickTimeout)

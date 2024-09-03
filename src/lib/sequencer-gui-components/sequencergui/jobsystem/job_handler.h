@@ -30,7 +30,6 @@
 
 namespace mvvm
 {
-template <typename T>
 class ItemListener;
 }
 
@@ -201,7 +200,7 @@ private:
   std::unique_ptr<BreakpointController> m_breakpoint_controller;
 
   //!< listens for JobItem property change
-  std::unique_ptr<mvvm::ItemListener<JobItem>> m_property_listener;
+  std::unique_ptr<mvvm::ItemListener> m_property_listener;
 
   //!< the job log
   JobLog* m_job_log{nullptr};
