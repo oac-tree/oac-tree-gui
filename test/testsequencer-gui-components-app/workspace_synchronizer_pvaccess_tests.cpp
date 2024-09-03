@@ -56,7 +56,7 @@ const std::string kTestPrefix("WorkspaceSynchronizerPVAccessTests:");
 class WorkspaceSynchronizerPVAccessTest : public ::testing::Test
 {
 public:
-  using mock_listener_t = ::testing::StrictMock<mvvm::test::MockModelListenerV2>;
+  using mock_listener_t = ::testing::StrictMock<mvvm::test::MockModelListener>;
 
   WorkspaceSynchronizerPVAccessTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
@@ -152,7 +152,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromGUI)
   EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
 
   // creating model listener and setting expectations
-  mvvm::test::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListener model_listener(&m_model);
   auto scalar_field = anyvalue_item->GetChildren().at(0);
   auto expected_event = mvvm::DataChangedEvent{scalar_field, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
@@ -186,7 +186,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
   m_workspace.Setup();
 
   // creating model listener and setting expectations
-  mvvm::test::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListener model_listener(&m_model);
 
   // Start method below will cause  DataChangedEvent for IsAvailable status
   auto is_available_property = GetIsAvailableItem(*variable_item);
@@ -317,7 +317,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
 
-  mvvm::test::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListener model_listener(&m_model);
 
   // expected events from client variable
   {

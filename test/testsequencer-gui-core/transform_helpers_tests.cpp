@@ -100,10 +100,10 @@ TEST_F(TransformHelpersTest, UpdateAnyValueSignaling)
 
   {
     const ::testing::InSequence seq;
-    auto expected_event1 = mvvm::event_variant_t(mvvm::AboutToInsertItemEvent{item, tag_index});
-    auto expected_event2 = mvvm::event_variant_t(mvvm::ItemInsertedEvent{item, tag_index});
-    EXPECT_CALL(listener, OnEvent(expected_event1)).Times(1);
-    EXPECT_CALL(listener, OnEvent(expected_event2)).Times(1);
+    mvvm::AboutToInsertItemEvent expected_event1{item, tag_index};
+    mvvm::ItemInsertedEvent expected_event2{item, tag_index};
+    EXPECT_CALL(listener, OnAboutToInsertItem(expected_event1)).Times(1);
+    EXPECT_CALL(listener, OnItemInserted(expected_event2)).Times(1);
   }
 
   SetAnyValue(anyvalue, *item);

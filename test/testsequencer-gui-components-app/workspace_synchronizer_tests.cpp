@@ -47,7 +47,7 @@ using ::testing::_;
 class WorkspaceSynchronizerTest : public ::testing::Test
 {
 public:
-  using mock_listener_t = ::testing::StrictMock<mvvm::test::MockModelListenerV2>;
+  using mock_listener_t = ::testing::StrictMock<mvvm::test::MockModelListener>;
 
   WorkspaceSynchronizerTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 

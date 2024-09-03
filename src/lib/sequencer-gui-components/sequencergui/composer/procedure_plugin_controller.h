@@ -21,9 +21,13 @@
 #define SEQUENCERGUI_COMPOSER_PROCEDURE_PLUGIN_CONTROLLER_H_
 
 #include <mvvm/signals/event_types.h>
-#include <mvvm/signals/model_listener_fwd.h>
 
 #include <memory>
+
+namespace mvvm
+{
+class ModelListener;
+}
 
 namespace sequencergui
 {
@@ -65,7 +69,7 @@ private:
    */
   void OnItemRemovedEvent(const mvvm::ItemRemovedEvent &event);
 
-  std::unique_ptr<mvvm::ModelListener<>> m_listener;
+  std::unique_ptr<mvvm::ModelListener> m_listener;
 };
 
 }  // namespace sequencergui

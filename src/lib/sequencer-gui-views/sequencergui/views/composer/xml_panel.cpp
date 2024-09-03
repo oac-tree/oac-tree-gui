@@ -78,7 +78,7 @@ void XmlPanel::SetupListener()
 {
   auto on_subscribe = [this]()
   {
-    m_listener = std::make_unique<mvvm::ModelListener<>>(m_model);
+    m_listener = std::make_unique<mvvm::ModelListener>(m_model);
     m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
     m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
     m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnDataChangedEvent);

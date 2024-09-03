@@ -52,7 +52,7 @@ WorkspaceItemListener::WorkspaceItemListener(WorkspaceItem* workspace_item,
     ++index;
   }
 
-  m_listener = std::make_unique<mvvm::ModelListener<>>(workspace_item->GetModel());
+  m_listener = std::make_unique<mvvm::ModelListener>(workspace_item->GetModel());
   m_listener->Connect<mvvm::DataChangedEvent>(this, &WorkspaceItemListener::OnDataChangedEvent);
   m_listener->Connect<mvvm::ItemInsertedEvent>(this, &WorkspaceItemListener::OnItemInsertedEvent);
 }
@@ -110,7 +110,7 @@ void WorkspaceItemListener::OnDataChangedEvent(const mvvm::DataChangedEvent& eve
   }
 }
 
-void WorkspaceItemListener::OnItemInsertedEvent(const mvvm::ItemInsertedEvent &event)
+void WorkspaceItemListener::OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event)
 {
   // If parent is VariableItem, then insert event denotes that AnyValueItem has been regenerated.
   if (auto variable_item = dynamic_cast<VariableItem*>(event.m_item); variable_item)

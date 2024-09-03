@@ -21,10 +21,14 @@
 #define SEQUENCERGUI_VIEWS_COMPOSER_XML_PANEL_H_
 
 #include <mvvm/signals/event_types.h>
-#include <mvvm/signals/model_listener_fwd.h>
 
 #include <QWidget>
 class QAction;
+
+namespace mvvm
+{
+class ModelListener;
+}
 
 namespace sup::gui
 {
@@ -77,7 +81,7 @@ private:
 
   sup::gui::CodeView* m_xml_view{nullptr};
   mvvm::ISessionModel* m_model{nullptr};
-  std::unique_ptr<mvvm::ModelListener<>> m_listener;
+  std::unique_ptr<mvvm::ModelListener> m_listener;
   ProcedureItem* m_procedure{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };

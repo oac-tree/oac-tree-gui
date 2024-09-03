@@ -110,7 +110,7 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   auto synchronizer = CreateSynchronizer();
 
   // Creating listeners and setting callback expectations.
-  mvvm::test::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListener model_listener(&m_model);
 
   // expecting an event about IsAvailable status change
   auto is_available_property = GetIsAvailableItem(*variable_item);

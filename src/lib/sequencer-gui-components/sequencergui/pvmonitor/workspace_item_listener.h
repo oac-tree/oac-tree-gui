@@ -24,10 +24,14 @@
 #include <sequencergui/jobsystem/domain_events.h>
 
 #include <mvvm/signals/event_types.h>
-#include <mvvm/signals/model_listener_fwd.h>
 
 #include <map>
 #include <memory>
+
+namespace mvvm
+{
+class ModelListener;
+}
 
 namespace sequencergui
 {
@@ -77,7 +81,7 @@ private:
 
   WorkspaceItem* m_workspace_item{nullptr};
   workspace_t* m_domain_workspace{nullptr};
-  std::unique_ptr<mvvm::ModelListener<>> m_listener;
+  std::unique_ptr<mvvm::ModelListener> m_listener;
   std::vector<bool> m_block_update_to_domain;
   std::map<VariableItem*, size_t> m_item_to_index;
   std::vector<VariableItem*> m_index_to_item;
