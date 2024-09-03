@@ -207,7 +207,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   mvvm::test::MockItemListener listener(message_item);
 
   mvvm::PropertyChangedEvent expected_event{message_item, itemconstants::kStatus};
-  EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
+  EXPECT_CALL(listener, OnPropertyChanged(expected_event)).Times(2);
 
   job_handler.OnStartRequest();
 
