@@ -22,6 +22,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 
+#include <mvvm/commands/command_stack.h>
+#include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -48,14 +50,17 @@ std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
 
 void SequencerModel::Clear()
 {
-  GetProcedureContainer()->Clear();
-  auto procedure = InsertItem<ProcedureItem>(GetProcedureContainer());
-  procedure->SetDisplayName("Untitled");
+  mvvm::ApplicationModel::Clear(); // this replaces root item, and clears command stack
+  PopulateModel();
 }
 
 void SequencerModel::PopulateModel()
 {
   InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
+  if (auto command_stack = GetCommandStack(); command_stack)
+  {
+    command_stack->Clear(); // to disallow "undo" of our main container
+  }
 }
 
 }  // namespace sequencergui

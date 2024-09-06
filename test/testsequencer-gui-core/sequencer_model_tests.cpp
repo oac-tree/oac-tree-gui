@@ -25,6 +25,7 @@
 #include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 
+#include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/item_factory.h>
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
@@ -35,7 +36,6 @@
 using namespace sequencergui;
 
 //! Tests for SequencerModel class.
-
 class SequencerModelTest : public testutils::FolderTest
 {
 public:
@@ -92,7 +92,6 @@ TEST_F(SequencerModelTest, XmlDocumentSaveLoad)
 
 //! Checking that domain name of universal instruction item outsurvive serialization (real-life
 //! bug).
-
 TEST_F(SequencerModelTest, UniversalInstructionSerialization)
 {
   const auto file_path = GetFilePath("UniversalInstructionSaveLoad.xml");
@@ -123,7 +122,6 @@ TEST_F(SequencerModelTest, UniversalInstructionSerialization)
 }
 
 //! Checking that domain name of universal variable item outsurvive serialization (real-life bug).
-
 TEST_F(SequencerModelTest, UniversalVariableSerialization)
 {
   const auto file_path = GetFilePath("UniversalVariableSaveLoad.xml");
@@ -149,4 +147,26 @@ TEST_F(SequencerModelTest, UniversalVariableSerialization)
   auto new_variable_item = model.GetProcedures().at(0)->GetWorkspace()->GetVariables().at(0);
 
   EXPECT_EQ(new_variable_item->GetDomainType(), domainconstants::kLocalVariableType);
+}
+
+//! Checking that command container is cleaned when model is cleared.
+TEST_F(SequencerModelTest, ClearAndCommandFramework)
+{
+  SequencerModel model;
+  model.SetUndoEnabled(true);
+
+  // initially created model already has a container, command stack is empty
+  ASSERT_NE(model.GetProcedureContainer(), nullptr);
+  ASSERT_EQ(model.GetCommandStack()->GetCommandCount(), 0);
+
+  // inserting procedures
+  model.InsertItem<ProcedureItem>(model.GetProcedureContainer(), mvvm::TagIndex::Append());
+  EXPECT_EQ(model.GetProcedures().size(), 1);
+  ASSERT_EQ(model.GetCommandStack()->GetCommandCount(), 1);
+
+  // clearing the model, container should still exist, command stack is empty
+  model.Clear();
+  ASSERT_NE(model.GetProcedureContainer(), nullptr);
+  EXPECT_EQ(model.GetProcedures().size(), 0);
+  ASSERT_EQ(model.GetCommandStack()->GetCommandCount(), 0);
 }
