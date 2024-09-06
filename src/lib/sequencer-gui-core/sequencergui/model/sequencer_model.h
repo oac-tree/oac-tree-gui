@@ -31,17 +31,28 @@ namespace sequencergui
 {
 class ProcedureItem;
 
-//! The model containing a collection of sequencer procedures.
-//! Used during procedure assembly.
-
+/**
+ * @brief The SequencerModel class is a model containing a collection of sequencer procedures.
+ */
 class SequencerModel : public mvvm::ApplicationModel
 {
 public:
   explicit SequencerModel(std::shared_ptr<mvvm::ItemPool> pool = {});
 
+  /**
+   * @brief Returns container with procedures.
+   */
   mvvm::ContainerItem* GetProcedureContainer() const;
 
+  /**
+   * @brief Returns list of all procedures in the procedure container.
+   */
   std::vector<ProcedureItem*> GetProcedures() const;
+
+  /**
+   * @brief Creates untitled proceduer.
+   */
+  void CreateUntitledProcedure();
 
   void Clear() override;
 

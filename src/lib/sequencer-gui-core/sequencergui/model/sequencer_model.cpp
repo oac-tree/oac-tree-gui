@@ -48,9 +48,15 @@ std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
   return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::TagIndex::kDefaultTag);
 }
 
+void SequencerModel::CreateUntitledProcedure()
+{
+  auto procedure = InsertItem<ProcedureItem>(GetProcedureContainer());
+  procedure->SetDisplayName("Untitled");
+}
+
 void SequencerModel::Clear()
 {
-  mvvm::ApplicationModel::Clear(); // this replaces root item, and clears command stack
+  mvvm::ApplicationModel::Clear();  // this replaces root item, and clears command stack
   PopulateModel();
 }
 
@@ -59,7 +65,7 @@ void SequencerModel::PopulateModel()
   InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
   if (auto command_stack = GetCommandStack(); command_stack)
   {
-    command_stack->Clear(); // to disallow "undo" of our main container
+    command_stack->Clear();  // to disallow "undo" of our main container
   }
 }
 

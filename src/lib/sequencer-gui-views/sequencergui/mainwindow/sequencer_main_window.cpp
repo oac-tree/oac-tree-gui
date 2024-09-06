@@ -54,6 +54,9 @@ SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<Applicati
   InitApplication();
 
   OnProjectLoad();
+
+  // create untitled procedure only once, on first GUI start
+  m_models->GetSequencerModel()->CreateUntitledProcedure();
 }
 
 bool SequencerMainWindow::ImportProcedure(const QString& file_name)
