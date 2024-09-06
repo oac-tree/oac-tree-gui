@@ -22,6 +22,7 @@
 #include <sequencergui/components/app_constants.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_constants.h>
 
 #include <QAction>
 #include <QWidget>
@@ -53,6 +54,9 @@ void SequencerComposerActions::RegisterActionsForContext(const sup::gui::AppCont
 
   sup::gui::AppAddActionToCommand(m_export_xml_action, app::constants::kExportXmlCommandId,
                                   context);
+
+  sup::gui::AppAddActionToCommand(m_undo_action, sup::gui::constants::kUndoCommandId, context);
+  sup::gui::AppAddActionToCommand(m_redo_action, sup::gui::constants::kRedoCommandId, context);
 }
 
 void SequencerComposerActions::SetupActions()
@@ -71,6 +75,9 @@ void SequencerComposerActions::SetupActions()
     handler.OnExportToXmlRequest(m_procedure_item);
   };
   connect(m_export_xml_action, &QAction::triggered, this, on_export);
+
+  m_undo_action = new QAction("Undo", this);
+  m_redo_action = new QAction("Redo", this);
 }
 
 }  // namespace sequencergui

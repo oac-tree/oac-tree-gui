@@ -61,6 +61,8 @@ private:
 
   QAction* m_validate_procedure_action{nullptr};
   QAction* m_export_xml_action{nullptr};
+  QAction* m_undo_action{nullptr};
+  QAction* m_redo_action{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};
 };
