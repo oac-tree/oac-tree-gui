@@ -83,6 +83,7 @@ SequencerComposerView::~SequencerComposerView()
 void SequencerComposerView::SetModel(SequencerModel *model)
 {
   m_model = model;
+  m_composer_actions->SetModel(model);
   m_composer_panel->SetModel(model);
   m_central_panel->SetModel(model);
   m_right_panel->SetModel(model);

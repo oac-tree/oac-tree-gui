@@ -34,9 +34,11 @@ namespace sequencergui
 {
 
 class ProcedureItem;
+class SequencerModel;
 
-//! Container for several procedure-related actions.
-
+/**
+ * @brief The SequencerComposerActions class is container for several procedure-related actions.
+ */
 class SequencerComposerActions : public QObject
 {
   Q_OBJECT
@@ -44,6 +46,8 @@ class SequencerComposerActions : public QObject
 public:
   explicit SequencerComposerActions(QWidget* parent = nullptr);
   ~SequencerComposerActions() override;
+
+  void SetModel(SequencerModel* model);
 
   void SetProcedure(ProcedureItem* procedure_item);
 
@@ -63,6 +67,7 @@ private:
   QAction* m_redo_action{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};
+  SequencerModel* m_model{nullptr};
 };
 
 }  // namespace sequencergui

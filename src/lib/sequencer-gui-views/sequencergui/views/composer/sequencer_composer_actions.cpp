@@ -39,6 +39,11 @@ SequencerComposerActions::SequencerComposerActions(QWidget *parent) : QObject(pa
   SetupActions();
 }
 
+void SequencerComposerActions::SetModel(SequencerModel *model)
+{
+  m_model = model;
+}
+
 SequencerComposerActions::~SequencerComposerActions() = default;
 
 void SequencerComposerActions::SetProcedure(ProcedureItem *procedure_item)
@@ -76,11 +81,24 @@ void SequencerComposerActions::SetupActions()
   connect(m_export_xml_action, &QAction::triggered, this, on_export);
 
   m_undo_action = new QAction("Undo", this);
-  auto on_undo = [this]() { m_procedure_item->GetModel()->GetCommandStack()->Undo(); };
+  auto on_undo = [this]()
+  {
+    if (m_model)
+    {
+      m_model->GetCommandStack()->Undo();
+    }
+  };
   connect(m_undo_action, &QAction::triggered, this, on_undo);
 
   m_redo_action = new QAction("Redo", this);
-  auto on_redo = [this]() { m_procedure_item->GetModel()->GetCommandStack()->Redo(); };
+  auto on_redo = [this]()
+  {
+    if (m_model)
+    {
+      m_model->GetCommandStack()->Redo();
+    }
+  };
+
   connect(m_redo_action, &QAction::triggered, this, on_redo);
 }
 
