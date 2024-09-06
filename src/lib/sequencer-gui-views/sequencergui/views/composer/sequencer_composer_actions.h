@@ -45,8 +45,6 @@ public:
   explicit SequencerComposerActions(QWidget* parent = nullptr);
   ~SequencerComposerActions() override;
 
-  QList<QAction*> GetMenuActions();
-
   void SetProcedure(ProcedureItem* procedure_item);
 
   /**

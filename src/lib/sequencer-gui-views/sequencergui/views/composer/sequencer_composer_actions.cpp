@@ -20,9 +20,13 @@
 #include "sequencer_composer_actions.h"
 
 #include <sequencergui/components/app_constants.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
+
+#include <mvvm/commands/i_command_stack.h>
 
 #include <QAction>
 #include <QWidget>
@@ -36,11 +40,6 @@ SequencerComposerActions::SequencerComposerActions(QWidget *parent) : QObject(pa
 }
 
 SequencerComposerActions::~SequencerComposerActions() = default;
-
-QList<QAction *> SequencerComposerActions::GetMenuActions()
-{
-  return {m_validate_procedure_action, m_export_xml_action};
-}
 
 void SequencerComposerActions::SetProcedure(ProcedureItem *procedure_item)
 {
@@ -77,7 +76,12 @@ void SequencerComposerActions::SetupActions()
   connect(m_export_xml_action, &QAction::triggered, this, on_export);
 
   m_undo_action = new QAction("Undo", this);
+  auto on_undo = [this]() { m_procedure_item->GetModel()->GetCommandStack()->Undo(); };
+  connect(m_undo_action, &QAction::triggered, this, on_undo);
+
   m_redo_action = new QAction("Redo", this);
+  auto on_redo = [this]() { m_procedure_item->GetModel()->GetCommandStack()->Redo(); };
+  connect(m_redo_action, &QAction::triggered, this, on_redo);
 }
 
 }  // namespace sequencergui

@@ -41,6 +41,10 @@ namespace
 const QString kGroupName = "MainWindow";
 const QString kWindowSizeSettingName = kGroupName + "/" + "size";
 const QString kWindowPosSettingName = kGroupName + "/" + "pos";
+
+const bool kEnableUndo = true;
+const size_t kUndoLimit = 100;
+
 }  // namespace
 
 namespace sequencergui
@@ -167,6 +171,11 @@ void SequencerMainWindow::OnProjectLoad()
   m_settings_view->SetApplicationModels(m_models.get());
 
   m_composer_view->OnProjectLoad();
+
+  if (kEnableUndo)
+  {
+    m_models->GetSequencerModel()->SetUndoEnabled(true, kUndoLimit);
+  }
 }
 
 }  // namespace sequencergui
