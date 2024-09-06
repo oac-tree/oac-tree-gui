@@ -34,6 +34,7 @@
 #include <sup/gui/core/message_handler_interface.h>
 
 #include <mvvm/core/exceptions.h>
+#include <mvvm/model/model_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QGraphicsSceneDragDropEvent>
@@ -162,6 +163,8 @@ void GraphicsScene::OnDeleteSelectedRequest()
     return;
   }
 
+  mvvm::utils::BeginMacro(*GetModel(), "OnDeleteSelectedRequest");
+
   for (auto instruction : GetSelectedInstructions())
   {
     auto view = FindViewForInstruction(instruction);
@@ -185,6 +188,8 @@ void GraphicsScene::OnDeleteSelectedRequest()
     // status.
     selected_connections = GetSelectedViewItems<NodeConnection>();
   }
+
+  mvvm::utils::EndMacro(*GetModel());
 }
 
 void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
