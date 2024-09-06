@@ -139,7 +139,17 @@ void SequencerMainWindowActions::SetupFileMenu()
 void SequencerMainWindowActions::SetupEditMenu()
 {
   auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kCutCommandId);
+                                               sup::gui::constants::kUndoCommandId);
+  command->SetText("Undo").SetShortcut(QKeySequence::Undo);
+
+  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                          sup::gui::constants::kRedoCommandId);
+  command->SetText("Redo").SetShortcut(QKeySequence::Redo);
+
+  sup::gui::AppGetMenu(sup::gui::constants::kEditMenu)->addSeparator();
+
+  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                          sup::gui::constants::kCutCommandId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
