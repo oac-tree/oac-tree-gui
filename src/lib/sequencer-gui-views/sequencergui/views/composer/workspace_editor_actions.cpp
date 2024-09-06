@@ -36,14 +36,7 @@ namespace sequencergui
 {
 
 WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent)
-    : QObject(parent)
-    , m_add_variable_menu(CreateInsertAfterMenu())
-    , m_add_variable_action(new sup::gui::ActionMenu(this))
-    , m_remove_variable_action(new QAction(this))
-    , m_remove_variable_toolbar_action(new sup::gui::ProxyAction(this))
-    , m_cut_action(new QAction(this))
-    , m_copy_action(new QAction(this))
-    , m_paste_action(new QAction(this))
+    : QObject(parent), m_add_variable_menu(CreateInsertAfterMenu())
 {
   SetupActions();
 }
@@ -80,7 +73,7 @@ WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 
 void WorkspaceEditorActions::SetupActions()
 {
-  m_add_variable_action->setText("Add variable");
+  m_add_variable_action = new sup::gui::ActionMenu("Add variable", this);
   m_add_variable_action->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
   m_add_variable_action->setMenu(m_add_variable_menu.get());
   m_add_variable_action->setToolTip(
@@ -89,7 +82,7 @@ void WorkspaceEditorActions::SetupActions()
       "  will be inserted after");
   m_action_map.Add(ActionKey::kAdd, m_add_variable_action);
 
-  m_remove_variable_action->setText("Remove variable");
+  m_remove_variable_action = new sup::gui::ActionMenu("Remove variable", this);
   m_remove_variable_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   m_remove_variable_action->setToolTip("Remove currently selected variable");
   connect(m_remove_variable_action, &QAction::triggered, this,
@@ -100,22 +93,21 @@ void WorkspaceEditorActions::SetupActions()
   m_remove_variable_toolbar_action->SetAction(m_remove_variable_action);
   m_action_map.Add(ActionKey::kRemove, m_remove_variable_toolbar_action);
 
-  m_cut_action = new QAction(this);
-  m_cut_action->setText("Cut");
+  m_cut_action = new QAction("Cut", this);
+  m_cut_action->setShortcut(QKeySequence::Cut);
   m_cut_action->setToolTip("Cuts selected variable");
-  m_cut_action->setShortcut(QKeySequence("Ctrl+X"));
   connect(m_cut_action, &QAction::triggered, this, &WorkspaceEditorActions::CutRequest);
   m_action_map.Add(ActionKey::kCut, m_cut_action);
 
-  m_copy_action->setText("Copy");
+  m_copy_action = new QAction("Copy", this);
+  m_copy_action->setShortcut(QKeySequence::Copy);
   m_copy_action->setToolTip("Copies selected variable");
-  m_copy_action->setShortcut(QKeySequence("Ctrl+C"));
   connect(m_copy_action, &QAction::triggered, this, &WorkspaceEditorActions::CopyRequest);
   m_action_map.Add(ActionKey::kCopy, m_copy_action);
 
-  m_paste_action->setText("Paste");
+  m_paste_action = new QAction("Paste", this);
+  m_paste_action->setShortcut(QKeySequence::Paste);
   m_paste_action->setToolTip("Paste selected variable after current variable");
-  m_paste_action->setShortcut(QKeySequence("Ctrl+V"));
   connect(m_paste_action, &QAction::triggered, this, &WorkspaceEditorActions::PasteRequest);
   m_action_map.Add(ActionKey::kPaste, m_paste_action);
 }

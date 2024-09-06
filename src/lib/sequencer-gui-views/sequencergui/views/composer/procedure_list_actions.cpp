@@ -31,40 +31,37 @@
 namespace sequencergui
 {
 
-ProcedureListActions::ProcedureListActions(QObject *parent)
-    : QObject(parent)
-    , m_new_procedure_action(new QAction(this))
-    , m_remove_selected_action(new QAction(this))
-    , m_cut_action(new QAction(this))
-    , m_copy_action(new QAction(this))
-    , m_paste_action(new QAction(this))
+ProcedureListActions::ProcedureListActions(QObject *parent) : QObject(parent)
 {
-  m_new_procedure_action->setText("New Procedure");
+  m_new_procedure_action = new QAction("New Procedure", this);
   m_new_procedure_action->setToolTip("Creates new empty procedure");
   m_new_procedure_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
   connect(m_new_procedure_action, &QAction::triggered, this,
           &ProcedureListActions::CreateNewProcedureRequest);
   m_action_map.Add(ActionKey::kCreateNew, m_new_procedure_action);
 
-  m_remove_selected_action->setText("Remove Procedure");
+  m_remove_selected_action = new QAction("Remove Procedure", this);
   m_remove_selected_action->setToolTip("Removes selected procedure");
   m_remove_selected_action->setIcon(sup::gui::utils::GetIcon("file-remove-outline.svg"));
   connect(m_remove_selected_action, &QAction::triggered, this,
           &ProcedureListActions::RemoveProcedureRequest);
   m_action_map.Add(ActionKey::kRemoveSelected, m_remove_selected_action);
 
-  m_cut_action->setText("Cut");
+  m_cut_action = new QAction("Cut", this);
   m_cut_action->setToolTip("Cuts selected procedure");
+  m_cut_action->setShortcut(QKeySequence::Cut);
   connect(m_cut_action, &QAction::triggered, this, &ProcedureListActions::CutRequest);
   m_action_map.Add(ActionKey::kCut, m_cut_action);
 
-  m_copy_action->setText("Copy");
+  m_copy_action = new QAction("Copy", this);
   m_copy_action->setToolTip("Copies selected procedure");
+  m_copy_action->setShortcut(QKeySequence::Copy);
   connect(m_copy_action, &QAction::triggered, this, &ProcedureListActions::CopyRequest);
   m_action_map.Add(ActionKey::kCopy, m_copy_action);
 
-  m_paste_action->setText("Paste");
+  m_paste_action = new QAction("Paste", this);
   m_paste_action->setToolTip("Paste selected procedure");
+  m_paste_action->setShortcut(QKeySequence::Paste);
   connect(m_paste_action, &QAction::triggered, this, &ProcedureListActions::PasteRequest);
   m_action_map.Add(ActionKey::kPaste, m_paste_action);
 }
