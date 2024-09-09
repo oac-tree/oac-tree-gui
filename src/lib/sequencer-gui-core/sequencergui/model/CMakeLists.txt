@@ -7,6 +7,9 @@ target_sources(${library_name} PRIVATE
   aggregate_factory.h
   application_models.cpp
   application_models.h
+  settings_item.cpp
+  settings_item.h
+  settings_constants.h
   epics_instruction_items.cpp
   epics_instruction_items.h
   instruction_container_item.cpp
@@ -28,6 +31,8 @@ target_sources(${library_name} PRIVATE
   sequencer_item_includes.h
   sequencer_model.cpp
   sequencer_model.h
+  settings_model.cpp
+  settings_model.h
   standard_instruction_items.cpp
   standard_instruction_items.h
   standard_variable_items.cpp
