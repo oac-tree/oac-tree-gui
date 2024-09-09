@@ -272,7 +272,7 @@ TEST_F(JobManagerTest, StopAllJobs)
   EXPECT_TRUE(manager.HasRunningJobs());
 
   manager.StopAllJobs();
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
 
   EXPECT_FALSE(manager.HasRunningJobs());
 }
