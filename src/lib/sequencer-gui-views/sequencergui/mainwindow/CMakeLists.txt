@@ -17,8 +17,6 @@ target_sources(${library_name} PRIVATE
   sequencer_main_window.h
   sequencer_main_window_actions.cpp
   sequencer_main_window_actions.h
-  settings_view.cpp
-  settings_view.h
   splash_screen.cpp
   splash_screen.h
 )

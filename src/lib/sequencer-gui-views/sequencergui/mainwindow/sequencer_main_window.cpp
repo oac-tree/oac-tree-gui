@@ -21,7 +21,6 @@
 
 #include "main_window_helper.h"
 #include "sequencer_main_window_actions.h"
-#include "settings_view.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -87,6 +86,10 @@ void SequencerMainWindow::InitComponents()
 {
   m_action_manager = new SequencerMainWindowActions(m_models->GetModels(), this);
 
+  if (kEnableUndo)
+  {
+  }
+
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
 
@@ -103,9 +106,6 @@ void SequencerMainWindow::InitComponents()
                           sup::gui::utils::GetIcon("chevron-right-circle-outline-light.svg"));
 
   m_tab_widget->AddSpacer();
-
-  m_settings_view = new SettingsView;
-  m_tab_widget->AddWidget(m_settings_view, "", sup::gui::utils::GetIcon("cog-outline-light.svg"));
 
   m_tab_widget->SetCurrentIndex(0);
 
@@ -171,14 +171,10 @@ void SequencerMainWindow::OnProjectLoad()
   m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModel(m_models->GetSequencerModel());
   m_operation_view->SetApplicationModels(m_models.get());
-  m_settings_view->SetApplicationModels(m_models.get());
 
   m_composer_view->OnProjectLoad();
 
-  if (kEnableUndo)
-  {
-    m_models->GetSequencerModel()->SetUndoEnabled(true, kUndoLimit);
-  }
+  m_models->GetSequencerModel()->SetUndoEnabled(kEnableUndo, kUndoLimit);
 }
 
 }  // namespace sequencergui
