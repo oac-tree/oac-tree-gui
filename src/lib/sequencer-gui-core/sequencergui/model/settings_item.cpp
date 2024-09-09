@@ -19,6 +19,8 @@
 
 #include "settings_item.h"
 
+#include "settings_constants.h"
+
 #include <mvvm/model/item_factory.h>
 
 namespace sequencergui
@@ -33,11 +35,17 @@ bool RegisterItems()
   return true;
 }
 
-static bool settings_item_registered_flag = RegisterItems();
+static const bool settings_item_registered_flag = RegisterItems();
 
 }  // namespace
 
-CommonSettingsItem::CommonSettingsItem() : CompoundItem(Type) {}
+CommonSettingsItem::CommonSettingsItem() : CompoundItem(Type)
+{
+  SetDisplayName("Common Settings");
+
+  AddProperty(kUseUndoSetting, kUseUndoDefault).SetDisplayName("Use undo/redo framework");
+  AddProperty(kUndoLimitSetting, kUndoLimitDefault).SetDisplayName("Undo limit");
+}
 
 std::unique_ptr<mvvm::SessionItem> CommonSettingsItem::Clone(bool make_unique_id) const
 {

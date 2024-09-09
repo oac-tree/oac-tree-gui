@@ -28,6 +28,16 @@
 namespace sequencergui
 {
 
+//! Setting names. These names are used to retrieve the value of the setting from the model and to
+//! store settings in QSetting machinery.
+
+const std::string kUseUndoSetting = "kUseUndoSetting";
+const std::string kUndoLimitSetting = "kUndoLimitSetting";
+
+//! Default values of some settings.
+
+const bool kUseUndoDefault = true;
+const int kUndoLimitDefault = 100;
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SETTINGS_ITEMS_H_

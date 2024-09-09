@@ -20,6 +20,9 @@
 #ifndef SEQUENCERGUI_MODEL_SETTINGS_MODEL_H_
 #define SEQUENCERGUI_MODEL_SETTINGS_MODEL_H_
 
+#include <sequencergui/model/settings_constants.h>
+#include <sequencergui/model/settings_item.h>
+
 #include <mvvm/model/application_model.h>
 
 namespace sequencergui
@@ -35,7 +38,22 @@ class SettingsModel : public mvvm::ApplicationModel
 {
 public:
   SettingsModel();
+
+  std::vector<mvvm::CompoundItem *> GetSettingsItems() const;
+
+  /**
+   * @brief Returns
+   */
+  template <typename T = mvvm::variant_t>
+  T Data(const std::string& setting_name) const;
 };
+
+template <typename T>
+inline T SettingsModel::Data(const std::string& setting_name) const
+{
+  // for the moment we assume that there is only one settings item, might change in the future
+  return GetSettingsItems().at(0)->Property<T>(setting_name);
+}
 
 }  // namespace sequencergui
 

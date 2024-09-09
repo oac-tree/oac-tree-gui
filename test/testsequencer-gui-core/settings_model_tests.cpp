@@ -17,23 +17,24 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "settings_model.h"
+#include "sequencergui/model/settings_model.h"
 
-#include "settings_item.h"
+#include <gtest/gtest.h>
+#include <testutils/folder_test.h>
 
-#include <mvvm/model/model_utils.h>
+using namespace sequencergui;
 
-namespace sequencergui
+//! Tests for SettingsModel class.
+class SettingsModelTest : public ::testing::Test
 {
+};
 
-SettingsModel::SettingsModel()
+TEST_F(SettingsModelTest, InitialState)
 {
-  InsertItem<CommonSettingsItem>();
+  SettingsModel model;
+
+  EXPECT_EQ(model.GetSettingsItems().size(), 1);
+
+  EXPECT_EQ(model.Data<bool>(kUseUndoSetting), kUseUndoDefault);
+  EXPECT_EQ(model.Data<int>(kUndoLimitSetting), kUndoLimitDefault);
 }
-
-std::vector<mvvm::CompoundItem*> SettingsModel::GetSettingsItems() const
-{
-  return mvvm::utils::GetTopItems<mvvm::CompoundItem>(this);
-}
-
-}  // namespace sequencergui
