@@ -22,6 +22,8 @@
 
 #include <QDialog>
 
+class QLabel;
+
 namespace sequencergui
 {
 
@@ -36,6 +38,7 @@ class SettingsEditorDialog : public QDialog
 
 public:
   explicit SettingsEditorDialog(QWidget* parent = nullptr);
+  ~SettingsEditorDialog() override;
 
 private:
   /**
@@ -48,7 +51,7 @@ private:
    */
   void WriteSettings();
 
-
+  QLabel* m_label{nullptr};
   SettingsEditor* m_settings_editor{nullptr};
 };
 

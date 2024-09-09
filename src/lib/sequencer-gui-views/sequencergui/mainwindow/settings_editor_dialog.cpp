@@ -24,6 +24,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QDialogButtonBox>
+#include <QLabel>
 #include <QPushButton>
 #include <QSettings>
 #include <QVBoxLayout>
@@ -34,16 +35,18 @@ namespace sequencergui
 namespace
 {
 
+const QString kGroupName = "SettingsEditorDialog";
+const QString kWindowSizeSettingName = kGroupName + "/" + "size";
+
 /**
  * @brief Creates layout with OK/Cancel buttons.
  */
 std::unique_ptr<QBoxLayout> CreateButtonLayout(QDialog* dialog)
 {
-  std::unique_ptr<QBoxLayout> result = std::make_unique<QVBoxLayout>();
+  auto result = std::make_unique<QVBoxLayout>();
 
   auto button_box = new QDialogButtonBox;
-  auto button =
-      button_box->addButton("Save settings (restart required)", QDialogButtonBox::AcceptRole);
+  auto button = button_box->addButton("Save settings", QDialogButtonBox::AcceptRole);
   button->setAutoDefault(false);
   button->setDefault(false);
   button = button_box->addButton("Cancel", QDialogButtonBox::RejectRole);
@@ -58,27 +61,35 @@ std::unique_ptr<QBoxLayout> CreateButtonLayout(QDialog* dialog)
   return result;
 }
 
-const QString kGroupName = "SettingsEditorDialog";
-const QString kWindowSizeSettingName = kGroupName + "/" + "size";
-
 }  // namespace
 
 SettingsEditorDialog::SettingsEditorDialog(QWidget* parent)
-    : QDialog(parent), m_settings_editor(new SettingsEditor)
+    : QDialog(parent), m_label(new QLabel), m_settings_editor(new SettingsEditor)
 {
   setWindowTitle("Application Settings");
 
+  m_label->setText("Changes in settings will come into effect at the next application start");
+  m_label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+  m_label->setFixedHeight(mvvm::utils::UnitSize(2));
+
   auto layout = new QVBoxLayout(this);
-  layout->setContentsMargins(0, 0, 0, 0);
-  layout->setSpacing(0);
   layout->addWidget(m_settings_editor);
+  layout->addWidget(m_label);
+  // layout->addSpacing(mvvm::utils::UnitSize(0.5));
   layout->addLayout(CreateButtonLayout(this).release());
+
+  ReadSettings();
+}
+
+SettingsEditorDialog::~SettingsEditorDialog()
+{
+  WriteSettings();
 }
 
 void SettingsEditorDialog::ReadSettings()
 {
   const QSettings settings;
-  const auto default_size = QSize(mvvm::utils::UnitSize(20), mvvm::utils::UnitSize(60));
+  const auto default_size = QSize(mvvm::utils::UnitSize(30), mvvm::utils::UnitSize(30));
   resize(settings.value(kWindowSizeSettingName, default_size).toSize());
 }
 

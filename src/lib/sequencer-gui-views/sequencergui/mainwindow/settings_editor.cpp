@@ -19,6 +19,14 @@
 
 #include "settings_editor.h"
 
+#include <sequencergui/model/settings_model.h>
+
+#include <mvvm/providers/item_view_component_provider.h>
+#include <mvvm/viewmodel/property_viewmodel.h>
+#include <mvvm/viewmodel/top_items_viewmodel.h>
+#include <mvvm/views/property_flat_view.h>
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QListView>
 #include <QSplitter>
 #include <QTreeView>
@@ -30,16 +38,35 @@ namespace sequencergui
 SettingsEditor::SettingsEditor(QWidget *parent)
     : QWidget(parent)
     , m_splitter(new QSplitter)
-    , m_top_item_list_view(new QListView)
-    , m_settings_view(new QTreeView)
+    , m_list_view(new QListView)
+    , m_settings_view(new mvvm::PropertyFlatView)
+    , m_settings_model(std::make_unique<SettingsModel>())
+    , m_list_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
+    , m_property_view_model(std::make_unique<mvvm::PropertyViewModel>(m_settings_model.get()))
 {
-  auto layout = QVBoxLayout(this);
-  layout.addWidget(m_splitter);
+  auto layout = new QVBoxLayout(this);
+  layout->addWidget(m_splitter);
 
-  m_splitter->addWidget(m_top_item_list_view);
+  m_splitter->addWidget(m_list_view);
   m_splitter->addWidget(m_settings_view);
+  m_splitter->setSizes(QList<int>() << 200 << 400);
+
+  m_list_component_provider->SetApplicationModel(m_settings_model.get());
+
+  connect(m_list_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged,
+          this, [this](auto item) { SetSettingsItem(item); });
+
+  m_settings_view->SetViewModel(m_property_view_model.get());
+
+  m_settings_view->layout()->setContentsMargins(mvvm::utils::UnitSize(1), 0, 0, 0);
+  m_list_component_provider->SetSelectedItem(m_settings_model->GetSettingsItems().at(0));
 }
 
 SettingsEditor::~SettingsEditor() = default;
+
+void SettingsEditor::SetSettingsItem(mvvm::SessionItem *item)
+{
+  m_property_view_model->SetRootSessionItem(item);
+}
 
 }  // namespace sequencergui
