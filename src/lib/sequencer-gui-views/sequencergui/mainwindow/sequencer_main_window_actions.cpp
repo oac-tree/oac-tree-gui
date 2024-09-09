@@ -20,6 +20,7 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
+#include "settings_editor_dialog.h"
 
 #include <sequencergui/components/app_constants.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -90,6 +91,11 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   connect(m_system_font_action, &QAction::triggered, this,
           &SequencerMainWindowActions::OnChangeSystemFont);
 
+  m_settings_dialog_action = new QAction("Application settings", this);
+  m_settings_dialog_action->setStatusTip("Summon application settings dialog");
+  connect(m_settings_dialog_action, &QAction::triggered, this,
+          &SequencerMainWindowActions::OnApplicationSettingsDialog);
+
   m_reset_settings_action = new QAction("Reset settings to defaults", this);
   m_reset_settings_action->setStatusTip(
       "Reset persistent application settings on disk to their defaults");
@@ -129,6 +135,7 @@ void SequencerMainWindowActions::SetupFileMenu()
   auto preferences_menu = file_menu->addMenu("Preferences");
   preferences_menu->setToolTipsVisible(true);
   preferences_menu->addAction(m_system_font_action);
+  preferences_menu->addAction(m_settings_dialog_action);
   preferences_menu->addSeparator();
   preferences_menu->addAction(m_reset_settings_action);
 
@@ -188,14 +195,19 @@ void SequencerMainWindowActions::OnAbout()
   dialog.exec();
 }
 
-void SequencerMainWindowActions::OnSummonSettingsDialogSettings() {}
-
 void SequencerMainWindowActions::OnChangeSystemFont()
 {
   if (sup::gui::SummonChangeSystemFontDialog())
   {
     emit RestartApplicationRequest(sup::gui::Restart);
   }
+}
+
+void SequencerMainWindowActions::OnApplicationSettingsDialog()
+{
+  SettingsEditorDialog dialog;
+  dialog.exec();
+
 }
 
 void SequencerMainWindowActions::OnResetSettings()

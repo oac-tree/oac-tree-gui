@@ -17,6 +17,10 @@ target_sources(${library_name} PRIVATE
   sequencer_main_window.h
   sequencer_main_window_actions.cpp
   sequencer_main_window_actions.h
+  settings_editor.cpp
+  settings_editor.h
+  settings_editor_dialog.cpp
+  settings_editor_dialog.h
   splash_screen.cpp
   splash_screen.h
 )
