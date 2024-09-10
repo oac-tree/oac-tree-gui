@@ -19,7 +19,7 @@
 
 #include "sequencergui/viewmodel/custom_presentation_items.h"
 
-#include <sequencergui/components/app_settings.h>
+#include <sequencergui/components/component_helper.h>
 
 #include <mvvm/model/compound_item.h>
 

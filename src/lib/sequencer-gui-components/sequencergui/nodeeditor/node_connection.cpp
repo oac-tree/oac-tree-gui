@@ -19,7 +19,7 @@
 
 #include "node_connection.h"
 
-#include <sequencergui/components/app_settings.h>
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/nodeeditor/node_port.h>
 
 #include <QGraphicsScene>

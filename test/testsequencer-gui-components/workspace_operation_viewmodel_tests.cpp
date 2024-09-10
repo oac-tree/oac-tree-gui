@@ -19,7 +19,7 @@
 
 #include "sequencergui/viewmodel/workspace_operation_viewmodel.h"
 
-#include <sequencergui/components/app_settings.h>
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>

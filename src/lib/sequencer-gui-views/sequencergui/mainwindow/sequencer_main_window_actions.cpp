@@ -22,7 +22,7 @@
 #include "about_application_dialog.h"
 #include "settings_editor_dialog.h"
 
-#include <sequencergui/components/app_constants.h>
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
@@ -177,10 +177,9 @@ void SequencerMainWindowActions::SetupViewMenu() {}
 void SequencerMainWindowActions::SetupToolsMenu()
 {
   sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu,
-                                app::constants::kValidateProcedureCommandId);
+                                constants::kValidateProcedureCommandId);
 
-  sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu,
-                                app::constants::kExportXmlCommandId);
+  sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu, constants::kExportXmlCommandId);
 }
 
 void SequencerMainWindowActions::SetupHelpMenu()
@@ -207,7 +206,6 @@ void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
   SettingsEditorDialog dialog;
   dialog.exec();
-
 }
 
 void SequencerMainWindowActions::OnResetSettings()

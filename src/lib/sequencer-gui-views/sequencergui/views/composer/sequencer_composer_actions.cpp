@@ -19,7 +19,7 @@
 
 #include "sequencer_composer_actions.h"
 
-#include <sequencergui/components/app_constants.h>
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
@@ -54,9 +54,9 @@ void SequencerComposerActions::SetProcedure(ProcedureItem *procedure_item)
 void SequencerComposerActions::RegisterActionsForContext(const sup::gui::AppContext &context)
 {
   sup::gui::AppAddActionToCommand(m_validate_procedure_action,
-                                  app::constants::kValidateProcedureCommandId, context);
+                                  constants::kValidateProcedureCommandId, context);
 
-  sup::gui::AppAddActionToCommand(m_export_xml_action, app::constants::kExportXmlCommandId,
+  sup::gui::AppAddActionToCommand(m_export_xml_action, constants::kExportXmlCommandId,
                                   context);
 
   sup::gui::AppAddActionToCommand(m_undo_action, sup::gui::constants::kUndoCommandId, context);

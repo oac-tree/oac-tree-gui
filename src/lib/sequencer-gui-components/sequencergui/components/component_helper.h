@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_
-#define SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_
+#ifndef SEQUENCERGUI_COMPONENTS_COMPONENT_HELPER_H_
+#define SEQUENCERGUI_COMPONENTS_COMPONENT_HELPER_H_
 
 //! @file
 //! Collection of helper function to retrieve values of presentation-related constants.
@@ -30,6 +30,12 @@
 
 namespace sequencergui
 {
+
+namespace constants
+{
+const QString kValidateProcedureCommandId = "Validate procedure";
+const QString kExportXmlCommandId = "Export XML";
+}
 
 /**
  * @brief Returns visual style of the behavior tree.
@@ -53,4 +59,4 @@ QString GetCustomToolTipStyle();
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_
+#endif  // SEQUENCERGUI_COMPONENTS_COMPONENT_HELPER_H_

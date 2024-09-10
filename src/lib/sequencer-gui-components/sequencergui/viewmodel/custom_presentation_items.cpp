@@ -19,7 +19,7 @@
 
 #include "custom_presentation_items.h"
 
-#include <sequencergui/components/app_settings.h>
+#include <sequencergui/components/component_helper.h>
 
 #include <mvvm/model/session_item.h>
 

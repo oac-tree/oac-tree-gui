@@ -2,9 +2,8 @@
 
 target_sources(${library_name} PRIVATE
   anyvalue_dialog_result.h
-  app_constants.h
-  app_settings.cpp
-  app_settings.h
+  component_helper.cpp
+  component_helper.h
   component_types.h
   custom_meta_types.cpp
   custom_meta_types.h

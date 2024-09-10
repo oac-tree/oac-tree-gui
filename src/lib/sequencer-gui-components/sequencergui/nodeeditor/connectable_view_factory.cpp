@@ -19,7 +19,7 @@
 
 #include "connectable_view_factory.h"
 
-#include <sequencergui/components/app_settings.h>
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
 #include <sequencergui/nodeeditor/position_strategy.h>

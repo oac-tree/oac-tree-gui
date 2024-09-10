@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "app_settings.h"
+#include "component_helper.h"
 
 #include <sup/gui/app/application_helper.h>
 
