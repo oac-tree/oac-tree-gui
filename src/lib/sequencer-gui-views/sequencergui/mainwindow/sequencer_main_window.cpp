@@ -25,6 +25,7 @@
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/settings_model.h>
 #include <sequencergui/views/composer/sequencer_composer_view.h>
 #include <sequencergui/views/explorer/sequencer_explorer_view.h>
 #include <sequencergui/views/operation/operation_monitor_view.h>
@@ -41,9 +42,6 @@ namespace
 const QString kGroupName = "MainWindow";
 const QString kWindowSizeSettingName = kGroupName + "/" + "size";
 const QString kWindowPosSettingName = kGroupName + "/" + "pos";
-
-const bool kEnableUndo = true;
-const size_t kUndoLimit = 100;
 
 }  // namespace
 
@@ -86,10 +84,6 @@ void SequencerMainWindow::InitApplication()
 void SequencerMainWindow::InitComponents()
 {
   m_action_manager = new SequencerMainWindowActions(m_models->GetModels(), this);
-
-  if (kEnableUndo)
-  {
-  }
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
@@ -178,7 +172,9 @@ void SequencerMainWindow::OnProjectLoad()
 
   m_composer_view->OnProjectLoad();
 
-  m_models->GetSequencerModel()->SetUndoEnabled(kEnableUndo, kUndoLimit);
+  const auto enable_undo = GetGlobalSettings().Data<bool>(kUseUndoSetting);
+  const auto undo_limit = GetGlobalSettings().Data<int>(kUndoLimitSetting);
+  m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
 }
 
 }  // namespace sequencergui
