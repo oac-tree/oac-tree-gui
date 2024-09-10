@@ -46,6 +46,9 @@ public:
    */
   void SetInitialValues(const SettingsModel& model);
 
+protected:
+  void keyPressEvent(QKeyEvent* event) override;
+
 private:
   /**
    * @brief Loads dialog persistence widget settings from disk.

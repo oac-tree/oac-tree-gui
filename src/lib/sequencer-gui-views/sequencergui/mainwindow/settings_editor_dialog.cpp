@@ -24,6 +24,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QDialogButtonBox>
+#include <QKeyEvent>
 #include <QLabel>
 #include <QPushButton>
 #include <QSettings>
@@ -86,9 +87,22 @@ SettingsEditorDialog::~SettingsEditorDialog()
   WriteSettings();
 }
 
-void SettingsEditorDialog::SetInitialValues(const SettingsModel &model)
+void SettingsEditorDialog::SetInitialValues(const SettingsModel& model)
 {
   m_settings_editor->SetInitialValues(model);
+}
+
+void SettingsEditorDialog::keyPressEvent(QKeyEvent* event)
+{
+  // Prevent dialog from closing on enter-key-event. This is necessary since some of underlying
+  // widgets might have own ideas and might forward this key event back.
+
+  if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+  {
+    return;
+  }
+
+  QDialog::keyPressEvent(event);
 }
 
 void SettingsEditorDialog::ReadSettings()
