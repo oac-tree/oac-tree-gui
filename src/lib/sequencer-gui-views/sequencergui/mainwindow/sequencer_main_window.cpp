@@ -21,6 +21,7 @@
 
 #include "main_window_helper.h"
 #include "sequencer_main_window_actions.h"
+#include "settings_helper.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -125,6 +126,9 @@ void SequencerMainWindow::ReadSettings()
 
   const auto default_pos = QPoint(mvvm::utils::UnitSize(20), mvvm::utils::UnitSize(40));
   move(settings.value(kWindowPosSettingName, default_pos).toPoint());
+
+  // global persistent setting stored in SettingsModel
+  ReadGlobalSettings();
 }
 
 void SequencerMainWindow::WriteSettings()

@@ -43,4 +43,25 @@ void SaveSettingsInPersistentStorage(const SettingsModel &model)
   settings.setValue(kRootSetingsModelName, QString::fromStdString(xml_string));
 }
 
+void LoadSettingsFromPersistentStorage(SettingsModel &model)
+{
+  const QSettings settings;
+
+  // If the QSettings file contains a record, we will fully rebuild the settings model with the
+  // content, stored in the file. This is not a very clean approach, since our C++ model
+  // might not match what was stored in a file a while ago. TODO find a way to update the model only
+  // with meaningful content.
+  if (settings.contains(kRootSetingsModelName))
+  {
+    auto str = settings.value(kRootSetingsModelName).toString().toStdString();
+    auto root_item = mvvm::utils::SessionItemFromXMLString(str);
+    model.ReplaceRootItem(std::move(root_item));
+  }
+}
+
+void ReadGlobalSettings()
+{
+  LoadSettingsFromPersistentStorage(const_cast<SettingsModel &>(GetGlobalSettings()));
+}
+
 }  // namespace sequencergui

@@ -44,6 +44,20 @@ const SettingsModel& GetGlobalSettings();
  */
 void SaveSettingsInPersistentStorage(const SettingsModel& model);
 
+/**
+ * @brief Loads settings from persistent storage.
+ *
+ * If persistent storage doesn't contain any related records, the model will be left unchainged.
+ */
+void LoadSettingsFromPersistentStorage(SettingsModel& model);
+
+/**
+ * @brief Loads global settings from persistent storage.
+ *
+ * If persistent storage doesn't contain any related records, the model will be left unchainged.
+ */
+void ReadGlobalSettings();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_SETTINGS_HELPER_H_
