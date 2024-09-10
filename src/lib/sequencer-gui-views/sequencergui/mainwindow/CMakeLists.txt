@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   settings_editor.h
   settings_editor_dialog.cpp
   settings_editor_dialog.h
+  settings_helper.cpp
+  settings_helper.h
   splash_screen.cpp
   splash_screen.h
 )

@@ -21,6 +21,7 @@
 
 #include "about_application_dialog.h"
 #include "settings_editor_dialog.h"
+#include "settings_helper.h"
 
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -205,6 +206,7 @@ void SequencerMainWindowActions::OnChangeSystemFont()
 void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
   SettingsEditorDialog dialog;
+  dialog.SetInitialValues(GetGlobalSettings());
   dialog.exec();
 }
 
