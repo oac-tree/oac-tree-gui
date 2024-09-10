@@ -27,10 +27,10 @@
 namespace sequencergui
 {
 
-class AppSettings;
-
-//! Factory to construct ConnectableViews from corre
-
+/**
+ * @brief The ConnectableViewFactory class is a factory to construct ConnectableViews from
+ * corresponding items.
+ */
 class ConnectableViewFactory : public ViewFactoryInterface
 {
 public:
@@ -38,9 +38,6 @@ public:
   ~ConnectableViewFactory() override;
 
   std::unique_ptr<ConnectableView> CreateView(InstructionItem *item) override;
-
-private:
-  std::unique_ptr<AppSettings> m_app_settings;
 };
 
 }  // namespace sequencergui

@@ -92,7 +92,7 @@ void NodeConnection::updatePath()
   QPainterPath p;
   p.moveTo(m_pos1);
 
-  if (m_settings.IsTopToBottomStyle())
+  if (GetBehaviorTreeStyle() == BehaviorTreeStyle::kTopToBottom)
   {
     qreal dx = m_pos2.y() - m_pos1.y();
     dx = qMax(dx, 200.);

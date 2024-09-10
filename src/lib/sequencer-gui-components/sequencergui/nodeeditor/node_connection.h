@@ -30,16 +30,18 @@
 
 namespace sequencergui
 {
+
 class NodePort;
 class ConnectableView;
 
-//! Elastic connection to connect ParentPort and ChildPort together.
-
+/**
+ * @brief Elastic connection to connect ParentPort and ChildPort together.
+ */
 class NodeConnection : public QGraphicsPathItem
 {
 public:
   explicit NodeConnection(QGraphicsScene* scene);
-  virtual ~NodeConnection() override;
+  ~NodeConnection() override;
 
   void setPos1(const QPointF& pos);
   void setPos2(const QPointF& pos);
@@ -63,7 +65,6 @@ private:
   QPointF m_pos2;
   NodePort* m_port1{nullptr};  //! The beginning of the connection.
   NodePort* m_port2{nullptr};  //! Connection end.
-  AppSettings m_settings;
 };
 
 }  // namespace sequencergui

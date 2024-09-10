@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 
-ConnectableViewFactory::ConnectableViewFactory() : m_app_settings(std::make_unique<AppSettings>())
+ConnectableViewFactory::ConnectableViewFactory()
 {
 }
 
@@ -38,7 +38,7 @@ std::unique_ptr<ConnectableView> ConnectableViewFactory::CreateView(InstructionI
   auto adapter = std::make_unique<ConnectableInstructionAdapter>(item);
   auto result = std::make_unique<ConnectableView>(std::move(adapter));
 
-  if (m_app_settings->IsTopToBottomStyle())
+  if (GetBehaviorTreeStyle() == BehaviorTreeStyle::kTopToBottom)
   {
     result->SetPositionStrategy(std::make_unique<TopBottomPositionStrategy>());
   }

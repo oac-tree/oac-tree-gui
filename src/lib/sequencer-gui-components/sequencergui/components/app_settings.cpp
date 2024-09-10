@@ -26,16 +26,10 @@
 namespace sequencergui
 {
 
-AppSettings::AppSettings() : m_tree_style(BehaviorTreeStyle::kTopToBottom) {}
-
-BehaviorTreeStyle AppSettings::GetTreeStyle() const
+BehaviorTreeStyle GetBehaviorTreeStyle()
 {
-  return m_tree_style;
-}
-
-bool AppSettings::IsTopToBottomStyle() const
-{
-  return m_tree_style == BehaviorTreeStyle::kTopToBottom;
+  // fixing tree style
+  return BehaviorTreeStyle::kTopToBottom;
 }
 
 QColor GetConnectedVariableColor()

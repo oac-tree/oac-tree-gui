@@ -32,18 +32,10 @@ enum class BehaviorTreeStyle
   kLeftToRight
 };
 
-class AppSettings
-{
-public:
-  AppSettings();
-
-  BehaviorTreeStyle GetTreeStyle() const;
-
-  bool IsTopToBottomStyle() const;
-
-private:
-  BehaviorTreeStyle m_tree_style;
-};
+/**
+ * @brief Returns visual style of the behavior tree.
+ */
+BehaviorTreeStyle GetBehaviorTreeStyle();
 
 /**
  * @brief Returns color for the decoration used to display connected variables.
