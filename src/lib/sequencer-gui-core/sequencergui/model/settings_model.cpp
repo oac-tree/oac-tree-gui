@@ -26,14 +26,25 @@
 namespace sequencergui
 {
 
-SettingsModel::SettingsModel()
+SettingsModel::SettingsModel() : ApplicationModel("SettingsModel")
 {
-  InsertItem<CommonSettingsItem>();
+  PopulateModel();
+}
+
+void SettingsModel::Clear()
+{
+  mvvm::ApplicationModel::Clear();
+  PopulateModel();
 }
 
 std::vector<mvvm::CompoundItem*> SettingsModel::GetSettingsItems() const
 {
   return mvvm::utils::GetTopItems<mvvm::CompoundItem>(this);
+}
+
+void SettingsModel::PopulateModel()
+{
+  InsertItem<CommonSettingsItem>();
 }
 
 }  // namespace sequencergui

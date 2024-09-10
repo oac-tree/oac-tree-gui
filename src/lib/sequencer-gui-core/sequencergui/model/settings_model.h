@@ -39,13 +39,21 @@ class SettingsModel : public mvvm::ApplicationModel
 public:
   SettingsModel();
 
+  /**
+   * @details Clears the model and populates it with the default settings.
+   */
+  void Clear() override;
+
   std::vector<mvvm::CompoundItem *> GetSettingsItems() const;
 
   /**
-   * @brief Returns
+   * @brief Returns data inside property item registered under the given setting name.
    */
   template <typename T = mvvm::variant_t>
   T Data(const std::string& setting_name) const;
+
+private:
+  void PopulateModel();
 };
 
 template <typename T>

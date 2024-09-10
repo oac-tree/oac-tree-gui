@@ -38,3 +38,18 @@ TEST_F(SettingsModelTest, InitialState)
   EXPECT_EQ(model.Data<bool>(kUseUndoSetting), kUseUndoDefault);
   EXPECT_EQ(model.Data<int>(kUndoLimitSetting), kUndoLimitDefault);
 }
+
+TEST_F(SettingsModelTest, Clear)
+{
+  SettingsModel model;
+
+  model.GetSettingsItems().at(0)->SetProperty(kUndoLimitSetting, 42);
+  EXPECT_EQ(model.Data<int>(kUndoLimitSetting), 42);
+  model.Clear();
+
+  // after clearing all setting items, and their values have been re-initialised
+  EXPECT_EQ(model.GetSettingsItems().size(), 1);
+  EXPECT_EQ(model.Data<bool>(kUseUndoSetting), kUseUndoDefault);
+  EXPECT_EQ(model.Data<int>(kUndoLimitSetting), kUndoLimitDefault);
+}
+
