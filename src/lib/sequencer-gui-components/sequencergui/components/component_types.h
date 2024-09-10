@@ -26,6 +26,19 @@
 namespace sequencergui
 {
 
+/**
+ * @brief The BehaviorTreeStyle enum defines presentation of behavior tree in the node editor.
+ */
+enum class BehaviorTreeStyle
+{
+  kTopToBottom,
+  kLeftToRight
+};
+
+/**
+ * @brief The WorkspacePresentationType enum defines how variables are presented in workspace
+ * editor.
+ */
 enum class WorkspacePresentationType
 {
   kWorkspaceTree,      //!< full tree with workspace variables, connection status hidded

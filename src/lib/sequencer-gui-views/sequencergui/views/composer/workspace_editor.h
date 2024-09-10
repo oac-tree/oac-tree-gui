@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_H_
 #define SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_H_
 
-#include <sequencergui/components/app_types.h>
+#include <sequencergui/components/component_types.h>
 
 #include <QObject>
 #include <memory>

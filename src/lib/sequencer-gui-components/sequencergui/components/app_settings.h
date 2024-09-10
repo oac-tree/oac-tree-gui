@@ -20,17 +20,16 @@
 #ifndef SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_
 #define SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_
 
+//! @file
+//! Collection of helper function to retrieve values of presentation-related constants.
+
+#include <sequencergui/components/component_types.h>
+
 #include <QColor>
 #include <QFont>
 
 namespace sequencergui
 {
-
-enum class BehaviorTreeStyle
-{
-  kTopToBottom,
-  kLeftToRight
-};
 
 /**
  * @brief Returns visual style of the behavior tree.
