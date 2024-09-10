@@ -51,14 +51,14 @@ SettingsEditor::SettingsEditor(QWidget *parent)
   m_splitter->setSizes(QList<int>() << 200 << 400);
 
   connect(m_list_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged,
-          this, [this](auto item) { SetSettingsItem(item); });
+          this, [this](auto item) { SetSettingsGroup(item); });
 
   m_settings_view->layout()->setContentsMargins(mvvm::utils::UnitSize(1), 0, 0, 0);
 }
 
 void SettingsEditor::SetInitialValues(const SettingsModel &model)
 {
-  // in the absnce of ISessionModel::CLone, we just clone root item
+  // in the absnce of ISessionModel::Clone, we just clone root item
   m_settings_model = std::make_unique<SettingsModel>();
   m_settings_model->ReplaceRootItem(model.GetRootItem()->Clone(/*unique_id*/ false));
 
@@ -69,9 +69,14 @@ void SettingsEditor::SetInitialValues(const SettingsModel &model)
 
 SettingsEditor::~SettingsEditor() = default;
 
-void SettingsEditor::SetSettingsItem(mvvm::SessionItem *item)
+void SettingsEditor::SetSettingsGroup(mvvm::SessionItem *item)
 {
   m_property_view_model->SetRootSessionItem(item);
+}
+
+const SettingsModel *SettingsEditor::GetResult() const
+{
+  return m_settings_model.get();
 }
 
 }  // namespace sequencergui

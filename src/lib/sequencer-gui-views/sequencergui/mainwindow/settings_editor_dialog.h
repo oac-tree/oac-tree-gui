@@ -46,10 +46,20 @@ public:
    */
   void SetInitialValues(const SettingsModel& model);
 
+  /**
+   * @brief Returns the model representing result of editing.
+   */
+  const SettingsModel* GetResult() const;
+
 protected:
   void keyPressEvent(QKeyEvent* event) override;
 
 private:
+  /**
+   * @brief Saves results of editing in persistent settings of QSettings file.
+   */
+  void SaveToPersistentSettings();
+
   /**
    * @brief Loads dialog persistence widget settings from disk.
    */

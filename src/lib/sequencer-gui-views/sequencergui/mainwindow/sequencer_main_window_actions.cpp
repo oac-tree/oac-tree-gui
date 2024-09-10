@@ -207,7 +207,10 @@ void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
   SettingsEditorDialog dialog;
   dialog.SetInitialValues(GetGlobalSettings());
-  dialog.exec();
+  if (dialog.exec() == QDialog::Accepted)
+  {
+    SaveSettingsInPersistentStorage(*dialog.GetResult());
+  }
 }
 
 void SequencerMainWindowActions::OnResetSettings()

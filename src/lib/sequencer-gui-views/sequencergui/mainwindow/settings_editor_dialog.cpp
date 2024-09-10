@@ -20,8 +20,10 @@
 #include "settings_editor_dialog.h"
 
 #include "settings_editor.h"
+#include "settings_helper.h"
 
 #include <mvvm/widgets/widget_utils.h>
+#include <mvvm/model/item_utils.h>
 
 #include <QDialogButtonBox>
 #include <QKeyEvent>
@@ -90,6 +92,11 @@ SettingsEditorDialog::~SettingsEditorDialog()
 void SettingsEditorDialog::SetInitialValues(const SettingsModel& model)
 {
   m_settings_editor->SetInitialValues(model);
+}
+
+const SettingsModel *SettingsEditorDialog::GetResult() const
+{
+  return m_settings_editor->GetResult();
 }
 
 void SettingsEditorDialog::keyPressEvent(QKeyEvent* event)

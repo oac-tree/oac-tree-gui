@@ -20,10 +20,17 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_SETTINGS_HELPER_H_
 #define SEQUENCERGUI_MAINWINDOW_SETTINGS_HELPER_H_
 
+//!< @file
 //!< Collection of helper function to access global application settings.
+
+#include <QString>
 
 namespace sequencergui
 {
+
+//! The name of the setting in QSettings file carrying XML representation of the root item of
+//! SettingsModel.
+const QString kRootSetingsModelName = "SettingsModel/xml";
 
 class SettingsModel;
 
@@ -31,6 +38,11 @@ class SettingsModel;
  * @brief Returns model with global application settings.
  */
 const SettingsModel& GetGlobalSettings();
+
+/**
+ * @brief Saves given settings in persistent storage.
+ */
+void SaveSettingsInPersistentStorage(const SettingsModel& model);
 
 }  // namespace sequencergui
 

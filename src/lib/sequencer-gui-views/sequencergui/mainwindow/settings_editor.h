@@ -43,8 +43,8 @@ class SettingsModel;
 /**
  * @brief The SettingsEditor class represents a simple editor of application persistent settings.
  *
- * It consists of the list with main settings items on the left, and a detailed editor for the
- * currently selected item on the right.
+ * It consists of the list with group setting items on the left, and a property editor for
+ * the currently selected group on the right.
  */
 class SettingsEditor : public QWidget
 {
@@ -59,7 +59,15 @@ public:
    */
   void SetInitialValues(const SettingsModel& model);
 
-  void SetSettingsItem(mvvm::SessionItem* item);
+  /**
+   * @brief Sets settings group item to show in property editor.
+   */
+  void SetSettingsGroup(mvvm::SessionItem* item);
+
+  /**
+   * @brief Returns the model representing result of editing.
+   */
+  const SettingsModel* GetResult() const;
 
 private:
   QSplitter* m_splitter{nullptr};

@@ -21,6 +21,11 @@
 
 #include <sequencergui/model/settings_model.h>
 
+#include <mvvm/model/item_utils.h>
+#include <mvvm/model/session_item.h>
+
+#include <QSettings>
+
 namespace sequencergui
 {
 
@@ -28,6 +33,14 @@ const SettingsModel &GetGlobalSettings()
 {
   static const SettingsModel model;
   return model;
+}
+
+void SaveSettingsInPersistentStorage(const SettingsModel &model)
+{
+  QSettings settings;
+
+  auto xml_string = mvvm::utils::ToXMLString(*model.GetRootItem());
+  settings.setValue(kRootSetingsModelName, QString::fromStdString(xml_string));
 }
 
 }  // namespace sequencergui
