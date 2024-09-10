@@ -23,11 +23,10 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <QColor>
-#include <QDebug>
-#include <algorithm>
 
 namespace
 {
@@ -54,19 +53,12 @@ QString ConnectableInstructionAdapter::GetDisplayName() const
   return QString::fromStdString(InsertSpaceAtCamelCase(m_instruction->GetDisplayName()));
 }
 
-//! Returns input ports of connectable view. This port is located on an instruction playing the role
-//! of a child. Usually located on the top part of the view. The connection from this port
-//! should go toward parent view.
 
 std::vector<PortInfo> ConnectableInstructionAdapter::GetInputPorts() const
 {
   return IsRoot() ? std::vector<PortInfo>({kRootPortInfo})
                   : std::vector<PortInfo>({kBasicPortInfo});
 }
-
-//! Returns output ports of connectable view. This port is located on an instruction playing the
-//! role of a parent. Usually located on the bottom part of the view. The connections from this port
-//! should go toward children.
 
 std::vector<PortInfo> ConnectableInstructionAdapter::GetOutputPorts() const
 {
@@ -86,7 +78,7 @@ double ConnectableInstructionAdapter::GetX() const
 
 void ConnectableInstructionAdapter::SetX(double value)
 {
-  return m_instruction->SetX(value);
+  m_instruction->SetX(value);
 }
 
 double ConnectableInstructionAdapter::GetY() const
@@ -96,12 +88,20 @@ double ConnectableInstructionAdapter::GetY() const
 
 void ConnectableInstructionAdapter::SetY(double value)
 {
-  return m_instruction->SetY(value);
+  m_instruction->SetY(value);
 }
 
 bool ConnectableInstructionAdapter::IsRoot() const
 {
   return m_instruction->IsRoot();
+}
+
+void ConnectableInstructionAdapter::SetXY(double x, double y)
+{
+  mvvm::utils::BeginMacro(*m_instruction, "SetXY");
+  m_instruction->SetX(x);
+  m_instruction->SetY(y);
+  mvvm::utils::EndMacro(*m_instruction);
 }
 
 }  // namespace sequencergui

@@ -182,8 +182,7 @@ QList<NodeConnection*> ConnectableView::GetOutputConnections() const
 
 void ConnectableView::UpdateItemFromView()
 {
-  m_item->SetX(x());
-  m_item->SetY(y());
+  m_item->SetXY(x(), y());
 }
 
 void ConnectableView::UpdateViewFromItem()

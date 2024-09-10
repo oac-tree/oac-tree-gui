@@ -29,12 +29,16 @@ class QString;
 
 namespace sequencergui
 {
+
 class InstructionItem;
 
-//! Convenience class which adapts InstructionItem for InstructionView. Introduced to isolate
-//! a view from InstructionItem, and also supplement InstructionItem with additional methods
-//! specific for a graphics scene.
-
+/**
+ * @brief The ConnectableInstructionAdapter is a convenience class that adapts InstructionItem for
+ * InstructionView.
+ *
+ * Introduced to isolate a view from InstructionItem, and also supplement InstructionItem with
+ * additional methods specific to a graphics scene.
+ */
 class ConnectableInstructionAdapter
 {
 public:
@@ -44,8 +48,20 @@ public:
 
   QString GetDisplayName() const;
 
+  /**
+   * @brief Returns input ports of connectable view.
+   *
+   * This port is located on an instruction playing the role of a child. Usually located on the top
+   * part of the view. The connection from this port should go toward parent view.
+   */
   virtual std::vector<PortInfo> GetInputPorts() const;
 
+  /**
+   * @brief Returns output ports of connectable view.
+   *
+   * This port is located on an instruction playing the role of a parent. Usually located on the
+   * bottom part of the view. The connections from this port should go toward children.
+   */
   virtual std::vector<PortInfo> GetOutputPorts() const;
 
   InstructionItem* GetInstruction() const;
@@ -59,6 +75,8 @@ public:
   void SetY(double value);
 
   bool IsRoot() const;
+
+  void SetXY(double x, double y);
 
 private:
   InstructionItem* m_instruction{nullptr};
