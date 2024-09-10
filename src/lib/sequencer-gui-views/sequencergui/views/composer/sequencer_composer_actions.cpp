@@ -83,7 +83,7 @@ void SequencerComposerActions::SetupActions()
   m_undo_action = new QAction("Undo", this);
   auto on_undo = [this]()
   {
-    if (m_model)
+    if (m_model && m_model->GetCommandStack())
     {
       m_model->GetCommandStack()->Undo();
     }
@@ -93,7 +93,7 @@ void SequencerComposerActions::SetupActions()
   m_redo_action = new QAction("Redo", this);
   auto on_redo = [this]()
   {
-    if (m_model)
+    if (m_model && m_model->GetCommandStack())
     {
       m_model->GetCommandStack()->Redo();
     }
