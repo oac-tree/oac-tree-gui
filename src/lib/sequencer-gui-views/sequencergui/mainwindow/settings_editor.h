@@ -41,7 +41,10 @@ namespace sequencergui
 class SettingsModel;
 
 /**
- * @brief The SettingsEditor class represents simple editor of application persistent settings.
+ * @brief The SettingsEditor class represents a simple editor of application persistent settings.
+ *
+ * It consists of the list with main settings items on the left, and a detailed editor for the
+ * currently selected item on the right.
  */
 class SettingsEditor : public QWidget
 {
@@ -51,6 +54,10 @@ public:
   explicit SettingsEditor(QWidget* parent = nullptr);
   ~SettingsEditor() override;
 
+  /**
+   * @brief Sets initial values for editing.
+   */
+  void SetInitialValues(const SettingsModel& model);
 
   void SetSettingsItem(mvvm::SessionItem* item);
 
@@ -65,6 +72,6 @@ private:
   std::unique_ptr<mvvm::PropertyViewModel> m_property_view_model;
 };
 
- }  // namespace sequencergui
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_SETTINGS_EDITOR_H_

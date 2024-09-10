@@ -40,9 +40,8 @@ SettingsEditor::SettingsEditor(QWidget *parent)
     , m_splitter(new QSplitter)
     , m_list_view(new QListView)
     , m_settings_view(new mvvm::PropertyFlatView)
-    , m_settings_model(std::make_unique<SettingsModel>())
     , m_list_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
-    , m_property_view_model(std::make_unique<mvvm::PropertyViewModel>(m_settings_model.get()))
+    , m_property_view_model(std::make_unique<mvvm::PropertyViewModel>(nullptr))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_splitter);
@@ -51,14 +50,20 @@ SettingsEditor::SettingsEditor(QWidget *parent)
   m_splitter->addWidget(m_settings_view);
   m_splitter->setSizes(QList<int>() << 200 << 400);
 
-  m_list_component_provider->SetApplicationModel(m_settings_model.get());
-
   connect(m_list_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged,
           this, [this](auto item) { SetSettingsItem(item); });
 
-  m_settings_view->SetViewModel(m_property_view_model.get());
-
   m_settings_view->layout()->setContentsMargins(mvvm::utils::UnitSize(1), 0, 0, 0);
+}
+
+void SettingsEditor::SetInitialValues(const SettingsModel &model)
+{
+  // in the absnce of ISessionModel::CLone, we just clone root item
+  m_settings_model = std::make_unique<SettingsModel>();
+  m_settings_model->ReplaceRootItem(model.GetRootItem()->Clone(/*unique_id*/ false));
+
+  m_list_component_provider->SetApplicationModel(m_settings_model.get());
+  m_settings_view->SetViewModel(m_property_view_model.get());
   m_list_component_provider->SetSelectedItem(m_settings_model->GetSettingsItems().at(0));
 }
 

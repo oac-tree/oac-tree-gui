@@ -86,6 +86,11 @@ SettingsEditorDialog::~SettingsEditorDialog()
   WriteSettings();
 }
 
+void SettingsEditorDialog::SetInitialValues(const SettingsModel &model)
+{
+  m_settings_editor->SetInitialValues(model);
+}
+
 void SettingsEditorDialog::ReadSettings()
 {
   const QSettings settings;

@@ -28,6 +28,7 @@ namespace sequencergui
 {
 
 class SettingsEditor;
+class SettingsModel;
 
 /**
  * @brief The SettingsEditorDialog class is a modal dialog that wraps SettingsEditor.
@@ -39,6 +40,11 @@ class SettingsEditorDialog : public QDialog
 public:
   explicit SettingsEditorDialog(QWidget* parent = nullptr);
   ~SettingsEditorDialog() override;
+
+  /**
+   * @brief Sets initial values for editing.
+   */
+  void SetInitialValues(const SettingsModel& model);
 
 private:
   /**
