@@ -21,6 +21,9 @@
 
 #include <sequencergui/model/standard_instruction_items.h>
 
+#include <mvvm/commands/i_command_stack.h>
+#include <mvvm/model/application_model.h>
+
 #include <gtest/gtest.h>
 
 #include <QString>
@@ -52,4 +55,30 @@ TEST_F(ConnectableInstructionAdapterTest, AdapterFromSequence)
   adapter.SetY(4.0);
   EXPECT_EQ(item.GetX(), 3.0);
   EXPECT_EQ(item.GetY(), 4.0);
+}
+
+//! Checking macro mode in undo/redo scenario.
+TEST_F(ConnectableInstructionAdapterTest, UndoRedoAndSetXY)
+{
+  mvvm::ApplicationModel model;
+  auto item = model.InsertItem<SequenceItem>();
+  ConnectableInstructionAdapter adapter(item);
+
+  model.SetUndoEnabled(true);
+
+  adapter.SetXY(1.0, 2.0);
+  EXPECT_EQ(item->GetX(), 1.0);
+  EXPECT_EQ(item->GetY(), 2.0);
+
+  adapter.SetXY(3.0, 4.0);
+  EXPECT_EQ(item->GetX(), 3.0);
+  EXPECT_EQ(item->GetY(), 4.0);
+
+  model.GetCommandStack()->Undo();
+  EXPECT_EQ(item->GetX(), 1.0);
+  EXPECT_EQ(item->GetY(), 2.0);
+
+  model.GetCommandStack()->Undo();
+  EXPECT_EQ(item->GetX(), 0.0);
+  EXPECT_EQ(item->GetY(), 0.0);
 }
