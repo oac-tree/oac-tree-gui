@@ -43,7 +43,7 @@ CommonSettingsItem::CommonSettingsItem() : CompoundItem(Type)
 {
   SetDisplayName("Common Settings");
 
-  AddProperty(kUseUndoSetting, kUseUndoDefault).SetDisplayName("Use undo/redo framework");
+  AddProperty(kUseUndoSetting, kUseUndoDefault).SetDisplayName("Enable undo/redo");
   AddProperty(kUndoLimitSetting, kUndoLimitDefault).SetDisplayName("Undo limit");
 }
 

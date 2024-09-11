@@ -30,7 +30,7 @@ namespace sequencergui
 
 //! The name of the setting in QSettings file carrying XML representation of the root item of
 //! SettingsModel.
-const QString kRootSetingsModelName = "SettingsModel/xml";
+const QString kRootSettingsModelName = "SettingsModel/xml";
 
 class SettingsModel;
 
