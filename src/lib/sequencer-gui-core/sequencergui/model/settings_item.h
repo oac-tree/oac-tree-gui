@@ -26,7 +26,9 @@ namespace sequencergui
 {
 
 /**
- * @brief Common application settings.
+ * @brief The CommonSettingsItem class represents a group of individual application settings.
+ *
+ * It's a compound item, where each property corresponds to an individual application settings.
  */
 class CommonSettingsItem : public mvvm::CompoundItem
 {

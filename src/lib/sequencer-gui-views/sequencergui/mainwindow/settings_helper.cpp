@@ -40,7 +40,7 @@ void SaveSettingsInPersistentStorage(const SettingsModel &model)
   QSettings settings;
 
   auto xml_string = mvvm::utils::ToXMLString(*model.GetRootItem());
-  settings.setValue(kRootSetingsModelName, QString::fromStdString(xml_string));
+  settings.setValue(kRootSettingsModelName, QString::fromStdString(xml_string));
 }
 
 void LoadSettingsFromPersistentStorage(SettingsModel &model)
@@ -51,9 +51,9 @@ void LoadSettingsFromPersistentStorage(SettingsModel &model)
   // content, stored in the file. This is not a very clean approach, since our C++ model
   // might not match what was stored in a file a while ago. TODO find a way to update the model only
   // with meaningful content.
-  if (settings.contains(kRootSetingsModelName))
+  if (settings.contains(kRootSettingsModelName))
   {
-    auto str = settings.value(kRootSetingsModelName).toString().toStdString();
+    auto str = settings.value(kRootSettingsModelName).toString().toStdString();
     auto root_item = mvvm::utils::SessionItemFromXMLString(str);
     model.ReplaceRootItem(std::move(root_item));
   }
