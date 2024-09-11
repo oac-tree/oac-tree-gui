@@ -82,3 +82,26 @@ TEST_F(ConnectableInstructionAdapterTest, UndoRedoAndSetXY)
   EXPECT_EQ(item->GetX(), 0.0);
   EXPECT_EQ(item->GetY(), 0.0);
 }
+
+//! Checking macro mode in undo/redo scenario. The difference with previous is one of the values is
+//! the same. We are checking that macro is working well, when one fo the command, setY, is in
+//! obsolete state.
+TEST_F(ConnectableInstructionAdapterTest, UndoRedoAndSetXAndSameY)
+{
+  mvvm::ApplicationModel model;
+  auto item = model.InsertItem<SequenceItem>();
+  item->SetX(1.0);
+  item->SetY(2.0);
+
+  ConnectableInstructionAdapter adapter(item);
+
+  model.SetUndoEnabled(true);
+
+  adapter.SetXY(3.0, 2.0);  // new x, same y
+  EXPECT_EQ(item->GetX(), 3.0);
+  EXPECT_EQ(item->GetY(), 2.0);
+
+  model.GetCommandStack()->Undo();
+  EXPECT_EQ(item->GetX(), 1.0);
+  EXPECT_EQ(item->GetY(), 2.0);
+}
