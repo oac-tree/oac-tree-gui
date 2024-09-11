@@ -32,7 +32,9 @@
 #include <sequencergui/nodeeditor/node_port.h>
 #include <sequencergui/transform/transform_helpers.h>
 
+#include <mvvm/commands/command_stack.h>
 #include <mvvm/commands/i_command_stack.h>
+#include <mvvm/commands/macro_command.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <sup/dto/anyvalue.h>
@@ -241,7 +243,14 @@ TEST_F(GraphicsSceneControllerTest, OnViewMoveUndo)
   EXPECT_DOUBLE_EQ(sequence->GetX(), 43.0);
   EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
 
-  EXPECT_NO_FATAL_FAILURE(m_model.GetCommandStack()->Undo()); // <-- failing here
+  ASSERT_EQ(m_model.GetCommandStack()->GetCommandCount(), 1);
+  auto command_stack = m_model.GetCommandStack();
+  auto macro1 = dynamic_cast<const mvvm::MacroCommand*>(command_stack->GetCommands().at(0));
+  ASSERT_FALSE(macro1->IsObsolete());
+  ASSERT_NE(macro1, nullptr);
+  ASSERT_EQ(macro1->GetCommandCount(), 1);
+
+  EXPECT_NO_FATAL_FAILURE(m_model.GetCommandStack()->Undo());
 
   EXPECT_EQ(sequence->GetX(), 42.0);
   EXPECT_EQ(sequence->GetY(), 0.0);

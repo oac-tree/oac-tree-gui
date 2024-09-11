@@ -79,6 +79,7 @@ private:
   QRectF m_rect;                                          //!< Bounding rectangle.
   std::unique_ptr<ConnectableInstructionAdapter> m_item;  //!< Underlying item of this view.
   bool m_block_view_update{false};
+  bool m_block_item_update{false};
   std::unique_ptr<PositionStrategyInterface> m_strategy;
 };
 

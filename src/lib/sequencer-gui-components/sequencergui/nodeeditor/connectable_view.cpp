@@ -182,7 +182,14 @@ QList<NodeConnection*> ConnectableView::GetOutputConnections() const
 
 void ConnectableView::UpdateItemFromView()
 {
+  if (m_block_item_update)
+  {
+    return;
+  }
+
+  m_block_view_update = true;
   m_item->SetXY(x(), y());
+  m_block_view_update = false;
 }
 
 void ConnectableView::UpdateViewFromItem()
@@ -192,12 +199,14 @@ void ConnectableView::UpdateViewFromItem()
     return;
   }
 
+  m_block_item_update = true;
   setX(m_item->GetX());
   setY(m_item->GetY());
   if (auto child_port = GetChildPort(); child_port)
   {
     child_port->SetPortInfo(m_item->GetInputPorts().at(0));
   }
+  m_block_item_update = false;
 }
 
 void ConnectableView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
@@ -209,9 +218,7 @@ QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& 
 {
   if (change == ItemScenePositionHasChanged)
   {
-    m_block_view_update = true;
     UpdateItemFromView();
-    m_block_view_update = false;
   }
   return value;
 }
