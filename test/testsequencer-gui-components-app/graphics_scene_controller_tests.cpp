@@ -32,6 +32,7 @@
 #include <sequencergui/nodeeditor/node_port.h>
 #include <sequencergui/transform/transform_helpers.h>
 
+#include <mvvm/commands/i_command_stack.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <sup/dto/anyvalue.h>
@@ -41,7 +42,6 @@
 using namespace sequencergui;
 
 //! Tests for GraphicsSceneController class.
-
 class GraphicsSceneControllerTest : public ::testing::Test
 {
 public:
@@ -71,11 +71,10 @@ public:
 
   SequencerModel m_model;
   GraphicsScene m_scene;
-  ProcedureItem* m_procedure_item;
+  ProcedureItem* m_procedure_item{nullptr};
 };
 
 //! Empty procedure and model.
-
 TEST_F(GraphicsSceneControllerTest, EmptyModel)
 {
   GraphicsSceneController controller(&m_model, &m_scene);
@@ -93,7 +92,6 @@ TEST_F(GraphicsSceneControllerTest, SingleInstruction)
 }
 
 //! Checking views corresponding to the sequence with `wait` as a child.
-
 TEST_F(GraphicsSceneControllerTest, ProcedureWithSequenceAndWait)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
@@ -110,7 +108,6 @@ TEST_F(GraphicsSceneControllerTest, ProcedureWithSequenceAndWait)
 
 //! Scene is looking to empty instruction container. After insertion of one instruction
 //! corresponding view should appear.
-
 TEST_F(GraphicsSceneControllerTest, InsertInstruction)
 {
   auto controller = CreateController();
@@ -121,9 +118,8 @@ TEST_F(GraphicsSceneControllerTest, InsertInstruction)
   EXPECT_EQ(m_scene.GetConnectableViews(), std::vector<ConnectableView*>({sequence_view}));
 }
 
-//! Scene is looking to empty procedure. After insertion of of wait into the sequence two
-//! connected children should appear.
-
+//! Scene is looking to empty procedure. After insertion of of wait into the sequence two connected
+//! children should appear.
 TEST_F(GraphicsSceneControllerTest, InsertSequenceAndWait)
 {
   auto controller = CreateController();
@@ -138,9 +134,8 @@ TEST_F(GraphicsSceneControllerTest, InsertSequenceAndWait)
   EXPECT_EQ(children_views, std::vector<ConnectableView*>({wait_view}));
 }
 
-//! Scene is looking to the procedure with single instruction.
-//! After its deletion, corresponding view should dissapear.
-
+//! Scene is looking to the procedure with single instruction. After its deletion, corresponding
+//! view should dissapear.
 TEST_F(GraphicsSceneControllerTest, RemoveInstruction)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
@@ -154,9 +149,8 @@ TEST_F(GraphicsSceneControllerTest, RemoveInstruction)
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
 }
 
-//! Scene is looking to the procedure with sequence and single child in it.
-//! Sequence is deleted, thish should lead to the disappearance of two vews.
-
+//! Scene is looking to the procedure with sequence and single child in it. Sequence is deleted,
+//! thish should lead to the disappearance of two vews.
 TEST_F(GraphicsSceneControllerTest, ParentWithChildRemoveChild)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
@@ -176,9 +170,8 @@ TEST_F(GraphicsSceneControllerTest, ParentWithChildRemoveChild)
   EXPECT_EQ(sequence_view2->GetConnectableItem()->GetInstruction(), sequence);
 }
 
-//! Scene is looking to the procedure with sequence and single child in it.
-//! Sequence is deleted, thish should lead to the disappearance of two views.
-
+//! Scene is looking to the procedure with sequence and single child in it. Sequence is deleted,
+//! thish should lead to the disappearance of two views.
 TEST_F(GraphicsSceneControllerTest, RemoveParentWithChild)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
@@ -196,7 +189,6 @@ TEST_F(GraphicsSceneControllerTest, RemoveParentWithChild)
 }
 
 //! View is moving, check item.
-
 TEST_F(GraphicsSceneControllerTest, OnViewMove)
 {
   // creating sequence with initial position
@@ -222,8 +214,40 @@ TEST_F(GraphicsSceneControllerTest, OnViewMove)
   EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
 }
 
-//! Item is moving, check view.
+//! Enable undo/redo. View is moving, check item.
+TEST_F(GraphicsSceneControllerTest, OnViewMoveUndo)
+{
+  // creating sequence with initial position
+  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+  sequence->SetX(42.0);
+  EXPECT_DOUBLE_EQ(sequence->GetX(), 42.0);
+  EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
 
+  m_model.SetUndoEnabled(true);
+
+  auto controller = CreateController();
+
+  // checking the view which was just created
+  auto sequence_view = m_scene.FindViewForInstruction(sequence);
+  EXPECT_EQ(m_scene.GetConnectableViews(), std::vector<ConnectableView*>({sequence_view}));
+
+  // checking its position
+  EXPECT_EQ(sequence_view->x(), 42.0);
+  EXPECT_EQ(sequence_view->y(), 0.0);
+
+  // changing coordinates of item
+  sequence_view->setX(43.0);
+
+  EXPECT_DOUBLE_EQ(sequence->GetX(), 43.0);
+  EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
+
+  EXPECT_NO_FATAL_FAILURE(m_model.GetCommandStack()->Undo()); // <-- failing here
+
+  EXPECT_EQ(sequence->GetX(), 42.0);
+  EXPECT_EQ(sequence->GetY(), 0.0);
+}
+
+//! Item is moving, check view.
 TEST_F(GraphicsSceneControllerTest, OnItemMove)
 {
   // creating sequence with initial position
@@ -247,9 +271,8 @@ TEST_F(GraphicsSceneControllerTest, OnItemMove)
   EXPECT_DOUBLE_EQ(sequence_view->y(), 44.0);
 }
 
-//! Scene is looking to empty procedure.
-//! Insert second procedure, controller should ignore any activity outside of its root item
-
+//! Scene is looking to empty procedure. Insert second procedure, controller should ignore any
+//! activity outside of its root item
 TEST_F(GraphicsSceneControllerTest, InsertProcedure)
 {
   auto controller = CreateController();
@@ -278,10 +301,8 @@ TEST_F(GraphicsSceneControllerTest, InsertProcedure)
   EXPECT_EQ(children_views, std::vector<ConnectableView*>({wait_view}));
 }
 
-//! Scene is looking to the procedure with instruction.
-//! Remove procedure and make sure that scene has been cleaned up.
-//! Real bug.
-
+//! Scene is looking to the procedure with instruction. Remove procedure and make sure that scene
+//! has been cleaned up. Real bug.
 TEST_F(GraphicsSceneControllerTest, RemoveProcedure)
 {
   auto controller = CreateController();
@@ -302,10 +323,9 @@ TEST_F(GraphicsSceneControllerTest, RemoveProcedure)
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
 }
 
-//! Testing the case when AnyValue is replaced on board of PvAccessWriteInstructionItem.
-//! The graphics controller should be happy with that and shouldn't try to create/remove
-//! instructions related views.
-
+//! Testing the case when AnyValue is replaced on board of PvAccessWriteInstructionItem. The
+//! graphics controller should be happy with that and shouldn't try to create/remove instructions
+//! related views.
 TEST_F(GraphicsSceneControllerTest, InsertAnyValueItem)
 {
   if (!IsSequencerPluginEpicsAvailable())
