@@ -37,6 +37,7 @@
 
 #include <mvvm/model/application_model.h>
 
+#include <QDebug>
 #include <QPointF>
 #include <QVBoxLayout>
 #include <QWidgetAction>
@@ -102,8 +103,6 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
   m_graphics_scene->SetInstructionContainer(instruction_container);
 
   SetupController();
-
-  m_graphics_view->onCenterView();
 }
 
 std::vector<InstructionItem *> NodeEditor::GetSelectedInstructions() const
@@ -165,6 +164,13 @@ void NodeEditor::SetupController()
       std::make_unique<GraphicsSceneController>(m_procedure_item->GetModel(), m_graphics_scene);
 
   m_scene_controller->Init(m_procedure_item->GetInstructionContainer());
+
+  static bool is_first_recenter = true;
+  if (is_first_recenter)
+  {
+    is_first_recenter = false;
+    m_graphics_view->onCenterView();
+  }
 }
 
 void NodeEditor::SetupConnections()
