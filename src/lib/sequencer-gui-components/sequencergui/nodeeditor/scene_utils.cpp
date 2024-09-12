@@ -28,29 +28,33 @@
 #include <mvvm/core/exceptions.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QDebug>
 #include <QLinearGradient>
 #include <QRectF>
 #include <cctype>
+
+namespace
+{
+const double kWindowSize = 10000;
+}
 
 namespace sequencergui
 {
 
 QSizeF GetGraphicsViewportSize()
 {
-  return {6000.0, 6000.0};
+  return {kWindowSize, kWindowSize};
 }
 
 QPointF GetGraphicsViewportOrigin()
 {
-  return {-3000.0, 0.0};
+  return {-kWindowSize / 2.0, 0.0};
 }
 
 QPointF GetGraphicsViewportCenter()
 {
   // y-axis on graphics scene is pointing downwards. Our scene's corners looks like this:
-  // (-3000, 0)     (3000, 0)
-  // (-3000, 6000)  (3000, 6000)
+  // (-window_size/2, 0)            (window_size/2, 0)
+  // (-window_size/2, window_size)  (window_size/2, window_size)
   const auto origin = GetGraphicsViewportOrigin();
   const auto size = GetGraphicsViewportSize();
   return {origin.x() + size.width() / 2, origin.y() + size.height() / 2};
