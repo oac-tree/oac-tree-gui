@@ -74,6 +74,7 @@ int RunApplication(int argc, char** argv)
 
   int exit_code{0};
   std::unique_ptr<MainWindowT> win;
+
   do
   {
     if (exit_code == sup::gui::CleanSettingsAndRestart)
@@ -84,6 +85,10 @@ int RunApplication(int argc, char** argv)
     }
 
     win = std::make_unique<MainWindowT>();
+    if (options.window_size.has_value())
+    {
+      win->resize(options.window_size.value());
+    }
     win->show();
     auto on_import = [&win](auto file_name) { return win->ImportProcedure(file_name); };
     ImportProcedures(options.file_name, on_import);
