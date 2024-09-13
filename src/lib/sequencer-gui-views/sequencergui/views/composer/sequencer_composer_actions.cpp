@@ -71,8 +71,8 @@ void SequencerComposerActions::SetupActions()
   connect(m_validate_procedure_action, &QAction::triggered, this,
           [this]() { ProcedureActionHandler::OnValidateProcedureRequest(m_procedure_item); });
 
-  m_export_xml_action = new QAction("Export to XML", this);
-  m_export_xml_action->setToolTip("Exports currently selected procedure to Sequencer XML file");
+  m_export_xml_action = new QAction("Save procedure to XML", this);
+  m_export_xml_action->setToolTip("Save currently selected procedure to Sequencer XML file");
   auto on_export = [this]()
   {
     ProcedureActionHandler handler;

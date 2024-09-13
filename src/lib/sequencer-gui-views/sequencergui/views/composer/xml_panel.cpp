@@ -67,9 +67,9 @@ void XmlPanel::SetProcedure(ProcedureItem *procedure)
 void XmlPanel::SetupActions()
 {
   m_export_action = new QAction(this);
-  m_export_action->setText("Export");
+  m_export_action->setText("Save procedure to XML");
   m_export_action->setIcon(sup::gui::utils::GetIcon("export.svg"));
-  m_export_action->setToolTip("Export Procedure to Sequencer XML file");
+  m_export_action->setToolTip("Save procedure to Sequencer XML file");
   connect(m_export_action, &QAction::triggered, this, &XmlPanel::ExportToFileRequest);
   addAction(m_export_action);
 }
