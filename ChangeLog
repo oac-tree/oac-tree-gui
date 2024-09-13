@@ -1,5 +1,8 @@
 Changes for 1.5.0:
 
+- CODAC Release 7.3
+- Provide settings view File/Preferences/Application Settings
+- Provide undo/redo for sequencer composer view
 - COA Release v2.2, August 2024
 - Refactor WorkspaceSynchronizer and sequencer variable update mechanism
 - Prototype of sequencer-remote application with sup-auto server support
