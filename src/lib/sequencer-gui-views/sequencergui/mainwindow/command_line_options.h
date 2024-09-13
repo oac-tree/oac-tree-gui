@@ -22,7 +22,9 @@
 
 //! Collection of utils for main() function.
 
+#include <QSize>
 #include <QString>
+#include <optional>
 
 namespace sequencergui
 {
@@ -43,6 +45,9 @@ struct Options
 
   //! the name of sequencer procedure to open
   QString file_name;
+
+  //! initial window size
+  std::optional<QSize> window_size;
 };
 
 //! Parse command line options.

@@ -19,9 +19,12 @@
 
 #include "command_line_options.h"
 
+#include <sup/gui/app/main_window_helper.h>
+
 #include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QCoreApplication>
+#include <QDebug>
 
 namespace sequencergui
 {
@@ -58,6 +61,10 @@ Options ParseOptions(int argc, char** argv)
       "filename");
   parser.addOption(file_option);
 
+  QCommandLineOption window_size_option("size", "Initial window size");
+  window_size_option.setValueName("1024x768");
+  parser.addOption(window_size_option);
+
   parser.process(app);
 
   Options result;
@@ -79,6 +86,24 @@ Options ParseOptions(int argc, char** argv)
     result.file_name = parser.value(file_option);
   }
 
+  if (parser.isSet(file_option))
+  {
+    result.file_name = parser.value(file_option);
+  }
+
+  if (parser.isSet(window_size_option))
+  {
+    if (auto optional_size = sup::gui::ParseSizeString(parser.value(window_size_option));
+        optional_size.has_value())
+    {
+      result.window_size = optional_size;
+    }
+    else
+    {
+      qInfo() << "Can't parse windows size option" << parser.value(window_size_option);
+      parser.showHelp(1);
+    }
+  }
   return result;
 }
 }  // namespace sequencergui
