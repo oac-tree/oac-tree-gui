@@ -1,6 +1,6 @@
 Changes for 1.5.0:
 
-- CODAC Release 7.3
+- CODAC Core System Release 7.2.1
 - Provide settings view File/Preferences/Application Settings
 - Provide undo/redo for sequencer composer view
 - COA Release v2.2, August 2024
@@ -12,6 +12,7 @@ Changes for 1.5.0:
 - Enable timing, string, and system plugins from the sequencer
 - Make use of the new CustomHeaderView with the possibility to reset column width
 - Implement filtering for Workspace variables
+- Repair broken sup-pvmonitor
 - Provide automatic reset of old setting files on GUI major/minor version change
 - Switch the GUI to the file-based projects
 - Refactor all context menus for instructions, procedures, and variables
