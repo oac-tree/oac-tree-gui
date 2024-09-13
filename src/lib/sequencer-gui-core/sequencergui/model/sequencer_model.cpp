@@ -69,4 +69,19 @@ void SequencerModel::PopulateModel()
   }
 }
 
+// ------------------------------------------------------------------------------------------------
+// SequencerProjectModel
+// ------------------------------------------------------------------------------------------------
+
+SequencerProjectModel::SequencerProjectModel(std::shared_ptr<mvvm::ItemPool> pool)
+    : SequencerModel(std::move(pool))
+{
+}
+
+void SequencerProjectModel::Clear()
+{
+  SequencerModel::Clear();
+  CreateUntitledProcedure();
+}
+
 }  // namespace sequencergui

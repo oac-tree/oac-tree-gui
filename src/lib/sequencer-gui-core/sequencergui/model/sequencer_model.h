@@ -60,6 +60,24 @@ private:
   void PopulateModel();
 };
 
+/**
+ * @brief The SequencerProjectModel class is an extension of original SequencerModel which creates
+ * untitled procedure each time when cleared.
+ *
+ * This is the only way with current design of AbstractProject
+ * - to create untitled procedure on each "new project" activity
+ * - have the document in unmodified state
+ *
+ * FIXME remove this class after AbstractProject refactoring
+ */
+class SequencerProjectModel : public SequencerModel
+{
+public:
+  explicit SequencerProjectModel(std::shared_ptr<mvvm::ItemPool> pool = {});
+
+  void Clear() override;
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_MODEL_H_

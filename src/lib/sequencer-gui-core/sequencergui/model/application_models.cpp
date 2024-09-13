@@ -30,7 +30,7 @@ namespace sequencergui
 
 ApplicationModels::ApplicationModels()
     : m_item_pool(std::make_shared<mvvm::ItemPool>())
-    , m_sequencer_model(std::make_unique<SequencerModel>(m_item_pool))
+    , m_sequencer_model(std::make_unique<SequencerProjectModel>(m_item_pool))
     , m_job_model(std::make_unique<JobModel>(m_item_pool))
 {
 }
