@@ -20,8 +20,6 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
 #define SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
 
-//! Collection of utils for main() function.
-
 #include <QSize>
 #include <QString>
 #include <optional>
@@ -29,6 +27,9 @@
 namespace sequencergui
 {
 
+/**
+ * @brief The Options struct contains the result of command line option parsing.
+ */
 struct Options
 {
   //! rely on system scale via QT_ variables, if true
@@ -50,7 +51,9 @@ struct Options
   std::optional<QSize> window_size;
 };
 
-//! Parse command line options.
+/**
+ * @brief Parses command line options and returns parsing result.
+ */
 Options ParseOptions(int argc, char** argv);
 
 }  // namespace sequencergui

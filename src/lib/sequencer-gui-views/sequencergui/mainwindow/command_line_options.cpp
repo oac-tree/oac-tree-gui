@@ -20,6 +20,7 @@
 #include "command_line_options.h"
 
 #include <sup/gui/app/main_window_helper.h>
+#include <sup/gui/app/main_window_types.h>
 
 #include <QCommandLineOption>
 #include <QCommandLineParser>
@@ -113,6 +114,7 @@ Options ParseOptions(QCommandLineParser& parser)
       parser.showHelp(1);
     }
   }
+
   return result;
 }
 
