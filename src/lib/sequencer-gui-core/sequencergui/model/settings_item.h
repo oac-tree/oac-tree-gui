@@ -22,6 +22,11 @@
 
 #include <mvvm/model/compound_item.h>
 
+namespace mvvm
+{
+class PropertyChangedEvent;
+}
+
 namespace sequencergui
 {
 
@@ -39,6 +44,12 @@ public:
   explicit CommonSettingsItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  /**
+   * @details Activates listening on own properties change. It will enable/disable status of undo
+   * limit property, when undo flag changes.
+   */
+  void Activate() override;
 };
 
 }  // namespace sequencergui

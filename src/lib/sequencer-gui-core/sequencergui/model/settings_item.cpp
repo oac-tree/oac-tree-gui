@@ -22,6 +22,7 @@
 #include "settings_constants.h"
 
 #include <mvvm/model/item_factory.h>
+#include <mvvm/signals/item_connect.h>
 
 namespace sequencergui
 {
@@ -35,7 +36,7 @@ bool RegisterItems()
   return true;
 }
 
-static const bool settings_item_registered_flag = RegisterItems();
+const bool settings_item_registered_flag = RegisterItems();
 
 }  // namespace
 
@@ -50,6 +51,16 @@ CommonSettingsItem::CommonSettingsItem() : CompoundItem(Type)
 std::unique_ptr<mvvm::SessionItem> CommonSettingsItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<CommonSettingsItem>(*this, make_unique_id);
+}
+
+void CommonSettingsItem::Activate()
+{
+  // Enable/disable property "Undo limit" when property "Enable undo/redo" changes
+  auto on_property_changed = [this](const mvvm::DataChangedEvent& event)
+  { GetItem(kUndoLimitSetting)->SetEnabled(GetItem(kUseUndoSetting)->Data<bool>()); };
+
+  mvvm::connect::Connect<mvvm::DataChangedEvent>(
+      /*source*/ GetItem(kUseUndoSetting), on_property_changed, GetSlot());
 }
 
 }  // namespace sequencergui
