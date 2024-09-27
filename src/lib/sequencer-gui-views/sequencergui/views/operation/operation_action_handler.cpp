@@ -26,7 +26,7 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sup/gui/widgets/standard_message_handlers.h>
+#include <sup/gui/core/standard_message_handlers.h>
 
 #include <QAbstractTableModel>
 #include <sstream>
