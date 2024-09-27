@@ -56,8 +56,8 @@ std::unique_ptr<mvvm::SessionItem> CommonSettingsItem::Clone(bool make_unique_id
 void CommonSettingsItem::Activate()
 {
   // Enable/disable property "Undo limit" when property "Enable undo/redo" changes
-  auto on_property_changed = [this](const mvvm::DataChangedEvent& event)
-  { GetItem(kUndoLimitSetting)->SetEnabled(GetItem(kUseUndoSetting)->Data<bool>()); };
+  auto on_property_changed = [this](const mvvm::DataChangedEvent&)
+  { GetItem(kUndoLimitSetting)->SetEnabled(Property<bool>(kUseUndoSetting)); };
 
   mvvm::connect::Connect<mvvm::DataChangedEvent>(
       /*source*/ GetItem(kUseUndoSetting), on_property_changed, GetSlot());
