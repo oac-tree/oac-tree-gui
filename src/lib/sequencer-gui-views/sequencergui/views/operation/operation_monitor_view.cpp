@@ -30,6 +30,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/views/editors/user_input_dialogs.h>
 #include <sequencergui/views/jobsystem/job_manager.h>
 #include <sequencergui/views/operation/message_panel.h>
 #include <sequencergui/views/operation/operation_action_handler.h>
@@ -67,7 +68,7 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     , m_left_panel(CreateLeftPanel(mode))
     , m_workspace_panel{new OperationWorkspacePanel}
     , m_splitter(new QSplitter)
-    , m_job_manager(new JobManager({}, this))
+    , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
     , m_action_handler(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
 {

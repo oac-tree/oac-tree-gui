@@ -23,7 +23,6 @@
 #include <sequencergui/jobsystem/user_context.h>
 
 #include <QObject>
-#include <functional>
 #include <memory>
 
 namespace sequencergui

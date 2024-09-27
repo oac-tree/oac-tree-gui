@@ -22,11 +22,9 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/views/editors/user_input_dialogs.h>
 
 #include <sup/dto/anyvalue.h>
 
-#include <QWidget>
 #include <algorithm>
 
 namespace sequencergui
@@ -169,16 +167,7 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
-  auto parent_widget = dynamic_cast<QWidget *>(parent());
-  auto on_user_input = [parent_widget](const auto &args)
-  { return GetAnyValueEditorDialogResult(args, parent_widget); };
-
-  auto on_user_choice = [parent_widget](const auto &args)
-  { return GetUserChoiceDialogResult(args, parent_widget); };
-
-  UserContext user_context{on_user_input, on_user_choice};
-
-  auto job_handler = std::make_unique<JobHandler>(item, user_context);
+  auto job_handler = std::make_unique<JobHandler>(item, m_user_context);
   connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
   connect(job_handler.get(), &JobHandler::NextLeavesChanged, this,
