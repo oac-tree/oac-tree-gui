@@ -44,14 +44,14 @@ DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_even
     throw RuntimeException("Callback is not initialised");
   }
 
-  if (user_context.m_user_choice_callback)
+  if (user_context.user_choice_callback)
   {
-    m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
+    m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.user_choice_callback);
   }
 
-  if (user_context.m_user_input_callback)
+  if (user_context.user_input_callback)
   {
-    m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
+    m_input_provider = std::make_unique<UserInputProvider>(user_context.user_input_callback);
   }
 }
 

@@ -20,9 +20,11 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_USER_INPUT_DIALOGS_H_
 #define SEQUENCERGUI_JOBSYSTEM_USER_INPUT_DIALOGS_H_
 
+//! @file
 //! Helper functions to create dialogs supporting UserConfirmation and UserChoices instructions.
 
 #include <sequencergui/jobsystem/request_types.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 class QWidget;
 
@@ -69,6 +71,15 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs& args, QWidget
  * @return Structure representing results of user input.
  */
 UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget* parent);
+
+/**
+ * @brief Creates user context which is necessary for JobManager and JobHandler to function.
+ *
+ * This implementation contains modal dialogs to get user input and user choice.
+ *
+ * @param parent Parent widget to center given dialog.
+ */
+UserContext CreateDefaultUserContext(QWidget* parent);
 
 }  // namespace sequencergui
 

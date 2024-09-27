@@ -134,4 +134,16 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget
   return UserInputResult{{}, false};
 }
 
+UserContext CreateDefaultUserContext(QWidget *parent)
+{
+  UserContext result;
+  result.user_choice_callback = [parent](const auto &args)
+  { return GetUserChoiceDialogResult(args, parent); };
+
+  result.user_input_callback = [parent](const auto &args)
+  { return GetAnyValueEditorDialogResult(args, parent); };
+
+  return result;
+}
+
 }  // namespace sequencergui

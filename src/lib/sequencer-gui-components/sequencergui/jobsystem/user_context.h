@@ -33,10 +33,10 @@ namespace sequencergui
 struct UserContext
 {
   //!< a callback to return user input
-  std::function<UserInputResult(UserInputArgs)> m_user_input_callback;
+  std::function<UserInputResult(UserInputArgs)> user_input_callback;
 
   //!< a callback to return user choice
-  std::function<UserChoiceResult(const UserChoiceArgs&)> m_user_choice_callback;
+  std::function<UserChoiceResult(const UserChoiceArgs&)> user_choice_callback;
 };
 
 }  // namespace sequencergui
