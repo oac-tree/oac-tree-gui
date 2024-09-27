@@ -52,8 +52,6 @@ void JobManager::SubmitJob(JobItem *job)
 
 JobManager::~JobManager() = default;
 
-//! Set JobManager to display the status of given job.
-
 void JobManager::SetCurrentJob(JobItem *job)
 {
   if (m_current_job == job)
@@ -77,16 +75,11 @@ JobHandler *JobManager::GetCurrentJobHandler()
   return GetJobHandler(m_current_job);
 }
 
-//! Returns job handler for JobItem.
-
 JobHandler *JobManager::GetJobHandler(JobItem *job)
 {
   auto iter = m_job_map.find(job);
   return iter == m_job_map.end() ? nullptr : iter->second.get();
 }
-
-//! Returns current job. It is the one that is attached to the MessagePanel and is the recipient
-//! of start/stop/pause requests.
 
 JobItem *JobManager::GetCurrentJob()
 {

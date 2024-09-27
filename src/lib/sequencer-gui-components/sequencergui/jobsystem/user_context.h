@@ -22,25 +22,21 @@
 
 #include <sequencergui/jobsystem/request_types.h>
 
-#include <QStringList>
 #include <functional>
 
 namespace sequencergui
 {
 
-//! Aggregates necessary information to communicate with the user.
-//!
+/**
+ * @brief The UserContext class aggregates necessary information to communicate with the user.
+ */
 struct UserContext
 {
-  //!< A callback to returns user input as a text.
-  //! Initial vaue, and the description are provided as callback parameters.
-  using userinput_callback_t = std::function<UserInputResult(UserInputArgs)>;
-  userinput_callback_t m_user_input_callback;
+  //!< a callback to return user input
+  std::function<UserInputResult(UserInputArgs)> m_user_input_callback;
 
-  //!< A callback to returns user choice as an integer.
-  //! Initial vaues, and the description are provided as callback parameters.
-  using userchoice_callback_t = std::function<UserChoiceResult(const UserChoiceArgs&)>;
-  userchoice_callback_t m_user_choice_callback;
+  //!< a callback to return user choice
+  std::function<UserChoiceResult(const UserChoiceArgs&)> m_user_choice_callback;
 };
 
 }  // namespace sequencergui

@@ -28,24 +28,38 @@
 namespace sequencergui
 {
 
+/**
+ * @brief The UserChoiceArgs struct represents information to give to the User while asking to make
+ * a choice.
+ */
 struct UserChoiceArgs
 {
   std::vector<std::string> options;
   sup::dto::AnyValue metadata;
 };
 
+/**
+ * @brief The UserChoiceResult struct represent user choice.
+ */
 struct UserChoiceResult
 {
   int index{0};
   bool processed{false};
 };
 
+/**
+ * @brief The UserInputArgs struct represents information to give to the User while asking for
+ * input.
+ */
 struct UserInputArgs
 {
   sup::dto::AnyValue value;
   std::string description;
 };
 
+/**
+ * @brief The UserInputResult struct is a result of user input.
+ */
 struct UserInputResult
 {
   sup::dto::AnyValue value;

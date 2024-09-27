@@ -26,19 +26,23 @@
 
 namespace sequencergui
 {
-struct UserChoiceResult;
-struct UserChoiceArgs;
-struct UserInputResult;
-struct UserInputArgs;
+
 class JobModel;
 class InstructionItem;
 class JobItem;
 class JobHandler;
 class JobLog;
 
-//! Manages JobItem execution. Maps JobItem to the JobHandler, containing all machinery to execute
-//! domain procedures in a thread.
-
+/**
+ * @brief The JobManager class manages the execution of sequencer jobs.
+ *
+ * The job is represented by the JobItem, that carries all information about sequencer procedure.
+ * The API contains interface to submit, start, pause and stop jobs.
+ *
+ * JobManager holds all jobs, submitted, paused, or running. Only one job at a time, set as the
+ * current job, can be manipulated with start/pause/step/stop commands. Also, only current job
+ * reports its status outside.
+ */
 class JobManager : public QObject
 {
   Q_OBJECT
@@ -49,32 +53,67 @@ public:
   explicit JobManager(QObject* parent = nullptr);
   ~JobManager() override;
 
+  /**
+   * @brief Submits job for execution.
+   *
+   * Internally creates JobHandler which will takes care about execution logic. Do not start
+   * execution yet.
+   */
   void SubmitJob(JobItem* job);
 
+  /**
+   * @brief Set the job as the current job.
+   *
+   * The job has to be submitted first.
+   */
   void SetCurrentJob(JobItem* job);
 
+  /**
+   * @brief Returns job handler corresponding to the current job.
+   */
   JobHandler* GetCurrentJobHandler();
 
+  /**
+   * @brief Returns job handler for a given job.
+   */
   JobHandler* GetJobHandler(JobItem* job);
 
+  /**
+   * @brief Returns current job.
+   */
   JobItem* GetCurrentJob();
 
+  /**
+   * @brief Start current job.
+   */
   void OnStartJobRequest();
+
+  /**
+   * @brief Pause current job.
+   */
   void OnPauseJobRequest();
+
+  /**
+   * @brief Stop current job.
+   */
   void OnStopJobRequest();
+
+  /**
+   * @brief Make step for paused job.
+   */
   void OnMakeStepRequest();
 
   /**
    * @brief Removes a job corresponding to a given JobItem from the manager.
    *
-   * @details Internally removes JobHandler, do not affect JobItem.
+   * Internally removes JobHandler, do not affect JobItem.
    */
   void OnRemoveJobRequest(JobItem* job);
 
   void SetMessagePanel(set_joblog_cb cb);
 
   /**
-   * @brief Returns true if there are jobs running.
+   * @brief Checks if there are jobs running.
    */
   bool HasRunningJobs() const;
 
