@@ -93,7 +93,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
-  JobManager manager;
+  JobManager manager({});
   manager.SetMessagePanel(callback);
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
@@ -176,7 +176,7 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
 
   JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
-  JobManager manager;
+  JobManager manager({});
   manager.SetMessagePanel(callback);
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
@@ -215,7 +215,7 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
 
   JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
-  JobManager manager;
+  JobManager manager({});
   manager.SetMessagePanel(callback);
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));

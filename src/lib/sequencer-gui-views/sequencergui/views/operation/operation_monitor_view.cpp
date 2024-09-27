@@ -67,7 +67,7 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     , m_left_panel(CreateLeftPanel(mode))
     , m_workspace_panel{new OperationWorkspacePanel}
     , m_splitter(new QSplitter)
-    , m_job_manager(new JobManager(this))
+    , m_job_manager(new JobManager({}, this))
     , m_action_handler(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
 {

@@ -32,7 +32,10 @@
 namespace sequencergui
 {
 
-JobManager::JobManager(QObject *parent) : QObject(parent) {}
+JobManager::JobManager(UserContext user_context, QObject *parent)
+    : QObject(parent), m_user_context(user_context)
+{
+}
 
 void JobManager::SubmitJob(JobItem *job)
 {

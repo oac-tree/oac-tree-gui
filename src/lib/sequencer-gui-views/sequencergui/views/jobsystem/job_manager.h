@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 
+#include <sequencergui/jobsystem/user_context.h>
+
 #include <QObject>
 #include <functional>
 #include <memory>
@@ -50,7 +52,7 @@ class JobManager : public QObject
 public:
   using set_joblog_cb = std::function<void(JobLog*)>;
 
-  explicit JobManager(QObject* parent = nullptr);
+  explicit JobManager(UserContext user_context, QObject* parent = nullptr);
   ~JobManager() override;
 
   /**
@@ -134,6 +136,7 @@ private:
   JobItem* m_current_job{nullptr};
   std::map<JobItem*, std::unique_ptr<JobHandler>> m_job_map;
   set_joblog_cb m_set_joblog_cb;
+  UserContext m_user_context;
 };
 
 }  // namespace sequencergui

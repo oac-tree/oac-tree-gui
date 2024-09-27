@@ -63,7 +63,7 @@ public:
 
 TEST_F(JobManagerTest, InitialState)
 {
-  JobManager manager;
+  JobManager manager({});
   EXPECT_FALSE(manager.GetCurrentJobHandler());
   EXPECT_FALSE(manager.GetJobHandler(m_job_item));
   EXPECT_FALSE(manager.GetCurrentJob());
@@ -77,7 +77,7 @@ TEST_F(JobManagerTest, SubmitProcedure)
 
   EXPECT_EQ(m_job_item->GetExpandedProcedure(), nullptr);
 
-  JobManager manager;
+  JobManager manager({});
   manager.SubmitJob(m_job_item);
   EXPECT_FALSE(manager.GetCurrentJob());
 
@@ -91,7 +91,7 @@ TEST_F(JobManagerTest, AttemptToSubmitProcedure)
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager manager;
+  JobManager manager({});
 
   // it shouldn't be possible to submit undefined job
   EXPECT_THROW(manager.SubmitJob(nullptr), RuntimeException);
@@ -109,7 +109,7 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
   auto invalid_procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(invalid_procedure);
 
-  JobManager manager;
+  JobManager manager({});
 
   EXPECT_THROW(manager.SubmitJob(m_job_item), sup::sequencer::InvalidOperationException);
 }
@@ -126,7 +126,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   MessagePanel panel;
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager manager;
+  JobManager manager({});
 
   JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
@@ -185,7 +185,7 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
 
   JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
-  JobManager manager;
+  JobManager manager({});
   manager.SetMessagePanel(callback);
 
   // nothing wrong if we are trying to remove non-submitted job
@@ -213,7 +213,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 
   JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
-  JobManager manager;
+  JobManager manager({});
   manager.SetMessagePanel(callback);
 
   manager.SubmitJob(m_job_item);
@@ -253,7 +253,7 @@ TEST_F(JobManagerTest, StopAllJobs)
 
   JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
-  JobManager manager;
+  JobManager manager({});
   manager.SetMessagePanel(callback);
 
   EXPECT_NO_FATAL_FAILURE(manager.StopAllJobs());
