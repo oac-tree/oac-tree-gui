@@ -22,8 +22,8 @@
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
-#include <sequencergui/widgets/steady_menu.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/steady_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/editors/selectable_combobox_editor.h>
@@ -145,9 +145,9 @@ std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()
   return result;
 }
 
-std::unique_ptr<SteadyMenu> MessagePanel::CreateSeveritySelectorMenu()
+std::unique_ptr<sup::gui::SteadyMenu> MessagePanel::CreateSeveritySelectorMenu()
 {
-  auto result = std::make_unique<SteadyMenu>();
+  auto result = std::make_unique<sup::gui::SteadyMenu>();
 
   for (auto severity : kSeveritiesToSelect)
   {

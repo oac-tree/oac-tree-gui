@@ -36,14 +36,14 @@ class QWidgetAction;
 namespace sup::gui
 {
 class CustomHeaderView;
-}
+class SteadyMenu;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
 
 class JobLog;
 class JobLogViewModel;
-class SteadyMenu;
 
 /**
  * @brief The MessagePanel class shows JobLog information in a log table.
@@ -66,7 +66,7 @@ private:
   void ReadSettings();
   void WriteSettings();
   std::unique_ptr<QWidget> CreateSeveritySelectorWidget();
-  std::unique_ptr<SteadyMenu> CreateSeveritySelectorMenu();
+  std::unique_ptr<sup::gui::SteadyMenu> CreateSeveritySelectorMenu();
 
   /**
    * @brief Setup tree view autoscroll in such a way, that if the scrollbar was at the bottom, it
@@ -86,7 +86,7 @@ private:
   QSortFilterProxyModel* m_proxy_model{nullptr};
   QWidgetAction* m_severity_selector_action{nullptr};
   std::map<Severity, bool> m_show_severity_flag;
-  std::unique_ptr<SteadyMenu> m_severity_selector_menu;
+  std::unique_ptr<sup::gui::SteadyMenu> m_severity_selector_menu;
 
   //! controls if the tree was scrolled to the bottom to make auto scroll
   bool m_tree_at_the_bottom{false};
