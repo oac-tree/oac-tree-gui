@@ -24,6 +24,7 @@
 #include "operation_workspace_panel.h"
 
 #include <sequencergui/jobsystem/job_handler.h>
+#include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
@@ -31,7 +32,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/views/editors/user_input_dialogs.h>
-#include <sequencergui/views/jobsystem/job_manager.h>
 #include <sequencergui/views/operation/message_panel.h>
 #include <sequencergui/views/operation/operation_action_handler.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>

@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   job_log.h
   job_log_severity.cpp
   job_log_severity.h
+  job_manager.cpp
+  job_manager.h
   job_utils.cpp
   job_utils.h
   log_event.cpp

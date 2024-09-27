@@ -18,7 +18,7 @@
  *****************************************************************************/
 
 #include <sequencergui/jobsystem/job_handler.h>
-#include <sequencergui/views/jobsystem/job_manager.h>
+#include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/job_item.h>
@@ -45,13 +45,13 @@
 #include <testutils/test_utils.h>
 
 #include <QTest>
+#include <QSignalSpy>
 
 using namespace sequencergui;
 
-#include <QSignalSpy>
-
-//! Tests for complex integration scenario.
-
+/**
+ * @brief Complex scenario integration tests.
+ */
 class IntegrationScenarioTest : public testutils::FolderTest
 {
 public:
@@ -68,7 +68,6 @@ public:
 
 //! Create procedure, save as a project file, load from disk, and execute procedure in a job
 //! manager.
-
 TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 {
   ApplicationModels m_models;
@@ -144,7 +143,6 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 }
 
 //! Validating that external includes are correctly found.
-
 TEST_F(IntegrationScenarioTest, ExternalInclude)
 {
   const std::string main_procedure{R"(
@@ -183,7 +181,6 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
 }
 
 //! Validating that external includes are correctly found, and that varying parameter is propagated.
-
 TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
 {
   const std::string main_procedure{R"(

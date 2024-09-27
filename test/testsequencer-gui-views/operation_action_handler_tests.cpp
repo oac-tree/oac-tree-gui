@@ -21,13 +21,13 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
+#include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/views/jobsystem/job_manager.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/views/jobsystem/job_manager.h"
+#include "sequencergui/jobsystem/job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
@@ -29,7 +29,6 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/views/operation/message_panel.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>
@@ -47,8 +46,9 @@
 using namespace sequencergui;
 using msec = std::chrono::milliseconds;
 
-//! Tests for JobManager.
-
+/**
+ * @brief Tests for JobManager class.
+ */
 class JobManagerTest : public ::testing::Test
 {
 public:
@@ -102,8 +102,7 @@ TEST_F(JobManagerTest, AttemptToSubmitProcedure)
   EXPECT_THROW(manager.SubmitJob(m_job_item), RuntimeException);
 }
 
-//! Attempt to submit wronly configured procedure.
-
+//! Attempt to submit wronпly configured procedure.
 TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 {
   auto invalid_procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
@@ -115,7 +114,6 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 }
 
 //! Set first procedure to the JobManager and execute it.
-
 TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 {
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
@@ -123,12 +121,11 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
-  MessagePanel panel;
   m_job_item->SetProcedure(copy_procedure);
 
   JobManager manager({});
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this](auto) {};
 
   manager.SetMessagePanel(callback);
   manager.SubmitJob(m_job_item);
@@ -175,15 +172,13 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 }
 
 //! Removing submitted job.
-
 TEST_F(JobManagerTest, OnRemoveJobRequest)
 {
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
-  MessagePanel panel;
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this](auto) {};
 
   JobManager manager({});
   manager.SetMessagePanel(callback);
@@ -208,10 +203,9 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 {
   auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
-  MessagePanel panel;
   m_job_item->SetProcedure(procedure);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this](auto) {};
 
   JobManager manager({});
   manager.SetMessagePanel(callback);
@@ -238,20 +232,18 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 }
 
 //! Attempt to remove long running job.
-
 TEST_F(JobManagerTest, StopAllJobs)
 {
   auto procedure0 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
   auto procedure1 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
-  MessagePanel panel;
   m_job_item->SetProcedure(procedure0);
   auto job_item1 = m_job_item;
 
   auto job_item2 = m_models.GetJobModel()->InsertItem<JobItem>();
   job_item2->SetProcedure(procedure1);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this](auto) {};
 
   JobManager manager({});
   manager.SetMessagePanel(callback);

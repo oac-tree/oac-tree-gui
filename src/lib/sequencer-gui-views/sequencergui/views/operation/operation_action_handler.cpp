@@ -21,11 +21,11 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
+#include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/views/jobsystem/job_manager.h>
 #include <sup/gui/widgets/standard_message_handlers.h>
 
 #include <QAbstractTableModel>
