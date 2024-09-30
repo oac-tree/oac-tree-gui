@@ -39,7 +39,7 @@ public:
   explicit WidgetOverlayMessageHandler(QWidget* view);
   ~WidgetOverlayMessageHandler() override;
 
-  void SendMessage(const std::string& text) override;
+  void SendMessage(const sup::gui::MessageEvent& message) override;
 
 private:
   std::unique_ptr<WidgetOverlayMessagePublisher> m_message_publisher;

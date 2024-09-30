@@ -31,9 +31,9 @@ WidgetOverlayMessageHandler::WidgetOverlayMessageHandler(QWidget *view)
 
 WidgetOverlayMessageHandler::~WidgetOverlayMessageHandler() = default;
 
-void WidgetOverlayMessageHandler::SendMessage(const std::string &text)
+void WidgetOverlayMessageHandler::SendMessage(const sup::gui::MessageEvent &message)
 {
-  m_message_publisher->AddMessage(QString::fromStdString(text));
+  m_message_publisher->AddMessage(QString::fromStdString(message.text));
 }
 
 }  // namespace sequencergui

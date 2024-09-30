@@ -29,14 +29,13 @@
 #include <sup/gui/core/standard_message_handlers.h>
 
 #include <QAbstractTableModel>
-#include <sstream>
 
 namespace
 {
 
 //! Invokes
 template <typename T>
-bool InvokeAndCatch(T method, const std::string &message,
+bool InvokeAndCatch(T method, const std::string &text,
                     sup::gui::MessageHandlerInterface *message_interface)
 {
   try
@@ -46,9 +45,9 @@ bool InvokeAndCatch(T method, const std::string &message,
   }
   catch (const std::exception &ex)
   {
-    std::ostringstream ostr;
-    ostr << message << " failed with the message '" << std::string(ex.what()) << "'";
-    message_interface->SendMessage(ostr.str());
+    sup::gui::MessageEvent message =
+        sup::gui::CreateInvalidOperationMessage(text + " failed", ex.what());
+    message_interface->SendMessage(message);
     return false;
   }
 

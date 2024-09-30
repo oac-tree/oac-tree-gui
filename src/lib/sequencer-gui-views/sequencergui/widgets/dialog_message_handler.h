@@ -29,7 +29,7 @@ namespace sequencergui
 class DialogMessageHandler : public sup::gui::MessageHandlerInterface
 {
 public:
-  void SendMessage(const std::string& text) override;
+  void SendMessage(const sup::gui::MessageEvent &message) override;
 };
 
 }  // namespace sequencergui

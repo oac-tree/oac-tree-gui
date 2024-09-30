@@ -40,7 +40,6 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QMessageBox>
 #include <QMimeData>
-#include <sstream>
 
 namespace
 {
@@ -240,9 +239,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
   {
     if (m_message_handler)
     {
-      std::ostringstream ostr;
-      ostr << ex.what();
-      m_message_handler->SendMessage(ostr.str());
+      m_message_handler->SendMessage(sup::gui::CreateInvalidOperationMessage(ex.what()));
     }
     else
     {

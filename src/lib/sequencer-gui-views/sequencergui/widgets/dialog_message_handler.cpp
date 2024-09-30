@@ -19,17 +19,14 @@
 
 #include "dialog_message_handler.h"
 
-#include <QMessageBox>
+#include <sup/gui/widgets/message_helper.h>
 
 namespace sequencergui
 {
 
-void DialogMessageHandler::SendMessage(const std::string &text)
+void DialogMessageHandler::SendMessage(const sup::gui::MessageEvent &message)
 {
-  QMessageBox msg_box;
-  msg_box.setText(QString::fromStdString(text));
-  msg_box.setIcon(msg_box.Critical);
-  msg_box.exec();
+  sup::gui::SendWarningMessage(message);
 }
 
 }  // namespace sequencergui

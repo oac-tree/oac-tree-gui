@@ -25,7 +25,6 @@
 #include <gmock/gmock.h>
 
 #include <memory>
-#include <string>
 
 namespace testutils
 {
@@ -35,7 +34,7 @@ namespace testutils
 class MockMessageHandler : public sup::gui::MessageHandlerInterface
 {
 public:
-  MOCK_METHOD(void, SendMessage, (const std::string&));
+  MOCK_METHOD(void, SendMessage, (const sup::gui::MessageEvent&));
 };
 
 //! Create decorator around MockMessageHandler.
