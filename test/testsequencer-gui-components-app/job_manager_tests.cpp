@@ -102,7 +102,7 @@ TEST_F(JobManagerTest, AttemptToSubmitProcedure)
   EXPECT_THROW(manager.SubmitJob(m_job_item), RuntimeException);
 }
 
-//! Attempt to submit wronпly configured procedure.
+//! Attempt to submit wrongly configured procedure.
 TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 {
   auto invalid_procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
