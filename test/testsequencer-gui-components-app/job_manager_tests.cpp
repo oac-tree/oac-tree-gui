@@ -132,8 +132,6 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   manager.SetCurrentJob(m_job_item);
   EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
 
-  QSignalSpy spy_instruction_status(&manager, &JobManager::InstructionStatusChanged);
-
   auto job_handler = manager.GetCurrentJobHandler();
   ASSERT_TRUE(job_handler != nullptr);
 
@@ -150,10 +148,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   // We are testing here queued signals, need special waiting to let procedure complete
   EXPECT_TRUE(QTest::qWaitFor(
-      [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
-
-  EXPECT_FALSE(job_handler->IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 2);
+      [&job_handler]() { return !job_handler->IsRunning(); }, 100));
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
@@ -231,7 +226,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   EXPECT_FALSE(manager.HasRunningJobs());
 }
 
-//! Attempt to remove long running job.
+//! Long running job removal.
 TEST_F(JobManagerTest, StopAllJobs)
 {
   auto procedure0 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
@@ -243,10 +238,8 @@ TEST_F(JobManagerTest, StopAllJobs)
   auto job_item2 = m_models.GetJobModel()->InsertItem<JobItem>();
   job_item2->SetProcedure(procedure1);
 
-  JobManager::set_joblog_cb callback = [this](auto) {};
-
   JobManager manager({});
-  manager.SetMessagePanel(callback);
+  manager.SetMessagePanel([this](auto) {});
 
   EXPECT_NO_FATAL_FAILURE(manager.StopAllJobs());
 
@@ -258,8 +251,7 @@ TEST_F(JobManagerTest, StopAllJobs)
   manager.SetCurrentJob(job_item2);
   manager.OnStartJobRequest();
 
-  auto job_handler = manager.GetCurrentJobHandler();
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return manager.HasRunningJobs(); }, 100));
 
   EXPECT_TRUE(manager.HasRunningJobs());
 

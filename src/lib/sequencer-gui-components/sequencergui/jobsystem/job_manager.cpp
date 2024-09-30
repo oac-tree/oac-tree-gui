@@ -168,8 +168,6 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
   auto job_handler = std::make_unique<JobHandler>(item, m_user_context);
-  connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,
-          &JobManager::InstructionStatusChanged);
   connect(job_handler.get(), &JobHandler::NextLeavesChanged, this,
           &JobManager::OnNextLeavesChanged);
 

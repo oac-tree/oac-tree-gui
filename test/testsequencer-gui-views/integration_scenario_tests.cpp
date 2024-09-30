@@ -44,8 +44,8 @@
 #include <testutils/standard_procedure_items.h>
 #include <testutils/test_utils.h>
 
-#include <QTest>
 #include <QSignalSpy>
+#include <QTest>
 
 using namespace sequencergui;
 
@@ -100,8 +100,6 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   manager.SetCurrentJob(m_job_item);
   EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
 
-  QSignalSpy spy_instruction_status(&manager, &JobManager::InstructionStatusChanged);
-
   auto job_handler = manager.GetCurrentJobHandler();
   ASSERT_TRUE(job_handler != nullptr);
 
@@ -116,12 +114,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   manager.OnStartJobRequest();
   QTest::qWait(20);
 
-  // We are testing here queued signals, need special waiting to let procedure complete
-  EXPECT_TRUE(QTest::qWaitFor(
-      [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
-
-  EXPECT_FALSE(job_handler->IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 2);
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
