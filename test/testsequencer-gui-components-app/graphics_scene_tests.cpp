@@ -34,6 +34,7 @@
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_message_handler.h>
 
@@ -187,11 +188,11 @@ TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
   // attempt to connect to leaves together
   EXPECT_THROW(m_scene.onConnectionRequest(view0, view1), mvvm::InvalidOperationException);
 
-  testutils::MockMessageHandler mock_handler;
-  m_scene.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> mock_handler;
+  m_scene.SetMessageHandler(testutils::CreateTestMessageHandler(mock_handler.AsStdFunction()));
 
   // after handler set, we expect no throws; handler method should be called
-  EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
+  EXPECT_CALL(mock_handler, Call(_)).Times(1);
   EXPECT_NO_THROW(m_scene.onConnectionRequest(view0, view1));
 }
 

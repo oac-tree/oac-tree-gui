@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_WIDGETS_MESSAGE_HANDLER_FACTORY_H_
 #define SEQUENCERGUI_WIDGETS_MESSAGE_HANDLER_FACTORY_H_
 
+//! @file
 //! Factory functions to create various message reporters.
 
 #include <sup/gui/core/message_handler_interface.h>
@@ -31,23 +32,35 @@ class QWidget;
 namespace sequencergui
 {
 
-//! Creates message handler that does nothing.
+/**
+ * @brief Creates message handler that does nothing.
+ */
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateNullMessageHandler();
 
-//! Creates message handler that prints messages to standard output.
+/**
+ * @brief Creates message handler that prints messages to standard output.
+ */
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateStdMessageHandler();
 
-//! Creates message handler intended to work with the graphics view.
+/**
+ * @brief Creates message handler intended to work with the graphics view.
+ */
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget* view);
 
-//! Creates message handler decorator.
+/**
+ * @brief Creates message handler decorator.
+ */
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator(
     sup::gui::MessageHandlerInterface* component);
 
-//! Creates message handler that pop's up a message box.
+/**
+ * @brief Creates message handler that pop's up a message box.
+ */
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageBoxHandler();
 
-//! Creates message handler that throws runtime exception.
+/**
+ * @brief Creates message handler that throws runtime exception.
+ */
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateThrowingMessageHandler();
 
 }  // namespace sequencergui

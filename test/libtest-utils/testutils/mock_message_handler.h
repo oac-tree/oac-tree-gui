@@ -22,27 +22,32 @@
 
 #include <sup/gui/core/message_handler_interface.h>
 
-#include <gmock/gmock.h>
-
+#include <functional>
 #include <memory>
 
 namespace testutils
 {
 
-//! Mock class to use as MessageHandler.
-
-class MockMessageHandler : public sup::gui::MessageHandlerInterface
+/**
+ * @brief The TestMessageHandler class is a test message handler which calls external callback on
+ * own method call.
+ */
+class TestMessageHandler : public sup::gui::MessageHandlerInterface
 {
 public:
-  MOCK_METHOD(void, SendMessage, (const sup::gui::MessageEvent&));
+  explicit TestMessageHandler(std::function<void(const sup::gui::MessageEvent&)> callback);
+
+  void SendMessage(const sup::gui::MessageEvent& message) override;
+
+private:
+  std::function<void(const sup::gui::MessageEvent&)> m_callback;
 };
 
-//! Create decorator around MockMessageHandler.
-//! This is to avoid pasing unique_ptr<MockMessageHandler> directly, since it triggers
-//! googletest warnings related to testing::Mock::AllowLeak.
-
-std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator(
-    MockMessageHandler* mock_handler);
+/**
+ * @brief Creates TestMessageHandler which will use given callback.
+ */
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateTestMessageHandler(
+    std::function<void(const sup::gui::MessageEvent&)> callback);
 
 }  // namespace testutils
 

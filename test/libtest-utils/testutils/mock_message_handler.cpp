@@ -24,10 +24,23 @@
 namespace testutils
 {
 
-std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator(
-    MockMessageHandler *mock_handler)
+TestMessageHandler::TestMessageHandler(std::function<void(const sup::gui::MessageEvent &)> callback)
+    : m_callback(std::move(callback))
 {
-  return sup::gui::MessageHandlerDecorator::Create(mock_handler);
+}
+
+void TestMessageHandler::SendMessage(const sup::gui::MessageEvent &message)
+{
+  if (m_callback)
+  {
+    m_callback(message);
+  }
+}
+
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateTestMessageHandler(
+    std::function<void(const sup::gui::MessageEvent &)> callback)
+{
+  return std::make_unique<TestMessageHandler>(std::move(callback));
 }
 
 }  // namespace testutils
