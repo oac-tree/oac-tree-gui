@@ -102,7 +102,7 @@ void WorkspaceItemListener::OnDataChangedEvent(const mvvm::DataChangedEvent& eve
   // finding VariableItem which is a parent of the item with changed data
   for (auto variable_item : m_workspace_item->GetVariables())
   {
-    if (mvvm::utils::IsItemAncestor(event.m_item, variable_item))
+    if (mvvm::utils::IsItemAncestor(event.item, variable_item))
     {
       ProcessEventToDomain(variable_item);
       break;
@@ -113,7 +113,7 @@ void WorkspaceItemListener::OnDataChangedEvent(const mvvm::DataChangedEvent& eve
 void WorkspaceItemListener::OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event)
 {
   // If parent is VariableItem, then insert event denotes that AnyValueItem has been regenerated.
-  if (auto variable_item = dynamic_cast<VariableItem*>(event.m_item); variable_item)
+  if (auto variable_item = dynamic_cast<VariableItem*>(event.item); variable_item)
   {
     ProcessEventToDomain(variable_item);
   }

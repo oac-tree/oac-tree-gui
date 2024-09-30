@@ -64,7 +64,7 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
   m_property_listener = std::make_unique<mvvm::ItemListener>(job_item);
   auto on_event = [this](const mvvm::PropertyChangedEvent &event)
   {
-    if (event.m_name == itemconstants::kTickTimeout)
+    if (event.name == itemconstants::kTickTimeout)
     {
       m_domain_runner_service->SetTickTimeout(m_job_item->GetTickTimeout());
     }

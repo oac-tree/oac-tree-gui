@@ -184,14 +184,14 @@ GraphicsSceneController::~GraphicsSceneController() = default;
 
 void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
 {
-  if (event.m_tag_index.tag == itemconstants::kAnyValueTag)
+  if (event.tag_index.tag == itemconstants::kAnyValueTag)
   {
     return;
   }
 
-  if (p_impl->IsInScope(event.m_item))
+  if (p_impl->IsInScope(event.item))
   {
-    p_impl->InsertView(event.m_item, event.m_tag_index);
+    p_impl->InsertView(event.item, event.tag_index);
   }
 }
 
@@ -220,7 +220,7 @@ void GraphicsSceneController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& e
 
 void GraphicsSceneController::OnModelEvent(const mvvm::DataChangedEvent& event)
 {
-  p_impl->OnDataChanged(event.m_item, event.m_data_role);
+  p_impl->OnDataChanged(event.item, event.data_role);
 }
 
 void GraphicsSceneController::Init(InstructionContainerItem* root_item)

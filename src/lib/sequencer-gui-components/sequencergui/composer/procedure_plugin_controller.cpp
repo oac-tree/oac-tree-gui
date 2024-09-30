@@ -63,17 +63,17 @@ bool ProcedurePluginController::IsRelevantParent(const mvvm::SessionItem *item)
 
 void ProcedurePluginController::OnItemInsertedEvent(const mvvm::ItemInsertedEvent &event)
 {
-  if (IsRelevantParent(event.m_item))
+  if (IsRelevantParent(event.item))
   {
-    UpdateProcedurePreamble(event.m_item);
+    UpdateProcedurePreamble(event.item);
   }
 }
 
 void ProcedurePluginController::OnItemRemovedEvent(const mvvm::ItemRemovedEvent &event)
 {
-  if (IsRelevantParent(event.m_item))
+  if (IsRelevantParent(event.item))
   {
-    UpdateProcedurePreamble(event.m_item);
+    UpdateProcedurePreamble(event.item);
   }
 }
 
