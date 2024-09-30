@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/views/operation/operation_action_handler.h"
+#include "sequencergui/operation/operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>

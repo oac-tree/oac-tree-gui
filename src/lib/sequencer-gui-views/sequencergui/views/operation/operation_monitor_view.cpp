@@ -31,9 +31,9 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/operation/operation_action_handler.h>
 #include <sequencergui/views/editors/user_input_dialogs.h>
 #include <sequencergui/views/operation/message_panel.h>
-#include <sequencergui/views/operation/operation_action_handler.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sequencergui/widgets/message_handler_factory.h>
 #include <sup/gui/app/app_action_helper.h>
