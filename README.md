@@ -40,7 +40,7 @@ The `sequencer-gui` application depends on a number of Codac Operation Applicati
 
 ```bash
 yum install codac-core-7.2-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
-yum install qt5-qtbase-devel.x86_64 qt5-qtsvg-devel.x86_64 qt5-qttools-devel.x86_64 qt5-qtbase-gui.x86_64 adwaita-qt5.x86_64 mesa-libGL-devel.x86_64
+yum install qt5-qtbase-devel.x86_64 qt5-qtsvg-devel.x86_64 qt5-qttools-devel.x86_64 qt5-qtbase-gui.x86_64 qt5-qtcharts-devel.x86_64 adwaita-qt5.x86_64 mesa-libGL-devel.x86_64
 ```
 
 ### Install COA packages

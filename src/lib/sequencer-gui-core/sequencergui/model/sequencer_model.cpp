@@ -22,7 +22,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 
-#include <mvvm/commands/command_stack.h>
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>

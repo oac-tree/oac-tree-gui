@@ -62,8 +62,26 @@ private:
   void InitComponents();
   void ReadSettings();
   void WriteSettings();
+
+  /**
+   * @brief Check if the application can be closed.
+   *
+   * This saves unsaved projects and writes persistent application settings.
+   *
+   * @return True if the application is ready to be closed.
+   */
   bool CanCloseApplication();
+
+  /**
+   * @brief Check if the application can be restarted and exit the application with the given code.
+   *
+   * The code will be used to start the application again from the main.
+   */
   void OnRestartRequest(sup::gui::AppExitCode exit_code);
+
+  /**
+   * @brief Perform widgets setup on new project creation or project load from disk.
+   */
   void OnProjectLoad();
 
   std::unique_ptr<ApplicationModels> m_models;
