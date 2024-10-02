@@ -19,8 +19,9 @@
 
 #include "command_line_options.h"
 
-#include <sup/gui/app/main_window_helper.h>
+#include <sup/gui/app/app_helper.h>
 #include <sup/gui/app/main_window_types.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <QCommandLineOption>
 #include <QCommandLineParser>

@@ -24,7 +24,7 @@
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/app_constants.h>
-#include <sup/gui/app/main_window_helper.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

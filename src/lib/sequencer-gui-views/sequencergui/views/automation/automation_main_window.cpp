@@ -24,7 +24,7 @@
 #include <sequencergui/model/application_models.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
-#include <sup/gui/app/application_helper.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <QCloseEvent>
 #include <QCoreApplication>

@@ -22,7 +22,7 @@
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/pvmonitor_main_window.h>
-#include <sup/gui/app/application_helper.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <QApplication>
 #include <QMessageBox>

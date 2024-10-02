@@ -25,7 +25,7 @@
 
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/splash_screen.h>
-#include <sup/gui/app/application_helper.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/app/main_window_types.h>
 
 #include <mvvm/widgets/widget_utils.h>

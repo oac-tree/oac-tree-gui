@@ -25,12 +25,11 @@
 
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
-#include <sup/gui/app/application_helper.h>
-#include <sup/gui/app/main_window_helper.h>
 #include <sup/gui/project/project_handler.h>
 #include <sup/gui/project/project_handler_utils.h>
 
