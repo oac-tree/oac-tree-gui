@@ -40,8 +40,9 @@ using namespace sequencergui;
 using ::testing::_;
 using ::testing::AtLeast;
 
-//! Tests for DomainRunner class.
-
+/**
+ * @brief Tests for DomainRunner class.
+ */
 class DomainRunnerTest : public ::testing::Test
 {
 public:
@@ -80,7 +81,6 @@ TEST_F(DomainRunnerTest, InitialState)
 }
 
 //! Running short domain procedure that executes normally.
-
 TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 {
   using ::sup::sequencer::ExecutionStatus;
@@ -137,8 +137,44 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
   EXPECT_FALSE(runner.IsBusy());
 }
 
-//! Terminates procedure that runs too long.
+//! Running short domain procedure till the end, and then reset.
+TEST_F(DomainRunnerTest, Reset)
+{
+  using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::JobState;
 
+  auto procedure = testutils::CreateMessageProcedure("text");
+  auto instruction_ptr = procedure->RootInstruction();
+
+  // DomainRunner runner(CreatePrintCallback(), *procedure);
+  DomainRunner runner(m_event_listener.AsStdFunction(), {}, *procedure);
+  EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  runner.Start();
+
+  auto final_state = runner.WaitForFinished();
+  EXPECT_EQ(final_state, sup::sequencer::JobState::kSucceeded);
+  EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+
+  EXPECT_TRUE(runner.IsFinished());
+  EXPECT_FALSE(runner.IsBusy());
+
+  runner.Reset();
+
+  auto has_finished = [&runner]()
+  { return runner.GetJobState() == sup::sequencer::JobState::kInitial; };
+  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
+
+  EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+}
+
+//! Terminates procedure that runs too long.
 TEST_F(DomainRunnerTest, StartAndTerminate)
 {
   using ::sup::sequencer::ExecutionStatus;
@@ -180,7 +216,6 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
 
 //! Sequence with single message in normal start mode. Validating that tick timeout is ignored for
 //! a single instructions.
-
 TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
 {
   const int tick_timeout_msec(1000);  // intentionally long timeout
@@ -347,7 +382,6 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 }
 
 //! Sequence with two messages in a step mode. After first step it is interrupted.
-
 TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
 {
   using ::sup::sequencer::ExecutionStatus;
@@ -374,7 +408,6 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
 
 //! Repeat procedure with increment instruction inside. We start in step mode, and after the first
 //! step continue till the end without interruptions.
-
 TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
 {
   testutils::MockDomainEventListener listener;
@@ -442,7 +475,6 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
 //! - Run
 //! - Pause
 //! - Run again, wait a bit, and stop via interrupt variable.
-
 TEST_F(DomainRunnerTest, RunPauseRun)
 {
   using ::sup::sequencer::ExecutionStatus;

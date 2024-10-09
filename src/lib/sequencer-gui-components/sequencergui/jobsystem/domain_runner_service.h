@@ -62,6 +62,11 @@ public:
   void SetTickTimeout(int msec);
 
   /**
+   * @brief Resets procedure to initial state.
+   */
+  void Reset();
+
+  /**
    * @brief Returns underlying domain async runner.
    */
   sup::sequencer::AsyncRunner* GetAsyncRunner();

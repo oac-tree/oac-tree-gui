@@ -113,6 +113,11 @@ void DomainRunner::SetTickTimeout(int msec)
   m_job_observer->SetTickTimeout(msec);
 }
 
+void DomainRunner::Reset()
+{
+  m_async_runner->Reset();
+}
+
 sup::sequencer::AsyncRunner* DomainRunner::GetAsyncRunner()
 {
   return m_async_runner.get();

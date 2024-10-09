@@ -81,6 +81,11 @@ void DomainRunnerService::SetTickTimeout(int msec)
   m_domain_runner->SetTickTimeout(msec);
 }
 
+void DomainRunnerService::Reset()
+{
+  m_domain_runner->Reset();
+}
+
 sup::sequencer::AsyncRunner* DomainRunnerService::GetAsyncRunner()
 {
   return m_domain_runner->GetAsyncRunner();
