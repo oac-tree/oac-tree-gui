@@ -131,7 +131,7 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   }
   ToggleBreakpointStatus(*instruction);
   m_breakpoint_controller->UpdateDomainBreakpoint(*instruction,
-                                                  *m_domain_runner_service->GetJobController());
+                                                  *m_domain_runner_service->GetAsyncRunner());
 }
 
 void JobHandler::OnInstructionStatusChanged(const InstructionStatusChangedEvent &event)
@@ -221,7 +221,7 @@ void JobHandler::SetupExpandedProcedureItem()
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 
   m_breakpoint_controller->PropagateBreakpointsToDomain(
-      *expanded_procedure_ptr, *m_domain_runner_service->GetJobController());
+      *expanded_procedure_ptr, *m_domain_runner_service->GetAsyncRunner());
 
   m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
       expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());

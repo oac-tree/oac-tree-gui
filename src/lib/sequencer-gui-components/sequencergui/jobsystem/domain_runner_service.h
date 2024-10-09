@@ -61,7 +61,10 @@ public:
 
   void SetTickTimeout(int msec);
 
-  sup::sequencer::AsyncRunner* GetJobController();
+  /**
+   * @brief Returns underlying domain async runner.
+   */
+  sup::sequencer::AsyncRunner* GetAsyncRunner();
 
 private:
   /**

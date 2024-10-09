@@ -37,7 +37,7 @@ DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback,
     : m_job_observer(std::make_unique<DomainJobObserver>(post_event_callback))
     , m_procedure_observer(
           std::make_unique<DomainProcedureObserver>(post_event_callback, user_context))
-    , m_job_controller(std::make_unique<sup::sequencer::AsyncRunner>(
+    , m_async_runner(std::make_unique<sup::sequencer::AsyncRunner>(
           procedure, *m_procedure_observer, *m_job_observer))
 {
 }
@@ -53,7 +53,7 @@ bool DomainRunner::Start()
 {
   m_runner_state = kStartPressed;
 
-  m_job_controller->Start();
+  m_async_runner->Start();
 
   return true;
 }
@@ -62,7 +62,7 @@ bool DomainRunner::Stop()
 {
   m_runner_state = kStopPressed;
 
-  m_job_controller->Halt();
+  m_async_runner->Halt();
 
   return true;
 }
@@ -71,7 +71,7 @@ bool DomainRunner::Pause()
 {
   m_runner_state = kPausePressed;
 
-  m_job_controller->Pause();
+  m_async_runner->Pause();
 
   return true;
 }
@@ -80,7 +80,7 @@ bool DomainRunner::Step()
 {
   m_runner_state = kStepPressed;
 
-  m_job_controller->Step();
+  m_async_runner->Step();
 
   return true;
 }
@@ -113,9 +113,9 @@ void DomainRunner::SetTickTimeout(int msec)
   m_job_observer->SetTickTimeout(msec);
 }
 
-sup::sequencer::AsyncRunner* DomainRunner::GetJobController()
+sup::sequencer::AsyncRunner* DomainRunner::GetAsyncRunner()
 {
-  return m_job_controller.get();
+  return m_async_runner.get();
 }
 
 }  // namespace sequencergui

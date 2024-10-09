@@ -81,9 +81,9 @@ void DomainRunnerService::SetTickTimeout(int msec)
   m_domain_runner->SetTickTimeout(msec);
 }
 
-sup::sequencer::AsyncRunner* DomainRunnerService::GetJobController()
+sup::sequencer::AsyncRunner* DomainRunnerService::GetAsyncRunner()
 {
-  return m_domain_runner->GetJobController();
+  return m_domain_runner->GetAsyncRunner();
 }
 
 std::function<void(const domain_event_t&)> DomainRunnerService::CreatePostEventCallback() const

@@ -113,14 +113,14 @@ public:
   void SetTickTimeout(int msec);
 
   /**
-   * @brief Returns underlying job controller.
+   * @brief Returns underlying domain async runner.
    */
-  sup::sequencer::AsyncRunner* GetJobController();
+  sup::sequencer::AsyncRunner* GetAsyncRunner();
 
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
-  std::unique_ptr<sup::sequencer::AsyncRunner> m_job_controller;
+  std::unique_ptr<sup::sequencer::AsyncRunner> m_async_runner;
   RunnerState m_runner_state{kReady};
 };
 
