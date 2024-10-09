@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "operation_job_panel_actions.h"
+#include "operation_job_actions.h"
 
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/widgets/action_menu.h>
@@ -29,7 +29,7 @@
 namespace sequencergui
 {
 
-OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
+OperationJobActions::OperationJobActions(QObject *parent)
     : QObject(parent)
     , m_import_action(new QAction(this))
     , m_submit_action(new sup::gui::ActionMenu(this))
@@ -41,7 +41,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
   m_import_action->setText("New");
   m_import_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
   m_import_action->setToolTip("Open sequencer XML procedure from disk");
-  connect(m_import_action, &QAction::triggered, this, &OperationJobPanelActions::ImportJobRequest);
+  connect(m_import_action, &QAction::triggered, this, &OperationJobActions::ImportJobRequest);
 
   m_submit_action->setText("Submit");
   m_submit_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
@@ -51,45 +51,45 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
   m_regenerate_action->setText("Reload");
   m_regenerate_action->setIcon(sup::gui::utils::GetIcon("refresh.svg"));
   connect(m_regenerate_action, &QAction::triggered, this,
-          &OperationJobPanelActions::RegenerateJobRequest);
+          &OperationJobActions::RegenerateJobRequest);
 
   m_remove_action->setText("Remove");
   m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
-  connect(m_remove_action, &QAction::triggered, this, &OperationJobPanelActions::RemoveJobRequest);
+  connect(m_remove_action, &QAction::triggered, this, &OperationJobActions::RemoveJobRequest);
 
   m_remove_and_cleanup_action->setText("Remove");
   m_remove_and_cleanup_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   m_remove_and_cleanup_action->setToolTip("Remove selected procedure from the list");
   connect(m_remove_and_cleanup_action, &QAction::triggered, this,
-          &OperationJobPanelActions::RemoveAndCleanupJobRequest);
+          &OperationJobActions::RemoveAndCleanupJobRequest);
 }
 
-OperationJobPanelActions::~OperationJobPanelActions() = default;
+OperationJobActions::~OperationJobActions() = default;
 
-void OperationJobPanelActions::SetAvailableProcedures(callback_t available_procedures)
+void OperationJobActions::SetAvailableProcedures(callback_t available_procedures)
 {
   m_available_procedures = available_procedures;
 }
 
-QList<QAction *> OperationJobPanelActions::GetSequencerMonitorViewActions()
+QList<QAction *> OperationJobActions::GetSequencerMonitorViewActions()
 {
   return QList<QAction *>({m_submit_action, m_regenerate_action, m_remove_action});
 }
 
-QList<QAction *> OperationJobPanelActions::GetOperationMonitorViewActions()
+QList<QAction *> OperationJobActions::GetOperationMonitorViewActions()
 {
   return QList<QAction *>({m_import_action, m_regenerate_action, m_remove_and_cleanup_action});
 }
 
-std::unique_ptr<QMenu> OperationJobPanelActions::CreateSubmitProcedureMenu()
+std::unique_ptr<QMenu> OperationJobActions::CreateSubmitProcedureMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
-  connect(result.get(), &QMenu::aboutToShow, this, &OperationJobPanelActions::OnAboutToShowMenu);
+  connect(result.get(), &QMenu::aboutToShow, this, &OperationJobActions::OnAboutToShowMenu);
   return result;
 }
 
-void OperationJobPanelActions::OnAboutToShowMenu()
+void OperationJobActions::OnAboutToShowMenu()
 {
   if (!m_available_procedures)
   {

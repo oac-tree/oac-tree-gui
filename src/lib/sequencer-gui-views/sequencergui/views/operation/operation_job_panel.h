@@ -34,7 +34,7 @@ class JobItem;
 class ProcedureItem;
 class JobPropertyWidget;
 class ApplicationModels;
-class OperationJobPanelActions;
+class OperationJobActions;
 
 //! Vertical panel with list of running jobs and job properties on the left side of
 //! OperationMonitorView.
@@ -72,7 +72,7 @@ private:
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
   JobPropertyWidget* m_job_property_widget{nullptr};
-  OperationJobPanelActions* m_job_actions{nullptr};
+  OperationJobActions* m_job_actions{nullptr};
 
   ApplicationModels* m_models{nullptr};
 };

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_PANEL_ACTIONS_H_
-#define SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_PANEL_ACTIONS_H_
+#ifndef SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
+#define SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
 
 #include <QObject>
 #include <functional>
@@ -38,18 +38,17 @@ namespace sequencergui
 class ProcedureItem;
 
 /**
- * @brief The OperationJobPanelToolActions class contains set of actions for OperationJobPanel.
+ * @brief The OperationJobActions class contains set of actions for OperationJobPanel.
  */
-
-class OperationJobPanelActions : public QObject
+class OperationJobActions : public QObject
 {
   Q_OBJECT
 
 public:
   using callback_t = std::function<std::vector<ProcedureItem*>()>;
 
-  explicit OperationJobPanelActions(QObject* parent = nullptr);
-  ~OperationJobPanelActions() override;
+  explicit OperationJobActions(QObject* parent = nullptr);
+  ~OperationJobActions() override;
 
   void SetAvailableProcedures(callback_t available_procedures);
 
@@ -81,4 +80,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_PANEL_ACTIONS_H_
+#endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_

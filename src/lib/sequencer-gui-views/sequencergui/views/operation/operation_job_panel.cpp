@@ -21,7 +21,7 @@
 
 #include "job_list_widget.h"
 #include "job_property_widget.h"
-#include "operation_job_panel_actions.h"
+#include "operation_job_actions.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
@@ -39,7 +39,7 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_job_list_widget(new JobListWidget)
     , m_job_property_widget(new JobPropertyWidget)
-    , m_job_actions(new OperationJobPanelActions(this))
+    , m_job_actions(new OperationJobActions(this))
 {
   setWindowTitle("Procedures");
 
@@ -90,15 +90,15 @@ void OperationJobPanel::SetupConnections()
   connect(m_job_list_widget, &JobListWidget::JobSelected, this,
           &OperationJobPanel::OnJobSelectedIntern);
 
-  connect(m_job_actions, &OperationJobPanelActions::SubmitProcedureRequest, this,
+  connect(m_job_actions, &OperationJobActions::SubmitProcedureRequest, this,
           &OperationJobPanel::SubmitProcedureRequest);
-  connect(m_job_actions, &OperationJobPanelActions::ImportJobRequest, this,
+  connect(m_job_actions, &OperationJobActions::ImportJobRequest, this,
           &OperationJobPanel::ImportJobRequest);
-  connect(m_job_actions, &OperationJobPanelActions::RegenerateJobRequest, this,
+  connect(m_job_actions, &OperationJobActions::RegenerateJobRequest, this,
           &OperationJobPanel::RegenerateJobRequest);
-  connect(m_job_actions, &OperationJobPanelActions::RemoveJobRequest, this,
+  connect(m_job_actions, &OperationJobActions::RemoveJobRequest, this,
           &OperationJobPanel::RemoveJobRequest);
-  connect(m_job_actions, &OperationJobPanelActions::RemoveAndCleanupJobRequest, this,
+  connect(m_job_actions, &OperationJobActions::RemoveAndCleanupJobRequest, this,
           &OperationJobPanel::RemoveAndCleanupJobRequest);
 }
 
