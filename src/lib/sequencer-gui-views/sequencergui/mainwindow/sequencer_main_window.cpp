@@ -93,7 +93,7 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget->AddWidget(m_composer_view, "Compose",
                           sup::gui::utils::GetIcon("graph-outline-light.svg"));
 
-  m_operation_view = new OperationMonitorView(OperationMonitorView::kIdeMode);
+  m_operation_view = new OperationMonitorView(OperationPresentationMode::kIdeMode);
   m_tab_widget->AddWidget(m_operation_view, "Run",
                           sup::gui::utils::GetIcon("chevron-right-circle-outline-light.svg"));
 

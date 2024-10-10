@@ -58,6 +58,7 @@ public:
   QList<QAction*> GetSequencerMonitorViewActions();
 
   QList<QAction*> GetOperationMonitorViewActions();
+
 signals:
   void JobSelected(sequencergui::JobItem* item);
   void SubmitProcedureRequest(sequencergui::ProcedureItem* item);

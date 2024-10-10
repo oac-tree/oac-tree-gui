@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_
 
 #include <QWidget>
+#include <sequencergui/components/component_types.h>
 
 class QSplitter;
 class QShowEvent;
@@ -47,13 +48,7 @@ class OperationMonitorView : public QWidget
   Q_OBJECT
 
 public:
-  enum Mode
-  {
-    kOperationMode,  //!< widget will be a part of sequencer-operation application
-    kIdeMode         //!< widget will be a part of sequencer-gui
-  };
-
-  explicit OperationMonitorView(Mode mode, QWidget* parent = nullptr);
+  explicit OperationMonitorView(OperationPresentationMode mode, QWidget* parent = nullptr);
   ~OperationMonitorView() override;
 
   void SetApplicationModels(ApplicationModels* models);
@@ -81,7 +76,7 @@ private:
   void SetupWidgetActions();
   void OnJobSelected(sequencergui::JobItem* item);
 
-  QWidget* CreateLeftPanel(Mode mode);
+  QWidget* CreateLeftPanel(OperationPresentationMode mode);
   QWidget* CreateCentralPanel();
 
   QAction* m_show_left_sidebar{nullptr};

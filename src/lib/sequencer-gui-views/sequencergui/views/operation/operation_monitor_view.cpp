@@ -60,7 +60,7 @@ const QString kRightPanelIsVisibleSettingName = kGroupName + "/" + "right_panel"
 namespace sequencergui
 {
 
-OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
+OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidget *parent)
     : QWidget(parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
@@ -282,11 +282,12 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
-QWidget *OperationMonitorView::CreateLeftPanel(Mode mode)
+QWidget *OperationMonitorView::CreateLeftPanel(OperationPresentationMode mode)
 {
   auto result = new sup::gui::ItemStackWidget;
-  auto actions = mode == kIdeMode ? m_job_panel->GetSequencerMonitorViewActions()
-                                  : m_job_panel->GetOperationMonitorViewActions();
+  auto actions = mode == OperationPresentationMode::kIdeMode
+                     ? m_job_panel->GetSequencerMonitorViewActions()
+                     : m_job_panel->GetOperationMonitorViewActions();
   result->AddWidget(m_job_panel, actions);
   return result;
 }

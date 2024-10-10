@@ -48,6 +48,16 @@ enum class WorkspacePresentationType : std::uint8_t
   kWorkspaceTable      //!< experimental table with workspace variables
 };
 
+/**
+ * @brief The OperationPresentationMode enum defines if widget is a part of full-fledged
+ * sequencer-gui or operation-gui.
+ */
+enum class OperationPresentationMode : std::uint8_t
+{
+  kOperationMode,  //!< widget is a part of sequencer-operation application
+  kIdeMode         //!< widget is a part of sequencer-gui
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPONENTS_APP_TYPES_H_
