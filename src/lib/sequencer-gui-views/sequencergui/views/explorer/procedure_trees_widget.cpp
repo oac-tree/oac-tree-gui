@@ -104,7 +104,7 @@ void ProcedureTreesWidget::ReadSettings()
   }
   else
   {
-    m_splitter->setSizes(QList<int>() << 400 << 200);
+    m_splitter->setSizes({400, 200});
   }
 }
 

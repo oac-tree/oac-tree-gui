@@ -31,7 +31,6 @@
 #include <sup/gui/app/app_action_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -62,9 +61,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   m_splitter->addWidget(m_composer_panel);
   m_splitter->addWidget(m_central_panel);
   m_splitter->addWidget(m_right_panel);
-
-  m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(40) << mvvm::utils::UnitSize(80)
-                                    << mvvm::utils::UnitSize(80));
+  m_splitter->setSizes({200, 400, 400});
 
   layout->addWidget(m_splitter);
 

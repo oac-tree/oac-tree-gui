@@ -48,7 +48,7 @@ SettingsEditor::SettingsEditor(QWidget *parent)
 
   m_splitter->addWidget(m_list_view);
   m_splitter->addWidget(m_settings_view);
-  m_splitter->setSizes(QList<int>() << 200 << 400);
+  m_splitter->setSizes({200, 400});
 
   connect(m_list_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged,
           this, [this](auto item) { SetSettingsGroup(item); });

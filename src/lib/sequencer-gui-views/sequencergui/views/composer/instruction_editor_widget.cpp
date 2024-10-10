@@ -90,7 +90,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_tree_view);
   m_splitter->addWidget(m_attribute_editor);
-  m_splitter->setSizes(QList<int>() << 300 << 200);
+  m_splitter->setSizes({300, 200});
   layout->addWidget(m_splitter);
 
   ReadSettings();

@@ -43,7 +43,6 @@
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -78,8 +77,7 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
   m_splitter->addWidget(m_left_panel);
   m_splitter->addWidget(CreateCentralPanel());
   m_splitter->addWidget(m_workspace_panel);
-  m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
-                                    << mvvm::utils::UnitSize(30));
+  m_splitter->setSizes({300, 900, 300});
 
   layout->addWidget(m_splitter);
 
