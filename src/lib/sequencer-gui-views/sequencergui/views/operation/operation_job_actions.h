@@ -72,10 +72,6 @@ public:
 
   void SetAvailableProcedures(callback_t available_procedures);
 
-  QList<QAction*> GetSequencerMonitorViewActions();
-
-  QList<QAction*> GetOperationMonitorViewActions();
-
 signals:
   void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
   void ImportJobRequest();

@@ -77,12 +77,16 @@ void OperationJobPanel::SetSelectedJob(JobItem *job_item)
 
 QList<QAction *> OperationJobPanel::GetSequencerMonitorViewActions()
 {
-  return m_job_actions->GetSequencerMonitorViewActions();
+  using ActionKey = OperationJobActions::ActionKey;
+  return m_job_actions->GetActions(
+      {ActionKey::kSubmitJob, ActionKey::kRegenerateJob, ActionKey::kRemoveJob});
 }
 
 QList<QAction *> OperationJobPanel::GetOperationMonitorViewActions()
 {
-  return m_job_actions->GetOperationMonitorViewActions();
+  using ActionKey = OperationJobActions::ActionKey;
+  return m_job_actions->GetActions(
+      {ActionKey::kImportProcedure, ActionKey::kRegenerateJob, ActionKey::kRemoveJobAndCleanup});
 }
 
 void OperationJobPanel::SetupConnections()

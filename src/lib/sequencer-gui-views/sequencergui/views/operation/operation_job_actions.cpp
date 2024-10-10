@@ -81,16 +81,6 @@ void OperationJobActions::SetAvailableProcedures(callback_t available_procedures
   m_available_procedures = available_procedures;
 }
 
-QList<QAction *> OperationJobActions::GetSequencerMonitorViewActions()
-{
-  return QList<QAction *>({m_submit_action, m_regenerate_action, m_remove_action});
-}
-
-QList<QAction *> OperationJobActions::GetOperationMonitorViewActions()
-{
-  return QList<QAction *>({m_import_action, m_regenerate_action, m_remove_and_cleanup_action});
-}
-
 std::unique_ptr<QMenu> OperationJobActions::CreateSubmitProcedureMenu()
 {
   auto result = std::make_unique<QMenu>();

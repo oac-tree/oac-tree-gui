@@ -29,6 +29,7 @@ class CollapsibleListView;
 
 namespace sequencergui
 {
+
 class JobListWidget;
 class JobItem;
 class ProcedureItem;
@@ -36,9 +37,10 @@ class JobPropertyWidget;
 class ApplicationModels;
 class OperationJobActions;
 
-//! Vertical panel with list of running jobs and job properties on the left side of
-//! OperationMonitorView.
-
+/**
+ * @brief The OperationJobPanel class represents a vertical panel with list of running jobs and job
+ * properties on the left side of OperationMonitorView
+ */
 class OperationJobPanel : public QWidget
 {
   Q_OBJECT
@@ -56,7 +58,6 @@ public:
   QList<QAction*> GetSequencerMonitorViewActions();
 
   QList<QAction*> GetOperationMonitorViewActions();
-
 signals:
   void JobSelected(sequencergui::JobItem* item);
   void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
