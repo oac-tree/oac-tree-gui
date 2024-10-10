@@ -42,26 +42,36 @@ OperationJobActions::OperationJobActions(QObject *parent)
   m_import_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
   m_import_action->setToolTip("Open sequencer XML procedure from disk");
   connect(m_import_action, &QAction::triggered, this, &OperationJobActions::ImportJobRequest);
+  m_action_map.Add(ActionKey::kImportProcedure, m_import_action);
 
   m_submit_action->setText("Submit");
   m_submit_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
   m_submit_action->setMenu(m_submit_procedure_menu.get());
   m_submit_action->setToolTip("Submit existing sequencer procedure for execution");
+  m_action_map.Add(ActionKey::kSubmitJob, m_submit_action);
 
   m_regenerate_action->setText("Reload");
   m_regenerate_action->setIcon(sup::gui::utils::GetIcon("refresh.svg"));
   connect(m_regenerate_action, &QAction::triggered, this,
           &OperationJobActions::RegenerateJobRequest);
+  m_action_map.Add(ActionKey::kRegenerateJob, m_regenerate_action);
 
   m_remove_action->setText("Remove");
   m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   connect(m_remove_action, &QAction::triggered, this, &OperationJobActions::RemoveJobRequest);
+  m_action_map.Add(ActionKey::kRemoveJob, m_remove_action);
 
   m_remove_and_cleanup_action->setText("Remove");
   m_remove_and_cleanup_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   m_remove_and_cleanup_action->setToolTip("Remove selected procedure from the list");
   connect(m_remove_and_cleanup_action, &QAction::triggered, this,
           &OperationJobActions::RemoveAndCleanupJobRequest);
+  m_action_map.Add(ActionKey::kRemoveJobAndCleanup, m_remove_and_cleanup_action);
+}
+
+QList<QAction *> OperationJobActions::GetActions(const std::vector<ActionKey> &action_keys) const
+{
+  return m_action_map.GetActions(action_keys);
 }
 
 OperationJobActions::~OperationJobActions() = default;

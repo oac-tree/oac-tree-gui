@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
 #define SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
 
+#include <sup/gui/components/action_map.h>
+
 #include <QObject>
 #include <functional>
 #include <memory>
@@ -45,10 +47,28 @@ class OperationJobActions : public QObject
   Q_OBJECT
 
 public:
+  /**
+   * @brief The ActionKey enum defines keys for all available actions.
+   */
+  enum class ActionKey
+  {
+    kImportProcedure,
+    kSubmitJob,
+    kRegenerateJob,
+    kRemoveJob,
+    kRemoveJobAndCleanup,
+    kTotalCount
+  };
+
   using callback_t = std::function<std::vector<ProcedureItem*>()>;
 
   explicit OperationJobActions(QObject* parent = nullptr);
   ~OperationJobActions() override;
+
+  /**
+   * @brief Returns list of actions according to provided flags.
+   */
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
   void SetAvailableProcedures(callback_t available_procedures);
 
@@ -76,6 +96,8 @@ private:
   QAction* m_remove_and_cleanup_action{nullptr};
 
   callback_t m_available_procedures;
+
+  sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui
