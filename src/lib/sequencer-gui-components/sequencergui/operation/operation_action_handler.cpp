@@ -233,7 +233,7 @@ void OperationActionHandler::ResetJobIfNecessary()
     if (status == RunnerStatus::kFailed || status == RunnerStatus::kSucceeded
         || status == RunnerStatus::kHalted)
     {
-      OnRegenerateJobRequest();
+      job_handler->Reset();
     }
   }
 }

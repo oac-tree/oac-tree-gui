@@ -102,6 +102,11 @@ void JobHandler::OnStopRequest()
   m_domain_runner_service->Stop();
 }
 
+void JobHandler::Reset()
+{
+  m_domain_runner_service->Reset();
+}
+
 bool JobHandler::IsRunning() const
 {
   return m_domain_runner_service->IsBusy();
@@ -220,8 +225,8 @@ void JobHandler::SetupExpandedProcedureItem()
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 
-  m_breakpoint_controller->PropagateBreakpointsToDomain(
-      *expanded_procedure_ptr, *m_domain_runner_service->GetAsyncRunner());
+  m_breakpoint_controller->PropagateBreakpointsToDomain(*expanded_procedure_ptr,
+                                                        *m_domain_runner_service->GetAsyncRunner());
 
   m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
       expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());

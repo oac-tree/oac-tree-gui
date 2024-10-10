@@ -88,6 +88,13 @@ public:
   void OnStopRequest();
 
   /**
+   * @brief Reset not-running procedure to initial state.
+   *
+   * Call domains' AsyncRunner::Reset
+   */
+  void Reset();
+
+  /**
    * @brief Checks if the job is running, which is one of pause/stepping/running states.
    */
   bool IsRunning() const;

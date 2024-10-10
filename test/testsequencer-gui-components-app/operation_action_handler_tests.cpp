@@ -173,6 +173,17 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
+
+  // starting second time, jobHandler should be the same as before
+  auto prev_job_handler = m_job_manager.GetCurrentJobHandler();
+
+  m_actions.OnStartJobRequest();
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
+
+  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
+  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
+
+  EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), prev_job_handler);
 }
 
 //! Removing submitted job.
