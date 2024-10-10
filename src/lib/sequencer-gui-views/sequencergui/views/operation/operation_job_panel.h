@@ -65,7 +65,6 @@ signals:
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();
-  void RemoveAndCleanupJobRequest();
 
 private:
   void SetupConnections();

@@ -86,7 +86,7 @@ QList<QAction *> OperationJobPanel::GetOperationMonitorViewActions()
 {
   using ActionKey = OperationJobActions::ActionKey;
   return m_job_actions->GetActions(
-      {ActionKey::kImportProcedure, ActionKey::kRegenerateJob, ActionKey::kRemoveJobAndCleanup});
+      {ActionKey::kImportProcedure, ActionKey::kRegenerateJob, ActionKey::kRemoveJob});
 }
 
 void OperationJobPanel::SetupConnections()
@@ -102,8 +102,6 @@ void OperationJobPanel::SetupConnections()
           &OperationJobPanel::RegenerateJobRequest);
   connect(m_job_actions, &OperationJobActions::RemoveJobRequest, this,
           &OperationJobPanel::RemoveJobRequest);
-  connect(m_job_actions, &OperationJobActions::RemoveAndCleanupJobRequest, this,
-          &OperationJobPanel::RemoveAndCleanupJobRequest);
 }
 
 void OperationJobPanel::OnJobSelectedIntern(JobItem *item)

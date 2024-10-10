@@ -203,12 +203,12 @@ TEST_F(OperationActionHandlerTest, OnRemoveJobAndCleanupRequest)
   EXPECT_EQ(GetJobItems().size(), 1);
 
   // if no selection provided, the command does nothing
-  EXPECT_NO_THROW(m_actions.OnRemoveJobAndCleanupRequest());
+  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest(/*clean-up*/ true));
 
   auto job_item = GetJobItems().at(0);
   m_selected_item = GetJobItems().at(0);
 
-  EXPECT_NO_THROW(m_actions.OnRemoveJobAndCleanupRequest());
+  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest(/*clean-up*/ true));
   EXPECT_TRUE(GetJobItems().empty());
   EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 0);
 }

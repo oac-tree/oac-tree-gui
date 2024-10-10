@@ -70,6 +70,7 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
     , m_action_handler(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
+    , m_presentation_mode(mode)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -214,12 +215,14 @@ void OperationMonitorView::SetupConnections()
           [this]() { OnImportJobRequest(); });
 
   // job removal request
+  auto on_remove_job_request = [this]()
+  {
+    // in operation mode removal of job should remove its imported procedure too
+    const bool cleanup = m_presentation_mode == OperationPresentationMode::kOperationMode;
+    m_action_handler->OnRemoveJobRequest(cleanup);
+  };
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_action_handler,
-          &OperationActionHandler::OnRemoveJobRequest);
-
-  // job removal request with cleanup after
-  connect(m_job_panel, &OperationJobPanel::RemoveAndCleanupJobRequest, m_action_handler,
-          &OperationActionHandler::OnRemoveJobAndCleanupRequest);
+          on_remove_job_request);
 
   // job regenerate request
   connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_action_handler,

@@ -57,16 +57,10 @@ OperationJobActions::OperationJobActions(QObject *parent)
   m_action_map.Add(ActionKey::kRegenerateJob, m_regenerate_action);
 
   m_remove_action->setText("Remove");
+  m_remove_action->setToolTip("Remove selected procedure from the list");
   m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   connect(m_remove_action, &QAction::triggered, this, &OperationJobActions::RemoveJobRequest);
   m_action_map.Add(ActionKey::kRemoveJob, m_remove_action);
-
-  m_remove_and_cleanup_action->setText("Remove");
-  m_remove_and_cleanup_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
-  m_remove_and_cleanup_action->setToolTip("Remove selected procedure from the list");
-  connect(m_remove_and_cleanup_action, &QAction::triggered, this,
-          &OperationJobActions::RemoveAndCleanupJobRequest);
-  m_action_map.Add(ActionKey::kRemoveJobAndCleanup, m_remove_and_cleanup_action);
 }
 
 QList<QAction *> OperationJobActions::GetActions(const std::vector<ActionKey> &action_keys) const

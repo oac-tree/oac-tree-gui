@@ -144,7 +144,7 @@ void OperationActionHandler::OnMakeStepRequest()
   m_job_manager->OnMakeStepRequest();
 }
 
-bool OperationActionHandler::OnRemoveJobRequest()
+bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
 {
   CheckConditions();
 
@@ -160,28 +160,15 @@ bool OperationActionHandler::OnRemoveJobRequest()
 
   if (is_success)
   {
+    auto procedure = job->GetProcedure();
     m_job_model->RemoveItem(job);
+    if (cleanup)
+    {
+      procedure->GetModel()->RemoveItem(procedure);
+    }
   }
 
   return is_success;
-}
-
-//! Removes job and cleanup original ProcedureItem.
-
-void OperationActionHandler::OnRemoveJobAndCleanupRequest()
-{
-  auto job = GetSelectedJob();
-  if (!job)
-  {
-    return;
-  }
-
-  auto procedure = job->GetProcedure();
-
-  if (OnRemoveJobRequest())
-  {
-    procedure->GetModel()->RemoveItem(procedure);
-  }
 }
 
 void OperationActionHandler::OnRegenerateJobRequest()

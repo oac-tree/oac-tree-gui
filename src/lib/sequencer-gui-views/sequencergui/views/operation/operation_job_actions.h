@@ -56,7 +56,6 @@ public:
     kSubmitJob,
     kRegenerateJob,
     kRemoveJob,
-    kRemoveJobAndCleanup,
     kTotalCount
   };
 
@@ -77,7 +76,6 @@ signals:
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();
-  void RemoveAndCleanupJobRequest();
 
 private:
   std::unique_ptr<QMenu> CreateSubmitProcedureMenu();
