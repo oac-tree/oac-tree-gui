@@ -32,7 +32,7 @@ class InstructionEditorActionsTest : public ::testing::Test
 TEST_F(InstructionEditorActionsTest, GetActions)
 {
   using ActionKey = InstructionEditorActions::ActionKey;
-  InstructionEditorActions editor_actions(/*handler*/ nullptr);
+  const InstructionEditorActions editor_actions(/*handler*/ nullptr);
 
   EXPECT_TRUE(editor_actions.GetActions({}).isEmpty());
 
@@ -49,11 +49,11 @@ TEST_F(InstructionEditorActionsTest, NoDuplicates)
     all_action_keys.push_back(static_cast<InstructionEditorActions::ActionKey>(i));
   }
 
-  InstructionEditorActions editor_actions(/*handler*/ nullptr);
+  const InstructionEditorActions editor_actions(/*handler*/ nullptr);
   auto actions = editor_actions.GetActions(all_action_keys);
   EXPECT_EQ(actions.size(), static_cast<size_t>(InstructionEditorActions::ActionKey::kTotalCount));
 
   // checking duplicates
-  std::set<QAction*> action_set(actions.begin(), actions.end());
+  const std::set<QAction*> action_set(actions.begin(), actions.end());
   EXPECT_EQ(action_set.size(), actions.size());
 }

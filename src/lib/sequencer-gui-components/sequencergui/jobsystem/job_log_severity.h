@@ -23,13 +23,14 @@
 //! Provide log severity levels and accompanying utility functions.
 
 #include <string>
+#include <cstdint>
 
 namespace sequencergui
 {
 
 //! Defines severity levels for messages.
 
-enum class Severity
+enum class Severity : std::uint8_t
 {
   kEmergency = 0,
   kAlert,

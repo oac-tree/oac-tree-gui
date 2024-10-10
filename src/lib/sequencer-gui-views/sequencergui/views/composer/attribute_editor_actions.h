@@ -54,7 +54,7 @@ public:
   /**
    * @brief The ActionKey enum defines keys for all available actions.
    */
-  enum class ActionKey
+  enum class ActionKey : std::uint8_t
   {
     kModifyAttribute,
     kEditAnyValue,

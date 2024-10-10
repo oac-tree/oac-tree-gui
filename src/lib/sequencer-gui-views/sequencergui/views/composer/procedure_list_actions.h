@@ -45,7 +45,7 @@ class ProcedureListActions : public QObject
   Q_OBJECT
 
 public:
-  enum class ActionKey
+  enum class ActionKey : std::uint8_t
   {
     kCreateNew,
     kRemoveSelected,

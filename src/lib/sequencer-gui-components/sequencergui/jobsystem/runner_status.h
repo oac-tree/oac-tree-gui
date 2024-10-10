@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_RUNNER_STATUS_H_
 
 #include <string>
+#include <cstdint>
 
 namespace sequencergui
 {
@@ -30,7 +31,7 @@ namespace sequencergui
  *
  * For the moment, it matches one-to-one sup::sequencer::JobStatus.
  */
-enum class RunnerStatus
+enum class RunnerStatus : std::uint8_t
 {
   kInitial,
   kPaused,

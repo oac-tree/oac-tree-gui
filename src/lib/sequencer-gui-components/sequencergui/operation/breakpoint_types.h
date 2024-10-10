@@ -21,11 +21,12 @@
 #define SEQUENCERGUI_OPERATION_BREAKPOINT_TYPES_H_
 
 #include <mvvm/model/path.h>
+#include <cstdint>
 
 namespace sequencergui
 {
 
-enum class BreakpointStatus
+enum class BreakpointStatus : std::uint8_t
 {
   kNotSet,
   kSet,

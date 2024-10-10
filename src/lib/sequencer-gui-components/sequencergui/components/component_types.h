@@ -23,13 +23,15 @@
 //! @file
 //! Common types for application widgets.
 
+#include <cstdint>
+
 namespace sequencergui
 {
 
 /**
  * @brief The BehaviorTreeStyle enum defines presentation of behavior tree in the node editor.
  */
-enum class BehaviorTreeStyle
+enum class BehaviorTreeStyle : std::uint8_t
 {
   kTopToBottom,
   kLeftToRight
@@ -39,7 +41,7 @@ enum class BehaviorTreeStyle
  * @brief The WorkspacePresentationType enum defines how variables are presented in workspace
  * editor.
  */
-enum class WorkspacePresentationType
+enum class WorkspacePresentationType : std::uint8_t
 {
   kWorkspaceTree,      //!< full tree with workspace variables, connection status hidded
   kWorkspaceTechTree,  //!< full tree with workspace variables, connection status shown
