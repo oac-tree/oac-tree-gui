@@ -110,7 +110,7 @@ void OperationActionHandler::OnStartJobRequest()
 {
   CheckConditions();
 
-  ResubmitIfNecessary();
+  ResetJobIfNecessary();
 
   m_job_manager->SetCurrentJob(GetSelectedJob());
 
@@ -139,7 +139,7 @@ void OperationActionHandler::OnMakeStepRequest()
 
   m_job_manager->SetCurrentJob(GetSelectedJob());
 
-  ResubmitIfNecessary();
+  ResetJobIfNecessary();
 
   m_job_manager->OnMakeStepRequest();
 }
@@ -225,9 +225,7 @@ void OperationActionHandler::CheckConditions()
   }
 }
 
-//! Resubmit job if last time it was terminated, or was completed succesfully.
-
-void OperationActionHandler::ResubmitIfNecessary()
+void OperationActionHandler::ResetJobIfNecessary()
 {
   if (auto job_handler = m_job_manager->GetCurrentJobHandler(); job_handler)
   {

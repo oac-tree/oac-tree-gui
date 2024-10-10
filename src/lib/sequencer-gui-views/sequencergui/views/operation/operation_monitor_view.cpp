@@ -64,7 +64,7 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     : QWidget(parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
-    , m_left_panel(CreateLeftPanel(mode))
+    , m_left_panel(CreateLeftPanel())
     , m_workspace_panel{new OperationWorkspacePanel}
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
@@ -285,10 +285,10 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
-QWidget *OperationMonitorView::CreateLeftPanel(OperationPresentationMode mode)
+QWidget *OperationMonitorView::CreateLeftPanel()
 {
   auto result = new sup::gui::ItemStackWidget;
-  auto actions = mode == OperationPresentationMode::kIdeMode
+  auto actions = m_presentation_mode == OperationPresentationMode::kIdeMode
                      ? m_job_panel->GetSequencerMonitorViewActions()
                      : m_job_panel->GetOperationMonitorViewActions();
   result->AddWidget(m_job_panel, actions);

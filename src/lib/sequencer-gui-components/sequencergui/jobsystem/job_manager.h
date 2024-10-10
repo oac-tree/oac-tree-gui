@@ -100,7 +100,7 @@ public:
   void OnStopJobRequest();
 
   /**
-   * @brief Make step for paused job.
+   * @brief Execute a single step of the current job.
    */
   void OnMakeStepRequest();
 

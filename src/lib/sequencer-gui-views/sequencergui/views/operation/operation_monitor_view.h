@@ -76,7 +76,7 @@ private:
   void SetupWidgetActions();
   void OnJobSelected(sequencergui::JobItem* item);
 
-  QWidget* CreateLeftPanel(OperationPresentationMode mode);
+  QWidget* CreateLeftPanel();
   QWidget* CreateCentralPanel();
 
   QAction* m_show_left_sidebar{nullptr};
