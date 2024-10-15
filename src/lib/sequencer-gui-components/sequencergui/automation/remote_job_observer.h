@@ -43,7 +43,7 @@ public:
 
   void JobStateUpdated(sup::sequencer::JobState state) override;
 
-  bool PutValue(const sup::dto::AnyValue& value, const std::string& description) override;
+  void PutValue(const sup::dto::AnyValue& value, const std::string& description) override;
 
   bool GetUserValue(sup::dto::AnyValue& value, const std::string& description) override;
 

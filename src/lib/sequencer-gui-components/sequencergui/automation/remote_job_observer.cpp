@@ -60,10 +60,9 @@ void RemoteJobObserver::JobStateUpdated(sup::sequencer::JobState state)
   m_post_event_callback(JobStateChangedEvent{state});
 }
 
-bool RemoteJobObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
+void RemoteJobObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
 {
   std::cout << "RemoteJobObserver::PutValue" << "\n";
-  return false;
 }
 
 bool RemoteJobObserver::GetUserValue(sup::dto::AnyValue &value, const std::string &description)

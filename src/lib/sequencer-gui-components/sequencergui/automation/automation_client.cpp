@@ -19,11 +19,9 @@
 
 #include "automation_client.h"
 
-#include "remote_job_observer.h"
-
 #include <sup/auto-server/automation_client.h>
 #include <sup/auto-server/automation_protocol_client.h>
-#include <sup/auto-server/epics_anyvalue_listener.h>
+#include <sup/auto-server/epics_io_client.h>
 #include <sup/epics/pv_access_rpc_client.h>
 #include <sup/protocol/protocol_rpc_client.h>
 
@@ -37,14 +35,14 @@ struct AutomationClient::AutomationManagerImpl
   sup::epics::PvAccessRPCClient pv_access_rpc_client;
   sup::protocol::ProtocolRPCClient protocol_rpc_client;
   sup::auto_server::AutomationProtocolClient auto_protocol_client;
-  sup::auto_server::ListenerFactoryFunction m_listener;
+  sup::auto_server::AnyValueIOFactoryFunction m_listener;
   sup::auto_server::AutomationClient auto_client;
 
   explicit AutomationManagerImpl(const std::string& server_name)
       : pv_access_rpc_client(sup::epics::GetDefaultRPCClientConfig(server_name))
       , protocol_rpc_client(pv_access_rpc_client)
       , auto_protocol_client(protocol_rpc_client)
-      , m_listener(sup::auto_server::EPICSListenerFactoryFunction)
+      , m_listener(sup::auto_server::EPICSIOCLientFactoryFunction)
       , auto_client(auto_protocol_client, m_listener)
   {
   }
