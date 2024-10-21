@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   procedure_examples.h
   pvmonitor_main_window.cpp
   pvmonitor_main_window.h
+  pvmonitor_project.cpp
+  pvmonitor_project.h
   sequencer_main_window.cpp
   sequencer_main_window.h
   sequencer_main_window_actions.cpp

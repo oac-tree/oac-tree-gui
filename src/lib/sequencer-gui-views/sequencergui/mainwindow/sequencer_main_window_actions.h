@@ -74,7 +74,6 @@ public:
 
 signals:
   void RestartApplicationRequest(sup::gui::AppExitCode);
-  void ProjectLoaded();
 
 private:
   /**

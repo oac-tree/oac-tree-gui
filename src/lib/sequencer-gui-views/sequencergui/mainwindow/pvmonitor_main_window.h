@@ -29,7 +29,7 @@ namespace sequencergui
 {
 
 class MonitorWidget;
-class MonitorModel;
+class PvMonitorProject;
 class MonitorMainWindowActions;
 
 /**
@@ -43,8 +43,6 @@ public:
   PvMonitorMainWindow();
   ~PvMonitorMainWindow() override;
 
-  void OnProjectLoad();
-
 protected:
   void closeEvent(QCloseEvent* event) override;
 
@@ -53,8 +51,23 @@ private:
   void ReadSettings();
   void WriteSettings();
 
-  std::unique_ptr<MonitorModel> m_model;
+  /**
+   * @brief Perform widgets setup on new project creation or project load from disk.
+   */
+  void OnProjectLoad();
 
+  /**
+   * @brief Perform widgets setup on project modification.
+   */
+  void OnProjectModified();
+
+  /**
+   * @brief Creates main application project agent.
+   */
+  std::unique_ptr<PvMonitorProject> CreateProjectAgent();
+
+
+  std::unique_ptr<PvMonitorProject> m_project_agent;
   MonitorWidget* m_monitor_widget{nullptr};
   MonitorMainWindowActions* m_actions{nullptr};
 };

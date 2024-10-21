@@ -22,7 +22,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
-#include <sup/gui/project/project_handler.h>
+#include <sup/gui/project/project_handler_v2.h>
 #include <sup/gui/project/project_handler_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -40,24 +40,25 @@ const QString kApplicationType = "SUP PV Monitor";
 namespace sequencergui
 {
 
-MonitorMainWindowActions::MonitorMainWindowActions(mvvm::ISessionModel *model,
+MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project,
                                                    QMainWindow *mainwindow)
     : QObject(mainwindow)
-    , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
-                                                     kApplicationType, {model}, mainwindow))
+    , m_project_handler(std::make_unique<sup::gui::ProjectHandlerV2>(project))
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(), {sup::gui::constants::kFileMenu});
 
   CreateActions(mainwindow);
   SetupMenus(mainwindow->menuBar());
-
-  connect(m_project_handler, &sup::gui::ProjectHandler::ProjectLoaded, this,
-          &MonitorMainWindowActions::ProjectLoaded);
 }
 
 bool MonitorMainWindowActions::CloseCurrentProject() const
 {
   return m_project_handler->CloseCurrentProject();
+}
+
+void MonitorMainWindowActions::OnProjectModified()
+{
+  m_project_handler->UpdateNames();
 }
 
 MonitorMainWindowActions::~MonitorMainWindowActions() = default;

@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
 #define SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
 
+#include <mvvm/project/i_project.h>
 #include <QWidget>
 
 class QMainWindow;
@@ -34,7 +35,7 @@ class ISessionModel;
 
 namespace sup::gui
 {
-class ProjectHandler;
+class ProjectHandlerV2;
 }
 
 namespace sequencergui
@@ -49,7 +50,7 @@ class MonitorMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit MonitorMainWindowActions(mvvm::ISessionModel* model, QMainWindow* mainwindow);
+  explicit MonitorMainWindowActions(mvvm::IProject* project, QMainWindow* mainwindow);
   ~MonitorMainWindowActions() override;
 
   /**
@@ -64,8 +65,7 @@ public:
    */
   bool CloseCurrentProject() const;
 
-signals:
-  void ProjectLoaded();
+  void OnProjectModified();
 
 private:
   void CreateActions(QMainWindow* mainwindow);
@@ -74,7 +74,7 @@ private:
   QAction* m_exit_action{nullptr};
   QMenu* m_recent_project_menu{nullptr};
 
-  sup::gui::ProjectHandler* m_project_handler{nullptr};
+  std::unique_ptr<sup::gui::ProjectHandlerV2> m_project_handler;
 };
 
 }  // namespace sequencergui

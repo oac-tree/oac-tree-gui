@@ -19,8 +19,9 @@
 
 #include "pvmonitor_main_window.h"
 
+#include "pvmonitor_project.h"
+
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/views/pvmonitor/monitor_main_window_actions.h>
 #include <sequencergui/views/pvmonitor/monitor_widget.h>
 
@@ -37,15 +38,11 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 namespace sequencergui
 {
 
-PvMonitorMainWindow::PvMonitorMainWindow() : m_model(std::make_unique<MonitorModel>())
+PvMonitorMainWindow::PvMonitorMainWindow() : m_project_agent(CreateProjectAgent())
 {
   InitApplication();
-  OnProjectLoad();
-}
 
-void PvMonitorMainWindow::OnProjectLoad()
-{
-  m_monitor_widget->SetWorkspaceItem(m_model->GetWorkspaceItem());
+  m_project_agent->CreateNewProject();
 }
 
 PvMonitorMainWindow::~PvMonitorMainWindow() = default;
@@ -59,13 +56,10 @@ void PvMonitorMainWindow::closeEvent(QCloseEvent* event)
 void PvMonitorMainWindow::InitApplication()
 {
   ReadSettings();
-  m_actions = new MonitorMainWindowActions(m_model.get(), this);
+  m_actions = new MonitorMainWindowActions(m_project_agent.get(), this);
 
-  m_monitor_widget = new MonitorWidget(m_model.get());
+  m_monitor_widget = new MonitorWidget;
   setCentralWidget(m_monitor_widget);
-
-  connect(m_actions, &MonitorMainWindowActions::ProjectLoaded, this,
-          &PvMonitorMainWindow::OnProjectLoad);
 }
 
 void PvMonitorMainWindow::ReadSettings()
@@ -80,6 +74,20 @@ void PvMonitorMainWindow::WriteSettings()
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
+}
+
+void PvMonitorMainWindow::OnProjectLoad()
+{
+  m_monitor_widget->SetModel(m_project_agent->GetMonitorModel());
+}
+
+void PvMonitorMainWindow::OnProjectModified() {}
+
+std::unique_ptr<PvMonitorProject> PvMonitorMainWindow::CreateProjectAgent()
+{
+  auto modified_callback = [this]() { OnProjectModified(); };
+  auto loaded_callback = [this]() { OnProjectLoad(); };
+  return std::make_unique<PvMonitorProject>(modified_callback, loaded_callback);
 }
 
 }  // namespace sequencergui

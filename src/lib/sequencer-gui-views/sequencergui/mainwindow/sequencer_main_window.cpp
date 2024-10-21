@@ -105,8 +105,6 @@ void SequencerMainWindow::InitComponents()
 
   connect(m_action_manager, &SequencerMainWindowActions::RestartApplicationRequest, this,
           &SequencerMainWindow::OnRestartRequest);
-  connect(m_action_manager, &SequencerMainWindowActions::ProjectLoaded, this,
-          &SequencerMainWindow::OnProjectLoad);
 }
 
 void SequencerMainWindow::ReadSettings()
