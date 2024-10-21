@@ -54,9 +54,8 @@ void SetEnabled(const QList<QAction *> &actions, bool is_enabled)
 namespace sequencergui
 {
 
-MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
+MonitorWidget::MonitorWidget(QWidget *parent)
     : QWidget(parent)
-    , m_model(model)
     , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_tree(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTechTree))
@@ -82,10 +81,16 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
   SetupConnections();  // should be after tree view got its model
 }
 
+void MonitorWidget::SetModel(MonitorModel *model)
+{
+  SetWorkspaceItem(model->GetWorkspaceItem());
+}
+
 MonitorWidget::~MonitorWidget() = default;
 
 void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
 {
+  m_workspace_item = item;
   m_workspace_tree->SetWorkspaceItem(item);
   m_workspace_table->SetWorkspaceItem(item);
 }
@@ -105,10 +110,10 @@ void MonitorWidget::OnStartMonitoringRequest()
   {
     m_workspace = std::make_unique<workspace_t>();
 
-    PopulateDomainWorkspace(*m_model->GetWorkspaceItem(), *m_workspace);
+    PopulateDomainWorkspace(*m_workspace_item, *m_workspace);
 
     m_workspace_synchronizer =
-        std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
+        std::make_unique<WorkspaceSynchronizer>(m_workspace_item, m_workspace.get());
 
     m_workspace->Setup();
 
@@ -146,6 +151,6 @@ void MonitorWidget::SetIsRunning(bool is_running)
   SetEnabled(m_workspace_tree->actions(), !is_running);
   SetEnabled(m_workspace_table->actions(), !is_running);
   m_monitor_actions->SetIsRunning(is_running);
-  UpdateVariableEditableProperty(is_running, *m_model->GetWorkspaceItem());
+  UpdateVariableEditableProperty(is_running, *m_workspace_item);
 }
 }  // namespace sequencergui

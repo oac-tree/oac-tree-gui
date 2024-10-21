@@ -49,8 +49,10 @@ class MonitorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit MonitorWidget(MonitorModel* model, QWidget* parent = nullptr);
+  explicit MonitorWidget(QWidget* parent = nullptr);
   ~MonitorWidget() override;
+
+  void SetModel(MonitorModel *model);
 
   void SetWorkspaceItem(WorkspaceItem* item);
 
@@ -67,7 +69,7 @@ private:
    */
   void SetIsRunning(bool is_running);
 
-  MonitorModel* m_model{nullptr};
+  WorkspaceItem* m_workspace_item{nullptr};
   std::unique_ptr<workspace_t> m_workspace;
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 

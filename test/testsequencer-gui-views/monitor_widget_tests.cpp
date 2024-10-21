@@ -49,7 +49,8 @@ TEST_F(MonitorWidgetTest, StartStopStart)
   variable_item0->SetName("abc");
   SetAnyValue(value0, *variable_item0);
 
-  MonitorWidget widget(&model);
+  MonitorWidget widget;
+  widget.SetModel(&model);
 
   EXPECT_NO_FATAL_FAILURE(widget.OnStartMonitoringRequest());
   EXPECT_NO_FATAL_FAILURE(widget.OnStopMonitoringRequest());
