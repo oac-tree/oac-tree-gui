@@ -35,7 +35,7 @@ class ISessionModel;
 
 namespace sup::gui
 {
-class ProjectHandlerV2;
+class ProjectHandler;
 }
 
 namespace sequencergui
@@ -74,7 +74,7 @@ private:
   QAction* m_exit_action{nullptr};
   QMenu* m_recent_project_menu{nullptr};
 
-  std::unique_ptr<sup::gui::ProjectHandlerV2> m_project_handler;
+  std::unique_ptr<sup::gui::ProjectHandler> m_project_handler;
 };
 
 }  // namespace sequencergui

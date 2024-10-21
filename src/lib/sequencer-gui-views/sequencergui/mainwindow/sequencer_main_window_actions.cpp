@@ -31,7 +31,7 @@
 #include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/project/project_handler_utils.h>
-#include <sup/gui/project/project_handler_v2.h>
+#include <sup/gui/project/project_handler.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -52,7 +52,7 @@ namespace sequencergui
 SequencerMainWindowActions::SequencerMainWindowActions(mvvm::IProject *project,
                                                        QMainWindow *mainwindow)
     : QObject(mainwindow)
-    , m_project_handler(std::make_unique<sup::gui::ProjectHandlerV2>(project))
+    , m_project_handler(std::make_unique<sup::gui::ProjectHandler>(project))
     , m_focus_controller(sup::gui::CreateGlobalFocusController())
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
