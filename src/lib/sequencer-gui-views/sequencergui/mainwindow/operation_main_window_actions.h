@@ -36,8 +36,6 @@ class ISessionModel;
 namespace sequencergui
 {
 
-class ApplicationModels;
-
 /**
  * @brief The OperationMainWindowActions class  handles actions of the main menubar.
  */

@@ -24,7 +24,6 @@
 #include <sequencergui/automation/automation_client.h>
 #include <sequencergui/automation/automation_job_handler.h>
 #include <sequencergui/automation/remote_job_observer.h>
-#include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
@@ -83,11 +82,11 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
 
 AutomationMonitorView::~AutomationMonitorView() = default;
 
-void AutomationMonitorView::SetApplicationModels(ApplicationModels *models)
+void AutomationMonitorView::SetModels(SequencerModel *sequencer_model, JobModel *job_model)
 {
-  m_sequencer_model = models->GetSequencerModel();
-  m_job_model = models->GetJobModel();
-  m_job_list->SetJobModel(models->GetJobModel());
+  m_sequencer_model = sequencer_model;
+  m_job_model = job_model;
+  m_job_list->SetJobModel(job_model);
 }
 
 void AutomationMonitorView::OnRunRequest()

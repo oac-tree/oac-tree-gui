@@ -32,7 +32,6 @@ class AutomationClient;
 class AutomationMonitorToolBar;
 class JobListWidget;
 class OperationRealTimePanel;
-class ApplicationModels;
 class SequencerModel;
 class JobModel;
 class AutomationJobHandler;
@@ -50,7 +49,7 @@ public:
   explicit AutomationMonitorView(QWidget* parent = nullptr);
   ~AutomationMonitorView() override;
 
-  void SetApplicationModels(ApplicationModels* models);
+  void SetModels(SequencerModel* sequencer_model, JobModel* job_model);
 
 private:
   void OnRunRequest();

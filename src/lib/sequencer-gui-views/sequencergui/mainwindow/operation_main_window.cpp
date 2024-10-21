@@ -86,7 +86,7 @@ void OperationMainWindow::InitApplication()
           &OperationMainWindow::OnRestartRequest);
 
   m_operation_view = new OperationMonitorView(OperationPresentationMode::kOperationMode, this);
-  m_operation_view->SetApplicationModels(m_models.get());
+  m_operation_view->SetModels(m_models.get());
 
   setCentralWidget(m_operation_view);
 }

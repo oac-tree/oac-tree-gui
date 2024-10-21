@@ -49,7 +49,7 @@ public:
   explicit OperationJobPanel(QWidget* parent = nullptr);
   ~OperationJobPanel() override;
 
-  void SetApplicationModels(ApplicationModels* models);
+  void SetModels(ApplicationModels* models);
 
   JobItem* GetSelectedJob() const;
 

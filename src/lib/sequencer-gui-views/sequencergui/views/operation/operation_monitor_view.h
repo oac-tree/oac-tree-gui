@@ -51,7 +51,7 @@ public:
   explicit OperationMonitorView(OperationPresentationMode mode, QWidget* parent = nullptr);
   ~OperationMonitorView() override;
 
-  void SetApplicationModels(ApplicationModels* models);
+  void SetModels(ApplicationModels* models);
 
   bool OnImportJobRequest(const QString& file_name = {});
 

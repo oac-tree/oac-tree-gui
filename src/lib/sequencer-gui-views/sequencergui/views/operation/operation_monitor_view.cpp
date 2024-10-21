@@ -97,10 +97,10 @@ OperationMonitorView::~OperationMonitorView()
   WriteSettings();
 }
 
-void OperationMonitorView::SetApplicationModels(ApplicationModels *models)
+void OperationMonitorView::SetModels(ApplicationModels *models)
 {
   m_models = models;
-  m_job_panel->SetApplicationModels(models);
+  m_job_panel->SetModels(models);
   m_action_handler->SetJobModel(models->GetJobModel());
 }
 

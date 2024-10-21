@@ -59,7 +59,7 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
 
 OperationJobPanel::~OperationJobPanel() = default;
 
-void OperationJobPanel::SetApplicationModels(ApplicationModels *models)
+void OperationJobPanel::SetModels(ApplicationModels *models)
 {
   m_models = models;
   m_job_list_widget->SetJobModel(models->GetJobModel());

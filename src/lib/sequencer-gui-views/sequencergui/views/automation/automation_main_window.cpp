@@ -69,7 +69,7 @@ void AutomationMainWindow::InitApplication()
                                 sup::gui::constants::kHelpMenu});
 
   m_monitor_view = new AutomationMonitorView;
-  m_monitor_view->SetApplicationModels(m_models.get());
+  m_monitor_view->SetModels(m_models->GetSequencerModel(), m_models->GetJobModel());
 
   setCentralWidget(m_monitor_view);
 }
