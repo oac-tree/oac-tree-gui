@@ -47,6 +47,7 @@ namespace sequencergui
 OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
   PopulateModel();
+  m_models->CreateNewProject();
   InitApplication();
 
   connect(m_action_manager, &OperationMainWindowActions::ImportJobRequest, this,

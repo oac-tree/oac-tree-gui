@@ -57,7 +57,11 @@ using msec = std::chrono::milliseconds;
 class JobHandlerTest : public ::testing::Test
 {
 public:
-  JobHandlerTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
+  JobHandlerTest()
+  {
+    m_models.CreateNewProject();
+    m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
+  }
 
   /**
    * @brief Finds UniversalInstructionItem representing given domain type.

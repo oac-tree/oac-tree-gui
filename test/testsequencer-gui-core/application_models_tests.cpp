@@ -37,8 +37,15 @@ TEST_F(ApplicationModelsTest, InitialState)
 {
   ApplicationModels models;
 
+  EXPECT_EQ(models.GetSequencerModel(), nullptr);
+  EXPECT_EQ(models.GetJobModel(), nullptr);
+
+  models.CreateNewProject();
+
   EXPECT_NE(models.GetSequencerModel(), nullptr);
   EXPECT_NE(models.GetJobModel(), nullptr);
+
+
   std::vector<mvvm::ISessionModel*> expected({models.GetSequencerModel(), models.GetJobModel()});
   EXPECT_EQ(models.GetModels(), expected);
 }
@@ -46,6 +53,7 @@ TEST_F(ApplicationModelsTest, InitialState)
 TEST_F(ApplicationModelsTest, FindItems)
 {
   ApplicationModels models;
+  models.CreateNewProject();
 
   // default catalogue is capable of creating sequencer items
   auto procedure = models.GetSequencerModel()->InsertItem<ProcedureItem>();

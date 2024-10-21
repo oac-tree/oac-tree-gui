@@ -30,7 +30,6 @@ namespace sequencergui
 
 ApplicationModels::ApplicationModels()
 {
-  CreateNewProject();
 }
 
 

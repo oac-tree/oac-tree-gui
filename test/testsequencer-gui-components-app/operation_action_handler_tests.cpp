@@ -50,6 +50,7 @@ public:
   OperationActionHandlerTest()
       : m_job_manager({}), m_actions(&m_job_manager, [this] { return m_selected_item; })
   {
+    m_models.CreateNewProject();
     m_actions.SetJobModel(GetJobModel());
   }
 

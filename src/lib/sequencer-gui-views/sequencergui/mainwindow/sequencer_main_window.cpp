@@ -49,6 +49,7 @@ namespace sequencergui
 {
 SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
+  m_models->CreateNewProject();
   InitApplication();
 
   OnProjectLoad();

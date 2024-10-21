@@ -52,7 +52,11 @@ using msec = std::chrono::milliseconds;
 class JobManagerTest : public ::testing::Test
 {
 public:
-  JobManagerTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
+  JobManagerTest()
+  {
+    m_models.CreateNewProject();
+    m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
+  }
 
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
   JobModel* GetJobModel() { return m_models.GetJobModel(); }

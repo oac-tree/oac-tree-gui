@@ -59,7 +59,11 @@ using namespace sequencergui;
 class ResourceFolderTest : public ::testing::TestWithParam<std::string>
 {
 public:
-  ResourceFolderTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
+  ResourceFolderTest()
+  {
+    m_models.CreateNewProject();
+    m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
+  }
 
   /**
    * @brief Prevent any test from here running if not all plugins are loaded.

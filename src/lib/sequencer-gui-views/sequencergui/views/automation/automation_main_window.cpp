@@ -44,6 +44,7 @@ namespace sequencergui
 
 AutomationMainWindow::AutomationMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
+  m_models->CreateNewProject();
   InitApplication();
 }
 

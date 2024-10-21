@@ -57,6 +57,7 @@ class IntegrationScenarioTest : public testutils::FolderTest
 public:
   IntegrationScenarioTest() : FolderTest("test_IntegrationScenario")
   {
+    m_models.CreateNewProject();
     m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
   }
   JobModel* GetJobModel() { return m_models.GetJobModel(); }

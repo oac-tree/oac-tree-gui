@@ -66,6 +66,7 @@ TEST_F(JobItemTest, SetProcedure)
 TEST_F(JobItemTest, SetProcedureInterModelContext)
 {
   ApplicationModels models;
+  models.CreateNewProject();
 
   auto job_item = models.GetJobModel()->InsertItem<JobItem>();
   auto procedure_item = models.GetSequencerModel()->InsertItem<ProcedureItem>();
