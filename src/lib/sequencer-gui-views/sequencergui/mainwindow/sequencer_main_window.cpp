@@ -167,8 +167,6 @@ void SequencerMainWindow::OnProjectLoad()
   m_composer_view->SetModel(m_models->GetSequencerModel());
   m_operation_view->SetApplicationModels(m_models.get());
 
-  m_composer_view->OnProjectLoad();
-
   const auto enable_undo = GetGlobalSettings().Data<bool>(kUseUndoSetting);
   const auto undo_limit = GetGlobalSettings().Data<int>(kUndoLimitSetting);
   m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);

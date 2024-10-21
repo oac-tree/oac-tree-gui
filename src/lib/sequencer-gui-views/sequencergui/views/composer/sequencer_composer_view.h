@@ -52,14 +52,10 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  void OnProjectLoad();
-
 private:
   void ReadSettings();
   void WriteSettings();
   void SetupConnections();
-
-  ProcedureItem* GetFirstProcedure();
 
   ComposerPanel* m_composer_panel{nullptr};
   ComposerWidgetPanel* m_central_panel{nullptr};

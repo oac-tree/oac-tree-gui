@@ -26,9 +26,12 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
+
+#include <mvvm/standarditems/container_item.h>
 
 #include <QVBoxLayout>
 
@@ -79,6 +82,12 @@ ComposerPanel::~ComposerPanel() = default;
 void ComposerPanel::SetModel(SequencerModel *model)
 {
   m_procedure_list_view->SetModel(model);
+
+  auto procedure_container = model ? model->GetProcedureContainer() : nullptr;
+  if (procedure_container)
+  {
+    SetSelectedProcedure(procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::First()));
+  }
 }
 
 ProcedureItem *ComposerPanel::GetSelectedProcedure()
@@ -88,7 +97,7 @@ ProcedureItem *ComposerPanel::GetSelectedProcedure()
 
 void ComposerPanel::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  return m_procedure_list_view->SetSelectedProcedure(procedure);
+  m_procedure_list_view->SetSelectedProcedure(procedure);
 }
 
 }  // namespace sequencergui

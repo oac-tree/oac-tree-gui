@@ -88,11 +88,6 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_plugin_controller = std::make_unique<ProcedurePluginController>(model);
 }
 
-void SequencerComposerView::OnProjectLoad()
-{
-  m_composer_panel->SetSelectedProcedure(GetFirstProcedure());
-}
-
 void SequencerComposerView::ReadSettings()
 {
   const QSettings settings;
@@ -146,13 +141,6 @@ void SequencerComposerView::SetupConnections()
   };
   connect(m_central_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
   connect(m_right_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
-}
-
-//! Returns first procedure from the procedure container, if exist.
-ProcedureItem *SequencerComposerView::GetFirstProcedure()
-{
-  auto procedure_container = m_model->GetProcedureContainer();
-  return procedure_container->IsEmpty() ? nullptr : procedure_container->GetItem<ProcedureItem>("");
 }
 
 }  // namespace sequencergui
