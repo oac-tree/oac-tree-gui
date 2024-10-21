@@ -42,7 +42,7 @@ Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
 class ProcedureListWidgetTest : public testutils::FolderTest
 {
 public:
-  ProcedureListWidgetTest() : testutils::FolderTest("test_ProcedureListWidgetTest")
+  ProcedureListWidgetTest() : testutils::FolderTest("ProcedureListWidgetTest")
   {
     qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
   }

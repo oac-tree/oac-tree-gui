@@ -38,7 +38,7 @@
 class XmlUtilsTest : public testutils::FolderTest
 {
 public:
-  XmlUtilsTest() : FolderTest("test_ImportUtilsTest") {}
+  XmlUtilsTest() : FolderTest("XmlUtilsTest") {}
 };
 
 //! Importing xml Procedure containing a single instruction.

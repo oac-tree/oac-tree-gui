@@ -31,15 +31,14 @@ namespace sequencergui
 namespace
 {
 
-const std::string kApplicationType = "Sequencer GUI";
-
 /**
  * @brief Creates context to pass to AbstractProject.
  */
 mvvm::ProjectContext CreateContext(ApplicationModels::callback_t modified_callback,
                                    ApplicationModels::callback_t loaded_callback)
 {
-  return {std::move(modified_callback), std::move(loaded_callback), kApplicationType};
+  return {std::move(modified_callback), std::move(loaded_callback),
+          ApplicationModels::kApplicationType};
 }
 
 }  // namespace

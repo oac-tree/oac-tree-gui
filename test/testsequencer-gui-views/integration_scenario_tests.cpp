@@ -55,7 +55,7 @@ using namespace sequencergui;
 class IntegrationScenarioTest : public testutils::FolderTest
 {
 public:
-  IntegrationScenarioTest() : FolderTest("test_IntegrationScenario")
+  IntegrationScenarioTest() : FolderTest("IntegrationScenarioTest")
   {
     m_models.CreateNewProject();
     m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();

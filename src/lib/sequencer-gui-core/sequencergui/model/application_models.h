@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_MODEL_APPLICATION_MODELS_H_
 
 #include <memory>
-#include <vector>
 #include <mvvm/project/app_project.h>
 
 namespace mvvm
@@ -36,6 +35,7 @@ namespace sequencergui
 class SequencerModel;
 class JobModel;
 
+
 /**
  * @brief The ApplicationModels class stores all application models.
  *
@@ -44,6 +44,8 @@ class JobModel;
 class ApplicationModels : public mvvm::AppProject
 {
 public:
+  static inline const std::string kApplicationType = "Sequencer GUI";
+
   ApplicationModels();
   ApplicationModels(callback_t modified_callback, callback_t loaded_callback);
   ~ApplicationModels() override;

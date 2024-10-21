@@ -32,7 +32,7 @@ using namespace sequencergui;
 class MainWindowHelperTest : public testutils::FolderTest
 {
 public:
-  MainWindowHelperTest() : FolderTest("test_MainWindowHelperTest") {}
+  MainWindowHelperTest() : FolderTest("MainWindowHelperTest") {}
 };
 
 TEST_F(MainWindowHelperTest, GetProcedureFiles)

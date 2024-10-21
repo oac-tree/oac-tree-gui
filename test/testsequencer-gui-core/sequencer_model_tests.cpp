@@ -39,7 +39,7 @@ using namespace sequencergui;
 class SequencerModelTest : public testutils::FolderTest
 {
 public:
-  SequencerModelTest() : FolderTest("test_SequencerModel") {}
+  SequencerModelTest() : FolderTest("SequencerModelTest") {}
 };
 
 TEST_F(SequencerModelTest, InitialState)

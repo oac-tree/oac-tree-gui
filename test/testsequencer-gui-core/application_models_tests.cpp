@@ -22,17 +22,32 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <mvvm/utils/file_utils.h>
 
 #include <mvvm/model/item_pool.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <testutils/folder_test.h>
 
 using namespace sequencergui;
 
-//! Tests of ApplicationModels class.
-
-class ApplicationModelsTest : public ::testing::Test
+/**
+ * @brief Tests of ApplicationModels class.
+ */
+class ApplicationModelsTest : public testutils::FolderTest
 {
+public:
+  ApplicationModelsTest() : FolderTest("ApplicationModelsTest") {}
+
+  std::unique_ptr<ApplicationModels> CreateProject()
+  {
+    return std::make_unique<ApplicationModels>(m_modified_callback.AsStdFunction(),
+                                               m_loaded_callback.AsStdFunction());
+  }
+
+  ::testing::MockFunction<void(void)> m_modified_callback;
+  ::testing::MockFunction<void(void)> m_loaded_callback;
 };
 
 TEST_F(ApplicationModelsTest, InitialState)
@@ -41,6 +56,9 @@ TEST_F(ApplicationModelsTest, InitialState)
 
   EXPECT_EQ(models.GetSequencerModel(), nullptr);
   EXPECT_EQ(models.GetJobModel(), nullptr);
+  EXPECT_TRUE(models.GetProjectPath().empty());
+  EXPECT_EQ(models.GetProjectType(), mvvm::ProjectType::kFileBased);
+  EXPECT_EQ(models.GetApplicationType(), ApplicationModels::kApplicationType);
 
   models.CreateNewProject();
 
@@ -65,6 +83,7 @@ TEST_F(ApplicationModelsTest, FindItems)
   EXPECT_EQ(models.GetJobModel()->FindItem(procedure->GetIdentifier()), procedure);
 }
 
+//! Test focuses on item pool recreation after creation of the new project.
 TEST_F(ApplicationModelsTest, RecreateModels)
 {
   ApplicationModels models;
@@ -87,4 +106,41 @@ TEST_F(ApplicationModelsTest, RecreateModels)
   models.CreateNewProject();
   // two root items from two models, and one procedure container
   EXPECT_EQ(models.GetItemPool()->GetSize(), 3);
+}
+
+TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
+{
+  const auto expected_path = GetFilePath("untitled.xml");
+
+  auto project = CreateProject();
+
+  // setting up expectations before project creation
+  EXPECT_CALL(m_loaded_callback, Call()).Times(1);
+
+  EXPECT_TRUE(project->CreateNewProject());
+
+  EXPECT_TRUE(project->GetProjectPath().empty());
+  EXPECT_NE(project->GetSequencerModel(), nullptr);
+  EXPECT_NE(project->GetJobModel(), nullptr);
+  EXPECT_FALSE(project->IsModified());
+
+  // setting up expectation before project modification
+  EXPECT_CALL(m_modified_callback, Call()).Times(1);
+
+  // modifying a project
+  project->GetSequencerModel()->InsertItem<mvvm::SessionItem>();
+  EXPECT_TRUE(project->IsModified());
+
+  EXPECT_TRUE(project->Save(expected_path));
+
+  EXPECT_EQ(project->GetProjectPath(), expected_path);
+  EXPECT_FALSE(project->IsModified());
+
+  // closing project
+  EXPECT_TRUE(project->CloseProject());
+  EXPECT_EQ(project->GetSequencerModel(), nullptr);
+  EXPECT_EQ(project->GetJobModel(), nullptr);
+  EXPECT_FALSE(project->IsModified());
+
+  EXPECT_TRUE(mvvm::utils::IsExists(expected_path));
 }
