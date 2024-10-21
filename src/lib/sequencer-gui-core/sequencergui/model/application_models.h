@@ -46,6 +46,8 @@ public:
   ApplicationModels();
   ~ApplicationModels();
 
+  bool CreateNewProject();
+
   SequencerModel* GetSequencerModel();
 
   JobModel* GetJobModel();
