@@ -28,11 +28,6 @@ class QMainWindow;
 class QAction;
 class QMenuBar;
 
-namespace mvvm
-{
-class ISessionModel;
-}
-
 namespace sequencergui
 {
 
@@ -44,7 +39,7 @@ class OperationMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit OperationMainWindowActions(mvvm::ISessionModel* model, QMainWindow* mainwindow);
+  explicit OperationMainWindowActions(QMainWindow* mainwindow);
   ~OperationMainWindowActions() override;
 
 signals:

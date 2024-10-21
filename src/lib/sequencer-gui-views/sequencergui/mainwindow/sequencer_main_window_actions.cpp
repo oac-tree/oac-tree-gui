@@ -25,13 +25,13 @@
 
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
-#include <sup/gui/project/project_handler.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/project/project_handler_utils.h>
+#include <sup/gui/project/project_handler_v2.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -49,11 +49,10 @@ const QString kApplicationType = "Sequencer GUI";
 namespace sequencergui
 {
 
-SequencerMainWindowActions::SequencerMainWindowActions(
-    const std::vector<mvvm::ISessionModel *> &models, QMainWindow *mainwindow)
+SequencerMainWindowActions::SequencerMainWindowActions(mvvm::IProject *project,
+                                                       QMainWindow *mainwindow)
     : QObject(mainwindow)
-    , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
-                                                     kApplicationType, models, mainwindow))
+    , m_project_handler(std::make_unique<sup::gui::ProjectHandlerV2>(project))
     , m_focus_controller(sup::gui::CreateGlobalFocusController())
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
@@ -63,9 +62,6 @@ SequencerMainWindowActions::SequencerMainWindowActions(
 
   CreateActions(mainwindow);
   SetupMenus();
-
-  connect(m_project_handler, &sup::gui::ProjectHandler::ProjectLoaded, this,
-          &SequencerMainWindowActions::ProjectLoaded);
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
@@ -73,6 +69,11 @@ SequencerMainWindowActions::~SequencerMainWindowActions() = default;
 bool SequencerMainWindowActions::CloseCurrentProject() const
 {
   return m_project_handler->CloseCurrentProject();
+}
+
+void SequencerMainWindowActions::OnProjectModified()
+{
+  m_project_handler->UpdateNames();
 }
 
 void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)

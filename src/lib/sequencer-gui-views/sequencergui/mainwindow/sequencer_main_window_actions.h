@@ -32,12 +32,12 @@ class QMenu;
 
 namespace mvvm
 {
-class ISessionModel;
+class IProject;
 }
 
 namespace sup::gui
 {
-class ProjectHandler;
+class ProjectHandlerV2;
 class AppContextFocusController;
 }  // namespace sup::gui
 
@@ -52,7 +52,7 @@ class SequencerMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerMainWindowActions(const std::vector<mvvm::ISessionModel*>& models,
+  explicit SequencerMainWindowActions(mvvm::IProject* project,
                                       QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 
@@ -69,6 +69,8 @@ public:
   bool CloseCurrentProject() const;
 
   void UpdateFocusWidget(QWidget* old, QWidget* now);
+
+  void OnProjectModified();
 
 signals:
   void RestartApplicationRequest(sup::gui::AppExitCode);
@@ -104,9 +106,7 @@ private:
 
   QMenu* m_recent_project_menu{nullptr};
 
-  sup::gui::ProjectHandler* m_project_handler{nullptr};
-  bool m_reset_settings_request{false};
-
+  std::unique_ptr<sup::gui::ProjectHandlerV2> m_project_handler;
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };
 

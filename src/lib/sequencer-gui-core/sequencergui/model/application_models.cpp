@@ -44,7 +44,10 @@ mvvm::ProjectContext CreateContext(ApplicationModels::callback_t modified_callba
 
 }  // namespace
 
-ApplicationModels::ApplicationModels() : AppProject(CreateContext({}, {}))
+ApplicationModels::ApplicationModels() : ApplicationModels({}, {}) {}
+
+ApplicationModels::ApplicationModels(callback_t modified_callback, callback_t loaded_callback)
+    : AppProject(CreateContext(modified_callback, loaded_callback))
 {
   auto sequenser_model_factory_func = [this]()
   {

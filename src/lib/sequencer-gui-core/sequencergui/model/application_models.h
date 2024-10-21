@@ -45,6 +45,7 @@ class ApplicationModels : public mvvm::AppProject
 {
 public:
   ApplicationModels();
+  ApplicationModels(callback_t modified_callback, callback_t loaded_callback);
   ~ApplicationModels() override;
 
   SequencerModel* GetSequencerModel();

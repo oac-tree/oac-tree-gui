@@ -47,12 +47,11 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 namespace sequencergui
 {
-SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<ApplicationModels>())
+SequencerMainWindow::SequencerMainWindow() : m_models(CreateProject())
 {
-  m_models->CreateNewProject();
   InitApplication();
 
-  OnProjectLoad();
+  m_models->CreateNewProject();
 }
 
 bool SequencerMainWindow::ImportProcedure(const QString& file_name)
@@ -81,7 +80,7 @@ void SequencerMainWindow::InitApplication()
 
 void SequencerMainWindow::InitComponents()
 {
-  m_action_manager = new SequencerMainWindowActions(m_models->GetModels(), this);
+  m_action_manager = new SequencerMainWindowActions(m_models.get(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
@@ -171,6 +170,18 @@ void SequencerMainWindow::OnProjectLoad()
   const auto enable_undo = GetGlobalSettings().Data<bool>(kUseUndoSetting);
   const auto undo_limit = GetGlobalSettings().Data<int>(kUndoLimitSetting);
   m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
+}
+
+void SequencerMainWindow::OnProjectModified()
+{
+  m_action_manager->OnProjectModified();
+}
+
+std::unique_ptr<ApplicationModels> SequencerMainWindow::CreateProject()
+{
+  auto modified_callback = [this]() { OnProjectModified(); };
+  auto loaded_callback = [this]() { OnProjectLoad(); };
+  return std::make_unique<ApplicationModels>(modified_callback, loaded_callback);
 }
 
 }  // namespace sequencergui

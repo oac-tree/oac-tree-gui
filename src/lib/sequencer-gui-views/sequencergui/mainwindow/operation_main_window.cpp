@@ -82,7 +82,7 @@ void OperationMainWindow::InitApplication()
                                {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
                                 sup::gui::constants::kHelpMenu});
 
-  m_action_manager = new OperationMainWindowActions(m_models->GetSequencerModel(), this);
+  m_action_manager = new OperationMainWindowActions(this);
   connect(m_action_manager, &OperationMainWindowActions::RestartApplicationRequest, this,
           &OperationMainWindow::OnRestartRequest);
 

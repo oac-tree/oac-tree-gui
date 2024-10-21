@@ -84,6 +84,16 @@ private:
    */
   void OnProjectLoad();
 
+  /**
+   * @brief Perform widgets setup on project modification.
+   */
+  void OnProjectModified();
+
+  /**
+   * @brief Creates main application project agent.
+   */
+  std::unique_ptr<ApplicationModels> CreateProject();
+
   std::unique_ptr<ApplicationModels> m_models;
 
   SequencerMainWindowActions* m_action_manager{nullptr};
