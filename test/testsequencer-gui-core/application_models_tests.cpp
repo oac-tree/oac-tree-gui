@@ -23,6 +23,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 
+#include <mvvm/model/item_pool.h>
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -45,8 +47,8 @@ TEST_F(ApplicationModelsTest, InitialState)
   EXPECT_NE(models.GetSequencerModel(), nullptr);
   EXPECT_NE(models.GetJobModel(), nullptr);
 
-
-  std::vector<mvvm::ISessionModel*> expected({models.GetSequencerModel(), models.GetJobModel()});
+  const std::vector<mvvm::ISessionModel*> expected(
+      {models.GetSequencerModel(), models.GetJobModel()});
   EXPECT_EQ(models.GetModels(), expected);
 }
 
@@ -61,4 +63,28 @@ TEST_F(ApplicationModelsTest, FindItems)
 
   // second model can find alien item
   EXPECT_EQ(models.GetJobModel()->FindItem(procedure->GetIdentifier()), procedure);
+}
+
+TEST_F(ApplicationModelsTest, RecreateModels)
+{
+  ApplicationModels models;
+  models.CreateNewProject();
+
+  // default catalogue is capable of creating sequencer items
+  auto procedure = models.GetSequencerModel()->InsertItem<ProcedureItem>();
+  EXPECT_EQ(procedure->GetType(), ProcedureItem::Type);
+
+  // second model can find alien item
+  EXPECT_EQ(models.GetJobModel()->FindItem(procedure->GetIdentifier()), procedure);
+
+  // on project close models should be removed, item pool cleared
+  models.CloseProject();
+  EXPECT_EQ(models.GetItemPool()->GetSize(), 0);
+  EXPECT_EQ(models.GetSequencerModel(), nullptr);
+  EXPECT_EQ(models.GetJobModel(), nullptr);
+
+  // on new project creation item pool should receive new items
+  models.CreateNewProject();
+  // two root items from two models, and one procedure container
+  EXPECT_EQ(models.GetItemPool()->GetSize(), 3);
 }

@@ -28,34 +28,54 @@
 namespace sequencergui
 {
 
-ApplicationModels::ApplicationModels()
+namespace
 {
+
+const std::string kApplicationType = "Sequencer GUI";
+
+/**
+ * @brief Creates context to pass to AbstractProject.
+ */
+mvvm::ProjectContext CreateContext(ApplicationModels::callback_t modified_callback,
+                                   ApplicationModels::callback_t loaded_callback)
+{
+  return {std::move(modified_callback), std::move(loaded_callback), kApplicationType};
 }
 
+}  // namespace
+
+ApplicationModels::ApplicationModels() : AppProject(CreateContext({}, {}))
+{
+  auto sequenser_model_factory_func = [this]()
+  {
+    // Recreating item pool which will be used for both models. Here we rely on the fact, that
+    // this lambda will be called first.
+    m_item_pool = std::make_shared<mvvm::ItemPool>();
+    return std::make_unique<SequencerProjectModel>(m_item_pool);
+  };
+  m_sequencer_model_index = RegisterModel(sequenser_model_factory_func);
+
+  auto job_model_factory_func = [this]() { return std::make_unique<JobModel>(m_item_pool); };
+  m_job_model_index = RegisterModel(job_model_factory_func);
+}
 
 ApplicationModels::~ApplicationModels() = default;
 
-bool ApplicationModels::CreateNewProject()
-{
-  m_item_pool = std::make_shared<mvvm::ItemPool>();
-  m_sequencer_model = std::make_unique<SequencerProjectModel>(m_item_pool);
-  m_job_model = std::make_unique<JobModel>(m_item_pool);
-  return true;
-}
-
 SequencerModel *ApplicationModels::GetSequencerModel()
 {
-  return m_sequencer_model.get();
+  return GetModelCount() > m_sequencer_model_index
+             ? GetModel<SequencerModel>(m_sequencer_model_index)
+             : nullptr;
 }
 
 JobModel *ApplicationModels::GetJobModel()
 {
-  return m_job_model.get();
+  return GetModelCount() > m_job_model_index ? GetModel<JobModel>(m_job_model_index) : nullptr;
 }
 
-std::vector<mvvm::ISessionModel *> ApplicationModels::GetModels() const
+std::shared_ptr<mvvm::ItemPool> ApplicationModels::GetItemPool()
 {
-  return {m_sequencer_model.get(), m_job_model.get()};
+  return m_item_pool;
 }
 
 }  // namespace sequencergui

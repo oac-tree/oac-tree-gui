@@ -22,6 +22,7 @@
 
 #include <memory>
 #include <vector>
+#include <mvvm/project/app_project.h>
 
 namespace mvvm
 {
@@ -40,24 +41,21 @@ class JobModel;
  *
  * All models are using the same memory pool to allow cross-model item search.
  */
-class ApplicationModels
+class ApplicationModels : public mvvm::AppProject
 {
 public:
   ApplicationModels();
-  ~ApplicationModels();
-
-  bool CreateNewProject();
+  ~ApplicationModels() override;
 
   SequencerModel* GetSequencerModel();
 
   JobModel* GetJobModel();
 
-  std::vector<mvvm::ISessionModel*> GetModels() const;
-
+  std::shared_ptr<mvvm::ItemPool> GetItemPool();
 private:
+  size_t m_sequencer_model_index{0};
+  size_t m_job_model_index{0};
   std::shared_ptr<mvvm::ItemPool> m_item_pool;
-  std::unique_ptr<SequencerModel> m_sequencer_model;
-  std::unique_ptr<JobModel> m_job_model;
 };
 
 }  // namespace sequencergui
