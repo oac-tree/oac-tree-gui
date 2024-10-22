@@ -53,7 +53,9 @@ ApplicationModels::ApplicationModels(callback_t modified_callback, callback_t lo
     // Recreating item pool which will be used for both models. Here we rely on the fact, that
     // this lambda will be called first.
     m_item_pool = std::make_shared<mvvm::ItemPool>();
-    return std::make_unique<SequencerProjectModel>(m_item_pool);
+    auto result = std::make_unique<SequencerProjectModel>(m_item_pool);
+    result->CreateUntitledProcedure();
+    return result;
   };
   m_sequencer_model_index = RegisterModel(sequenser_model_factory_func);
 

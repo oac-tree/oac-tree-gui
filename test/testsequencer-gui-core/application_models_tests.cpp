@@ -22,9 +22,9 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <mvvm/utils/file_utils.h>
 
 #include <mvvm/model/item_pool.h>
+#include <mvvm/utils/file_utils.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -89,11 +89,12 @@ TEST_F(ApplicationModelsTest, RecreateModels)
   ApplicationModels models;
   models.CreateNewProject();
 
-  // default catalogue is capable of creating sequencer items
-  auto procedure = models.GetSequencerModel()->InsertItem<ProcedureItem>();
-  EXPECT_EQ(procedure->GetType(), ProcedureItem::Type);
+  // by default we have already untitled procedure created
+  ASSERT_FALSE(models.GetSequencerModel()->GetProcedures().empty());
+  EXPECT_FALSE(models.IsModified());
 
-  // second model can find alien item
+  // second model can find item belonging to another model
+  auto procedure = models.GetSequencerModel()->GetProcedures().at(0);
   EXPECT_EQ(models.GetJobModel()->FindItem(procedure->GetIdentifier()), procedure);
 
   // on project close models should be removed, item pool cleared
@@ -104,8 +105,9 @@ TEST_F(ApplicationModelsTest, RecreateModels)
 
   // on new project creation item pool should receive new items
   models.CreateNewProject();
-  // two root items from two models, and one procedure container
-  EXPECT_EQ(models.GetItemPool()->GetSize(), 3);
+  // two root items from two models, and one procedure container, and one untitled procedure with
+  // all its properties
+  EXPECT_TRUE(models.GetItemPool()->GetSize() > 3);
 }
 
 TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
