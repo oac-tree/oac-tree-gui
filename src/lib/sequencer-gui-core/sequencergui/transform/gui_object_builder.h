@@ -23,6 +23,7 @@
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sup/sequencer/instruction_map.h>  // REFACTORING
 
 #include <map>
 #include <memory>
@@ -31,6 +32,11 @@
 namespace mvvm
 {
 class SessionItem;
+}
+
+namespace sup::sequencer
+{
+class InstructionMap;
 }
 
 namespace sequencergui
@@ -51,6 +57,7 @@ class VariableItem;
 class GUIObjectBuilder
 {
 public:
+  ~GUIObjectBuilder();
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
   void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
@@ -68,6 +75,8 @@ public:
 
   const instruction_t* FindInstruction(const InstructionItem* instruction_item) const;
 
+  size_t FindInstructionItemIndex(const InstructionItem* instruction_item) const;
+
 private:
   mvvm::SessionItem* ProcessInstruction(const instruction_t* instruction,
                                         mvvm::SessionItem* parent);
@@ -80,6 +89,9 @@ private:
 
   std::map<const variable_t*, VariableItem*> m_domain_variable_to_item;
   std::map<std::string, VariableItem*> m_variablename_to_item;
+
+  std::unique_ptr<sup::sequencer::InstructionMap> m_instruction_map; // REFACTORING
+
 };
 
 }  // namespace sequencergui

@@ -19,6 +19,7 @@
 
 #include "gui_object_builder.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -57,9 +58,15 @@ std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t &pro
 namespace sequencergui
 {
 
+GUIObjectBuilder::~GUIObjectBuilder() = default;
+
 std::unique_ptr<ProcedureItem> GUIObjectBuilder::CreateProcedureItem(const procedure_t *procedure,
                                                                      bool root_only)
 {
+  // REFACTORING
+  m_instruction_map =
+      std::make_unique<sup::sequencer::InstructionMap>(procedure->RootInstruction());
+
   auto result = std::make_unique<ProcedureItem>();
   PopulateProcedureItem(procedure, result.get(), root_only);
   return result;
@@ -131,6 +138,17 @@ const instruction_t *GUIObjectBuilder::FindInstruction(
   auto predicate = [instruction_item](auto it) { return it.second == instruction_item; };
   auto it = std::find_if(m_to_instruction_item.begin(), m_to_instruction_item.end(), predicate);
   return it == m_to_instruction_item.end() ? nullptr : it->first;
+}
+
+size_t GUIObjectBuilder::FindInstructionItemIndex(const InstructionItem *instruction_item) const
+{
+  // REFACTORING
+  if (auto domain_instruction = FindInstruction(instruction_item); domain_instruction)
+  {
+    return m_instruction_map->FindInstructionIndex(domain_instruction);
+  }
+
+  throw RuntimeException("Can't find instruction index");
 }
 
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
