@@ -137,6 +137,12 @@ TEST_F(JobHandlerTest, PrepareJobRequestBreakpoints)
       job_handler.GetExpandedProcedure()->GetInstructionContainer()->GetInstructions().at(0);
   EXPECT_NE(wait_item, new_wait_item);
   EXPECT_EQ(GetBreakpointStatus(*new_wait_item), BreakpointStatus::kSet);
+
+  // toggling breakpoint
+  job_handler.OnToggleBreakpointRequest(new_wait_item);
+  EXPECT_EQ(GetBreakpointStatus(*new_wait_item), BreakpointStatus::kDisabled);
+  job_handler.OnToggleBreakpointRequest(new_wait_item);
+  EXPECT_EQ(GetBreakpointStatus(*new_wait_item), BreakpointStatus::kNotSet);
 }
 
 //! Attempt to use JobHandler with invalid procedure.

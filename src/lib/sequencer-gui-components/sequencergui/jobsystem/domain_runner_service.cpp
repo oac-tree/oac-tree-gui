@@ -86,6 +86,16 @@ void DomainRunnerService::Reset()
   m_domain_runner->Reset();
 }
 
+void DomainRunnerService::SetBreakpoint(size_t instr_idx)
+{
+  m_domain_runner->SetBreakpoint(instr_idx);
+}
+
+void DomainRunnerService::RemoveBreakpoint(size_t instr_idx)
+{
+  m_domain_runner->RemoveBreakpoint(instr_idx);
+}
+
 sup::sequencer::AsyncRunner* DomainRunnerService::GetAsyncRunner()
 {
   return m_domain_runner->GetAsyncRunner();

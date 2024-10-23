@@ -24,6 +24,7 @@
 #include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/jobsystem/runner_status.h>
 #include <sequencergui/jobsystem/user_context.h>
+#include <sequencergui/operation/breakpoint_types.h>
 
 #include <QObject>
 #include <memory>
@@ -185,6 +186,8 @@ private:
    * @param sleep_time_msec Sleep time at the end of each tick.
    */
   void SetupDomainRunner(const UserContext& user_context, int sleep_time_msec);
+
+  void SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_status);
 
   /**
    * @brief Returns a context necessary for sequencer event queue to function.

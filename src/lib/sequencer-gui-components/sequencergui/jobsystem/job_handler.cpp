@@ -35,6 +35,8 @@
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/iterate_helper.h>
 
 #include <mvvm/signals/item_listener.h>
 
@@ -128,6 +130,7 @@ JobLog *JobHandler::GetJobLog() const
   return m_job_log;
 }
 
+// FIXME implement unit test
 void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
 {
   if (IsRunning())
@@ -135,8 +138,10 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
     return;
   }
   ToggleBreakpointStatus(*instruction);
-  m_breakpoint_controller->UpdateDomainBreakpoint(*instruction,
-                                                  *m_domain_runner_service->GetAsyncRunner());
+
+  // update domain breakpoint
+  size_t instruction_index = m_guiobject_builder->FindInstructionItemIndex(instruction);
+  SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
 
 void JobHandler::OnInstructionStatusChanged(const InstructionStatusChangedEvent &event)
@@ -225,8 +230,16 @@ void JobHandler::SetupExpandedProcedureItem()
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 
-  m_breakpoint_controller->PropagateBreakpointsToDomain(*expanded_procedure_ptr,
-                                                        *m_domain_runner_service->GetAsyncRunner());
+  // propagate all breakpoints to the domain
+  // FIXME extract to function
+  auto func = [this](const InstructionItem *item)
+  {
+    auto index = m_guiobject_builder->FindInstructionItemIndex(item);
+    SetDomainBreakpoint(index, GetBreakpointStatus(*item));
+  };
+  IterateInstructionContainer<const InstructionItem *>(
+      expanded_procedure_ptr->GetInstructionContainer()->GetInstructions(), func);
+
 
   m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
       expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());
@@ -238,6 +251,20 @@ void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_ti
   m_domain_runner_service =
       std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
+}
+
+void JobHandler::SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_status)
+{
+  if (breakpoint_status == BreakpointStatus::kSet)
+  {
+    m_domain_runner_service->SetBreakpoint(index);
+  }
+  else
+  {
+    // We do not use "disabled" breakpoints in the domain, InstructionItem's breakpoint marked as
+    // disabled, will remove breakpoint from the domain
+    m_domain_runner_service->RemoveBreakpoint(index);
+  }
 }
 
 DomainEventDispatcherContext JobHandler::CreateContext()

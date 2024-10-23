@@ -63,10 +63,6 @@ GUIObjectBuilder::~GUIObjectBuilder() = default;
 std::unique_ptr<ProcedureItem> GUIObjectBuilder::CreateProcedureItem(const procedure_t *procedure,
                                                                      bool root_only)
 {
-  // REFACTORING
-  m_instruction_map =
-      std::make_unique<sup::sequencer::InstructionMap>(procedure->RootInstruction());
-
   auto result = std::make_unique<ProcedureItem>();
   PopulateProcedureItem(procedure, result.get(), root_only);
   return result;
@@ -83,6 +79,10 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
   m_to_instruction_item.clear();
   m_domain_variable_to_item.clear();
   m_variablename_to_item.clear();
+
+  // REFACTORING
+  m_instruction_map =
+      std::make_unique<sup::sequencer::InstructionMap>(procedure->RootInstruction());
 
   auto instruction_container = procedure_item->GetInstructionContainer();
   PopulateInstructionContainerItem(procedure, instruction_container, root_only);

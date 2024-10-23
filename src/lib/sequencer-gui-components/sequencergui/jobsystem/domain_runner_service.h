@@ -67,6 +67,16 @@ public:
   void Reset();
 
   /**
+   * @brief Sets the breakpoint on the instruction with given index.
+   */
+  void SetBreakpoint(size_t instr_idx);
+
+  /**
+   * @brief Removes the breakpoint from the instruction with given index.
+   */
+  void RemoveBreakpoint(size_t instr_idx);
+
+  /**
    * @brief Returns underlying domain async runner.
    */
   sup::sequencer::AsyncRunner* GetAsyncRunner();
