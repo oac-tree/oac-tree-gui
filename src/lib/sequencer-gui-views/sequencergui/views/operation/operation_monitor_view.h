@@ -76,6 +76,8 @@ private:
   void SetupWidgetActions();
   void OnJobSelected(sequencergui::JobItem* item);
 
+  OperationPresentationMode m_presentation_mode;
+
   QWidget* CreateLeftPanel();
   QWidget* CreateCentralPanel();
 
@@ -96,7 +98,6 @@ private:
   bool m_left_panel_is_visible{true};
   bool m_right_panel_is_visible{true};
 
-  OperationPresentationMode m_presentation_mode;
 };
 
 }  // namespace sequencergui

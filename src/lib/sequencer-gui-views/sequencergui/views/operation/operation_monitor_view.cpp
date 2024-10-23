@@ -62,6 +62,7 @@ namespace sequencergui
 
 OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidget *parent)
     : QWidget(parent)
+    , m_presentation_mode(mode)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
     , m_left_panel(CreateLeftPanel())
@@ -70,7 +71,6 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
     , m_action_handler(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
-    , m_presentation_mode(mode)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
