@@ -122,11 +122,23 @@ public:
    */
   sup::sequencer::AsyncRunner* GetAsyncRunner();
 
+  /**
+   * @brief Sets the breakpoint on the instruction with given index.
+   */
+  void SetBreakpoint(size_t instr_idx);
+
+  /**
+   * @brief Removes the breakpoint from the instruction with given index.
+   */
+  void RemoveBreakpoint(size_t instr_idx);
+
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
   std::unique_ptr<sup::sequencer::AsyncRunner> m_async_runner;
   RunnerState m_runner_state{kReady};
+
+  std::vector<const sup::sequencer::Instruction*> m_index_to_instruction; // REFACTORING
 };
 
 }  // namespace sequencergui

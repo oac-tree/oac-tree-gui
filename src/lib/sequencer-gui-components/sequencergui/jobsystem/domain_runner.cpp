@@ -26,6 +26,7 @@
 #include <sequencergui/core/exceptions.h>
 
 #include <sup/sequencer/async_runner.h>
+#include <sup/sequencer/instruction_map.h>  // REFACTORING
 
 #include <set>
 
@@ -37,9 +38,12 @@ DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback,
     : m_job_observer(std::make_unique<DomainJobObserver>(post_event_callback))
     , m_procedure_observer(
           std::make_unique<DomainProcedureObserver>(post_event_callback, user_context))
-    , m_async_runner(std::make_unique<sup::sequencer::AsyncRunner>(
-          procedure, *m_procedure_observer, *m_job_observer))
+    , m_async_runner(std::make_unique<sup::sequencer::AsyncRunner>(procedure, *m_procedure_observer,
+                                                                   *m_job_observer))
 {
+  // REFACTORING, procedure should be after Setup already
+  sup::sequencer::InstructionMap instruction_map(procedure.RootInstruction());
+  m_index_to_instruction = sup::sequencer::GetReverseMap(instruction_map.GetInstructionIndexMap());
 }
 
 sup::sequencer::JobState DomainRunner::GetJobState() const
@@ -121,6 +125,16 @@ void DomainRunner::Reset()
 sup::sequencer::AsyncRunner* DomainRunner::GetAsyncRunner()
 {
   return m_async_runner.get();
+}
+
+void DomainRunner::SetBreakpoint(size_t instr_idx)
+{
+  m_async_runner->SetBreakpoint(m_index_to_instruction[instr_idx]);
+}
+
+void DomainRunner::RemoveBreakpoint(size_t instr_idx)
+{
+  m_async_runner->RemoveBreakpoint(m_index_to_instruction[instr_idx]);
 }
 
 }  // namespace sequencergui
