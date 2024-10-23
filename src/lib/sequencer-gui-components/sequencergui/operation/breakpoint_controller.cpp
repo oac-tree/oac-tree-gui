@@ -34,8 +34,8 @@
 namespace sequencergui
 {
 
-BreakpointController::BreakpointController(get_instruction_t callback, QObject *parent)
-    : QObject(parent), m_get_domain_instruction(std::move(callback))
+BreakpointController::BreakpointController(get_instruction_t callback)
+    : m_get_domain_instruction(std::move(callback))
 {
 }
 

@@ -23,7 +23,6 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/operation/breakpoint_types.h>
 
-#include <QObject>
 #include <functional>
 
 namespace sequencergui
@@ -36,14 +35,12 @@ class InstructionItem;
  * @brief The BreakpointController class stores information about breakpoints, and controls its
  * propagation to the domain runner.
  */
-class BreakpointController : public QObject
+class BreakpointController
 {
-  Q_OBJECT
-
 public:
   using get_instruction_t = std::function<const instruction_t*(const InstructionItem&)>;
 
-  explicit BreakpointController(get_instruction_t callback, QObject* parent = nullptr);
+  explicit BreakpointController(get_instruction_t callback);
 
   /**
    * @brief Save breakpoint information in internal cash.
