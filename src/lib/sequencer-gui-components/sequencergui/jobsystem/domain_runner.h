@@ -52,15 +52,6 @@ class DomainRunner
 public:
   using post_event_callback_t = std::function<void(const domain_event_t& event)>;
 
-  enum RunnerState
-  {
-    kReady,
-    kStartPressed,
-    kStopPressed,
-    kPausePressed,
-    kStepPressed
-  };
-
   explicit DomainRunner(const post_event_callback_t& post_event_callback,
                         const UserContext& user_context, procedure_t& procedure);
   ~DomainRunner();
@@ -136,7 +127,6 @@ private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
   std::unique_ptr<sup::sequencer::AsyncRunner> m_async_runner;
-  RunnerState m_runner_state{kReady};
 
   std::vector<const sup::sequencer::Instruction*> m_index_to_instruction; // REFACTORING
 };

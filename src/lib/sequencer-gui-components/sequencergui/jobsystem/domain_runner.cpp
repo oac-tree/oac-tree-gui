@@ -55,8 +55,6 @@ DomainRunner::~DomainRunner() = default;
 
 bool DomainRunner::Start()
 {
-  m_runner_state = kStartPressed;
-
   m_async_runner->Start();
 
   return true;
@@ -64,8 +62,6 @@ bool DomainRunner::Start()
 
 bool DomainRunner::Stop()
 {
-  m_runner_state = kStopPressed;
-
   m_async_runner->Halt();
 
   return true;
@@ -73,8 +69,6 @@ bool DomainRunner::Stop()
 
 bool DomainRunner::Pause()
 {
-  m_runner_state = kPausePressed;
-
   m_async_runner->Pause();
 
   return true;
@@ -82,8 +76,6 @@ bool DomainRunner::Pause()
 
 bool DomainRunner::Step()
 {
-  m_runner_state = kStepPressed;
-
   m_async_runner->Step();
 
   return true;
