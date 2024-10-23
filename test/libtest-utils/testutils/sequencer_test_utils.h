@@ -20,6 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_EPICS_TEST_UTILS_H_
 #define LIBTEST_UTILS_TESTUTILS_EPICS_TEST_UTILS_H_
 
+//! @file
 //! Collection of utils to test sequencer.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
@@ -70,7 +71,7 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string& name,
 /**
  * @brief Helper method to create JobInfo from procedure text body.
  */
-sup::auto_server::JobInfo CreateJobInfo(const std::string& procedure_text);
+sup::sequencer::JobInfo CreateJobInfo(const std::string& procedure_text);
 
 }  // namespace testutils
 

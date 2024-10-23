@@ -33,6 +33,12 @@ class Runner;
 class UserInterface;
 class Variable;
 class Workspace;
+
+class InstructionInfo;
+class VariableInfo;
+class JobInfo;
+class WorkspaceInfo;
+class IJobInfoIO;
 }  // namespace sup::sequencer
 
 using attribute_definition_t = sup::sequencer::AttributeDefinition;
@@ -45,12 +51,5 @@ using userinterface_t = sup::sequencer::UserInterface;
 using variable_t = sup::sequencer::Variable;
 using workspace_t = sup::sequencer::Workspace;
 
-namespace sup::auto_server
-{
-class InstructionInfo;
-class VariableInfo;
-class JobInfo;
-class WorkspaceInfo;
-}
 
 #endif  // SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

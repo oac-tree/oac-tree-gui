@@ -27,7 +27,7 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 
-#include <sup/auto-server/job_info.h>
+#include <sup/sequencer/job_info.h>
 #include <sup/sequencer/procedure.h>
 
 #include <gtest/gtest.h>

@@ -186,8 +186,8 @@ TEST_F(DomainEventTest, InstructionStateUpdatedEvent)
   }
 
   {  // state is different
-    const sup::auto_server::InstructionState state1{false, ExecutionStatus::RUNNING};
-    const sup::auto_server::InstructionState state2{false, ExecutionStatus::SUCCESS};
+    const sup::sequencer::InstructionState state1{false, ExecutionStatus::RUNNING};
+    const sup::sequencer::InstructionState state2{false, ExecutionStatus::SUCCESS};
     const InstructionStateUpdatedEvent event1{0, state1};
     const InstructionStateUpdatedEvent event2{0, state1};
     const InstructionStateUpdatedEvent event3{0, state2};
@@ -198,7 +198,7 @@ TEST_F(DomainEventTest, InstructionStateUpdatedEvent)
   }
 
   {  // index is different
-    const sup::auto_server::InstructionState state{false, ExecutionStatus::RUNNING};
+    const sup::sequencer::InstructionState state{false, ExecutionStatus::RUNNING};
     const InstructionStateUpdatedEvent event1{0, state};
     const InstructionStateUpdatedEvent event2{1, state};
     EXPECT_FALSE(event1 == event2);

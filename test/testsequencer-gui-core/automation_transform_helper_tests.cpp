@@ -29,9 +29,9 @@
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
-#include <sup/auto-server/instruction_info.h>
-#include <sup/auto-server/variable_info.h>
-#include <sup/auto-server/workspace_info.h>
+#include <sup/sequencer/instruction_info.h>
+#include <sup/sequencer/variable_info.h>
+#include <sup/sequencer/workspace_info.h>
 
 #include <gtest/gtest.h>
 
@@ -47,7 +47,7 @@ class AutomationTransformHelperTest : public ::testing::Test
 TEST_F(AutomationTransformHelperTest, CreateInstructionItem)
 {
   const size_t instruction_id{0};
-  sup::auto_server::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+  sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
                                          instruction_id,
                                          {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -63,7 +63,7 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItem)
 TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForWait)
 {
   const size_t instruction_id{0};
-  sup::auto_server::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+  sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
                                          instruction_id,
                                          {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -83,8 +83,8 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForWait)
 TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForSequence)
 {
   using namespace sequencergui::domainconstants;
-  using sup::auto_server::AttributeInfo;
-  using sup::auto_server::InstructionInfo;
+  using sup::sequencer::AttributeInfo;
+  using sup::sequencer::InstructionInfo;
 
   InstructionInfo sequence_info(kSequenceInstructionType, 0, {});
   auto child0 = std::make_unique<InstructionInfo>(
@@ -122,11 +122,11 @@ TEST_F(AutomationTransformHelperTest, CreateVariableItem)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  std::vector<sup::auto_server::AttributeInfo> attributes(
+  const std::vector<sup::sequencer::AttributeInfo> attributes(
       {{domainconstants::kNameAttribute, expected_name},
        {domainconstants::kTypeAttribute, expected_type},
        {domainconstants::kValueAttribute, expected_value}});
-  sup::auto_server::VariableInfo info(domainconstants::kLocalVariableType, variable_id, attributes);
+  sup::sequencer::VariableInfo info(domainconstants::kLocalVariableType, variable_id, attributes);
 
   auto variable_item = CreateVariableItem(info);
 
@@ -142,7 +142,7 @@ TEST_F(AutomationTransformHelperTest, PopulateWorkspaceItem)
     WorkspaceItem workspace_item;
     workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
-    sup::auto_server::WorkspaceInfo info;
+    sup::sequencer::WorkspaceInfo info;
     EXPECT_THROW(PopulateWorkspaceItem(info, &workspace_item), RuntimeException);
   }
 
@@ -151,20 +151,20 @@ TEST_F(AutomationTransformHelperTest, PopulateWorkspaceItem)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  std::vector<sup::auto_server::AttributeInfo> attributes(
+  const std::vector<sup::sequencer::AttributeInfo> attributes(
       {{domainconstants::kNameAttribute, expected_name},
        {domainconstants::kTypeAttribute, expected_type},
        {domainconstants::kValueAttribute, expected_value}});
 
-  sup::auto_server::VariableInfo info0(
+  const sup::sequencer::VariableInfo info0(
       domainconstants::kLocalVariableType, 0,
       {{domainconstants::kTypeAttribute, expected_type}, {domainconstants::kValueAttribute, "42"}});
 
-  sup::auto_server::VariableInfo info1(
+  const sup::sequencer::VariableInfo info1(
       domainconstants::kLocalVariableType, 1,
       {{domainconstants::kTypeAttribute, expected_type}, {domainconstants::kValueAttribute, "43"}});
 
-  sup::auto_server::WorkspaceInfo workspace_info;
+  sup::sequencer::WorkspaceInfo workspace_info;
   workspace_info.AddVariableInfo("var0", info0);
   workspace_info.AddVariableInfo("var1", info1);
 

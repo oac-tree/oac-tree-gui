@@ -47,7 +47,7 @@ public:
   /**
    * @brief Creates procedure item from given automation server information.
    */
-  std::unique_ptr<ProcedureItem> CreateProcedureItem(const sup::auto_server::JobInfo& job_info);
+  std::unique_ptr<ProcedureItem> CreateProcedureItem(const sup::sequencer::JobInfo &job_info);
 
   /**
    * @brief Returns instruction item for given automation index.

@@ -39,7 +39,7 @@ namespace sequencergui
 {
 
 AutomationJobHandler::AutomationJobHandler(JobItem *job_item,
-                                           const sup::auto_server::JobInfo &job_info)
+                                           const sup::sequencer::JobInfo &job_info)
     : m_builder(std::make_unique<ProcedureItemAutomationBuilder>())
     , m_job_observer(std::make_unique<RemoteJobObserver>(CreatePostEventCallback()))
     , m_event_queue(std::make_unique<DomainEventQueue>())
@@ -54,14 +54,14 @@ AutomationJobHandler::AutomationJobHandler(JobItem *job_item,
   SetupProcedureItem(job_info);
 }
 
-sup::auto_server::IJobInfoIO *AutomationJobHandler::GetJobObserver() const
+sup::sequencer::IJobInfoIO *AutomationJobHandler::GetJobObserver() const
 {
   return m_job_observer.get();
 }
 
 AutomationJobHandler::~AutomationJobHandler() = default;
 
-void AutomationJobHandler::SetupProcedureItem(const sup::auto_server::JobInfo &job_info)
+void AutomationJobHandler::SetupProcedureItem(const sup::sequencer::JobInfo &job_info)
 {
   auto procedure_item = m_builder->CreateProcedureItem(job_info);
   auto procedure_item_ptr = procedure_item.get();

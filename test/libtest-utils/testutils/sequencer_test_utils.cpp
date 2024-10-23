@@ -23,10 +23,10 @@
 #include <sequencergui/domain/domain_helper.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
-#include <sup/auto-server/instruction_map.h>
-#include <sup/auto-server/job_info.h>
-#include <sup/auto-server/job_utils.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/sequencer/instruction_map.h>
+#include <sup/sequencer/job_info.h>
+#include <sup/sequencer/job_info_utils.h>
 #include <sup/sequencer/sequence_parser.h>
 #include <sup/sequencer/workspace.h>
 
@@ -131,14 +131,13 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string &name,
                         initial_value, channel_name);
 }
 
-sup::auto_server::JobInfo CreateJobInfo(const std::string &procedure_text)
+sup::sequencer::JobInfo CreateJobInfo(const std::string &procedure_text)
 {
-  const std::string prefix = "JobInfoTest:FromProcedure:";
   auto procedure =
       sup::sequencer::ParseProcedureString(testutils::CreateProcedureString(procedure_text));
   auto root = procedure->RootInstruction();
-  const sup::auto_server::InstructionMap instr_map{root};
-  auto job_info = sup::auto_server::utils::CreateJobInfo(prefix, *procedure, instr_map);
+  const sup::sequencer::InstructionMap instr_map{root};
+  auto job_info = sup::sequencer::utils::CreateJobInfo(*procedure, instr_map);
 
   return job_info;
 }

@@ -32,8 +32,8 @@
 
 #include <mvvm/model/item_utils.h>
 
-#include <sup/auto-server/i_job_info_io.h>
-#include <sup/auto-server/job_info.h>
+#include <sup/sequencer/i_job_info_io.h>
+#include <sup/sequencer/job_info.h>
 #include <sup/sequencer/procedure.h>
 
 #include <gtest/gtest.h>
@@ -108,7 +108,7 @@ TEST_F(AutomationJobHandlerTest, InstructionStateUpdated)
   const size_t index_of_second_wait{2};  // from JobInfo
   handler.GetJobObserver()->InstructionStateUpdated(
       index_of_second_wait,
-      sup::auto_server::InstructionState{false, sup::sequencer::ExecutionStatus::RUNNING});
+      sup::sequencer::InstructionState{false, sup::sequencer::ExecutionStatus::RUNNING});
 
   auto wait_items = mvvm::utils::FindItemDown<WaitItem>(job_item);
   ASSERT_EQ(wait_items.size(), 2);
@@ -150,7 +150,7 @@ TEST_F(AutomationJobHandlerTest, OnVariableUpdated)
   // We are testing here queued signals, need special waiting
   QTest::qWait(50);
 
-          // LocalVariableItem is always available
+  // LocalVariableItem is always available
   EXPECT_EQ(GetAnyValue(*variable_items.at(1)), new_anyvalue);
   EXPECT_TRUE(variable_items.at(1)->IsAvailable());
 }

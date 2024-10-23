@@ -35,8 +35,8 @@
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/style_utils.h>
 
-#include <sup/auto-server/exceptions.h>
-#include <sup/auto-server/job_info.h>
+#include <sup/sequencer/exceptions.h>
+#include <sup/sequencer/job_info.h>
 
 #include <QDebug>
 #include <QPushButton>
@@ -141,7 +141,7 @@ void AutomationMonitorView::OnConnect(const QString &server_name)
   {
     m_automation_client = std::make_unique<AutomationClient>(server_name.toStdString());
   }
-  catch (const sup::auto_server::InvalidOperationException &ex)
+  catch (const sup::sequencer::InvalidOperationException &ex)
   {
     qDebug() << "Can't connect" << ex.what();
     return;

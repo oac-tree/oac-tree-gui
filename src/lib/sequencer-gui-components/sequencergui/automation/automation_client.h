@@ -25,11 +25,6 @@
 #include <memory>
 #include <string>
 
-namespace sup::auto_server
-{
-class IJobInfoIO;
-}
-
 namespace sequencergui
 {
 
@@ -59,12 +54,12 @@ public:
   /**
    * @brief Returns full job information for given job index.
    */
-  sup::auto_server::JobInfo GetJobInfo(size_t job_index) const;
+  sup::sequencer::JobInfo GetJobInfo(size_t job_index) const;
 
   /**
    * @brief Connect job observer with remote job with the given index.
    */
-  void Connect(size_t job_index, sup::auto_server::IJobInfoIO *observer);
+  void Connect(size_t job_index, sup::sequencer::IJobInfoIO *observer);
 
 private:
   struct AutomationManagerImpl;

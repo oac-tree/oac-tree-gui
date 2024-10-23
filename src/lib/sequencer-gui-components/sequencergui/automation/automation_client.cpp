@@ -19,10 +19,8 @@
 
 #include "automation_client.h"
 
-#include <sup/auto-server/automation_client.h>
-#include <sup/auto-server/automation_protocol_client.h>
-#include <sup/auto-server/epics_io_client.h>
-#include <sup/epics/pv_access_rpc_client.h>
+#include <sup/auto-server/client_job.h>
+#include <sup/auto-server/epics_client_utils.h>
 #include <sup/protocol/protocol_rpc_client.h>
 
 #include <iostream>
@@ -32,18 +30,11 @@ namespace sequencergui
 
 struct AutomationClient::AutomationManagerImpl
 {
-  sup::epics::PvAccessRPCClient pv_access_rpc_client;
-  sup::protocol::ProtocolRPCClient protocol_rpc_client;
-  sup::auto_server::AutomationProtocolClient auto_protocol_client;
-  sup::auto_server::AnyValueIOFactoryFunction m_listener;
-  sup::auto_server::AutomationClient auto_client;
+  std::unique_ptr<sup::auto_server::IJobManager> automation_client;
+  std::unique_ptr<sup::sequencer::IJob> client_job;
 
   explicit AutomationManagerImpl(const std::string& server_name)
-      : pv_access_rpc_client(sup::epics::GetDefaultRPCClientConfig(server_name))
-      , protocol_rpc_client(pv_access_rpc_client)
-      , auto_protocol_client(protocol_rpc_client)
-      , m_listener(sup::auto_server::EPICSIOCLientFactoryFunction)
-      , auto_client(auto_protocol_client, m_listener)
+      : automation_client(sup::auto_server::utils::CreateEPICSJobManager(server_name))
   {
   }
 };
@@ -51,45 +42,52 @@ struct AutomationClient::AutomationManagerImpl
 AutomationClient::AutomationClient(const std::string& server_name)
     : p_impl(std::make_unique<AutomationManagerImpl>(server_name))
 {
-  std::cout << p_impl->auto_protocol_client.GetServerPrefix() << " "
-            << p_impl->auto_protocol_client.GetNumberOfJobs() << "\n";
+  std::cout << "Number of jobs " << p_impl->automation_client->GetNumberOfJobs() << "\n";
 }
 
 void AutomationClient::Run(size_t job_index)
 {
-  p_impl->auto_protocol_client.SendJobCommand(job_index, sup::sequencer::JobCommand::kStart);
+  (void)job_index;
+  p_impl->client_job->Start();
 }
 
 void AutomationClient::Pause(size_t job_index)
 {
-  p_impl->auto_protocol_client.SendJobCommand(job_index, sup::sequencer::JobCommand::kPause);
+  (void)job_index;
+  p_impl->client_job->Pause();
 }
 
 void AutomationClient::Stop(size_t job_index)
 {
-  p_impl->auto_protocol_client.SendJobCommand(job_index, sup::sequencer::JobCommand::kHalt);
+  (void)job_index;
+  p_impl->client_job->Halt();
 }
 
 void AutomationClient::Step(size_t job_index)
 {
-  p_impl->auto_protocol_client.SendJobCommand(job_index, sup::sequencer::JobCommand::kStep);
+  (void)job_index;
+  p_impl->client_job->Step();
 }
 
 AutomationClient::~AutomationClient() = default;
 
 size_t AutomationClient::GetJobCount() const
 {
-  return p_impl->auto_protocol_client.GetNumberOfJobs();
+  return p_impl->automation_client->GetNumberOfJobs();
 }
 
-sup::auto_server::JobInfo AutomationClient::GetJobInfo(size_t job_index) const
+sup::sequencer::JobInfo AutomationClient::GetJobInfo(size_t job_index) const
 {
-  return p_impl->auto_protocol_client.GetJobInfo(job_index);
+  (void)job_index;
+  return p_impl->client_job->GetInfo();
 }
 
-void AutomationClient::Connect(size_t job_index, sup::auto_server::IJobInfoIO* observer)
+void AutomationClient::Connect(size_t job_index, sup::sequencer::IJobInfoIO* observer)
 {
-  p_impl->auto_client.Connect(job_index, *observer);
+  (void)job_index;
+
+  p_impl->client_job = sup::auto_server::CreateClientJob(
+      *p_impl->automation_client, 0, sup::auto_server::utils::CreateEPICSIOClient, *observer);
 }
 
 }  // namespace sequencergui

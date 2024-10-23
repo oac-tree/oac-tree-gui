@@ -41,7 +41,7 @@ void RemoteJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 }
 
 void RemoteJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
-                                                sup::auto_server::InstructionState state)
+                                                sup::sequencer::InstructionState state)
 {
   std::cout << "RemoteJobObserver::InstructionStateUpdated " << instr_idx << " "
             << ::sup::sequencer::StatusToString(state.m_execution_status) << "\n";

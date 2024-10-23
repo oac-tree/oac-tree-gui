@@ -25,10 +25,10 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 
-#include <sup/auto-server/instruction_info.h>
-#include <sup/auto-server/job_info.h>
-#include <sup/auto-server/variable_info.h>
-#include <sup/auto-server/workspace_info.h>
+#include <sup/sequencer/instruction_info.h>
+#include <sup/sequencer/job_info.h>
+#include <sup/sequencer/variable_info.h>
+#include <sup/sequencer/workspace_info.h>
 
 namespace sequencergui
 {
@@ -36,11 +36,11 @@ namespace sequencergui
 ProcedureItemAutomationBuilder::ProcedureItemAutomationBuilder() = default;
 
 std::unique_ptr<ProcedureItem> ProcedureItemAutomationBuilder::CreateProcedureItem(
-    const sup::auto_server::JobInfo &job_info)
+    const sup::sequencer::JobInfo &job_info)
 {
   auto result = std::make_unique<ProcedureItem>();
 
-  result->SetDisplayName(job_info.GetPrefix());
+  result->SetDisplayName(job_info.GetProcedureName());
 
   auto instruction_tree = CreateInstructionItemTree(*job_info.GetRootInstructionInfo());
   m_instruction_indexes = std::move(instruction_tree.indexes);

@@ -36,13 +36,13 @@ namespace sequencergui
  * This method ignores all possible children instructions.
  */
 std::unique_ptr<sup::sequencer::Instruction> CreateDomainInstruction(
-    const sup::auto_server::InstructionInfo& info);
+    const sup::sequencer::InstructionInfo& info);
 
 /**
  * @brief Creates domain variable from automation VariableInfo presentation.
  */
 std::unique_ptr<sup::sequencer::Variable> CreateDomainVariable(
-    const sup::auto_server::VariableInfo& info);
+    const sup::sequencer::VariableInfo& info);
 
 }  // namespace sequencergui
 

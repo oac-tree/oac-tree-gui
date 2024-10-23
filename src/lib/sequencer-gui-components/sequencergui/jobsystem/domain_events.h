@@ -27,9 +27,9 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/log_event.h>
 
-#include <sup/auto-server/instruction_state.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/execution_status.h>
+#include <sup/sequencer/instruction_state.h>
 #include <sup/sequencer/job_states.h>
 
 #include <string>
@@ -99,7 +99,7 @@ struct NextLeavesChangedEvent
 struct InstructionStateUpdatedEvent
 {
   size_t index{0};
-  sup::auto_server::InstructionState state;
+  sup::sequencer::InstructionState state;
 
   bool operator==(const InstructionStateUpdatedEvent& other) const;
   bool operator!=(const InstructionStateUpdatedEvent& other) const;

@@ -20,13 +20,13 @@
 #ifndef SEQUENCERGUI_AUTOMATION_REMOTE_JOB_OBSERVER_H_
 #define SEQUENCERGUI_AUTOMATION_REMOTE_JOB_OBSERVER_H_
 
-#include <sup/auto-server/i_job_info_io.h>
+#include <sup/sequencer/i_job_info_io.h>
 #include <sequencergui/jobsystem/domain_events.h>
 
 namespace sequencergui
 {
 
-class RemoteJobObserver : public sup::auto_server::IJobInfoIO
+class RemoteJobObserver : public sup::sequencer::IJobInfoIO
 {
 public:
   using post_event_callback_t = std::function<void(const domain_event_t& event)>;
@@ -36,7 +36,7 @@ public:
   void InitNumberOfInstructions(sup::dto::uint32 n_instr) override;
 
   void InstructionStateUpdated(sup::dto::uint32 instr_idx,
-                               sup::auto_server::InstructionState state) override;
+                               sup::sequencer::InstructionState state) override;
 
   void VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue& value,
                        bool connected) override;

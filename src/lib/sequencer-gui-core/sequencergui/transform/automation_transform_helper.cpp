@@ -26,11 +26,11 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
-#include <sup/auto-server/instruction_info.h>
-#include <sup/auto-server/variable_info.h>
-#include <sup/auto-server/workspace_info.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/instruction_info.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/variable_info.h>
+#include <sup/sequencer/workspace_info.h>
 
 #include <stack>
 
@@ -39,7 +39,7 @@ namespace
 
 struct InstructionInfoStackNode
 {
-  const sup::auto_server::InstructionInfo& info;
+  const sup::sequencer::InstructionInfo& info;
   sequencergui::InstructionItem& item;
 };
 
@@ -48,8 +48,7 @@ struct InstructionInfoStackNode
 namespace sequencergui
 {
 
-std::unique_ptr<InstructionItem> CreateInstructionItem(
-    const sup::auto_server::InstructionInfo& info)
+std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::sequencer::InstructionInfo& info)
 {
   auto result = sequencergui::CreateInstructionItem(info.GetType());
 
@@ -61,7 +60,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(
   return result;
 }
 
-InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInfo& info)
+InstructionTree CreateInstructionItemTree(const sup::sequencer::InstructionInfo& info)
 {
   std::stack<InstructionInfoStackNode> stack;
 
@@ -95,7 +94,7 @@ InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInf
   return {std::move(result), std::move(index_list)};
 }
 
-std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::VariableInfo& info)
+std::unique_ptr<VariableItem> CreateVariableItem(const sup::sequencer::VariableInfo& info)
 {
   auto result = sequencergui::CreateVariableItem(info.GetType());
 
@@ -107,7 +106,7 @@ std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::Variabl
   return result;
 }
 
-std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::auto_server::WorkspaceInfo& info,
+std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::WorkspaceInfo& info,
                                                        WorkspaceItem* workspace_item)
 {
   std::vector<const VariableItem*> index_to_variable_item;

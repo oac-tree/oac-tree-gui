@@ -26,11 +26,6 @@
 #include <QObject>
 #include <memory>
 
-namespace sup::auto_server
-{
-class IJobInfoIO;
-}
-
 namespace sequencergui
 {
 
@@ -61,19 +56,19 @@ public:
    * @param job_item Empty job item.
    * @param job_info Job info from automation server.
    */
-  AutomationJobHandler(JobItem* job_item, const sup::auto_server::JobInfo& job_info);
+  AutomationJobHandler(JobItem* job_item, const sup::sequencer::JobInfo& job_info);
   ~AutomationJobHandler() override;
 
   /**
    * @brief GetJobObserver
    */
-  sup::auto_server::IJobInfoIO* GetJobObserver() const;
+  sup::sequencer::IJobInfoIO* GetJobObserver() const;
 
 private:
   /**
    * @brief Setups ProcedureItem on board of JobItem using provided automation job info.
    */
-  void SetupProcedureItem(const sup::auto_server::JobInfo& job_info);
+  void SetupProcedureItem(const sup::sequencer::JobInfo &job_info);
 
   /**
    * @brief Creates context necessary for DomainEventDispatcher.

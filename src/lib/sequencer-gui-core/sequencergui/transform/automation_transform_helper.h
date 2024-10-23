@@ -55,18 +55,17 @@ struct InstructionTree
  *
  * This method ignores all possible children instructions.
  */
-std::unique_ptr<InstructionItem> CreateInstructionItem(
-    const sup::auto_server::InstructionInfo& info);
+std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::sequencer::InstructionInfo& info);
 
 /**
  * @brief Creates InstructionItem with all its children from the automation server information.
  */
-InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInfo& info);
+InstructionTree CreateInstructionItemTree(const sup::sequencer::InstructionInfo& info);
 
 /**
  * @brief Creates VariableItem from the automation server information.
  */
-std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::VariableInfo& info);
+std::unique_ptr<VariableItem> CreateVariableItem(const sup::sequencer::VariableInfo& info);
 
 /**
  * @brief Populates empty workspace workspace item with variables from the automation server
@@ -76,7 +75,7 @@ std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::Variabl
  * @param workspace_item An empty workspace item to populate with the content.
  * @return List of all created variables stored according to their automation indexes
  */
-std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::auto_server::WorkspaceInfo& info,
+std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::WorkspaceInfo& info,
                                                        WorkspaceItem* workspace_item);
 
 }  // namespace sequencergui

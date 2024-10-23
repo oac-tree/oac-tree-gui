@@ -21,10 +21,10 @@
 
 #include <sequencergui/domain/domain_constants.h>
 
-#include <sup/auto-server/instruction_info.h>
-#include <sup/auto-server/variable_info.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/instruction_info.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/variable_info.h>
 
 #include <gtest/gtest.h>
 
@@ -39,9 +39,9 @@ class DomainAutomationHelperTest : public ::testing::Test
 TEST_F(DomainAutomationHelperTest, CreateDomainInstruction)
 {
   const size_t instruction_id{0};
-  sup::auto_server::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
-                                         instruction_id,
-                                         {{domainconstants::kTimeoutAttribute, "42"}});
+  const sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+                                             instruction_id,
+                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
   auto instruction = CreateDomainInstruction(info);
 
@@ -57,12 +57,12 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  std::vector<sup::auto_server::AttributeInfo> attributes(
+  const std::vector<sup::sequencer::AttributeInfo> attributes(
       {{domainconstants::kNameAttribute, expected_name},
        {domainconstants::kTypeAttribute, expected_type},
        {domainconstants::kValueAttribute, expected_value}});
-  sup::auto_server::VariableInfo info(sequencergui::domainconstants::kLocalVariableType,
-                                      variable_id, attributes);
+  sup::sequencer::VariableInfo info(sequencergui::domainconstants::kLocalVariableType, variable_id,
+                                    attributes);
 
   auto variable = CreateDomainVariable(info);
 
