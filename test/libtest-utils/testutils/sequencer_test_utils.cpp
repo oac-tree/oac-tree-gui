@@ -21,6 +21,8 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_helper.h>
+#include <sequencergui/model/variable_item.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
@@ -140,6 +142,15 @@ sup::sequencer::JobInfo CreateJobInfo(const std::string &procedure_text)
   auto job_info = sup::sequencer::utils::CreateJobInfo(*procedure, instr_map);
 
   return job_info;
+}
+
+bool IsEqual(const sequencergui::VariableItem &variable, const sup::dto::AnyValue &value)
+{
+  if (auto anyvalue_item = variable.GetAnyValueItem(); anyvalue_item)
+  {
+    return sup::gui::CreateAnyValue(*anyvalue_item) == value;
+  }
+  return false;
 }
 
 }  // namespace testutils

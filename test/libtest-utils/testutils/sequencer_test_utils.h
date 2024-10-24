@@ -29,6 +29,11 @@
 #include <memory>
 #include <string>
 
+namespace sequencergui
+{
+class VariableItem;
+}
+
 namespace testutils
 {
 
@@ -60,7 +65,6 @@ std::unique_ptr<variable_t> CreatePVAccessClientVariable(const std::string& name
 std::unique_ptr<variable_t> CreatePVAccessServerVariable(const std::string& name,
                                                          const sup::dto::AnyValue& initial_value,
                                                          const std::string& channel_name);
-
 /**
  * @brief Creates ChannelAccessVariable with given parameters.
  */
@@ -72,6 +76,11 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string& name,
  * @brief Helper method to create JobInfo from procedure text body.
  */
 sup::sequencer::JobInfo CreateJobInfo(const std::string& procedure_text);
+
+/**
+ * @brief Checks if the value caried inside VariableItem is equal to a given AnyValue.
+ */
+bool IsEqual(const sequencergui::VariableItem& variable, const sup::dto::AnyValue& value);
 
 }  // namespace testutils
 

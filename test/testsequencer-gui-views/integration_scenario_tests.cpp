@@ -30,7 +30,6 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/views/operation/message_panel.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>
@@ -41,6 +40,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
+#include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
 #include <testutils/test_utils.h>
 
@@ -120,21 +120,22 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
-  auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
-  auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
+  auto var_inside0 = vars_inside.at(0);
+  auto var_inside1 = vars_inside.at(1);
 
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
 
-  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
-  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue0);
+  EXPECT_TRUE(testutils::IsEqual(*var_inside0, anyvalue0));
+  EXPECT_TRUE(testutils::IsEqual(*var_inside1, anyvalue0));
 
   // variables at original model remained unchanged
-  auto inside = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
-  auto initial_anyvalue_item0 = inside.at(0)->GetAnyValueItem();
-  auto initial_anyvalue_item1 = inside.at(1)->GetAnyValueItem();
-  EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item0), anyvalue0);
-  EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item1), anyvalue1);
+  auto vars = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
+  auto var0 = vars.at(0);
+  auto var1 = vars.at(1);
+
+  EXPECT_TRUE(testutils::IsEqual(*var0, anyvalue0));
+  EXPECT_TRUE(testutils::IsEqual(*var1, anyvalue1));
 }
 
 //! Validating that external includes are correctly found.

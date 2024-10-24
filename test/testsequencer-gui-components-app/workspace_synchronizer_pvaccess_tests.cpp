@@ -28,7 +28,6 @@
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/core/exceptions.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
@@ -39,6 +38,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
+#include <testutils/sequencer_test_utils.h>
 #include <testutils/test_utils.h>
 
 #include <QTest>
@@ -281,8 +281,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 3000));
 
   ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
-  EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
-  EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
+  EXPECT_TRUE(testutils::IsEqual(*client_item, initial_value));
+  EXPECT_TRUE(testutils::IsEqual(*server_item, initial_value));
 }
 
 //! One server and one client variable in a workspace. The difference with the previous test is that
@@ -311,8 +311,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
 
   EXPECT_FALSE(server_item->IsAvailable());
   EXPECT_FALSE(client_item->IsAvailable());
-  EXPECT_FALSE(client_item->GetAnyValueItem());
-  EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
+  EXPECT_TRUE(testutils::IsEqual(*server_item, initial_value));
 
   // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
@@ -357,6 +356,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 3000));
 
   ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
-  EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
-  EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
+  EXPECT_TRUE(testutils::IsEqual(*client_item, initial_value));
+  EXPECT_TRUE(testutils::IsEqual(*server_item, initial_value));
 }
