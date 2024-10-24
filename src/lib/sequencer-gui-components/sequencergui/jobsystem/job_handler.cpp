@@ -24,8 +24,10 @@
 #include "job_log.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
@@ -35,8 +37,6 @@
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/iterate_helper.h>
 
 #include <mvvm/signals/item_listener.h>
 
@@ -196,9 +196,7 @@ JobModel *JobHandler::GetJobModel()
 
 void JobHandler::SetupBreakpointController()
 {
-  auto find_instruction = [this](const InstructionItem &item)
-  { return m_guiobject_builder->FindInstruction(&item); };
-  m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
+  m_breakpoint_controller = std::make_unique<BreakpointController>();
 
   if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
@@ -229,16 +227,7 @@ void JobHandler::SetupExpandedProcedureItem()
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 
-  // propagate all breakpoints to the domain
-  // FIXME extract to function
-  auto func = [this](const InstructionItem *item)
-  {
-    auto index = m_guiobject_builder->FindInstructionItemIndex(item);
-    SetDomainBreakpoint(index, GetBreakpointStatus(*item));
-  };
-  IterateInstructionContainer<const InstructionItem *>(
-      expanded_procedure_ptr->GetInstructionContainer()->GetInstructions(), func);
-
+  PropagateBreakpointsToDomain();
 
   m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
       expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());
@@ -264,6 +253,18 @@ void JobHandler::SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_s
     // disabled, will remove breakpoint from the domain
     m_domain_runner_service->RemoveBreakpoint(index);
   }
+}
+
+void JobHandler::PropagateBreakpointsToDomain()
+{
+  // visit all insrtuction items and set breakpoint status to the domain
+  auto func = [this](const InstructionItem *item)
+  {
+    auto index = m_guiobject_builder->FindInstructionItemIndex(item);
+    SetDomainBreakpoint(index, GetBreakpointStatus(*item));
+  };
+  IterateInstructionContainer<const InstructionItem *>(
+      GetExpandedProcedure()->GetInstructionContainer()->GetInstructions(), func);
 }
 
 DomainEventDispatcherContext JobHandler::CreateContext()

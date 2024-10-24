@@ -43,32 +43,15 @@
 
 using namespace sequencergui;
 
+/**
+ * @brief Tests for BreakpointController class.
+ */
 class BreakpointControllerTest : public ::testing::Test
 {
 };
 
-//! Testing FindDomainInstruction method.
-
-TEST_F(BreakpointControllerTest, FindDomainInstruction)
-{
-  WaitItem wait_item;
-  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-
-  {  // no callback set
-    BreakpointController controller({});
-    EXPECT_THROW(controller.FindDomainInstruction(wait_item), RuntimeException);
-  }
-
-  {  // normal instruction find
-    auto find_instruction = [&wait](const auto& item) { return wait.get(); };
-    BreakpointController controller(find_instruction);
-    EXPECT_EQ(controller.FindDomainInstruction(wait_item), wait.get());
-  }
-}
-
 //! Testing methods to save and restore breakpoint information in the instruction tree of
 //! ProcedureItem.
-
 TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
 {
   BreakpointController controller({});
@@ -114,59 +97,4 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
     EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kSet);
     EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
   }
-}
-
-//! Validating method UpdateDomainBreakpoint. Version which operates on JobController.
-
-TEST_F(BreakpointControllerTest, PropagateBreakpointsToDomain)
-{
-  testutils::EmptyUserInterface empty_ui;
-  sup::sequencer::utils::SimpleJobStateMonitor monitor;
-
-  // building domain and GUI procedures
-  GUIObjectBuilder builder;
-  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
-  EXPECT_NO_THROW(procedure->Setup());
-  auto procedure_item = builder.CreateProcedureItem(procedure.get(), /*root_only*/ false);
-
-  sup::sequencer::AsyncRunner async_runner(*procedure, empty_ui, monitor);
-
-  // accessing instructions in GUI and domain
-  auto sequence = procedure->GetTopInstructions().at(0);
-  auto sequence_item = procedure_item->GetInstructionContainer()->GetInstructions().at(0);
-  auto message0 = sequence->ChildInstructions().at(0);
-  auto message1 = sequence->ChildInstructions().at(1);
-  auto message_item0 = sequence_item->GetInstructions().at(0);
-  auto message_item1 = sequence_item->GetInstructions().at(1);
-
-  // preparing controller
-  auto find_instruction = [&builder](const auto& instruction_item)
-  { return builder.FindInstruction(&instruction_item); };
-  BreakpointController breakpoint_controller(find_instruction);
-
-  // setting breakpoints in GUI
-  SetBreakpointStatus(*message_item1, BreakpointStatus::kSet);
-
-  EXPECT_TRUE(breakpoint_controller.PropagateBreakpointsToDomain(*procedure_item, async_runner));
-
-  // FIXME restore after job_controller fixes GetBreakpoints
-  // auto breakpoints = job_controller.GetBreakpoints();
-  // ASSERT_EQ(breakpoints.size(), 1);
-  // EXPECT_EQ(breakpoints.at(0).GetInstruction(), message1);
-
-  // execution
-  async_runner.Start();
-  EXPECT_TRUE(monitor.WaitForState(::sup::sequencer::JobState::kPaused, 1));
-
-  EXPECT_EQ(monitor.GetCurrentState(), ::sup::sequencer::JobState::kPaused);
-  // EXPECT_FALSE(runner.IsFinished());
-
-  ASSERT_EQ(sup::sequencer::GetNextInstructions(*procedure).size(), 2);
-  EXPECT_EQ(sup::sequencer::GetNextInstructions(*procedure).at(0), sequence);
-  EXPECT_EQ(sup::sequencer::GetNextInstructions(*procedure).at(1), message1);
-
-  ASSERT_EQ(sup::sequencer::GetNextLeaves(*procedure).size(), 1);
-  EXPECT_EQ(sup::sequencer::GetNextLeaves(*procedure).at(0), message1);
-
-  // seems we were lazy to write the test till procedure is completed
 }

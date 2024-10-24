@@ -23,13 +23,10 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/operation/breakpoint_types.h>
 
-#include <functional>
-
 namespace sequencergui
 {
 
 class ProcedureItem;
-class InstructionItem;
 
 /**
  * @brief The BreakpointController class stores information about breakpoints, and controls its
@@ -38,9 +35,7 @@ class InstructionItem;
 class BreakpointController
 {
 public:
-  using get_instruction_t = std::function<const instruction_t*(const InstructionItem&)>;
-
-  explicit BreakpointController(get_instruction_t callback);
+  BreakpointController();
 
   /**
    * @brief Save breakpoint information in internal cash.
@@ -63,43 +58,7 @@ public:
    */
   void RestoreBreakpoints(ProcedureItem& procedure_item);
 
-  /**
-   * @brief Sets breakpoints to the controller using breakpoint information from instruction tree.
-   *
-   * It is expected that the controller doesn't have any breakpoints set, that it contains a domain
-   * procedure corresponding to a given item. The controller should be also not running, or be in
-   * pause state.
-   *
-   * @param procedure_item Expanded procedure item.
-   * @param job_controller Sequencer domain job controller.
-   *
-   * @return true if breakpoints have been successfully set.
-   *
-   */
-  bool PropagateBreakpointsToDomain(const ProcedureItem& item, async_runner_t& job_controller);
-
-  /**
-   * @brief Updates domain breakpoint using InstructionItem breakpoint.
-   *
-   * Please note, that we do not use disabled status in the domain. InstructionItem's breakpoint
-   * marked as disabled will remove breakpoint from the domain.
-   *
-   * @param item Instruction item
-   * @param job_controller Sequencer domain job controller.
-   *
-   * @return true if breakpoints have been successfully set.
-   */
-  bool UpdateDomainBreakpoint(const InstructionItem& item, async_runner_t& job_controller);
-
-  /**
-   * @brief Find domain instruction corresponding to a given item.
-   */
-  const instruction_t* FindDomainInstruction(const InstructionItem& item);
-
 private:
-  //! callback to retrieve domain instruction corresponding to given InstructionItem
-  get_instruction_t m_get_domain_instruction;
-
   //! information
   std::vector<BreakpointInfo> m_breakpoints;
 };

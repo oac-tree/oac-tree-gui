@@ -187,7 +187,15 @@ private:
    */
   void SetupDomainRunner(const UserContext& user_context, int sleep_time_msec);
 
+  /**
+   * @brief Set breakpoint to the domain instruction with the given index.
+   */
   void SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_status);
+
+  /**
+   * @brief Propagates breakpoints from expanded procedure to domain.
+   */
+  void PropagateBreakpointsToDomain();
 
   /**
    * @brief Returns a context necessary for sequencer event queue to function.
