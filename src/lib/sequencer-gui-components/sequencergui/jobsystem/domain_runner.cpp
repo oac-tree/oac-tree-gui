@@ -114,11 +114,6 @@ void DomainRunner::Reset()
   m_async_runner->Reset();
 }
 
-sup::sequencer::AsyncRunner* DomainRunner::GetAsyncRunner()
-{
-  return m_async_runner.get();
-}
-
 void DomainRunner::SetBreakpoint(size_t instr_idx)
 {
   m_async_runner->SetBreakpoint(m_index_to_instruction[instr_idx]);

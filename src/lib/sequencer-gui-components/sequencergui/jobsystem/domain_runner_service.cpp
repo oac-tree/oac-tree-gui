@@ -96,11 +96,6 @@ void DomainRunnerService::RemoveBreakpoint(size_t instr_idx)
   m_domain_runner->RemoveBreakpoint(instr_idx);
 }
 
-sup::sequencer::AsyncRunner* DomainRunnerService::GetAsyncRunner()
-{
-  return m_domain_runner->GetAsyncRunner();
-}
-
 std::function<void(const domain_event_t&)> DomainRunnerService::CreatePostEventCallback() const
 {
   return [this](const domain_event_t& event) { m_event_queue->PushEvent(event); };

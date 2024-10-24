@@ -20,13 +20,13 @@
 #ifndef SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_
 #define SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_
 
+//! @file
 //! Type aliases for main Sequencer types.
 
 namespace sup::sequencer
 {
 class AttributeDefinition;
 class Instruction;
-class AsyncRunner;
 class Procedure;
 class ProcedurePreamble;
 class Runner;
@@ -43,7 +43,6 @@ class IJobInfoIO;
 
 using attribute_definition_t = sup::sequencer::AttributeDefinition;
 using instruction_t = sup::sequencer::Instruction;
-using async_runner_t = sup::sequencer::AsyncRunner;
 using preamble_t = sup::sequencer::ProcedurePreamble;
 using procedure_t = sup::sequencer::Procedure;
 using runner_t = sup::sequencer::Runner;

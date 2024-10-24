@@ -76,11 +76,6 @@ public:
    */
   void RemoveBreakpoint(size_t instr_idx);
 
-  /**
-   * @brief Returns underlying domain async runner.
-   */
-  sup::sequencer::AsyncRunner* GetAsyncRunner();
-
 private:
   /**
    * @brief Creates a callback to publish domain events.

@@ -109,11 +109,6 @@ public:
   void Reset();
 
   /**
-   * @brief Returns underlying domain async runner.
-   */
-  sup::sequencer::AsyncRunner* GetAsyncRunner();
-
-  /**
    * @brief Sets the breakpoint on the instruction with given index.
    */
   void SetBreakpoint(size_t instr_idx);
