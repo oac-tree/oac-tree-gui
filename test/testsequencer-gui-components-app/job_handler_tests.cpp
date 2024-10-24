@@ -441,3 +441,69 @@ TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
   auto regenerated_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
   EXPECT_EQ(sup::gui::CreateAnyValue(*regenerated_anyvalue_item2), anyvalue1);  // value was changed
 }
+
+//! Testing propagation of breakpoints to the domain.
+TEST_F(JobHandlerTest, SetBreakpoint)
+{
+  auto procedure = testutils::CreateIncrementProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
+
+  auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetSequencerModel());
+  ASSERT_EQ(instructions.size(), 3);  // sequence, increment0, increment1
+
+  JobHandler job_handler(m_job_item);
+
+  // expanded procedure has different variables and instructions
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto instructions_inside = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
+  ASSERT_EQ(vars_inside.size(), 2);          // var0, var1
+  ASSERT_EQ(instructions_inside.size(), 3);  // sequence, increment0, increment1
+
+  auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
+  auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
+  {  // initial values in expanded procedure
+    const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 0};
+    const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 10};
+    EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);  // value was incremented
+    EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);  // same as before
+  }
+
+  // breakpoint on second increment will make it stop just before
+  job_handler.OnToggleBreakpointRequest(instructions_inside.at(2));
+  EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSet);
+
+  job_handler.OnStartRequest();
+
+  auto predicate = [&job_handler]()
+  { return job_handler.GetRunnerStatus() == RunnerStatus::kPaused; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+
+  {  // values when on pause
+    const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 1};
+    const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 10};
+    EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);  // value was incremented
+    EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);  // same as before
+  }
+
+  // run till the end
+  job_handler.OnStartRequest();
+
+  vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
+  new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
+
+  auto predicate2 = [&job_handler]()
+  { return job_handler.GetRunnerStatus() == RunnerStatus::kSucceeded; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 50));
+
+  {  // values at the end
+    const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 1};
+    const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 11};
+    EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);  // value was incremented
+
+    // it takes time to propagate values to the domain
+    auto predicate3 = [new_anyvalue_item1, &anyvalue1]()
+    { return sup::gui::CreateAnyValue(*new_anyvalue_item1) == anyvalue1; };
+    EXPECT_TRUE(QTest::qWaitFor(predicate3, 50));
+  }
+}

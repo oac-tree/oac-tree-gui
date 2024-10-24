@@ -130,7 +130,6 @@ JobLog *JobHandler::GetJobLog() const
   return m_job_log;
 }
 
-// FIXME implement unit test
 void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
 {
   if (IsRunning())

@@ -252,4 +252,33 @@ ProcedureItem* CreateVariableResetProcedureItem(sequencergui::SequencerModel* mo
   return CreateProcedure(&CreateVariableResetProcedureItem, model);
 }
 
+std::unique_ptr<ProcedureItem> CreateIncrementProcedureItem()
+{
+  auto result = std::make_unique<ProcedureItem>();
+
+  auto sequence =
+      result->GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+
+  auto increment0 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
+  SetVariableName("var0", increment0);
+
+  auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  var0->SetName("var0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
+
+  auto increment1 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
+  SetVariableName("var1", increment1);
+
+  auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  var1->SetName("var1");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 10}, *var1);
+
+  return result;
+}
+
+ProcedureItem* CreateIncrementProcedureItem(sequencergui::SequencerModel* model)
+{
+  return CreateProcedure(&CreateIncrementProcedureItem, model);
+}
+
 }  // namespace testutils

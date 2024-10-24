@@ -138,6 +138,20 @@ std::unique_ptr<sequencergui::ProcedureItem> CreateVariableResetProcedureItem();
  */
 sequencergui::ProcedureItem* CreateVariableResetProcedureItem(sequencergui::SequencerModel* model);
 
+/**
+ * @brief Creates procedure demonstrating Increment instruction.
+ *
+ * Contains a sequence with two increment instructions, incrementing two different variables. Used
+ */
+std::unique_ptr<sequencergui::ProcedureItem> CreateIncrementProcedureItem();
+
+/**
+ * @brief Creates procedure demonstrating Increment instruction.
+ *
+ * The procedure is created in the procedure container of the given model.
+ */
+sequencergui::ProcedureItem* CreateIncrementProcedureItem(sequencergui::SequencerModel* model);
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURE_ITEMS_H_
