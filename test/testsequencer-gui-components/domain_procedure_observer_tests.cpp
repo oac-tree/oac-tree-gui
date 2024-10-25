@@ -17,15 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/domain_procedure_observer_v2.h"
+#include "sequencergui/jobsystem/domain_procedure_observer.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/jobsystem/user_context.h>
 
 #include <sup/sequencer/execution_status.h>
-#include <sup/sequencer/instruction.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -33,7 +30,7 @@
 using namespace sequencergui;
 using ::testing::_;
 
-//! Tests for DomainProcedureObserverV2 class.
+//! Tests for DomainProcedureObserver class.
 
 class DomainProcedureObserverTest : public ::testing::Test
 {
@@ -43,7 +40,7 @@ public:
 
 TEST_F(DomainProcedureObserverTest, InitialState)
 {
-  EXPECT_THROW(DomainProcedureObserverV2({}, {}), RuntimeException);
+  EXPECT_THROW(DomainProcedureObserver({}, {}), RuntimeException);
 }
 
 TEST_F(DomainProcedureObserverTest, OnStateChange)
@@ -51,9 +48,7 @@ TEST_F(DomainProcedureObserverTest, OnStateChange)
   using ::sup::sequencer::ExecutionStatus;
   using ::sup::sequencer::InstructionState;
 
-  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-
-  DomainProcedureObserverV2 observer(m_event_listener.AsStdFunction(), {});
+  DomainProcedureObserver observer(m_event_listener.AsStdFunction(), {});
 
   domain_event_t expected_event(
       InstructionStateUpdatedEvent{0, InstructionState{false, ExecutionStatus::NOT_STARTED}});

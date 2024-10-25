@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_PROCEDURE_OBSERVER_V2_H_
-#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_PROCEDURE_OBSERVER_V2_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_PROCEDURE_OBSERVER_H_
+#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_PROCEDURE_OBSERVER_H_
 
 #include <sequencergui/jobsystem/domain_events.h>
 
@@ -39,7 +39,7 @@ class UserInputProvider;
  * @brief The DomainProcedureObserver class listens for changes in the domain procedure and
  * reports them to the event queue.
  */
-class DomainProcedureObserverV2 : public sup::sequencer::IJobInfoIO
+class DomainProcedureObserver : public sup::sequencer::IJobInfoIO
 {
 public:
   using post_event_callback_t = std::function<void(const domain_event_t& event)>;
@@ -50,9 +50,9 @@ public:
    * @param post_event_callback A callback to report events to the GUI.
    * @param user_context Special user dialog callbacks to interact with the user.
    */
-  explicit DomainProcedureObserverV2(post_event_callback_t post_event_callback,
+  explicit DomainProcedureObserver(post_event_callback_t post_event_callback,
                                    const UserContext& user_context);
-  ~DomainProcedureObserverV2() override;
+  ~DomainProcedureObserver() override;
 
   void InitNumberOfInstructions(sup::dto::uint32 n_instr) override;
 
@@ -111,4 +111,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_PROCEDURE_OBSERVER_V2_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_PROCEDURE_OBSERVER_H_

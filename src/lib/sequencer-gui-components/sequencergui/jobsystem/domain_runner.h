@@ -30,16 +30,13 @@
 
 namespace sup::sequencer
 {
-class AsyncRunner;
 class LocalJob;
 }
 
 namespace sequencergui
 {
 
-class DomainJobObserver;
 class DomainProcedureObserver;
-class DomainProcedureObserverV2;
 class UserContext;
 
 /**
@@ -122,10 +119,8 @@ public:
   void RemoveBreakpoint(size_t instr_idx);
 
 private:
-  std::unique_ptr<DomainProcedureObserverV2> m_procedure_observer_v2;
+  std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
   std::unique_ptr<sup::sequencer::LocalJob> m_local_job;
-
-  std::vector<const sup::sequencer::Instruction*> m_index_to_instruction; // REFACTORING
 };
 
 }  // namespace sequencergui

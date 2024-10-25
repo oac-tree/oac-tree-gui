@@ -19,13 +19,9 @@
 
 #include "domain_runner.h"
 
-#include "domain_procedure_observer_v2.h"
+#include "domain_procedure_observer.h"
 #include "user_context.h"
 
-#include <sequencergui/automation/remote_job_observer.h>
-#include <sequencergui/core/exceptions.h>
-
-#include <sup/sequencer/instruction_map.h>  // REFACTORING
 #include <sup/sequencer/local_job.h>
 
 #include <set>
@@ -35,21 +31,16 @@ namespace sequencergui
 
 DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback,
                            const UserContext& user_context, std::unique_ptr<procedure_t> procedure)
-    : m_procedure_observer_v2(
-          std::make_unique<DomainProcedureObserverV2>(post_event_callback, user_context))
+    : m_procedure_observer(
+          std::make_unique<DomainProcedureObserver>(post_event_callback, user_context))
+    , m_local_job(
+          std::make_unique<sup::sequencer::LocalJob>(std::move(procedure), *m_procedure_observer))
 {
-  auto procedure_ptr = procedure.get();
-  m_local_job =
-      std::make_unique<sup::sequencer::LocalJob>(std::move(procedure), *m_procedure_observer_v2);
-
-  // REFACTORING, procedure should be after Setup already
-  sup::sequencer::InstructionMap instruction_map(procedure_ptr->RootInstruction());
-  m_index_to_instruction = sup::sequencer::GetReverseMap(instruction_map.GetInstructionIndexMap());
 }
 
 sup::sequencer::JobState DomainRunner::GetJobState() const
 {
-  return m_procedure_observer_v2->GetCurrentState();
+  return m_procedure_observer->GetCurrentState();
 }
 
 DomainRunner::~DomainRunner() = default;
@@ -84,17 +75,17 @@ bool DomainRunner::Step()
 
 sup::sequencer::JobState DomainRunner::WaitForFinished() const
 {
-  return m_procedure_observer_v2->WaitForFinished();
+  return m_procedure_observer->WaitForFinished();
 }
 
 bool DomainRunner::WaitForState(sup::sequencer::JobState state, double msec) const
 {
-  return m_procedure_observer_v2->WaitForState(state, msec);
+  return m_procedure_observer->WaitForState(state, msec);
 }
 
 bool DomainRunner::IsFinished() const
 {
-  return sup::sequencer::IsFinishedJobState(m_procedure_observer_v2->GetCurrentState());
+  return sup::sequencer::IsFinishedJobState(m_procedure_observer->GetCurrentState());
 }
 
 bool DomainRunner::IsBusy() const
@@ -107,7 +98,7 @@ bool DomainRunner::IsBusy() const
 
 void DomainRunner::SetTickTimeout(int msec)
 {
-  m_procedure_observer_v2->SetTickTimeout(msec);
+  m_procedure_observer->SetTickTimeout(msec);
 }
 
 void DomainRunner::Reset()
