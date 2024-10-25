@@ -41,8 +41,12 @@ class UserContext;
 class DomainRunnerService
 {
 public:
-  explicit DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
-                               const UserContext& user_context, procedure_t& procedure);
+  DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
+                      const UserContext& user_context, procedure_t& procedure);
+
+  DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
+                      const UserContext& user_context, std::unique_ptr<procedure_t> procedure);
+
   ~DomainRunnerService();
 
   sup::sequencer::JobState GetJobState() const;

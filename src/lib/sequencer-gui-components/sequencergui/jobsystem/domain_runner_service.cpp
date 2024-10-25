@@ -23,6 +23,8 @@
 #include "domain_event_queue.h"
 #include "domain_runner.h"
 
+#include <sup/sequencer/procedure.h>
+
 namespace sequencergui
 {
 
@@ -37,6 +39,20 @@ DomainRunnerService::DomainRunnerService(DomainEventDispatcherContext dispatcher
                    &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
   m_domain_runner =
       std::make_unique<DomainRunner>(CreatePostEventCallback(), user_context, procedure);
+}
+
+DomainRunnerService::DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
+                                         const UserContext& user_context,
+                                         std::unique_ptr<procedure_t> procedure)
+    : m_event_queue(std::make_unique<DomainEventQueue>())
+    , m_event_dispatcher(std::make_unique<DomainEventDispatcher>(CreateGetEventCallback(),
+                                                                 std::move(dispatcher_context)))
+{
+  // connecting event queue with event dispatcher using queued connection
+  QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
+                   &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
+  m_domain_runner =
+      std::make_unique<DomainRunner>(CreatePostEventCallback(), user_context, std::move(procedure));
 }
 
 DomainRunnerService::~DomainRunnerService() = default;

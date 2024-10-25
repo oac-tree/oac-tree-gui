@@ -31,6 +31,7 @@
 namespace sup::sequencer
 {
 class AsyncRunner;
+class LocalJob;
 }
 
 namespace sequencergui
@@ -39,6 +40,7 @@ namespace sequencergui
 class DomainJobObserver;
 class DomainProcedureObserver;
 class UserContext;
+class RemoteJobObserver;
 
 /**
  * @brief The DomainRunner class provides the necessary components to run sequencer domain
@@ -52,8 +54,12 @@ class DomainRunner
 public:
   using post_event_callback_t = std::function<void(const domain_event_t& event)>;
 
-  explicit DomainRunner(const post_event_callback_t& post_event_callback,
+  DomainRunner(const post_event_callback_t& post_event_callback,
                         const UserContext& user_context, procedure_t& procedure);
+
+  DomainRunner(const post_event_callback_t& post_event_callback,
+               const UserContext& user_context, std::unique_ptr<procedure_t> procedure);
+
   ~DomainRunner();
 
   /**
@@ -121,7 +127,9 @@ public:
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
+  std::unique_ptr<RemoteJobObserver> m_remote_observer;
   std::unique_ptr<sup::sequencer::AsyncRunner> m_async_runner;
+  std::unique_ptr<sup::sequencer::LocalJob> m_local_job;
 
   std::vector<const sup::sequencer::Instruction*> m_index_to_instruction; // REFACTORING
 };
