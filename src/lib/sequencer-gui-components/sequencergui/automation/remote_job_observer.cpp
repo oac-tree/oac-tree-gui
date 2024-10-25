@@ -62,7 +62,7 @@ void RemoteJobObserver::JobStateUpdated(sup::sequencer::JobState state)
 
 void RemoteJobObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
 {
-  std::cout << "RemoteJobObserver::PutValue" << "\n";
+  std::cout << "RemoteJobObserver::PutValue " << description << "\n";
 }
 
 bool RemoteJobObserver::GetUserValue(sup::dto::AnyValue &value, const std::string &description)
@@ -84,7 +84,7 @@ int RemoteJobObserver::GetUserChoice(const std::vector<std::string> &options,
 
 void RemoteJobObserver::Message(const std::string &message)
 {
-  std::cout << "RemoteJobObserver::Message" << "\n";
+  std::cout << "RemoteJobObserver::Message" << message << "\n";
 }
 
 void RemoteJobObserver::Log(int severity, const std::string &message)
@@ -92,6 +92,12 @@ void RemoteJobObserver::Log(int severity, const std::string &message)
   (void)severity;
   (void)message;
   std::cout << "RemoteJobObserver::Log" << "\n";
+}
+
+void RemoteJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint32> &instr_indices)
+{
+  (void)instr_indices;
+  std::cout << "RemoteJobObserver::NextInstructionsUpdated" << "\n";
 }
 
 }  // namespace sequencergui

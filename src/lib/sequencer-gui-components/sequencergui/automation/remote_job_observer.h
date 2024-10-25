@@ -54,6 +54,8 @@ public:
 
   void Log(int severity, const std::string& message) override;
 
+  void NextInstructionsUpdated(const std::vector<sup::dto::uint32>& instr_indices) override;
+
 private:
   post_event_callback_t m_post_event_callback;
 };
