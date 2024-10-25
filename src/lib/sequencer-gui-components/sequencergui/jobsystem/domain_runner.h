@@ -39,8 +39,8 @@ namespace sequencergui
 
 class DomainJobObserver;
 class DomainProcedureObserver;
+class DomainProcedureObserverV2;
 class UserContext;
-class RemoteJobObserver;
 
 /**
  * @brief The DomainRunner class provides the necessary components to run sequencer domain
@@ -127,7 +127,7 @@ public:
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
-  std::unique_ptr<RemoteJobObserver> m_remote_observer;
+  std::unique_ptr<DomainProcedureObserverV2> m_procedure_observer_v2;
   std::unique_ptr<sup::sequencer::AsyncRunner> m_async_runner;
   std::unique_ptr<sup::sequencer::LocalJob> m_local_job;
 
