@@ -202,6 +202,11 @@ void JobHandler::OnWorkspaceEvent(const WorkspaceEvent &event)
   m_workspace_item_listener->ProcessEventFromDomain(event);
 }
 
+void JobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
+{
+  m_workspace_item_listener->ProcessEventFromDomain(event);
+}
+
 JobModel *JobHandler::GetJobModel()
 {
   return dynamic_cast<JobModel *>(m_job_item->GetModel());
@@ -291,6 +296,8 @@ DomainEventDispatcherContext JobHandler::CreateContext()
   { OnInstructionStateUpdated(event); };
 
   result.process_workspace_event = [this](const WorkspaceEvent &event) { OnWorkspaceEvent(event); };
+  result.process_variable_updated = [this](const VariableUpdatedEvent &event)
+  { OnVariableUpdatedEvent(event); };
 
   result.process_job_state_changed = [this](const JobStateChangedEvent &event)
   { OnJobStateChanged(event); };

@@ -157,6 +157,7 @@ private:
    * @brief Handles events reporting update in the domain variable.
    */
   void OnWorkspaceEvent(const WorkspaceEvent& event);
+  void OnVariableUpdatedEvent(const VariableUpdatedEvent& event);
 
   /**
    * @brief Returns job model to which our JobItem
