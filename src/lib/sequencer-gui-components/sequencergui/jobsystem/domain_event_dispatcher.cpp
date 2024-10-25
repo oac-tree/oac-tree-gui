@@ -82,6 +82,14 @@ void DomainEventDispatcher::operator()(const NextLeavesChangedEvent &event) cons
   }
 }
 
+void DomainEventDispatcher::operator()(const NextLeavesChangedEventV2 &event) const
+{
+  if (m_context.next_leaves_changed_event_v2)
+  {
+    m_context.next_leaves_changed_event_v2(event);
+  }
+}
+
 void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent &event) const
 {
   if (m_context.process_instruction_state_updated)

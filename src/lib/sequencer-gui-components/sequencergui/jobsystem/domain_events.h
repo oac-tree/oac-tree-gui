@@ -129,9 +129,10 @@ struct VariableUpdatedEvent
   bool operator!=(const VariableUpdatedEvent& other) const;
 };
 
-using domain_event_t = std::variant<std::monostate, InstructionStateUpdatedEvent, WorkspaceEvent,
-                                    JobStateChangedEvent, LogEvent, NextLeavesChangedEvent,
-                                    InstructionStatusChangedEvent, VariableUpdatedEvent>;
+using domain_event_t =
+    std::variant<std::monostate, InstructionStateUpdatedEvent, WorkspaceEvent, JobStateChangedEvent,
+                 LogEvent, NextLeavesChangedEvent, NextLeavesChangedEventV2,
+                 InstructionStatusChangedEvent, VariableUpdatedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

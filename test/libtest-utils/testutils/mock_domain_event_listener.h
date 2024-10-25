@@ -95,6 +95,10 @@ public:
   {
     OnNextLeavesChanged(event);
   }
+  void operator()(const sequencergui::NextLeavesChangedEventV2& event) const
+  {
+    OnNextLeavesChangedV2(event);
+  }
 
   /**
    * @brief Operator to visit VariableStateUpdated and trigger mock method.
@@ -118,6 +122,8 @@ public:
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
   MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChangedEvent&), (const));
+  MOCK_METHOD(void, OnNextLeavesChangedV2, (const sequencergui::NextLeavesChangedEventV2&),
+              (const));
   MOCK_METHOD(void, OnInstructionStateUpdated, (const sequencergui::InstructionStateUpdatedEvent&),
               (const));
   MOCK_METHOD(void, OnVariableUpdated, (const sequencergui::VariableUpdatedEvent&), (const));
@@ -143,6 +149,10 @@ public:
 
     result.next_leaves_changed_event = [this](const sequencergui::NextLeavesChangedEvent& event)
     { OnNextLeavesChanged(event); };
+
+    result.next_leaves_changed_event_v2 =
+        [this](const sequencergui::NextLeavesChangedEventV2& event)
+    { OnNextLeavesChangedV2(event); };
 
     result.process_instruction_state_updated =
         [this](const sequencergui::InstructionStateUpdatedEvent& event)

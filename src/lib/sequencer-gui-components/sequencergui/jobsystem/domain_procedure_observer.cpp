@@ -149,7 +149,7 @@ void DomainProcedureObserver::NextInstructionsUpdated(
     const std::vector<sup::dto::uint32> &instr_indices)
 {
   std::cout << "DomainProcedureObserver::NextInstructionsUpdated \n";
-  //m_post_event_callback(NextLeavesChangedEventV2{instr_indices});
+  m_post_event_callback(NextLeavesChangedEventV2{instr_indices});
 }
 
 }  // namespace sequencergui
