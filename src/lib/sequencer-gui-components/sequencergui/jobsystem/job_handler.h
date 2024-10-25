@@ -180,7 +180,7 @@ private:
    *
    * It will reflect the content of domain procedure after its Setup.
    */
-  void SetupExpandedProcedureItem();
+  void SetupExpandedProcedureItem(procedure_t* domain_procedure);
 
   /**
    * @brief Setups the domain runner.

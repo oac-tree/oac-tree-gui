@@ -76,10 +76,11 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
   SetupBreakpointController();
 
   CreateDomainProcedure();
+  auto domain_procedure_ptr = m_domain_procedure.get();
 
   SetupDomainRunner(user_context, m_job_item->GetTickTimeout());  // calls also Procedure::Setup
 
-  SetupExpandedProcedureItem();
+  SetupExpandedProcedureItem(domain_procedure_ptr);
 }
 
 JobHandler::~JobHandler() = default;
@@ -245,7 +246,7 @@ void JobHandler::CreateDomainProcedure()
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
 }
 
-void JobHandler::SetupExpandedProcedureItem()
+void JobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedure)
 {
   // We expect that Procedure::Setup was already called
 
@@ -257,7 +258,7 @@ void JobHandler::SetupExpandedProcedureItem()
 
   auto expanded_procedure = std::make_unique<ProcedureItem>();
   auto expanded_procedure_ptr = expanded_procedure.get();
-  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),
+  m_guiobject_builder->PopulateProcedureItem(domain_procedure, expanded_procedure.get(),
                                              /*root_only*/ true);
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
@@ -266,7 +267,7 @@ void JobHandler::SetupExpandedProcedureItem()
   PropagateBreakpointsToDomain();
 
   m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
-      expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());
+      expanded_procedure_ptr->GetWorkspace(), &domain_procedure->GetWorkspace());
 }
 
 void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_time_msec)
@@ -274,6 +275,8 @@ void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_ti
   // this creates beneath DomainRunner(AsyncRunner(Runner())) and then call procedure->Setup
   m_domain_runner_service =
       std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
+  // m_domain_runner_service = std::make_unique<DomainRunnerService>(CreateContext(), user_context,
+  //                                                                 std::move(m_domain_procedure));
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
 }
 
