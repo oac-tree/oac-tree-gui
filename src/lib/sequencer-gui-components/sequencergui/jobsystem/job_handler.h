@@ -136,6 +136,7 @@ private:
    * accordingly.
    */
   void OnInstructionStatusChanged(const InstructionStatusChangedEvent& event);
+  void OnInstructionStateUpdated(const InstructionStateUpdatedEvent& event);
 
   /**
    * @brief Processes job status changed from the domain, and update JobItem status accordingly.

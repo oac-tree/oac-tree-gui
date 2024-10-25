@@ -69,6 +69,8 @@ public:
   void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace,
                              const anytype_registry_t* registry);
 
+
+  InstructionItem* FindInstructionItem(size_t domain_index) const;
   InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
   VariableItem* FindVariableItem(const variable_t* variable) const;
   VariableItem* FindVariableItem(const std::string& variable_name) const;
@@ -91,7 +93,7 @@ private:
   std::map<std::string, VariableItem*> m_variablename_to_item;
 
   std::unique_ptr<sup::sequencer::InstructionMap> m_instruction_map; // REFACTORING
-
+  std::vector<const sup::sequencer::Instruction*> m_index_to_instruction; // REFACTORING
 };
 
 }  // namespace sequencergui

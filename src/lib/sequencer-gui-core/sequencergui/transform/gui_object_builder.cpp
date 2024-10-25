@@ -83,6 +83,8 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
   // REFACTORING
   m_instruction_map =
       std::make_unique<sup::sequencer::InstructionMap>(procedure->RootInstruction());
+  m_index_to_instruction =
+      sup::sequencer::GetReverseMap(m_instruction_map->GetInstructionIndexMap());
 
   auto instruction_container = procedure_item->GetInstructionContainer();
   PopulateInstructionContainerItem(procedure, instruction_container, root_only);
@@ -112,6 +114,12 @@ void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, Works
     item->InitFromDomain(variable, registry);
     workspace->InsertItem(std::move(item), {"", -1});
   }
+}
+
+InstructionItem *GUIObjectBuilder::FindInstructionItem(size_t domain_index) const
+{
+  auto domain_instruction = m_index_to_instruction[domain_index];
+  return FindInstructionItem(domain_instruction);
 }
 
 InstructionItem *GUIObjectBuilder::FindInstructionItem(const instruction_t *instruction) const

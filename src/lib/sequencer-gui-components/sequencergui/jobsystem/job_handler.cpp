@@ -156,6 +156,19 @@ void JobHandler::OnInstructionStatusChanged(const InstructionStatusChangedEvent 
   }
 }
 
+void JobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
+{
+  if (auto *item = m_guiobject_builder->FindInstructionItem(event.index); item)
+  {
+    item->SetStatus(::sup::sequencer::StatusToString(event.state.m_execution_status));
+    emit InstructionStatusChanged(item);
+  }
+  else
+  {
+    qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
+  }
+}
+
 void JobHandler::OnJobStateChanged(const JobStateChangedEvent &event)
 {
   m_job_item->SetStatus(::sup::sequencer::ToString(event.status));
@@ -273,6 +286,9 @@ DomainEventDispatcherContext JobHandler::CreateContext()
 
   result.process_instruction_status_changed = [this](const InstructionStatusChangedEvent &event)
   { OnInstructionStatusChanged(event); };
+
+  result.process_instruction_state_updated = [this](const InstructionStateUpdatedEvent &event)
+  { OnInstructionStateUpdated(event); };
 
   result.process_workspace_event = [this](const WorkspaceEvent &event) { OnWorkspaceEvent(event); };
 
