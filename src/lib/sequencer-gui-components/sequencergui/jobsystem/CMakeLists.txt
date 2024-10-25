@@ -9,8 +9,6 @@ target_sources(${library_name} PRIVATE
   domain_events.h
   domain_job_observer.cpp
   domain_job_observer.h
-  domain_procedure_observer.cpp
-  domain_procedure_observer.h
   domain_procedure_observer_v2.cpp
   domain_procedure_observer_v2.h
   domain_runner.cpp

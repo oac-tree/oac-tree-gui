@@ -19,8 +19,6 @@
 
 #include "domain_runner.h"
 
-#include "domain_job_observer.h"
-#include "domain_procedure_observer.h"
 #include "domain_procedure_observer_v2.h"
 #include "user_context.h"
 
