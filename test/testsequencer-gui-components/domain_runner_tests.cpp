@@ -56,7 +56,7 @@ public:
    */
   static std::function<void(const domain_event_t& event)> CreatePrintCallback()
   {
-    return [](const domain_event_t& event) { std::cout << ToString(event) << std::endl; };
+    return [](const domain_event_t& event) { std::cout << ToString(event) << "\n"; };
   }
 
   /**
@@ -73,7 +73,7 @@ public:
 TEST_F(DomainRunnerTest, InitialState)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
-  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
+  const DomainRunner runner(CreateNoopCallback(), {}, std::move(procedure));
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_FALSE(runner.IsFinished());
@@ -84,10 +84,13 @@ TEST_F(DomainRunnerTest, InitialState)
 TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 {
   using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::InstructionState;
   using ::sup::sequencer::JobState;
 
   auto procedure = testutils::CreateMessageProcedure("text");
-  auto instruction_ptr = procedure->RootInstruction();
+  auto procedure_ptr = procedure.get();
+  auto instruction_ptr = procedure_ptr->RootInstruction();
+  const sup::dto::uint32 instruction_index{0};
 
   {
     const ::testing::InSequence seq;
@@ -99,40 +102,40 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     const domain_event_t event2(JobStateChangedEvent{JobState::kRunning});
     EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
-    const domain_event_t event3(
-        InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::NOT_FINISHED});
+    const domain_event_t event3(InstructionStateUpdatedEvent{
+        instruction_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}});
     EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
 
     // message instruction (too difficult to make proper comparison because of time stamp)
     EXPECT_CALL(m_event_listener, Call(_)).Times(1);
 
-    const domain_event_t event5(
-        InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::SUCCESS});
+    const domain_event_t event5(InstructionStateUpdatedEvent{
+        instruction_index, InstructionState{false, ExecutionStatus::SUCCESS}});
     EXPECT_CALL(m_event_listener, Call(event5)).Times(1);
 
     const domain_event_t event6(JobStateChangedEvent{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, Call(event6)).Times(1);
 
-    const domain_event_t event7(NextLeavesChangedEvent{});
+    const domain_event_t event7(NextLeavesChangedEventV2{});
     EXPECT_CALL(m_event_listener, Call(event7)).Times(1);
 
     // triggered by JobController d-tor
-    const domain_event_t event8(
-        InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::NOT_STARTED});
+    const domain_event_t event8(InstructionStateUpdatedEvent{
+        instruction_index, InstructionState{false, ExecutionStatus::NOT_STARTED}});
     EXPECT_CALL(m_event_listener, Call(event8)).Times(1);
   }
 
   // DomainRunner runner(CreatePrintCallback(), *procedure);
-  DomainRunner runner(m_event_listener.AsStdFunction(), {}, *procedure);
+  DomainRunner runner(m_event_listener.AsStdFunction(), {}, std::move(procedure));
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   runner.Start();
 
   auto final_state = runner.WaitForFinished();
   EXPECT_EQ(final_state, sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
   EXPECT_TRUE(runner.IsFinished());
   EXPECT_FALSE(runner.IsBusy());
 }
@@ -144,12 +147,13 @@ TEST_F(DomainRunnerTest, Reset)
   using ::sup::sequencer::JobState;
 
   auto procedure = testutils::CreateMessageProcedure("text");
-  auto instruction_ptr = procedure->RootInstruction();
+  auto procedure_ptr = procedure.get();
+  auto instruction_ptr = procedure_ptr->RootInstruction();
 
   // DomainRunner runner(CreatePrintCallback(), *procedure);
-  DomainRunner runner(m_event_listener.AsStdFunction(), {}, *procedure);
+  DomainRunner runner(m_event_listener.AsStdFunction(), {}, std::move(procedure));
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
   EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   runner.Start();
@@ -157,7 +161,7 @@ TEST_F(DomainRunnerTest, Reset)
   auto final_state = runner.WaitForFinished();
   EXPECT_EQ(final_state, sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
   EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   EXPECT_TRUE(runner.IsFinished());
@@ -170,7 +174,7 @@ TEST_F(DomainRunnerTest, Reset)
   EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
   EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 }
 
@@ -182,9 +186,10 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
   const std::chrono::milliseconds wait_timeout(10000);
 
   auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
-  auto instruction_ptr = procedure->RootInstruction();
+  auto procedure_ptr = procedure.get();
+  auto instruction_ptr = procedure_ptr->RootInstruction();
 
-  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, std::move(procedure));
 
   EXPECT_TRUE(runner.Start());  // trigger action
 
@@ -209,8 +214,7 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
 
   EXPECT_EQ(runner.GetJobState(), JobState::kFailed);
   // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
-  std::cout << static_cast<int>(runner.GetJobState()) << std::endl;
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
   EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
@@ -221,7 +225,8 @@ TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
   const int tick_timeout_msec(1000);  // intentionally long timeout
 
   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
-  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
+  auto procedure_ptr = procedure.get();
+  DomainRunner runner(CreateNoopCallback(), {}, std::move(procedure));
 
   runner.SetTickTimeout(tick_timeout_msec);
 
@@ -234,7 +239,7 @@ TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
   EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   const time_t end_time = clock_used::now();
 
@@ -251,7 +256,8 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
   const int tick_timeout_msec(50);
 
   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
-  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
+  auto procedure_ptr = procedure.get();
+  DomainRunner runner(CreateNoopCallback(), {}, std::move(procedure));
 
   runner.SetTickTimeout(tick_timeout_msec);
 
@@ -264,7 +270,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
   EXPECT_TRUE(testutils::WaitFor(has_finished, msec(200)));
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   const time_t end_time = clock_used::now();
 
@@ -277,6 +283,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
 TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 {
   using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::InstructionState;
   using ::sup::sequencer::JobState;
 
   const msec wait_time(10);   // parameter for Wait instruction
@@ -287,10 +294,11 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
                                       + safety_gap);
 
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(wait_time, wait_time);
+  auto procedure_ptr = procedure.get();
 
-  auto sequence_ptr = procedure->RootInstruction();
-  auto wait0_ptr = sequence_ptr->ChildInstructions().at(0);
-  auto wait1_ptr = sequence_ptr->ChildInstructions().at(1);
+  const sup::dto::uint32 sequence_index{0};
+  const sup::dto::uint32 wait0_index{1};
+  const sup::dto::uint32 wait1_index{2};
 
   {
     const ::testing::InSequence seq;
@@ -301,28 +309,30 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     const domain_event_t event1(JobStateChangedEvent{JobState::kStepping});
     EXPECT_CALL(m_event_listener, Call(event1)).Times(1);
 
-    const domain_event_t event2(
-        InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::NOT_FINISHED});
+    const domain_event_t event2(InstructionStateUpdatedEvent{
+        sequence_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}});
     EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
-    const domain_event_t event3(
-        InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_FINISHED});
+    const domain_event_t event3(InstructionStateUpdatedEvent{
+        wait0_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}});
     EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
 
-    const domain_event_t event4(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::SUCCESS});
+    const domain_event_t event4(InstructionStateUpdatedEvent{
+        wait0_index, InstructionState{false, ExecutionStatus::SUCCESS}});
     EXPECT_CALL(m_event_listener, Call(event4)).Times(1);
 
-    const domain_event_t event4a(NextLeavesChangedEvent{{wait1_ptr}});
+    const domain_event_t event4a(
+        NextLeavesChangedEventV2{std::vector<sup::dto::uint32>({wait1_index})});
     EXPECT_CALL(m_event_listener, Call(event4a)).Times(1);
 
     const domain_event_t event5(JobStateChangedEvent{JobState::kPaused});
     EXPECT_CALL(m_event_listener, Call(event5)).Times(1);
   }
 
-  DomainRunner runner(m_event_listener.AsStdFunction(), {}, *procedure);
+  DomainRunner runner(m_event_listener.AsStdFunction(), {}, std::move(procedure));
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   // Step #1 right from initial state
   EXPECT_TRUE(runner.Step());
@@ -339,18 +349,19 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     const domain_event_t event1(JobStateChangedEvent{JobState::kStepping});
     EXPECT_CALL(m_event_listener, Call(event1)).Times(1);
 
-    const domain_event_t event2(
-        InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_FINISHED});
+    const domain_event_t event2(InstructionStateUpdatedEvent{
+        wait1_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}});
     EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
-    const domain_event_t event3(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::SUCCESS});
+    const domain_event_t event3(InstructionStateUpdatedEvent{
+        wait1_index, InstructionState{false, ExecutionStatus::SUCCESS}});
     EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
 
-    const domain_event_t event4(
-        InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::SUCCESS});
+    const domain_event_t event4(InstructionStateUpdatedEvent{
+        sequence_index, InstructionState{false, ExecutionStatus::SUCCESS}});
     EXPECT_CALL(m_event_listener, Call(event4)).Times(1);
 
-    const domain_event_t event4a(NextLeavesChangedEvent{});
+    const domain_event_t event4a(NextLeavesChangedEventV2{});
     EXPECT_CALL(m_event_listener, Call(event4a)).Times(1);
 
     const domain_event_t event5(JobStateChangedEvent{JobState::kSucceeded});
@@ -367,16 +378,16 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   {
     const ::testing::InSequence seq;
 
-    const domain_event_t event1(
-        InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_STARTED});
+    const domain_event_t event1(InstructionStateUpdatedEvent{
+        wait0_index, InstructionState{false, ExecutionStatus::NOT_STARTED}});
     EXPECT_CALL(m_event_listener, Call(event1)).Times(1);
 
-    const domain_event_t event2(
-        InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_STARTED});
+    const domain_event_t event2(InstructionStateUpdatedEvent{
+        wait1_index, InstructionState{false, ExecutionStatus::NOT_STARTED}});
     EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
-    const domain_event_t event3(
-        InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::NOT_STARTED});
+    const domain_event_t event3(InstructionStateUpdatedEvent{
+        sequence_index, InstructionState{false, ExecutionStatus::NOT_STARTED}});
     EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
   }
 }
@@ -388,10 +399,11 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
   using ::sup::sequencer::JobState;
 
   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  auto procedure_ptr = procedure.get();
 
-  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, std::move(procedure));
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   runner.Step();
 
@@ -403,7 +415,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
   runner.WaitForFinished();
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kHalted);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
 }
 
 //! Repeat procedure with increment instruction inside. We start in step mode, and after the first
@@ -413,8 +425,9 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   testutils::MockDomainEventListener listener;
 
   auto procedure = testutils::CreateCounterProcedure(3);
-  auto variable = procedure->GetWorkspace().GetVariable("counter");
-  procedure->Setup();
+  auto procedure_ptr = procedure.get();
+  auto variable = procedure_ptr->GetWorkspace().GetVariable("counter");
+  procedure_ptr->Setup();
 
   sup::dto::AnyValue counter_value;
   variable->GetValue(counter_value);
@@ -423,11 +436,11 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   // JobState: initial, stepping, paused
   EXPECT_CALL(listener, OnJobStateChanged(_)).Times(3);
   // Instruction: repeat (not finished) + one increment (not finished, success)
-  EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(3);
-  EXPECT_CALL(listener, OnWorkspaceEvent(_)).Times(1);  // variable changed (increment 1)
-  EXPECT_CALL(listener, OnNextLeavesChanged(_)).Times(3);
+  EXPECT_CALL(listener, OnInstructionStateUpdated(_)).Times(3);
+  EXPECT_CALL(listener, OnVariableUpdated(_)).Times(1);  // variable changed (increment 1)
+  EXPECT_CALL(listener, OnNextLeavesChangedV2(_)).Times(3);
 
-  DomainRunner runner(listener.CreateCallback(), {}, *procedure);
+  DomainRunner runner(listener.CreateCallback(), {}, std::move(procedure));
 
   // making step
   EXPECT_TRUE(runner.Step());
@@ -444,8 +457,8 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   // JobState: running, success
   EXPECT_CALL(listener, OnJobStateChanged(_)).Times(2);
   // Instruction: two increments 2*(not started, not finished, success) + repeat (success)
-  EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(7);
-  EXPECT_CALL(listener, OnWorkspaceEvent(_)).Times(2);  // variable changed (increment 2 and 3)
+  EXPECT_CALL(listener, OnInstructionStateUpdated(_)).Times(7);
+  EXPECT_CALL(listener, OnVariableUpdated(_)).Times(2);  // variable changed (increment 2 and 3)
 
   // continuing till the end
   EXPECT_TRUE(runner.Start());
@@ -453,13 +466,13 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   runner.WaitForFinished();
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   variable->GetValue(counter_value);
   EXPECT_EQ(counter_value, 3U);
 
   // destruction of jobController, two instructions (not_started)
-  EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(2);
+  EXPECT_CALL(listener, OnInstructionStateUpdated(_)).Times(2);
 }
 
 //! Repeat procedure with increment instruction for infinite repeat for run-pause-run scenario.
@@ -483,19 +496,20 @@ TEST_F(DomainRunnerTest, RunPauseRun)
   // The procedure contains two variables: a counter, and variable for interruption. By magic we
   // know variable names.
   auto procedure = testutils::CreateRepeatIncrementAndCompare();
+  auto procedure_ptr = procedure.get();
+
   const std::string kCounterVarName("counter");
-  const std::string kContinueVarName("to_continue");
-  auto& workspace = procedure->GetWorkspace();
+  auto& workspace = procedure_ptr->GetWorkspace();
   auto counter_var = workspace.GetVariable(kCounterVarName);
 
-  procedure->Setup();
+  procedure_ptr->Setup();
 
   // counter is 0 at the beginning
   sup::dto::AnyValue counter_value;
   counter_var->GetValue(counter_value);
   EXPECT_EQ(counter_value, 0U);
 
-  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, std::move(procedure));
 
   // starting and waiting a bit to let the counter to increment
   EXPECT_TRUE(runner.Start());
@@ -528,7 +542,7 @@ TEST_F(DomainRunnerTest, RunPauseRun)
 
   // to stop incrementing use interruption variable
   sup::dto::AnyValue interrupt_value(0U);
-  procedure->GetWorkspace().SetValue("to_continue", interrupt_value);
+  procedure_ptr->GetWorkspace().SetValue("to_continue", interrupt_value);
 
   std::this_thread::sleep_for(msec(25));
 
@@ -540,5 +554,5 @@ TEST_F(DomainRunnerTest, RunPauseRun)
 
   // it is failed because we've made a sequence quite
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kFailed);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }

@@ -42,9 +42,6 @@ class DomainRunnerService
 {
 public:
   DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
-                      const UserContext& user_context, procedure_t& procedure);
-
-  DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
                       const UserContext& user_context, std::unique_ptr<procedure_t> procedure);
 
   ~DomainRunnerService();

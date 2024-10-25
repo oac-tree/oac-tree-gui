@@ -46,15 +46,16 @@ public:
 TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
+  auto procedure_ptr = procedure.get();
 
-  DomainRunnerService runner(m_listener.CreateDispatcherContext(), {}, *procedure);
+  DomainRunnerService runner(m_listener.CreateDispatcherContext(), {}, std::move(procedure));
 
   // JobState: initial, stepping, paused
   EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(3);
   // Instruction: repeat (not finished) + one increment (not finished, success)
-  EXPECT_CALL(m_listener, OnInstructionStatusChanged(_)).Times(2);
+  EXPECT_CALL(m_listener, OnInstructionStateUpdated(_)).Times(2);
   EXPECT_CALL(m_listener, OnLogEvent(_)).Times(1);
-  EXPECT_CALL(m_listener, OnNextLeavesChanged(_)).Times(1);
+  EXPECT_CALL(m_listener, OnNextLeavesChangedV2(_)).Times(1);
 
   runner.Start();
 
@@ -68,5 +69,5 @@ TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
   // queued signals.
   QApplication::processEvents();
 
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
