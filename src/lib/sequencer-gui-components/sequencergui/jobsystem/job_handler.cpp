@@ -273,10 +273,10 @@ void JobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedure)
 void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_time_msec)
 {
   // this creates beneath DomainRunner(AsyncRunner(Runner())) and then call procedure->Setup
-  m_domain_runner_service =
-      std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
-  // m_domain_runner_service = std::make_unique<DomainRunnerService>(CreateContext(), user_context,
-  //                                                                 std::move(m_domain_procedure));
+  // m_domain_runner_service =
+  //     std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
+  m_domain_runner_service = std::make_unique<DomainRunnerService>(CreateContext(), user_context,
+                                                                  std::move(m_domain_procedure));
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
 }
 
