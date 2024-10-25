@@ -152,6 +152,7 @@ private:
    * @brief Handles events reporting for changes in domain's next leaves.
    */
   void OnNextLeavesChangedEvent(const NextLeavesChangedEvent& event);
+  void OnNextLeavesChangedEventV2(const NextLeavesChangedEventV2& event);
 
   /**
    * @brief Handles events reporting update in the domain variable.
