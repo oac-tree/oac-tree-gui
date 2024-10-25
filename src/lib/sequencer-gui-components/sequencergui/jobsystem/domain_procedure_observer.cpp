@@ -30,8 +30,10 @@
 
 #include <sup/sequencer/instruction.h>
 
+#include <cmath>
 #include <iostream>
 #include <sstream>
+#include <thread>
 
 namespace sequencergui
 {
@@ -56,12 +58,13 @@ DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_even
   }
 }
 
+DomainProcedureObserver::~DomainProcedureObserver() = default;
+
 void DomainProcedureObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 {
+  (void)n_instr;
   std::cout << "DomainProcedureObserver::InitNumberOfInstructions" << "\n";
 }
-
-DomainProcedureObserver::~DomainProcedureObserver() = default;
 
 void DomainProcedureObserver::UpdateInstructionStatus(
     const sup::sequencer::Instruction *instruction)
@@ -92,9 +95,12 @@ void DomainProcedureObserver::VariableUpdated(sup::dto::uint32 var_idx,
 
 void DomainProcedureObserver::JobStateUpdated(sup::sequencer::JobState state)
 {
-  std::cout << "DomainProcedureObserver::JobStateUpdated " << ::sup::sequencer::ToString(state)
-            << "\n";
-  m_post_event_callback(JobStateChangedEvent{state});
+  {
+    const std::lock_guard<std::mutex> lock{m_mutex};
+    m_state = state;
+    m_post_event_callback(JobStateChangedEvent{state});
+  }
+  m_cv.notify_one();
 }
 
 bool DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
@@ -149,7 +155,51 @@ void DomainProcedureObserver::NextInstructionsUpdated(
     const std::vector<sup::dto::uint32> &instr_indices)
 {
   std::cout << "DomainProcedureObserver::NextInstructionsUpdated \n";
+
+  std::unique_lock<std::mutex> lock{m_mutex};
+
   m_post_event_callback(NextLeavesChangedEventV2{instr_indices});
+
+  if (m_tick_timeout_msec > 0 && !IsLastTick())
+  {
+    lock.unlock();
+    std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_msec));
+  }
+}
+
+sup::sequencer::JobState DomainProcedureObserver::GetCurrentState() const
+{
+  const std::lock_guard<std::mutex> lock{m_mutex};
+  return m_state;
+}
+
+bool DomainProcedureObserver::WaitForState(sup::sequencer::JobState state, double msec) const
+{
+  const double nanosec_per_msec{1e6};
+  auto duration = std::chrono::nanoseconds(std::lround(msec * nanosec_per_msec));
+  std::unique_lock<std::mutex> lock{m_mutex};
+  return m_cv.wait_for(lock, duration, [this, state]() { return m_state == state; });
+}
+
+sup::sequencer::JobState DomainProcedureObserver::WaitForFinished() const
+{
+  auto pred = [this]() { return sup::sequencer::IsFinishedJobState(m_state); };
+  std::unique_lock<std::mutex> lock{m_mutex};
+  m_cv.wait(lock, pred);
+  return m_state;
+}
+
+void DomainProcedureObserver::SetTickTimeout(int msec)
+{
+  const std::unique_lock<std::mutex> lock{m_mutex};
+  m_tick_timeout_msec = msec;
+}
+
+bool DomainProcedureObserver::IsLastTick()
+{
+  // return status == ExecutionStatus::SUCCESS || status == ExecutionStatus::FAILURE;
+  // How to check last tick?
+  return false;
 }
 
 }  // namespace sequencergui

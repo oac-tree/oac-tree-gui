@@ -24,7 +24,9 @@
 
 #include <sup/sequencer/user_interface.h>
 
+#include <condition_variable>
 #include <functional>
+#include <mutex>
 
 namespace sequencergui
 {
@@ -80,10 +82,36 @@ public:
 
   void NextInstructionsUpdated(const std::vector<sup::dto::uint32>& instr_indices);
 
+  /**
+   * @brief Returns last reported job state.
+   */
+  sup::sequencer::JobState GetCurrentState() const;
+
+  /**
+   * @brief Waits for given state.
+   */
+  bool WaitForState(sup::sequencer::JobState state, double msec) const;
+
+  /**
+   * @brief Waits for job finished state, which is one of succeeded/failed/halted.
+   */
+  sup::sequencer::JobState WaitForFinished() const;
+
+  /**
+   * @brief Sets sleep time on every tick.
+   */
+  void SetTickTimeout(int msec);
+
 private:
+  bool IsLastTick();
+
   post_event_callback_t m_post_event_callback;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
+  sup::sequencer::JobState m_state{sup::sequencer::JobState::kInitial};
+  mutable std::mutex m_mutex;
+  mutable std::condition_variable m_cv;
+  int m_tick_timeout_msec{0};
 };
 
 }  // namespace sequencergui
