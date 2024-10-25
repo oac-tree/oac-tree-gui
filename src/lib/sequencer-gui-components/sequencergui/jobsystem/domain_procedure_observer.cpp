@@ -30,6 +30,7 @@
 
 #include <sup/sequencer/instruction.h>
 
+#include <iostream>
 #include <sstream>
 
 namespace sequencergui
@@ -55,6 +56,11 @@ DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_even
   }
 }
 
+void DomainProcedureObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
+{
+  std::cout << "DomainProcedureObserver::InitNumberOfInstructions" << "\n";
+}
+
 DomainProcedureObserver::~DomainProcedureObserver() = default;
 
 void DomainProcedureObserver::UpdateInstructionStatus(
@@ -64,10 +70,31 @@ void DomainProcedureObserver::UpdateInstructionStatus(
   m_post_event_callback(InstructionStatusChangedEvent{instruction, instruction->GetStatus()});
 }
 
+void DomainProcedureObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
+                                                      sup::sequencer::InstructionState state)
+{
+  std::cout << "DomainProcedureObserver::InstructionStateUpdated " << instr_idx << " "
+            << ::sup::sequencer::StatusToString(state.m_execution_status) << "\n";
+  m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
+}
+
 void DomainProcedureObserver::VariableUpdated(const std::string &name,
                                               const sup::dto::AnyValue &value, bool connected)
 {
   m_post_event_callback(WorkspaceEvent{name, value, connected});
+}
+
+void DomainProcedureObserver::VariableUpdated(sup::dto::uint32 var_idx,
+                                              const sup::dto::AnyValue &value, bool connected)
+{
+  m_post_event_callback(VariableUpdatedEvent{var_idx, value, connected});
+}
+
+void DomainProcedureObserver::JobStateUpdated(sup::sequencer::JobState state)
+{
+  std::cout << "DomainProcedureObserver::JobStateUpdated " << ::sup::sequencer::ToString(state)
+            << "\n";
+  m_post_event_callback(JobStateChangedEvent{state});
 }
 
 bool DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
@@ -116,6 +143,13 @@ void DomainProcedureObserver::Log(int severity, const std::string &message)
 {
   // assuming sequencer severity is the same as GUI severity
   m_post_event_callback(CreateLogEvent(static_cast<Severity>(severity), message));
+}
+
+void DomainProcedureObserver::NextInstructionsUpdated(
+    const std::vector<sup::dto::uint32> &instr_indices)
+{
+  std::cout << "DomainProcedureObserver::NextInstructionsUpdated \n";
+  // m_post_event_callback(NextLeavesChangedEvent{sup::sequencer::GetNextLeaves(proc)});
 }
 
 }  // namespace sequencergui

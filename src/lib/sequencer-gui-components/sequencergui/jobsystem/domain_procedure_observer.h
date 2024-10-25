@@ -52,10 +52,20 @@ public:
                                    const UserContext& user_context);
   ~DomainProcedureObserver() override;
 
+  void InitNumberOfInstructions(sup::dto::uint32 n_instr);
+
   void UpdateInstructionStatus(const ::sup::sequencer::Instruction* instruction) override;
+
+  void InstructionStateUpdated(sup::dto::uint32 instr_idx,
+                               sup::sequencer::InstructionState state);
 
   void VariableUpdated(const std::string& name, const sup::dto::AnyValue& value,
                        bool connected) override;
+
+  void VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue& value,
+                       bool connected);
+
+  void JobStateUpdated(sup::sequencer::JobState state);
 
   bool PutValue(const sup::dto::AnyValue& value, const std::string& description) override;
 
@@ -67,6 +77,8 @@ public:
   void Message(const std::string& message) override;
 
   void Log(int severity, const std::string& message) override;
+
+  void NextInstructionsUpdated(const std::vector<sup::dto::uint32>& instr_indices);
 
 private:
   post_event_callback_t m_post_event_callback;
