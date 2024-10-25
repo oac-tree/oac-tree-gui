@@ -150,6 +150,16 @@ bool NextLeavesChangedEvent::operator!=(const NextLeavesChangedEvent &other) con
   return !(*this == other);
 }
 
+bool NextLeavesChangedEventV2::operator==(const NextLeavesChangedEventV2 &other) const
+{
+  return leaves == other.leaves;
+}
+
+bool NextLeavesChangedEventV2::operator!=(const NextLeavesChangedEventV2 &other) const
+{
+  return !(*this == other);
+}
+
 bool IsValid(const domain_event_t &value)
 {
   return value.index() != 0;  // index==0 corresponds to `monostate`

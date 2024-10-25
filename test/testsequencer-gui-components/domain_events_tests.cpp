@@ -172,6 +172,28 @@ TEST_F(DomainEventTest, NextLeavesChangedEvent)
   }
 }
 
+TEST_F(DomainEventTest, NextLeavesChangedEventV2)
+{
+  using ::sup::sequencer::ExecutionStatus;
+
+  {  // default constructed
+    const NextLeavesChangedEventV2 event1{};
+    const NextLeavesChangedEventV2 event2{};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // instruction
+    const NextLeavesChangedEventV2 event1{{1}};
+    const NextLeavesChangedEventV2 event2{{1}};
+    const NextLeavesChangedEventV2 event3{{2}};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+    EXPECT_FALSE(event1 == event3);
+    EXPECT_TRUE(event1 != event3);
+  }
+}
+
 TEST_F(DomainEventTest, InstructionStateUpdatedEvent)
 {
   using ::sup::sequencer::ExecutionStatus;

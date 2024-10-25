@@ -90,6 +90,14 @@ struct NextLeavesChangedEvent
   bool operator!=(const NextLeavesChangedEvent& other) const;
 };
 
+struct NextLeavesChangedEventV2
+{
+  std::vector<sup::dto::uint32> leaves;
+
+  bool operator==(const NextLeavesChangedEventV2& other) const;
+  bool operator!=(const NextLeavesChangedEventV2& other) const;
+};
+
 /**
  * @brief The InstructionStateUpdatedEvent class represents automation server event when
  * instruction state has changed.
