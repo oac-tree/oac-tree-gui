@@ -34,16 +34,6 @@ struct DomainEventToStringVisitor
 {
   std::string operator()(const std::monostate &event) const { return std::string("monostate"); }
 
-  std::string operator()(const ::sequencergui::InstructionStatusChangedEvent &event) const
-  {
-    std::ostringstream ostr;
-    const std::string name = (event.instruction ? event.instruction->GetName() : std::string());
-    ostr << "InstructionStatusChanged"
-         << " " << (event.instruction) << " " << name << " "
-         << ::sup::sequencer::StatusToString(event.status);
-    return ostr.str();
-  }
-
   std::string operator()(const ::sequencergui::WorkspaceEvent &event) const
   {
     std::ostringstream ostr;
@@ -111,18 +101,6 @@ struct DomainEventToStringVisitor
 
 namespace sequencergui
 {
-
-// InstructionStatusChanged
-
-bool InstructionStatusChangedEvent::operator==(const InstructionStatusChangedEvent &other) const
-{
-  return instruction == other.instruction && status == other.status;
-}
-
-bool InstructionStatusChangedEvent::operator!=(const InstructionStatusChangedEvent &other) const
-{
-  return !(*this == other);
-}
 
 // WorkspaceEvent
 

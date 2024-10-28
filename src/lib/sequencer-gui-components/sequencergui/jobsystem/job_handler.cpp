@@ -144,19 +144,6 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
 
-void JobHandler::OnInstructionStatusChanged(const InstructionStatusChangedEvent &event)
-{
-  if (auto *item = m_guiobject_builder->FindInstructionItem(event.instruction); item)
-  {
-    item->SetStatus(::sup::sequencer::StatusToString(event.status));
-    emit InstructionStatusChanged(item);
-  }
-  else
-  {
-    qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
-  }
-}
-
 void JobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
 {
   if (auto *item = m_guiobject_builder->FindInstructionItem(event.index); item)
@@ -309,9 +296,6 @@ void JobHandler::PropagateBreakpointsToDomain()
 DomainEventDispatcherContext JobHandler::CreateContext()
 {
   DomainEventDispatcherContext result;
-
-  result.process_instruction_status_changed = [this](const InstructionStatusChangedEvent &event)
-  { OnInstructionStatusChanged(event); };
 
   result.process_instruction_state_updated = [this](const InstructionStateUpdatedEvent &event)
   { OnInstructionStateUpdated(event); };

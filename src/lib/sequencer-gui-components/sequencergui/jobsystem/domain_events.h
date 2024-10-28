@@ -40,19 +40,6 @@ namespace sequencergui
 {
 
 /**
- * @brief The InstructionStatusChangedEvent struct represents an event when instruction status has
- * changed.
- */
-struct InstructionStatusChangedEvent
-{
-  const instruction_t* instruction{nullptr};
-  sup::sequencer::ExecutionStatus status;
-
-  bool operator==(const InstructionStatusChangedEvent& other) const;
-  bool operator!=(const InstructionStatusChangedEvent& other) const;
-};
-
-/**
  * @brief The WorkspaceEvent class represents a change of the value or connection status of the
  * domain variable.
  */
@@ -101,8 +88,6 @@ struct NextLeavesChangedEventV2
 /**
  * @brief The InstructionStateUpdatedEvent class represents automation server event when
  * instruction state has changed.
- *
- * FIXME consider merging with InstructionStatusChangedEvent
  */
 struct InstructionStateUpdatedEvent
 {
@@ -131,8 +116,7 @@ struct VariableUpdatedEvent
 
 using domain_event_t =
     std::variant<std::monostate, InstructionStateUpdatedEvent, WorkspaceEvent, JobStateChangedEvent,
-                 LogEvent, NextLeavesChangedEvent, NextLeavesChangedEventV2,
-                 InstructionStatusChangedEvent, VariableUpdatedEvent>;
+                 LogEvent, NextLeavesChangedEvent, NextLeavesChangedEventV2, VariableUpdatedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

@@ -47,7 +47,6 @@ public:
   void OnNewEvent();
 
   void operator()(const std::monostate& event) const;
-  void operator()(const InstructionStatusChangedEvent& event) const;
   void operator()(const WorkspaceEvent& event) const;
   void operator()(const JobStateChangedEvent& event) const;
   void operator()(const LogEvent& event) const;

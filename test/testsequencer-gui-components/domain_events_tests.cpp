@@ -40,44 +40,6 @@ TEST_F(DomainEventTest, Monostate)
   EXPECT_FALSE(IsValid(event));
 }
 
-TEST_F(DomainEventTest, InstructionStatusChangedEvent)
-{
-  using ::sup::sequencer::ExecutionStatus;
-
-  EXPECT_TRUE(IsValid(domain_event_t{InstructionStatusChangedEvent{}}));
-
-  {  // default constructed
-    const InstructionStatusChangedEvent event1{};
-    const InstructionStatusChangedEvent event2{};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-  }
-
-  {  // names
-    const InstructionStatusChangedEvent event1{nullptr, ExecutionStatus::RUNNING};
-    const InstructionStatusChangedEvent event2{nullptr, ExecutionStatus::RUNNING};
-    const InstructionStatusChangedEvent event3{nullptr, ExecutionStatus::SUCCESS};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-    EXPECT_FALSE(event1 == event3);
-    EXPECT_TRUE(event1 != event3);
-  }
-
-  {  // instruction
-    auto instr1 = ::sequencergui::CreateDomainInstruction(
-        ::sequencergui::domainconstants::kWaitInstructionType);
-    auto instr2 = ::sequencergui::CreateDomainInstruction(
-        ::sequencergui::domainconstants::kWaitInstructionType);
-    const InstructionStatusChangedEvent event1{instr1.get(), ExecutionStatus::RUNNING};
-    const InstructionStatusChangedEvent event2{instr1.get(), ExecutionStatus::RUNNING};
-    const InstructionStatusChangedEvent event3{instr2.get(), ExecutionStatus::RUNNING};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-    EXPECT_FALSE(event1 == event3);
-    EXPECT_TRUE(event1 != event3);
-  }
-}
-
 TEST_F(DomainEventTest, WorkspaceEvent)
 {
   {  // default constructed
@@ -231,29 +193,29 @@ TEST_F(DomainEventTest, InstructionStateUpdatedEvent)
 TEST_F(DomainEventTest, VariableUpdatedEvent)
 {
   {  // default constructed
-    VariableUpdatedEvent event1;
-    VariableUpdatedEvent event2;
+    const VariableUpdatedEvent event1;
+    const VariableUpdatedEvent event2;
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // same id's
-    VariableUpdatedEvent event1{42};
-    VariableUpdatedEvent event2{42};
+    const VariableUpdatedEvent event1{42};
+    const VariableUpdatedEvent event2{42};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // same id's and values
-    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    const VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    const VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // different id's and same values
-    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    VariableUpdatedEvent event2{43, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    const VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    const VariableUpdatedEvent event2{43, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
     EXPECT_FALSE(event1 == event2);
     EXPECT_TRUE(event1 != event2);
   }

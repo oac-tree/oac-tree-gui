@@ -42,14 +42,6 @@ void DomainEventDispatcher::OnNewEvent()
 
 void DomainEventDispatcher::operator()(const std::monostate &event) const {}
 
-void DomainEventDispatcher::operator()(const InstructionStatusChangedEvent &event) const
-{
-  if (m_context.process_instruction_status_changed)
-  {
-    m_context.process_instruction_status_changed(event);
-  }
-}
-
 void DomainEventDispatcher::operator()(const WorkspaceEvent &event) const
 {
   if (m_context.process_workspace_event)

@@ -58,19 +58,19 @@ TEST_F(DomainEventDispatcherTest, EmptyEvent)
   const domain_event_t event;
   auto dispatcher = CreateDispatcher(event);
 
-  EXPECT_CALL(m_listener, OnInstructionStatusChanged(_)).Times(0);
+  EXPECT_CALL(m_listener, OnInstructionStateUpdated(_)).Times(0);
   EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(0);
 
   dispatcher->OnNewEvent();
 }
 
-TEST_F(DomainEventDispatcherTest, InstructionStatusChanged)
+TEST_F(DomainEventDispatcherTest, InstructionStateUpdatedChanged)
 {
-  InstructionStatusChangedEvent expected_event{nullptr,
-                                               ::sup::sequencer::ExecutionStatus::NOT_STARTED};
+  InstructionStateUpdatedEvent expected_event{
+      0, sup::sequencer::InstructionState{false, ::sup::sequencer::ExecutionStatus::NOT_STARTED}};
   auto dispatcher = CreateDispatcher(expected_event);
 
-  EXPECT_CALL(m_listener, OnInstructionStatusChanged(expected_event)).Times(1);
+  EXPECT_CALL(m_listener, OnInstructionStateUpdated(expected_event)).Times(1);
   EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(0);
 
   dispatcher->OnNewEvent();
@@ -81,7 +81,7 @@ TEST_F(DomainEventDispatcherTest, JobStatusChanged)
   JobStateChangedEvent expected_event{::sup::sequencer::JobState::kInitial};
   auto dispatcher = CreateDispatcher(expected_event);
 
-  EXPECT_CALL(m_listener, OnInstructionStatusChanged(_)).Times(0);
+  EXPECT_CALL(m_listener, OnInstructionStateUpdated(_)).Times(0);
   EXPECT_CALL(m_listener, OnJobStateChanged(expected_event)).Times(1);
 
   dispatcher->OnNewEvent();

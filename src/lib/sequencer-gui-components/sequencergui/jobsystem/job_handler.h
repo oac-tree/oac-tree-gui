@@ -135,7 +135,6 @@ private:
    * @brief Processes instruction status change in the domain, and update InstructionItem's status
    * accordingly.
    */
-  void OnInstructionStatusChanged(const InstructionStatusChangedEvent& event);
   void OnInstructionStateUpdated(const InstructionStateUpdatedEvent& event);
 
   /**

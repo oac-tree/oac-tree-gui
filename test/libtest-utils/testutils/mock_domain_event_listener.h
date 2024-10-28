@@ -63,14 +63,6 @@ public:
   void operator()(const std::monostate& event) const {}
 
   /**
-   * @brief Operator to visit InstructionStatusChanged and trigger mock method.
-   */
-  void operator()(const sequencergui::InstructionStatusChangedEvent& event) const
-  {
-    OnInstructionStatusChanged(event);
-  }
-
-  /**
    * @brief Operator to visit WorkspaceEvent and trigger mock method.
    */
   void operator()(const sequencergui::WorkspaceEvent& event) const { OnWorkspaceEvent(event); }
@@ -116,8 +108,6 @@ public:
     OnInstructionStateUpdated(event);
   }
 
-  MOCK_METHOD(void, OnInstructionStatusChanged,
-              (const sequencergui::InstructionStatusChangedEvent&), (const));
   MOCK_METHOD(void, OnWorkspaceEvent, (const sequencergui::WorkspaceEvent&), (const));
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
@@ -134,10 +124,6 @@ public:
   sequencergui::DomainEventDispatcherContext CreateDispatcherContext()
   {
     sequencergui::DomainEventDispatcherContext result;
-
-    result.process_instruction_status_changed =
-        [this](const sequencergui::InstructionStatusChangedEvent& event)
-    { OnInstructionStatusChanged(event); };
 
     result.process_workspace_event = [this](const sequencergui::WorkspaceEvent& event)
     { OnWorkspaceEvent(event); };
