@@ -167,7 +167,7 @@ void JobHandler::onLogEvent(const sequencergui::LogEvent &event)
   m_job_log->Append(event);
 }
 
-void JobHandler::OnNextLeavesChangedEventV2(const NextLeavesChangedEventV2 &event)
+void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
 {
   std::vector<InstructionItem *> items;
   for (auto instruction_index : event.leaves)
@@ -291,8 +291,8 @@ DomainEventDispatcherContext JobHandler::CreateContext()
 
   result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
 
-  result.next_leaves_changed_event_v2 = [this](const NextLeavesChangedEventV2 &event)
-  { OnNextLeavesChangedEventV2(event); };
+  result.next_leaves_changed_event = [this](const NextLeavesChangedEvent &event)
+  { OnNextLeavesChangedEvent(event); };
 
   return result;
 }

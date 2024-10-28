@@ -107,21 +107,21 @@ TEST_F(DomainEventTest, JobStateChangedEvent)
   }
 }
 
-TEST_F(DomainEventTest, NextLeavesChangedEventV2)
+TEST_F(DomainEventTest, NextLeavesChangedEvent)
 {
   using ::sup::sequencer::ExecutionStatus;
 
   {  // default constructed
-    const NextLeavesChangedEventV2 event1{};
-    const NextLeavesChangedEventV2 event2{};
+    const NextLeavesChangedEvent event1{};
+    const NextLeavesChangedEvent event2{};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // instruction
-    const NextLeavesChangedEventV2 event1{{1}};
-    const NextLeavesChangedEventV2 event2{{1}};
-    const NextLeavesChangedEventV2 event3{{2}};
+    const NextLeavesChangedEvent event1{{1}};
+    const NextLeavesChangedEvent event2{{1}};
+    const NextLeavesChangedEvent event3{{2}};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);
@@ -194,15 +194,17 @@ TEST_F(DomainEventTest, VariableUpdatedEvent)
   }
 
   {  // same id's and different values
-    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}};
+    const VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    const VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}};
     EXPECT_FALSE(event1 == event2);
     EXPECT_TRUE(event1 != event2);
   }
 
   {  // same id's and values, different is_available
-    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, false};
-    VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, true};
+    const VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42},
+                                      false};
+    const VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42},
+                                      true};
     EXPECT_FALSE(event1 == event2);
     EXPECT_TRUE(event1 != event2);
   }

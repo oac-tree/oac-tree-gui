@@ -116,7 +116,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     const domain_event_t event6(JobStateChangedEvent{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, Call(event6)).Times(1);
 
-    const domain_event_t event7(NextLeavesChangedEventV2{});
+    const domain_event_t event7(NextLeavesChangedEvent{});
     EXPECT_CALL(m_event_listener, Call(event7)).Times(1);
 
     // triggered by JobController d-tor
@@ -322,7 +322,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     EXPECT_CALL(m_event_listener, Call(event4)).Times(1);
 
     const domain_event_t event4a(
-        NextLeavesChangedEventV2{std::vector<sup::dto::uint32>({wait1_index})});
+        NextLeavesChangedEvent{std::vector<sup::dto::uint32>({wait1_index})});
     EXPECT_CALL(m_event_listener, Call(event4a)).Times(1);
 
     const domain_event_t event5(JobStateChangedEvent{JobState::kPaused});
@@ -361,7 +361,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
         sequence_index, InstructionState{false, ExecutionStatus::SUCCESS}});
     EXPECT_CALL(m_event_listener, Call(event4)).Times(1);
 
-    const domain_event_t event4a(NextLeavesChangedEventV2{});
+    const domain_event_t event4a(NextLeavesChangedEvent{});
     EXPECT_CALL(m_event_listener, Call(event4a)).Times(1);
 
     const domain_event_t event5(JobStateChangedEvent{JobState::kSucceeded});

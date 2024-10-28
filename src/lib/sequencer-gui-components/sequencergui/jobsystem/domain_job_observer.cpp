@@ -142,7 +142,7 @@ void DomainJobObserver::NextInstructionsUpdated(
 
   std::unique_lock<std::mutex> lock{m_mutex};
 
-  m_post_event_callback(NextLeavesChangedEventV2{instr_indices});
+  m_post_event_callback(NextLeavesChangedEvent{instr_indices});
 
   if (m_tick_timeout_msec > 0 && !IsLastTick())
   {
