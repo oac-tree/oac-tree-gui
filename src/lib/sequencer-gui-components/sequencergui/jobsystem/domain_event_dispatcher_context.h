@@ -42,7 +42,6 @@ struct DomainEventDispatcherContext
   std::function<void(const LogEvent&)> process_log_event;
 
   //! a callback to process next-leaves-changed event
-  std::function<void(const NextLeavesChangedEvent&)> next_leaves_changed_event;
   std::function<void(const NextLeavesChangedEventV2&)> next_leaves_changed_event_v2;
 
   //! a callback to process a change in automation instruction state

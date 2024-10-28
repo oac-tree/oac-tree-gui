@@ -50,7 +50,6 @@ public:
   void operator()(const WorkspaceEvent& event) const;
   void operator()(const JobStateChangedEvent& event) const;
   void operator()(const LogEvent& event) const;
-  void operator()(const NextLeavesChangedEvent& event) const;
   void operator()(const NextLeavesChangedEventV2& event) const;
   void operator()(const InstructionStateUpdatedEvent& event) const;
   void operator()(const VariableUpdatedEvent& event) const;

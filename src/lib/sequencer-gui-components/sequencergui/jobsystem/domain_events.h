@@ -65,18 +65,6 @@ struct JobStateChangedEvent
   bool operator!=(const JobStateChangedEvent& other) const;
 };
 
-/**
- * @brief The NextLeavesChanged struct represents an event when list of next instruction leaves is
- * changed.
- */
-struct NextLeavesChangedEvent
-{
-  std::vector<const instruction_t*> leaves;
-
-  bool operator==(const NextLeavesChangedEvent& other) const;
-  bool operator!=(const NextLeavesChangedEvent& other) const;
-};
-
 struct NextLeavesChangedEventV2
 {
   std::vector<sup::dto::uint32> leaves;
@@ -116,7 +104,7 @@ struct VariableUpdatedEvent
 
 using domain_event_t =
     std::variant<std::monostate, InstructionStateUpdatedEvent, WorkspaceEvent, JobStateChangedEvent,
-                 LogEvent, NextLeavesChangedEvent, NextLeavesChangedEventV2, VariableUpdatedEvent>;
+                 LogEvent, NextLeavesChangedEventV2, VariableUpdatedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

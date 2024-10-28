@@ -167,24 +167,6 @@ void JobHandler::onLogEvent(const sequencergui::LogEvent &event)
   m_job_log->Append(event);
 }
 
-void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
-{
-  std::vector<InstructionItem *> items;
-  for (const auto *instruction : event.leaves)
-  {
-    if (auto *item = m_guiobject_builder->FindInstructionItem(instruction); item)
-    {
-      items.push_back(item);
-    }
-    else
-    {
-      qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
-    }
-  }
-
-  emit NextLeavesChanged(items);
-}
-
 void JobHandler::OnNextLeavesChangedEventV2(const NextLeavesChangedEventV2 &event)
 {
   std::vector<InstructionItem *> items;
@@ -309,8 +291,6 @@ DomainEventDispatcherContext JobHandler::CreateContext()
 
   result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
 
-  result.next_leaves_changed_event = [this](const NextLeavesChangedEvent &event)
-  { OnNextLeavesChangedEvent(event); };
   result.next_leaves_changed_event_v2 = [this](const NextLeavesChangedEventV2 &event)
   { OnNextLeavesChangedEventV2(event); };
 
