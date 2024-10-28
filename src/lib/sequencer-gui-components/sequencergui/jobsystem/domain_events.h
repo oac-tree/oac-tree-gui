@@ -40,20 +40,6 @@ namespace sequencergui
 {
 
 /**
- * @brief The WorkspaceEvent class represents a change of the value or connection status of the
- * domain variable.
- */
-struct WorkspaceEvent
-{
-  std::string variable_name;
-  sup::dto::AnyValue value;
-  bool connected{false};
-
-  bool operator==(const WorkspaceEvent& other) const;
-  bool operator!=(const WorkspaceEvent& other) const;
-};
-
-/**
  * @brief The JobStateChangedEvent struct represents an event when instruction status has
  * changed.
  */
@@ -89,8 +75,6 @@ struct InstructionStateUpdatedEvent
 /**
  * @brief The VariableUpdatedEvent class represents automation server event when variable value has
  * changed.
- *
- * FIXME consider merging with WorkspaceEvent
  */
 struct VariableUpdatedEvent
 {
@@ -103,8 +87,8 @@ struct VariableUpdatedEvent
 };
 
 using domain_event_t =
-    std::variant<std::monostate, InstructionStateUpdatedEvent, WorkspaceEvent, JobStateChangedEvent,
-                 LogEvent, NextLeavesChangedEvent, VariableUpdatedEvent>;
+    std::variant<std::monostate, InstructionStateUpdatedEvent, JobStateChangedEvent, LogEvent,
+                 NextLeavesChangedEvent, VariableUpdatedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

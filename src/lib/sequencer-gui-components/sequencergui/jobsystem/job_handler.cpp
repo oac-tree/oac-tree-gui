@@ -185,11 +185,6 @@ void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
   emit NextLeavesChanged(items);
 }
 
-void JobHandler::OnWorkspaceEvent(const WorkspaceEvent &event)
-{
-  m_workspace_item_listener->ProcessEventFromDomain(event);
-}
-
 void JobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
 {
   m_workspace_item_listener->ProcessEventFromDomain(event);
@@ -282,7 +277,6 @@ DomainEventDispatcherContext JobHandler::CreateContext()
   result.process_instruction_state_updated = [this](const InstructionStateUpdatedEvent &event)
   { OnInstructionStateUpdated(event); };
 
-  result.process_workspace_event = [this](const WorkspaceEvent &event) { OnWorkspaceEvent(event); };
   result.process_variable_updated = [this](const VariableUpdatedEvent &event)
   { OnVariableUpdatedEvent(event); };
 

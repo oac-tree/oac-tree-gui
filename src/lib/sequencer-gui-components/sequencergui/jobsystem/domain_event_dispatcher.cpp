@@ -42,14 +42,6 @@ void DomainEventDispatcher::OnNewEvent()
 
 void DomainEventDispatcher::operator()(const std::monostate &event) const {}
 
-void DomainEventDispatcher::operator()(const WorkspaceEvent &event) const
-{
-  if (m_context.process_workspace_event)
-  {
-    m_context.process_workspace_event(event);
-  }
-}
-
 void DomainEventDispatcher::operator()(const JobStateChangedEvent &event) const
 {
   if (m_context.process_job_state_changed)

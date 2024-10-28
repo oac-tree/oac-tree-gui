@@ -68,9 +68,6 @@ public:
    */
   void ProcessEventFromDomain(const VariableUpdatedEvent& event);
 
-  // temporary duplication before removing WorkspaceEvent
-  void ProcessEventFromDomain(const WorkspaceEvent& event);
-
 private:
   void ValidateWorkspaces();
 
@@ -85,7 +82,6 @@ private:
   std::vector<bool> m_block_update_to_domain;
   std::map<VariableItem*, size_t> m_item_to_index;
   std::vector<VariableItem*> m_index_to_item;
-  std::map<std::string, size_t> m_name_to_index;
 };
 
 }  // namespace sequencergui

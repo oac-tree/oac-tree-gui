@@ -34,15 +34,6 @@ struct DomainEventToStringVisitor
 {
   std::string operator()(const std::monostate &event) const { return std::string("monostate"); }
 
-  std::string operator()(const ::sequencergui::WorkspaceEvent &event) const
-  {
-    std::ostringstream ostr;
-    ostr << "WorkspaceEvent"
-         << " " << (event.variable_name) << " connected:" <<event.connected << " "
-         << ::sup::dto::PrintAnyValue(event.value);
-    return ostr.str();
-  }
-
   std::string operator()(const ::sequencergui::InstructionStateUpdatedEvent &event) const
   {
     std::ostringstream ostr;
@@ -90,19 +81,6 @@ struct DomainEventToStringVisitor
 
 namespace sequencergui
 {
-
-// WorkspaceEvent
-
-bool WorkspaceEvent::operator==(const WorkspaceEvent& other) const
-{
-  return variable_name == other.variable_name && value == other.value
-         && connected == other.connected;
-}
-
-bool WorkspaceEvent::operator!=(const WorkspaceEvent& other) const
-{
-  return !(*this == other);
-}
 
 // JobStatusChanged
 

@@ -63,11 +63,6 @@ public:
   void operator()(const std::monostate& event) const {}
 
   /**
-   * @brief Operator to visit WorkspaceEvent and trigger mock method.
-   */
-  void operator()(const sequencergui::WorkspaceEvent& event) const { OnWorkspaceEvent(event); }
-
-  /**
    * @brief Operator to visit JobStateChanged and trigger mock method.
    */
   void operator()(const sequencergui::JobStateChangedEvent& event) const
@@ -104,7 +99,6 @@ public:
     OnInstructionStateUpdated(event);
   }
 
-  MOCK_METHOD(void, OnWorkspaceEvent, (const sequencergui::WorkspaceEvent&), (const));
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
   MOCK_METHOD(void, OnNextLeavesChangedV2, (const sequencergui::NextLeavesChangedEvent&),
@@ -119,9 +113,6 @@ public:
   sequencergui::DomainEventDispatcherContext CreateDispatcherContext()
   {
     sequencergui::DomainEventDispatcherContext result;
-
-    result.process_workspace_event = [this](const sequencergui::WorkspaceEvent& event)
-    { OnWorkspaceEvent(event); };
 
     result.process_job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
     { OnJobStateChanged(event); };

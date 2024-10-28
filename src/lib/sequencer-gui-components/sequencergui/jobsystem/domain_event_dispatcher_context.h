@@ -32,9 +32,6 @@ namespace sequencergui
  */
 struct DomainEventDispatcherContext
 {
-  //! a callback to process a change in variable
-  std::function<void(const WorkspaceEvent&)> process_workspace_event;
-
   //! a callback to process job status change
   std::function<void(const JobStateChangedEvent&)> process_job_state_changed;
 

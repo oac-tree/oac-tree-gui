@@ -20,7 +20,6 @@
 #include "sequencergui/jobsystem/domain_events.h"
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/domain_helper.h>
 
 #include <sup/sequencer/instruction.h>
 
@@ -38,51 +37,6 @@ TEST_F(DomainEventTest, Monostate)
 {
   domain_event_t event;
   EXPECT_FALSE(IsValid(event));
-}
-
-TEST_F(DomainEventTest, WorkspaceEvent)
-{
-  {  // default constructed
-    WorkspaceEvent event1;
-    WorkspaceEvent event2;
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-  }
-
-  {  // same names
-    WorkspaceEvent event1{"abc"};
-    WorkspaceEvent event2{"abc"};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-  }
-
-  {  // same names and values
-    WorkspaceEvent event1{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    WorkspaceEvent event2{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-  }
-
-  {  // different names and same values
-    WorkspaceEvent event1{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    WorkspaceEvent event2{"def", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    EXPECT_FALSE(event1 == event2);
-    EXPECT_TRUE(event1 != event2);
-  }
-
-  {  // same names and different values
-    WorkspaceEvent event1{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
-    WorkspaceEvent event2{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}};
-    EXPECT_FALSE(event1 == event2);
-    EXPECT_TRUE(event1 != event2);
-  }
-
-  {  // same names and values, different is_available
-    WorkspaceEvent event1{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, false};
-    WorkspaceEvent event2{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, true};
-    EXPECT_FALSE(event1 == event2);
-    EXPECT_TRUE(event1 != event2);
-  }
 }
 
 TEST_F(DomainEventTest, JobStateChangedEvent)
