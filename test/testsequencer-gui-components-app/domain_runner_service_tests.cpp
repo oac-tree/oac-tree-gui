@@ -55,7 +55,7 @@ TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
   // Instruction: repeat (not finished) + one increment (not finished, success)
   EXPECT_CALL(m_listener, OnInstructionStateUpdated(_)).Times(2);
   EXPECT_CALL(m_listener, OnLogEvent(_)).Times(1);
-  EXPECT_CALL(m_listener, OnNextLeavesChangedV2(_)).Times(1);
+  EXPECT_CALL(m_listener, OnNextLeavesChanged(_)).Times(1);
 
   runner.Start();
 

@@ -32,6 +32,12 @@ namespace sequencergui
  */
 struct DomainEventDispatcherContext
 {
+  //! a callback to process a change in automation instruction state
+  std::function<void(const InstructionStateUpdatedEvent&)> process_instruction_state_updated;
+
+  //! a callback to process a change in a variable
+  std::function<void(const VariableUpdatedEvent&)> process_variable_updated;
+
   //! a callback to process job status change
   std::function<void(const JobStateChangedEvent&)> process_job_state_changed;
 
@@ -40,12 +46,6 @@ struct DomainEventDispatcherContext
 
   //! a callback to process next-leaves-changed event
   std::function<void(const NextLeavesChangedEvent&)> next_leaves_changed_event;
-
-  //! a callback to process a change in automation instruction state
-  std::function<void(const InstructionStateUpdatedEvent&)> process_instruction_state_updated;
-
-  //! a callback to process a change in a variable
-  std::function<void(const VariableUpdatedEvent&)> process_variable_updated;
 };
 
 }  // namespace sequencergui

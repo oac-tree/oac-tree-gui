@@ -47,11 +47,11 @@ public:
   void OnNewEvent();
 
   void operator()(const std::monostate& event) const;
+  void operator()(const InstructionStateUpdatedEvent& event) const;
+  void operator()(const VariableUpdatedEvent& event) const;
   void operator()(const JobStateChangedEvent& event) const;
   void operator()(const LogEvent& event) const;
   void operator()(const NextLeavesChangedEvent& event) const;
-  void operator()(const InstructionStateUpdatedEvent& event) const;
-  void operator()(const VariableUpdatedEvent& event) const;
 
 private:
   get_event_callback_t m_get_event;

@@ -63,6 +63,22 @@ public:
   void operator()(const std::monostate& event) const {}
 
   /**
+   * @brief Operator to visit InstructionStateUpdated and trigger mock method.
+   */
+  void operator()(const sequencergui::InstructionStateUpdatedEvent& event) const
+  {
+    OnInstructionStateUpdated(event);
+  }
+
+  /**
+   * @brief Operator to visit VariableStateUpdated and trigger mock method.
+   */
+  void operator()(const sequencergui::VariableUpdatedEvent& event) const
+  {
+    OnVariableUpdated(event);
+  }
+
+  /**
    * @brief Operator to visit JobStateChanged and trigger mock method.
    */
   void operator()(const sequencergui::JobStateChangedEvent& event) const
@@ -80,32 +96,15 @@ public:
    */
   void operator()(const sequencergui::NextLeavesChangedEvent& event) const
   {
-    OnNextLeavesChangedV2(event);
+    OnNextLeavesChanged(event);
   }
 
-  /**
-   * @brief Operator to visit VariableStateUpdated and trigger mock method.
-   */
-  void operator()(const sequencergui::VariableUpdatedEvent& event) const
-  {
-    OnVariableUpdated(event);
-  }
-
-  /**
-   * @brief Operator to visit InstructionStateUpdated and trigger mock method.
-   */
-  void operator()(const sequencergui::InstructionStateUpdatedEvent& event) const
-  {
-    OnInstructionStateUpdated(event);
-  }
-
-  MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
-  MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
-  MOCK_METHOD(void, OnNextLeavesChangedV2, (const sequencergui::NextLeavesChangedEvent&),
-              (const));
   MOCK_METHOD(void, OnInstructionStateUpdated, (const sequencergui::InstructionStateUpdatedEvent&),
               (const));
   MOCK_METHOD(void, OnVariableUpdated, (const sequencergui::VariableUpdatedEvent&), (const));
+  MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
+  MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
+  MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChangedEvent&), (const));
 
   /**
    * @brief Creates a structure with callbacks to trigger mock methods.
@@ -114,21 +113,20 @@ public:
   {
     sequencergui::DomainEventDispatcherContext result;
 
-    result.process_job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
-    { OnJobStateChanged(event); };
-
-    result.process_log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
-
-    result.next_leaves_changed_event =
-        [this](const sequencergui::NextLeavesChangedEvent& event)
-    { OnNextLeavesChangedV2(event); };
-
     result.process_instruction_state_updated =
         [this](const sequencergui::InstructionStateUpdatedEvent& event)
     { OnInstructionStateUpdated(event); };
 
     result.process_variable_updated = [this](const sequencergui::VariableUpdatedEvent& event)
     { OnVariableUpdated(event); };
+
+    result.process_job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
+    { OnJobStateChanged(event); };
+
+    result.process_log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
+
+    result.next_leaves_changed_event = [this](const sequencergui::NextLeavesChangedEvent& event)
+    { OnNextLeavesChanged(event); };
 
     return result;
   }

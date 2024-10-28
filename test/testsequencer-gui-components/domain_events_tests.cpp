@@ -35,52 +35,8 @@ class DomainEventTest : public ::testing::Test
 
 TEST_F(DomainEventTest, Monostate)
 {
-  domain_event_t event;
+  const domain_event_t event;
   EXPECT_FALSE(IsValid(event));
-}
-
-TEST_F(DomainEventTest, JobStateChangedEvent)
-{
-  EXPECT_TRUE(IsValid(domain_event_t{JobStateChangedEvent{}}));
-
-  {  // default constructed
-    const JobStateChangedEvent event1{};
-    const JobStateChangedEvent event2{};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-  }
-
-  {  // names
-    const JobStateChangedEvent event1{::sup::sequencer::JobState::kInitial};
-    const JobStateChangedEvent event2{::sup::sequencer::JobState::kInitial};
-    const JobStateChangedEvent event3{::sup::sequencer::JobState::kRunning};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-    EXPECT_FALSE(event1 == event3);
-    EXPECT_TRUE(event1 != event3);
-  }
-}
-
-TEST_F(DomainEventTest, NextLeavesChangedEvent)
-{
-  using ::sup::sequencer::ExecutionStatus;
-
-  {  // default constructed
-    const NextLeavesChangedEvent event1{};
-    const NextLeavesChangedEvent event2{};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-  }
-
-  {  // instruction
-    const NextLeavesChangedEvent event1{{1}};
-    const NextLeavesChangedEvent event2{{1}};
-    const NextLeavesChangedEvent event3{{2}};
-    EXPECT_TRUE(event1 == event2);
-    EXPECT_FALSE(event1 != event2);
-    EXPECT_FALSE(event1 == event3);
-    EXPECT_TRUE(event1 != event3);
-  }
 }
 
 TEST_F(DomainEventTest, InstructionStateUpdatedEvent)
@@ -161,5 +117,50 @@ TEST_F(DomainEventTest, VariableUpdatedEvent)
                                       true};
     EXPECT_FALSE(event1 == event2);
     EXPECT_TRUE(event1 != event2);
+  }
+}
+
+
+TEST_F(DomainEventTest, JobStateChangedEvent)
+{
+  EXPECT_TRUE(IsValid(domain_event_t{JobStateChangedEvent{}}));
+
+  {  // default constructed
+    const JobStateChangedEvent event1{};
+    const JobStateChangedEvent event2{};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // names
+    const JobStateChangedEvent event1{::sup::sequencer::JobState::kInitial};
+    const JobStateChangedEvent event2{::sup::sequencer::JobState::kInitial};
+    const JobStateChangedEvent event3{::sup::sequencer::JobState::kRunning};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+    EXPECT_FALSE(event1 == event3);
+    EXPECT_TRUE(event1 != event3);
+  }
+}
+
+TEST_F(DomainEventTest, NextLeavesChangedEvent)
+{
+  using ::sup::sequencer::ExecutionStatus;
+
+  {  // default constructed
+    const NextLeavesChangedEvent event1{};
+    const NextLeavesChangedEvent event2{};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // instruction
+    const NextLeavesChangedEvent event1{{1}};
+    const NextLeavesChangedEvent event2{{1}};
+    const NextLeavesChangedEvent event3{{2}};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+    EXPECT_FALSE(event1 == event3);
+    EXPECT_TRUE(event1 != event3);
   }
 }

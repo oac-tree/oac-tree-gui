@@ -438,7 +438,7 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   // Instruction: repeat (not finished) + one increment (not finished, success)
   EXPECT_CALL(listener, OnInstructionStateUpdated(_)).Times(3);
   EXPECT_CALL(listener, OnVariableUpdated(_)).Times(1);  // variable changed (increment 1)
-  EXPECT_CALL(listener, OnNextLeavesChangedV2(_)).Times(3);
+  EXPECT_CALL(listener, OnNextLeavesChanged(_)).Times(3);
 
   DomainRunner runner(listener.CreateCallback(), {}, std::move(procedure));
 

@@ -42,6 +42,22 @@ void DomainEventDispatcher::OnNewEvent()
 
 void DomainEventDispatcher::operator()(const std::monostate &event) const {}
 
+void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent &event) const
+{
+  if (m_context.process_instruction_state_updated)
+  {
+    m_context.process_instruction_state_updated(event);
+  }
+}
+
+void DomainEventDispatcher::operator()(const VariableUpdatedEvent &event) const
+{
+  if (m_context.process_variable_updated)
+  {
+    m_context.process_variable_updated(event);
+  }
+}
+
 void DomainEventDispatcher::operator()(const JobStateChangedEvent &event) const
 {
   if (m_context.process_job_state_changed)
@@ -63,22 +79,6 @@ void DomainEventDispatcher::operator()(const NextLeavesChangedEvent &event) cons
   if (m_context.next_leaves_changed_event)
   {
     m_context.next_leaves_changed_event(event);
-  }
-}
-
-void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent &event) const
-{
-  if (m_context.process_instruction_state_updated)
-  {
-    m_context.process_instruction_state_updated(event);
-  }
-}
-
-void DomainEventDispatcher::operator()(const VariableUpdatedEvent &event) const
-{
-  if (m_context.process_variable_updated)
-  {
-    m_context.process_variable_updated(event);
   }
 }
 

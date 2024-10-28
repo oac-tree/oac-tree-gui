@@ -43,6 +43,15 @@ struct DomainEventToStringVisitor
     return ostr.str();
   }
 
+  std::string operator()(const ::sequencergui::VariableUpdatedEvent &event) const
+  {
+    std::ostringstream ostr;
+    ostr << std::string("VariableUpdatedEvent") << " "
+         << ::sup::dto::PrintAnyValue(event.value);
+    ostr << " connected:" << event.connected;
+    return ostr.str();
+  }
+
   std::string operator()(const ::sequencergui::JobStateChangedEvent &event) const
   {
     return std::string("JobStatusChanged") + " " + ::sup::sequencer::ToString(event.status);
@@ -59,20 +68,11 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::sequencergui::NextLeavesChangedEvent &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("NextLeavesChangedV2") << " " << event.leaves.size() << " ";
+    ostr << std::string("NextLeavesChanged") << " " << event.leaves.size() << " ";
     for (auto instr_index : event.leaves)
     {
       ostr << instr_index << " ";
     }
-    return ostr.str();
-  }
-
-  std::string operator()(const ::sequencergui::VariableUpdatedEvent &event) const
-  {
-    std::ostringstream ostr;
-    ostr << std::string("VariableUpdatedEvent") << " "
-         << ::sup::dto::PrintAnyValue(event.value);
-    ostr << " connected:" << event.connected;
     return ostr.str();
   }
 };

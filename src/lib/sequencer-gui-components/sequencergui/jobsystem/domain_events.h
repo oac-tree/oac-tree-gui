@@ -40,26 +40,6 @@ namespace sequencergui
 {
 
 /**
- * @brief The JobStateChangedEvent struct represents an event when instruction status has
- * changed.
- */
-struct JobStateChangedEvent
-{
-  sup::sequencer::JobState status;
-
-  bool operator==(const JobStateChangedEvent& other) const;
-  bool operator!=(const JobStateChangedEvent& other) const;
-};
-
-struct NextLeavesChangedEvent
-{
-  std::vector<sup::dto::uint32> leaves;
-
-  bool operator==(const NextLeavesChangedEvent& other) const;
-  bool operator!=(const NextLeavesChangedEvent& other) const;
-};
-
-/**
  * @brief The InstructionStateUpdatedEvent class represents automation server event when
  * instruction state has changed.
  */
@@ -86,9 +66,29 @@ struct VariableUpdatedEvent
   bool operator!=(const VariableUpdatedEvent& other) const;
 };
 
+/**
+ * @brief The JobStateChangedEvent struct represents an event when instruction status has
+ * changed.
+ */
+struct JobStateChangedEvent
+{
+  sup::sequencer::JobState status;
+
+  bool operator==(const JobStateChangedEvent& other) const;
+  bool operator!=(const JobStateChangedEvent& other) const;
+};
+
+struct NextLeavesChangedEvent
+{
+  std::vector<sup::dto::uint32> leaves;
+
+  bool operator==(const NextLeavesChangedEvent& other) const;
+  bool operator!=(const NextLeavesChangedEvent& other) const;
+};
+
 using domain_event_t =
-    std::variant<std::monostate, InstructionStateUpdatedEvent, JobStateChangedEvent, LogEvent,
-                 NextLeavesChangedEvent, VariableUpdatedEvent>;
+    std::variant<std::monostate, InstructionStateUpdatedEvent, VariableUpdatedEvent,
+                 JobStateChangedEvent, LogEvent, NextLeavesChangedEvent>;
 
 bool IsValid(const domain_event_t& value);
 
