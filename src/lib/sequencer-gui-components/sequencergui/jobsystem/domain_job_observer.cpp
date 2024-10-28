@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "domain_procedure_observer.h"
+#include "domain_job_observer.h"
 
 #include "user_choice_provider.h"
 #include "user_context.h"
@@ -38,7 +38,7 @@
 namespace sequencergui
 {
 
-DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_event_callback,
+DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
                                                      const UserContext &user_context)
     : m_post_event_callback(std::move(post_event_callback))
 {
@@ -58,27 +58,27 @@ DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_even
   }
 }
 
-DomainProcedureObserver::~DomainProcedureObserver() = default;
+DomainJobObserver::~DomainJobObserver() = default;
 
-void DomainProcedureObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
+void DomainJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 {
   (void)n_instr;
   std::cout << "DomainProcedureObserver::InitNumberOfInstructions" << "\n";
 }
 
-void DomainProcedureObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
+void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                         sup::sequencer::InstructionState state)
 {
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 }
 
-void DomainProcedureObserver::VariableUpdated(sup::dto::uint32 var_idx,
+void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx,
                                                 const sup::dto::AnyValue &value, bool connected)
 {
   m_post_event_callback(VariableUpdatedEvent{var_idx, value, connected});
 }
 
-void DomainProcedureObserver::JobStateUpdated(sup::sequencer::JobState state)
+void DomainJobObserver::JobStateUpdated(sup::sequencer::JobState state)
 {
   {
     const std::lock_guard<std::mutex> lock{m_mutex};
@@ -88,7 +88,7 @@ void DomainProcedureObserver::JobStateUpdated(sup::sequencer::JobState state)
   m_cv.notify_one();
 }
 
-void DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
+void DomainJobObserver::PutValue(const sup::dto::AnyValue &value,
                                          const std::string &description)
 {
   auto value_string = sup::gui::ValuesToJSONString(value);
@@ -97,7 +97,7 @@ void DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
   m_post_event_callback(CreateLogEvent(Severity::kInfo, ostr.str()));
 }
 
-bool DomainProcedureObserver::GetUserValue(sup::dto::AnyValue &value,
+bool DomainJobObserver::GetUserValue(sup::dto::AnyValue &value,
                                              const std::string &description)
 {
   if (m_input_provider)
@@ -111,7 +111,7 @@ bool DomainProcedureObserver::GetUserValue(sup::dto::AnyValue &value,
   return false;
 }
 
-int DomainProcedureObserver::GetUserChoice(const std::vector<std::string> &options,
+int DomainJobObserver::GetUserChoice(const std::vector<std::string> &options,
                                              const sup::dto::AnyValue &metadata)
 {
   if (m_choice_provider)
@@ -124,18 +124,18 @@ int DomainProcedureObserver::GetUserChoice(const std::vector<std::string> &optio
   return -1;
 }
 
-void DomainProcedureObserver::Message(const std::string &message)
+void DomainJobObserver::Message(const std::string &message)
 {
   m_post_event_callback(CreateLogEvent(Severity::kInfo, message));
 }
 
-void DomainProcedureObserver::Log(int severity, const std::string &message)
+void DomainJobObserver::Log(int severity, const std::string &message)
 {
   // assuming sequencer severity is the same as GUI severity
   m_post_event_callback(CreateLogEvent(static_cast<Severity>(severity), message));
 }
 
-void DomainProcedureObserver::NextInstructionsUpdated(
+void DomainJobObserver::NextInstructionsUpdated(
     const std::vector<sup::dto::uint32> &instr_indices)
 {
   std::cout << "DomainProcedureObserver::NextInstructionsUpdated \n";
@@ -151,13 +151,13 @@ void DomainProcedureObserver::NextInstructionsUpdated(
   }
 }
 
-sup::sequencer::JobState DomainProcedureObserver::GetCurrentState() const
+sup::sequencer::JobState DomainJobObserver::GetCurrentState() const
 {
   const std::lock_guard<std::mutex> lock{m_mutex};
   return m_state;
 }
 
-bool DomainProcedureObserver::WaitForState(sup::sequencer::JobState state, double msec) const
+bool DomainJobObserver::WaitForState(sup::sequencer::JobState state, double msec) const
 {
   const double nanosec_per_msec{1e6};
   auto duration = std::chrono::nanoseconds(std::lround(msec * nanosec_per_msec));
@@ -165,7 +165,7 @@ bool DomainProcedureObserver::WaitForState(sup::sequencer::JobState state, doubl
   return m_cv.wait_for(lock, duration, [this, state]() { return m_state == state; });
 }
 
-sup::sequencer::JobState DomainProcedureObserver::WaitForFinished() const
+sup::sequencer::JobState DomainJobObserver::WaitForFinished() const
 {
   auto pred = [this]() { return sup::sequencer::IsFinishedJobState(m_state); };
   std::unique_lock<std::mutex> lock{m_mutex};
@@ -173,13 +173,13 @@ sup::sequencer::JobState DomainProcedureObserver::WaitForFinished() const
   return m_state;
 }
 
-void DomainProcedureObserver::SetTickTimeout(int msec)
+void DomainJobObserver::SetTickTimeout(int msec)
 {
   const std::unique_lock<std::mutex> lock{m_mutex};
   m_tick_timeout_msec = msec;
 }
 
-bool DomainProcedureObserver::IsLastTick()
+bool DomainJobObserver::IsLastTick()
 {
   // return status == ExecutionStatus::SUCCESS || status == ExecutionStatus::FAILURE;
   // How to check last tick?

@@ -36,7 +36,7 @@ class LocalJob;
 namespace sequencergui
 {
 
-class DomainProcedureObserver;
+class DomainJobObserver;
 class UserContext;
 
 /**
@@ -119,7 +119,7 @@ public:
   void RemoveBreakpoint(size_t instr_idx);
 
 private:
-  std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
+  std::unique_ptr<DomainJobObserver> m_procedure_observer;
   std::unique_ptr<sup::sequencer::LocalJob> m_local_job;
 };
 

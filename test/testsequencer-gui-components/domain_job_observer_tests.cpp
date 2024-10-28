@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/domain_procedure_observer.h"
+#include "sequencergui/jobsystem/domain_job_observer.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/user_context.h>
@@ -28,27 +28,26 @@
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
-using ::testing::_;
 
-//! Tests for DomainProcedureObserver class.
+//! Tests for DomainJobObserver class.
 
-class DomainProcedureObserverTest : public ::testing::Test
+class DomainJobObserverTest : public ::testing::Test
 {
 public:
   testing::MockFunction<void(const domain_event_t&)> m_event_listener;
 };
 
-TEST_F(DomainProcedureObserverTest, InitialState)
+TEST_F(DomainJobObserverTest, InitialState)
 {
-  EXPECT_THROW(DomainProcedureObserver({}, {}), RuntimeException);
+  EXPECT_THROW(DomainJobObserver({}, {}), RuntimeException);
 }
 
-TEST_F(DomainProcedureObserverTest, OnStateChange)
+TEST_F(DomainJobObserverTest, OnStateChange)
 {
   using ::sup::sequencer::ExecutionStatus;
   using ::sup::sequencer::InstructionState;
 
-  DomainProcedureObserver observer(m_event_listener.AsStdFunction(), {});
+  DomainJobObserver observer(m_event_listener.AsStdFunction(), {});
 
   domain_event_t expected_event(
       InstructionStateUpdatedEvent{0, InstructionState{false, ExecutionStatus::NOT_STARTED}});

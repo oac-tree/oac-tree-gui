@@ -19,7 +19,7 @@
 
 #include "domain_runner.h"
 
-#include "domain_procedure_observer.h"
+#include "domain_job_observer.h"
 #include "user_context.h"
 
 #include <sup/sequencer/local_job.h>
@@ -31,8 +31,7 @@ namespace sequencergui
 
 DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback,
                            const UserContext& user_context, std::unique_ptr<procedure_t> procedure)
-    : m_procedure_observer(
-          std::make_unique<DomainProcedureObserver>(post_event_callback, user_context))
+    : m_procedure_observer(std::make_unique<DomainJobObserver>(post_event_callback, user_context))
     , m_local_job(
           std::make_unique<sup::sequencer::LocalJob>(std::move(procedure), *m_procedure_observer))
 {
