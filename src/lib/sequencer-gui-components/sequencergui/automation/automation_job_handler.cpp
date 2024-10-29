@@ -54,12 +54,12 @@ AutomationJobHandler::AutomationJobHandler(JobItem *job_item,
   SetupProcedureItem(job_info);
 }
 
+AutomationJobHandler::~AutomationJobHandler() = default;
+
 sup::sequencer::IJobInfoIO *AutomationJobHandler::GetJobObserver() const
 {
   return m_job_observer.get();
 }
-
-AutomationJobHandler::~AutomationJobHandler() = default;
 
 void AutomationJobHandler::SetupProcedureItem(const sup::sequencer::JobInfo &job_info)
 {

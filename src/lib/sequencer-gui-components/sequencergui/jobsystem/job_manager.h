@@ -104,7 +104,6 @@ public:
    */
   void OnMakeStepRequest();
 
-
   /**
    * @brief Removes a job corresponding to a given JobItem from the manager.
    *

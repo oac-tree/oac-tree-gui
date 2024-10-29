@@ -37,12 +37,12 @@ DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback,
 {
 }
 
+DomainRunner::~DomainRunner() = default;
+
 sup::sequencer::JobState DomainRunner::GetJobState() const
 {
   return m_procedure_observer->GetCurrentState();
 }
-
-DomainRunner::~DomainRunner() = default;
 
 bool DomainRunner::Start()
 {
