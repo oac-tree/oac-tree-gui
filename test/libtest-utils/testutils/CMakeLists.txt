@@ -6,6 +6,7 @@ target_sources(${library_name} PRIVATE
   mock_message_handler.cpp
   mock_message_handler.h
   mock_sequencer_observer.h
+  mock_user_context.h
   sequencer_test_utils.cpp
   sequencer_test_utils.h
   standard_procedure_items.cpp

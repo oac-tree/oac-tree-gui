@@ -33,7 +33,7 @@ namespace sequencergui
 struct UserContext
 {
   //!< a callback to return user input
-  std::function<UserInputResult(UserInputArgs)> user_input_callback;
+  std::function<UserInputResult(const UserInputArgs&)> user_input_callback;
 
   //!< a callback to return user choice
   std::function<UserChoiceResult(const UserChoiceArgs&)> user_choice_callback;
