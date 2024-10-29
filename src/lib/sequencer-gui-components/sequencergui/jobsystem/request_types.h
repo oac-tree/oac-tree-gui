@@ -36,6 +36,9 @@ struct UserChoiceArgs
 {
   std::vector<std::string> options;
   sup::dto::AnyValue metadata;
+
+  bool operator==(const UserChoiceArgs& other) const;
+  bool operator!=(const UserChoiceArgs& other) const;
 };
 
 /**
@@ -45,6 +48,9 @@ struct UserChoiceResult
 {
   int index{0};
   bool processed{false};
+
+  bool operator==(const UserChoiceResult& other) const;
+  bool operator!=(const UserChoiceResult& other) const;
 };
 
 /**
@@ -55,6 +61,9 @@ struct UserInputArgs
 {
   sup::dto::AnyValue value;
   std::string description;
+
+  bool operator==(const UserInputArgs& other) const;
+  bool operator!=(const UserInputArgs& other) const;
 };
 
 /**
@@ -64,6 +73,9 @@ struct UserInputResult
 {
   sup::dto::AnyValue value;
   bool processed{false};
+
+  bool operator==(const UserInputResult& other) const;
+  bool operator!=(const UserInputResult& other) const;
 };
 
 }  // namespace sequencergui

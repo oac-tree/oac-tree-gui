@@ -33,6 +33,7 @@ target_sources(${library_name} PRIVATE
   log_event.h
   request_handler.h
   request_handler_queue.h
+  request_types.cpp
   request_types.h
   runner_status.cpp
   runner_status.h
