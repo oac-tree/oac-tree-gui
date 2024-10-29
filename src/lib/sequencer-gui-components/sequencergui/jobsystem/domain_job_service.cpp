@@ -1,0 +1,67 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2024 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "domain_job_service.h"
+
+#include "domain_event_dispatcher.h"
+#include "domain_event_queue.h"
+#include "domain_job_observer.h"
+
+#include <iostream>
+
+namespace sequencergui
+{
+
+DomainJobService::DomainJobService(DomainEventDispatcherContext dispatcher_context,
+                                   const UserContext &user_context)
+    : m_event_queue(std::make_unique<DomainEventQueue>())
+    , m_event_dispatcher(std::make_unique<DomainEventDispatcher>(CreateGetEventCallback(),
+                                                                 std::move(dispatcher_context)))
+    , m_job_observer(std::make_unique<DomainJobObserver>(CreatePostEventCallback(), user_context))
+{
+  // connecting event queue with event dispatcher using queued connection
+  QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
+                   &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
+
+}
+
+DomainJobService::~DomainJobService() = default;
+
+sup::sequencer::IJobInfoIO *DomainJobService::GetJobInfoIO()
+{
+  return m_job_observer.get();
+}
+
+std::function<void(const domain_event_t &)> DomainJobService::CreatePostEventCallback() const
+{
+  return [this](const domain_event_t &event) {
+    std::cout << "CreatePostEventCallback\n";
+    m_event_queue->PushEvent(event);
+  };
+}
+
+std::function<domain_event_t()> DomainJobService::CreateGetEventCallback() const
+{
+  return [this]() -> domain_event_t {
+    std::cout << "CreateGetEventCallback\n";
+    return m_event_queue->PopEvent();
+  };
+}
+
+}  // namespace sequencergui

@@ -1,10 +1,10 @@
 # Collection of classes to submit sequencer procedures as jobs running in a separate thread.
 
 target_sources(${library_name} PRIVATE
-  abstract_job_handler.cpp
-  abstract_job_handler.h
   abstract_domain_runner.cpp
   abstract_domain_runner.h
+  abstract_job_handler.cpp
+  abstract_job_handler.h
   domain_event_dispatcher.cpp
   domain_event_dispatcher.h
   domain_event_queue.cpp
@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   domain_events.h
   domain_job_observer.cpp
   domain_job_observer.h
+  domain_job_service.cpp
+  domain_job_service.h
   domain_runner.cpp
   domain_runner.h
   domain_runner_service.cpp
