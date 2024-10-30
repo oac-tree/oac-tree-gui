@@ -24,6 +24,8 @@
 #include "domain_job_service.h"
 #include "user_context.h"
 
+#include <sequencergui/core/exceptions.h>
+
 #include <sup/sequencer/i_job.h>
 #include <sup/sequencer/job_states.h>
 
@@ -33,11 +35,9 @@ namespace sequencergui
 {
 
 AbstractDomainRunner::AbstractDomainRunner(DomainEventDispatcherContext dispatcher_context,
-                                           UserContext user_context,
-                                           std::unique_ptr<sup::sequencer::IJob> job)
+                                           UserContext user_context)
     : m_job_service(std::make_unique<DomainJobService>(std::move(dispatcher_context),
                                                        std::move(user_context)))
-    , m_job(std::move(job))
 {
 }
 
@@ -45,6 +45,7 @@ AbstractDomainRunner::~AbstractDomainRunner() = default;
 
 bool AbstractDomainRunner::Start()
 {
+  ValidateJob();
   m_job->Start();
 
   return true;
@@ -52,6 +53,7 @@ bool AbstractDomainRunner::Start()
 
 bool AbstractDomainRunner::Stop()
 {
+  ValidateJob();
   m_job->Halt();
 
   return true;
@@ -59,6 +61,7 @@ bool AbstractDomainRunner::Stop()
 
 bool AbstractDomainRunner::Pause()
 {
+  ValidateJob();
   m_job->Pause();
 
   return true;
@@ -66,6 +69,7 @@ bool AbstractDomainRunner::Pause()
 
 bool AbstractDomainRunner::Step()
 {
+  ValidateJob();
   m_job->Step();
 
   return true;
@@ -73,16 +77,19 @@ bool AbstractDomainRunner::Step()
 
 void AbstractDomainRunner::Reset()
 {
+  ValidateJob();
   m_job->Reset();
 }
 
 void AbstractDomainRunner::SetBreakpoint(size_t instr_idx)
 {
+  ValidateJob();
   m_job->SetBreakpoint(instr_idx);
 }
 
 void AbstractDomainRunner::RemoveBreakpoint(size_t instr_idx)
 {
+  ValidateJob();
   m_job->RemoveBreakpoint(instr_idx);
 }
 
@@ -122,6 +129,19 @@ bool AbstractDomainRunner::IsBusy() const
 void AbstractDomainRunner::SetTickTimeout(int msec)
 {
   m_job_service->SetTickTimeout(msec);
+}
+
+void AbstractDomainRunner::SetJob(std::unique_ptr<sup::sequencer::IJob> job)
+{
+  m_job = std::move(job);
+}
+
+void AbstractDomainRunner::ValidateJob()
+{
+  if (!m_job)
+  {
+    throw RuntimeException("Job is not initialized");
+  }
 }
 
 }  // namespace sequencergui

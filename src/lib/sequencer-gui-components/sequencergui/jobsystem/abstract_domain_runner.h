@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_ABSTRACT_DOMAIN_RUNNER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+
 #include <sup/sequencer/job_states.h>
 
 #include <memory>
@@ -39,8 +40,7 @@ class AbstractDomainRunner
 {
 public:
   explicit AbstractDomainRunner(DomainEventDispatcherContext dispatcher_context,
-                                UserContext user_context,
-                                std::unique_ptr<sup::sequencer::IJob> job);
+                                UserContext user_context);
 
   virtual ~AbstractDomainRunner();
 
@@ -114,7 +114,12 @@ public:
    */
   void SetTickTimeout(int msec);
 
+protected:
+  void SetJob(std::unique_ptr<sup::sequencer::IJob> job);
+
 private:
+  void ValidateJob();
+
   std::unique_ptr<DomainJobService> m_job_service;
   std::unique_ptr<sup::sequencer::IJob> m_job;
 };

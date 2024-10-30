@@ -30,15 +30,9 @@ namespace sequencergui
 LocalDomainRunner::LocalDomainRunner(DomainEventDispatcherContext dispatcher_context,
                                      UserContext user_context,
                                      std::unique_ptr<procedure_t> procedure)
-    : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context),
-                           CreateLocalJob(std::move(procedure)))
+    : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {
-}
-
-std::unique_ptr<sup::sequencer::IJob> LocalDomainRunner::CreateLocalJob(
-    std::unique_ptr<procedure_t> procedure)
-{
-  return std::make_unique<sup::sequencer::LocalJob>(std::move(procedure), *GetJobInfoIO());
+  SetJob(std::make_unique<sup::sequencer::LocalJob>(std::move(procedure), *GetJobInfoIO()));
 }
 
 }  // namespace sequencergui
