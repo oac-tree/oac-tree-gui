@@ -17,61 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "abstract_domain_runner.h"
+#include "local_domain_runner.h"
 
-#include <sup/sequencer/i_job.h>
+#include <sup/sequencer/local_job.h>
 
 namespace sequencergui
 {
 
-AbstractDomainRunner::AbstractDomainRunner(std::unique_ptr<sup::sequencer::IJob> job)
-    : m_job(std::move(job))
+LocalDomainRunner::LocalDomainRunner(std::unique_ptr<procedure_t> procedure,
+                                     sup::sequencer::IJobInfoIO *info_io)
+    : AbstractDomainRunner(
+          std::make_unique<sup::sequencer::LocalJob>(std::move(procedure), *info_io))
 {
-}
-
-AbstractDomainRunner::~AbstractDomainRunner() = default;
-
-bool AbstractDomainRunner::Start()
-{
-  m_job->Start();
-
-  return true;
-}
-
-bool AbstractDomainRunner::Stop()
-{
-  m_job->Halt();
-
-  return true;
-}
-
-bool AbstractDomainRunner::Pause()
-{
-  m_job->Pause();
-
-  return true;
-}
-
-bool AbstractDomainRunner::Step()
-{
-  m_job->Step();
-
-  return true;
-}
-
-void AbstractDomainRunner::Reset()
-{
-  m_job->Reset();
-}
-
-void AbstractDomainRunner::SetBreakpoint(size_t instr_idx)
-{
-  m_job->SetBreakpoint(instr_idx);
-}
-
-void AbstractDomainRunner::RemoveBreakpoint(size_t instr_idx)
-{
-  m_job->RemoveBreakpoint(instr_idx);
 }
 
 }  // namespace sequencergui

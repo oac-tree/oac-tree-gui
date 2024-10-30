@@ -29,6 +29,8 @@ target_sources(${library_name} PRIVATE
   job_manager.h
   job_utils.cpp
   job_utils.h
+  local_domain_runner.cpp
+  local_domain_runner.h
   log_event.cpp
   log_event.h
   request_handler.h

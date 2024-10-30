@@ -20,16 +20,63 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACT_DOMAIN_RUNNER_H_
 #define SEQUENCERGUI_JOBSYSTEM_ABSTRACT_DOMAIN_RUNNER_H_
 
+#include <memory>
+
+namespace sup::sequencer
+{
+class IJob;
+}
+
 namespace sequencergui
 {
 
 /**
- * @brief The AbstractDomainRunner is a base class to manipulate domain local and remote jobs.
+ * @brief The AbstractDomainRunner is a base class to run domain local and remote jobs.
  */
 class AbstractDomainRunner
 {
 public:
+  explicit AbstractDomainRunner(std::unique_ptr<sup::sequencer::IJob> job);
+
   virtual ~AbstractDomainRunner();
+
+  /**
+   * @brief Starts procedure execution.
+   */
+  bool Start();
+
+  /**
+   * @brief Stops procedure execution.
+   */
+  bool Stop();
+
+  /**
+   * @brief Pauses execution.
+   */
+  bool Pause();
+
+  /**
+   * @brief Make a step after pause.
+   */
+  bool Step();
+
+  /**
+   * @brief Resets procedure to initial state.
+   */
+  void Reset();
+
+  /**
+   * @brief Sets the breakpoint on the instruction with given index.
+   */
+  void SetBreakpoint(size_t instr_idx);
+
+  /**
+   * @brief Removes the breakpoint from the instruction with given index.
+   */
+  void RemoveBreakpoint(size_t instr_idx);
+
+private:
+  std::unique_ptr<sup::sequencer::IJob> m_job;
 };
 
 }  // namespace sequencergui
