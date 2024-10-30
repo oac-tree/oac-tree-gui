@@ -22,23 +22,22 @@
 #include "domain_event_dispatcher.h"
 #include "domain_event_queue.h"
 #include "domain_job_observer.h"
-
-#include <iostream>
+#include "user_context.h"
 
 namespace sequencergui
 {
 
 DomainJobService::DomainJobService(DomainEventDispatcherContext dispatcher_context,
-                                   const UserContext &user_context)
+                                   UserContext user_context)
     : m_event_queue(std::make_unique<DomainEventQueue>())
     , m_event_dispatcher(std::make_unique<DomainEventDispatcher>(CreateGetEventCallback(),
                                                                  std::move(dispatcher_context)))
-    , m_job_observer(std::make_unique<DomainJobObserver>(CreatePostEventCallback(), user_context))
+    , m_job_observer(
+          std::make_unique<DomainJobObserver>(CreatePostEventCallback(), std::move(user_context)))
 {
   // connecting event queue with event dispatcher using queued connection
   QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
                    &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
-
 }
 
 DomainJobService::~DomainJobService() = default;
@@ -50,18 +49,12 @@ sup::sequencer::IJobInfoIO *DomainJobService::GetJobInfoIO()
 
 std::function<void(const domain_event_t &)> DomainJobService::CreatePostEventCallback() const
 {
-  return [this](const domain_event_t &event) {
-    std::cout << "CreatePostEventCallback\n";
-    m_event_queue->PushEvent(event);
-  };
+  return [this](const domain_event_t &event) { m_event_queue->PushEvent(event); };
 }
 
 std::function<domain_event_t()> DomainJobService::CreateGetEventCallback() const
 {
-  return [this]() -> domain_event_t {
-    std::cout << "CreateGetEventCallback\n";
-    return m_event_queue->PopEvent();
-  };
+  return [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
 }
 
 }  // namespace sequencergui

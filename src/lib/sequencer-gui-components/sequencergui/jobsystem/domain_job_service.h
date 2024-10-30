@@ -41,7 +41,7 @@ class DomainJobService
 {
 public:
   DomainJobService(DomainEventDispatcherContext dispatcher_context,
-                   const UserContext& user_context);
+                   UserContext user_context);
   virtual ~DomainJobService();
 
   sup::sequencer::IJobInfoIO* GetJobInfoIO();

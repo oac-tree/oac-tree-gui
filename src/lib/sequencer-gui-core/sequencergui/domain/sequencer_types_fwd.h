@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_
 
 //! @file
-//! Type aliases for main Sequencer types.
+//! Forward declarations and type aliases to some of sequencer domain types.
 
 namespace sup::sequencer
 {
@@ -39,6 +39,7 @@ class VariableInfo;
 class JobInfo;
 class WorkspaceInfo;
 class IJobInfoIO;
+class IJob;
 }  // namespace sup::sequencer
 
 using attribute_definition_t = sup::sequencer::AttributeDefinition;
