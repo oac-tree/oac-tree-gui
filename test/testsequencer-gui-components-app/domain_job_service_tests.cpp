@@ -213,14 +213,12 @@ TEST_F(DomainJobServiceTest, Log)
 {
   auto service = CreateService();
 
-  const int severity{42};
+  const Severity severity{Severity::kAlert};
   const std::string message("mesage");
 
-  EXPECT_CALL(m_event_listener,
-              OnLogEvent(CreateLogEvent(static_cast<Severity>(severity), message)))
-      .Times(1);
+  EXPECT_CALL(m_event_listener, OnLogEvent(CreateLogEvent(severity, message))).Times(1);
 
-  service->GetJobInfoIO()->Log(severity, message);
+  service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
 
   QApplication::processEvents();
 }

@@ -31,7 +31,6 @@
 #include <sup/sequencer/instruction.h>
 
 #include <cmath>
-#include <iostream>
 #include <sstream>
 #include <thread>
 
@@ -63,7 +62,6 @@ DomainJobObserver::~DomainJobObserver() = default;
 void DomainJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 {
   (void)n_instr;
-  std::cout << "DomainProcedureObserver::InitNumberOfInstructions" << "\n";
 }
 
 void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
@@ -138,8 +136,6 @@ void DomainJobObserver::Log(int severity, const std::string &message)
 void DomainJobObserver::NextInstructionsUpdated(
     const std::vector<sup::dto::uint32> &instr_indices)
 {
-  std::cout << "DomainProcedureObserver::NextInstructionsUpdated \n";
-
   std::unique_lock<std::mutex> lock{m_mutex};
 
   m_post_event_callback(NextLeavesChangedEvent{instr_indices});
