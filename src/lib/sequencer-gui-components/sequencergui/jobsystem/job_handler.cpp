@@ -20,7 +20,7 @@
 #include "job_handler.h"
 
 #include "domain_event_dispatcher_context.h"
-#include "domain_runner_service.h"
+#include "local_domain_runner.h"
 #include "job_log.h"
 
 #include <sequencergui/core/exceptions.h>
@@ -239,7 +239,7 @@ void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_ti
   // this creates beneath DomainRunner(AsyncRunner(Runner())) and then call procedure->Setup
   // m_domain_runner_service =
   //     std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
-  m_domain_runner_service = std::make_unique<DomainRunnerService>(CreateContext(), user_context,
+  m_domain_runner_service = std::make_unique<LocalDomainRunner>(CreateContext(), user_context,
                                                                   std::move(m_domain_procedure));
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
 }

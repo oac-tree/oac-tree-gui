@@ -47,6 +47,7 @@ class WorkspaceItemListener;
 class JobModel;
 class BreakpointController;
 class DomainRunnerService;
+class LocalDomainRunner;
 class DomainEventDispatcherContext;
 
 /**
@@ -209,7 +210,7 @@ private:
   std::unique_ptr<procedure_t> m_domain_procedure;
 
   //!< main runner to start/stop jobs
-  std::unique_ptr<DomainRunnerService> m_domain_runner_service;
+  std::unique_ptr<LocalDomainRunner> m_domain_runner_service;
 
   //!< dedicated listener to provide communication between domain/GUI workspace variables
   std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
