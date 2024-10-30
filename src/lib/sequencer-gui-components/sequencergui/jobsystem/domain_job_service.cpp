@@ -47,6 +47,26 @@ sup::sequencer::IJobInfoIO *DomainJobService::GetJobInfoIO()
   return m_job_observer.get();
 }
 
+sup::sequencer::JobState DomainJobService::GetJobState() const
+{
+  return m_job_observer->GetCurrentState();
+}
+
+sup::sequencer::JobState DomainJobService::WaitForFinished() const
+{
+  return m_job_observer->WaitForFinished();
+}
+
+bool DomainJobService::WaitForState(sup::sequencer::JobState state, double msec) const
+{
+  return m_job_observer->WaitForState(state, msec);
+}
+
+void DomainJobService::SetTickTimeout(int msec)
+{
+  m_job_observer->SetTickTimeout(msec);
+}
+
 std::function<void(const domain_event_t &)> DomainJobService::CreatePostEventCallback() const
 {
   return [this](const domain_event_t &event) { m_event_queue->PushEvent(event); };

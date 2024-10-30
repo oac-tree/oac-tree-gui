@@ -40,11 +40,30 @@ class UserContext;
 class DomainJobService
 {
 public:
-  DomainJobService(DomainEventDispatcherContext dispatcher_context,
-                   UserContext user_context);
+  DomainJobService(DomainEventDispatcherContext dispatcher_context, UserContext user_context);
   virtual ~DomainJobService();
 
   sup::sequencer::IJobInfoIO* GetJobInfoIO();
+
+  /**
+   * @brief Returns last reported job state.
+   */
+  sup::sequencer::JobState GetJobState() const;
+
+  /**
+   * @brief Waits for underlying job opbserver reports finished state.
+   */
+  sup::sequencer::JobState WaitForFinished() const;
+
+  /**
+   * @brief Waits for given state.
+   */
+  bool WaitForState(sup::sequencer::JobState state, double msec) const;
+
+  /**
+   * @brief Sets sleep time on every tick.
+   */
+  void SetTickTimeout(int msec);
 
 private:
   /**

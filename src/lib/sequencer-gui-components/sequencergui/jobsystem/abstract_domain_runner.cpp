@@ -25,6 +25,9 @@
 #include "user_context.h"
 
 #include <sup/sequencer/i_job.h>
+#include <sup/sequencer/job_states.h>
+
+#include <set>
 
 namespace sequencergui
 {
@@ -86,6 +89,39 @@ void AbstractDomainRunner::RemoveBreakpoint(size_t instr_idx)
 sup::sequencer::IJobInfoIO *AbstractDomainRunner::GetJobInfoIO()
 {
   return m_job_service->GetJobInfoIO();
+}
+
+sup::sequencer::JobState AbstractDomainRunner::GetJobState() const
+{
+  return m_job_service->GetJobState();
+}
+
+sup::sequencer::JobState AbstractDomainRunner::WaitForFinished() const
+{
+  return m_job_service->WaitForFinished();
+}
+
+bool AbstractDomainRunner::WaitForState(sup::sequencer::JobState state, double msec) const
+{
+  return m_job_service->WaitForState(state, msec);
+}
+
+bool AbstractDomainRunner::IsFinished() const
+{
+  return sup::sequencer::IsFinishedJobState(m_job_service->GetJobState());
+}
+
+bool AbstractDomainRunner::IsBusy() const
+{
+  using sup::sequencer::JobState;
+  static const std::set<JobState> busy_states = {JobState::kPaused, JobState::kStepping,
+                                                 JobState::kRunning};
+  return busy_states.find(GetJobState()) != busy_states.end();
+}
+
+void AbstractDomainRunner::SetTickTimeout(int msec)
+{
+  m_job_service->SetTickTimeout(msec);
 }
 
 }  // namespace sequencergui

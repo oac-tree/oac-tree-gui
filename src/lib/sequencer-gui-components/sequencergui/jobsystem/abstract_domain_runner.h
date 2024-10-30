@@ -84,6 +84,36 @@ public:
    */
   sup::sequencer::IJobInfoIO* GetJobInfoIO();
 
+  /**
+   * @brief Returns last reported job state.
+   */
+  sup::sequencer::JobState GetJobState() const;
+
+  /**
+   * @brief Waits for job to finish.
+   */
+  sup::sequencer::JobState WaitForFinished() const;
+
+  /**
+   * @brief Waits for given state.
+   */
+  bool WaitForState(sup::sequencer::JobState state, double msec) const;
+
+  /**
+   * @brief Checks if the job is in one of succeeded/failed/halted states.
+   */
+  bool IsFinished() const;
+
+  /**
+   * @brief Checks if the the job is in one of paused/stepping/running states.
+   */
+  bool IsBusy() const;
+
+  /**
+   * @brief Sets sleep time on every tick.
+   */
+  void SetTickTimeout(int msec);
+
 private:
   std::unique_ptr<DomainJobService> m_job_service;
   std::unique_ptr<sup::sequencer::IJob> m_job;
