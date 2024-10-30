@@ -42,11 +42,18 @@ class DomainJobServiceTest : public ::testing::Test
 public:
   using mock_event_listener_t = ::testing::StrictMock<testutils::MockDomainEventListener>;
   using mock_user_listener_t = ::testing::StrictMock<testutils::MockUserContext>;
+  using msec = std::chrono::milliseconds;
 
   std::unique_ptr<DomainJobService> CreateService()
   {
     return std::make_unique<DomainJobService>(m_event_listener.CreateDispatcherContext(),
                                               m_user_listener.CreateContext());
+  }
+
+  bool WaitForEmptyQueue(const DomainJobService &service, msec timeout)
+  {
+    auto predicate = [&service](){return service.GetEventCount() == 0;};
+    return QTest::qWaitFor(predicate, timeout.count());
   }
 
   mock_event_listener_t m_event_listener;
@@ -68,7 +75,7 @@ TEST_F(DomainJobServiceTest, InstructionStateUpdated)
 
   service->GetJobInfoIO()->InstructionStateUpdated(expected_index, expected_state);
 
-  QApplication::processEvents();
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, VariableUpdated)
@@ -84,7 +91,7 @@ TEST_F(DomainJobServiceTest, VariableUpdated)
 
   service->GetJobInfoIO()->VariableUpdated(index, value, connected);
 
-  QApplication::processEvents();
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, JobStateUpdated)
@@ -100,7 +107,7 @@ TEST_F(DomainJobServiceTest, JobStateUpdated)
 
   service->GetJobInfoIO()->JobStateUpdated(state);
 
-  QApplication::processEvents();
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, PutValue)
@@ -114,7 +121,7 @@ TEST_F(DomainJobServiceTest, PutValue)
 
   service->GetJobInfoIO()->PutValue(value, description);
 
-  QApplication::processEvents();
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, GetUserValue)
@@ -206,7 +213,7 @@ TEST_F(DomainJobServiceTest, Message)
 
   service->GetJobInfoIO()->Message(message);
 
-  QApplication::processEvents();
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, Log)
@@ -220,7 +227,7 @@ TEST_F(DomainJobServiceTest, Log)
 
   service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
 
-  QApplication::processEvents();
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, NextInstructionsUpdated)
@@ -235,5 +242,5 @@ TEST_F(DomainJobServiceTest, NextInstructionsUpdated)
 
   service->GetJobInfoIO()->NextInstructionsUpdated(indices);
 
-  QApplication::processEvents();
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
 }

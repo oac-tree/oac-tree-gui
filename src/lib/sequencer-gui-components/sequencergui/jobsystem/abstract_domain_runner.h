@@ -114,6 +114,13 @@ public:
    */
   void SetTickTimeout(int msec);
 
+  /**
+   * @brief Returns number of events in a queue.
+   *
+   * This number should be zero, when all domain events have been processed by the GUI.
+   */
+  size_t GetEventCount() const;
+
 protected:
   void SetJob(std::unique_ptr<sup::sequencer::IJob> job);
 

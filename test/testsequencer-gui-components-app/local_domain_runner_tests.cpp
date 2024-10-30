@@ -35,7 +35,6 @@
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
 
-#include <QApplication>
 #include <QTest>
 #include <thread>
 
@@ -76,27 +75,18 @@ public:
   }
 
   /**
-   * @brief Wait for timeout in milisseconds or until predicate returns true.
-   *
-   * Provides additional waiting to complete all queued signals. The method shall be used when we
-   * test the runner and are interested to receive mock notifications.
-   */
-  bool WaitForPredicateAndQueue(std::function<bool()> predicate, msec msec_value)
-  {
-    auto result = QTest::qWaitFor(predicate, msec_value.count());
-    QApplication::processEvents();  // finish queued events to get mocks
-    return result;
-  }
-
-  /**
    * @brief Wait for runner receives the given state, and let all queued signals reach their
    * destinations.
+   *
+   * Provides additional waiting to complete all queued signals. The method shall be used when we
+   * test the runner and are interested to receive and process all mock notifications.
    */
-  bool WaitForStateAndQueue(LocalDomainRunner* runner, sup::sequencer::JobState job_state,
-                            msec msec_value)
+  bool WaitForStateAndEmptyQueue(const LocalDomainRunner& runner,
+                                 sup::sequencer::JobState job_state, msec msec_value)
   {
-    auto predicate = [this, runner, job_state]() { return runner->GetJobState() == job_state; };
-    return WaitForPredicateAndQueue(predicate, msec_value);
+    auto predicate = [this, &runner, job_state]()
+    { return runner.GetJobState() == job_state && runner.GetEventCount() == 0; };
+    return QTest::qWaitFor(predicate, static_cast<int>(msec_value.count()));
   }
 
   mock_event_listener_t m_event_listener;
@@ -158,7 +148,7 @@ TEST_F(LocalDomainRunnerTest, ShortProcedureThatExecutesNormally)
 
   runner->Start();
 
-  WaitForStateAndQueue(runner.get(), sup::sequencer::JobState::kSucceeded, msec(100));
+  WaitForStateAndEmptyQueue(*runner, sup::sequencer::JobState::kSucceeded, msec(100));
 
   auto final_state = runner->WaitForFinished();
   EXPECT_EQ(final_state, sup::sequencer::JobState::kSucceeded);
@@ -362,7 +352,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   // Step #1 right from initial state
   EXPECT_TRUE(runner->Step());
 
-  WaitForStateAndQueue(runner.get(), JobState::kPaused, max_after_step_wait_time);
+  WaitForStateAndEmptyQueue(*runner, JobState::kPaused, max_after_step_wait_time);
 
   EXPECT_FALSE(runner->IsFinished());
   EXPECT_TRUE(runner->IsBusy());
@@ -395,9 +385,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   // Step #2 and waiting till the end
   EXPECT_TRUE(runner->Step());
 
-  // auto has_succeeded = [&runner]() { return runner.GetJobState() == JobState::kSucceeded; };
-  // EXPECT_TRUE(testutils::WaitFor(has_succeeded, max_after_step_wait_time));
-  WaitForStateAndQueue(runner.get(), JobState::kSucceeded, max_after_step_wait_time);
+  WaitForStateAndEmptyQueue(*runner, JobState::kSucceeded, max_after_step_wait_time);
 }
 
 //! Sequence with two messages in a step mode. After first step it is interrupted.
@@ -451,13 +439,13 @@ TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
   // making step
   EXPECT_TRUE(runner->Step());
 
-  auto is_incremented = [variable]()
+  auto is_incremented = [variable, &runner]()
   {
     sup::dto::AnyValue counter_value;
     variable->GetValue(counter_value);
-    return counter_value == 1U;
+    return counter_value == 1U && runner->GetEventCount() == 0;
   };
-  EXPECT_TRUE(WaitForPredicateAndQueue(is_incremented, msec(100)));
+  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 100));
 
   // JobState: running, success
   EXPECT_CALL(m_event_listener, OnJobStateChanged(_)).Times(2);
@@ -469,7 +457,7 @@ TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
   // continuing till the end
   EXPECT_TRUE(runner->Start());
 
-  EXPECT_TRUE(WaitForStateAndQueue(runner.get(), sup::sequencer::JobState::kSucceeded, msec(100)));
+  EXPECT_TRUE(WaitForStateAndEmptyQueue(*runner, sup::sequencer::JobState::kSucceeded, msec(100)));
 
   EXPECT_EQ(runner->GetJobState(), sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
@@ -523,11 +511,11 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
     counter_var->GetValue(counter_value);
     return counter_value.As<int>() > 1U;
   };
-  EXPECT_TRUE(WaitForPredicateAndQueue(is_incremented, msec(100)));
+  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 100));
 
   // pause
   EXPECT_TRUE(runner->Pause());
-  EXPECT_TRUE(WaitForStateAndQueue(runner.get(), sup::sequencer::JobState::kPaused, msec(100)));
+  EXPECT_TRUE(runner->WaitForState(sup::sequencer::JobState::kPaused, 200));
 
   // It is paused now, increment counter should increase.
   counter_var->GetValue(counter_value);
@@ -537,7 +525,7 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
   // continuing till the end
   EXPECT_TRUE(runner->Start());
 
-  EXPECT_TRUE(WaitForStateAndQueue(runner.get(), sup::sequencer::JobState::kRunning, msec(100)));
+  EXPECT_TRUE(runner->WaitForState(sup::sequencer::JobState::kRunning, 200));
 
   // to stop incrementing use interruption variable
   const sup::dto::AnyValue interrupt_value(0U);

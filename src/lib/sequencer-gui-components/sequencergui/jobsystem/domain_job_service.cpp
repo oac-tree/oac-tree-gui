@@ -67,6 +67,11 @@ void DomainJobService::SetTickTimeout(int msec)
   m_job_observer->SetTickTimeout(msec);
 }
 
+size_t DomainJobService::GetEventCount() const
+{
+  return m_event_queue->GetEventCount();
+}
+
 std::function<void(const domain_event_t &)> DomainJobService::CreatePostEventCallback() const
 {
   return [this](const domain_event_t &event) { m_event_queue->PushEvent(event); };

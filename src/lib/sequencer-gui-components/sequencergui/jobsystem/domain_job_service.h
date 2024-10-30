@@ -65,6 +65,11 @@ public:
    */
   void SetTickTimeout(int msec);
 
+  /**
+   * @brief Returns number of events in a queue.
+   */
+  size_t GetEventCount() const;
+
 private:
   /**
    * @brief Creates a callback to publish domain events.

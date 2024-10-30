@@ -131,6 +131,11 @@ void AbstractDomainRunner::SetTickTimeout(int msec)
   m_job_service->SetTickTimeout(msec);
 }
 
+size_t AbstractDomainRunner::GetEventCount() const
+{
+  return m_job_service->GetEventCount();
+}
+
 void AbstractDomainRunner::SetJob(std::unique_ptr<sup::sequencer::IJob> job)
 {
   m_job = std::move(job);
