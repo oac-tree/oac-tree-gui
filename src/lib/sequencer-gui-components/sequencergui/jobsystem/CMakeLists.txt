@@ -15,10 +15,6 @@ target_sources(${library_name} PRIVATE
   domain_job_observer.h
   domain_job_service.cpp
   domain_job_service.h
-  domain_runner.cpp
-  domain_runner.h
-  domain_runner_service.cpp
-  domain_runner_service.h
   job_handler.cpp
   job_handler.h
   job_log.cpp
