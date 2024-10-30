@@ -19,13 +19,22 @@
 
 #include "abstract_domain_runner.h"
 
+#include "domain_event_dispatcher_context.h"
+#include "domain_job_observer.h"
+#include "domain_job_service.h"
+#include "user_context.h"
+
 #include <sup/sequencer/i_job.h>
 
 namespace sequencergui
 {
 
-AbstractDomainRunner::AbstractDomainRunner(std::unique_ptr<sup::sequencer::IJob> job)
-    : m_job(std::move(job))
+AbstractDomainRunner::AbstractDomainRunner(DomainEventDispatcherContext dispatcher_context,
+                                           UserContext user_context,
+                                           std::unique_ptr<sup::sequencer::IJob> job)
+    : m_job_service(std::make_unique<DomainJobService>(std::move(dispatcher_context),
+                                                       std::move(user_context)))
+    , m_job(std::move(job))
 {
 }
 
@@ -72,6 +81,11 @@ void AbstractDomainRunner::SetBreakpoint(size_t instr_idx)
 void AbstractDomainRunner::RemoveBreakpoint(size_t instr_idx)
 {
   m_job->RemoveBreakpoint(instr_idx);
+}
+
+sup::sequencer::IJobInfoIO *AbstractDomainRunner::GetJobInfoIO()
+{
+  return m_job_service->GetJobInfoIO();
 }
 
 }  // namespace sequencergui

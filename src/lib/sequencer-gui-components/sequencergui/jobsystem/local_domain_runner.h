@@ -32,8 +32,11 @@ namespace sequencergui
 class LocalDomainRunner : public AbstractDomainRunner
 {
 public:
-  explicit LocalDomainRunner(std::unique_ptr<procedure_t> procedure,
-                             sup::sequencer::IJobInfoIO* info_io);
+  explicit LocalDomainRunner(DomainEventDispatcherContext dispatcher_context,
+                             UserContext user_context, std::unique_ptr<procedure_t> procedure);
+
+private:
+  std::unique_ptr<sup::sequencer::IJob> CreateLocalJob(std::unique_ptr<procedure_t> procedure);
 };
 
 }  // namespace sequencergui
