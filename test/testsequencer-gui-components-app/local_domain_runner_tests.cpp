@@ -186,8 +186,11 @@ TEST_F(LocalDomainRunnerTest, Reset)
 
   runner->Reset();
 
-  EXPECT_TRUE(runner->WaitForState(sup::sequencer::JobState::kInitial,
-                                   testutils::GetTimeoutInSec(msec(50))));
+  // EXPECT_TRUE(runner->WaitForState(sup::sequencer::JobState::kInitial,
+  //                                  testutils::GetTimeoutInSec(msec(100))));
+  auto has_finished = [&runner]()
+  { return runner->GetJobState() == sup::sequencer::JobState::kInitial; };
+  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
 
   EXPECT_EQ(runner->GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
