@@ -25,6 +25,7 @@
 #include <sequencergui/model/standard_instruction_items.h>
 
 #include <sup/sequencer/instruction_info.h>
+#include <sup/sequencer/sequence_parser.h>
 
 #include <gtest/gtest.h>
 
@@ -38,12 +39,12 @@ class JobInfoTransformHelperTest : public ::testing::Test
 };
 
 //! Testing CreateInstructionItem helper method.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItem)
+TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
 {
   const size_t instruction_id{0};
-  sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
-                                       instruction_id,
-                                       {{domainconstants::kTimeoutAttribute, "42"}});
+  const sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+                                             instruction_id,
+                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
   auto instruction_item = CreateInstructionItem(info);
 
@@ -54,12 +55,12 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItem)
 
 //! Testing CreateInstructionItemTree for automation InstructionInfo containing a single
 //! instruction.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWait)
+TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 {
   const size_t instruction_id{0};
-  sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
-                                       instruction_id,
-                                       {{domainconstants::kTimeoutAttribute, "42"}});
+  const sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+                                             instruction_id,
+                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
   auto item_tree = CreateInstructionItemTree(info);
   ASSERT_EQ(item_tree.indexes.size(), 1);
@@ -74,7 +75,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWait)
 
 //! Testing CreateInstructionItemTree for automation InstructionInfo containing a sequence with two
 //! children.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequence)
+TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
 {
   using namespace sequencergui::domainconstants;
   using sup::sequencer::AttributeInfo;
@@ -106,4 +107,41 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequence)
   EXPECT_EQ(item_tree.indexes[0], sequence_item);
   EXPECT_EQ(item_tree.indexes[1], wait_items[0]);
   EXPECT_EQ(item_tree.indexes[2], wait_items[1]);
+}
+
+TEST_F(JobInfoTransformHelperTest, CreateInstructionTreeFromRootInstruction)
+{
+  const std::string procedure_xml = R"RAW(
+<Procedure>
+  <Repeat maxCount="10">
+    <Sequence>
+      <Wait timeout="42"/>
+      <Wait timeout="43"/>
+    </Sequence>
+  </Repeat>
+</Procedure>
+)RAW";
+  auto procedure = sup::sequencer::ParseProcedureString(procedure_xml);
+
+  auto item_tree = CreateInstructionItemTree(*procedure->RootInstruction());
+  ASSERT_EQ(item_tree.indexes.size(), 4);
+
+  auto repeat_item = dynamic_cast<RepeatItem*>(item_tree.root.get());
+  ASSERT_NE(repeat_item, nullptr);
+  ASSERT_EQ(repeat_item->GetInstructions().size(), 1);
+  auto sequence_item =
+      dynamic_cast<SequenceItem*>(repeat_item->GetItem<SequenceItem>(mvvm::TagIndex::kDefaultTag));
+  ASSERT_NE(sequence_item, nullptr);
+
+  ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
+
+  auto wait_items = sequence_item->GetItems<WaitItem>(mvvm::TagIndex::kDefaultTag);
+  ASSERT_EQ(wait_items.size(), 2);
+  EXPECT_EQ(wait_items[0]->GetTimeout(), 42);
+  EXPECT_EQ(wait_items[1]->GetTimeout(), 43);
+
+  EXPECT_EQ(item_tree.indexes[0], repeat_item);
+  EXPECT_EQ(item_tree.indexes[1], sequence_item);
+  EXPECT_EQ(item_tree.indexes[2], wait_items[0]);
+  EXPECT_EQ(item_tree.indexes[3], wait_items[1]);
 }

@@ -60,6 +60,11 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::sequencer::Ins
  */
 InstructionTree CreateInstructionItemTree(const sup::sequencer::InstructionInfo& info);
 
+/**
+ * @brief Creates InstructionItem with all its children from domain instruction.
+ */
+InstructionTree CreateInstructionItemTree(const sup::sequencer::Instruction& instruction);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_INSTRUCTION_ITEM_TRANSFORM_HELPER_H_

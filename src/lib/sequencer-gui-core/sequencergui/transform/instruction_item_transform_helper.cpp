@@ -25,6 +25,8 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_info.h>
+#include <sup/sequencer/instruction_info_utils.h>
+#include <sup/sequencer/instruction_map.h>
 
 #include <stack>
 
@@ -34,9 +36,23 @@ namespace sequencergui
 namespace
 {
 
+/**
+ * @brief The InstructionInfoStackNode structs stores stack information during traversing of
+ * InstructionInfo object.
+ */
 struct InstructionInfoStackNode
 {
   const sup::sequencer::InstructionInfo& info;
+  sequencergui::InstructionItem& item;
+};
+
+/**
+ * @brief The InstructionStackNode structs stores stack information during traversing of
+ * domain Instruction object.
+ */
+struct InstructionStackNode
+{
+  const sup::sequencer::Instruction& instruction;
   sequencergui::InstructionItem& item;
 };
 
@@ -86,6 +102,13 @@ InstructionTree CreateInstructionItemTree(const sup::sequencer::InstructionInfo&
                 [&index_list](auto it) { index_list[it.second] = it.first; });
 
   return {std::move(result), std::move(index_list)};
+}
+
+InstructionTree CreateInstructionItemTree(const sup::sequencer::Instruction& instruction)
+{
+  sup::sequencer::InstructionMap instr_map{&instruction};
+  auto instr_info = sup::sequencer::utils::CreateInstructionInfoTree(instruction, instr_map);
+  return CreateInstructionItemTree(*instr_info);
 }
 
 }  // namespace sequencergui
