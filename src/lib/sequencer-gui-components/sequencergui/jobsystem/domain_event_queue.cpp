@@ -19,6 +19,8 @@
 
 #include "domain_event_queue.h"
 
+#include <sequencergui/core/exceptions.h>
+
 namespace sequencergui
 {
 
@@ -27,7 +29,10 @@ DomainEventQueue::DomainEventQueue(QObject *parent) : QObject(parent) {}
 domain_event_t DomainEventQueue::PopEvent()
 {
   domain_event_t result;
-  m_domain_events.try_pop(result);
+  if (!m_domain_events.try_pop(result))
+  {
+    throw RuntimeException("Broken logic, event stack is empty");
+  }
   return result;
 }
 

@@ -52,8 +52,11 @@ public:
 
   static bool WaitForEmptyQueue(const DomainJobService &service, msec timeout)
   {
-    auto predicate = [&service](){return service.GetEventCount() == 0;};
-    return QTest::qWaitFor(predicate, static_cast<int>(timeout.count()));
+    auto predicate = [&service]() { return service.GetEventCount() == 0; };
+    auto result = QTest::qWaitFor(predicate, static_cast<int>(timeout.count()));
+    // FIXME Experimenting with test stability. Without this very rarely events are not processed.
+    QTest::qWait(20);
+    return result;
   }
 
   mock_event_listener_t m_event_listener;
