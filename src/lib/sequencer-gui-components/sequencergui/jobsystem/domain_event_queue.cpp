@@ -31,6 +31,8 @@ domain_event_t DomainEventQueue::PopEvent()
   domain_event_t result;
   if (!m_domain_events.try_pop(result))
   {
+    // We should warn somehow the user without exaggerating too much. Wouldn't be already enough to
+    // print to stderr?
     throw RuntimeException("Broken logic, event stack is empty");
   }
   return result;

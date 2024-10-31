@@ -19,6 +19,8 @@
 
 #include "sequencergui/jobsystem/domain_event_queue.h"
 
+#include <sequencergui/core/exceptions.h>
+
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
@@ -36,18 +38,18 @@ TEST_F(DomainEventQueueTest, InitialState)
   DomainEventQueue queue;
   EXPECT_EQ(queue.GetEventCount(), 0);
 
-  auto event = queue.PopEvent();
-  EXPECT_FALSE(IsValid(event));
+  //auto event = queue.PopEvent();
+  EXPECT_THROW(queue.PopEvent(), RuntimeException);
 }
 
 TEST_F(DomainEventQueueTest, PushAndPop)
 {
   DomainEventQueue queue;
 
-  QSignalSpy spy_queue(&queue, &DomainEventQueue::NewEvent);
+  const QSignalSpy spy_queue(&queue, &DomainEventQueue::NewEvent);
 
-  domain_event_t event1(JobStateChangedEvent{::sup::sequencer::JobState::kInitial});
-  domain_event_t event2(JobStateChangedEvent{::sup::sequencer::JobState::kSucceeded});
+  const domain_event_t event1(JobStateChangedEvent{::sup::sequencer::JobState::kInitial});
+  const domain_event_t event2(JobStateChangedEvent{::sup::sequencer::JobState::kSucceeded});
 
   queue.PushEvent(event1);
   queue.PushEvent(event2);
