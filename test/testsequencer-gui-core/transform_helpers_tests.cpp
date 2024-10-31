@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/transform/transform_helpers.h"
+#include "sequencergui/transform/anyvalue_item_transform_helper.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_helper.h>
@@ -51,15 +51,15 @@
 using namespace sequencergui;
 using ::testing::_;
 
-//! Tests for functions from variable_item_transform_utils.h
+//! Tests for functions from anyvalue_item_transform_helper.h
 
-class TransformHelpersTest : public ::testing::Test
+class AnyValueItemTransformHelperTest : public ::testing::Test
 {
 };
 
 //! Checking SetAnyValue function.
 
-TEST_F(TransformHelpersTest, SetAnyValueFromScalar)
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -87,7 +87,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromScalar)
 
 //! Same as above, except that LocalVariableItem is a part of the model.
 
-TEST_F(TransformHelpersTest, UpdateAnyValueSignaling)
+TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueSignaling)
 {
   SequencerModel model;
   auto item = model.InsertItem<LocalVariableItem>();
@@ -111,7 +111,7 @@ TEST_F(TransformHelpersTest, UpdateAnyValueSignaling)
 
 //! Checking UpdateAnyValue function.
 
-TEST_F(TransformHelpersTest, UpdateAnyValueFromScalar)
+TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -132,7 +132,7 @@ TEST_F(TransformHelpersTest, UpdateAnyValueFromScalar)
 //! Checking UpdateAnyValue function on changing type of AnyValue.
 //! Current implementation allows to change AnyValueItem, this might change in the future.
 
-TEST_F(TransformHelpersTest, UpdateAnyValueFromScalarWithTypeChange)
+TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalarWithTypeChange)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -153,7 +153,7 @@ TEST_F(TransformHelpersTest, UpdateAnyValueFromScalarWithTypeChange)
 
 //! Setting AnyValue to instruction.
 
-TEST_F(TransformHelpersTest, SetInstructionAnyValueFromScalar)
+TEST_F(AnyValueItemTransformHelperTest, SetInstructionAnyValueFromScalar)
 {
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   WaitItem item;
@@ -186,7 +186,7 @@ TEST_F(TransformHelpersTest, SetInstructionAnyValueFromScalar)
 //! Domain sequencer variable with json type and value attributes is used to set AnyValueItem on
 //! board of VariableItem.
 
-TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariable)
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariable)
 {
   {  // when domain variable has type attribute
     auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
@@ -225,7 +225,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariable)
 
 //! Validate SetAnyValueFromDomainVariable helper method. Json type is preregistered.
 
-TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariableWithRegistry)
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableWithRegistry)
 {
   sup::dto::AnyTypeRegistry registry;
   std::string one_scalar_name = "OneScalar";
@@ -245,7 +245,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariableWithRegistry)
   EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
 }
 
-TEST_F(TransformHelpersTest, SetAnyValueFromDomainInstruction)
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainInstruction)
 {
   // We use Wait instruction for test event if it is not intended for storing json type and value
   // attributes.
@@ -266,7 +266,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainInstruction)
   EXPECT_EQ(expected_anyvalue, stored_anyvalue);
 }
 
-TEST_F(TransformHelpersTest, RegisterChildrenTag)
+TEST_F(AnyValueItemTransformHelperTest, RegisterChildrenTag)
 {
   {  // case when variable has no children
     auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
@@ -298,7 +298,7 @@ TEST_F(TransformHelpersTest, RegisterChildrenTag)
   }
 }
 
-TEST_F(TransformHelpersTest, PopulateProcedurePreambleFromItem)
+TEST_F(AnyValueItemTransformHelperTest, PopulateProcedurePreambleFromItem)
 {
   {  // empty
     sup::sequencer::ProcedurePreamble preamble;
@@ -340,7 +340,7 @@ TEST_F(TransformHelpersTest, PopulateProcedurePreambleFromItem)
 }
 
 //! Validating GetAnyValue helper method.
-TEST_F(TransformHelpersTest, GetStoredAnyValue)
+TEST_F(AnyValueItemTransformHelperTest, GetStoredAnyValue)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -354,7 +354,7 @@ TEST_F(TransformHelpersTest, GetStoredAnyValue)
 }
 
 //! Validating GetAnyValue method for domain worskpaces.
-TEST_F(TransformHelpersTest, GetAnyValueFromDomainWorkspace)
+TEST_F(AnyValueItemTransformHelperTest, GetAnyValueFromDomainWorkspace)
 {
   const std::string var_name("var");
 

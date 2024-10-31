@@ -31,7 +31,7 @@
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
-#include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/model/session_item.h>
 

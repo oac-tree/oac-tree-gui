@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPERS_H_
-#define SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPERS_H_
+#ifndef SEQUENCERGUI_TRANSFORM_ANYVALUE_ITEM_TRANSFORM_HELPER_H_
+#define SEQUENCERGUI_TRANSFORM_ANYVALUE_ITEM_TRANSFORM_HELPER_H_
 
 //! @file
 //! Collection of helper functions to transform AnyValueItem from/to domain.
@@ -113,4 +113,4 @@ sup::dto::AnyValue GetAnyValue(const std::string& var_name,
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPERS_H_
+#endif  // SEQUENCERGUI_TRANSFORM_ANYVALUE_ITEM_TRANSFORM_HELPER_H_

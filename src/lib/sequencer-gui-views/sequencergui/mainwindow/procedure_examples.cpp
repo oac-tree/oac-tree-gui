@@ -24,7 +24,7 @@
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/universal_item_helper.h>
-#include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
 

@@ -30,7 +30,7 @@
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_port.h>
-#include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/commands/command_stack.h>
 #include <mvvm/commands/i_command_stack.h>

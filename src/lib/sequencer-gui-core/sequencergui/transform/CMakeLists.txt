@@ -1,6 +1,8 @@
 # Collection of files related to the transformations from the GUI model to domain and back.
 
 target_sources(${library_name} PRIVATE
+  anyvalue_item_transform_helper.cpp
+  anyvalue_item_transform_helper.h
   attribute_item_transform_helper.cpp
   attribute_item_transform_helper.h
   domain_procedure_builder.cpp
@@ -16,6 +18,4 @@ target_sources(${library_name} PRIVATE
   procedure_item_job_info_builder.h
   transform_from_domain.cpp
   transform_from_domain.h
-  transform_helpers.cpp
-  transform_helpers.h
 )

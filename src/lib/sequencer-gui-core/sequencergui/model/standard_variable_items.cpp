@@ -23,7 +23,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/sequencer/variable.h>
 

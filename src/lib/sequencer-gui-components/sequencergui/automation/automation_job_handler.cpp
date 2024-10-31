@@ -30,7 +30,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/transform/procedure_item_job_info_builder.h>
-#include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/transform/anyvalue_item_transform_helper.h>
 
 #include <QDebug>
 #include <iostream>
