@@ -41,7 +41,7 @@ class ProcedureItem;
 class JobLog;
 class JobItem;
 class InstructionItem;
-class GUIObjectBuilder;
+class ProcedureItemBuilder;
 class LogEvent;
 class WorkspaceItemListener;
 class JobModel;
@@ -204,7 +204,7 @@ private:
   DomainEventDispatcherContext CreateContext();
 
   //!< GUI object builder holding domain/GUI object correspondance
-  std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
+  std::unique_ptr<ProcedureItemBuilder> m_guiobject_builder;
 
   //!< domain procedure should live longer than the runner
   std::unique_ptr<procedure_t> m_domain_procedure;

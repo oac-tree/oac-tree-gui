@@ -22,6 +22,7 @@
 
 #include <sup/gui/core/dto_types_fwd.h>
 
+#include <sequencergui/transform/i_procedure_item_builder.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sup/sequencer/instruction_map.h>  // REFACTORING
 
@@ -54,10 +55,10 @@ class VariableItem;
 //! - Procedure must be already set up (Procedure::Setup method called) to have all internal clones
 //! already performed.
 
-class GUIObjectBuilder
+class ProcedureItemBuilder
 {
 public:
-  ~GUIObjectBuilder();
+  ~ProcedureItemBuilder();
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
   void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
@@ -70,7 +71,9 @@ public:
                              const anytype_registry_t* registry);
 
 
-  InstructionItem* FindInstructionItem(size_t domain_index) const;
+  InstructionItem* GetInstruction(size_t domain_index) const;
+
+
   InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
   VariableItem* FindVariableItem(const variable_t* variable) const;
   VariableItem* FindVariableItem(const std::string& variable_name) const;

@@ -27,7 +27,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/operation/breakpoint_helper.h>
-#include <sequencergui/transform/gui_object_builder.h>
+#include <sequencergui/transform/procedure_item_builder.h>
 
 #include <mvvm/standarditems/container_item.h>
 

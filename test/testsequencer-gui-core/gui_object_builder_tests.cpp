@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/transform/gui_object_builder.h"
+#include "sequencergui/transform/procedure_item_builder.h"
 
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -42,18 +42,18 @@ using namespace sequencergui;
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
-class GUIObjectBuilderTest : public ::testing::Test
+class ProcedureItemBuilderTest : public ::testing::Test
 {
 };
 
 //! Populate InstructionContainerItem from empty Procedure.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemFromEmptyProcedure)
+TEST_F(ProcedureItemBuilderTest, PopulateItemFromEmptyProcedure)
 {
   ::sup::sequencer::Procedure procedure;
   sequencergui::ProcedureItem procedure_item;
 
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 0);
@@ -62,7 +62,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromEmptyProcedure)
 
 //! Populate InstructionContainerItem from Procedure with a single Wait instruction.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithWait)
+TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithWait)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -72,7 +72,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithWait)
   procedure.PushInstruction(std::move(wait));
 
   sequencergui::ProcedureItem procedure_item;
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   auto item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
@@ -83,7 +83,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithWait)
 //! Populate InstructionContainerItem from Procedure with two Wait instruction.
 //! One is marked as root instruction, root_only=true is used
 
-TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithTwoWaits)
+TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithTwoWaits)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -97,7 +97,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithTwoWaits)
   procedure.PushInstruction(std::move(wait1));
 
   sequencergui::ProcedureItem procedure_item;
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ true);
 
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetInstructionCount(), 1);
@@ -108,7 +108,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithTwoWaits)
 
 //! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithSequence)
+TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithSequence)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -124,7 +124,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithSequence)
   procedure.Setup();
 
   sequencergui::ProcedureItem procedure_item;
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   auto sequence_item =
@@ -138,7 +138,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithSequence)
 
 //! Populate WorkspaceItem from empty procedure.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithLocalVariable)
+TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithLocalVariable)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -161,7 +161,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithLocalVariable)
   procedure.Setup();
 
   sequencergui::ProcedureItem procedure_item;
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   EXPECT_EQ(procedure_item.GetWorkspace()->GetTotalItemCount(), 1);
@@ -177,7 +177,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithLocalVariable)
 //! Procedure with local include after Setup call.
 //! root_only mode is used.
 
-TEST_F(GUIObjectBuilderTest, LocalIncludeProcedure)
+TEST_F(ProcedureItemBuilderTest, LocalIncludeProcedure)
 {
   auto procedure = testutils::CreateLocalIncludeProcedure();
 
@@ -196,7 +196,7 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeProcedure)
 
   // Building ProcedureItem in root_only mode
   sequencergui::ProcedureItem procedure_item;
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(procedure.get(), &procedure_item, /*root_only*/ false);
 
   // only one root instruction has been processed
@@ -224,7 +224,7 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeProcedure)
 //! Procedure with local include after Setup call.
 //! root_only mode is used.
 
-TEST_F(GUIObjectBuilderTest, LocalIncludeAfterSetup)
+TEST_F(ProcedureItemBuilderTest, LocalIncludeAfterSetup)
 {
   auto procedure = testutils::CreateLocalIncludeProcedure();
 
@@ -241,7 +241,7 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeAfterSetup)
 
   // Building ProcedureItem in root_only mode
   sequencergui::ProcedureItem procedure_item;
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(procedure.get(), &procedure_item, /*root_only*/ true);
 
   // only one root instruction has been processed
@@ -274,9 +274,9 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeAfterSetup)
   EXPECT_EQ(builder.FindInstructionItem(cloned_domain_wait), wait_item);
 }
 
-TEST_F(GUIObjectBuilderTest, FindInstruction)
+TEST_F(ProcedureItemBuilderTest, FindInstruction)
 {
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
 
   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
 
@@ -297,7 +297,7 @@ TEST_F(GUIObjectBuilderTest, FindInstruction)
 
 //! Populate ProcedureItem from the domain procedure containing preamble.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithPreamble)
+TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithPreamble)
 {
   using sup::sequencer::TypeRegistrationInfo;
 
@@ -312,7 +312,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithPreamble)
       TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, json_type));
 
   sequencergui::ProcedureItem procedure_item;
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   std::vector<std::string> expected_paths{"abc", "def"};

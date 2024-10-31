@@ -7,11 +7,11 @@ target_sources(${library_name} PRIVATE
   domain_procedure_builder.h
   domain_workspace_builder.cpp
   domain_workspace_builder.h
-  gui_object_builder.cpp
-  gui_object_builder.h
   i_procedure_item_builder.h
   job_info_transform_helper.cpp
   job_info_transform_helper.h
+  procedure_item_builder.cpp
+  procedure_item_builder.h
   procedure_item_job_info_builder.cpp
   procedure_item_job_info_builder.h
   transform_from_domain.cpp

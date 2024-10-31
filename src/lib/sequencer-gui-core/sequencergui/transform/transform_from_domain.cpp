@@ -23,7 +23,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/sequencer_item_includes.h>
-#include <sequencergui/transform/gui_object_builder.h>
+#include <sequencergui/transform/procedure_item_builder.h>
 
 #include <mvvm/model/function_types.h>
 #include <mvvm/model/item_catalogue.h>
@@ -115,7 +115,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 
 std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only)
 {
-  GUIObjectBuilder builder;
+  ProcedureItemBuilder builder;
   return builder.CreateProcedureItem(procedure, root_only);
 }
 

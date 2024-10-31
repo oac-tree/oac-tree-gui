@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "gui_object_builder.h"
+#include "procedure_item_builder.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
@@ -58,9 +58,9 @@ std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t &pro
 namespace sequencergui
 {
 
-GUIObjectBuilder::~GUIObjectBuilder() = default;
+ProcedureItemBuilder::~ProcedureItemBuilder() = default;
 
-std::unique_ptr<ProcedureItem> GUIObjectBuilder::CreateProcedureItem(const procedure_t *procedure,
+std::unique_ptr<ProcedureItem> ProcedureItemBuilder::CreateProcedureItem(const procedure_t *procedure,
                                                                      bool root_only)
 {
   auto result = std::make_unique<ProcedureItem>();
@@ -68,7 +68,7 @@ std::unique_ptr<ProcedureItem> GUIObjectBuilder::CreateProcedureItem(const proce
   return result;
 }
 
-void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
+void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
                                              ProcedureItem *procedure_item, bool root_only)
 {
   if (!procedure)
@@ -99,7 +99,7 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
 
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
 
-void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, WorkspaceItem *workspace,
+void ProcedureItemBuilder::PopulateWorkspaceItem(const procedure_t *procedure, WorkspaceItem *workspace,
                                              const anytype_registry_t *registry)
 {
   if (workspace->GetTotalItemCount() > 0)
@@ -116,31 +116,31 @@ void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, Works
   }
 }
 
-InstructionItem *GUIObjectBuilder::FindInstructionItem(size_t domain_index) const
+InstructionItem *ProcedureItemBuilder::GetInstruction(size_t domain_index) const
 {
   auto domain_instruction = m_index_to_instruction[domain_index];
   return FindInstructionItem(domain_instruction);
 }
 
-InstructionItem *GUIObjectBuilder::FindInstructionItem(const instruction_t *instruction) const
+InstructionItem *ProcedureItemBuilder::FindInstructionItem(const instruction_t *instruction) const
 {
   auto it = m_to_instruction_item.find(instruction);
   return it == m_to_instruction_item.end() ? nullptr : it->second;
 }
 
-VariableItem *GUIObjectBuilder::FindVariableItem(const variable_t *variable) const
+VariableItem *ProcedureItemBuilder::FindVariableItem(const variable_t *variable) const
 {
   auto it = m_domain_variable_to_item.find(variable);
   return it == m_domain_variable_to_item.end() ? nullptr : it->second;
 }
 
-VariableItem *GUIObjectBuilder::FindVariableItem(const std::string &variable_name) const
+VariableItem *ProcedureItemBuilder::FindVariableItem(const std::string &variable_name) const
 {
   auto it = m_variablename_to_item.find(variable_name);
   return it == m_variablename_to_item.end() ? nullptr : it->second;
 }
 
-const instruction_t *GUIObjectBuilder::FindInstruction(
+const instruction_t *ProcedureItemBuilder::FindInstruction(
     const InstructionItem *instruction_item) const
 {
   auto predicate = [instruction_item](auto it) { return it.second == instruction_item; };
@@ -148,7 +148,7 @@ const instruction_t *GUIObjectBuilder::FindInstruction(
   return it == m_to_instruction_item.end() ? nullptr : it->first;
 }
 
-size_t GUIObjectBuilder::FindInstructionItemIndex(const InstructionItem *instruction_item) const
+size_t ProcedureItemBuilder::FindInstructionItemIndex(const InstructionItem *instruction_item) const
 {
   // REFACTORING
   if (auto domain_instruction = FindInstruction(instruction_item); domain_instruction)
@@ -161,7 +161,7 @@ size_t GUIObjectBuilder::FindInstructionItemIndex(const InstructionItem *instruc
 
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
 
-void GUIObjectBuilder::PopulateInstructionContainerItem(const procedure_t *procedure,
+void ProcedureItemBuilder::PopulateInstructionContainerItem(const procedure_t *procedure,
                                                         InstructionContainerItem *container,
                                                         bool root_only)
 {
@@ -194,7 +194,7 @@ void GUIObjectBuilder::PopulateInstructionContainerItem(const procedure_t *proce
   }
 }
 
-mvvm::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t *instruction,
+mvvm::SessionItem *ProcedureItemBuilder::ProcessInstruction(const instruction_t *instruction,
                                                         mvvm::SessionItem *parent)
 {
   auto item = sequencergui::CreateInstructionItem(instruction->GetType());
@@ -206,7 +206,7 @@ mvvm::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t *ins
   return next_parent;
 }
 
-void GUIObjectBuilder::Iterate(const instruction_t *instruction, mvvm::SessionItem *parent)
+void ProcedureItemBuilder::Iterate(const instruction_t *instruction, mvvm::SessionItem *parent)
 {
   for (auto &instruction : instruction->ChildInstructions())
   {
@@ -218,7 +218,7 @@ void GUIObjectBuilder::Iterate(const instruction_t *instruction, mvvm::SessionIt
   }
 }
 
-void GUIObjectBuilder::Save(const instruction_t *instruction, InstructionItem *item)
+void ProcedureItemBuilder::Save(const instruction_t *instruction, InstructionItem *item)
 {
   auto it = m_to_instruction_item.find(instruction);
   if (it != m_to_instruction_item.end())
@@ -228,7 +228,7 @@ void GUIObjectBuilder::Save(const instruction_t *instruction, InstructionItem *i
   m_to_instruction_item.insert({instruction, item});
 }
 
-void GUIObjectBuilder::Save(const variable_t *variable, VariableItem *item)
+void ProcedureItemBuilder::Save(const variable_t *variable, VariableItem *item)
 {
   auto it = m_variablename_to_item.find(variable->GetName());
   if (it != m_variablename_to_item.end())

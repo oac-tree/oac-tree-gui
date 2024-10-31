@@ -36,7 +36,7 @@
 #include <sequencergui/pvmonitor/workspace_item_listener.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
-#include <sequencergui/transform/gui_object_builder.h>
+#include <sequencergui/transform/procedure_item_builder.h>
 
 #include <mvvm/signals/item_listener.h>
 
@@ -49,7 +49,7 @@ namespace sequencergui
 {
 
 JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
-    : m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
+    : m_guiobject_builder(std::make_unique<ProcedureItemBuilder>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
 {
@@ -146,7 +146,7 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
 
 void JobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
 {
-  if (auto *item = m_guiobject_builder->FindInstructionItem(event.index); item)
+  if (auto *item = m_guiobject_builder->GetInstruction(event.index); item)
   {
     item->SetStatus(::sup::sequencer::StatusToString(event.state.m_execution_status));
     emit InstructionStatusChanged(item);
@@ -172,7 +172,7 @@ void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
   std::vector<InstructionItem *> items;
   for (auto instruction_index : event.leaves)
   {
-    if (auto *item = m_guiobject_builder->FindInstructionItem(instruction_index); item)
+    if (auto *item = m_guiobject_builder->GetInstruction(instruction_index); item)
     {
       items.push_back(item);
     }
