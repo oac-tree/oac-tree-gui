@@ -11,6 +11,7 @@ target_sources(${library_name} PRIVATE
   domain_workspace_builder.h
   gui_object_builder.cpp
   gui_object_builder.h
+  i_procedure_item_builder.h
   procedure_item_automation_builder.cpp
   procedure_item_automation_builder.h
   transform_from_domain.cpp

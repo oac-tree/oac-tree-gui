@@ -52,14 +52,17 @@ std::unique_ptr<ProcedureItem> ProcedureItemAutomationBuilder::CreateProcedureIt
   return result;
 }
 
-const InstructionItem *ProcedureItemAutomationBuilder::GetInstruction(size_t index) const
+InstructionItem *ProcedureItemAutomationBuilder::GetInstruction(size_t index) const
 {
-  return index < m_instruction_indexes.size() ? m_instruction_indexes[index] : nullptr;
+  return index < m_instruction_indexes.size()
+             ? const_cast<InstructionItem *>(m_instruction_indexes[index])
+             : nullptr;
 }
 
-const VariableItem *ProcedureItemAutomationBuilder::GetVariable(size_t index) const
+VariableItem *ProcedureItemAutomationBuilder::GetVariable(size_t index) const
 {
-  return index < m_variable_indexes.size() ? m_variable_indexes[index] : nullptr;
+  return index < m_variable_indexes.size() ? const_cast<VariableItem *>(m_variable_indexes[index])
+                                           : nullptr;
 }
 
 }  // namespace sequencergui

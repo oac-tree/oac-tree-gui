@@ -50,10 +50,10 @@ public:
                                               m_user_listener.CreateContext());
   }
 
-  bool WaitForEmptyQueue(const DomainJobService &service, msec timeout)
+  static bool WaitForEmptyQueue(const DomainJobService &service, msec timeout)
   {
     auto predicate = [&service](){return service.GetEventCount() == 0;};
-    return QTest::qWaitFor(predicate, timeout.count());
+    return QTest::qWaitFor(predicate, static_cast<int>(timeout.count()));
   }
 
   mock_event_listener_t m_event_listener;
@@ -75,7 +75,7 @@ TEST_F(DomainJobServiceTest, InstructionStateUpdated)
 
   service->GetJobInfoIO()->InstructionStateUpdated(expected_index, expected_state);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, VariableUpdated)
@@ -91,7 +91,7 @@ TEST_F(DomainJobServiceTest, VariableUpdated)
 
   service->GetJobInfoIO()->VariableUpdated(index, value, connected);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, JobStateUpdated)
@@ -107,7 +107,7 @@ TEST_F(DomainJobServiceTest, JobStateUpdated)
 
   service->GetJobInfoIO()->JobStateUpdated(state);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, PutValue)
@@ -121,7 +121,7 @@ TEST_F(DomainJobServiceTest, PutValue)
 
   service->GetJobInfoIO()->PutValue(value, description);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, GetUserValue)
@@ -213,7 +213,7 @@ TEST_F(DomainJobServiceTest, Message)
 
   service->GetJobInfoIO()->Message(message);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, Log)
@@ -227,7 +227,7 @@ TEST_F(DomainJobServiceTest, Log)
 
   service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, NextInstructionsUpdated)

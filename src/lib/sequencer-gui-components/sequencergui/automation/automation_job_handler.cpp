@@ -96,7 +96,7 @@ std::function<domain_event_t()> AutomationJobHandler::CreateGetEventCallback() c
 
 void AutomationJobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
 {
-  if (auto *item = const_cast<InstructionItem *>(m_builder->GetInstruction(event.index)); item)
+  if (auto *item = m_builder->GetInstruction(event.index); item)
   {
     item->SetStatus(::sup::sequencer::StatusToString(event.state.m_execution_status));
   }
@@ -113,7 +113,7 @@ void AutomationJobHandler::OnJobStateChanged(const JobStateChangedEvent &event)
 
 void AutomationJobHandler::OnVariableUpdated(const VariableUpdatedEvent &event)
 {
-  if (auto item = const_cast<VariableItem *>(m_builder->GetVariable(event.index)); item)
+  if (auto item = m_builder->GetVariable(event.index); item)
   {
     if (event.connected && sup::dto::IsEmptyValue(event.value) && !item->IsAvailable())
     {

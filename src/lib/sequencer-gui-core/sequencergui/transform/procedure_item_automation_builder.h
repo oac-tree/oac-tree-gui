@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_AUTOMATION_BUILDER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/transform/i_procedure_item_builder.h>
 
 #include <memory>
 #include <vector>
@@ -39,7 +40,7 @@ class VariableItem;
  *
  * Contains machinery to get instruction and variable pointers from automation indexes.
  */
-class ProcedureItemAutomationBuilder
+class ProcedureItemAutomationBuilder : public IProcedureItemBuilder
 {
 public:
   ProcedureItemAutomationBuilder();
@@ -47,17 +48,17 @@ public:
   /**
    * @brief Creates procedure item from given automation server information.
    */
-  std::unique_ptr<ProcedureItem> CreateProcedureItem(const sup::sequencer::JobInfo &job_info);
+  std::unique_ptr<ProcedureItem> CreateProcedureItem(const sup::sequencer::JobInfo& job_info);
 
   /**
    * @brief Returns instruction item for given automation index.
    */
-  const InstructionItem* GetInstruction(size_t index) const;
+  InstructionItem* GetInstruction(size_t index) const override;
 
   /**
    * @brief Returns variable item for given automation index.
    */
-  const VariableItem* GetVariable(size_t index) const;
+  VariableItem *GetVariable(size_t index) const override;
 
 private:
   std::vector<const InstructionItem*> m_instruction_indexes;
