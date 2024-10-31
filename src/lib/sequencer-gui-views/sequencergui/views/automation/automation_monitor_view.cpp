@@ -28,7 +28,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/transform/procedure_item_automation_builder.h>
+#include <sequencergui/transform/procedure_item_job_info_builder.h>
 #include <sequencergui/views/operation/job_list_widget.h>
 #include <sequencergui/views/operation/operation_realtime_panel.h>
 #include <sequencergui/views/operation/operation_workspace_panel.h>

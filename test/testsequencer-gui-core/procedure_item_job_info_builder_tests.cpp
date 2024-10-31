@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/transform/procedure_item_automation_builder.h"
+#include "sequencergui/transform/procedure_item_job_info_builder.h"
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -47,17 +47,18 @@ const std::string kSequenceTwoWaitsBody{
   </Workspace>
 )RAW"};
 
-//! Tests for ProcedureItemAutomationBuilder class.
-
-class ProcedureItemAutomationBuilderTest : public ::testing::Test
+/**
+ * @brief Tests for ProcedureItemJobInfoBuilder class.
+ */
+class ProcedureItemJobInfoBuilderTest : public ::testing::Test
 {
 };
 
-TEST_F(ProcedureItemAutomationBuilderTest, SequenceWithTwoWaits)
+TEST_F(ProcedureItemJobInfoBuilderTest, SequenceWithTwoWaits)
 {
   auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
 
-  ProcedureItemAutomationBuilder builder;
+  ProcedureItemJobInfoBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);
 
   // EXPECT_EQ(procedure_item->GetDisplayName(), std::string());

@@ -3,8 +3,6 @@
 target_sources(${library_name} PRIVATE
   attribute_item_transform_helper.cpp
   attribute_item_transform_helper.h
-  automation_transform_helper.cpp
-  automation_transform_helper.h
   domain_procedure_builder.cpp
   domain_procedure_builder.h
   domain_workspace_builder.cpp
@@ -12,8 +10,10 @@ target_sources(${library_name} PRIVATE
   gui_object_builder.cpp
   gui_object_builder.h
   i_procedure_item_builder.h
-  procedure_item_automation_builder.cpp
-  procedure_item_automation_builder.h
+  job_info_transform_helper.cpp
+  job_info_transform_helper.h
+  procedure_item_job_info_builder.cpp
+  procedure_item_job_info_builder.h
   transform_from_domain.cpp
   transform_from_domain.h
   transform_helpers.cpp

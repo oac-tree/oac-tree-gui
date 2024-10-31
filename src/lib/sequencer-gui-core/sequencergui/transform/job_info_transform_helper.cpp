@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "automation_transform_helper.h"
+#include "job_info_transform_helper.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_automation_helper.h>

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/transform/automation_transform_helper.h"
+#include "sequencergui/transform/job_info_transform_helper.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
@@ -37,14 +37,14 @@
 
 using namespace sequencergui;
 
-//! Tests of helper methods from automation_transform_helper.h
+//! Tests of helper methods from job_info_transform_helper.h
 
-class AutomationTransformHelperTest : public ::testing::Test
+class JobInfoTransformHelperTest : public ::testing::Test
 {
 };
 
 //! Testing CreateInstructionItem helper method.
-TEST_F(AutomationTransformHelperTest, CreateInstructionItem)
+TEST_F(JobInfoTransformHelperTest, CreateInstructionItem)
 {
   const size_t instruction_id{0};
   sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
@@ -60,7 +60,7 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItem)
 
 //! Testing CreateInstructionItemTree for automation InstructionInfo containing a single
 //! instruction.
-TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForWait)
+TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWait)
 {
   const size_t instruction_id{0};
   sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
@@ -80,7 +80,7 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForWait)
 
 //! Testing CreateInstructionItemTree for automation InstructionInfo containing a sequence with two
 //! children.
-TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForSequence)
+TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequence)
 {
   using namespace sequencergui::domainconstants;
   using sup::sequencer::AttributeInfo;
@@ -115,7 +115,7 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForSequence)
 }
 
 //! Testing CreateVariableItem helper method.
-TEST_F(AutomationTransformHelperTest, CreateVariableItem)
+TEST_F(JobInfoTransformHelperTest, CreateVariableItem)
 {
   const size_t variable_id{0};
   const std::string expected_name("abc");
@@ -136,7 +136,7 @@ TEST_F(AutomationTransformHelperTest, CreateVariableItem)
   EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 }
 
-TEST_F(AutomationTransformHelperTest, PopulateWorkspaceItem)
+TEST_F(JobInfoTransformHelperTest, PopulateWorkspaceItem)
 {
   {  // attempt to populate non-empty workspace
     WorkspaceItem workspace_item;

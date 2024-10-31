@@ -30,7 +30,7 @@ namespace sequencergui
 {
 
 class JobItem;
-class ProcedureItemAutomationBuilder;
+class ProcedureItemJobInfoBuilder;
 class RemoteJobObserver;
 class DomainEventQueue;
 class DomainEventDispatcher;
@@ -101,7 +101,7 @@ private:
    */
   void OnVariableUpdated(const VariableUpdatedEvent& event);
 
-  std::unique_ptr<ProcedureItemAutomationBuilder> m_builder;
+  std::unique_ptr<ProcedureItemJobInfoBuilder> m_builder;
   std::unique_ptr<RemoteJobObserver> m_job_observer;
   std::unique_ptr<DomainEventQueue> m_event_queue;
   std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;

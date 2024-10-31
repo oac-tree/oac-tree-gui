@@ -29,7 +29,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/variable_item.h>
-#include <sequencergui/transform/procedure_item_automation_builder.h>
+#include <sequencergui/transform/procedure_item_job_info_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
 
 #include <QDebug>
@@ -40,7 +40,7 @@ namespace sequencergui
 
 AutomationJobHandler::AutomationJobHandler(JobItem *job_item,
                                            const sup::sequencer::JobInfo &job_info)
-    : m_builder(std::make_unique<ProcedureItemAutomationBuilder>())
+    : m_builder(std::make_unique<ProcedureItemJobInfoBuilder>())
     , m_job_observer(std::make_unique<RemoteJobObserver>(CreatePostEventCallback()))
     , m_event_queue(std::make_unique<DomainEventQueue>())
     , m_event_dispatcher(std::make_unique<DomainEventDispatcher>(CreateGetEventCallback(),

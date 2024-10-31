@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_AUTOMATION_BUILDER_H_
-#define SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_AUTOMATION_BUILDER_H_
+#ifndef SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_JOB_INFO_BUILDER_H_
+#define SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_JOB_INFO_BUILDER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/transform/i_procedure_item_builder.h>
@@ -35,29 +35,23 @@ class InstructionItem;
 class VariableItem;
 
 /**
- * @brief The ProcedureItemAutomationBuilder class creates ProcedureItem from automation server
+ * @brief The ProcedureItemJobInfoBuilder class creates ProcedureItem from automation server
  * information.
  *
  * Contains machinery to get instruction and variable pointers from automation indexes.
  */
-class ProcedureItemAutomationBuilder : public IProcedureItemBuilder
+class ProcedureItemJobInfoBuilder : public IProcedureItemBuilder
 {
 public:
-  ProcedureItemAutomationBuilder();
+  ProcedureItemJobInfoBuilder();
 
   /**
    * @brief Creates procedure item from given automation server information.
    */
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const sup::sequencer::JobInfo& job_info);
 
-  /**
-   * @brief Returns instruction item for given automation index.
-   */
   InstructionItem* GetInstruction(size_t index) const override;
 
-  /**
-   * @brief Returns variable item for given automation index.
-   */
   VariableItem *GetVariable(size_t index) const override;
 
 private:
@@ -67,4 +61,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_AUTOMATION_BUILDER_H_
+#endif  // SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_JOB_INFO_BUILDER_H_

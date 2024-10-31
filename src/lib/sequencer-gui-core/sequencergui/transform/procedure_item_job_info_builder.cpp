@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "procedure_item_automation_builder.h"
+#include "procedure_item_job_info_builder.h"
 
-#include "automation_transform_helper.h"
+#include "job_info_transform_helper.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -33,9 +33,9 @@
 namespace sequencergui
 {
 
-ProcedureItemAutomationBuilder::ProcedureItemAutomationBuilder() = default;
+ProcedureItemJobInfoBuilder::ProcedureItemJobInfoBuilder() = default;
 
-std::unique_ptr<ProcedureItem> ProcedureItemAutomationBuilder::CreateProcedureItem(
+std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
     const sup::sequencer::JobInfo &job_info)
 {
   auto result = std::make_unique<ProcedureItem>();
@@ -52,14 +52,14 @@ std::unique_ptr<ProcedureItem> ProcedureItemAutomationBuilder::CreateProcedureIt
   return result;
 }
 
-InstructionItem *ProcedureItemAutomationBuilder::GetInstruction(size_t index) const
+InstructionItem *ProcedureItemJobInfoBuilder::GetInstruction(size_t index) const
 {
   return index < m_instruction_indexes.size()
              ? const_cast<InstructionItem *>(m_instruction_indexes[index])
              : nullptr;
 }
 
-VariableItem *ProcedureItemAutomationBuilder::GetVariable(size_t index) const
+VariableItem *ProcedureItemJobInfoBuilder::GetVariable(size_t index) const
 {
   return index < m_variable_indexes.size() ? const_cast<VariableItem *>(m_variable_indexes[index])
                                            : nullptr;
