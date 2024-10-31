@@ -29,6 +29,7 @@
 #include <sup/sequencer/instruction_info.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/variable_info.h>
+#include <sup/sequencer/workspace.h>
 #include <sup/sequencer/workspace_info.h>
 
 namespace sequencergui
@@ -67,6 +68,28 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::Wor
   }
 
   return index_to_variable_item;
+}
+
+std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::Workspace& workspace,
+                                                       const anytype_registry_t* registry,
+                                                       WorkspaceItem* workspace_item)
+{
+  std::vector<const VariableItem*> result;
+
+  if (workspace_item->GetTotalItemCount() > 0)
+  {
+    throw std::runtime_error("Error: WorkspaceItem is not empty.");
+  }
+
+  for (auto variable : workspace.GetVariables())
+  {
+    auto item = sequencergui::CreateVariableItem(variable->GetType());
+    item->InitFromDomain(variable, registry);
+    result.push_back(item.get());
+    workspace_item->InsertItem(std::move(item), {"", -1});
+  }
+
+  return result;
 }
 
 }  // namespace sequencergui

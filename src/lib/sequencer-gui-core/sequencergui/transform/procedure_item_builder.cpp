@@ -27,6 +27,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
+#include <sequencergui/transform/variable_item_transform_helper.h>
 
 #include <sup/dto/anytype_registry.h>
 #include <sup/sequencer/instruction.h>
@@ -77,8 +78,6 @@ void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
   }
 
   m_to_instruction_item.clear();
-  m_domain_variable_to_item.clear();
-  m_variablename_to_item.clear();
 
   // REFACTORING
   m_instruction_map =
@@ -94,29 +93,8 @@ void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
   auto registry = CreateRegistry(*procedure);
 
   auto workspace_item = procedure_item->GetWorkspace();
-  PopulateWorkspaceItem(procedure, workspace_item, registry.get());
-
-  m_index_to_variable = procedure_item->GetWorkspace()->GetVariables();
-}
-
-//! Populates empty WorkspaceItem with the content from sequencer Procedure.
-
-void ProcedureItemBuilder::PopulateWorkspaceItem(const procedure_t *procedure,
-                                                 WorkspaceItem *workspace,
-                                                 const anytype_registry_t *registry)
-{
-  if (workspace->GetTotalItemCount() > 0)
-  {
-    throw std::runtime_error("Error: WorkspaceItem is not empty.");
-  }
-
-  for (auto variable : procedure->GetWorkspace().GetVariables())
-  {
-    auto item = sequencergui::CreateVariableItem(variable->GetType());
-    Save(variable, item.get());
-    item->InitFromDomain(variable, registry);
-    workspace->InsertItem(std::move(item), {"", -1});
-  }
+  m_index_to_variable =
+      PopulateWorkspaceItem(procedure->GetWorkspace(), registry.get(), workspace_item);
 }
 
 InstructionItem *ProcedureItemBuilder::GetInstruction(size_t domain_index) const
@@ -129,18 +107,6 @@ InstructionItem *ProcedureItemBuilder::FindInstructionItem(const instruction_t *
 {
   auto it = m_to_instruction_item.find(instruction);
   return it == m_to_instruction_item.end() ? nullptr : it->second;
-}
-
-VariableItem *ProcedureItemBuilder::FindVariableItem(const variable_t *variable) const
-{
-  auto it = m_domain_variable_to_item.find(variable);
-  return it == m_domain_variable_to_item.end() ? nullptr : it->second;
-}
-
-VariableItem *ProcedureItemBuilder::FindVariableItem(const std::string &variable_name) const
-{
-  auto it = m_variablename_to_item.find(variable_name);
-  return it == m_variablename_to_item.end() ? nullptr : it->second;
 }
 
 const instruction_t *ProcedureItemBuilder::FindInstruction(
@@ -164,7 +130,8 @@ size_t ProcedureItemBuilder::GetIndex(const InstructionItem *instruction_item) c
 
 VariableItem *ProcedureItemBuilder::GetVariable(size_t index) const
 {
-  return index < m_index_to_variable.size() ? m_index_to_variable[index] : nullptr;
+  return index < m_index_to_variable.size() ? const_cast<VariableItem *>(m_index_to_variable[index])
+                                            : nullptr;
 }
 
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
@@ -234,18 +201,6 @@ void ProcedureItemBuilder::Save(const instruction_t *instruction, InstructionIte
     throw std::runtime_error("Error in GUIObjectBuilder: domain instruction already present");
   }
   m_to_instruction_item.insert({instruction, item});
-}
-
-void ProcedureItemBuilder::Save(const variable_t *variable, VariableItem *item)
-{
-  auto it = m_variablename_to_item.find(variable->GetName());
-  if (it != m_variablename_to_item.end())
-  {
-    throw std::runtime_error("Error in GUIObjectBuilder: domain variable already present");
-  }
-
-  m_domain_variable_to_item.insert({variable, item});
-  m_variablename_to_item.insert({variable->GetName(), item});
 }
 
 }  // namespace sequencergui

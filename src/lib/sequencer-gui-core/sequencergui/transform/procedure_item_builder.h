@@ -67,16 +67,10 @@ public:
   void PopulateInstructionContainerItem(const procedure_t* procedure,
                                         InstructionContainerItem* container, bool root_only);
 
-  void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace,
-                             const anytype_registry_t* registry);
-
 
   InstructionItem* GetInstruction(size_t domain_index) const override;
 
-
   InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
-  VariableItem* FindVariableItem(const variable_t* variable) const;
-  VariableItem* FindVariableItem(const std::string& variable_name) const;
 
   const instruction_t* FindInstruction(const InstructionItem* instruction_item) const;
 
@@ -94,12 +88,9 @@ private:
 
   std::map<const instruction_t*, InstructionItem*> m_to_instruction_item;
 
-  std::map<const variable_t*, VariableItem*> m_domain_variable_to_item;
-  std::map<std::string, VariableItem*> m_variablename_to_item;
-
   std::unique_ptr<sup::sequencer::InstructionMap> m_instruction_map; // REFACTORING
   std::vector<const sup::sequencer::Instruction*> m_index_to_instruction; // REFACTORING
-  std::vector<VariableItem*> m_index_to_variable;
+  std::vector<const VariableItem*> m_index_to_variable;
 };
 
 }  // namespace sequencergui

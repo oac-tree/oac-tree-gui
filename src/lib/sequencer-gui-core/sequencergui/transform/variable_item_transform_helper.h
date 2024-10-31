@@ -25,6 +25,7 @@
 //! from automation server information.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
 #include <vector>
@@ -47,9 +48,23 @@ std::unique_ptr<VariableItem> CreateVariableItem(const sup::sequencer::VariableI
  *
  * @param info Automation server representation of the domain workspace.
  * @param workspace_item An empty workspace item to populate with the content.
+ *
  * @return List of all created variables stored according to their automation indexes
  */
 std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::WorkspaceInfo& info,
+                                                       WorkspaceItem* workspace_item);
+
+/**
+ * @brief Populates empty workspace workspace item with variables from the domain workspace.
+ *
+ * @param info Domain workspace.
+ * @param registry Possible registry containing reference to some types.
+ * @param workspace_item An empty workspace item to populate with the content.
+ *
+ * @return List of all created variables stored according to their automation indexes
+ */
+std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::Workspace& workspace,
+                                                       const anytype_registry_t* registry,
                                                        WorkspaceItem* workspace_item);
 
 }  // namespace sequencergui

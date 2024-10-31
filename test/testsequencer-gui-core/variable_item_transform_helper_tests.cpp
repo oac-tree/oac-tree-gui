@@ -26,10 +26,12 @@
 #include <sequencergui/transform/anyvalue_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
+#include <sup/sequencer/sequence_parser.h>
 #include <sup/sequencer/variable_info.h>
 #include <sup/sequencer/workspace_info.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 using namespace sequencergui;
 
@@ -108,4 +110,33 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
 
   const sup::dto::AnyValue expected_anyvalue1(sup::dto::SignedInteger32Type, 43);
   EXPECT_EQ(GetAnyValue(*variable_items[1]), expected_anyvalue1);
+}
+
+TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItemFromDomain)
+{
+  const std::string procedure_xml = R"RAW(
+<Procedure>
+  <Wait timeout="42"/>
+  <Workspace>
+    <Local name="counter" type='{"type":"int32"}' value="0"/>
+    <Local name="one" type='{"type":"int32"}' value="1"/>
+  </Workspace>
+</Procedure>
+)RAW";
+  auto procedure = sup::sequencer::ParseProcedureString(procedure_xml);
+  procedure->Setup();
+
+  WorkspaceItem workspace_item;
+  auto variables = PopulateWorkspaceItem(procedure->GetWorkspace(), nullptr, &workspace_item);
+
+  ASSERT_EQ(variables.size(), 2);
+  ASSERT_EQ(workspace_item.GetTotalItemCount(), 2);
+  // validating indices
+  EXPECT_EQ(variables[0], workspace_item.GetVariables().at(0));
+  EXPECT_EQ(variables[1], workspace_item.GetVariables().at(1));
+
+  EXPECT_TRUE(
+      testutils::IsEqual(*variables[0], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}));
+  EXPECT_TRUE(
+      testutils::IsEqual(*variables[1], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1}));
 }

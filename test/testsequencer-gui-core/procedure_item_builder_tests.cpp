@@ -170,8 +170,7 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithLocalVariable)
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 
-  EXPECT_EQ(builder.FindVariableItem(local_variable_ptr), variable_item);
-  EXPECT_EQ(builder.FindVariableItem(local_variable_ptr->GetName()), variable_item);
+  EXPECT_EQ(builder.GetVariable(0), variable_item);
 
   EXPECT_EQ(builder.GetVariable(0), variable_item);
   EXPECT_EQ(builder.GetVariable(1), nullptr);
