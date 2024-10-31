@@ -44,7 +44,12 @@ public:
   virtual InstructionItem* GetInstruction(size_t index) const = 0;
 
   /**
-   * @brief Returns variable item for given automation index.
+   * @brief Returns automation index corresponding to a given instruction item.
+   */
+  virtual size_t GetIndex(const InstructionItem* item) const = 0;
+
+  /**
+   * @brief Returns variable item for a given automation index.
    */
   virtual VariableItem* GetVariable(size_t index) const = 0;
 };

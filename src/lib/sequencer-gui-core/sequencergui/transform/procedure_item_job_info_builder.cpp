@@ -21,6 +21,7 @@
 
 #include "job_info_transform_helper.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -57,6 +58,17 @@ InstructionItem *ProcedureItemJobInfoBuilder::GetInstruction(size_t index) const
   return index < m_instruction_indexes.size()
              ? const_cast<InstructionItem *>(m_instruction_indexes[index])
              : nullptr;
+}
+
+size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem *item) const
+{
+  auto pos = std::find(m_instruction_indexes.begin(), m_instruction_indexes.end(), item);
+  if (pos == m_instruction_indexes.end())
+  {
+    throw RuntimeException("Can't find automation index for given item");
+  }
+
+  return std::distance(m_instruction_indexes.begin(), pos);
 }
 
 VariableItem *ProcedureItemJobInfoBuilder::GetVariable(size_t index) const

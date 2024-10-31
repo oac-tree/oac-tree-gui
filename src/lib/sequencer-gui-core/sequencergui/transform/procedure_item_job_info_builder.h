@@ -52,6 +52,9 @@ public:
 
   InstructionItem* GetInstruction(size_t index) const override;
 
+  size_t GetIndex(const InstructionItem* item) const override;
+
+
   VariableItem *GetVariable(size_t index) const override;
 
 private:

@@ -19,6 +19,7 @@
 
 #include "sequencergui/transform/procedure_item_job_info_builder.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -54,14 +55,12 @@ class ProcedureItemJobInfoBuilderTest : public ::testing::Test
 {
 };
 
-TEST_F(ProcedureItemJobInfoBuilderTest, SequenceWithTwoWaits)
+TEST_F(ProcedureItemJobInfoBuilderTest, GetInstruction)
 {
   auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
 
   ProcedureItemJobInfoBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);
-
-  // EXPECT_EQ(procedure_item->GetDisplayName(), std::string());
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
@@ -81,6 +80,14 @@ TEST_F(ProcedureItemJobInfoBuilderTest, SequenceWithTwoWaits)
   EXPECT_EQ(builder.GetInstruction(1), wait0);
   EXPECT_EQ(builder.GetInstruction(2), wait1);
   EXPECT_EQ(builder.GetInstruction(3), nullptr);
+}
+
+TEST_F(ProcedureItemJobInfoBuilderTest, GetVariable)
+{
+  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+
+  ProcedureItemJobInfoBuilder builder;
+  auto procedure_item = builder.CreateProcedureItem(job_info);
 
   auto variable_items = procedure_item->GetWorkspace()->GetVariables();
   ASSERT_EQ(variable_items.size(), 2);
@@ -89,4 +96,28 @@ TEST_F(ProcedureItemJobInfoBuilderTest, SequenceWithTwoWaits)
   EXPECT_EQ(variable_items[1]->GetDisplayName(), "var1");
   EXPECT_EQ(builder.GetVariable(0), variable_items[0]);
   EXPECT_EQ(builder.GetVariable(1), variable_items[1]);
+}
+
+TEST_F(ProcedureItemJobInfoBuilderTest, GetInstructionIndex)
+{
+  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+
+  ProcedureItemJobInfoBuilder builder;
+  auto procedure_item = builder.CreateProcedureItem(job_info);
+
+  ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
+
+  auto sequence =
+      procedure_item->GetInstructionContainer()->GetItem<SequenceItem>(mvvm::TagIndex::Default(0));
+  ASSERT_NE(sequence, nullptr);
+  ASSERT_EQ(sequence->GetInstructions().size(), 2);
+
+  auto wait0 = sequence->GetItem<WaitItem>(mvvm::TagIndex::Default(0));
+  auto wait1 = sequence->GetItem<WaitItem>(mvvm::TagIndex::Default(1));
+
+  EXPECT_EQ(builder.GetIndex(sequence), 0);
+  EXPECT_EQ(builder.GetIndex(wait0), 1);
+  EXPECT_EQ(builder.GetIndex(wait1), 2);
+
+  EXPECT_THROW(builder.GetIndex(nullptr), RuntimeException);
 }
