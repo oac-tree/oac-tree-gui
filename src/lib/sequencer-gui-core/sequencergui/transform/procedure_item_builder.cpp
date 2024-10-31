@@ -60,8 +60,8 @@ namespace sequencergui
 
 ProcedureItemBuilder::~ProcedureItemBuilder() = default;
 
-std::unique_ptr<ProcedureItem> ProcedureItemBuilder::CreateProcedureItem(const procedure_t *procedure,
-                                                                     bool root_only)
+std::unique_ptr<ProcedureItem> ProcedureItemBuilder::CreateProcedureItem(
+    const procedure_t *procedure, bool root_only)
 {
   auto result = std::make_unique<ProcedureItem>();
   PopulateProcedureItem(procedure, result.get(), root_only);
@@ -69,7 +69,7 @@ std::unique_ptr<ProcedureItem> ProcedureItemBuilder::CreateProcedureItem(const p
 }
 
 void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
-                                             ProcedureItem *procedure_item, bool root_only)
+                                                 ProcedureItem *procedure_item, bool root_only)
 {
   if (!procedure)
   {
@@ -95,12 +95,15 @@ void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
 
   auto workspace_item = procedure_item->GetWorkspace();
   PopulateWorkspaceItem(procedure, workspace_item, registry.get());
+
+  m_index_to_variable = procedure_item->GetWorkspace()->GetVariables();
 }
 
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
 
-void ProcedureItemBuilder::PopulateWorkspaceItem(const procedure_t *procedure, WorkspaceItem *workspace,
-                                             const anytype_registry_t *registry)
+void ProcedureItemBuilder::PopulateWorkspaceItem(const procedure_t *procedure,
+                                                 WorkspaceItem *workspace,
+                                                 const anytype_registry_t *registry)
 {
   if (workspace->GetTotalItemCount() > 0)
   {
@@ -148,7 +151,7 @@ const instruction_t *ProcedureItemBuilder::FindInstruction(
   return it == m_to_instruction_item.end() ? nullptr : it->first;
 }
 
-size_t ProcedureItemBuilder::FindInstructionItemIndex(const InstructionItem *instruction_item) const
+size_t ProcedureItemBuilder::GetIndex(const InstructionItem *instruction_item) const
 {
   // REFACTORING
   if (auto domain_instruction = FindInstruction(instruction_item); domain_instruction)
@@ -159,11 +162,16 @@ size_t ProcedureItemBuilder::FindInstructionItemIndex(const InstructionItem *ins
   throw RuntimeException("Can't find instruction index");
 }
 
+VariableItem *ProcedureItemBuilder::GetVariable(size_t index) const
+{
+  return index < m_index_to_variable.size() ? m_index_to_variable[index] : nullptr;
+}
+
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
 
 void ProcedureItemBuilder::PopulateInstructionContainerItem(const procedure_t *procedure,
-                                                        InstructionContainerItem *container,
-                                                        bool root_only)
+                                                            InstructionContainerItem *container,
+                                                            bool root_only)
 {
   if (container->GetTotalItemCount() > 0)
   {
@@ -195,7 +203,7 @@ void ProcedureItemBuilder::PopulateInstructionContainerItem(const procedure_t *p
 }
 
 mvvm::SessionItem *ProcedureItemBuilder::ProcessInstruction(const instruction_t *instruction,
-                                                        mvvm::SessionItem *parent)
+                                                            mvvm::SessionItem *parent)
 {
   auto item = sequencergui::CreateInstructionItem(instruction->GetType());
 

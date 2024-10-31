@@ -140,7 +140,7 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   ToggleBreakpointStatus(*instruction);
 
   // update domain breakpoint
-  size_t instruction_index = m_guiobject_builder->FindInstructionItemIndex(instruction);
+  size_t instruction_index = m_guiobject_builder->GetIndex(instruction);
   SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
 
@@ -263,7 +263,7 @@ void JobHandler::PropagateBreakpointsToDomain()
   // visit all insrtuction items and set breakpoint status to the domain
   auto func = [this](const InstructionItem *item)
   {
-    auto index = m_guiobject_builder->FindInstructionItemIndex(item);
+    auto index = m_guiobject_builder->GetIndex(item);
     SetDomainBreakpoint(index, GetBreakpointStatus(*item));
   };
   IterateInstructionContainer<const InstructionItem *>(

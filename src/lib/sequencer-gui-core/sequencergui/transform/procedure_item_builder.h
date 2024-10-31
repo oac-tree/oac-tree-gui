@@ -55,10 +55,10 @@ class VariableItem;
 //! - Procedure must be already set up (Procedure::Setup method called) to have all internal clones
 //! already performed.
 
-class ProcedureItemBuilder
+class ProcedureItemBuilder : public IProcedureItemBuilder
 {
 public:
-  ~ProcedureItemBuilder();
+  ~ProcedureItemBuilder() override;
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
   void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
@@ -71,7 +71,7 @@ public:
                              const anytype_registry_t* registry);
 
 
-  InstructionItem* GetInstruction(size_t domain_index) const;
+  InstructionItem* GetInstruction(size_t domain_index) const override;
 
 
   InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
@@ -80,7 +80,9 @@ public:
 
   const instruction_t* FindInstruction(const InstructionItem* instruction_item) const;
 
-  size_t FindInstructionItemIndex(const InstructionItem* instruction_item) const;
+  size_t GetIndex(const InstructionItem* instruction_item) const override;
+
+  VariableItem* GetVariable(size_t index) const override;
 
 private:
   mvvm::SessionItem* ProcessInstruction(const instruction_t* instruction,
@@ -97,6 +99,7 @@ private:
 
   std::unique_ptr<sup::sequencer::InstructionMap> m_instruction_map; // REFACTORING
   std::vector<const sup::sequencer::Instruction*> m_index_to_instruction; // REFACTORING
+  std::vector<VariableItem*> m_index_to_variable;
 };
 
 }  // namespace sequencergui

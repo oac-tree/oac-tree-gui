@@ -172,6 +172,9 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithLocalVariable)
 
   EXPECT_EQ(builder.FindVariableItem(local_variable_ptr), variable_item);
   EXPECT_EQ(builder.FindVariableItem(local_variable_ptr->GetName()), variable_item);
+
+  EXPECT_EQ(builder.GetVariable(0), variable_item);
+  EXPECT_EQ(builder.GetVariable(1), nullptr);
 }
 
 //! Procedure with local include after Setup call.

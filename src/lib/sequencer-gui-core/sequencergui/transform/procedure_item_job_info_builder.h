@@ -54,8 +54,7 @@ public:
 
   size_t GetIndex(const InstructionItem* item) const override;
 
-
-  VariableItem *GetVariable(size_t index) const override;
+  VariableItem* GetVariable(size_t index) const override;
 
 private:
   std::vector<const InstructionItem*> m_instruction_indexes;
