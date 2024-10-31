@@ -140,7 +140,7 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   ToggleBreakpointStatus(*instruction);
 
   // update domain breakpoint
-  size_t instruction_index = m_guiobject_builder->GetIndex(instruction);
+  const size_t instruction_index = m_guiobject_builder->GetIndex(instruction);
   SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
 

@@ -17,19 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/transform/job_info_transform_helper.h"
+#include "sequencergui/transform/variable_item_transform_helper.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/anyvalue_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
-#include <sup/sequencer/instruction_info.h>
 #include <sup/sequencer/variable_info.h>
 #include <sup/sequencer/workspace_info.h>
 
@@ -37,85 +33,15 @@
 
 using namespace sequencergui;
 
-//! Tests of helper methods from job_info_transform_helper.h
-
-class JobInfoTransformHelperTest : public ::testing::Test
+/**
+ * @brief Tests of helper methods from variable_item_transform_helper.h
+ */
+class VariableItemTransformHelperTest : public ::testing::Test
 {
 };
 
-//! Testing CreateInstructionItem helper method.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItem)
-{
-  const size_t instruction_id{0};
-  sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
-                                         instruction_id,
-                                         {{domainconstants::kTimeoutAttribute, "42"}});
-
-  auto instruction_item = CreateInstructionItem(info);
-
-  auto wait_item = dynamic_cast<WaitItem*>(instruction_item.get());
-  ASSERT_NE(wait_item, nullptr);
-  EXPECT_EQ(wait_item->GetTimeout(), 42.0);
-}
-
-//! Testing CreateInstructionItemTree for automation InstructionInfo containing a single
-//! instruction.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWait)
-{
-  const size_t instruction_id{0};
-  sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
-                                         instruction_id,
-                                         {{domainconstants::kTimeoutAttribute, "42"}});
-
-  auto item_tree = CreateInstructionItemTree(info);
-  ASSERT_EQ(item_tree.indexes.size(), 1);
-
-  auto wait_item = dynamic_cast<WaitItem*>(item_tree.root.get());
-
-  ASSERT_NE(wait_item, nullptr);
-  EXPECT_EQ(wait_item->GetTimeout(), 42.0);
-
-  EXPECT_EQ(item_tree.indexes[0], wait_item);
-}
-
-//! Testing CreateInstructionItemTree for automation InstructionInfo containing a sequence with two
-//! children.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequence)
-{
-  using namespace sequencergui::domainconstants;
-  using sup::sequencer::AttributeInfo;
-  using sup::sequencer::InstructionInfo;
-
-  InstructionInfo sequence_info(kSequenceInstructionType, 0, {});
-  auto child0 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, 1, std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
-  auto child0_ptr = child0.get();
-  auto child1 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, 2, std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
-  auto child1_ptr = child0.get();
-
-  sequence_info.AppendChild(std::move(child0));
-  sequence_info.AppendChild(std::move(child1));
-
-  auto item_tree = CreateInstructionItemTree(sequence_info);
-
-  ASSERT_EQ(item_tree.indexes.size(), 3);
-
-  auto sequence_item = dynamic_cast<SequenceItem*>(item_tree.root.get());
-  ASSERT_NE(sequence_item, nullptr);
-  ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
-  auto wait_items = sequence_item->GetItems<WaitItem>(mvvm::TagIndex::kDefaultTag);
-  ASSERT_EQ(wait_items.size(), 2);
-  EXPECT_EQ(wait_items[0]->GetTimeout(), 42);
-  EXPECT_EQ(wait_items[1]->GetTimeout(), 43);
-
-  EXPECT_EQ(item_tree.indexes[0], sequence_item);
-  EXPECT_EQ(item_tree.indexes[1], wait_items[0]);
-  EXPECT_EQ(item_tree.indexes[2], wait_items[1]);
-}
-
 //! Testing CreateVariableItem helper method.
-TEST_F(JobInfoTransformHelperTest, CreateVariableItem)
+TEST_F(VariableItemTransformHelperTest, CreateVariableItem)
 {
   const size_t variable_id{0};
   const std::string expected_name("abc");
@@ -136,7 +62,7 @@ TEST_F(JobInfoTransformHelperTest, CreateVariableItem)
   EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 }
 
-TEST_F(JobInfoTransformHelperTest, PopulateWorkspaceItem)
+TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
 {
   {  // attempt to populate non-empty workspace
     WorkspaceItem workspace_item;
@@ -177,7 +103,7 @@ TEST_F(JobInfoTransformHelperTest, PopulateWorkspaceItem)
   EXPECT_EQ(variable_items[0], index_to_variable_item[0]);
   EXPECT_EQ(variable_items[1], index_to_variable_item[1]);
 
-   const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
+  const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(GetAnyValue(*variable_items[0]), expected_anyvalue0);
 
   const sup::dto::AnyValue expected_anyvalue1(sup::dto::SignedInteger32Type, 43);

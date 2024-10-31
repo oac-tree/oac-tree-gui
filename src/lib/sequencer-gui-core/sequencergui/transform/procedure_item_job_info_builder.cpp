@@ -19,7 +19,8 @@
 
 #include "procedure_item_job_info_builder.h"
 
-#include "job_info_transform_helper.h"
+#include "instruction_item_transform_helper.h"
+#include "variable_item_transform_helper.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>

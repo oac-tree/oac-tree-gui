@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_AUTOMATION_TRANSFORM_HELPER_H_
-#define SEQUENCERGUI_TRANSFORM_AUTOMATION_TRANSFORM_HELPER_H_
+#ifndef SEQUENCERGUI_TRANSFORM_INSTRUCTION_ITEM_TRANSFORM_HELPER_H_
+#define SEQUENCERGUI_TRANSFORM_INSTRUCTION_ITEM_TRANSFORM_HELPER_H_
 
 //! @file
 //! Collection of helper functions to transform VariableItem and InstructionItem properties
@@ -33,8 +33,6 @@ namespace sequencergui
 {
 
 class InstructionItem;
-class VariableItem;
-class WorkspaceItem;
 
 /**
  * @brief The InstructionTree class contains a root instruction with all its children, and the
@@ -62,22 +60,6 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::sequencer::Ins
  */
 InstructionTree CreateInstructionItemTree(const sup::sequencer::InstructionInfo& info);
 
-/**
- * @brief Creates VariableItem from the automation server information.
- */
-std::unique_ptr<VariableItem> CreateVariableItem(const sup::sequencer::VariableInfo& info);
-
-/**
- * @brief Populates empty workspace workspace item with variables from the automation server
- * information.
- *
- * @param info Automation server representation of the domain workspace.
- * @param workspace_item An empty workspace item to populate with the content.
- * @return List of all created variables stored according to their automation indexes
- */
-std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::WorkspaceInfo& info,
-                                                       WorkspaceItem* workspace_item);
-
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_AUTOMATION_TRANSFORM_HELPER_H_
+#endif  // SEQUENCERGUI_TRANSFORM_INSTRUCTION_ITEM_TRANSFORM_HELPER_H_
