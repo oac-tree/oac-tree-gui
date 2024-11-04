@@ -121,11 +121,16 @@ public:
    */
   size_t GetEventCount() const;
 
+  /**
+   * @brief Returns sequencer job info.
+   */
+  const sup::sequencer::JobInfo& GetJobInfo() const;
+
 protected:
   void SetJob(std::unique_ptr<sup::sequencer::IJob> job);
 
 private:
-  void ValidateJob();
+  void ValidateJob() const;
 
   std::unique_ptr<DomainJobService> m_job_service;
   std::unique_ptr<sup::sequencer::IJob> m_job;

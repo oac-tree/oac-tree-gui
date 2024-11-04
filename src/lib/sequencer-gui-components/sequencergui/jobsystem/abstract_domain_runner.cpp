@@ -136,12 +136,19 @@ size_t AbstractDomainRunner::GetEventCount() const
   return m_job_service->GetEventCount();
 }
 
+const sup::sequencer::JobInfo &AbstractDomainRunner::GetJobInfo() const
+{
+  ValidateJob();
+
+  return m_job->GetInfo();
+}
+
 void AbstractDomainRunner::SetJob(std::unique_ptr<sup::sequencer::IJob> job)
 {
   m_job = std::move(job);
 }
 
-void AbstractDomainRunner::ValidateJob()
+void AbstractDomainRunner::ValidateJob() const
 {
   if (!m_job)
   {

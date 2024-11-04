@@ -36,7 +36,7 @@
 #include <sequencergui/pvmonitor/workspace_item_listener.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
-#include <sequencergui/transform/procedure_item_builder.h>
+#include <sequencergui/transform/procedure_item_job_info_builder.h>
 
 #include <mvvm/signals/item_listener.h>
 
@@ -49,7 +49,7 @@ namespace sequencergui
 {
 
 AbstractJobHandler::AbstractJobHandler(JobItem *job_item, const UserContext &user_context)
-    : m_guiobject_builder(std::make_unique<ProcedureItemBuilder>())
+    : m_guiobject_builder(std::make_unique<ProcedureItemJobInfoBuilder>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
 {
@@ -221,7 +221,7 @@ void AbstractJobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedur
   }
 
   auto expanded_procedure =
-      m_guiobject_builder->CreateProcedureItem(domain_procedure, /*root_only*/ true);
+      m_guiobject_builder->CreateProcedureItem(m_domain_runner_service->GetJobInfo());
   auto expanded_procedure_ptr = expanded_procedure.get();
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
