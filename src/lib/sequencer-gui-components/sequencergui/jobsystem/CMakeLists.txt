@@ -15,8 +15,6 @@ target_sources(${library_name} PRIVATE
   domain_job_observer.h
   domain_job_service.cpp
   domain_job_service.h
-  job_handler.cpp
-  job_handler.h
   job_log.cpp
   job_log.h
   job_log_severity.cpp
@@ -27,6 +25,8 @@ target_sources(${library_name} PRIVATE
   job_utils.h
   local_domain_runner.cpp
   local_domain_runner.h
+  local_job_handler.cpp
+  local_job_handler.h
   log_event.cpp
   log_event.h
   request_handler.h

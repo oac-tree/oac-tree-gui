@@ -49,7 +49,7 @@ namespace sequencergui
 {
 
 AbstractJobHandler::AbstractJobHandler(JobItem *job_item, const UserContext &user_context)
-    : m_guiobject_builder(std::make_unique<ProcedureItemJobInfoBuilder>())
+    : m_procedure_item_builder(std::make_unique<ProcedureItemJobInfoBuilder>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
 {
@@ -140,13 +140,13 @@ void AbstractJobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   ToggleBreakpointStatus(*instruction);
 
   // update domain breakpoint
-  const size_t instruction_index = m_guiobject_builder->GetIndex(instruction);
+  const size_t instruction_index = m_procedure_item_builder->GetIndex(instruction);
   SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
 
 void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
 {
-  if (auto *item = m_guiobject_builder->GetInstruction(event.index); item)
+  if (auto *item = m_procedure_item_builder->GetInstruction(event.index); item)
   {
     item->SetStatus(::sup::sequencer::StatusToString(event.state.m_execution_status));
     emit InstructionStatusChanged(item);
@@ -172,7 +172,7 @@ void AbstractJobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &
   std::vector<InstructionItem *> items;
   for (auto instruction_index : event.leaves)
   {
-    if (auto *item = m_guiobject_builder->GetInstruction(instruction_index); item)
+    if (auto *item = m_procedure_item_builder->GetInstruction(instruction_index); item)
     {
       items.push_back(item);
     }
@@ -221,7 +221,7 @@ void AbstractJobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedur
   }
 
   auto expanded_procedure =
-      m_guiobject_builder->CreateProcedureItem(m_domain_runner_service->GetJobInfo());
+      m_procedure_item_builder->CreateProcedureItem(m_domain_runner_service->GetJobInfo());
   auto expanded_procedure_ptr = expanded_procedure.get();
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
@@ -262,7 +262,7 @@ void AbstractJobHandler::PropagateBreakpointsToDomain()
   // visit all insrtuction items and set breakpoint status to the domain
   auto func = [this](const InstructionItem *item)
   {
-    auto index = m_guiobject_builder->GetIndex(item);
+    auto index = m_procedure_item_builder->GetIndex(item);
     SetDomainBreakpoint(index, GetBreakpointStatus(*item));
   };
   IterateInstructionContainer<const InstructionItem *>(

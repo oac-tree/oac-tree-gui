@@ -20,7 +20,7 @@
 #include "job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/job_handler.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/instruction_item.h>
 
 #include <sup/dto/anyvalue.h>
@@ -71,12 +71,12 @@ void JobManager::SetCurrentJob(JobItem *job)
   }
 }
 
-JobHandler *JobManager::GetCurrentJobHandler()
+LocalJobHandler *JobManager::GetCurrentJobHandler()
 {
   return GetJobHandler(m_current_job);
 }
 
-JobHandler *JobManager::GetJobHandler(JobItem *job)
+LocalJobHandler *JobManager::GetJobHandler(JobItem *job)
 {
   auto iter = m_job_map.find(job);
   return iter == m_job_map.end() ? nullptr : iter->second.get();
@@ -156,7 +156,7 @@ void JobManager::StopAllJobs()
 
 void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
 {
-  auto sending_job_handler = qobject_cast<JobHandler *>(sender());
+  auto sending_job_handler = qobject_cast<LocalJobHandler *>(sender());
 
   // we do not want to send selection request for invisible job
   if (sending_job_handler == GetCurrentJobHandler())
@@ -165,10 +165,10 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
   }
 }
 
-std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
+std::unique_ptr<LocalJobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
-  auto job_handler = std::make_unique<JobHandler>(item, m_user_context);
-  connect(job_handler.get(), &JobHandler::NextLeavesChanged, this,
+  auto job_handler = std::make_unique<LocalJobHandler>(item, m_user_context);
+  connect(job_handler.get(), &LocalJobHandler::NextLeavesChanged, this,
           &JobManager::OnNextLeavesChanged);
 
   return job_handler;

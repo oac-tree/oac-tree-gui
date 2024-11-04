@@ -20,7 +20,7 @@
 #include "sequencergui/operation/operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/job_handler.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/application_models.h>

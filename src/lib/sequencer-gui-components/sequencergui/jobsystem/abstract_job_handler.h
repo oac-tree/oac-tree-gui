@@ -204,7 +204,7 @@ private:
   DomainEventDispatcherContext CreateContext();
 
   //!< GUI object builder holding domain/GUI object correspondance
-  std::unique_ptr<ProcedureItemJobInfoBuilder> m_guiobject_builder;
+  std::unique_ptr<ProcedureItemJobInfoBuilder> m_procedure_item_builder;
 
   //!< domain procedure should live longer than the runner
   std::unique_ptr<procedure_t> m_domain_procedure;

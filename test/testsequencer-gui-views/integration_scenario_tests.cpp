@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/jobsystem/job_handler.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>

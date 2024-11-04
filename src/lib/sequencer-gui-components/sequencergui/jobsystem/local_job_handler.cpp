@@ -17,26 +17,16 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_HANDLER_H_
-#define SEQUENCERGUI_JOBSYSTEM_JOB_HANDLER_H_
-
-#include <sequencergui/jobsystem/abstract_job_handler.h>
+#include "local_job_handler.h"
 
 namespace sequencergui
 {
 
-/**
- * @brief The AbstractJobHandler is a base class to run a jobs represented by the JobItem.
- */
-class JobHandler : public AbstractJobHandler
+LocalJobHandler::LocalJobHandler(JobItem *job_item, const UserContext &user_context)
+    : AbstractJobHandler(job_item, user_context)
 {
-  Q_OBJECT
+}
 
-public:
-  explicit JobHandler(JobItem* job_item, const UserContext& user_context = {});
-  ~JobHandler() override;
-};
+LocalJobHandler::~LocalJobHandler() = default;
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_HANDLER_H_

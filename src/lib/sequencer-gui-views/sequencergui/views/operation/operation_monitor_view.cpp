@@ -23,7 +23,7 @@
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
 
-#include <sequencergui/jobsystem/job_handler.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>

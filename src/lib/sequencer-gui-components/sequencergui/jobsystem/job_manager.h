@@ -31,7 +31,7 @@ namespace sequencergui
 class JobModel;
 class InstructionItem;
 class JobItem;
-class JobHandler;
+class LocalJobHandler;
 class JobLog;
 
 /**
@@ -72,12 +72,12 @@ public:
   /**
    * @brief Returns job handler corresponding to the current job.
    */
-  JobHandler* GetCurrentJobHandler();
+  LocalJobHandler* GetCurrentJobHandler();
 
   /**
    * @brief Returns job handler for a given job.
    */
-  JobHandler* GetJobHandler(JobItem* job);
+  LocalJobHandler* GetJobHandler(JobItem* job);
 
   /**
    * @brief Returns current job.
@@ -129,10 +129,10 @@ signals:
 private:
   void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
-  std::unique_ptr<JobHandler> CreateJobHandler(JobItem* item);
+  std::unique_ptr<LocalJobHandler> CreateJobHandler(JobItem* item);
 
   JobItem* m_current_job{nullptr};
-  std::map<JobItem*, std::unique_ptr<JobHandler>> m_job_map;
+  std::map<JobItem*, std::unique_ptr<LocalJobHandler>> m_job_map;
   set_joblog_cb m_set_joblog_cb;
   UserContext m_user_context;
 };
