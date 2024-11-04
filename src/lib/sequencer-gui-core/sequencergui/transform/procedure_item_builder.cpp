@@ -69,34 +69,6 @@ std::unique_ptr<ProcedureItem> ProcedureItemBuilder::CreateProcedureItem(
   return result;
 }
 
-void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
-                                                 ProcedureItem *procedure_item, bool root_only)
-{
-  if (!procedure)
-  {
-    throw std::runtime_error("Error: uninitialised procedure");
-  }
-
-  m_to_instruction_item.clear();
-
-  // REFACTORING
-  m_instruction_map =
-      std::make_unique<sup::sequencer::InstructionMap>(procedure->RootInstruction());
-  m_index_to_instruction =
-      sup::sequencer::GetReverseMap(m_instruction_map->GetInstructionIndexMap());
-
-  auto instruction_container = procedure_item->GetInstructionContainer();
-  PopulateInstructionContainerItem(procedure, instruction_container, root_only);
-
-  PopulateProcedurePreambleItem(procedure->GetPreamble(), *procedure_item->GetPreambleItem());
-
-  auto registry = CreateRegistry(*procedure);
-
-  auto workspace_item = procedure_item->GetWorkspace();
-  m_index_to_variable =
-      PopulateWorkspaceItem(procedure->GetWorkspace(), registry.get(), workspace_item);
-}
-
 InstructionItem *ProcedureItemBuilder::GetInstruction(size_t domain_index) const
 {
   auto domain_instruction = m_index_to_instruction[domain_index];
@@ -134,6 +106,34 @@ VariableItem *ProcedureItemBuilder::GetVariable(size_t index) const
                                             : nullptr;
 }
 
+void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
+                                                 ProcedureItem *procedure_item, bool root_only)
+{
+  if (!procedure)
+  {
+    throw std::runtime_error("Error: uninitialised procedure");
+  }
+
+  m_to_instruction_item.clear();
+
+          // REFACTORING
+  m_instruction_map =
+      std::make_unique<sup::sequencer::InstructionMap>(procedure->RootInstruction());
+  m_index_to_instruction =
+      sup::sequencer::GetReverseMap(m_instruction_map->GetInstructionIndexMap());
+
+  auto instruction_container = procedure_item->GetInstructionContainer();
+  PopulateInstructionContainerItem(procedure, instruction_container, root_only);
+
+  PopulateProcedurePreambleItem(procedure->GetPreamble(), *procedure_item->GetPreambleItem());
+
+  auto registry = CreateRegistry(*procedure);
+
+  auto workspace_item = procedure_item->GetWorkspace();
+  m_index_to_variable =
+      PopulateWorkspaceItem(procedure->GetWorkspace(), registry.get(), workspace_item);
+}
+
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
 
 void ProcedureItemBuilder::PopulateInstructionContainerItem(const procedure_t *procedure,
@@ -168,6 +168,7 @@ void ProcedureItemBuilder::PopulateInstructionContainerItem(const procedure_t *p
     }
   }
 }
+
 
 mvvm::SessionItem *ProcedureItemBuilder::ProcessInstruction(const instruction_t *instruction,
                                                             mvvm::SessionItem *parent)

@@ -26,8 +26,8 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/anyvalue_item_transform_helper.h>
+#include <sequencergui/transform/transform_from_domain.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <sup/sequencer/instruction.h>
@@ -41,27 +41,23 @@
 using namespace sequencergui;
 
 //! Tests for utility functions related to the domain to presentation transformations.
-
 class ProcedureItemBuilderTest : public ::testing::Test
 {
 };
 
 //! Populate InstructionContainerItem from empty Procedure.
-
 TEST_F(ProcedureItemBuilderTest, PopulateItemFromEmptyProcedure)
 {
   ::sup::sequencer::Procedure procedure;
-  sequencergui::ProcedureItem procedure_item;
 
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
+  auto procedure_item = builder.CreateProcedureItem(&procedure, /*root_only*/ false);
 
-  EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 0);
-  EXPECT_EQ(procedure_item.GetWorkspace()->GetTotalItemCount(), 0);
+  EXPECT_EQ(procedure_item->GetInstructionContainer()->GetTotalItemCount(), 0);
+  EXPECT_EQ(procedure_item->GetWorkspace()->GetTotalItemCount(), 0);
 }
 
 //! Populate InstructionContainerItem from Procedure with a single Wait instruction.
-
 TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithWait)
 {
   ::sup::sequencer::Procedure procedure;
@@ -71,18 +67,16 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithWait)
   auto wait_ptr = wait.get();
   procedure.PushInstruction(std::move(wait));
 
-  sequencergui::ProcedureItem procedure_item;
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
+  auto procedure_item = builder.CreateProcedureItem(&procedure, /*root_only*/ false);
 
-  auto item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
+  auto item = procedure_item->GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(item->GetTimeout(), 42.0);
   EXPECT_EQ(builder.FindInstructionItem(wait_ptr), item);
 }
 
 //! Populate InstructionContainerItem from Procedure with two Wait instruction.
 //! One is marked as root instruction, root_only=true is used
-
 TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithTwoWaits)
 {
   ::sup::sequencer::Procedure procedure;
@@ -96,18 +90,16 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithTwoWaits)
   wait1->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "43");
   procedure.PushInstruction(std::move(wait1));
 
-  sequencergui::ProcedureItem procedure_item;
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ true);
+  auto procedure_item = builder.CreateProcedureItem(&procedure, /*root_only*/ true);
 
-  EXPECT_EQ(procedure_item.GetInstructionContainer()->GetInstructionCount(), 1);
+  EXPECT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
+  auto item = procedure_item->GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(item->GetTimeout(), 43.0);
 }
 
 //! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
-
 TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithSequence)
 {
   ::sup::sequencer::Procedure procedure;
@@ -123,12 +115,11 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithSequence)
   procedure.PushInstruction(std::move(sequence));
   procedure.Setup();
 
-  sequencergui::ProcedureItem procedure_item;
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
+  auto procedure_item = builder.CreateProcedureItem(&procedure, /*root_only*/ false);
 
   auto sequence_item =
-      procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("");
+      procedure_item->GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("");
   auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 
@@ -137,7 +128,6 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithSequence)
 }
 
 //! Populate WorkspaceItem from empty procedure.
-
 TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithLocalVariable)
 {
   ::sup::sequencer::Procedure procedure;
@@ -160,13 +150,12 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithLocalVariable)
 
   procedure.Setup();
 
-  sequencergui::ProcedureItem procedure_item;
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
+  auto procedure_item = builder.CreateProcedureItem(&procedure, /*root_only*/ false);
 
-  EXPECT_EQ(procedure_item.GetWorkspace()->GetTotalItemCount(), 1);
+  EXPECT_EQ(procedure_item->GetWorkspace()->GetTotalItemCount(), 1);
 
-  auto variable_item = procedure_item.GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
+  auto variable_item = procedure_item->GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 
@@ -177,8 +166,6 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithLocalVariable)
 }
 
 //! Procedure with local include after Setup call.
-//! root_only mode is used.
-
 TEST_F(ProcedureItemBuilderTest, LocalIncludeProcedure)
 {
   auto procedure = testutils::CreateLocalIncludeProcedure();
@@ -196,19 +183,17 @@ TEST_F(ProcedureItemBuilderTest, LocalIncludeProcedure)
   EXPECT_EQ(repeat_ptr->ChildInstructions().at(0), include_ptr);
   EXPECT_EQ(include_ptr->ChildInstructions().size(), 0);  // since no Setup has been called
 
-  // Building ProcedureItem in root_only mode
-  sequencergui::ProcedureItem procedure_item;
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(procedure.get(), &procedure_item, /*root_only*/ false);
+  auto procedure_item = builder.CreateProcedureItem(procedure.get(), /*root_only*/ false);
 
   // only one root instruction has been processed
-  EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 2);
+  EXPECT_EQ(procedure_item->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto repeat_item =
-      procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>({"", 1});
+      procedure_item->GetInstructionContainer()->GetItem<sequencergui::RepeatItem>({"", 1});
   auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>("");
   auto sequence_item =
-      procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>({"", 0});
+      procedure_item->GetInstructionContainer()->GetItem<sequencergui::SequenceItem>({"", 0});
   auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
 
   // Repeat and Include instructions corresponds to their domain counterpart
@@ -225,7 +210,6 @@ TEST_F(ProcedureItemBuilderTest, LocalIncludeProcedure)
 
 //! Procedure with local include after Setup call.
 //! root_only mode is used.
-
 TEST_F(ProcedureItemBuilderTest, LocalIncludeAfterSetup)
 {
   auto procedure = testutils::CreateLocalIncludeProcedure();
@@ -242,15 +226,14 @@ TEST_F(ProcedureItemBuilderTest, LocalIncludeAfterSetup)
   procedure->Setup();
 
   // Building ProcedureItem in root_only mode
-  sequencergui::ProcedureItem procedure_item;
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(procedure.get(), &procedure_item, /*root_only*/ true);
+  auto procedure_item = builder.CreateProcedureItem(procedure.get(), /*root_only*/ true);
 
   // only one root instruction has been processed
-  EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 1);
+  EXPECT_EQ(procedure_item->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto repeat_item =
-      procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>("");
+      procedure_item->GetInstructionContainer()->GetItem<sequencergui::RepeatItem>("");
   auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>("");
   auto sequence_item = include_item->GetItem<sequencergui::SequenceItem>("");
   auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
@@ -298,7 +281,6 @@ TEST_F(ProcedureItemBuilderTest, FindInstruction)
 }
 
 //! Populate ProcedureItem from the domain procedure containing preamble.
-
 TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithPreamble)
 {
   using sup::sequencer::TypeRegistrationInfo;
@@ -313,13 +295,12 @@ TEST_F(ProcedureItemBuilderTest, PopulateItemFromProcedureWithPreamble)
   procedure.GetPreamble().AddTypeRegistration(
       TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, json_type));
 
-  sequencergui::ProcedureItem procedure_item;
   ProcedureItemBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
+  auto procedure_item = builder.CreateProcedureItem(&procedure, /*root only*/ false);
 
   std::vector<std::string> expected_paths{"abc", "def"};
   std::vector<std::pair<int, std::string> > expected_info = {{1, json_type}};
 
-  EXPECT_EQ(procedure_item.GetPreambleItem()->GetPluginPaths(), expected_paths);
-  EXPECT_EQ(procedure_item.GetPreambleItem()->GetTypeRegistrations(), expected_info);
+  EXPECT_EQ(procedure_item->GetPreambleItem()->GetPluginPaths(), expected_paths);
+  EXPECT_EQ(procedure_item->GetPreambleItem()->GetTypeRegistrations(), expected_info);
 }

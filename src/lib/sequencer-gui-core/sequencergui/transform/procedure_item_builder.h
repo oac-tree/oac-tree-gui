@@ -61,24 +61,25 @@ public:
   ~ProcedureItemBuilder() override;
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
+  InstructionItem* GetInstruction(size_t domain_index) const override;
+
+  size_t GetIndex(const InstructionItem* instruction_item) const override;
+
+  VariableItem* GetVariable(size_t index) const override;
+
+
+  InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
+
+  const instruction_t* FindInstruction(const InstructionItem* instruction_item) const;
+
+
+private:
   void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
                              bool root_only);
 
   void PopulateInstructionContainerItem(const procedure_t* procedure,
                                         InstructionContainerItem* container, bool root_only);
 
-
-  InstructionItem* GetInstruction(size_t domain_index) const override;
-
-  InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
-
-  const instruction_t* FindInstruction(const InstructionItem* instruction_item) const;
-
-  size_t GetIndex(const InstructionItem* instruction_item) const override;
-
-  VariableItem* GetVariable(size_t index) const override;
-
-private:
   mvvm::SessionItem* ProcessInstruction(const instruction_t* instruction,
                                         mvvm::SessionItem* parent);
   void Iterate(const instruction_t* instruction, mvvm::SessionItem* parent);

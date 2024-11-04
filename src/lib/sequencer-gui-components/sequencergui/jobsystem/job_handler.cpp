@@ -20,8 +20,8 @@
 #include "job_handler.h"
 
 #include "domain_event_dispatcher_context.h"
-#include "local_domain_runner.h"
 #include "job_log.h"
+#include "local_domain_runner.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -220,10 +220,9 @@ void JobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedure)
     GetJobModel()->RemoveItem(expanded_procedure);
   }
 
-  auto expanded_procedure = std::make_unique<ProcedureItem>();
+  auto expanded_procedure =
+      m_guiobject_builder->CreateProcedureItem(domain_procedure, /*root_only*/ true);
   auto expanded_procedure_ptr = expanded_procedure.get();
-  m_guiobject_builder->PopulateProcedureItem(domain_procedure, expanded_procedure.get(),
-                                             /*root_only*/ true);
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
@@ -240,7 +239,7 @@ void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_ti
   // m_domain_runner_service =
   //     std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
   m_domain_runner_service = std::make_unique<LocalDomainRunner>(CreateContext(), user_context,
-                                                                  std::move(m_domain_procedure));
+                                                                std::move(m_domain_procedure));
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
 }
 
