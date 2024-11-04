@@ -23,7 +23,6 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/jobsystem/runner_status.h>
-#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/operation/breakpoint_types.h>
 
 #include <QObject>
@@ -46,8 +45,7 @@ class LogEvent;
 class WorkspaceItemListener;
 class JobModel;
 class BreakpointController;
-class DomainRunnerService;
-class LocalDomainRunner;
+class AbstractDomainRunner;
 class DomainEventDispatcherContext;
 
 /**
@@ -66,7 +64,7 @@ class AbstractJobHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit AbstractJobHandler(JobItem* job_item, const UserContext& user_context = {});
+  explicit AbstractJobHandler(JobItem* job_item);
   ~AbstractJobHandler() override;
 
   /**
@@ -148,7 +146,7 @@ protected:
    *
    * Depending on the type of the runner, the job will be either local, or remote.
    */
-  void Setup(std::unique_ptr<LocalDomainRunner> runner);
+  void Setup(std::unique_ptr<AbstractDomainRunner> runner);
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
@@ -179,7 +177,7 @@ private:
   /**
    * @brief Handles events reporting update in the domain variable.
    */
-  void OnVariableUpdatedEvent(const VariableUpdatedEvent& event);
+  virtual void OnVariableUpdatedEvent(const VariableUpdatedEvent& event);
 
   /**
    * @brief Returns job model to which our JobItem
@@ -196,7 +194,7 @@ private:
    *
    * It will reflect the content of domain procedure after its Setup.
    */
-  void SetupExpandedProcedureItem(procedure_t* domain_procedure);
+  void SetupExpandedProcedureItem();
 
   /**
    * @brief Set breakpoint to the domain instruction with the given index.
@@ -211,14 +209,8 @@ private:
   //!< GUI object builder holding domain/GUI object correspondance
   std::unique_ptr<ProcedureItemJobInfoBuilder> m_procedure_item_builder;
 
-  //!< domain procedure should live longer than the runner
-  std::unique_ptr<procedure_t> m_domain_procedure;
-
   //!< main runner to start/stop jobs
-  std::unique_ptr<LocalDomainRunner> m_domain_runner;
-
-  //!< dedicated listener to provide communication between domain/GUI workspace variables
-  std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
+  std::unique_ptr<AbstractDomainRunner> m_domain_runner;
 
   //!< main controller to handle breakpoints toggling
   std::unique_ptr<BreakpointController> m_breakpoint_controller;

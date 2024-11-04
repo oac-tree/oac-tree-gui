@@ -19,9 +19,9 @@
 
 #include "abstract_job_handler.h"
 
+#include "abstract_domain_runner.h"
 #include "domain_event_dispatcher_context.h"
 #include "job_log.h"
-#include "local_domain_runner.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -33,7 +33,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/operation/breakpoint_helper.h>
-#include <sequencergui/pvmonitor/workspace_item_listener.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/procedure_item_job_info_builder.h>
@@ -48,7 +47,7 @@
 namespace sequencergui
 {
 
-AbstractJobHandler::AbstractJobHandler(JobItem *job_item, const UserContext &user_context)
+AbstractJobHandler::AbstractJobHandler(JobItem *job_item)
     : m_procedure_item_builder(std::make_unique<ProcedureItemJobInfoBuilder>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
@@ -72,20 +71,6 @@ AbstractJobHandler::AbstractJobHandler(JobItem *job_item, const UserContext &use
     }
   };
   m_property_listener->Connect<mvvm::PropertyChangedEvent>(on_event);
-
-  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
-  auto domain_procedure_ptr = m_domain_procedure.get();
-
-  // LocalDomainRunner's internals call Setup on the domain procedure
-  m_domain_runner = std::make_unique<LocalDomainRunner>(CreateContext(), user_context,
-                                                        std::move(m_domain_procedure));
-
-  m_domain_runner->SetTickTimeout(m_job_item->GetTickTimeout());
-
-  Setup({});
-  SetupBreakpointController();
-
-  SetupExpandedProcedureItem(domain_procedure_ptr);
 }
 
 AbstractJobHandler::~AbstractJobHandler() = default;
@@ -180,7 +165,14 @@ DomainEventDispatcherContext AbstractJobHandler::CreateContext()
   return result;
 }
 
-void AbstractJobHandler::Setup(std::unique_ptr<LocalDomainRunner> runner) {}
+void AbstractJobHandler::Setup(std::unique_ptr<AbstractDomainRunner> runner)
+{
+  SetupBreakpointController();
+
+  m_domain_runner = std::move(runner);
+
+  SetupExpandedProcedureItem();
+}
 
 void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
 {
@@ -225,7 +217,8 @@ void AbstractJobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &
 
 void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
 {
-  m_workspace_item_listener->ProcessEventFromDomain(event);
+  (void)event;
+  throw RuntimeException("AbstractJobHandler::OnVariableUpdatedEvent is not implemented");
 }
 
 JobModel *AbstractJobHandler::GetJobModel()
@@ -243,7 +236,7 @@ void AbstractJobHandler::SetupBreakpointController()
   }
 }
 
-void AbstractJobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedure)
+void AbstractJobHandler::SetupExpandedProcedureItem()
 {
   // We expect that Procedure::Setup was already called
 
@@ -261,9 +254,6 @@ void AbstractJobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedur
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 
   PropagateBreakpointsToDomain();
-
-  m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
-      expanded_procedure_ptr->GetWorkspace(), &domain_procedure->GetWorkspace());
 }
 
 void AbstractJobHandler::SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_status)

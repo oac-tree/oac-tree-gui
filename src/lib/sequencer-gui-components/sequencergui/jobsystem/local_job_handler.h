@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
 
 #include <sequencergui/jobsystem/abstract_job_handler.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 namespace sequencergui
 {
@@ -35,6 +36,12 @@ class LocalJobHandler : public AbstractJobHandler
 public:
   explicit LocalJobHandler(JobItem* job_item, const UserContext& user_context = {});
   ~LocalJobHandler() override;
+
+private:
+  void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;
+
+  //!< dedicated listener to provide communication between domain/GUI workspace variables
+  std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
 };
 
 }  // namespace sequencergui
