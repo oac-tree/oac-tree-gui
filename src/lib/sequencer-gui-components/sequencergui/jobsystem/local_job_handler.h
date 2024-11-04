@@ -23,8 +23,15 @@
 #include <sequencergui/jobsystem/abstract_job_handler.h>
 #include <sequencergui/jobsystem/user_context.h>
 
+namespace mvvm
+{
+class ItemListener;
+}
+
 namespace sequencergui
 {
+
+class WorkspaceItemListener;
 
 /**
  * @brief The LocalJobHandler class is intended to run a local job represented by the JobItem.
@@ -40,8 +47,23 @@ public:
 private:
   void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;
 
+  /**
+   * @brief Creates local domain runner.
+   */
+  std::unique_ptr<AbstractDomainRunner> CreateDomainRunner(const UserContext& user_context,
+                                                           std::unique_ptr<procedure_t> procedure);
+
+  /**
+   * @brief Setup property listener to propagate tick timeouts from GUI to domain.
+   *
+   */
+  void SetupPropertyListener();
+
   //!< dedicated listener to provide communication between domain/GUI workspace variables
   std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
+
+  //!< listens for JobItem property change
+  std::unique_ptr<mvvm::ItemListener> m_property_listener;
 };
 
 }  // namespace sequencergui

@@ -28,11 +28,6 @@
 #include <QObject>
 #include <memory>
 
-namespace mvvm
-{
-class ItemListener;
-}
-
 namespace sequencergui
 {
 
@@ -42,22 +37,20 @@ class JobItem;
 class InstructionItem;
 class ProcedureItemJobInfoBuilder;
 class LogEvent;
-class WorkspaceItemListener;
 class JobModel;
 class BreakpointController;
 class AbstractDomainRunner;
 class DomainEventDispatcherContext;
 
 /**
- * @brief The JobHandler class is the main class to run a job represented by the JobItem.
+ * @brief The AbstractJobHandler class is a base class to run a job represented by the JobItem.
  *
- * It is used by the JobManager, where each JobItem is handled by its own JobHandler. JobHandler has
- * multiple responsibilities:
+ * Depending on the implementation, it can run jobs either localy, or remotely. The class is used by
+ * the JobManager, where each JobItem is handled by its own JobHandler. JobHandler is responsible
+ * for:
  *
- * - generate sequencer domain procedure using ProcedureItem
- * - setup domain procedure, and generate corresponding expanded ProcedureItem
- * - handle start/stop/pause/step requests
- * - listen for all sequencer domain events and update GUI items accordingly
+ * - handling start/stop/pause/step requests
+ * - listening for all sequencer domain events and updating the GUI items accordingly
  */
 class AbstractJobHandler : public QObject
 {
@@ -131,9 +124,9 @@ public:
   JobItem* GetJobItem();
 
   /**
-   * @brief Returns domain procedure.
+   * @brief Returns domain  runner.
    */
-  virtual procedure_t* GetDomainProcedure();
+  AbstractDomainRunner* GetDomainRunner();
 
 protected:
   /**
@@ -214,9 +207,6 @@ private:
 
   //!< main controller to handle breakpoints toggling
   std::unique_ptr<BreakpointController> m_breakpoint_controller;
-
-  //!< listens for JobItem property change
-  std::unique_ptr<mvvm::ItemListener> m_property_listener;
 
   //!< the job log
   JobLog* m_job_log{nullptr};

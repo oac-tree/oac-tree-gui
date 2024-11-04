@@ -26,7 +26,6 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -36,8 +35,6 @@
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/procedure_item_job_info_builder.h>
-
-#include <mvvm/signals/item_listener.h>
 
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
@@ -62,15 +59,6 @@ AbstractJobHandler::AbstractJobHandler(JobItem *job_item)
     throw RuntimeException("Procedure doesn't exist");
   }
 
-  m_property_listener = std::make_unique<mvvm::ItemListener>(job_item);
-  auto on_event = [this](const mvvm::PropertyChangedEvent &event)
-  {
-    if (event.name == itemconstants::kTickTimeout)
-    {
-      m_domain_runner->SetTickTimeout(m_job_item->GetTickTimeout());
-    }
-  };
-  m_property_listener->Connect<mvvm::PropertyChangedEvent>(on_event);
 }
 
 AbstractJobHandler::~AbstractJobHandler() = default;
@@ -139,9 +127,9 @@ JobItem *AbstractJobHandler::GetJobItem()
   return m_job_item;
 }
 
-procedure_t *AbstractJobHandler::GetDomainProcedure()
+AbstractDomainRunner *AbstractJobHandler::GetDomainRunner()
 {
-  return nullptr;
+  return m_domain_runner.get();
 }
 
 DomainEventDispatcherContext AbstractJobHandler::CreateContext()
@@ -238,8 +226,6 @@ void AbstractJobHandler::SetupBreakpointController()
 
 void AbstractJobHandler::SetupExpandedProcedureItem()
 {
-  // We expect that Procedure::Setup was already called
-
   // remove previous expanded procedure
   if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
