@@ -68,17 +68,22 @@ AbstractJobHandler::AbstractJobHandler(JobItem *job_item, const UserContext &use
   {
     if (event.name == itemconstants::kTickTimeout)
     {
-      m_domain_runner_service->SetTickTimeout(m_job_item->GetTickTimeout());
+      m_domain_runner->SetTickTimeout(m_job_item->GetTickTimeout());
     }
   };
   m_property_listener->Connect<mvvm::PropertyChangedEvent>(on_event);
 
-  SetupBreakpointController();
-
-  CreateDomainProcedure();
+  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
   auto domain_procedure_ptr = m_domain_procedure.get();
 
-  SetupDomainRunner(user_context, m_job_item->GetTickTimeout());  // calls also Procedure::Setup
+  // LocalDomainRunner's internals call Setup on the domain procedure
+  m_domain_runner = std::make_unique<LocalDomainRunner>(CreateContext(), user_context,
+                                                        std::move(m_domain_procedure));
+
+  m_domain_runner->SetTickTimeout(m_job_item->GetTickTimeout());
+
+  Setup({});
+  SetupBreakpointController();
 
   SetupExpandedProcedureItem(domain_procedure_ptr);
 }
@@ -87,32 +92,32 @@ AbstractJobHandler::~AbstractJobHandler() = default;
 
 void AbstractJobHandler::OnStartRequest()
 {
-  m_domain_runner_service->Start();
+  m_domain_runner->Start();
 }
 
 void AbstractJobHandler::OnPauseRequest()
 {
-  m_domain_runner_service->Pause();
+  m_domain_runner->Pause();
 }
 
 void AbstractJobHandler::OnMakeStepRequest()
 {
-  m_domain_runner_service->Step();
+  m_domain_runner->Step();
 }
 
 void AbstractJobHandler::OnStopRequest()
 {
-  m_domain_runner_service->Stop();
+  m_domain_runner->Stop();
 }
 
 void AbstractJobHandler::Reset()
 {
-  m_domain_runner_service->Reset();
+  m_domain_runner->Reset();
 }
 
 bool AbstractJobHandler::IsRunning() const
 {
-  return m_domain_runner_service->IsBusy();
+  return m_domain_runner->IsBusy();
 }
 
 ProcedureItem *AbstractJobHandler::GetExpandedProcedure() const
@@ -122,8 +127,8 @@ ProcedureItem *AbstractJobHandler::GetExpandedProcedure() const
 
 RunnerStatus AbstractJobHandler::GetRunnerStatus() const
 {
-  return m_domain_runner_service ? static_cast<RunnerStatus>(m_domain_runner_service->GetJobState())
-                                 : RunnerStatus::kInitial;
+  return m_domain_runner ? static_cast<RunnerStatus>(m_domain_runner->GetJobState())
+                         : RunnerStatus::kInitial;
 }
 
 JobLog *AbstractJobHandler::GetJobLog() const
@@ -143,6 +148,39 @@ void AbstractJobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   const size_t instruction_index = m_procedure_item_builder->GetIndex(instruction);
   SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
+
+JobItem *AbstractJobHandler::GetJobItem()
+{
+  return m_job_item;
+}
+
+procedure_t *AbstractJobHandler::GetDomainProcedure()
+{
+  return nullptr;
+}
+
+DomainEventDispatcherContext AbstractJobHandler::CreateContext()
+{
+  DomainEventDispatcherContext result;
+
+  result.process_instruction_state_updated = [this](const InstructionStateUpdatedEvent &event)
+  { OnInstructionStateUpdated(event); };
+
+  result.process_variable_updated = [this](const VariableUpdatedEvent &event)
+  { OnVariableUpdatedEvent(event); };
+
+  result.process_job_state_changed = [this](const JobStateChangedEvent &event)
+  { OnJobStateChanged(event); };
+
+  result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
+
+  result.next_leaves_changed_event = [this](const NextLeavesChangedEvent &event)
+  { OnNextLeavesChangedEvent(event); };
+
+  return result;
+}
+
+void AbstractJobHandler::Setup(std::unique_ptr<LocalDomainRunner> runner) {}
 
 void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
 {
@@ -205,11 +243,6 @@ void AbstractJobHandler::SetupBreakpointController()
   }
 }
 
-void AbstractJobHandler::CreateDomainProcedure()
-{
-  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
-}
-
 void AbstractJobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedure)
 {
   // We expect that Procedure::Setup was already called
@@ -221,7 +254,7 @@ void AbstractJobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedur
   }
 
   auto expanded_procedure =
-      m_procedure_item_builder->CreateProcedureItem(m_domain_runner_service->GetJobInfo());
+      m_procedure_item_builder->CreateProcedureItem(m_domain_runner->GetJobInfo());
   auto expanded_procedure_ptr = expanded_procedure.get();
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
@@ -233,27 +266,17 @@ void AbstractJobHandler::SetupExpandedProcedureItem(procedure_t *domain_procedur
       expanded_procedure_ptr->GetWorkspace(), &domain_procedure->GetWorkspace());
 }
 
-void AbstractJobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_time_msec)
-{
-  // this creates beneath DomainRunner(AsyncRunner(Runner())) and then call procedure->Setup
-  // m_domain_runner_service =
-  //     std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
-  m_domain_runner_service = std::make_unique<LocalDomainRunner>(CreateContext(), user_context,
-                                                                std::move(m_domain_procedure));
-  m_domain_runner_service->SetTickTimeout(sleep_time_msec);
-}
-
 void AbstractJobHandler::SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_status)
 {
   if (breakpoint_status == BreakpointStatus::kSet)
   {
-    m_domain_runner_service->SetBreakpoint(index);
+    m_domain_runner->SetBreakpoint(index);
   }
   else
   {
     // We do not use "disabled" breakpoints in the domain, InstructionItem's breakpoint marked as
     // disabled, will remove breakpoint from the domain
-    m_domain_runner_service->RemoveBreakpoint(index);
+    m_domain_runner->RemoveBreakpoint(index);
   }
 }
 
@@ -267,27 +290,6 @@ void AbstractJobHandler::PropagateBreakpointsToDomain()
   };
   IterateInstructionContainer<const InstructionItem *>(
       GetExpandedProcedure()->GetInstructionContainer()->GetInstructions(), func);
-}
-
-DomainEventDispatcherContext AbstractJobHandler::CreateContext()
-{
-  DomainEventDispatcherContext result;
-
-  result.process_instruction_state_updated = [this](const InstructionStateUpdatedEvent &event)
-  { OnInstructionStateUpdated(event); };
-
-  result.process_variable_updated = [this](const VariableUpdatedEvent &event)
-  { OnVariableUpdatedEvent(event); };
-
-  result.process_job_state_changed = [this](const JobStateChangedEvent &event)
-  { OnJobStateChanged(event); };
-
-  result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
-
-  result.next_leaves_changed_event = [this](const NextLeavesChangedEvent &event)
-  { OnNextLeavesChangedEvent(event); };
-
-  return result;
 }
 
 }  // namespace sequencergui

@@ -127,6 +127,29 @@ public:
    */
   void OnToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
+  /**
+   * @brief Returns job item served by this handler.
+   */
+  JobItem* GetJobItem();
+
+  /**
+   * @brief Returns domain procedure.
+   */
+  virtual procedure_t* GetDomainProcedure();
+
+protected:
+  /**
+   * @brief Returns a context necessary for sequencer event queue to function.
+   */
+  DomainEventDispatcherContext CreateContext();
+
+  /**
+   * @brief Set-up domain runner.
+   *
+   * Depending on the type of the runner, the job will be either local, or remote.
+   */
+  void Setup(std::unique_ptr<LocalDomainRunner> runner);
+
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
@@ -169,24 +192,11 @@ private:
   void SetupBreakpointController();
 
   /**
-   * @brief Creates domain procedure from ProcedureItem.
-   */
-  void CreateDomainProcedure();
-
-  /**
    * @brief Setup expanded procedure item.
    *
    * It will reflect the content of domain procedure after its Setup.
    */
   void SetupExpandedProcedureItem(procedure_t* domain_procedure);
-
-  /**
-   * @brief Setups the domain runner.
-   *
-   * @param user_context The context to provide interaction with the user.
-   * @param sleep_time_msec Sleep time at the end of each tick.
-   */
-  void SetupDomainRunner(const UserContext& user_context, int sleep_time_msec);
 
   /**
    * @brief Set breakpoint to the domain instruction with the given index.
@@ -198,11 +208,6 @@ private:
    */
   void PropagateBreakpointsToDomain();
 
-  /**
-   * @brief Returns a context necessary for sequencer event queue to function.
-   */
-  DomainEventDispatcherContext CreateContext();
-
   //!< GUI object builder holding domain/GUI object correspondance
   std::unique_ptr<ProcedureItemJobInfoBuilder> m_procedure_item_builder;
 
@@ -210,7 +215,7 @@ private:
   std::unique_ptr<procedure_t> m_domain_procedure;
 
   //!< main runner to start/stop jobs
-  std::unique_ptr<LocalDomainRunner> m_domain_runner_service;
+  std::unique_ptr<LocalDomainRunner> m_domain_runner;
 
   //!< dedicated listener to provide communication between domain/GUI workspace variables
   std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
