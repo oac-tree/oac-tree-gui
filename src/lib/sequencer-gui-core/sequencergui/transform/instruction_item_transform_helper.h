@@ -21,8 +21,7 @@
 #define SEQUENCERGUI_TRANSFORM_INSTRUCTION_ITEM_TRANSFORM_HELPER_H_
 
 //! @file
-//! Collection of helper functions to transform VariableItem and InstructionItem properties
-//! from automation server information.
+//! Collection of helper functions to transform InstructionItem from/to domain instructions.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 

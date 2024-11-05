@@ -86,7 +86,7 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::Wor
     auto item = sequencergui::CreateVariableItem(variable->GetType());
     item->InitFromDomain(variable, registry);
     result.push_back(item.get());
-    workspace_item->InsertItem(std::move(item), {"", -1});
+    workspace_item->InsertItem(std::move(item), mvvm::TagIndex::Append());
   }
 
   return result;
