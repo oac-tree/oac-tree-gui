@@ -19,27 +19,16 @@
 
 #include "sequencergui/operation/breakpoint_controller.h"
 
-#include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/operation/breakpoint_helper.h>
-#include <sequencergui/transform/procedure_item_builder.h>
 
 #include <mvvm/standarditems/container_item.h>
 
-#include <sup/sequencer/application_utils.h>
-#include <sup/sequencer/async_runner.h>
-#include <sup/sequencer/instruction.h>
-#include <sup/sequencer/procedure.h>
-#include <sup/sequencer/user_interface.h>
-
 #include <gtest/gtest.h>
-#include <testutils/mock_sequencer_observer.h>
-#include <testutils/standard_procedures.h>
 
 using namespace sequencergui;
 

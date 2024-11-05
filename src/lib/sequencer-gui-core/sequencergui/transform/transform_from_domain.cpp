@@ -23,14 +23,11 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/sequencer_item_includes.h>
-#include <sequencergui/transform/procedure_item_builder.h>
 
 #include <mvvm/model/function_types.h>
 #include <mvvm/model/item_catalogue.h>
 
 #include <sup/sequencer/instruction.h>
-#include <sup/sequencer/procedure.h>
-#include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/workspace.h>
 
 namespace
@@ -111,30 +108,6 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
   }
 
   return catalogue->Create(domain_type);
-}
-
-std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only)
-{
-  ProcedureItemBuilder builder;
-  return builder.CreateProcedureItem(procedure);
-}
-
-void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item)
-{
-  if (!item.GetPluginPaths().empty() || !item.GetTypeRegistrations().empty())
-  {
-    throw LogicErrorException("ProcedurePreambleItem must be empty");
-  }
-
-  for (const auto& str : preamble.GetPluginPaths())
-  {
-    item.AddPluginPath(str);
-  }
-
-  for (const auto& info : preamble.GetTypeRegistrations())
-  {
-    item.AddTypeRegistration(static_cast<int>(info.GetRegistrationMode()), info.GetString());
-  }
 }
 
 }  // namespace sequencergui

@@ -33,8 +33,6 @@ namespace sequencergui
 
 class InstructionItem;
 class VariableItem;
-class ProcedureItem;
-class ProcedurePreambleItem;
 
 /**
  * @brief Creates VariableItem from string representing the type of sup::sequencer::Variable.
@@ -45,16 +43,6 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
  * @brief Creates InstructionItem from string representing Type of sup::sequencer::Instruction.
  */
 std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type);
-
-/**
- * @brief Creates ProcedureItem from given domain procedure.
- */
-std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
-
-/**
- * @brief Populates empty PreambleItem with the domain information.
- */
-void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item);
 
 }  // namespace sequencergui
 

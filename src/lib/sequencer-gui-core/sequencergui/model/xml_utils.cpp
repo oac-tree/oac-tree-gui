@@ -23,7 +23,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
-#include <sequencergui/transform/transform_from_domain.h>
+#include <sequencergui/transform/procedure_item_transform_helper.h>
 
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/sequence_parser.h>
@@ -75,6 +75,7 @@ size_t ReplaceHtmlQuotes(std::string &str, size_t pos1, size_t pos2)
 
 namespace sequencergui
 {
+
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
 {
   auto procedure = sup::sequencer::ParseProcedureFile(file_name);
@@ -84,7 +85,7 @@ std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
     throw std::runtime_error("Error: uninitialised procedure");
   }
 
-  auto result = CreateProcedureItem(procedure.get(), /*root_only*/ false);
+  auto result = CreateProcedureItem(*procedure);
   result->SetFileName(file_name);
 
   return result;

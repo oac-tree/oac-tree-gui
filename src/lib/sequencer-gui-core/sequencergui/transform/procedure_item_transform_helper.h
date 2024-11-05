@@ -17,8 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_GUI_OBJECT_BUILDER_H_
-#define SEQUENCERGUI_TRANSFORM_GUI_OBJECT_BUILDER_H_
+#ifndef SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_
+#define SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_
+
+//! @file
+//! Collection of utility functions to convert sup::sequencer::Procedure into SessionModel.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
@@ -28,28 +31,21 @@ namespace sequencergui
 {
 
 class ProcedureItem;
-class InstructionContainerItem;
-class InstructionItem;
-class VariableItem;
+class ProcedurePreambleItem;
 
 /**
- * @brief The ProcedureItemBuilder class builds GUI's ProcedureItem from the domain procedure.
+ * @brief Populates empty PreambleItem with the domain information.
+ */
+void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item);
+
+/**
+ * @brief Creates ProcedureItem from given domain procedure.
  *
  * Its main purpose is to generate a GUI object from the result of XML import. It is expected, that
  * the domain procedure's Setup() hasn't been performed yet.
  */
-class ProcedureItemBuilder
-{
-public:
-  std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure);
-
-private:
-  void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item);
-
-  void PopulateInstructionContainerItem(const procedure_t* procedure,
-                                        InstructionContainerItem* container);
-};
+std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t& procedure);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_GUI_OBJECT_BUILDER_H_
+#endif  // SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_

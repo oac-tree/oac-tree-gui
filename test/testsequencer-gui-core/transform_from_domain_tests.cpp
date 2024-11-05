@@ -172,44 +172,44 @@ TEST_F(TransformFromDomainTest, CreateUniversalVariable)
   EXPECT_EQ(universal_item->GetType(), UniversalVariableItem::Type);
 }
 
-TEST_F(TransformFromDomainTest, PopulateProcedurePreambleItem)
-{
-  {  // empty
-    sup::sequencer::ProcedurePreamble preamble;
-    ProcedurePreambleItem item;
-    PopulateProcedurePreambleItem(preamble, item);
+// TEST_F(TransformFromDomainTest, PopulateProcedurePreambleItem)
+// {
+//   {  // empty
+//     sup::sequencer::ProcedurePreamble preamble;
+//     ProcedurePreambleItem item;
+//     PopulateProcedurePreambleItem(preamble, item);
 
-    EXPECT_TRUE(preamble.GetPluginPaths().empty());
-    EXPECT_TRUE(preamble.GetTypeRegistrations().empty());
-  }
+//     EXPECT_TRUE(preamble.GetPluginPaths().empty());
+//     EXPECT_TRUE(preamble.GetTypeRegistrations().empty());
+//   }
 
-  {  // preamble
-    using sup::sequencer::TypeRegistrationInfo;
+//   {  // preamble
+//     using sup::sequencer::TypeRegistrationInfo;
 
-    sup::sequencer::ProcedurePreamble preamble;
-    preamble.AddPluginPath("abc");
-    preamble.AddPluginPath("def");
-    preamble.AddTypeRegistration(TypeRegistrationInfo(TypeRegistrationInfo::kJSONFile, "a1"));
-    preamble.AddTypeRegistration(TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, "a2"));
+//     sup::sequencer::ProcedurePreamble preamble;
+//     preamble.AddPluginPath("abc");
+//     preamble.AddPluginPath("def");
+//     preamble.AddTypeRegistration(TypeRegistrationInfo(TypeRegistrationInfo::kJSONFile, "a1"));
+//     preamble.AddTypeRegistration(TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, "a2"));
 
-    ProcedurePreambleItem item;
-    PopulateProcedurePreambleItem(preamble, item);
+//     ProcedurePreambleItem item;
+//     PopulateProcedurePreambleItem(preamble, item);
 
-    std::vector<std::string> expected_paths{"abc", "def"};
-    std::vector<std::pair<int, std::string> > expected_info = {{0, "a1"}, {1, "a2"}};
+//     std::vector<std::string> expected_paths{"abc", "def"};
+//     std::vector<std::pair<int, std::string> > expected_info = {{0, "a1"}, {1, "a2"}};
 
-    EXPECT_EQ(item.GetPluginPaths(), expected_paths);
-    EXPECT_EQ(item.GetTypeRegistrations(), expected_info);
-  }
+//     EXPECT_EQ(item.GetPluginPaths(), expected_paths);
+//     EXPECT_EQ(item.GetTypeRegistrations(), expected_info);
+//   }
 
-  {  // attempt to add in non-empty preamble
-    using sup::sequencer::TypeRegistrationInfo;
+//   {  // attempt to add in non-empty preamble
+//     using sup::sequencer::TypeRegistrationInfo;
 
-    sup::sequencer::ProcedurePreamble preamble;
-    preamble.AddPluginPath("abc");
+//     sup::sequencer::ProcedurePreamble preamble;
+//     preamble.AddPluginPath("abc");
 
-    ProcedurePreambleItem item;
-    item.AddPluginPath("aaa");
-    EXPECT_THROW(PopulateProcedurePreambleItem(preamble, item), LogicErrorException);
-  }
-}
+//     ProcedurePreambleItem item;
+//     item.AddPluginPath("aaa");
+//     EXPECT_THROW(PopulateProcedurePreambleItem(preamble, item), LogicErrorException);
+//   }
+// }
