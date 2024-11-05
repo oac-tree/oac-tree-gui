@@ -29,6 +29,10 @@ target_sources(${library_name} PRIVATE
   local_job_handler.h
   log_event.cpp
   log_event.h
+  remote_domain_runner.cpp
+  remote_domain_runner.h
+  remote_job_handler.cpp
+  remote_job_handler.h
   request_handler.h
   request_handler_queue.h
   request_types.cpp

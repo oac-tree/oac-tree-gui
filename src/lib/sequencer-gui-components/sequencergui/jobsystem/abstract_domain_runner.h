@@ -35,6 +35,9 @@ class UserContext;
 
 /**
  * @brief The AbstractDomainRunner is a base class to run domain local and remote jobs.
+ *
+ * It holds JobInfoIO and all the machinery to handle domain events and user input. Sequencer's IJob
+ * has to be created outside and moved here via SetJob method.
  */
 class AbstractDomainRunner
 {
@@ -126,7 +129,9 @@ public:
    */
   const sup::sequencer::JobInfo& GetJobInfo() const;
 
-protected:
+  /**
+   * @brief Sets sequencer Job to execute.
+   */
   void SetJob(std::unique_ptr<sup::sequencer::IJob> job);
 
 private:

@@ -17,25 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_LOCAL_DOMAIN_RUNNER_H_
-#define SEQUENCERGUI_JOBSYSTEM_LOCAL_DOMAIN_RUNNER_H_
+#include "remote_domain_runner.h"
 
-#include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/jobsystem/abstract_domain_runner.h>
+#include "domain_event_dispatcher_context.h"
+#include "user_context.h"
+
+#include <sup/auto-server/client_job.h>
 
 namespace sequencergui
 {
 
-/**
- * @brief The LocalDomainRunner class runs locally the sequencer domain procedure.
- */
-class LocalDomainRunner : public AbstractDomainRunner
+RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
+                                       UserContext user_context)
+    : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {
-public:
-  LocalDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context,
-                    std::unique_ptr<procedure_t> procedure);
-};
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_JOBSYSTEM_LOCAL_DOMAIN_RUNNER_H_
