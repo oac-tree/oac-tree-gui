@@ -21,10 +21,8 @@
 
 #include "automation_monitor_tool_bar.h"
 
-#include <sequencergui/automation/automation_client.h>
-#include <sequencergui/automation/automation_job_handler.h>
-#include <sequencergui/automation/remote_job_observer.h>
 #include <sequencergui/jobsystem/abstract_job_handler.h>
+#include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>

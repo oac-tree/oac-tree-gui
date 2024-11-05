@@ -1,4 +1,3 @@
-add_subdirectory(automation)
 add_subdirectory(components)
 add_subdirectory(composer)
 add_subdirectory(jobsystem)
