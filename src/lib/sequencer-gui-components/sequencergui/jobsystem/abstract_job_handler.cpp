@@ -162,6 +162,11 @@ void AbstractJobHandler::Setup(std::unique_ptr<AbstractDomainRunner> runner)
   SetupExpandedProcedureItem();
 }
 
+ProcedureItemJobInfoBuilder *AbstractJobHandler::GetItemBuilder()
+{
+  return m_procedure_item_builder.get();
+}
+
 void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
 {
   if (auto *item = m_procedure_item_builder->GetInstruction(event.index); item)

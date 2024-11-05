@@ -128,7 +128,6 @@ public:
    */
   AbstractDomainRunner* GetDomainRunner();
 
-protected:
   /**
    * @brief Returns a context necessary for sequencer event queue to function.
    */
@@ -140,6 +139,11 @@ protected:
    * Depending on the type of the runner, the job will be either local, or remote.
    */
   void Setup(std::unique_ptr<AbstractDomainRunner> runner);
+
+  /**
+   * @brief Returns item builder.
+   */
+  ProcedureItemJobInfoBuilder* GetItemBuilder();
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
