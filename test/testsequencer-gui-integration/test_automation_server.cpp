@@ -21,7 +21,7 @@
 
 #include <sup/auto-server/automation_server.h>
 #include <sup/auto-server/control_protocol_server.h>
-#include <sup/auto-server/epics/epics_anyvalue_manager_registry.h>
+#include <sup/auto-server/epics_config_utils.h>
 #include <sup/auto-server/info_protocol_server.h>
 #include <sup/auto-server/sup_auto_protocol.h>
 #include <sup/epics/epics_protocol_factory.h>
@@ -29,21 +29,10 @@
 
 #include <testutils/test_utils.h>
 
-#include <iostream>
 #include <thread>
 
 namespace testutils
 {
-
-namespace
-{
-std::unique_ptr<sup::auto_server::IAnyValueManagerRegistry> CreateAnyValueManagerRegistry(
-    sup::dto::uint32 n_managers)
-{
-  return std::make_unique<sup::auto_server::EPICSAnyValueManagerRegistry>(n_managers);
-}
-
-}  // namespace
 
 void TestAutomationServer::Start(const std::string &server_name,
                                  const std::string &procedure_string)
@@ -53,7 +42,7 @@ void TestAutomationServer::Start(const std::string &server_name,
     auto procedure =
         sup::sequencer::ParseProcedureString(testutils::CreateProcedureString(procedure_string));
 
-    auto anyvalue_manager_registry = CreateAnyValueManagerRegistry(1);
+    auto anyvalue_manager_registry = sup::auto_server::utils::CreateEPICSAnyValueManagerRegistry(1);
     sup::auto_server::AutomationServer auto_server{server_name, *anyvalue_manager_registry};
     auto_server.AddJob(std::move(procedure));
 
@@ -70,22 +59,17 @@ void TestAutomationServer::Start(const std::string &server_name,
     auto control_server_stack =
         sup::epics::CreateEPICSRPCServerStack(control_server_protocol, control_server_config);
 
-    int counter{0};
     while (m_continue)
     {
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
-      std::cout << "count " << counter++ << "\n";
     }
-    std::cout << "Server stopped";
   };
+
   m_future = std::async(std::launch::async, worker);
-
-
 }
 
 void TestAutomationServer::Stop()
 {
-  std::cout << "Stop signal received\n";
   m_continue = false;
   m_future.wait();
 }

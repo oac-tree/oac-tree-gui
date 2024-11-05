@@ -22,7 +22,7 @@
 #include <sequencergui/jobsystem/remote_job_handler.h>
 #include <sequencergui/jobsystem/user_context.h>
 
-#include <sup/auto-server/epics_client_utils.h>
+#include <sup/auto-server/epics_config_utils.h>
 
 #include <iostream>
 

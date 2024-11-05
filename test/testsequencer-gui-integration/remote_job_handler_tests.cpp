@@ -20,7 +20,18 @@
 #include "sequencergui/jobsystem/remote_job_handler.h"
 #include "test_automation_server.h"
 
+#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/job_model.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/workspace_item.h>
+
+#include <sup/auto-server/epics_config_utils.h>
+
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
+
+#include <QTest>
 #include <thread>
 
 namespace sequencergui
@@ -29,11 +40,15 @@ namespace sequencergui
 class RemoteJobHandlerTest : public ::testing::Test
 {
 public:
+  RemoteJobHandlerTest() { m_job_item = m_model.InsertItem<JobItem>(); }
+
+  JobModel m_model;
+  JobItem* m_job_item{nullptr};
 };
 
 TEST_F(RemoteJobHandlerTest, SimpleProcedure)
 {
-  const std::string kSequenceTwoWaitsBody{
+  const std::string kProcedureBodyText{
       R"RAW(
   <Repeat maxCount="3">
     <Sequence>
@@ -46,14 +61,33 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
 )RAW"};
 
   const std::string server_name("RemoteJobHandlerTestServer");
-
   testutils::TestAutomationServer server;
 
-  server.Start(server_name, kSequenceTwoWaitsBody);
-  std::this_thread::sleep_for(std::chrono::seconds(2));
+  server.Start(server_name, kProcedureBodyText);
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(20));
+
+  auto manager = sup::auto_server::utils::CreateEPICSJobManager(server_name);
+  EXPECT_EQ(manager->GetNumberOfJobs(), 1);
+
+  RemoteJobHandler job_handler(m_job_item, *manager, 0, {});
+
+  ASSERT_NE(m_job_item->GetExpandedProcedure(), nullptr);
+  EXPECT_FALSE(job_handler.IsRunning());
+  EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kInitial);
+
+  job_handler.OnStartRequest();
+  QTest::qWait(50);
+  EXPECT_FALSE(job_handler.IsRunning());
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+
+  auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
+  ASSERT_EQ(variables.size(), 1);
+
+  const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 3};
+  EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
 
   server.Stop();
-
 }
 
 }  // namespace sequencergui
