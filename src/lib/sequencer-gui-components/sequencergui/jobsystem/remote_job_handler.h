@@ -23,9 +23,9 @@
 #include <sequencergui/jobsystem/abstract_job_handler.h>
 #include <sequencergui/jobsystem/user_context.h>
 
-namespace mvvm
+namespace sup::auto_server
 {
-class ItemListener;
+class IJobManager;
 }
 
 namespace sequencergui
@@ -35,26 +35,15 @@ class WorkspaceItemListener;
 
 /**
  * @brief The RemoteJobHandler class is intended to run a remote job represented by the JobItem.
- *
- * The remote job should be created using SetRemoteJob.
  */
 class RemoteJobHandler : public AbstractJobHandler
 {
   Q_OBJECT
 
 public:
-  explicit RemoteJobHandler(JobItem* job_item, const UserContext& user_context = {});
+  explicit RemoteJobHandler(JobItem* job_item, sup::auto_server::IJobManager& manager,
+                            size_t job_index, const UserContext& user_context = {});
   ~RemoteJobHandler() override;
-
-  /**
-   * @brief Sets remote job to be
-   */
-  void SetRemoteJob(std::unique_ptr<sup::sequencer::IJob> job);
-
-  /**
-   * @brief Returns sequencer JobInfo interface.
-   */
-  sup::sequencer::IJobInfoIO* GetJobInfoIO();
 
 private:
   void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;

@@ -23,15 +23,10 @@
 #include "domain_event_dispatcher_context.h"
 #include "remote_domain_runner.h"
 
-#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/transform/anyvalue_item_transform_helper.h>
 #include <sequencergui/transform/procedure_item_job_info_builder.h>
 
-#include <mvvm/signals/item_listener.h>
-
-#include <sup/sequencer/i_job.h>
-#include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
 
 #include <iostream>
@@ -39,23 +34,14 @@
 namespace sequencergui
 {
 
-RemoteJobHandler::RemoteJobHandler(JobItem *job_item, const UserContext &user_context)
+RemoteJobHandler::RemoteJobHandler(JobItem *job_item, sup::auto_server::IJobManager &manager,
+                                   size_t job_index, const UserContext &user_context)
     : AbstractJobHandler(job_item)
 {
-  Setup(std::make_unique<RemoteDomainRunner>(CreateContext(), user_context));
-}
-
-void RemoteJobHandler::SetRemoteJob(std::unique_ptr<sup::sequencer::IJob> job)
-{
-  GetDomainRunner()->SetJob(std::move(job));
+  Setup(std::make_unique<RemoteDomainRunner>(CreateContext(), user_context, manager, job_index));
 }
 
 RemoteJobHandler::~RemoteJobHandler() = default;
-
-sup::sequencer::IJobInfoIO *RemoteJobHandler::GetJobInfoIO()
-{
-  return GetDomainRunner() ? GetDomainRunner()->GetJobInfoIO() : nullptr;
-}
 
 void RemoteJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
 {

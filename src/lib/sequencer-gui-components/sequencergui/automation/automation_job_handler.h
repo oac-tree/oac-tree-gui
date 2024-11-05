@@ -34,7 +34,7 @@ class ProcedureItemJobInfoBuilder;
 class RemoteJobObserver;
 class DomainEventQueue;
 class DomainEventDispatcher;
-class DomainEventDispatcherContext;
+struct DomainEventDispatcherContext;
 
 /**
  * @brief The AutomationJobHandler class provides all machinery to propagate changes from remote

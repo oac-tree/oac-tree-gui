@@ -23,19 +23,19 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/abstract_domain_runner.h>
 
+#include <sup/auto-server/i_job_manager.h>
+
 namespace sequencergui
 {
 
 /**
  * @brief The RemoteDomainRunner class runs remotely the sequencer domain procedure.
- *
- * It requires SetJob method to be called after creation, to pass the domain job. See
- * AutomationClient for more details.
  */
 class RemoteDomainRunner : public AbstractDomainRunner
 {
 public:
-  RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context);
+  RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context,
+                     sup::auto_server::IJobManager &manager, size_t job_index);
 };
 
 }  // namespace sequencergui

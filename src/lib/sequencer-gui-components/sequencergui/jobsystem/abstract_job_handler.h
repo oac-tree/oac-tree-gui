@@ -40,7 +40,7 @@ class LogEvent;
 class JobModel;
 class BreakpointController;
 class AbstractDomainRunner;
-class DomainEventDispatcherContext;
+struct DomainEventDispatcherContext;
 
 /**
  * @brief The AbstractJobHandler class is a base class to run a job represented by the JobItem.
@@ -123,6 +123,11 @@ public:
    */
   JobItem* GetJobItem();
 
+signals:
+  void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
+  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
+
+protected:
   /**
    * @brief Returns domain  runner.
    */
@@ -137,6 +142,8 @@ public:
    * @brief Set-up domain runner.
    *
    * Depending on the type of the runner, the job will be either local, or remote.
+   * Call to this method creates expanded ProcedureItem and populates it with the JobInfo content
+   * obtained from the runner.
    */
   void Setup(std::unique_ptr<AbstractDomainRunner> runner);
 
@@ -144,10 +151,6 @@ public:
    * @brief Returns item builder.
    */
   ProcedureItemJobInfoBuilder* GetItemBuilder();
-
-signals:
-  void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
-  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
 private:
   /**

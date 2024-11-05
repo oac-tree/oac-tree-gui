@@ -30,8 +30,8 @@ namespace sequencergui
 {
 
 class DomainJobService;
-class DomainEventDispatcherContext;
-class UserContext;
+struct DomainEventDispatcherContext;
+struct UserContext;
 
 /**
  * @brief The AbstractDomainRunner is a base class to run domain local and remote jobs.

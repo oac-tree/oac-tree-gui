@@ -31,7 +31,7 @@
 namespace sequencergui
 {
 
-class UserContext;
+struct UserContext;
 class UserChoiceProvider;
 class UserInputProvider;
 

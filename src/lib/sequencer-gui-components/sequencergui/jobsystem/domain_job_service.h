@@ -29,9 +29,9 @@ namespace sequencergui
 
 class DomainEventQueue;
 class DomainEventDispatcher;
-class DomainEventDispatcherContext;
+struct DomainEventDispatcherContext;
 class DomainJobObserver;
-class UserContext;
+struct UserContext;
 
 /**
  * @brief The DomainJobService class provides thread-safe wiring between domain's JobInfoIO and GUI

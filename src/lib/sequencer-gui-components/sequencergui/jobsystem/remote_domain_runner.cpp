@@ -23,14 +23,20 @@
 #include "user_context.h"
 
 #include <sup/auto-server/client_job.h>
+#include <sup/auto-server/epics_client_utils.h>
 
 namespace sequencergui
 {
 
 RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
-                                       UserContext user_context)
+                                       UserContext user_context,
+                                       sup::auto_server::IJobManager &manager, size_t job_index)
     : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {
+  auto remote_job = sup::auto_server::CreateClientJob(
+      manager, job_index, sup::auto_server::utils::CreateEPICSIOClient, *GetJobInfoIO());
+
+  SetJob(std::move(remote_job));
 }
 
 }  // namespace sequencergui
