@@ -137,6 +137,7 @@ sup::sequencer::JobInfo CreateJobInfo(const std::string &procedure_text)
 {
   auto procedure =
       sup::sequencer::ParseProcedureString(testutils::CreateProcedureString(procedure_text));
+  procedure->Setup();
   auto root = procedure->RootInstruction();
   const sup::sequencer::InstructionMap instr_map{root};
   auto job_info = sup::sequencer::utils::CreateJobInfo(*procedure, instr_map);

@@ -121,3 +121,36 @@ TEST_F(ProcedureItemJobInfoBuilderTest, GetInstructionIndex)
 
   EXPECT_THROW(builder.GetIndex(nullptr), RuntimeException);
 }
+
+TEST_F(ProcedureItemJobInfoBuilderTest, BuildFromIncludeAfterSteup)
+{
+  const std::string kProcedure{
+      R"RAW(
+  <Sequence name="CountTwice">
+      <Wait/>
+  </Sequence>
+  <Repeat isRoot="true" maxCount="10">
+      <Include name="Counts" path="CountTwice"/>
+  </Repeat>
+)RAW"};
+
+  auto job_info = testutils::CreateJobInfo(kProcedure);
+
+  ProcedureItemJobInfoBuilder builder;
+  auto procedure_item = builder.CreateProcedureItem(job_info);
+
+  ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
+
+  auto repeat_item = procedure_item->GetInstructionContainer()->GetItem<sequencergui::RepeatItem>(
+      mvvm::TagIndex::Default(0));
+
+  auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>(mvvm::TagIndex::Default(0));
+  auto sequence_item =
+      include_item->GetItem<sequencergui::SequenceItem>(mvvm::TagIndex::Default(0));
+  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>(mvvm::TagIndex::Default(0));
+
+  EXPECT_EQ(builder.GetInstruction(0), repeat_item);
+  EXPECT_EQ(builder.GetInstruction(1), include_item);
+  EXPECT_EQ(builder.GetInstruction(2), sequence_item);
+  EXPECT_EQ(builder.GetInstruction(3), wait_item);
+}
