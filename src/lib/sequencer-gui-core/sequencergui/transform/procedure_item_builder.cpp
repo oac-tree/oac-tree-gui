@@ -22,10 +22,11 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/instruction_item_transform_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/variable_item_transform_helper.h>
 
@@ -39,8 +40,11 @@
 namespace
 {
 
-//! Creates Registry containing type defined in a preamble.
-//! We can't used registry on board of procedure itself, because it hasn't been setup  yet.
+/**
+ * @brief Creates Registry containing type defined in a preamble.
+ *
+ * We can't use registry on board of procedure itself, because it hasn't been setup  yet.
+ */
 std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t &procedure)
 {
   auto result = std::make_unique<sup::dto::AnyTypeRegistry>();
@@ -59,149 +63,40 @@ std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t &pro
 namespace sequencergui
 {
 
-ProcedureItemBuilder::~ProcedureItemBuilder() = default;
-
 std::unique_ptr<ProcedureItem> ProcedureItemBuilder::CreateProcedureItem(
-    const procedure_t *procedure, bool root_only)
+    const procedure_t *procedure)
 {
   auto result = std::make_unique<ProcedureItem>();
-  PopulateProcedureItem(procedure, result.get(), root_only);
+  PopulateProcedureItem(procedure, result.get());
   return result;
 }
 
-InstructionItem *ProcedureItemBuilder::GetInstruction(size_t domain_index) const
-{
-  auto domain_instruction = m_index_to_instruction[domain_index];
-  return FindInstructionItem(domain_instruction);
-}
-
-InstructionItem *ProcedureItemBuilder::FindInstructionItem(const instruction_t *instruction) const
-{
-  auto it = m_to_instruction_item.find(instruction);
-  return it == m_to_instruction_item.end() ? nullptr : it->second;
-}
-
-const instruction_t *ProcedureItemBuilder::FindInstruction(
-    const InstructionItem *instruction_item) const
-{
-  auto predicate = [instruction_item](auto it) { return it.second == instruction_item; };
-  auto it = std::find_if(m_to_instruction_item.begin(), m_to_instruction_item.end(), predicate);
-  return it == m_to_instruction_item.end() ? nullptr : it->first;
-}
-
-size_t ProcedureItemBuilder::GetIndex(const InstructionItem *instruction_item) const
-{
-  // REFACTORING
-  if (auto domain_instruction = FindInstruction(instruction_item); domain_instruction)
-  {
-    return m_instruction_map->FindInstructionIndex(domain_instruction);
-  }
-
-  throw RuntimeException("Can't find instruction index");
-}
-
-VariableItem *ProcedureItemBuilder::GetVariable(size_t index) const
-{
-  return index < m_index_to_variable.size() ? const_cast<VariableItem *>(m_index_to_variable[index])
-                                            : nullptr;
-}
-
 void ProcedureItemBuilder::PopulateProcedureItem(const procedure_t *procedure,
-                                                 ProcedureItem *procedure_item, bool root_only)
+                                                 ProcedureItem *procedure_item)
 {
   if (!procedure)
   {
     throw std::runtime_error("Error: uninitialised procedure");
   }
 
-  m_to_instruction_item.clear();
-
-          // REFACTORING
-  m_instruction_map =
-      std::make_unique<sup::sequencer::InstructionMap>(procedure->RootInstruction());
-  m_index_to_instruction =
-      sup::sequencer::GetReverseMap(m_instruction_map->GetInstructionIndexMap());
-
   auto instruction_container = procedure_item->GetInstructionContainer();
-  PopulateInstructionContainerItem(procedure, instruction_container, root_only);
+  PopulateInstructionContainerItem(procedure, instruction_container);
 
   PopulateProcedurePreambleItem(procedure->GetPreamble(), *procedure_item->GetPreambleItem());
 
   auto registry = CreateRegistry(*procedure);
 
-  auto workspace_item = procedure_item->GetWorkspace();
-  m_index_to_variable =
-      PopulateWorkspaceItem(procedure->GetWorkspace(), registry.get(), workspace_item);
+  PopulateWorkspaceItem(procedure->GetWorkspace(), registry.get(), procedure_item->GetWorkspace());
 }
-
-//! Populates empty InstructionContainerItem with the content from sequencer Procedure.
 
 void ProcedureItemBuilder::PopulateInstructionContainerItem(const procedure_t *procedure,
-                                                            InstructionContainerItem *container,
-                                                            bool root_only)
+                                                            InstructionContainerItem *container)
 {
-  if (container->GetTotalItemCount() > 0)
+  for (auto instruction : procedure->GetTopInstructions())
   {
-    throw std::runtime_error("Error: InstructionContainerItem is not empty.");
+    auto instruction_tree = CreateInstructionItemTree(*instruction);
+    container->InsertItem(std::move(instruction_tree.root), mvvm::TagIndex::Append());
   }
-
-  if (root_only)
-  {
-    if (auto instruction = procedure->RootInstruction(); instruction)
-    {
-      auto next_parent_item = ProcessInstruction(instruction, container);
-      if (next_parent_item)
-      {
-        Iterate(instruction, next_parent_item);
-      }
-    }
-  }
-  else
-  {
-    for (auto instruction : procedure->GetTopInstructions())
-    {
-      auto next_parent_item = ProcessInstruction(instruction, container);
-      if (next_parent_item)
-      {
-        Iterate(instruction, next_parent_item);
-      }
-    }
-  }
-}
-
-
-mvvm::SessionItem *ProcedureItemBuilder::ProcessInstruction(const instruction_t *instruction,
-                                                            mvvm::SessionItem *parent)
-{
-  auto item = sequencergui::CreateInstructionItem(instruction->GetType());
-
-  Save(instruction, item.get());
-
-  item->InitFromDomain(instruction);
-  auto next_parent = parent->InsertItem(std::move(item), mvvm::TagIndex::Append());
-  return next_parent;
-}
-
-void ProcedureItemBuilder::Iterate(const instruction_t *instruction, mvvm::SessionItem *parent)
-{
-  for (auto &instruction : instruction->ChildInstructions())
-  {
-    auto next_parent_item = ProcessInstruction(instruction, parent);
-    if (next_parent_item)
-    {
-      Iterate(instruction, next_parent_item);
-    }
-  }
-}
-
-void ProcedureItemBuilder::Save(const instruction_t *instruction, InstructionItem *item)
-{
-  auto it = m_to_instruction_item.find(instruction);
-  if (it != m_to_instruction_item.end())
-  {
-    throw std::runtime_error("Error in GUIObjectBuilder: domain instruction already present");
-  }
-  m_to_instruction_item.insert({instruction, item});
 }
 
 }  // namespace sequencergui

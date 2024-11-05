@@ -45,36 +45,36 @@ std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
   result->SetDisplayName(job_info.GetProcedureName());
 
   auto instruction_tree = CreateInstructionItemTree(*job_info.GetRootInstructionInfo());
-  m_instruction_indexes = std::move(instruction_tree.indexes);
+  m_index_to_instruction = std::move(instruction_tree.indexes);
   result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
                                                 mvvm::TagIndex::Append());
 
-  m_variable_indexes = PopulateWorkspaceItem(job_info.GetWorkspaceInfo(), result->GetWorkspace());
+  m_index_to_variable = PopulateWorkspaceItem(job_info.GetWorkspaceInfo(), result->GetWorkspace());
 
   return result;
 }
 
 InstructionItem *ProcedureItemJobInfoBuilder::GetInstruction(size_t index) const
 {
-  return index < m_instruction_indexes.size()
-             ? const_cast<InstructionItem *>(m_instruction_indexes[index])
+  return index < m_index_to_instruction.size()
+             ? const_cast<InstructionItem *>(m_index_to_instruction[index])
              : nullptr;
 }
 
 size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem *item) const
 {
-  auto pos = std::find(m_instruction_indexes.begin(), m_instruction_indexes.end(), item);
-  if (pos == m_instruction_indexes.end())
+  auto pos = std::find(m_index_to_instruction.begin(), m_index_to_instruction.end(), item);
+  if (pos == m_index_to_instruction.end())
   {
     throw RuntimeException("Can't find automation index for given item");
   }
 
-  return std::distance(m_instruction_indexes.begin(), pos);
+  return std::distance(m_index_to_instruction.begin(), pos);
 }
 
 VariableItem *ProcedureItemJobInfoBuilder::GetVariable(size_t index) const
 {
-  return index < m_variable_indexes.size() ? const_cast<VariableItem *>(m_variable_indexes[index])
+  return index < m_index_to_variable.size() ? const_cast<VariableItem *>(m_index_to_variable[index])
                                            : nullptr;
 }
 

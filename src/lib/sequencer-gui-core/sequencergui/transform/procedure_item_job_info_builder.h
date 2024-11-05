@@ -57,8 +57,8 @@ public:
   VariableItem* GetVariable(size_t index) const override;
 
 private:
-  std::vector<const InstructionItem*> m_instruction_indexes;
-  std::vector<const VariableItem*> m_variable_indexes;
+  std::vector<const InstructionItem*> m_index_to_instruction;
+  std::vector<const VariableItem*> m_index_to_variable;
 };
 
 }  // namespace sequencergui

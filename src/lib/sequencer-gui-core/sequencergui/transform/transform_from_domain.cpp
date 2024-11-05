@@ -116,7 +116,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only)
 {
   ProcedureItemBuilder builder;
-  return builder.CreateProcedureItem(procedure, root_only);
+  return builder.CreateProcedureItem(procedure);
 }
 
 void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item)
