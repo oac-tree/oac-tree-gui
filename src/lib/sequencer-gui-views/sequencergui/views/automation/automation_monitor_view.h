@@ -34,7 +34,7 @@ class JobListWidget;
 class OperationRealTimePanel;
 class SequencerModel;
 class JobModel;
-class AutomationJobHandler;
+class AbstractJobHandler;
 class OperationWorkspacePanel;
 class JobItem;
 
@@ -72,7 +72,7 @@ private:
   SequencerModel* m_sequencer_model{nullptr};
   JobModel* m_job_model{nullptr};
   std::unique_ptr<AutomationClient> m_automation_client;
-  std::vector<std::unique_ptr<AutomationJobHandler>> m_job_handlers;
+  std::unique_ptr<AbstractJobHandler> m_job_handler;
 };
 
 }  // namespace sequencergui

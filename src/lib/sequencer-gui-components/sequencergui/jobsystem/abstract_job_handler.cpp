@@ -53,12 +53,6 @@ AbstractJobHandler::AbstractJobHandler(JobItem *job_item)
   {
     throw RuntimeException("JobItem is not initialised");
   }
-
-  if (!m_job_item->GetProcedure())
-  {
-    throw RuntimeException("Procedure doesn't exist");
-  }
-
 }
 
 AbstractJobHandler::~AbstractJobHandler() = default;

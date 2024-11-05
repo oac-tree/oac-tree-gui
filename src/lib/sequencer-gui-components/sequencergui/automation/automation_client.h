@@ -23,10 +23,17 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <memory>
-#include <string>
+
+namespace sup::auto_server
+{
+class IJobManager;
+}
 
 namespace sequencergui
 {
+
+class AbstractJobHandler;
+class JobItem;
 
 /**
  * @brief The AutomationClient class is a simple wrapper around automation server machinery to hide
@@ -38,32 +45,16 @@ public:
   explicit AutomationClient(const std::string& server_name);
   ~AutomationClient();
 
-  void Run(size_t job_index);
-
-  void Pause(size_t job_index);
-
-  void Stop(size_t job_index);
-
-  void Step(size_t job_index);
-
   /**
    * @brief Returns number of server jobs.
    */
   size_t GetJobCount() const;
 
-  /**
-   * @brief Returns full job information for given job index.
-   */
-  sup::sequencer::JobInfo GetJobInfo(size_t job_index) const;
-
-  /**
-   * @brief Connect job observer with remote job with the given index.
-   */
-  void Connect(size_t job_index, sup::sequencer::IJobInfoIO *observer);
+  std::unique_ptr<AbstractJobHandler> CreateJobHandler(sequencergui::JobItem* job_item,
+                                                       size_t job_index);
 
 private:
-  struct AutomationManagerImpl;
-  std::unique_ptr<AutomationManagerImpl> p_impl;
+  std::unique_ptr<sup::auto_server::IJobManager> m_automation_job_manager;
 };
 
 }  // namespace sequencergui

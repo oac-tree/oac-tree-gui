@@ -22,6 +22,7 @@
 #include "domain_event_dispatcher_context.h"
 #include "local_domain_runner.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -39,6 +40,11 @@ namespace sequencergui
 LocalJobHandler::LocalJobHandler(JobItem *job_item, const UserContext &user_context)
     : AbstractJobHandler(job_item)
 {
+  if (!GetJobItem()->GetProcedure())
+  {
+    throw RuntimeException("Procedure doesn't exist");
+  }
+
   SetupPropertyListener();
 
   auto domain_procedure = DomainProcedureBuilder::CreateProcedure(*GetJobItem()->GetProcedure());

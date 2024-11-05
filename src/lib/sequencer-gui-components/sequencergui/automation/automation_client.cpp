@@ -19,75 +19,34 @@
 
 #include "automation_client.h"
 
-#include <sup/auto-server/client_job.h>
+#include <sequencergui/jobsystem/remote_job_handler.h>
+#include <sequencergui/jobsystem/user_context.h>
+
 #include <sup/auto-server/epics_client_utils.h>
-#include <sup/protocol/protocol_rpc_client.h>
 
 #include <iostream>
 
 namespace sequencergui
 {
 
-struct AutomationClient::AutomationManagerImpl
-{
-  std::unique_ptr<sup::auto_server::IJobManager> automation_client;
-  std::unique_ptr<sup::sequencer::IJob> client_job;
-
-  explicit AutomationManagerImpl(const std::string& server_name)
-      : automation_client(sup::auto_server::utils::CreateEPICSJobManager(server_name))
-  {
-  }
-};
-
 AutomationClient::AutomationClient(const std::string& server_name)
-    : p_impl(std::make_unique<AutomationManagerImpl>(server_name))
+    : m_automation_job_manager(sup::auto_server::utils::CreateEPICSJobManager(server_name))
 {
-  std::cout << "Number of jobs " << p_impl->automation_client->GetNumberOfJobs() << "\n";
-}
-
-void AutomationClient::Run(size_t job_index)
-{
-  (void)job_index;
-  p_impl->client_job->Start();
-}
-
-void AutomationClient::Pause(size_t job_index)
-{
-  (void)job_index;
-  p_impl->client_job->Pause();
-}
-
-void AutomationClient::Stop(size_t job_index)
-{
-  (void)job_index;
-  p_impl->client_job->Halt();
-}
-
-void AutomationClient::Step(size_t job_index)
-{
-  (void)job_index;
-  p_impl->client_job->Step();
+  std::cout << "Number of jobs " << m_automation_job_manager->GetNumberOfJobs() << "\n";
 }
 
 AutomationClient::~AutomationClient() = default;
 
 size_t AutomationClient::GetJobCount() const
 {
-  return p_impl->automation_client->GetNumberOfJobs();
+  return m_automation_job_manager->GetNumberOfJobs();
 }
 
-sup::sequencer::JobInfo AutomationClient::GetJobInfo(size_t job_index) const
+std::unique_ptr<AbstractJobHandler> AutomationClient::CreateJobHandler(JobItem* job_item,
+                                                                       size_t job_index)
 {
-  (void)job_index;
-  return p_impl->client_job->GetInfo();
-}
-
-void AutomationClient::Connect(size_t job_index, sup::sequencer::IJobInfoIO* observer)
-{
-  (void)job_index;
-
-  p_impl->client_job = sup::auto_server::CreateClientJob(
-      *p_impl->automation_client, 0, sup::auto_server::utils::CreateEPICSIOClient, *observer);
+  return std::make_unique<RemoteJobHandler>(job_item, *m_automation_job_manager, job_index,
+                                            UserContext{});
 }
 
 }  // namespace sequencergui

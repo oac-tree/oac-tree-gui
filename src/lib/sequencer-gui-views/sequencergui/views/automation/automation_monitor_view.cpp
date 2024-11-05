@@ -24,6 +24,7 @@
 #include <sequencergui/automation/automation_client.h>
 #include <sequencergui/automation/automation_job_handler.h>
 #include <sequencergui/automation/remote_job_observer.h>
+#include <sequencergui/jobsystem/abstract_job_handler.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
@@ -91,22 +92,22 @@ void AutomationMonitorView::SetModels(SequencerModel *sequencer_model, JobModel 
 
 void AutomationMonitorView::OnRunRequest()
 {
-  m_automation_client->Run(0);
+  m_job_handler->OnStartRequest();
 }
 
 void AutomationMonitorView::OnPauseRequest()
 {
-  m_automation_client->Pause(0);
+  m_job_handler->OnPauseRequest();
 }
 
 void AutomationMonitorView::OnStepRequest()
 {
-  m_automation_client->Step(0);
+  m_job_handler->OnMakeStepRequest();
 }
 
 void AutomationMonitorView::OnStopRequest()
 {
-  m_automation_client->Stop(0);
+  m_job_handler->OnStopRequest();
 }
 
 void AutomationMonitorView::OnJobSelected(JobItem *item)
@@ -135,7 +136,6 @@ void AutomationMonitorView::OnConnect(const QString &server_name)
 
   m_automation_client.reset();
   m_job_model->Clear();
-  m_job_handlers.clear();
 
   try
   {
@@ -147,16 +147,10 @@ void AutomationMonitorView::OnConnect(const QString &server_name)
     return;
   }
 
-  for (size_t job_index = 0; job_index < m_automation_client->GetJobCount(); ++job_index)
+  if (m_automation_client->GetJobCount() > 0)
   {
-    qDebug() << "RemoteMonitorView::OnConnect() Processing job_index" << job_index;
-
     auto job_item = m_job_model->InsertItem<JobItem>();
-    auto job_handler = std::make_unique<AutomationJobHandler>(
-        job_item, m_automation_client->GetJobInfo(job_index));
-    m_automation_client->Connect(0, job_handler->GetJobObserver());
-
-    m_job_handlers.push_back(std::move(job_handler));
+    m_job_handler = m_automation_client->CreateJobHandler(job_item, 0);
   }
 }
 
