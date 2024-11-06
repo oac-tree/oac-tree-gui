@@ -32,7 +32,10 @@
 namespace sequencergui
 {
 
-VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type) {}
+VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
+{
+  SetFlag(mvvm::Appearance::kEditableDisplayName, true);
+}
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {

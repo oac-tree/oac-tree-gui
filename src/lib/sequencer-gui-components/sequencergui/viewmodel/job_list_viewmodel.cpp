@@ -36,7 +36,7 @@ namespace sequencergui
 class JobRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
-  int GetSize() const override { return 2;}
+  int GetSize() const override { return 2; }
 
   QStringList GetHorizontalHeaderLabels() const override
   {
@@ -48,7 +48,7 @@ private:
   std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override
   {
     std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-    result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(item));
+    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*item)));
     return result;
   }

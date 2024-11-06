@@ -38,6 +38,8 @@ JobItem::JobItem() : CompoundItem(Type)
       .SetDisplayName("Tick timeout");
 
   RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::Type}), /*as_default*/ true);
+
+  SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
 
 std::unique_ptr<mvvm::SessionItem> JobItem::Clone(bool make_unique_id) const

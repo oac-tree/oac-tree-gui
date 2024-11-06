@@ -122,7 +122,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(
 std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(sequencergui::VariableItem &item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-  result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(&item));
+  result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
   result.emplace_back(mvvm::CreateLabelViewItem(&item));
   result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetType()));
 
