@@ -23,13 +23,13 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/viewmodel/procedure_viewmodel.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/viewmodel/top_items_viewmodel.h>
 
 #include <QClipboard>
 #include <QGuiApplication>
@@ -44,7 +44,7 @@ namespace sequencergui
 ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     : QWidget(parent)
     , m_list_view(new QListView)
-    , m_component_provider(mvvm::CreateProvider<ProcedureViewModel>(m_list_view))
+    , m_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
     , m_actions(new ProcedureListActions(this))
     , m_action_handler(new ProcedureListActionHandler(CreateContext(), this))
 {
