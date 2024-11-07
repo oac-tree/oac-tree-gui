@@ -1,0 +1,89 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2024 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "sequencergui/jobsystem/i_automation_client.h"
+#include "sequencergui/jobsystem/remote_connection_service.h"
+
+#include <gtest/gtest.h>
+
+namespace sequencergui
+{
+
+/**
+ * @brief Tests for RemoteConnectionServiceTest class.
+ */
+class RemoteConnectionServiceTest : public ::testing::Test
+{
+public:
+  class TestClient : public IAutomationClient
+  {
+  public:
+    explicit TestClient(const std::string& name) : m_name(name) {}
+
+    std::string GetServerName() const override { return m_name; };
+
+    std::string m_name;
+  };
+
+  /**
+   * @brief Returns lamba to create test clients.
+   */
+  static RemoteConnectionService::create_client_t CreateFunc()
+  {
+    auto result = [](const std::string& name) { return std::make_unique<TestClient>(name); };
+    return result;
+  }
+};
+
+TEST_F(RemoteConnectionServiceTest, Connect)
+{
+  RemoteConnectionService service(CreateFunc());
+  EXPECT_TRUE(service.GetServerNames().empty());
+  EXPECT_FALSE(service.HasClient("abc"));
+
+  service.Connect("abc");
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
+  EXPECT_TRUE(service.HasClient("abc"));
+
+  // same name, do nothing
+  service.Connect("abc");
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
+
+  service.Connect("def");
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc", "def"}));
+}
+
+TEST_F(RemoteConnectionServiceTest, Disconnect)
+{
+  RemoteConnectionService service(CreateFunc());
+  EXPECT_TRUE(service.GetServerNames().empty());
+  EXPECT_FALSE(service.HasClient("abc"));
+
+  service.Connect("a1");
+  service.Connect("a2");
+  service.Connect("a3");
+
+  service.Disconnect("def");
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a2", "a3"}));
+
+  service.Disconnect("a2");
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a3"}));
+}
+
+}  // namespace sequencergui

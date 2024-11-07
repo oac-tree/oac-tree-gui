@@ -22,6 +22,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace sequencergui
@@ -30,10 +31,10 @@ namespace sequencergui
 class IAutomationClient;
 
 /**
- * @brief The RemoteConnectionService class holds collection of clients, connected with remote
+ * @brief The RemoteConnectionService class holds collection of clients connected with remote
  * servers.
  *
- * One client is connected with one server.
+ * One client is connected with one server, there can't be two clients connected with single server.
  */
 class RemoteConnectionService
 {
@@ -49,6 +50,13 @@ public:
   void Connect(const std::string& server_name);
 
   /**
+   * @brief Disconnect the server by ermoving underlying client.
+   *
+   * If connection was already established, does nothing.
+   */
+  void Disconnect(const std::string& server_name);
+
+  /**
    * @brief Checks if client exists and server is responding.
    */
   bool IsConnected(const std::string& server_name) const;
@@ -57,6 +65,11 @@ public:
    * @brief Checks if client exists for server with the given name.
    */
   bool HasClient(const std::string& server_name) const;
+
+  /**
+   * @brief Returns list of already connected servers.
+   */
+  std::vector<std::string> GetServerNames() const;
 
 private:
   //!< collection of remote clients, one client per server name
