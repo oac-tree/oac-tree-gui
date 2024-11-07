@@ -35,7 +35,7 @@ OperationJobActions::OperationJobActions(QObject *parent)
     , m_submit_action(new sup::gui::ActionMenu(this))
     , m_regenerate_action(new QAction(this))
     , m_remove_action(new QAction(this))
-    , m_remove_and_cleanup_action(new QAction(this))
+    , m_connect_to_remote_action(new QAction(this))
     , m_submit_procedure_menu(CreateSubmitProcedureMenu())
 {
   m_import_action->setText("New");
@@ -61,6 +61,13 @@ OperationJobActions::OperationJobActions(QObject *parent)
   m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   connect(m_remove_action, &QAction::triggered, this, &OperationJobActions::RemoveJobRequest);
   m_action_map.Add(ActionKey::kRemoveJob, m_remove_action);
+
+  m_connect_to_remote_action->setText("Connect");
+  m_connect_to_remote_action->setToolTip("Connect to remote server and import jobs");
+  m_connect_to_remote_action->setIcon(sup::gui::utils::GetIcon("lan-pending.svg"));
+  connect(m_connect_to_remote_action, &QAction::triggered, this,
+          &OperationJobActions::ConnectRequest);
+  m_action_map.Add(ActionKey::kConnect, m_connect_to_remote_action);
 }
 
 QList<QAction *> OperationJobActions::GetActions(const std::vector<ActionKey> &action_keys) const

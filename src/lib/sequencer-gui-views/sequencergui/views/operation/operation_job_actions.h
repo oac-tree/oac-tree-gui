@@ -56,6 +56,7 @@ public:
     kSubmitJob,
     kRegenerateJob,
     kRemoveJob,
+    kConnect,
     kTotalCount
   };
 
@@ -76,6 +77,7 @@ signals:
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();
+  void ConnectRequest();
 
 private:
   std::unique_ptr<QMenu> CreateSubmitProcedureMenu();
@@ -87,7 +89,7 @@ private:
   sup::gui::ActionMenu* m_submit_action{nullptr};
   QAction* m_regenerate_action{nullptr};
   QAction* m_remove_action{nullptr};
-  QAction* m_remove_and_cleanup_action{nullptr};
+  QAction* m_connect_to_remote_action{nullptr};
 
   callback_t m_available_procedures;
 

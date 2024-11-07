@@ -85,8 +85,8 @@ QList<QAction *> OperationJobPanel::GetSequencerMonitorViewActions()
 QList<QAction *> OperationJobPanel::GetOperationMonitorViewActions()
 {
   using ActionKey = OperationJobActions::ActionKey;
-  return m_job_actions->GetActions(
-      {ActionKey::kImportProcedure, ActionKey::kRegenerateJob, ActionKey::kRemoveJob});
+  return m_job_actions->GetActions({ActionKey::kImportProcedure, ActionKey::kConnect,
+                                    ActionKey::kRegenerateJob, ActionKey::kRemoveJob});
 }
 
 void OperationJobPanel::SetupConnections()
