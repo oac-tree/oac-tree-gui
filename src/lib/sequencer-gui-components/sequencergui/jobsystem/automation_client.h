@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_AUTOMATION_AUTOMATION_CLIENT_H_
-#define SEQUENCERGUI_AUTOMATION_AUTOMATION_CLIENT_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
+#define SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
@@ -59,4 +59,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_AUTOMATION_AUTOMATION_CLIENT_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_

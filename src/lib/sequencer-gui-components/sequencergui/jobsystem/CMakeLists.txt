@@ -17,6 +17,7 @@ target_sources(${library_name} PRIVATE
   domain_job_observer.h
   domain_job_service.cpp
   domain_job_service.h
+  i_automation_client.h
   job_log.cpp
   job_log.h
   job_log_severity.cpp
@@ -35,6 +36,8 @@ target_sources(${library_name} PRIVATE
   remote_domain_runner.h
   remote_job_handler.cpp
   remote_job_handler.h
+  remote_connection_service.cpp
+  remote_connection_service.h
   request_handler.h
   request_handler_queue.h
   request_types.cpp
