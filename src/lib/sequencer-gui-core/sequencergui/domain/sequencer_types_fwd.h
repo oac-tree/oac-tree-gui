@@ -30,7 +30,6 @@ class Instruction;
 class Procedure;
 class ProcedurePreamble;
 class Runner;
-class UserInterface;
 class Variable;
 class Workspace;
 
@@ -47,7 +46,6 @@ using instruction_t = sup::sequencer::Instruction;
 using preamble_t = sup::sequencer::ProcedurePreamble;
 using procedure_t = sup::sequencer::Procedure;
 using runner_t = sup::sequencer::Runner;
-using userinterface_t = sup::sequencer::UserInterface;
 using variable_t = sup::sequencer::Variable;
 using workspace_t = sup::sequencer::Workspace;
 
