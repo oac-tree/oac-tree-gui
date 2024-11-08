@@ -17,27 +17,27 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_LOCAL_DOMAIN_RUNNER_H_
-#define SEQUENCERGUI_JOBSYSTEM_LOCAL_DOMAIN_RUNNER_H_
+#ifndef SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
+#define SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
 
-#include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/jobsystem/abstract_domain_runner.h>
+#include <QDialog>
 
 namespace sequencergui
 {
 
 /**
- * @brief The LocalDomainRunner class runs locally the sequencer domain procedure.
- *
- * Sequencer's IJob has to be created outside and moved here via SetJob method.
+ * @brief The RemoteConnectionDialog class is a modal dialog to connect with remote server and
+ * import jobs.
  */
-class LocalDomainRunner : public AbstractDomainRunner
+class RemoteConnectionDialog : public QDialog
 {
+  Q_OBJECT
+
 public:
-  LocalDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context,
-                    std::unique_ptr<procedure_t> procedure);
+  explicit RemoteConnectionDialog(QWidget* parent = nullptr);
+  ~RemoteConnectionDialog() override;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_LOCAL_DOMAIN_RUNNER_H_
+#endif  // SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_

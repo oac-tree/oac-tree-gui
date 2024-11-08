@@ -23,4 +23,6 @@ target_sources(${library_name} PRIVATE
   procedure_action_handler.h
   realtime_instruction_tree_widget.cpp
   realtime_instruction_tree_widget.h
+  remote_connection_dialog.cpp
+  remote_connection_dialog.h
 )
