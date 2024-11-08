@@ -19,15 +19,20 @@
 
 #include "remote_connection_dialog.h"
 
+#include <sup/gui/widgets/dialog_helper.h>
+
+#include <QVBoxLayout>
+
 namespace sequencergui
 {
 
 RemoteConnectionDialog::RemoteConnectionDialog(QWidget *parent) : QDialog(parent)
 {
-
+  auto layout = new QVBoxLayout(this);
+  layout->addWidget(new QWidget);
+  layout->addLayout(sup::gui::CreateButtonLayout(this).release());
 }
 
 RemoteConnectionDialog::~RemoteConnectionDialog() = default;
 
-
-}
+}  // namespace sequencergui

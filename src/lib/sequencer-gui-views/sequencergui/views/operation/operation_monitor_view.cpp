@@ -35,6 +35,7 @@
 #include <sequencergui/views/editors/user_input_dialogs.h>
 #include <sequencergui/views/operation/message_panel.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
+#include <sequencergui/views/operation/remote_connection_dialog.h>
 #include <sequencergui/widgets/message_handler_factory.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
@@ -199,7 +200,7 @@ void OperationMonitorView::SetupConnections()
           &OperationActionHandler::OnSetTickTimeoutRequest);
   m_action_handler->OnSetTickTimeoutRequest(m_realtime_panel->GetCurrentTickTimeout());
 
-  // instruction next leave request from JobManager to MonitorRealTimeWidget
+  // instruction next leave request from JobManager to OperationRealTimePanel
   connect(m_job_manager, &JobManager::NextLeavesChanged, m_realtime_panel,
           &OperationRealTimePanel::SetSelectedInstructions);
 
@@ -213,6 +214,10 @@ void OperationMonitorView::SetupConnections()
   // import request
   connect(m_job_panel, &OperationJobPanel::ImportJobRequest, this,
           [this]() { OnImportJobRequest(); });
+
+  // remote server connect request
+  connect(m_job_panel, &OperationJobPanel::ConnectRequest, this,
+          [this]() { OnConnectRequest(); });
 
   // job removal request
   auto on_remove_job_request = [this]()
@@ -283,6 +288,12 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
   m_job_manager->SetCurrentJob(item);
   m_realtime_panel->SetCurrentJob(item);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+}
+
+void OperationMonitorView::OnConnectRequest()
+{
+  RemoteConnectionDialog dialog;
+  dialog.exec();
 }
 
 QWidget *OperationMonitorView::CreateLeftPanel()

@@ -22,13 +22,13 @@
 #include "settings_editor.h"
 #include "settings_helper.h"
 
-#include <mvvm/widgets/widget_utils.h>
-#include <mvvm/model/item_utils.h>
+#include <sup/gui/widgets/dialog_helper.h>
 
-#include <QDialogButtonBox>
+#include <mvvm/model/item_utils.h>
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QKeyEvent>
 #include <QLabel>
-#include <QPushButton>
 #include <QSettings>
 #include <QVBoxLayout>
 
@@ -40,29 +40,6 @@ namespace
 
 const QString kGroupName = "SettingsEditorDialog";
 const QString kWindowSizeSettingName = kGroupName + "/" + "size";
-
-/**
- * @brief Creates layout with OK/Cancel buttons.
- */
-std::unique_ptr<QBoxLayout> CreateButtonLayout(QDialog* dialog)
-{
-  auto result = std::make_unique<QVBoxLayout>();
-
-  auto button_box = new QDialogButtonBox;
-  auto button = button_box->addButton("Save settings", QDialogButtonBox::AcceptRole);
-  button->setAutoDefault(false);
-  button->setDefault(false);
-  button = button_box->addButton("Cancel", QDialogButtonBox::RejectRole);
-  button->setAutoDefault(false);
-  button->setDefault(false);
-  QDialogButtonBox::connect(button_box, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
-  QDialogButtonBox::connect(button_box, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
-
-  auto gap = mvvm::utils::UnitSize(0.5);
-  result->setContentsMargins(gap, gap, gap, gap);
-  result->addWidget(button_box);
-  return result;
-}
 
 }  // namespace
 
@@ -79,7 +56,7 @@ SettingsEditorDialog::SettingsEditorDialog(QWidget* parent)
   layout->addWidget(m_settings_editor);
   layout->addWidget(m_label);
   // layout->addSpacing(mvvm::utils::UnitSize(0.5));
-  layout->addLayout(CreateButtonLayout(this).release());
+  layout->addLayout(sup::gui::CreateButtonLayout(this, "Save settings", "Cancel").release());
 
   ReadSettings();
 }
@@ -94,7 +71,7 @@ void SettingsEditorDialog::SetInitialValues(const SettingsModel& model)
   m_settings_editor->SetInitialValues(model);
 }
 
-const SettingsModel *SettingsEditorDialog::GetResult() const
+const SettingsModel* SettingsEditorDialog::GetResult() const
 {
   return m_settings_editor->GetResult();
 }

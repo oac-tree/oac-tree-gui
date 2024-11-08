@@ -75,6 +75,7 @@ private:
   void SetupConnections();
   void SetupWidgetActions();
   void OnJobSelected(sequencergui::JobItem* item);
+  void OnConnectRequest();
 
   OperationPresentationMode m_presentation_mode;
 
