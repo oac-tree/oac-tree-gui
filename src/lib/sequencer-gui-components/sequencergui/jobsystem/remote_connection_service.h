@@ -50,7 +50,7 @@ public:
   void Connect(const std::string& server_name);
 
   /**
-   * @brief Disconnect the server by ermoving underlying client.
+   * @brief Disconnect the server by removing underlying client.
    *
    * If connection was already established, does nothing.
    */

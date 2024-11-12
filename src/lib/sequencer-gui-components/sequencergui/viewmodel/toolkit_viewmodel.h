@@ -55,8 +55,6 @@ public:
    * This will clear the model from the previous content.
    */
   void PopulateModel(const std::vector<ObjectGroupInfo>& objects_group_info);
-
-private:
 };
 
 }  // namespace sequencergui

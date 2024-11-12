@@ -21,6 +21,13 @@
 #define SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
 
 #include <QDialog>
+#include <memory>
+
+class QListView;
+class QLineEdit;
+class QPushButton;
+class QStandardItemModel;
+class QHBoxLayout;
 
 namespace sequencergui
 {
@@ -36,6 +43,30 @@ class RemoteConnectionDialog : public QDialog
 public:
   explicit RemoteConnectionDialog(QWidget* parent = nullptr);
   ~RemoteConnectionDialog() override;
+
+protected:
+  void keyPressEvent(QKeyEvent* event) override;
+
+private:
+  /**
+   * @brief Creates layout with server name field and connect button.
+   */
+  std::unique_ptr<QHBoxLayout> CreateConnectLayout();
+
+  /**
+   * @brief Loads dialog persistence widget settings from disk.
+   */
+  void ReadSettings();
+
+  /**
+   * @brief Writes persistence widget settings on disk.
+   */
+  void WriteSettings();
+
+  QLineEdit* m_server_name_line_edit{nullptr};
+  QPushButton* m_connect_button{nullptr};
+  QListView* m_job_list_view{nullptr};
+  QStandardItemModel* m_job_model{nullptr};
 };
 
 }  // namespace sequencergui

@@ -78,8 +78,8 @@ const SettingsModel* SettingsEditorDialog::GetResult() const
 
 void SettingsEditorDialog::keyPressEvent(QKeyEvent* event)
 {
-  // Prevent dialog from closing on enter-key-event. This is necessary since some of underlying
-  // widgets might have own ideas and might forward this key event back.
+  // Prevent dialog from closing on press-enter-key event. This seems to be the only reliable way
+  // to avoid forwarding such events from QLineEdit to "OK" QPushButton.
 
   if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
   {
