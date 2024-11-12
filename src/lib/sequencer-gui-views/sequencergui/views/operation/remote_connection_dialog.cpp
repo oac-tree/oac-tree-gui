@@ -20,6 +20,7 @@
 #include "remote_connection_dialog.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/i_automation_client.h>
 #include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sup/gui/widgets/dialog_helper.h>
 
@@ -44,6 +45,17 @@ namespace
 
 const QString kGroupName = "RemoteConnectionDialog";
 const QString kWindowSizeSettingName = kGroupName + "/" + "size";
+
+/**
+ * @brief Creates item for job list model.
+ */
+std::unique_ptr<QStandardItem> CreateItem(const std::string &name)
+{
+  auto result = std::make_unique<QStandardItem>(QString::fromStdString(name));
+  result->setEditable(false);
+  result->setToolTip(QString::fromStdString(name));
+  return result;
+}
 
 }  // namespace
 
@@ -112,11 +124,12 @@ void RemoteConnectionDialog::OnConnectRequest()
   setCursor(Qt::WaitCursor);
   QApplication::processEvents();
 
+  // TODO establish connection in a thread with possibility to cancel hanging
   const auto server_name = m_server_name_line_edit->text().toStdString();
   if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
   {
+    PopulateJobInfoModel(server_name);
     m_connection_context.server_name = server_name;
-
   }
 
   unsetCursor();
@@ -142,6 +155,19 @@ void RemoteConnectionDialog::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
+}
+
+void RemoteConnectionDialog::PopulateJobInfoModel(const std::string &server_name)
+{
+  m_job_info_model->clear();
+
+  auto parent_item = m_job_info_model->invisibleRootItem();
+  auto &client = m_connection_service->GetAutomationClient(server_name);
+  for (size_t job_index = 0; job_index < client.GetJobCount(); ++job_index)
+  {
+    auto procedure_name = client.GetProcedureName(job_index);
+    parent_item->appendRow(CreateItem(procedure_name).release());
+  }
 }
 
 }  // namespace sequencergui

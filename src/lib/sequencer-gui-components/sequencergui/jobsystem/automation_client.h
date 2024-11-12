@@ -51,6 +51,8 @@ public:
 
   size_t GetJobCount() const override;
 
+  std::string GetProcedureName(size_t job_index) const override;
+
   std::unique_ptr<AbstractJobHandler> CreateJobHandler(sequencergui::JobItem* job_item,
                                                        size_t job_index);
 

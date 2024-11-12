@@ -27,8 +27,6 @@
 #include <sup/auto-server/exceptions.h>
 #include <sup/sequencer/job_info.h>
 
-#include <iostream>
-
 namespace sequencergui
 {
 
@@ -40,10 +38,6 @@ AutomationClient::AutomationClient(const std::string& server_name)
   {
     // current way to check if connection was established
     [[maybe_unused]] auto job_count = m_automation_job_manager->GetNumberOfJobs();
-
-    std::cout << "AutomationClient " << job_count << " "
-              << m_automation_job_manager->GetServerPrefix() << " "
-              << m_automation_job_manager->GetJobInfo(0).GetProcedureName() << "\n";
   }
   catch (const sup::auto_server::InvalidOperationException& ex)
   {
@@ -62,6 +56,11 @@ std::string AutomationClient::GetServerName() const
 size_t AutomationClient::GetJobCount() const
 {
   return m_automation_job_manager->GetNumberOfJobs();
+}
+
+std::string AutomationClient::GetProcedureName(size_t job_index) const
+{
+  return m_automation_job_manager->GetJobInfo(job_index).GetProcedureName();
 }
 
 std::unique_ptr<AbstractJobHandler> AutomationClient::CreateJobHandler(JobItem* job_item,

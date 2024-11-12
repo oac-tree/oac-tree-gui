@@ -78,6 +78,11 @@ private:
    */
   void WriteSettings();
 
+  /**
+   * @brief Populates the model with information about remote jobs.
+   */
+  void PopulateJobInfoModel(const std::string &server_name);
+
   QLineEdit* m_server_name_line_edit{nullptr};
   QPushButton* m_connect_button{nullptr};
   QListView* m_job_list_view{nullptr};
