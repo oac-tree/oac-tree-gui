@@ -25,6 +25,9 @@
 
 #include <sup/auto-server/epics_config_utils.h>
 #include <sup/auto-server/exceptions.h>
+#include <sup/sequencer/job_info.h>
+
+#include <iostream>
 
 namespace sequencergui
 {
@@ -37,6 +40,10 @@ AutomationClient::AutomationClient(const std::string& server_name)
   {
     // current way to check if connection was established
     [[maybe_unused]] auto job_count = m_automation_job_manager->GetNumberOfJobs();
+
+    std::cout << "AutomationClient " << job_count << " "
+              << m_automation_job_manager->GetServerPrefix() << " "
+              << m_automation_job_manager->GetJobInfo(0).GetProcedureName() << "\n";
   }
   catch (const sup::auto_server::InvalidOperationException& ex)
   {

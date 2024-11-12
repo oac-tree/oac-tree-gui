@@ -45,14 +45,11 @@ class AutomationClient : public IAutomationClient
 {
 public:
   explicit AutomationClient(const std::string& server_name);
-  ~AutomationClient();
+  ~AutomationClient() override;
 
   std::string GetServerName() const override;
 
-  /**
-   * @brief Returns number of server jobs.
-   */
-  size_t GetJobCount() const;
+  size_t GetJobCount() const override;
 
   std::unique_ptr<AbstractJobHandler> CreateJobHandler(sequencergui::JobItem* job_item,
                                                        size_t job_index);

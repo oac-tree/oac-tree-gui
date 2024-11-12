@@ -40,6 +40,8 @@ public:
 
     std::string GetServerName() const override { return m_name; };
 
+    size_t GetJobCount() const override { return 42; }
+
     std::string m_name;
   };
 
@@ -96,6 +98,20 @@ TEST_F(RemoteConnectionServiceTest, Disconnect)
 
   service.Disconnect("a2");
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a3"}));
+}
+
+TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
+{
+  auto client = std::make_unique<TestClient>("abc");
+  auto client_ptr = client.get();
+
+  auto factory_func = [&client](const std::string&) { return std::move(client); };
+
+  RemoteConnectionService service(factory_func);
+
+  EXPECT_TRUE(service.HasClient("abc"));
+  EXPECT_EQ(&service.GetAutomationClient("abc"), client_ptr);
+  EXPECT_THROW(service.GetAutomationClient("def"), RuntimeException);
 }
 
 }  // namespace sequencergui

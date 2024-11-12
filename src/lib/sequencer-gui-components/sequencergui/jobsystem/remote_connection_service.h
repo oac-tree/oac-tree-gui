@@ -45,9 +45,9 @@ public:
   /**
    * @brief Connect with the server using the given server name.
    *
-   * If connection was already established, does nothing.
+   * If connection was already established, does nothing. Connection remains.
    *
-   * @return True if connection was already existing, or was just successfully established.
+   * @return True if connected.
    */
   bool Connect(const std::string& server_name);
 
@@ -72,6 +72,11 @@ public:
    * @brief Returns list of already connected servers.
    */
   std::vector<std::string> GetServerNames() const;
+
+  /**
+   * @brief Returns the client connected with the remote server with the given name.
+   */
+  IAutomationClient& GetAutomationClient(const std::string& server_name);
 
 private:
   //!< collection of remote clients, one client per server name

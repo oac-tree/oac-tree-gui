@@ -25,15 +25,22 @@ namespace sequencergui
 /**
  * @brief The IAutomationClient class holds automation server connection information.
  *
- * It is used to create remote jobs.
- * Internally holds sup::sequencer::IJobManager.
+ * It is used to create remote jobs. Internally holds sup::sequencer::IJobManager.
  */
 class IAutomationClient
 {
 public:
   virtual ~IAutomationClient() = default;
 
+  /**
+   * @brief Returns the name of the connected server.
+   */
   virtual std::string GetServerName() const = 0;
+
+  /**
+   * @brief Returns number of server jobs.
+   */
+  virtual size_t GetJobCount() const = 0;
 };
 
 }  // namespace sequencergui

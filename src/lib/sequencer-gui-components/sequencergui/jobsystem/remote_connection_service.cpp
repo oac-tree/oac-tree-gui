@@ -87,4 +87,19 @@ std::vector<std::string> RemoteConnectionService::GetServerNames() const
   return result;
 }
 
+IAutomationClient &RemoteConnectionService::GetAutomationClient(const std::string &server_name)
+{
+  auto on_element = [&server_name](auto& element)
+  { return element->GetServerName() == server_name; };
+  auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
+
+  if ( pos == m_clients.end())
+  {
+    throw RuntimeException("No client for server ["+server_name+"]");
+  }
+
+  IAutomationClient* client = pos->get();
+  return *client;
+}
+
 }  // namespace sequencergui
