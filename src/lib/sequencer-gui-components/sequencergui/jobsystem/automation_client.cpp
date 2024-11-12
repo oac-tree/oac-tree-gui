@@ -30,9 +30,15 @@ namespace sequencergui
 {
 
 AutomationClient::AutomationClient(const std::string& server_name)
-    : m_automation_job_manager(sup::auto_server::utils::CreateEPICSJobManager(server_name))
+    : m_server_name(server_name)
+    , m_automation_job_manager(sup::auto_server::utils::CreateEPICSJobManager(server_name))
 {
   std::cout << "Number of jobs " << m_automation_job_manager->GetNumberOfJobs() << "\n";
+}
+
+std::string AutomationClient::GetServerName() const
+{
+  return m_server_name;
 }
 
 AutomationClient::~AutomationClient() = default;

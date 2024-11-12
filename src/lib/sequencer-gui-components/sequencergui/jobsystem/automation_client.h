@@ -22,6 +22,8 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
+#include <sequencergui/jobsystem/i_automation_client.h>
+
 #include <memory>
 
 namespace sup::auto_server
@@ -39,11 +41,13 @@ class JobItem;
  * @brief The AutomationClient class is a simple wrapper around automation server machinery to hide
  * its API.
  */
-class AutomationClient
+class AutomationClient : public IAutomationClient
 {
 public:
   explicit AutomationClient(const std::string& server_name);
   ~AutomationClient();
+
+  std::string GetServerName() const override;
 
   /**
    * @brief Returns number of server jobs.
@@ -54,6 +58,7 @@ public:
                                                        size_t job_index);
 
 private:
+  std::string m_server_name;
   std::unique_ptr<sup::auto_server::IJobManager> m_automation_job_manager;
 };
 
