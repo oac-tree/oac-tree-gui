@@ -29,7 +29,7 @@ namespace sequencergui
 {
 
 RemoteConnectionService::RemoteConnectionService(const create_client_t& create_connection)
-    : m_create_connection(create_connection)
+    : m_create_client(create_connection)
 {
   if (!create_connection)
   {
@@ -37,14 +37,25 @@ RemoteConnectionService::RemoteConnectionService(const create_client_t& create_c
   }
 }
 
-void RemoteConnectionService::Connect(const std::string& server_name)
+bool RemoteConnectionService::Connect(const std::string& server_name)
 {
   if (HasClient(server_name))
   {
-    return;
+    return true;
   }
 
-  m_clients.push_back(m_create_connection(server_name));
+  std::unique_ptr<IAutomationClient> client;
+  try
+  {
+    client = m_create_client(server_name);
+  }
+  catch (const RuntimeException&)
+  {
+    return false;
+  }
+
+  m_clients.push_back(std::move(client));
+  return true;
 }
 
 void RemoteConnectionService::Disconnect(const std::string& server_name)

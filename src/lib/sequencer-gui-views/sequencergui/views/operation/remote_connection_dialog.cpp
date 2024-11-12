@@ -25,6 +25,7 @@
 
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QApplication>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QKeyEvent>
@@ -52,7 +53,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(RemoteConnectionService *connecti
     , m_server_name_line_edit(new QLineEdit)
     , m_connect_button(new QPushButton("Connect"))
     , m_job_list_view(new QListView)
-    , m_job_model(new QStandardItemModel(this))
+    , m_job_info_model(new QStandardItemModel(this))
     , m_connection_service(connection_service)
 {
   if (!m_connection_service)
@@ -65,15 +66,19 @@ RemoteConnectionDialog::RemoteConnectionDialog(RemoteConnectionService *connecti
   auto layout = new QVBoxLayout(this);
   layout->addLayout(CreateConnectLayout().release());
   layout->addWidget(m_job_list_view);
-  layout->addLayout(sup::gui::CreateButtonLayout(this).release());
+  layout->addLayout(
+      sup::gui::CreateButtonLayout(this, "Attach to selected jobs", "Cancel").release());
 
   m_server_name_line_edit->setClearButtonEnabled(true);
   m_server_name_line_edit->setPlaceholderText("Server name");
   m_connect_button->setFixedWidth(mvvm::utils::UnitSize(12));
+
   m_job_list_view->setAlternatingRowColors(true);
+  m_job_list_view->setModel(m_job_info_model);
 
   connect(m_connect_button, &QPushButton::clicked, this, &RemoteConnectionDialog::OnConnectRequest);
-  connect(m_server_name_line_edit, &QLineEdit::editingFinished, this,
+
+  connect(m_server_name_line_edit, &QLineEdit::returnPressed, this,
           &RemoteConnectionDialog::OnConnectRequest);
 
   ReadSettings();
@@ -104,8 +109,18 @@ void RemoteConnectionDialog::keyPressEvent(QKeyEvent *event)
 
 void RemoteConnectionDialog::OnConnectRequest()
 {
-  qDebug() << "OnConnectRequest" << m_server_name_line_edit->text();
-  m_connection_service->Connect(m_server_name_line_edit->text().toStdString());
+  setCursor(Qt::WaitCursor);
+  QApplication::processEvents();
+
+  const auto server_name = m_server_name_line_edit->text().toStdString();
+  if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
+  {
+    m_connection_context.server_name = server_name;
+
+  }
+
+  unsetCursor();
+  QApplication::processEvents();
 }
 
 std::unique_ptr<QHBoxLayout> RemoteConnectionDialog::CreateConnectLayout()

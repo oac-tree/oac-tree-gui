@@ -81,7 +81,7 @@ private:
   QLineEdit* m_server_name_line_edit{nullptr};
   QPushButton* m_connect_button{nullptr};
   QListView* m_job_list_view{nullptr};
-  QStandardItemModel* m_job_model{nullptr};
+  QStandardItemModel* m_job_info_model{nullptr};
 
   RemoteConnectionContext m_connection_context;
   RemoteConnectionService* m_connection_service{nullptr};

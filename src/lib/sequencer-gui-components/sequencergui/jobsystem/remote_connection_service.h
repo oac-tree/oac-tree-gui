@@ -46,8 +46,10 @@ public:
    * @brief Connect with the server using the given server name.
    *
    * If connection was already established, does nothing.
+   *
+   * @return True if connection was already existing, or was just successfully established.
    */
-  void Connect(const std::string& server_name);
+  bool Connect(const std::string& server_name);
 
   /**
    * @brief Disconnect the server by removing underlying client.
@@ -75,7 +77,7 @@ private:
   //!< collection of remote clients, one client per server name
   std::vector<std::unique_ptr<IAutomationClient>> m_clients;
 
-  create_client_t m_create_connection;
+  create_client_t m_create_client;
 };
 
 }  // namespace sequencergui

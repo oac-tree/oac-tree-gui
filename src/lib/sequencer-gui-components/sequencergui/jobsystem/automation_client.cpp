@@ -19,12 +19,12 @@
 
 #include "automation_client.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/remote_job_handler.h>
 #include <sequencergui/jobsystem/user_context.h>
 
 #include <sup/auto-server/epics_config_utils.h>
-
-#include <iostream>
+#include <sup/auto-server/exceptions.h>
 
 namespace sequencergui
 {
@@ -33,15 +33,24 @@ AutomationClient::AutomationClient(const std::string& server_name)
     : m_server_name(server_name)
     , m_automation_job_manager(sup::auto_server::utils::CreateEPICSJobManager(server_name))
 {
-  std::cout << "Number of jobs " << m_automation_job_manager->GetNumberOfJobs() << "\n";
+  try
+  {
+    // current way to check if connection was established
+    [[maybe_unused]] auto job_count = m_automation_job_manager->GetNumberOfJobs();
+  }
+  catch (const sup::auto_server::InvalidOperationException& ex)
+  {
+    throw RuntimeException("Connection to the server [" + server_name
+                           + "] has failed with the message [" + ex.what() + "]");
+  }
 }
+
+AutomationClient::~AutomationClient() = default;
 
 std::string AutomationClient::GetServerName() const
 {
   return m_server_name;
 }
-
-AutomationClient::~AutomationClient() = default;
 
 size_t AutomationClient::GetJobCount() const
 {

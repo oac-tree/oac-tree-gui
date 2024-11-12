@@ -17,8 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/i_automation_client.h"
 #include "sequencergui/jobsystem/remote_connection_service.h"
+
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/i_automation_client.h>
 
 #include <gtest/gtest.h>
 
@@ -57,16 +59,26 @@ TEST_F(RemoteConnectionServiceTest, Connect)
   EXPECT_TRUE(service.GetServerNames().empty());
   EXPECT_FALSE(service.HasClient("abc"));
 
-  service.Connect("abc");
+  EXPECT_TRUE(service.Connect("abc"));
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
   EXPECT_TRUE(service.HasClient("abc"));
 
   // same name, do nothing
-  service.Connect("abc");
+  EXPECT_TRUE(service.Connect("abc"));
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
 
   service.Connect("def");
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc", "def"}));
+}
+
+TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
+{
+  auto factory_func = [](const std::string&) -> std::unique_ptr<IAutomationClient>
+  { throw RuntimeException("Connection problem"); };
+
+  RemoteConnectionService service(factory_func);
+
+  EXPECT_FALSE(service.Connect("abc"));
 }
 
 TEST_F(RemoteConnectionServiceTest, Disconnect)
@@ -75,9 +87,9 @@ TEST_F(RemoteConnectionServiceTest, Disconnect)
   EXPECT_TRUE(service.GetServerNames().empty());
   EXPECT_FALSE(service.HasClient("abc"));
 
-  service.Connect("a1");
-  service.Connect("a2");
-  service.Connect("a3");
+  EXPECT_TRUE(service.Connect("a1"));
+  EXPECT_TRUE(service.Connect("a2"));
+  EXPECT_TRUE(service.Connect("a3"));
 
   service.Disconnect("def");
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a2", "a3"}));
