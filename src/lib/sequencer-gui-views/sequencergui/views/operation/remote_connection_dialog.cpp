@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/i_automation_client.h>
+#include <sequencergui/jobsystem/remote_connection_context.h>
 #include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sup/gui/widgets/dialog_helper.h>
 
@@ -29,6 +30,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QItemSelectionModel>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QListView>
@@ -87,6 +89,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(RemoteConnectionService *connecti
 
   m_job_list_view->setAlternatingRowColors(true);
   m_job_list_view->setModel(m_job_info_model);
+  m_job_list_view->setSelectionMode(QAbstractItemView::MultiSelection);
 
   connect(m_connect_button, &QPushButton::clicked, this, &RemoteConnectionDialog::OnConnectRequest);
 
@@ -103,7 +106,14 @@ RemoteConnectionDialog::~RemoteConnectionDialog()
 
 RemoteConnectionContext RemoteConnectionDialog::GetResult() const
 {
-  return m_connection_context;
+  // collecting selected jobs, sorting accoring to the job index
+  std::set<size_t> indexes;
+  for (auto index : m_job_list_view->selectionModel()->selectedIndexes())
+  {
+    indexes.insert(static_cast<size_t>(index.row()));
+  }
+
+  return {m_current_server_name, indexes};
 }
 
 void RemoteConnectionDialog::keyPressEvent(QKeyEvent *event)
@@ -129,7 +139,7 @@ void RemoteConnectionDialog::OnConnectRequest()
   if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
   {
     PopulateJobInfoModel(server_name);
-    m_connection_context.server_name = server_name;
+    m_current_server_name = server_name;
   }
 
   unsetCursor();

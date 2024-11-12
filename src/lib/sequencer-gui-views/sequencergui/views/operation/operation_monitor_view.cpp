@@ -26,6 +26,7 @@
 #include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/remote_connection_context.h>
 #include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
@@ -51,6 +52,7 @@
 #include <QSplitter>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <iostream>
 
 namespace sequencergui
 {
@@ -302,7 +304,17 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 void OperationMonitorView::OnConnectRequest()
 {
   RemoteConnectionDialog dialog(m_connection_service.get());
-  dialog.exec();
+
+  if (dialog.exec() == QDialog::Accepted)
+  {
+    auto connection_context = dialog.GetResult();
+    std::cout << "server name " << connection_context.server_name << " (";
+    for (auto index : connection_context.job_indexes)
+    {
+      std::cout << index << " ";
+    }
+    std::cout << ")\n";
+  }
 }
 
 QWidget *OperationMonitorView::CreateLeftPanel()

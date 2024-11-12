@@ -20,8 +20,8 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_CONTEXT_H_
 #define SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_CONTEXT_H_
 
+#include <set>
 #include <string>
-#include <vector>
 
 namespace sequencergui
 {
@@ -32,8 +32,8 @@ namespace sequencergui
  */
 struct RemoteConnectionContext
 {
-  std::string server_name;        //!< the name of the server to connect
-  std::vector<size_t> m_job_ids;  //!< list of automation jobs to import into the job system
+  std::string server_name;       //!< the name of the server to connect
+  std::set<size_t> job_indexes;  //!< list of job indices to import into the job system
 };
 
 }  // namespace sequencergui

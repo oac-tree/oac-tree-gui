@@ -296,7 +296,7 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
   QTest::qWait(100);
 
   EXPECT_EQ(spy_instruction_status.count(), 6);  // 3 instructions
@@ -324,7 +324,7 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
   QTest::qWait(100);
 
   EXPECT_EQ(spy_instruction_status.count(), 4);

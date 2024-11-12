@@ -20,8 +20,6 @@
 #ifndef SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
 #define SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
 
-#include <sequencergui/jobsystem/remote_connection_context.h>
-
 #include <QDialog>
 #include <memory>
 
@@ -35,6 +33,7 @@ namespace sequencergui
 {
 
 class RemoteConnectionService;
+struct RemoteConnectionContext;
 
 /**
  * @brief The RemoteConnectionDialog class is a modal dialog to connect with remote server and
@@ -50,7 +49,7 @@ public:
   ~RemoteConnectionDialog() override;
 
   /**
-   * @brief Returns user choice regarding remote jobs to connect.
+   * @brief Returns users choice with the server name to connect, and the list of remote jobs.
    */
   RemoteConnectionContext GetResult() const;
 
@@ -81,15 +80,15 @@ private:
   /**
    * @brief Populates the model with information about remote jobs.
    */
-  void PopulateJobInfoModel(const std::string &server_name);
+  void PopulateJobInfoModel(const std::string& server_name);
 
   QLineEdit* m_server_name_line_edit{nullptr};
   QPushButton* m_connect_button{nullptr};
   QListView* m_job_list_view{nullptr};
   QStandardItemModel* m_job_info_model{nullptr};
 
-  RemoteConnectionContext m_connection_context;
   RemoteConnectionService* m_connection_service{nullptr};
+  std::string m_current_server_name;
 };
 
 }  // namespace sequencergui
