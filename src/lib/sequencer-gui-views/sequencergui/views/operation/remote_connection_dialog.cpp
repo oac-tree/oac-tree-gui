@@ -19,10 +19,13 @@
 
 #include "remote_connection_dialog.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sup/gui/widgets/dialog_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QDebug>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLineEdit>
@@ -43,13 +46,20 @@ const QString kWindowSizeSettingName = kGroupName + "/" + "size";
 
 }  // namespace
 
-RemoteConnectionDialog::RemoteConnectionDialog(QWidget *parent)
+RemoteConnectionDialog::RemoteConnectionDialog(RemoteConnectionService *connection_service,
+                                               QWidget *parent)
     : QDialog(parent)
     , m_server_name_line_edit(new QLineEdit)
     , m_connect_button(new QPushButton("Connect"))
     , m_job_list_view(new QListView)
     , m_job_model(new QStandardItemModel(this))
+    , m_connection_service(connection_service)
 {
+  if (!m_connection_service)
+  {
+    throw RuntimeException("Uninitialized server");
+  }
+
   setWindowTitle("Connect to server");
 
   auto layout = new QVBoxLayout(this);
@@ -60,6 +70,11 @@ RemoteConnectionDialog::RemoteConnectionDialog(QWidget *parent)
   m_server_name_line_edit->setClearButtonEnabled(true);
   m_server_name_line_edit->setPlaceholderText("Server name");
   m_connect_button->setFixedWidth(mvvm::utils::UnitSize(12));
+  m_job_list_view->setAlternatingRowColors(true);
+
+  connect(m_connect_button, &QPushButton::clicked, this, &RemoteConnectionDialog::OnConnectRequest);
+  connect(m_server_name_line_edit, &QLineEdit::editingFinished, this,
+          &RemoteConnectionDialog::OnConnectRequest);
 
   ReadSettings();
 }
@@ -67,6 +82,11 @@ RemoteConnectionDialog::RemoteConnectionDialog(QWidget *parent)
 RemoteConnectionDialog::~RemoteConnectionDialog()
 {
   WriteSettings();
+}
+
+RemoteConnectionContext RemoteConnectionDialog::GetResult() const
+{
+  return m_connection_context;
 }
 
 void RemoteConnectionDialog::keyPressEvent(QKeyEvent *event)
@@ -80,6 +100,12 @@ void RemoteConnectionDialog::keyPressEvent(QKeyEvent *event)
   }
 
   QDialog::keyPressEvent(event);
+}
+
+void RemoteConnectionDialog::OnConnectRequest()
+{
+  qDebug() << "OnConnectRequest" << m_server_name_line_edit->text();
+  m_connection_service->Connect(m_server_name_line_edit->text().toStdString());
 }
 
 std::unique_ptr<QHBoxLayout> RemoteConnectionDialog::CreateConnectLayout()

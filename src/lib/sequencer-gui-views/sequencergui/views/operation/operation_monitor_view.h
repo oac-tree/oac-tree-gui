@@ -23,6 +23,8 @@
 #include <QWidget>
 #include <sequencergui/components/component_types.h>
 
+#include <memory>
+
 class QSplitter;
 class QShowEvent;
 
@@ -37,6 +39,7 @@ class OperationRealTimePanel;
 class OperationJobPanel;
 class ProcedureItem;
 class OperationActionHandler;
+class RemoteConnectionService;
 
 /**
  * @brief The OperationMonitorView class is the main window component to run sequences and monitor
@@ -95,6 +98,7 @@ private:
 
   JobManager* m_job_manager{nullptr};
   OperationActionHandler* m_action_handler{nullptr};
+  std::unique_ptr<RemoteConnectionService> m_connection_service;
 
   bool m_left_panel_is_visible{true};
   bool m_right_panel_is_visible{true};

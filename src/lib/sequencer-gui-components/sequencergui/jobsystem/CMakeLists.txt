@@ -38,6 +38,7 @@ target_sources(${library_name} PRIVATE
   remote_job_handler.h
   remote_connection_service.cpp
   remote_connection_service.h
+  remote_connection_context.h
   request_handler.h
   request_handler_queue.h
   request_types.cpp

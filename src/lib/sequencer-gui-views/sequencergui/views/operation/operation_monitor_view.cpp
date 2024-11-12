@@ -23,8 +23,10 @@
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
 
-#include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
@@ -50,16 +52,23 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+namespace sequencergui
+{
+
 namespace
 {
 const QString kGroupName("OperationMonitorView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kLeftPanelIsVisibleSettingName = kGroupName + "/" + "left_panel";
 const QString kRightPanelIsVisibleSettingName = kGroupName + "/" + "right_panel";
-}  // namespace
 
-namespace sequencergui
+std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
 {
+  return [](const std::string &server_name)
+  { return std::make_unique<AutomationClient>(server_name); };
+}
+
+}  // namespace
 
 OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidget *parent)
     : QWidget(parent)
@@ -72,6 +81,7 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
     , m_action_handler(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
+    , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -216,8 +226,7 @@ void OperationMonitorView::SetupConnections()
           [this]() { OnImportJobRequest(); });
 
   // remote server connect request
-  connect(m_job_panel, &OperationJobPanel::ConnectRequest, this,
-          [this]() { OnConnectRequest(); });
+  connect(m_job_panel, &OperationJobPanel::ConnectRequest, this, [this]() { OnConnectRequest(); });
 
   // job removal request
   auto on_remove_job_request = [this]()
@@ -292,7 +301,7 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 
 void OperationMonitorView::OnConnectRequest()
 {
-  RemoteConnectionDialog dialog;
+  RemoteConnectionDialog dialog(m_connection_service.get());
   dialog.exec();
 }
 
