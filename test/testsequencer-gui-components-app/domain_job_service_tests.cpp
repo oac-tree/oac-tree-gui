@@ -136,6 +136,8 @@ TEST_F(DomainJobServiceTest, PutValue)
 
 TEST_F(DomainJobServiceTest, GetUserValue)
 {
+  const sup::dto::uint64 request_id{42};
+
   sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 41};
   const std::string description("description");
   const UserInputArgs args{initial_value, description};
@@ -153,10 +155,10 @@ TEST_F(DomainJobServiceTest, GetUserValue)
   // mimick sequencer thread asking for user input
   std::promise<void> ready_for_test;
   // runner to ask for user input (blocking)
-  auto runner = [&service, &ready_for_test, &initial_value, &description]()
+  auto runner = [&service, &ready_for_test, &initial_value, &description, request_id]()
   {
     ready_for_test.set_value();
-    return service->GetJobInfoIO()->GetUserValue(initial_value, description);
+    return service->GetJobInfoIO()->GetUserValue(request_id, initial_value, description);
   };
 
   // launching runner in a thread
@@ -176,6 +178,8 @@ TEST_F(DomainJobServiceTest, GetUserValue)
 
 TEST_F(DomainJobServiceTest, GetUserChoice)
 {
+  const sup::dto::uint64 request_id{42};
+
   const std::vector<std::string> options({"option1"});
   sup::dto::AnyValue metadata{sup::dto::SignedInteger32Type, 41};
   const UserChoiceArgs args{options, metadata};
@@ -193,10 +197,10 @@ TEST_F(DomainJobServiceTest, GetUserChoice)
   // mimick sequencer thread asking for user choice
   std::promise<void> ready_for_test;
   // runner to ask for user input (blocking)
-  auto runner = [&service, &ready_for_test, &options, &metadata]()
+  auto runner = [&service, &ready_for_test, &options, &metadata, request_id]()
   {
     ready_for_test.set_value();
-    return service->GetJobInfoIO()->GetUserChoice(options, metadata);
+    return service->GetJobInfoIO()->GetUserChoice(request_id, options, metadata);
   };
 
   // launching runner in a thread

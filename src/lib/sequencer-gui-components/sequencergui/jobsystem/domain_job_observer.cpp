@@ -95,9 +95,11 @@ void DomainJobObserver::PutValue(const sup::dto::AnyValue &value,
   m_post_event_callback(CreateLogEvent(Severity::kInfo, ostr.str()));
 }
 
-bool DomainJobObserver::GetUserValue(sup::dto::AnyValue &value,
+bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue &value,
                                              const std::string &description)
 {
+  (void)id; // TODO send this id to the GUI
+
   if (m_input_provider)
   {
     auto result = m_input_provider->GetUserInput({value, description});
@@ -109,9 +111,11 @@ bool DomainJobObserver::GetUserValue(sup::dto::AnyValue &value,
   return false;
 }
 
-int DomainJobObserver::GetUserChoice(const std::vector<std::string> &options,
-                                             const sup::dto::AnyValue &metadata)
+int DomainJobObserver::GetUserChoice(sup::dto::uint64 id, const std::vector<std::string> &options,
+                                     const sup::dto::AnyValue &metadata)
 {
+  (void)id; // TODO send this id to the GUI
+
   if (m_choice_provider)
   {
     auto result = m_choice_provider->GetUserChoice({options, metadata});
@@ -120,6 +124,12 @@ int DomainJobObserver::GetUserChoice(const std::vector<std::string> &options,
 
   m_post_event_callback(CreateLogEvent(Severity::kWarning, "User choice callback is not set"));
   return -1;
+}
+
+void DomainJobObserver::Interrupt(sup::dto::uint64 id)
+{
+  // TODO What to do here?
+  (void)id;
 }
 
 void DomainJobObserver::Message(const std::string &message)

@@ -66,10 +66,12 @@ public:
 
   void PutValue(const sup::dto::AnyValue& value, const std::string& description) override;
 
-  bool GetUserValue(sup::dto::AnyValue& value, const std::string& description) override;
+  bool GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue& value, const std::string& description) override;
 
-  int GetUserChoice(const std::vector<std::string>& options,
+  int GetUserChoice(sup::dto::uint64 id, const std::vector<std::string>& options,
                     const sup::dto::AnyValue& metadata) override;
+
+  void Interrupt(sup::dto::uint64 id) override;
 
   void Message(const std::string& message) override;
 
