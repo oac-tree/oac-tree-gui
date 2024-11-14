@@ -56,11 +56,11 @@ TEST_F(ApplicationModelsTest, InitialState)
 
   EXPECT_EQ(models.GetSequencerModel(), nullptr);
   EXPECT_EQ(models.GetJobModel(), nullptr);
-  EXPECT_TRUE(models.GetProjectPath().empty());
+  EXPECT_TRUE(models.GetPath().empty());
   EXPECT_EQ(models.GetProjectType(), mvvm::ProjectType::kFileBased);
   EXPECT_EQ(models.GetApplicationType(), ApplicationModels::kApplicationType);
 
-  models.CreateNewProject();
+  models.CreateEmpty();
 
   EXPECT_NE(models.GetSequencerModel(), nullptr);
   EXPECT_NE(models.GetJobModel(), nullptr);
@@ -73,7 +73,7 @@ TEST_F(ApplicationModelsTest, InitialState)
 TEST_F(ApplicationModelsTest, FindItems)
 {
   ApplicationModels models;
-  models.CreateNewProject();
+  models.CreateEmpty();
 
   // default catalogue is capable of creating sequencer items
   auto procedure = models.GetSequencerModel()->InsertItem<ProcedureItem>();
@@ -87,7 +87,7 @@ TEST_F(ApplicationModelsTest, FindItems)
 TEST_F(ApplicationModelsTest, RecreateModels)
 {
   ApplicationModels models;
-  models.CreateNewProject();
+  models.CreateEmpty();
 
   // by default we have already untitled procedure created
   ASSERT_FALSE(models.GetSequencerModel()->GetProcedures().empty());
@@ -98,13 +98,13 @@ TEST_F(ApplicationModelsTest, RecreateModels)
   EXPECT_EQ(models.GetJobModel()->FindItem(procedure->GetIdentifier()), procedure);
 
   // on project close models should be removed, item pool cleared
-  models.CloseProject();
+  models.Close();
   EXPECT_EQ(models.GetItemPool()->GetSize(), 0);
   EXPECT_EQ(models.GetSequencerModel(), nullptr);
   EXPECT_EQ(models.GetJobModel(), nullptr);
 
   // on new project creation item pool should receive new items
-  models.CreateNewProject();
+  models.CreateEmpty();
   // two root items from two models, and one procedure container, and one untitled procedure with
   // all its properties
   EXPECT_TRUE(models.GetItemPool()->GetSize() > 3);
@@ -119,9 +119,9 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
   // setting up expectations before project creation
   EXPECT_CALL(m_loaded_callback, Call()).Times(1);
 
-  EXPECT_TRUE(project->CreateNewProject());
+  EXPECT_TRUE(project->CreateEmpty());
 
-  EXPECT_TRUE(project->GetProjectPath().empty());
+  EXPECT_FALSE(project->HasPath());
   EXPECT_NE(project->GetSequencerModel(), nullptr);
   EXPECT_NE(project->GetJobModel(), nullptr);
   EXPECT_FALSE(project->IsModified());
@@ -135,11 +135,11 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
 
   EXPECT_TRUE(project->Save(expected_path));
 
-  EXPECT_EQ(project->GetProjectPath(), expected_path);
+  EXPECT_EQ(project->GetPath(), expected_path);
   EXPECT_FALSE(project->IsModified());
 
   // closing project
-  EXPECT_TRUE(project->CloseProject());
+  EXPECT_TRUE(project->Close());
   EXPECT_EQ(project->GetSequencerModel(), nullptr);
   EXPECT_EQ(project->GetJobModel(), nullptr);
   EXPECT_FALSE(project->IsModified());

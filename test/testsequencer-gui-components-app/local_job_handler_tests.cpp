@@ -60,7 +60,7 @@ class LocalJobHandlerTest : public ::testing::Test
 public:
   LocalJobHandlerTest()
   {
-    m_models.CreateNewProject();
+    m_models.CreateEmpty();
     m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
   }
 

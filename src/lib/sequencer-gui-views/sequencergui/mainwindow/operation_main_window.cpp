@@ -46,8 +46,8 @@ namespace sequencergui
 
 OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
-  PopulateModel();
-  m_models->CreateNewProject();
+  m_models->CreateEmpty();
+
   InitApplication();
 
   connect(m_action_manager, &OperationMainWindowActions::ImportJobRequest, this,
@@ -71,8 +71,6 @@ void OperationMainWindow::closeEvent(QCloseEvent* event)
 
   event->ignore();
 }
-
-void OperationMainWindow::PopulateModel() {}
 
 void OperationMainWindow::InitApplication()
 {

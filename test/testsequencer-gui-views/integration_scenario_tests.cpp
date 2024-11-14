@@ -57,7 +57,7 @@ class IntegrationScenarioTest : public testutils::FolderTest
 public:
   IntegrationScenarioTest() : FolderTest("IntegrationScenarioTest")
   {
-    m_models.CreateNewProject();
+    m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
     m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
   }

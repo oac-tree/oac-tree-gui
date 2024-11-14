@@ -42,7 +42,7 @@ PvMonitorMainWindow::PvMonitorMainWindow() : m_project_agent(CreateProjectAgent(
 {
   InitApplication();
 
-  m_project_agent->CreateNewProject();
+  m_project_agent->CreateEmpty();
 }
 
 PvMonitorMainWindow::~PvMonitorMainWindow() = default;

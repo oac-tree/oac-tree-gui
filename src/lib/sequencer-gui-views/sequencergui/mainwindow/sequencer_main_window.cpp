@@ -37,6 +37,9 @@
 #include <QCloseEvent>
 #include <QSettings>
 
+namespace sequencergui
+{
+
 namespace
 {
 const QString kGroupName = "MainWindow";
@@ -45,13 +48,11 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 }  // namespace
 
-namespace sequencergui
-{
 SequencerMainWindow::SequencerMainWindow() : m_models(CreateProject())
 {
   InitApplication();
 
-  m_models->CreateNewProject();
+  m_models->CreateEmpty();
 }
 
 bool SequencerMainWindow::ImportProcedure(const QString& file_name)

@@ -54,7 +54,7 @@ class JobManagerTest : public ::testing::Test
 public:
   JobManagerTest()
   {
-    m_models.CreateNewProject();
+    m_models.CreateEmpty();
     m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
   }
 
