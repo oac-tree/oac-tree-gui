@@ -76,7 +76,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kInitial);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
   QTest::qWait(50);
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);

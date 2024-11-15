@@ -105,7 +105,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
   QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
   // starting procedure and waiting for completion
-  job_handler.OnStartRequest();
+  job_handler.Start();
 
   auto predicate = [this]() { return IsCompleted(m_job_item); };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 500));

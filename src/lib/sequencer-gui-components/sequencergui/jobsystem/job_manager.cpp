@@ -91,7 +91,7 @@ void JobManager::OnStartJobRequest()
 {
   if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    job_handler->OnStartRequest();
+    job_handler->Start();
   }
 }
 
@@ -99,7 +99,7 @@ void JobManager::OnPauseJobRequest()
 {
   if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    job_handler->OnPauseRequest();
+    job_handler->Pause();
   }
 }
 
@@ -107,7 +107,7 @@ void JobManager::OnStopJobRequest()
 {
   if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    job_handler->OnStopRequest();
+    job_handler->Stop();
   }
 }
 
@@ -115,7 +115,7 @@ void JobManager::OnMakeStepRequest()
 {
   if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    job_handler->OnMakeStepRequest();
+    job_handler->Step();
   }
 }
 
@@ -150,8 +150,7 @@ bool JobManager::HasRunningJobs() const
 
 void JobManager::StopAllJobs()
 {
-  std::for_each(m_job_map.begin(), m_job_map.end(),
-                [](const auto &iter) { iter.second->OnStopRequest(); });
+  std::for_each(m_job_map.begin(), m_job_map.end(), [](const auto &iter) { iter.second->Stop(); });
 }
 
 void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)

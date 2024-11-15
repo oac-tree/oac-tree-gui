@@ -63,22 +63,22 @@ public:
   /**
    * @brief Run sequencer procedure in continuous manner, if allowed.
    */
-  void OnStartRequest();
+  void Start();
 
   /**
    * @brief Pause procedure's execution.
    */
-  void OnPauseRequest();
+  void Pause();
 
   /**
    * @brief Execute a single step of the procedure, if allowed.
    */
-  void OnMakeStepRequest();
+  void Step();
 
   /**
    * @brief Stops the procedure execution.
    */
-  void OnStopRequest();
+  void Stop();
 
   /**
    * @brief Reset not-running procedure to initial state.

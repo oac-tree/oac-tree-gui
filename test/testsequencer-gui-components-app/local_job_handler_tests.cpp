@@ -161,7 +161,7 @@ TEST_F(LocalJobHandlerTest, PrematureDeletion)
 
   {
     LocalJobHandler job_handler(m_job_item);
-    job_handler.OnStartRequest();
+    job_handler.Start();
   }
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
@@ -179,7 +179,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
 
   QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
 
   auto predicate = [this, &job_handler, &spy_instruction_status]()
   { return !job_handler.IsRunning() && spy_instruction_status.count() == 2; };
@@ -214,7 +214,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   const mvvm::PropertyChangedEvent expected_event{message_item, itemconstants::kStatus};
   EXPECT_CALL(listener, OnPropertyChanged(expected_event)).Times(2);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
 
   QTest::qWait(50);
 
@@ -248,7 +248,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   EXPECT_TRUE(testutils::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(testutils::IsEqual(*var_inside1, anyvalue1));
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
   // We are testing here queued signals, need special waiting
   QTest::qWait(50);
 
@@ -265,7 +265,7 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
   // We are testing here queued signals, need special waiting
   QTest::qWait(50);
 
@@ -347,7 +347,7 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
 
   QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
 
   EXPECT_TRUE(QTest::qWaitFor(
       [&spy_instruction_status]() { return spy_instruction_status.count() == 1; }, 100));
@@ -355,7 +355,7 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
   EXPECT_TRUE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 1);
 
-  job_handler.OnStopRequest();
+  job_handler.Stop();
 
   EXPECT_TRUE(QTest::qWaitFor(
       [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
@@ -377,7 +377,7 @@ TEST_F(LocalJobHandlerTest, LogEvents)
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
   QTest::qWait(50);
   //  EXPECT_TRUE(QTest::qWaitFor([&job_handler]() { return !job_handler.IsRunning(); }, 10));
 
@@ -416,7 +416,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   EXPECT_TRUE(testutils::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(testutils::IsEqual(*var_inside1, anyvalue1));
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
 
@@ -458,7 +458,7 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   job_handler.OnToggleBreakpointRequest(instructions_inside.at(2));
   EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSet);
 
-  job_handler.OnStartRequest();
+  job_handler.Start();
 
   auto predicate = [&job_handler]()
   { return job_handler.GetRunnerStatus() == RunnerStatus::kPaused; };
@@ -472,7 +472,7 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   }
 
   // run till the end
-  job_handler.OnStartRequest();
+  job_handler.Start();
 
   auto predicate2 = [&job_handler]()
   { return job_handler.GetRunnerStatus() == RunnerStatus::kSucceeded; };

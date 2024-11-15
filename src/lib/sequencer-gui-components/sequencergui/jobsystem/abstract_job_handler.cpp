@@ -57,22 +57,22 @@ AbstractJobHandler::AbstractJobHandler(JobItem *job_item)
 
 AbstractJobHandler::~AbstractJobHandler() = default;
 
-void AbstractJobHandler::OnStartRequest()
+void AbstractJobHandler::Start()
 {
   m_domain_runner->Start();
 }
 
-void AbstractJobHandler::OnPauseRequest()
+void AbstractJobHandler::Pause()
 {
   m_domain_runner->Pause();
 }
 
-void AbstractJobHandler::OnMakeStepRequest()
+void AbstractJobHandler::Step()
 {
   m_domain_runner->Step();
 }
 
-void AbstractJobHandler::OnStopRequest()
+void AbstractJobHandler::Stop()
 {
   m_domain_runner->Stop();
 }

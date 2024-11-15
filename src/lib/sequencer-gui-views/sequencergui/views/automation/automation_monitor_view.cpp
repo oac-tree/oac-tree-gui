@@ -90,22 +90,22 @@ void AutomationMonitorView::SetModels(SequencerModel *sequencer_model, JobModel 
 
 void AutomationMonitorView::OnRunRequest()
 {
-  m_job_handler->OnStartRequest();
+  m_job_handler->Start();
 }
 
 void AutomationMonitorView::OnPauseRequest()
 {
-  m_job_handler->OnPauseRequest();
+  m_job_handler->Pause();
 }
 
 void AutomationMonitorView::OnStepRequest()
 {
-  m_job_handler->OnMakeStepRequest();
+  m_job_handler->Step();
 }
 
 void AutomationMonitorView::OnStopRequest()
 {
-  m_job_handler->OnStopRequest();
+  m_job_handler->Stop();
 }
 
 void AutomationMonitorView::OnJobSelected(JobItem *item)
