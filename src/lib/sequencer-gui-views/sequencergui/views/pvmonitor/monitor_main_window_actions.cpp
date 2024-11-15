@@ -51,17 +51,17 @@ MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project,
   SetupMenus(mainwindow->menuBar());
 }
 
+MonitorMainWindowActions::~MonitorMainWindowActions() = default;
+
 bool MonitorMainWindowActions::CloseCurrentProject() const
 {
-  return m_project_handler->CloseCurrentProject();
+  return m_project_handler->CloseProject();
 }
 
 void MonitorMainWindowActions::OnProjectModified()
 {
   m_project_handler->UpdateNames();
 }
-
-MonitorMainWindowActions::~MonitorMainWindowActions() = default;
 
 //! Create main actions.
 
