@@ -30,9 +30,9 @@
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
-#include <sup/gui/project/project_handler_utils.h>
-#include <sup/gui/project/project_handler.h>
 
+#include <mvvm/project/project_handler.h>
+#include <mvvm/project/project_handler_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
@@ -52,7 +52,7 @@ namespace sequencergui
 SequencerMainWindowActions::SequencerMainWindowActions(mvvm::IProject *project,
                                                        QMainWindow *mainwindow)
     : QObject(mainwindow)
-    , m_project_handler(std::make_unique<sup::gui::ProjectHandler>(project))
+    , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
     , m_focus_controller(sup::gui::CreateGlobalFocusController())
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
@@ -120,17 +120,17 @@ void SequencerMainWindowActions::SetupFileMenu()
   auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
 
   auto about_to_show_menu = [this]()
-  { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
+  { mvvm::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
   connect(file_menu, &QMenu::aboutToShow, this, about_to_show_menu);
 
-  sup::gui::AddNewProjectAction(file_menu, *m_project_handler);
-  sup::gui::AddOpenExistingProjectAction(file_menu, *m_project_handler);
+  mvvm::AddNewProjectAction(file_menu, *m_project_handler);
+  mvvm::AddOpenExistingProjectAction(file_menu, *m_project_handler);
 
   m_recent_project_menu = file_menu->addMenu("Recent Projects");
 
   file_menu->addSeparator();
-  sup::gui::AddSaveCurrentProjectAction(file_menu, *m_project_handler);
-  sup::gui::AddSaveProjectAsAction(file_menu, *m_project_handler);
+  mvvm::AddSaveCurrentProjectAction(file_menu, *m_project_handler);
+  mvvm::AddSaveProjectAsAction(file_menu, *m_project_handler);
 
   file_menu->addSeparator();
   auto preferences_menu = file_menu->addMenu("Preferences");

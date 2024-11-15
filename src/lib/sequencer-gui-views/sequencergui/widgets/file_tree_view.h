@@ -28,9 +28,13 @@ class QLabel;
 class QAction;
 class QMenu;
 
-namespace sup::gui
+namespace mvvm
 {
 class RecentProjectSettings;
+}
+
+namespace sup::gui
+{
 class ActionMenu;
 }  // namespace sup::gui
 
@@ -103,7 +107,7 @@ private:
   QString m_current_xml_file;
   QAction* m_import_file_action{nullptr};
   sup::gui::ActionMenu* m_bookmark_action{nullptr};
-  std::unique_ptr<sup::gui::RecentProjectSettings> m_recent_dirs;
+  std::unique_ptr<mvvm::RecentProjectSettings> m_recent_dirs;
   std::unique_ptr<QMenu> m_bookmark_menu;
 };
 

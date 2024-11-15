@@ -33,11 +33,11 @@ class QMenu;
 namespace mvvm
 {
 class IProject;
-}
+class ProjectHandler;
+}  // namespace mvvm
 
 namespace sup::gui
 {
-class ProjectHandler;
 class AppContextFocusController;
 }  // namespace sup::gui
 
@@ -52,8 +52,7 @@ class SequencerMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerMainWindowActions(mvvm::IProject* project,
-                                      QMainWindow* mainwindow);
+  explicit SequencerMainWindowActions(mvvm::IProject* project, QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 
   /**
@@ -105,7 +104,7 @@ private:
 
   QMenu* m_recent_project_menu{nullptr};
 
-  std::unique_ptr<sup::gui::ProjectHandler> m_project_handler;
+  std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };
 

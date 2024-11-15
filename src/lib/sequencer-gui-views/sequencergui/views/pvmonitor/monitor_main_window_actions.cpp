@@ -22,8 +22,8 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
-#include <sup/gui/project/project_handler.h>
-#include <sup/gui/project/project_handler_utils.h>
+#include <mvvm/project/project_handler.h>
+#include <mvvm/project/project_handler_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -43,7 +43,7 @@ namespace sequencergui
 MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project,
                                                    QMainWindow *mainwindow)
     : QObject(mainwindow)
-    , m_project_handler(std::make_unique<sup::gui::ProjectHandler>(project))
+    , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(), {sup::gui::constants::kFileMenu});
 
@@ -78,17 +78,17 @@ void MonitorMainWindowActions::SetupMenus(QMenuBar *menubar)
   auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
 
   auto about_to_show_menu = [this]()
-  { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
+  { mvvm::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
   connect(file_menu, &QMenu::aboutToShow, this, about_to_show_menu);
 
-  sup::gui::AddNewProjectAction(file_menu, *m_project_handler);
-  sup::gui::AddOpenExistingProjectAction(file_menu, *m_project_handler);
+  mvvm::AddNewProjectAction(file_menu, *m_project_handler);
+  mvvm::AddOpenExistingProjectAction(file_menu, *m_project_handler);
 
   m_recent_project_menu = file_menu->addMenu("Recent Projects");
 
   file_menu->addSeparator();
-  sup::gui::AddSaveCurrentProjectAction(file_menu, *m_project_handler);
-  sup::gui::AddSaveProjectAsAction(file_menu, *m_project_handler);
+  mvvm::AddSaveCurrentProjectAction(file_menu, *m_project_handler);
+  mvvm::AddSaveProjectAsAction(file_menu, *m_project_handler);
 
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);

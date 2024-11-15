@@ -19,7 +19,7 @@
 
 #include "file_tree_view.h"
 
-#include <sup/gui/project/recent_project_settings.h>
+#include <mvvm/project/recent_project_settings.h>
 #include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
@@ -52,7 +52,7 @@ FileTreeView::FileTreeView(QWidget *parent)
     , m_file_system_model(new QFileSystemModel(this))
     , m_tree_view(new QTreeView)
     , m_path_label(new QLabel)
-    , m_recent_dirs(std::make_unique<sup::gui::RecentProjectSettings>("FileTreeView"))
+    , m_recent_dirs(std::make_unique<mvvm::RecentProjectSettings>("FileTreeView"))
     , m_bookmark_menu(std::make_unique<QMenu>())
 {
   setWindowTitle("EXPLORER");
