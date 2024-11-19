@@ -178,9 +178,11 @@ void SequencerMainWindow::OnProjectModified()
 
 std::unique_ptr<ApplicationModels> SequencerMainWindow::CreateProject()
 {
-  auto modified_callback = [this]() { OnProjectModified(); };
-  auto loaded_callback = [this]() { OnProjectLoad(); };
-  return std::make_unique<ApplicationModels>(modified_callback, loaded_callback);
+  mvvm::ProjectContext context;
+  context.modified_callback = [this]() { OnProjectModified(); };
+  context.loaded_callback = [this]() { OnProjectLoad(); };
+  context.application_type = ApplicationModels::kApplicationType;
+  return std::make_unique<ApplicationModels>(context);
 }
 
 }  // namespace sequencergui

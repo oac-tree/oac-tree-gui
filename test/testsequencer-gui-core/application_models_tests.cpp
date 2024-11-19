@@ -24,6 +24,7 @@
 #include <sequencergui/model/sequencer_model.h>
 
 #include <mvvm/model/item_pool.h>
+#include <mvvm/test/mock_project_context.h>
 #include <mvvm/utils/file_utils.h>
 
 #include <gmock/gmock.h>
@@ -42,12 +43,11 @@ public:
 
   std::unique_ptr<ApplicationModels> CreateProject()
   {
-    return std::make_unique<ApplicationModels>(m_modified_callback.AsStdFunction(),
-                                               m_loaded_callback.AsStdFunction());
+    return std::make_unique<ApplicationModels>(
+        m_mock_project_context.CreateContext(ApplicationModels::kApplicationType));
   }
 
-  ::testing::MockFunction<void(void)> m_modified_callback;
-  ::testing::MockFunction<void(void)> m_loaded_callback;
+  mvvm::test::MockProjectContext m_mock_project_context;
 };
 
 TEST_F(ApplicationModelsTest, InitialState)
@@ -58,7 +58,7 @@ TEST_F(ApplicationModelsTest, InitialState)
   EXPECT_EQ(models.GetJobModel(), nullptr);
   EXPECT_TRUE(models.GetPath().empty());
   EXPECT_EQ(models.GetProjectType(), mvvm::ProjectType::kFileBased);
-  EXPECT_EQ(models.GetApplicationType(), ApplicationModels::kApplicationType);
+  EXPECT_EQ(models.GetApplicationType(), std::string());
 
   models.CreateEmpty();
 
@@ -117,7 +117,7 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
   auto project = CreateProject();
 
   // setting up expectations before project creation
-  EXPECT_CALL(m_loaded_callback, Call()).Times(1);
+  EXPECT_CALL(m_mock_project_context, OnLoaded()).Times(1);
 
   EXPECT_TRUE(project->CreateEmpty());
 
@@ -127,7 +127,7 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
   EXPECT_FALSE(project->IsModified());
 
   // setting up expectation before project modification
-  EXPECT_CALL(m_modified_callback, Call()).Times(1);
+  EXPECT_CALL(m_mock_project_context, OnModified()).Times(1);
 
   // modifying a project
   project->GetSequencerModel()->InsertItem<mvvm::SessionItem>();

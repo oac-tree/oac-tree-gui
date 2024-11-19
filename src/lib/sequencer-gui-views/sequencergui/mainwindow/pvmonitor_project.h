@@ -35,13 +35,7 @@ class PvMonitorProject : public mvvm::AppProject
 public:
   static inline const std::string kApplicationType = "SUP PV Monitor";
 
-  /**
-   * @brief Main c-tor.
-   *
-   * @param modified_callback A callback to report when project was modified.
-   * @param loaded_callback A callback to report when project was reloaded.
-   */
-  explicit PvMonitorProject(callback_t modified_callback, callback_t loaded_callback);
+  explicit PvMonitorProject(const mvvm::ProjectContext &context);
 
   ~PvMonitorProject() override;
 

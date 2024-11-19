@@ -85,9 +85,10 @@ void PvMonitorMainWindow::OnProjectModified() {}
 
 std::unique_ptr<PvMonitorProject> PvMonitorMainWindow::CreateProjectAgent()
 {
-  auto modified_callback = [this]() { OnProjectModified(); };
-  auto loaded_callback = [this]() { OnProjectLoad(); };
-  return std::make_unique<PvMonitorProject>(modified_callback, loaded_callback);
+  mvvm::ProjectContext context;
+  context.loaded_callback = [this]() { OnProjectLoad(); };
+  context.application_type = PvMonitorProject::kApplicationType;
+  return std::make_unique<PvMonitorProject>(context);
 }
 
 }  // namespace sequencergui

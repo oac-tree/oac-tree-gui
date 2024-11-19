@@ -27,6 +27,7 @@ namespace mvvm
 {
 class ItemPool;
 class ISessionModel;
+class ProjectContext;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -47,7 +48,7 @@ public:
   static inline const std::string kApplicationType = "Sequencer GUI";
 
   ApplicationModels();
-  ApplicationModels(callback_t modified_callback, callback_t loaded_callback);
+  explicit ApplicationModels(const mvvm::ProjectContext& context);
   ~ApplicationModels() override;
 
   SequencerModel* GetSequencerModel();

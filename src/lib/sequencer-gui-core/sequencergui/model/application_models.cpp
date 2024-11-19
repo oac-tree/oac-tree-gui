@@ -28,25 +28,9 @@
 namespace sequencergui
 {
 
-namespace
-{
+ApplicationModels::ApplicationModels() : ApplicationModels(mvvm::ProjectContext{}) {}
 
-/**
- * @brief Creates context to pass to AbstractProject.
- */
-mvvm::ProjectContext CreateContext(ApplicationModels::callback_t modified_callback,
-                                   ApplicationModels::callback_t loaded_callback)
-{
-  return {std::move(modified_callback), std::move(loaded_callback),
-          ApplicationModels::kApplicationType};
-}
-
-}  // namespace
-
-ApplicationModels::ApplicationModels() : ApplicationModels({}, {}) {}
-
-ApplicationModels::ApplicationModels(callback_t modified_callback, callback_t loaded_callback)
-    : AppProject(CreateContext(modified_callback, loaded_callback))
+ApplicationModels::ApplicationModels(const mvvm::ProjectContext &context) : AppProject(context)
 {
   auto sequenser_model_factory_func = [this]()
   {

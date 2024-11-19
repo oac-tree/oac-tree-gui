@@ -24,9 +24,7 @@
 namespace sequencergui
 {
 
-PvMonitorProject::PvMonitorProject(callback_t modified_callback, callback_t loaded_callback)
-    : AppProject({std::move(modified_callback), std::move(loaded_callback),
-                  PvMonitorProject::kApplicationType})
+PvMonitorProject::PvMonitorProject(const mvvm::ProjectContext &context) : AppProject(context)
 {
   RegisterModel<MonitorModel>();
 }
