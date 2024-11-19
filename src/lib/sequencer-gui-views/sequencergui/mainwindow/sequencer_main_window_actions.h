@@ -67,9 +67,12 @@ public:
    */
   bool CloseCurrentProject() const;
 
-  void UpdateFocusWidget(QWidget* old, QWidget* now);
-
-  void OnProjectModified();
+  /**
+   * @brief Update currently opened project name.
+   *
+   * Handles modified status of project name, updates recent project list.
+   */
+  void UpdateProjectNames();
 
 signals:
   void RestartApplicationRequest(sup::gui::AppExitCode);

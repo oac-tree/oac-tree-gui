@@ -61,7 +61,7 @@ public:
    */
   bool CloseCurrentProject() const;
 
-  void OnProjectModified();
+  void UpdateProjectNames();
 
 private:
   void CreateActions(QMainWindow* mainwindow);

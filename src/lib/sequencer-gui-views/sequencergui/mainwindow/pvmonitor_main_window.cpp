@@ -38,11 +38,11 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 namespace sequencergui
 {
 
-PvMonitorMainWindow::PvMonitorMainWindow() : m_project_agent(CreateProjectAgent())
+PvMonitorMainWindow::PvMonitorMainWindow() : m_project(CreateProject())
 {
   InitApplication();
 
-  m_project_agent->CreateEmpty();
+  m_project->CreateEmpty();
 }
 
 PvMonitorMainWindow::~PvMonitorMainWindow() = default;
@@ -56,7 +56,7 @@ void PvMonitorMainWindow::closeEvent(QCloseEvent* event)
 void PvMonitorMainWindow::InitApplication()
 {
   ReadSettings();
-  m_actions = new MonitorMainWindowActions(m_project_agent.get(), this);
+  m_actions = new MonitorMainWindowActions(m_project.get(), this);
 
   m_monitor_widget = new MonitorWidget;
   setCentralWidget(m_monitor_widget);
@@ -78,15 +78,21 @@ void PvMonitorMainWindow::WriteSettings()
 
 void PvMonitorMainWindow::OnProjectLoad()
 {
-  m_monitor_widget->SetModel(m_project_agent->GetMonitorModel());
+  m_monitor_widget->SetModel(m_project->GetMonitorModel());
+  UpdateProjectNames();
 }
 
-void PvMonitorMainWindow::OnProjectModified() {}
+void PvMonitorMainWindow::UpdateProjectNames()
+{
+  m_actions->UpdateProjectNames();
+}
 
-std::unique_ptr<PvMonitorProject> PvMonitorMainWindow::CreateProjectAgent()
+std::unique_ptr<PvMonitorProject> PvMonitorMainWindow::CreateProject()
 {
   mvvm::ProjectContext context;
   context.loaded_callback = [this]() { OnProjectLoad(); };
+  context.modified_callback = [this]() { UpdateProjectNames(); };
+  context.saved_callback = [this]() { UpdateProjectNames(); };
   context.application_type = PvMonitorProject::kApplicationType;
   return std::make_unique<PvMonitorProject>(context);
 }

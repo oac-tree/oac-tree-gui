@@ -85,13 +85,10 @@ private:
   void OnProjectLoad();
 
   /**
-   * @brief Perform widgets setup on project modification.
+   * @brief Update currently opened project name.
    */
-  void OnProjectModified();
+  void UpdateProjectNames();
 
-  /**
-   * @brief Creates main application project agent.
-   */
   std::unique_ptr<ApplicationModels> CreateProject();
 
   std::unique_ptr<ApplicationModels> m_models;

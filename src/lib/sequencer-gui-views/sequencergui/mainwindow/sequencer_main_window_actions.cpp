@@ -71,7 +71,7 @@ bool SequencerMainWindowActions::CloseCurrentProject() const
   return m_project_handler->CloseProject();
 }
 
-void SequencerMainWindowActions::OnProjectModified()
+void SequencerMainWindowActions::UpdateProjectNames()
 {
   m_project_handler->UpdateNames();
 }

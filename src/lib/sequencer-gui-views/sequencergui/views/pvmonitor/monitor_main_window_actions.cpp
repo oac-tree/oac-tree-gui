@@ -32,11 +32,6 @@
 #include <QMenu>
 #include <QMenuBar>
 
-namespace
-{
-const QString kApplicationType = "SUP PV Monitor";
-}
-
 namespace sequencergui
 {
 
@@ -58,12 +53,10 @@ bool MonitorMainWindowActions::CloseCurrentProject() const
   return m_project_handler->CloseProject();
 }
 
-void MonitorMainWindowActions::OnProjectModified()
+void MonitorMainWindowActions::UpdateProjectNames()
 {
   m_project_handler->UpdateNames();
 }
-
-//! Create main actions.
 
 void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
 {

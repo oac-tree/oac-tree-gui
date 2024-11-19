@@ -56,18 +56,11 @@ private:
    */
   void OnProjectLoad();
 
-  /**
-   * @brief Perform widgets setup on project modification.
-   */
-  void OnProjectModified();
+  void UpdateProjectNames();
 
-  /**
-   * @brief Creates main application project agent.
-   */
-  std::unique_ptr<PvMonitorProject> CreateProjectAgent();
+  std::unique_ptr<PvMonitorProject> CreateProject();
 
-
-  std::unique_ptr<PvMonitorProject> m_project_agent;
+  std::unique_ptr<PvMonitorProject> m_project;
   MonitorWidget* m_monitor_widget{nullptr};
   MonitorMainWindowActions* m_actions{nullptr};
 };

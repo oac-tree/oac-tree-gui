@@ -169,18 +169,21 @@ void SequencerMainWindow::OnProjectLoad()
   const auto enable_undo = GetGlobalSettings().Data<bool>(kUseUndoSetting);
   const auto undo_limit = GetGlobalSettings().Data<int>(kUndoLimitSetting);
   m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
+
+  UpdateProjectNames();
 }
 
-void SequencerMainWindow::OnProjectModified()
+void SequencerMainWindow::UpdateProjectNames()
 {
-  m_action_manager->OnProjectModified();
+  m_action_manager->UpdateProjectNames();
 }
 
 std::unique_ptr<ApplicationModels> SequencerMainWindow::CreateProject()
 {
   mvvm::ProjectContext context;
-  context.modified_callback = [this]() { OnProjectModified(); };
+  context.modified_callback = [this]() { UpdateProjectNames(); };
   context.loaded_callback = [this]() { OnProjectLoad(); };
+  context.saved_callback = [this]() { UpdateProjectNames(); };
   context.application_type = ApplicationModels::kApplicationType;
   return std::make_unique<ApplicationModels>(context);
 }
