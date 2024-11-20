@@ -98,9 +98,9 @@ void OperationRealTimePanel::SetSelectedInstructions(std::vector<InstructionItem
   m_realtime_instruction_tree->SetSelectedInstructions(items);
 }
 
-MessagePanel *OperationRealTimePanel::GetMessagePanel()
+void OperationRealTimePanel::SetJobLog(JobLog *job_log)
 {
-  return m_message_panel;
+  m_message_panel->SetLog(job_log);
 }
 
 int OperationRealTimePanel::GetCurrentTickTimeout()

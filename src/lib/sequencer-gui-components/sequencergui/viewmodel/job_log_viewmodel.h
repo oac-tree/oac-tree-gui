@@ -27,8 +27,10 @@ namespace sequencergui
 
 class JobLog;
 
-//! View model to represent JobLog in Qt tree in a form of a table.
-
+/**
+ * @brief The JobLogViewModel class is a viewmodel to show JobLog content in the form of the
+ * table.
+ */
 class JobLogViewModel : public QAbstractTableModel
 {
   Q_OBJECT
@@ -49,17 +51,29 @@ public:
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
+  /**
+   * @brief Provides necessary view model bookkeeping when a new LogEvent is added to a JobLog.
+   *
+   * This method should be connected with JobLog::LogEventAppended.
+   */
   void OnLogEventAppended();
 
+  /**
+   * @brief Clears the model.
+   *
+   * Called when log is cleared.
+   */
   void OnLogCleared();
 
-private:
+  /**
+   * @brief Set model connected/disconnected with JobLog events.
+   */
   void SetConnected(bool value);
 
   //!< current container with LogEvents
   JobLog *m_job_log{nullptr};
 
-  //!< Number of rows shown by the table table. May differ from the actual number of LogEvents in
+  //!< Number of rows shown by the table. May differ from the actual number of LogEvents in
   //!< the container.
   int m_row_count{0};
 };

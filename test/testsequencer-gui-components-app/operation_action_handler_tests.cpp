@@ -60,7 +60,7 @@ public:
 
   std::vector<JobItem*> GetJobItems() { return mvvm::utils::GetTopItems<JobItem>(GetJobModel()); }
 
-  bool IsCompleted(JobItem* job_item)
+  static bool IsCompleted(JobItem* job_item)
   {
     auto status = job_item->GetStatus();
     return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;

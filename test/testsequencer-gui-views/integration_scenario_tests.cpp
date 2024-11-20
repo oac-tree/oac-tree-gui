@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/job_item.h>
@@ -29,7 +29,6 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/model/xml_utils.h>
-#include <sequencergui/views/operation/message_panel.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>
@@ -72,8 +71,6 @@ public:
 //! manager.
 TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 {
-  ApplicationModels m_models;
-
   auto procedure_item = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
   const auto file_name = GetFilePath("XmlDocumentSaveLoad.xml");
@@ -89,13 +86,9 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   auto loaded_procedure = GetSequencerModel()->GetProcedures().at(0);
   EXPECT_NE(procedure_item, loaded_procedure);
 
-  MessagePanel panel;
   m_job_item->SetProcedure(loaded_procedure);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
-
   JobManager manager({});
-  manager.SetMessagePanel(callback);
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 
@@ -165,13 +158,9 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
   model->InsertItem(std::move(procedure_item), model->GetProcedureContainer(),
                     mvvm::TagIndex::Append());
 
-  MessagePanel panel;
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
-
   JobManager manager({});
-  manager.SetMessagePanel(callback);
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 }
@@ -203,13 +192,9 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
   model->InsertItem(std::move(procedure_item), model->GetProcedureContainer(),
                     mvvm::TagIndex::Append());
 
-  MessagePanel panel;
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
-
   JobManager manager({});
-  manager.SetMessagePanel(callback);
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 

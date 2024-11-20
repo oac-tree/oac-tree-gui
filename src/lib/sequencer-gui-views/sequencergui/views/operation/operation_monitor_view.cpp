@@ -36,7 +36,6 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_action_handler.h>
 #include <sequencergui/views/editors/user_input_dialogs.h>
-#include <sequencergui/views/operation/message_panel.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sequencergui/views/operation/remote_connection_dialog.h>
 #include <sequencergui/widgets/message_handler_factory.h>
@@ -99,9 +98,6 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
   SetupWidgetActions();
 
   m_action_handler->SetMessageHandler(CreateMessageBoxHandler());
-  JobManager::set_joblog_cb callback = [this](auto log)
-  { m_realtime_panel->GetMessagePanel()->SetLog(log); };
-  m_job_manager->SetMessagePanel(callback);
   ReadSettings();
 }
 
@@ -297,7 +293,14 @@ void OperationMonitorView::SetupWidgetActions()
 void OperationMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
+
   m_realtime_panel->SetCurrentJob(item);
+
+  if (auto handler = m_job_manager->GetJobHandler(item); handler)
+  {
+    m_realtime_panel->SetJobLog(handler->GetJobLog());
+  }
+
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 

@@ -129,9 +129,6 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   JobManager manager({});
 
-  JobManager::set_joblog_cb callback = [this](auto) {};
-
-  manager.SetMessagePanel(callback);
   manager.SubmitJob(m_job_item);
   manager.SetCurrentJob(m_job_item);
   EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
@@ -176,10 +173,7 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
 
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager::set_joblog_cb callback = [this](auto) {};
-
   JobManager manager({});
-  manager.SetMessagePanel(callback);
 
   // nothing wrong if we are trying to remove non-submitted job
   EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
@@ -203,10 +197,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 
   m_job_item->SetProcedure(procedure);
 
-  JobManager::set_joblog_cb callback = [this](auto) {};
-
   JobManager manager({});
-  manager.SetMessagePanel(callback);
 
   manager.SubmitJob(m_job_item);
   manager.SetCurrentJob(m_job_item);
@@ -242,7 +233,6 @@ TEST_F(JobManagerTest, StopAllJobs)
   job_item2->SetProcedure(procedure1);
 
   JobManager manager({});
-  manager.SetMessagePanel([this](auto) {});
 
   EXPECT_NO_FATAL_FAILURE(manager.StopAllJobs());
 

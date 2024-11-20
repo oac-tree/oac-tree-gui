@@ -31,15 +31,21 @@ class CollapsibleListView;
 
 namespace sequencergui
 {
-class SequencerModel;
-class MonitorRealTimeActions;
+
 class InstructionItem;
 class JobItem;
+class JobLog;
 class MessagePanel;
+class MonitorRealTimeActions;
 class RealTimeInstructionTreeWidget;
+class SequencerModel;
 
-//! Central panel on SequencerMonitorView.
-
+/**
+ * @brief The OperationRealTimePanel class is a central panel of the OperationMonitorView.
+ *
+ * Contains a real-time instruction tree with start/step/stop control elements on the top, and log
+ * panel at the bottom.
+ */
 class OperationRealTimePanel : public QWidget
 {
   Q_OBJECT
@@ -52,7 +58,7 @@ public:
 
   void SetSelectedInstructions(std::vector<InstructionItem*> items);
 
-  MessagePanel* GetMessagePanel();
+  void SetJobLog(JobLog* job_log);
 
   int GetCurrentTickTimeout();
 

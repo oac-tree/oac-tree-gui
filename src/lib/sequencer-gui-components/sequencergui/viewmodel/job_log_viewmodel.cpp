@@ -25,6 +25,7 @@
 
 namespace
 {
+
 const int kColumnCount = 5;  // number of members in LogEvent
 QStringList GetColumnNames()
 {
@@ -40,7 +41,8 @@ QStringList GetColumnNames()
 namespace sequencergui
 {
 
-JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent) : m_job_log(job_log)
+JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent)
+    : QAbstractTableModel(parent), m_job_log(job_log)
 {
   if (m_job_log)
   {
@@ -119,7 +121,7 @@ QVariant JobLogViewModel::data(const QModelIndex &index, int role) const
 
 QVariant JobLogViewModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-  static QStringList column_names = GetColumnNames();
+  static const QStringList column_names = GetColumnNames();
 
   if (role != Qt::DisplayRole)
   {
@@ -144,12 +146,9 @@ Qt::ItemFlags JobLogViewModel::flags(const QModelIndex &index) const
   return QAbstractTableModel::flags(index) | Qt::ItemIsSelectable;
 }
 
-//! Provides necessary ViewModel-related bookkeeping when a new LogEvent is added to a JobLog.
-//! This method should be connected with JobLog::LogEventAppended.
-
 void JobLogViewModel::OnLogEventAppended()
 {
-  int current_row_count = rowCount(QModelIndex());
+  const int current_row_count = rowCount(QModelIndex());
 
   if (current_row_count + 1 != m_job_log->GetSize())
   {
@@ -161,7 +160,6 @@ void JobLogViewModel::OnLogEventAppended()
   endInsertRows();
 }
 
-//! Clean the table.
 void JobLogViewModel::OnLogCleared()
 {
   beginResetModel();
@@ -169,7 +167,6 @@ void JobLogViewModel::OnLogCleared()
   endResetModel();
 }
 
-//! Connect or disconnect the view to the JobLog.
 void JobLogViewModel::SetConnected(bool value)
 {
   if (!m_job_log)

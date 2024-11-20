@@ -48,10 +48,9 @@ class JobLogViewModel;
 /**
  * @brief The MessagePanel class shows JobLog information in a log table.
  *
- * @details The table is implemented as a tree view  with columns: date, time, severity, source
+ * The table is implemented as a tree view  with columns: date, time, severity, source
  * and the message. It has a selector to filter out certain severity levels.
  */
-
 class MessagePanel : public QWidget
 {
   Q_OBJECT

@@ -28,14 +28,15 @@
 namespace sequencergui
 {
 
-//! Holds all messages of running job in chronological order.
-
+/**
+ * @brief The JobLog class holds all messages of running job in chronological order.
+ */
 class JobLog : public QObject
 {
   Q_OBJECT
 
 public:
-  JobLog(QObject* parent = nullptr);
+  explicit JobLog(QObject* parent = nullptr);
 
   void Append(const LogEvent& log_event);
 

@@ -64,10 +64,6 @@ void JobManager::SetCurrentJob(JobItem *job)
 
   if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    if (m_set_joblog_cb)
-    {
-      m_set_joblog_cb(job_handler->GetJobLog());
-    }
   }
 }
 
@@ -135,11 +131,6 @@ void JobManager::OnRemoveJobRequest(JobItem *job)
 
     m_job_map.erase(job);
   }
-}
-
-void JobManager::SetMessagePanel(set_joblog_cb cb)
-{
-  m_set_joblog_cb = cb;
 }
 
 bool JobManager::HasRunningJobs() const

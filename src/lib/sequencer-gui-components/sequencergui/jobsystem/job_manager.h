@@ -32,7 +32,6 @@ class JobModel;
 class InstructionItem;
 class JobItem;
 class LocalJobHandler;
-class JobLog;
 
 /**
  * @brief The JobManager class manages the execution of sequencer jobs.
@@ -49,8 +48,6 @@ class JobManager : public QObject
   Q_OBJECT
 
 public:
-  using set_joblog_cb = std::function<void(JobLog*)>;
-
   explicit JobManager(UserContext user_context, QObject* parent = nullptr);
   ~JobManager() override;
 
@@ -111,8 +108,6 @@ public:
    */
   void OnRemoveJobRequest(JobItem* job);
 
-  void SetMessagePanel(set_joblog_cb cb);
-
   /**
    * @brief Checks if there are jobs running.
    */
@@ -133,7 +128,6 @@ private:
 
   JobItem* m_current_job{nullptr};
   std::map<JobItem*, std::unique_ptr<LocalJobHandler>> m_job_map;
-  set_joblog_cb m_set_joblog_cb;
   UserContext m_user_context;
 };
 
