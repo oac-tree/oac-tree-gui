@@ -92,10 +92,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 
-  manager.SetCurrentJob(m_job_item);
-  EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
-
-  auto job_handler = manager.GetCurrentJobHandler();
+  auto job_handler = manager.GetJobHandler(m_job_item);
   ASSERT_TRUE(job_handler != nullptr);
 
   EXPECT_FALSE(job_handler->IsRunning());

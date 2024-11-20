@@ -161,15 +161,11 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
   m_actions.OnStartJobRequest();
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  // no item was selected, job_handler is not switched
-  EXPECT_FALSE(m_job_manager.GetCurrentJobHandler());
 
   // making item selected
   m_selected_item = job_item;
 
   m_actions.OnStartJobRequest();
-
-  EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), m_job_manager.GetJobHandler(job_item));
 
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
@@ -177,7 +173,7 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
   EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
 
   // starting second time, jobHandler should be the same as before
-  auto prev_job_handler = m_job_manager.GetCurrentJobHandler();
+  auto prev_job_handler = m_job_manager.GetJobHandler(job_item);
 
   m_actions.OnStartJobRequest();
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
@@ -185,7 +181,7 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
 
-  EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), prev_job_handler);
+  EXPECT_EQ(m_job_manager.GetJobHandler(job_item), prev_job_handler);
 }
 
 //! Removing submitted job.
@@ -239,7 +235,7 @@ TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
 
   m_actions.OnStartJobRequest();
 
-  auto job_handler = m_job_manager.GetCurrentJobHandler();
+  auto job_handler = m_job_manager.GetJobHandler(job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
   EXPECT_TRUE(job_handler->IsRunning());
 
@@ -346,8 +342,6 @@ TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
   m_selected_item = job_item;
 
   m_actions.OnStartJobRequest();
-
-  EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), m_job_manager.GetJobHandler(job_item));
 
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 

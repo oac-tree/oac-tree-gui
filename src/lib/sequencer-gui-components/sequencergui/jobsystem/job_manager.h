@@ -60,26 +60,9 @@ public:
   void SubmitJob(JobItem* job);
 
   /**
-   * @brief Set the job as the current job.
-   *
-   * The job has to be submitted first.
-   */
-  void SetCurrentJob(JobItem* job);
-
-  /**
-   * @brief Returns job handler corresponding to the current job.
-   */
-  LocalJobHandler* GetCurrentJobHandler();
-
-  /**
    * @brief Returns job handler for a given job.
    */
   LocalJobHandler* GetJobHandler(JobItem* job);
-
-  /**
-   * @brief Returns current job.
-   */
-  JobItem* GetCurrentJob();
 
   /**
    * @brief Start current job.
@@ -126,7 +109,6 @@ private:
 
   std::unique_ptr<LocalJobHandler> CreateJobHandler(JobItem* item);
 
-  JobItem* m_current_job{nullptr};
   std::map<JobItem*, std::unique_ptr<LocalJobHandler>> m_job_map;
   UserContext m_user_context;
 };

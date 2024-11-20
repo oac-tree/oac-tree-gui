@@ -20,8 +20,8 @@
 #include "operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -112,8 +112,6 @@ void OperationActionHandler::OnStartJobRequest()
 
   ResetJobIfNecessary();
 
-  m_job_manager->SetCurrentJob(GetSelectedJob());
-
   m_job_manager->OnStartJobRequest(GetSelectedJob());
 }
 
@@ -134,8 +132,6 @@ void OperationActionHandler::OnStopJobRequest()
 void OperationActionHandler::OnMakeStepRequest()
 {
   CheckConditions();
-
-  m_job_manager->SetCurrentJob(GetSelectedJob());
 
   ResetJobIfNecessary();
 
@@ -225,7 +221,7 @@ void OperationActionHandler::CheckConditions()
 
 void OperationActionHandler::ResetJobIfNecessary()
 {
-  if (auto job_handler = m_job_manager->GetCurrentJobHandler(); job_handler)
+  if (auto job_handler = m_job_manager->GetJobHandler(GetSelectedJob()); job_handler)
   {
     auto status = job_handler->GetRunnerStatus();
     if (status == RunnerStatus::kFailed || status == RunnerStatus::kSucceeded

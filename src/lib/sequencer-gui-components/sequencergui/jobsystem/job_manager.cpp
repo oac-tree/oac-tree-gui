@@ -35,6 +35,8 @@ JobManager::JobManager(UserContext user_context, QObject *parent)
 {
 }
 
+JobManager::~JobManager() = default;
+
 void JobManager::SubmitJob(JobItem *job)
 {
   if (!job)
@@ -51,36 +53,10 @@ void JobManager::SubmitJob(JobItem *job)
   m_job_map.insert({job, std::move(job_handler)});
 }
 
-JobManager::~JobManager() = default;
-
-void JobManager::SetCurrentJob(JobItem *job)
-{
-  if (m_current_job == job)
-  {
-    return;
-  }
-
-  m_current_job = job;
-
-  if (auto job_handler = GetCurrentJobHandler(); job_handler)
-  {
-  }
-}
-
-LocalJobHandler *JobManager::GetCurrentJobHandler()
-{
-  return GetJobHandler(m_current_job);
-}
-
 LocalJobHandler *JobManager::GetJobHandler(JobItem *job)
 {
   auto iter = m_job_map.find(job);
   return iter == m_job_map.end() ? nullptr : iter->second.get();
-}
-
-JobItem *JobManager::GetCurrentJob()
-{
-  return m_current_job;
 }
 
 void JobManager::OnStartJobRequest(JobItem *item)
@@ -124,11 +100,6 @@ void JobManager::OnRemoveJobRequest(JobItem *job)
       throw RuntimeException("Attempt to modify running job");
     }
 
-    if (job == GetCurrentJob())
-    {
-      SetCurrentJob(nullptr);
-    }
-
     m_job_map.erase(job);
   }
 }
@@ -148,11 +119,12 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
 {
   auto sending_job_handler = qobject_cast<LocalJobHandler *>(sender());
 
-  // we do not want to send selection request for invisible job
-  if (sending_job_handler == GetCurrentJobHandler())
-  {
-    emit NextLeavesChanged(leaves);
-  }
+  // FIXME restore
+  // // we do not want to send selection request for invisible job
+  // if (sending_job_handler == GetCurrentJobHandler())
+  // {
+  //   emit NextLeavesChanged(leaves);
+  // }
 }
 
 std::unique_ptr<LocalJobHandler> JobManager::CreateJobHandler(JobItem *item)

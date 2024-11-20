@@ -68,9 +68,7 @@ public:
 TEST_F(JobManagerTest, InitialState)
 {
   JobManager manager({});
-  EXPECT_FALSE(manager.GetCurrentJobHandler());
-  EXPECT_FALSE(manager.GetJobHandler(m_job_item));
-  EXPECT_FALSE(manager.GetCurrentJob());
+  EXPECT_EQ(manager.GetJobHandler(m_job_item), nullptr);
   EXPECT_FALSE(manager.HasRunningJobs());
 }
 
@@ -83,7 +81,6 @@ TEST_F(JobManagerTest, SubmitProcedure)
 
   JobManager manager({});
   manager.SubmitJob(m_job_item);
-  EXPECT_FALSE(manager.GetCurrentJob());
 
   ASSERT_TRUE(manager.GetJobHandler(m_job_item));
   EXPECT_EQ(manager.GetJobHandler(m_job_item)->GetExpandedProcedure(),
@@ -130,10 +127,8 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   JobManager manager({});
 
   manager.SubmitJob(m_job_item);
-  manager.SetCurrentJob(m_job_item);
-  EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
 
-  auto job_handler = manager.GetCurrentJobHandler();
+  auto job_handler = manager.GetJobHandler(m_job_item);
   ASSERT_TRUE(job_handler != nullptr);
 
   EXPECT_FALSE(job_handler->IsRunning());
@@ -179,14 +174,11 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
   EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
 
   manager.SubmitJob(m_job_item);
-  manager.SetCurrentJob(m_job_item);
 
   // should be possible to remove submitted, but non-running job
   EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
 
-  EXPECT_EQ(manager.GetCurrentJobHandler(), nullptr);
   EXPECT_EQ(manager.GetJobHandler(m_job_item), nullptr);
-  EXPECT_EQ(manager.GetCurrentJob(), nullptr);
 }
 
 //! Attempt to remove long running job.
@@ -200,10 +192,9 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   JobManager manager({});
 
   manager.SubmitJob(m_job_item);
-  manager.SetCurrentJob(m_job_item);
   manager.OnStartJobRequest(m_job_item);
 
-  auto job_handler = manager.GetCurrentJobHandler();
+  auto job_handler = manager.GetJobHandler(m_job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
 
   EXPECT_TRUE(job_handler->IsRunning());
@@ -238,10 +229,8 @@ TEST_F(JobManagerTest, StopAllJobs)
 
   manager.SubmitJob(job_item1);
   manager.SubmitJob(job_item2);
-  manager.SetCurrentJob(job_item1);
   manager.OnStartJobRequest(job_item1);
 
-  manager.SetCurrentJob(job_item2);
   manager.OnStartJobRequest(job_item1);
 
   EXPECT_TRUE(QTest::qWaitFor([&manager]() { return manager.HasRunningJobs(); }, 100));
