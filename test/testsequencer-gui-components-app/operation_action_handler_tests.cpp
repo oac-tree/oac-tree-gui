@@ -20,9 +20,9 @@
 #include "sequencergui/operation/operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/job_utils.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -51,7 +51,7 @@ public:
       : m_job_manager({}), m_actions(&m_job_manager, [this] { return m_selected_item; })
   {
     m_models.CreateEmpty();
-    m_models.GetSequencerModel()->GetProcedureContainer()->Clear(); // our untitled procedure
+    m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
     m_actions.SetJobModel(GetJobModel());
   }
 

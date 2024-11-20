@@ -115,16 +115,20 @@ void JobManager::StopAllJobs()
   std::for_each(m_job_map.begin(), m_job_map.end(), [](const auto &iter) { iter.second->Stop(); });
 }
 
+void JobManager::SetActiveJob(JobItem *item)
+{
+  m_active_job = item;
+}
+
 void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
 {
   auto sending_job_handler = qobject_cast<LocalJobHandler *>(sender());
 
-  // FIXME restore
-  // // we do not want to send selection request for invisible job
-  // if (sending_job_handler == GetCurrentJobHandler())
-  // {
-  //   emit NextLeavesChanged(leaves);
-  // }
+  // we want to send notifications only from the job the user is surrently looking at
+  if (sending_job_handler->GetJobItem() == m_active_job)
+  {
+    emit NextLeavesChanged(leaves);
+  }
 }
 
 std::unique_ptr<LocalJobHandler> JobManager::CreateJobHandler(JobItem *item)

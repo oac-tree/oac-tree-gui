@@ -36,6 +36,7 @@ class JobModel;
 class JobManager;
 class JobItem;
 class ProcedureItem;
+class InstructionItem;
 
 /**
  * @brief The OperationActionHandler class handles high-level actions of OperationMonitorView
@@ -109,6 +110,11 @@ public:
    * @brief Sets tick timeout of currently selected job to given value.
    */
   void OnSetTickTimeoutRequest(int msec);
+
+  /**
+   * @brief Set/unset a breakpoint for given instruction for currently active job.
+   */
+  void OnToggleBreakpoint(InstructionItem* instruction);
 
 signals:
   void MakeJobSelectedRequest(sequencergui::JobItem* item);

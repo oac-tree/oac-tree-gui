@@ -101,6 +101,14 @@ public:
    */
   void StopAllJobs();
 
+  /**
+   * @brief Set active job.
+   *
+   * An active job is what is currently selected by the user. This job is allowed to send signals
+   * and is used for toggling breakpoints requests.
+   */
+  void SetActiveJob(JobItem* item);
+
 signals:
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
@@ -111,6 +119,7 @@ private:
 
   std::map<JobItem*, std::unique_ptr<LocalJobHandler>> m_job_map;
   UserContext m_user_context;
+  JobItem* m_active_job{nullptr};
 };
 
 }  // namespace sequencergui

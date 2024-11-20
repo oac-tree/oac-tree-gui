@@ -244,16 +244,8 @@ void OperationMonitorView::SetupConnections()
   connect(m_action_handler, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 
-  // FIXME restore
-  // auto on_toggle_breakpoint_request = [this](auto *instruction)
-  // {
-  //   if (auto handler = m_job_manager->GetCurrentJobHandler(); handler)
-  //   {
-  //     handler->OnToggleBreakpointRequest(instruction);
-  //   }
-  // };
-  // connect(m_realtime_panel, &OperationRealTimePanel::ToggleBreakpointRequest, this,
-  //         on_toggle_breakpoint_request);
+  connect(m_realtime_panel, &OperationRealTimePanel::ToggleBreakpointRequest, m_action_handler,
+          &OperationActionHandler::OnToggleBreakpoint);
 }
 
 void OperationMonitorView::SetupWidgetActions()
@@ -293,6 +285,7 @@ void OperationMonitorView::SetupWidgetActions()
 //! Setup widgets to show currently selected job.
 void OperationMonitorView::OnJobSelected(JobItem *item)
 {
+  m_job_manager->SetActiveJob(item);
   m_realtime_panel->SetCurrentJob(item);
 
   if (auto handler = m_job_manager->GetJobHandler(item); handler)

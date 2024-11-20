@@ -201,6 +201,14 @@ void OperationActionHandler::OnSetTickTimeoutRequest(int msec)
   }
 }
 
+void OperationActionHandler::OnToggleBreakpoint(InstructionItem *instruction)
+{
+  if (auto job_handler = m_job_manager->GetJobHandler(GetSelectedJob()); job_handler)
+  {
+    job_handler->OnToggleBreakpointRequest(instruction);
+  }
+}
+
 void OperationActionHandler::CheckConditions()
 {
   if (!m_job_manager)
