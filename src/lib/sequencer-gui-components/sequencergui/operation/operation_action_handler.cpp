@@ -223,6 +223,17 @@ void OperationActionHandler::CheckConditions()
   }
 }
 
+void OperationActionHandler::SendMessage(const std::string &text, const std::string &informative,
+                                         const std::string &details) const
+{
+  SendMessage(sup::gui::CreateInvalidOperationMessage(text, informative, details));
+}
+
+void OperationActionHandler::SendMessage(const sup::gui::MessageEvent &message_event) const
+{
+  m_operation_context.send_message(message_event);
+}
+
 JobItem *OperationActionHandler::GetSelectedJob()
 {
   return m_operation_context.selected_job();

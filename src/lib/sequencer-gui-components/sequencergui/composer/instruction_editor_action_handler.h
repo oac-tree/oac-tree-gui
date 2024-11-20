@@ -169,8 +169,8 @@ private:
   mvvm::ISessionModel* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;
   void SendMessage(const std::string& text, const std::string& informative = {},
-                   const std::string& details = {});
-  void SendMessage(const sup::gui::MessageEvent& message_event);
+                   const std::string& details = {}) const;
+  void SendMessage(const sup::gui::MessageEvent& message_event) const;
 
   const QMimeData* GetMimeData() const;
 

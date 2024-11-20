@@ -292,13 +292,12 @@ InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContaine
 
 void InstructionEditorActionHandler::SendMessage(const std::string &text,
                                                  const std::string &informative,
-                                                 const std::string &details)
+                                                 const std::string &details) const
 {
-  auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
-  m_context.send_message_callback(message);
+  SendMessage(sup::gui::CreateInvalidOperationMessage(text, informative, details));
 }
 
-void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent &message_event)
+void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent &message_event) const
 {
   m_context.send_message_callback(message_event);
 }

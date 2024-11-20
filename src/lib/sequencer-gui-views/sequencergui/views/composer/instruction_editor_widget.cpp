@@ -245,14 +245,9 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   InstructionEditorContext result;
   result.selected_procedure = [this]() { return m_procedure; };
   result.selected_instruction = [this]() { return GetSelectedInstruction(); };
-
-  auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
-  result.send_message_callback = send_message_callback;
-
+  result.send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
-
   result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };
-
   result.set_mime_data = [](std::unique_ptr<QMimeData> data)
   { QGuiApplication::clipboard()->setMimeData(data.release()); };
 

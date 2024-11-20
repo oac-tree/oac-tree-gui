@@ -42,6 +42,7 @@
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/widgets/item_stack_widget.h>
+#include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/model_utils.h>
@@ -316,6 +317,7 @@ OperationActionContext OperationMonitorView::CreateOperationContext()
 {
   OperationActionContext result;
   result.selected_job = [this] { return m_job_panel->GetSelectedJob(); };
+  result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   return result;
 }
 

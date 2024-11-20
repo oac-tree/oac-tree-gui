@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_OPERATION_OPERATION_ACTION_CONTEXT_H_
 #define SEQUENCERGUI_OPERATION_OPERATION_ACTION_CONTEXT_H_
 
+#include <sup/gui/core/message_event.h>
+
 #include <functional>
 
 namespace sequencergui
@@ -29,12 +31,15 @@ class JobItem;
 
 /**
  * @brief The OperationActionContext struct contains callbacks necessary for OperationActionHandler
- * to ask for external info.
+ * to function.
  */
 struct OperationActionContext
 {
   //! callback to get currently selected job
   std::function<JobItem*()> selected_job;
+
+  //!< callback to report an error
+  std::function<void(const sup::gui::MessageEvent&)> send_message;
 };
 
 }  // namespace sequencergui

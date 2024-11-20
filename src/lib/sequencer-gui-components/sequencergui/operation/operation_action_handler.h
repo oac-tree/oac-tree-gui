@@ -30,7 +30,8 @@
 namespace sup::gui
 {
 class MessageHandlerInterface;
-}
+class MessageEvent;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -124,6 +125,10 @@ signals:
 
 private:
   void CheckConditions();
+
+  void SendMessage(const std::string& text, const std::string& informative = {},
+                   const std::string& details = {}) const;
+  void SendMessage(const sup::gui::MessageEvent& message_event) const;
 
   JobItem* GetSelectedJob();
 
