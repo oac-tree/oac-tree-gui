@@ -65,31 +65,31 @@ public:
   LocalJobHandler* GetJobHandler(JobItem* job);
 
   /**
-   * @brief Start current job.
+   * @brief Start job.
    */
-  void OnStartJobRequest(JobItem* item);
+  void Start(JobItem* item);
 
   /**
-   * @brief Pause job.
+   * @brief Pause given job.
    */
-  void OnPauseJobRequest(JobItem* item);
+  void Pause(JobItem* item);
 
   /**
-   * @brief Stop current job.
+   * @brief Stop given job.
    */
-  void OnStopJobRequest(JobItem* item);
+  void Stop(JobItem* item);
 
   /**
-   * @brief Execute a single step of the current job.
+   * @brief Execute a single step of the given job.
    */
-  void OnMakeStepRequest(JobItem* item);
+  void Step(JobItem* item);
 
   /**
    * @brief Removes a job corresponding to a given JobItem from the manager.
    *
    * Internally removes JobHandler, do not affect JobItem.
    */
-  void OnRemoveJobRequest(JobItem* job);
+  void RemoveJobHandler(JobItem* job);
 
   /**
    * @brief Checks if there are jobs running.

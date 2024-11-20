@@ -59,7 +59,7 @@ LocalJobHandler *JobManager::GetJobHandler(JobItem *job)
   return iter == m_job_map.end() ? nullptr : iter->second.get();
 }
 
-void JobManager::OnStartJobRequest(JobItem *item)
+void JobManager::Start(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -67,7 +67,7 @@ void JobManager::OnStartJobRequest(JobItem *item)
   }
 }
 
-void JobManager::OnPauseJobRequest(JobItem *item)
+void JobManager::Pause(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -75,7 +75,7 @@ void JobManager::OnPauseJobRequest(JobItem *item)
   }
 }
 
-void JobManager::OnStopJobRequest(JobItem *item)
+void JobManager::Stop(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -83,7 +83,7 @@ void JobManager::OnStopJobRequest(JobItem *item)
   }
 }
 
-void JobManager::OnMakeStepRequest(JobItem *item)
+void JobManager::Step(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -91,7 +91,7 @@ void JobManager::OnMakeStepRequest(JobItem *item)
   }
 }
 
-void JobManager::OnRemoveJobRequest(JobItem *job)
+void JobManager::RemoveJobHandler(JobItem *job)
 {
   if (auto job_handler = GetJobHandler(job); job_handler)
   {

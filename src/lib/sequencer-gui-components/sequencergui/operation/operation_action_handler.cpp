@@ -112,21 +112,21 @@ void OperationActionHandler::OnStartJobRequest()
 
   ResetJobIfNecessary();
 
-  m_job_manager->OnStartJobRequest(GetSelectedJob());
+  m_job_manager->Start(GetSelectedJob());
 }
 
 void OperationActionHandler::OnPauseJobRequest()
 {
   CheckConditions();
 
-  m_job_manager->OnPauseJobRequest(GetSelectedJob());
+  m_job_manager->Pause(GetSelectedJob());
 }
 
 void OperationActionHandler::OnStopJobRequest()
 {
   CheckConditions();
 
-  m_job_manager->OnStopJobRequest(GetSelectedJob());
+  m_job_manager->Stop(GetSelectedJob());
 }
 
 void OperationActionHandler::OnMakeStepRequest()
@@ -135,7 +135,7 @@ void OperationActionHandler::OnMakeStepRequest()
 
   ResetJobIfNecessary();
 
-  m_job_manager->OnMakeStepRequest(GetSelectedJob());
+  m_job_manager->Step(GetSelectedJob());
 }
 
 bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
@@ -149,7 +149,7 @@ bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
     return false;
   }
 
-  auto is_success = InvokeAndCatch([this, job]() { m_job_manager->OnRemoveJobRequest(job); },
+  auto is_success = InvokeAndCatch([this, job]() { m_job_manager->RemoveJobHandler(job); },
                                    "Job removal", m_message_handler.get());
 
   if (is_success)
@@ -176,7 +176,7 @@ void OperationActionHandler::OnRegenerateJobRequest()
     return;
   }
 
-  auto is_success = InvokeAndCatch([this, job]() { m_job_manager->OnRemoveJobRequest(job); },
+  auto is_success = InvokeAndCatch([this, job]() { m_job_manager->RemoveJobHandler(job); },
                                    "Job removal", m_message_handler.get());
 
   if (is_success)

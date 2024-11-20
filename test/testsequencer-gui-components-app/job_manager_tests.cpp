@@ -139,7 +139,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   EXPECT_EQ(procedure->GetWorkspace()->GetVariableCount(), 2);
 
   // starting procedure
-  manager.OnStartJobRequest(m_job_item);
+  manager.Start(m_job_item);
   QTest::qWait(20);
 
   // We are testing here queued signals, need special waiting to let procedure complete
@@ -171,12 +171,12 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
   JobManager manager({});
 
   // nothing wrong if we are trying to remove non-submitted job
-  EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
+  EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item));
 
   manager.SubmitJob(m_job_item);
 
   // should be possible to remove submitted, but non-running job
-  EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
+  EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item));
 
   EXPECT_EQ(manager.GetJobHandler(m_job_item), nullptr);
 }
@@ -192,7 +192,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   JobManager manager({});
 
   manager.SubmitJob(m_job_item);
-  manager.OnStartJobRequest(m_job_item);
+  manager.Start(m_job_item);
 
   auto job_handler = manager.GetJobHandler(m_job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
@@ -201,10 +201,10 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   EXPECT_TRUE(manager.HasRunningJobs());
 
   // it shouldn't be possible to remove running job without first stopping it
-  EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
+  EXPECT_THROW(manager.RemoveJobHandler(m_job_item), RuntimeException);
   QTest::qWait(20);
 
-  manager.OnStopJobRequest(m_job_item);
+  manager.Stop(m_job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 50));
 
   EXPECT_FALSE(job_handler->IsRunning());
@@ -229,9 +229,9 @@ TEST_F(JobManagerTest, StopAllJobs)
 
   manager.SubmitJob(job_item1);
   manager.SubmitJob(job_item2);
-  manager.OnStartJobRequest(job_item1);
+  manager.Start(job_item1);
 
-  manager.OnStartJobRequest(job_item1);
+  manager.Start(job_item1);
 
   EXPECT_TRUE(QTest::qWaitFor([&manager]() { return manager.HasRunningJobs(); }, 100));
 
