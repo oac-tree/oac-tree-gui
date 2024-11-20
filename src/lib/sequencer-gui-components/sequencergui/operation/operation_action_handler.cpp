@@ -59,18 +59,18 @@ namespace sequencergui
 {
 
 OperationActionHandler::OperationActionHandler(JobManager *job_manager,
-                                               selection_callback_t selection_callback,
+                                               OperationActionContext operation_context,
                                                UserContext user_context, QObject *parent)
     : QObject(parent)
     , m_job_manager(job_manager)
-    , m_job_selection_callback(std::move(selection_callback))
+    , m_operation_context(std::move(operation_context))
     , m_user_context(user_context)
     , m_message_handler(
           std::make_unique<sup::gui::ThrowingMessageHandler<::sequencergui::RuntimeException>>())
     , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
 
 {
-  if (!m_job_selection_callback)
+  if (!m_operation_context.selected_job)
   {
     throw RuntimeException("Selection callback is not defined");
   }
@@ -225,7 +225,7 @@ void OperationActionHandler::CheckConditions()
 
 JobItem *OperationActionHandler::GetSelectedJob()
 {
-  return m_job_selection_callback ? m_job_selection_callback() : nullptr;
+  return m_operation_context.selected_job();
 }
 
 }  // namespace sequencergui

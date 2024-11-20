@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_OPERATION_OPERATION_ACTION_HANDLER_H_
 
 #include <sequencergui/jobsystem/user_context.h>
+#include <sequencergui/operation/operation_action_context.h>
 
 #include <QObject>
 #include <functional>
@@ -55,7 +56,7 @@ public:
   //!< A callback to get currently selected JobItem.
   using selection_callback_t = std::function<JobItem*()>;
 
-  explicit OperationActionHandler(JobManager* job_manager, selection_callback_t selection_callback,
+  explicit OperationActionHandler(JobManager* job_manager, OperationActionContext operation_context,
                                   UserContext user_context, QObject* parent = nullptr);
 
   ~OperationActionHandler() override;
@@ -128,7 +129,7 @@ private:
 
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
-  selection_callback_t m_job_selection_callback;
+  OperationActionContext m_operation_context;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
   int m_default_delay{0};
   UserContext m_user_context;

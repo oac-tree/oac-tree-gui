@@ -48,10 +48,10 @@ struct AnyValueDialogResult;
  */
 struct InstructionEditorContext
 {
-  //! Callback to get currently selected procedure.
+  //! callback to get currently selected procedure
   std::function<ProcedureItem*()> selected_procedure;
 
-  //! Callback to get currently selected instruction.
+  //! callback to get currently selected instruction
   std::function<InstructionItem*()> selected_instruction;
 
   //!< callback to report an error

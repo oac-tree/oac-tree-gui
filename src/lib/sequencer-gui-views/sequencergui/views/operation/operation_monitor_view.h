@@ -39,6 +39,7 @@ class OperationRealTimePanel;
 class OperationJobPanel;
 class ProcedureItem;
 class OperationActionHandler;
+class OperationActionContext;
 class RemoteConnectionService;
 
 /**
@@ -79,6 +80,7 @@ private:
   void SetupWidgetActions();
   void OnJobSelected(sequencergui::JobItem* item);
   void OnConnectRequest();
+  OperationActionContext CreateOperationContext();
 
   OperationPresentationMode m_presentation_mode;
 

@@ -48,12 +48,18 @@ class OperationActionHandlerTest : public ::testing::Test
 {
 public:
   OperationActionHandlerTest()
-      : m_job_manager({})
-      , m_actions(&m_job_manager, [this] { return m_selected_item; }, UserContext{})
+      : m_job_manager({}), m_actions(&m_job_manager, CreateOperationContext(), UserContext{})
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
     m_actions.SetJobModel(GetJobModel());
+  }
+
+  OperationActionContext CreateOperationContext()
+  {
+    OperationActionContext result;
+    result.selected_job = [this] { return m_selected_item; };
+    return result;
   }
 
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
@@ -75,12 +81,12 @@ public:
 
 TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
 {
-  UserContext context;
-  auto get_item = [this] { return m_selected_item; };
-  EXPECT_THROW(OperationActionHandler(nullptr, get_item, context), RuntimeException);
+  const UserContext context;
+  const OperationActionContext action_context{[this] { return m_selected_item; }};
+  EXPECT_THROW(OperationActionHandler(nullptr, action_context, context), RuntimeException);
   EXPECT_THROW(OperationActionHandler(&m_job_manager, {}, context), RuntimeException);
 
-  OperationActionHandler actions(&m_job_manager, get_item, context);
+  OperationActionHandler actions(&m_job_manager, action_context, context);
   EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
 }
 
