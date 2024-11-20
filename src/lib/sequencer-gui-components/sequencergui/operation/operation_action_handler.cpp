@@ -114,23 +114,21 @@ void OperationActionHandler::OnStartJobRequest()
 
   m_job_manager->SetCurrentJob(GetSelectedJob());
 
-  m_job_manager->OnStartJobRequest();
+  m_job_manager->OnStartJobRequest(GetSelectedJob());
 }
 
 void OperationActionHandler::OnPauseJobRequest()
 {
   CheckConditions();
 
-  m_job_manager->SetCurrentJob(GetSelectedJob());
-  m_job_manager->OnPauseJobRequest();
+  m_job_manager->OnPauseJobRequest(GetSelectedJob());
 }
 
 void OperationActionHandler::OnStopJobRequest()
 {
   CheckConditions();
 
-  m_job_manager->SetCurrentJob(GetSelectedJob());
-  m_job_manager->OnStopJobRequest();
+  m_job_manager->OnStopJobRequest(GetSelectedJob());
 }
 
 void OperationActionHandler::OnMakeStepRequest()
@@ -141,7 +139,7 @@ void OperationActionHandler::OnMakeStepRequest()
 
   ResetJobIfNecessary();
 
-  m_job_manager->OnMakeStepRequest();
+  m_job_manager->OnMakeStepRequest(GetSelectedJob());
 }
 
 bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)

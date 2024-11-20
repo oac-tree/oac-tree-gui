@@ -83,33 +83,33 @@ JobItem *JobManager::GetCurrentJob()
   return m_current_job;
 }
 
-void JobManager::OnStartJobRequest()
+void JobManager::OnStartJobRequest(JobItem *item)
 {
-  if (auto job_handler = GetCurrentJobHandler(); job_handler)
+  if (auto job_handler = GetJobHandler(item); job_handler)
   {
     job_handler->Start();
   }
 }
 
-void JobManager::OnPauseJobRequest()
+void JobManager::OnPauseJobRequest(JobItem *item)
 {
-  if (auto job_handler = GetCurrentJobHandler(); job_handler)
+  if (auto job_handler = GetJobHandler(item); job_handler)
   {
     job_handler->Pause();
   }
 }
 
-void JobManager::OnStopJobRequest()
+void JobManager::OnStopJobRequest(JobItem *item)
 {
-  if (auto job_handler = GetCurrentJobHandler(); job_handler)
+  if (auto job_handler = GetJobHandler(item); job_handler)
   {
     job_handler->Stop();
   }
 }
 
-void JobManager::OnMakeStepRequest()
+void JobManager::OnMakeStepRequest(JobItem *item)
 {
-  if (auto job_handler = GetCurrentJobHandler(); job_handler)
+  if (auto job_handler = GetJobHandler(item); job_handler)
   {
     job_handler->Step();
   }

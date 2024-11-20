@@ -144,7 +144,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   EXPECT_EQ(procedure->GetWorkspace()->GetVariableCount(), 2);
 
   // starting procedure
-  manager.OnStartJobRequest();
+  manager.OnStartJobRequest(m_job_item);
   QTest::qWait(20);
 
   // We are testing here queued signals, need special waiting to let procedure complete
@@ -201,7 +201,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 
   manager.SubmitJob(m_job_item);
   manager.SetCurrentJob(m_job_item);
-  manager.OnStartJobRequest();
+  manager.OnStartJobRequest(m_job_item);
 
   auto job_handler = manager.GetCurrentJobHandler();
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
@@ -213,7 +213,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
   QTest::qWait(20);
 
-  manager.OnStopJobRequest();
+  manager.OnStopJobRequest(m_job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 50));
 
   EXPECT_FALSE(job_handler->IsRunning());
@@ -239,10 +239,10 @@ TEST_F(JobManagerTest, StopAllJobs)
   manager.SubmitJob(job_item1);
   manager.SubmitJob(job_item2);
   manager.SetCurrentJob(job_item1);
-  manager.OnStartJobRequest();
+  manager.OnStartJobRequest(job_item1);
 
   manager.SetCurrentJob(job_item2);
-  manager.OnStartJobRequest();
+  manager.OnStartJobRequest(job_item1);
 
   EXPECT_TRUE(QTest::qWaitFor([&manager]() { return manager.HasRunningJobs(); }, 100));
 

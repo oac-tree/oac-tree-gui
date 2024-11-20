@@ -84,22 +84,22 @@ public:
   /**
    * @brief Start current job.
    */
-  void OnStartJobRequest();
+  void OnStartJobRequest(JobItem* item);
 
   /**
-   * @brief Pause current job.
+   * @brief Pause job.
    */
-  void OnPauseJobRequest();
+  void OnPauseJobRequest(JobItem* item);
 
   /**
    * @brief Stop current job.
    */
-  void OnStopJobRequest();
+  void OnStopJobRequest(JobItem* item);
 
   /**
    * @brief Execute a single step of the current job.
    */
-  void OnMakeStepRequest();
+  void OnMakeStepRequest(JobItem* item);
 
   /**
    * @brief Removes a job corresponding to a given JobItem from the manager.

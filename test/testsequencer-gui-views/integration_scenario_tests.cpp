@@ -106,7 +106,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   EXPECT_EQ(procedure->GetWorkspace()->GetVariableCount(), 2);
 
   // starting procedure
-  manager.OnStartJobRequest();
+  manager.OnStartJobRequest(m_job_item);
   QTest::qWait(20);
 
   EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
