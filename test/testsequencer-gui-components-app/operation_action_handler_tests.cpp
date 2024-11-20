@@ -48,7 +48,7 @@ class OperationActionHandlerTest : public ::testing::Test
 {
 public:
   OperationActionHandlerTest()
-      : m_job_manager({}), m_actions(&m_job_manager, [this] { return m_selected_item; })
+      : m_job_manager({}), m_actions(&m_job_manager, [this] { return m_selected_item; }, UserContext{})
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
@@ -75,17 +75,17 @@ public:
 TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
 {
   {
-    OperationActionHandler actions(nullptr, {});
+    OperationActionHandler actions(nullptr, {}, UserContext{});
     EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
   }
 
   {
-    OperationActionHandler actions(&m_job_manager, {});
+    OperationActionHandler actions(&m_job_manager, {}, UserContext{});
     EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
   }
 
   {
-    OperationActionHandler actions(&m_job_manager, [this] { return m_selected_item; });
+    OperationActionHandler actions(&m_job_manager, [this] { return m_selected_item; }, UserContext{});
     EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
   }
 }

@@ -81,7 +81,8 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
     , m_action_handler(new OperationActionHandler(
-          m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
+          m_job_manager, [this] { return m_job_panel->GetSelectedJob(); },
+          CreateDefaultUserContext(this), this))
     , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
 {
   auto layout = new QVBoxLayout(this);

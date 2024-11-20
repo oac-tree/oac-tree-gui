@@ -60,10 +60,11 @@ namespace sequencergui
 
 OperationActionHandler::OperationActionHandler(JobManager *job_manager,
                                                selection_callback_t selection_callback,
-                                               QObject *parent)
+                                               UserContext user_context, QObject *parent)
     : QObject(parent)
     , m_job_manager(job_manager)
     , m_job_selection_callback(std::move(selection_callback))
+    , m_user_context(user_context)
     , m_message_handler(
           std::make_unique<sup::gui::ThrowingMessageHandler<::sequencergui::RuntimeException>>())
     , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
