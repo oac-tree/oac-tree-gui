@@ -70,6 +70,15 @@ OperationActionHandler::OperationActionHandler(JobManager *job_manager,
     , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
 
 {
+  if (!m_job_selection_callback)
+  {
+    throw RuntimeException("Selection callback is not defined");
+  }
+
+  if (!m_job_manager)
+  {
+    throw RuntimeException("JobManager is not defined");
+  }
 }
 
 OperationActionHandler::~OperationActionHandler() = default;
@@ -111,8 +120,6 @@ void OperationActionHandler::OnStartJobRequest()
 {
   CheckConditions();
 
-  ResetJobIfNecessary();
-
   m_job_manager->Start(GetSelectedJob());
 }
 
@@ -133,8 +140,6 @@ void OperationActionHandler::OnStopJobRequest()
 void OperationActionHandler::OnMakeStepRequest()
 {
   CheckConditions();
-
-  ResetJobIfNecessary();
 
   m_job_manager->Step(GetSelectedJob());
 }
@@ -212,32 +217,9 @@ void OperationActionHandler::OnToggleBreakpoint(InstructionItem *instruction)
 
 void OperationActionHandler::CheckConditions()
 {
-  if (!m_job_manager)
-  {
-    throw RuntimeException("JobManager is not defined");
-  }
-
   if (!m_job_model)
   {
     throw RuntimeException("JobModel is not defined");
-  }
-
-  if (!m_job_selection_callback)
-  {
-    throw RuntimeException("Selection callback is not defined");
-  }
-}
-
-void OperationActionHandler::ResetJobIfNecessary()
-{
-  if (auto job_handler = m_job_manager->GetJobHandler(GetSelectedJob()); job_handler)
-  {
-    auto status = job_handler->GetRunnerStatus();
-    if (status == RunnerStatus::kFailed || status == RunnerStatus::kSucceeded
-        || status == RunnerStatus::kHalted)
-    {
-      job_handler->Reset();
-    }
   }
 }
 

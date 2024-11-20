@@ -48,7 +48,8 @@ class OperationActionHandlerTest : public ::testing::Test
 {
 public:
   OperationActionHandlerTest()
-      : m_job_manager({}), m_actions(&m_job_manager, [this] { return m_selected_item; }, UserContext{})
+      : m_job_manager({})
+      , m_actions(&m_job_manager, [this] { return m_selected_item; }, UserContext{})
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
@@ -74,20 +75,13 @@ public:
 
 TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
 {
-  {
-    OperationActionHandler actions(nullptr, {}, UserContext{});
-    EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
-  }
+  UserContext context;
+  auto get_item = [this] { return m_selected_item; };
+  EXPECT_THROW(OperationActionHandler(nullptr, get_item, context), RuntimeException);
+  EXPECT_THROW(OperationActionHandler(&m_job_manager, {}, context), RuntimeException);
 
-  {
-    OperationActionHandler actions(&m_job_manager, {}, UserContext{});
-    EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
-  }
-
-  {
-    OperationActionHandler actions(&m_job_manager, [this] { return m_selected_item; }, UserContext{});
-    EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
-  }
+  OperationActionHandler actions(&m_job_manager, get_item, context);
+  EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
 }
 
 //! Submission of the procedure.
@@ -137,7 +131,7 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
 {
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
-  JobManager manager({});
+  const JobManager manager({});
 
   EXPECT_THROW(m_actions.OnSubmitJobRequest(procedure), sequencergui::RuntimeException);
 

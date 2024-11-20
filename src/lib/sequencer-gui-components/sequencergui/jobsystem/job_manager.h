@@ -31,7 +31,7 @@ namespace sequencergui
 class JobModel;
 class InstructionItem;
 class JobItem;
-class LocalJobHandler;
+class AbstractJobHandler;
 
 /**
  * @brief The JobManager class manages the execution of sequencer jobs.
@@ -62,7 +62,7 @@ public:
   /**
    * @brief Returns job handler for a given job.
    */
-  LocalJobHandler* GetJobHandler(JobItem* job);
+  AbstractJobHandler* GetJobHandler(JobItem* job);
 
   /**
    * @brief Start job.
@@ -115,9 +115,20 @@ signals:
 private:
   void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
-  std::unique_ptr<LocalJobHandler> CreateJobHandler(JobItem* item);
+  /**
+   * @brief Resets domain async runner of the given job to initial state, if necessary.
+   *
+   * This concerns jobs that are not running but were running before (i.e. jobs that are in one
+   * of kFailed, kSucceeded, or kHalted states).
+   *
+   * Effectively, it leads to instruction/procedure states reset to the initial state. The rest
+   * (domain procedure, JobHandler, collapse/expand status of the tree) should stay as before.
+   */
+  void ResetJobIfNecessary(JobItem* item);
 
-  std::map<JobItem*, std::unique_ptr<LocalJobHandler>> m_job_map;
+  std::unique_ptr<AbstractJobHandler> CreateLocalJobHandler(JobItem* item);
+
+  std::map<JobItem*, std::unique_ptr<AbstractJobHandler>> m_job_map;
   UserContext m_user_context;
   JobItem* m_active_job{nullptr};
 };

@@ -124,17 +124,6 @@ signals:
 private:
   void CheckConditions();
 
-  /**
-   * @brief Resets domain async runner of currently selected job to initial state, if necessary.
-   *
-   * This concerns jobs that are not running but were running before (i.e. jobs that are in one
-   * of kFailed, kSucceeded, or kHalted states).
-   *
-   * Effectively, it leads to instruction/procedure states reset to the initial state. The rest
-   * (domain procedure, JobHandler, collapse/expand status of the tree) should stay as before.
-   */
-  void ResetJobIfNecessary();
-
   JobItem* GetSelectedJob();
 
   JobModel* m_job_model{nullptr};

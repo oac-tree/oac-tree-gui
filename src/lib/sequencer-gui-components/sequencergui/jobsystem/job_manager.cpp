@@ -49,11 +49,11 @@ void JobManager::SubmitJob(JobItem *job)
     throw RuntimeException("Attempt to submit already existing job");
   }
 
-  auto job_handler = CreateJobHandler(job);
+  auto job_handler = CreateLocalJobHandler(job);
   m_job_map.insert({job, std::move(job_handler)});
 }
 
-LocalJobHandler *JobManager::GetJobHandler(JobItem *job)
+AbstractJobHandler *JobManager::GetJobHandler(JobItem *job)
 {
   auto iter = m_job_map.find(job);
   return iter == m_job_map.end() ? nullptr : iter->second.get();
@@ -63,6 +63,7 @@ void JobManager::Start(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
+    ResetJobIfNecessary(item);
     job_handler->Start();
   }
 }
@@ -87,6 +88,7 @@ void JobManager::Step(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
+    ResetJobIfNecessary(item);
     job_handler->Step();
   }
 }
@@ -131,7 +133,20 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
   }
 }
 
-std::unique_ptr<LocalJobHandler> JobManager::CreateJobHandler(JobItem *item)
+void JobManager::ResetJobIfNecessary(JobItem *item)
+{
+  if (auto job_handler = GetJobHandler(item); job_handler)
+  {
+    auto status = job_handler->GetRunnerStatus();
+    if (status == RunnerStatus::kFailed || status == RunnerStatus::kSucceeded
+        || status == RunnerStatus::kHalted)
+    {
+      job_handler->Reset();
+    }
+  }
+}
+
+std::unique_ptr<AbstractJobHandler> JobManager::CreateLocalJobHandler(JobItem *item)
 {
   auto job_handler = std::make_unique<LocalJobHandler>(item, m_user_context);
   connect(job_handler.get(), &LocalJobHandler::NextLeavesChanged, this,
