@@ -75,6 +75,11 @@ OperationActionHandler::OperationActionHandler(JobManager *job_manager,
     throw RuntimeException("Selection callback is not defined");
   }
 
+  if (!m_operation_context.send_message)
+  {
+    throw RuntimeException("Send message callback is not defined");
+  }
+
   if (!m_job_manager)
   {
     throw RuntimeException("JobManager is not defined");

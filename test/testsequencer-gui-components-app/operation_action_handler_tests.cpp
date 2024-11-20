@@ -34,6 +34,7 @@
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
+#include <testutils/mock_operation_action_context.h>
 #include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
@@ -47,18 +48,20 @@ Q_DECLARE_METATYPE(sequencergui::JobItem*)
 class OperationActionHandlerTest : public ::testing::Test
 {
 public:
-  OperationActionHandlerTest()
-      : m_job_manager({}), m_actions(&m_job_manager, CreateOperationContext(), UserContext{})
+  OperationActionHandlerTest() : m_job_manager({})
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
-    m_actions.SetJobModel(GetJobModel());
   }
 
-  OperationActionContext CreateOperationContext()
+  /**
+   * @brief Creates operation action handler.
+   */
+  std::unique_ptr<OperationActionHandler> CreateOperationHandler()
   {
-    OperationActionContext result;
-    result.selected_job = [this] { return m_selected_item; };
+    auto result = std::make_unique<OperationActionHandler>(
+        &m_job_manager, m_mock_context.CreateContext(), UserContext{});
+    result->SetJobModel(GetJobModel());
     return result;
   }
 
@@ -75,18 +78,18 @@ public:
 
   ApplicationModels m_models;
   JobManager m_job_manager;
-  OperationActionHandler m_actions;
-  JobItem* m_selected_item{nullptr};
+
+  testutils::MockOperationActionContext m_mock_context;
 };
 
 TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
 {
   const UserContext context;
-  const OperationActionContext action_context{[this] { return m_selected_item; }};
-  EXPECT_THROW(OperationActionHandler(nullptr, action_context, context), RuntimeException);
+  EXPECT_THROW(OperationActionHandler(nullptr, m_mock_context.CreateContext(), context),
+               RuntimeException);
   EXPECT_THROW(OperationActionHandler(&m_job_manager, {}, context), RuntimeException);
 
-  OperationActionHandler actions(&m_job_manager, action_context, context);
+  OperationActionHandler actions(&m_job_manager, m_mock_context.CreateContext(), context);
   EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
 }
 
@@ -96,17 +99,20 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
   procedure->SetDisplayName("procedure_display_name");
 
-  QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
+  auto handler = CreateOperationHandler();
 
-  m_actions.OnSetTickTimeoutRequest(42);
+  QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
 
-  EXPECT_FALSE(m_actions.OnSubmitJobRequest(nullptr));
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnSetTickTimeoutRequest(42);
+
+  EXPECT_FALSE(handler->OnSubmitJobRequest(nullptr));
 
   // At the beginning there is not JobItems in a modelo
   EXPECT_TRUE(GetJobItems().empty());
 
   // submitting the procedure
-  EXPECT_TRUE(m_actions.OnSubmitJobRequest(procedure));
+  EXPECT_TRUE(handler->OnSubmitJobRequest(procedure));
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -122,7 +128,7 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
   EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
 
   // we can submit same procedure twice, it will be two different jobs
-  m_actions.OnSubmitJobRequest(procedure);
+  handler->OnSubmitJobRequest(procedure);
   ASSERT_EQ(GetJobItems().size(), 2);
 
   EXPECT_EQ(GetJobItems().at(0), job_item);
@@ -138,8 +144,9 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
   const JobManager manager({});
+  auto handler = CreateOperationHandler();
 
-  EXPECT_THROW(m_actions.OnSubmitJobRequest(procedure), sequencergui::RuntimeException);
+  EXPECT_THROW(handler->OnSubmitJobRequest(procedure), sequencergui::RuntimeException);
 
   // After unsuccessfull submission JobItem remains there
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -149,23 +156,26 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
 TEST_F(OperationActionHandlerTest, OnStartJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  auto handler = CreateOperationHandler();
 
   // submitting the procedure
-  m_actions.OnSubmitJobRequest(procedure);
+  handler->OnSubmitJobRequest(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item));
 
-  // sarting the job when now JobItem is selected
-  m_actions.OnStartJobRequest();
+  // sarting the job when no JobItem is selected
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
   // making item selected
-  m_selected_item = job_item;
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  m_actions.OnStartJobRequest();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
 
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
@@ -175,7 +185,8 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
   // starting second time, jobHandler should be the same as before
   auto prev_job_handler = m_job_manager.GetJobHandler(job_item);
 
-  m_actions.OnStartJobRequest();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
@@ -188,17 +199,21 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
 TEST_F(OperationActionHandlerTest, OnRemoveJobRequest)
 {
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  auto handler = CreateOperationHandler();
 
-  m_actions.OnSubmitJobRequest(procedure);
+  handler->OnSubmitJobRequest(procedure);
   EXPECT_EQ(GetJobItems().size(), 1);
 
   // if no selection provided, the command does nothing
-  EXPECT_FALSE(m_actions.OnRemoveJobRequest());
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_FALSE(handler->OnRemoveJobRequest());
 
+  // making item selected
   auto job_item = GetJobItems().at(0);
-  m_selected_item = GetJobItems().at(0);
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  EXPECT_TRUE(m_actions.OnRemoveJobRequest());
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_TRUE(handler->OnRemoveJobRequest());
   EXPECT_TRUE(GetJobItems().empty());
 }
 
@@ -208,16 +223,19 @@ TEST_F(OperationActionHandlerTest, OnRemoveJobAndCleanupRequest)
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 1);
 
-  m_actions.OnSubmitJobRequest(procedure);
+  auto handler = CreateOperationHandler();
+  handler->OnSubmitJobRequest(procedure);
   EXPECT_EQ(GetJobItems().size(), 1);
 
   // if no selection provided, the command does nothing
-  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest(/*clean-up*/ true));
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_NO_THROW(handler->OnRemoveJobRequest(/*clean-up*/ true));
 
   auto job_item = GetJobItems().at(0);
-  m_selected_item = GetJobItems().at(0);
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest(/*clean-up*/ true));
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_NO_THROW(handler->OnRemoveJobRequest(/*clean-up*/ true));
   EXPECT_TRUE(GetJobItems().empty());
   EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 0);
 }
@@ -227,23 +245,27 @@ TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
 {
   auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
-  m_actions.OnSubmitJobRequest(procedure);
+  auto handler = CreateOperationHandler();
+  handler->OnSubmitJobRequest(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
-  m_selected_item = GetJobItems().at(0);
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  m_actions.OnStartJobRequest();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
   EXPECT_TRUE(job_handler->IsRunning());
 
   // it shouldn't be possible to remove running job without first stopping it
-  EXPECT_THROW(m_actions.OnRemoveJobRequest(), sequencergui::RuntimeException);
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_THROW(handler->OnRemoveJobRequest(), sequencergui::RuntimeException);
   QTest::qWait(5);
 
-  m_actions.OnStopJobRequest();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStopJobRequest();
   QTest::qWait(5);
 
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 50));
@@ -257,7 +279,8 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
-  m_actions.OnSubmitJobRequest(procedure);
+  auto handler = CreateOperationHandler();
+  handler->OnSubmitJobRequest(procedure);
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -271,11 +294,13 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 
   job_item->SetStatus("abc");  // set arbitrary status
 
-  QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
+  QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
 
   // regenerating a job
-  m_selected_item = job_item;
-  m_actions.OnRegenerateJobRequest();
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnRegenerateJobRequest();
 
   // on regeneration status should be reset
   EXPECT_TRUE(job_item->GetStatus().empty());
@@ -295,7 +320,8 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
-  m_actions.OnSubmitJobRequest(procedure);
+  auto handler = CreateOperationHandler();
+  handler->OnSubmitJobRequest(procedure);
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -306,11 +332,13 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
   // deleting procedure
   GetSequencerModel()->RemoveItem(procedure);
 
-  QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
+  QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
 
-  // regenerating a job
-  m_selected_item = job_item;
-  EXPECT_THROW(m_actions.OnRegenerateJobRequest(), sequencergui::RuntimeException);
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  // there will be throw, since original procedure was deleted and regeneration is impossible
+  EXPECT_THROW(handler->OnRegenerateJobRequest(), sequencergui::RuntimeException);
 
   // job item has lost it's procedure
   EXPECT_FALSE(job_item->GetProcedure());
@@ -332,16 +360,18 @@ TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
-  m_actions.OnSubmitJobRequest(procedure);
+  auto handler = CreateOperationHandler();
+  handler->OnSubmitJobRequest(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item));
 
   // sarting the job when now JobItem is selected
-  m_selected_item = job_item;
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  m_actions.OnStartJobRequest();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
 
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
@@ -349,7 +379,8 @@ TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
   EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
 
   // starting same job again
-  m_actions.OnStartJobRequest();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
 
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
