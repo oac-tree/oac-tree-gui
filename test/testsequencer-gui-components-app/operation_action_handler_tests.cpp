@@ -146,7 +146,8 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
   const JobManager manager({});
   auto handler = CreateOperationHandler();
 
-  EXPECT_THROW(handler->OnSubmitJobRequest(procedure), sequencergui::RuntimeException);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+  EXPECT_FALSE(handler->OnSubmitJobRequest(procedure));
 
   // After unsuccessfull submission JobItem remains there
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -261,7 +262,8 @@ TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
 
   // it shouldn't be possible to remove running job without first stopping it
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  EXPECT_THROW(handler->OnRemoveJobRequest(), sequencergui::RuntimeException);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+  EXPECT_FALSE(handler->OnRemoveJobRequest());
   QTest::qWait(5);
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -337,8 +339,9 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
   ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
   // there will be throw, since original procedure was deleted and regeneration is impossible
-  EXPECT_THROW(handler->OnRegenerateJobRequest(), sequencergui::RuntimeException);
+  EXPECT_FALSE(handler->OnRegenerateJobRequest());
 
   // job item has lost it's procedure
   EXPECT_FALSE(job_item->GetProcedure());

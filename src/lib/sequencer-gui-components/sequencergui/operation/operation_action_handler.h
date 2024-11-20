@@ -25,11 +25,9 @@
 
 #include <QObject>
 #include <functional>
-#include <memory>
 
 namespace sup::gui
 {
-class MessageHandlerInterface;
 class MessageEvent;
 }  // namespace sup::gui
 
@@ -61,8 +59,6 @@ public:
                                   UserContext user_context, QObject* parent = nullptr);
 
   ~OperationActionHandler() override;
-
-  void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 
   void SetJobModel(JobModel* job_model);
 
@@ -108,7 +104,7 @@ public:
    * runner), and will resubmit the same job again. As a result, the domain procedure will be
    * freshly generated from its GUI source.
    */
-  void OnRegenerateJobRequest();
+  bool OnRegenerateJobRequest();
 
   /**
    * @brief Sets tick timeout of currently selected job to given value.
@@ -135,7 +131,6 @@ private:
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
   OperationActionContext m_operation_context;
-  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
   int m_default_delay{0};
   UserContext m_user_context;
 };

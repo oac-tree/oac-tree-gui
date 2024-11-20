@@ -28,15 +28,13 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/core/standard_message_handlers.h>
 
-#include <QAbstractTableModel>
-
 namespace
 {
 
 //! Invokes
 template <typename T>
 bool InvokeAndCatch(T method, const std::string &text,
-                    sup::gui::MessageHandlerInterface *message_interface)
+                    const std::function<void(const sup::gui::MessageEvent &)> &send_message)
 {
   try
   {
@@ -45,9 +43,9 @@ bool InvokeAndCatch(T method, const std::string &text,
   }
   catch (const std::exception &ex)
   {
-    sup::gui::MessageEvent message =
+    const sup::gui::MessageEvent message =
         sup::gui::CreateInvalidOperationMessage(text + " failed", ex.what());
-    message_interface->SendMessage(message);
+    send_message(message);
     return false;
   }
 
@@ -65,10 +63,7 @@ OperationActionHandler::OperationActionHandler(JobManager *job_manager,
     , m_job_manager(job_manager)
     , m_operation_context(std::move(operation_context))
     , m_user_context(user_context)
-    , m_message_handler(
-          std::make_unique<sup::gui::ThrowingMessageHandler<::sequencergui::RuntimeException>>())
     , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
-
 {
   if (!m_operation_context.selected_job)
   {
@@ -87,12 +82,6 @@ OperationActionHandler::OperationActionHandler(JobManager *job_manager,
 }
 
 OperationActionHandler::~OperationActionHandler() = default;
-
-void OperationActionHandler::SetMessageHandler(
-    std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
-{
-  m_message_handler = std::move(message_handler);
-}
 
 void OperationActionHandler::SetJobModel(JobModel *job_model)
 {
@@ -114,7 +103,7 @@ bool OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
   job->SetTickTimeout(m_default_delay);
 
   auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
-                               m_message_handler.get());
+                               m_operation_context.send_message);
 
   emit MakeJobSelectedRequest(job);
 
@@ -161,7 +150,7 @@ bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
   }
 
   auto is_success = InvokeAndCatch([this, job]() { m_job_manager->RemoveJobHandler(job); },
-                                   "Job removal", m_message_handler.get());
+                                   "Job removal", m_operation_context.send_message);
 
   if (is_success)
   {
@@ -176,7 +165,7 @@ bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
   return is_success;
 }
 
-void OperationActionHandler::OnRegenerateJobRequest()
+bool OperationActionHandler::OnRegenerateJobRequest()
 {
   CheckConditions();
 
@@ -184,16 +173,16 @@ void OperationActionHandler::OnRegenerateJobRequest()
 
   if (!job)
   {
-    return;
+    return false;
   }
 
   auto is_success = InvokeAndCatch([this, job]() { m_job_manager->RemoveJobHandler(job); },
-                                   "Job removal", m_message_handler.get());
+                                   "Job removal", m_operation_context.send_message);
 
   if (is_success)
   {
-    auto is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); },
-                                     "Job submission", m_message_handler.get());
+    is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); },
+                                     "Job submission", m_operation_context.send_message);
 
     if (is_success)
     {
@@ -201,6 +190,8 @@ void OperationActionHandler::OnRegenerateJobRequest()
       emit MakeJobSelectedRequest(job);
     }
   }
+
+  return is_success;
 }
 
 void OperationActionHandler::OnSetTickTimeoutRequest(int msec)

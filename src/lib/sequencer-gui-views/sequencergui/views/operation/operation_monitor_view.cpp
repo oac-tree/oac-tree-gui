@@ -38,7 +38,6 @@
 #include <sequencergui/views/editors/user_input_dialogs.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sequencergui/views/operation/remote_connection_dialog.h>
-#include <sequencergui/widgets/message_handler_factory.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/widgets/item_stack_widget.h>
@@ -98,7 +97,6 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
   SetupConnections();
   SetupWidgetActions();
 
-  m_action_handler->SetMessageHandler(CreateMessageBoxHandler());
   ReadSettings();
 }
 
