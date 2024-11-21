@@ -22,6 +22,7 @@
 
 #include <QDialog>
 #include <memory>
+#include <optional>
 
 class QListView;
 class QLineEdit;
@@ -90,6 +91,17 @@ private:
   RemoteConnectionService* m_connection_service{nullptr};
   std::string m_current_server_name;
 };
+
+/**
+ * @brief Summons remote connection dialog and returns remote job import information.
+ *
+ * The optional result can be empty, if dialog was canceled by the user.
+ *
+ * @param connection_service The main service to use fo connection.
+ * @return Optional result of the user choice.
+ */
+std::optional<RemoteConnectionContext> GetDialogRemoteConnectionConext(
+    RemoteConnectionService& connection_service, QWidget* parent = nullptr);
 
 }  // namespace sequencergui
 

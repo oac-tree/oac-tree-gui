@@ -20,9 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_
 #define SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_
 
-#include <functional>
 #include <future>
-#include <thread>
 
 namespace sequencergui
 {

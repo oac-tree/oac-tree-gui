@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   operation_action_context.h
   operation_action_handler.cpp
   operation_action_handler.h
+  operation_action_helper.cpp
+  operation_action_helper.h
   tooltip_helper.cpp
   tooltip_helper.h
   workspace_view_component_provider.cpp

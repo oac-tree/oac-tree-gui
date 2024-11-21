@@ -223,7 +223,8 @@ void OperationMonitorView::SetupConnections()
           [this]() { OnImportJobRequest(); });
 
   // remote server connect request
-  connect(m_job_panel, &OperationJobPanel::ConnectRequest, this, [this]() { OnConnectRequest(); });
+  connect(m_job_panel, &OperationJobPanel::ConnectRequest, m_action_handler,
+          &OperationActionHandler::OnImportRemoteJobRequest);
 
   // job removal request
   auto on_remove_job_request = [this]()
@@ -295,27 +296,13 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
-void OperationMonitorView::OnConnectRequest()
-{
-  RemoteConnectionDialog dialog(m_connection_service.get());
-
-  if (dialog.exec() == QDialog::Accepted)
-  {
-    auto connection_context = dialog.GetResult();
-    std::cout << "server name " << connection_context.server_name << " (";
-    for (auto index : connection_context.job_indexes)
-    {
-      std::cout << index << " ";
-    }
-    std::cout << ")\n";
-  }
-}
-
 OperationActionContext OperationMonitorView::CreateOperationContext()
 {
   OperationActionContext result;
   result.selected_job = [this] { return m_job_panel->GetSelectedJob(); };
   result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
+  result.get_remote_context = [this](RemoteConnectionService &service)
+  { return GetDialogRemoteConnectionConext(service, this); };
   return result;
 }
 

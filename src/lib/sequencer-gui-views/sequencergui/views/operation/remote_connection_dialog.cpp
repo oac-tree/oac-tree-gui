@@ -38,6 +38,7 @@
 #include <QSettings>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
+#include <iostream>
 
 namespace sequencergui
 {
@@ -178,6 +179,25 @@ void RemoteConnectionDialog::PopulateJobInfoModel(const std::string &server_name
     auto procedure_name = client.GetProcedureName(job_index);
     parent_item->appendRow(CreateItem(procedure_name).release());
   }
+}
+
+std::optional<RemoteConnectionContext> GetDialogRemoteConnectionConext(
+    RemoteConnectionService &connection_service, QWidget *parent)
+{
+  RemoteConnectionDialog dialog(&connection_service, parent);
+
+  if (dialog.exec() == QDialog::Accepted)
+  {
+    auto connection_context = dialog.GetResult();
+    std::cout << "server name " << connection_context.server_name << " (";
+    for (auto index : connection_context.job_indexes)
+    {
+      std::cout << index << " ";
+    }
+    std::cout << ")\n";
+    return connection_context;
+  }
+  return {};
 }
 
 }  // namespace sequencergui

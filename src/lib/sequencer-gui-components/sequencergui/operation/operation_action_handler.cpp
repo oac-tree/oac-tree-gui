@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/jobsystem/remote_connection_context.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
@@ -108,6 +109,16 @@ bool OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
   emit MakeJobSelectedRequest(job);
 
   return result;
+}
+
+bool OperationActionHandler::OnImportRemoteJobRequest()
+{
+  if (!m_operation_context.get_remote_context)
+  {
+    return false;
+  }
+
+  return true;
 }
 
 void OperationActionHandler::OnStartJobRequest()

@@ -17,36 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_ACTION_CONTEXT_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_ACTION_CONTEXT_H_
+#ifndef SEQUENCERGUI_OPERATION_OPERATION_ACTION_HELPER_H_
+#define SEQUENCERGUI_OPERATION_OPERATION_ACTION_HELPER_H_
 
-#include <sup/gui/core/message_event.h>
-
-#include <functional>
-#include <optional>
+//! @file
+//! Collection of stand-alone helper functions to handle operation actions, i.e. for import remote
+//! and local jobs.
 
 namespace sequencergui
 {
-
-class JobItem;
-class RemoteConnectionService;
-struct RemoteConnectionContext;
-/**
- * @brief The OperationActionContext struct contains callbacks necessary for OperationActionHandler
- * to function.
- */
-struct OperationActionContext
-{
-  //! callback to get currently selected job
-  std::function<JobItem*()> selected_job;
-
-  //!< callback to report an error
-  std::function<void(const sup::gui::MessageEvent&)> send_message;
-
-  //!< callback to ask about remote job import information
-  std::function<std::optional<RemoteConnectionContext>(RemoteConnectionService&)>
-      get_remote_context;
-};
 
 }  // namespace sequencergui
 

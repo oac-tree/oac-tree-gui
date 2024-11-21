@@ -67,6 +67,8 @@ public:
    */
   bool OnSubmitJobRequest(ProcedureItem* procedure_item);
 
+  bool OnImportRemoteJobRequest();
+
   /**
    * @brief Start currently selected job.
    */
