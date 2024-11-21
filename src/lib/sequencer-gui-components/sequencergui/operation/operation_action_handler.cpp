@@ -20,15 +20,15 @@
 #include "operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
-#include <sequencergui/jobsystem/remote_connection_context.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/remote_connection_context.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/core/standard_message_handlers.h>
-#include <sequencergui/jobsystem/automation_client.h>
 
 namespace sequencergui
 {
@@ -127,9 +127,13 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
     return false;
   }
 
-  auto user_choice = m_operation_context.get_remote_context(*m_connection_service);
+  if (auto user_choice = m_operation_context.get_remote_context(*m_connection_service);
+      user_choice.has_value())
+  {
+    return true;
+  }
 
-  return true;
+  return false;
 }
 
 void OperationActionHandler::OnStartJobRequest()
@@ -203,8 +207,8 @@ bool OperationActionHandler::OnRegenerateJobRequest()
 
   if (is_success)
   {
-    is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); },
-                                     "Job submission", m_operation_context.send_message);
+    is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
+                                m_operation_context.send_message);
 
     if (is_success)
     {

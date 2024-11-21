@@ -87,6 +87,22 @@ TEST_F(JobManagerTest, SubmitProcedure)
             m_job_item->GetExpandedProcedure());
 }
 
+TEST_F(JobManagerTest, SubmitHandler)
+{
+  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  m_job_item->SetProcedure(copy_procedure);
+
+  auto job_handler = std::make_unique<LocalJobHandler>(m_job_item, UserContext{});
+  auto job_handler_ptr = job_handler.get();
+
+  JobManager manager({});
+  manager.SubmitJob(std::move(job_handler));
+
+  ASSERT_EQ(manager.GetJobHandler(m_job_item), job_handler_ptr);
+  EXPECT_EQ(manager.GetJobHandler(m_job_item)->GetExpandedProcedure(),
+            m_job_item->GetExpandedProcedure());
+}
+
 TEST_F(JobManagerTest, AttemptToSubmitProcedure)
 {
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());

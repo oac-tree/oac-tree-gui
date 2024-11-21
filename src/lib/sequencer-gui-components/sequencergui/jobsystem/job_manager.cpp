@@ -44,13 +44,22 @@ void JobManager::SubmitJob(JobItem *job)
     throw RuntimeException("Attempt to submit undefined job");
   }
 
-  if (auto job_handler = GetJobHandler(job); job_handler)
+  SubmitJob(std::make_unique<LocalJobHandler>(job, m_user_context));
+}
+
+void JobManager::SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler)
+{
+  auto job_item = job_handler->GetJobItem();
+
+  if (auto handler = GetJobHandler(job_item); handler)
   {
     throw RuntimeException("Attempt to submit already existing job");
   }
 
-  auto job_handler = CreateLocalJobHandler(job);
-  m_job_map.insert({job, std::move(job_handler)});
+  connect(job_handler.get(), &AbstractJobHandler::NextLeavesChanged, this,
+          &JobManager::OnNextLeavesChanged);
+
+  m_job_map.insert({job_item, std::move(job_handler)});
 }
 
 AbstractJobHandler *JobManager::GetJobHandler(JobItem *job)
@@ -144,15 +153,6 @@ void JobManager::ResetJobIfNecessary(JobItem *item)
       job_handler->Reset();
     }
   }
-}
-
-std::unique_ptr<AbstractJobHandler> JobManager::CreateLocalJobHandler(JobItem *item)
-{
-  auto job_handler = std::make_unique<LocalJobHandler>(item, m_user_context);
-  connect(job_handler.get(), &LocalJobHandler::NextLeavesChanged, this,
-          &JobManager::OnNextLeavesChanged);
-
-  return job_handler;
 }
 
 }  // namespace sequencergui

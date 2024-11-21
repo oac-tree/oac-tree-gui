@@ -31,6 +31,7 @@ namespace sequencergui
 class JobItem;
 class RemoteConnectionService;
 struct RemoteConnectionContext;
+
 /**
  * @brief The OperationActionContext struct contains callbacks necessary for OperationActionHandler
  * to function.

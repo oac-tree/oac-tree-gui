@@ -59,6 +59,8 @@ public:
    */
   void SubmitJob(JobItem* job);
 
+  void SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler);
+
   /**
    * @brief Returns job handler for a given job.
    */
@@ -125,8 +127,6 @@ private:
    * (domain procedure, JobHandler, collapse/expand status of the tree) should stay as before.
    */
   void ResetJobIfNecessary(JobItem* item);
-
-  std::unique_ptr<AbstractJobHandler> CreateLocalJobHandler(JobItem* item);
 
   std::map<JobItem*, std::unique_ptr<AbstractJobHandler>> m_job_map;
   UserContext m_user_context;
