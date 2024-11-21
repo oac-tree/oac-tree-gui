@@ -23,11 +23,8 @@
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
 
-#include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
-#include <sequencergui/jobsystem/remote_connection_context.h>
-#include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
@@ -51,7 +48,6 @@
 #include <QSplitter>
 #include <QToolBar>
 #include <QVBoxLayout>
-#include <iostream>
 
 namespace sequencergui
 {
@@ -62,12 +58,6 @@ const QString kGroupName("OperationMonitorView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kLeftPanelIsVisibleSettingName = kGroupName + "/" + "left_panel";
 const QString kRightPanelIsVisibleSettingName = kGroupName + "/" + "right_panel";
-
-std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
-{
-  return [](const std::string &server_name)
-  { return std::make_unique<AutomationClient>(server_name); };
-}
 
 }  // namespace
 
@@ -82,7 +72,6 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
     , m_action_handler(new OperationActionHandler(m_job_manager, CreateOperationContext(),
                                                   CreateDefaultUserContext(this), this))
-    , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);

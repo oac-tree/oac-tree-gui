@@ -28,6 +28,10 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/core/standard_message_handlers.h>
+#include <sequencergui/jobsystem/automation_client.h>
+
+namespace sequencergui
+{
 
 namespace
 {
@@ -52,10 +56,14 @@ bool InvokeAndCatch(T method, const std::string &text,
 
   return false;
 }
-}  // namespace
 
-namespace sequencergui
+std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
 {
+  return [](const std::string &server_name)
+  { return std::make_unique<AutomationClient>(server_name); };
+}
+
+}  // namespace
 
 OperationActionHandler::OperationActionHandler(JobManager *job_manager,
                                                OperationActionContext operation_context,
@@ -64,6 +72,7 @@ OperationActionHandler::OperationActionHandler(JobManager *job_manager,
     , m_job_manager(job_manager)
     , m_operation_context(std::move(operation_context))
     , m_user_context(user_context)
+    , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
     , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
 {
   if (!m_operation_context.selected_job)
@@ -117,6 +126,8 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
   {
     return false;
   }
+
+  auto user_choice = m_operation_context.get_remote_context(*m_connection_service);
 
   return true;
 }
