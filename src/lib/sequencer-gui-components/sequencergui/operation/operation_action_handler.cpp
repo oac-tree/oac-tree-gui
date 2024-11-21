@@ -28,6 +28,7 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sup/gui/core/standard_message_handlers.h>
 
 namespace sequencergui
@@ -130,6 +131,18 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
   if (auto user_choice = m_operation_context.get_remote_context(*m_connection_service);
       user_choice.has_value())
   {
+    auto user_choice_value = user_choice.value();
+
+    for (auto index : user_choice_value.job_indexes)
+    {
+      auto job_item = CreateRemoteJobItem(user_choice_value.server_name, index);
+      auto job_item_ptr = job_item.get();
+      m_job_model->InsertItem(std::move(job_item), m_job_model->GetRootItem(),
+                              mvvm::TagIndex::Append());
+      auto job_handler = m_connection_service->CreateJobHandler(job_item_ptr, m_user_context);
+      m_job_manager->SubmitJob(std::move(job_handler));
+    }
+
     return true;
   }
 

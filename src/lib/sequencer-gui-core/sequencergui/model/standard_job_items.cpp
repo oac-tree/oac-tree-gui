@@ -119,7 +119,7 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
   return result;
 }
 
-std::unique_ptr<JobItem> CreateRemoteJobItem(const std::string &server_name, size_t job_index)
+std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_name, size_t job_index)
 {
   auto result = std::make_unique<RemoteJobItem>();
   result->SetServerName(server_name);

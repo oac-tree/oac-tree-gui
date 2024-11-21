@@ -133,7 +133,7 @@ void JobManager::SetActiveJob(JobItem *item)
 
 void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
 {
-  auto sending_job_handler = qobject_cast<LocalJobHandler *>(sender());
+  auto sending_job_handler = qobject_cast<AbstractJobHandler *>(sender());
 
   // we want to send notifications only from the job the user is currently looking at
   if (sending_job_handler->GetJobItem() == m_active_job)

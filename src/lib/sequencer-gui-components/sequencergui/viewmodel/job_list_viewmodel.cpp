@@ -22,6 +22,7 @@
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/standard_job_items.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/abstract_row_strategy.h>
@@ -59,7 +60,10 @@ class TopJobStrategy : public mvvm::IChildrenStrategy
 public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override
   {
-    if (item && item->GetType() == JobItem::Type)
+    // refactor after COA-1184
+    if (item
+        && (item->GetType() == JobItem::Type || item->GetType() == RemoteJobItem::Type
+            || item->GetType() == ImportedJobItem::Type))
     {
       return {};
     }
