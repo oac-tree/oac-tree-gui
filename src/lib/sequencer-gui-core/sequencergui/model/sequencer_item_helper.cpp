@@ -65,12 +65,15 @@ bool RegisterSequencerItems()
 
   // other items
   mvvm::RegisterGlobalItem<sequencergui::InstructionContainerItem>();
-  mvvm::RegisterGlobalItem<sequencergui::JobItem>();
   mvvm::RegisterGlobalItem<sequencergui::ProcedureItem>();
   mvvm::RegisterGlobalItem<sequencergui::WorkspaceItem>();
   mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
   mvvm::RegisterGlobalItem<sequencergui::TypeRegistrationItem>();
   mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
+
+  mvvm::RegisterGlobalItem<sequencergui::LocalJobItem>();
+  mvvm::RegisterGlobalItem<sequencergui::ImportedJobItem>();
+  mvvm::RegisterGlobalItem<sequencergui::RemoteJobItem>();
 
   return true;
 }

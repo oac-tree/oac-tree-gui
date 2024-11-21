@@ -90,11 +90,14 @@ TEST_F(SequencerItemHelperTest, Clone)
 
   // other
   EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
-  EXPECT_TRUE(IsCloneImplemented<JobItem>());
   EXPECT_TRUE(IsCloneImplemented<ProcedureItem>());
   EXPECT_TRUE(IsCloneImplemented<TypeRegistrationItem>());
   EXPECT_TRUE(IsCloneImplemented<ProcedurePreambleItem>());
   EXPECT_TRUE(IsCloneImplemented<WorkspaceItem>());
+
+  EXPECT_TRUE(IsCloneImplemented<LocalJobItem>());
+  EXPECT_TRUE(IsCloneImplemented<ImportedJobItem>());
+  EXPECT_TRUE(IsCloneImplemented<RemoteJobItem>());
 }
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)

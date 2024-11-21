@@ -19,6 +19,7 @@
 
 #include "job_item.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/procedure_item.h>
 
@@ -30,7 +31,7 @@ namespace sequencergui
 static inline const std::string kLink = "kLink";
 static inline const std::string kExpandedProcedure = "kExpandedProcedure";
 
-JobItem::JobItem() : CompoundItem(Type)
+JobItem::JobItem(const std::string &type) : CompoundItem(type)
 {
   AddProperty(itemconstants::kStatus, std::string()).SetDisplayName("Status").SetEditable(false);
   AddProperty<mvvm::LinkedItem>(kLink).SetDisplayName("Link");
@@ -44,7 +45,8 @@ JobItem::JobItem() : CompoundItem(Type)
 
 std::unique_ptr<mvvm::SessionItem> JobItem::Clone(bool make_unique_id) const
 {
-  return std::make_unique<JobItem>(*this, make_unique_id);
+  // This base is not intended to be used directly
+  throw NotImplementedException("Clone for JobItem is not implemented");
 }
 
 std::string JobItem::GetStatus() const

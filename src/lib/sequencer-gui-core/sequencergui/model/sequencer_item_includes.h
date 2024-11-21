@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
 #define SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
 
+//! @file
 //! Includes for all sequencer related items.
 
 #include <sequencergui/model/epics_instruction_items.h>
@@ -29,6 +30,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_variable_item.h>
