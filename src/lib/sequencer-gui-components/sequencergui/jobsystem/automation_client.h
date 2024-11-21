@@ -20,8 +20,9 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 #define SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 
-#include <sequencergui/domain/sequencer_types_fwd.h>
+#include "sequencergui/jobsystem/user_context.h"
 
+#include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/i_automation_client.h>
 
 #include <memory>
@@ -35,7 +36,6 @@ namespace sequencergui
 {
 
 class AbstractJobHandler;
-class JobItem;
 
 /**
  * @brief The AutomationClient class is a simple wrapper around automation server machinery to hide
@@ -53,8 +53,8 @@ public:
 
   std::string GetProcedureName(size_t job_index) const override;
 
-  std::unique_ptr<AbstractJobHandler> CreateJobHandler(sequencergui::JobItem* job_item,
-                                                       size_t job_index);
+  std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
+                                                       const UserContext& user_context) override;
 
 private:
   std::string m_server_name;

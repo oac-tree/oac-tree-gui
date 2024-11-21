@@ -17,10 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <memory>
 #include <string>
 
 namespace sequencergui
 {
+
+class AbstractJobHandler;
+struct UserContext;
+class RemoteJobItem;
 
 /**
  * @brief The IAutomationClient class holds automation server connection information.
@@ -46,6 +51,19 @@ public:
    * @brief Returns the name of the procedure for given job index.
    */
   virtual std::string GetProcedureName(size_t job_index) const = 0;
+
+  /**
+   * @brief Creates job handler.
+   *
+   * Job handler is a GUI object intended to run jobs represented by the remote job item.
+   *
+   * @param job_item Remote job item.
+   * @param user_context The user context to handle user interactions.
+   *
+   * @return New AbstractJobHandler intended for ouw GUI JobManager.
+   */
+  virtual std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
+                                                               const UserContext& user_context) = 0;
 };
 
 }  // namespace sequencergui

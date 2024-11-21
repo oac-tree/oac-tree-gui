@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/remote_job_handler.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/jobsystem/user_context.h>
 
 #include <sup/auto-server/epics_config_utils.h>
@@ -63,11 +64,12 @@ std::string AutomationClient::GetProcedureName(size_t job_index) const
   return m_automation_job_manager->GetJobInfo(job_index).GetProcedureName();
 }
 
-std::unique_ptr<AbstractJobHandler> AutomationClient::CreateJobHandler(JobItem* job_item,
-                                                                       size_t job_index)
+std::unique_ptr<AbstractJobHandler> AutomationClient::CreateJobHandler(
+    RemoteJobItem* job_item, const UserContext& user_context)
 {
+  auto job_index = job_item->GetRemoteJobIndex();
   return std::make_unique<RemoteJobHandler>(job_item, *m_automation_job_manager, job_index,
-                                            UserContext{});
+                                            user_context);
 }
 
 }  // namespace sequencergui

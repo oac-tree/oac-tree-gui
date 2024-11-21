@@ -22,6 +22,8 @@
 #include "i_automation_client.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/abstract_job_handler.h>
+#include <sequencergui/model/standard_job_items.h>
 
 #include <algorithm>
 
@@ -87,19 +89,32 @@ std::vector<std::string> RemoteConnectionService::GetServerNames() const
   return result;
 }
 
-IAutomationClient &RemoteConnectionService::GetAutomationClient(const std::string &server_name)
+IAutomationClient& RemoteConnectionService::GetAutomationClient(const std::string& server_name)
 {
   auto on_element = [&server_name](auto& element)
   { return element->GetServerName() == server_name; };
   auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
 
-  if ( pos == m_clients.end())
+  if (pos == m_clients.end())
   {
-    throw RuntimeException("No client for server ["+server_name+"]");
+    throw RuntimeException("No client for server [" + server_name + "]");
   }
 
   IAutomationClient* client = pos->get();
   return *client;
+}
+
+std::unique_ptr<AbstractJobHandler> RemoteConnectionService::CreateJobHandler(
+    RemoteJobItem* job_item, const UserContext& user_context)
+{
+  auto server_name = job_item->GetServerName();
+
+  if (!Connect(server_name))
+  {
+    throw RuntimeException("Can't connect to server");
+  }
+
+  return GetAutomationClient(server_name).CreateJobHandler(job_item, user_context);
 }
 
 }  // namespace sequencergui

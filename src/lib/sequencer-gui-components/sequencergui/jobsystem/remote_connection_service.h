@@ -29,6 +29,9 @@ namespace sequencergui
 {
 
 class IAutomationClient;
+class AbstractJobHandler;
+class RemoteJobItem;
+class UserContext;
 
 /**
  * @brief The RemoteConnectionService class holds collection of clients connected with remote
@@ -77,6 +80,12 @@ public:
    * @brief Returns the client connected with the remote server with the given name.
    */
   IAutomationClient& GetAutomationClient(const std::string& server_name);
+
+  /**
+   * @brief Creates job handler for given remote job item.
+   */
+  std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
+                                                       const UserContext& user_context);
 
 private:
   //!< collection of remote clients, one client per server name

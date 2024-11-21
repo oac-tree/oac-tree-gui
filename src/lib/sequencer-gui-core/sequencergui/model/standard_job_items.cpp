@@ -63,9 +63,7 @@ std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone(bool make_unique_id) c
 
 RemoteJobItem::RemoteJobItem() : JobItem(Type)
 {
-  AddProperty(kJobIndex, -1)
-      .SetDisplayName("Job index")
-      .SetToolTip("Remote job index (-1 when undefined)");
+  AddProperty(kJobIndex, size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
 
   AddProperty(kServerName, std::string())
       .SetDisplayName("Server name")
@@ -77,12 +75,12 @@ std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone(bool make_unique_id) con
   return std::make_unique<RemoteJobItem>(*this, make_unique_id);
 }
 
-int RemoteJobItem::GetRemoteJobIndex() const
+size_t RemoteJobItem::GetRemoteJobIndex() const
 {
-  return Property<int>(kJobIndex);
+  return Property<size_t>(kJobIndex);
 }
 
-void RemoteJobItem::SetRemoteJobIndex(int value)
+void RemoteJobItem::SetRemoteJobIndex(size_t value)
 {
   SetProperty(kJobIndex, value);
 }
@@ -108,14 +106,6 @@ std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure)
   return result;
 }
 
-std::unique_ptr<JobItem> CreateRemoteJobItem(const std::string &server_name, int job_index)
-{
-  auto result = std::make_unique<RemoteJobItem>();
-  result->SetServerName(server_name);
-  result->SetRemoteJobIndex(job_index);
-  return result;
-}
-
 std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure)
 {
   auto result = std::make_unique<ImportedJobItem>();
@@ -126,6 +116,14 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
                           mvvm::TagIndex::Append(ImportedJobItem::kImportedProcedure));
   result->SetProcedure(procedure_ptr);  // set link
 
+  return result;
+}
+
+std::unique_ptr<JobItem> CreateRemoteJobItem(const std::string &server_name, size_t job_index)
+{
+  auto result = std::make_unique<RemoteJobItem>();
+  result->SetServerName(server_name);
+  result->SetRemoteJobIndex(job_index);
   return result;
 }
 

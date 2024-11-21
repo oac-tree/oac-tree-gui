@@ -148,7 +148,7 @@ void AutomationMonitorView::OnConnect(const QString &server_name)
   if (m_automation_client->GetJobCount() > 0)
   {
     auto job_item = m_job_model->InsertItem<JobItem>();
-    m_job_handler = m_automation_client->CreateJobHandler(job_item, 0);
+    // m_job_handler = m_automation_client->CreateJobHandler(job_item, 0);
   }
 }
 

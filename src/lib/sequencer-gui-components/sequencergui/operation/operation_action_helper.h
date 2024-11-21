@@ -26,6 +26,9 @@
 
 namespace sequencergui
 {
+
+
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_OPERATION_OPERATION_ACTION_CONTEXT_H_

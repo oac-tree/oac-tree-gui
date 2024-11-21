@@ -41,7 +41,7 @@ TEST_F(StandardJobItemsTest, RemoteJobItem)
 {
   RemoteJobItem item;
 
-  EXPECT_EQ(item.GetRemoteJobIndex(), -1);
+  EXPECT_EQ(item.GetRemoteJobIndex(), 0);
   EXPECT_EQ(item.GetServerName(), std::string());
 
   item.SetRemoteJobIndex(42);
