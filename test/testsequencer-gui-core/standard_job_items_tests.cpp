@@ -98,4 +98,15 @@ TEST_F(StandardJobItemsTest, CreateImportedJobItem)
             procedure_ptr);
 }
 
+TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
+{
+  const std::string server_name("abc");
+  const size_t job_index{42};
+
+  auto item = CreateRemoteJobItem(server_name, job_index);
+
+  EXPECT_EQ(item->GetRemoteJobIndex(), job_index);
+  EXPECT_EQ(item->GetServerName(), server_name);
+}
+
 }  // namespace sequencergui

@@ -17,6 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
+#ifndef SEQUENCERGUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_
+#define SEQUENCERGUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_
+
 #include <memory>
 #include <string>
 
@@ -67,3 +70,5 @@ public:
 };
 
 }  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_
