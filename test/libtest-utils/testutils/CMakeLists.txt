@@ -1,6 +1,8 @@
 target_sources(${library_name} PRIVATE
   folder_test.cpp
   folder_test.h
+  mock_automation_client.cpp
+  mock_automation_client.h
   mock_domain_event_listener.h
   mock_domain_workspace_listener.h
   mock_message_handler.cpp
