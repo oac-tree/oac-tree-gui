@@ -37,7 +37,6 @@ class JobItem;
 class InstructionItem;
 class ProcedureItemJobInfoBuilder;
 class LogEvent;
-class JobModel;
 class BreakpointController;
 class AbstractDomainRunner;
 struct DomainEventDispatcherContext;
@@ -178,11 +177,6 @@ private:
    * @brief Handles events reporting update in the domain variable.
    */
   virtual void OnVariableUpdatedEvent(const VariableUpdatedEvent& event);
-
-  /**
-   * @brief Returns job model to which our JobItem
-   */
-  JobModel* GetJobModel();
 
   /**
    * @brief Setups breakpoint controller.

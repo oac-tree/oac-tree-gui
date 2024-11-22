@@ -28,7 +28,6 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/job_item.h>
-#include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/operation/breakpoint_helper.h>
@@ -38,6 +37,8 @@
 
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
+
+#include <mvvm/model/item_utils.h>
 
 #include <QDebug>
 
@@ -208,11 +209,6 @@ void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &even
   throw RuntimeException("AbstractJobHandler::OnVariableUpdatedEvent is not implemented");
 }
 
-JobModel *AbstractJobHandler::GetJobModel()
-{
-  return dynamic_cast<JobModel *>(m_job_item->GetModel());
-}
-
 void AbstractJobHandler::SetupBreakpointController()
 {
   m_breakpoint_controller = std::make_unique<BreakpointController>();
@@ -228,14 +224,14 @@ void AbstractJobHandler::SetupExpandedProcedureItem()
   // remove previous expanded procedure
   if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
-    GetJobModel()->RemoveItem(expanded_procedure);
+    mvvm::utils::RemoveItem(*expanded_procedure);
   }
 
   auto expanded_procedure =
       m_procedure_item_builder->CreateProcedureItem(m_domain_runner->GetJobInfo());
   auto expanded_procedure_ptr = expanded_procedure.get();
 
-  GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+  mvvm::utils::InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 
   PropagateBreakpointsToDomain();
