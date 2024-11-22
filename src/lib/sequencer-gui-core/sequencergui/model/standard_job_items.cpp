@@ -19,6 +19,7 @@
 
 #include "standard_job_items.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/procedure_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -99,17 +100,30 @@ void RemoteJobItem::SetServerName(const std::string &name)
 // Factory methods
 // ------------------------------------------------------------------------------------------------
 
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure)
+std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure, int msec)
 {
+  if (!procedure)
+  {
+    throw RuntimeException("Procedure is not initialized");
+  }
   auto result = std::make_unique<LocalJobItem>();
   result->SetProcedure(procedure);
+  result->SetDisplayName(procedure->GetDisplayName());
+  result->SetTickTimeout(msec);
   return result;
 }
 
-std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure)
+std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure, int msec)
 {
+  if (!procedure)
+  {
+    throw RuntimeException("Procedure is not initialized");
+  }
+
   auto result = std::make_unique<ImportedJobItem>();
   result->SetProcedure(procedure.get());
+  result->SetDisplayName(procedure->GetDisplayName());
+  result->SetTickTimeout(msec);
 
   // inserting imported procedure into own container and thus taking an ownership
   mvvm::utils::InsertItem(std::move(procedure), result.get(),

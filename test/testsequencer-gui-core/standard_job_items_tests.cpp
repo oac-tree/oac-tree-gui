@@ -19,6 +19,7 @@
 
 #include "sequencergui/model/standard_job_items.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/procedure_item.h>
 
 #include <mvvm/model/application_model.h>
@@ -53,11 +54,17 @@ TEST_F(StandardJobItemsTest, RemoteJobItem)
 
 TEST_F(StandardJobItemsTest, CreateLocalJobItem)
 {
+  EXPECT_THROW(CreateLocalJobItem(nullptr), RuntimeException);
+
   mvvm::ApplicationModel model;
   auto procedure = model.InsertItem<ProcedureItem>();
+  procedure->SetDisplayName("abc");
 
-  auto job_item = CreateLocalJobItem(procedure);
+  auto job_item = CreateLocalJobItem(procedure, 42);
   auto job_item_ptr = job_item.get();
+
+  EXPECT_EQ(job_item->GetTickTimeout(), 42);
+  EXPECT_EQ(job_item->GetDisplayName(), std::string("abc"));
 
   // linked mechanism will be working only after JobItem become part of the model
   EXPECT_EQ(job_item->GetProcedure(), nullptr);
@@ -68,13 +75,18 @@ TEST_F(StandardJobItemsTest, CreateLocalJobItem)
 
 TEST_F(StandardJobItemsTest, CreateImportedJobItem)
 {
-  mvvm::ApplicationModel model;
+  EXPECT_THROW(CreateImportedJobItem(nullptr), RuntimeException);
 
+  mvvm::ApplicationModel model;
   auto procedure = std::make_unique<ProcedureItem>();
   auto procedure_ptr = procedure.get();
+  procedure->SetDisplayName("abc");
 
-  auto job_item = CreateImportedJobItem(std::move(procedure));
+  auto job_item = CreateImportedJobItem(std::move(procedure), 42);
   auto job_item_ptr = job_item.get();
+
+  EXPECT_EQ(job_item->GetTickTimeout(), 42);
+  EXPECT_EQ(job_item->GetDisplayName(), std::string("abc"));
 
   // linked mechanism will be working only after JobItem become part of the model
   EXPECT_EQ(job_item->GetProcedure(), nullptr);

@@ -101,11 +101,12 @@ public:
   void SetServerName(const std::string& name);
 };
 
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure);
+std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int msec = 0);
 
-std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure);
+std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure, int msec = 0);
 
-std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name, size_t job_index);
+std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
+                                                   size_t job_index);
 
 }  // namespace sequencergui
 

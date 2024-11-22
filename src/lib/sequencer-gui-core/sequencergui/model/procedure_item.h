@@ -22,8 +22,6 @@
 
 #include <mvvm/model/compound_item.h>
 
-#include <set>
-
 namespace sequencergui
 {
 class WorkspaceItem;
