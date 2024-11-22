@@ -24,10 +24,33 @@
 //! Collection of stand-alone helper functions to handle operation actions, i.e. for import remote
 //! and local jobs.
 
+#include <functional>
+#include <memory>
+
 namespace sequencergui
 {
 
+class IRemoteConnectionService;
+class JobItem;
+class AbstractJobHandler;
+struct UserContext;
 
+/**
+ * @brief Creates factory function which is capable of creating job handlers, when JobItem is given
+ * to it.
+ *
+ * JobItem can be one of: local, imported, or remote.
+ *
+ * Usage:
+ * auto factory_func = CreateJobHandlerFactoryFunc(context, service);
+ * handler = factory_func(job_item);
+ *
+ * @param user_context The user interaction context, which will be used to create
+ * AnstractJobHandler.
+ * @param service Remote connection service used to create remote job handler.
+ */
+std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)> CreateJobHandlerFactoryFunc(
+    const UserContext& user_context, IRemoteConnectionService& service);
 
 }  // namespace sequencergui
 
