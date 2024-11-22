@@ -109,13 +109,11 @@ std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure)
 std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure)
 {
   auto result = std::make_unique<ImportedJobItem>();
-  auto procedure_ptr = procedure.get();
+  result->SetProcedure(procedure.get());
 
-  // we insert imported procedure in dedicated place, and link to it
+  // inserting imported procedure into own container and thus taking an ownership
   mvvm::utils::InsertItem(std::move(procedure), result.get(),
                           mvvm::TagIndex::Append(ImportedJobItem::kImportedProcedure));
-  result->SetProcedure(procedure_ptr);  // set link
-
   return result;
 }
 
