@@ -106,12 +106,7 @@ bool OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
     return false;
   }
 
-  CheckConditions();
-
-  auto job = m_job_model->InsertItem<JobItem>();
-  job->SetProcedure(procedure_item);
-  job->SetDisplayName(procedure_item->GetDisplayName());
-  job->SetTickTimeout(m_default_delay);
+  auto job = InsertJobAfterCurrentSelection(CreateLocalJobItem(procedure_item, m_default_delay));
 
   auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                                m_operation_context.send_message);
@@ -248,6 +243,23 @@ void OperationActionHandler::OnToggleBreakpoint(InstructionItem *instruction)
   {
     job_handler->OnToggleBreakpointRequest(instruction);
   }
+}
+
+JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item)
+{
+  if (!m_job_model)
+  {
+    throw RuntimeException("JobModel is not defined");
+  }
+
+  auto result = job_item.get();
+
+  auto selected_job = GetSelectedJob();
+  auto parent = selected_job ? selected_job->GetParent() : m_job_model->GetRootItem();
+  auto tagindex = selected_job ? selected_job->GetTagIndex().Next() : mvvm::TagIndex::Append();
+  m_job_model->InsertItem(std::move(job_item), parent, tagindex);
+  // emit MakeJobSelectedRequest(result);
+  return result;
 }
 
 void OperationActionHandler::CheckConditions()

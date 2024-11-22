@@ -124,6 +124,11 @@ signals:
   void MakeJobSelectedRequest(sequencergui::JobItem* item);
 
 private:
+  /**
+   * @brief Inserts job in the job model after current selection
+   */
+  JobItem* InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item);
+
   void CheckConditions();
 
   void SendMessage(const std::string& text, const std::string& informative = {},

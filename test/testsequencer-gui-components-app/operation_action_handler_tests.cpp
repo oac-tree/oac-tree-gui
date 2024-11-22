@@ -112,6 +112,7 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
   EXPECT_TRUE(GetJobItems().empty());
 
   // submitting the procedure
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   EXPECT_TRUE(handler->OnSubmitJobRequest(procedure));
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
@@ -128,6 +129,7 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
   EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
 
   // we can submit same procedure twice, it will be two different jobs
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
   ASSERT_EQ(GetJobItems().size(), 2);
 
