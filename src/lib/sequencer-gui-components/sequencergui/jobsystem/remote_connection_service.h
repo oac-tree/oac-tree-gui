@@ -17,75 +17,40 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REMOET_CONNECTION_SERVICE_H_
-#define SEQUENCERGUI_JOBSYSTEM_REMOET_CONNECTION_SERVICE_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_SERVICE_H_
+#define SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_SERVICE_H_
+
+#include <sequencergui/jobsystem/i_remote_connection_service.h>
 
 #include <functional>
-#include <memory>
-#include <string>
-#include <vector>
 
 namespace sequencergui
 {
 
-class IAutomationClient;
-class AbstractJobHandler;
-class RemoteJobItem;
-class UserContext;
-
 /**
- * @brief The RemoteConnectionService class holds collection of clients connected with remote
- * servers.
- *
- * One client is connected with one server, there can't be two clients connected with single server.
+ * @brief The RemoteConnectionService is a defaut implementation of service to connect with remote
+ * automation jobs.
  */
-class RemoteConnectionService
+class RemoteConnectionService : public IRemoteConnectionService
 {
 public:
   using create_client_t = std::function<std::unique_ptr<IAutomationClient>(const std::string&)>;
   explicit RemoteConnectionService(const create_client_t& create_connection);
 
-  /**
-   * @brief Connect with the server using the given server name.
-   *
-   * If connection was already established, does nothing. Connection remains.
-   *
-   * @return True if connected.
-   */
-  bool Connect(const std::string& server_name);
+  bool Connect(const std::string& server_name) override;
 
-  /**
-   * @brief Disconnect the server by removing underlying client.
-   *
-   * If connection was already established, does nothing.
-   */
-  void Disconnect(const std::string& server_name);
+  void Disconnect(const std::string& server_name) override;
 
-  /**
-   * @brief Checks if client exists and server is responding.
-   */
-  bool IsConnected(const std::string& server_name) const;
+  bool IsConnected(const std::string& server_name) const override;
 
-  /**
-   * @brief Checks if client exists for server with the given name.
-   */
-  bool HasClient(const std::string& server_name) const;
+  bool HasClient(const std::string& server_name) const override;
 
-  /**
-   * @brief Returns list of already connected servers.
-   */
-  std::vector<std::string> GetServerNames() const;
+  std::vector<std::string> GetServerNames() const override;
 
-  /**
-   * @brief Returns the client connected with the remote server with the given name.
-   */
-  IAutomationClient& GetAutomationClient(const std::string& server_name);
+  IAutomationClient& GetAutomationClient(const std::string& server_name) override;
 
-  /**
-   * @brief Creates job handler for given remote job item.
-   */
   std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
-                                                       const UserContext& user_context);
+                                                       const UserContext& user_context) override;
 
 private:
   //!< collection of remote clients, one client per server name
@@ -96,4 +61,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REMOET_CONNECTION_SERVICE_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_SERVICE_H_

@@ -107,6 +107,10 @@ IAutomationClient& RemoteConnectionService::GetAutomationClient(const std::strin
 std::unique_ptr<AbstractJobHandler> RemoteConnectionService::CreateJobHandler(
     RemoteJobItem* job_item, const UserContext& user_context)
 {
+  if (!job_item)
+  {
+    throw RuntimeException("JobItem is not initialized");
+  }
   auto server_name = job_item->GetServerName();
 
   if (!Connect(server_name))

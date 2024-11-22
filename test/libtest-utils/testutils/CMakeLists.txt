@@ -9,6 +9,7 @@ target_sources(${library_name} PRIVATE
   mock_message_handler.h
   mock_operation_action_context.cpp
   mock_operation_action_context.h
+  mock_remote_connection_service.h
   mock_user_context.h
   sequencer_test_utils.cpp
   sequencer_test_utils.h
