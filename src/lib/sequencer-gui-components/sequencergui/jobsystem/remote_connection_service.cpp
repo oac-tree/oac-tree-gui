@@ -64,7 +64,7 @@ void RemoteConnectionService::Disconnect(const std::string& server_name)
 {
   auto on_element = [&server_name](auto& element)
   { return element->GetServerName() == server_name; };
-  m_clients.erase(std::find_if(m_clients.begin(), m_clients.end(), on_element));
+  m_clients.erase(std::remove_if(m_clients.begin(), m_clients.end(), on_element), m_clients.end());
 }
 
 bool RemoteConnectionService::IsConnected(const std::string& server_name) const

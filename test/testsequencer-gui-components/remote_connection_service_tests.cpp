@@ -20,6 +20,7 @@
 #include "sequencergui/jobsystem/remote_connection_service.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/abstract_job_handler.h>
 #include <sequencergui/jobsystem/i_automation_client.h>
 
 #include <gtest/gtest.h>
@@ -41,6 +42,20 @@ public:
     std::string GetServerName() const override { return m_name; };
 
     size_t GetJobCount() const override { return 42; }
+
+    std::string GetProcedureName(size_t job_index) const override
+    {
+      (void)job_index;
+      return {};
+    }
+
+    std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
+                                                         const UserContext& user_context) override
+    {
+      (void)job_item;
+      (void)user_context;
+      return {};
+    }
 
     std::string m_name;
   };
@@ -92,6 +107,7 @@ TEST_F(RemoteConnectionServiceTest, Disconnect)
   EXPECT_TRUE(service.Connect("a1"));
   EXPECT_TRUE(service.Connect("a2"));
   EXPECT_TRUE(service.Connect("a3"));
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a2", "a3"}));
 
   service.Disconnect("def");
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a2", "a3"}));
@@ -108,6 +124,8 @@ TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
   auto factory_func = [&client](const std::string&) { return std::move(client); };
 
   RemoteConnectionService service(factory_func);
+
+  EXPECT_TRUE(service.Connect("abc"));
 
   EXPECT_TRUE(service.HasClient("abc"));
   EXPECT_EQ(&service.GetAutomationClient("abc"), client_ptr);
