@@ -50,6 +50,9 @@ namespace sequencergui
 
 using msec = std::chrono::milliseconds;
 
+/**
+ * @brief Tests of OperationActionHandler class using full setup.
+ */
 class OperationActionHandlerExtendedTest : public ::testing::Test
 {
 public:

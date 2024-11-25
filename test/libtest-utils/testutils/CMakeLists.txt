@@ -5,6 +5,7 @@ target_sources(${library_name} PRIVATE
   mock_automation_client.h
   mock_domain_event_listener.h
   mock_domain_workspace_listener.h
+  mock_job_manager.h
   mock_message_handler.cpp
   mock_message_handler.h
   mock_operation_action_context.cpp

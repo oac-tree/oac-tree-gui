@@ -27,6 +27,7 @@ sequencergui::OperationActionContext MockOperationActionContext::CreateContext()
   sequencergui::OperationActionContext result;
   result.selected_job = [this]() { return OnSelectedJob(); };
   result.send_message = [this](const auto& message) { OnMessage(message); };
+  result.get_remote_context = [this]() { return OnGetRemoteConnectionContext(); };
   return result;
 }
 

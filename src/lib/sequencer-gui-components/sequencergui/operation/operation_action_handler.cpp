@@ -59,7 +59,7 @@ bool InvokeAndCatch(T method, const std::string &text,
 
 }  // namespace
 
-OperationActionHandler::OperationActionHandler(JobManager *job_manager,
+OperationActionHandler::OperationActionHandler(AbstractJobItemManager *job_manager,
                                                OperationActionContext operation_context,
                                                QObject *parent)
     : QObject(parent)

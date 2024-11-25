@@ -20,6 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_OPERATION_ACTION_CONTEXT_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_OPERATION_ACTION_CONTEXT_H_
 
+#include <sequencergui/jobsystem/remote_connection_context.h>
 #include <sequencergui/operation/operation_action_context.h>
 
 #include <gmock/gmock.h>
@@ -36,6 +37,8 @@ class MockOperationActionContext
 public:
   MOCK_METHOD(sequencergui::JobItem*, OnSelectedJob, (), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
+  MOCK_METHOD(std::optional<sequencergui::RemoteConnectionContext>, OnGetRemoteConnectionContext,
+              (), ());
 
   sequencergui::OperationActionContext CreateContext();
 };
