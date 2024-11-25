@@ -41,6 +41,8 @@ class UserContext;
 class IRemoteConnectionService
 {
 public:
+  virtual ~IRemoteConnectionService() = default;
+
   /**
    * @brief Connect with the server using the given server name.
    *
