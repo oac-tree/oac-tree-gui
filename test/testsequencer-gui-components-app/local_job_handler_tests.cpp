@@ -33,6 +33,7 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/operation/breakpoint_helper.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -89,7 +90,7 @@ public:
 
 TEST_F(LocalJobHandlerTest, EmptyJobItem)
 {
-  EXPECT_THROW(LocalJobHandler(nullptr), RuntimeException);
+  EXPECT_THROW(LocalJobHandler(nullptr, UserContext{}), RuntimeException);
 }
 
 //! Initial JobItem setup.
@@ -98,7 +99,7 @@ TEST_F(LocalJobHandlerTest, JobItemWithProcedure)
   auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
-  const LocalJobHandler job_handler(m_job_item);
+  const LocalJobHandler job_handler(m_job_item, UserContext{});
 
   auto expanded_procedure = job_handler.GetExpandedProcedure();
   EXPECT_NE(expanded_procedure, nullptr);
@@ -124,7 +125,7 @@ TEST_F(LocalJobHandlerTest, PrepareJobRequestBreakpoints)
   auto wait_item = expanded_procedure_ptr->GetInstructionContainer()->GetInstructions().at(0);
   SetBreakpointStatus(*wait_item, BreakpointStatus::kSet);
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   // at this point expanded procedure should be regenerated
   auto new_expanded_procedure = job_handler.GetExpandedProcedure();
@@ -150,7 +151,7 @@ TEST_F(LocalJobHandlerTest, InvalidProcedure)
   auto procedure = testutils::CreateInvalidProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_THROW(LocalJobHandler(m_job_item, {}), sup::sequencer::InvalidOperationException);
+  EXPECT_THROW(LocalJobHandler(m_job_item, UserContext{}), sup::sequencer::InvalidOperationException);
 }
 
 //! Delete JobHanlder after procedure start.
@@ -160,7 +161,7 @@ TEST_F(LocalJobHandlerTest, PrematureDeletion)
   m_job_item->SetProcedure(procedure);
 
   {
-    LocalJobHandler job_handler(m_job_item);
+    LocalJobHandler job_handler(m_job_item, UserContext{});
     job_handler.Start();
   }
 
@@ -175,7 +176,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
@@ -204,7 +205,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   auto message_item = instructions.at(0);
@@ -238,7 +239,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   EXPECT_TRUE(testutils::IsEqual(*var0, anyvalue0));
   EXPECT_TRUE(testutils::IsEqual(*var1, anyvalue1));
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   // expanded procedure has different variables
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
@@ -261,7 +262,7 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
   auto procedure = testutils::CreateIncludeProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
@@ -292,7 +293,7 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   const sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, 42};
   auto on_user_input = [new_value](auto) { return UserInputResult{new_value, true}; };
 
-  LocalJobHandler job_handler(m_job_item, {on_user_input});
+  LocalJobHandler job_handler(m_job_item, UserContext{on_user_input});
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
@@ -343,7 +344,7 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
       testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10000));
   m_job_item->SetProcedure(procedure);
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
@@ -373,7 +374,7 @@ TEST_F(LocalJobHandlerTest, LogEvents)
       testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), expected_message);
   m_job_item->SetProcedure(procedure);
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
@@ -402,7 +403,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   auto procedure = testutils::CreateVariableResetProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   // expanded procedure has different variables
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
@@ -436,7 +437,7 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetSequencerModel());
   ASSERT_EQ(instructions.size(), 3);  // sequence, increment0, increment1
 
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
 
   // expanded procedure has different variables and instructions
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());

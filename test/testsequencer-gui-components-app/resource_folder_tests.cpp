@@ -18,8 +18,9 @@
  *****************************************************************************/
 
 #include <sequencergui/domain/domain_helper.h>
-#include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/job_utils.h>
+#include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
@@ -101,7 +102,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
 
   // setup JobHandler to run procedure with the help of JobItem
   m_job_item->SetProcedure(procedure_ptr);
-  LocalJobHandler job_handler(m_job_item);
+  LocalJobHandler job_handler(m_job_item, UserContext{});
   QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
   // starting procedure and waiting for completion

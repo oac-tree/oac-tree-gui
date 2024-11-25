@@ -23,6 +23,7 @@
 #include "local_domain_runner.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>

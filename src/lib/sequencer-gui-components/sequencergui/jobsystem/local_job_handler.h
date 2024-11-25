@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
 
 #include <sequencergui/jobsystem/abstract_job_handler.h>
-#include <sequencergui/jobsystem/user_context.h>
 
 namespace mvvm
 {
@@ -32,6 +31,7 @@ namespace sequencergui
 {
 
 class WorkspaceItemListener;
+struct UserContext;
 
 /**
  * @brief The LocalJobHandler class is intended to run a local job represented by the JobItem.
@@ -41,7 +41,7 @@ class LocalJobHandler : public AbstractJobHandler
   Q_OBJECT
 
 public:
-  explicit LocalJobHandler(JobItem* job_item, const UserContext& user_context = {});
+  explicit LocalJobHandler(JobItem* job_item, const UserContext& user_context);
   ~LocalJobHandler() override;
 
 private:
