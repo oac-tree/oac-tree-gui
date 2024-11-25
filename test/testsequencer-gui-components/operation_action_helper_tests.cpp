@@ -19,6 +19,7 @@
 
 #include "sequencergui/operation/operation_action_helper.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sequencergui/jobsystem/remote_job_handler.h>
@@ -43,11 +44,24 @@ namespace sequencergui
 class OperationActionHelperTest : public ::testing::Test
 {
 public:
+  class UnknownJobItem : public JobItem
+  {
+  public:
+    UnknownJobItem() : JobItem("UnknownJobItem") {}
+  };
+
   UserContext m_user_context;
   mvvm::ApplicationModel m_model;
 
   testutils::MockRemoteConnectionService m_mock_connection_service;
 };
+
+TEST_F(OperationActionHelperTest, CreateJobHandlerForUnknownJob)
+{
+  auto create_func = CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  UnknownJobItem job_item;
+  EXPECT_THROW(create_func(job_item), RuntimeException);
+}
 
 TEST_F(OperationActionHelperTest, CreateJobHandlerForLocalJob)
 {
