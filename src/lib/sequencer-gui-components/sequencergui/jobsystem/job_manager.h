@@ -20,16 +20,13 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 
-#include <QObject>
-#include <memory>
+#include <sequencergui/jobsystem/abstract_job_item_manager.h>
 
 namespace sequencergui
 {
 
 class JobModel;
 class InstructionItem;
-class JobItem;
-class AbstractJobHandler;
 
 /**
  * @brief The JobManager class manages the execution of sequencer jobs.
@@ -38,10 +35,9 @@ class AbstractJobHandler;
  * The API contains interface to submit, start, pause and stop jobs.
  *
  * JobManager holds all jobs, submitted, paused, or running. Only one job at a time, set as the
- * current job, can be manipulated with start/pause/step/stop commands. Also, only current job
- * reports its status outside.
+ * active job, can report its status up.
  */
-class JobManager : public QObject
+class JobManager : public AbstractJobItemManager
 {
   Q_OBJECT
 
@@ -51,63 +47,25 @@ public:
   explicit JobManager(create_handler_func_t create_handler_func, QObject* parent = nullptr);
   ~JobManager() override;
 
-  /**
-   * @brief Submits job for execution.
-   *
-   * Internally creates JobHandler which will takes care about execution logic. Do not start
-   * execution yet.
-   */
-  void SubmitJob(JobItem* job);
+  void SubmitJob(JobItem* job) override;
 
-  /**
-   * @brief Returns job handler for a given job.
-   */
-  AbstractJobHandler* GetJobHandler(JobItem* job);
+  AbstractJobHandler* GetJobHandler(JobItem* job) override;
 
-  /**
-   * @brief Start job.
-   */
-  void Start(JobItem* item);
+  void Start(JobItem* item) override;
 
-  /**
-   * @brief Pause given job.
-   */
-  void Pause(JobItem* item);
+  void Pause(JobItem* item) override;
 
-  /**
-   * @brief Stop given job.
-   */
-  void Stop(JobItem* item);
+  void Stop(JobItem* item) override;
 
-  /**
-   * @brief Execute a single step of the given job.
-   */
-  void Step(JobItem* item);
+  void Step(JobItem* item) override;
 
-  /**
-   * @brief Removes a job corresponding to a given JobItem from the manager.
-   *
-   * Internally removes JobHandler, do not affect JobItem.
-   */
-  void RemoveJobHandler(JobItem* job);
+  void RemoveJobHandler(JobItem* job) override;
 
-  /**
-   * @brief Checks if there are jobs running.
-   */
-  bool HasRunningJobs() const;
+  bool HasRunningJobs() const override;
 
-  /**
-   * @brief Stop all running jobs.
-   */
-  void StopAllJobs();
+  void StopAllJobs() override;
 
-  /**
-   * @brief Set active job.
-   *
-   * An active job is what is currently selected by the user. This job is allowed to send signals
-   * and is used for toggling breakpoints requests.
-   */
-  void SetActiveJob(JobItem* item);
+  void SetActiveJob(JobItem* item) override;
 
 signals:
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
@@ -116,10 +74,11 @@ private:
   /**
    * @brief Inserts job handler into the job map.
    */
-  void InsertJobJandler(std::unique_ptr<AbstractJobHandler> job_handler);
+  void InsertJobHandler(std::unique_ptr<AbstractJobHandler> job_handler);
 
   /**
-   * @brief Process "Next Leaves" events from all job handlers, forwards active job notifications up.
+   * @brief Process "Next Leaves" events from all job handlers, forwards active job notifications
+   * up.
    */
   void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
@@ -135,7 +94,7 @@ private:
   void ResetJobIfNecessary(JobItem* item);
 
   std::map<JobItem*, std::unique_ptr<AbstractJobHandler>> m_job_map;
-  JobItem* m_active_job{nullptr}; //!< job which is allowed to send signals up
+  JobItem* m_active_job{nullptr};  //!< job which is allowed to send signals up
   create_handler_func_t m_create_handler_func;
 };
 

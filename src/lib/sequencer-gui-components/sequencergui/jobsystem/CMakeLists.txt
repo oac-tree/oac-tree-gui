@@ -5,6 +5,7 @@ target_sources(${library_name} PRIVATE
   abstract_domain_runner.h
   abstract_job_handler.cpp
   abstract_job_handler.h
+  abstract_job_item_manager.h
   automation_client.cpp
   automation_client.h
   domain_event_dispatcher.cpp
