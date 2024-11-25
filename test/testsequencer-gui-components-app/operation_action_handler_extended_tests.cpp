@@ -50,10 +50,10 @@ namespace sequencergui
 
 using msec = std::chrono::milliseconds;
 
-class OperationActionHandlerTest : public ::testing::Test
+class OperationActionHandlerExtendedTest : public ::testing::Test
 {
 public:
-  OperationActionHandlerTest() : m_job_manager(CreateJobManagerContext())
+  OperationActionHandlerExtendedTest() : m_job_manager(CreateJobManagerContext())
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
@@ -97,7 +97,7 @@ public:
   UserContext m_user_context;
 };
 
-TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
+TEST_F(OperationActionHandlerExtendedTest, AttemptToUseWhenMisconfigured)
 {
   EXPECT_THROW(OperationActionHandler(nullptr, m_mock_context.CreateContext()), RuntimeException);
   EXPECT_THROW(OperationActionHandler(&m_job_manager, {}), RuntimeException);
@@ -107,7 +107,7 @@ TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
 }
 
 //! Submission of the procedure.
-TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
+TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
   procedure->SetDisplayName("procedure_display_name");
@@ -154,7 +154,7 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
 }
 
 //! Attempt to submit wronly configured procedure.
-TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
+TEST_F(OperationActionHandlerExtendedTest, AttemptToSubmitMalformedProcedure)
 {
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
@@ -170,7 +170,7 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
 }
 
 //! Submit the job, when start and wait till the end.
-TEST_F(OperationActionHandlerTest, OnStartJobRequest)
+TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
   auto handler = CreateOperationHandler();
@@ -214,7 +214,7 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
 }
 
 //! Removing submitted job.
-TEST_F(OperationActionHandlerTest, OnRemoveJobRequest)
+TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobRequest)
 {
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   auto handler = CreateOperationHandler();
@@ -237,7 +237,7 @@ TEST_F(OperationActionHandlerTest, OnRemoveJobRequest)
 }
 
 //! Removing submitted job together with original procedure.
-TEST_F(OperationActionHandlerTest, OnRemoveJobAndCleanupRequest)
+TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobAndCleanupRequest)
 {
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 1);
@@ -261,7 +261,7 @@ TEST_F(OperationActionHandlerTest, OnRemoveJobAndCleanupRequest)
 }
 
 //! Attempt to remove long running job.
-TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
+TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
 {
   auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
@@ -296,7 +296,7 @@ TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
 }
 
 //! Regenerate submitted job.
-TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
+TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -338,7 +338,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 }
 
 //! Regenerate submitted job.
-TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
+TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequestWhenProcedureDeleted)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -380,11 +380,11 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
 }
 
 //! Consequent execution of same job.
-TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
+TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
-  // submitting the procedure  
+  // submitting the procedure
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);

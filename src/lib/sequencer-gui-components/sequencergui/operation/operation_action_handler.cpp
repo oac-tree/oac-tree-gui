@@ -102,8 +102,6 @@ bool OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
   auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                                m_operation_context.send_message);
 
-  emit MakeJobSelectedRequest(job);
-
   return result;
 }
 
@@ -120,11 +118,11 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
 
     for (auto index : user_choice_value.job_indexes)
     {
-      auto job_item = CreateRemoteJobItem(user_choice_value.server_name, index);
-      auto job_item_ptr = job_item.get();
-      m_job_model->InsertItem(std::move(job_item), m_job_model->GetRootItem(),
-                              mvvm::TagIndex::Append());
-      m_job_manager->SubmitJob(job_item_ptr);
+      auto job =
+          InsertJobAfterCurrentSelection(CreateRemoteJobItem(user_choice_value.server_name, index));
+
+      auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); },
+                                   "Remote job submission", m_operation_context.send_message);
     }
 
     return true;
@@ -247,7 +245,7 @@ JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<
   auto parent = selected_job ? selected_job->GetParent() : m_job_model->GetRootItem();
   auto tagindex = selected_job ? selected_job->GetTagIndex().Next() : mvvm::TagIndex::Append();
   m_job_model->InsertItem(std::move(job_item), parent, tagindex);
-  // emit MakeJobSelectedRequest(result);
+  emit MakeJobSelectedRequest(result);
   return result;
 }
 
