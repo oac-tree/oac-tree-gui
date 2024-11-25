@@ -35,6 +35,15 @@ JobManager::JobManager(UserContext user_context, QObject *parent)
 {
 }
 
+JobManager::JobManager(create_handler_func_t create_handler_func, QObject *parent)
+    : QObject(parent), m_create_handler_func(std::move(create_handler_func))
+{
+  if (!m_create_handler_func)
+  {
+    throw RuntimeException("Uninitialized factory functions to create handlers");
+  }
+}
+
 JobManager::~JobManager() = default;
 
 void JobManager::SubmitJob(JobItem *job)
@@ -45,21 +54,6 @@ void JobManager::SubmitJob(JobItem *job)
   }
 
   SubmitJob(std::make_unique<LocalJobHandler>(job, m_user_context));
-}
-
-void JobManager::SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler)
-{
-  auto job_item = job_handler->GetJobItem();
-
-  if (auto handler = GetJobHandler(job_item); handler)
-  {
-    throw RuntimeException("Attempt to submit already existing job");
-  }
-
-  connect(job_handler.get(), &AbstractJobHandler::NextLeavesChanged, this,
-          &JobManager::OnNextLeavesChanged);
-
-  m_job_map.insert({job_item, std::move(job_handler)});
 }
 
 AbstractJobHandler *JobManager::GetJobHandler(JobItem *job)
@@ -153,6 +147,21 @@ void JobManager::ResetJobIfNecessary(JobItem *item)
       job_handler->Reset();
     }
   }
+}
+
+void JobManager::SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler)
+{
+  auto job_item = job_handler->GetJobItem();
+
+  if (auto handler = GetJobHandler(job_item); handler)
+  {
+    throw RuntimeException("Attempt to submit already existing job");
+  }
+
+  connect(job_handler.get(), &AbstractJobHandler::NextLeavesChanged, this,
+          &JobManager::OnNextLeavesChanged);
+
+  m_job_map.insert({job_item, std::move(job_handler)});
 }
 
 }  // namespace sequencergui

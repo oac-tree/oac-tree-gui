@@ -48,7 +48,7 @@ Q_DECLARE_METATYPE(sequencergui::JobItem*)
 class OperationActionHandlerTest : public ::testing::Test
 {
 public:
-  OperationActionHandlerTest() : m_job_manager({})
+  OperationActionHandlerTest() : m_job_manager(UserContext{})
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
@@ -145,7 +145,7 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
 {
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
-  const JobManager manager({});
+  const JobManager manager(UserContext{});
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);

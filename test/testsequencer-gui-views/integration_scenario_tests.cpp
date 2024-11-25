@@ -88,7 +88,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   m_job_item->SetProcedure(loaded_procedure);
 
-  JobManager manager({});
+  JobManager manager(UserContext{});
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 
@@ -157,7 +157,7 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
 
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager manager({});
+  JobManager manager(UserContext{});
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 }
@@ -191,7 +191,7 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
 
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager manager({});
+  JobManager manager(UserContext{});
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 

@@ -101,10 +101,37 @@ public:
   void SetServerName(const std::string& name);
 };
 
+/**
+ * @brief Creates job item intended for running local procedures.
+ *
+ * The procedure shall belong to some model, and it will be linked with this JobItem via the linked
+ * item mechanism.
+ *
+ * @param procedure The procedure to run.
+ * @param msec Initial value of tick timeout during procedure execution.
+ * @return New job item.
+ */
 std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int msec = 0);
 
-std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure, int msec = 0);
+/**
+ * @brief Creates job item intended to run procedure imported from XML file.
+ *
+ * The procedure will be inserted in dedicated tag on board of this item. Ownership will be taken.
+ *
+ * @param procedure The procedure to run.
+ * @param msec Initial value of tick timeout during procedure execution.
+ * @return New job item.
+ */
+std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure,
+                                               int msec = 0);
 
+/**
+ * @brief Creates job item intended to control remote procedures.
+ *
+ * @param server_name The name of the automation server.
+ * @param job_index Index of servers' job.
+ * @return New job item.
+ */
 std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
                                                    size_t job_index);
 

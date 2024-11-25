@@ -29,6 +29,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/operation/operation_action_helper.h>
 
 #include <mvvm/model/model_utils.h>
 
@@ -36,6 +37,7 @@
 #include <sup/sequencer/exceptions.h>
 
 #include <gtest/gtest.h>
+#include <testutils/mock_remote_connection_service.h>
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
 
@@ -58,16 +60,26 @@ public:
     m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
   }
 
+  /**
+   * @brief Creates context necessary for JobManager to funciton.
+   */
+  JobManager::create_handler_func_t GetContext()
+  {
+    return CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  }
+
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
   ApplicationModels m_models;
   JobItem* m_job_item{nullptr};
+  testutils::MockRemoteConnectionService m_mock_connection_service;
+  UserContext m_user_context;
 };
 
 TEST_F(JobManagerTest, InitialState)
 {
-  JobManager manager({});
+  JobManager manager(GetContext());
   EXPECT_EQ(manager.GetJobHandler(m_job_item), nullptr);
   EXPECT_FALSE(manager.HasRunningJobs());
 }
@@ -79,26 +91,10 @@ TEST_F(JobManagerTest, SubmitProcedure)
 
   EXPECT_EQ(m_job_item->GetExpandedProcedure(), nullptr);
 
-  JobManager manager({});
+  JobManager manager(GetContext());
   manager.SubmitJob(m_job_item);
 
   ASSERT_TRUE(manager.GetJobHandler(m_job_item));
-  EXPECT_EQ(manager.GetJobHandler(m_job_item)->GetExpandedProcedure(),
-            m_job_item->GetExpandedProcedure());
-}
-
-TEST_F(JobManagerTest, SubmitHandler)
-{
-  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
-  m_job_item->SetProcedure(copy_procedure);
-
-  auto job_handler = std::make_unique<LocalJobHandler>(m_job_item, UserContext{});
-  auto job_handler_ptr = job_handler.get();
-
-  JobManager manager({});
-  manager.SubmitJob(std::move(job_handler));
-
-  ASSERT_EQ(manager.GetJobHandler(m_job_item), job_handler_ptr);
   EXPECT_EQ(manager.GetJobHandler(m_job_item)->GetExpandedProcedure(),
             m_job_item->GetExpandedProcedure());
 }
@@ -108,7 +104,7 @@ TEST_F(JobManagerTest, AttemptToSubmitProcedure)
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager manager({});
+  JobManager manager(GetContext());
 
   // it shouldn't be possible to submit undefined job
   EXPECT_THROW(manager.SubmitJob(nullptr), RuntimeException);
@@ -125,7 +121,7 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
   auto invalid_procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(invalid_procedure);
 
-  JobManager manager({});
+  JobManager manager(GetContext());
 
   EXPECT_THROW(manager.SubmitJob(m_job_item), sup::sequencer::InvalidOperationException);
 }
@@ -140,7 +136,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager manager({});
+  JobManager manager(GetContext());
 
   manager.SubmitJob(m_job_item);
 
@@ -184,7 +180,7 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
 
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager manager({});
+  JobManager manager(GetContext());
 
   // nothing wrong if we are trying to remove non-submitted job
   EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item));
@@ -205,7 +201,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 
   m_job_item->SetProcedure(procedure);
 
-  JobManager manager({});
+  JobManager manager(GetContext());
 
   manager.SubmitJob(m_job_item);
   manager.Start(m_job_item);
@@ -239,7 +235,7 @@ TEST_F(JobManagerTest, StopAllJobs)
   auto job_item2 = m_models.GetJobModel()->InsertItem<JobItem>();
   job_item2->SetProcedure(procedure1);
 
-  JobManager manager({});
+  JobManager manager(GetContext());
 
   EXPECT_NO_FATAL_FAILURE(manager.StopAllJobs());
 

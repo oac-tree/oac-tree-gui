@@ -48,7 +48,10 @@ class JobManager : public QObject
   Q_OBJECT
 
 public:
-  explicit JobManager(UserContext user_context, QObject* parent = nullptr);
+  using create_handler_func_t = std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)>;
+
+  JobManager(UserContext user_context, QObject* parent = nullptr);
+  JobManager(create_handler_func_t create_handler_func, QObject* parent = nullptr);
   ~JobManager() override;
 
   /**
@@ -58,8 +61,6 @@ public:
    * execution yet.
    */
   void SubmitJob(JobItem* job);
-
-  void SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler);
 
   /**
    * @brief Returns job handler for a given job.
@@ -111,6 +112,8 @@ public:
    */
   void SetActiveJob(JobItem* item);
 
+  void SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler);
+
 signals:
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
@@ -131,6 +134,7 @@ private:
   std::map<JobItem*, std::unique_ptr<AbstractJobHandler>> m_job_map;
   UserContext m_user_context;
   JobItem* m_active_job{nullptr};
+  create_handler_func_t m_create_handler_func;
 };
 
 }  // namespace sequencergui
