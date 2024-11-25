@@ -121,15 +121,16 @@ TEST_F(WorkspaceItemListenerTest, ModifyAnyValueFromModelViaInsert)
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
   WorkspaceItemListener listener(m_workspace_item, &m_workspace);
+
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
 
+  // expectations triggered by the setup
+  EXPECT_CALL(domain_listener, OnEvent(var_name, value, true)).Times(1);
   m_workspace.Setup();
 
-  // preparing callback expectations
+  // expectations triggered by value change
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
-
-  // modifying value from the model
   SetAnyValue(new_value, *variable_item);  // replaces AnyValueItem
 
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), new_value);
@@ -138,14 +139,13 @@ TEST_F(WorkspaceItemListenerTest, ModifyAnyValueFromModelViaInsert)
 
 //! Setting up the workspace with two variables. Replacing variables one after another and checking
 //! the order of callbacks.
-
 TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
 {
   const std::string var_name0("var0");
   const std::string var_name1("var1");
-  sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
-  sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
-  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 44);
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
+  const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
+  const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 44);
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   SetAnyValue(value0, *variable_item0);
@@ -157,13 +157,18 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
 
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
-  WorkspaceItemListener listener(m_workspace_item, &m_workspace);
+  const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
 
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(domain_listener, OnEvent(var_name0, value0, true)).Times(1);
+    EXPECT_CALL(domain_listener, OnEvent(var_name1, value1, true)).Times(1);
+  }
   m_workspace.Setup();
 
   {
-    ::testing::InSequence seq;
+    const ::testing::InSequence seq;
     EXPECT_CALL(domain_listener, OnEvent(var_name0, new_value, true)).Times(1);
     EXPECT_CALL(domain_listener, OnEvent(var_name1, new_value, true)).Times(1);
   }

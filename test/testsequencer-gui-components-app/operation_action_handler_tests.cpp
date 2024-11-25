@@ -162,6 +162,7 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   EXPECT_FALSE(handler->OnSubmitJobRequest(procedure));
 
   // After unsuccessfull submission JobItem remains there
@@ -175,6 +176,7 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
   auto handler = CreateOperationHandler();
 
   // submitting the procedure
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -217,6 +219,7 @@ TEST_F(OperationActionHandlerTest, OnRemoveJobRequest)
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   auto handler = CreateOperationHandler();
 
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
   EXPECT_EQ(GetJobItems().size(), 1);
 
@@ -240,6 +243,7 @@ TEST_F(OperationActionHandlerTest, OnRemoveJobAndCleanupRequest)
   EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 1);
 
   auto handler = CreateOperationHandler();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
   EXPECT_EQ(GetJobItems().size(), 1);
 
@@ -262,6 +266,7 @@ TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
   auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
   auto handler = CreateOperationHandler();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -297,6 +302,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 
   // submitting the procedure
   auto handler = CreateOperationHandler();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
@@ -338,6 +344,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
 
   // submitting the procedure
   auto handler = CreateOperationHandler();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
@@ -377,8 +384,10 @@ TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
-  // submitting the procedure
+  // submitting the procedure  
   auto handler = CreateOperationHandler();
+
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSubmitJobRequest(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);

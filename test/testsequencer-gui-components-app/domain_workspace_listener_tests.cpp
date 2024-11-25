@@ -130,6 +130,7 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
   auto listener = std::make_unique<DomainWorkspaceListener>(&m_workspace, mock_client.AsStdFunction());
   EXPECT_EQ(listener->GetEventCount(), 0);
 
+  EXPECT_CALL(mock_client, Call(_)).Times(1);
   m_workspace.Setup();
 
   EXPECT_EQ(listener->GetEventCount(), 1);
