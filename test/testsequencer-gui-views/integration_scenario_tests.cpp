@@ -17,11 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -42,6 +43,8 @@
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
 #include <testutils/test_utils.h>
+#include <testutils/mock_remote_connection_service.h>
+#include <sequencergui/operation/operation_action_helper.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -58,13 +61,26 @@ public:
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
-    m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
+    m_job_item = m_models.GetJobModel()->InsertItem<LocalJobItem>();
   }
+
+  /**
+   * @brief Creates context necessary for JobManager to funciton.
+   */
+  JobManager::create_handler_func_t CreateJobManagerContext()
+  {
+    return CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  }
+
+
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
   ApplicationModels m_models;
-  JobItem* m_job_item{nullptr};
+  LocalJobItem* m_job_item{nullptr};
+
+  testutils::MockRemoteConnectionService m_mock_connection_service;
+  UserContext m_user_context;
 };
 
 //! Create procedure, save as a project file, load from disk, and execute procedure in a job
@@ -88,7 +104,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   m_job_item->SetProcedure(loaded_procedure);
 
-  JobManager manager(UserContext{});
+  JobManager manager(CreateJobManagerContext());
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 
@@ -157,7 +173,7 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
 
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager manager(UserContext{});
+  JobManager manager(CreateJobManagerContext());
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 }
@@ -191,7 +207,7 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
 
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager manager(UserContext{});
+  JobManager manager(CreateJobManagerContext());
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 

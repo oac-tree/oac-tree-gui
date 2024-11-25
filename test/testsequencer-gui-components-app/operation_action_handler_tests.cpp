@@ -23,11 +23,13 @@
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/operation/operation_action_helper.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -35,23 +37,34 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_operation_action_context.h>
+#include <testutils/mock_remote_connection_service.h>
 #include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>
 
-using namespace sequencergui;
-using msec = std::chrono::milliseconds;
-
 Q_DECLARE_METATYPE(sequencergui::JobItem*)
+
+namespace sequencergui
+{
+
+using msec = std::chrono::milliseconds;
 
 class OperationActionHandlerTest : public ::testing::Test
 {
 public:
-  OperationActionHandlerTest() : m_job_manager(UserContext{})
+  OperationActionHandlerTest() : m_job_manager(CreateJobManagerContext())
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
+  }
+
+  /**
+   * @brief Creates context necessary for JobManager to funciton.
+   */
+  JobManager::create_handler_func_t CreateJobManagerContext()
+  {
+    return CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   }
 
   /**
@@ -80,6 +93,8 @@ public:
   JobManager m_job_manager;
 
   testutils::MockOperationActionContext m_mock_context;
+  testutils::MockRemoteConnectionService m_mock_connection_service;
+  UserContext m_user_context;
 };
 
 TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
@@ -143,7 +158,7 @@ TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
 {
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
-  const JobManager manager(UserContext{});
+  const JobManager manager(CreateJobManagerContext());
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
@@ -390,3 +405,5 @@ TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
 
   EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
 }
+
+}  // namespace sequencergui

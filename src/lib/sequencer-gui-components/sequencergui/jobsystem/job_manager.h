@@ -20,8 +20,6 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 
-#include <sequencergui/jobsystem/user_context.h>
-
 #include <QObject>
 #include <memory>
 
@@ -50,8 +48,7 @@ class JobManager : public QObject
 public:
   using create_handler_func_t = std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)>;
 
-  JobManager(UserContext user_context, QObject* parent = nullptr);
-  JobManager(create_handler_func_t create_handler_func, QObject* parent = nullptr);
+  explicit JobManager(create_handler_func_t create_handler_func, QObject* parent = nullptr);
   ~JobManager() override;
 
   /**
@@ -112,12 +109,18 @@ public:
    */
   void SetActiveJob(JobItem* item);
 
-  void SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler);
-
 signals:
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
 private:
+  /**
+   * @brief Inserts job handler into the job map.
+   */
+  void InsertJobJandler(std::unique_ptr<AbstractJobHandler> job_handler);
+
+  /**
+   * @brief Process "Next Leaves" events from all job handlers, forwards active job notifications up.
+   */
   void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
   /**
@@ -132,8 +135,7 @@ private:
   void ResetJobIfNecessary(JobItem* item);
 
   std::map<JobItem*, std::unique_ptr<AbstractJobHandler>> m_job_map;
-  UserContext m_user_context;
-  JobItem* m_active_job{nullptr};
+  JobItem* m_active_job{nullptr}; //!< job which is allowed to send signals up
   create_handler_func_t m_create_handler_func;
 };
 

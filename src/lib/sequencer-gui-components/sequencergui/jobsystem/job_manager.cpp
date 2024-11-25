@@ -30,11 +30,6 @@
 namespace sequencergui
 {
 
-JobManager::JobManager(UserContext user_context, QObject *parent)
-    : QObject(parent), m_user_context(user_context)
-{
-}
-
 JobManager::JobManager(create_handler_func_t create_handler_func, QObject *parent)
     : QObject(parent), m_create_handler_func(std::move(create_handler_func))
 {
@@ -53,7 +48,7 @@ void JobManager::SubmitJob(JobItem *job)
     throw RuntimeException("Attempt to submit undefined job");
   }
 
-  SubmitJob(std::make_unique<LocalJobHandler>(job, m_user_context));
+  InsertJobJandler(m_create_handler_func(*job));
 }
 
 AbstractJobHandler *JobManager::GetJobHandler(JobItem *job)
@@ -149,7 +144,7 @@ void JobManager::ResetJobIfNecessary(JobItem *item)
   }
 }
 
-void JobManager::SubmitJob(std::unique_ptr<AbstractJobHandler> job_handler)
+void JobManager::InsertJobJandler(std::unique_ptr<AbstractJobHandler> job_handler)
 {
   auto job_item = job_handler->GetJobItem();
 

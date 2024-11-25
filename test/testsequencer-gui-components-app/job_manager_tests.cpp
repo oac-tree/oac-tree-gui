@@ -20,13 +20,13 @@
 #include "sequencergui/jobsystem/job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/abstract_job_handler.h>
+#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/application_models.h>
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/operation/operation_action_helper.h>
@@ -57,7 +57,7 @@ public:
   JobManagerTest()
   {
     m_models.CreateEmpty();
-    m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
+    m_job_item = m_models.GetJobModel()->InsertItem<LocalJobItem>();
   }
 
   /**
@@ -72,7 +72,7 @@ public:
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
   ApplicationModels m_models;
-  JobItem* m_job_item{nullptr};
+  LocalJobItem* m_job_item{nullptr};
   testutils::MockRemoteConnectionService m_mock_connection_service;
   UserContext m_user_context;
 };
@@ -232,7 +232,7 @@ TEST_F(JobManagerTest, StopAllJobs)
   m_job_item->SetProcedure(procedure0);
   auto job_item1 = m_job_item;
 
-  auto job_item2 = m_models.GetJobModel()->InsertItem<JobItem>();
+  auto job_item2 = m_models.GetJobModel()->InsertItem<LocalJobItem>();
   job_item2->SetProcedure(procedure1);
 
   JobManager manager(GetContext());
