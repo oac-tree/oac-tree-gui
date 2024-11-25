@@ -59,8 +59,8 @@ public:
    */
   std::unique_ptr<OperationActionHandler> CreateOperationHandler()
   {
-    auto result = std::make_unique<OperationActionHandler>(
-        &m_job_manager, m_mock_context.CreateContext(), UserContext{});
+    auto result =
+        std::make_unique<OperationActionHandler>(&m_job_manager, m_mock_context.CreateContext());
     result->SetJobModel(GetJobModel());
     return result;
   }
@@ -84,12 +84,10 @@ public:
 
 TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
 {
-  const UserContext context;
-  EXPECT_THROW(OperationActionHandler(nullptr, m_mock_context.CreateContext(), context),
-               RuntimeException);
-  EXPECT_THROW(OperationActionHandler(&m_job_manager, {}, context), RuntimeException);
+  EXPECT_THROW(OperationActionHandler(nullptr, m_mock_context.CreateContext()), RuntimeException);
+  EXPECT_THROW(OperationActionHandler(&m_job_manager, {}), RuntimeException);
 
-  OperationActionHandler actions(&m_job_manager, m_mock_context.CreateContext(), context);
+  OperationActionHandler actions(&m_job_manager, m_mock_context.CreateContext());
   EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
 }
 

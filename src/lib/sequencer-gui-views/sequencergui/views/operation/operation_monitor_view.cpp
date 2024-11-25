@@ -23,6 +23,7 @@
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
 
+#include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/application_models.h>
@@ -32,6 +33,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_action_handler.h>
+#include <sequencergui/operation/operation_action_helper.h>
 #include <sequencergui/views/editors/user_input_dialogs.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sequencergui/views/operation/remote_connection_dialog.h>
@@ -59,6 +61,12 @@ const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kLeftPanelIsVisibleSettingName = kGroupName + "/" + "left_panel";
 const QString kRightPanelIsVisibleSettingName = kGroupName + "/" + "right_panel";
 
+std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
+{
+  return [](const std::string &server_name)
+  { return std::make_unique<AutomationClient>(server_name); };
+}
+
 }  // namespace
 
 OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidget *parent)
@@ -69,9 +77,9 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_left_panel(CreateLeftPanel())
     , m_workspace_panel{new OperationWorkspacePanel}
     , m_splitter(new QSplitter)
+    , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
     , m_job_manager(new JobManager(CreateDefaultUserContext(this), this))
-    , m_action_handler(new OperationActionHandler(m_job_manager, CreateOperationContext(),
-                                                  CreateDefaultUserContext(this), this))
+    , m_action_handler(new OperationActionHandler(m_job_manager, CreateOperationContext(), this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -290,8 +298,8 @@ OperationActionContext OperationMonitorView::CreateOperationContext()
   OperationActionContext result;
   result.selected_job = [this] { return m_job_panel->GetSelectedJob(); };
   result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
-  result.get_remote_context = [this](RemoteConnectionService &service)
-  { return GetDialogRemoteConnectionConext(service, this); };
+  result.get_remote_context = [this]()
+  { return GetDialogRemoteConnectionConext(*m_connection_service, this); };
   return result;
 }
 

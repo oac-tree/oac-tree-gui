@@ -20,7 +20,6 @@
 #include "operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/jobsystem/remote_connection_context.h>
@@ -58,22 +57,14 @@ bool InvokeAndCatch(T method, const std::string &text,
   return false;
 }
 
-std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
-{
-  return [](const std::string &server_name)
-  { return std::make_unique<AutomationClient>(server_name); };
-}
-
 }  // namespace
 
 OperationActionHandler::OperationActionHandler(JobManager *job_manager,
                                                OperationActionContext operation_context,
-                                               UserContext user_context, QObject *parent)
+                                               QObject *parent)
     : QObject(parent)
     , m_job_manager(job_manager)
     , m_operation_context(std::move(operation_context))
-    , m_user_context(user_context)
-    , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
     , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
 {
   if (!m_operation_context.selected_job)
@@ -123,8 +114,7 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
     return false;
   }
 
-  if (auto user_choice = m_operation_context.get_remote_context(*m_connection_service);
-      user_choice.has_value())
+  if (auto user_choice = m_operation_context.get_remote_context(); user_choice.has_value())
   {
     auto user_choice_value = user_choice.value();
 
@@ -134,8 +124,7 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
       auto job_item_ptr = job_item.get();
       m_job_model->InsertItem(std::move(job_item), m_job_model->GetRootItem(),
                               mvvm::TagIndex::Append());
-      auto job_handler = m_connection_service->CreateJobHandler(job_item_ptr, m_user_context);
-      m_job_manager->SubmitJob(std::move(job_handler));
+      m_job_manager->SubmitJob(job_item_ptr);
     }
 
     return true;

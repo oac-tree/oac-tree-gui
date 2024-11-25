@@ -22,7 +22,6 @@
 
 #include <sequencergui/jobsystem/remote_connection_context.h>
 #include <sequencergui/jobsystem/remote_connection_service.h>
-#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/operation/operation_action_context.h>
 
 #include <QObject>
@@ -41,7 +40,7 @@ class JobManager;
 class JobItem;
 class ProcedureItem;
 class InstructionItem;
-class RemoteConnectionService;
+
 /**
  * @brief The OperationActionHandler class handles high-level actions of OperationMonitorView
  * related to job submission and job removal.
@@ -58,7 +57,7 @@ public:
   using selection_callback_t = std::function<JobItem*()>;
 
   explicit OperationActionHandler(JobManager* job_manager, OperationActionContext operation_context,
-                                  UserContext user_context, QObject* parent = nullptr);
+                                  QObject* parent = nullptr);
 
   ~OperationActionHandler() override;
 
@@ -140,9 +139,7 @@ private:
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
   OperationActionContext m_operation_context;
-  std::unique_ptr<RemoteConnectionService> m_connection_service;
   int m_default_delay{0};
-  UserContext m_user_context;
 };
 
 }  // namespace sequencergui

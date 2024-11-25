@@ -45,8 +45,7 @@ struct OperationActionContext
   std::function<void(const sup::gui::MessageEvent&)> send_message;
 
   //!< callback to ask about remote job import information
-  std::function<std::optional<RemoteConnectionContext>(RemoteConnectionService&)>
-      get_remote_context;
+  std::function<std::optional<RemoteConnectionContext>()> get_remote_context;
 };
 
 }  // namespace sequencergui

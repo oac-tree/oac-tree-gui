@@ -38,6 +38,7 @@ class OperationJobPanel;
 class ProcedureItem;
 class OperationActionHandler;
 class OperationActionContext;
+class RemoteConnectionService;
 
 /**
  * @brief The OperationMonitorView class is the main window component to run sequences and monitor
@@ -94,6 +95,7 @@ private:
   QSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};
 
+  std::unique_ptr<RemoteConnectionService> m_connection_service;
   JobManager* m_job_manager{nullptr};
   OperationActionHandler* m_action_handler{nullptr};
 
