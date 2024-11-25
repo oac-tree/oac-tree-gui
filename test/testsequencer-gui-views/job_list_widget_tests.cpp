@@ -20,7 +20,7 @@
 #include "sequencergui/views/operation/job_list_widget.h"
 
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 
 #include <mvvm/test/test_helper.h>
@@ -50,7 +50,7 @@ TEST_F(JobListWidgetTest, InitialState)
 TEST_F(JobListWidgetTest, SelectJob)
 {
   JobModel model;
-  auto job = model.InsertItem<JobItem>();
+  auto job = model.InsertItem<LocalJobItem>();
 
   JobListWidget view;
   QSignalSpy spy_selected(&view, &JobListWidget::JobSelected);
@@ -78,7 +78,7 @@ TEST_F(JobListWidgetTest, SelectJob)
 TEST_F(JobListWidgetTest, SelectionAfterRemoval)
 {
   JobModel model;
-  auto job = model.InsertItem<JobItem>();
+  auto job = model.InsertItem<LocalJobItem>();
 
   JobListWidget view;
   view.SetJobModel(&model);
@@ -101,7 +101,7 @@ TEST_F(JobListWidgetTest, SelectionAfterRemoval)
 TEST_F(JobListWidgetTest, SetCurrentIndex)
 {
   JobModel model;
-  auto job = model.InsertItem<JobItem>();
+  auto job = model.InsertItem<LocalJobItem>();
 
   JobListWidget view;
   view.SetJobModel(&model);

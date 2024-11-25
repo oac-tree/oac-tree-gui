@@ -62,8 +62,8 @@ public:
   {
     // refactor after COA-1184
     if (item
-        && (item->GetType() == JobItem::Type || item->GetType() == LocalJobItem::Type
-            || item->GetType() == RemoteJobItem::Type || item->GetType() == ImportedJobItem::Type))
+        && (item->GetType() == LocalJobItem::Type || item->GetType() == RemoteJobItem::Type
+            || item->GetType() == ImportedJobItem::Type))
     {
       return {};
     }

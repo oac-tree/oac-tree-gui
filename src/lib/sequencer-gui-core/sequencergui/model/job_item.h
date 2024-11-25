@@ -28,19 +28,17 @@ namespace sequencergui
 class ProcedureItem;
 
 /**
- * @brief The JobItem class represents a job to run a procedure.
+ * @brief The JobItem class is a base class for jobs to run a procedure.
  *
- * @details Job item links to ProcedureItem via item pool machinery, so it should be used only when
- * it is a part of the model. JobItem doesn't have own logic to run a job and is handled by
- * JobHandler.
+ * Job item links to ProcedureItem via item pool machinery, so it should be used only when it is a
+ * part of the model. JobItem doesn't have its own logic to run a job and is handled by JobHandler.
  */
-
 class JobItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "Job";
   using CompoundItem::CompoundItem;
-  explicit JobItem(const std::string& type = Type);
+
+  explicit JobItem(const std::string& type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
@@ -83,13 +81,7 @@ public:
    *
    * Expanded procedure is a ProcedureItem which is obtained from the sequencer domain procedure
    * after its Setup. Expanded ProcedureItem is stored on board this JobItem, and may contain
-   * breakpoint information, and is shown in a real-time instruction tree. The whole chain looks
-   * like the following.
-   *
-   * - ProcedureItem is what the user has created in the editor
-   * - Sequencer domain procedure
-   * - Sequencer domain procedure after Setup call
-   * - Expanded ProcedureItem
+   * breakpoint information, and is shown in a real-time instruction tree.
    */
   ProcedureItem* GetExpandedProcedure();
 };

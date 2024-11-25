@@ -20,7 +20,7 @@
 #include "sequencergui/viewmodel/job_list_viewmodel.h"
 
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 
@@ -48,7 +48,7 @@ TEST_F(JobListViewModelTest, SingleProcedure)
 {
   TestModel model;
 
-  auto item = model.InsertItem<JobItem>();
+  auto item = model.InsertItem<LocalJobItem>();
   item->SetStatus("abc");
 
   JobListViewModel viewmodel(&model);
@@ -66,7 +66,7 @@ TEST_F(JobListViewModelTest, SingleProcedure)
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(status_index), item->GetItem(itemconstants::kStatus));
 
   EXPECT_EQ(viewmodel.data(displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Job"));
+            std::string("LocalJob"));
   EXPECT_EQ(viewmodel.data(status_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
 
@@ -79,8 +79,8 @@ TEST_F(JobListViewModelTest, NotificationOnStatusChange)
 {
   TestModel model;
 
-  auto procedure0 = model.InsertItem<JobItem>();
-  auto procedure1 = model.InsertItem<JobItem>();
+  auto procedure0 = model.InsertItem<LocalJobItem>();
+  auto procedure1 = model.InsertItem<LocalJobItem>();
 
   JobListViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(), 2);

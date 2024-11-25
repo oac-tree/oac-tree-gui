@@ -26,7 +26,7 @@
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -62,7 +62,7 @@ public:
   LocalJobHandlerTest()
   {
     m_models.CreateEmpty();
-    m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
+    m_job_item = m_models.GetJobModel()->InsertItem<LocalJobItem>();
   }
 
   /**
@@ -85,7 +85,7 @@ public:
   }
 
   ApplicationModels m_models;
-  JobItem* m_job_item{nullptr};
+  LocalJobItem* m_job_item{nullptr};
 };
 
 TEST_F(LocalJobHandlerTest, EmptyJobItem)

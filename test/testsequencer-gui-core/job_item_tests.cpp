@@ -33,11 +33,17 @@ using namespace sequencergui;
 
 class JobItemTest : public ::testing::Test
 {
+public:
+  class TestItem : public JobItem
+  {
+  public:
+    TestItem() : JobItem("TestItem") {}
+  };
 };
 
 TEST_F(JobItemTest, JobItem)
 {
-  JobItem item;
+  TestItem item;
 
   EXPECT_EQ(item.GetTickTimeout(), itemconstants::kDefaultTickTimeoutMsec);
   item.SetTickTimeout(42);
@@ -53,7 +59,7 @@ TEST_F(JobItemTest, SetProcedure)
 {
   SequencerModel model;
 
-  auto job_item = model.InsertItem<JobItem>();
+  auto job_item = model.InsertItem<TestItem>();
   auto procedure_item = model.InsertItem<ProcedureItem>();
 
   // checking JobItem search machinery
@@ -68,7 +74,7 @@ TEST_F(JobItemTest, SetProcedureInterModelContext)
   ApplicationModels models;
   models.CreateEmpty();
 
-  auto job_item = models.GetJobModel()->InsertItem<JobItem>();
+  auto job_item = models.GetJobModel()->InsertItem<TestItem>();
   auto procedure_item = models.GetSequencerModel()->InsertItem<ProcedureItem>();
 
   // checking JobItem search machinery

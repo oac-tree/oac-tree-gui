@@ -23,6 +23,7 @@
 #include <sequencergui/jobsystem/abstract_job_handler.h>
 #include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/application_models.h>
+#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>

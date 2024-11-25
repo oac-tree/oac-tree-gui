@@ -20,7 +20,7 @@
 #include "sequencergui/jobsystem/remote_job_handler.h"
 #include "test_automation_server.h"
 
-#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/variable_item.h>
@@ -40,10 +40,10 @@ namespace sequencergui
 class RemoteJobHandlerTest : public ::testing::Test
 {
 public:
-  RemoteJobHandlerTest() { m_job_item = m_model.InsertItem<JobItem>(); }
+  RemoteJobHandlerTest() { m_job_item = m_model.InsertItem<RemoteJobItem>(); }
 
   JobModel m_model;
-  JobItem* m_job_item{nullptr};
+  RemoteJobItem* m_job_item{nullptr};
 };
 
 TEST_F(RemoteJobHandlerTest, SimpleProcedure)
