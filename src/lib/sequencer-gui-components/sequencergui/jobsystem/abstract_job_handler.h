@@ -135,7 +135,7 @@ protected:
   /**
    * @brief Returns a context necessary for sequencer event queue to function.
    */
-  DomainEventDispatcherContext CreateContext();
+  DomainEventDispatcherContext CreateEventDispatcherContext();
 
   /**
    * @brief Set-up domain runner.

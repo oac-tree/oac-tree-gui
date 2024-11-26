@@ -49,8 +49,7 @@ struct UserContext;
  * AnstractJobHandler.
  * @param service Remote connection service used to create remote job handler.
  */
-std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)> CreateJobHandlerFactoryFunc(
-    const UserContext& user_context, IRemoteConnectionService& service);
+std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)> CreateJobHandlerFactoryFunc(const UserContext &user_context, IRemoteConnectionService& service);
 
 }  // namespace sequencergui
 

@@ -38,7 +38,7 @@
 namespace sequencergui
 {
 
-LocalJobHandler::LocalJobHandler(JobItem *job_item, const UserContext &user_context)
+LocalJobHandler::LocalJobHandler(JobItem *job_item, UserContext user_context)
     : AbstractJobHandler(job_item)
 {
   if (!GetJobItem()->GetProcedure())
@@ -51,7 +51,7 @@ LocalJobHandler::LocalJobHandler(JobItem *job_item, const UserContext &user_cont
   auto domain_procedure = DomainProcedureBuilder::CreateProcedure(*GetJobItem()->GetProcedure());
   auto domain_procedure_ptr = domain_procedure.get();
 
-  auto runner = CreateDomainRunner(user_context, std::move(domain_procedure));
+  auto runner = CreateDomainRunner(std::move(user_context), std::move(domain_procedure));
   Setup(std::move(runner));
 
   m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
@@ -66,11 +66,11 @@ void LocalJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
 }
 
 std::unique_ptr<AbstractDomainRunner> LocalJobHandler::CreateDomainRunner(
-    const UserContext &user_context, std::unique_ptr<procedure_t> procedure)
+    UserContext user_context, std::unique_ptr<procedure_t> procedure)
 {
   // LocalDomainRunner's internals call Setup on the domain procedure
-  auto runner =
-      std::make_unique<LocalDomainRunner>(CreateContext(), user_context, std::move(procedure));
+  auto runner = std::make_unique<LocalDomainRunner>(CreateEventDispatcherContext(), std::move(user_context),
+                                                    std::move(procedure));
   runner->SetTickTimeout(GetJobItem()->GetTickTimeout());
   return runner;
 }

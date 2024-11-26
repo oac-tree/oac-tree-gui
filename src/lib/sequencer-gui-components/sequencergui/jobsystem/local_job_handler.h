@@ -41,7 +41,7 @@ class LocalJobHandler : public AbstractJobHandler
   Q_OBJECT
 
 public:
-  explicit LocalJobHandler(JobItem* job_item, const UserContext& user_context);
+  explicit LocalJobHandler(JobItem* job_item, UserContext user_context);
   ~LocalJobHandler() override;
 
 private:
@@ -50,7 +50,7 @@ private:
   /**
    * @brief Creates local domain runner.
    */
-  std::unique_ptr<AbstractDomainRunner> CreateDomainRunner(const UserContext& user_context,
+  std::unique_ptr<AbstractDomainRunner> CreateDomainRunner(UserContext user_context,
                                                            std::unique_ptr<procedure_t> procedure);
 
   /**

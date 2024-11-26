@@ -127,7 +127,7 @@ AbstractDomainRunner *AbstractJobHandler::GetDomainRunner()
   return m_domain_runner.get();
 }
 
-DomainEventDispatcherContext AbstractJobHandler::CreateContext()
+DomainEventDispatcherContext AbstractJobHandler::CreateEventDispatcherContext()
 {
   DomainEventDispatcherContext result;
 

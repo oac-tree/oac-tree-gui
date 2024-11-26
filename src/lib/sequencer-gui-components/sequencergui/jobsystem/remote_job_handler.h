@@ -42,16 +42,11 @@ class RemoteJobHandler : public AbstractJobHandler
 
 public:
   RemoteJobHandler(JobItem* job_item, sup::auto_server::IJobManager& manager,
-                            size_t job_index, const UserContext& user_context = {});
+                            size_t job_index, UserContext user_context);
   ~RemoteJobHandler() override;
 
 private:
   void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;
-
-  /**
-   * @brief Creates remote domain runner.
-   */
-  std::unique_ptr<AbstractDomainRunner> CreateDomainRunner(const UserContext& user_context);
 };
 
 }  // namespace sequencergui

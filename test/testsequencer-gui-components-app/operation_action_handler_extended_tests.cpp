@@ -93,11 +93,11 @@ public:
   }
 
   ApplicationModels m_models;
+  UserContext m_user_context;
   JobManager m_job_manager;
 
   testutils::MockOperationActionContext m_mock_context;
   testutils::MockRemoteConnectionService m_mock_connection_service;
-  UserContext m_user_context;
 };
 
 TEST_F(OperationActionHandlerExtendedTest, AttemptToUseWhenMisconfigured)
