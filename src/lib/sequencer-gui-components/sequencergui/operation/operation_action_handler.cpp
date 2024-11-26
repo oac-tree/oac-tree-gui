@@ -96,12 +96,17 @@ bool OperationActionHandler::SubmitLocalJob(ProcedureItem *procedure_item)
     return false;
   }
 
-  auto job = InsertJobAfterCurrentSelection(CreateLocalJobItem(procedure_item, m_tick_timeout));
+  return SubmitJob(CreateLocalJobItem(procedure_item, m_tick_timeout));
+}
 
-  auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
-                               m_operation_context.send_message);
+bool OperationActionHandler::SubmitImportedJob(std::unique_ptr<ProcedureItem> procedure_item)
+{
+  if (!procedure_item)
+  {
+    return false;
+  }
 
-  return result;
+  return SubmitJob(CreateImportedJobItem(std::move(procedure_item), m_tick_timeout));
 }
 
 bool OperationActionHandler::OnImportRemoteJobRequest()
@@ -111,23 +116,19 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
     return false;
   }
 
+  bool is_success{false};
   if (auto user_choice = m_operation_context.get_remote_context(); user_choice.has_value())
   {
+    is_success = true;
     auto user_choice_value = user_choice.value();
-
     for (auto index : user_choice_value.job_indexes)
     {
-      auto job =
-          InsertJobAfterCurrentSelection(CreateRemoteJobItem(user_choice_value.server_name, index));
-
-      auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); },
-                                   "Remote job submission", m_operation_context.send_message);
+      // all should succeed
+      is_success &= SubmitJob(CreateRemoteJobItem(user_choice_value.server_name, index));
     }
-
-    return true;
   }
 
-  return false;
+  return is_success;
 }
 
 void OperationActionHandler::OnStartJobRequest()
@@ -217,6 +218,14 @@ void OperationActionHandler::OnToggleBreakpoint(InstructionItem *instruction)
   {
     job_handler->OnToggleBreakpointRequest(instruction);
   }
+}
+
+bool OperationActionHandler::SubmitJob(std::unique_ptr<JobItem> job_item)
+{
+  auto job = InsertJobAfterCurrentSelection(std::move(job_item));
+
+  return InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
+                        m_operation_context.send_message);
 }
 
 JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item)

@@ -65,9 +65,19 @@ public:
   void SetJobModel(JobModel* job_model);
 
   /**
-   * @brief Submits given procedure for execution.
+   * @brief Submits given procedure for execution as local job.
+   *
+   * Local job doesn't own procedure. Procedure will remain after local job removal.
    */
   bool SubmitLocalJob(ProcedureItem* procedure_item);
+
+  /**
+   * @brief Submits given procedure for execution as imported job.
+   *
+   * Imported job owns the procedure. Procedure will be removed together with the job.
+   */
+  bool SubmitImportedJob(std::unique_ptr<ProcedureItem> procedure_item);
+
 
   bool OnImportRemoteJobRequest();
 
@@ -124,6 +134,13 @@ signals:
   void MakeJobSelectedRequest(sequencergui::JobItem* item);
 
 private:
+  /**
+   * @brief Submit job for execution.
+   *
+   * Job will be inserted in the model, and then submitted to the job manager.
+   */
+  bool SubmitJob(std::unique_ptr<JobItem> job_item);
+
   /**
    * @brief Inserts job in the job model after current selection
    */

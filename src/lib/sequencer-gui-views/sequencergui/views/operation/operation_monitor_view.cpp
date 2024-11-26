@@ -112,20 +112,8 @@ void OperationMonitorView::SetModels(ApplicationModels *models)
 
 bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
 {
-  auto model = m_models->GetSequencerModel();
-
   ProcedureActionHandler handler;
-  auto procedure = handler.LoadProcedureFromFile(file_name);
-
-  if (procedure)
-  {
-    auto procedure_ptr = procedure.get();
-    model->InsertItem(std::move(procedure), model->GetProcedureContainer(),
-                      mvvm::TagIndex::Append());
-    return m_action_handler->SubmitLocalJob(procedure_ptr);
-  }
-
-  return false;
+  return m_action_handler->SubmitImportedJob(handler.LoadProcedureFromFile(file_name));
 }
 
 bool OperationMonitorView::HasRunningJobs() const
