@@ -36,7 +36,6 @@ namespace sequencergui
 namespace
 {
 
-//! Invokes
 template <typename T>
 bool InvokeAndCatch(T method, const std::string &text,
                     const std::function<void(const sup::gui::MessageEvent &)> &send_message)
@@ -65,7 +64,7 @@ OperationActionHandler::OperationActionHandler(IJobItemManager *job_manager,
     : QObject(parent)
     , m_job_manager(job_manager)
     , m_operation_context(std::move(operation_context))
-    , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
+    , m_tick_timeout(itemconstants::kDefaultTickTimeoutMsec)
 {
   if (!m_operation_context.selected_job)
   {
@@ -90,14 +89,14 @@ void OperationActionHandler::SetJobModel(JobModel *job_model)
   m_job_model = job_model;
 }
 
-bool OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
+bool OperationActionHandler::SubmitLocalJob(ProcedureItem *procedure_item)
 {
   if (!procedure_item)
   {
     return false;
   }
 
-  auto job = InsertJobAfterCurrentSelection(CreateLocalJobItem(procedure_item, m_default_delay));
+  auto job = InsertJobAfterCurrentSelection(CreateLocalJobItem(procedure_item, m_tick_timeout));
 
   auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                                m_operation_context.send_message);
@@ -205,7 +204,7 @@ bool OperationActionHandler::OnRegenerateJobRequest()
 
 void OperationActionHandler::OnSetTickTimeoutRequest(int msec)
 {
-  m_default_delay = msec;
+  m_tick_timeout = msec;
   if (auto job_item = GetSelectedJob(); job_item)
   {
     job_item->SetTickTimeout(msec);

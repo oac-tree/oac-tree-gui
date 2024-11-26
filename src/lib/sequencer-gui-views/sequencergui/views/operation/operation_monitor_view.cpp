@@ -122,7 +122,7 @@ bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
     auto procedure_ptr = procedure.get();
     model->InsertItem(std::move(procedure), model->GetProcedureContainer(),
                       mvvm::TagIndex::Append());
-    return m_action_handler->OnSubmitJobRequest(procedure_ptr);
+    return m_action_handler->SubmitLocalJob(procedure_ptr);
   }
 
   return false;
@@ -214,7 +214,7 @@ void OperationMonitorView::SetupConnections()
 
   // job submission request
   connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_action_handler,
-          &OperationActionHandler::OnSubmitJobRequest);
+          &OperationActionHandler::SubmitLocalJob);
 
   // import request
   connect(m_job_panel, &OperationJobPanel::ImportJobRequest, this,

@@ -100,7 +100,7 @@ void RemoteJobItem::SetServerName(const std::string &name)
 // Factory methods
 // ------------------------------------------------------------------------------------------------
 
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure, int msec)
+std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure, int tick_timeout_msec)
 {
   if (!procedure)
   {
@@ -109,11 +109,12 @@ std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure, int msec)
   auto result = std::make_unique<LocalJobItem>();
   result->SetProcedure(procedure);
   result->SetDisplayName(procedure->GetDisplayName());
-  result->SetTickTimeout(msec);
+  result->SetTickTimeout(tick_timeout_msec);
   return result;
 }
 
-std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure, int msec)
+std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure,
+                                               int tick_timeout_msec)
 {
   if (!procedure)
   {
@@ -123,7 +124,7 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
   auto result = std::make_unique<ImportedJobItem>();
   result->SetProcedure(procedure.get());
   result->SetDisplayName(procedure->GetDisplayName());
-  result->SetTickTimeout(msec);
+  result->SetTickTimeout(tick_timeout_msec);
 
   // inserting imported procedure into own container and thus taking an ownership
   mvvm::utils::InsertItem(std::move(procedure), result.get(),

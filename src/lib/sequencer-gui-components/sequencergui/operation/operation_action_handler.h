@@ -67,7 +67,7 @@ public:
   /**
    * @brief Submits given procedure for execution.
    */
-  bool OnSubmitJobRequest(ProcedureItem* procedure_item);
+  bool SubmitLocalJob(ProcedureItem* procedure_item);
 
   bool OnImportRemoteJobRequest();
 
@@ -138,7 +138,7 @@ private:
   JobModel* m_job_model{nullptr};
   IJobItemManager* m_job_manager{nullptr};
   OperationActionContext m_operation_context;
-  int m_default_delay{0};
+  int m_tick_timeout{0};
 };
 
 }  // namespace sequencergui

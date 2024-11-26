@@ -119,14 +119,14 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSetTickTimeoutRequest(42);
 
-  EXPECT_FALSE(handler->OnSubmitJobRequest(nullptr));
+  EXPECT_FALSE(handler->SubmitLocalJob(nullptr));
 
   // At the beginning there is not JobItems in a modelo
   EXPECT_TRUE(GetJobItems().empty());
 
   // submitting the procedure
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  EXPECT_TRUE(handler->OnSubmitJobRequest(procedure));
+  EXPECT_TRUE(handler->SubmitLocalJob(procedure));
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -143,7 +143,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
 
   // we can submit same procedure twice, it will be two different jobs
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
   ASSERT_EQ(GetJobItems().size(), 2);
 
   EXPECT_EQ(GetJobItems().at(0), job_item);
@@ -163,7 +163,7 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToSubmitMalformedProcedure)
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  EXPECT_FALSE(handler->OnSubmitJobRequest(procedure));
+  EXPECT_FALSE(handler->SubmitLocalJob(procedure));
 
   // After unsuccessfull submission JobItem remains there
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -177,7 +177,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
 
   // submitting the procedure
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
@@ -220,7 +220,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobRequest)
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
   EXPECT_EQ(GetJobItems().size(), 1);
 
   // if no selection provided, the command does nothing
@@ -244,7 +244,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobAndCleanupRequest)
 
   auto handler = CreateOperationHandler();
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
   EXPECT_EQ(GetJobItems().size(), 1);
 
   // if no selection provided, the command does nothing
@@ -267,7 +267,7 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
 
   auto handler = CreateOperationHandler();
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
@@ -303,7 +303,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
   // submitting the procedure
   auto handler = CreateOperationHandler();
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -345,7 +345,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequestWhenProcedureDe
   // submitting the procedure
   auto handler = CreateOperationHandler();
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -388,7 +388,7 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSubmitJobRequest(procedure);
+  handler->SubmitLocalJob(procedure);
 
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);

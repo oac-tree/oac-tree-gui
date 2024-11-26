@@ -108,10 +108,10 @@ public:
  * item mechanism.
  *
  * @param procedure The procedure to run.
- * @param msec Initial value of tick timeout during procedure execution.
+ * @param tick_timeout_msec Initial value of tick timeout during procedure execution.
  * @return New job item.
  */
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int msec = 0);
+std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_timeout_msec = 0);
 
 /**
  * @brief Creates job item intended to run procedure imported from XML file.
@@ -119,11 +119,11 @@ std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int msec =
  * The procedure will be inserted in dedicated tag on board of this item. Ownership will be taken.
  *
  * @param procedure The procedure to run.
- * @param msec Initial value of tick timeout during procedure execution.
+ * @param tick_timeout_msec Initial value of tick timeout during procedure execution.
  * @return New job item.
  */
 std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure,
-                                               int msec = 0);
+                                               int tick_timeout_msec = 0);
 
 /**
  * @brief Creates job item intended to control remote procedures.

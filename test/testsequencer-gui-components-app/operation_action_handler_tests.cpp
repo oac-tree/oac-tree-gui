@@ -66,7 +66,6 @@ public:
   testutils::MockJobManager m_mock_mock_job_manager;
 };
 
-//! Testing import of a single remote job.
 TEST_F(OperationActionHandlerTest, AttemptToInsertWhenNoModelIsDefined)
 {
   auto handler = std::make_unique<OperationActionHandler>(&m_mock_mock_job_manager,
@@ -74,7 +73,55 @@ TEST_F(OperationActionHandlerTest, AttemptToInsertWhenNoModelIsDefined)
   // no model is set
 
   ProcedureItem procedure_item;
-  EXPECT_THROW(handler->OnSubmitJobRequest(&procedure_item), RuntimeException);
+  EXPECT_THROW(handler->SubmitLocalJob(&procedure_item), RuntimeException);
+}
+
+TEST_F(OperationActionHandlerTest, SubmitLocalJob)
+{
+  auto operation_handler = CreateOperationHandler();
+  EXPECT_FALSE(operation_handler->SubmitLocalJob(nullptr));
+
+  auto procedure_item = m_model.InsertItem<ProcedureItem>();
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
+
+  QSignalSpy spy_selected_request(operation_handler.get(),
+                                  &OperationActionHandler::MakeJobSelectedRequest);
+
+  EXPECT_TRUE(operation_handler->SubmitLocalJob(procedure_item));
+
+  // as a result of import request, a single LocalJobItem has been inserted into the model
+  auto job_item = mvvm::utils::GetTopItem<LocalJobItem>(&m_model);
+  ASSERT_NE(job_item, nullptr);
+
+  ASSERT_EQ(job_item->GetProcedure(), procedure_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
+}
+
+TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
+{
+  auto operation_handler = CreateOperationHandler();
+  auto procedure_item = m_model.InsertItem<ProcedureItem>();
+
+  ON_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_))
+      .WillByDefault(::testing::Throw(RuntimeException("Submit failure")));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob()).Times(1);
+  EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
+
+  QSignalSpy spy_selected_request(operation_handler.get(),
+                                  &OperationActionHandler::MakeJobSelectedRequest);
+
+  EXPECT_FALSE(operation_handler->SubmitLocalJob(procedure_item));
+
+  // Current implementation is that submitting throwing procedure will still lead to the appearance
+  // of LocalJobItem, so the user can resubmit job later
+  auto job_item = mvvm::utils::GetTopItem<LocalJobItem>(&m_model);
+  ASSERT_NE(job_item, nullptr);
+  ASSERT_EQ(job_item->GetProcedure(), procedure_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
 }
 
 //! Testing import of a single remote job.
@@ -109,7 +156,7 @@ TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)
 }
 
 //! Testing import of two remote jobs between two existing one.
-TEST_F(OperationActionHandlerTest, ImportOfTwoRemoteJobs)
+TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
 {
   auto job_item0 = m_model.InsertItem<LocalJobItem>();
   auto job_item1 = m_model.InsertItem<LocalJobItem>();
