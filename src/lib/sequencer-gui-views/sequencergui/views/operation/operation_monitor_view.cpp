@@ -109,7 +109,7 @@ void OperationMonitorView::SetModels(ApplicationModels *models)
 {
   m_models = models;
   m_job_panel->SetModels(models);
-  m_action_handler->SetJobModel(models->GetJobModel());
+  m_action_handler->SetJobContainer(models->GetJobModel()->GetRootItem());
 }
 
 bool OperationMonitorView::OnImportJobRequest(const QString &file_name)

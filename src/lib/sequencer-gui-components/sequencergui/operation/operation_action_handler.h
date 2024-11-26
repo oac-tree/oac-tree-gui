@@ -24,6 +24,12 @@
 
 #include <QObject>
 
+namespace mvvm
+{
+class SessionItem;
+class ISessionModel;
+}
+
 namespace sup::gui
 {
 class MessageEvent;
@@ -32,7 +38,6 @@ class MessageEvent;
 namespace sequencergui
 {
 
-class JobModel;
 class IJobItemManager;
 class JobItem;
 class ProcedureItem;
@@ -59,7 +64,7 @@ public:
 
   ~OperationActionHandler() override;
 
-  void SetJobModel(JobModel* job_model);
+  void SetJobContainer(mvvm::SessionItem* job_container);
 
   /**
    * @brief Submits given procedure for execution as local job.
@@ -144,9 +149,19 @@ private:
                    const std::string& details = {}) const;
   void SendMessage(const sup::gui::MessageEvent& message_event) const;
 
+  /**
+   * @brief Returns model used to store jobs.
+   */
+  mvvm::ISessionModel* GetModel() const;
+
+  /**
+   * @brief Returns container used for job storage.
+   */
+  mvvm::SessionItem* GetJobContainer() const;
+
   JobItem* GetSelectedJob();
 
-  JobModel* m_job_model{nullptr};
+  mvvm::SessionItem* m_job_container{nullptr};
   IJobItemManager* m_job_manager{nullptr};
   OperationActionContext m_operation_context;
   int m_tick_timeout{0};

@@ -21,12 +21,12 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/abstract_job_handler.h>
-#include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_job_items.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
+#include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
@@ -49,6 +49,40 @@ using msec = std::chrono::milliseconds;
 class OperationActionHandlerTest : public ::testing::Test
 {
 public:
+  OperationActionHandlerTest()
+  {
+    m_procedure_container = m_model.InsertItem<mvvm::ContainerItem>();
+    m_job_container = m_model.InsertItem<mvvm::ContainerItem>();
+  }
+
+  /**
+   * @brief Helper function to insert new job in the container.
+   */
+  template <typename T>
+  T* InsertJob()
+  {
+    return m_model.InsertItem<T>(m_job_container, mvvm::TagIndex::Append());
+  }
+
+  template <typename T>
+  std::vector<T*> GetJobs()
+  {
+    return m_job_container->GetItems<T>(mvvm::TagIndex::kDefaultTag);
+  }
+
+  /**
+   * @brief Helper function to insert new procedure in the container.
+   */
+  ProcedureItem* InsertProcedure()
+  {
+    return m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
+  }
+
+  std::vector<ProcedureItem*> GetProcedures()
+  {
+    return m_procedure_container->GetItems<ProcedureItem>(mvvm::TagIndex::kDefaultTag);
+  }
+
   /**
    * @brief Creates operation action handler.
    */
@@ -56,11 +90,14 @@ public:
   {
     auto result = std::make_unique<OperationActionHandler>(
         &m_mock_mock_job_manager, m_mock_operation_context.CreateContext());
-    result->SetJobModel(&m_model);
+    result->SetJobContainer(m_job_container);
     return result;
   }
 
-  JobModel m_model;
+  mvvm::ApplicationModel m_model;
+  mvvm::ContainerItem* m_procedure_container{nullptr};
+  mvvm::ContainerItem* m_job_container{nullptr};
+
   testutils::MockOperationActionContext m_mock_operation_context;
   testutils::MockRemoteConnectionService m_mock_connection_service;
   testutils::MockJobManager m_mock_mock_job_manager;
@@ -81,7 +118,7 @@ TEST_F(OperationActionHandlerTest, SubmitLocalJob)
   auto operation_handler = CreateOperationHandler();
   EXPECT_FALSE(operation_handler->SubmitLocalJob(nullptr));
 
-  auto procedure_item = m_model.InsertItem<ProcedureItem>();
+  auto procedure_item = InsertProcedure();
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
@@ -92,17 +129,17 @@ TEST_F(OperationActionHandlerTest, SubmitLocalJob)
   EXPECT_TRUE(operation_handler->SubmitLocalJob(procedure_item));
 
   // as a result of import request, a single LocalJobItem has been inserted into the model
-  auto job_item = mvvm::utils::GetTopItem<LocalJobItem>(&m_model);
-  ASSERT_NE(job_item, nullptr);
+  auto job_items = GetJobs<LocalJobItem>();
+  ASSERT_EQ(job_items.size(), 1);
 
-  ASSERT_EQ(job_item->GetProcedure(), procedure_item);
-  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
+  ASSERT_EQ(job_items.at(0)->GetProcedure(), procedure_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_items.at(0));
 }
 
 TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
 {
   auto operation_handler = CreateOperationHandler();
-  auto procedure_item = m_model.InsertItem<ProcedureItem>();
+  auto procedure_item = InsertProcedure();
 
   ON_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_))
       .WillByDefault(::testing::Throw(RuntimeException("Submit failure")));
@@ -117,11 +154,11 @@ TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
   EXPECT_FALSE(operation_handler->SubmitLocalJob(procedure_item));
 
   // Current implementation is that submitting throwing procedure will still lead to the appearance
-  // of LocalJobItem, so the user can resubmit job later
-  auto job_item = mvvm::utils::GetTopItem<LocalJobItem>(&m_model);
-  ASSERT_NE(job_item, nullptr);
-  ASSERT_EQ(job_item->GetProcedure(), procedure_item);
-  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
+  // of LocalJobItem, so the user can resubmit job later, after proper editing of bad procedure
+  auto job_items = GetJobs<JobItem>();
+  ASSERT_EQ(job_items.size(), 1);
+  ASSERT_EQ(job_items.at(0)->GetProcedure(), procedure_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_items.at(0));
 }
 
 TEST_F(OperationActionHandlerTest, SubmitImportedJob)
@@ -140,8 +177,10 @@ TEST_F(OperationActionHandlerTest, SubmitImportedJob)
   EXPECT_TRUE(operation_handler->SubmitImportedJob(std::move(procedure_item)));
 
   // as a result of import request, a single LocalJobItem has been inserted into the model
-  auto job_item = mvvm::utils::GetTopItem<ImportedJobItem>(&m_model);
-  ASSERT_NE(job_item, nullptr);
+  auto job_items = GetJobs<JobItem>();
+  ASSERT_EQ(job_items.size(), 1);
+
+  auto job_item = job_items.at(0);
 
   EXPECT_EQ(job_item->GetProcedure(), procedure_item_ptr);
   EXPECT_EQ(job_item->GetItem(ImportedJobItem::kImportedProcedure), procedure_item_ptr);
@@ -171,19 +210,21 @@ TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)
   EXPECT_TRUE(operation_handler->OnImportRemoteJobRequest());
 
   // as a result of import request, a single RemoteJobItem has been inserted into the model
-  auto job_item = dynamic_cast<RemoteJobItem*>(mvvm::utils::GetTopItem(&m_model));
-  ASSERT_NE(job_item, nullptr);
+  auto job_items = GetJobs<RemoteJobItem>();
+  ASSERT_EQ(job_items.size(), 1);
+
+  auto job_item = job_items.at(0);
+
   EXPECT_EQ(job_item->GetServerName(), server_name);
   EXPECT_EQ(job_item->GetRemoteJobIndex(), job_index);
-
   EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
 }
 
 //! Testing import of two remote jobs between two existing one.
 TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
 {
-  auto job_item0 = m_model.InsertItem<LocalJobItem>();
-  auto job_item1 = m_model.InsertItem<LocalJobItem>();
+  auto job_item0 = InsertJob<LocalJobItem>();
+  auto job_item1 = InsertJob<LocalJobItem>();
 
   const std::string server_name("abc");
   const size_t job_index0{42};
@@ -202,14 +243,15 @@ TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
   EXPECT_CALL(m_mock_operation_context, OnGetRemoteConnectionInfo()).Times(1);
   EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_)).Times(2);
 
-  QSignalSpy spy_selected_request(operation_handler.get(),
-                                  &OperationActionHandler::MakeJobSelectedRequest);
+  const QSignalSpy spy_selected_request(operation_handler.get(),
+                                        &OperationActionHandler::MakeJobSelectedRequest);
 
   EXPECT_TRUE(operation_handler->OnImportRemoteJobRequest());
 
   // as a result of import request, two RemoteJobItem have been inserted into the model
   // item order: job_item0, item_inserted_second, item_inserted_fisr, job_item1
-  auto inserted_job_items = mvvm::utils::GetTopItems<RemoteJobItem>(&m_model);
+  auto inserted_job_items = GetJobs<RemoteJobItem>();
+
   auto item_inserted_first = inserted_job_items.at(1);
   auto item_inserted_second = inserted_job_items.at(0);
   ASSERT_EQ(inserted_job_items.size(), 2);
@@ -223,7 +265,57 @@ TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
   // items were inserted in this order since job_item0 will always reported as selected
   const std::vector<JobItem*> expected_items(
       {job_item0, item_inserted_second, item_inserted_first, job_item1});
-  EXPECT_EQ(mvvm::utils::GetTopItems<JobItem>(&m_model), expected_items);
+  EXPECT_EQ(GetJobs<JobItem>(), expected_items);
+}
+
+TEST_F(OperationActionHandlerTest, RemoveLocalJob)
+{
+  auto operation_handler = CreateOperationHandler();
+
+  auto procedure_item = InsertProcedure();
+  auto job_item = InsertJob<LocalJobItem>();
+  job_item->SetProcedure(procedure_item);
+
+  // job_item will be reported as selected
+  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_mock_job_manager, RemoveJobHandler(job_item));
+
+  const QSignalSpy spy_selected_request(operation_handler.get(),
+                                        &OperationActionHandler::MakeJobSelectedRequest);
+
+  EXPECT_TRUE(operation_handler->OnRemoveJobRequest());
+
+  EXPECT_EQ(spy_selected_request.count(), 0);
+  EXPECT_TRUE(GetJobs<JobItem>().empty());
+  EXPECT_EQ(GetProcedures(), std::vector<ProcedureItem*>({procedure_item}));
+}
+
+TEST_F(OperationActionHandlerTest, RemoveLocalJobInTheMiddle)
+{
+  auto operation_handler = CreateOperationHandler();
+
+  auto job_item0 = InsertJob<LocalJobItem>();
+  auto job_item1 = InsertJob<LocalJobItem>();
+  auto job_item2 = InsertJob<LocalJobItem>();
+
+  // job_item will be reported as selected
+  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item1));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_mock_job_manager, RemoveJobHandler(job_item1));
+
+  QSignalSpy spy_selected_request(operation_handler.get(),
+                                  &OperationActionHandler::MakeJobSelectedRequest);
+
+  EXPECT_TRUE(operation_handler->OnRemoveJobRequest());
+
+  EXPECT_EQ(spy_selected_request.count(), 1);
+  EXPECT_EQ(GetJobs<JobItem>(), std::vector<JobItem*>({job_item0, job_item2}));
+
+  // last job reported as new selection
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item2);
 }
 
 }  // namespace sequencergui

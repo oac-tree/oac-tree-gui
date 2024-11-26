@@ -77,7 +77,7 @@ public:
   {
     auto result =
         std::make_unique<OperationActionHandler>(&m_job_manager, m_mock_context.CreateContext());
-    result->SetJobModel(GetJobModel());
+    result->SetJobContainer(GetJobModel()->GetRootItem());
     return result;
   }
 
