@@ -287,8 +287,8 @@ OperationActionContext OperationMonitorView::CreateOperationContext()
   OperationActionContext result;
   result.selected_job = [this] { return m_job_panel->GetSelectedJob(); };
   result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
-  result.get_remote_context = [this]()
-  { return GetDialogRemoteConnectionConext(*m_connection_service, this); };
+  result.get_remote_connection_info = [this]()
+  { return GetDialogRemoteConnectionInfo(*m_connection_service, this); };
   return result;
 }
 

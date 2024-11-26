@@ -34,7 +34,7 @@ namespace sequencergui
 {
 
 class RemoteConnectionService;
-struct RemoteConnectionContext;
+struct RemoteConnectionInfo;
 
 /**
  * @brief The RemoteConnectionDialog class is a modal dialog to connect with remote server and
@@ -52,7 +52,7 @@ public:
   /**
    * @brief Returns users choice with the server name to connect, and the list of remote jobs.
    */
-  RemoteConnectionContext GetResult() const;
+  RemoteConnectionInfo GetResult() const;
 
 protected:
   void keyPressEvent(QKeyEvent* event) override;
@@ -100,7 +100,7 @@ private:
  * @param connection_service The main service to use fo connection.
  * @return Optional result of the user choice.
  */
-std::optional<RemoteConnectionContext> GetDialogRemoteConnectionConext(
+std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
     RemoteConnectionService& connection_service, QWidget* parent = nullptr);
 
 }  // namespace sequencergui

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_CONTEXT_H_
-#define SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_CONTEXT_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
+#define SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
 
 #include <set>
 #include <string>
@@ -27,10 +27,10 @@ namespace sequencergui
 {
 
 /**
- * @brief The RemoteConnectionContext struct holds information about remote jobs that should be
+ * @brief The RemoteConnectionInfo struct holds information about remote jobs that should be
  * imported into the job system.
  */
-struct RemoteConnectionContext
+struct RemoteConnectionInfo
 {
   std::string server_name;       //!< the name of the server to connect
   std::set<size_t> job_indexes;  //!< list of job indices to import into the job system
@@ -38,4 +38,4 @@ struct RemoteConnectionContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_CONTEXT_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_

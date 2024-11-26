@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_OPERATION_OPERATION_ACTION_HANDLER_H_
 #define SEQUENCERGUI_OPERATION_OPERATION_ACTION_HANDLER_H_
 
-#include <sequencergui/jobsystem/remote_connection_context.h>
+#include <sequencergui/jobsystem/remote_connection_info.h>
 #include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sequencergui/operation/operation_action_context.h>
 
@@ -78,7 +78,9 @@ public:
    */
   bool SubmitImportedJob(std::unique_ptr<ProcedureItem> procedure_item);
 
-
+  /**
+   * @brief Invokes dialogs to ask for remote connection info, and submits remote jobs.
+   */
   bool OnImportRemoteJobRequest();
 
   /**

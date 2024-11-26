@@ -22,7 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
-#include <sequencergui/jobsystem/remote_connection_context.h>
+#include <sequencergui/jobsystem/remote_connection_info.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -111,13 +111,13 @@ bool OperationActionHandler::SubmitImportedJob(std::unique_ptr<ProcedureItem> pr
 
 bool OperationActionHandler::OnImportRemoteJobRequest()
 {
-  if (!m_operation_context.get_remote_context)
+  if (!m_operation_context.get_remote_connection_info)
   {
     return false;
   }
 
   bool is_success{false};
-  if (auto user_choice = m_operation_context.get_remote_context(); user_choice.has_value())
+  if (auto user_choice = m_operation_context.get_remote_connection_info(); user_choice.has_value())
   {
     is_success = true;
     auto user_choice_value = user_choice.value();
@@ -224,8 +224,13 @@ bool OperationActionHandler::SubmitJob(std::unique_ptr<JobItem> job_item)
 {
   auto job = InsertJobAfterCurrentSelection(std::move(job_item));
 
-  return InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
-                        m_operation_context.send_message);
+  auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
+                               m_operation_context.send_message);
+
+  // current implementation is that even if submission fails, JobItem remains in a list
+  emit MakeJobSelectedRequest(job);
+
+  return result;
 }
 
 JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item)
@@ -241,7 +246,6 @@ JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<
   auto parent = selected_job ? selected_job->GetParent() : m_job_model->GetRootItem();
   auto tagindex = selected_job ? selected_job->GetTagIndex().Next() : mvvm::TagIndex::Append();
   m_job_model->InsertItem(std::move(job_item), parent, tagindex);
-  emit MakeJobSelectedRequest(result);
   return result;
 }
 

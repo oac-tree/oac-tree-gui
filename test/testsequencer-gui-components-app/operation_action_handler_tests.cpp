@@ -153,16 +153,16 @@ TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)
 {
   const std::string server_name("abc");
   const size_t job_index{42};
-  const RemoteConnectionContext connection_context{server_name, {job_index}};
+  const RemoteConnectionInfo connection_context{server_name, {job_index}};
 
   // setting up context, so it report "user choice" related to remote job import
-  ON_CALL(m_mock_operation_context, OnGetRemoteConnectionContext())
-      .WillByDefault(::testing::Return(std::optional<RemoteConnectionContext>(connection_context)));
+  ON_CALL(m_mock_operation_context, OnGetRemoteConnectionInfo())
+      .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
   auto operation_handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_operation_context, OnGetRemoteConnectionContext());
+  EXPECT_CALL(m_mock_operation_context, OnGetRemoteConnectionInfo());
   EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
 
   QSignalSpy spy_selected_request(operation_handler.get(),
@@ -188,18 +188,18 @@ TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
   const std::string server_name("abc");
   const size_t job_index0{42};
   const size_t job_index1{43};
-  const RemoteConnectionContext connection_context{server_name, {job_index0, job_index1}};
+  const RemoteConnectionInfo connection_context{server_name, {job_index0, job_index1}};
 
   // setting up context, so it report "user choice" related to remote job import
-  ON_CALL(m_mock_operation_context, OnGetRemoteConnectionContext())
-      .WillByDefault(::testing::Return(std::optional<RemoteConnectionContext>(connection_context)));
+  ON_CALL(m_mock_operation_context, OnGetRemoteConnectionInfo())
+      .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
   // job_item0 will be always reported as selected
   ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item0));
 
   auto operation_handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob()).Times(2);
-  EXPECT_CALL(m_mock_operation_context, OnGetRemoteConnectionContext()).Times(1);
+  EXPECT_CALL(m_mock_operation_context, OnGetRemoteConnectionInfo()).Times(1);
   EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_)).Times(2);
 
   QSignalSpy spy_selected_request(operation_handler.get(),

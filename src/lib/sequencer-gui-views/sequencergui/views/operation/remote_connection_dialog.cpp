@@ -21,7 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/i_automation_client.h>
-#include <sequencergui/jobsystem/remote_connection_context.h>
+#include <sequencergui/jobsystem/remote_connection_info.h>
 #include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sup/gui/widgets/dialog_helper.h>
 
@@ -105,7 +105,7 @@ RemoteConnectionDialog::~RemoteConnectionDialog()
   WriteSettings();
 }
 
-RemoteConnectionContext RemoteConnectionDialog::GetResult() const
+RemoteConnectionInfo RemoteConnectionDialog::GetResult() const
 {
   // collecting selected jobs, sorting accoring to the job index
   std::set<size_t> indexes;
@@ -181,7 +181,7 @@ void RemoteConnectionDialog::PopulateJobInfoModel(const std::string &server_name
   }
 }
 
-std::optional<RemoteConnectionContext> GetDialogRemoteConnectionConext(
+std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
     RemoteConnectionService &connection_service, QWidget *parent)
 {
   RemoteConnectionDialog dialog(&connection_service, parent);

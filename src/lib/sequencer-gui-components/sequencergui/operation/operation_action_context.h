@@ -30,7 +30,7 @@ namespace sequencergui
 
 class JobItem;
 class RemoteConnectionService;
-struct RemoteConnectionContext;
+struct RemoteConnectionInfo;
 
 /**
  * @brief The OperationActionContext struct contains callbacks necessary for OperationActionHandler
@@ -45,7 +45,7 @@ struct OperationActionContext
   std::function<void(const sup::gui::MessageEvent&)> send_message;
 
   //!< callback to ask about remote job import information
-  std::function<std::optional<RemoteConnectionContext>()> get_remote_context;
+  std::function<std::optional<RemoteConnectionInfo>()> get_remote_connection_info;
 };
 
 }  // namespace sequencergui
