@@ -20,12 +20,9 @@
 #ifndef SEQUENCERGUI_OPERATION_OPERATION_ACTION_HANDLER_H_
 #define SEQUENCERGUI_OPERATION_OPERATION_ACTION_HANDLER_H_
 
-#include <sequencergui/jobsystem/remote_connection_info.h>
-#include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sequencergui/operation/operation_action_context.h>
 
 #include <QObject>
-#include <functional>
 
 namespace sup::gui
 {
@@ -104,14 +101,9 @@ public:
   void OnMakeStepRequest();
 
   /**
-   * @brief Removes currently selected job. By providing an additional flag, it is possible to
-   * remove the procedure on which the given job is looking. It is relevant only for
-   * sequencer-operation GUI, where the removal of JobItem from the list of job should lead to the
-   * removal of the corresponding imported procedure.
-   *
-   * @param cleanup Provide additional cleanup and remove the corresponding procedure.
+   * @brief Removes currently selected job.
    */
-  bool OnRemoveJobRequest(bool cleanup = false);
+  bool OnRemoveJobRequest();
 
   /**
    * @brief Fully regenerates submitted job.

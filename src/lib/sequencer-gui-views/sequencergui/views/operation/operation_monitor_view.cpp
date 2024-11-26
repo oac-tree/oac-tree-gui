@@ -26,6 +26,8 @@
 #include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/remote_connection_info.h>
+#include <sequencergui/jobsystem/remote_connection_service.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
@@ -212,15 +214,9 @@ void OperationMonitorView::SetupConnections()
   connect(m_job_panel, &OperationJobPanel::ConnectRequest, m_action_handler,
           &OperationActionHandler::OnImportRemoteJobRequest);
 
-  // job removal request
-  auto on_remove_job_request = [this]()
-  {
-    // in operation mode removal of job should remove its imported procedure too
-    const bool cleanup = m_presentation_mode == OperationPresentationMode::kOperationMode;
-    m_action_handler->OnRemoveJobRequest(cleanup);
-  };
+  // remove job request
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_action_handler,
-          on_remove_job_request);
+          &OperationActionHandler::OnRemoveJobRequest);
 
   // job regenerate request
   connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_action_handler,

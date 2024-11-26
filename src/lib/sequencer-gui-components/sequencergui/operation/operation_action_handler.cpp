@@ -30,6 +30,8 @@
 #include <sequencergui/model/standard_job_items.h>
 #include <sup/gui/core/standard_message_handlers.h>
 
+#include <mvvm/model/item_utils.h>
+
 namespace sequencergui
 {
 
@@ -151,7 +153,7 @@ void OperationActionHandler::OnMakeStepRequest()
   m_job_manager->Step(GetSelectedJob());
 }
 
-bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
+bool OperationActionHandler::OnRemoveJobRequest()
 {
   auto job = GetSelectedJob();
 
@@ -165,11 +167,12 @@ bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
 
   if (is_success)
   {
-    auto procedure = job->GetProcedure();
+    auto next_to_select = mvvm::utils::FindNextSiblingToSelect(job);
     m_job_model->RemoveItem(job);
-    if (cleanup)
+    if (next_to_select)
     {
-      procedure->GetModel()->RemoveItem(procedure);
+      // suggest to select something else instead of just deleted item
+      emit MakeJobSelectedRequest(dynamic_cast<JobItem *>(next_to_select));
     }
   }
 

@@ -236,30 +236,6 @@ TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobRequest)
   EXPECT_TRUE(GetJobItems().empty());
 }
 
-//! Removing submitted job together with original procedure.
-TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobAndCleanupRequest)
-{
-  auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
-  EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 1);
-
-  auto handler = CreateOperationHandler();
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->SubmitLocalJob(procedure);
-  EXPECT_EQ(GetJobItems().size(), 1);
-
-  // if no selection provided, the command does nothing
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  EXPECT_NO_THROW(handler->OnRemoveJobRequest(/*clean-up*/ true));
-
-  auto job_item = GetJobItems().at(0);
-  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
-
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  EXPECT_NO_THROW(handler->OnRemoveJobRequest(/*clean-up*/ true));
-  EXPECT_TRUE(GetJobItems().empty());
-  EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 0);
-}
-
 //! Attempt to remove long running job.
 TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
 {
