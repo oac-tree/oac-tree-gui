@@ -20,7 +20,9 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 
-#include <sequencergui/jobsystem/abstract_job_item_manager.h>
+#include <QObject>
+
+#include <sequencergui/jobsystem/i_job_item_manager.h>
 
 namespace sequencergui
 {
@@ -37,7 +39,7 @@ class InstructionItem;
  * JobManager holds all jobs, submitted, paused, or running. Only one job at a time, set as the
  * active job, can report its status up.
  */
-class JobManager : public AbstractJobItemManager
+class JobManager : public QObject, public IJobItemManager
 {
   Q_OBJECT
 

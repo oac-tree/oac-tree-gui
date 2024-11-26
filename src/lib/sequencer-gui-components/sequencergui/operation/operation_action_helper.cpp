@@ -33,7 +33,7 @@ std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)> CreateJobHandlerFac
 {
   auto result = [&user_context, &service](JobItem& item) -> std::unique_ptr<AbstractJobHandler>
   {
-    // local and remote JobItems' are handler by the same LocalJobHandler
+    // local and imported JobItems' are handled by the same LocalJobHandler
     if (item.GetType() == LocalJobItem::Type || item.GetType() == ImportedJobItem::Type)
     {
       return std::make_unique<LocalJobHandler>(&item, user_context);

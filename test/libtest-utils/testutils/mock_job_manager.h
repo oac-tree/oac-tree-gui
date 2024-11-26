@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_JOB_MANAGER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_JOB_MANAGER_H_
 
-#include <sequencergui/jobsystem/abstract_job_item_manager.h>
+#include <sequencergui/jobsystem/i_job_item_manager.h>
 
 #include <gmock/gmock.h>
 
@@ -37,7 +37,7 @@ namespace testutils
  * @brief The MockJobManager class plays the role of JobManager while testing OperationActionHandler
  * machinery.
  */
-class MockJobManager : public sequencergui::AbstractJobItemManager
+class MockJobManager : public sequencergui::IJobItemManager
 {
 public:
   MOCK_METHOD(void, SubmitJob, (sequencergui::JobItem*), (override));

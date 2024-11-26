@@ -31,7 +31,7 @@ namespace sequencergui
 {
 
 JobManager::JobManager(create_handler_func_t create_handler_func, QObject *parent)
-    : AbstractJobItemManager(parent), m_create_handler_func(std::move(create_handler_func))
+    : QObject(parent), m_create_handler_func(std::move(create_handler_func))
 {
   if (!m_create_handler_func)
   {

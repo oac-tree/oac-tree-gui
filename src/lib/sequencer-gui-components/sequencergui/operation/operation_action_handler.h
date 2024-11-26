@@ -36,7 +36,7 @@ namespace sequencergui
 {
 
 class JobModel;
-class AbstractJobItemManager;
+class IJobItemManager;
 class JobItem;
 class ProcedureItem;
 class InstructionItem;
@@ -56,7 +56,7 @@ public:
   //!< A callback to get currently selected JobItem.
   using selection_callback_t = std::function<JobItem*()>;
 
-  explicit OperationActionHandler(AbstractJobItemManager* job_manager,
+  explicit OperationActionHandler(IJobItemManager* job_manager,
                                   OperationActionContext operation_context,
                                   QObject* parent = nullptr);
 
@@ -138,7 +138,7 @@ private:
   JobItem* GetSelectedJob();
 
   JobModel* m_job_model{nullptr};
-  AbstractJobItemManager* m_job_manager{nullptr};
+  IJobItemManager* m_job_manager{nullptr};
   OperationActionContext m_operation_context;
   int m_default_delay{0};
 };

@@ -17,10 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACT_JOB_ITEM_MANAGER_H_
-#define SEQUENCERGUI_JOBSYSTEM_ABSTRACT_JOB_ITEM_MANAGER_H_
-
-#include <QObject>
+#ifndef SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
+#define SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
 
 namespace sequencergui
 {
@@ -29,7 +27,7 @@ class JobItem;
 class AbstractJobHandler;
 
 /**
- * @brief The IJobManager class is a base to manage the execution of sequencer jobs.
+ * @brief The AbstractJobItemManager class is a base to manage the execution of sequencer jobs.
  *
  * The job is represented by the JobItem, that carries all information about sequencer procedure.
  * The API contains interface to submit, start, pause and stop jobs.
@@ -37,13 +35,10 @@ class AbstractJobHandler;
  * JobManager holds all jobs, submitted, paused, or running. Only one job at a time, set as the
  * active job, can report its status up.
  */
-// FIXME get rid of QObject base by switching signals to callback
-class AbstractJobItemManager : public QObject
+class IJobItemManager
 {
-  Q_OBJECT
-
 public:
-  explicit AbstractJobItemManager(QObject* parent = nullptr) : QObject(parent) {}
+  virtual ~IJobItemManager() = default;
 
   /**
    * @brief Submits job for execution.
@@ -106,4 +101,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_ABSTRACT_JOB_ITEM_MANAGER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
