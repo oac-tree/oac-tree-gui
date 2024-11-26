@@ -129,8 +129,6 @@ private:
    */
   JobItem* InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item);
 
-  void CheckConditions();
-
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {}) const;
   void SendMessage(const sup::gui::MessageEvent& message_event) const;

@@ -19,8 +19,10 @@
 
 #include "sequencergui/operation/operation_action_handler.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/abstract_job_handler.h>
 #include <sequencergui/model/job_model.h>
+#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_job_items.h>
 
 #include <mvvm/model/application_model.h>
@@ -63,6 +65,17 @@ public:
   testutils::MockRemoteConnectionService m_mock_connection_service;
   testutils::MockJobManager m_mock_mock_job_manager;
 };
+
+//! Testing import of a single remote job.
+TEST_F(OperationActionHandlerTest, AttemptToInsertWhenNoModelIsDefined)
+{
+  auto handler = std::make_unique<OperationActionHandler>(&m_mock_mock_job_manager,
+                                                          m_mock_operation_context.CreateContext());
+  // no model is set
+
+  ProcedureItem procedure_item;
+  EXPECT_THROW(handler->OnSubmitJobRequest(&procedure_item), RuntimeException);
+}
 
 //! Testing import of a single remote job.
 TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)

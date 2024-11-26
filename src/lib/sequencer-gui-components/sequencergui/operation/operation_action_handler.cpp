@@ -133,36 +133,26 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
 
 void OperationActionHandler::OnStartJobRequest()
 {
-  CheckConditions();
-
   m_job_manager->Start(GetSelectedJob());
 }
 
 void OperationActionHandler::OnPauseJobRequest()
 {
-  CheckConditions();
-
   m_job_manager->Pause(GetSelectedJob());
 }
 
 void OperationActionHandler::OnStopJobRequest()
 {
-  CheckConditions();
-
   m_job_manager->Stop(GetSelectedJob());
 }
 
 void OperationActionHandler::OnMakeStepRequest()
 {
-  CheckConditions();
-
   m_job_manager->Step(GetSelectedJob());
 }
 
 bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
 {
-  CheckConditions();
-
   auto job = GetSelectedJob();
 
   if (!job)
@@ -188,8 +178,6 @@ bool OperationActionHandler::OnRemoveJobRequest(bool cleanup)
 
 bool OperationActionHandler::OnRegenerateJobRequest()
 {
-  CheckConditions();
-
   auto job = GetSelectedJob();
 
   if (!job)
@@ -247,14 +235,6 @@ JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<
   m_job_model->InsertItem(std::move(job_item), parent, tagindex);
   emit MakeJobSelectedRequest(result);
   return result;
-}
-
-void OperationActionHandler::CheckConditions()
-{
-  if (!m_job_model)
-  {
-    throw RuntimeException("JobModel is not defined");
-  }
 }
 
 void OperationActionHandler::SendMessage(const std::string &text, const std::string &informative,
