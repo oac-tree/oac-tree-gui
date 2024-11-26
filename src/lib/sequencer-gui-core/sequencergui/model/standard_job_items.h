@@ -38,11 +38,9 @@ class LocalJobItem : public JobItem
 {
 public:
   static inline const std::string Type = "LocalJob";
-
-  using JobItem::JobItem;
   LocalJobItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 /**
@@ -57,11 +55,9 @@ class ImportedJobItem : public JobItem
 public:
   static inline const std::string Type = "ImportedJob";
   static inline const std::string kImportedProcedure = "kImportedProcedure";
-
-  using JobItem::JobItem;
   ImportedJobItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 /**
@@ -72,11 +68,9 @@ class RemoteJobItem : public JobItem
 {
 public:
   static inline const std::string Type = "RemoteJob";
-
-  using JobItem::JobItem;
   RemoteJobItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   /**
    * @brief Returns remote job index.

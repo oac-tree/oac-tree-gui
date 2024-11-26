@@ -58,9 +58,9 @@ SettingsEditor::SettingsEditor(QWidget *parent)
 
 void SettingsEditor::SetInitialValues(const SettingsModel &model)
 {
-  // in the absnce of ISessionModel::Clone, we just clone root item
+  // in the absence of ISessionModel::Clone, we just clone root item
   m_settings_model = std::make_unique<SettingsModel>();
-  m_settings_model->ReplaceRootItem(model.GetRootItem()->Clone(/*unique_id*/ false));
+  m_settings_model->ReplaceRootItem(model.GetRootItem()->Clone());
 
   m_list_component_provider->SetApplicationModel(m_settings_model.get());
   m_settings_view->SetViewModel(m_property_view_model.get());

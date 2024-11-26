@@ -35,8 +35,6 @@ class UniversalVariableItem : public VariableItem
 public:
   static inline const std::string Type = "UniversalVariable";
 
-  using VariableItem::VariableItem;
-
   /**
    * @brief The parameterized c-tor for UniversalVariableItem.
    *
@@ -50,7 +48,7 @@ public:
    */
   explicit UniversalVariableItem(const std::string& item_type = {});
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetDomainType() const override;
 

@@ -93,9 +93,9 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
 
-std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone() const
 {
-  return std::make_unique<ProcedureItem>(*this, make_unique_id);
+  return std::make_unique<ProcedureItem>(*this);
 }
 
 std::string ProcedureItem::GetName() const

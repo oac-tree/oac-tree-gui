@@ -39,9 +39,9 @@ const std::string kJobIndex = "kJobIndex";
 
 LocalJobItem::LocalJobItem() : JobItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 {
-  return std::make_unique<LocalJobItem>(*this, make_unique_id);
+  return std::make_unique<LocalJobItem>(*this);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -53,9 +53,9 @@ ImportedJobItem::ImportedJobItem() : JobItem(Type)
   RegisterTag(mvvm::TagInfo(kImportedProcedure, 0, 1, {ProcedureItem::Type}));
 }
 
-std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 {
-  return std::make_unique<ImportedJobItem>(*this, make_unique_id);
+  return std::make_unique<ImportedJobItem>(*this);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -71,9 +71,9 @@ RemoteJobItem::RemoteJobItem() : JobItem(Type)
       .SetToolTip("Remote server name");
 }
 
-std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone() const
 {
-  return std::make_unique<RemoteJobItem>(*this, make_unique_id);
+  return std::make_unique<RemoteJobItem>(*this);
 }
 
 size_t RemoteJobItem::GetRemoteJobIndex() const

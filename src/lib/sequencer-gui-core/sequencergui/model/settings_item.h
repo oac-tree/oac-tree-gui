@@ -40,10 +40,9 @@ class CommonSettingsItem : public mvvm::CompoundItem
 public:
   static inline const std::string Type = "CommonSettings";
 
-  using CompoundItem::CompoundItem;
-  explicit CommonSettingsItem();
+  CommonSettingsItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   /**
    * @details Activates listening on own properties change. It will enable/disable status of undo

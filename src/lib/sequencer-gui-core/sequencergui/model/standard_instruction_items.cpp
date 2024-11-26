@@ -32,9 +32,9 @@ namespace sequencergui
 
 IncludeItem::IncludeItem() : UniversalInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone() const
 {
-  return std::make_unique<IncludeItem>(*this, make_unique_id);
+  return std::make_unique<IncludeItem>(*this);
 }
 
 std::string IncludeItem::GetFileName() const
@@ -63,9 +63,9 @@ void IncludeItem::SetPath(const std::string &value)
 
 ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone() const
 {
-  return std::make_unique<ParallelSequenceItem>(*this, make_unique_id);
+  return std::make_unique<ParallelSequenceItem>(*this);
 }
 
 mvvm::uint32 ParallelSequenceItem::GetSuccessThreshold() const
@@ -97,9 +97,9 @@ RepeatItem::RepeatItem() : UniversalInstructionItem(Type)
   SetRepeatCount(-1);
 }
 
-std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone() const
 {
-  return std::make_unique<RepeatItem>(*this, make_unique_id);
+  return std::make_unique<RepeatItem>(*this);
 }
 
 int RepeatItem::GetRepeatCount() const
@@ -117,9 +117,9 @@ void RepeatItem::SetRepeatCount(int value)
 // ----------------------------------------------------------------------------
 SequenceItem::SequenceItem() : UniversalInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone() const
 {
-  return std::make_unique<SequenceItem>(*this, make_unique_id);
+  return std::make_unique<SequenceItem>(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -131,9 +131,9 @@ WaitItem::WaitItem() : UniversalInstructionItem(Type)
   SetTimeout(0.0);
 }
 
-std::unique_ptr<mvvm::SessionItem> WaitItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> WaitItem::Clone() const
 {
-  return std::make_unique<WaitItem>(*this, make_unique_id);
+  return std::make_unique<WaitItem>(*this);
 }
 
 void WaitItem::SetTimeout(double value)

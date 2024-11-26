@@ -23,6 +23,7 @@
 
 namespace sequencergui
 {
+
 static inline const std::string kVariableItems = "kVariableItems";
 
 WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
@@ -30,9 +31,9 @@ WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
 }
 
-std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone() const
 {
-  return std::make_unique<WorkspaceItem>(*this, make_unique_id);
+  return std::make_unique<WorkspaceItem>(*this);
 }
 
 std::vector<VariableItem *> WorkspaceItem::GetVariables() const

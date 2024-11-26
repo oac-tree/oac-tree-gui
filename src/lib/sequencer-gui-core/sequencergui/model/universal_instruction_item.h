@@ -41,8 +41,6 @@ class UniversalInstructionItem : public InstructionItem
 public:
   static inline const std::string Type = "UniversalInstruction";
 
-  using InstructionItem::InstructionItem;
-
   /**
    * @brief The parameterized c-tor for UniversalInstructionItem.
    *
@@ -56,7 +54,7 @@ public:
    */
   explicit UniversalInstructionItem(const std::string& item_type = Type);
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   /**
    * @brief Set the domain type and performs attribute initialization.

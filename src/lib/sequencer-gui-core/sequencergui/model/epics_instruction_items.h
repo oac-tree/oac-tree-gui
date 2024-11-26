@@ -32,10 +32,9 @@ namespace sequencergui
 class EpicsReadInstructionItem : public UniversalInstructionItem
 {
 public:
-  using UniversalInstructionItem::UniversalInstructionItem;
   explicit EpicsReadInstructionItem(const std::string& instruction_type);
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetChannel() const;
 
@@ -54,10 +53,9 @@ public:
 class EpicsWriteInstructionItem : public UniversalInstructionItem
 {
 public:
-  using UniversalInstructionItem::UniversalInstructionItem;
   explicit EpicsWriteInstructionItem(const std::string& instruction_type);
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetVariableName() const;
 
@@ -79,10 +77,9 @@ public:
   static inline const std::string Type =
       sequencergui::domainconstants::kChannelAccessReadInstructionType;
 
-  using EpicsReadInstructionItem::EpicsReadInstructionItem;
   ChannelAccessReadInstructionItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represents ChannelAccessWriteInstruction.
@@ -92,10 +89,9 @@ public:
   static inline const std::string Type =
       sequencergui::domainconstants::kChannelAccessWriteInstructionType;
 
-  using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
   ChannelAccessWriteInstructionItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represents PVAccessReadInstruction.
@@ -105,10 +101,9 @@ public:
   static inline const std::string Type =
       sequencergui::domainconstants::kPvAccessReadInstructionType;
 
-  using EpicsReadInstructionItem::EpicsReadInstructionItem;
   PvAccessReadInstructionItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represents PVAccessWriteInstruction.
@@ -118,10 +113,9 @@ public:
   static inline const std::string Type =
       sequencergui::domainconstants::kPvAccessWriteInstructionType;
 
-  using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
   PvAccessWriteInstructionItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represents RPCClientInstruction.
@@ -130,10 +124,9 @@ class RPCClientInstruction : public UniversalInstructionItem
 public:
   static inline const std::string Type = sequencergui::domainconstants::kRPCClientInstructionType;
 
-  using UniversalInstructionItem::UniversalInstructionItem;
   RPCClientInstruction();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetService() const;
 
@@ -158,10 +151,9 @@ class SystemCallInstructionItem : public UniversalInstructionItem
 public:
   static inline const std::string Type = sequencergui::domainconstants::kSystemCallInstructionType;
 
-  using UniversalInstructionItem::UniversalInstructionItem;
   SystemCallInstructionItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetCommand() const;
 
@@ -174,10 +166,9 @@ class LogInstructionItem : public UniversalInstructionItem
 public:
   static inline const std::string Type = sequencergui::domainconstants::kLogInstructionType;
 
-  using UniversalInstructionItem::UniversalInstructionItem;
   LogInstructionItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetMessage() const;
 

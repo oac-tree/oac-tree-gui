@@ -34,10 +34,9 @@ class ProcedureItem : public mvvm::CompoundItem
 public:
   static inline const std::string Type = "Procedure";
 
-  using CompoundItem::CompoundItem;
   ProcedureItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetName() const;
 

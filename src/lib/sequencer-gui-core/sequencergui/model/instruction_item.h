@@ -30,10 +30,9 @@ namespace sequencergui
 class InstructionItem : public mvvm::CompoundItem
 {
 public:
-  using CompoundItem::CompoundItem;
   explicit InstructionItem(const std::string& item_type);
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   virtual std::string GetDomainType() const = 0;
 

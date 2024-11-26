@@ -36,11 +36,9 @@ class ProcedureItem;
 class JobItem : public mvvm::CompoundItem
 {
 public:
-  using CompoundItem::CompoundItem;
-
   explicit JobItem(const std::string& type);
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   /**
    * @brief Returns job status.

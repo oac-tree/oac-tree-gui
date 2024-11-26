@@ -32,10 +32,9 @@ class InstructionContainerItem : public mvvm::CompoundItem
 public:
   static inline const std::string Type = "InstructionContainer";
 
-  using CompoundItem::CompoundItem;
   InstructionContainerItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::vector<InstructionItem*> GetInstructions() const;
 

@@ -38,9 +38,8 @@ namespace sequencergui
 
 InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type) {}
 
-std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone() const
 {
-  (void)make_unique_id;
   throw NotImplementedException("InstructionItem::clone() should not be used");
 }
 

@@ -43,7 +43,7 @@ JobItem::JobItem(const std::string &type) : CompoundItem(type)
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
 
-std::unique_ptr<mvvm::SessionItem> JobItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> JobItem::Clone() const
 {
   // This base is not intended to be used directly
   throw NotImplementedException("Clone for JobItem is not implemented");

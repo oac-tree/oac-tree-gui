@@ -37,10 +37,9 @@ class TypeRegistrationItem : public mvvm::CompoundItem
 public:
   static inline const std::string Type = "TypeRegistrationItem";
 
-  using CompoundItem::CompoundItem;
   TypeRegistrationItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   int GetRegistrationMode() const;
   void SetRegistrationMode(int value);
@@ -56,10 +55,9 @@ class ProcedurePreambleItem : public mvvm::CompoundItem
 public:
   static inline const std::string Type = "ProcedurePreamble";
 
-  using CompoundItem::CompoundItem;
   ProcedurePreambleItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   mvvm::ContainerItem* GetTypeRegistrationContainer() const;
 

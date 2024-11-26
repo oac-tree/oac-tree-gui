@@ -58,9 +58,9 @@ UniversalInstructionItem::UniversalInstructionItem(const std::string &item_type)
   }
 }
 
-std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
 {
-  return std::make_unique<UniversalInstructionItem>(*this, make_unique_id);
+  return std::make_unique<UniversalInstructionItem>(*this);
 }
 
 void UniversalInstructionItem::SetDomainType(const std::string &domain_type)

@@ -33,11 +33,9 @@ class IncludeItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kIncludeInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
   IncludeItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetFileName() const;
 
@@ -53,11 +51,9 @@ class ParallelSequenceItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kParallelInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
   ParallelSequenceItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   mvvm::uint32 GetSuccessThreshold() const;
 
@@ -73,11 +69,9 @@ class RepeatItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kRepeatInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
   RepeatItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   int GetRepeatCount() const;
 
@@ -89,11 +83,9 @@ class SequenceItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kSequenceInstructionType;
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
   SequenceItem();
+
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represent Wait instruction.
@@ -101,11 +93,9 @@ class WaitItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kWaitInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
   WaitItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   void SetTimeout(double value);
 

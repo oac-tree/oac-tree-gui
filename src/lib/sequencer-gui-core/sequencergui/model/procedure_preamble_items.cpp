@@ -42,9 +42,9 @@ TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(Type)
           "JSON string or a filename for a file containing the JSON representation of the type");
 }
 
-std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone() const
 {
-  return std::make_unique<TypeRegistrationItem>(*this, make_unique_id);
+  return std::make_unique<TypeRegistrationItem>(*this);
 }
 
 int TypeRegistrationItem::GetRegistrationMode() const
@@ -83,9 +83,9 @@ ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(Type)
   AddBranch<mvvm::ContainerItem>(kPluginContainerTag).SetDisplayName("Plugins");
 }
 
-std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone() const
 {
-  return std::make_unique<ProcedurePreambleItem>(*this, make_unique_id);
+  return std::make_unique<ProcedurePreambleItem>(*this);
 }
 
 mvvm::ContainerItem *ProcedurePreambleItem::GetTypeRegistrationContainer() const

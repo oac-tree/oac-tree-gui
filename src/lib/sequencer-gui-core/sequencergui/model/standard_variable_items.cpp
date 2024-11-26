@@ -40,9 +40,8 @@ ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_typ
   AddProperty(itemconstants::kIsAvailable, false).SetDisplayName("connected").SetEditable(false);
 }
 
-std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone() const
 {
-  (void)make_unique_id;
   // This base is not intended to be used directly
   throw NotImplementedException("Clone for ConnectableVariableItem is not implemented");
 }
@@ -73,9 +72,9 @@ void ConnectableVariableItem::SetIsAvailable(bool value)
 
 ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone() const
 {
-  return std::make_unique<ChannelAccessVariableItem>(*this, make_unique_id);
+  return std::make_unique<ChannelAccessVariableItem>(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -83,9 +82,9 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone(bool make_un
 // ----------------------------------------------------------------------------
 FileVariableItem::FileVariableItem() : sequencergui::UniversalVariableItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone() const
 {
-  return std::make_unique<FileVariableItem>(*this, make_unique_id);
+  return std::make_unique<FileVariableItem>(*this);
 }
 
 std::string FileVariableItem::GetFileName() const
@@ -104,18 +103,18 @@ void FileVariableItem::SetFileName(const std::string &name)
 
 LocalVariableItem::LocalVariableItem() : sequencergui::UniversalVariableItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone() const
 {
-  return std::make_unique<LocalVariableItem>(*this, make_unique_id);
+  return std::make_unique<LocalVariableItem>(*this);
 }
 
 // ----------------------------------------------------------------------------
 // PvAccessClientVariableItem
 // ----------------------------------------------------------------------------
 
-std::unique_ptr<mvvm::SessionItem> PvAccessClientVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessClientVariableItem::Clone() const
 {
-  return std::make_unique<PvAccessClientVariableItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessClientVariableItem>(*this);
 }
 
 PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableItem(Type) {}
@@ -124,9 +123,9 @@ PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableIt
 // PvAccessServerVariableItem
 // ----------------------------------------------------------------------------
 
-std::unique_ptr<mvvm::SessionItem> PvAccessServerVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessServerVariableItem::Clone() const
 {
-  return std::make_unique<PvAccessServerVariableItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessServerVariableItem>(*this);
 }
 
 PvAccessServerVariableItem::PvAccessServerVariableItem() : ConnectableVariableItem(Type) {}

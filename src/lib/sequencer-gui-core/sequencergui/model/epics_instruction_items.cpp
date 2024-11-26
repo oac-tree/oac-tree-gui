@@ -50,9 +50,8 @@ EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string &instructio
   SetTimeout(1.0);
 }
 
-std::unique_ptr<mvvm::SessionItem> EpicsReadInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> EpicsReadInstructionItem::Clone() const
 {
-  (void)make_unique_id;
   throw NotImplementedException("EpicsReadInstructionItem::clone() should not be used");
 }
 
@@ -97,9 +96,8 @@ EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruct
   InitDefaultAnyValue(*this);
 }
 
-std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone() const
 {
-  (void)make_unique_id;
   throw NotImplementedException("EpicsWriteInstructionItem::clone() should not be used");
 }
 
@@ -142,10 +140,9 @@ ChannelAccessReadInstructionItem::ChannelAccessReadInstructionItem()
 {
 }
 
-std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone(
-    bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone() const
 {
-  return std::make_unique<ChannelAccessReadInstructionItem>(*this, make_unique_id);
+  return std::make_unique<ChannelAccessReadInstructionItem>(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -157,10 +154,9 @@ ChannelAccessWriteInstructionItem::ChannelAccessWriteInstructionItem()
 {
 }
 
-std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone(
-    bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone() const
 {
-  return std::make_unique<ChannelAccessWriteInstructionItem>(*this, make_unique_id);
+  return std::make_unique<ChannelAccessWriteInstructionItem>(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -169,9 +165,9 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone(
 
 PvAccessReadInstructionItem::PvAccessReadInstructionItem() : EpicsReadInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone() const
 {
-  return std::make_unique<PvAccessReadInstructionItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessReadInstructionItem>(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -180,9 +176,9 @@ std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone(bool make_
 
 PvAccessWriteInstructionItem::PvAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone() const
 {
-  return std::make_unique<PvAccessWriteInstructionItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessWriteInstructionItem>(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -195,9 +191,9 @@ RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(Type)
   InitDefaultAnyValue(*this);
 }
 
-std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone() const
 {
-  return std::make_unique<RPCClientInstruction>(*this, make_unique_id);
+  return std::make_unique<RPCClientInstruction>(*this);
 }
 std::string RPCClientInstruction::GetService() const
 {
@@ -245,9 +241,9 @@ void RPCClientInstruction::SetOutput(const std::string &value)
 
 SystemCallInstructionItem::SystemCallInstructionItem() : UniversalInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> SystemCallInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> SystemCallInstructionItem::Clone() const
 {
-  return std::make_unique<SystemCallInstructionItem>(*this, make_unique_id);
+  return std::make_unique<SystemCallInstructionItem>(*this);
 }
 
 std::string SystemCallInstructionItem::GetCommand() const
@@ -266,9 +262,9 @@ void SystemCallInstructionItem::SetCommand(const std::string &value)
 
 LogInstructionItem::LogInstructionItem() : UniversalInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> LogInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> LogInstructionItem::Clone() const
 {
-  return std::make_unique<LogInstructionItem>(*this, make_unique_id);
+  return std::make_unique<LogInstructionItem>(*this);
 }
 
 std::string LogInstructionItem::GetMessage() const

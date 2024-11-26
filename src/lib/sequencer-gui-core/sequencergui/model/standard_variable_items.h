@@ -33,10 +33,9 @@ namespace sequencergui
 class ConnectableVariableItem : public UniversalVariableItem
 {
 public:
-  using UniversalVariableItem::UniversalVariableItem;
   explicit ConnectableVariableItem(const std::string& variable_type);
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetChannel() const;
 
@@ -52,11 +51,9 @@ class ChannelAccessVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kChannelAccessVariableType;
-
-  using ConnectableVariableItem::ConnectableVariableItem;
   ChannelAccessVariableItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represent FileVariable.
@@ -64,11 +61,9 @@ class FileVariableItem : public sequencergui::UniversalVariableItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kFileVariableType;
-
-  using sequencergui::UniversalVariableItem::UniversalVariableItem;
   FileVariableItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetFileName() const;
 
@@ -80,11 +75,9 @@ class LocalVariableItem : public sequencergui::UniversalVariableItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kLocalVariableType;
-
-  using sequencergui::UniversalVariableItem::UniversalVariableItem;
   LocalVariableItem();
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represent PvAccessClientVariable.
@@ -92,11 +85,9 @@ class PvAccessClientVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kPvAccessClientVariableType;
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  using ConnectableVariableItem::ConnectableVariableItem;
   PvAccessClientVariableItem();
+
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 //! Represent PvAccessServerVariable.
@@ -105,10 +96,9 @@ class PvAccessServerVariableItem : public ConnectableVariableItem
 public:
   static inline const std::string Type = sequencergui::domainconstants::kPvAccessServerVariableType;
 
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  using ConnectableVariableItem::ConnectableVariableItem;
   PvAccessServerVariableItem();
+
+  std::unique_ptr<SessionItem> Clone() const override;
 };
 
 }  // namespace sequencergui

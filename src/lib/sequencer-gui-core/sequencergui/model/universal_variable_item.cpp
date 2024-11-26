@@ -22,8 +22,8 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/anyvalue_item_transform_helper.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -58,9 +58,9 @@ UniversalVariableItem::UniversalVariableItem(const std::string &item_type)
   }
 }
 
-std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone() const
 {
-  return std::make_unique<UniversalVariableItem>(*this, make_unique_id);
+  return std::make_unique<UniversalVariableItem>(*this);
 }
 
 std::string UniversalVariableItem::GetDomainType() const

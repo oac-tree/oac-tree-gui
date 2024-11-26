@@ -48,9 +48,9 @@ CommonSettingsItem::CommonSettingsItem() : CompoundItem(Type)
   AddProperty(kUndoLimitSetting, kUndoLimitDefault).SetDisplayName("Undo limit");
 }
 
-std::unique_ptr<mvvm::SessionItem> CommonSettingsItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> CommonSettingsItem::Clone() const
 {
-  return std::make_unique<CommonSettingsItem>(*this, make_unique_id);
+  return std::make_unique<CommonSettingsItem>(*this);
 }
 
 void CommonSettingsItem::Activate()
