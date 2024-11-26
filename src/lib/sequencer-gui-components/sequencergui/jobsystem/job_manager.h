@@ -23,6 +23,7 @@
 #include <QObject>
 
 #include <sequencergui/jobsystem/i_job_item_manager.h>
+#include <memory>
 
 namespace sequencergui
 {
