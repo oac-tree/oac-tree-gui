@@ -44,7 +44,7 @@ namespace sequencergui
 using msec = std::chrono::milliseconds;
 
 /**
- * @brief Tests of OperationActionHandler class using mocked depencies.
+ * @brief Tests of OperationActionHandler class using mocked dependencies.
  */
 class OperationActionHandlerTest : public ::testing::Test
 {
@@ -89,7 +89,7 @@ public:
   std::unique_ptr<OperationActionHandler> CreateOperationHandler()
   {
     auto result = std::make_unique<OperationActionHandler>(
-        &m_mock_mock_job_manager, m_mock_operation_context.CreateContext());
+        &m_mock_job_manager, m_mock_operation_context.CreateContext());
     result->SetJobContainer(m_job_container);
     return result;
   }
@@ -100,12 +100,12 @@ public:
 
   testutils::MockOperationActionContext m_mock_operation_context;
   testutils::MockRemoteConnectionService m_mock_connection_service;
-  testutils::MockJobManager m_mock_mock_job_manager;
+  testutils::MockJobManager m_mock_job_manager;
 };
 
 TEST_F(OperationActionHandlerTest, AttemptToInsertWhenNoModelIsDefined)
 {
-  auto handler = std::make_unique<OperationActionHandler>(&m_mock_mock_job_manager,
+  auto handler = std::make_unique<OperationActionHandler>(&m_mock_job_manager,
                                                           m_mock_operation_context.CreateContext());
   // no model is set
 
@@ -121,7 +121,7 @@ TEST_F(OperationActionHandlerTest, SubmitLocalJob)
   auto procedure_item = InsertProcedure();
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(::testing::_));
 
   QSignalSpy spy_selected_request(operation_handler.get(),
                                   &OperationActionHandler::MakeJobSelectedRequest);
@@ -141,12 +141,12 @@ TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
   auto operation_handler = CreateOperationHandler();
   auto procedure_item = InsertProcedure();
 
-  ON_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_))
+  ON_CALL(m_mock_job_manager, SubmitJob(::testing::_))
       .WillByDefault(::testing::Throw(RuntimeException("Submit failure")));
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob()).Times(1);
   EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_)).Times(1);
-  EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(::testing::_));
 
   QSignalSpy spy_selected_request(operation_handler.get(),
                                   &OperationActionHandler::MakeJobSelectedRequest);
@@ -169,15 +169,15 @@ TEST_F(OperationActionHandlerTest, SubmitImportedJob)
   auto procedure_item_ptr = procedure_item.get();
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(::testing::_));
 
   QSignalSpy spy_selected_request(operation_handler.get(),
                                   &OperationActionHandler::MakeJobSelectedRequest);
 
   EXPECT_TRUE(operation_handler->SubmitImportedJob(std::move(procedure_item)));
 
-  // as a result of import request, a single LocalJobItem has been inserted into the model
-  auto job_items = GetJobs<JobItem>();
+  // as a result of import request, a single ImportedJobItem has been inserted into the model
+  auto job_items = GetJobs<ImportedJobItem>();
   ASSERT_EQ(job_items.size(), 1);
 
   auto job_item = job_items.at(0);
@@ -202,7 +202,7 @@ TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_operation_context, OnGetRemoteConnectionInfo());
-  EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_));
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(::testing::_));
 
   QSignalSpy spy_selected_request(operation_handler.get(),
                                   &OperationActionHandler::MakeJobSelectedRequest);
@@ -241,7 +241,7 @@ TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob()).Times(2);
   EXPECT_CALL(m_mock_operation_context, OnGetRemoteConnectionInfo()).Times(1);
-  EXPECT_CALL(m_mock_mock_job_manager, SubmitJob(::testing::_)).Times(2);
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(::testing::_)).Times(2);
 
   const QSignalSpy spy_selected_request(operation_handler.get(),
                                         &OperationActionHandler::MakeJobSelectedRequest);
@@ -280,7 +280,7 @@ TEST_F(OperationActionHandlerTest, RemoveLocalJob)
   ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_mock_job_manager, RemoveJobHandler(job_item));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(job_item));
 
   const QSignalSpy spy_selected_request(operation_handler.get(),
                                         &OperationActionHandler::MakeJobSelectedRequest);
@@ -304,7 +304,7 @@ TEST_F(OperationActionHandlerTest, RemoveLocalJobInTheMiddle)
   ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item1));
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_mock_job_manager, RemoveJobHandler(job_item1));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(job_item1));
 
   QSignalSpy spy_selected_request(operation_handler.get(),
                                   &OperationActionHandler::MakeJobSelectedRequest);
