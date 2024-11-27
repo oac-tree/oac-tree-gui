@@ -38,7 +38,6 @@
 #include <QSettings>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
-#include <iostream>
 
 namespace sequencergui
 {
@@ -188,14 +187,7 @@ std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
 
   if (dialog.exec() == QDialog::Accepted)
   {
-    auto connection_context = dialog.GetResult();
-    std::cout << "server name " << connection_context.server_name << " (";
-    for (auto index : connection_context.job_indexes)
-    {
-      std::cout << index << " ";
-    }
-    std::cout << ")\n";
-    return connection_context;
+    return dialog.GetResult();
   }
   return {};
 }
