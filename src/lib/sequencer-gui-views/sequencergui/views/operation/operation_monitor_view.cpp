@@ -182,13 +182,13 @@ void OperationMonitorView::SetupConnections()
   connect(m_realtime_panel, &OperationRealTimePanel::PauseRequest, m_action_handler,
           &OperationActionHandler::OnPauseJobRequest);
 
-  // stop request
-  connect(m_realtime_panel, &OperationRealTimePanel::StopRequest, m_action_handler,
-          &OperationActionHandler::OnStopJobRequest);
-
   // step request
   connect(m_realtime_panel, &OperationRealTimePanel::StepRequest, m_action_handler,
           &OperationActionHandler::OnMakeStepRequest);
+
+  // stop request
+  connect(m_realtime_panel, &OperationRealTimePanel::StopRequest, m_action_handler,
+          &OperationActionHandler::OnStopJobRequest);
 
   // reset request
   connect(m_realtime_panel, &OperationRealTimePanel::ResetRequest, m_action_handler,

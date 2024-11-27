@@ -96,6 +96,11 @@ public:
   void OnPauseJobRequest();
 
   /**
+   * @brief Execute a single step of the currently selected job.
+   */
+  void OnMakeStepRequest();
+
+  /**
    * @brief Make step for currently selected job.
    */
   void OnStopJobRequest();
@@ -106,11 +111,6 @@ public:
    * Works only for finished/halted jobs.
    */
   void OnResetJobRequest();
-
-  /**
-   * @brief Execute a single step of the currently selected job.
-   */
-  void OnMakeStepRequest();
 
   /**
    * @brief Removes currently selected job.

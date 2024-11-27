@@ -64,14 +64,14 @@ public:
   virtual void Pause(JobItem* item) = 0;
 
   /**
-   * @brief Stop given job.
-   */
-  virtual void Stop(JobItem* item) = 0;
-
-  /**
    * @brief Execute a single step of the given job.
    */
   virtual void Step(JobItem* item) = 0;
+
+  /**
+   * @brief Stop given job.
+   */
+  virtual void Stop(JobItem* item) = 0;
 
   /**
    * @brief Reset sequencer domain runner to the initial state.

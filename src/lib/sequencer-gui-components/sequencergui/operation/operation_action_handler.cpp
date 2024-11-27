@@ -142,14 +142,14 @@ void OperationActionHandler::OnPauseJobRequest()
   m_job_manager->Pause(GetSelectedJob());
 }
 
-void OperationActionHandler::OnStopJobRequest()
-{
-  m_job_manager->Stop(GetSelectedJob());
-}
-
 void OperationActionHandler::OnMakeStepRequest()
 {
   m_job_manager->Step(GetSelectedJob());
+}
+
+void OperationActionHandler::OnStopJobRequest()
+{
+  m_job_manager->Stop(GetSelectedJob());
 }
 
 void OperationActionHandler::OnResetJobRequest()

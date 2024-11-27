@@ -58,9 +58,9 @@ public:
 
   void Pause(JobItem* item) override;
 
-  void Stop(JobItem* item) override;
-
   void Step(JobItem* item) override;
+
+  void Stop(JobItem* item) override;
 
   void Reset(JobItem* item) override;
 
