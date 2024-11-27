@@ -23,6 +23,7 @@
 #include <sequencergui/operation/operation_action_context.h>
 
 #include <QObject>
+#include <memory>
 
 namespace mvvm
 {
