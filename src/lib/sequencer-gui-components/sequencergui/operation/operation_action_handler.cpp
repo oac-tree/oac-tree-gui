@@ -28,8 +28,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_job_items.h>
 
-#include <mvvm/model/item_utils.h>
 #include <mvvm/model/i_session_model.h>
+#include <mvvm/model/item_utils.h>
 
 namespace sequencergui
 {
@@ -150,6 +150,11 @@ void OperationActionHandler::OnStopJobRequest()
 void OperationActionHandler::OnMakeStepRequest()
 {
   m_job_manager->Step(GetSelectedJob());
+}
+
+void OperationActionHandler::OnResetJobRequest()
+{
+  m_job_manager->Reset(GetSelectedJob());
 }
 
 bool OperationActionHandler::OnRemoveJobRequest()

@@ -101,6 +101,13 @@ public:
   void OnStopJobRequest();
 
   /**
+   * @brief Reset domain runner.
+   *
+   * Works only for finished/halted jobs.
+   */
+  void OnResetJobRequest();
+
+  /**
    * @brief Execute a single step of the currently selected job.
    */
   void OnMakeStepRequest();
@@ -118,7 +125,6 @@ public:
    * freshly generated from its GUI source.
    */
   bool OnRegenerateJobRequest();
-
   /**
    * @brief Sets tick timeout of currently selected job to given value.
    */

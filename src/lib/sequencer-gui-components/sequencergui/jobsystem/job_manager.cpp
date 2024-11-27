@@ -61,7 +61,7 @@ void JobManager::Start(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
-    ResetJobIfNecessary(item);
+    Reset(item);
     job_handler->Start();
   }
 }
@@ -86,7 +86,7 @@ void JobManager::Step(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
-    ResetJobIfNecessary(item);
+    Reset(item);
     job_handler->Step();
   }
 }
@@ -131,16 +131,11 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
   }
 }
 
-void JobManager::ResetJobIfNecessary(JobItem *item)
+void JobManager::Reset(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
-    auto status = job_handler->GetRunnerStatus();
-    if (status == RunnerStatus::kFailed || status == RunnerStatus::kSucceeded
-        || status == RunnerStatus::kHalted)
-    {
-      job_handler->Reset();
-    }
+    job_handler->Reset();
   }
 }
 

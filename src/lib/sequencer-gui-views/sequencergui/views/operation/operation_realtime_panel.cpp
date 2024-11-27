@@ -130,15 +130,17 @@ void OperationRealTimePanel::SetupConnections()
 {
   // forward signals from a toolbar further up
   connect(m_actions, &MonitorRealTimeActions::RunRequest, this,
-          &OperationRealTimePanel::runRequest);
+          &OperationRealTimePanel::RunRequest);
   connect(m_actions, &MonitorRealTimeActions::PauseRequest, this,
-          &OperationRealTimePanel::pauseRequest);
+          &OperationRealTimePanel::PauseRequest);
   connect(m_actions, &MonitorRealTimeActions::StepRequest, this,
-          &OperationRealTimePanel::stepRequest);
+          &OperationRealTimePanel::StepRequest);
   connect(m_actions, &MonitorRealTimeActions::StopRequest, this,
-          &OperationRealTimePanel::stopRequest);
+          &OperationRealTimePanel::StopRequest);
+  connect(m_actions, &MonitorRealTimeActions::ResetRequest, this,
+          &OperationRealTimePanel::ResetRequest);
   connect(m_actions, &MonitorRealTimeActions::ChangeDelayRequest, this,
-          &OperationRealTimePanel::changeDelayRequest);
+          &OperationRealTimePanel::ChangeDelayRequest);
 
   connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest,
           this, &OperationRealTimePanel::ToggleBreakpointRequest);

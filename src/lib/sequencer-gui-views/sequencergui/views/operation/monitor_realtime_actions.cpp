@@ -83,8 +83,8 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
 
   m_reset_action->setIcon(sup::gui::utils::GetIcon("page-first.svg"));
   m_reset_action->setToolTip(
-      "Reset sequencer domain procedure to initial state\n"
-      "Works only for finished/halted jobs");
+      "Reset sequencer procedure runner to the initial state\n"
+      "Works only on finished/halted procedures");
   connect(m_reset_action, &QAction::triggered, this, &MonitorRealTimeActions::ResetRequest);
   m_action_map.Add(ActionKey::kReset, m_reset_action);
 

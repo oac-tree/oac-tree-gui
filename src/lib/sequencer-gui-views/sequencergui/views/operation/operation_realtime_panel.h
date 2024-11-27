@@ -63,11 +63,12 @@ public:
   int GetCurrentTickTimeout();
 
 signals:
-  void runRequest();
-  void pauseRequest();
-  void stepRequest();
-  void stopRequest();
-  void changeDelayRequest(int msec);
+  void RunRequest();
+  void PauseRequest();
+  void StepRequest();
+  void StopRequest();
+  void ResetRequest();
+  void ChangeDelayRequest(int msec);
   void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
 private:

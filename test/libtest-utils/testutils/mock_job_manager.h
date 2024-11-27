@@ -49,6 +49,7 @@ public:
   MOCK_METHOD(void, Pause, (sequencergui::JobItem*), (override));
   MOCK_METHOD(void, Stop, (sequencergui::JobItem*), (override));
   MOCK_METHOD(void, Step, (sequencergui::JobItem*), (override));
+  MOCK_METHOD(void, Reset, (sequencergui::JobItem*), (override));
 
   MOCK_METHOD(void, RemoveJobHandler, (sequencergui::JobItem*), (override));
   MOCK_METHOD(bool, HasRunningJobs, (), (const, override));

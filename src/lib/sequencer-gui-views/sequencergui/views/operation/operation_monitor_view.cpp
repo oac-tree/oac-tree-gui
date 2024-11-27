@@ -175,23 +175,27 @@ void OperationMonitorView::SetupConnections()
   // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
   // start request
-  connect(m_realtime_panel, &OperationRealTimePanel::runRequest, m_action_handler,
+  connect(m_realtime_panel, &OperationRealTimePanel::RunRequest, m_action_handler,
           &OperationActionHandler::OnStartJobRequest);
 
   // pause request
-  connect(m_realtime_panel, &OperationRealTimePanel::pauseRequest, m_action_handler,
+  connect(m_realtime_panel, &OperationRealTimePanel::PauseRequest, m_action_handler,
           &OperationActionHandler::OnPauseJobRequest);
 
   // stop request
-  connect(m_realtime_panel, &OperationRealTimePanel::stopRequest, m_action_handler,
+  connect(m_realtime_panel, &OperationRealTimePanel::StopRequest, m_action_handler,
           &OperationActionHandler::OnStopJobRequest);
 
   // step request
-  connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, m_action_handler,
+  connect(m_realtime_panel, &OperationRealTimePanel::StepRequest, m_action_handler,
           &OperationActionHandler::OnMakeStepRequest);
 
+  // reset request
+  connect(m_realtime_panel, &OperationRealTimePanel::ResetRequest, m_action_handler,
+          &OperationActionHandler::OnResetJobRequest);
+
   // change delay request
-  connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_action_handler,
+  connect(m_realtime_panel, &OperationRealTimePanel::ChangeDelayRequest, m_action_handler,
           &OperationActionHandler::OnSetTickTimeoutRequest);
   m_action_handler->OnSetTickTimeoutRequest(m_realtime_panel->GetCurrentTickTimeout());
 

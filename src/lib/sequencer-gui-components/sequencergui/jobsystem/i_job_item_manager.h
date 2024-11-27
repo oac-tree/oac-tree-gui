@@ -74,6 +74,13 @@ public:
   virtual void Step(JobItem* item) = 0;
 
   /**
+   * @brief Reset sequencer domain runner to the initial state.
+   *
+   * Works for finished/halted procedures.
+   */
+  virtual void Reset(JobItem* item) = 0;
+
+  /**
    * @brief Removes a job corresponding to a given JobItem from the manager.
    *
    * Internally removes JobHandler, do not affect JobItem.

@@ -20,9 +20,9 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 
-#include <QObject>
-
 #include <sequencergui/jobsystem/i_job_item_manager.h>
+
+#include <QObject>
 #include <memory>
 
 namespace sequencergui
@@ -62,6 +62,8 @@ public:
 
   void Step(JobItem* item) override;
 
+  void Reset(JobItem* item) override;
+
   void RemoveJobHandler(JobItem* job) override;
 
   bool HasRunningJobs() const override;
@@ -84,17 +86,6 @@ private:
    * up.
    */
   void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
-
-  /**
-   * @brief Resets domain async runner of the given job to initial state, if necessary.
-   *
-   * This concerns jobs that are not running but were running before (i.e. jobs that are in one
-   * of kFailed, kSucceeded, or kHalted states).
-   *
-   * Effectively, it leads to instruction/procedure states reset to the initial state. The rest
-   * (domain procedure, JobHandler, collapse/expand status of the tree) should stay as before.
-   */
-  void ResetJobIfNecessary(JobItem* item);
 
   std::map<JobItem*, std::unique_ptr<AbstractJobHandler>> m_job_map;
   JobItem* m_active_job{nullptr};  //!< job which is allowed to send signals up

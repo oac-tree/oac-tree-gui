@@ -52,7 +52,7 @@ OperationJobActions::OperationJobActions(QObject *parent)
 
   m_regenerate_action->setText("Reload");
   m_regenerate_action->setIcon(sup::gui::utils::GetIcon("refresh.svg"));
-  m_regenerate_action->setToolTip("Full rebuild of sequencer procedure from the original source");
+  m_regenerate_action->setToolTip("Full rebuild of sequencer job from the original source");
   connect(m_regenerate_action, &QAction::triggered, this,
           &OperationJobActions::RegenerateJobRequest);
   m_action_map.Add(ActionKey::kRegenerateJob, m_regenerate_action);
