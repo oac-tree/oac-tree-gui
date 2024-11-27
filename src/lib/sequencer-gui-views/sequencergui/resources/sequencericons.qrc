@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/bell-alert-outline.svg</file>
         <file>icons/about_logo.awk</file>
         <file>icons/arrow-down-thin-circle-outline.svg</file>
         <file>icons/arrow-right-circle-outline.svg</file>
@@ -8,6 +7,7 @@
         <file>icons/arrow-top-left.svg</file>
         <file>icons/arrow-up-thin-circle-outline.svg</file>
         <file>icons/beaker-remove-outline.svg</file>
+        <file>icons/bell-alert-outline.svg</file>
         <file>icons/bookmark-outline.svg</file>
         <file>icons/camera-metering-center.svg</file>
         <file>icons/card-bulleted-outline.svg</file>
@@ -42,6 +42,7 @@
         <file>icons/open-panel-left.svg</file>
         <file>icons/open-panel-right.svg</file>
         <file>icons/order-bool-descending-variant.svg</file>
+        <file>icons/page-first.svg</file>
         <file>icons/page-previous-outline.svg</file>
         <file>icons/pause-circle-outline.svg</file>
         <file>icons/play-pause.svg</file>
@@ -50,6 +51,7 @@
         <file>icons/plus-circle-multiple-outline.svg</file>
         <file>icons/plus-circle-outline.svg</file>
         <file>icons/refresh.svg</file>
+        <file>icons/restore.svg</file>
         <file>icons/speedometer-slow.svg</file>
         <file>icons/speedometer.svg</file>
         <file>icons/splash-bg1.png</file>

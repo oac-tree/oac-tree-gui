@@ -52,6 +52,7 @@ public:
     kPause,
     kStep,
     kStop,
+    kReset,
     kDelay,
     kSettings,
     kTotalCount
@@ -74,6 +75,7 @@ signals:
   void PauseRequest();
   void StepRequest();
   void StopRequest();
+  void ResetRequest();
   void ChangeDelayRequest(int msec);
   void ScrollToSelectionRequest(bool);
 
@@ -87,6 +89,7 @@ private:
   QAction* m_pause_action{nullptr};
   QAction* m_step_action{nullptr};
   QAction* m_stop_action{nullptr};
+  QAction* m_reset_action{nullptr};
   QToolButton* m_delay_button{nullptr};
   QWidgetAction* m_delay_action{nullptr};
   sup::gui::ActionMenu* m_settings_action{nullptr};

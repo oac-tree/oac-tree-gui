@@ -42,7 +42,8 @@ QList<QAction *> GetToolBarActions(sequencergui::MonitorRealTimeActions *actions
 {
   using ActionKey = sequencergui::MonitorRealTimeActions::ActionKey;
   return actions->GetActions({ActionKey::kRun, ActionKey::kPause, ActionKey::kStep,
-                              ActionKey::kStop, ActionKey::kDelay, ActionKey::kSettings});
+                              ActionKey::kStop, ActionKey::kReset, ActionKey::kDelay,
+                              ActionKey::kSettings});
 }
 
 }  // namespace

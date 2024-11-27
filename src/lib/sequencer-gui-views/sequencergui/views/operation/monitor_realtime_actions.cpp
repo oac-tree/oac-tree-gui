@@ -48,10 +48,11 @@ namespace sequencergui
 
 MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
     : QObject(parent)
-    , m_run_action(new QAction(this))
-    , m_pause_action(new QAction(this))
-    , m_step_action(new QAction(this))
-    , m_stop_action(new QAction(this))
+    , m_run_action(new QAction("Run", this))
+    , m_pause_action(new QAction("Pause", this))
+    , m_step_action(new QAction("Step", this))
+    , m_stop_action(new QAction("Stop", this))
+    , m_reset_action(new QAction("Reset", this))
     , m_delay_button(new QToolButton)
     , m_delay_action(new QWidgetAction(this))
     , m_settings_action(new sup::gui::ActionMenu)
@@ -60,29 +61,32 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
 {
   ReadSettings();
 
-  m_run_action->setText("Run");
   m_run_action->setIcon(sup::gui::utils::GetIcon("arrow-right-drop-circle-outline.svg"));
   m_run_action->setToolTip("Run procedure");
   connect(m_run_action, &QAction::triggered, this, &MonitorRealTimeActions::RunRequest);
   m_action_map.Add(ActionKey::kRun, m_run_action);
 
-  m_pause_action->setText("Pause");
   m_pause_action->setIcon(sup::gui::utils::GetIcon("pause-circle-outline.svg"));
   m_pause_action->setToolTip("Pause sequence at the next occasion");
   connect(m_pause_action, &QAction::triggered, this, &MonitorRealTimeActions::PauseRequest);
   m_action_map.Add(ActionKey::kPause, m_pause_action);
 
-  m_step_action->setText("Step");
   m_step_action->setIcon(sup::gui::utils::GetIcon("play-pause.svg"));
   m_step_action->setToolTip("Execute single instruction");
   connect(m_step_action, &QAction::triggered, this, &MonitorRealTimeActions::StepRequest);
   m_action_map.Add(ActionKey::kStep, m_step_action);
 
-  m_stop_action->setText("Stop");
   m_stop_action->setIcon(sup::gui::utils::GetIcon("stop-circle-outline.svg"));
   m_stop_action->setToolTip("Stop procedure");
   connect(m_stop_action, &QAction::triggered, this, &MonitorRealTimeActions::StopRequest);
   m_action_map.Add(ActionKey::kStop, m_stop_action);
+
+  m_reset_action->setIcon(sup::gui::utils::GetIcon("page-first.svg"));
+  m_reset_action->setToolTip(
+      "Reset sequencer domain procedure to initial state\n"
+      "Works only for finished/halted jobs");
+  connect(m_reset_action, &QAction::triggered, this, &MonitorRealTimeActions::ResetRequest);
+  m_action_map.Add(ActionKey::kReset, m_reset_action);
 
   m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
   m_delay_button->setIcon(sup::gui::utils::GetIcon("speedometer-slow.svg"));
