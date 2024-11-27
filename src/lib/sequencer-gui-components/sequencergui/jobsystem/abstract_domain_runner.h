@@ -136,8 +136,8 @@ public:
 private:
   void ValidateJob() const;
 
-  std::unique_ptr<DomainJobService> m_job_service;
-  std::unique_ptr<sup::sequencer::IJob> m_job;
+  std::unique_ptr<DomainJobService> m_domain_job_service;
+  std::unique_ptr<sup::sequencer::IJob> m_domain_job;
 };
 
 }  // namespace sequencergui

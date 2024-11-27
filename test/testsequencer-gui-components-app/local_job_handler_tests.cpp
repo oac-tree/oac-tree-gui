@@ -23,17 +23,17 @@
 #include <sequencergui/jobsystem/job_log.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/request_types.h>
+#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/operation/breakpoint_helper.h>
-#include <sequencergui/jobsystem/user_context.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -151,7 +151,8 @@ TEST_F(LocalJobHandlerTest, InvalidProcedure)
   auto procedure = testutils::CreateInvalidProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_THROW(LocalJobHandler(m_job_item, UserContext{}), sup::sequencer::InvalidOperationException);
+  EXPECT_THROW(LocalJobHandler(m_job_item, UserContext{}),
+               sup::sequencer::InvalidOperationException);
 }
 
 //! Delete JobHanlder after procedure start.
@@ -366,7 +367,6 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
 }
 
 //! Control log events with the help of MessageInstruction.
-
 TEST_F(LocalJobHandlerTest, LogEvents)
 {
   const std::string expected_message("abc");
@@ -377,6 +377,9 @@ TEST_F(LocalJobHandlerTest, LogEvents)
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+
+  // Put something in the log, to validate that it will be cleaned up before job start
+  job_handler.GetJobLog()->Append({});
 
   job_handler.Start();
   QTest::qWait(50);

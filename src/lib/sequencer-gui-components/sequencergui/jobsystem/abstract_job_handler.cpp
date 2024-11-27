@@ -35,10 +35,10 @@
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/procedure_item_job_info_builder.h>
 
+#include <mvvm/model/item_utils.h>
+
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
-
-#include <mvvm/model/item_utils.h>
 
 #include <QDebug>
 
@@ -60,6 +60,10 @@ AbstractJobHandler::~AbstractJobHandler() = default;
 
 void AbstractJobHandler::Start()
 {
+  if (!IsRunning())
+  {
+    m_job_log->ClearLog();
+  }
   m_domain_runner->Start();
 }
 
