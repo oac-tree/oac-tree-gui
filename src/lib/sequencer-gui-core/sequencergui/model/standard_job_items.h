@@ -96,6 +96,11 @@ public:
 };
 
 /**
+ * @brief Return types of all available job items.
+ */
+std::vector<std::string> GetJobItemTypes();
+
+/**
  * @brief Creates job item intended for running local procedures.
  *
  * The procedure shall belong to some model, and it will be linked with this JobItem via the linked

@@ -96,6 +96,11 @@ void RemoteJobItem::SetServerName(const std::string &name)
   SetProperty(kServerName, name);
 }
 
+std::vector<std::string> GetJobItemTypes()
+{
+  return {LocalJobItem::Type, ImportedJobItem::Type, RemoteJobItem::Type};
+}
+
 // ------------------------------------------------------------------------------------------------
 // Factory methods
 // ------------------------------------------------------------------------------------------------

@@ -26,7 +26,7 @@
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/abstract_row_strategy.h>
-#include <mvvm/viewmodel/i_children_strategy.h>
+#include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodel/viewmodel_controller_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
@@ -55,20 +55,10 @@ private:
   }
 };
 
-class TopJobStrategy : public mvvm::IChildrenStrategy
+class TopJobStrategy : public mvvm::FixedItemTypeStrategy
 {
 public:
-  std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override
-  {
-    // refactor after COA-1184
-    if (item
-        && (item->GetType() == LocalJobItem::Type || item->GetType() == RemoteJobItem::Type
-            || item->GetType() == ImportedJobItem::Type))
-    {
-      return {};
-    }
-    return item ? mvvm::utils::TopLevelItems(*item) : std::vector<mvvm::SessionItem *>();
-  }
+  TopJobStrategy() : mvvm::FixedItemTypeStrategy(GetJobItemTypes()) {}
 };
 
 JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent) : ViewModel(parent)
