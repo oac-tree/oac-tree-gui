@@ -41,8 +41,6 @@ Q_DECLARE_METATYPE(sequencergui::JobItem*)
 namespace sequencergui
 {
 
-using msec = std::chrono::milliseconds;
-
 /**
  * @brief Tests of OperationActionHandler class using mocked dependencies.
  */
@@ -316,6 +314,113 @@ TEST_F(OperationActionHandlerTest, RemoveLocalJobInTheMiddle)
 
   // last job reported as new selection
   EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item2);
+}
+
+TEST_F(OperationActionHandlerTest, StartPauseStepStopResetJob)
+{
+  LocalJobItem job_item;
+
+  auto operation_handler = CreateOperationHandler();
+
+  // job_item will be reported as selected
+  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_job_manager, Start(&job_item));
+  operation_handler->OnStartJobRequest();
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_job_manager, Pause(&job_item));
+  operation_handler->OnPauseJobRequest();
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_job_manager, Step(&job_item));
+  operation_handler->OnMakeStepRequest();
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_job_manager, Stop(&job_item));
+  operation_handler->OnStopJobRequest();
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_job_manager, Reset(&job_item));
+  operation_handler->OnResetJobRequest();
+}
+
+TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
+{
+  LocalJobItem job_item;
+  job_item.SetStatus("abc");
+
+  auto operation_handler = CreateOperationHandler();
+
+  QSignalSpy spy_selected_request(operation_handler.get(),
+                                  &OperationActionHandler::MakeJobSelectedRequest);
+
+  // job_item will be reported as selected
+  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(&job_item));
+
+  EXPECT_TRUE(operation_handler->OnRegenerateJobRequest());
+
+  EXPECT_EQ(spy_selected_request.count(), 1);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), &job_item);
+  EXPECT_EQ(job_item.GetStatus(), std::string());
+}
+
+//! Attempt to regenerate job when current job is still running.
+TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenRemovalFailed)
+{
+  LocalJobItem job_item;
+  job_item.SetStatus("abc");
+
+  auto operation_handler = CreateOperationHandler();
+
+  const QSignalSpy spy_selected_request(operation_handler.get(),
+                                        &OperationActionHandler::MakeJobSelectedRequest);
+
+  // job_item will be reported as selected
+  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
+  ON_CALL(m_mock_job_manager, RemoveJobHandler(::testing::_))
+      .WillByDefault(::testing::Throw(RuntimeException("Removal failure")));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+
+  EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
+
+  EXPECT_EQ(spy_selected_request.count(), 0);
+  EXPECT_EQ(job_item.GetStatus(), std::string("abc"));
+}
+
+//! Attempt to regenerate job when submit is failing.
+TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobIsBroken)
+{
+  LocalJobItem job_item;
+  job_item.SetStatus("abc");
+
+  auto operation_handler = CreateOperationHandler();
+
+  const QSignalSpy spy_selected_request(operation_handler.get(),
+                                        &OperationActionHandler::MakeJobSelectedRequest);
+
+  // job_item will be reported as selected
+  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
+  ON_CALL(m_mock_job_manager, SubmitJob(::testing::_))
+      .WillByDefault(::testing::Throw(RuntimeException("Submit failure")));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(&job_item));
+
+  EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
+
+  EXPECT_EQ(spy_selected_request.count(), 0);
+  EXPECT_EQ(job_item.GetStatus(), std::string("abc"));
 }
 
 }  // namespace sequencergui
