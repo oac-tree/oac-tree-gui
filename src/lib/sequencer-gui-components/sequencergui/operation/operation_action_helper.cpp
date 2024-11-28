@@ -28,11 +28,11 @@
 namespace sequencergui
 {
 
-std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)> CreateJobHandlerFactoryFunc(
+std::function<std::unique_ptr<IJobHandler>(JobItem&)> CreateJobHandlerFactoryFunc(
     const UserContext& user_context, IRemoteConnectionService& service)
 {
   auto result = [/*copy*/user_context,
-                 &service](JobItem& item) -> std::unique_ptr<AbstractJobHandler>
+                 &service](JobItem& item) -> std::unique_ptr<IJobHandler>
   {
     // local and imported JobItems' are handled by the same LocalJobHandler
     if (item.GetType() == LocalJobItem::Type || item.GetType() == ImportedJobItem::Type)

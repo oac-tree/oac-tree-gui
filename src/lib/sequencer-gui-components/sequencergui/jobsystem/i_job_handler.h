@@ -95,6 +95,11 @@ public:
    * @brief Returns job item served by this handler.
    */
   virtual JobItem* GetJobItem() = 0;
+
+  /**
+   * @brief Returns expanded ProcedureItem.
+   */
+  virtual ProcedureItem* GetExpandedProcedure() const = 0;
 };
 
 }  // namespace sequencergui

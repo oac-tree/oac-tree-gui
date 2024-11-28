@@ -45,14 +45,14 @@ class JobManager : public QObject, public IJobItemManager
   Q_OBJECT
 
 public:
-  using create_handler_func_t = std::function<std::unique_ptr<AbstractJobHandler>(JobItem&)>;
+  using create_handler_func_t = std::function<std::unique_ptr<IJobHandler>(JobItem&)>;
 
   explicit JobManager(create_handler_func_t create_handler_func, QObject* parent = nullptr);
   ~JobManager() override;
 
   void SubmitJob(JobItem* job) override;
 
-  AbstractJobHandler* GetJobHandler(JobItem* job) override;
+  IJobHandler* GetJobHandler(JobItem* job) override;
 
   void Start(JobItem* item) override;
 
@@ -79,7 +79,7 @@ private:
   /**
    * @brief Inserts job handler into the job map.
    */
-  void InsertJobHandler(std::unique_ptr<AbstractJobHandler> job_handler);
+  void InsertJobHandler(std::unique_ptr<IJobHandler> job_handler);
 
   /**
    * @brief Process "Next Leaves" events from all job handlers, forwards active job notifications
@@ -87,7 +87,7 @@ private:
    */
   void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
-  std::map<JobItem*, std::unique_ptr<AbstractJobHandler>> m_job_map;
+  std::map<JobItem*, std::unique_ptr<IJobHandler>> m_job_map;
   JobItem* m_active_job{nullptr};  //!< job which is allowed to send signals up
   create_handler_func_t m_create_handler_func;
 };

@@ -51,7 +51,7 @@ void JobManager::SubmitJob(JobItem *job)
   InsertJobHandler(m_create_handler_func(*job));
 }
 
-AbstractJobHandler *JobManager::GetJobHandler(JobItem *job)
+IJobHandler *JobManager::GetJobHandler(JobItem *job)
 {
   auto iter = m_job_map.find(job);
   return iter == m_job_map.end() ? nullptr : iter->second.get();
@@ -139,7 +139,7 @@ void JobManager::Reset(JobItem *item)
   }
 }
 
-void JobManager::InsertJobHandler(std::unique_ptr<AbstractJobHandler> job_handler)
+void JobManager::InsertJobHandler(std::unique_ptr<IJobHandler> job_handler)
 {
   auto job_item = job_handler->GetJobItem();
 
@@ -148,8 +148,11 @@ void JobManager::InsertJobHandler(std::unique_ptr<AbstractJobHandler> job_handle
     throw RuntimeException("Attempt to submit already existing job");
   }
 
-  connect(job_handler.get(), &AbstractJobHandler::NextLeavesChanged, this,
-          &JobManager::OnNextLeavesChanged);
+  if (auto abstract_handler = dynamic_cast<AbstractJobHandler *>(job_handler.get()))
+  {
+    connect(abstract_handler, &AbstractJobHandler::NextLeavesChanged, this,
+            &JobManager::OnNextLeavesChanged);
+  }
 
   m_job_map.insert({job_item, std::move(job_handler)});
 }

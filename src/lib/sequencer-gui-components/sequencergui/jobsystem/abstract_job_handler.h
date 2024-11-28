@@ -76,10 +76,7 @@ public:
 
   JobItem* GetJobItem() override;
 
-  /**
-   * @brief Returns expanded ProcedureItem.
-   */
-  ProcedureItem* GetExpandedProcedure() const;
+  ProcedureItem* GetExpandedProcedure() const override;
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);

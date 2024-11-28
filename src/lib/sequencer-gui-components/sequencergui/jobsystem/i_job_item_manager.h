@@ -24,7 +24,7 @@ namespace sequencergui
 {
 
 class JobItem;
-class AbstractJobHandler;
+class IJobHandler;
 
 /**
  * @brief The AbstractJobItemManager class is a base to manage the execution of sequencer jobs.
@@ -51,7 +51,7 @@ public:
   /**
    * @brief Returns job handler for a given job.
    */
-  virtual AbstractJobHandler* GetJobHandler(JobItem* job) = 0;
+  virtual IJobHandler* GetJobHandler(JobItem* job) = 0;
 
   /**
    * @brief Start job.
