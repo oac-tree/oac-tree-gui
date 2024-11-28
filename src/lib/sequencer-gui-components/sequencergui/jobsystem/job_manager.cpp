@@ -23,12 +23,25 @@
 #include <sequencergui/jobsystem/local_job_handler.h>
 #include <sequencergui/model/instruction_item.h>
 
+#include <mvvm/utils/container_utils.h>
+
 #include <sup/dto/anyvalue.h>
 
 #include <algorithm>
 
 namespace sequencergui
 {
+
+/**
+ * @brief Checks if domain reset is required.
+ */
+bool IsResetRequired(RunnerStatus runner_status)
+{
+  static const std::vector<RunnerStatus> kStatesRequiringReset = {
+      RunnerStatus::kSucceeded, RunnerStatus::kFailed, RunnerStatus::kHalted};
+
+  return mvvm::utils::Contains(kStatesRequiringReset, runner_status);
+}
 
 JobManager::JobManager(create_handler_func_t create_handler_func, QObject *parent)
     : QObject(parent), m_create_handler_func(std::move(create_handler_func))
@@ -61,7 +74,10 @@ void JobManager::Start(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
-    Reset(item);
+    if (IsResetRequired(job_handler->GetRunnerStatus()))
+    {
+      Reset(item);
+    }
     job_handler->Start();
   }
 }
@@ -86,7 +102,7 @@ void JobManager::Step(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
-    if (!job_handler->IsRunning())
+    if (IsResetRequired(job_handler->GetRunnerStatus()))
     {
       Reset(item);
     }

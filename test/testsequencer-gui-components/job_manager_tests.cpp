@@ -53,8 +53,8 @@ public:
   testutils::MockJobHandlerListener m_mock_job_handler_listener;
 };
 
-//! Step for not-running job should call job reset before.
-TEST_F(JobManagerTest, StepFinishedJob)
+//! Checking Start method, and Reset method call.
+TEST_F(JobManagerTest, StartJob)
 {
   LocalJobItem job_item;
 
@@ -64,42 +64,58 @@ TEST_F(JobManagerTest, StepFinishedJob)
   auto handler = manager->GetJobHandler(&job_item);
   ASSERT_NE(handler, nullptr);
 
-  // letd job handler report that it is not running
-  ON_CALL(m_mock_job_handler_listener, IsRunning(::testing::_))
-      .WillByDefault(::testing::Return(false));
+  ON_CALL(m_mock_job_handler_listener, GetRunnerStatus(::testing::_))
+      .WillByDefault(::testing::Return(RunnerStatus::kInitial));
 
   {
     const ::testing::InSequence seq;
-    EXPECT_CALL(m_mock_job_handler_listener, IsRunning(handler));
+    EXPECT_CALL(m_mock_job_handler_listener, GetRunnerStatus(handler));
+    EXPECT_CALL(m_mock_job_handler_listener, Start(handler));
+  }
+  manager->Start(&job_item);
+
+  ON_CALL(m_mock_job_handler_listener, GetRunnerStatus(::testing::_))
+      .WillByDefault(::testing::Return(RunnerStatus::kHalted));
+
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(m_mock_job_handler_listener, GetRunnerStatus(handler));
+    EXPECT_CALL(m_mock_job_handler_listener, Reset(handler));
+    EXPECT_CALL(m_mock_job_handler_listener, Start(handler));
+  }
+  manager->Start(&job_item);
+}
+
+//! Checking Step method, and Reset method call.
+TEST_F(JobManagerTest, StepJob)
+{
+  LocalJobItem job_item;
+
+  auto manager = CreateJobManager();
+
+  manager->SubmitJob(&job_item);
+  auto handler = manager->GetJobHandler(&job_item);
+  ASSERT_NE(handler, nullptr);
+
+  ON_CALL(m_mock_job_handler_listener, GetRunnerStatus(::testing::_))
+      .WillByDefault(::testing::Return(RunnerStatus::kPaused));
+
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(m_mock_job_handler_listener, GetRunnerStatus(handler));
+    EXPECT_CALL(m_mock_job_handler_listener, Step(handler));
+  }
+  manager->Step(&job_item);
+
+  ON_CALL(m_mock_job_handler_listener, GetRunnerStatus(::testing::_))
+      .WillByDefault(::testing::Return(RunnerStatus::kSucceeded));
+
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(m_mock_job_handler_listener, GetRunnerStatus(handler));
     EXPECT_CALL(m_mock_job_handler_listener, Reset(handler));
     EXPECT_CALL(m_mock_job_handler_listener, Step(handler));
   }
-
   manager->Step(&job_item);
 }
-
-//! Step for running job should be simply forwarded.
-TEST_F(JobManagerTest, StepRunningJob)
-{
-  LocalJobItem job_item;
-
-  auto manager = CreateJobManager();
-
-  manager->SubmitJob(&job_item);
-  auto handler = manager->GetJobHandler(&job_item);
-  ASSERT_NE(handler, nullptr);
-
-  // letd job handler report that it is running
-  ON_CALL(m_mock_job_handler_listener, IsRunning(::testing::_))
-      .WillByDefault(::testing::Return(true));
-
-  {
-    const ::testing::InSequence seq;
-    EXPECT_CALL(m_mock_job_handler_listener, IsRunning(handler));
-    EXPECT_CALL(m_mock_job_handler_listener, Step(handler));
-  }
-
-  manager->Step(&job_item);
-}
-
 }  // namespace sequencergui
