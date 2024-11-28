@@ -86,7 +86,10 @@ void JobManager::Step(JobItem *item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
-    Reset(item);
+    if (!job_handler->IsRunning())
+    {
+      Reset(item);
+    }
     job_handler->Step();
   }
 }

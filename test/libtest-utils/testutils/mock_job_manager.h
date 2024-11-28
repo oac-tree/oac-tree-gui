@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 class JobItem;
-class AbstractJobHandler;
+class IJobHandler;
 }  // namespace sequencergui
 
 namespace testutils
@@ -42,7 +42,7 @@ class MockJobManager : public sequencergui::IJobItemManager
 public:
   MOCK_METHOD(void, SubmitJob, (sequencergui::JobItem*), (override));
 
-  MOCK_METHOD(sequencergui::AbstractJobHandler*, GetJobHandler, (sequencergui::JobItem*),
+  MOCK_METHOD(sequencergui::IJobHandler*, GetJobHandler, (sequencergui::JobItem*),
               (override));
 
   MOCK_METHOD(void, Start, (sequencergui::JobItem*), (override));
