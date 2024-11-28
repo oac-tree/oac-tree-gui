@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Procedure name="Simple procedure to test increment on the remote server">
-  <Repeat maxCount="-1">
+  <Repeat maxCount="3">
     <Sequence>
       <Output fromVar="var0" description="Variable is"/>
       <Increment varName="var0"/>
@@ -9,6 +9,6 @@
     </Sequence>
   </Repeat>
   <Workspace>
-    <Local name="var0" type='{"type":"int32"}' value="0"/>
+    <Local name="var0" type='{"type":"int32"}' value="42"/>
   </Workspace>
 </Procedure>

@@ -31,6 +31,7 @@
 #include <sup/sequencer/instruction.h>
 
 #include <cmath>
+#include <iostream>
 #include <sstream>
 #include <thread>
 
@@ -38,7 +39,7 @@ namespace sequencergui
 {
 
 DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
-                                                     const UserContext &user_context)
+                                     const UserContext &user_context)
     : m_post_event_callback(std::move(post_event_callback))
 {
   if (!m_post_event_callback)
@@ -65,14 +66,18 @@ void DomainJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 }
 
 void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
-                                                        sup::sequencer::InstructionState state)
+                                                sup::sequencer::InstructionState state)
 {
+  std::cout << "DomainJobObserver::InstructionStateUpdated " << instr_idx << "\n";
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 }
 
-void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx,
-                                                const sup::dto::AnyValue &value, bool connected)
+void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue &value,
+                                        bool connected)
 {
+  std::cout << "DomainJobObserver::VariableUpdated " << var_idx
+            << " value: " << sup::gui::AnyValueToJSONString(value) << " connected:" << connected
+            << "\n";
   m_post_event_callback(VariableUpdatedEvent{var_idx, value, connected});
 }
 
@@ -86,8 +91,7 @@ void DomainJobObserver::JobStateUpdated(sup::sequencer::JobState state)
   m_cv.notify_one();
 }
 
-void DomainJobObserver::PutValue(const sup::dto::AnyValue &value,
-                                         const std::string &description)
+void DomainJobObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
 {
   auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
@@ -96,9 +100,9 @@ void DomainJobObserver::PutValue(const sup::dto::AnyValue &value,
 }
 
 bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue &value,
-                                             const std::string &description)
+                                     const std::string &description)
 {
-  (void)id; // TODO send this id to the GUI
+  (void)id;  // TODO send this id to the GUI
 
   if (m_input_provider)
   {
@@ -114,7 +118,7 @@ bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue &va
 int DomainJobObserver::GetUserChoice(sup::dto::uint64 id, const std::vector<std::string> &options,
                                      const sup::dto::AnyValue &metadata)
 {
-  (void)id; // TODO send this id to the GUI
+  (void)id;  // TODO send this id to the GUI
 
   if (m_choice_provider)
   {
@@ -143,8 +147,7 @@ void DomainJobObserver::Log(int severity, const std::string &message)
   m_post_event_callback(CreateLogEvent(static_cast<Severity>(severity), message));
 }
 
-void DomainJobObserver::NextInstructionsUpdated(
-    const std::vector<sup::dto::uint32> &instr_indices)
+void DomainJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint32> &instr_indices)
 {
   std::unique_lock<std::mutex> lock{m_mutex};
 

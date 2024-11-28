@@ -143,7 +143,7 @@ const sup::sequencer::JobInfo &AbstractDomainRunner::GetJobInfo() const
   return m_domain_job->GetInfo();
 }
 
-void AbstractDomainRunner::SetJob(std::unique_ptr<sup::sequencer::IJob> job)
+void AbstractDomainRunner::SetDomainJob(std::unique_ptr<sup::sequencer::IJob> job)
 {
   m_domain_job = std::move(job);
 }

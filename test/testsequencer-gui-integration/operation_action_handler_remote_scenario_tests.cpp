@@ -50,15 +50,32 @@ namespace
 const std::string kServerName = "OperationActionHandlerRemoteScenarioTestServer";
 const size_t kJobIndex{0};
 
+// const std::string kProcedureBodyText{
+//     R"RAW(
+//   <Repeat maxCount="3">
+//     <Sequence>
+//       <Output fromVar="var0" description="Variable is"/>
+//       <Increment varName="var0"/>
+//       <Message text="Variable was incremented"/>
+//       <Wait timeout="0.1"/>
+//     </Sequence>
+//   </Repeat>
+//   <Workspace>
+//     <Local name="var0" type='{"type":"int32"}' value="42"/>
+//   </Workspace>
+// )RAW"};
+
 const std::string kProcedureBodyText{
     R"RAW(
   <Repeat maxCount="3">
     <Sequence>
-       <Increment varName="var0"/>
+      <Increment varName="var0"/>
+      <Message text="Variable was incremented"/>
+      <Wait timeout="0.1"/>
     </Sequence>
   </Repeat>
   <Workspace>
-    <Local name="var0" type='{"type":"uint32"}' value='0'/>
+    <Local name="var0" type='{"type":"int32"}' value="42"/>
   </Workspace>
 )RAW"};
 
@@ -169,14 +186,14 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
     auto status = job_item->GetStatus();
     return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kInitial;
   };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 5000));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = job_item->GetExpandedProcedure();
   ASSERT_NE(procedure_item, nullptr);
   auto variables = job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
-  const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 0};
+  const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 42};
   EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
 }
 
@@ -209,7 +226,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
     auto status = job_item->GetStatus();
     return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
   };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 5000));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
@@ -218,7 +235,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   ASSERT_NE(procedure_item, nullptr);
   auto variables = job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
-  const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 3};
+  const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 45};
   EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
 }
 

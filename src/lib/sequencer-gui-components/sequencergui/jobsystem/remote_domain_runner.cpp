@@ -36,7 +36,7 @@ RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_c
   auto remote_job = sup::auto_server::CreateClientJob(
       manager, job_index, sup::auto_server::utils::CreateEPICSIOClient, *GetJobInfoIO());
 
-  SetJob(std::move(remote_job));
+  SetDomainJob(std::move(remote_job));
 }
 
 }  // namespace sequencergui

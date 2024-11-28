@@ -26,6 +26,7 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/transform/anyvalue_item_transform_helper.h>
 #include <sequencergui/transform/procedure_item_job_info_builder.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/sequencer/workspace.h>
 
@@ -48,6 +49,10 @@ void RemoteJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
 {
   if (auto item = GetItemBuilder()->GetVariable(event.index); item)
   {
+    std::cout << "RemoteJobHandler::OnVariableUpdatedEvent " << event.index
+              << " value: " << sup::gui::AnyValueToJSONString(event.value)
+              << " connected:" << event.connected << "\n";
+
     if (event.connected && sup::dto::IsEmptyValue(event.value) && !item->IsAvailable())
     {
       item->SetIsAvailable(event.connected);

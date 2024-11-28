@@ -131,7 +131,7 @@ public:
   /**
    * @brief Sets sequencer Job to execute.
    */
-  void SetJob(std::unique_ptr<sup::sequencer::IJob> job);
+  void SetDomainJob(std::unique_ptr<sup::sequencer::IJob> job);
 
 private:
   void ValidateJob() const;
