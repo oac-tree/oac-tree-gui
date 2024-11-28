@@ -50,12 +50,12 @@ using namespace sequencergui;
 using msec = std::chrono::milliseconds;
 
 /**
- * @brief Tests for JobManager class.
+ * @brief Tests for JobManager class by running actual sequencer procedures.
  */
-class JobManagerTest : public ::testing::Test
+class JobManagerExtendedTest : public ::testing::Test
 {
 public:
-  JobManagerTest()
+  JobManagerExtendedTest()
   {
     m_models.CreateEmpty();
     m_job_item = m_models.GetJobModel()->InsertItem<LocalJobItem>();
@@ -78,14 +78,14 @@ public:
   UserContext m_user_context;
 };
 
-TEST_F(JobManagerTest, InitialState)
+TEST_F(JobManagerExtendedTest, InitialState)
 {
   JobManager manager(GetContext());
   EXPECT_EQ(manager.GetJobHandler(m_job_item), nullptr);
   EXPECT_FALSE(manager.HasRunningJobs());
 }
 
-TEST_F(JobManagerTest, SubmitProcedure)
+TEST_F(JobManagerExtendedTest, SubmitProcedure)
 {
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
@@ -100,7 +100,7 @@ TEST_F(JobManagerTest, SubmitProcedure)
             m_job_item->GetExpandedProcedure());
 }
 
-TEST_F(JobManagerTest, AttemptToSubmitProcedure)
+TEST_F(JobManagerExtendedTest, AttemptToSubmitProcedure)
 {
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
@@ -117,7 +117,7 @@ TEST_F(JobManagerTest, AttemptToSubmitProcedure)
 }
 
 //! Attempt to submit wrongly configured procedure.
-TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
+TEST_F(JobManagerExtendedTest, AttemptToSubmitMalformedProcedure)
 {
   auto invalid_procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(invalid_procedure);
@@ -128,7 +128,7 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 }
 
 //! Set first procedure to the JobManager and execute it.
-TEST_F(JobManagerTest, SetCurrentJobAndExecute)
+TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
 {
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
@@ -175,7 +175,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 }
 
 //! Removing submitted job.
-TEST_F(JobManagerTest, OnRemoveJobRequest)
+TEST_F(JobManagerExtendedTest, OnRemoveJobRequest)
 {
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
@@ -195,8 +195,7 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
 }
 
 //! Attempt to remove long running job.
-
-TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
+TEST_F(JobManagerExtendedTest, AttemptToRemoveLongRunningJob)
 {
   auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
@@ -225,7 +224,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 }
 
 //! Long running job removal.
-TEST_F(JobManagerTest, StopAllJobs)
+TEST_F(JobManagerExtendedTest, StopAllJobs)
 {
   auto procedure0 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
   auto procedure1 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
