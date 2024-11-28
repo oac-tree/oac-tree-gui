@@ -40,22 +40,23 @@ namespace testutils
 class MockJobManager : public sequencergui::IJobItemManager
 {
 public:
-  MOCK_METHOD(void, SubmitJob, (sequencergui::JobItem*), (override));
+  MOCK_METHOD(size_t, GetJobCount, (), (const, override));
+  MOCK_METHOD(std::vector<sequencergui::JobItem *>, GetJobItems, (), (const, override));
+  MOCK_METHOD(void, SubmitJob, (sequencergui::JobItem *), (override));
 
-  MOCK_METHOD(sequencergui::IJobHandler*, GetJobHandler, (sequencergui::JobItem*),
-              (override));
+  MOCK_METHOD(sequencergui::IJobHandler *, GetJobHandler, (sequencergui::JobItem *), (override));
 
-  MOCK_METHOD(void, Start, (sequencergui::JobItem*), (override));
-  MOCK_METHOD(void, Pause, (sequencergui::JobItem*), (override));
-  MOCK_METHOD(void, Stop, (sequencergui::JobItem*), (override));
-  MOCK_METHOD(void, Step, (sequencergui::JobItem*), (override));
-  MOCK_METHOD(void, Reset, (sequencergui::JobItem*), (override));
+  MOCK_METHOD(void, Start, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(void, Pause, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(void, Stop, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(void, Step, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(void, Reset, (sequencergui::JobItem *), (override));
 
-  MOCK_METHOD(void, RemoveJobHandler, (sequencergui::JobItem*), (override));
+  MOCK_METHOD(void, RemoveJobHandler, (sequencergui::JobItem *), (override));
   MOCK_METHOD(bool, HasRunningJobs, (), (const, override));
   MOCK_METHOD(void, StopAllJobs, (), (override));
 
-  MOCK_METHOD(void, SetActiveJob, (sequencergui::JobItem*), (override));
+  MOCK_METHOD(void, SetActiveJob, (sequencergui::JobItem *), (override));
 };
 
 }  // namespace testutils

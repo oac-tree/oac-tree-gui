@@ -50,6 +50,10 @@ public:
   explicit JobManager(create_handler_func_t create_handler_func, QObject* parent = nullptr);
   ~JobManager() override;
 
+  size_t GetJobCount() const override;
+
+  std::vector<JobItem*> GetJobItems() const override;
+
   void SubmitJob(JobItem* job) override;
 
   IJobHandler* GetJobHandler(JobItem* job) override;

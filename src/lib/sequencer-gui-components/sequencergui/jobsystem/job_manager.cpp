@@ -52,6 +52,19 @@ JobManager::JobManager(create_handler_func_t create_handler_func, QObject *paren
   }
 }
 
+size_t JobManager::GetJobCount() const
+{
+  return m_job_map.size();
+}
+
+std::vector<JobItem *> JobManager::GetJobItems() const
+{
+  std::vector<JobItem *> result;
+  auto on_element = [](const auto &element) { return element.first; };
+  std::transform(m_job_map.begin(), m_job_map.end(), std::back_inserter(result), on_element);
+  return result;
+}
+
 JobManager::~JobManager() = default;
 
 void JobManager::SubmitJob(JobItem *job)

@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
 #define SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
 
+#include <vector>
+
 namespace sequencergui
 {
 
@@ -39,6 +41,16 @@ class IJobItemManager
 {
 public:
   virtual ~IJobItemManager() = default;
+
+  /**
+   * @brief Returns number of submitted jobs.
+   */
+  virtual size_t GetJobCount() const = 0;
+
+  /**
+   * @brief Returns list of conrtolled job items.
+   */
+  virtual std::vector<JobItem*> GetJobItems() const = 0;
 
   /**
    * @brief Submits job for execution.

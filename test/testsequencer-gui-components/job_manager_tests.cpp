@@ -20,7 +20,7 @@
 #include "sequencergui/jobsystem/job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/abstract_job_handler.h>
+#include <sequencergui/jobsystem/i_job_handler.h>
 #include <sequencergui/model/standard_job_items.h>
 
 #include <gtest/gtest.h>
@@ -52,6 +52,25 @@ public:
 
   testutils::MockJobHandlerListener m_mock_job_handler_listener;
 };
+
+//! Checking Start method, and Reset method call.
+TEST_F(JobManagerTest, InitialState)
+{
+  LocalJobItem job_item1;
+
+  auto manager = CreateJobManager();
+  EXPECT_EQ(manager->GetJobCount(), 0);
+  EXPECT_TRUE(manager->GetJobItems().empty());
+
+  manager->SubmitJob(&job_item1);
+  EXPECT_EQ(manager->GetJobCount(), 1);
+  EXPECT_EQ(manager->GetJobItems(), std::vector<JobItem*>({&job_item1}));
+
+  ImportedJobItem job_item2;
+  manager->SubmitJob(&job_item2);
+  EXPECT_EQ(manager->GetJobCount(), 2);
+  EXPECT_EQ(manager->GetJobItems(), std::vector<JobItem*>({&job_item1, &job_item2}));
+}
 
 //! Checking Start method, and Reset method call.
 TEST_F(JobManagerTest, StartJob)
