@@ -58,7 +58,7 @@ public:
 
 TEST_F(OperationActionHelperTest, CreateJobHandlerForUnknownJob)
 {
-  auto create_func = CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  auto create_func = GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   UnknownJobItem job_item;
   EXPECT_THROW(create_func(job_item), RuntimeException);
 }
@@ -72,7 +72,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForLocalJob)
   m_model.InsertItem(std::move(procedure), m_model.GetRootItem(), mvvm::TagIndex::Append());
   m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());
 
-  auto create_func = CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  auto create_func = GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   auto job_handler = create_func(*job_item_ptr);
   ASSERT_NE(dynamic_cast<LocalJobHandler*>(job_handler.get()), nullptr);
 }
@@ -86,7 +86,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForImportedJob)
   m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());
 
   // imported job is handled by the same LocalJobHandler
-  auto create_func = CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  auto create_func = GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   auto job_handler = create_func(*job_item_ptr);
   ASSERT_NE(dynamic_cast<LocalJobHandler*>(job_handler.get()), nullptr);
 }
@@ -104,7 +104,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForRemoteJob)
 
   EXPECT_CALL(m_mock_connection_service, CreateJobHandler(job_item_ptr, ::testing::_)).Times(1);
 
-  auto create_func = CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  auto create_func = GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   auto job_handler = create_func(*job_item_ptr);
 }
 

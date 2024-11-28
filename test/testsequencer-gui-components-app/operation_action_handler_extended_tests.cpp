@@ -56,18 +56,11 @@ using msec = std::chrono::milliseconds;
 class OperationActionHandlerExtendedTest : public ::testing::Test
 {
 public:
-  OperationActionHandlerExtendedTest() : m_job_manager(CreateJobManagerContext())
+  OperationActionHandlerExtendedTest()
+      : m_job_manager(GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service))
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
-  }
-
-  /**
-   * @brief Creates context necessary for JobManager to funciton.
-   */
-  JobManager::create_handler_func_t CreateJobManagerContext()
-  {
-    return CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   }
 
   /**
@@ -158,7 +151,7 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToSubmitMalformedProcedure)
 {
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
-  const JobManager manager(CreateJobManagerContext());
+  const JobManager manager(GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service));
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);

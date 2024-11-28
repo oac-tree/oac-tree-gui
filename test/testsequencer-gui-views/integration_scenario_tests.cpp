@@ -69,7 +69,7 @@ public:
    */
   JobManager::create_handler_func_t CreateJobManagerContext()
   {
-    return CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+    return GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   }
 
 

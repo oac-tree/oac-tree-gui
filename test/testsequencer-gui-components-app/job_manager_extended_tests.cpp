@@ -66,7 +66,7 @@ public:
    */
   JobManager::create_handler_func_t GetContext()
   {
-    return CreateJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+    return GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   }
 
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }

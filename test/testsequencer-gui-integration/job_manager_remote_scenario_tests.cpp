@@ -64,7 +64,7 @@ const std::string kProcedureBodyText{
 class JobManagerRemoteScenarioTest : public ::testing::Test
 {
 public:
-  JobManagerRemoteScenarioTest() : m_remote_connection_service(CreateAutomationClientFunc())
+  JobManagerRemoteScenarioTest() : m_remote_connection_service(GetAutomationClientFactoryFunc())
   {
     // creating remote job item
     const size_t job_index{0};
@@ -85,7 +85,7 @@ public:
    *
    * This function is used to setup RemoteConnectionService.
    */
-  static RemoteConnectionService::create_client_t CreateAutomationClientFunc()
+  static RemoteConnectionService::create_client_t GetAutomationClientFactoryFunc()
   {
     auto result = [](const std::string& name) { return std::make_unique<AutomationClient>(name); };
     return result;
@@ -97,7 +97,7 @@ public:
   std::unique_ptr<JobManager> CreateJobManager()
   {
     return std::make_unique<JobManager>(
-        CreateJobHandlerFactoryFunc(m_user_context, m_remote_connection_service));
+        GetJobHandlerFactoryFunc(m_user_context, m_remote_connection_service));
   }
 
   RemoteConnectionService m_remote_connection_service;

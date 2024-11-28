@@ -42,14 +42,14 @@ struct UserContext;
  * JobItem can be one of: local, imported, or remote.
  *
  * Usage:
- * auto factory_func = CreateJobHandlerFactoryFunc(context, service);
+ * auto factory_func = GetJobHandlerFactoryFunc(context, service);
  * handler = factory_func(job_item);
  *
  * @param user_context The user interaction context, which will be used to create
  * AnstractJobHandler.
  * @param service Remote connection service used to create remote job handler.
  */
-std::function<std::unique_ptr<IJobHandler>(JobItem&)> CreateJobHandlerFactoryFunc(
+std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
     const UserContext& user_context, IRemoteConnectionService& service);
 
 }  // namespace sequencergui

@@ -28,7 +28,7 @@
 namespace sequencergui
 {
 
-std::function<std::unique_ptr<IJobHandler>(JobItem&)> CreateJobHandlerFactoryFunc(
+std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
     const UserContext& user_context, IRemoteConnectionService& service)
 {
   auto result = [user_context_copy = user_context,
