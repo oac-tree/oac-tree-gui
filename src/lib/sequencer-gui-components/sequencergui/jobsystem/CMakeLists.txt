@@ -18,6 +18,7 @@ target_sources(${library_name} PRIVATE
   domain_job_service.cpp
   domain_job_service.h
   i_automation_client.h
+  i_job_handler.h
   i_job_item_manager.h
   i_remote_connection_service.h
   job_log.cpp

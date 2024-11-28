@@ -22,7 +22,7 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/domain_events.h>
-#include <sequencergui/jobsystem/runner_status.h>
+#include <sequencergui/jobsystem/i_job_handler.h>
 #include <sequencergui/operation/breakpoint_types.h>
 
 #include <QObject>
@@ -31,10 +31,6 @@
 namespace sequencergui
 {
 
-class ProcedureItem;
-class JobLog;
-class JobItem;
-class InstructionItem;
 class ProcedureItemJobInfoBuilder;
 class LogEvent;
 class BreakpointController;
@@ -42,7 +38,8 @@ class AbstractDomainRunner;
 struct DomainEventDispatcherContext;
 
 /**
- * @brief The AbstractJobHandler class is a base class to run a job represented by the JobItem.
+ * @brief The AbstractJobHandler class is an abstract class that partially implements functionality
+ * to run a job represented by the JobItem.
  *
  * Depending on the implementation, it can run jobs either localy, or remotely. The class is used by
  * the JobManager, where each JobItem is handled by its own JobHandler. JobHandler is responsible
@@ -51,7 +48,7 @@ struct DomainEventDispatcherContext;
  * - handling start/stop/pause/step requests
  * - listening for all sequencer domain events and updating the GUI items accordingly
  */
-class AbstractJobHandler : public QObject
+class AbstractJobHandler : public QObject, public IJobHandler
 {
   Q_OBJECT
 
@@ -59,68 +56,30 @@ public:
   explicit AbstractJobHandler(JobItem* job_item);
   ~AbstractJobHandler() override;
 
-  /**
-   * @brief Run sequencer procedure in continuous manner, if allowed.
-   */
-  void Start();
+  void Start() override;
 
-  /**
-   * @brief Pause procedure's execution.
-   */
-  void Pause();
+  void Pause() override;
 
-  /**
-   * @brief Execute a single step of the procedure, if allowed.
-   */
-  void Step();
+  void Step() override;
 
-  /**
-   * @brief Stops the procedure execution.
-   */
-  void Stop();
+  void Stop() override;
 
-  /**
-   * @brief Reset not-running procedure to initial state.
-   *
-   * Call domains' AsyncRunner::Reset
-   */
-  void Reset();
+  void Reset() override;
 
-  /**
-   * @brief Checks if the job is running, which is one of pause/stepping/running states.
-   */
-  bool IsRunning() const;
+  bool IsRunning() const override;
+
+  RunnerStatus GetRunnerStatus() const override;
+
+  JobLog* GetJobLog() const override;
+
+  void OnToggleBreakpointRequest(sequencergui::InstructionItem* instruction) override;
+
+  JobItem* GetJobItem() override;
 
   /**
    * @brief Returns expanded ProcedureItem.
    */
   ProcedureItem* GetExpandedProcedure() const;
-
-  /**
-   * @brief Returns runner status.
-   */
-  RunnerStatus GetRunnerStatus() const;
-
-  /**
-   * @brief Returns a job log.
-   */
-  JobLog* GetJobLog() const;
-
-  /**
-   * @brief Set/unset a breakpoint for given instruction.
-   *
-   * It is used to handle double-clicks in a tree of instructions belonging to ExpandedProcedure
-   * item. Each double-click will toggle breakpoint status in a circle set/disabled/not-set.
-   *
-   * @param instruction Instruction item from expanded procedure tree.
-   *
-   */
-  void OnToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
-
-  /**
-   * @brief Returns job item served by this handler.
-   */
-  JobItem* GetJobItem();
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);

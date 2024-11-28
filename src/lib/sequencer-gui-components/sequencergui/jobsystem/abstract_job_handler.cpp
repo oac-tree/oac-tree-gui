@@ -92,11 +92,6 @@ bool AbstractJobHandler::IsRunning() const
   return m_domain_runner->IsBusy();
 }
 
-ProcedureItem *AbstractJobHandler::GetExpandedProcedure() const
-{
-  return m_job_item->GetExpandedProcedure();
-}
-
 RunnerStatus AbstractJobHandler::GetRunnerStatus() const
 {
   return m_domain_runner ? static_cast<RunnerStatus>(m_domain_runner->GetJobState())
@@ -124,6 +119,11 @@ void AbstractJobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
 JobItem *AbstractJobHandler::GetJobItem()
 {
   return m_job_item;
+}
+
+ProcedureItem *AbstractJobHandler::GetExpandedProcedure() const
+{
+  return m_job_item->GetExpandedProcedure();
 }
 
 AbstractDomainRunner *AbstractJobHandler::GetDomainRunner()

@@ -62,7 +62,7 @@ public:
   }
 
   /**
-   * @brief Creates context necessary for JobManager to funciton.
+   * @brief Creates context necessary for JobManager to function.
    */
   JobManager::create_handler_func_t GetContext()
   {
