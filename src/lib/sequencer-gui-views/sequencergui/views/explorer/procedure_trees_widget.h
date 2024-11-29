@@ -34,18 +34,20 @@ class ItemViewComponentProvider;
 namespace sup::gui
 {
 class CustomHeaderView;
-class ItemStackWidget;
 }  // namespace sup::gui
 
 namespace sequencergui
 {
+
 class SequencerModel;
 class ProcedureItem;
 
-//! The panel with two trees in the middle of SequencerXMLView.
-//! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
-//! procedure's element.
-
+/**
+ * @brief The ProcedureTreesWidget class represents a panel with a top-item tree and properties to
+ * give a quick overview of the procedure.
+ *
+ * Hidden under XML panel of main SequencerExplorerView.
+ */
 class ProcedureTreesWidget : public QWidget
 {
   Q_OBJECT
@@ -59,8 +61,6 @@ public:
 private:
   void ReadSettings();
   void WriteSettings();
-
-  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 
   QTreeView* m_procedure_tree{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_procedure_tree_provider;

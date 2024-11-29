@@ -57,9 +57,9 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
   layout->setContentsMargins(4, 1, 4, 4);
 
   m_splitter->addWidget(m_explorer_panel);
-  m_splitter->addWidget(m_trees_widget);
 
   m_right_panel->AddWidget(m_xml_view);
+  m_right_panel->AddWidget(m_trees_widget);
   m_splitter->addWidget(m_right_panel);
 
   layout->addWidget(m_splitter);

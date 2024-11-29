@@ -20,10 +20,7 @@
 #include "procedure_trees_widget.h"
 
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/item_stack_widget.h>
-#include <sup/gui/widgets/panel_toolbar.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/providers/item_view_component_provider.h>
@@ -46,14 +43,15 @@ const QString kProcedureHeaderStateSettingName = kGroupName + "/" + "header_stat
 
 namespace sequencergui
 {
+
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     : QWidget(parent)
-    , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_procedure_tree(new QTreeView)
     , m_procedure_tree_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_procedure_tree))
     , m_procedure_custom_header(
           new sup::gui::CustomHeaderView(kProcedureHeaderStateSettingName, this))
     , m_property_tree(new mvvm::PropertyTreeView)
+    , m_splitter(new QSplitter)
 {
   setWindowTitle("Procedure View");
 
@@ -61,14 +59,12 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_splitter = new QSplitter;
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_procedure_tree);
   m_splitter->addWidget(m_property_tree);
 
   m_splitter->setWindowTitle("Procedure View");
-  m_stack_widget->AddWidget(m_splitter);
-  layout->addWidget(m_stack_widget);
+  layout->addWidget(m_splitter);
 
   m_procedure_tree->setHeader(m_procedure_custom_header);
   m_procedure_tree->setAlternatingRowColors(true);
