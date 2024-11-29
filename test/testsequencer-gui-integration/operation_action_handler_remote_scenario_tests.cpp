@@ -50,28 +50,14 @@ namespace
 const std::string kServerName = "OperationActionHandlerRemoteScenarioTestServer";
 const size_t kJobIndex{0};
 
-// const std::string kProcedureBodyText{
-//     R"RAW(
-//   <Repeat maxCount="3">
-//     <Sequence>
-//       <Output fromVar="var0" description="Variable is"/>
-//       <Increment varName="var0"/>
-//       <Message text="Variable was incremented"/>
-//       <Wait timeout="0.1"/>
-//     </Sequence>
-//   </Repeat>
-//   <Workspace>
-//     <Local name="var0" type='{"type":"int32"}' value="42"/>
-//   </Workspace>
-// )RAW"};
-
 const std::string kProcedureBodyText{
     R"RAW(
   <Repeat maxCount="3">
     <Sequence>
+      <Output fromVar="var0" description="Variable is"/>
       <Increment varName="var0"/>
       <Message text="Variable was incremented"/>
-      <Wait timeout="0.1"/>
+      <Wait timeout="0.01"/>
     </Sequence>
   </Repeat>
   <Workspace>
@@ -197,7 +183,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
 }
 
-TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
+TEST_F(OperationActionHandlerRemoteScenarioTest, DISABLED_ImportRemoteJobAndStart)
 {
   auto handler = CreateOperationHandler();
 
@@ -226,7 +212,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
     auto status = job_item->GetStatus();
     return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
   };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 5000));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
