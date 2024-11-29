@@ -31,8 +31,6 @@
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
 
-#include <iostream>
-
 namespace sequencergui
 {
 
@@ -120,7 +118,6 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
   }
 
   bool is_success{false};
-  std::cout << "OperationActionHandler::OnImportRemoteJobRequest() XXX 1.1 \n";
   if (auto user_choice = m_operation_context.get_remote_connection_info(); user_choice.has_value())
   {
     is_success = true;
@@ -128,9 +125,7 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
     for (auto index : user_choice_value.job_indexes)
     {
       // all should succeed
-      std::cout << "OperationActionHandler::OnImportRemoteJobRequest() XXX 1.2 \n";
       is_success &= SubmitJob(CreateRemoteJobItem(user_choice_value.server_name, index));
-      std::cout << "OperationActionHandler::OnImportRemoteJobRequest() XXX 1.3 \n";
     }
   }
 

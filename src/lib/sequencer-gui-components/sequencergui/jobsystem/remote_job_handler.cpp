@@ -29,7 +29,6 @@
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/sequencer/workspace.h>
-
 #include <iostream>
 
 namespace sequencergui
@@ -49,10 +48,6 @@ void RemoteJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
 {
   if (auto item = GetItemBuilder()->GetVariable(event.index); item)
   {
-    std::cout << "RemoteJobHandler::OnVariableUpdatedEvent " << event.index
-              << " value: " << sup::gui::AnyValueToJSONString(event.value)
-              << " connected:" << event.connected << "\n";
-
     if (event.connected && sup::dto::IsEmptyValue(event.value) && !item->IsAvailable())
     {
       item->SetIsAvailable(event.connected);

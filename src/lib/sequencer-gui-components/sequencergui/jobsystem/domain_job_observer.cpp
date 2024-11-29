@@ -31,7 +31,6 @@
 #include <sup/sequencer/instruction.h>
 
 #include <cmath>
-#include <iostream>
 #include <sstream>
 #include <thread>
 
@@ -68,16 +67,12 @@ void DomainJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                 sup::sequencer::InstructionState state)
 {
-  std::cout << "DomainJobObserver::InstructionStateUpdated " << instr_idx << "\n";
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 }
 
 void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue &value,
                                         bool connected)
 {
-  std::cout << "DomainJobObserver::VariableUpdated " << var_idx
-            << " value: " << sup::gui::AnyValueToJSONString(value) << " connected:" << connected
-            << "\n";
   m_post_event_callback(VariableUpdatedEvent{var_idx, value, connected});
 }
 
@@ -95,7 +90,6 @@ void DomainJobObserver::PutValue(const sup::dto::AnyValue &value, const std::str
 {
   auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
-  ostr << description << " " << value_string;
   m_post_event_callback(CreateLogEvent(Severity::kInfo, ostr.str()));
 }
 

@@ -146,6 +146,8 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
   // submit job
+  EXPECT_CALL(m_mock_context, OnGetRemoteConnectionInfo());
+  EXPECT_CALL(m_mock_context, OnSelectedJob());
   handler->OnImportRemoteJobRequest();
 
   // validating job model
@@ -183,7 +185,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
 }
 
-TEST_F(OperationActionHandlerRemoteScenarioTest, DISABLED_ImportRemoteJobAndStart)
+TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 {
   auto handler = CreateOperationHandler();
 
@@ -194,6 +196,8 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, DISABLED_ImportRemoteJobAndStar
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
   // submit job
+  EXPECT_CALL(m_mock_context, OnGetRemoteConnectionInfo());
+  EXPECT_CALL(m_mock_context, OnSelectedJob());
   handler->OnImportRemoteJobRequest();
 
   // validating job model
@@ -204,6 +208,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, DISABLED_ImportRemoteJobAndStar
   // making item selected
   ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
+  EXPECT_CALL(m_mock_context, OnSelectedJob());
   handler->OnStartJobRequest();
 
   // after queued connection processed all event, JobItem should get its status
@@ -212,7 +217,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, DISABLED_ImportRemoteJobAndStar
     auto status = job_item->GetStatus();
     return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
   };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 200));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
