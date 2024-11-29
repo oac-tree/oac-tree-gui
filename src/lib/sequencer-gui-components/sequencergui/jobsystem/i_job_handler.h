@@ -31,7 +31,7 @@ class JobLog;
 class JobItem;
 
 /**
- * @brief TheIJobHandler class is a an inetrface to run a job represented by the JobItem.
+ * @brief The IJobHandler class is a an interface to run a job represented by the JobItem.
  */
 class IJobHandler
 {
