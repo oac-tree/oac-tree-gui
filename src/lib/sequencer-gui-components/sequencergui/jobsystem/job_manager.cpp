@@ -54,14 +54,15 @@ JobManager::JobManager(create_handler_func_t create_handler_func, QObject *paren
 
 size_t JobManager::GetJobCount() const
 {
-  return m_job_map.size();
+  return m_job_handlers.size();
 }
 
 std::vector<JobItem *> JobManager::GetJobItems() const
 {
   std::vector<JobItem *> result;
-  auto on_element = [](const auto &element) { return element.first; };
-  std::transform(m_job_map.begin(), m_job_map.end(), std::back_inserter(result), on_element);
+  auto on_element = [](const auto &handler) { return handler->GetJobItem(); };
+  std::transform(m_job_handlers.begin(), m_job_handlers.end(), std::back_inserter(result),
+                 on_element);
   return result;
 }
 
@@ -79,8 +80,9 @@ void JobManager::SubmitJob(JobItem *job)
 
 IJobHandler *JobManager::GetJobHandler(JobItem *job)
 {
-  auto iter = m_job_map.find(job);
-  return iter == m_job_map.end() ? nullptr : iter->second.get();
+  auto on_element = [job](const auto &handler) { return handler->GetJobItem() == job; };
+  auto pos = std::find_if(m_job_handlers.begin(), m_job_handlers.end(), on_element);
+  return pos == m_job_handlers.end() ? nullptr : pos->get();
 }
 
 void JobManager::Start(JobItem *item)
@@ -132,19 +134,22 @@ void JobManager::RemoveJobHandler(JobItem *job)
       throw RuntimeException("Attempt to modify running job");
     }
 
-    m_job_map.erase(job);
+    auto on_element = [job](auto &handler) { return handler->GetJobItem() == job; };
+    m_job_handlers.erase(std::remove_if(m_job_handlers.begin(), m_job_handlers.end(), on_element),
+                         m_job_handlers.end());
   }
 }
 
 bool JobManager::HasRunningJobs() const
 {
-  return std::any_of(m_job_map.begin(), m_job_map.end(),
-                     [](const auto &iter) { return iter.second->IsRunning(); });
+  return std::any_of(m_job_handlers.begin(), m_job_handlers.end(),
+                     [](const auto &handler) { return handler->IsRunning(); });
 }
 
 void JobManager::StopAllJobs()
 {
-  std::for_each(m_job_map.begin(), m_job_map.end(), [](const auto &iter) { iter.second->Stop(); });
+  std::for_each(m_job_handlers.begin(), m_job_handlers.end(),
+                [](const auto &handler) { handler->Stop(); });
 }
 
 void JobManager::SetActiveJob(JobItem *item)
@@ -186,7 +191,7 @@ void JobManager::InsertJobHandler(std::unique_ptr<IJobHandler> job_handler)
             &JobManager::OnNextLeavesChanged);
   }
 
-  m_job_map.insert({job_item, std::move(job_handler)});
+  m_job_handlers.push_back(std::move(job_handler));
 }
 
 }  // namespace sequencergui

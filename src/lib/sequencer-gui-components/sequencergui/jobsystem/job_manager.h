@@ -91,7 +91,7 @@ private:
    */
   void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
-  std::map<JobItem*, std::unique_ptr<IJobHandler>> m_job_map;
+  std::vector<std::unique_ptr<IJobHandler>> m_job_handlers;
   JobItem* m_active_job{nullptr};  //!< job which is allowed to send signals up
   create_handler_func_t m_create_handler_func;
 };
