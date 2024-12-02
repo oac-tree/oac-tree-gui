@@ -30,6 +30,9 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/workspace.h>
 
+namespace sequencergui
+{
+
 namespace
 {
 
@@ -38,15 +41,15 @@ namespace
  * strings known by the sequencer.
  * @return
  */
-std::unique_ptr<mvvm::ItemCatalogue<sequencergui::VariableItem>> CreateVariableItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue<VariableItem>> CreateVariableItemCatalogue()
 {
-  auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::VariableItem>>();
+  auto result = std::make_unique<mvvm::ItemCatalogue<VariableItem>>();
 
-  result->RegisterItem<sequencergui::LocalVariableItem>();
-  result->RegisterItem<sequencergui::FileVariableItem>();
-  result->RegisterItem<sequencergui::ChannelAccessVariableItem>();
-  result->RegisterItem<sequencergui::PvAccessClientVariableItem>();
-  result->RegisterItem<sequencergui::PvAccessServerVariableItem>();
+  result->RegisterItem<LocalVariableItem>();
+  result->RegisterItem<FileVariableItem>();
+  result->RegisterItem<ChannelAccessVariableItem>();
+  result->RegisterItem<PvAccessClientVariableItem>();
+  result->RegisterItem<PvAccessServerVariableItem>();
 
   return result;
 }
@@ -55,32 +58,43 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::VariableItem>> CreateVariableI
  * @brief Creates catalogue where InstructionItem factory functions are registered against "Type"
  * name strings known by the sequencer.
  */
-std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstructionItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue<InstructionItem>> CreateInstructionItemCatalogue()
 {
-  auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::InstructionItem>>();
+  auto result = std::make_unique<mvvm::ItemCatalogue<InstructionItem>>();
 
-  result->RegisterItem<sequencergui::IncludeItem>();
-  result->RegisterItem<sequencergui::ParallelSequenceItem>();
-  result->RegisterItem<sequencergui::RepeatItem>();
-  result->RegisterItem<sequencergui::SequenceItem>();
-  result->RegisterItem<sequencergui::WaitItem>();
+  result->RegisterItem<IncludeItem>();
+  result->RegisterItem<ParallelSequenceItem>();
+  result->RegisterItem<RepeatItem>();
+  result->RegisterItem<SequenceItem>();
+  result->RegisterItem<WaitItem>();
 
   // instructions from sequencer-plugin-epics
-  result->RegisterItem<sequencergui::ChannelAccessReadInstructionItem>();
-  result->RegisterItem<sequencergui::ChannelAccessWriteInstructionItem>();
-  result->RegisterItem<sequencergui::PvAccessReadInstructionItem>();
-  result->RegisterItem<sequencergui::PvAccessWriteInstructionItem>();
-  result->RegisterItem<sequencergui::RPCClientInstruction>();
-  result->RegisterItem<sequencergui::SystemCallInstructionItem>();
-  result->RegisterItem<sequencergui::LogInstructionItem>();
+  result->RegisterItem<ChannelAccessReadInstructionItem>();
+  result->RegisterItem<ChannelAccessWriteInstructionItem>();
+  result->RegisterItem<PvAccessReadInstructionItem>();
+  result->RegisterItem<PvAccessWriteInstructionItem>();
+  result->RegisterItem<RPCClientInstruction>();
+  result->RegisterItem<SystemCallInstructionItem>();
+  result->RegisterItem<LogInstructionItem>();
 
   return result;
 }
 
-}  // namespace
-
-namespace sequencergui
+std::map<sup::sequencer::JobState, RunnerStatus> GetRunnerStatusMap()
 {
+  using sup::sequencer::JobState;
+  std::map<sup::sequencer::JobState, RunnerStatus> result = {
+      {JobState::kInitial, RunnerStatus::kInitial},
+      {JobState::kPaused, RunnerStatus::kPaused},
+      {JobState::kStepping, RunnerStatus::kStepping},
+      {JobState::kRunning, RunnerStatus::kRunning},
+      {JobState::kSucceeded, RunnerStatus::kSucceeded},
+      {JobState::kFailed, RunnerStatus::kFailed},
+      {JobState::kHalted, RunnerStatus::kHalted}};
+  return result;
+}
+
+}  // namespace
 
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 {
@@ -112,7 +126,13 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 
 RunnerStatus GetRunnerStatusFromDomain(sup::sequencer::JobState job_state)
 {
-  return static_cast<RunnerStatus>(job_state);
+  static const auto kRunnerStatusMap = GetRunnerStatusMap();
+  auto iter = kRunnerStatusMap.find(job_state);
+  if (iter == kRunnerStatusMap.end())
+  {
+    throw RuntimeException("Can't convert sup::sequencer::JobState");
+  }
+  return iter->second;
 }
 
 }  // namespace sequencergui
