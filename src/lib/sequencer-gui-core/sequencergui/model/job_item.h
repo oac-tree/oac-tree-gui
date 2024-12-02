@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_MODEL_JOB_ITEM_H_
 
 #include <mvvm/model/compound_item.h>
+#include <sequencergui/model/runner_status.h>
 
 namespace sequencergui
 {
@@ -82,7 +83,13 @@ public:
    * breakpoint information, and is shown in a real-time instruction tree.
    */
   ProcedureItem* GetExpandedProcedure();
+
 };
+
+/**
+ * @brief Returns runner status corresponding to the state of the given job item.
+ */
+RunnerStatus GetRunnerStatus(const JobItem* item);
 
 }  // namespace sequencergui
 

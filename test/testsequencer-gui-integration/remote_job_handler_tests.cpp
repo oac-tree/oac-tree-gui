@@ -20,9 +20,9 @@
 #include "sequencergui/jobsystem/remote_job_handler.h"
 #include "test_automation_server.h"
 
-#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 
@@ -79,7 +79,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   job_handler.Start();
   QTest::qWait(50);
   EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
 
   auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);

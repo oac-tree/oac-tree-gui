@@ -134,11 +134,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
   EXPECT_TRUE(m_remote_connection_service.HasClient(kServerName));
 
   // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this]()
-  {
-    auto status = m_job_item->GetStatus();
-    return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kInitial;
-  };
+  auto predicate = [this]() { return GetRunnerStatus(m_job_item) == RunnerStatus::kInitial; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
 
   // validating internal expanded ProcedureItem
@@ -159,11 +155,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
   job_manager->Start(m_job_item);
 
   // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this]()
-  {
-    auto status = m_job_item->GetStatus();
-    return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
-  };
+  auto predicate = [this]() { return GetRunnerStatus(m_job_item) == RunnerStatus::kSucceeded; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
 
   EXPECT_FALSE(job_manager->GetJobHandler(m_job_item)->IsRunning());

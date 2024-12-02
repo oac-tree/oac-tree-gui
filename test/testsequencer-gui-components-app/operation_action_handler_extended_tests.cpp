@@ -81,8 +81,7 @@ public:
 
   static bool IsCompleted(JobItem* job_item)
   {
-    auto status = job_item->GetStatus();
-    return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
+    return GetRunnerStatus(job_item) == RunnerStatus::kSucceeded;
   }
 
   ApplicationModels m_models;
@@ -191,7 +190,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
 
   // starting second time, jobHandler should be the same as before
   auto prev_job_handler = m_job_manager.GetJobHandler(job_item);
@@ -201,7 +200,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
 
   EXPECT_EQ(m_job_manager.GetJobHandler(job_item), prev_job_handler);
 }
@@ -295,7 +294,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
   handler->OnRegenerateJobRequest();
 
   // on regeneration status should be reset
-  EXPECT_TRUE(job_item->GetStatus().empty());
+  EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kUndefined);
 
   EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
 
@@ -372,7 +371,7 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
 
   // starting same job again
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -381,7 +380,7 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
-  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
 }
 
 }  // namespace sequencergui

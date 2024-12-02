@@ -23,10 +23,10 @@
 #include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/xml_utils.h>
 
 #include <mvvm/model/application_model.h>
@@ -77,12 +77,6 @@ public:
     }
   }
 
-  static bool IsCompleted(JobItem* job_item)
-  {
-    auto status = job_item->GetStatus();
-    return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
-  }
-
   ApplicationModels m_models;
   LocalJobItem* m_job_item{nullptr};
 };
@@ -108,11 +102,11 @@ TEST_P(ResourceFolderTest, RunProcedure)
   // starting procedure and waiting for completion
   job_handler.Start();
 
-  auto predicate = [this]() { return IsCompleted(m_job_item); };
+  auto predicate = [this]() { return GetRunnerStatus(m_job_item) == RunnerStatus::kSucceeded; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
 
   // validating some of parameters after job is complet
-  EXPECT_TRUE(IsCompleted(m_job_item));
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kSucceeded);
   auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");

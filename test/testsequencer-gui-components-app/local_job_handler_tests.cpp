@@ -166,7 +166,7 @@ TEST_F(LocalJobHandlerTest, PrematureDeletion)
     job_handler.Start();
   }
 
-  EXPECT_EQ(m_job_item->GetStatus(), std::string());
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kUndefined);
 }
 
 //! Normal execution of the procedure with single message instruction.
@@ -175,7 +175,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
   auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_EQ(m_job_item->GetStatus(), std::string());
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kUndefined);
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
@@ -194,7 +194,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
   ASSERT_EQ(instructions.size(), 1);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
 }
 
 //! Normal execution of procedure with single wait. Validating signaling going from expanded
@@ -204,7 +204,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_EQ(m_job_item->GetStatus(), std::string());
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kUndefined);
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
@@ -221,7 +221,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   QTest::qWait(50);
 
   EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
 }
 
 TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
@@ -392,7 +392,7 @@ TEST_F(LocalJobHandlerTest, LogEvents)
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
 
   ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 1);
 

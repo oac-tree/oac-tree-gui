@@ -84,4 +84,9 @@ ProcedureItem *JobItem::GetExpandedProcedure()
   return GetItem<ProcedureItem>(kExpandedProcedure);
 }
 
+RunnerStatus GetRunnerStatus(const JobItem *item)
+{
+  return GetRunnerStatus(item->GetStatus());
+}
+
 }  // namespace sequencergui
