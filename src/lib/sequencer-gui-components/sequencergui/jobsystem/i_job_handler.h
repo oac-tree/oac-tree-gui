@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_I_JOB_HANDLER_H_
 #define SEQUENCERGUI_JOBSYSTEM_I_JOB_HANDLER_H_
 
-#include <sequencergui/jobsystem/runner_status.h>
+#include <sequencergui/model/runner_status.h>
 
 namespace sequencergui
 {

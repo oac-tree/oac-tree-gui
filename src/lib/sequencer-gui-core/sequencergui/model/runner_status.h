@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_RUNNER_STATUS_H_
-#define SEQUENCERGUI_JOBSYSTEM_RUNNER_STATUS_H_
+#ifndef SEQUENCERGUI_MODEL_RUNNER_STATUS_H_
+#define SEQUENCERGUI_MODEL_RUNNER_STATUS_H_
 
-#include <string>
 #include <cstdint>
+#include <string>
 
 namespace sequencergui
 {
@@ -54,4 +54,4 @@ RunnerStatus GetRunnerStatus(const std::string& status_name);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_RUNNER_STATUS_H_
+#endif  // SEQUENCERGUI_MODEL_RUNNER_STATUS_H_

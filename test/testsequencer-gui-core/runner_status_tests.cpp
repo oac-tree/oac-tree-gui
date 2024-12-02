@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/runner_status.h"
+#include "sequencergui/model/runner_status.h"
 
 #include <gtest/gtest.h>
 
