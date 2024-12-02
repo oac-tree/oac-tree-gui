@@ -34,6 +34,7 @@
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/procedure_item_job_info_builder.h>
+#include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -94,7 +95,7 @@ bool AbstractJobHandler::IsRunning() const
 
 RunnerStatus AbstractJobHandler::GetRunnerStatus() const
 {
-  return m_domain_runner ? static_cast<RunnerStatus>(m_domain_runner->GetJobState())
+  return m_domain_runner ? GetRunnerStatusFromDomain(m_domain_runner->GetJobState())
                          : RunnerStatus::kInitial;
 }
 

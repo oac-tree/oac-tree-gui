@@ -168,3 +168,15 @@ TEST_F(TransformFromDomainTest, CreateUniversalVariable)
   EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainVariable::Type);
   EXPECT_EQ(universal_item->GetType(), UniversalVariableItem::Type);
 }
+
+TEST_F(TransformFromDomainTest, GetRunnerStatusFromDomain)
+{
+  using sup::sequencer::JobState;
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kInitial), RunnerStatus::kInitial);
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kPaused), RunnerStatus::kPaused);
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kStepping), RunnerStatus::kStepping);
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kRunning), RunnerStatus::kRunning);
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kSucceeded), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kFailed), RunnerStatus::kFailed);
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kHalted), RunnerStatus::kHalted);
+}

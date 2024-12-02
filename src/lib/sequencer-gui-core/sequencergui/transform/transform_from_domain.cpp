@@ -110,4 +110,9 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
   return catalogue->Create(domain_type);
 }
 
+RunnerStatus GetRunnerStatusFromDomain(sup::sequencer::JobState job_state)
+{
+  return static_cast<RunnerStatus>(job_state);
+}
+
 }  // namespace sequencergui
