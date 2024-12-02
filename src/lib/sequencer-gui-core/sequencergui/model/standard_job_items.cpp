@@ -142,6 +142,7 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_nam
   auto result = std::make_unique<RemoteJobItem>();
   result->SetServerName(server_name);
   result->SetRemoteJobIndex(job_index);
+  result->SetDisplayName(server_name + "_" + std::to_string(job_index));
   return result;
 }
 

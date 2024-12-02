@@ -107,6 +107,7 @@ TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
 
   EXPECT_EQ(item->GetRemoteJobIndex(), job_index);
   EXPECT_EQ(item->GetServerName(), server_name);
+  EXPECT_EQ(item->GetDisplayName(), "abc_42");
 }
 
 }  // namespace sequencergui
