@@ -95,8 +95,7 @@ bool AbstractJobHandler::IsRunning() const
 
 RunnerStatus AbstractJobHandler::GetRunnerStatus() const
 {
-  return m_domain_runner ? GetRunnerStatusFromDomain(m_domain_runner->GetJobState())
-                         : RunnerStatus::kInitial;
+  return GetRunnerStatusFromDomain(m_domain_runner->GetJobState());
 }
 
 JobLog *AbstractJobHandler::GetJobLog() const
