@@ -1,4 +1,4 @@
-Welcome to the documentation of oac-tree GUI
+Welcome to the documentation of OACTree GUI
 ============================================
 
 This is a user manual of the Graphical User Interface for the OACTree framework.
