@@ -27,9 +27,10 @@ namespace sequencergui
 {
 
 /**
- * @brief The RunnerStatus enum defines possible states that runner can have during job execution.
+ * @brief The RunnerStatus enum defines possible states that a runner can have during job execution.
  *
- * For the moment, it matches one-to-one sup::sequencer::JobStatus.
+ * It reproduces the sequencer's domain JobStatus, except kUndefined when the domain doesn't exist
+ * yet, or its status wasn't yet reported.
  */
 enum class RunnerStatus : std::uint8_t
 {
@@ -39,7 +40,8 @@ enum class RunnerStatus : std::uint8_t
   kRunning,
   kSucceeded,
   kFailed,
-  kHalted
+  kHalted,
+  kUndefined
 };
 
 /**

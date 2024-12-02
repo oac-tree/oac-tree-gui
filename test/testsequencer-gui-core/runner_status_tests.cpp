@@ -19,6 +19,8 @@
 
 #include "sequencergui/model/runner_status.h"
 
+#include <sequencergui/core/exceptions.h>
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -38,6 +40,7 @@ TEST_F(RunnerStatusTest, ToString)
   EXPECT_EQ(ToString(RunnerStatus::kSucceeded), "Success");
   EXPECT_EQ(ToString(RunnerStatus::kFailed), "Failure");
   EXPECT_EQ(ToString(RunnerStatus::kHalted), "Halted");
+  EXPECT_EQ(ToString(RunnerStatus::kUndefined), "");
 }
 
 TEST_F(RunnerStatusTest, GetRunnerStatus)
@@ -49,4 +52,5 @@ TEST_F(RunnerStatusTest, GetRunnerStatus)
   EXPECT_EQ(GetRunnerStatus("Success"), RunnerStatus::kSucceeded);
   EXPECT_EQ(GetRunnerStatus("Failure"), RunnerStatus::kFailed);
   EXPECT_EQ(GetRunnerStatus("Halted"), RunnerStatus::kHalted);
+  EXPECT_THROW(GetRunnerStatus("abc"), RuntimeException);
 }

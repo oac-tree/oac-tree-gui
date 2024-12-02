@@ -27,15 +27,15 @@
 namespace
 {
 
-// Our RunnerStatus is exact copy of sup::sequencer::JobState
-static const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
+const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
     {sequencergui::RunnerStatus::kInitial, "Initial"},
     {sequencergui::RunnerStatus::kPaused, "Paused"},
     {sequencergui::RunnerStatus::kStepping, "Stepping"},
     {sequencergui::RunnerStatus::kRunning, "Running"},
     {sequencergui::RunnerStatus::kSucceeded, "Success"},
     {sequencergui::RunnerStatus::kFailed, "Failure"},
-    {sequencergui::RunnerStatus::kHalted, "Halted"}};
+    {sequencergui::RunnerStatus::kHalted, "Halted"},
+    {sequencergui::RunnerStatus::kUndefined, ""}};
 
 }  // namespace
 
@@ -44,7 +44,11 @@ namespace sequencergui
 std::string ToString(RunnerStatus status)
 {
   auto iter = kRunnerStatusMap.find(status);
-  return iter == kRunnerStatusMap.end() ? std::string("Unknown") : iter->second;
+  if (iter == kRunnerStatusMap.end())
+  {
+    throw RuntimeException("Unknown runner status");
+  }
+  return iter->second;
 }
 
 RunnerStatus GetRunnerStatus(const std::string &status_name)
