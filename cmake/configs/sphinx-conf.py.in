@@ -1,8 +1,8 @@
 extensions = [ "breathe" ]
-breathe_projects = { "sequencer-gui": "@CMAKE_CURRENT_BINARY_DIR@/xml" }
-breathe_default_project = "sequencer-gui"
+breathe_projects = { "OACTree GUI": "@CMAKE_CURRENT_BINARY_DIR@/xml" }
+breathe_default_project = "OACTree GUI"
 
-project = "sequencer-gui"
+project = "OACTree GUI"
 author = "Gennady Pospelov"
 copyright = "ITER Organization"
 version = "@PROJECT_VERSION@"

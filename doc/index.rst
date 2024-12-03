@@ -17,6 +17,7 @@ is your feedback. We very much welcome your suggestions for improvements and bug
    :caption: Contents:
 
    overview.rst
+   installation.rst
 
 Indices and tables
 ==================
