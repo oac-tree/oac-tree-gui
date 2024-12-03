@@ -55,6 +55,7 @@ Checkout packages from [COA git](https://git.iter.org/projects/COA/repos/sup-uti
 - sup-epics
 - sequencer
 - sequencer-plugin-epics
+- sup-auto-server
 - sup-mvvm
 - sup-gui-extra
 - sup-gui-core
