@@ -1,15 +1,15 @@
 extensions = [ "breathe" ]
-breathe_projects = { "OACTree GUI": "@CMAKE_CURRENT_BINARY_DIR@/xml" }
-breathe_default_project = "OACTree GUI"
+breathe_projects = { "oac-tree GUI": "@CMAKE_CURRENT_BINARY_DIR@/xml" }
+breathe_default_project = "oac-tree GUI"
 
-project = "OACTree GUI"
+project = "oac-tree GUI"
 author = "Gennady Pospelov"
 copyright = "ITER Organization"
 version = "@PROJECT_VERSION@"
 release = "@PROJECT_VERSION@"
 
 # Set link name generated in the top bar.
-html_title = 'SEQUENCER GUI'
+html_title = 'oac-tree GUI'
 
 try:
     import sphinx_rtd_theme

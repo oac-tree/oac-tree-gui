@@ -1,18 +1,18 @@
 Installation
 ============
 
-We are currently working on a convenient way of installing OACTree-related packages all at once
-using the `vcpkg` dependency manager. While it is not yet ready, one has to install OACTree packages
+We are currently working on a convenient way of installing oac-tree related packages all at once
+using the `vcpkg` dependency manager. While it is not yet ready, one has to install oac-tree packages
 one by one using the standard ``CMake/make/make install`` chain.
 
-Prerequisites for OACTree GUI
+Prerequisites for oac-tree GUI
 -----------------------------
 
 * C++-17
 * CMake >= 3.14
 * gtest >= 1.12
 * libxml2
-* OACTree and plugins
+* oac-tree and plugins
 * Qt >= 5.12 (qt5-base, qt5-tools, qt5-charts, qt5-svg)
 
 Install COA packages

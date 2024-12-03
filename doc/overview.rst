@@ -4,7 +4,7 @@ Overview
 Main GUI views
 ---------------
 
-The main OACTree GUI can be started by running executable ``bin/sequencer-gui``.
+The main oac-tree GUI can be started by running executable ``bin/sequencer-gui``.
 The empty windows as in *Figure 1* will appear on startup.
 
 .. image:: screenshots/overview-explorer.png

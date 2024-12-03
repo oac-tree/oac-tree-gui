@@ -1,4 +1,4 @@
-# Sequencer Graphical User Interface
+# oac-tree Graphical User Interface
 
 ![Explorer view](./doc/explorer-1200x.png)
 
