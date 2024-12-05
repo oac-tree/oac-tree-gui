@@ -22,6 +22,7 @@ add_subdirectory(testsequencer-gui-components)
 add_subdirectory(testsequencer-gui-components-app)
 add_subdirectory(testsequencer-gui-views)
 add_subdirectory(testsequencer-gui-integration)
+add_subdirectory(parasoft)
 
 # Add custom target `make testall` which will run test executables one after another.
 # This can be used instead of usual `make test` or `ctest` while running tests via an ssh
