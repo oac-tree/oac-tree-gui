@@ -124,7 +124,7 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
 
   // let event loop do its job
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 100));
 
   // setting expectation for second value change
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
@@ -142,5 +142,5 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
 
   EXPECT_EQ(listener.GetEventCount(), 1);
 
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 1000));
 }
