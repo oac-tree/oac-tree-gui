@@ -38,7 +38,7 @@ cpptest_add_executable(sequencer-gui-cpptest
   TARGETS sequencer-gui-core sequencer-gui-components sequencer-gui-views testsequencer-gui-core testsequencer-gui-components testsequencer-gui-components-app testsequencer-gui-views testsequencer-gui-integration
 )
 
-get_target_property(SEQUENCER_GUI_INCLUDE_DIRECTORIES sup-mvvm-view INCLUDE_DIRECTORIES)
+get_target_property(SEQUENCER_GUI_INCLUDE_DIRECTORIES sequencer-gui-views INCLUDE_DIRECTORIES)
 target_include_directories(sequencer-gui-cpptest PUBLIC ${SEQUENCER_GUI_INCLUDE_DIRECTORIES})
 
 target_link_libraries(sequencer-gui-cpptest
