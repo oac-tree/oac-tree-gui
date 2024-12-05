@@ -14,24 +14,17 @@
 # refer to the file ITER-LICENSE.TXT located in the top level directory
 # of the distribution package.
 
-# Set required CMake version
-# This sets the default CMake behaviour through policies allowing compatibility with future versions
-# Justification:
-#   - CMake 3.12 - CMP0074: find_package command now searches prefixes specified by the <PackageName>_ROOT environment variable
-#       CODAC systems contain conflicting environment variables which generate warnings when this policy is not set to NEW
-#   - CMake 3.13 - CMP0076: relative source file paths are interpreted as being relative to the current source directory
-cmake_minimum_required(VERSION 3.13)
-
+cmake_minimum_required(VERSION 3.13...3.31)
 project(sequencer-gui VERSION 1.5.0 LANGUAGES CXX)
-
 set(CMAKE_CXX_STANDARD 17)
 
-option(COA_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clangformat'" OFF)
-option(COA_USE_QT6 "Compile with Qt6" OFF)
+option(COA_COVERAGE "Generate unit test coverage information" OFF)
+option(COA_PARASOFT_INTEGRATION "Parasoft integration" OFF)
 option(COA_BUILD_TESTS "Build unit tests" ON)
 option(COA_BUILD_DOCUMENTATION "Build documentation" OFF)
 option(COA_NO_CODAC "Don't look for the presence of CODAC environment" OFF)
-option(COA_COVERAGE "Generate unit test coverage information" OFF)
+option(COA_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clangformat'" OFF)
+option(COA_USE_QT6 "Compile with Qt6" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
 set(CMAKE_CONFIG_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/configs)

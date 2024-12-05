@@ -29,7 +29,16 @@ if(CODAC_FOUND)
   if(CODAC_CICD)
     string(APPEND CODAC_FOUND_MESSAGE " CICD environment")
 
-    set(COA_BUILD_DOCUMENTATION ON)
+    set(COA_BUILD_TESTS ON)
+
+    # Ideally we would want a cleaner way to detect analysis builds, but are limited by the maven workflow
+    if(COA_COVERAGE)
+      # CODAC CICD with coverage means analysis build, enable parasoft integration
+      set(COA_PARASOFT_INTEGRATION ON)
+    else()
+      # Regular CODAC CICD build, enable documentation for packaging
+      set(COA_BUILD_DOCUMENTATION ON)
+    endif()
   else()
     string(APPEND CODAC_FOUND_MESSAGE " environment")
   endif()
@@ -50,9 +59,10 @@ else()
 endif()
 
 if(COA_COVERAGE)
+  # On coverage builds always build tests
+  set(COA_BUILD_TESTS ON)
+  message(STATUS "Enabling test coverage information")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -fno-inline --coverage")
-  message(STATUS "Enabling test coverage information: ${CMAKE_CXX_FLAGS}")
-  set(COA_BUILD_DOCUMENTATION OFF)
 endif()
 
 # -----------------------------------------------------------------------------
