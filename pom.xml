@@ -40,6 +40,7 @@
         <sourcepath>SOURCE</sourcepath>
         <makefile.args>install</makefile.args>
         <coverage>false</coverage>
+        <valgrind.enable>false</valgrind.enable>
         <!-- -->
         <sonar.language>cpp</sonar.language>
         <sonar.sources.cpp>src</sonar.sources.cpp>
