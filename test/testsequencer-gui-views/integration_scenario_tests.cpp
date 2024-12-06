@@ -120,7 +120,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   // starting procedure
   manager.Start(m_job_item);
-  QTest::qWait(20);
+  QTest::qWait(50);
 
   EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
 

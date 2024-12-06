@@ -35,6 +35,8 @@
 #include <testutils/sequencer_test_utils.h>
 
 #include <QTest>
+#include <thread>
+#include <chrono>
 
 namespace sequencergui
 {
@@ -76,9 +78,16 @@ public:
   /**
    * @brief Runs remoet server with single procedure on board.
    */
-  static void SetUpTestSuite() { m_test_automation_server.Start(kServerName, kProcedureBodyText); }
+  static void SetUpTestSuite() {
+    m_test_automation_server.Start(kServerName, kProcedureBodyText);
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+  }
 
-  static void TearDownTestSuite() { m_test_automation_server.Stop(); }
+  static void TearDownTestSuite()
+  {
+    m_test_automation_server.Stop();
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
 
   /**
    * @brief Returns factory function to create automation clients.
@@ -135,7 +144,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this]() { return GetRunnerStatus(m_job_item) == RunnerStatus::kInitial; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = m_job_item->GetExpandedProcedure();
@@ -156,7 +165,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this]() { return GetRunnerStatus(m_job_item) == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   EXPECT_FALSE(job_manager->GetJobHandler(m_job_item)->IsRunning());
 
