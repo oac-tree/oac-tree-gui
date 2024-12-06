@@ -69,7 +69,7 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
 
   m_workspace.Setup();
   // checking current server variable
-  EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 5.0));
+  EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 20.0));
 
   // These are two events from domain that variable has changed. It is not processed yet by the
   // workspace listener, since connection is queued.

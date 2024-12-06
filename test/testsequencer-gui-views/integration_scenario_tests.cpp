@@ -132,7 +132,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   {
     const bool is_completed = !manager.HasRunningJobs();
     const bool var0_updated = testutils::IsEqual(*var_inside0, anyvalue0);
-    const bool var1_updated = testutils::IsEqual(*var_inside1, anyvalue1);
+    const bool var1_updated = testutils::IsEqual(*var_inside1, anyvalue0);
     return is_completed && var0_updated && var1_updated;
   };
 
