@@ -133,6 +133,7 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
   project->GetSequencerModel()->InsertItem<mvvm::SessionItem>();
   EXPECT_TRUE(project->IsModified());
 
+  EXPECT_CALL(m_mock_project_context, OnSaved()).Times(1);
   EXPECT_TRUE(project->Save(expected_path));
 
   EXPECT_EQ(project->GetPath(), expected_path);
