@@ -17,19 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
+#include <sequencergui/jobsystem/user_context.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/model/xml_utils.h>
+#include <sequencergui/operation/operation_action_helper.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>
@@ -40,11 +41,10 @@
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
+#include <testutils/mock_remote_connection_service.h>
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
 #include <testutils/test_utils.h>
-#include <testutils/mock_remote_connection_service.h>
-#include <sequencergui/operation/operation_action_helper.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -71,7 +71,6 @@ public:
   {
     return GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   }
-
 
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
@@ -120,9 +119,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   // starting procedure
   manager.Start(m_job_item);
-  QTest::qWait(50);
-
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
+  QTest::qWait(20);
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
@@ -131,6 +128,15 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
+  auto predicate = [&manager, var_inside0, var_inside1, &anyvalue0, &anyvalue1]
+  {
+    const bool is_completed = !manager.HasRunningJobs();
+    const bool var0_updated = testutils::IsEqual(*var_inside0, anyvalue0);
+    const bool var1_updated = testutils::IsEqual(*var_inside1, anyvalue1);
+    return is_completed && var0_updated && var1_updated;
+  };
+
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
 
   EXPECT_TRUE(testutils::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(testutils::IsEqual(*var_inside1, anyvalue0));

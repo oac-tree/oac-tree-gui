@@ -156,12 +156,21 @@ TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
   QTest::qWait(20);
 
   // We are testing here queued signals, need special waiting to let procedure complete
-  EXPECT_TRUE(QTest::qWaitFor([&job_handler]() { return !job_handler->IsRunning(); }, 100));
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
+
+  auto predicate = [&job_handler, var_inside0, var_inside1, &anyvalue0]
+  {
+    const bool is_completed = !job_handler->IsRunning();
+    const bool var0_updated = testutils::IsEqual(*var_inside0, anyvalue0);
+    const bool var1_updated = testutils::IsEqual(*var_inside1, anyvalue0);
+    return is_completed && var0_updated && var1_updated;
+  };
+
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   EXPECT_TRUE(testutils::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(testutils::IsEqual(*var_inside1, anyvalue0));

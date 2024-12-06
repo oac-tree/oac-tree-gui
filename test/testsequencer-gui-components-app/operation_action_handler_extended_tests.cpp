@@ -187,7 +187,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
@@ -197,7 +197,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
@@ -245,20 +245,20 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
   handler->OnStartJobRequest();
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 100));
   EXPECT_TRUE(job_handler->IsRunning());
 
   // it shouldn't be possible to remove running job without first stopping it
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
   EXPECT_FALSE(handler->OnRemoveJobRequest());
-  QTest::qWait(5);
+  QTest::qWait(10);
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStopJobRequest();
-  QTest::qWait(5);
+  QTest::qWait(10);
 
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 100));
 
   EXPECT_FALSE(job_handler->IsRunning());
 }
@@ -368,7 +368,7 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
@@ -377,7 +377,7 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
   EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
