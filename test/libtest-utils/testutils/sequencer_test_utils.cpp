@@ -38,7 +38,7 @@ namespace
 {
 
 const std::string db_content = R"RAW(
-record (bo,"CA-TESTS:BOOL")
+record (bo,"SEQUENCERGUI-CA-TESTS:BOOL")
 {
     field(DESC,"Some EPICSv3 record")
     field(ONAM,"TRUE")
@@ -48,13 +48,19 @@ record (bo,"CA-TESTS:BOOL")
     field(VAL,"0")
 }
 
-record (longin,"CA-TESTS:INT")
+record (longin,"SEQUENCERGUI-CA-TESTS:INT")
 {
   field(DESC,"Test is running flag")
   field(VAL,"1")
 }
 
-record (ao,"CA-TESTS:FLOAT")
+record (longout,"SEQUENCERGUI-CA-WORKSPACE-TESTS:INT")
+{
+  field(DESC,"Test is running flag")
+  field(VAL,"42")
+}
+
+record (ao,"SEQUENCERGUI-CA-TESTS:FLOAT")
 {
     field(DESC,"Some EPICSv3 record")
     field(DRVH,"5.0")
@@ -62,13 +68,13 @@ record (ao,"CA-TESTS:FLOAT")
     field(VAL,"0")
 }
 
-record (stringout,"CA-TESTS:STRING")
+record (stringout,"SEQUENCERGUI-CA-TESTS:STRING")
 {
     field(DESC,"Some EPICSv3 record")
     field(VAL,"undefined")
 }
 
-record (waveform,"CA-TESTS:CHARRAY")
+record (waveform,"SEQUENCERGUI-CA-TESTS:CHARRAY")
 {
     field(DESC,"Some EPICSv3 record")
     field(FTVL, "CHAR")

@@ -24,7 +24,6 @@
 
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
-#include <sup/epics-test/softioc_runner.h>
 #include <sup/epics-test/unit_test_helper.h>
 #include <sup/sequencer/workspace.h>
 
@@ -39,7 +38,8 @@ using testing::_;
 
 namespace
 {
-const std::string kChannelName("CA-TESTS:INT");
+// the name defined in sequencer_test_utils.cpp
+const std::string kChannelName("SEQUENCERGUI-CA-TESTS:INT");
 }
 
 //! Tests for DomainWorkspaceListener class.
@@ -49,37 +49,8 @@ class DomainWorkspaceListenerSoftIocTest : public ::testing::Test
 public:
   using mock_client_t = testing::MockFunction<void(const VariableUpdatedEvent &)>;
 
-  //! Disables all tests in the fixture if ChannelAccess is not available
-  void SetUp() override
-  {
-    if (!IsSequencerPluginEpicsAvailable())
-    {
-      GTEST_SKIP();
-    }
-  }
-
-  static void SetUpTestSuite()
-  {
-    if (IsSequencerPluginEpicsAvailable())
-    {
-      m_softioc_service.Start(testutils::GetEpicsDBContentString());
-    }
-  }
-
-  static void TearDownTestSuite()
-  {
-    if (IsSequencerPluginEpicsAvailable())
-    {
-      m_softioc_service.Stop();
-    }
-  }
-
-  static sup::epics::test::SoftIocRunner m_softioc_service;
-
   sup::sequencer::Workspace m_workspace;
 };
-
-sup::epics::test::SoftIocRunner DomainWorkspaceListenerSoftIocTest::m_softioc_service{};
 
 TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariable)
 {
