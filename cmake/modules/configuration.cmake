@@ -1,69 +1,11 @@
-# -----------------------------------------------------------------------------
-# Modules
-# -----------------------------------------------------------------------------
+# Project main configuration
 
 include(CTest)
 include(CodeTools)
 include(GNUInstallDirs)
 include(FindPackageMessage)
-
-# -----------------------------------------------------------------------------
-# CODAC environment
-# -----------------------------------------------------------------------------
-if(NOT COA_NO_CODAC)
-  find_package(CODAC OPTIONAL_COMPONENTS site-packages Python MODULE QUIET)
-endif()
-
-if(CODAC_FOUND)
-  set(CODAC_FOUND_MESSAGE "Building with CODAC")
-
-  # Append CODAC_CMAKE_PREFIXES to cmake seard directories, this helps cmake find packages installed in the CODAC enviorenment
-  list(APPEND CMAKE_PREFIX_PATH ${CODAC_CMAKE_PREFIXES})
-
-  # If CODAC module provides python executable, override Python3_EXECUTABLE with it
-  if(CODAC_Python_FOUND AND NOT Python3_EXECUTABLE)
-    set(Python3_EXECUTABLE ${CODAC_PYTHON_EXECUTABLE})
-  endif()
-
-  # Check if operating inside a CODAC CICD system
-  if(CODAC_CICD)
-    string(APPEND CODAC_FOUND_MESSAGE " CICD environment")
-
-    set(COA_BUILD_TESTS ON)
-
-    # Ideally we would want a cleaner way to detect analysis builds, but are limited by the maven workflow
-    if(COA_COVERAGE)
-      # CODAC CICD with coverage means analysis build, enable parasoft integration
-      set(COA_PARASOFT_INTEGRATION ON)
-    else()
-      # Regular CODAC CICD build, enable documentation for packaging
-      set(COA_BUILD_DOCUMENTATION ON)
-    endif()
-  else()
-    string(APPEND CODAC_FOUND_MESSAGE " environment")
-  endif()
-
-  if(CODAC_DOCS)
-    string(APPEND CODAC_FOUND_MESSAGE " and will build documentation")
-
-    set(COA_BUILD_DOCUMENTATION ON)
-  endif()
-
-  find_package_message(
-    CODAC_DETAILS
-    "${CODAC_FOUND_MESSAGE}: ${CODAC_DIR} (version \"${CODAC_VERSION}\")"
-    "[${CODAC_FOUND}][${CODAC_DIR}][${CODAC_CICD}][v${CODAC_VERSION}]"
-  )
-else()
-  find_package_message(CODAC_DETAILS "Building without CODAC environment" "[${CODAC_FOUND}]")
-endif()
-
-if(COA_COVERAGE)
-  # On coverage builds always build tests
-  set(COA_BUILD_TESTS ON)
-  message(STATUS "Enabling test coverage information")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -fno-inline --coverage")
-endif()
+include(COASetupCodacEnvironment)
+include(COASetupQt)
 
 # -----------------------------------------------------------------------------
 # Variables
@@ -74,14 +16,9 @@ set(SEQUENCERGUI_SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 set(SEQUENCERGUI_BUILDVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 set(SEQUENCERGUI_TESTRESULT_DIR ${CMAKE_BINARY_DIR}/test_result)
 
-# Qt related variables
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
 # -----------------------------------------------------------------------------
 # Directories
 # -----------------------------------------------------------------------------
-
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
@@ -104,42 +41,7 @@ file(MAKE_DIRECTORY ${SEQUENCERGUI_AUTOGEN_DIR})
 # -----------------------------------------------------------------------------
 # Dependencies
 # -----------------------------------------------------------------------------
-if(COA_USE_QT6)
-  set(QT_VERSION_MAJOR 6)
-  set(QT_FIND_COMPONENTS Widgets Core Gui PrintSupport Test)
-else()
-  set(QT_VERSION_MAJOR 5)
-  set(QT_FIND_COMPONENTS Widgets Core Gui PrintSupport Test)
-endif()
-
-if(CODAC_FOUND)
-  # Set NO_CMAKE_PATH and PATHS to CMAKE_PREFIX_PATH, so that find_package will use the system Qt first
-  # if it finds one, but still look in CMAKE_PREFIX_PATH as a last resort. This gives system Qt priority over CODAC Qt
-  set(QT_FIND_OPTIONS NO_CMAKE_PATH PATHS ${CMAKE_PREFIX_PATH})
-endif()
-
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS})
-
-# Gather details about the Qt package found
-set(QT_VERSION "${Qt${QT_VERSION_MAJOR}_VERSION_MAJOR}.${Qt${QT_VERSION_MAJOR}_VERSION_MINOR}.${Qt${QT_VERSION_MAJOR}_VERSION_PATCH}")
-set(QT_DETAILS "[${Qt${QT_VERSION_MAJOR}_DIR}][v${QT_VERSION}]")
-foreach(QT_COMPONENT ${QT_FIND_COMPONENTS})
-  get_target_property(QT_${QT_COMPONENT}_LOCATION Qt${QT_VERSION_MAJOR}::${QT_COMPONENT} LOCATION)
-  string(PREPEND QT_DETAILS "[${QT_COMPONENT}:${QT_${QT_COMPONENT}_LOCATION}]")
-endforeach()
-
-# Print the message about finding Qt if it has not been printed yet, or if the details have changed
-# This is essentially a reimplementaion of find_package_message, but with more detailed information gated by verbosity
-if(NOT "${QT_DETAILS}" STREQUAL "${FIND_PACKAGE_MESSAGE_DETAILS_QT}")
-  message(STATUS "Found Qt: ${Qt${QT_VERSION_MAJOR}_DIR} (version \"${QT_VERSION}\")")
-  foreach(QT_COMPONENT ${QT_FIND_COMPONENTS})
-    message(VERBOSE "\tQt::${QT_COMPONENT}: ${QT_${QT_COMPONENT}_LOCATION}")
-  endforeach()
-  set(FIND_PACKAGE_MESSAGE_DETAILS_QT ${QT_DETAILS} CACHE INTERNAL "Details about finding Qt")
-endif()
-
 find_package(Threads)
-
 find_package(sup-gui-core REQUIRED)
 find_package(sequencer REQUIRED)
 find_package(sup-auto-server REQUIRED)
@@ -148,19 +50,5 @@ find_package(sup-epics REQUIRED)
 # -----------------------------------------------------------------------------
 # Generating config files
 # -----------------------------------------------------------------------------
-
 configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/testconfig.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/testconfig.h @ONLY)
 configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version_constants.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/version_constants.h @ONLY)
-
-# -----------------------------------------------------------------------------
-# Compile options
-# -----------------------------------------------------------------------------
-
-#add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
-
-## warning level
-#if (MSVC)
-#    add_compile_options(/W2)
-#else()
-#    add_compile_options(-Wall -Wextra -pedantic)
-#endif()
