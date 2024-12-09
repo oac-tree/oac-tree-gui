@@ -5,15 +5,23 @@ We are currently working on a convenient way of installing oac-tree related pack
 using the `vcpkg` dependency manager. While it is not yet ready, one has to install oac-tree packages
 one by one using the standard ``CMake/make/make install`` chain.
 
+Source
+------
+
+* `oac-tree repository collections <https://github.com/orgs/oac-tree/repositories>`_
+* `Codac Operation Applications <https://git.iter.org/scm/coa>`_
+
 Prerequisites for oac-tree GUI
------------------------------
+------------------------------
 
 * C++-17
 * CMake >= 3.14
 * gtest >= 1.12
 * libxml2
 * oac-tree and plugins
-* Qt >= 5.12 (qt5-base, qt5-tools, qt5-charts, qt5-svg)
+* Qt6 (qt6-base, qt6-tools, qt6-charts, qt6-svg)
+
+Qt5 build is also possible with ``-DCOA_USE_QT6=OFF`` flag.
 
 Install COA packages
 --------------------

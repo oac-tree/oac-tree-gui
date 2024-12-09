@@ -1,5 +1,9 @@
 # oac-tree Graphical User Interface
 
+## Main application
+
+- <install_dir>/bin/sequencer-gui
+
 ![Explorer view](./doc/explorer-view.jpg)
 
 Explorer view
@@ -16,37 +20,29 @@ Composer view (InstructionTree and Workspace panels)
 
 Operation view (Real-time instruction tree with breakpoints and variable table)
 
-## Installation on CODAC machines from RPMs
-
-```bash
-yum install codac-core-7.2-sequencer-gui.x86_64
-```
-
-## Run
-
-- /opt/codac/bin/sequencer-gui
-
 Other applications:
 
-- /opt/codac/bin/sequencer-operation
-- /opt/codac/bin/sup-pvmonitor
-- /opt/codac/bin/anyvalue-editor
+- <install_dir>/bin/sequencer-operation
+- <install_dir>/bin/sup-pvmonitor
+- <install_dir>/bin/anyvalue-editor
 
-## Installation on CODAC machines (manual)
+## The source
 
-The `sequencer-gui` application depends on a number of Codac Operation Application libraries.
+- [Codac Operation Applications (COA)](https://git.iter.org/scm/coa)
+- [oac-tree collection](https://github.com/orgs/oac-tree/repositories)
 
-### Install prerequisites
+## Dependencies
 
-```bash
-yum install codac-core-7.2-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
-yum install qt5-qtbase-devel.x86_64 qt5-qtsvg-devel.x86_64 qt5-qttools-devel.x86_64 qt5-qtbase-gui.x86_64 qt5-qtcharts-devel.x86_64 adwaita-qt5.x86_64 mesa-libGL-devel.x86_64
-```
+- C++-17
+- CMake >= 3.14
+- gtest >= 1.12
+- libxml2
+- Qt6 (base, tools, charts, svg)
+- oak-tree and plugins
 
-### Install COA packages
+*Note:* Qt5 is also possible with `-DCOA_USE_QT6=OFF` flag
 
-Checkout packages from [COA git](https://git.iter.org/projects/COA/repos/sup-utils/browse
-) and install them one-by-one using `mvn clean install`
+**oak-tree and plugins**
 
 - sup-utils
 - sup-dto
@@ -63,7 +59,11 @@ Checkout packages from [COA git](https://git.iter.org/projects/COA/repos/sup-uti
 
 ## Installation on custom Linux
 
-All COA packages are ordinary CMake packages and they can be compiled and installed on any Linux
+    We are currently working on a convenient way of installing oac-tree related packages all at once
+    using the `vcpkg` dependency manager. While it is not yet ready, one has to install oac-tree packages
+    one by one using the standard ``CMake/make/make install`` chain.
+
+All oak-tree packages are ordinary CMake packages and they can be compiled and installed on any Linux
 of user choice like any other CMake project. Here we show the installation of `sup-utils` package. 
 All others have to be installed in a similar way in the order given by the list above.
 We assume that the user wants to install all dependencies into `<path-to-local-install>` (e.g. /opt/local).
@@ -90,3 +90,27 @@ cmake -DCOA_EXPORT_BUILD_TREE=ON <path-to-repo>
 make -j4; ctest
 ```
 
+## Installation on CODAC
+
+### Installation from RPMs
+
+```bash
+yum install codac-core-7.2-sequencer-gui.x86_64
+```
+
+## Run on CODAC
+
+- /opt/codac/bin/sequencer-gui
+- /opt/codac/bin/sequencer-operation
+- /opt/codac/bin/sup-pvmonitor
+- /opt/codac/bin/anyvalue-editor
+
+## Manual build on CODAC using Maven
+
+```bash
+# prerequisites
+yum install codac-core-7.2-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
+yum install qt5-qtbase-devel.x86_64 qt5-qtsvg-devel.x86_64 qt5-qttools-devel.x86_64 qt5-qtbase-gui.x86_64 qt5-qtcharts-devel.x86_64 adwaita-qt5.x86_64 mesa-libGL-devel.x86_64
+```
+
+Checkout packages from the list above from [COA git](https://git.iter.org/projects/COA/repos/sup-utils/browse) and install them one-by-one using `mvn clean install`
