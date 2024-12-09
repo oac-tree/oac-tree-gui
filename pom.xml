@@ -181,6 +181,7 @@ Categories=CODAC-%{codac_version_mm};]]>
                                 <argument>-DCMAKE_INSTALL_DOCDIR=doc/${project.artifactId}</argument>
                                 <argument>-DTEST_OUTPUT_DIRECTORY=${project.build.directory}/test</argument>
                                 <argument>-DCOA_COVERAGE=${coverage}</argument>
+                                <argument>-DCOA_USE_QT6=OFF</argument>
                                 <argument>${sourcepath}</argument>
                             </arguments>
                         </configuration>
