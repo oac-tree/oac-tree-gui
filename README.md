@@ -1,18 +1,18 @@
 # oac-tree Graphical User Interface
 
-![Explorer view](./doc/explorer-1200x.png)
+![Explorer view](./doc/explorer-view.jpg)
 
 Explorer view
 
-![Composer view](./doc/nodeeditor-1200x.png)
+![Composer view](./doc/nodeeditor-view.jpg)
 
 Composer view (NodeEditor and InstructionTree panels)
 
-![Composer view](./doc/composer-1200x.png)
+![Composer view](./doc/composer-view.jpg)
 
 Composer view (InstructionTree and Workspace panels)
 
-![Operation View](./doc/operation-1200x.png)
+![Operation View](./doc/operation-view.jpg)
 
 Operation view (Real-time instruction tree with breakpoints and variable table)
 
