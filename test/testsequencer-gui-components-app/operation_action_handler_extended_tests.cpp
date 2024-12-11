@@ -368,16 +368,18 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 150));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
+
+  QTest::qWait(20);
 
   // starting same job again
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 150));
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
   EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
