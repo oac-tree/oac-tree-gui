@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "version.h"
+
 #include "version_constants.h"  // from <build>/autogen
 
 namespace sequencergui
