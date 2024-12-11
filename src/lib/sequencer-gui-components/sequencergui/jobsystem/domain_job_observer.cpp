@@ -90,6 +90,7 @@ void DomainJobObserver::PutValue(const sup::dto::AnyValue &value, const std::str
 {
   auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
+  ostr << "Put value request > " << description << " " << value_string;
   m_post_event_callback(CreateLogEvent(Severity::kInfo, ostr.str()));
 }
 
