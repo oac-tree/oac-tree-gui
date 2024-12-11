@@ -111,7 +111,7 @@ public:
    *the table was already constructed. We ask the WorkspaceItem to regenerate the whole branch
    *related to VariableItem.
    */
-  void UpdateBranch(mvvm::SessionItem *item)
+  void UpdateBranch(const mvvm::SessionItem *item)
   {
     auto tag_index = item->GetTagIndex();
 
