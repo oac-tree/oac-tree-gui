@@ -44,7 +44,7 @@ void AlignNode::SetParent(AlignNode *parent)
 std::vector<AlignNode *> AlignNode::GetChildren() const
 {
   std::vector<AlignNode *> result;
-  std::transform(m_children.begin(), m_children.end(), std::back_inserter(result),
+  (void)std::transform(m_children.begin(), m_children.end(), std::back_inserter(result),
                  [](const auto &x) { return x.get(); });
   return result;
 }
@@ -52,7 +52,7 @@ std::vector<AlignNode *> AlignNode::GetChildren() const
 AlignNode *AlignNode::Add(std::unique_ptr<AlignNode> child)
 {
   auto result = child.get();
-  m_children.emplace_back(std::move(child));
+  (void)m_children.emplace_back(std::move(child));
   result->SetParent(this);
   return result;
 }

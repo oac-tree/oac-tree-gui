@@ -37,43 +37,43 @@ namespace
 bool RegisterSequencerItems()
 {
   // instructions
-  mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
-  mvvm::RegisterGlobalItem<sequencergui::ParallelSequenceItem>();
-  mvvm::RegisterGlobalItem<sequencergui::RepeatItem>();
-  mvvm::RegisterGlobalItem<sequencergui::SequenceItem>();
-  mvvm::RegisterGlobalItem<sequencergui::WaitItem>();
-  mvvm::RegisterGlobalItem<sequencergui::UniversalInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ParallelSequenceItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::RepeatItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::SequenceItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::WaitItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::UniversalInstructionItem>();
 
   // sequencer-plugin-epics instructions
-  mvvm::RegisterGlobalItem<sequencergui::ChannelAccessReadInstructionItem>();
-  mvvm::RegisterGlobalItem<sequencergui::ChannelAccessWriteInstructionItem>();
-  mvvm::RegisterGlobalItem<sequencergui::PvAccessReadInstructionItem>();
-  mvvm::RegisterGlobalItem<sequencergui::PvAccessWriteInstructionItem>();
-  mvvm::RegisterGlobalItem<sequencergui::RPCClientInstruction>();
-  mvvm::RegisterGlobalItem<sequencergui::SystemCallInstructionItem>();
-  mvvm::RegisterGlobalItem<sequencergui::LogInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessReadInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessWriteInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessReadInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessWriteInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::RPCClientInstruction>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::SystemCallInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::LogInstructionItem>();
 
   // variables
-  mvvm::RegisterGlobalItem<sequencergui::FileVariableItem>();
-  mvvm::RegisterGlobalItem<sequencergui::LocalVariableItem>();
-  mvvm::RegisterGlobalItem<sequencergui::UniversalVariableItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::FileVariableItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::LocalVariableItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::UniversalVariableItem>();
 
   // variables sequencer-plugin-epics
-  mvvm::RegisterGlobalItem<sequencergui::ChannelAccessVariableItem>();
-  mvvm::RegisterGlobalItem<sequencergui::PvAccessClientVariableItem>();
-  mvvm::RegisterGlobalItem<sequencergui::PvAccessServerVariableItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessVariableItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessClientVariableItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessServerVariableItem>();
 
   // other items
-  mvvm::RegisterGlobalItem<sequencergui::InstructionContainerItem>();
-  mvvm::RegisterGlobalItem<sequencergui::ProcedureItem>();
-  mvvm::RegisterGlobalItem<sequencergui::WorkspaceItem>();
-  mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
-  mvvm::RegisterGlobalItem<sequencergui::TypeRegistrationItem>();
-  mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::InstructionContainerItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedureItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::WorkspaceItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::TypeRegistrationItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
 
-  mvvm::RegisterGlobalItem<sequencergui::LocalJobItem>();
-  mvvm::RegisterGlobalItem<sequencergui::ImportedJobItem>();
-  mvvm::RegisterGlobalItem<sequencergui::RemoteJobItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::LocalJobItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::ImportedJobItem>();
+  (void)mvvm::RegisterGlobalItem<sequencergui::RemoteJobItem>();
 
   return true;
 }

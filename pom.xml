@@ -44,8 +44,7 @@
         <!-- -->
         <sonar.language>cpp</sonar.language>
         <sonar.sources.cpp>src</sonar.sources.cpp>
-        <sonar.tests.cpp>test</sonar.tests.cpp>
-        <sonar.exclusions>test/**, src/app/**, src/lib/sequencer-gui-views/**</sonar.exclusions>
+        <sonar.exclusions>src/app/**, src/lib/sequencer-gui-views/**</sonar.exclusions>
     </properties>
     <!-- Parent pom.xml -->
     <parent>

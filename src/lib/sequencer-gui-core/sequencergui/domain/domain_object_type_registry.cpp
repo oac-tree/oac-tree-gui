@@ -30,7 +30,7 @@ void DomainObjectTypeRegistry::Update(const std::string &plugin_name,
     auto iter = m_object_name_to_plugin_name.find(name);
     if (iter == m_object_name_to_plugin_name.end())
     {
-      m_object_name_to_plugin_name.insert({name, plugin_name});
+      (void)m_object_name_to_plugin_name.insert({name, plugin_name});
     }
   }
 }

@@ -32,7 +32,7 @@ namespace
 
 bool RegisterItems()
 {
-  mvvm::RegisterGlobalItem<CommonSettingsItem>();
+  (void)mvvm::RegisterGlobalItem<CommonSettingsItem>();
   return true;
 }
 
