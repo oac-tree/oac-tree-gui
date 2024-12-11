@@ -45,7 +45,7 @@ std::vector<AlignNode *> AlignNode::GetChildren() const
 {
   std::vector<AlignNode *> result;
   (void)std::transform(m_children.begin(), m_children.end(), std::back_inserter(result),
-                 [](const auto &x) { return x.get(); });
+                       [](const auto &x) { return x.get(); });
   return result;
 }
 
@@ -117,7 +117,7 @@ AlignNode *AlignNode::GetPreviousSibling() const
 
   auto children = GetParent()->GetChildren();
   auto index = mvvm::utils::IndexOfItem(children, this);
-  return children.at(index - 1);
+  return children.at(static_cast<size_t>(index - 1));
 }
 
 AlignNode *AlignNode::GetNextSibling() const
@@ -129,7 +129,7 @@ AlignNode *AlignNode::GetNextSibling() const
 
   auto children = GetParent()->GetChildren();
   auto index = mvvm::utils::IndexOfItem(children, this);
-  return children.at(index + 1);
+  return children.at(static_cast<size_t>(index + 1));
 }
 
 AlignNode *AlignNode::GetLeftMostSibling()
