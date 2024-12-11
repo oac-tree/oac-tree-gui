@@ -148,7 +148,7 @@ void DomainJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint
 
   m_post_event_callback(NextLeavesChangedEvent{instr_indices});
 
-  if (m_tick_timeout_msec > 0 && !IsLastTick())
+  if (m_tick_timeout_msec > 0)
   {
     lock.unlock();
     std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_msec));
@@ -181,13 +181,6 @@ void DomainJobObserver::SetTickTimeout(int msec)
 {
   const std::unique_lock<std::mutex> lock{m_mutex};
   m_tick_timeout_msec = msec;
-}
-
-bool DomainJobObserver::IsLastTick()
-{
-  // return status == ExecutionStatus::SUCCESS || status == ExecutionStatus::FAILURE;
-  // How to check last tick?
-  return false;
 }
 
 }  // namespace sequencergui

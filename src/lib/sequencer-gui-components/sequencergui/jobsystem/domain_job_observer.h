@@ -100,8 +100,6 @@ public:
   void SetTickTimeout(int msec);
 
 private:
-  bool IsLastTick();
-
   post_event_callback_t m_post_event_callback;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
