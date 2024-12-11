@@ -125,8 +125,8 @@ public:
 };
 
 WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::ISessionModel *model,
-                                                         QObject *parent)
-    : ViewModel(parent)
+                                                         QObject *parent_object)
+    : ViewModel(parent_object)
 {
   auto controller = std::make_unique<WorkspaceOperationViewModelController>(this);
   controller->SetModel(model);
@@ -135,6 +135,7 @@ WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::ISessionModel *mo
 
 int WorkspaceOperationViewModel::columnCount(const QModelIndex &parent) const
 {
+  (void)parent;
   return 4;  // "Name", "Value", "Type", "Channel"
 }
 

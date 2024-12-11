@@ -27,8 +27,9 @@
 namespace sequencergui
 {
 
-AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
-    : ViewModel(parent)
+AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model,
+                                                   QObject *parent_object)
+    : ViewModel(parent_object)
 {
   // we reuse VariableRowStrategy which covers AnyValueItems too
   SetController(mvvm::factory::CreateController<mvvm::PropertyItemsStrategy, VariableRowStrategy>(
@@ -37,6 +38,7 @@ AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model, Q
 
 int AttributeEditorViewModel::columnCount(const QModelIndex &parent) const
 {
+  (void)parent;
   return 3;  // Name, Value, TypeName
 }
 

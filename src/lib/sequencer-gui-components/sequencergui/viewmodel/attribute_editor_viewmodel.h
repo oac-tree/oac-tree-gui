@@ -41,7 +41,7 @@ class MVVM_VIEWMODEL_EXPORT AttributeEditorViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit AttributeEditorViewModel(mvvm::ISessionModel* model, QObject* parent = nullptr);
+  explicit AttributeEditorViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
 
   int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };

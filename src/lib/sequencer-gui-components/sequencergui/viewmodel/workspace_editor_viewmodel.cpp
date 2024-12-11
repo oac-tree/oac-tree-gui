@@ -46,6 +46,7 @@ WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, b
 
 int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const
 {
+  (void)parent;
   return 3;  // Name, Value, TypeName
 }
 
