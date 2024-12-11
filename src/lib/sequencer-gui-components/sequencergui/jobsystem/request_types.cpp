@@ -28,7 +28,7 @@ namespace sequencergui
 
 bool UserChoiceArgs::operator==(const UserChoiceArgs& other) const
 {
-  return options == other.options && metadata == other.metadata;
+  return (options == other.options) && (metadata == other.metadata);
 }
 
 bool UserChoiceArgs::operator!=(const UserChoiceArgs& other) const
@@ -42,7 +42,7 @@ bool UserChoiceArgs::operator!=(const UserChoiceArgs& other) const
 
 bool UserChoiceResult::operator==(const UserChoiceResult& other) const
 {
-  return index == other.index && processed == other.processed;
+  return (index == other.index) && (processed == other.processed);
 }
 
 bool UserChoiceResult::operator!=(const UserChoiceResult& other) const
@@ -70,7 +70,7 @@ bool UserInputArgs::operator!=(const UserInputArgs& other) const
 
 bool UserInputResult::operator==(const UserInputResult& other) const
 {
-  return value == other.value && processed == other.processed;
+  return (value == other.value) && (processed == other.processed);
 }
 
 bool UserInputResult::operator!=(const UserInputResult& other) const

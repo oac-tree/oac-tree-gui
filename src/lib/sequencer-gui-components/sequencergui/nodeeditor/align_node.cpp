@@ -100,12 +100,12 @@ bool AlignNode::IsLeaf() const
 
 bool AlignNode::IsLeftMost() const
 {
-  return GetParent() ? GetParent()->GetChildren().front() == this : true;
+  return GetParent() ? (GetParent()->GetChildren().front() == this) : true;
 }
 
 bool AlignNode::IsRightMost() const
 {
-  return GetParent() ? GetParent()->GetChildren().back() == this : true;
+  return GetParent() ? (GetParent()->GetChildren().back() == this) : true;
 }
 
 AlignNode *AlignNode::GetPreviousSibling() const
