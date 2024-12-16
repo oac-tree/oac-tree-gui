@@ -12,11 +12,9 @@
         <file>icons/camera-metering-center.svg</file>
         <file>icons/card-bulleted-outline.svg</file>
         <file>icons/chevron-down.svg</file>
-        <file>icons/chevron-right-circle-outline-light.svg</file>
         <file>icons/chevron-right-circle-outline.svg</file>
         <file>icons/chevron-right.svg</file>
         <file>icons/chevron-triple-right.svg</file>
-        <file>icons/cog-outline-light.svg</file>
         <file>icons/cog-outline.svg</file>
         <file>icons/cog.svg</file>
         <file>icons/dock-left.svg</file>
@@ -30,17 +28,13 @@
         <file>icons/file-import-outline.svg</file>
         <file>icons/file-plus-outline.svg</file>
         <file>icons/file-remove-outline.svg</file>
-        <file>icons/file-search-outline-light.svg</file>
         <file>icons/filter-variant-plus.svg</file>
         <file>icons/focus-field.svg</file>
-        <file>icons/graph-outline-light.svg</file>
         <file>icons/hand-back-right-outline.svg</file>
         <file>icons/lan-pending.svg</file>
         <file>icons/map-marker-outline.svg</file>
         <file>icons/menu-open.svg</file>
         <file>icons/menu.svg</file>
-        <file>icons/open-panel-left.svg</file>
-        <file>icons/open-panel-right.svg</file>
         <file>icons/order-bool-descending-variant.svg</file>
         <file>icons/page-first.svg</file>
         <file>icons/page-previous-outline.svg</file>
@@ -56,7 +50,17 @@
         <file>icons/speedometer.svg</file>
         <file>icons/splash-bg1.png</file>
         <file>icons/stop-circle-outline.svg</file>
-        <file>icons/view-dashboard-edit-outline-light.svg</file>
         <file>icons</file>
+        <file>icons/graph-outline.svg</file>
+        <file>icons/file-search-outline.svg</file>
+        <file>icons/file-tree-outline.svg</file>
+        <file>icons/file-tree.svg</file>
+        <file>icons/magnify-plus-outline.svg</file>
+        <file>icons/sequencer-gui-96.png</file>
+        <file>icons/sequencer-gui.svg</file>
+        <file>icons/sequencer-operation-96.png</file>
+        <file>icons/sequencer-operation.svg</file>
+        <file>icons/sup-pvmonitor-96.png</file>
+        <file>icons/sup-pvmonitor.svg</file>
     </qresource>
 </RCC>

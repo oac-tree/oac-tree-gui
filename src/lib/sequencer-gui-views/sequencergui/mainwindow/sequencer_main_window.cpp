@@ -81,22 +81,27 @@ void SequencerMainWindow::InitApplication()
 
 void SequencerMainWindow::InitComponents()
 {
+  using sup::gui::utils::AppIconColorFlavor;
+
   m_action_manager = new SequencerMainWindowActions(m_models.get(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
 
   m_explorer_view = new SequencerExplorerView;
-  m_tab_widget->AddWidget(m_explorer_view, "Explore",
-                          sup::gui::utils::GetIcon("file-search-outline-light.svg"));
+  m_tab_widget->AddWidget(
+      m_explorer_view, "Explore",
+      sup::gui::utils::GetIcon("file-search-outline", AppIconColorFlavor::kForDarkThemes));
 
   m_composer_view = new SequencerComposerView;
-  m_tab_widget->AddWidget(m_composer_view, "Compose",
-                          sup::gui::utils::GetIcon("graph-outline-light.svg"));
+  m_tab_widget->AddWidget(
+      m_composer_view, "Compose",
+      sup::gui::utils::GetIcon("graph-outline", AppIconColorFlavor::kForDarkThemes));
 
   m_operation_view = new OperationMonitorView(OperationPresentationMode::kIdeMode);
-  m_tab_widget->AddWidget(m_operation_view, "Run",
-                          sup::gui::utils::GetIcon("chevron-right-circle-outline-light.svg"));
+  m_tab_widget->AddWidget(
+      m_operation_view, "Run",
+      sup::gui::utils::GetIcon("chevron-right-circle-outline", AppIconColorFlavor::kForDarkThemes));
 
   m_tab_widget->AddSpacer();
 
