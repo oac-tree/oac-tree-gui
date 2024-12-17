@@ -19,6 +19,7 @@
 
 #include "sequencer_main_window.h"
 
+#include "color_palette.h"
 #include "main_window_helper.h"
 #include "sequencer_main_window_actions.h"
 #include "settings_helper.h"
@@ -86,7 +87,7 @@ void SequencerMainWindow::InitComponents()
   m_action_manager = new SequencerMainWindowActions(m_models.get(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
-  m_tab_widget->SetBaseColor("#005291");
+  m_tab_widget->SetBaseColor(GetMainToolBarColor());
 
   m_explorer_view = new SequencerExplorerView;
   m_tab_widget->AddWidget(
