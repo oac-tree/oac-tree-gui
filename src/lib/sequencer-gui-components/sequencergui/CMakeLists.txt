@@ -4,6 +4,7 @@ add_subdirectory(jobsystem)
 add_subdirectory(nodeeditor)
 add_subdirectory(operation)
 add_subdirectory(pvmonitor)
+add_subdirectory(resources)
 add_subdirectory(style)
 add_subdirectory(viewmodel)
 
