@@ -28,7 +28,6 @@
 #include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/app/main_window_types.h>
 #include <sequencergui/components/custom_meta_types.h>
-#include <sequencergui/style/style_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -37,14 +36,6 @@
 #include <functional>
 #include <string>
 #include <vector>
-
-inline void InitResources()
-{
-  Q_INIT_RESOURCE(oac_tree_icons);
-  Q_INIT_RESOURCE(sup_gui_core_icons);
-  sequencergui::RegisterCustomMetaTypes();
-  sequencergui::RegisterPackageIcons();
-}
 
 namespace sequencergui
 {

@@ -26,7 +26,5 @@ int main(int argc, char** argv)
   auto version = QString::fromStdString(sequencergui::ProjectVersion());
   sup::gui::InitCoreApplication("sequencer-gui", version);
 
-  InitResources();
-
   return sequencergui::RunApplication<sequencergui::SequencerMainWindow>(argc, argv);
 }
