@@ -20,10 +20,10 @@
 #include "procedure_list_actions.h"
 
 #include <sequencergui/composer/procedure_list_action_handler.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context.h>
-#include <sup/gui/style/style_helper.h>
 
 #include <QAction>
 #include <QMenu>
@@ -35,14 +35,14 @@ ProcedureListActions::ProcedureListActions(QObject *parent) : QObject(parent)
 {
   m_new_procedure_action = new QAction("New Procedure", this);
   m_new_procedure_action->setToolTip("Creates new empty procedure");
-  m_new_procedure_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
+  m_new_procedure_action->setIcon(FindIcon("file-plus-outline"));
   connect(m_new_procedure_action, &QAction::triggered, this,
           &ProcedureListActions::CreateNewProcedureRequest);
   m_action_map.Add(ActionKey::kCreateNew, m_new_procedure_action);
 
   m_remove_selected_action = new QAction("Remove Procedure", this);
   m_remove_selected_action->setToolTip("Removes selected procedure");
-  m_remove_selected_action->setIcon(sup::gui::utils::GetIcon("file-remove-outline.svg"));
+  m_remove_selected_action->setIcon(FindIcon("file-remove-outline"));
   connect(m_remove_selected_action, &QAction::triggered, this,
           &ProcedureListActions::RemoveProcedureRequest);
   m_action_map.Add(ActionKey::kRemoveSelected, m_remove_selected_action);

@@ -27,10 +27,10 @@
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/settings_model.h>
+#include <sequencergui/style/style_helper.h>
 #include <sequencergui/views/composer/sequencer_composer_view.h>
 #include <sequencergui/views/explorer/sequencer_explorer_view.h>
 #include <sequencergui/views/operation/operation_monitor_view.h>
-#include <sup/gui/style/style_helper.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -82,7 +82,7 @@ void SequencerMainWindow::InitApplication()
 
 void SequencerMainWindow::InitComponents()
 {
-  using sup::gui::utils::AppIconColorFlavor;
+  using sup::gui::IconColorFlavor;
 
   m_action_manager = new SequencerMainWindowActions(m_models.get(), this);
 
@@ -90,19 +90,17 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget->SetBaseColor(GetMainToolBarColor());
 
   m_explorer_view = new SequencerExplorerView;
-  m_tab_widget->AddWidget(
-      m_explorer_view, "Explore",
-      sup::gui::utils::GetIcon("file-search-outline", AppIconColorFlavor::kForDarkThemes));
+  m_tab_widget->AddWidget(m_explorer_view, "Explore",
+                          FindIcon("file-search-outline", IconColorFlavor::kForDarkThemes));
 
   m_composer_view = new SequencerComposerView;
-  m_tab_widget->AddWidget(
-      m_composer_view, "Compose",
-      sup::gui::utils::GetIcon("graph-outline", AppIconColorFlavor::kForDarkThemes));
+  m_tab_widget->AddWidget(m_composer_view, "Compose",
+                          FindIcon("graph-outline", IconColorFlavor::kForDarkThemes));
 
   m_operation_view = new OperationMonitorView(OperationPresentationMode::kIdeMode);
   m_tab_widget->AddWidget(
       m_operation_view, "Run",
-      sup::gui::utils::GetIcon("chevron-right-circle-outline", AppIconColorFlavor::kForDarkThemes));
+      FindIcon("chevron-right-circle-outline", IconColorFlavor::kForDarkThemes));
 
   m_tab_widget->AddSpacer();
 

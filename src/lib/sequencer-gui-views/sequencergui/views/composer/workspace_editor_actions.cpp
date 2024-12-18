@@ -21,10 +21,10 @@
 
 #include <sequencergui/composer/workspace_editor_action_handler.h>
 #include <sequencergui/domain/domain_helper.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/components/proxy_action.h>
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -74,7 +74,7 @@ WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 void WorkspaceEditorActions::SetupActions()
 {
   m_add_variable_action = new sup::gui::ActionMenu("Add variable", this);
-  m_add_variable_action->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
+  m_add_variable_action->setIcon(FindIcon("plus-circle-outline"));
   m_add_variable_action->setMenu(m_add_variable_menu.get());
   m_add_variable_action->setToolTip(
       "Add sequencer variable to the workspace\n\n"
@@ -83,7 +83,7 @@ void WorkspaceEditorActions::SetupActions()
   m_action_map.Add(ActionKey::kAdd, m_add_variable_action);
 
   m_remove_variable_action = new sup::gui::ActionMenu("Remove variable", this);
-  m_remove_variable_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+  m_remove_variable_action->setIcon(FindIcon("beaker-remove-outline"));
   m_remove_variable_action->setToolTip("Remove currently selected variable");
   connect(m_remove_variable_action, &QAction::triggered, this,
           &WorkspaceEditorActions::RemoveVariableRequest);

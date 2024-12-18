@@ -21,7 +21,7 @@
 
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/nodeeditor/graphics_scene_types.h>
-#include <sup/gui/style/style_helper.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -57,7 +57,7 @@ NodeEditorActions::NodeEditorActions(QWidget *parent)
     , m_zoom_menu(CreateZoomMenu())
 {
   m_pointer_button->setText("Select");
-  m_pointer_button->setIcon(sup::gui::utils::GetIcon("arrow-top-left.svg"));
+  m_pointer_button->setIcon(FindIcon("arrow-top-left"));
   m_pointer_button->setToolTip("Scene in edit mode");
   m_pointer_button->setCheckable(true);
   m_pointer_button->setChecked(true);
@@ -66,7 +66,7 @@ NodeEditorActions::NodeEditorActions(QWidget *parent)
   m_action_map.Add(ActionKey::kPointer, m_pointer_action);
 
   m_pan_button->setText("Pan");
-  m_pan_button->setIcon(sup::gui::utils::GetIcon("hand-back-right-outline.svg"));
+  m_pan_button->setIcon(FindIcon("hand-back-right-outline"));
   m_pan_button->setToolTip("Scene in pan mode (space)");
   m_pan_button->setCheckable(true);
   m_pan_button->setToolButtonStyle(Qt::ToolButtonFollowStyle);
@@ -79,19 +79,19 @@ NodeEditorActions::NodeEditorActions(QWidget *parent)
   connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, &NodeEditorActions::selectionMode);
 
   m_zoom_action->setText(GetZoomText(kDefaultZoomLevel));
-  m_zoom_action->setIcon(sup::gui::utils::GetIcon("magnify-plus-outline.svg"));
+  m_zoom_action->setIcon(FindIcon("magnify-plus-outline"));
   m_zoom_action->setMenu(m_zoom_menu.get());
   m_zoom_action->setToolTip("Zoom");
   m_action_map.Add(ActionKey::kZoom, m_zoom_action);
 
   m_center_action->setText("Center");
-  m_center_action->setIcon(sup::gui::utils::GetIcon("camera-metering-center.svg"));
+  m_center_action->setIcon(FindIcon("camera-metering-center"));
   m_center_action->setToolTip("Center view");
   connect(m_center_action, &QAction::triggered, this, &NodeEditorActions::centerView);
   m_action_map.Add(ActionKey::kCenter, m_center_action);
 
   m_align_action->setText("Align");
-  m_align_action->setIcon(sup::gui::utils::GetIcon("dots-triangle.svg"));
+  m_align_action->setIcon(FindIcon("dots-triangle"));
   m_align_action->setToolTip("Align children of currently selected item");
   connect(m_align_action, &QAction::triggered, this, &NodeEditorActions::alignSelectedRequest);
   m_action_map.Add(ActionKey::kAlign, m_align_action);

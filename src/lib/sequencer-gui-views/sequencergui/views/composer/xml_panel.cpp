@@ -21,7 +21,7 @@
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/xml_utils.h>
-#include <sup/gui/style/style_helper.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/views/codeeditor/code_view.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
@@ -68,7 +68,7 @@ void XmlPanel::SetupActions()
 {
   m_export_action = new QAction(this);
   m_export_action->setText("Save procedure to XML");
-  m_export_action->setIcon(sup::gui::utils::GetIcon("export.svg"));
+  m_export_action->setIcon(FindIcon("export"));
   m_export_action->setToolTip("Save procedure to Sequencer XML file");
   connect(m_export_action, &QAction::triggered, this, &XmlPanel::ExportToFileRequest);
   addAction(m_export_action);

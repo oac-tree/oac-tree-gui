@@ -20,7 +20,7 @@
 #include "monitor_realtime_actions.h"
 
 #include <sequencergui/model/item_constants.h>
-#include <sup/gui/style/style_helper.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <QAction>
@@ -61,27 +61,27 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
 {
   ReadSettings();
 
-  m_run_action->setIcon(sup::gui::utils::GetIcon("arrow-right-drop-circle-outline.svg"));
+  m_run_action->setIcon(FindIcon("arrow-right-drop-circle-outline"));
   m_run_action->setToolTip("Run procedure");
   connect(m_run_action, &QAction::triggered, this, &MonitorRealTimeActions::RunRequest);
   m_action_map.Add(ActionKey::kRun, m_run_action);
 
-  m_pause_action->setIcon(sup::gui::utils::GetIcon("pause-circle-outline.svg"));
+  m_pause_action->setIcon(FindIcon("pause-circle-outline"));
   m_pause_action->setToolTip("Pause sequence at the next occasion");
   connect(m_pause_action, &QAction::triggered, this, &MonitorRealTimeActions::PauseRequest);
   m_action_map.Add(ActionKey::kPause, m_pause_action);
 
-  m_step_action->setIcon(sup::gui::utils::GetIcon("play-pause.svg"));
+  m_step_action->setIcon(FindIcon("play-pause"));
   m_step_action->setToolTip("Execute single instruction");
   connect(m_step_action, &QAction::triggered, this, &MonitorRealTimeActions::StepRequest);
   m_action_map.Add(ActionKey::kStep, m_step_action);
 
-  m_stop_action->setIcon(sup::gui::utils::GetIcon("stop-circle-outline.svg"));
+  m_stop_action->setIcon(FindIcon("stop-circle-outline"));
   m_stop_action->setToolTip("Stop procedure");
   connect(m_stop_action, &QAction::triggered, this, &MonitorRealTimeActions::StopRequest);
   m_action_map.Add(ActionKey::kStop, m_stop_action);
 
-  m_reset_action->setIcon(sup::gui::utils::GetIcon("page-first.svg"));
+  m_reset_action->setIcon(FindIcon("page-first"));
   m_reset_action->setToolTip(
       "Reset sequencer procedure runner to the initial state\n"
       "Works only on finished/halted procedures");
@@ -89,7 +89,7 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
   m_action_map.Add(ActionKey::kReset, m_reset_action);
 
   m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
-  m_delay_button->setIcon(sup::gui::utils::GetIcon("speedometer-slow.svg"));
+  m_delay_button->setIcon(FindIcon("speedometer-slow"));
   m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_delay_button->setToolTip("Artificial delay after each change of instruction status");
   m_delay_button->setMenu(m_delay_menu.get());
@@ -98,7 +98,7 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
   m_action_map.Add(ActionKey::kDelay, m_delay_action);
 
   m_settings_action->setText("Other");
-  m_settings_action->setIcon(sup::gui::utils::GetIcon("menu.svg"));
+  m_settings_action->setIcon(FindIcon("menu"));
   m_settings_action->setToolTip("Other settings");
   m_settings_action->setMenu(m_settings_menu.get());
   m_action_map.Add(ActionKey::kSettings, m_settings_action);

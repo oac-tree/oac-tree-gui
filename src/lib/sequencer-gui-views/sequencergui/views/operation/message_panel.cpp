@@ -21,8 +21,8 @@
 
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/job_utils.h>
+#include <sequencergui/style/style_helper.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/steady_menu.h>
 
@@ -137,7 +137,7 @@ std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()
 
   auto result = std::make_unique<QToolButton>();
   result->setText("Severity");
-  result->setIcon(sup::gui::utils::GetIcon("cog-outline.svg"));
+  result->setIcon(FindIcon("cog-outline"));
   result->setPopupMode(QToolButton::InstantPopup);
   result->setToolButtonStyle(Qt::ToolButtonIconOnly);
   result->setMenu(m_severity_selector_menu.get());

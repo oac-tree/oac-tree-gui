@@ -25,7 +25,7 @@
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/components/proxy_action.h>
-#include <sup/gui/style/style_helper.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -96,21 +96,21 @@ void InstructionEditorActions::SetupInsertRemoveActions()
 {
   // insert instruction after (special version whick looks nice in a toolbar and in pop-up menu)
   m_insert_after_action = new sup::gui::ActionMenu("Add", this);
-  m_insert_after_action->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
+  m_insert_after_action->setIcon(FindIcon("plus-circle-outline"));
   m_insert_after_action->setMenu(m_insert_after_menu.get());
   m_insert_after_action->setToolTip("Add instruction after current selection");
   m_action_map.Add(ActionKey::kInsertAfter, m_insert_after_action);
 
   // insert instruction into
   m_insert_into_action = new sup::gui::ActionMenu("Insert", this);
-  m_insert_into_action->setIcon(sup::gui::utils::GetIcon("plus-circle-multiple-outline.svg"));
+  m_insert_into_action->setIcon(FindIcon("plus-circle-multiple-outline"));
   m_insert_into_action->setMenu(m_insert_into_menu.get());
   m_insert_into_action->setToolTip("Insert instruction into currently selected instruction");
   m_action_map.Add(ActionKey::kInsertInto, m_insert_into_action);
 
   // remove action
   m_remove_action = new QAction("Remove", this);
-  m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+  m_remove_action->setIcon(FindIcon("beaker-remove-outline"));
   m_remove_action->setToolTip("Remove currently selected instruction together with its children");
   connect(m_remove_action, &QAction::triggered, this,
           [this]() { m_action_handler->OnRemoveInstructionRequest(); });
@@ -121,7 +121,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_action_map.Add(ActionKey::kRemoveSelected, m_remove_toolbar_action);
 
   m_move_up_action = new QAction("Move Up", this);
-  m_move_up_action->setIcon(sup::gui::utils::GetIcon("arrow-up-thin-circle-outline.svg"));
+  m_move_up_action->setIcon(FindIcon("arrow-up-thin-circle-outline"));
   m_move_up_action->setToolTip(
       "Move currently selected instruction up, works within the same parent");
   m_action_map.Add(ActionKey::kMoveUp, m_move_up_action);
@@ -129,7 +129,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
           [this]() { m_action_handler->OnMoveUpRequest(); });
 
   m_move_down_action = new QAction("Move Down", this);
-  m_move_down_action->setIcon(sup::gui::utils::GetIcon("arrow-down-thin-circle-outline.svg"));
+  m_move_down_action->setIcon(FindIcon("arrow-down-thin-circle-outline"));
   m_move_down_action->setToolTip(
       "Move currently selected instruction down, works within the same parent");
   m_action_map.Add(ActionKey::kMoveDown, m_move_down_action);

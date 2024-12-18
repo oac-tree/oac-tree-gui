@@ -19,10 +19,11 @@
 
 #include "file_tree_view.h"
 
-#include <mvvm/project/recent_project_settings.h>
-#include <sup/gui/widgets/action_menu.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/style/style_helper.h>
+#include <sup/gui/widgets/action_menu.h>
 
+#include <mvvm/project/recent_project_settings.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
@@ -151,7 +152,7 @@ void FileTreeView::SetupActions()
   m_import_file_action->setToolTip(
       "Import procedure from currently selected XML file\n"
       "(alternatively, double-click on it)");
-  m_import_file_action->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
+  m_import_file_action->setIcon(FindIcon("file-import-outline"));
   auto on_import_from_file = [this]() {};
   connect(m_import_file_action, &QAction::triggered, this, &FileTreeView::OnImportFromFileRequest);
   addAction(m_import_file_action);
@@ -161,7 +162,7 @@ void FileTreeView::SetupActions()
   connect(m_bookmark_menu.get(), &QMenu::aboutToShow, this,
           &FileTreeView::OnAboutToShowBookmarkMenu);
   m_bookmark_action->setText("Bookmark");
-  m_bookmark_action->setIcon(sup::gui::utils::GetIcon("bookmark-outline.svg"));
+  m_bookmark_action->setIcon(FindIcon("bookmark-outline"));
   m_bookmark_action->setMenu(m_bookmark_menu.get());
   m_bookmark_action->setToolTip("Manage bookmarks");
   addAction(m_bookmark_action);

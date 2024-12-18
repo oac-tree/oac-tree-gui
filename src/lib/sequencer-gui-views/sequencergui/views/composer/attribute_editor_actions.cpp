@@ -21,10 +21,10 @@
 
 #include <sequencergui/composer/attribute_editor_action_handler.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/style/style_helper.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/action_menu.h>
-#include <sup/gui/style/style_helper.h>
 
 #include <QMenu>
 #include <QToolButton>
@@ -52,13 +52,13 @@ AttributeEditorActions::AttributeEditorActions(const AttributeEditorActionHandle
           &AttributeEditorActions::OnAboutToShowMenu);
 
   m_modify_attribute_action->setText("Modify attribute");
-  m_modify_attribute_action->setIcon(sup::gui::utils::GetIcon("page-previous-outline.svg"));
+  m_modify_attribute_action->setIcon(FindIcon("page-previous-outline"));
   m_modify_attribute_action->setMenu(m_modify_attribute_menu.get());
   m_modify_attribute_action->setToolTip("Modifies currently selected attribute");
   m_action_map.Add(ActionKey::kModifyAttribute, m_modify_attribute_action);
 
   m_edit_anyvalue_action->setText("Edit AnyValue");
-  m_edit_anyvalue_action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
+  m_edit_anyvalue_action->setIcon(FindIcon("file-tree-outline"));
   m_edit_anyvalue_action->setToolTip(kEditAnyValueToolTip);
   connect(m_edit_anyvalue_action, &QAction::triggered, this,
           &AttributeEditorActions::EditAnyvalueRequest);
@@ -129,7 +129,7 @@ void AttributeEditorActions::AddEditAnyValueAction(QMenu &menu)
 {
   auto action = menu.addAction("Set placeholder attribute");
   action->setText("Edit AnyValue");
-  action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
+  action->setIcon(FindIcon("file-tree-outline"));
   action->setToolTip(kEditAnyValueToolTip);
   connect(action, &QAction::triggered, this, &AttributeEditorActions::EditAnyvalueRequest);
   action->setEnabled(m_handler->CanEditAnyValue());

@@ -36,12 +36,12 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_action_handler.h>
 #include <sequencergui/operation/operation_action_helper.h>
+#include <sequencergui/style/style_helper.h>
 #include <sequencergui/views/editors/user_input_dialogs.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sequencergui/views/operation/remote_connection_dialog.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
 
@@ -245,7 +245,7 @@ void OperationMonitorView::SetupWidgetActions()
   m_show_left_sidebar = new QAction("Show/hide Left Sidebar", this);
   m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
   m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
-  m_show_left_sidebar->setIcon(sup::gui::utils::GetIcon("dock-left.svg"));
+  m_show_left_sidebar->setIcon(FindIcon("dock-left"));
   connect(m_show_left_sidebar, &QAction::triggered, this,
           [this](auto)
           {
@@ -256,7 +256,7 @@ void OperationMonitorView::SetupWidgetActions()
   m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
   m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
   m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
-  m_show_right_sidebar->setIcon(sup::gui::utils::GetIcon("dock-right.svg"));
+  m_show_right_sidebar->setIcon(FindIcon("dock-right"));
   connect(m_show_right_sidebar, &QAction::triggered, this,
           [this](auto)
           {
