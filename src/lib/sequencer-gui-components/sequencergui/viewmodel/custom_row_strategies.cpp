@@ -38,7 +38,7 @@
 namespace
 {
 
-const QVariant kEditorIcon = QVariant::fromValue(QIcon(":/icons/file-tree-outline.svg"));
+const QVariant kEditorIcon = QVariant::fromValue(QIcon(":/oac-tree/icons/file-tree-outline.svg"));
 
 /**
  * @brief Creates view item representing AnyValue in a column.

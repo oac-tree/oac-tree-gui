@@ -28,6 +28,8 @@ class QString;
 namespace sequencergui
 {
 
+void RegisterPackageIcons();
+
 /**
  * @brief FindIcon
  */

@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/oac-tree">
         <file>icons/about_logo.awk</file>
         <file>icons/arrow-down-thin-circle-outline.svg</file>
         <file>icons/arrow-right-circle-outline.svg</file>

@@ -41,7 +41,7 @@ int main(int argc, char** argv)
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
   sequencergui::RegisterCustomMetaTypes();
-  Q_INIT_RESOURCE(sequencericons);
+  Q_INIT_RESOURCE(oac_tree_icons);
 
   auto [success, message] = sequencergui::LoadPlugins();
   if (!success)

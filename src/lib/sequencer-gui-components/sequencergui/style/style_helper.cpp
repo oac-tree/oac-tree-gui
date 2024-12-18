@@ -24,9 +24,19 @@
 namespace sequencergui
 {
 
+void RegisterPackageIcons()
+{
+  sup::gui::utils::RegisterPackageIcons();
+
+  const QString oac_tree_icons_resource = "oac_tree_icons.qrc";
+  const QString oac_tree_resource_path = ":/oac_tree/icons";  // as defined in file
+  sup::gui::utils::RegisterResource(oac_tree_icons_resource, oac_tree_resource_path,
+                                    sup::gui::utils::GetDefaultIconPathAlias());
+}
+
 QIcon FindIcon(const QString &icon_name, sup::gui::IconColorFlavor icon_flavor)
 {
-  return sup::gui::utils::GetIcon(QString(":/icons/%1.%2").arg(icon_name, "svg"), icon_flavor);
+  return sup::gui::utils::FindIcon(icon_name, icon_flavor);
 }
 
 }  // namespace sequencergui

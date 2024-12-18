@@ -17,7 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/components/custom_meta_types.h>
 #include <sequencergui/core/version.h>
 #include <sequencergui/mainwindow/main_window_helper.h>
 #include <sequencergui/mainwindow/sequencer_main_window.h>
@@ -27,8 +26,7 @@ int main(int argc, char** argv)
   auto version = QString::fromStdString(sequencergui::ProjectVersion());
   sup::gui::InitCoreApplication("sequencer-gui", version);
 
-  sequencergui::RegisterCustomMetaTypes();
-  Q_INIT_RESOURCE(sequencericons);
+  InitResources();
 
   return sequencergui::RunApplication<sequencergui::SequencerMainWindow>(argc, argv);
 }
