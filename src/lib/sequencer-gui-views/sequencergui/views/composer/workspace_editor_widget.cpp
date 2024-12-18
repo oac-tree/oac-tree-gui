@@ -22,8 +22,8 @@
 #include "workspace_editor.h"
 
 #include <sup/gui/components/tree_helper.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>

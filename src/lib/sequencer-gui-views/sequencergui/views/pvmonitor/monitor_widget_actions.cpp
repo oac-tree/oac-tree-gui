@@ -19,7 +19,7 @@
 
 #include "monitor_widget_actions.h"
 
-#include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/style/style_helper.h>
 
 #include <QAction>
 

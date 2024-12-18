@@ -24,7 +24,7 @@
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/action_menu.h>
-#include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/style/style_helper.h>
 
 #include <QMenu>
 #include <QToolButton>

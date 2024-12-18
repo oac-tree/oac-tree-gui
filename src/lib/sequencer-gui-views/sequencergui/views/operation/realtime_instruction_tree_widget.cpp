@@ -29,8 +29,8 @@
 #include <sequencergui/operation/tooltip_helper.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sup/gui/components/tree_helper.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>

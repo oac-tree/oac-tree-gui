@@ -22,9 +22,9 @@
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/steady_menu.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/editors/selectable_combobox_editor.h>
 

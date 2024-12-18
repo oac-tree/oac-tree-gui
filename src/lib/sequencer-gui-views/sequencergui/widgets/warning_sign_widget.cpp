@@ -19,7 +19,7 @@
 
 #include "warning_sign_widget.h"
 
-#include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/style/style_helper.h>
 
 #include <QIcon>
 #include <QMessageBox>

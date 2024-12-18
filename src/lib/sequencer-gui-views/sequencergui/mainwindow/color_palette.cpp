@@ -19,7 +19,7 @@
 
 #include "color_palette.h"
 
-#include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/style/style_helper.h>
 
 namespace sequencergui
 {

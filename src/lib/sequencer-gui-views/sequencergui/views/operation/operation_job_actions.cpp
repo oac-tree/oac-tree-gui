@@ -20,8 +20,8 @@
 #include "operation_job_actions.h"
 
 #include <sequencergui/model/procedure_item.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
 #include <QToolButton>

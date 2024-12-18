@@ -20,8 +20,8 @@
 #include "procedure_trees_widget.h"
 
 #include <sequencergui/model/procedure_item.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/viewmodel/top_items_viewmodel.h>

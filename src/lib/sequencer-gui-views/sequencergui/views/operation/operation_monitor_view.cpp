@@ -41,9 +41,9 @@
 #include <sequencergui/views/operation/remote_connection_dialog.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>

@@ -25,8 +25,8 @@
 #include <sequencergui/composer/attribute_editor_context.h>
 #include <sequencergui/viewmodel/attribute_editor_viewmodel.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/session_item.h>
 #include <mvvm/providers/item_view_component_provider.h>

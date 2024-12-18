@@ -21,8 +21,8 @@
 
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/nodeeditor/graphics_scene_types.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

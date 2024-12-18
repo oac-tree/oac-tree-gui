@@ -30,7 +30,7 @@
 #include <sequencergui/views/composer/sequencer_composer_view.h>
 #include <sequencergui/views/explorer/sequencer_explorer_view.h>
 #include <sequencergui/views/operation/operation_monitor_view.h>
-#include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/style/style_helper.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <mvvm/widgets/widget_utils.h>

@@ -21,7 +21,7 @@
 
 #include <mvvm/project/recent_project_settings.h>
 #include <sup/gui/widgets/action_menu.h>
-#include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/style/style_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

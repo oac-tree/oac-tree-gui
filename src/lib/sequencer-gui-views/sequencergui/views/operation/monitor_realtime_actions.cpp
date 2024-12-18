@@ -20,8 +20,8 @@
 #include "monitor_realtime_actions.h"
 
 #include <sequencergui/model/item_constants.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
 #include <QMenu>

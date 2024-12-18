@@ -26,9 +26,9 @@
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/views/composer/workspace_editor_widget.h>
+#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <sup/sequencer/workspace.h>
 
