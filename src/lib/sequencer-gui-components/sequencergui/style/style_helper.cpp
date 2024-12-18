@@ -21,21 +21,14 @@
 
 #include <sup/gui/style/style_helper.h>
 
+#include <QIcon>
+
 namespace sequencergui
 {
 
-// void RegisterPackageIcons()
-// {
-//   sup::gui::utils::RegisterPackageIcons();
-
-//   const QString oac_tree_icons_resource = "oac_tree_icons.qrc";
-//   const QString oac_tree_resource_path = ":/oac_tree/icons";  // as defined in file
-//   sup::gui::utils::RegisterResource(oac_tree_icons_resource, oac_tree_resource_path,
-//                                     sup::gui::utils::GetDefaultIconPathAlias());
-// }
-
 QIcon FindIcon(const QString &icon_name, sup::gui::IconColorFlavor icon_flavor)
 {
+  // in accordance with the oac_tree_icons.qrc file
   return sup::gui::utils::GetIcon(QString(":/oac-tree/icons/%1.svg").arg(icon_name), icon_flavor);
 }
 

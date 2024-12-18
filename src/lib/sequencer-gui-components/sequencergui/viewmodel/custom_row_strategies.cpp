@@ -26,7 +26,9 @@
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/style/style_helper.h>
 
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
@@ -38,7 +40,16 @@
 namespace
 {
 
-const QVariant kEditorIcon = QVariant::fromValue(QIcon(":/oac-tree/icons/file-tree-outline.svg"));
+QVariant GetValueIcon()
+{
+  // Our ColorIconEngine doesn't work with icons embedded into tree view
+  // Have to set icons manually depending on theme
+  if (sup::gui::utils::IsDarkTheme())
+  {
+    return QVariant::fromValue(QIcon(":/oac-tree/icons/file-tree-outline-light.svg"));
+  }
+  return QVariant::fromValue(QIcon(":/oac-tree/icons/file-tree-outline-dark.svg"));
+}
 
 /**
  * @brief Creates view item representing AnyValue in a column.
@@ -140,7 +151,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
   if (item.GetTagIndex().tag == sequencergui::itemconstants::kAnyValueTag)
   {
     auto view_item = mvvm::CreateFixedDataViewItem(&item);
-    view_item->SetData(kEditorIcon, Qt::DecorationRole);
+    view_item->SetData(GetValueIcon(), Qt::DecorationRole);
     view_item->SetData(QString::fromStdString(item.GetDisplayName()), Qt::DisplayRole);
     result.emplace_back(std::move(view_item));
   }

@@ -28,10 +28,11 @@ class QString;
 namespace sequencergui
 {
 
-void RegisterPackageIcons();
-
 /**
- * @brief FindIcon
+ * @brief Finds an icon with the given name and dark/light color flavor.
+ *
+ * Example: FindIcon("animation", AppIconColorFlavor::kForDarkThemes)
+ * Is assumes an existence of animation.svg file in the resource folder of sequencer package.
  */
 QIcon FindIcon(const QString& icon_name,
                sup::gui::IconColorFlavor icon_flavor = sup::gui::IconColorFlavor::kUnspecified);
