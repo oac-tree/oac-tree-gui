@@ -34,6 +34,7 @@ class ItemViewComponentProvider;
 namespace sup::gui
 {
 class CustomHeaderView;
+class CustomSplitter;
 }  // namespace sup::gui
 
 namespace sequencergui
@@ -67,7 +68,7 @@ private:
   sup::gui::CustomHeaderView* m_procedure_custom_header{nullptr};
 
   mvvm::PropertyTreeView* m_property_tree{nullptr};
-  QSplitter* m_splitter{nullptr};
+  sup::gui::CustomSplitter* m_splitter{nullptr};
 };
 
 }  // namespace sequencergui

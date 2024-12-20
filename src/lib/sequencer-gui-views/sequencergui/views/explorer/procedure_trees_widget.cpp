@@ -22,13 +22,12 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/custom_splitter.h>
 
 #include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/viewmodel/top_items_viewmodel.h>
 #include <mvvm/views/property_tree_view.h>
 
-#include <QSettings>
-#include <QSplitter>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -51,7 +50,7 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     , m_procedure_custom_header(
           new sup::gui::CustomHeaderView(kProcedureHeaderStateSettingName, this))
     , m_property_tree(new mvvm::PropertyTreeView)
-    , m_splitter(new QSplitter)
+    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
 {
   setWindowTitle("Procedure View");
 
@@ -62,6 +61,7 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_procedure_tree);
   m_splitter->addWidget(m_property_tree);
+  m_splitter->setSizes({400, 200});
 
   m_splitter->setWindowTitle("Procedure View");
   layout->addWidget(m_splitter);
@@ -92,22 +92,12 @@ void ProcedureTreesWidget::SetProcedure(ProcedureItem *procedure_item)
 
 void ProcedureTreesWidget::ReadSettings()
 {
-  const QSettings settings;
-
-  if (settings.contains(kSplitterSettingName))
-  {
-    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
-  }
-  else
-  {
-    m_splitter->setSizes({400, 200});
-  }
+  m_splitter->ReadSettings();
 }
 
 void ProcedureTreesWidget::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kSplitterSettingName, m_splitter->saveState());
+  m_splitter->WriteSettings();
 }
 
 }  // namespace sequencergui

@@ -29,6 +29,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/widgets/custom_splitter.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -52,7 +53,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_composer_panel(new ComposerPanel)
     , m_central_panel(new ComposerWidgetPanel)
     , m_right_panel(new ComposerWidgetPanel)
-    , m_splitter(new QSplitter)
+    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_composer_actions(new SequencerComposerActions(this))
 {
   auto layout = new QVBoxLayout(this);
@@ -92,25 +93,23 @@ void SequencerComposerView::ReadSettings()
 {
   const QSettings settings;
 
-  if (settings.contains(kSplitterSettingName))
-  {
-    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
-  }
-
   auto central_index = settings.value(kCentralPanel, ComposerWidgetPanel::kInstructionTree).toInt();
   m_central_panel->SetCurrentWidgetType(
       static_cast<ComposerWidgetPanel::WidgetType>(central_index));
 
   auto right_index = settings.value(kRightPanel, ComposerWidgetPanel::kWorkspace).toInt();
   m_right_panel->SetCurrentWidgetType(static_cast<ComposerWidgetPanel::WidgetType>(right_index));
+
+  m_splitter->ReadSettings();
 }
 
 void SequencerComposerView::WriteSettings()
 {
   QSettings settings;
-  settings.setValue(kSplitterSettingName, m_splitter->saveState());
   settings.setValue(kCentralPanel, m_central_panel->GetCurrentWidgetType());
   settings.setValue(kRightPanel, m_right_panel->GetCurrentWidgetType());
+
+  m_splitter->WriteSettings();
 }
 
 void SequencerComposerView::SetupConnections()

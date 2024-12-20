@@ -22,7 +22,10 @@
 
 #include <QWidget>
 
-class QSplitter;
+namespace sup::gui
+{
+class CustomSplitter;
+}
 
 namespace sequencergui
 {
@@ -61,7 +64,7 @@ private:
   ComposerWidgetPanel* m_central_panel{nullptr};
   ComposerWidgetPanel* m_right_panel{nullptr};
 
-  QSplitter* m_splitter{nullptr};
+  sup::gui::CustomSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
 
   SequencerComposerActions* m_composer_actions{nullptr};
