@@ -42,6 +42,7 @@
 #include <sequencergui/views/operation/remote_connection_dialog.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
 
@@ -49,7 +50,6 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <QSettings>
-#include <QSplitter>
 #include <QToolBar>
 #include <QVBoxLayout>
 
@@ -60,8 +60,6 @@ namespace
 {
 const QString kGroupName("OperationMonitorView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
-const QString kLeftPanelIsVisibleSettingName = kGroupName + "/" + "left_panel";
-const QString kRightPanelIsVisibleSettingName = kGroupName + "/" + "right_panel";
 
 std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
 {
@@ -78,7 +76,7 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_realtime_panel(new OperationRealTimePanel)
     , m_left_panel(CreateLeftPanel())
     , m_workspace_panel{new OperationWorkspacePanel}
-    , m_splitter(new QSplitter)
+    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
     , m_job_manager(new JobManager(
           GetJobHandlerFactoryFunc(CreateDefaultUserContext(this), *m_connection_service), this))
@@ -148,26 +146,12 @@ void OperationMonitorView::closeEvent(QCloseEvent *event)
 
 void OperationMonitorView::ReadSettings()
 {
-  const QSettings settings;
-
-  if (settings.contains(kSplitterSettingName))
-  {
-    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
-  }
-
-  // see comments to the method SetupWidgetActions
-  m_left_panel_is_visible = settings.value(kLeftPanelIsVisibleSettingName, true).toBool();
-  m_right_panel_is_visible = settings.value(kRightPanelIsVisibleSettingName, true).toBool();
-  m_left_panel->setVisible(m_left_panel_is_visible);
-  m_workspace_panel->setVisible(m_right_panel_is_visible);
+  m_splitter->ReadSettings();
 }
 
 void OperationMonitorView::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kSplitterSettingName, m_splitter->saveState());
-  settings.setValue(kLeftPanelIsVisibleSettingName, m_left_panel_is_visible);
-  settings.setValue(kRightPanelIsVisibleSettingName, m_right_panel_is_visible);
+  m_splitter->WriteSettings();
 }
 
 void OperationMonitorView::SetupConnections()
@@ -236,33 +220,19 @@ void OperationMonitorView::SetupConnections()
 
 void OperationMonitorView::SetupWidgetActions()
 {
-  // We setup actions to collapse/expand left and right panels. Here we are relying
-  // on two additional flags for that: m_show_left_sidebar and m_show_right_sidebar.
-  // We could do instead widget->setVisible(!widget->isVisible()), but this will not allow
-  // us to save visible/invisible state on application destruction: the reason is that widgets
-  // during shutdown phase are always invisible.
-
   m_show_left_sidebar = new QAction("Show/hide Left Sidebar", this);
   m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
   m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
   m_show_left_sidebar->setIcon(FindIcon("dock-left"));
   connect(m_show_left_sidebar, &QAction::triggered, this,
-          [this](auto)
-          {
-            m_left_panel_is_visible = !m_left_panel_is_visible;
-            m_left_panel->setVisible(m_left_panel_is_visible);
-          });
+          [this](auto) { m_left_panel->setVisible(!m_left_panel->isVisible()); });
 
   m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
   m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
   m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
   m_show_right_sidebar->setIcon(FindIcon("dock-right"));
   connect(m_show_right_sidebar, &QAction::triggered, this,
-          [this](auto)
-          {
-            m_right_panel_is_visible = !m_right_panel_is_visible;
-            m_workspace_panel->setVisible(m_right_panel_is_visible);
-          });
+          [this](auto) { m_workspace_panel->setVisible(!m_workspace_panel->isVisible()); });
 
   sup::gui::AppRegisterAction(sup::gui::constants::kViewMenu, m_show_left_sidebar);
   sup::gui::AppRegisterAction(sup::gui::constants::kViewMenu, m_show_right_sidebar);

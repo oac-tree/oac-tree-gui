@@ -26,6 +26,11 @@
 class QSplitter;
 class QShowEvent;
 
+namespace sup::gui
+{
+class CustomSplitter;
+}
+
 namespace sequencergui
 {
 
@@ -92,16 +97,12 @@ private:
   QWidget* m_left_panel{nullptr};
   OperationWorkspacePanel* m_workspace_panel{nullptr};
 
-  QSplitter* m_splitter{nullptr};
+  sup::gui::CustomSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};
 
   std::unique_ptr<RemoteConnectionService> m_connection_service;
   JobManager* m_job_manager{nullptr};
   OperationActionHandler* m_action_handler{nullptr};
-
-  bool m_left_panel_is_visible{true};
-  bool m_right_panel_is_visible{true};
-
 };
 
 }  // namespace sequencergui
