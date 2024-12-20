@@ -26,12 +26,11 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sup/gui/views/codeeditor/code_view.h>
+#include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
 #include <mvvm/standarditems/container_item.h>
 
-#include <QSettings>
-#include <QSplitter>
 #include <QVBoxLayout>
 
 namespace
@@ -51,7 +50,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     , m_trees_widget(new ProcedureTreesWidget)
     , m_xml_view(new sup::gui::CodeView)
     , m_right_panel(new sup::gui::ItemStackWidget)
-    , m_splitter(new QSplitter)
+    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -118,18 +117,12 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 
 void SequencerExplorerView::ReadSettings()
 {
-  const QSettings settings;
-
-  if (settings.contains(kSplitterSettingName))
-  {
-    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
-  }
+  m_splitter->ReadSettings();
 }
 
 void SequencerExplorerView::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kSplitterSettingName, m_splitter->saveState());
+  m_splitter->WriteSettings();
 }
 
 void SequencerExplorerView::SetupConnections()

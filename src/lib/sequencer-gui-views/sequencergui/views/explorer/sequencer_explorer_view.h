@@ -22,12 +22,11 @@
 
 #include <QWidget>
 
-class QSplitter;
-
 namespace sup::gui
 {
 class CodeView;
 class ItemStackWidget;
+class CustomSplitter;
 }  // namespace sup::gui
 
 namespace sequencergui
@@ -69,7 +68,7 @@ private:
   ProcedureTreesWidget* m_trees_widget{nullptr};
   sup::gui::CodeView* m_xml_view{nullptr};
   sup::gui::ItemStackWidget* m_right_panel{nullptr};
-  QSplitter* m_splitter{nullptr};
+  sup::gui::CustomSplitter* m_splitter{nullptr};
 
   std::unique_ptr<SequencerModel> m_temp_model;  //!< temporary model for disk browsing
   SequencerModel* m_model{nullptr};
