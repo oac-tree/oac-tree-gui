@@ -49,7 +49,6 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
-#include <QSettings>
 #include <QToolBar>
 #include <QVBoxLayout>
 

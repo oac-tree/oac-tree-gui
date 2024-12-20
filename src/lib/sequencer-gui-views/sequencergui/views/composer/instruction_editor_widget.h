@@ -23,7 +23,6 @@
 #include <QWidget>
 #include <memory>
 
-class QSplitter;
 class QTreeView;
 
 namespace mvvm
@@ -35,6 +34,7 @@ namespace sup::gui
 {
 class CustomHeaderView;
 class VisibilityAgentBase;
+class CustomSplitter;
 }  // namespace sup::gui
 
 namespace sequencergui
@@ -90,7 +90,7 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   InstructionAttributeEditor* m_attribute_editor{nullptr};
 
-  QSplitter* m_splitter{nullptr};
+  sup::gui::CustomSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};
 
   InstructionEditorActionHandler* m_action_handler{nullptr};

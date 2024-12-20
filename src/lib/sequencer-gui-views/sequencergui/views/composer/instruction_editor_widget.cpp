@@ -34,6 +34,7 @@
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
@@ -43,8 +44,6 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QMimeData>
-#include <QSettings>
-#include <QSplitter>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -75,7 +74,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
     , m_attribute_editor(new InstructionAttributeEditor)
-    , m_splitter(new QSplitter)
+    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_action_handler(new InstructionEditorActionHandler(CreateInstructionEditorContext(), this))
     , m_editor_actions(new InstructionEditorActions(m_action_handler, this))
     , m_tree_view_style(new CustomTreeViewStyle(style()))
@@ -155,18 +154,12 @@ InstructionItem *InstructionEditorWidget::GetSelectedInstruction() const
 
 void InstructionEditorWidget::ReadSettings()
 {
-  const QSettings settings;
-
-  if (settings.contains(kSplitterSettingName))
-  {
-    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
-  }
+  m_splitter->ReadSettings();
 }
 
 void InstructionEditorWidget::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kSplitterSettingName, m_splitter->saveState());
+  m_splitter->WriteSettings();
 }
 
 void InstructionEditorWidget::SetupTree()
