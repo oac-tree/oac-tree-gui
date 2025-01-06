@@ -63,6 +63,7 @@ int RunApplication(int argc, char** argv)
   LoadMainPlugins();
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
+  sequencergui::RegisterCustomMetaTypes();
 
   std::unique_ptr<sequencergui::SplashScreen> splash;
 

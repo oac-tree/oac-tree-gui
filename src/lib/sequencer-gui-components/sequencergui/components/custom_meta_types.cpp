@@ -27,21 +27,36 @@
 
 #include <sup/sequencer/instruction.h>
 
+#include <QDataStream>
+
 namespace sequencergui
 {
+
 void RegisterCustomMetaTypes()
 {
-  qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
-  qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
-  qRegisterMetaType<std::vector<sequencergui::InstructionItem*>>(
-      "std::vector<sequencergui::InstructionItem*>");
-  qRegisterMetaType<const sequencergui::InstructionItem*>("const sequencergui::InstructionItem*");
-  qRegisterMetaType<instruction_t*>("instruction_t*");
-  qRegisterMetaType<const instruction_t*>("const instruction_t*");
-  qRegisterMetaType<mvvm::SessionItem*>("mvvm::SessionItem*");
-  qRegisterMetaType<sequencergui::JobItem*>("sequencergui::JobItem*");
-  qRegisterMetaType<LogEvent>("sequencergui::LogEvent");
-  qRegisterMetaType<sequencergui::RunnerStatus>("sequencergui::RunnerStatus");
+  bool is_registered = false;
+
+  if (!is_registered)
+  {
+    (void)qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
+    (void)qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
+    (void)qRegisterMetaType<std::vector<sequencergui::InstructionItem*>>(
+        "std::vector<sequencergui::InstructionItem*>");
+    (void)qRegisterMetaType<const sequencergui::InstructionItem*>("const sequencergui::InstructionItem*");
+    (void)qRegisterMetaType<instruction_t*>("instruction_t*");
+    (void)qRegisterMetaType<const instruction_t*>("const instruction_t*");
+    (void)qRegisterMetaType<mvvm::SessionItem*>("mvvm::SessionItem*");
+    (void)qRegisterMetaType<sequencergui::JobItem*>("sequencergui::JobItem*");
+    (void)qRegisterMetaType<LogEvent>("sequencergui::LogEvent");
+    (void)qRegisterMetaType<sequencergui::RunnerStatus>("sequencergui::RunnerStatus");
+    (void)qRegisterMetaType<QList<int>>("QList<int>");
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    qRegisterMetaTypeStreamOperators<QList<int>>("QList<int>");
+#endif
+
+    is_registered = true;
+  }
 }
 
 }  // namespace sequencergui

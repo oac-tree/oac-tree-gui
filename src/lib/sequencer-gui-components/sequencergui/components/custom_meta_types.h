@@ -26,8 +26,7 @@
 #include <sequencergui/jobsystem/log_event.h>
 
 #include <QMetaType>
-
-Q_DECLARE_METATYPE(sequencergui::LogEvent)
+#include <QList>
 
 namespace sequencergui
 {
@@ -35,5 +34,10 @@ namespace sequencergui
 void RegisterCustomMetaTypes();
 
 }  // namespace sequencergui
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+Q_DECLARE_METATYPE(sequencergui::LogEvent)
+Q_DECLARE_METATYPE(QList<int>)
+#endif
 
 #endif  // SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_
