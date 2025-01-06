@@ -53,4 +53,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_SETTINGS_ITEMS_H_
+#endif  // SEQUENCERGUI_MODEL_SETTINGS_ITEM_H_

@@ -46,4 +46,4 @@ std::unique_ptr<sup::sequencer::Variable> CreateDomainVariable(
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
+#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_AUTOMATION_TRANSFORM_HELPER_H_
-#define SEQUENCERGUI_TRANSFORM_AUTOMATION_TRANSFORM_HELPER_H_
+#ifndef SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_
+#define SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_
 
 //! @file
 //! Collection of helper functions to transform VariableItem from/to domain variables.
@@ -68,4 +68,4 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::sequencer::Wor
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_AUTOMATION_TRANSFORM_HELPER_H_
+#endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_

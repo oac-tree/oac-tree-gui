@@ -105,4 +105,4 @@ std::pair<bool, std::string> LoadPlugins();
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
+#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_HELPER_H_

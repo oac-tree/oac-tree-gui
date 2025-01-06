@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_TREE_EDITOR_H_
-#define SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_TREE_EDITOR_H_
+#ifndef SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_COMPACT_TREE_EDITOR_H_
+#define SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_COMPACT_TREE_EDITOR_H_
 
 #include <sup/gui/views/anyvalueeditor/abstract_anyvalue_editor.h>
 
@@ -72,4 +72,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_TREE_EDITOR_H_
+#endif  // SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_COMPACT_TREE_EDITOR_H_

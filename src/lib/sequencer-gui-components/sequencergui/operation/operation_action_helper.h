@@ -54,4 +54,4 @@ std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_ACTION_CONTEXT_H_
+#endif  // SEQUENCERGUI_OPERATION_OPERATION_ACTION_HELPER_H_

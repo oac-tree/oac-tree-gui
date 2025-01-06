@@ -104,4 +104,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_ABSTRACT_JOB_HANDLER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_I_JOB_HANDLER_H_

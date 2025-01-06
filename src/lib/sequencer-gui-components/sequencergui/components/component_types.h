@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_APP_TYPES_H_
-#define SEQUENCERGUI_COMPONENTS_APP_TYPES_H_
+#ifndef SEQUENCERGUI_COMPONENTS_COMPONENT_TYPES_H_
+#define SEQUENCERGUI_COMPONENTS_COMPONENT_TYPES_H_
 
 //! @file
 //! Common types for application widgets.
@@ -60,4 +60,4 @@ enum class OperationPresentationMode : std::uint8_t
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_APP_TYPES_H_
+#endif  // SEQUENCERGUI_COMPONENTS_COMPONENT_TYPES_H_

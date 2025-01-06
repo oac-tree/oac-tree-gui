@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
-#define SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
+#ifndef SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
+#define SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 
 #include <sequencergui/components/anyvalue_dialog_result.h>
 
@@ -79,4 +79,4 @@ std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValu
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
+#endif  // SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_

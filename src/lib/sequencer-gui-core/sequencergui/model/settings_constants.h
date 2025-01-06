@@ -40,4 +40,4 @@ const bool kUseUndoDefault = true;
 const int kUndoLimitDefault = 100;
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_SETTINGS_ITEMS_H_
+#endif  // SEQUENCERGUI_MODEL_SETTINGS_CONSTANTS_H_

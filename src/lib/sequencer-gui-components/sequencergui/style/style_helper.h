@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_STYLE_HELPER_H_
-#define SEQUENCERGUI_COMPONENTS_STYLE_HELPER_H_
+#ifndef SEQUENCERGUI_STYLE_STYLE_HELPER_H_
+#define SEQUENCERGUI_STYLE_STYLE_HELPER_H_
 
 #include <sup/gui/style/icon_color_flavor.h>
 
@@ -39,4 +39,4 @@ QIcon FindIcon(const QString& icon_name,
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_STYLE_HELPER_H_
+#endif  // SEQUENCERGUI_STYLE_STYLE_HELPER_H_

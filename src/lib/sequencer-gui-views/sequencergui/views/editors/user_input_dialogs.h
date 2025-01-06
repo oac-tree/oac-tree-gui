@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_USER_INPUT_DIALOGS_H_
-#define SEQUENCERGUI_JOBSYSTEM_USER_INPUT_DIALOGS_H_
+#ifndef SEQUENCERGUI_VIEWS_EDITORS_USER_INPUT_DIALOGS_H_
+#define SEQUENCERGUI_VIEWS_EDITORS_USER_INPUT_DIALOGS_H_
 
 //! @file
 //! Helper functions to create dialogs supporting UserConfirmation and UserChoices instructions.
@@ -83,4 +83,4 @@ UserContext CreateDefaultUserContext(QWidget* parent);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_USER_INPUT_DIALOGS_H_
+#endif  // SEQUENCERGUI_VIEWS_EDITORS_USER_INPUT_DIALOGS_H_
