@@ -53,7 +53,6 @@ QString ConnectableInstructionAdapter::GetDisplayName() const
   return QString::fromStdString(InsertSpaceAtCamelCase(m_instruction->GetDisplayName()));
 }
 
-
 std::vector<PortInfo> ConnectableInstructionAdapter::GetInputPorts() const
 {
   return IsRoot() ? std::vector<PortInfo>({kRootPortInfo})

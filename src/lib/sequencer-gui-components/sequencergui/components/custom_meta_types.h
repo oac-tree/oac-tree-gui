@@ -25,8 +25,8 @@
 
 #include <sequencergui/jobsystem/log_event.h>
 
-#include <QMetaType>
 #include <QList>
+#include <QMetaType>
 
 namespace sequencergui
 {

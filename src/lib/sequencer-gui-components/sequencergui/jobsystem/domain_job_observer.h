@@ -51,7 +51,7 @@ public:
    * @param user_context Special user dialog callbacks to interact with the user.
    */
   explicit DomainJobObserver(post_event_callback_t post_event_callback,
-                                   const UserContext& user_context);
+                             const UserContext& user_context);
   ~DomainJobObserver() override;
 
   void InitNumberOfInstructions(sup::dto::uint32 n_instr) override;
@@ -66,7 +66,8 @@ public:
 
   void PutValue(const sup::dto::AnyValue& value, const std::string& description) override;
 
-  bool GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue& value, const std::string& description) override;
+  bool GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue& value,
+                    const std::string& description) override;
 
   int GetUserChoice(sup::dto::uint64 id, const std::vector<std::string>& options,
                     const sup::dto::AnyValue& metadata) override;

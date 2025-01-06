@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
 
 #include <mvvm/project/i_project.h>
+
 #include <QWidget>
 
 class QMainWindow;
@@ -32,7 +33,7 @@ namespace mvvm
 {
 class ISessionModel;
 class ProjectHandler;
-}
+}  // namespace mvvm
 
 namespace sequencergui
 {

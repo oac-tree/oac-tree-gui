@@ -40,7 +40,7 @@ namespace
 {
 // the name defined in sequencer_test_utils.cpp
 const std::string kChannelName("SEQUENCERGUI-CA-TESTS:INT");
-}
+}  // namespace
 
 //! Tests for DomainWorkspaceListener class.
 //! Sequencer workspace is populated with ChannelAccessVariable.

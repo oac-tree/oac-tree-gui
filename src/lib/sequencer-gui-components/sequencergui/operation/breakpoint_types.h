@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_OPERATION_BREAKPOINT_TYPES_H_
 
 #include <mvvm/model/path.h>
+
 #include <cstdint>
 
 namespace sequencergui

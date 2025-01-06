@@ -20,8 +20,9 @@
 #ifndef SEQUENCERGUI_MODEL_APPLICATION_MODELS_H_
 #define SEQUENCERGUI_MODEL_APPLICATION_MODELS_H_
 
-#include <memory>
 #include <mvvm/project/app_project.h>
+
+#include <memory>
 
 namespace mvvm
 {
@@ -35,7 +36,6 @@ namespace sequencergui
 
 class SequencerModel;
 class JobModel;
-
 
 /**
  * @brief The ApplicationModels class stores all application models.
@@ -56,6 +56,7 @@ public:
   JobModel* GetJobModel();
 
   std::shared_ptr<mvvm::ItemPool> GetItemPool();
+
 private:
   size_t m_sequencer_model_index{0};
   size_t m_job_model_index{0};

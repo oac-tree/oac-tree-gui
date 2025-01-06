@@ -27,9 +27,7 @@
 namespace sequencergui
 {
 
-ConnectableViewFactory::ConnectableViewFactory()
-{
-}
+ConnectableViewFactory::ConnectableViewFactory() {}
 
 ConnectableViewFactory::~ConnectableViewFactory() = default;
 

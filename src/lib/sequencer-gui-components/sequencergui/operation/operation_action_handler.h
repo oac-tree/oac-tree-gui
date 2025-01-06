@@ -29,7 +29,7 @@ namespace mvvm
 {
 class SessionItem;
 class ISessionModel;
-}
+}  // namespace mvvm
 
 namespace sup::gui
 {

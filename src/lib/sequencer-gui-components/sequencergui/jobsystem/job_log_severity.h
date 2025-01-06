@@ -22,8 +22,8 @@
 
 //! Provide log severity levels and accompanying utility functions.
 
-#include <string>
 #include <cstdint>
+#include <string>
 
 namespace sequencergui
 {

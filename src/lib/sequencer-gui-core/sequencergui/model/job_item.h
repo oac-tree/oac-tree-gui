@@ -20,8 +20,9 @@
 #ifndef SEQUENCERGUI_MODEL_JOB_ITEM_H_
 #define SEQUENCERGUI_MODEL_JOB_ITEM_H_
 
-#include <mvvm/model/compound_item.h>
 #include <sequencergui/model/runner_status.h>
+
+#include <mvvm/model/compound_item.h>
 
 namespace sequencergui
 {
@@ -83,7 +84,6 @@ public:
    * breakpoint information, and is shown in a real-time instruction tree.
    */
   ProcedureItem* GetExpandedProcedure();
-
 };
 
 /**

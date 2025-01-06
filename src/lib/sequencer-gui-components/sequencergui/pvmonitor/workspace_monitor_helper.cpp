@@ -26,8 +26,8 @@
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/anyvalue_item_transform_helper.h>
+#include <sequencergui/transform/domain_workspace_builder.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>

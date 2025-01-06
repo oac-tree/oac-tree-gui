@@ -52,7 +52,7 @@ public:
   explicit MonitorWidget(QWidget* parent = nullptr);
   ~MonitorWidget() override;
 
-  void SetModel(MonitorModel *model);
+  void SetModel(MonitorModel* model);
 
   void SetWorkspaceItem(WorkspaceItem* item);
 

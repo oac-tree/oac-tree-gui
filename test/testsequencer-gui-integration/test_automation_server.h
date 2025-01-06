@@ -20,9 +20,9 @@
 #ifndef LIBTEST_UTILS_TEST_AUTOMATION_SERVER_H_
 #define LIBTEST_UTILS_TEST_AUTOMATION_SERVER_H_
 
+#include <atomic>
 #include <future>
 #include <string>
-#include <atomic>
 
 namespace testutils
 {
@@ -35,12 +35,12 @@ class TestAutomationServer
 public:
   TestAutomationServer() = default;
 
-  void Start(const std::string& server_name,
-             const std::string& procedure_string);
+  void Start(const std::string& server_name, const std::string& procedure_string);
 
   void Stop();
 
   void WaitForResult();
+
 private:
   std::future<void> m_future;
   std::atomic<bool> m_continue{true};

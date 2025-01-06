@@ -56,8 +56,7 @@ void SequencerComposerActions::RegisterActionsForContext(const sup::gui::AppCont
   sup::gui::AppAddActionToCommand(m_validate_procedure_action,
                                   constants::kValidateProcedureCommandId, context);
 
-  sup::gui::AppAddActionToCommand(m_export_xml_action, constants::kExportXmlCommandId,
-                                  context);
+  sup::gui::AppAddActionToCommand(m_export_xml_action, constants::kExportXmlCommandId, context);
 
   sup::gui::AppAddActionToCommand(m_undo_action, sup::gui::constants::kUndoCommandId, context);
   sup::gui::AppAddActionToCommand(m_redo_action, sup::gui::constants::kRedoCommandId, context);

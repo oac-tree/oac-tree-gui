@@ -20,8 +20,8 @@
 #include "domain_object_group_helper.h"
 
 #include "domain_constants.h"
-#include "domain_object_type_registry.h"
 #include "domain_helper.h"
+#include "domain_object_type_registry.h"
 
 #include <mvvm/utils/container_utils.h>
 

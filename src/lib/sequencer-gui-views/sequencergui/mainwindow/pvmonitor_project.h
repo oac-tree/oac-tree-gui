@@ -35,7 +35,7 @@ class PvMonitorProject : public mvvm::AppProject
 public:
   static inline const std::string kApplicationType = "SUP PV Monitor";
 
-  explicit PvMonitorProject(const mvvm::ProjectContext &context);
+  explicit PvMonitorProject(const mvvm::ProjectContext& context);
 
   ~PvMonitorProject() override;
 

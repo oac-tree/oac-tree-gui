@@ -20,9 +20,9 @@
 #include "sequencergui/viewmodel/job_list_viewmodel.h"
 
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_job_items.h>
 
 #include <mvvm/model/application_model.h>
 

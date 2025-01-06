@@ -120,7 +120,6 @@ TEST_F(DomainEventTest, VariableUpdatedEvent)
   }
 }
 
-
 TEST_F(DomainEventTest, JobStateChangedEvent)
 {
   EXPECT_TRUE(IsValid(domain_event_t{JobStateChangedEvent{}}));

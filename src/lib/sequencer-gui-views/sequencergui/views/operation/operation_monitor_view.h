@@ -20,8 +20,9 @@
 #ifndef SEQUENCERGUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_
 #define SEQUENCERGUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_
 
-#include <QWidget>
 #include <sequencergui/components/component_types.h>
+
+#include <QWidget>
 
 class QSplitter;
 class QShowEvent;

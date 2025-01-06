@@ -20,8 +20,8 @@
 #include "sequencergui/views/operation/job_list_widget.h"
 
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/model/job_model.h>
+#include <sequencergui/model/standard_job_items.h>
 
 #include <mvvm/test/test_helper.h>
 #include <mvvm/viewmodel/viewmodel.h>

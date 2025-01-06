@@ -52,4 +52,3 @@ TEST_F(SettingsModelTest, Clear)
   EXPECT_EQ(model.Data<bool>(kUseUndoSetting), kUseUndoDefault);
   EXPECT_EQ(model.Data<int>(kUndoLimitSetting), kUndoLimitDefault);
 }
-

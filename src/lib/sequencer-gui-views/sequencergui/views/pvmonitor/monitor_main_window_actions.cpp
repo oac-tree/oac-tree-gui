@@ -22,9 +22,9 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
+
 #include <mvvm/project/project_handler.h>
 #include <mvvm/project/project_handler_utils.h>
-
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
@@ -35,10 +35,8 @@
 namespace sequencergui
 {
 
-MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project,
-                                                   QMainWindow *mainwindow)
-    : QObject(mainwindow)
-    , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
+MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project, QMainWindow *mainwindow)
+    : QObject(mainwindow), m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(), {sup::gui::constants::kFileMenu});
 

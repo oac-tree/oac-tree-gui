@@ -21,8 +21,8 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/remote_job_handler.h>
-#include <sequencergui/model/standard_job_items.h>
 #include <sequencergui/jobsystem/user_context.h>
+#include <sequencergui/model/standard_job_items.h>
 
 #include <sup/auto-server/epics_config_utils.h>
 #include <sup/auto-server/exceptions.h>

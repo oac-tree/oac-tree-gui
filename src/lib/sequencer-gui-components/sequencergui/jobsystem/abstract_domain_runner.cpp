@@ -37,7 +37,7 @@ namespace sequencergui
 AbstractDomainRunner::AbstractDomainRunner(DomainEventDispatcherContext dispatcher_context,
                                            UserContext user_context)
     : m_domain_job_service(std::make_unique<DomainJobService>(std::move(dispatcher_context),
-                                                       std::move(user_context)))
+                                                              std::move(user_context)))
 {
 }
 

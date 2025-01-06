@@ -41,8 +41,8 @@ class RemoteJobHandler : public AbstractJobHandler
   Q_OBJECT
 
 public:
-  RemoteJobHandler(JobItem* job_item, sup::auto_server::IJobManager& manager,
-                            size_t job_index, UserContext user_context);
+  RemoteJobHandler(JobItem* job_item, sup::auto_server::IJobManager& manager, size_t job_index,
+                   UserContext user_context);
   ~RemoteJobHandler() override;
 
 private:

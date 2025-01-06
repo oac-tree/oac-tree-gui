@@ -26,8 +26,8 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-#include <thread>
 #include <chrono>
+#include <thread>
 
 class IOCEnvironment : public ::testing::Environment
 {

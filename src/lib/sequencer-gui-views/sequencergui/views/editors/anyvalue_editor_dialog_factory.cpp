@@ -22,9 +22,9 @@
 #include "anyvalue_compact_scalar_editor.h"
 #include "anyvalue_compact_tree_editor.h"
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/views/anyvalueeditor/anyvalue_editor.h>
 #include <sup/gui/views/anyvalueeditor/anyvalue_editor_dialog.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {

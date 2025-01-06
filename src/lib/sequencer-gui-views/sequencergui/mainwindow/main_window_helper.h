@@ -23,11 +23,11 @@
 //! @file
 //! Collection of helper methods common for all sequencer main windows.
 
+#include <sequencergui/components/custom_meta_types.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/splash_screen.h>
-#include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/app/main_window_types.h>
-#include <sequencergui/components/custom_meta_types.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

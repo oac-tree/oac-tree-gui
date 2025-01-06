@@ -38,7 +38,6 @@ namespace sequencergui
 class VariableRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
-
   int GetSize() const override;
 
   QStringList GetHorizontalHeaderLabels() const override;

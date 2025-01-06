@@ -25,6 +25,7 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/runner_status.h>
+
 #include <sup/sequencer/job_states.h>
 
 #include <memory>

@@ -49,5 +49,4 @@ using runner_t = sup::sequencer::Runner;
 using variable_t = sup::sequencer::Variable;
 using workspace_t = sup::sequencer::Workspace;
 
-
 #endif  // SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

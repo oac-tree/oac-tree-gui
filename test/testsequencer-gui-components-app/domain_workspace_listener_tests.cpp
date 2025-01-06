@@ -127,7 +127,8 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
   auto local_variable_ptr = local_variable.get();
   m_workspace.AddVariable(var_name, std::move(local_variable));
 
-  auto listener = std::make_unique<DomainWorkspaceListener>(&m_workspace, mock_client.AsStdFunction());
+  auto listener =
+      std::make_unique<DomainWorkspaceListener>(&m_workspace, mock_client.AsStdFunction());
   EXPECT_EQ(listener->GetEventCount(), 0);
 
   EXPECT_CALL(mock_client, Call(_)).Times(1);
@@ -151,4 +152,3 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
 
   // expecting no calls
 }
-

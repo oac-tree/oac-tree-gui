@@ -35,7 +35,7 @@ namespace constants
 {
 const QString kValidateProcedureCommandId = "Validate procedure";
 const QString kExportXmlCommandId = "Export XML";
-}
+}  // namespace constants
 
 /**
  * @brief Returns visual style of the behavior tree.

@@ -35,8 +35,8 @@
 #include <testutils/sequencer_test_utils.h>
 
 #include <QTest>
-#include <thread>
 #include <chrono>
+#include <thread>
 
 namespace sequencergui
 {
@@ -78,7 +78,8 @@ public:
   /**
    * @brief Runs remoet server with single procedure on board.
    */
-  static void SetUpTestSuite() {
+  static void SetUpTestSuite()
+  {
     m_test_automation_server.Start(kServerName, kProcedureBodyText);
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }

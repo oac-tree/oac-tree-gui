@@ -22,10 +22,10 @@
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/domain/domain_object_group_helper.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/components/proxy_action.h>
-#include <sequencergui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/widgets/widget_utils.h>

@@ -75,7 +75,7 @@ size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem *item) const
 VariableItem *ProcedureItemJobInfoBuilder::GetVariable(size_t index) const
 {
   return index < m_index_to_variable.size() ? const_cast<VariableItem *>(m_index_to_variable[index])
-                                           : nullptr;
+                                            : nullptr;
 }
 
 }  // namespace sequencergui

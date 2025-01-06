@@ -29,6 +29,7 @@
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/sequencer/workspace.h>
+
 #include <iostream>
 
 namespace sequencergui

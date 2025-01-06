@@ -23,8 +23,8 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
+#include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/item_utils.h>
 

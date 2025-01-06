@@ -170,7 +170,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
   EXPECT_CALL(model_listener, OnItemInserted(_)).Times(1);
 
   // no need to wait, domain is notified via direct connections
-  SetAnyValue(new_value, *variable_item_ptr); // will replace AnyValueItem as a whole
+  SetAnyValue(new_value, *variable_item_ptr);  // will replace AnyValueItem as a whole
 
   EXPECT_EQ(GetAnyValue(*variable_item_ptr), new_value);
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), new_value);

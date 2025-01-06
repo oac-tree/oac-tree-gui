@@ -38,7 +38,7 @@ TEST_F(DomainEventQueueTest, InitialState)
   DomainEventQueue queue;
   EXPECT_EQ(queue.GetEventCount(), 0);
 
-  //auto event = queue.PopEvent();
+  // auto event = queue.PopEvent();
   EXPECT_THROW(queue.PopEvent(), RuntimeException);
 }
 

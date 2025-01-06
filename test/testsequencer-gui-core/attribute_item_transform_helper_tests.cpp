@@ -22,8 +22,8 @@
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/compound_item.h>
 #include <mvvm/model/item_utils.h>
@@ -332,7 +332,7 @@ TEST_F(AttributeItemTransformHelperTest, SetChannelAccessVariableJsonAttributesF
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute),
             R"RAW({"type":"int32"})RAW");
 
-          // channel access variable doesn't have value attribute
+  // channel access variable doesn't have value attribute
   EXPECT_FALSE(variable->HasAttribute(domainconstants::kValueAttribute));
 }
 
@@ -346,7 +346,7 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromItem)
   sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   auto anyvalue_item = sup::gui::CreateItem(anyvalue);
 
-          // PvAccessWriteInstruction should get attributes
+  // PvAccessWriteInstruction should get attributes
   auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
   SetJsonAttributesFromItem(*anyvalue_item, *instr);
 
@@ -372,7 +372,7 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromEmptyIt
   sup::dto::AnyValue anyvalue;
   auto anyvalue_item = sup::gui::CreateItem(anyvalue);
 
-          // PvAccessWriteInstruction should get attributes
+  // PvAccessWriteInstruction should get attributes
   auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
   SetJsonAttributesFromItem(*anyvalue_item, *instr);
 

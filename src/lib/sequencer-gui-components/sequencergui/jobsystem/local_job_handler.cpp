@@ -69,8 +69,8 @@ std::unique_ptr<AbstractDomainRunner> LocalJobHandler::CreateDomainRunner(
     UserContext user_context, std::unique_ptr<procedure_t> procedure)
 {
   // LocalDomainRunner's internals call Setup on the domain procedure
-  auto runner = std::make_unique<LocalDomainRunner>(CreateEventDispatcherContext(), std::move(user_context),
-                                                    std::move(procedure));
+  auto runner = std::make_unique<LocalDomainRunner>(CreateEventDispatcherContext(),
+                                                    std::move(user_context), std::move(procedure));
   runner->SetTickTimeout(GetJobItem()->GetTickTimeout());
   return runner;
 }

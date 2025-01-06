@@ -20,10 +20,10 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 #define SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 
-#include <memory>
-#include <functional>
-
 #include <sequencergui/components/anyvalue_dialog_result.h>
+
+#include <functional>
+#include <memory>
 
 class QWidget;
 

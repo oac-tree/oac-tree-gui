@@ -22,9 +22,9 @@
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/transform/anyvalue_item_transform_helper.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
-#include <sequencergui/transform/anyvalue_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/core/exceptions.h>

@@ -44,7 +44,7 @@ public:
    */
   void Clear() override;
 
-  std::vector<mvvm::CompoundItem *> GetSettingsItems() const;
+  std::vector<mvvm::CompoundItem*> GetSettingsItems() const;
 
   /**
    * @brief Returns data inside property item registered under the given setting name.

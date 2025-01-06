@@ -21,9 +21,8 @@
 
 #include <sup/gui/model/anyvalue_utils.h>
 
-#include <sup/sequencer/instruction.h>
-
 #include <sup/dto/anyvalue_helper.h>
+#include <sup/sequencer/instruction.h>
 
 #include <sstream>
 
@@ -46,8 +45,7 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::sequencergui::VariableUpdatedEvent &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("VariableUpdatedEvent") << " "
-         << ::sup::dto::PrintAnyValue(event.value);
+    ostr << std::string("VariableUpdatedEvent") << " " << ::sup::dto::PrintAnyValue(event.value);
     ostr << " connected:" << event.connected;
     return ostr.str();
   }

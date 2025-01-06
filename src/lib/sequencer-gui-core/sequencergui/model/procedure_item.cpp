@@ -82,7 +82,7 @@ static inline const std::string kPreamble = "kPreamble";
 static inline const std::string kFileName = "kFileName";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
-{  
+{
   AddProperty(itemconstants::kName, std::string()).SetDisplayName("Name");
   AddProperty(itemconstants::kDescription, std::string()).SetDisplayName("Description");
   AddProperty(kFileName, std::string()).SetDisplayName("File name");
