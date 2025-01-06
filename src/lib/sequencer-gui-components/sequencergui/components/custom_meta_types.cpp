@@ -28,21 +28,23 @@
 #include <sup/sequencer/instruction.h>
 
 #include <QDataStream>
+#include <mutex>
 
 namespace sequencergui
 {
 
 void RegisterCustomMetaTypes()
 {
-  bool is_registered = false;
+  static std::once_flag register_once_flag;
 
-  if (!is_registered)
+  auto register_func = []()
   {
     (void)qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
     (void)qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
     (void)qRegisterMetaType<std::vector<sequencergui::InstructionItem*>>(
         "std::vector<sequencergui::InstructionItem*>");
-    (void)qRegisterMetaType<const sequencergui::InstructionItem*>("const sequencergui::InstructionItem*");
+    (void)qRegisterMetaType<const sequencergui::InstructionItem*>(
+        "const sequencergui::InstructionItem*");
     (void)qRegisterMetaType<instruction_t*>("instruction_t*");
     (void)qRegisterMetaType<const instruction_t*>("const instruction_t*");
     (void)qRegisterMetaType<mvvm::SessionItem*>("mvvm::SessionItem*");
@@ -54,9 +56,9 @@ void RegisterCustomMetaTypes()
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<QList<int>>("QList<int>");
 #endif
+  };
 
-    is_registered = true;
-  }
+  std::call_once(register_once_flag, register_func);
 }
 
 }  // namespace sequencergui
