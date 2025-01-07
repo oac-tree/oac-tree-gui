@@ -25,22 +25,19 @@
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
-#include <QSettings>
-#include <QSplitter>
 #include <QToolButton>
 #include <QVBoxLayout>
 
 namespace
 {
-const QString kGroupName = "ExplorerPanel";
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kSplitterSettingName = "ExplorerPanel/collapsible_list";
 }  // namespace
 
 namespace sequencergui
 {
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
-    , m_collapsible_list(new sup::gui::CollapsibleListView)
+    , m_collapsible_list(new sup::gui::CollapsibleListView(kSplitterSettingName))
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListWidget)
     , m_stack_widget(new sup::gui::ItemStackWidget)
@@ -80,19 +77,12 @@ void ExplorerPanel::SetModel(SequencerModel *model)
 
 void ExplorerPanel::ReadSettings()
 {
-  const QSettings settings;
-
-  if (settings.contains(kSplitterSettingName))
-  {
-    m_collapsible_list->GetSplitter()->restoreState(
-        settings.value(kSplitterSettingName).toByteArray());
-  }
+  m_collapsible_list->ReadSettings();
 }
 
 void ExplorerPanel::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kSplitterSettingName, m_collapsible_list->GetSplitter()->saveState());
+  m_collapsible_list->WriteSettings();
 }
 
 }  // namespace sequencergui

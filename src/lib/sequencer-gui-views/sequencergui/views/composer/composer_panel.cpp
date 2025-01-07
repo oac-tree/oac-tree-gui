@@ -34,7 +34,6 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <QVBoxLayout>
-#include <QSplitter>
 
 namespace sequencergui
 {
