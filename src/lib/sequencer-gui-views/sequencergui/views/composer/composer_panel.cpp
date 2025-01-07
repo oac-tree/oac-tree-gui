@@ -34,13 +34,19 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <QVBoxLayout>
+#include <QSplitter>
 
 namespace sequencergui
 {
 
+namespace
+{
+const QString &kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
+}
+
 ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
-    , m_collapsible_list(new sup::gui::CollapsibleListView)
+    , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_procedure_list_view(new ProcedureListWidget)
     , m_instruction_panel(new InstructionItemPanel)
     , m_aggregate_panel(new AggregatePanel)
@@ -55,7 +61,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, {});
   m_collapsible_list->AddCollapsibleWidget(m_instruction_panel, {});
-  m_collapsible_list->AddCollapsibleWidget(m_aggregate_panel, {});
+  m_collapsible_list->AddCollapsibleWidget(m_aggregate_panel, {}, false);
 
   auto toolbar_actions =
       m_procedure_list_view->GetActions({ProcedureListActions::ActionKey::kCreateNew,
@@ -75,9 +81,14 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   };
   connect(m_instruction_panel, &InstructionItemPanel::InstructionDoubleClicked, this,
           append_instruction);
+
+  ReadSettings();
 }
 
-ComposerPanel::~ComposerPanel() = default;
+ComposerPanel::~ComposerPanel()
+{
+  WriteSettings();
+}
 
 void ComposerPanel::SetModel(SequencerModel *model)
 {
@@ -98,6 +109,16 @@ ProcedureItem *ComposerPanel::GetSelectedProcedure()
 void ComposerPanel::SetSelectedProcedure(ProcedureItem *procedure)
 {
   m_procedure_list_view->SetSelectedProcedure(procedure);
+}
+
+void ComposerPanel::ReadSettings()
+{
+  m_collapsible_list->ReadSettings();
+}
+
+void ComposerPanel::WriteSettings()
+{
+  m_collapsible_list->WriteSettings();
 }
 
 }  // namespace sequencergui

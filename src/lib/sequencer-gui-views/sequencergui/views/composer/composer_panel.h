@@ -64,6 +64,9 @@ signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   InstructionItemPanel* m_instruction_panel{nullptr};
