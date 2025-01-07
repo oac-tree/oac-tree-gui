@@ -30,14 +30,14 @@
 
 namespace
 {
-const QString kSplitterSettingName = "ExplorerPanel/collapsible_list";
+const QString kCollapsibleListSettingName = "ExplorerPanel/collapsible_list";
 }  // namespace
 
 namespace sequencergui
 {
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
-    , m_collapsible_list(new sup::gui::CollapsibleListView(kSplitterSettingName))
+    , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListWidget)
     , m_stack_widget(new sup::gui::ItemStackWidget)

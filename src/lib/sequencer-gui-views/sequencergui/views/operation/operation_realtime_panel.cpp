@@ -29,14 +29,12 @@
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
-#include <QSettings>
-#include <QSplitter>
 #include <QVBoxLayout>
 
 namespace
 {
-const QString kGroupName("OperationRealTimePanel");
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+
+const QString kCollapsibleListSettingName = "OperationRealTimePanel/collapsible_list";
 
 QList<QAction *> GetToolBarActions(sequencergui::MonitorRealTimeActions *actions)
 {
@@ -54,7 +52,7 @@ namespace sequencergui
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
     , m_actions(new MonitorRealTimeActions(this))
-    , m_collapsible_list(new sup::gui::CollapsibleListView)
+    , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_message_panel(new MessagePanel)
 {
@@ -111,19 +109,12 @@ int OperationRealTimePanel::GetCurrentTickTimeout()
 
 void OperationRealTimePanel::ReadSettings()
 {
-  const QSettings settings;
-
-  if (settings.contains(kSplitterSettingName))
-  {
-    m_collapsible_list->GetSplitter()->restoreState(
-        settings.value(kSplitterSettingName).toByteArray());
-  }
+  m_collapsible_list->ReadSettings();
 }
 
 void OperationRealTimePanel::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kSplitterSettingName, m_collapsible_list->GetSplitter()->saveState());
+  m_collapsible_list->WriteSettings();
 }
 
 void OperationRealTimePanel::SetupConnections()
