@@ -35,8 +35,8 @@ const QString kCollapsibleListSettingName = "ExplorerPanel/collapsible_list";
 
 namespace sequencergui
 {
-ExplorerPanel::ExplorerPanel(QWidget *parent)
-    : QWidget(parent)
+ExplorerPanel::ExplorerPanel(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListWidget)

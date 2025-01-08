@@ -46,8 +46,8 @@ namespace sequencergui
 {
 
 WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentation,
-                                             QWidget *parent)
-    : QWidget(parent)
+                                             QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))

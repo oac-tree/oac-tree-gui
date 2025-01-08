@@ -57,8 +57,8 @@ const std::vector<int> kDefaultColumnStretch({2, 2, 2, 1, 6});
 namespace sequencergui
 {
 
-MessagePanel::MessagePanel(QWidget* parent)
-    : QWidget(parent)
+MessagePanel::MessagePanel(QWidget* parent_widget)
+    : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))

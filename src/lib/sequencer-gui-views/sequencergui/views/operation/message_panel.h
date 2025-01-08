@@ -56,7 +56,7 @@ class MessagePanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit MessagePanel(QWidget* parent = nullptr);
+  explicit MessagePanel(QWidget* parent_widget = nullptr);
   ~MessagePanel() override;
 
   void SetLog(JobLog* job_log);

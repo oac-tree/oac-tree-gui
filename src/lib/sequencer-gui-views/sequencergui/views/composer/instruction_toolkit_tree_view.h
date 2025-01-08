@@ -35,7 +35,7 @@ class InsructionToolKitTreeView : public QTreeView
 {
   Q_OBJECT
 public:
-  explicit InsructionToolKitTreeView(QWidget* parent = nullptr);
+  explicit InsructionToolKitTreeView(QWidget* parent_widget = nullptr);
 
 signals:
   void InstructionDoubleClicked(const QString& name);

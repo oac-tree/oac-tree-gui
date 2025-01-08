@@ -53,7 +53,7 @@ class NodeEditor : public QWidget
   Q_OBJECT
 
 public:
-  explicit NodeEditor(QWidget* parent = nullptr);
+  explicit NodeEditor(QWidget* parent_widget = nullptr);
   ~NodeEditor() override;
 
   void SetProcedure(ProcedureItem* procedure);

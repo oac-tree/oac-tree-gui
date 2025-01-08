@@ -39,7 +39,7 @@ class JobPropertyWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit JobPropertyWidget(QWidget* parent = nullptr);
+  explicit JobPropertyWidget(QWidget* parent_widget = nullptr);
 
   void SetJob(JobItem* item);
 

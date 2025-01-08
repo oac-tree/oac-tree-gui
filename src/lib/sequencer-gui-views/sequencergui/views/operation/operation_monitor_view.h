@@ -56,7 +56,7 @@ class OperationMonitorView : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationMonitorView(OperationPresentationMode mode, QWidget* parent = nullptr);
+  explicit OperationMonitorView(OperationPresentationMode mode, QWidget* parent_widget = nullptr);
   ~OperationMonitorView() override;
 
   void SetModels(ApplicationModels* models);

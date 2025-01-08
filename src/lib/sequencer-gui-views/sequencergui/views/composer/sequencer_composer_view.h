@@ -50,7 +50,7 @@ class SequencerComposerView : public QWidget
   Q_OBJECT
 
 public:
-  explicit SequencerComposerView(QWidget* parent = nullptr);
+  explicit SequencerComposerView(QWidget* parent_widget = nullptr);
   ~SequencerComposerView() override;
 
   void SetModel(SequencerModel* model);

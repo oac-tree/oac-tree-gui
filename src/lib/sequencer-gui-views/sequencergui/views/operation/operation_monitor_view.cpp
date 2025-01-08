@@ -68,8 +68,8 @@ std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClient
 
 }  // namespace
 
-OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidget *parent)
-    : QWidget(parent)
+OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_presentation_mode(mode)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)

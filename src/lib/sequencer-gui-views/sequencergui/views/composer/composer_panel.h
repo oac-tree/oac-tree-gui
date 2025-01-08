@@ -51,7 +51,7 @@ class ComposerPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit ComposerPanel(QWidget* parent = nullptr);
+  explicit ComposerPanel(QWidget* parent_widget = nullptr);
   ~ComposerPanel() override;
 
   void SetModel(SequencerModel* model);

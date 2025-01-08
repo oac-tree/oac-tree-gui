@@ -44,7 +44,7 @@ const QString kCurrentWorkdirSettingName = kGroupName + "/" + "workdir";
 namespace sequencergui
 {
 
-ProcedureActionHandler::ProcedureActionHandler(QWidget *parent) : QObject(parent)
+ProcedureActionHandler::ProcedureActionHandler(QWidget *parent_widget) : QObject(parent_widget)
 {
   ReadSettings();
 }

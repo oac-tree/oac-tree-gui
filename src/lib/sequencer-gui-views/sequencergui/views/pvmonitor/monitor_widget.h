@@ -49,7 +49,7 @@ class MonitorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit MonitorWidget(QWidget* parent = nullptr);
+  explicit MonitorWidget(QWidget* parent_widget = nullptr);
   ~MonitorWidget() override;
 
   void SetModel(MonitorModel* model);

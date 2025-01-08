@@ -52,7 +52,7 @@ class AnyValueCompactTreeEditor : public sup::gui::AbstractAnyValueEditor
   Q_OBJECT
 
 public:
-  explicit AnyValueCompactTreeEditor(QWidget* parent = nullptr);
+  explicit AnyValueCompactTreeEditor(QWidget* parent_widget = nullptr);
   ~AnyValueCompactTreeEditor() override;
 
   void SetDescription(const QString& text) override;

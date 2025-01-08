@@ -54,7 +54,7 @@ class WorkspaceEditor : public QObject
 {
 public:
   explicit WorkspaceEditor(WorkspacePresentationType presentation, QTreeView* tree,
-                           QWidget* parent = nullptr);
+                           QWidget* parent_widget = nullptr);
   ~WorkspaceEditor() override;
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);

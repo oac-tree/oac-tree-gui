@@ -29,8 +29,8 @@
 namespace sequencergui
 {
 
-JobPropertyWidget::JobPropertyWidget(QWidget *parent)
-    : QWidget(parent), m_property_tree_view(new mvvm::PropertyTreeView)
+JobPropertyWidget::JobPropertyWidget(QWidget *parent_widget)
+    : QWidget(parent_widget), m_property_tree_view(new mvvm::PropertyTreeView)
 {
   setWindowTitle("JOB PROPERTIES");
   setToolTip("Properties of currently selected job");

@@ -38,7 +38,7 @@ class SettingsEditorDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit SettingsEditorDialog(QWidget* parent = nullptr);
+  explicit SettingsEditorDialog(QWidget* parent_widget = nullptr);
   ~SettingsEditorDialog() override;
 
   /**

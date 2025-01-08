@@ -50,7 +50,7 @@ class FileTreeView : public QWidget
   Q_OBJECT
 
 public:
-  explicit FileTreeView(QWidget* parent = nullptr);
+  explicit FileTreeView(QWidget* parent_widget = nullptr);
   ~FileTreeView() override;
 
   /**

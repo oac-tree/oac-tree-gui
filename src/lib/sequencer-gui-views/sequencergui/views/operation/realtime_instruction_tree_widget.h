@@ -52,7 +52,7 @@ class RealTimeInstructionTreeWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit RealTimeInstructionTreeWidget(QWidget* parent = nullptr);
+  explicit RealTimeInstructionTreeWidget(QWidget* parent_widget = nullptr);
   ~RealTimeInstructionTreeWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);

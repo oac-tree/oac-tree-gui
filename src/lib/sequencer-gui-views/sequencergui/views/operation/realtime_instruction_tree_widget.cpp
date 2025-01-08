@@ -52,8 +52,8 @@ const std::vector<int> kDefaultColumnStretch({15, 5, 1});
 namespace sequencergui
 {
 
-RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
-    : QWidget(parent)
+RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
     , m_custom_header(

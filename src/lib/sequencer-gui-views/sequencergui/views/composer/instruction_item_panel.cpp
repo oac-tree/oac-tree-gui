@@ -35,8 +35,8 @@
 namespace sequencergui
 {
 
-InstructionItemPanel::InstructionItemPanel(QWidget* parent)
-    : QWidget(parent)
+InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
+    : QWidget(parent_widget)
     , m_instruction_toolkit_viewmodel(new ToolKitViewModel(this))
     , m_proxy_model(new mvvm::FilterNameViewModel(this))
     , m_tree_view(new InsructionToolKitTreeView)

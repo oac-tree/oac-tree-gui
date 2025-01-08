@@ -34,8 +34,8 @@
 namespace sequencergui
 {
 
-OperationJobPanel::OperationJobPanel(QWidget *parent)
-    : QWidget(parent)
+OperationJobPanel::OperationJobPanel(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_job_list_widget(new JobListWidget)
     , m_job_property_widget(new JobPropertyWidget)

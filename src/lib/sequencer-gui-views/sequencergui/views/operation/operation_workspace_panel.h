@@ -45,7 +45,7 @@ class OperationWorkspacePanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationWorkspacePanel(QWidget* parent = nullptr);
+  explicit OperationWorkspacePanel(QWidget* parent_widget = nullptr);
   ~OperationWorkspacePanel() override;
 
   void SetProcedure(ProcedureItem* item);

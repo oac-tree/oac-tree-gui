@@ -62,7 +62,7 @@ public:
     kXmlPanel
   };
 
-  explicit ComposerWidgetPanel(QWidget* parent = nullptr);
+  explicit ComposerWidgetPanel(QWidget* parent_widget = nullptr);
   ~ComposerWidgetPanel() override;
 
   void SetModel(SequencerModel* model);

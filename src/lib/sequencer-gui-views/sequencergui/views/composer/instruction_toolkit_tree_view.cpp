@@ -52,7 +52,7 @@ QPixmap CreatePixmap()
 namespace sequencergui
 {
 
-InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent) : QTreeView(parent)
+InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent_widget) : QTreeView(parent_widget)
 {
   auto on_double_click = [this](auto index)
   {

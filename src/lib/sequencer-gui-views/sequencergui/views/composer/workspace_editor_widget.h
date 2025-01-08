@@ -56,7 +56,8 @@ class WorkspaceEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorWidget(WorkspacePresentationType presentation, QWidget* parent = nullptr);
+  explicit WorkspaceEditorWidget(WorkspacePresentationType presentation,
+                                 QWidget* parent_widget = nullptr);
   ~WorkspaceEditorWidget() override;
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);

@@ -67,7 +67,7 @@ QLabel* createLogoLabel()
 namespace sequencergui
 {
 
-AboutApplicationDialog::AboutApplicationDialog(QWidget* parent) : QDialog(parent)
+AboutApplicationDialog::AboutApplicationDialog(QWidget* parent_widget) : QDialog(parent_widget)
 {
   QColor bgColor(240, 240, 240, 255);
   QPalette palette;

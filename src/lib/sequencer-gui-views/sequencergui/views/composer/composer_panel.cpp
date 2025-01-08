@@ -43,8 +43,8 @@ namespace
 const QString &kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
 }
 
-ComposerPanel::ComposerPanel(QWidget *parent)
-    : QWidget(parent)
+ComposerPanel::ComposerPanel(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_procedure_list_view(new ProcedureListWidget)
     , m_instruction_panel(new InstructionItemPanel)

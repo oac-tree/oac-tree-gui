@@ -48,8 +48,8 @@ const QString kRightPanel = kGroupName + "/" + "right";
 
 namespace sequencergui
 {
-SequencerComposerView::SequencerComposerView(QWidget *parent)
-    : QWidget(parent)
+SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_composer_panel(new ComposerPanel)
     , m_central_panel(new ComposerWidgetPanel)
     , m_right_panel(new ComposerWidgetPanel)

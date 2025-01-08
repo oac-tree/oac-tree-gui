@@ -29,8 +29,8 @@
 namespace sequencergui
 {
 
-AggregatePanel::AggregatePanel(QWidget *parent)
-    : QWidget(parent)
+AggregatePanel::AggregatePanel(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_toolkit_viewmodel(new ToolKitViewModel(this))
     , m_tree_view(new InsructionToolKitTreeView)
 {

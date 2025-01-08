@@ -47,7 +47,7 @@ class ExplorerPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit ExplorerPanel(QWidget* parent = nullptr);
+  explicit ExplorerPanel(QWidget* parent_widget = nullptr);
   ~ExplorerPanel() override;
 
   void SetModel(SequencerModel* model);

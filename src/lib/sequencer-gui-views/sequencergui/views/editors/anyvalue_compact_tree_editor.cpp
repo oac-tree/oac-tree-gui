@@ -36,8 +36,8 @@
 namespace sequencergui
 {
 
-AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent)
-    : AbstractAnyValueEditor(parent)
+AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent_widget)
+    : AbstractAnyValueEditor(parent_widget)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_label(new QLabel)
     , m_tree_view(new QTreeView)

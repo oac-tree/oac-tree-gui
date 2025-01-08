@@ -44,7 +44,7 @@ class SequencerComposerActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerComposerActions(QWidget* parent = nullptr);
+  explicit SequencerComposerActions(QWidget* parent_widget = nullptr);
   ~SequencerComposerActions() override;
 
   void SetModel(SequencerModel* model);

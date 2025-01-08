@@ -68,8 +68,8 @@ std::vector<sequencergui::InstructionEditorActions::ActionKey> GetToolBarActionK
 namespace sequencergui
 {
 
-InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
-    : QWidget(parent)
+InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))

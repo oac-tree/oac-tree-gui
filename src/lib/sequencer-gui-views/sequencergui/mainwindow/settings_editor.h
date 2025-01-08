@@ -51,7 +51,7 @@ class SettingsEditor : public QWidget
   Q_OBJECT
 
 public:
-  explicit SettingsEditor(QWidget* parent = nullptr);
+  explicit SettingsEditor(QWidget* parent_widget = nullptr);
   ~SettingsEditor() override;
 
   /**

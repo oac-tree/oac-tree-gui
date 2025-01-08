@@ -41,8 +41,8 @@
 namespace sequencergui
 {
 
-ProcedureListWidget::ProcedureListWidget(QWidget *parent)
-    : QWidget(parent)
+ProcedureListWidget::ProcedureListWidget(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_list_view(new QListView)
     , m_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
     , m_actions(new ProcedureListActions(this))

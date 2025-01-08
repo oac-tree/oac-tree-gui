@@ -48,8 +48,8 @@ bool IsProcedureFile(const QFileInfo &info)
 namespace sequencergui
 {
 
-FileTreeView::FileTreeView(QWidget *parent)
-    : QWidget(parent)
+FileTreeView::FileTreeView(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_file_system_model(new QFileSystemModel(this))
     , m_tree_view(new QTreeView)
     , m_path_label(new QLabel)

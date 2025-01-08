@@ -33,7 +33,7 @@ class AboutApplicationDialog : public QDialog
 {
   Q_OBJECT
 public:
-  AboutApplicationDialog(QWidget* parent = 0);
+  AboutApplicationDialog(QWidget* parent_widget = 0);
 
 private:
   QBoxLayout* createLogoLayout();

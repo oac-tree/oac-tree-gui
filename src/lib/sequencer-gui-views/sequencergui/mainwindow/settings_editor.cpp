@@ -35,8 +35,8 @@
 namespace sequencergui
 {
 
-SettingsEditor::SettingsEditor(QWidget *parent)
-    : QWidget(parent)
+SettingsEditor::SettingsEditor(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_splitter(new QSplitter)
     , m_list_view(new QListView)
     , m_settings_view(new mvvm::PropertyFlatView)

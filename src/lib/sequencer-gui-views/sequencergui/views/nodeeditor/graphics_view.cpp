@@ -27,7 +27,8 @@
 
 namespace sequencergui
 {
-GraphicsView::GraphicsView(GraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent)
+GraphicsView::GraphicsView(GraphicsScene* scene, QWidget* parent_widget)
+    : QGraphicsView(scene, parent_widget)
 {
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setRenderHint(QPainter::Antialiasing);

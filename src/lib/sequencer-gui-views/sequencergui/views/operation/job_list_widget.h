@@ -51,7 +51,7 @@ class JobListWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit JobListWidget(QWidget* parent = nullptr);
+  explicit JobListWidget(QWidget* parent_widget = nullptr);
   ~JobListWidget() override;
 
   void SetJobModel(JobModel* model);

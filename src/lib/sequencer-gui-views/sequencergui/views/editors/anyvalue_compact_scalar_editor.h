@@ -59,7 +59,7 @@ class AnyValueCompactScalarEditor : public sup::gui::AbstractAnyValueEditor
   Q_OBJECT
 
 public:
-  explicit AnyValueCompactScalarEditor(QWidget* parent = nullptr);
+  explicit AnyValueCompactScalarEditor(QWidget* parent_widget = nullptr);
   ~AnyValueCompactScalarEditor() override;
 
   void SetDescription(const QString& text) override;

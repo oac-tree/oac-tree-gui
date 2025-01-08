@@ -44,8 +44,8 @@ namespace sequencergui
 {
 
 WorkspaceEditor::WorkspaceEditor(WorkspacePresentationType presentation, QTreeView *tree,
-                                 QWidget *parent)
-    : QObject(parent)
+                                 QWidget *parent_widget)
+    : QObject(parent_widget)
     , m_tree_view(tree)
     , m_component_provider(CreateProvider(presentation))
     , m_action_handler(new WorkspaceEditorActionHandler(CreateWorkspaceEditorContext(), this))
@@ -56,7 +56,7 @@ WorkspaceEditor::WorkspaceEditor(WorkspacePresentationType presentation, QTreeVi
 {
   SetupConnections();
 
-  m_editor_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(parent));
+  m_editor_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(parent_widget));
 }
 
 WorkspaceEditor::~WorkspaceEditor() = default;

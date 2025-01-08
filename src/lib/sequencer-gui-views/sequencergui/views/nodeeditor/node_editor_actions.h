@@ -55,7 +55,7 @@ public:
     kAlign
   };
 
-  explicit NodeEditorActions(QWidget* parent = nullptr);
+  explicit NodeEditorActions(QWidget* parent_widget = nullptr);
   ~NodeEditorActions() override;
 
   void onViewSelectionMode(int mode);

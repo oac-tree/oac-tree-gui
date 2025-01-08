@@ -39,8 +39,8 @@ QRect GetPixmapRect()
 namespace sequencergui
 {
 
-WarningSignWidget::WarningSignWidget(const QString &message, QWidget *parent)
-    : QWidget(parent)
+WarningSignWidget::WarningSignWidget(const QString &message, QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_header("Houston, we have a problem.")
     , m_message(message)
     , m_pixmap(":/icons/bell-alert-outline.png")

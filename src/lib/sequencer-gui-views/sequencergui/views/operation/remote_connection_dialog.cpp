@@ -62,8 +62,8 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string &name)
 }  // namespace
 
 RemoteConnectionDialog::RemoteConnectionDialog(RemoteConnectionService *connection_service,
-                                               QWidget *parent)
-    : QDialog(parent)
+                                               QWidget *parent_widget)
+    : QDialog(parent_widget)
     , m_server_name_line_edit(new QLineEdit)
     , m_connect_button(new QPushButton("Connect"))
     , m_job_list_view(new QListView)

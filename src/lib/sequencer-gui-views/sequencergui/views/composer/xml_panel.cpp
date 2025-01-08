@@ -35,8 +35,8 @@
 namespace sequencergui
 {
 
-XmlPanel::XmlPanel(QWidget *parent)
-    : QWidget(parent), m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML))
+XmlPanel::XmlPanel(QWidget *parent_widget)
+    : QWidget(parent_widget), m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML))
 {
   setWindowTitle("XML View");
 

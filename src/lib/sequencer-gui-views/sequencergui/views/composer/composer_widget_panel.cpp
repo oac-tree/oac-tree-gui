@@ -33,8 +33,8 @@
 namespace sequencergui
 {
 
-ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent)
-    : QWidget(parent)
+ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent_widget)
+    : QWidget(parent_widget)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(
           new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))

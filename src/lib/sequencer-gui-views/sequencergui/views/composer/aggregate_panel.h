@@ -35,7 +35,7 @@ class AggregatePanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit AggregatePanel(QWidget* parent = nullptr);
+  explicit AggregatePanel(QWidget* parent_widget = nullptr);
 
 private:
   ToolKitViewModel* m_toolkit_viewmodel{nullptr};

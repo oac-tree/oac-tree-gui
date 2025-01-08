@@ -46,8 +46,8 @@ const std::vector<int> kDefaultColumnStretch({2, 1, 1});
 namespace sequencergui
 {
 
-InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
-    : QWidget(parent)
+InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_tool_bar(new QToolBar)
     , m_tree_view(new QTreeView)
     , m_custom_header(

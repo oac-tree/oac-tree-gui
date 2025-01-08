@@ -42,7 +42,7 @@ class ProcedureActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureActionHandler(QWidget* parent = nullptr);
+  explicit ProcedureActionHandler(QWidget* parent_widget = nullptr);
   ~ProcedureActionHandler() override;
 
   void OnExportToXmlRequest(ProcedureItem* procedure_item);

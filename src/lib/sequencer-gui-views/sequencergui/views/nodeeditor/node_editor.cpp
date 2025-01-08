@@ -55,8 +55,8 @@ QList<QAction *> GetToolBarActions(sequencergui::NodeEditorActions *actions)
 namespace sequencergui
 {
 
-NodeEditor::NodeEditor(QWidget *parent)
-    : QWidget(parent)
+NodeEditor::NodeEditor(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_actions(new NodeEditorActions)
     , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))

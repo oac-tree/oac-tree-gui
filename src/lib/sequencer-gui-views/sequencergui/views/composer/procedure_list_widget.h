@@ -52,7 +52,7 @@ class ProcedureListWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit ProcedureListWidget(QWidget* parent = nullptr);
+  explicit ProcedureListWidget(QWidget* parent_widget = nullptr);
   ~ProcedureListWidget() override;
 
   void SetModel(SequencerModel* model);

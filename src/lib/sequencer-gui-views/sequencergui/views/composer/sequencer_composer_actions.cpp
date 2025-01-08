@@ -34,7 +34,7 @@
 namespace sequencergui
 {
 
-SequencerComposerActions::SequencerComposerActions(QWidget *parent) : QObject(parent)
+SequencerComposerActions::SequencerComposerActions(QWidget *parent_widget) : QObject(parent_widget)
 {
   SetupActions();
 }

@@ -43,8 +43,8 @@ const QString kProcedureHeaderStateSettingName = kGroupName + "/" + "header_stat
 namespace sequencergui
 {
 
-ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
-    : QWidget(parent)
+ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_procedure_tree(new QTreeView)
     , m_procedure_tree_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_procedure_tree))
     , m_procedure_custom_header(

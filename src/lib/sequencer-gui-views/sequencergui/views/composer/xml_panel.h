@@ -50,7 +50,7 @@ class XmlPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit XmlPanel(QWidget* parent = nullptr);
+  explicit XmlPanel(QWidget* parent_widget = nullptr);
   ~XmlPanel() override;
 
   void SetModel(mvvm::ISessionModel* model);

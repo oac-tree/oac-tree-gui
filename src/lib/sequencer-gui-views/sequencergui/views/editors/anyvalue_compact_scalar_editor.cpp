@@ -36,8 +36,8 @@
 namespace sequencergui
 {
 
-AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent)
-    : AbstractAnyValueEditor(parent)
+AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent_widget)
+    : AbstractAnyValueEditor(parent_widget)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_delegate(std::make_unique<mvvm::ViewModelDelegate>())
     , m_view_model(std::make_unique<mvvm::PropertyViewModel>(m_model.get()))

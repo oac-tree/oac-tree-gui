@@ -34,7 +34,7 @@ class OverlayMessageFrame : public QFrame
   Q_OBJECT
 
 public:
-  explicit OverlayMessageFrame(const QString& text, QWidget* parent = nullptr);
+  explicit OverlayMessageFrame(const QString& text, QWidget* parent_widget = nullptr);
 
   //  void SetRectangle(const QRect& rect);
   void SetPosition(int x, int y);

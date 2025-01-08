@@ -43,8 +43,8 @@ const QString kWindowSizeSettingName = kGroupName + "/" + "size";
 
 }  // namespace
 
-SettingsEditorDialog::SettingsEditorDialog(QWidget* parent)
-    : QDialog(parent), m_label(new QLabel), m_settings_editor(new SettingsEditor)
+SettingsEditorDialog::SettingsEditorDialog(QWidget* parent_widget)
+    : QDialog(parent_widget), m_label(new QLabel), m_settings_editor(new SettingsEditor)
 {
   setWindowTitle("Application Settings");
 

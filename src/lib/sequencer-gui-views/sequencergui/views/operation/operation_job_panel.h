@@ -46,7 +46,7 @@ class OperationJobPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationJobPanel(QWidget* parent = nullptr);
+  explicit OperationJobPanel(QWidget* parent_widget = nullptr);
   ~OperationJobPanel() override;
 
   void SetModels(ApplicationModels* models);

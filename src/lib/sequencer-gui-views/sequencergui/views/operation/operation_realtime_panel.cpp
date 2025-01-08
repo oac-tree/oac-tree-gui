@@ -49,8 +49,8 @@ QList<QAction *> GetToolBarActions(sequencergui::MonitorRealTimeActions *actions
 namespace sequencergui
 {
 
-OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
-    : QWidget(parent)
+OperationRealTimePanel::OperationRealTimePanel(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_actions(new MonitorRealTimeActions(this))
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)

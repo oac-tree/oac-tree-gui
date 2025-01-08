@@ -36,8 +36,8 @@ const QString kWorkspaceIndexSettingName = kGroupName + "/" + "workspace_index";
 namespace sequencergui
 {
 
-OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
-    : QWidget(parent)
+OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_tree_widget(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table_widget(

@@ -50,7 +50,7 @@ class SequencerExplorerView : public QWidget
   Q_OBJECT
 
 public:
-  explicit SequencerExplorerView(QWidget* parent = nullptr);
+  explicit SequencerExplorerView(QWidget* parent_widget = nullptr);
   ~SequencerExplorerView() override;
 
   void SetModel(SequencerModel* model);

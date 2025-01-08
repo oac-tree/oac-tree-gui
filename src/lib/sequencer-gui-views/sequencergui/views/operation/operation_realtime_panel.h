@@ -51,7 +51,7 @@ class OperationRealTimePanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationRealTimePanel(QWidget* parent = nullptr);
+  explicit OperationRealTimePanel(QWidget* parent_widget = nullptr);
   ~OperationRealTimePanel() override;
 
   void SetCurrentJob(JobItem* job_item);

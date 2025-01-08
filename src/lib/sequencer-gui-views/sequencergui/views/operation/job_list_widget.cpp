@@ -38,8 +38,8 @@ const QString kHeaderStateSettingName = "JobListWidget/header_state";
 namespace sequencergui
 {
 
-JobListWidget::JobListWidget(QWidget *parent)
-    : QWidget(parent)
+JobListWidget::JobListWidget(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<JobListViewModel>(m_tree_view))
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))

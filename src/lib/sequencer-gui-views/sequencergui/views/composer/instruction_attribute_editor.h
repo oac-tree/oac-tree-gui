@@ -54,7 +54,7 @@ class InstructionAttributeEditor : public QWidget
   Q_OBJECT
 
 public:
-  explicit InstructionAttributeEditor(QWidget* parent = nullptr);
+  explicit InstructionAttributeEditor(QWidget* parent_widget = nullptr);
   ~InstructionAttributeEditor() override;
 
   void SetItem(mvvm::SessionItem* item);

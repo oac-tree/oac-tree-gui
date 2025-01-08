@@ -37,7 +37,7 @@ class GraphicsView : public QGraphicsView
   Q_OBJECT
 
 public:
-  GraphicsView(GraphicsScene* scene, QWidget* parent);
+  GraphicsView(GraphicsScene* scene, QWidget* parent_widget);
 
   void onCenterView();
 

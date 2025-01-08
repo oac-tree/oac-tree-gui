@@ -46,7 +46,7 @@ class RemoteConnectionDialog : public QDialog
 
 public:
   explicit RemoteConnectionDialog(RemoteConnectionService* connection_service,
-                                  QWidget* parent = nullptr);
+                                  QWidget* parent_widget = nullptr);
   ~RemoteConnectionDialog() override;
 
   /**

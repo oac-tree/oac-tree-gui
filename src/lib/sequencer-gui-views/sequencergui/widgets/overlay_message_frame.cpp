@@ -44,8 +44,8 @@ int GetMinimumBoxHeight()
 namespace sequencergui
 {
 
-OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
-    : QFrame(parent)
+OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent_widget)
+    : QFrame(parent_widget)
     , m_text(text)
     , m_bounding_rect(0, 0, GetMaximumBoxWidth(), GetMinimumBoxHeight())
     , m_font("Monospace", mvvm::utils::SystemPointSize(), QFont::Normal, true)

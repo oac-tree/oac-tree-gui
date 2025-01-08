@@ -59,7 +59,7 @@ class InstructionEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit InstructionEditorWidget(QWidget* parent = nullptr);
+  explicit InstructionEditorWidget(QWidget* parent_widget = nullptr);
   ~InstructionEditorWidget() override;
 
   void SetProcedure(ProcedureItem* procedure);

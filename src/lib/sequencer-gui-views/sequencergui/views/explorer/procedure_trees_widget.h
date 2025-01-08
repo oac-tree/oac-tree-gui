@@ -54,7 +54,7 @@ class ProcedureTreesWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit ProcedureTreesWidget(QWidget* parent = nullptr);
+  explicit ProcedureTreesWidget(QWidget* parent_widget = nullptr);
   ~ProcedureTreesWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);

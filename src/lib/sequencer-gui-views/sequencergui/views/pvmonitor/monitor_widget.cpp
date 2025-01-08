@@ -54,8 +54,8 @@ void SetEnabled(const QList<QAction *> &actions, bool is_enabled)
 namespace sequencergui
 {
 
-MonitorWidget::MonitorWidget(QWidget *parent)
-    : QWidget(parent)
+MonitorWidget::MonitorWidget(QWidget *parent_widget)
+    : QWidget(parent_widget)
     , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_tree(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTechTree))

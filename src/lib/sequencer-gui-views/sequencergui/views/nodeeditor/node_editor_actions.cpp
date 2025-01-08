@@ -44,8 +44,8 @@ QString GetZoomText(int scale)
 
 namespace sequencergui
 {
-NodeEditorActions::NodeEditorActions(QWidget *parent)
-    : QObject(parent)
+NodeEditorActions::NodeEditorActions(QWidget *parent_widget)
+    : QObject(parent_widget)
     , m_pointer_mode_group(new QButtonGroup(this))
     , m_pointer_button(new QToolButton)
     , m_pointer_action(new QWidgetAction(this))
