@@ -56,7 +56,7 @@ QLabel* createCopyrightLabel()
 
 QLabel* createLogoLabel()
 {
-  QPixmap logo(":/icons/about_logo.awk", "JPG");
+  QPixmap logo(":/oac-tree/icons/about_logo.awk", "JPG");
   auto result = new QLabel;
   result->setPixmap(
       logo.scaled(mvvm::utils::UnitSize(50), mvvm::utils::UnitSize(50), Qt::KeepAspectRatio));
@@ -96,7 +96,7 @@ QBoxLayout* AboutApplicationDialog::createLogoLayout()
 {
   auto result = new QVBoxLayout;
 
-  QPixmap logo(":/icons/iter_logo.png");
+  QPixmap logo(":/sup-gui-core/icons/iter_logo.png");
   auto label = new QLabel;
   label->setPixmap(
       logo.scaled(mvvm::utils::UnitSize(10), mvvm::utils::UnitSize(10), Qt::KeepAspectRatio));
