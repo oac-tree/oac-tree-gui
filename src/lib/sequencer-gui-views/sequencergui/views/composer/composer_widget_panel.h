@@ -62,7 +62,15 @@ public:
     kXmlPanel
   };
 
-  explicit ComposerWidgetPanel(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * @param settings_group_name Unique name of the panel for persistent settings.
+   * @param widget_type The type of the panel to show at first start.
+   * @param parent_widget The parent widget.
+   */
+  explicit ComposerWidgetPanel(const QString& settings_group_name, WidgetType widget_type,
+                               QWidget* parent_widget = nullptr);
   ~ComposerWidgetPanel() override;
 
   void SetModel(SequencerModel* model);
@@ -74,8 +82,15 @@ public:
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
-  WidgetType GetCurrentWidgetType() const;
-  void SetCurrentWidgetType(WidgetType widget_type);
+  /**
+   * @brief Read settings from persistent storage.
+   */
+  void ReadSettings();
+
+  /**
+   * @brief Write settings to persistent storage.
+   */
+  void WriteSettings();
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
@@ -92,7 +107,7 @@ private:
 
   ProcedureItem* m_procedure{nullptr};
   SequencerModel* m_model{nullptr};
-  bool m_block_selection_notification{false};  //!< do not notify ouside if selection changed
+  bool m_block_selection_notification{false};  //!< do not notify outside if selection changed
 };
 
 }  // namespace sequencergui

@@ -33,12 +33,11 @@
 
 #include <mvvm/standarditems/container_item.h>
 
-#include <QSettings>
-#include <QSplitter>
 #include <QVBoxLayout>
 
 namespace
 {
+
 const QString kGroupName("SequencerComposerView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kCentralPanel = kGroupName + "/" + "central";
@@ -51,8 +50,8 @@ namespace sequencergui
 SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_composer_panel(new ComposerPanel)
-    , m_central_panel(new ComposerWidgetPanel)
-    , m_right_panel(new ComposerWidgetPanel)
+    , m_central_panel(new ComposerWidgetPanel(kCentralPanel, ComposerWidgetPanel::kInstructionTree))
+    , m_right_panel(new ComposerWidgetPanel(kRightPanel, ComposerWidgetPanel::kWorkspace))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_composer_actions(new SequencerComposerActions(this))
 {
@@ -91,24 +90,15 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 
 void SequencerComposerView::ReadSettings()
 {
-  const QSettings settings;
-
-  auto central_index = settings.value(kCentralPanel, ComposerWidgetPanel::kInstructionTree).toInt();
-  m_central_panel->SetCurrentWidgetType(
-      static_cast<ComposerWidgetPanel::WidgetType>(central_index));
-
-  auto right_index = settings.value(kRightPanel, ComposerWidgetPanel::kWorkspace).toInt();
-  m_right_panel->SetCurrentWidgetType(static_cast<ComposerWidgetPanel::WidgetType>(right_index));
-
+  m_central_panel->ReadSettings();
+  m_right_panel->ReadSettings();
   m_splitter->ReadSettings();
 }
 
 void SequencerComposerView::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kCentralPanel, m_central_panel->GetCurrentWidgetType());
-  settings.setValue(kRightPanel, m_right_panel->GetCurrentWidgetType());
-
+  m_central_panel->WriteSettings();
+  m_right_panel->WriteSettings();
   m_splitter->WriteSettings();
 }
 

@@ -33,14 +33,25 @@
 namespace sequencergui
 {
 
-ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent_widget)
+namespace
+{
+
+QString GetStackWidgetSettingsKey(const QString& settings_group_name)
+{
+  return settings_group_name + "_stack_widget";
+}
+
+}  // namespace
+
+ComposerWidgetPanel::ComposerWidgetPanel(const QString& settings_group_name, WidgetType widget_type,
+                                         QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(
           new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
     , m_node_editor(new NodeEditor)
     , m_xml_panel(new XmlPanel)
-    , m_stack_widget(new sup::gui::ItemStackWidget)
+    , m_stack_widget(new sup::gui::ItemStackWidget(GetStackWidgetSettingsKey(settings_group_name)))
 {
   setWindowTitle("Composer");
 
@@ -56,6 +67,8 @@ ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent_widget)
   layout->setSpacing(0);
 
   SetupConnections();
+
+  m_stack_widget->SetCurrentIndex(static_cast<int>(widget_type));
 }
 
 ComposerWidgetPanel::~ComposerWidgetPanel() = default;
@@ -106,14 +119,14 @@ InstructionItem* ComposerWidgetPanel::GetSelectedInstruction() const
   return selected.empty() ? nullptr : selected.front();
 }
 
-ComposerWidgetPanel::WidgetType ComposerWidgetPanel::GetCurrentWidgetType() const
+void ComposerWidgetPanel::ReadSettings()
 {
-  return static_cast<WidgetType>(m_stack_widget->GetCurrentIndex());
+  m_stack_widget->ReadSettings(sup::gui::GetSettingsReadFunc());
 }
 
-void ComposerWidgetPanel::SetCurrentWidgetType(WidgetType widget_type)
+void ComposerWidgetPanel::WriteSettings()
 {
-  m_stack_widget->SetCurrentIndex(static_cast<int>(widget_type));
+  m_stack_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
 }
 
 void ComposerWidgetPanel::SetupConnections()
