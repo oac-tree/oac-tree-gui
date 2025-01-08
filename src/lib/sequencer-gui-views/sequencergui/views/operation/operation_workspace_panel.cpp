@@ -23,13 +23,12 @@
 #include <sequencergui/views/composer/workspace_editor_widget.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
-#include <QSettings>
 #include <QVBoxLayout>
 
 namespace
 {
-const QString kGroupName("OperationWorkspacePanel");
-const QString kWorkspaceIndexSettingName = kGroupName + "/" + "workspace_index";
+
+const QString kWorkspaceSettingsKey = "OperationWorkspacePanel/stack_widget";
 
 }  // namespace
 
@@ -38,7 +37,7 @@ namespace sequencergui
 
 OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent_widget)
     : QWidget(parent_widget)
-    , m_stack_widget(new sup::gui::ItemStackWidget)
+    , m_stack_widget(new sup::gui::ItemStackWidget(kWorkspaceSettingsKey))
     , m_workspace_tree_widget(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table_widget(
           new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTable))
@@ -71,15 +70,12 @@ void OperationWorkspacePanel::SetProcedure(ProcedureItem *item)
 
 void OperationWorkspacePanel::ReadSettings()
 {
-  const QSettings settings;
-  auto current_index = settings.value(kWorkspaceIndexSettingName, 0).toInt();
-  m_stack_widget->SetCurrentIndex(current_index);
+  m_stack_widget->ReadSettings(sup::gui::GetSettingsReadFunc());
 }
 
 void OperationWorkspacePanel::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kWorkspaceIndexSettingName, m_stack_widget->GetCurrentIndex());
+  m_stack_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
 }
 
 }  // namespace sequencergui

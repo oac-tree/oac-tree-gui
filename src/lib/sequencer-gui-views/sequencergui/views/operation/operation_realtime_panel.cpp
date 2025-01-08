@@ -27,7 +27,6 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
-#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QVBoxLayout>
 
