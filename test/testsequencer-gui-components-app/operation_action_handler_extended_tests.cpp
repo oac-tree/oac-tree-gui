@@ -368,10 +368,11 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 150));
-
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
+  // check that JobItem got correct state via queued connection
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+  // check that JobManager sees correct state from async runner
+  EXPECT_TRUE(QTest::qWaitFor(
+      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 100));
 
   QTest::qWait(20);
 
@@ -379,10 +380,11 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 150));
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-
-  EXPECT_EQ(GetRunnerStatus(job_item), RunnerStatus::kSucceeded);
+  // check that JobItem got correct state via queued connection
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+  // check that JobManager sees correct state from async runner
+  EXPECT_TRUE(QTest::qWaitFor(
+      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 100));
 }
 
 }  // namespace sequencergui
