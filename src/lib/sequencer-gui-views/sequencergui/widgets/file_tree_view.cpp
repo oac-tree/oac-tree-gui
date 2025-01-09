@@ -153,7 +153,6 @@ void FileTreeView::SetupActions()
       "Import procedure from currently selected XML file\n"
       "(alternatively, double-click on it)");
   m_import_file_action->setIcon(FindIcon("file-import-outline"));
-  auto on_import_from_file = [this]() {};
   connect(m_import_file_action, &QAction::triggered, this, &FileTreeView::OnImportFromFileRequest);
   addAction(m_import_file_action);
 

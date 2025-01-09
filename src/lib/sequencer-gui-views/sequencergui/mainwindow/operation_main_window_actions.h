@@ -48,7 +48,7 @@ signals:
 
 private:
   void CreateActions(QMainWindow* mainwindow);
-  void SetupMenus(QMenuBar* menubar);
+  void SetupMenus();
   void OnAbout();
   void OnChangeSystemFont();
   void OnResetSettings();

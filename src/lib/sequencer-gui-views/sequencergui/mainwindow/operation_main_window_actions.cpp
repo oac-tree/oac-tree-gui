@@ -40,7 +40,7 @@ OperationMainWindowActions::OperationMainWindowActions(QMainWindow *mainwindow)
     : QObject(mainwindow)
 {
   CreateActions(mainwindow);
-  SetupMenus(mainwindow->menuBar());
+  SetupMenus();
 }
 
 OperationMainWindowActions::~OperationMainWindowActions() = default;
@@ -80,7 +80,7 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 //! Equips menu with actions.
 
-void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
+void OperationMainWindowActions::SetupMenus()
 {
   auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
 
