@@ -1,5 +1,7 @@
 # Setup CODAC environment related to continuous integration, and documentation.
 
+include(FindPackageMessage)
+
 if(NOT COA_NO_CODAC)
   find_package(CODAC OPTIONAL_COMPONENTS site-packages Python MODULE QUIET)
 endif()
@@ -51,6 +53,4 @@ endif()
 if(COA_COVERAGE)
   # On coverage builds always build tests
   set(COA_BUILD_TESTS ON)
-  message(STATUS "Enabling test coverage information")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -fno-inline --coverage")
 endif()
