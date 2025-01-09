@@ -31,12 +31,12 @@ namespace sequencergui
 
 OperationJobActions::OperationJobActions(QObject *parent)
     : QObject(parent)
+    , m_submit_procedure_menu(CreateSubmitProcedureMenu())
     , m_import_action(new QAction(this))
     , m_submit_action(new sup::gui::ActionMenu(this))
     , m_regenerate_action(new QAction(this))
     , m_remove_action(new QAction(this))
     , m_connect_to_remote_action(new QAction(this))
-    , m_submit_procedure_menu(CreateSubmitProcedureMenu())
 {
   m_import_action->setText("New");
   m_import_action->setIcon(FindIcon("file-plus-outline"));

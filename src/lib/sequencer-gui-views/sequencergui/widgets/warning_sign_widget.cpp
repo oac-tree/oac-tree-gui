@@ -31,7 +31,7 @@ namespace
 QRect GetPixmapRect()
 {
   auto size = sup::gui::utils::ToolBarIconSize();
-  return {0, 0, 32, 32};
+  return {0, 0, size.width(), size.width()};
 }
 
 }  // namespace

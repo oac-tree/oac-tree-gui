@@ -105,8 +105,8 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
   {
     m_temp_model = std::make_unique<SequencerModel>();
     auto procedure_ptr = procedure_item.get();
-    auto procedure = m_temp_model->InsertItem(
-        std::move(procedure_item), m_temp_model->GetRootItem(), mvvm::TagIndex::Append());
+    (void)m_temp_model->InsertItem(std::move(procedure_item), m_temp_model->GetRootItem(),
+                                   mvvm::TagIndex::Append());
     m_trees_widget->SetProcedure(procedure_ptr);
   }
   else

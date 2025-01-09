@@ -75,9 +75,9 @@ private:
 
   MonitorWidgetActions* m_monitor_actions{nullptr};
 
+  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_tree{nullptr};
   WorkspaceEditorWidget* m_workspace_table{nullptr};
-  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
   QToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
 };

@@ -41,7 +41,7 @@ MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project, QMai
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(), {sup::gui::constants::kFileMenu});
 
   CreateActions(mainwindow);
-  SetupMenus(mainwindow->menuBar());
+  SetupMenus();
 }
 
 MonitorMainWindowActions::~MonitorMainWindowActions() = default;
@@ -64,7 +64,7 @@ void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
   connect(m_exit_action, &QAction::triggered, mainwindow, &QMainWindow::close);
 }
 
-void MonitorMainWindowActions::SetupMenus(QMenuBar *menubar)
+void MonitorMainWindowActions::SetupMenus()
 {
   auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
 
