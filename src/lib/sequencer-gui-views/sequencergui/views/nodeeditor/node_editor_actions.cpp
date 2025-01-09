@@ -37,7 +37,7 @@ const int kDefaultZoomLevel = 100;
 
 QString GetZoomText(int scale)
 {
-  return QString("Zoom %1 \%").arg(scale);
+  return QString("Zoom %1").arg(scale);
 }
 
 }  // namespace
