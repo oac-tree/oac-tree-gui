@@ -71,6 +71,8 @@ InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent_widget) : Q
 
 void InsructionToolKitTreeView::startDrag(Qt::DropActions supported_actions)
 {
+  (void) supported_actions;
+
   if (auto mime_data = model()->mimeData(selectedIndexes()); mime_data)
   {
     auto drag = new QDrag(this);   // drag ownership will be taken

@@ -241,16 +241,18 @@ QString ConnectableView::GetLabel() const
 
 void ConnectableView::SetupPorts()
 {
-  int portIndex{0};
   for (const auto& info : m_item->GetInputPorts())
   {
-    auto inputPort = new ChildPort(this, info);
+    // ownership belongs to parent
+    auto input_port = new ChildPort(this, info);
+    (void)input_port;
   }
 
-  portIndex = 0;
   for (const auto& info : m_item->GetOutputPorts())
   {
-    auto outputPort = new ParentPort(this, info);
+    // ownership belongs to parent
+    auto output_port = new ParentPort(this, info);
+    (void)output_port;
   }
 
   if (m_strategy)

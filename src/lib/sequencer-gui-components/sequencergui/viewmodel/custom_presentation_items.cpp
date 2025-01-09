@@ -52,6 +52,8 @@ QVariant ChannelPresentationItem::Data(int qt_role) const
 
 bool ChannelPresentationItem::SetData(const QVariant &data, int qt_role)
 {
+  (void)data;
+  (void)qt_role;
   return false;
 }
 

@@ -60,7 +60,7 @@ void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem *procedure_item)
 {
   if (!procedure_item)
   {
-    sup::gui::SendWarningMessage({"Validate Procedure", "No procedure selected"});
+    sup::gui::SendWarningMessage({"Validate Procedure", "No procedure selected", "", ""});
     return;
   }
 
@@ -72,7 +72,7 @@ void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem *procedure_item)
   catch (const std::exception &ex)
   {
     sup::gui::SendWarningMessage(
-        {"Export to XML", "Procedure is in unconsistent state, can't generate XML", ex.what()});
+        {"Export to XML", "Procedure is in unconsistent state, can't generate XML", ex.what(), ""});
   }
 
   if (xml_content.empty())
@@ -96,7 +96,7 @@ void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure
 {
   if (!procedure_item)
   {
-    sup::gui::SendWarningMessage({"Validate Procedure", "No procedure selected"});
+    sup::gui::SendWarningMessage({"Validate Procedure", "No procedure selected", "", ""});
     return;
   }
 
@@ -104,13 +104,13 @@ void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure
   try
   {
     const DomainProcedureBuilder builder;
-    domain_procedure = std::move(builder.CreateProcedure(*procedure_item));
+    domain_procedure = builder.CreateProcedure(*procedure_item);
     domain_procedure->Setup();
   }
   catch (std::exception &ex)
   {
     sup::gui::SendWarningMessage(
-        {"Validate Procedure", "Validation of procedure failed", ex.what()});
+        {"Validate Procedure", "Validation of procedure failed", ex.what(), ""});
     return;
   }
 
@@ -118,12 +118,12 @@ void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure
   {
     sup::gui::SendWarningMessage(
         {"Validate Procedure", "Validation of procedure failed",
-         "None of existing top-level instructions is marked as root instruction"});
+         "None of existing top-level instructions is marked as root instruction", ""});
     return;
   }
 
   sup::gui::SendInfoMessage({"Validate Procedure", "Sequencer procedure is valid",
-                             "Domain procedure setup has been completed successfully"});
+                             "Domain procedure setup has been completed successfully", ""});
 }
 
 std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(QString file_name)
@@ -156,7 +156,8 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileInte
   }
   catch (const std::exception &ex)
   {
-    sup::gui::SendWarningMessage({"Import from file", "Procedure import has failed", ex.what()});
+    sup::gui::SendWarningMessage(
+        {"Import from file", "Procedure import has failed", ex.what(), ""});
   }
 
   return result;

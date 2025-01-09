@@ -74,8 +74,6 @@ void ToolKitViewModel::PopulateModel(const std::vector<ObjectGroupInfo>& objects
 {
   clear();
 
-  auto parent_item = invisibleRootItem();
-
   for (const auto& group_info : objects_group_info)
   {
     auto group_item = CreateItem(group_info.group_name, /*drag_enabled*/ false);

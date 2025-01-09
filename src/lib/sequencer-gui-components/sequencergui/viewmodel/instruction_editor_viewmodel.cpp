@@ -106,6 +106,9 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
                                                  int row, int column,
                                                  const QModelIndex &parent) const
 {
+  (void) action;
+  (void) column;
+
   if (!data)
   {
     return false;

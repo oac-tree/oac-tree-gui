@@ -180,9 +180,9 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
 
   auto sequence0 = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
-  auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
+  (void) InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 
-  auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
+  (void) InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 
   auto fallback0 = InsertInstruction(domainconstants::kFallbackInstructionType, sequence0);
 
@@ -192,17 +192,17 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
   auto inverter0 = InsertInstruction(domainconstants::kInverterInstructionType, listen0);
 
   auto fallback1 = InsertInstruction(domainconstants::kFallbackInstructionType, inverter0);
-  auto wait0 = model->InsertItem<WaitItem>(fallback1);
-  auto wait1 = model->InsertItem<WaitItem>(fallback1);
+  (void) model->InsertItem<WaitItem>(fallback1);
+  (void) model->InsertItem<WaitItem>(fallback1);
 
   auto sequence1 = model->InsertItem<SequenceItem>(fallback0);
   auto force0 = InsertInstruction(domainconstants::kForceSuccessInstructionType, sequence1);
-  auto copy2 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
-  auto copy3 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
+  (void) InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
+  (void) InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 
   auto sequence2 = model->InsertItem<SequenceItem>(force0);
-  auto wait2 = model->InsertItem<WaitItem>(sequence2);
-  auto wait3 = model->InsertItem<WaitItem>(sequence2);
+  (void) model->InsertItem<WaitItem>(sequence2);
+  (void) model->InsertItem<WaitItem>(sequence2);
 
   return procedure_item;
 }

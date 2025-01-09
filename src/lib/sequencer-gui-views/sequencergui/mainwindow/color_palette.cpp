@@ -27,10 +27,10 @@ namespace sequencergui
 namespace
 {
 
-const char *kCetaceanBlue = "#070e2b";
-const char *kDarkPurple = "#32002f";
+// const char *kCetaceanBlue = "#070e2b";
+// const char *kDarkPurple = "#32002f";
 const char *kMediumElectricBlue = "#005291";
-const char *kArsenic = "#35374a";
+// const char *kArsenic = "#35374a";
 const char *kChineseBlack = "#171717";
 
 }  // namespace

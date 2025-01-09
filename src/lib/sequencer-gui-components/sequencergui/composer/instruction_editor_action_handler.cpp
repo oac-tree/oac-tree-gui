@@ -315,14 +315,14 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
   if (item_type.empty())
   {
     return sup::gui::QueryResult::Failure(
-        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]"});
+        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]", ""});
   }
 
   auto instruction_container = GetInstructionContainer();
   if (!instruction_container)
   {
     return sup::gui::QueryResult::Failure(
-        {kFailedActionTitle, kFailedActionText, "No procedure selected"});
+        {kFailedActionTitle, kFailedActionText, "No procedure selected", ""});
   }
 
   // Checking if there is a selection inside another parent. To paste after this selection, the
@@ -333,7 +333,8 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
         item_type, selected_item->GetParent(), selected_item->GetTagIndex().Next());
     if (!success_flag)
     {
-      return sup::gui::QueryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
+      return sup::gui::QueryResult::Failure(
+          {kFailedActionTitle, kFailedActionText, informative, ""});
     }
   }
 
@@ -348,14 +349,14 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
   if (item_type.empty())
   {
     return sup::gui::QueryResult::Failure(
-        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]"});
+        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]", ""});
   }
 
   auto selected_instruction = GetSelectedInstruction();
   if (!selected_instruction)
   {
     return sup::gui::QueryResult::Failure(
-        {kFailedActionTitle, kFailedActionText, "No instruction selected"});
+        {kFailedActionTitle, kFailedActionText, "No instruction selected", ""});
   }
 
   // Checking if there is a selection inside another parent. To paste after this selection, the
@@ -366,7 +367,8 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
         mvvm::utils::CanInsertType(item_type, selected_item, mvvm::TagIndex::Append());
     if (!success_flag)
     {
-      return sup::gui::QueryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
+      return sup::gui::QueryResult::Failure(
+          {kFailedActionTitle, kFailedActionText, informative, ""});
     }
   }
 

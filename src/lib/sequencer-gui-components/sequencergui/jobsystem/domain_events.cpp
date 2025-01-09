@@ -31,7 +31,11 @@ namespace
 
 struct DomainEventToStringVisitor
 {
-  std::string operator()(const std::monostate &event) const { return std::string("monostate"); }
+  std::string operator()(const std::monostate &event) const
+  {
+    (void)event;
+    return std::string("monostate");
+  }
 
   std::string operator()(const ::sequencergui::InstructionStateUpdatedEvent &event) const
   {

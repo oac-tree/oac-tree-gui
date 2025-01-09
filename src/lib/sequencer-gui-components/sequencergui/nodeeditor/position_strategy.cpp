@@ -109,11 +109,12 @@ void TopBottomPositionStrategy::SetPositionToTop(const QRectF &rect, NodePort *p
 }
 
 //! Initializes port position and labels to be on the right side of bounding rectangle of
-//! ConnectableView. This port represents an output of a parennt (i.e. the port is located on an
+//! ConnectableView. This port represents an output of a parent (i.e. the port is located on an
 //! instruction playing the role of a parent).
 
 void TopBottomPositionStrategy::SetPositionToBottom(const QRectF &rect, NodePort *port, int index)
 {
+  (void) index;
   port->GetLabel()->setVisible(false);
   port->setPos(rect.width() / 2, rect.height());
 }

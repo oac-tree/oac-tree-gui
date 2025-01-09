@@ -150,6 +150,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
 
   void OnDataChanged(mvvm::SessionItem* item, int role)
   {
+    (void) role;
     if (m_block_update)
     {
       return;

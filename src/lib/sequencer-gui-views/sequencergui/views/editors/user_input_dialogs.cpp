@@ -102,6 +102,7 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget
 
   auto option0_button = msg_box.addButton(selection_list.at(0), QMessageBox::AcceptRole);
   auto option1_button = msg_box.addButton(selection_list.at(1), QMessageBox::RejectRole);
+  (void) option1_button;
 
   msg_box.exec();
 

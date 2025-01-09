@@ -121,7 +121,7 @@ void MonitorWidget::OnStartMonitoringRequest()
   }
   catch (std::exception &ex)
   {
-    sup::gui::SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
+    sup::gui::SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what(), ""});
     OnStopMonitoringRequest();
   }
 }

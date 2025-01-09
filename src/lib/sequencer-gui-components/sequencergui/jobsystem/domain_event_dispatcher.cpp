@@ -40,7 +40,10 @@ void DomainEventDispatcher::OnNewEvent()
   std::visit(*this, event);
 }
 
-void DomainEventDispatcher::operator()(const std::monostate &event) const {}
+void DomainEventDispatcher::operator()(const std::monostate &event) const
+{
+  (void)event;
+}
 
 void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent &event) const
 {

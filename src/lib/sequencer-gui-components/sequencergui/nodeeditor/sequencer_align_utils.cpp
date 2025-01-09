@@ -111,9 +111,6 @@ void TranslatePositions(const QPointF &reference, AlignNode &root_node)
     auto node = node_stack.top();
     node_stack.pop();
 
-    double x = node->GetX() * scale_x + reference.x();
-    double y = node->GetY() * scale_x + reference.y();
-
     node->SetPos(translate_x(node->GetX()), translate_y(node->GetY()));
 
     auto children = node->GetChildren();
