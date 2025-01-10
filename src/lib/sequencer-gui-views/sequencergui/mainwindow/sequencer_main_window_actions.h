@@ -29,6 +29,8 @@ class QMainWindow;
 class QAction;
 class QMenuBar;
 class QMenu;
+class QStatusBar;
+class QToolButton;
 
 namespace mvvm
 {
@@ -74,6 +76,11 @@ public:
    */
   void UpdateProjectNames();
 
+  /**
+   * @brief Populates external status bar with actions.
+   */
+  void SetupStatusBar(QStatusBar* status_bar);
+
 signals:
   void RestartApplicationRequest(sup::gui::AppExitCode);
 
@@ -106,6 +113,8 @@ private:
   QAction* m_reset_settings_action{nullptr};
 
   QMenu* m_recent_project_menu{nullptr};
+
+  QToolButton* m_toggle_right_sidebar_button{nullptr};
 
   std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;

@@ -25,6 +25,7 @@
 
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
@@ -33,6 +34,7 @@
 
 #include <mvvm/project/project_handler.h>
 #include <mvvm/project/project_handler_utils.h>
+#include <mvvm/widgets/appearance_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
@@ -40,17 +42,20 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
+#include <QStatusBar>
+#include <QToolButton>
 
 namespace
 {
 const QString kApplicationType = "Sequencer GUI";
-}
+
+}  // namespace
 
 namespace sequencergui
 {
 
-SequencerMainWindowActions::SequencerMainWindowActions(mvvm::IProject *project,
-                                                       QMainWindow *mainwindow)
+SequencerMainWindowActions::SequencerMainWindowActions(mvvm::IProject* project,
+                                                       QMainWindow* mainwindow)
     : QObject(mainwindow)
     , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
     , m_focus_controller(sup::gui::CreateGlobalFocusController())
@@ -76,7 +81,23 @@ void SequencerMainWindowActions::UpdateProjectNames()
   m_project_handler->UpdateNames();
 }
 
-void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
+void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
+{
+  status_bar->setVisible(true);
+  m_toggle_right_sidebar_button = new QToolButton;
+  m_toggle_right_sidebar_button->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
+  m_toggle_right_sidebar_button->setToolTip("Show/hide Right Sidebar");
+  m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
+  m_toggle_right_sidebar_button->setText("");
+  m_toggle_right_sidebar_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  m_toggle_right_sidebar_button->setStyleSheet(mvvm::GetFlatButtonStyleString("#eff0f1"));
+  m_toggle_right_sidebar_button->setFixedSize(24, 24);
+  m_toggle_right_sidebar_button->setIconSize(QSize(24, 24));
+
+  status_bar->insertPermanentWidget(0, m_toggle_right_sidebar_button);
+}
+
+void SequencerMainWindowActions::CreateActions(QMainWindow* mainwindow)
 {
   m_exit_action = new QAction("Exit Application", this);
   m_exit_action->setShortcuts(QKeySequence::Quit);

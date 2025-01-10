@@ -37,6 +37,7 @@
 
 #include <QCloseEvent>
 #include <QSettings>
+#include <QStatusBar>
 
 namespace sequencergui
 {
@@ -110,6 +111,8 @@ void SequencerMainWindow::InitComponents()
 
   connect(m_action_manager, &SequencerMainWindowActions::RestartApplicationRequest, this,
           &SequencerMainWindow::OnRestartRequest);
+
+  m_action_manager->SetupStatusBar(m_tab_widget->GetStatusBar());
 }
 
 void SequencerMainWindow::ReadSettings()
