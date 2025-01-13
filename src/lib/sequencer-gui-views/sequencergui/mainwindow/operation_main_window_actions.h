@@ -28,6 +28,11 @@ class QMainWindow;
 class QAction;
 class QMenuBar;
 
+namespace sup::gui
+{
+class AppContextFocusController;
+}  // namespace sup::gui
+
 namespace sequencergui
 {
 
@@ -49,6 +54,10 @@ signals:
 private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus();
+  void SetupFileMenu();
+  void SetupViewMenu();
+  void SetupHelpMenu();
+
   void OnAbout();
   void OnChangeSystemFont();
   void OnResetSettings();
@@ -59,6 +68,8 @@ private:
 
   QAction* m_system_font_action{nullptr};
   QAction* m_reset_settings_action{nullptr};
+
+  std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };
 
 }  // namespace sequencergui

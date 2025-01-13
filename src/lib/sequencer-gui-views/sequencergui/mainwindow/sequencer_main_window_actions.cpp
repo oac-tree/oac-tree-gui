@@ -31,6 +31,7 @@
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
+#include <sequencergui/components/component_helper.h>
 
 #include <mvvm/project/project_handler.h>
 #include <mvvm/project/project_handler_utils.h>
@@ -86,7 +87,6 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
   status_bar->setVisible(true);
 
   m_toggle_right_sidebar_button = new QToolButton;
-  m_toggle_right_sidebar_button->setShortcut(QKeySequence(QString("Alt+Shift+0")));
   m_toggle_right_sidebar_button->setToolTip("Show/hide Right Sidebar");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
   m_toggle_right_sidebar_button->setText("");
@@ -94,6 +94,9 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
   m_toggle_right_sidebar_button->setStyleSheet(mvvm::GetFlatButtonStyleString("#eff0f1"));
   m_toggle_right_sidebar_button->setFixedSize(24, 24);
   m_toggle_right_sidebar_button->setIconSize(QSize(24, 24));
+
+
+  // m_toggle_right_sidebar_button->setDefaultAction();
 
   status_bar->insertPermanentWidget(0, m_toggle_right_sidebar_button);
 }

@@ -235,7 +235,6 @@ void OperationMonitorView::SetupWidgetActions()
           [this](auto) { m_left_panel->setVisible(!m_left_panel->isVisible()); });
 
   m_toggle_right_sidebar = new QAction("Show/hide right sidebar", this);
-  m_toggle_right_sidebar->setShortcut(QKeySequence(QString("Alt+Shift+0")));
   m_toggle_right_sidebar->setToolTip("Show/hide right sidebar");
   m_toggle_right_sidebar->setIcon(FindIcon("dock-right"));
   connect(m_toggle_right_sidebar, &QAction::triggered, this,

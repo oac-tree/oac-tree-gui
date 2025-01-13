@@ -19,11 +19,14 @@
 
 #include "operation_main_window_actions.h"
 
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_action_manager.h>
+#include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -37,7 +40,7 @@ namespace sequencergui
 {
 
 OperationMainWindowActions::OperationMainWindowActions(QMainWindow *mainwindow)
-    : QObject(mainwindow)
+    : QObject(mainwindow), m_focus_controller(sup::gui::CreateGlobalFocusController())
 {
   CreateActions(mainwindow);
   SetupMenus();
@@ -78,9 +81,14 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
           &OperationMainWindowActions::OnResetSettings);
 }
 
-//! Equips menu with actions.
-
 void OperationMainWindowActions::SetupMenus()
+{
+  SetupFileMenu();
+  SetupViewMenu();
+  SetupHelpMenu();
+}
+
+void OperationMainWindowActions::SetupFileMenu()
 {
   auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
 
@@ -95,7 +103,22 @@ void OperationMainWindowActions::SetupMenus()
 
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
+}
 
+void OperationMainWindowActions::SetupViewMenu()
+{
+  qDebug() << "OperationMainWindowActions::SetupViewMenu()";
+  auto command =
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu, constants::kToggleLeftSideBar);
+  command->SetShortcut(QKeySequence("Alt+0"));
+
+  command =
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu, constants::kToggleRightSideBar);
+  command->SetShortcut(QKeySequence("Alt+Shift+0"));
+}
+
+void OperationMainWindowActions::SetupHelpMenu()
+{
   auto help_menu = sup::gui::AppGetMenu(sup::gui::constants::kHelpMenu);
   help_menu->addAction(m_about_action);
 }
