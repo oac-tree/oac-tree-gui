@@ -33,9 +33,10 @@
 namespace
 {
 
-QLabel* createLinkLabel()
+std::unique_ptr<QLabel> CreateLinkLabel()
 {
-  auto result = new QLabel();
+  auto result = std::make_unique<QLabel>();
+
   result->setTextFormat(Qt::RichText);
   result->setTextInteractionFlags(Qt::TextBrowserInteraction);
   result->setText(
@@ -44,24 +45,28 @@ QLabel* createLinkLabel()
   return result;
 }
 
-QLabel* createCopyrightLabel()
+std::unique_ptr<QLabel> CreateCopyrightLabel()
 {
-  QDate date = QDate::currentDate();
-  QString copyright = QString("Copyright: 2010-%1 ITER Organization ").arg(date.toString("yyyy"));
+  const QDate date = QDate::currentDate();
+  const QString copyright =
+      QString("Copyright: 2010-%1 ITER Organization ").arg(date.toString("yyyy"));
 
-  auto result = new QLabel(copyright);
+  auto result = std::make_unique<QLabel>();
   result->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
   return result;
 }
 
-QLabel* createLogoLabel()
+std::unique_ptr<QLabel> CreateLogoLabel()
 {
-  QPixmap logo(":/oac-tree/icons/about_logo.awk", "JPG");
-  auto result = new QLabel;
+  const QPixmap logo(":/oac-tree/icons/about_logo.awk", "JPG");
+
+  auto result = std::make_unique<QLabel>();
+
   result->setPixmap(
       logo.scaled(mvvm::utils::UnitSize(50), mvvm::utils::UnitSize(50), Qt::KeepAspectRatio));
   return result;
 }
+
 }  // namespace
 
 namespace sequencergui
@@ -69,32 +74,23 @@ namespace sequencergui
 
 AboutApplicationDialog::AboutApplicationDialog(QWidget* parent_widget) : QDialog(parent_widget)
 {
-  QColor bgColor(240, 240, 240, 255);
-  QPalette palette;
-  palette.setColor(QPalette::Window, bgColor);
-  setAutoFillBackground(true);
-  setPalette(palette);
-
   setWindowTitle("About Sequencer");
   setWindowFlags(Qt::Dialog);
 
   auto details_layout = new QHBoxLayout;
-  details_layout->addLayout(createLogoLayout());
-  details_layout->addLayout(createTextLayout());
+  details_layout->addLayout(CreateLogoLayout().release(), 2);
+  details_layout->addLayout(CreateTextLayout().release(), 5);
 
   auto main_layout = new QVBoxLayout;
   main_layout->addLayout(details_layout);
-  main_layout->addLayout(createButtonLayout());
-
-  //  setMinimumHeight(styleutils::UnitSize(20));
-  //  setMinimumWidth(styleutils::UnitSize(30));
+  main_layout->addLayout(CreateButtonLayout().release());
 
   setLayout(main_layout);
 }
 
-QBoxLayout* AboutApplicationDialog::createLogoLayout()
+std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateLogoLayout()
 {
-  auto result = new QVBoxLayout;
+  auto result = std::make_unique<QVBoxLayout>();
 
   QPixmap logo(":/sup-gui-core/icons/iter_logo.png");
   auto label = new QLabel;
@@ -109,18 +105,15 @@ QBoxLayout* AboutApplicationDialog::createLogoLayout()
   return result;
 }
 
-QBoxLayout* AboutApplicationDialog::createTextLayout()
+std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateTextLayout()
 {
-  auto result = new QVBoxLayout;
+  auto result = std::make_unique<QVBoxLayout>();
 
   // title
   auto about_title_label = new QLabel(
       QString("Sequencer GUI version ").append(QString::fromStdString(ProjectVersion())));
   mvvm::utils::ScaleLabelFont(about_title_label, 1.2, true);
   about_title_label->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
-
-  // copyright
-  auto copyright_label = createCopyrightLabel();
 
   // description
   QString description =
@@ -133,8 +126,8 @@ QBoxLayout* AboutApplicationDialog::createTextLayout()
   result->addWidget(about_title_label);
   result->addWidget(description_label);
   result->addStretch(1);
-  result->addWidget(copyright_label);
-  result->addWidget(createLinkLabel());
+  result->addWidget(CreateCopyrightLabel().release());
+  result->addWidget(CreateLinkLabel().release());
   result->addStretch(1);
 
   auto gap = mvvm::utils::UnitSize(1.0);
@@ -143,9 +136,9 @@ QBoxLayout* AboutApplicationDialog::createTextLayout()
   return result;
 }
 
-QBoxLayout* AboutApplicationDialog::createButtonLayout()
+std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateButtonLayout()
 {
-  auto result = new QHBoxLayout;
+  auto result = std::make_unique<QHBoxLayout>();
 
   auto closeButton = new QPushButton("Close");
   connect(closeButton, &QPushButton::clicked, this, &QDialog::reject);
@@ -157,9 +150,10 @@ QBoxLayout* AboutApplicationDialog::createButtonLayout()
   QByteArray b = QByteArray::fromRawData(mydata, sizeof(mydata));
   auto f = new mvvm::ShortcodeFilter(b, this);
   connect(f, &mvvm::ShortcodeFilter::found, this,
-          [=]() { layout()->addWidget(createLogoLabel()); });
+          [=]() { layout()->addWidget(CreateLogoLabel().release()); });
   installEventFilter(f);
 
   return result;
 }
+
 }  // namespace sequencergui

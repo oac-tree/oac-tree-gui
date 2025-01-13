@@ -22,23 +22,27 @@
 
 #include <QDialog>
 
+#include <memory>
+
 class QBoxLayout;
 
 namespace sequencergui
 {
 
-//! About application dialog.
-
+/**
+ * @brief The AboutApplicationDialog class is a dialog that pops-up on Help/About menu entry.
+ */
 class AboutApplicationDialog : public QDialog
 {
   Q_OBJECT
+
 public:
   AboutApplicationDialog(QWidget* parent_widget = 0);
 
 private:
-  QBoxLayout* createLogoLayout();
-  QBoxLayout* createTextLayout();
-  QBoxLayout* createButtonLayout();
+  std::unique_ptr<QBoxLayout> CreateLogoLayout();
+  std::unique_ptr<QBoxLayout> CreateTextLayout();
+  std::unique_ptr<QBoxLayout> CreateButtonLayout();
 };
 
 }  // namespace sequencergui
