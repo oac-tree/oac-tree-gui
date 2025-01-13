@@ -35,6 +35,8 @@ namespace constants
 {
 const QString kValidateProcedureCommandId = "Validate procedure";
 const QString kExportXmlCommandId = "Export XML";
+const QString kToggleLeftSideBar = "Show/hide left side bar";
+const QString kToggleRightSideBar = "Show/hide right side bar";
 }  // namespace constants
 
 /**

@@ -30,6 +30,7 @@ class QShowEvent;
 namespace sup::gui
 {
 class CustomSplitter;
+class AppContext;
 }
 
 namespace sequencergui
@@ -73,6 +74,11 @@ public:
    */
   void StopAllJobs();
 
+  /**
+   * @brief Registers actions for given context.
+   */
+  void RegisterActionsForContext(const sup::gui::AppContext& context);
+
 protected:
   void showEvent(QShowEvent* event) override;
   void closeEvent(QCloseEvent* event) override;
@@ -90,8 +96,8 @@ private:
   QWidget* CreateLeftPanel();
   QWidget* CreateCentralPanel();
 
-  QAction* m_show_left_sidebar{nullptr};
-  QAction* m_show_right_sidebar{nullptr};
+  QAction* m_toggle_left_sidebar{nullptr};
+  QAction* m_toggle_right_sidebar{nullptr};
 
   OperationJobPanel* m_job_panel{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};

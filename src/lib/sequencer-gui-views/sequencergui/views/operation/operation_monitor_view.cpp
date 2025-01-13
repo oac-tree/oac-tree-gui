@@ -23,6 +23,7 @@
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
 
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
@@ -95,6 +96,8 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
   SetupWidgetActions();
 
   ReadSettings();
+
+  RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
 }
 
 OperationMonitorView::~OperationMonitorView()
@@ -123,6 +126,12 @@ bool OperationMonitorView::HasRunningJobs() const
 void OperationMonitorView::StopAllJobs()
 {
   m_job_manager->StopAllJobs();
+}
+
+void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppContext &context)
+{
+  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, constants::kToggleLeftSideBar, context);
+  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, constants::kToggleRightSideBar, context);
 }
 
 void OperationMonitorView::showEvent(QShowEvent *event)
@@ -219,22 +228,18 @@ void OperationMonitorView::SetupConnections()
 
 void OperationMonitorView::SetupWidgetActions()
 {
-  m_show_left_sidebar = new QAction("Show/hide Left Sidebar", this);
-  m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
-  m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
-  m_show_left_sidebar->setIcon(FindIcon("dock-left"));
-  connect(m_show_left_sidebar, &QAction::triggered, this,
+  m_toggle_left_sidebar = new QAction("Show/hide left sidebar", this);
+  m_toggle_left_sidebar->setToolTip("Show/hide left sidebar");
+  m_toggle_left_sidebar->setIcon(FindIcon("dock-left"));
+  connect(m_toggle_left_sidebar, &QAction::triggered, this,
           [this](auto) { m_left_panel->setVisible(!m_left_panel->isVisible()); });
 
-  m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
-  m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
-  m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
-  m_show_right_sidebar->setIcon(FindIcon("dock-right"));
-  connect(m_show_right_sidebar, &QAction::triggered, this,
+  m_toggle_right_sidebar = new QAction("Show/hide right sidebar", this);
+  m_toggle_right_sidebar->setShortcut(QKeySequence(QString("Alt+Shift+0")));
+  m_toggle_right_sidebar->setToolTip("Show/hide right sidebar");
+  m_toggle_right_sidebar->setIcon(FindIcon("dock-right"));
+  connect(m_toggle_right_sidebar, &QAction::triggered, this,
           [this](auto) { m_workspace_panel->setVisible(!m_workspace_panel->isVisible()); });
-
-  sup::gui::AppRegisterAction(sup::gui::constants::kViewMenu, m_show_left_sidebar);
-  sup::gui::AppRegisterAction(sup::gui::constants::kViewMenu, m_show_right_sidebar);
 }
 
 //! Setup widgets to show currently selected job.

@@ -84,8 +84,9 @@ void SequencerMainWindowActions::UpdateProjectNames()
 void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
 {
   status_bar->setVisible(true);
+
   m_toggle_right_sidebar_button = new QToolButton;
-  m_toggle_right_sidebar_button->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
+  m_toggle_right_sidebar_button->setShortcut(QKeySequence(QString("Alt+Shift+0")));
   m_toggle_right_sidebar_button->setToolTip("Show/hide Right Sidebar");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
   m_toggle_right_sidebar_button->setText("");
@@ -194,7 +195,16 @@ void SequencerMainWindowActions::SetupEditMenu()
   command->SetText("Paste Special").SetShortcut(QKeySequence("Ctrl+Shift+V"));
 }
 
-void SequencerMainWindowActions::SetupViewMenu() {}
+void SequencerMainWindowActions::SetupViewMenu()
+{
+  auto command =
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu, constants::kToggleLeftSideBar);
+  command->SetShortcut(QKeySequence("Alt+0"));
+
+  command =
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu, constants::kToggleRightSideBar);
+  command->SetShortcut(QKeySequence("Alt+Shift+0"));
+}
 
 void SequencerMainWindowActions::SetupToolsMenu()
 {
