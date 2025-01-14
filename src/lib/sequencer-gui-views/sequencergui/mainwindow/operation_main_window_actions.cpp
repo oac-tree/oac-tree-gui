@@ -19,6 +19,8 @@
 
 #include "operation_main_window_actions.h"
 
+#include "status_bar_helper.h"
+
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -60,12 +62,12 @@ void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
   m_toggle_left_sidebar_button = new QToolButton;
   m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
-  // SetupStatusBarButton(m_toggle_left_sidebar_button, constants::kToggleLeftSideBar);
+  SetupStatusBarButton(m_toggle_left_sidebar_button, constants::kToggleLeftSideBar);
 
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
-  // SetupStatusBarButton(m_toggle_right_sidebar_button, constants::kToggleRightSideBar);
+  SetupStatusBarButton(m_toggle_right_sidebar_button, constants::kToggleRightSideBar);
 
   status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
 

@@ -29,5 +29,7 @@ target_sources(${library_name} PRIVATE
   settings_helper.h
   splash_screen.cpp
   splash_screen.h
+  status_bar_helper.cpp
+  status_bar_helper.h
 )
 

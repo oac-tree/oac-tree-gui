@@ -22,6 +22,7 @@
 #include "about_application_dialog.h"
 #include "settings_editor_dialog.h"
 #include "settings_helper.h"
+#include "status_bar_helper.h"
 
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -34,7 +35,6 @@
 
 #include <mvvm/project/project_handler.h>
 #include <mvvm/project/project_handler_utils.h>
-#include <mvvm/widgets/appearance_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
@@ -48,38 +48,6 @@
 namespace
 {
 const QString kApplicationType = "Sequencer GUI";
-
-/**
- * @brief Setup status bar button.
- *
- * Tunes status bar button appearance for the main application status bar, connects the button with
- * proxy action.
- *
- * @param button The button to setup.
- * @param command_id The id of the command corresponding to the action in the main menubar.
- */
-void SetupStatusBarButton(QToolButton* button, const QString& command_id)
-{
-  const int size = mvvm::utils::UnitSize(1.3);  // size of the button
-  const auto palette = QApplication::palette();
-  const auto background_color = palette.color(QPalette::Window);
-
-  // set button appearance
-  button->setText("");
-  button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  button->setStyleSheet(mvvm::GetFlatButtonStyleString(background_color));
-  button->setFixedSize(size, size);
-  button->setIconSize(QSize(size, size));
-
-  // connect button with the proxy action in the toolbar
-  auto action = sup::gui::FindProxyAction(command_id);
-  QObject::connect(button, &QToolButton::clicked, action, &QAction::trigger);
-
-  // synchronize enabled status of action and the button
-  button->setEnabled(action->isEnabled());
-  QObject::connect(action, &QAction::enabledChanged, button, &QToolButton::setEnabled);
-}
-
 }  // namespace
 
 namespace sequencergui
