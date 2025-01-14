@@ -48,7 +48,6 @@
 namespace
 {
 const QString kApplicationType = "Sequencer GUI";
-
 }  // namespace
 
 namespace sequencergui
@@ -85,6 +84,20 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
 {
   status_bar->setVisible(true);
 
+  m_toggle_left_sidebar_button = new QToolButton;
+  m_toggle_left_sidebar_button->setToolTip("Show/hide left sidebar");
+  m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
+  m_toggle_left_sidebar_button->setText("");
+  m_toggle_left_sidebar_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  m_toggle_left_sidebar_button->setStyleSheet(mvvm::GetFlatButtonStyleString("#eff0f1"));
+  m_toggle_left_sidebar_button->setFixedSize(24, 24);
+  m_toggle_left_sidebar_button->setIconSize(QSize(24, 24));
+
+  auto action = sup::gui::FindProxyAction(constants::kToggleLeftSideBar);
+  m_toggle_left_sidebar_button->setEnabled(action->isEnabled());
+  connect(m_toggle_left_sidebar_button, &QToolButton::clicked, action, &QAction::trigger);
+  connect(action, &QAction::enabledChanged, m_toggle_left_sidebar_button, &QToolButton::setEnabled);
+
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right sidebar");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
@@ -94,10 +107,19 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
   m_toggle_right_sidebar_button->setFixedSize(24, 24);
   m_toggle_right_sidebar_button->setIconSize(QSize(24, 24));
 
-  auto action = sup::gui::FindProxyAction(constants::kToggleRightSideBar);
+  action = sup::gui::FindProxyAction(constants::kToggleRightSideBar);
+  m_toggle_right_sidebar_button->setEnabled(action->isEnabled());
   connect(m_toggle_right_sidebar_button, &QToolButton::clicked, action, &QAction::trigger);
+  connect(action, &QAction::enabledChanged, m_toggle_right_sidebar_button,
+          &QToolButton::setEnabled);
 
-  status_bar->insertPermanentWidget(0, m_toggle_right_sidebar_button);
+  status_bar->insertPermanentWidget(0, m_toggle_left_sidebar_button, 1);
+
+  auto widget = new QWidget;
+  widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+  status_bar->insertPermanentWidget(1, widget, 1);
+
+  status_bar->insertPermanentWidget(2, m_toggle_right_sidebar_button, 1);
 }
 
 void SequencerMainWindowActions::CreateActions(QMainWindow* mainwindow)

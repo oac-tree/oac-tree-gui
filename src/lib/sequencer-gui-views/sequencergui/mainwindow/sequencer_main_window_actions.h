@@ -114,6 +114,7 @@ private:
 
   QMenu* m_recent_project_menu{nullptr};
 
+  QToolButton* m_toggle_left_sidebar_button{nullptr};
   QToolButton* m_toggle_right_sidebar_button{nullptr};
 
   std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
