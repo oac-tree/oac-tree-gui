@@ -27,6 +27,8 @@
 class QMainWindow;
 class QAction;
 class QMenuBar;
+class QStatusBar;
+class QToolButton;
 
 namespace sup::gui
 {
@@ -46,6 +48,11 @@ class OperationMainWindowActions : public QObject
 public:
   explicit OperationMainWindowActions(QMainWindow* mainwindow);
   ~OperationMainWindowActions() override;
+
+  /**
+   * @brief Populates external status bar with actions.
+   */
+  void SetupStatusBar(QStatusBar* status_bar);
 
 signals:
   void ImportJobRequest();
@@ -68,6 +75,9 @@ private:
 
   QAction* m_system_font_action{nullptr};
   QAction* m_reset_settings_action{nullptr};
+
+  QToolButton* m_toggle_left_sidebar_button{nullptr};
+  QToolButton* m_toggle_right_sidebar_button{nullptr};
 
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };

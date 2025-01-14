@@ -22,6 +22,7 @@
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/style/style_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/app_command.h>
@@ -35,6 +36,8 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
+#include <QStatusBar>
+#include <QToolButton>
 
 namespace sequencergui
 {
@@ -42,8 +45,35 @@ namespace sequencergui
 OperationMainWindowActions::OperationMainWindowActions(QMainWindow *mainwindow)
     : QObject(mainwindow), m_focus_controller(sup::gui::CreateGlobalFocusController())
 {
+  sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
+                               {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
+                                sup::gui::constants::kHelpMenu});
+
   CreateActions(mainwindow);
   SetupMenus();
+
+  SetupStatusBar(mainwindow->statusBar());
+}
+
+void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
+{
+  m_toggle_left_sidebar_button = new QToolButton;
+  m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
+  m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
+  // SetupStatusBarButton(m_toggle_left_sidebar_button, constants::kToggleLeftSideBar);
+
+  m_toggle_right_sidebar_button = new QToolButton;
+  m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
+  m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
+  // SetupStatusBarButton(m_toggle_right_sidebar_button, constants::kToggleRightSideBar);
+
+  status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
+
+  auto expander = new QWidget;
+  expander->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+  status_bar->addPermanentWidget(expander, 1);
+
+  status_bar->addPermanentWidget(m_toggle_right_sidebar_button, 0);
 }
 
 OperationMainWindowActions::~OperationMainWindowActions() = default;
@@ -107,7 +137,6 @@ void OperationMainWindowActions::SetupFileMenu()
 
 void OperationMainWindowActions::SetupViewMenu()
 {
-  qDebug() << "OperationMainWindowActions::SetupViewMenu()";
   auto command =
       sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu, constants::kToggleLeftSideBar);
   command->SetShortcut(QKeySequence("Alt+0"));

@@ -76,10 +76,6 @@ void OperationMainWindow::InitApplication()
 {
   ReadSettings();
 
-  sup::gui::AppRegisterMenuBar(menuBar(),
-                               {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
-                                sup::gui::constants::kHelpMenu});
-
   m_action_manager = new OperationMainWindowActions(this);
   connect(m_action_manager, &OperationMainWindowActions::RestartApplicationRequest, this,
           &OperationMainWindow::OnRestartRequest);
