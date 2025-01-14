@@ -48,6 +48,38 @@
 namespace
 {
 const QString kApplicationType = "Sequencer GUI";
+
+/**
+ * @brief Setup status bar button.
+ *
+ * Tunes status bar button appearance for the main application status bar, connects the button with
+ * proxy action.
+ *
+ * @param button The button to setup.
+ * @param command_id The id of the command corresponding to the action in the main menubar.
+ */
+void SetupStatusBarButton(QToolButton* button, const QString& command_id)
+{
+  const int size = mvvm::utils::UnitSize(1.3);  // size of the button
+  const auto palette = QApplication::palette();
+  const auto background_color = palette.color(QPalette::Window);
+
+  // set button appearance
+  button->setText("");
+  button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  button->setStyleSheet(mvvm::GetFlatButtonStyleString(background_color));
+  button->setFixedSize(size, size);
+  button->setIconSize(QSize(size, size));
+
+  // connect button with the proxy action in the toolbar
+  auto action = sup::gui::FindProxyAction(command_id);
+  QObject::connect(button, &QToolButton::clicked, action, &QAction::trigger);
+
+  // synchronize enabled status of action and the button
+  button->setEnabled(action->isEnabled());
+  QObject::connect(action, &QAction::enabledChanged, button, &QToolButton::setEnabled);
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -85,41 +117,22 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
   status_bar->setVisible(true);
 
   m_toggle_left_sidebar_button = new QToolButton;
-  m_toggle_left_sidebar_button->setToolTip("Show/hide left sidebar");
+  m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
-  m_toggle_left_sidebar_button->setText("");
-  m_toggle_left_sidebar_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  m_toggle_left_sidebar_button->setStyleSheet(mvvm::GetFlatButtonStyleString("#eff0f1"));
-  m_toggle_left_sidebar_button->setFixedSize(24, 24);
-  m_toggle_left_sidebar_button->setIconSize(QSize(24, 24));
-
-  auto action = sup::gui::FindProxyAction(constants::kToggleLeftSideBar);
-  m_toggle_left_sidebar_button->setEnabled(action->isEnabled());
-  connect(m_toggle_left_sidebar_button, &QToolButton::clicked, action, &QAction::trigger);
-  connect(action, &QAction::enabledChanged, m_toggle_left_sidebar_button, &QToolButton::setEnabled);
+  SetupStatusBarButton(m_toggle_left_sidebar_button, constants::kToggleLeftSideBar);
 
   m_toggle_right_sidebar_button = new QToolButton;
-  m_toggle_right_sidebar_button->setToolTip("Show/hide right sidebar");
+  m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
-  m_toggle_right_sidebar_button->setText("");
-  m_toggle_right_sidebar_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  m_toggle_right_sidebar_button->setStyleSheet(mvvm::GetFlatButtonStyleString("#eff0f1"));
-  m_toggle_right_sidebar_button->setFixedSize(24, 24);
-  m_toggle_right_sidebar_button->setIconSize(QSize(24, 24));
+  SetupStatusBarButton(m_toggle_right_sidebar_button, constants::kToggleLeftSideBar);
 
-  action = sup::gui::FindProxyAction(constants::kToggleRightSideBar);
-  m_toggle_right_sidebar_button->setEnabled(action->isEnabled());
-  connect(m_toggle_right_sidebar_button, &QToolButton::clicked, action, &QAction::trigger);
-  connect(action, &QAction::enabledChanged, m_toggle_right_sidebar_button,
-          &QToolButton::setEnabled);
+  status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
 
-  status_bar->insertPermanentWidget(0, m_toggle_left_sidebar_button, 1);
+  auto expander = new QWidget;
+  expander->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+  status_bar->addPermanentWidget(expander, 1);
 
-  auto widget = new QWidget;
-  widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-  status_bar->insertPermanentWidget(1, widget, 1);
-
-  status_bar->insertPermanentWidget(2, m_toggle_right_sidebar_button, 1);
+  status_bar->addPermanentWidget(m_toggle_right_sidebar_button, 0);
 }
 
 void SequencerMainWindowActions::CreateActions(QMainWindow* mainwindow)
