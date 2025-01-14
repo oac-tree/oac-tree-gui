@@ -24,10 +24,10 @@
 #include <mvvm/widgets/appearance_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QAction>
 #include <QApplication>
 #include <QPalette>
 #include <QToolButton>
-#include <QAction>
 
 namespace sequencergui
 {
@@ -51,7 +51,13 @@ void SetupStatusBarButton(QToolButton *button, const QString &command_id)
 
   // synchronize enabled status of action and the button
   button->setEnabled(action->isEnabled());
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  QObject::connect(action, &QAction::changed,
+                   [button, action]() { button->setEnabled(action->isEnabled()); });
+#else
   QObject::connect(action, &QAction::enabledChanged, button, &QToolButton::setEnabled);
+#endif
 }
 
 }  // namespace sequencergui

@@ -37,7 +37,7 @@ namespace sequencergui
  * @details The method goes through column=0 only.
  */
 void IterateFirstColumn(const QAbstractItemModel& viewmodel, const QModelIndex& parent,
-                        const std::function<const void(const QModelIndex& child)>& func);
+                        const std::function<void(const QModelIndex&)>& func);
 
 }  // namespace sequencergui
 

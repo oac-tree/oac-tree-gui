@@ -27,7 +27,7 @@ namespace sequencergui
 {
 
 void IterateFirstColumn(const QAbstractItemModel &viewmodel, const QModelIndex &parent,
-                        const std::function<const void(const QModelIndex &)> &func)
+                        const std::function<void(const QModelIndex &)> &func)
 {
   struct Node
   {

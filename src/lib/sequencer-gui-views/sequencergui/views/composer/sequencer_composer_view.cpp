@@ -36,6 +36,7 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <QVBoxLayout>
+#include <QAction>
 
 namespace
 {

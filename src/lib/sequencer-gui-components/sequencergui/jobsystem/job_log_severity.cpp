@@ -48,7 +48,7 @@ std::map<sequencergui::Severity, std::string> CreateSeverityMap()
       {sequencergui::Severity::kDebug, kDebugString},
       {sequencergui::Severity::kTrace, kTraceString}};
   return result;
-};
+}
 
 }  // namespace
 

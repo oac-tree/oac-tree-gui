@@ -46,4 +46,4 @@ LogEvent& JobLog::At(int index)
   return m_records.at(index);
 }
 
-};  // namespace sequencergui
+}  // namespace sequencergui
