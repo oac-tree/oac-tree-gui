@@ -95,6 +95,8 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
   SetupConnections();
   SetupWidgetActions();
 
+  m_workspace_panel->setVisible(false);
+
   ReadSettings();
 
   RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));

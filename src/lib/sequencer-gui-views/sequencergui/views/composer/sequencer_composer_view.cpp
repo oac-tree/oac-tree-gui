@@ -70,6 +70,8 @@ SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
   SetupConnections();
   SetupWidgetActions();
 
+  m_right_panel->setVisible(false);
+
   ReadSettings();
   RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
 }
