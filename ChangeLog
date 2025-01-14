@@ -1,3 +1,22 @@
+Changes for 1.6.0:
+
+- COA Release v2.3, January 2025
+- Implement collapse/expand for left and right sidebars
+- Make only two panels visible by default in sequencer-operation view
+- Provide persistent settings for the majority of splitters and collapsible lists
+- Round of Sonar/Misra/Parasoft code quality fixes
+- Switch to Qt6 by default
+- Provide support for dark themes
+- Provide minimalistic documentation
+- Implement functionality to reset existing jobs
+- Provide experimental support for running remote jobs in sequencer-operation
+- Implement remote connection dialog
+- Refactoring of instruction/variable item transformations to support domain JobInfo objects
+- Heavy refactoring of job system for remote jobs support
+- Switch to new Project save/load machinery
+- Switch to a new item clone machinery
+- New settings to enable/disable undo/redo
+
 Changes for 1.5.0:
 
 - CODAC Core System Release 7.2.1
