@@ -124,7 +124,7 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
-  SetupStatusBarButton(m_toggle_right_sidebar_button, constants::kToggleLeftSideBar);
+  SetupStatusBarButton(m_toggle_right_sidebar_button, constants::kToggleRightSideBar);
 
   status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
 
