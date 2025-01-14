@@ -23,10 +23,12 @@
 #include "composer_widget_panel.h"
 #include "sequencer_composer_actions.h"
 
+#include <sequencergui/components/component_helper.h>
 #include <sequencergui/composer/procedure_plugin_controller.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/style/style_helper.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/custom_splitter.h>
@@ -66,10 +68,10 @@ SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
   layout->addWidget(m_splitter);
 
   SetupConnections();
+  SetupWidgetActions();
 
   ReadSettings();
-
-  m_composer_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
+  RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
 }
 
 SequencerComposerView::~SequencerComposerView()
@@ -86,6 +88,13 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_right_panel->SetModel(model);
 
   m_plugin_controller = std::make_unique<ProcedurePluginController>(model);
+}
+
+void SequencerComposerView::RegisterActionsForContext(const sup::gui::AppContext &context)
+{
+  m_composer_actions->RegisterActionsForContext(context);
+  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, constants::kToggleLeftSideBar, context);
+  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, constants::kToggleRightSideBar, context);
 }
 
 void SequencerComposerView::ReadSettings()
@@ -130,6 +139,21 @@ void SequencerComposerView::SetupConnections()
   };
   connect(m_central_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
   connect(m_right_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
+}
+
+void SequencerComposerView::SetupWidgetActions()
+{
+  m_toggle_left_sidebar = new QAction("Show/hide left sidebar", this);
+  m_toggle_left_sidebar->setToolTip("Show/hide left panel");
+  m_toggle_left_sidebar->setIcon(FindIcon("dock-left"));
+  connect(m_toggle_left_sidebar, &QAction::triggered, this,
+          [this](auto) { m_composer_panel->setVisible(!m_composer_panel->isVisible()); });
+
+  m_toggle_right_sidebar = new QAction("Show/hide right sidebar", this);
+  m_toggle_right_sidebar->setToolTip("Show/hide right panel");
+  m_toggle_right_sidebar->setIcon(FindIcon("dock-right"));
+  connect(m_toggle_right_sidebar, &QAction::triggered, this,
+          [this](auto) { m_right_panel->setVisible(!m_right_panel->isVisible()); });
 }
 
 }  // namespace sequencergui

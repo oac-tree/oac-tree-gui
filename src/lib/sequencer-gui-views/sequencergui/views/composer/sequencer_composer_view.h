@@ -25,6 +25,7 @@
 namespace sup::gui
 {
 class CustomSplitter;
+class AppContext;
 }
 
 namespace sequencergui
@@ -55,10 +56,19 @@ public:
 
   void SetModel(SequencerModel* model);
 
+  /**
+   * @brief Registers actions for given context.
+   */
+  void RegisterActionsForContext(const sup::gui::AppContext& context);
+
 private:
   void ReadSettings();
   void WriteSettings();
   void SetupConnections();
+  void SetupWidgetActions();
+
+  QAction* m_toggle_left_sidebar{nullptr};
+  QAction* m_toggle_right_sidebar{nullptr};
 
   ComposerPanel* m_composer_panel{nullptr};
   ComposerWidgetPanel* m_central_panel{nullptr};
