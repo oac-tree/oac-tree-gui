@@ -114,6 +114,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
 InstructionEditorWidget::~InstructionEditorWidget()
 {
   WriteSettings();
+  sup::gui::AppUnregisterWidgetUniqueId(this);
 }
 
 void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)

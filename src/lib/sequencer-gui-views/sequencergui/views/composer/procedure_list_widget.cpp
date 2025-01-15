@@ -80,7 +80,10 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent_widget)
   m_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
 }
 
-ProcedureListWidget::~ProcedureListWidget() = default;
+ProcedureListWidget::~ProcedureListWidget()
+{
+  sup::gui::AppUnregisterWidgetUniqueId(this);
+}
 
 void ProcedureListWidget::SetModel(SequencerModel *model)
 {

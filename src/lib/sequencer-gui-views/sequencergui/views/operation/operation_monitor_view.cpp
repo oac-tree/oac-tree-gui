@@ -105,6 +105,7 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
 OperationMonitorView::~OperationMonitorView()
 {
   WriteSettings();
+  sup::gui::AppUnregisterWidgetUniqueId(this);
 }
 
 void OperationMonitorView::SetModels(ApplicationModels *models)

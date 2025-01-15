@@ -80,6 +80,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
 SequencerComposerView::~SequencerComposerView()
 {
   WriteSettings();
+  sup::gui::AppUnregisterWidgetUniqueId(this);
 }
 
 void SequencerComposerView::SetModel(SequencerModel *model)
