@@ -26,6 +26,11 @@ set(SEQUENCERGUI_SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 set(SEQUENCERGUI_BUILDVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 set(SEQUENCERGUI_TESTRESULT_DIR ${CMAKE_BINARY_DIR}/test_result)
 
+if (COA_COVERAGE)
+  message(STATUS "Enabling test coverage information")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -fno-inline --coverage")
+endif()
+
 # -----------------------------------------------------------------------------
 # Directories
 # -----------------------------------------------------------------------------
