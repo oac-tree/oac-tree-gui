@@ -37,7 +37,8 @@ class MVVM_VIEWMODEL_EXPORT InstructionOperationViewModel : public mvvm::ViewMod
   Q_OBJECT
 
 public:
-  explicit InstructionOperationViewModel(mvvm::ISessionModel* model, QObject* parent = nullptr);
+  explicit InstructionOperationViewModel(mvvm::ISessionModel* model,
+                                         QObject* parent_object = nullptr);
 
   /**
    * @brief Returns index of a column used to render breakpoints.

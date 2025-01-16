@@ -74,10 +74,10 @@ public:
    * @brief Main c-tor
    *
    * @param An action handler to retrieve status of enabled/disabled actions.
-   * @param parent Parent Qobject.
+   * @param parent_object Parent Qobject.
    */
   explicit InstructionEditorActions(InstructionEditorActionHandler* handler,
-                                    QObject* parent = nullptr);
+                                    QObject* parent_object = nullptr);
   ~InstructionEditorActions() override;
 
   /**

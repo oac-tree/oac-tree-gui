@@ -26,8 +26,8 @@
 namespace sequencergui
 {
 
-MonitorWidgetActions::MonitorWidgetActions(QObject *parent)
-    : QObject(parent), m_start_action(new QAction(this)), m_stop_action(new QAction(this))
+MonitorWidgetActions::MonitorWidgetActions(QObject *parent_object)
+    : QObject(parent_object), m_start_action(new QAction(this)), m_stop_action(new QAction(this))
 {
   m_start_action->setText("Start");
   m_start_action->setIcon(FindIcon("chevron-right-circle-outline"));

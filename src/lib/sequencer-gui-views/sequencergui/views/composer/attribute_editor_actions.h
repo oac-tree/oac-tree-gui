@@ -62,7 +62,7 @@ public:
   };
 
   explicit AttributeEditorActions(const AttributeEditorActionHandler* handler,
-                                  QObject* parent = nullptr);
+                                  QObject* parent_object = nullptr);
   ~AttributeEditorActions() override;
 
   /**

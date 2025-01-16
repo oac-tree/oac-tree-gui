@@ -35,8 +35,8 @@
 namespace sequencergui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent)
-    : QObject(parent), m_add_variable_menu(CreateInsertAfterMenu())
+WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent_object)
+    : QObject(parent_object), m_add_variable_menu(CreateInsertAfterMenu())
 {
   SetupActions();
 }

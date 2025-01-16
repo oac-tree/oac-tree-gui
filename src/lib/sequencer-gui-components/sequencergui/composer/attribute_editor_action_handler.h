@@ -44,7 +44,8 @@ class AttributeEditorActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit AttributeEditorActionHandler(AttributeEditorContext context, QObject* parent = nullptr);
+  explicit AttributeEditorActionHandler(AttributeEditorContext context,
+                                        QObject* parent_object = nullptr);
   ~AttributeEditorActionHandler() override;
 
   /**

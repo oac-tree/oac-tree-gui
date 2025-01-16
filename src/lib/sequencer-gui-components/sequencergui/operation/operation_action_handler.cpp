@@ -61,8 +61,8 @@ bool InvokeAndCatch(T method, const std::string &text,
 
 OperationActionHandler::OperationActionHandler(IJobItemManager *job_manager,
                                                OperationActionContext operation_context,
-                                               QObject *parent)
-    : QObject(parent)
+                                               QObject *parent_object)
+    : QObject(parent_object)
     , m_job_manager(job_manager)
     , m_operation_context(std::move(operation_context))
     , m_tick_timeout(itemconstants::kDefaultTickTimeoutMsec)

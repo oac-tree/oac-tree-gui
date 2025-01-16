@@ -61,11 +61,11 @@ public:
    *
    * @param domain_workspace Sequencer domain workspace.
    * @param callback A callback to change VariableItem.
-   * @param parent Qt parent.
+   * @param parent_object Qt parent_object.
    */
   DomainWorkspaceListener(sup::sequencer::Workspace* domain_workspace,
                           const std::function<void(const VariableUpdatedEvent& event)>& callback,
-                          QObject* parent = nullptr);
+                          QObject* parent_object = nullptr);
   ~DomainWorkspaceListener() override;
 
   /**

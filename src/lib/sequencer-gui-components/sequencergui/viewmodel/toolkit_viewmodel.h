@@ -38,7 +38,7 @@ class ToolKitViewModel : public QStandardItemModel
   Q_OBJECT
 
 public:
-  explicit ToolKitViewModel(QObject* parent = nullptr);
+  explicit ToolKitViewModel(QObject* parent_object = nullptr);
 
   QMimeData* mimeData(const QModelIndexList& index_list) const override;
 

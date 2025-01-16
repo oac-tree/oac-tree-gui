@@ -61,7 +61,8 @@ public:
   TopJobStrategy() : mvvm::FixedItemTypeStrategy(GetJobItemTypes()) {}
 };
 
-JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent) : ViewModel(parent)
+JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent_object)
+    : ViewModel(parent_object)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
 }

@@ -52,7 +52,7 @@ class InstructionTreeExpandController : public QObject
   Q_OBJECT
 
 public:
-  explicit InstructionTreeExpandController(QTreeView* tree_view, QObject* parent = nullptr);
+  explicit InstructionTreeExpandController(QTreeView* tree_view, QObject* parent_object = nullptr);
   ~InstructionTreeExpandController() override;
 
   void SetInstructionContainer(InstructionContainerItem* instruction_container);

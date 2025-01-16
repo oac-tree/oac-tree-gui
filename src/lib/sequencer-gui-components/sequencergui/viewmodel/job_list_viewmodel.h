@@ -39,7 +39,7 @@ class MVVM_VIEWMODEL_EXPORT JobListViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit JobListViewModel(mvvm::ISessionModel* model, QObject* parent = nullptr);
+  explicit JobListViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
 };
 
 }  // namespace sequencergui

@@ -31,7 +31,7 @@
 namespace sequencergui
 {
 
-ProcedureListActions::ProcedureListActions(QObject *parent) : QObject(parent)
+ProcedureListActions::ProcedureListActions(QObject *parent_object) : QObject(parent_object)
 {
   m_new_procedure_action = new QAction("New Procedure", this);
   m_new_procedure_action->setToolTip("Creates new empty procedure");

@@ -27,8 +27,8 @@ namespace sequencergui
 {
 
 AttributeEditorActionHandler::AttributeEditorActionHandler(AttributeEditorContext context,
-                                                           QObject *parent)
-    : QObject(parent), m_context(std::move(context))
+                                                           QObject *parent_object)
+    : QObject(parent_object), m_context(std::move(context))
 {
 }
 

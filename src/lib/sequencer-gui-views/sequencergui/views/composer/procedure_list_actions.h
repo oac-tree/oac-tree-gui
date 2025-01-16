@@ -55,7 +55,7 @@ public:
     kTotalCount
   };
 
-  explicit ProcedureListActions(QObject* parent = nullptr);
+  explicit ProcedureListActions(QObject* parent_object = nullptr);
 
   /**
    * @brief Returns list of actions according to provided flags.

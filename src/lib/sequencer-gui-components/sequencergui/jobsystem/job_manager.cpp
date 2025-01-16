@@ -43,8 +43,8 @@ bool IsResetRequired(RunnerStatus runner_status)
   return mvvm::utils::Contains(kStatesRequiringReset, runner_status);
 }
 
-JobManager::JobManager(create_handler_func_t create_handler_func, QObject *parent)
-    : QObject(parent), m_create_handler_func(std::move(create_handler_func))
+JobManager::JobManager(create_handler_func_t create_handler_func, QObject *parent_object)
+    : QObject(parent_object), m_create_handler_func(std::move(create_handler_func))
 {
   if (!m_create_handler_func)
   {

@@ -24,7 +24,7 @@
 namespace sequencergui
 {
 
-DomainEventQueue::DomainEventQueue(QObject *parent) : QObject(parent) {}
+DomainEventQueue::DomainEventQueue(QObject *parent_object) : QObject(parent_object) {}
 
 domain_event_t DomainEventQueue::PopEvent()
 {

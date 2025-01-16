@@ -61,7 +61,7 @@ public:
 
   explicit OperationActionHandler(IJobItemManager* job_manager,
                                   OperationActionContext operation_context,
-                                  QObject* parent = nullptr);
+                                  QObject* parent_object = nullptr);
 
   ~OperationActionHandler() override;
 

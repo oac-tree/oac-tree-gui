@@ -34,8 +34,9 @@
 namespace sequencergui
 {
 
-InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
-    : ViewModel(parent)
+InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel *model,
+                                                       QObject *parent_object)
+    : ViewModel(parent_object)
 {
   SetController(
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionEditorRowStrategy>(model,
@@ -106,8 +107,8 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
                                                  int row, int column,
                                                  const QModelIndex &parent) const
 {
-  (void) action;
-  (void) column;
+  (void)action;
+  (void)column;
 
   if (!data)
   {

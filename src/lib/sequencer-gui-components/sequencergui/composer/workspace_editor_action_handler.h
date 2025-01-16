@@ -44,7 +44,7 @@ class WorkspaceEditorActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorActionHandler(WorkspaceEditorContext context, QObject* parent = nullptr);
+  explicit WorkspaceEditorActionHandler(WorkspaceEditorContext context, QObject* parent_object = nullptr);
 
   void OnAddVariableRequest(const std::string& variable_type_name);
 

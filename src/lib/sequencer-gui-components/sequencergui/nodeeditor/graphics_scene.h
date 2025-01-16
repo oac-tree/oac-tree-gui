@@ -50,7 +50,7 @@ class GraphicsScene : public QGraphicsScene
   Q_OBJECT
 
 public:
-  explicit GraphicsScene(QObject* parent = nullptr);
+  explicit GraphicsScene(QObject* parent_object = nullptr);
   ~GraphicsScene() override;
 
   void SetInstructionContainer(InstructionContainerItem* root_item);

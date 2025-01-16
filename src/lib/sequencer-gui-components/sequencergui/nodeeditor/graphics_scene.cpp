@@ -73,8 +73,8 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 
 namespace sequencergui
 {
-GraphicsScene::GraphicsScene(QObject *parent)
-    : QGraphicsScene(parent), m_node_controller(new NodeController(this))
+GraphicsScene::GraphicsScene(QObject *parent_object)
+    : QGraphicsScene(parent_object), m_node_controller(new NodeController(this))
 {
   setSceneRect(GetDefaultSceneRect());
 

@@ -107,8 +107,8 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
 
 DomainWorkspaceListener::DomainWorkspaceListener(
     sup::sequencer::Workspace *domain_workspace,
-    const std::function<void(const VariableUpdatedEvent &event)> &callback, QObject *parent)
-    : QObject(parent)
+    const std::function<void(const VariableUpdatedEvent &event)> &callback, QObject *parent_object)
+    : QObject(parent_object)
     , p_impl(std::make_unique<DomainWorkspaceListenerImpl>(this, domain_workspace, callback))
 {
   StartListening();

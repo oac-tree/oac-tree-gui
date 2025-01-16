@@ -60,7 +60,7 @@ public:
     kTotalCount
   };
 
-  explicit WorkspaceEditorActions(QObject* parent = nullptr);
+  explicit WorkspaceEditorActions(QObject* parent_object = nullptr);
   ~WorkspaceEditorActions() override;
 
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;

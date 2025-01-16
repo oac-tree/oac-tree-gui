@@ -22,7 +22,7 @@
 namespace sequencergui
 {
 
-JobLog::JobLog(QObject* parent) : QObject(parent) {}
+JobLog::JobLog(QObject* parent_object) : QObject(parent_object) {}
 
 void JobLog::Append(const LogEvent& log_event)
 {

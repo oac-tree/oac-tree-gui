@@ -62,7 +62,7 @@ public:
 
   using callback_t = std::function<std::vector<ProcedureItem*>()>;
 
-  explicit OperationJobActions(QObject* parent = nullptr);
+  explicit OperationJobActions(QObject* parent_object = nullptr);
   ~OperationJobActions() override;
 
   /**

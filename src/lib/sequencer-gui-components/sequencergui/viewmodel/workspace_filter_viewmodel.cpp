@@ -28,7 +28,8 @@
 namespace sequencergui
 {
 
-WorkspaceFilterViewModel::WorkspaceFilterViewModel(QObject *parent) : QSortFilterProxyModel(parent)
+WorkspaceFilterViewModel::WorkspaceFilterViewModel(QObject *parent_object)
+    : QSortFilterProxyModel(parent_object)
 {
   setRecursiveFilteringEnabled(true);
 }

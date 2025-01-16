@@ -40,8 +40,8 @@ namespace sequencergui
 {
 
 AttributeEditorActions::AttributeEditorActions(const AttributeEditorActionHandler *handler,
-                                               QObject *parent)
-    : QObject(parent)
+                                               QObject *parent_object)
+    : QObject(parent_object)
     , m_handler(handler)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
     , m_modify_attribute_action(new sup::gui::ActionMenu(this))

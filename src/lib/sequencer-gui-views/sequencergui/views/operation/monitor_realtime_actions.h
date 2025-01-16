@@ -58,7 +58,7 @@ public:
     kTotalCount
   };
 
-  explicit MonitorRealTimeActions(QObject* parent = nullptr);
+  explicit MonitorRealTimeActions(QObject* parent_object = nullptr);
   ~MonitorRealTimeActions() override;
 
   int GetCurrentTickTimeout();

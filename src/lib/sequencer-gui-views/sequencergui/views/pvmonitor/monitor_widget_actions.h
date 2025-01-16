@@ -49,7 +49,7 @@ public:
     kStopWorkspace
   };
 
-  explicit MonitorWidgetActions(QObject* parent = nullptr);
+  explicit MonitorWidgetActions(QObject* parent_object = nullptr);
 
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 

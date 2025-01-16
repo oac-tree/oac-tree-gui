@@ -46,8 +46,8 @@ QString GetDelayText(int delay)
 namespace sequencergui
 {
 
-MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
-    : QObject(parent)
+MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent_object)
+    : QObject(parent_object)
     , m_run_action(new QAction("Run", this))
     , m_pause_action(new QAction("Pause", this))
     , m_step_action(new QAction("Step", this))

@@ -39,7 +39,8 @@ class DomainEventDispatcher : public QObject
 public:
   using get_event_callback_t = std::function<domain_event_t()>;
   explicit DomainEventDispatcher(get_event_callback_t get_event_callback,
-                                 DomainEventDispatcherContext context, QObject* parent = nullptr);
+                                 DomainEventDispatcherContext context,
+                                 QObject* parent_object = nullptr);
 
   /**
    * @brief Processes new event by calling get_event callback.

@@ -55,7 +55,7 @@ class InstructionEditorActionHandler : public QObject
 
 public:
   explicit InstructionEditorActionHandler(InstructionEditorContext context,
-                                          QObject* parent = nullptr);
+                                          QObject* parent_object = nullptr);
   ~InstructionEditorActionHandler() override;
 
   /**

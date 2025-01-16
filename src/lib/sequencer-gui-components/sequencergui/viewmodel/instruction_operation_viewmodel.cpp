@@ -77,8 +77,8 @@ private:
 };
 
 InstructionOperationViewModel::InstructionOperationViewModel(mvvm::ISessionModel *model,
-                                                             QObject *parent)
-    : ViewModel(parent)
+                                                             QObject *parent_object)
+    : ViewModel(parent_object)
 {
   SetController(
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionOperationRowStrategy>(

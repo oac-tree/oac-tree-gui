@@ -41,7 +41,8 @@ class ProcedureListActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureListActionHandler(ProcedureListContext context, QObject* parent = nullptr);
+  explicit ProcedureListActionHandler(ProcedureListContext context,
+                                      QObject* parent_object = nullptr);
 
   /**
    * @brief Creates empty procedure after the current selection.

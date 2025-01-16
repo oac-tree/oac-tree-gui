@@ -42,7 +42,7 @@ class WorkspaceFilterViewModel : public QSortFilterProxyModel
   Q_OBJECT
 
 public:
-  explicit WorkspaceFilterViewModel(QObject* parent = nullptr);
+  explicit WorkspaceFilterViewModel(QObject* parent_object = nullptr);
 
   void SetPattern(const QString& pattern);
 

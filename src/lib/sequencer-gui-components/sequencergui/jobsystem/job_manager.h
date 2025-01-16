@@ -47,7 +47,7 @@ class JobManager : public QObject, public IJobItemManager
 public:
   using create_handler_func_t = std::function<std::unique_ptr<IJobHandler>(JobItem&)>;
 
-  explicit JobManager(create_handler_func_t create_handler_func, QObject* parent = nullptr);
+  explicit JobManager(create_handler_func_t create_handler_func, QObject* parent_object = nullptr);
   ~JobManager() override;
 
   size_t GetJobCount() const override;

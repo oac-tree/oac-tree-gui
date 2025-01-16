@@ -69,8 +69,8 @@ namespace sequencergui
 {
 
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context,
-                                                               QObject *parent)
-    : QObject(parent), m_context(std::move(context))
+                                                               QObject *parent_object)
+    : QObject(parent_object), m_context(std::move(context))
 {
   if (!m_context.selected_procedure)
   {

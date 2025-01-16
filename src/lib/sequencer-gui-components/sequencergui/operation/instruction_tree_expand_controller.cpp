@@ -35,8 +35,8 @@ namespace sequencergui
 {
 
 InstructionTreeExpandController::InstructionTreeExpandController(QTreeView *tree_view,
-                                                                 QObject *parent)
-    : QObject(parent), m_tree_view(tree_view)
+                                                                 QObject *parent_object)
+    : QObject(parent_object), m_tree_view(tree_view)
 {
   connect(tree_view, &QTreeView::collapsed, this, [this](auto) { emit VisibilityHasChanged(); });
   connect(tree_view, &QTreeView::expanded, this, [this](auto) { emit VisibilityHasChanged(); });

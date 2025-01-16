@@ -29,8 +29,8 @@
 namespace sequencergui
 {
 
-OperationJobActions::OperationJobActions(QObject *parent)
-    : QObject(parent)
+OperationJobActions::OperationJobActions(QObject *parent_object)
+    : QObject(parent_object)
     , m_submit_procedure_menu(CreateSubmitProcedureMenu())
     , m_import_action(new QAction(this))
     , m_submit_action(new sup::gui::ActionMenu(this))

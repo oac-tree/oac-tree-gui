@@ -34,8 +34,8 @@ namespace sequencergui
 {
 
 ProcedureListActionHandler::ProcedureListActionHandler(ProcedureListContext context,
-                                                       QObject *parent)
-    : QObject(parent), m_context(std::move(context))
+                                                       QObject *parent_object)
+    : QObject(parent_object), m_context(std::move(context))
 {
   if (!m_context.procedure_container || !m_context.selected_procedure)
   {

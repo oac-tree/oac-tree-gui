@@ -36,8 +36,8 @@ namespace sequencergui
 {
 
 InstructionEditorActions::InstructionEditorActions(InstructionEditorActionHandler *handler,
-                                                   QObject *parent)
-    : QObject(parent)
+                                                   QObject *parent_object)
+    : QObject(parent_object)
     , m_action_handler(handler)
     , m_insert_after_menu(CreateInsertMenu())
     , m_insert_into_menu(CreateInsertMenu())

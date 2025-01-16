@@ -36,7 +36,7 @@ class JobLog : public QObject
   Q_OBJECT
 
 public:
-  explicit JobLog(QObject* parent = nullptr);
+  explicit JobLog(QObject* parent_object = nullptr);
 
   void Append(const LogEvent& log_event);
 

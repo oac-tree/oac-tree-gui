@@ -40,7 +40,7 @@ class DomainEventQueue : public QObject
   Q_OBJECT
 
 public:
-  explicit DomainEventQueue(QObject* parent = nullptr);
+  explicit DomainEventQueue(QObject* parent_object = nullptr);
 
   /**
    * @brief Pops an event from the queue.
