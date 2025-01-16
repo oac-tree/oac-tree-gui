@@ -36,7 +36,6 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <testutils/mock_message_handler.h>
 
 #include <QSignalSpy>
 #include <QTest>

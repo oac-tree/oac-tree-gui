@@ -8,8 +8,6 @@ target_sources(${library_name} PRIVATE
   mock_job_handler.cpp
   mock_job_handler.h
   mock_job_manager.h
-  mock_message_handler.cpp
-  mock_message_handler.h
   mock_operation_action_context.cpp
   mock_operation_action_context.h
   mock_remote_connection_service.h
