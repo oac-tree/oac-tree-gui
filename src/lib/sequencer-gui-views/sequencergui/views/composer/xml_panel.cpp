@@ -23,6 +23,7 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/style/style_helper.h>
 #include <sup/gui/views/codeeditor/code_view.h>
+#include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>
@@ -36,7 +37,9 @@ namespace sequencergui
 {
 
 XmlPanel::XmlPanel(QWidget *parent_widget)
-    : QWidget(parent_widget), m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML))
+    : QWidget(parent_widget)
+    , m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML))
+    , m_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_xml_view))
 {
   setWindowTitle("XML View");
 
@@ -118,12 +121,21 @@ void XmlPanel::UpdateXml()
       // Procedure is in inconsistent state. For example, variable items all have the same names
       // which makes domain's Workspace unhappy.
       m_xml_view->ClearText();
+      SendMessage(ex.what());
     }
   }
   else
   {
     m_xml_view->ClearText();
   }
+}
+
+void XmlPanel::SendMessage(const std::string &what) const
+{
+  const std::string title("XML generation failed");
+  const std::string text("The current procedure is in inconsistent state:");
+  sup::gui::MessageEvent message{title, text, what, ""};
+  m_message_handler->SendMessage(message);
 }
 
 }  // namespace sequencergui

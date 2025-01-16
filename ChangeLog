@@ -1,6 +1,6 @@
 To the next Release:
 
-- Fix bug with missed error messages on NodeEditor failure
+- Implement overlay error messages on NodeEditor and XMLPanel failures
 - Move overlay error message machinery to sup-gui-core
 
 Changes for 1.6.0:

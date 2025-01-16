@@ -34,6 +34,7 @@ namespace sup::gui
 {
 class CodeView;
 class VisibilityAgentBase;
+class MessageHandlerInterface;
 }  // namespace sup::gui
 
 namespace sequencergui
@@ -77,6 +78,11 @@ private:
    */
   void UpdateXml();
 
+  /**
+   * @brief Notifies the user that XML generation went wrong.
+   */
+  void SendMessage(const std::string& what) const;
+
   QAction* m_export_action{nullptr};
 
   sup::gui::CodeView* m_xml_view{nullptr};
@@ -84,6 +90,7 @@ private:
   std::unique_ptr<mvvm::ModelListener> m_listener;
   ProcedureItem* m_procedure{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
+   std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
 };
 
 }  // namespace sequencergui
