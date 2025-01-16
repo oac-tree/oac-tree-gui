@@ -32,7 +32,7 @@
 #include <sequencergui/nodeeditor/graphics_scene_controller.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
-#include <sequencergui/widgets/message_handler_factory.h>
+#include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>
@@ -60,7 +60,7 @@ NodeEditor::NodeEditor(QWidget *parent_widget)
     , m_actions(new NodeEditorActions)
     , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
-    , m_graphics_view_message_handler(CreateWidgetOverlayMessageHandler(m_graphics_view))
+    , m_graphics_view_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
   setWindowTitle("NodeEditor");
 
