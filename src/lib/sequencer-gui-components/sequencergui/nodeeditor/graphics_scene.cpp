@@ -31,7 +31,6 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
-#include <sup/gui/core/message_handler_interface.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
@@ -73,8 +72,12 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 
 namespace sequencergui
 {
-GraphicsScene::GraphicsScene(QObject *parent_object)
-    : QGraphicsScene(parent_object), m_node_controller(new NodeController(this))
+GraphicsScene::GraphicsScene(
+    std::function<void(const sup::gui::MessageEvent &)> send_message_callback,
+    QObject *parent_object)
+    : QGraphicsScene(parent_object)
+    , m_node_controller(new NodeController(this))
+    , m_send_message_callback(send_message_callback)
 {
   setSceneRect(GetDefaultSceneRect());
 
@@ -102,12 +105,6 @@ GraphicsScene::~GraphicsScene() = default;
 void GraphicsScene::SetInstructionContainer(InstructionContainerItem *root_item)
 {
   m_root_item = root_item;
-}
-
-void GraphicsScene::SetMessageHandler(
-    std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
-{
-  m_message_handler = std::move(message_handler);
 }
 
 //! Returns true if given scene is initialised (has model and instruction container assigned).
@@ -237,14 +234,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
   }
   catch (const mvvm::MessageException &ex)
   {
-    if (m_message_handler)
-    {
-      m_message_handler->SendMessage(sup::gui::CreateInvalidOperationMessage(ex.what()));
-    }
-    else
-    {
-      throw;
-    }
+    m_send_message_callback(sup::gui::CreateInvalidOperationMessage(ex.what()));
   }
 }
 

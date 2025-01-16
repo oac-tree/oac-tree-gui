@@ -47,7 +47,7 @@ using namespace sequencergui;
 class GraphicsSceneControllerTest : public ::testing::Test
 {
 public:
-  GraphicsSceneControllerTest()
+  GraphicsSceneControllerTest() : m_scene({})
   {
     m_procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }

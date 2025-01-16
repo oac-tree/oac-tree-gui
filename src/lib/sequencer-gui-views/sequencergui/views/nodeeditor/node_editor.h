@@ -62,8 +62,6 @@ public:
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions) const;
 
-  std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandler();
-
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
 

@@ -58,7 +58,9 @@ namespace sequencergui
 NodeEditor::NodeEditor(QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_actions(new NodeEditorActions)
-    , m_graphics_scene(new GraphicsScene(this))
+    , m_graphics_scene(new GraphicsScene([this](const auto &message)
+                                         { m_graphics_view_message_handler->SendMessage(message); },
+                                         this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
@@ -68,8 +70,6 @@ NodeEditor::NodeEditor(QWidget *parent_widget)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_graphics_view);
-
-  m_graphics_scene->SetMessageHandler(CreateMessageHandler());
 
   SetupConnections();
 
@@ -118,14 +118,6 @@ void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &i
   }
 
   m_graphics_scene->SetSelectedInstructions(instructions);
-}
-
-//! Creates message handler that can be used to publish messages at the lower right corner of
-//! graphics view.
-
-std::unique_ptr<sup::gui::MessageHandlerInterface> NodeEditor::CreateMessageHandler()
-{
-  return CreateMessageHandlerDecorator(m_graphics_view_message_handler.get());
 }
 
 //! Provides node alignment on graphics view.

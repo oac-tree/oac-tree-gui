@@ -45,11 +45,10 @@ using namespace sequencergui;
 using ::testing::_;
 
 //! Tests for GraphicsScene class. Supplements graphicscontroller.test.cpp
-
 class GraphicsSceneTest : public ::testing::Test
 {
 public:
-  GraphicsSceneTest()
+  GraphicsSceneTest() : m_scene(m_mock_handler.AsStdFunction())
   {
     m_model.InsertItem<ProcedureItem>();
     m_scene.SetInstructionContainer(GetInstructionContainer());
@@ -99,18 +98,18 @@ public:
     return result;
   }
 
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_mock_handler;
   SequencerModel m_model;
   GraphicsScene m_scene;
 };
 
 TEST_F(GraphicsSceneTest, InitialState)
 {
-  GraphicsScene scene;
+  GraphicsScene scene({});
   EXPECT_FALSE(scene.HasContext());
 }
 
 //! Scene with single instruction. Make it selected and emit delete request.
-
 TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
@@ -130,7 +129,6 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)
 }
 
 //! Scene with two instructions. One gets connected with another.
-
 TEST_F(GraphicsSceneTest, onConnectionRequest)
 {
   auto controller = CreateController();
@@ -170,7 +168,6 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 
 //! Scene with two instructions not intended for connection. One tries to get connected with
 //! another.
-
 TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
 {
   auto controller = CreateController();
@@ -185,20 +182,13 @@ TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
   auto view1 = m_scene.FindViewForInstruction(wait1);
   ASSERT_TRUE(view1 != nullptr);
 
-  // attempt to connect to leaves together
-  EXPECT_THROW(m_scene.onConnectionRequest(view0, view1), mvvm::InvalidOperationException);
-
-  testing::MockFunction<void(const sup::gui::MessageEvent&)> mock_handler;
-  m_scene.SetMessageHandler(testutils::CreateTestMessageHandler(mock_handler.AsStdFunction()));
-
   // after handler set, we expect no throws; handler method should be called
-  EXPECT_CALL(mock_handler, Call(_)).Times(1);
+  EXPECT_CALL(m_mock_handler, Call(_)).Times(1);
   EXPECT_NO_THROW(m_scene.onConnectionRequest(view0, view1));
 }
 
 //! Scene with two instructions. One connected with the another, when we delete connection.
 //! Children instruction should move on top of the container.
-
 TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
 {
   auto controller = CreateController();
@@ -240,7 +230,6 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
 }
 
 //! Scene with two instructions. One connected with the another, when we delete child.
-
 TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
 {
   auto controller = CreateController();
@@ -280,7 +269,6 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
 
 //! Scene with two instructions. One connected with the another, when we delete parent. Child should
 //! gets disconnected and survive.
-
 TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
 {
   auto controller = CreateController();

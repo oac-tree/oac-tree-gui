@@ -32,11 +32,6 @@ class ViewItem;
 class ApplicationModel;
 }  // namespace mvvm
 
-namespace sup::gui
-{
-class MessageHandlerInterface;
-}
-
 namespace sequencergui
 {
 class ConnectableView;
@@ -50,12 +45,11 @@ class GraphicsScene : public QGraphicsScene
   Q_OBJECT
 
 public:
-  explicit GraphicsScene(QObject* parent_object = nullptr);
+  explicit GraphicsScene(std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
+                         QObject* parent_object = nullptr);
   ~GraphicsScene() override;
 
   void SetInstructionContainer(InstructionContainerItem* root_item);
-
-  void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 
   bool HasContext();
 
@@ -91,7 +85,7 @@ private:
 
   InstructionContainerItem* m_root_item{nullptr};
   std::unique_ptr<NodeController> m_node_controller;
-  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
+  std::function<void(const sup::gui::MessageEvent&)> m_send_message_callback;
 };
 
 template <typename T>
