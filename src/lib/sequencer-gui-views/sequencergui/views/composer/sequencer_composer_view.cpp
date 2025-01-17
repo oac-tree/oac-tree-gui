@@ -35,8 +35,8 @@
 
 #include <mvvm/standarditems/container_item.h>
 
-#include <QVBoxLayout>
 #include <QAction>
+#include <QVBoxLayout>
 
 namespace
 {
@@ -97,8 +97,10 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 void SequencerComposerView::RegisterActionsForContext(const sup::gui::AppContext &context)
 {
   m_composer_actions->RegisterActionsForContext(context);
-  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, constants::kToggleLeftSideBar, context);
-  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, constants::kToggleRightSideBar, context);
+  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, constants::kToggleLeftPanelCommandId,
+                                  context);
+  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, constants::kToggleRightPanelCommandId,
+                                  context);
 }
 
 void SequencerComposerView::ReadSettings()
