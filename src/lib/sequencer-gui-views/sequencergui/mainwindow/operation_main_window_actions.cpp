@@ -70,11 +70,7 @@ void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
                                  sup::gui::constants::kToggleRightPanelCommandId);
 
   status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
-
-  auto expander = new QWidget;
-  expander->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-  status_bar->addPermanentWidget(expander, 1);
-
+  sup::gui::AddPermanentStretch(status_bar);
   status_bar->addPermanentWidget(m_toggle_right_sidebar_button, 0);
 }
 
