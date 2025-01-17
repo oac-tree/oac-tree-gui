@@ -23,7 +23,6 @@
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
 
-#include <sequencergui/components/component_helper.h>
 #include <sequencergui/jobsystem/automation_client.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/jobsystem/local_job_handler.h>
@@ -133,9 +132,9 @@ void OperationMonitorView::StopAllJobs()
 
 void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppContext &context)
 {
-  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, constants::kToggleLeftPanelCommandId,
+  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, sup::gui::constants::kToggleLeftPanelCommandId,
                                   context);
-  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, constants::kToggleRightPanelCommandId,
+  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, sup::gui::constants::kToggleRightPanelCommandId,
                                   context);
 }
 

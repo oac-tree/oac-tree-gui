@@ -19,7 +19,6 @@
 
 #include "operation_main_window_actions.h"
 
-#include <sequencergui/components/component_helper.h>
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/style/style_helper.h>
@@ -62,13 +61,13 @@ void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
   m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
   sup::gui::SetupStatusBarButton(m_toggle_left_sidebar_button,
-                                 constants::kToggleLeftPanelCommandId);
+                                 sup::gui::constants::kToggleLeftPanelCommandId);
 
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
   sup::gui::SetupStatusBarButton(m_toggle_right_sidebar_button,
-                                 constants::kToggleRightPanelCommandId);
+                                 sup::gui::constants::kToggleRightPanelCommandId);
 
   status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
 
@@ -141,11 +140,11 @@ void OperationMainWindowActions::SetupFileMenu()
 void OperationMainWindowActions::SetupViewMenu()
 {
   auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu,
-                                               constants::kToggleLeftPanelCommandId);
+                                               sup::gui::constants::kToggleLeftPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+0"));
 
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu,
-                                          constants::kToggleRightPanelCommandId);
+                                          sup::gui::constants::kToggleRightPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+Shift+0"));
 }
 

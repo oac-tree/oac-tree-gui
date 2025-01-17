@@ -23,7 +23,6 @@
 #include "composer_widget_panel.h"
 #include "sequencer_composer_actions.h"
 
-#include <sequencergui/components/component_helper.h>
 #include <sequencergui/composer/procedure_plugin_controller.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -31,6 +30,7 @@
 #include <sequencergui/style/style_helper.h>
 #include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_constants.h>
 #include <sup/gui/widgets/custom_splitter.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -97,10 +97,10 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 void SequencerComposerView::RegisterActionsForContext(const sup::gui::AppContext &context)
 {
   m_composer_actions->RegisterActionsForContext(context);
-  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, constants::kToggleLeftPanelCommandId,
-                                  context);
-  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, constants::kToggleRightPanelCommandId,
-                                  context);
+  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar,
+                                  sup::gui::constants::kToggleLeftPanelCommandId, context);
+  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar,
+                                  sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
 void SequencerComposerView::ReadSettings()
