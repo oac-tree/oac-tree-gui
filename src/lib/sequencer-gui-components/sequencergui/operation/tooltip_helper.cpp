@@ -100,7 +100,7 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
 
   for (auto property : mvvm::utils::SinglePropertyItems(*instruction))
   {
-    if (IsPropertyToShow(property->GetTagIndex().tag))
+    if (IsPropertyToShow(property->GetTagIndex().GetTag()))
     {
       AppendNameValuePair(property->GetDisplayName(), mvvm::utils::ValueToString(property->Data()),
                           text_edit);

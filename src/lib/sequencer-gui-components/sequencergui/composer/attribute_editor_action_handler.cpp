@@ -100,7 +100,7 @@ sup::gui::AnyValueItem *AttributeEditorActionHandler::GetSelectedAttributeItem()
 bool AttributeEditorActionHandler::IsAnyValue() const
 {
   return GetSelectedAttributeItem()
-         && GetSelectedAttributeItem()->GetTagIndex().tag == itemconstants::kAnyValueTag;
+         && GetSelectedAttributeItem()->GetTagIndex().GetTag() == itemconstants::kAnyValueTag;
 }
 
 }  // namespace sequencergui

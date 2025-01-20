@@ -99,7 +99,7 @@ void XmlPanel::OnDataChangedEvent(const mvvm::DataChangedEvent &event)
 {
   auto [item, role] = event;
 
-  auto [tag, index] = item->GetTagIndex();
+  auto tag = item->GetTagIndex().GetTag();
 
   //   instruction node coordinates are not relevant for the XML of the procedure
   if (tag != itemconstants::kXpos && tag != itemconstants::kYpos)

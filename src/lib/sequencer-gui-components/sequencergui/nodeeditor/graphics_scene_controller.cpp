@@ -185,7 +185,7 @@ GraphicsSceneController::~GraphicsSceneController() = default;
 
 void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
 {
-  if (event.tag_index.tag == itemconstants::kAnyValueTag)
+  if (event.tag_index.GetTag() == itemconstants::kAnyValueTag)
   {
     return;
   }
@@ -200,7 +200,7 @@ void GraphicsSceneController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& e
 {
   auto [parent, tag_index] = event;
   auto item_to_remove = parent->GetItem(tag_index);
-  if (tag_index.tag == itemconstants::kAnyValueTag)
+  if (tag_index.GetTag() == itemconstants::kAnyValueTag)
   {
     return;
   }

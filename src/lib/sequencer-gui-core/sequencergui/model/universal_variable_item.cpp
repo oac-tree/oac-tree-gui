@@ -84,7 +84,7 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
 
   for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueItem>(properties))
   {
-    auto [tag, index] = property->GetTagIndex();
+    auto tag = property->GetTagIndex().GetTag();
 
     if (!mvvm::utils::Contains(kSkipItemTagList, tag))
     {

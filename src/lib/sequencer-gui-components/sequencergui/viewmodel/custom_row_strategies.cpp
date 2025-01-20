@@ -148,7 +148,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
   // If it's a tag corresponding to AnyValue, let's place an icon before display name.
-  if (item.GetTagIndex().tag == sequencergui::itemconstants::kAnyValueTag)
+  if (item.GetTagIndex().GetTag() == sequencergui::itemconstants::kAnyValueTag)
   {
     auto view_item = mvvm::CreateFixedDataViewItem(&item);
     view_item->SetData(GetValueIcon(), Qt::DecorationRole);

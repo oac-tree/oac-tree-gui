@@ -118,7 +118,7 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
   {
     // if item is moved inside the same parent we have to shift by one, to insert in proper place
     auto current_tag_index = item.GetTagIndex();
-    if (current_tag_index.index < drop_indicator_row)
+    if (current_tag_index.GetIndex() < drop_indicator_row)
     {
       // if item is moved toward larger indices
       return {"", drop_indicator_row - 1};
