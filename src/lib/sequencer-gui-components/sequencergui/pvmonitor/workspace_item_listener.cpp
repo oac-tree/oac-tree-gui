@@ -44,7 +44,7 @@ WorkspaceItemListener::WorkspaceItemListener(WorkspaceItem* workspace_item,
 
   m_index_to_item = m_workspace_item->GetVariables();
 
-  size_t index{0};
+  std::size_t index{0};
   for (auto item : m_workspace_item->GetVariables())
   {
     m_item_to_index[item] = index;

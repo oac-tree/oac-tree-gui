@@ -64,7 +64,7 @@ std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 
 RemoteJobItem::RemoteJobItem() : JobItem(Type)
 {
-  AddProperty(kJobIndex, size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
+  AddProperty(kJobIndex, std::size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
 
   AddProperty(kServerName, std::string())
       .SetDisplayName("Server name")
@@ -76,12 +76,12 @@ std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone() const
   return std::make_unique<RemoteJobItem>(*this);
 }
 
-size_t RemoteJobItem::GetRemoteJobIndex() const
+std::size_t RemoteJobItem::GetRemoteJobIndex() const
 {
-  return Property<size_t>(kJobIndex);
+  return Property<std::size_t>(kJobIndex);
 }
 
-void RemoteJobItem::SetRemoteJobIndex(size_t value)
+void RemoteJobItem::SetRemoteJobIndex(std::size_t value)
 {
   SetProperty(kJobIndex, value);
 }
@@ -137,7 +137,8 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
   return result;
 }
 
-std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_name, size_t job_index)
+std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_name,
+                                                   std::size_t job_index)
 {
   auto result = std::make_unique<RemoteJobItem>();
   result->SetServerName(server_name);

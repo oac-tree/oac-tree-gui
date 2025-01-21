@@ -34,12 +34,12 @@ std::string AutomationClientDecorator::GetServerName() const
   return m_decoratee.GetServerName();
 }
 
-size_t AutomationClientDecorator::GetJobCount() const
+std::size_t AutomationClientDecorator::GetJobCount() const
 {
   return m_decoratee.GetJobCount();
 }
 
-std::string AutomationClientDecorator::GetProcedureName(size_t job_index) const
+std::string AutomationClientDecorator::GetProcedureName(std::size_t job_index) const
 {
   return m_decoratee.GetProcedureName(job_index);
 }

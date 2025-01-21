@@ -45,7 +45,7 @@ namespace sequencergui
  */
 struct InstructionStateUpdatedEvent
 {
-  size_t index{0};
+  std::size_t index{0};
   sup::sequencer::InstructionState state;
 
   bool operator==(const InstructionStateUpdatedEvent& other) const;
@@ -58,7 +58,7 @@ struct InstructionStateUpdatedEvent
  */
 struct VariableUpdatedEvent
 {
-  size_t index{0};
+  std::size_t index{0};
   sup::dto::AnyValue value;
   bool connected{false};
 

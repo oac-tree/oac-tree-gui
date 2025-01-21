@@ -45,7 +45,7 @@ class VariableItemTransformHelperTest : public ::testing::Test
 //! Testing CreateVariableItem helper method.
 TEST_F(VariableItemTransformHelperTest, CreateVariableItem)
 {
-  const size_t variable_id{0};
+  const std::size_t variable_id{0};
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
@@ -74,7 +74,7 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
     EXPECT_THROW(PopulateWorkspaceItem(info, &workspace_item), RuntimeException);
   }
 
-  const size_t variable_id{0};
+  const std::size_t variable_id{0};
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");

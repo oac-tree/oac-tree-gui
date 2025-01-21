@@ -117,7 +117,7 @@ AlignNode *AlignNode::GetPreviousSibling() const
 
   auto children = GetParent()->GetChildren();
   auto index = mvvm::utils::IndexOfItem(children, this);
-  return children.at(static_cast<size_t>(index - 1));
+  return children.at(static_cast<std::size_t>(index - 1));
 }
 
 AlignNode *AlignNode::GetNextSibling() const
@@ -129,7 +129,7 @@ AlignNode *AlignNode::GetNextSibling() const
 
   auto children = GetParent()->GetChildren();
   auto index = mvvm::utils::IndexOfItem(children, this);
-  return children.at(static_cast<size_t>(index + 1));
+  return children.at(static_cast<std::size_t>(index + 1));
 }
 
 AlignNode *AlignNode::GetLeftMostSibling()

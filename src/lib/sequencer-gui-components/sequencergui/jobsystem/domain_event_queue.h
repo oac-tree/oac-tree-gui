@@ -60,7 +60,7 @@ public:
   /**
    * @brief Returns number of events in a queue.
    */
-  size_t GetEventCount() const;
+  std::size_t GetEventCount() const;
 
 signals:
   /**

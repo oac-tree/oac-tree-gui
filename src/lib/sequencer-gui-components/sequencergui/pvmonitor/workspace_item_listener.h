@@ -80,7 +80,7 @@ private:
   workspace_t* m_domain_workspace{nullptr};
   std::unique_ptr<mvvm::ModelListener> m_listener;
   std::vector<bool> m_block_update_to_domain;
-  std::map<VariableItem*, size_t> m_item_to_index;
+  std::map<VariableItem*, std::size_t> m_item_to_index;
   std::vector<VariableItem*> m_index_to_item;
 };
 

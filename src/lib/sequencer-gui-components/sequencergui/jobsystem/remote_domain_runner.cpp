@@ -30,7 +30,8 @@ namespace sequencergui
 
 RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
                                        UserContext user_context,
-                                       sup::auto_server::IJobManager &manager, size_t job_index)
+                                       sup::auto_server::IJobManager &manager,
+                                       std::size_t job_index)
     : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {
   auto remote_job = sup::auto_server::CreateClientJob(

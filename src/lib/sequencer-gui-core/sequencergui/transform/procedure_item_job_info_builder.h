@@ -50,11 +50,11 @@ public:
    */
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const sup::sequencer::JobInfo& job_info);
 
-  InstructionItem* GetInstruction(size_t index) const override;
+  InstructionItem* GetInstruction(std::size_t index) const override;
 
-  size_t GetIndex(const InstructionItem* item) const override;
+  std::size_t GetIndex(const InstructionItem* item) const override;
 
-  VariableItem* GetVariable(size_t index) const override;
+  VariableItem* GetVariable(std::size_t index) const override;
 
 private:
   std::vector<const InstructionItem*> m_index_to_instruction;

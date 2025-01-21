@@ -33,7 +33,7 @@ namespace sequencergui
 struct RemoteConnectionInfo
 {
   std::string server_name;       //!< the name of the server to connect
-  std::set<size_t> job_indexes;  //!< list of job indices to import into the job system
+  std::set<std::size_t> job_indexes;  //!< list of job indices to import into the job system
 };
 
 }  // namespace sequencergui

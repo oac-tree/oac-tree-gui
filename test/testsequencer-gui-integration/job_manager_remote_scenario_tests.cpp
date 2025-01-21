@@ -69,7 +69,7 @@ public:
   JobManagerRemoteScenarioTest() : m_remote_connection_service(GetAutomationClientFactoryFunc())
   {
     // creating remote job item
-    const size_t job_index{0};
+    const std::size_t job_index{0};
     m_job_item = m_model.InsertItem<RemoteJobItem>();
     m_job_item->SetServerName(kServerName);
     m_job_item->SetRemoteJobIndex(job_index);

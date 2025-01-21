@@ -36,11 +36,11 @@ namespace
 /**
  * @brief Finds position of two quotes in a string starting from given position.
  */
-std::pair<size_t, size_t> FindQuotes(const std::string &str, size_t pos = 0)
+std::pair<std::size_t, std::size_t> FindQuotes(const std::string &str, std::size_t pos = 0)
 {
   const char quote = '"';
   auto pos1 = str.find(quote, pos);
-  size_t pos2 = pos1 == std::string::npos ? std::string::npos : str.find(quote, pos1 + 1);
+  std::size_t pos2 = pos1 == std::string::npos ? std::string::npos : str.find(quote, pos1 + 1);
   return {pos1, pos2};
 }
 
@@ -54,7 +54,7 @@ std::pair<size_t, size_t> FindQuotes(const std::string &str, size_t pos = 0)
  *
  * @return New position of the end if replacement had occured.
  */
-size_t ReplaceHtmlQuotes(std::string &str, size_t pos1, size_t pos2)
+std::size_t ReplaceHtmlQuotes(std::string &str, std::size_t pos1, std::size_t pos2)
 {
   const std::string double_quote("\"");
   const std::string html_quote = "&quot;";

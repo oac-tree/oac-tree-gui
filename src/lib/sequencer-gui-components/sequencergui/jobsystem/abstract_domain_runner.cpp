@@ -81,13 +81,13 @@ void AbstractDomainRunner::Reset()
   m_domain_job->Reset();
 }
 
-void AbstractDomainRunner::SetBreakpoint(size_t instr_idx)
+void AbstractDomainRunner::SetBreakpoint(std::size_t instr_idx)
 {
   ValidateJob();
   m_domain_job->SetBreakpoint(instr_idx);
 }
 
-void AbstractDomainRunner::RemoveBreakpoint(size_t instr_idx)
+void AbstractDomainRunner::RemoveBreakpoint(std::size_t instr_idx)
 {
   ValidateJob();
   m_domain_job->RemoveBreakpoint(instr_idx);
@@ -131,7 +131,7 @@ void AbstractDomainRunner::SetTickTimeout(int msec)
   m_domain_job_service->SetTickTimeout(msec);
 }
 
-size_t AbstractDomainRunner::GetEventCount() const
+std::size_t AbstractDomainRunner::GetEventCount() const
 {
   return m_domain_job_service->GetEventCount();
 }

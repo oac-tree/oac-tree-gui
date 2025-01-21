@@ -107,10 +107,10 @@ RemoteConnectionDialog::~RemoteConnectionDialog()
 RemoteConnectionInfo RemoteConnectionDialog::GetResult() const
 {
   // collecting selected jobs, sorting accoring to the job index
-  std::set<size_t> indexes;
+  std::set<std::size_t> indexes;
   for (auto index : m_job_list_view->selectionModel()->selectedIndexes())
   {
-    indexes.insert(static_cast<size_t>(index.row()));
+    indexes.insert(static_cast<std::size_t>(index.row()));
   }
 
   return {m_current_server_name, indexes};
@@ -173,7 +173,7 @@ void RemoteConnectionDialog::PopulateJobInfoModel(const std::string &server_name
 
   auto parent_item = m_job_info_model->invisibleRootItem();
   auto &client = m_connection_service->GetAutomationClient(server_name);
-  for (size_t job_index = 0; job_index < client.GetJobCount(); ++job_index)
+  for (std::size_t job_index = 0; job_index < client.GetJobCount(); ++job_index)
   {
     auto procedure_name = client.GetProcedureName(job_index);
     parent_item->appendRow(CreateItem(procedure_name).release());

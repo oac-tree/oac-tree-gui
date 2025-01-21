@@ -62,7 +62,7 @@ TEST_F(ProcedureListActionsTest, NoDuplicates)
 
   ProcedureListActions procedure_actions;
   auto actions = procedure_actions.GetActions(all_action_keys);
-  EXPECT_EQ(actions.size(), static_cast<size_t>(ProcedureListActions::ActionKey::kTotalCount));
+  EXPECT_EQ(actions.size(), static_cast<std::size_t>(ProcedureListActions::ActionKey::kTotalCount));
 
   // checking duplicates
   std::set<QAction*> action_set(actions.begin(), actions.end());

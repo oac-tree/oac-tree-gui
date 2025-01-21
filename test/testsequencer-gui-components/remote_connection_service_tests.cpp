@@ -41,9 +41,9 @@ public:
 
     std::string GetServerName() const override { return m_name; };
 
-    size_t GetJobCount() const override { return 42; }
+    std::size_t GetJobCount() const override { return 42; }
 
-    std::string GetProcedureName(size_t job_index) const override
+    std::string GetProcedureName(std::size_t job_index) const override
     {
       (void)job_index;
       return {};

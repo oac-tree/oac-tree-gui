@@ -58,8 +58,8 @@ public:
   std::shared_ptr<mvvm::ItemPool> GetItemPool();
 
 private:
-  size_t m_sequencer_model_index{0};
-  size_t m_job_model_index{0};
+  std::size_t m_sequencer_model_index{0};
+  std::size_t m_job_model_index{0};
   std::shared_ptr<mvvm::ItemPool> m_item_pool;
 };
 

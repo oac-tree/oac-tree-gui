@@ -44,7 +44,7 @@ void DomainEventQueue::PushEvent(const domain_event_t &event)
   emit NewEvent();
 }
 
-size_t DomainEventQueue::GetEventCount() const
+std::size_t DomainEventQueue::GetEventCount() const
 {
   return m_domain_events.size();
 }

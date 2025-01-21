@@ -35,7 +35,7 @@ class RemoteDomainRunner : public AbstractDomainRunner
 {
 public:
   RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context,
-                     sup::auto_server::IJobManager &manager, size_t job_index);
+                     sup::auto_server::IJobManager &manager, std::size_t job_index);
 };
 
 }  // namespace sequencergui

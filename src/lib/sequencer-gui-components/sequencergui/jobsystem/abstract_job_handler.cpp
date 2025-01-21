@@ -112,7 +112,7 @@ void AbstractJobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   ToggleBreakpointStatus(*instruction);
 
   // update domain breakpoint
-  const size_t instruction_index = m_procedure_item_builder->GetIndex(instruction);
+  const std::size_t instruction_index = m_procedure_item_builder->GetIndex(instruction);
   SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
 
@@ -241,7 +241,7 @@ void AbstractJobHandler::SetupExpandedProcedureItem()
   PropagateBreakpointsToDomain();
 }
 
-void AbstractJobHandler::SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_status)
+void AbstractJobHandler::SetDomainBreakpoint(std::size_t index, BreakpointStatus breakpoint_status)
 {
   if (breakpoint_status == BreakpointStatus::kSet)
   {

@@ -38,7 +38,7 @@ class DomainAutomationHelperTest : public ::testing::Test
 
 TEST_F(DomainAutomationHelperTest, CreateDomainInstruction)
 {
-  const size_t instruction_id{0};
+  const std::size_t instruction_id{0};
   const sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
                                              instruction_id,
                                              {{domainconstants::kTimeoutAttribute, "42"}});
@@ -52,7 +52,7 @@ TEST_F(DomainAutomationHelperTest, CreateDomainInstruction)
 
 TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
 {
-  const size_t variable_id{0};
+  const std::size_t variable_id{0};
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");

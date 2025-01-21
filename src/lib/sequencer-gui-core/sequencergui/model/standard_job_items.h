@@ -77,12 +77,12 @@ public:
    *
    * It index wasn't set, will return -1.
    */
-  size_t GetRemoteJobIndex() const;
+  std::size_t GetRemoteJobIndex() const;
 
   /**
    * @brief Sets remote job index.
    */
-  void SetRemoteJobIndex(size_t value);
+  void SetRemoteJobIndex(std::size_t value);
 
   /**
    * @brief Returns the remote server name.
@@ -132,7 +132,7 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
  * @return New job item.
  */
 std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
-                                                   size_t job_index);
+                                                   std::size_t job_index);
 
 }  // namespace sequencergui
 

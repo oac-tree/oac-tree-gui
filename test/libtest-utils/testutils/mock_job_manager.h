@@ -40,7 +40,7 @@ namespace testutils
 class MockJobManager : public sequencergui::IJobItemManager
 {
 public:
-  MOCK_METHOD(size_t, GetJobCount, (), (const, override));
+  MOCK_METHOD(std::size_t, GetJobCount, (), (const, override));
   MOCK_METHOD(std::vector<sequencergui::JobItem *>, GetJobItems, (), (const, override));
   MOCK_METHOD(void, SubmitJob, (sequencergui::JobItem *), (override));
 

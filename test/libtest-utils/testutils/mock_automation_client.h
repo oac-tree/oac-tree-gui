@@ -36,8 +36,8 @@ class MockAutomationClient : public sequencergui::IAutomationClient
 {
 public:
   MOCK_METHOD(std::string, GetServerName, (), (const, override));
-  MOCK_METHOD(size_t, GetJobCount, (), (const, override));
-  MOCK_METHOD(std::string, GetProcedureName, (size_t), (const, override));
+  MOCK_METHOD(std::size_t, GetJobCount, (), (const, override));
+  MOCK_METHOD(std::string, GetProcedureName, (std::size_t), (const, override));
   MOCK_METHOD(std::unique_ptr<sequencergui::AbstractJobHandler>, CreateJobHandler,
               (sequencergui::RemoteJobItem*, const sequencergui::UserContext&), (override));
 };
@@ -56,9 +56,9 @@ public:
 
   std::string GetServerName() const override;
 
-  size_t GetJobCount() const override;
+  std::size_t GetJobCount() const override;
 
-  std::string GetProcedureName(size_t job_index) const override;
+  std::string GetProcedureName(std::size_t job_index) const override;
 
   std::unique_ptr<sequencergui::AbstractJobHandler> CreateJobHandler(
       sequencergui::RemoteJobItem* job_item,

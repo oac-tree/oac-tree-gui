@@ -48,12 +48,12 @@ public:
   /**
    * @brief Returns number of server jobs.
    */
-  virtual size_t GetJobCount() const = 0;
+  virtual std::size_t GetJobCount() const = 0;
 
   /**
    * @brief Returns the name of the procedure for given job index.
    */
-  virtual std::string GetProcedureName(size_t job_index) const = 0;
+  virtual std::string GetProcedureName(std::size_t job_index) const = 0;
 
   /**
    * @brief Creates job handler.

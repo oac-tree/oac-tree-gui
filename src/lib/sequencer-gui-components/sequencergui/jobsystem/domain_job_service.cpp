@@ -67,7 +67,7 @@ void DomainJobService::SetTickTimeout(int msec)
   m_job_observer->SetTickTimeout(msec);
 }
 
-size_t DomainJobService::GetEventCount() const
+std::size_t DomainJobService::GetEventCount() const
 {
   return m_event_queue->GetEventCount();
 }

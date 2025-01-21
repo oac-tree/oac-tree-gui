@@ -45,7 +45,7 @@ public:
   /**
    * @brief Returns number of submitted jobs.
    */
-  virtual size_t GetJobCount() const = 0;
+  virtual std::size_t GetJobCount() const = 0;
 
   /**
    * @brief Returns list of conrtolled job items.

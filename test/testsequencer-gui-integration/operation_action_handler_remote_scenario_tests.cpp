@@ -50,7 +50,7 @@ namespace
 {
 
 const std::string kServerName = "OperationActionHandlerRemoteScenarioTestServer";
-const size_t kJobIndex{0};
+const std::size_t kJobIndex{0};
 
 const std::string kProcedureBodyText{
     R"RAW(

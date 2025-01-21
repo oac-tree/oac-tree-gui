@@ -41,7 +41,7 @@ class JobInfoTransformHelperTest : public ::testing::Test
 //! Testing CreateInstructionItem helper method.
 TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
 {
-  const size_t instruction_id{0};
+  const std::size_t instruction_id{0};
   const sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
                                              instruction_id,
                                              {{domainconstants::kTimeoutAttribute, "42"}});
@@ -57,7 +57,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
 //! instruction.
 TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 {
-  const size_t instruction_id{0};
+  const std::size_t instruction_id{0};
   const sup::sequencer::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
                                              instruction_id,
                                              {{domainconstants::kTimeoutAttribute, "42"}});

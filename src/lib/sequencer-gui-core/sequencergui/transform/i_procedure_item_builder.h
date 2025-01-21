@@ -41,7 +41,7 @@ public:
   /**
    * @brief Returns instruction item for given automation index.
    */
-  virtual InstructionItem* GetInstruction(size_t index) const = 0;
+  virtual InstructionItem* GetInstruction(std::size_t index) const = 0;
 
   /**
    * @brief Returns automation index corresponding to a given instruction item.
@@ -51,7 +51,7 @@ public:
   /**
    * @brief Returns variable item for a given automation index.
    */
-  virtual VariableItem* GetVariable(size_t index) const = 0;
+  virtual VariableItem* GetVariable(std::size_t index) const = 0;
 };
 
 }  // namespace sequencergui

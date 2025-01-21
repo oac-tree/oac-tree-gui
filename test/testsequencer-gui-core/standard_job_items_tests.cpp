@@ -101,7 +101,7 @@ TEST_F(StandardJobItemsTest, CreateImportedJobItem)
 TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
 {
   const std::string server_name("abc");
-  const size_t job_index{42};
+  const std::size_t job_index{42};
 
   auto item = CreateRemoteJobItem(server_name, job_index);
 

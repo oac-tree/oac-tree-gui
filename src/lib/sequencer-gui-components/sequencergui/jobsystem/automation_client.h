@@ -49,9 +49,9 @@ public:
 
   std::string GetServerName() const override;
 
-  size_t GetJobCount() const override;
+  std::size_t GetJobCount() const override;
 
-  std::string GetProcedureName(size_t job_index) const override;
+  std::string GetProcedureName(std::size_t job_index) const override;
 
   std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
                                                        const UserContext& user_context) override;

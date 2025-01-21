@@ -94,7 +94,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForImportedJob)
 TEST_F(OperationActionHelperTest, CreateJobHandlerForRemoteJob)
 {
   const std::string server_name("abc");
-  const size_t job_index{42};
+  const std::size_t job_index{42};
 
   // all job handlers further down requres that procedure and job are part of models
   auto job_item = CreateRemoteJobItem(server_name, job_index);

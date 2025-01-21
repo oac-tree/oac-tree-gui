@@ -149,7 +149,7 @@ private:
   /**
    * @brief Set breakpoint to the domain instruction with the given index.
    */
-  void SetDomainBreakpoint(size_t index, BreakpointStatus breakpoint_status);
+  void SetDomainBreakpoint(std::size_t index, BreakpointStatus breakpoint_status);
 
   /**
    * @brief Propagates breakpoints from expanded procedure to domain.

@@ -189,7 +189,7 @@ TEST_F(OperationActionHandlerTest, SubmitImportedJob)
 TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)
 {
   const std::string server_name("abc");
-  const size_t job_index{42};
+  const std::size_t job_index{42};
   const RemoteConnectionInfo connection_context{server_name, {job_index}};
 
   // setting up context, so it report "user choice" related to remote job import
@@ -225,8 +225,8 @@ TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
   auto job_item1 = InsertJob<LocalJobItem>();
 
   const std::string server_name("abc");
-  const size_t job_index0{42};
-  const size_t job_index1{43};
+  const std::size_t job_index0{42};
+  const std::size_t job_index1{43};
   const RemoteConnectionInfo connection_context{server_name, {job_index0, job_index1}};
 
   // setting up context, so it report "user choice" related to remote job import

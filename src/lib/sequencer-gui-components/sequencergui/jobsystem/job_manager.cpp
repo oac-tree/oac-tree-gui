@@ -52,7 +52,7 @@ JobManager::JobManager(create_handler_func_t create_handler_func, QObject *paren
   }
 }
 
-size_t JobManager::GetJobCount() const
+std::size_t JobManager::GetJobCount() const
 {
   return m_job_handlers.size();
 }

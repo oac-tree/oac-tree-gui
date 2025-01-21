@@ -191,7 +191,7 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
   // initially VariableItem doesn't have AnyValueItem
   EXPECT_EQ(variable_item.GetAnyValueItem(), nullptr);
 
-  size_t unused_variable_index{0};
+  std::size_t unused_variable_index{0};
   UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, variable_item);
 
   EXPECT_TRUE(variable_item.IsAvailable());

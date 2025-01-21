@@ -74,12 +74,12 @@ public:
   /**
    * @brief Sets the breakpoint on the instruction with given index.
    */
-  void SetBreakpoint(size_t instr_idx);
+  void SetBreakpoint(std::size_t instr_idx);
 
   /**
    * @brief Removes the breakpoint from the instruction with given index.
    */
-  void RemoveBreakpoint(size_t instr_idx);
+  void RemoveBreakpoint(std::size_t instr_idx);
 
   /**
    * @brief Returns sequencer JobInfo interface.
@@ -121,7 +121,7 @@ public:
    *
    * This number should be zero, when all domain events have been processed by the GUI.
    */
-  size_t GetEventCount() const;
+  std::size_t GetEventCount() const;
 
   /**
    * @brief Returns sequencer job info.

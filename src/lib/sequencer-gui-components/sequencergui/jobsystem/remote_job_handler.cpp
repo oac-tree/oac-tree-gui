@@ -36,7 +36,7 @@ namespace sequencergui
 {
 
 RemoteJobHandler::RemoteJobHandler(JobItem *job_item, sup::auto_server::IJobManager &manager,
-                                   size_t job_index, UserContext user_context)
+                                   std::size_t job_index, UserContext user_context)
     : AbstractJobHandler(job_item)
 {
   Setup(std::make_unique<RemoteDomainRunner>(CreateEventDispatcherContext(),

@@ -36,7 +36,6 @@
 #include <QDebug>
 #include <QPointF>
 #include <QRectF>
-#include <iostream>
 
 using namespace sequencergui;
 
@@ -49,7 +48,7 @@ bool operator==(const std::vector<QPointF>& lhs, const std::vector<QPointF>& rhs
   {
     return false;
   }
-  for (size_t i = 0; i < lhs.size(); ++i)
+  for (std::size_t i = 0; i < lhs.size(); ++i)
   {
     if (lhs[i] != rhs[i])
     {

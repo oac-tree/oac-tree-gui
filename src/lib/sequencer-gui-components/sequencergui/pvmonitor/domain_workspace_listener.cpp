@@ -57,7 +57,7 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
     ValidateParameters();
 
     auto variables = m_domain_workspace->GetVariables();
-    for (size_t index = 0; index < variables.size(); ++index)
+    for (std::size_t index = 0; index < variables.size(); ++index)
     {
       m_name_to_index[variables[index]->GetName()] = index;
     }

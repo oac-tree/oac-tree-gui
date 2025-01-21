@@ -54,12 +54,12 @@ std::string AutomationClient::GetServerName() const
   return m_server_name;
 }
 
-size_t AutomationClient::GetJobCount() const
+std::size_t AutomationClient::GetJobCount() const
 {
   return m_automation_job_manager->GetNumberOfJobs();
 }
 
-std::string AutomationClient::GetProcedureName(size_t job_index) const
+std::string AutomationClient::GetProcedureName(std::size_t job_index) const
 {
   return m_automation_job_manager->GetJobInfo(job_index).GetProcedureName();
 }

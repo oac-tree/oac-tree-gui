@@ -75,7 +75,7 @@ InstructionTree CreateInstructionItemTree(const sup::sequencer::InstructionInfo&
   std::stack<InstructionInfoStackNode> stack;
 
   std::unique_ptr<InstructionItem> result = CreateInstructionItem(info);
-  std::map<const InstructionItem*, size_t> item_to_index;
+  std::map<const InstructionItem*, std::size_t> item_to_index;
 
   stack.push({info, *result});
   item_to_index[result.get()] = info.GetIndex();
