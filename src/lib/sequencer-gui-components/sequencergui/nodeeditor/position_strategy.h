@@ -20,8 +20,6 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_
 #define SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_
 
-#include <functional>
-
 class QRectF;
 
 namespace sequencergui

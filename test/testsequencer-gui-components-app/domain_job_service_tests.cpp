@@ -40,6 +40,7 @@ using namespace sequencergui;
 class DomainJobServiceTest : public ::testing::Test
 {
 public:
+  DomainJobServiceTest() : m_service(CreateService()){}
   using mock_event_listener_t = ::testing::StrictMock<testutils::MockDomainEventListener>;
   using mock_user_listener_t = ::testing::StrictMock<testutils::MockUserContext>;
   using msec = std::chrono::milliseconds;
@@ -59,8 +60,6 @@ public:
    */
   static bool WaitForEmptyQueue(const DomainJobService &service, msec timeout)
   {
-    QTest::qWait(20);
-
     // gives time for the queue to be emptied by mock event listeners
     auto predicate = [&service]() { return service.GetEventCount() == 0; };
     return QTest::qWaitFor(predicate, static_cast<int>(timeout.count()));
@@ -68,6 +67,7 @@ public:
 
   mock_event_listener_t m_event_listener;
   mock_user_listener_t m_user_listener;
+  std::unique_ptr<DomainJobService> m_service;
 };
 
 TEST_F(DomainJobServiceTest, InstructionStateUpdated)
@@ -75,23 +75,19 @@ TEST_F(DomainJobServiceTest, InstructionStateUpdated)
   using ::sup::sequencer::ExecutionStatus;
   using ::sup::sequencer::InstructionState;
 
-  auto service = CreateService();
-
   const InstructionState expected_state{false, ExecutionStatus::NOT_FINISHED};
   const sup::dto::uint32 expected_index{42};
 
   const InstructionStateUpdatedEvent expected_event{expected_index, expected_state};
   EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(expected_event)).Times(1);
 
-  service->GetJobInfoIO()->InstructionStateUpdated(expected_index, expected_state);
+  m_service->GetJobInfoIO()->InstructionStateUpdated(expected_index, expected_state);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, VariableUpdated)
 {
-  auto service = CreateService();
-
   const sup::dto::uint32 index{42};
   const sup::dto::AnyValue value(43);
   const bool connected{true};
@@ -99,25 +95,23 @@ TEST_F(DomainJobServiceTest, VariableUpdated)
   const VariableUpdatedEvent expected_event{index, value, connected};
   EXPECT_CALL(m_event_listener, OnVariableUpdated(expected_event)).Times(1);
 
-  service->GetJobInfoIO()->VariableUpdated(index, value, connected);
+  m_service->GetJobInfoIO()->VariableUpdated(index, value, connected);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, JobStateUpdated)
 {
   using ::sup::sequencer::JobState;
 
-  auto service = CreateService();
-
   const JobState state{JobState::kRunning};
 
   const JobStateChangedEvent expected_event{state};
   EXPECT_CALL(m_event_listener, OnJobStateChanged(expected_event)).Times(1);
 
-  service->GetJobInfoIO()->JobStateUpdated(state);
+  m_service->GetJobInfoIO()->JobStateUpdated(state);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
 }
 
 TEST_F(DomainJobServiceTest, PutValue)
@@ -145,8 +139,6 @@ TEST_F(DomainJobServiceTest, GetUserValue)
   const sup::dto::AnyValue expected_value{sup::dto::SignedInteger32Type, 42};
   const UserInputResult expected_result{expected_value, true};
 
-  auto service = CreateService();
-
   ON_CALL(m_user_listener, OnUserInputRequest(args))
       .WillByDefault(::testing::Return(expected_result));
 
@@ -155,10 +147,10 @@ TEST_F(DomainJobServiceTest, GetUserValue)
   // mimick sequencer thread asking for user input
   std::promise<void> ready_for_test;
   // runner to ask for user input (blocking)
-  auto runner = [&service, &ready_for_test, &initial_value, &description, request_id]()
+  auto runner = [this, &ready_for_test, &initial_value, &description, request_id]()
   {
     ready_for_test.set_value();
-    return service->GetJobInfoIO()->GetUserValue(request_id, initial_value, description);
+    return m_service->GetJobInfoIO()->GetUserValue(request_id, initial_value, description);
   };
 
   // launching runner in a thread
@@ -187,8 +179,6 @@ TEST_F(DomainJobServiceTest, GetUserChoice)
   const int user_index_choice{1};
   const UserChoiceResult expected_result{user_index_choice, true};
 
-  auto service = CreateService();
-
   ON_CALL(m_user_listener, OnUserChoiceRequest(args))
       .WillByDefault(::testing::Return(expected_result));
 
@@ -197,10 +187,10 @@ TEST_F(DomainJobServiceTest, GetUserChoice)
   // mimick sequencer thread asking for user choice
   std::promise<void> ready_for_test;
   // runner to ask for user input (blocking)
-  auto runner = [&service, &ready_for_test, &options, &metadata, request_id]()
+  auto runner = [this, &ready_for_test, &options, &metadata, request_id]()
   {
     ready_for_test.set_value();
-    return service->GetJobInfoIO()->GetUserChoice(request_id, options, metadata);
+    return m_service->GetJobInfoIO()->GetUserChoice(request_id, options, metadata);
   };
 
   // launching runner in a thread
@@ -219,43 +209,37 @@ TEST_F(DomainJobServiceTest, GetUserChoice)
 
 TEST_F(DomainJobServiceTest, Message)
 {
-  auto service = CreateService();
-
   const std::string message("mesage");
 
   EXPECT_CALL(m_event_listener, OnLogEvent(_)).Times(1);
 
-  service->GetJobInfoIO()->Message(message);
+  m_service->GetJobInfoIO()->Message(message);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, Log)
 {
-  auto service = CreateService();
-
   const Severity severity{Severity::kAlert};
   const std::string message("mesage");
 
   // can't compare log event since current comparison operator contains date and time
   EXPECT_CALL(m_event_listener, OnLogEvent(_)).Times(1);
 
-  service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
+  m_service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
 }
 
 TEST_F(DomainJobServiceTest, NextInstructionsUpdated)
 {
-  auto service = CreateService();
-
   const std::vector<sup::dto::uint32> indices({42, 43});
 
   const NextLeavesChangedEvent expected_event{indices};
 
   EXPECT_CALL(m_event_listener, OnNextLeavesChanged(expected_event)).Times(1);
 
-  service->GetJobInfoIO()->NextInstructionsUpdated(indices);
+  m_service->GetJobInfoIO()->NextInstructionsUpdated(indices);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
 }
