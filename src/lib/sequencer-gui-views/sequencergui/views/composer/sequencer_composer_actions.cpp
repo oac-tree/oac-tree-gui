@@ -34,6 +34,19 @@
 namespace sequencergui
 {
 
+namespace
+{
+
+/**
+ * @brief Checks if undo/redo is enabled.
+ */
+bool HasUndo(const mvvm::ISessionModel *model)
+{
+  return model && model->GetCommandStack() != nullptr;
+}
+
+}  // namespace
+
 SequencerComposerActions::SequencerComposerActions(QWidget *parent_widget) : QObject(parent_widget)
 {
   SetupActions();
@@ -42,6 +55,8 @@ SequencerComposerActions::SequencerComposerActions(QWidget *parent_widget) : QOb
 void SequencerComposerActions::SetModel(SequencerModel *model)
 {
   m_model = model;
+  m_undo_action->setEnabled(HasUndo(m_model));
+  m_redo_action->setEnabled(HasUndo(m_model));
 }
 
 SequencerComposerActions::~SequencerComposerActions() = default;
