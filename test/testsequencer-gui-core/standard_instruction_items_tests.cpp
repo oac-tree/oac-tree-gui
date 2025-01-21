@@ -65,10 +65,10 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
   item.SetPath("def");
   EXPECT_EQ(item.GetPath(), std::string("def"));
 
-  auto wait = item.InsertItem<WaitItem>({"", -1});
+  auto wait = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to inverter
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
+  EXPECT_THROW(item.InsertItem<WaitItem>(mvvm::TagIndex::Append()), mvvm::InvalidOperationException);
 }
 
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
@@ -260,8 +260,8 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
   item.SetFailureThreshold(43);
   EXPECT_EQ(item.GetFailureThreshold(), 43);
 
-  auto wait0 = item.InsertItem<WaitItem>({"", -1});
-  auto wait1 = item.InsertItem<WaitItem>({"", -1});
+  auto wait0 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
 }
 
@@ -324,10 +324,10 @@ TEST_F(StandardInstructionItemsTest, RepeatItem)
   item.SetRepeatCount(42);
   EXPECT_EQ(item.GetRepeatCount(), 42);
 
-  auto wait = item.InsertItem<WaitItem>({"", -1});
+  auto wait = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to repeater
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
+  EXPECT_THROW(item.InsertItem<WaitItem>(mvvm::TagIndex::Append()), mvvm::InvalidOperationException);
 }
 
 TEST_F(StandardInstructionItemsTest, RepeatItemFromDomain)
@@ -366,8 +366,8 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
 
   EXPECT_FALSE(item.IsRoot());
 
-  auto wait0 = item.InsertItem<WaitItem>({"", -1});
-  auto wait1 = item.InsertItem<WaitItem>({"", -1});
+  auto wait0 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
 }
 

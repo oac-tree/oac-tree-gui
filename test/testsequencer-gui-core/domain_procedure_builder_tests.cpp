@@ -98,7 +98,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence_item = container->InsertItem<SequenceItem>({"", -1});
+  auto sequence_item = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
   DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
@@ -118,9 +118,9 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto wait0 = container->InsertItem<WaitItem>({"", -1});
+  auto wait0 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
   wait0->SetTimeout(0.1);
-  auto wait1 = container->InsertItem<WaitItem>({"", -1});
+  auto wait1 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
   wait1->SetTimeout(0.2);
 
   DomainProcedureBuilder builder;
@@ -144,8 +144,8 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence = container->InsertItem<SequenceItem>({"", -1});
-  auto wait = sequence->InsertItem<WaitItem>({"", -1});
+  auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
@@ -169,8 +169,8 @@ TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence = container->InsertItem<SequenceItem>({"", -1});
-  auto wait = sequence->InsertItem<WaitItem>({"", -1});
+  auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
@@ -233,8 +233,8 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto repeater = container->InsertItem<RepeatItem>({"", -1});
-  auto sequence = repeater->InsertItem<SequenceItem>({"", -1});
+  auto repeater = container->InsertItem<RepeatItem>(mvvm::TagIndex::Append());
+  auto sequence = repeater->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(repeater->GetItem<SequenceItem>({"", 0}), sequence);
 
   auto procedure = std::make_unique<procedure_t>();

@@ -196,7 +196,7 @@ void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
   // corresponding ConnectableView recreation.
 
   auto instruction = GetInstruction(connection->childView());
-  GetModel()->MoveItem(instruction, m_root_item, {"", -1});
+  GetModel()->MoveItem(instruction, m_root_item, mvvm::TagIndex::Append());
   // No need to delete the connection explicitly. It will be done by ConnectableView via its
   // ports.
 }
@@ -230,7 +230,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
 
   try
   {
-    GetModel()->MoveItem(child_instruction, parent_instruction, {"", -1});
+    GetModel()->MoveItem(child_instruction, parent_instruction, mvvm::TagIndex::Append());
   }
   catch (const mvvm::MessageException &ex)
   {

@@ -91,7 +91,7 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   sequencergui::ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto wait0 = container->InsertItem<sequencergui::WaitItem>({"", -1});
+  auto wait0 = container->InsertItem<sequencergui::WaitItem>(mvvm::TagIndex::Append());
   wait0->SetTimeout(42.0);
 
   const std::string body{R"(
