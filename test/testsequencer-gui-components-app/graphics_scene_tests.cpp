@@ -144,7 +144,9 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 
   // connecting two views
   m_scene.onConnectionRequest(wait_view, sequence_view);
-  QTest::qWait(50);
+
+  auto predicate = [this]() { return GetInstructionContainer()->GetTotalItemCount() == 1; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   // still two connectable view
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
@@ -154,7 +156,7 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 
   // but the wait view was regenerated
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
-  //  EXPECT_NE(wait_view, new_wait_view); // FIXME failing in the container
+  //  EXPECT_NE(wait_view, new_wait_view);
 
   // sequence now connected with new wait_view
   auto children_views = GetConnectedChildren(sequence_view);
@@ -212,12 +214,15 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
 
   // deleting connection
   m_scene.disconnectConnectedViews(connections.at(0));
-  QTest::qWait(50);
+
+  auto predicate = [sequence_view, this]()
+  { return GetConnectedChildren(sequence_view).size() == 0; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   // new sequence view is the same, wait view is different
   EXPECT_EQ(sequence_view, m_scene.FindViewForInstruction(sequence));
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
-  //  ASSERT_NE(wait_view, new_wait_view); // FIXME failing in the container
+  (void)new_wait_view;  // wait_view != new_wait_view, but not always
 
   // there is no connections anymore
   EXPECT_EQ(GetConnectedChildren(sequence_view).size(), 0);
@@ -254,7 +259,10 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
   wait_view->setSelected(true);
 
   ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
-  QTest::qWait(50);
+
+  auto predicate = [sequence_view, this]()
+  { return GetConnectedChildren(sequence_view).size() == 0; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   auto connections = sequence_view->GetParentPort()->connections();
   ASSERT_EQ(connections.size(), 0);
@@ -293,11 +301,13 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   sequence_view->setSelected(true);
 
   ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
-  QTest::qWait(50);
+
+  auto predicate = [sequence_view, this]() { return m_scene.GetConnectableViews().size() == 1; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   // WaitView vas regenerated on the move of ViewItem on top.
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
-  //  ASSERT_NE(wait_view, new_wait_view); // failing in the container
+  (void)new_wait_view;  // wait_view != new_wait_view, but not always
 
   EXPECT_EQ(new_wait_view->GetConnectableItem()->GetInstruction(), wait);
 }
@@ -397,7 +407,9 @@ TEST_F(GraphicsSceneTest, ComplexAggregateRemoval)
   EXPECT_EQ(selected_view_items.size(), 11);
 
   ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
-  QTest::qWait(50);
+
+  auto predicate = [this]() { return m_scene.GetSelectedViewItems<QGraphicsItem>().size() == 0; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   EXPECT_EQ(m_scene.GetSelectedViewItems<QGraphicsItem>().size(), 0);
 
