@@ -20,8 +20,6 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
-#include "settings_editor_dialog.h"
-#include "settings_helper.h"
 
 #include <sequencergui/components/component_helper.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -31,6 +29,8 @@
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
+#include <sup/gui/mainwindow/settings_editor_dialog.h>
+#include <sup/gui/mainwindow/settings_helper.h>
 #include <sup/gui/mainwindow/status_bar_helper.h>
 
 #include <mvvm/project/project_handler.h>
@@ -239,8 +239,8 @@ void SequencerMainWindowActions::OnChangeSystemFont()
 
 void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
-  SettingsEditorDialog dialog;
-  dialog.SetInitialValues(GetGlobalSettings());
+  sup::gui::SettingsEditorDialog dialog;
+  dialog.SetInitialValues(sup::gui::GetGlobalSettings());
   if (dialog.exec() == QDialog::Accepted)
   {
     SaveSettingsInPersistentStorage(*dialog.GetResult());

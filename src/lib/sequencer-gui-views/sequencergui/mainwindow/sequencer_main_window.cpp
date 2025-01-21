@@ -22,15 +22,15 @@
 #include "color_palette.h"
 #include "main_window_helper.h"
 #include "sequencer_main_window_actions.h"
-#include "settings_helper.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/model/settings_model.h>
 #include <sequencergui/style/style_helper.h>
 #include <sequencergui/views/composer/sequencer_composer_view.h>
 #include <sequencergui/views/explorer/sequencer_explorer_view.h>
 #include <sequencergui/views/operation/operation_monitor_view.h>
+#include <sup/gui/mainwindow/settings_helper.h>
+#include <sup/gui/model/settings_model.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -125,7 +125,7 @@ void SequencerMainWindow::ReadSettings()
   move(settings.value(kWindowPosSettingName, default_pos).toPoint());
 
   // global persistent setting stored in SettingsModel
-  ReadGlobalSettings();
+  sup::gui::ReadGlobalSettings();
 }
 
 void SequencerMainWindow::WriteSettings()
@@ -169,13 +169,15 @@ void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 
 void SequencerMainWindow::OnProjectLoad()
 {
+  const auto enable_undo =
+      sup::gui::GetGlobalSettings().Data<bool>(sup::gui::constants::kUseUndoSetting);
+  const auto undo_limit =
+      sup::gui::GetGlobalSettings().Data<int>(sup::gui::constants::kUndoLimitSetting);
+  m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
+
   m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModel(m_models->GetSequencerModel());
   m_operation_view->SetModels(m_models.get());
-
-  const auto enable_undo = GetGlobalSettings().Data<bool>(kUseUndoSetting);
-  const auto undo_limit = GetGlobalSettings().Data<int>(kUndoLimitSetting);
-  m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
 
   UpdateProjectNames();
 }
