@@ -22,9 +22,7 @@
 #include <gtest/gtest.h>
 
 #include <QTest>
-#include <chrono>
 #include <future>
-#include <iostream>
 
 using namespace sequencergui;
 
@@ -64,7 +62,7 @@ TEST_F(UserChoiceProviderTest, SingleThreadAsksForUserChoice)
   ready_for_test.get_future().wait();
 
   // processing event loop to make queued connection passing in UserChoiceProvider
-  QTest::qWait(100);
+  QTest::qWait(50);
 
   // making sure the thread has finished
   auto result = future_result.get();
@@ -113,7 +111,7 @@ TEST_F(UserChoiceProviderTest, TwoThreadsAskForUserChoice)
   ready_for_test2.get_future().wait();
 
   // processing event loop to make queued connection passing in UserChoiceProvider
-  QTest::qWait(100);
+  QTest::qWait(50);
 
   // making sure the thread has finished
   auto result1 = future_result1.get();

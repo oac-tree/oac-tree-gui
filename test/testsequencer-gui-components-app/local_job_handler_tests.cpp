@@ -327,7 +327,13 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
   job_handler.Start();
-  QTest::qWait(100);
+
+  auto predicate = [this, &expected_anyvalue]()
+  {
+    auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+    return testutils::IsEqual(*vars_inside.at(1), expected_anyvalue);
+  };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
 
@@ -422,7 +428,8 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
 
   job_handler.Start();
   // We are testing here queued signals, need special waiting
-  QTest::qWait(100);
+  EXPECT_TRUE(QTest::qWaitFor(
+      [&var_inside2, anyvalue1]() { return testutils::IsEqual(*var_inside2, anyvalue1); }, 50));
 
   EXPECT_FALSE(job_handler.IsRunning());
 

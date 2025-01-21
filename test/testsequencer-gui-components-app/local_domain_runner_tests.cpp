@@ -241,7 +241,7 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
 //! execution.
 TEST_F(LocalDomainRunnerTest, SequenceWithTwoMessages)
 {
-  const int tick_timeout_msec(50);
+  const int tick_timeout_msec(20);
 
   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
   auto procedure_ptr = procedure.get();
@@ -275,7 +275,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   using ::sup::sequencer::JobState;
 
   const msec wait_time(10);   // parameter for Wait instruction
-  const msec safety_gap(50);  // some additional waiting time safety gap
+  const msec safety_gap(10);  // some additional waiting time safety gap
 
   // wait time after each step for procedure containing two Wait instructions
   const msec max_after_step_wait_time(2 * (testutils::kDefaultWaitPrecision + wait_time)
