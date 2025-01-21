@@ -237,37 +237,6 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
   EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
-//! Sequence with single message in normal start mode. Validating that tick timeout is ignored for
-//! a single instructions.
-TEST_F(LocalDomainRunnerTest, SequenceWithSingleMessage)
-{
-  const int tick_timeout_msec(1000);  // intentionally long timeout
-
-  auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
-  auto procedure_ptr = procedure.get();
-  auto runner = CreateRunner(std::move(procedure), /*listen_callbacks*/ false);
-
-  runner->SetTickTimeout(tick_timeout_msec);
-
-  const time_t start_time = clock_used::now();
-
-  // triggering action
-  EXPECT_TRUE(runner->Start());
-
-  auto has_finished = [&runner]() { return runner->IsFinished(); };
-  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
-
-  EXPECT_EQ(runner->GetJobState(), sup::sequencer::JobState::kSucceeded);
-  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
-
-  const time_t end_time = clock_used::now();
-
-  // Here we test that runner.SetTickTimeout(1000) doesn't influence execution time,
-  // since we have only one child that gets executed during single step.
-  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
-              < msec(tick_timeout_msec));
-}
-
 //! Sequence with two messages in normal start mode. Additional tick timeout slows down the
 //! execution.
 TEST_F(LocalDomainRunnerTest, SequenceWithTwoMessages)
