@@ -38,9 +38,6 @@
 #include <QTest>
 #include <thread>
 
-using ::testing::_;
-using ::testing::AtLeast;
-
 namespace sequencergui::test
 {
 
@@ -131,7 +128,7 @@ TEST_F(LocalDomainRunnerTest, ShortProcedureThatExecutesNormally)
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event3)).Times(1);
 
     // message instruction (too difficult to make proper comparison because of time stamp)
-    EXPECT_CALL(m_event_listener, OnLogEvent(_)).Times(1);
+    EXPECT_CALL(m_event_listener, OnLogEvent(::testing::_)).Times(1);
 
     const InstructionStateUpdatedEvent event5{instruction_index,
                                               InstructionState{false, ExecutionStatus::SUCCESS}};
@@ -391,6 +388,8 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
 //! step continue till the end without interruptions.
 TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
 {
+  using ::testing::_;
+
   auto procedure = test::CreateCounterProcedure(3);
   auto procedure_ptr = procedure.get();
   auto variable = procedure_ptr->GetWorkspace().GetVariable("counter");

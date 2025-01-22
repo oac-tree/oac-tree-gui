@@ -40,8 +40,6 @@
 #include <QSignalSpy>
 #include <QTest>
 
-using ::testing::_;
-
 namespace sequencergui::test
 {
 
@@ -186,7 +184,7 @@ TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
   ASSERT_TRUE(view1 != nullptr);
 
   // after handler set, we expect no throws; handler method should be called
-  EXPECT_CALL(m_mock_handler, Call(_)).Times(1);
+  EXPECT_CALL(m_mock_handler, Call(::testing::_)).Times(1);
   EXPECT_NO_THROW(m_scene.onConnectionRequest(view0, view1));
 }
 

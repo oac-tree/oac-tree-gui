@@ -38,8 +38,6 @@
 #include <QMimeData>
 #include <QSignalSpy>
 
-using ::testing::_;
-
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 namespace sequencergui::test
@@ -205,7 +203,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   EXPECT_TRUE(handler->CanPasteAfter());
   handler->PasteAfter();
@@ -238,7 +236,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   // creating action handler mimicking `sequence` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler(sequence, mime_data.get());
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // appending instruction to the container
   handler->PasteAfter();
@@ -278,7 +276,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   // wait0 is selected
   auto handler = CreateActionHandler(wait0, mime_data.get());
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // appending instruction to the container
   handler->PasteAfter();
@@ -314,7 +312,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(sequence, mime_data.get());
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // inserting instruction into selected instruction
   handler->PasteInto();
@@ -346,7 +344,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // inserting instruction into selected instruction
   EXPECT_TRUE(handler->CanCut());

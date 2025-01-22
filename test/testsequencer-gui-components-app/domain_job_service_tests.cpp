@@ -30,7 +30,6 @@
 
 #include <QTest>
 #include <future>
-using ::testing::_;
 
 namespace sequencergui::test
 {
@@ -122,7 +121,7 @@ TEST_F(DomainJobServiceTest, PutValue)
   const sup::dto::AnyValue value(43);
   const std::string description("description");
 
-  EXPECT_CALL(m_event_listener, OnLogEvent(_)).Times(1);
+  EXPECT_CALL(m_event_listener, OnLogEvent(::testing::_)).Times(1);
 
   service->GetJobInfoIO()->PutValue(value, description);
 
@@ -212,7 +211,7 @@ TEST_F(DomainJobServiceTest, Message)
 {
   const std::string message("mesage");
 
-  EXPECT_CALL(m_event_listener, OnLogEvent(_)).Times(1);
+  EXPECT_CALL(m_event_listener, OnLogEvent(::testing::_)).Times(1);
 
   m_service->GetJobInfoIO()->Message(message);
 
@@ -225,7 +224,7 @@ TEST_F(DomainJobServiceTest, Log)
   const std::string message("mesage");
 
   // can't compare log event since current comparison operator contains date and time
-  EXPECT_CALL(m_event_listener, OnLogEvent(_)).Times(1);
+  EXPECT_CALL(m_event_listener, OnLogEvent(::testing::_)).Times(1);
 
   m_service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
 

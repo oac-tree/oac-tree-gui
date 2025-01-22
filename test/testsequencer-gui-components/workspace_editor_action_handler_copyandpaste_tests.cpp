@@ -41,8 +41,6 @@
 #include <QMimeData>
 #include <QSignalSpy>
 
-using ::testing::_;
-
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 namespace sequencergui::test
@@ -162,6 +160,8 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 //! item should just appear as a first item.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContainer)
 {
+  using ::testing::_;
+
   // creating mime data representing clipboard content
   LocalVariableItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
@@ -190,6 +190,8 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 //! pasting new variable right after it.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 {
+  using ::testing::_;
+
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
 
@@ -220,6 +222,8 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
 {
+  using ::testing::_;
+
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
 

@@ -39,8 +39,6 @@
 
 #include <QTest>
 
-using ::testing::_;
-
 namespace sequencergui::test
 {
 
@@ -145,6 +143,8 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
 //! Changing GUI variable and checking that domain was properly updated.
 TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 {
+  using ::testing::_;
+
   const std::string var_name("var");
   const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
 

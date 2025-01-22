@@ -43,8 +43,6 @@
 
 #include <QTest>
 
-using ::testing::_;
-
 namespace sequencergui::test
 {
 
@@ -325,8 +323,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
     auto expected_event1 = mvvm::DataChangedEvent{client_item->GetItem(itemconstants::kIsAvailable),
                                                   mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
-    EXPECT_CALL(model_listener, OnAboutToInsertItem(_)).Times(1);
-    EXPECT_CALL(model_listener, OnItemInserted(_)).Times(1);
+    EXPECT_CALL(model_listener, OnAboutToInsertItem(::testing::_)).Times(1);
+    EXPECT_CALL(model_listener, OnItemInserted(::testing::_)).Times(1);
   }
 
   // expected events from server variable

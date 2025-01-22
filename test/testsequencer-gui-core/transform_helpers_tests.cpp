@@ -48,8 +48,6 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-using ::testing::_;
-
 namespace sequencergui::test
 {
 

@@ -24,8 +24,6 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>
 
-using ::testing::_;
-
 namespace sequencergui::test
 {
 
@@ -57,6 +55,8 @@ public:
 
 TEST_F(DomainEventDispatcherTest, EmptyEvent)
 {
+  using ::testing::_;
+
   const domain_event_t event;
   auto dispatcher = CreateDispatcher(event);
 
@@ -68,6 +68,8 @@ TEST_F(DomainEventDispatcherTest, EmptyEvent)
 
 TEST_F(DomainEventDispatcherTest, InstructionStateUpdatedChanged)
 {
+  using ::testing::_;
+
   InstructionStateUpdatedEvent expected_event{
       0, sup::sequencer::InstructionState{false, ::sup::sequencer::ExecutionStatus::NOT_STARTED}};
   auto dispatcher = CreateDispatcher(expected_event);
@@ -80,6 +82,8 @@ TEST_F(DomainEventDispatcherTest, InstructionStateUpdatedChanged)
 
 TEST_F(DomainEventDispatcherTest, JobStatusChanged)
 {
+  using ::testing::_;
+
   JobStateChangedEvent expected_event{::sup::sequencer::JobState::kInitial};
   auto dispatcher = CreateDispatcher(expected_event);
 

@@ -29,8 +29,6 @@
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/test_utils.h>
 
-using ::testing::_;
-
 namespace sequencergui::test
 {
 
@@ -51,6 +49,8 @@ public:
 //! workspace->Setup.
 TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
 {
+  using ::testing::_;
+
   const std::string var_name("var0");
 
   // creating local variable
@@ -94,6 +94,8 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
 
 TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
 {
+  using ::testing::_;
+
   if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
