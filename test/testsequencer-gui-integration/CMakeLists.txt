@@ -11,5 +11,4 @@ target_link_libraries(${test} PRIVATE sequencer-gui-components test-utils sup-ep
 
 set_target_properties(${test} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TEST_OUTPUT_DIRECTORY})
 
-# We do not discover tests, so they are not executed via IDE. Will be executed only test.sh
-#gtest_discover_tests(${test} DISCOVERY_TIMEOUT 10 DISCOVERY_MODE PRE_TEST TEST_PREFIX Integration.)
+gtest_discover_tests(${test} DISCOVERY_TIMEOUT 10 DISCOVERY_MODE PRE_TEST TEST_PREFIX Integration.)
