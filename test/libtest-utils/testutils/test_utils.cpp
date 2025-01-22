@@ -33,7 +33,7 @@ const std::string footer{R"RAW(</root>
 using clock = std::chrono::high_resolution_clock;
 }  // namespace
 
-namespace testutils
+namespace sequencergui::test
 {
 
 bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout)
@@ -76,4 +76,4 @@ std::string CreateProcedureString(const std::string &body, bool schema)
   return (schema ? header_with_schema : header) + body + footer;
 }
 
-}  // namespace testutils
+}  // namespace sequencergui::test

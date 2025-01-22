@@ -19,7 +19,7 @@
 
 #include "mock_job_handler.h"
 
-namespace testutils
+namespace sequencergui::test
 {
 
 void MockJobHandler::Start()
@@ -77,4 +77,4 @@ sequencergui::ProcedureItem *MockJobHandler::GetExpandedProcedure() const
   return m_listener.GetExpandedProcedure(this);
 }
 
-}  // namespace testutils
+}  // namespace sequencergui::test

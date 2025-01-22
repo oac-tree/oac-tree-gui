@@ -23,15 +23,16 @@
 #include <sequencergui/jobsystem/i_remote_connection_service.h>
 
 #include <gmock/gmock.h>
+
 namespace sequencergui
 {
+
 class IAutomationClient;
 class AbstractJobHandler;
 struct UserContext;
 class RemoteJobItem;
-}  // namespace sequencergui
 
-namespace testutils
+namespace test
 {
 
 /**
@@ -52,6 +53,8 @@ public:
               (sequencergui::RemoteJobItem*, const sequencergui::UserContext&), (override));
 };
 
-}  // namespace testutils
+}  // namespace test
+
+}  // namespace sequencergui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_REMOTE_CONNECTION_SERVICE_H_

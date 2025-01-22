@@ -30,11 +30,11 @@
 
 namespace sequencergui
 {
+
 class ProcedureItem;
 class SequencerModel;
-}  // namespace sequencergui
 
-namespace testutils
+namespace test
 {
 
 /**
@@ -152,6 +152,8 @@ std::unique_ptr<sequencergui::ProcedureItem> CreateIncrementProcedureItem();
  */
 sequencergui::ProcedureItem* CreateIncrementProcedureItem(sequencergui::SequencerModel* model);
 
-}  // namespace testutils
+}  // namespace test
+
+}  // namespace sequencergui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURE_ITEMS_H_

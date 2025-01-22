@@ -70,7 +70,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
 
   // creating LocalVariable in domain workspace
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
-  auto variable = testutils::CreatePVAccessServerVariable(var_name, value, kScalarChannelName);
+  auto variable = test::CreatePVAccessServerVariable(var_name, value, kScalarChannelName);
   m_workspace.AddVariable(var_name, std::move(variable));
 
   DomainWorkspaceListener listener(&m_workspace, mock_client.AsStdFunction());
@@ -113,8 +113,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
 
   // creating LocalVariable in domain workspace
   const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
-  auto variable =
-      testutils::CreatePVAccessServerVariable(var_name, initial_value, kStructChannelName);
+  auto variable = test::CreatePVAccessServerVariable(var_name, initial_value, kStructChannelName);
   m_workspace.AddVariable(var_name, std::move(variable));
 
   DomainWorkspaceListener listener(&m_workspace, mock_client.AsStdFunction());

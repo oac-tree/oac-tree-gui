@@ -26,7 +26,7 @@
 
 #include <gmock/gmock.h>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 /**
@@ -40,11 +40,8 @@ public:
   {
     m_guard = m_workspace.GetCallbackGuard(this);
 
-    auto on_variable_updated =
-        [this](const std::string& name, const sup::dto::AnyValue& value, bool connected)
-    {
-      OnEvent(name, value, connected);
-    };
+    auto on_variable_updated = [this](const std::string& name, const sup::dto::AnyValue& value,
+                                      bool connected) { OnEvent(name, value, connected); };
 
     workspace.RegisterGenericCallback(on_variable_updated, this);
   }
@@ -56,6 +53,6 @@ public:
   sup::sequencer::ScopeGuard m_guard;
 };
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_WORKSPACE_LISTENER_H_

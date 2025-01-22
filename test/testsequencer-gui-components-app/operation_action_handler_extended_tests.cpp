@@ -88,8 +88,8 @@ public:
   UserContext m_user_context;
   JobManager m_job_manager;
 
-  testutils::MockOperationActionContext m_mock_context;
-  testutils::MockRemoteConnectionService m_mock_connection_service;
+  test::MockOperationActionContext m_mock_context;
+  test::MockRemoteConnectionService m_mock_connection_service;
 };
 
 TEST_F(OperationActionHandlerExtendedTest, AttemptToUseWhenMisconfigured)
@@ -101,7 +101,7 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToUseWhenMisconfigured)
 //! Submission of the procedure.
 TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
 {
-  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  auto procedure = test::CreateMessageProcedureItem(GetSequencerModel(), "text");
   procedure->SetDisplayName("procedure_display_name");
 
   auto handler = CreateOperationHandler();
@@ -148,7 +148,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
 //! Attempt to submit wronly configured procedure.
 TEST_F(OperationActionHandlerExtendedTest, AttemptToSubmitMalformedProcedure)
 {
-  auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
+  auto procedure = test::CreateInvalidProcedureItem(GetSequencerModel());
 
   const JobManager manager(GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service));
   auto handler = CreateOperationHandler();
@@ -164,7 +164,7 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToSubmitMalformedProcedure)
 //! Submit the job, when start and wait till the end.
 TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
 {
-  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  auto procedure = test::CreateMessageProcedureItem(GetSequencerModel(), "text");
   auto handler = CreateOperationHandler();
 
   // submitting the procedure
@@ -208,7 +208,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
 //! Removing submitted job.
 TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobRequest)
 {
-  auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  auto procedure = test::CreateCopyProcedureItem(GetSequencerModel());
   auto handler = CreateOperationHandler();
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -231,7 +231,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobRequest)
 //! Attempt to remove long running job.
 TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+  auto procedure = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
   auto handler = CreateOperationHandler();
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -266,7 +266,7 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
 //! Regenerate submitted job.
 TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
 {
-  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  auto procedure = test::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
   auto handler = CreateOperationHandler();
@@ -308,7 +308,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
 //! Regenerate submitted job.
 TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequestWhenProcedureDeleted)
 {
-  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  auto procedure = test::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
   auto handler = CreateOperationHandler();
@@ -350,7 +350,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequestWhenProcedureDe
 //! Consequent execution of same job.
 TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
 {
-  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  auto procedure = test::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
   auto handler = CreateOperationHandler();

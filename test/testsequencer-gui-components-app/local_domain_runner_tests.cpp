@@ -48,8 +48,8 @@ using ::testing::AtLeast;
 class LocalDomainRunnerTest : public ::testing::Test
 {
 public:
-  using mock_event_listener_t = ::testing::StrictMock<testutils::MockDomainEventListener>;
-  using mock_user_listener_t = ::testing::StrictMock<testutils::MockUserContext>;
+  using mock_event_listener_t = ::testing::StrictMock<test::MockDomainEventListener>;
+  using mock_user_listener_t = ::testing::StrictMock<test::MockUserContext>;
 
   using clock_used = std::chrono::high_resolution_clock;
   using time_t = std::chrono::time_point<clock_used>;
@@ -95,7 +95,7 @@ public:
 
 TEST_F(LocalDomainRunnerTest, InitialState)
 {
-  const auto runner = CreateRunner(testutils::CreateMessageProcedure("text"));
+  const auto runner = CreateRunner(test::CreateMessageProcedure("text"));
 
   EXPECT_EQ(runner->GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_FALSE(runner->IsFinished());
@@ -109,7 +109,7 @@ TEST_F(LocalDomainRunnerTest, ShortProcedureThatExecutesNormally)
   using ::sup::sequencer::InstructionState;
   using ::sup::sequencer::JobState;
 
-  auto procedure = testutils::CreateMessageProcedure("text");
+  auto procedure = test::CreateMessageProcedure("text");
   auto procedure_ptr = procedure.get();
   auto instruction_ptr = procedure_ptr->RootInstruction();
   const sup::dto::uint32 instruction_index{0};
@@ -164,7 +164,7 @@ TEST_F(LocalDomainRunnerTest, Reset)
   using ::sup::sequencer::ExecutionStatus;
   using ::sup::sequencer::JobState;
 
-  auto procedure = testutils::CreateMessageProcedure("text");
+  auto procedure = test::CreateMessageProcedure("text");
   auto procedure_ptr = procedure.get();
   auto instruction_ptr = procedure_ptr->RootInstruction();
 
@@ -187,10 +187,10 @@ TEST_F(LocalDomainRunnerTest, Reset)
   runner->Reset();
 
   // EXPECT_TRUE(runner->WaitForState(sup::sequencer::JobState::kInitial,
-  //                                  testutils::GetTimeoutInSec(msec(100))));
+  //                                  test::GetTimeoutInSec(msec(100))));
   auto has_finished = [&runner]()
   { return runner->GetJobState() == sup::sequencer::JobState::kInitial; };
-  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
+  EXPECT_TRUE(test::WaitFor(has_finished, msec(50)));
 
   EXPECT_EQ(runner->GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -204,7 +204,7 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
   using ::sup::sequencer::JobState;
   const std::chrono::milliseconds wait_timeout(10000);
 
-  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
+  auto procedure = test::CreateSingleWaitProcedure(wait_timeout);
   auto procedure_ptr = procedure.get();
   auto instruction_ptr = procedure_ptr->RootInstruction();
 
@@ -219,7 +219,7 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
     return instruction_ptr->GetStatus() == ExecutionStatus::NOT_FINISHED
            && runner->GetJobState() == JobState::kRunning;
   };
-  EXPECT_TRUE(testutils::WaitFor(has_started, msec(50)));
+  EXPECT_TRUE(test::WaitFor(has_started, msec(50)));
 
   EXPECT_FALSE(runner->IsFinished());
   EXPECT_TRUE(runner->IsBusy());
@@ -227,7 +227,7 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
   runner->Stop();
 
   auto is_finished = [&runner]() { return runner->IsFinished(); };
-  EXPECT_TRUE(testutils::WaitFor(is_finished, msec(100)));
+  EXPECT_TRUE(test::WaitFor(is_finished, msec(100)));
 
   EXPECT_TRUE(runner->IsFinished());
 
@@ -243,7 +243,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoMessages)
 {
   const int tick_timeout_msec(20);
 
-  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  auto procedure = test::CreateSequenceWithTwoMessagesProcedure();
   auto procedure_ptr = procedure.get();
   auto runner = CreateRunner(std::move(procedure), /*listen_callbacks*/ false);
 
@@ -255,7 +255,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoMessages)
   EXPECT_TRUE(runner->Start());
 
   auto has_finished = [&runner]() { return runner->IsFinished(); };
-  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(200)));
+  EXPECT_TRUE(test::WaitFor(has_finished, msec(200)));
 
   EXPECT_EQ(runner->GetJobState(), sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
@@ -278,10 +278,10 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   const msec safety_gap(10);  // some additional waiting time safety gap
 
   // wait time after each step for procedure containing two Wait instructions
-  const msec max_after_step_wait_time(2 * (testutils::kDefaultWaitPrecision + wait_time)
+  const msec max_after_step_wait_time(2 * (test::kDefaultWaitPrecision + wait_time)
                                       + safety_gap);
 
-  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(wait_time, wait_time);
+  auto procedure = test::CreateSequenceWithTwoWaitsProcedure(wait_time, wait_time);
   auto procedure_ptr = procedure.get();
 
   const sup::dto::uint32 sequence_index{0};
@@ -366,7 +366,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
   using ::sup::sequencer::ExecutionStatus;
   using ::sup::sequencer::JobState;
 
-  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  auto procedure = test::CreateSequenceWithTwoMessagesProcedure();
   auto procedure_ptr = procedure.get();
 
   auto runner = CreateRunner(std::move(procedure), /*listen_callbacks*/ false);
@@ -376,7 +376,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
   runner->Step();
 
   auto has_paused = [&runner]() { return runner->GetJobState() == JobState::kPaused; };
-  EXPECT_TRUE(testutils::WaitFor(has_paused, msec(50)));
+  EXPECT_TRUE(test::WaitFor(has_paused, msec(50)));
 
   EXPECT_TRUE(runner->Stop());
 
@@ -390,7 +390,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
 //! step continue till the end without interruptions.
 TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
 {
-  auto procedure = testutils::CreateCounterProcedure(3);
+  auto procedure = test::CreateCounterProcedure(3);
   auto procedure_ptr = procedure.get();
   auto variable = procedure_ptr->GetWorkspace().GetVariable("counter");
   procedure_ptr->Setup();
@@ -458,7 +458,7 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
 
   // The procedure contains two variables: a counter, and variable for interruption. By magic we
   // know variable names.
-  auto procedure = testutils::CreateRepeatIncrementAndCompare();
+  auto procedure = test::CreateRepeatIncrementAndCompare();
   auto procedure_ptr = procedure.get();
 
   const std::string kCounterVarName("counter");

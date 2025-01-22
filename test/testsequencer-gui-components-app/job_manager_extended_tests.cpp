@@ -74,7 +74,7 @@ public:
 
   ApplicationModels m_models;
   LocalJobItem* m_job_item{nullptr};
-  testutils::MockRemoteConnectionService m_mock_connection_service;
+  test::MockRemoteConnectionService m_mock_connection_service;
   UserContext m_user_context;
 };
 
@@ -87,7 +87,7 @@ TEST_F(JobManagerExtendedTest, InitialState)
 
 TEST_F(JobManagerExtendedTest, SubmitProcedure)
 {
-  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  auto copy_procedure = test::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
 
   EXPECT_EQ(m_job_item->GetExpandedProcedure(), nullptr);
@@ -102,7 +102,7 @@ TEST_F(JobManagerExtendedTest, SubmitProcedure)
 
 TEST_F(JobManagerExtendedTest, AttemptToSubmitProcedure)
 {
-  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  auto copy_procedure = test::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
 
   JobManager manager(GetContext());
@@ -119,7 +119,7 @@ TEST_F(JobManagerExtendedTest, AttemptToSubmitProcedure)
 //! Attempt to submit wrongly configured procedure.
 TEST_F(JobManagerExtendedTest, AttemptToSubmitMalformedProcedure)
 {
-  auto invalid_procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
+  auto invalid_procedure = test::CreateInvalidProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(invalid_procedure);
 
   JobManager manager(GetContext());
@@ -133,7 +133,7 @@ TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
 
-  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  auto copy_procedure = test::CreateCopyProcedureItem(GetSequencerModel());
 
   m_job_item->SetProcedure(copy_procedure);
 
@@ -165,28 +165,28 @@ TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
   auto predicate = [&job_handler, var_inside0, var_inside1, &anyvalue0]
   {
     const bool is_completed = !job_handler->IsRunning();
-    const bool var0_updated = testutils::IsEqual(*var_inside0, anyvalue0);
-    const bool var1_updated = testutils::IsEqual(*var_inside1, anyvalue0);
+    const bool var0_updated = test::IsEqual(*var_inside0, anyvalue0);
+    const bool var1_updated = test::IsEqual(*var_inside1, anyvalue0);
     return is_completed && var0_updated && var1_updated;
   };
 
   EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
-  EXPECT_TRUE(testutils::IsEqual(*var_inside0, anyvalue0));
-  EXPECT_TRUE(testutils::IsEqual(*var_inside1, anyvalue0));
+  EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
+  EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));
 
   // variables at original model remained unchanged
   auto inside = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
   auto var0 = inside.at(0);
   auto var1 = inside.at(1);
-  EXPECT_TRUE(testutils::IsEqual(*var0, anyvalue0));
-  EXPECT_TRUE(testutils::IsEqual(*var1, anyvalue1));
+  EXPECT_TRUE(test::IsEqual(*var0, anyvalue0));
+  EXPECT_TRUE(test::IsEqual(*var1, anyvalue1));
 }
 
 //! Removing submitted job.
 TEST_F(JobManagerExtendedTest, OnRemoveJobRequest)
 {
-  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  auto copy_procedure = test::CreateCopyProcedureItem(GetSequencerModel());
 
   m_job_item->SetProcedure(copy_procedure);
 
@@ -206,7 +206,7 @@ TEST_F(JobManagerExtendedTest, OnRemoveJobRequest)
 //! Attempt to remove long running job.
 TEST_F(JobManagerExtendedTest, AttemptToRemoveLongRunningJob)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+  auto procedure = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
   m_job_item->SetProcedure(procedure);
 
@@ -235,8 +235,8 @@ TEST_F(JobManagerExtendedTest, AttemptToRemoveLongRunningJob)
 //! Long running job removal.
 TEST_F(JobManagerExtendedTest, StopAllJobs)
 {
-  auto procedure0 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
-  auto procedure1 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+  auto procedure0 = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+  auto procedure1 = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
   m_job_item->SetProcedure(procedure0);
   auto job_item1 = m_job_item;

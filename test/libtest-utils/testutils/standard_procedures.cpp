@@ -29,9 +29,7 @@
 #include <sup/sequencer/sequence_parser.h>
 #include <sup/sequencer/variable.h>
 
-using namespace sequencergui;
-
-namespace testutils
+namespace sequencergui::test
 {
 
 std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds timeout)

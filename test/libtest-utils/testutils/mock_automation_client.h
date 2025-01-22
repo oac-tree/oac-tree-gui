@@ -26,7 +26,7 @@
 
 #include <functional>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 /**
@@ -80,6 +80,6 @@ std::unique_ptr<sequencergui::IAutomationClient> CreateAutomationClientDecorator
 std::function<std::unique_ptr<sequencergui::IAutomationClient>(const std::string& server_name)>
 AutomationClientDecoratorCreateFunc(sequencergui::IAutomationClient& decoratee);
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_AUTOMATION_CLIENT_H_

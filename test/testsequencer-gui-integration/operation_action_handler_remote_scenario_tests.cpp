@@ -128,11 +128,11 @@ public:
   RemoteConnectionService m_remote_connection_service;
   UserContext m_user_context;
   JobManager m_job_manager;
-  testutils::MockOperationActionContext m_mock_context;
-  static testutils::TestAutomationServer m_test_automation_server;
+  test::MockOperationActionContext m_mock_context;
+  static test::TestAutomationServer m_test_automation_server;
 };
 
-testutils::TestAutomationServer OperationActionHandlerRemoteScenarioTest::m_test_automation_server;
+test::TestAutomationServer OperationActionHandlerRemoteScenarioTest::m_test_automation_server;
 
 TEST_F(OperationActionHandlerRemoteScenarioTest, InitialState)
 {
@@ -185,7 +185,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   auto variables = job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 42};
-  EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
 TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
@@ -227,7 +227,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   auto variables = job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 45};
-  EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
 }  // namespace sequencergui

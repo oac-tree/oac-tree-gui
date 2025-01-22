@@ -52,7 +52,7 @@ void IOCEnvironment::SetUp()
 {
   if (sequencergui::IsSequencerPluginEpicsAvailable())
   {
-    m_softioc_service.Start(testutils::GetEpicsDBContentString());
+    m_softioc_service.Start(sequencergui::test::GetEpicsDBContentString());
     std::this_thread::sleep_for(std::chrono::milliseconds(20));
   }
 }

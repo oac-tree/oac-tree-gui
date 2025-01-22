@@ -362,7 +362,7 @@ TEST_F(AnyValueItemTransformHelperTest, GetAnyValueFromDomainWorkspace)
   EXPECT_THROW(GetAnyValue(var_name, workspace), RuntimeException);
 
   sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
-  workspace.AddVariable(var_name, testutils::CreateLocalVariable(var_name, initial_value));
+  workspace.AddVariable(var_name, test::CreateLocalVariable(var_name, initial_value));
   workspace.Setup();
   EXPECT_EQ(GetAnyValue(var_name, workspace), initial_value);
 }

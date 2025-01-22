@@ -40,6 +40,9 @@
 #include <QSignalSpy>
 #include <QTest>
 
+namespace sequencergui
+{
+
 namespace
 {
 
@@ -48,12 +51,10 @@ namespace
  */
 std::string GetResourceFolder()
 {
-  return testutils::GetProjectSourceDir() + "/test/resources/functional";
+  return test::GetProjectSourceDir() + "/test/resources/functional";
 }
 
 }  // namespace
-
-using namespace sequencergui;
 
 //! Tests for all XML procedures found in resource/functional folder.
 
@@ -114,3 +115,5 @@ TEST_P(ResourceFolderTest, RunProcedure)
 
 INSTANTIATE_TEST_SUITE_P(FunctionalTests, ResourceFolderTest,
                          ::testing::Values("wait_for_condition.xml", "fallback.xml"));
+
+}  // namespace sequencergui

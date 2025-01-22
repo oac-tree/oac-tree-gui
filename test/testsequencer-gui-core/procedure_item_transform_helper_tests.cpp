@@ -145,7 +145,7 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithLocalVaria
 //! Procedure with local include.
 TEST_F(ProcedureItemTransformHelperTest, LocalIncludeProcedure)
 {
-  auto procedure = testutils::CreateLocalIncludeProcedure();
+  auto procedure = test::CreateLocalIncludeProcedure();
 
   ASSERT_EQ(procedure->GetTopInstructions().size(), 2);
   auto sequence_ptr = procedure->GetTopInstructions().at(0);

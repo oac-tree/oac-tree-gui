@@ -33,8 +33,6 @@
 #include <testutils/mock_remote_connection_service.h>
 #include <testutils/standard_procedure_items.h>
 
-using namespace sequencergui;
-
 namespace sequencergui
 {
 
@@ -53,7 +51,7 @@ public:
   UserContext m_user_context;
   mvvm::ApplicationModel m_model;
 
-  testutils::MockRemoteConnectionService m_mock_connection_service;
+  test::MockRemoteConnectionService m_mock_connection_service;
 };
 
 TEST_F(OperationActionHelperTest, CreateJobHandlerForUnknownJob)
@@ -66,7 +64,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForUnknownJob)
 TEST_F(OperationActionHelperTest, CreateJobHandlerForLocalJob)
 {
   // all job handlers further down requres that procedure and job are part of models
-  auto procedure = testutils::CreateMessageProcedureItem("abc");
+  auto procedure = test::CreateMessageProcedureItem("abc");
   auto job_item = CreateLocalJobItem(procedure.get());
   auto job_item_ptr = job_item.get();
   m_model.InsertItem(std::move(procedure), m_model.GetRootItem(), mvvm::TagIndex::Append());
@@ -80,7 +78,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForLocalJob)
 TEST_F(OperationActionHelperTest, CreateJobHandlerForImportedJob)
 {
   // all job handlers further down requres that procedure and job are part of models
-  auto job_item = CreateImportedJobItem(testutils::CreateMessageProcedureItem("abc"));
+  auto job_item = CreateImportedJobItem(test::CreateMessageProcedureItem("abc"));
   auto job_item_ptr = job_item.get();
 
   m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());

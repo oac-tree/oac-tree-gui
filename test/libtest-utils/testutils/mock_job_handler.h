@@ -26,10 +26,10 @@
 
 namespace sequencergui
 {
-class JobItem;
-}  // namespace sequencergui
 
-namespace testutils
+class JobItem;
+
+namespace test
 {
 
 /**
@@ -95,6 +95,8 @@ public:
   sequencergui::JobItem* m_job_item{nullptr};
 };
 
-}  // namespace testutils
+}  // namespace test
+
+}  // namespace sequencergui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_JOB_HANDLER_H_

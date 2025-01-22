@@ -101,7 +101,7 @@ std::unique_ptr<variable_t> CreateVariable(const std::string &variable_type,
 
 }  // unnamed namespace
 
-namespace testutils
+namespace sequencergui::test
 {
 
 std::string GetEpicsDBContentString()
@@ -142,7 +142,7 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string &name,
 sup::sequencer::JobInfo CreateJobInfo(const std::string &procedure_text)
 {
   auto procedure =
-      sup::sequencer::ParseProcedureString(testutils::CreateProcedureString(procedure_text));
+      sup::sequencer::ParseProcedureString(test::CreateProcedureString(procedure_text));
   procedure->Setup();
   auto root = procedure->RootInstruction();
   const sup::sequencer::InstructionMap instr_map{root};
@@ -160,4 +160,4 @@ bool IsEqual(const sequencergui::VariableItem &variable, const sup::dto::AnyValu
   return false;
 }
 
-}  // namespace testutils
+}  // namespace sequencergui::test

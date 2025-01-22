@@ -29,7 +29,7 @@
 
 using namespace sequencergui;
 
-class MainWindowHelperTest : public testutils::FolderTest
+class MainWindowHelperTest : public test::FolderTest
 {
 public:
   MainWindowHelperTest() : FolderTest("MainWindowHelperTest") {}

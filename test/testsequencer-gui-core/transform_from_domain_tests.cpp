@@ -143,7 +143,7 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
 
 TEST_F(TransformFromDomainTest, CreateUniversalInstruction)
 {
-  using testutils::UnknownDomainInstruction;
+  using test::UnknownDomainInstruction;
 
   UnknownDomainInstruction::RegisterUnknownDomainInstruction();
 
@@ -157,7 +157,7 @@ TEST_F(TransformFromDomainTest, CreateUniversalInstruction)
 
 TEST_F(TransformFromDomainTest, CreateUniversalVariable)
 {
-  using testutils::UnknownDomainVariable;
+  using test::UnknownDomainVariable;
 
   UnknownDomainVariable::RegisterUnknownDomainVariable();
 

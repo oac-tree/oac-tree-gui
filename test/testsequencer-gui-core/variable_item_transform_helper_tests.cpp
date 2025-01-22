@@ -135,8 +135,6 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItemFromDomain)
   EXPECT_EQ(variables[0], workspace_item.GetVariables().at(0));
   EXPECT_EQ(variables[1], workspace_item.GetVariables().at(1));
 
-  EXPECT_TRUE(
-      testutils::IsEqual(*variables[0], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}));
-  EXPECT_TRUE(
-      testutils::IsEqual(*variables[1], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1}));
+  EXPECT_TRUE(test::IsEqual(*variables[0], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}));
+  EXPECT_TRUE(test::IsEqual(*variables[1], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1}));
 }

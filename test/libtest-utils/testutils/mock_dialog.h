@@ -29,7 +29,7 @@ namespace sup::gui
 class AnyValueItem;
 }
 
-namespace testutils
+namespace sequencergui::test
 {
 
 /**
@@ -59,6 +59,6 @@ public:
   sequencergui::AnyValueDialogResult m_dialog_result;
 };
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DIALOG_H_

@@ -27,11 +27,11 @@
 
 namespace sequencergui
 {
+
 class InstructionStatusChangedEvent;
 class JobStateChangedEvent;
-}  // namespace sequencergui
 
-namespace testutils
+namespace test
 {
 
 /**
@@ -132,6 +132,8 @@ public:
   }
 };
 
-}  // namespace testutils
+}  // namespace test
+
+}  // namespace sequencergui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_

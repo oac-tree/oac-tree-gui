@@ -27,7 +27,7 @@
 #include <functional>
 #include <string>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 /**
@@ -45,6 +45,6 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout);
  */
 std::string CreateProcedureString(const std::string& body, bool schema = true);
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

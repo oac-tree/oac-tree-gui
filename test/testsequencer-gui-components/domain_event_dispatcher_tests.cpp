@@ -50,7 +50,7 @@ public:
                                                    m_listener.CreateDispatcherContext());
   }
 
-  testutils::MockDomainEventListener m_listener;
+  test::MockDomainEventListener m_listener;
 };
 
 TEST_F(DomainEventDispatcherTest, EmptyEvent)

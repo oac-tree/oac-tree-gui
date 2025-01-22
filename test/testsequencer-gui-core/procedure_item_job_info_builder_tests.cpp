@@ -57,7 +57,7 @@ class ProcedureItemJobInfoBuilderTest : public ::testing::Test
 
 TEST_F(ProcedureItemJobInfoBuilderTest, GetInstruction)
 {
-  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+  auto job_info = test::CreateJobInfo(kSequenceTwoWaitsBody);
 
   ProcedureItemJobInfoBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);
@@ -84,7 +84,7 @@ TEST_F(ProcedureItemJobInfoBuilderTest, GetInstruction)
 
 TEST_F(ProcedureItemJobInfoBuilderTest, GetVariable)
 {
-  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+  auto job_info = test::CreateJobInfo(kSequenceTwoWaitsBody);
 
   ProcedureItemJobInfoBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);
@@ -100,7 +100,7 @@ TEST_F(ProcedureItemJobInfoBuilderTest, GetVariable)
 
 TEST_F(ProcedureItemJobInfoBuilderTest, GetInstructionIndex)
 {
-  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+  auto job_info = test::CreateJobInfo(kSequenceTwoWaitsBody);
 
   ProcedureItemJobInfoBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);
@@ -134,7 +134,7 @@ TEST_F(ProcedureItemJobInfoBuilderTest, BuildFromIncludeAfterSteup)
   </Repeat>
 )RAW"};
 
-  auto job_info = testutils::CreateJobInfo(kProcedure);
+  auto job_info = test::CreateJobInfo(kProcedure);
 
   ProcedureItemJobInfoBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);

@@ -35,7 +35,8 @@
 
 #include <sup/dto/anyvalue.h>
 
-using namespace sequencergui;
+namespace sequencergui
+{
 
 namespace
 {
@@ -68,7 +69,7 @@ sequencergui::ProcedureItem* CreateProcedure(std::unique_ptr<sequencergui::Proce
 
 }  // namespace
 
-namespace testutils
+namespace test
 {
 
 std::unique_ptr<sequencergui::ProcedureItem> CreateInvalidProcedureItem()
@@ -281,4 +282,6 @@ ProcedureItem* CreateIncrementProcedureItem(sequencergui::SequencerModel* model)
   return CreateProcedure(&CreateIncrementProcedureItem, model);
 }
 
-}  // namespace testutils
+}  // namespace test
+
+}  // namespace sequencergui

@@ -54,7 +54,7 @@ using namespace sequencergui;
 /**
  * @brief Complex scenario integration tests.
  */
-class IntegrationScenarioTest : public testutils::FolderTest
+class IntegrationScenarioTest : public test::FolderTest
 {
 public:
   IntegrationScenarioTest() : FolderTest("IntegrationScenarioTest")
@@ -78,7 +78,7 @@ public:
   ApplicationModels m_models;
   LocalJobItem* m_job_item{nullptr};
 
-  testutils::MockRemoteConnectionService m_mock_connection_service;
+  test::MockRemoteConnectionService m_mock_connection_service;
   UserContext m_user_context;
 };
 
@@ -86,7 +86,7 @@ public:
 //! manager.
 TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 {
-  auto procedure_item = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  auto procedure_item = test::CreateCopyProcedureItem(GetSequencerModel());
 
   const auto file_name = GetFilePath("XmlDocumentSaveLoad.xml");
 
@@ -131,23 +131,23 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   auto predicate = [&manager, var_inside0, var_inside1, &anyvalue0, &anyvalue1]
   {
     const bool is_completed = !manager.HasRunningJobs();
-    const bool var0_updated = testutils::IsEqual(*var_inside0, anyvalue0);
-    const bool var1_updated = testutils::IsEqual(*var_inside1, anyvalue0);
+    const bool var0_updated = test::IsEqual(*var_inside0, anyvalue0);
+    const bool var1_updated = test::IsEqual(*var_inside1, anyvalue0);
     return is_completed && var0_updated && var1_updated;
   };
 
   EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
 
-  EXPECT_TRUE(testutils::IsEqual(*var_inside0, anyvalue0));
-  EXPECT_TRUE(testutils::IsEqual(*var_inside1, anyvalue0));
+  EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
+  EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));
 
   // variables at original model remained unchanged
   auto vars = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
   auto var0 = vars.at(0);
   auto var1 = vars.at(1);
 
-  EXPECT_TRUE(testutils::IsEqual(*var0, anyvalue0));
-  EXPECT_TRUE(testutils::IsEqual(*var1, anyvalue1));
+  EXPECT_TRUE(test::IsEqual(*var0, anyvalue0));
+  EXPECT_TRUE(test::IsEqual(*var1, anyvalue1));
 }
 
 //! Validating that external includes are correctly found.
@@ -164,11 +164,11 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
 )"};
 
   const auto main_file_name = GetFilePath("main.xml");
-  mvvm::test::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
+  mvvm::test::CreateTextFile(main_file_name, test::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external.xml");
   mvvm::test::CreateTextFile(external_file_name,
-                             testutils::CreateProcedureString(external_procedure));
+                             test::CreateProcedureString(external_procedure));
 
   auto procedure_item = sequencergui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
@@ -198,11 +198,11 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
 )"};
 
   const auto main_file_name = GetFilePath("main2.xml");
-  mvvm::test::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
+  mvvm::test::CreateTextFile(main_file_name, test::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external2.xml");
   mvvm::test::CreateTextFile(external_file_name,
-                             testutils::CreateProcedureString(external_procedure));
+                             test::CreateProcedureString(external_procedure));
 
   auto procedure_item = sequencergui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();

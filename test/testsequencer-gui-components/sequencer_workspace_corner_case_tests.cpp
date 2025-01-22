@@ -53,11 +53,11 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
 
   // creating local variable
   const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
-  auto variable = testutils::CreateLocalVariable(var_name, initial_value);
+  auto variable = test::CreateLocalVariable(var_name, initial_value);
   auto variable_ptr = variable.get();
 
   // listener is subscribed to the workspace on the contstruction already
-  testutils::MockDomainWorkspaceListener listener(m_workspace);
+  test::MockDomainWorkspaceListener listener(m_workspace);
 
   // adding variable doesn't cause notifications
   EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
@@ -102,11 +102,11 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
 
   // creating local variable
   const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
-  auto variable = testutils::CreatePVAccessServerVariable(var_name, initial_value, kChannelName);
+  auto variable = test::CreatePVAccessServerVariable(var_name, initial_value, kChannelName);
   auto variable_ptr = variable.get();
 
   // listener is subscribed to the workspace on the contstruction already
-  testutils::MockDomainWorkspaceListener listener(m_workspace);
+  test::MockDomainWorkspaceListener listener(m_workspace);
 
   // adding variable doesn't cause notifications
   EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
@@ -161,19 +161,19 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessClientAndServerVariables)
 
   // adding two variables in a workspace
   auto server_variable =
-      testutils::CreatePVAccessServerVariable(server_var_name, initial_value, kChannelName);
+      test::CreatePVAccessServerVariable(server_var_name, initial_value, kChannelName);
   auto server_variable_ptr = server_variable.get();
 
   // adding two variables in a workspace
   auto client_variable =
-      testutils::CreatePVAccessClientVariable(client_var_name, initial_value, kChannelName);
+      test::CreatePVAccessClientVariable(client_var_name, initial_value, kChannelName);
   auto client_variable_ptr = client_variable.get();
 
   m_workspace.AddVariable(server_var_name, std::move(server_variable));
   m_workspace.AddVariable(client_var_name, std::move(client_variable));
 
   // setting expectations
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
   {
     const ::testing::InSequence seq;
     // server variable reports its availability once

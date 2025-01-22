@@ -33,9 +33,12 @@
 #include <testutils/folder_test.h>
 #include <testutils/test_utils.h>
 
+namespace sequencergui
+{
+
 //! Testing methods from importutils.h
 
-class XmlUtilsTest : public testutils::FolderTest
+class XmlUtilsTest : public test::FolderTest
 {
 public:
   XmlUtilsTest() : FolderTest("XmlUtilsTest") {}
@@ -51,7 +54,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleWait.xml");
-  mvvm::test::CreateTextFile(file_name, testutils::CreateProcedureString(body));
+  mvvm::test::CreateTextFile(file_name, test::CreateProcedureString(body));
 
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 
@@ -74,7 +77,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleVariable.xml");
-  mvvm::test::CreateTextFile(file_name, testutils::CreateProcedureString(body));
+  mvvm::test::CreateTextFile(file_name, test::CreateProcedureString(body));
 
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 
@@ -100,7 +103,7 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
 )"};
 
   // current ExportToXMLString doesn't know how export with schema
-  auto expected_string = testutils::CreateProcedureString(body, /*schema*/ false);
+  auto expected_string = test::CreateProcedureString(body, /*schema*/ false);
   EXPECT_EQ(sequencergui::ExportToXMLString(procedure_item), expected_string);
 }
 
@@ -132,3 +135,5 @@ TEST_F(XmlUtilsTest, ReplaceQuotationMarks)
       R"RAW(<Local name="cancel_text" dynamicType="false" type='{"type":"string"}' value='"Negative"'/>)RAW");
   EXPECT_EQ(ReplaceQuotationMarks(long_str), expected);
 }
+
+}  // namespace sequencergui

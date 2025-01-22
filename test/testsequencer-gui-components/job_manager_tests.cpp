@@ -41,7 +41,7 @@ public:
   JobManager::create_handler_func_t GetJobHandlerFactoryFunc()
   {
     auto result = [this](JobItem& item) -> std::unique_ptr<IJobHandler>
-    { return std::make_unique<testutils::MockJobHandler>(m_mock_job_handler_listener, &item); };
+    { return std::make_unique<test::MockJobHandler>(m_mock_job_handler_listener, &item); };
     return result;
   }
 
@@ -50,7 +50,7 @@ public:
     return std::make_unique<JobManager>(GetJobHandlerFactoryFunc());
   }
 
-  testutils::MockJobHandlerListener m_mock_job_handler_listener;
+  test::MockJobHandlerListener m_mock_job_handler_listener;
 };
 
 //! Checking Start method, and Reset method call.

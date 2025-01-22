@@ -59,7 +59,7 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
 
   // creating ChannelAccessVariable
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
-  auto variable = testutils::CreateChannelAccessVariable(var_name, value, kChannelName);
+  auto variable = test::CreateChannelAccessVariable(var_name, value, kChannelName);
   m_workspace.AddVariable(var_name, std::move(variable));
 
   DomainWorkspaceListener listener(&m_workspace, mock_client.AsStdFunction());

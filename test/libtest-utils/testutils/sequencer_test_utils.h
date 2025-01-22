@@ -31,10 +31,10 @@
 
 namespace sequencergui
 {
-class VariableItem;
-}
 
-namespace testutils
+class VariableItem;
+
+namespace test
 {
 
 /**
@@ -82,6 +82,8 @@ sup::sequencer::JobInfo CreateJobInfo(const std::string& procedure_text);
  */
 bool IsEqual(const sequencergui::VariableItem& variable, const sup::dto::AnyValue& value);
 
-}  // namespace testutils
+}  // namespace test
+
+}  // namespace sequencergui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_EPICS_TEST_UTILS_H_

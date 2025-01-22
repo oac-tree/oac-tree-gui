@@ -27,7 +27,7 @@
 #include <chrono>
 #include <memory>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 //! hard-coded value in Wait instruction
@@ -107,6 +107,6 @@ std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, i
  */
 std::unique_ptr<procedure_t> CreateRepeatIncrementAndCompare();
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURES_H_

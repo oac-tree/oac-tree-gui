@@ -24,8 +24,8 @@
 //! Collection of utils to test sequencer.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-
 #include <sup/gui/core/dto_types_fwd.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
 #include <sup/sequencer/variable.h>
@@ -33,7 +33,7 @@
 
 #include <string>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 //! Test instruction playing the role of domain instruction unknown to the GUI.
@@ -78,6 +78,6 @@ public:
   }
 };
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_UNIVERSAL_ITEMS_H_

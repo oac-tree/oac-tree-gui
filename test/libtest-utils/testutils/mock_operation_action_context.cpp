@@ -19,7 +19,7 @@
 
 #include "mock_operation_action_context.h"
 
-namespace testutils
+namespace sequencergui::test
 {
 
 sequencergui::OperationActionContext MockOperationActionContext::CreateContext()
@@ -31,4 +31,4 @@ sequencergui::OperationActionContext MockOperationActionContext::CreateContext()
   return result;
 }
 
-}  // namespace testutils
+}  // namespace sequencergui::test

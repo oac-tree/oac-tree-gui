@@ -146,7 +146,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromGUI)
   m_workspace.Setup();
 
   // Creating domain and setting callback expectations.
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
   auto anyvalue_item = variable_item->GetAnyValueItem();
   const sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
   EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
@@ -259,7 +259,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   }
 
   // Creating domain listener and setting callback expectations.
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
   const sup::dto::AnyValue empty_value;
   {
     // This behavior coincides SequencerWorkspaceCornerCaseTest::PVAccessClientAndServerVariables
@@ -281,8 +281,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 3000));
 
   ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
-  EXPECT_TRUE(testutils::IsEqual(*client_item, initial_value));
-  EXPECT_TRUE(testutils::IsEqual(*server_item, initial_value));
+  EXPECT_TRUE(test::IsEqual(*client_item, initial_value));
+  EXPECT_TRUE(test::IsEqual(*server_item, initial_value));
 }
 
 //! One server and one client variable in a workspace. The difference with the previous test is that
@@ -311,7 +311,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
 
   EXPECT_FALSE(server_item->IsAvailable());
   EXPECT_FALSE(client_item->IsAvailable());
-  EXPECT_TRUE(testutils::IsEqual(*server_item, initial_value));
+  EXPECT_TRUE(test::IsEqual(*server_item, initial_value));
 
   // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
@@ -335,7 +335,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   }
 
   // Creating domain listener and setting callback expectations.
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
   {
     // This behavior coincides SequencerWorkspaceCornerCaseTest::PVAccessClientAndServerVariables
     // We check that WorkspaceSyncronizer doesn't change Workspace behavior.
@@ -356,6 +356,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 3000));
 
   ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
-  EXPECT_TRUE(testutils::IsEqual(*client_item, initial_value));
-  EXPECT_TRUE(testutils::IsEqual(*server_item, initial_value));
+  EXPECT_TRUE(test::IsEqual(*client_item, initial_value));
+  EXPECT_TRUE(test::IsEqual(*server_item, initial_value));
 }

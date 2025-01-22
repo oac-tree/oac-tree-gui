@@ -24,7 +24,7 @@
 #include <future>
 #include <string>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 /**
@@ -46,6 +46,6 @@ private:
   std::atomic<bool> m_continue{true};
 };
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

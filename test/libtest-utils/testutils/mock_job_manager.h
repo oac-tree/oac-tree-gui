@@ -26,11 +26,11 @@
 
 namespace sequencergui
 {
+
 class JobItem;
 class IJobHandler;
-}  // namespace sequencergui
 
-namespace testutils
+namespace test
 {
 
 /**
@@ -59,6 +59,8 @@ public:
   MOCK_METHOD(void, SetActiveJob, (sequencergui::JobItem *), (override));
 };
 
-}  // namespace testutils
+}  // namespace test
+
+}  // namespace sequencergui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_JOB_MANAGER_H_

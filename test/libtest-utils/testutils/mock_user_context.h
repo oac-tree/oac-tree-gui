@@ -24,7 +24,7 @@
 
 #include <gmock/gmock.h>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 /**
@@ -55,6 +55,6 @@ public:
   }
 };
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_

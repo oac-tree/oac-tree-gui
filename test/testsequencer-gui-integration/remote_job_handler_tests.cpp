@@ -61,7 +61,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
 )RAW"};
 
   const std::string server_name("RemoteJobHandlerTestServer");
-  testutils::TestAutomationServer server;
+  test::TestAutomationServer server;
 
   server.Start(server_name, kProcedureBodyText);
 
@@ -85,7 +85,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   ASSERT_EQ(variables.size(), 1);
 
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 3};
-  EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 
   server.Stop();
 }

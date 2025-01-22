@@ -66,7 +66,7 @@ TEST_F(WorkspaceItemListenerTest, SetScalarData)
 
   m_workspace.Setup();
 
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
 
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), value);
 
@@ -122,7 +122,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyAnyValueFromModelViaInsert)
 
   WorkspaceItemListener listener(m_workspace_item, &m_workspace);
 
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
 
   // expectations triggered by the setup
   EXPECT_CALL(domain_listener, OnEvent(var_name, value, true)).Times(1);
@@ -158,7 +158,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
   const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
 
   {
     const ::testing::InSequence seq;

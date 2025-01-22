@@ -157,7 +157,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
   EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
 
   mock_listener_t model_listener(&m_model);
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  test::MockDomainWorkspaceListener domain_listener(m_workspace);
 
   // changing the value via the model
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);

@@ -21,7 +21,7 @@
 
 #include <sequencergui/jobsystem/abstract_job_handler.h>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 AutomationClientDecorator::AutomationClientDecorator(IAutomationClient &decoratee)
@@ -68,4 +68,4 @@ AutomationClientDecoratorCreateFunc(sequencergui::IAutomationClient &decoratee)
   return result;
 }
 
-}  // namespace testutils
+}  // namespace sequencergui::test

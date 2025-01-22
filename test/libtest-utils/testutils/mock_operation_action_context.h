@@ -25,7 +25,7 @@
 
 #include <gmock/gmock.h>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 /**
@@ -37,12 +37,11 @@ class MockOperationActionContext
 public:
   MOCK_METHOD(sequencergui::JobItem*, OnSelectedJob, (), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
-  MOCK_METHOD(std::optional<sequencergui::RemoteConnectionInfo>, OnGetRemoteConnectionInfo,
-              (), ());
+  MOCK_METHOD(std::optional<sequencergui::RemoteConnectionInfo>, OnGetRemoteConnectionInfo, (), ());
 
   sequencergui::OperationActionContext CreateContext();
 };
 
-}  // namespace testutils
+}  // namespace sequencergui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_

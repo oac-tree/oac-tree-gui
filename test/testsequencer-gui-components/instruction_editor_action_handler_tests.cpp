@@ -92,8 +92,8 @@ public:
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
-  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
-  testutils::MockDialog m_mock_dialog;
+  ::testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
+  test::MockDialog m_mock_dialog;
 };
 
 //! Attempt to insert an instruction when no procedure created upfront.

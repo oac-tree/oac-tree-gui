@@ -114,10 +114,10 @@ public:
   UserContext m_user_context;
   mvvm::ApplicationModel m_model;
   RemoteJobItem* m_job_item{nullptr};
-  static testutils::TestAutomationServer m_test_automation_server;
+  static test::TestAutomationServer m_test_automation_server;
 };
 
-testutils::TestAutomationServer JobManagerRemoteScenarioTest::m_test_automation_server;
+test::TestAutomationServer JobManagerRemoteScenarioTest::m_test_automation_server;
 
 TEST_F(JobManagerRemoteScenarioTest, InitialState)
 {
@@ -153,7 +153,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
   auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 0};
-  EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
 TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
@@ -176,7 +176,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
   auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 3};
-  EXPECT_TRUE(testutils::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
 }  // namespace sequencergui

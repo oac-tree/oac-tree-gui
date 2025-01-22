@@ -70,7 +70,7 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
 
   // creating LocalVariable in domain workspace
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
-  auto local_variable = testutils::CreateLocalVariable(var_name, value);
+  auto local_variable = test::CreateLocalVariable(var_name, value);
   auto local_variable_ptr = local_variable.get();
   m_workspace.AddVariable(var_name, std::move(local_variable));
 
@@ -123,7 +123,7 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
 
   // creating LocalVariable in domain workspace
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
-  auto local_variable = testutils::CreateLocalVariable(var_name, value);
+  auto local_variable = test::CreateLocalVariable(var_name, value);
   auto local_variable_ptr = local_variable.get();
   m_workspace.AddVariable(var_name, std::move(local_variable));
 

@@ -68,7 +68,7 @@ TEST_F(UniversalItemHelperTest, AddKnownInstruction)
 
 TEST_F(UniversalItemHelperTest, AddUnknownInstruction)
 {
-  using testutils::UnknownDomainInstruction;
+  using test::UnknownDomainInstruction;
 
   UnknownDomainInstruction::RegisterUnknownDomainInstruction();
 

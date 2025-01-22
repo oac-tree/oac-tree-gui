@@ -77,8 +77,8 @@ public:
   WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   MonitorModel m_model;
-  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
-  testutils::MockDialog m_mock_dialog;
+  ::testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
+  test::MockDialog m_mock_dialog;
 };
 
 TEST_F(WorkspaceEditorActionHandlerTest, InitialState)

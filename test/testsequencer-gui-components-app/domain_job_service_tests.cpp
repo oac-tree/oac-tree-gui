@@ -41,8 +41,8 @@ class DomainJobServiceTest : public ::testing::Test
 {
 public:
   DomainJobServiceTest() : m_service(CreateService()){}
-  using mock_event_listener_t = ::testing::StrictMock<testutils::MockDomainEventListener>;
-  using mock_user_listener_t = ::testing::StrictMock<testutils::MockUserContext>;
+  using mock_event_listener_t = ::testing::StrictMock<test::MockDomainEventListener>;
+  using mock_user_listener_t = ::testing::StrictMock<test::MockUserContext>;
   using msec = std::chrono::milliseconds;
 
   std::unique_ptr<DomainJobService> CreateService()

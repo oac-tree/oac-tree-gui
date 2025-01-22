@@ -31,7 +31,7 @@
 
 #include <thread>
 
-namespace testutils
+namespace sequencergui::test
 {
 
 void TestAutomationServer::Start(const std::string &server_name,
@@ -40,7 +40,7 @@ void TestAutomationServer::Start(const std::string &server_name,
   auto worker = [this, &server_name, &procedure_string]()
   {
     auto procedure =
-        sup::sequencer::ParseProcedureString(testutils::CreateProcedureString(procedure_string));
+        sup::sequencer::ParseProcedureString(test::CreateProcedureString(procedure_string));
 
     auto anyvalue_manager_registry = sup::auto_server::utils::CreateEPICSAnyValueManagerRegistry(1);
     sup::auto_server::AutomationServer auto_server{server_name, *anyvalue_manager_registry};
@@ -79,4 +79,4 @@ void TestAutomationServer::WaitForResult()
   m_future.wait();
 }
 
-}  // namespace testutils
+}  // namespace sequencergui::test

@@ -96,9 +96,9 @@ public:
   mvvm::ContainerItem* m_procedure_container{nullptr};
   mvvm::ContainerItem* m_job_container{nullptr};
 
-  testutils::MockOperationActionContext m_mock_operation_context;
-  testutils::MockRemoteConnectionService m_mock_connection_service;
-  testutils::MockJobManager m_mock_job_manager;
+  test::MockOperationActionContext m_mock_operation_context;
+  test::MockRemoteConnectionService m_mock_connection_service;
+  test::MockJobManager m_mock_job_manager;
 };
 
 TEST_F(OperationActionHandlerTest, AttemptToInsertWhenNoModelIsDefined)

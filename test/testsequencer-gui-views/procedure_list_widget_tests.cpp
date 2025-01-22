@@ -39,10 +39,10 @@ Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
-class ProcedureListWidgetTest : public testutils::FolderTest
+class ProcedureListWidgetTest : public test::FolderTest
 {
 public:
-  ProcedureListWidgetTest() : testutils::FolderTest("ProcedureListWidgetTest")
+  ProcedureListWidgetTest() : test::FolderTest("ProcedureListWidgetTest")
   {
     qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
   }
