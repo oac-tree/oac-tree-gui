@@ -21,22 +21,36 @@ add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-components)
 add_subdirectory(testsequencer-gui-components-app)
 add_subdirectory(testsequencer-gui-views)
-add_subdirectory(testsequencer-gui-integration)
+if (COA_BUILD_INTEGRATION_TESTS)
+  add_subdirectory(testsequencer-gui-integration)
+endif()
 add_subdirectory(parasoft)
 
-# Add custom target `make testall` which will run test executables one after another.
+# -----------------------------------------------------------------------------
+# Add custom target `make testall` to run test executables one after another.
+# -----------------------------------------------------------------------------
+
 # This can be used instead of usual `make test` or `ctest` while running tests via an ssh
 # connection. In certain cases `make testall` will be faster than `ctest -j4` because of fewer
 # instantiations of QApplication.
 
-add_custom_target(testall
+add_custom_target(testall DEPENDS testall-cmd)
+add_custom_command(OUTPUT testall-cmd
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components-app
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration
 )
 
+if (COA_BUILD_INTEGRATION_TESTS)
+  add_custom_command(OUTPUT testall-cmd APPEND
+    COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration
+  )
+endif()
+
+# -----------------------------------------------------------------------------
+# Generate test.sh for Maven
+# -----------------------------------------------------------------------------
 file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
 "#!/bin/bash
 export QT_QPA_PLATFORM=offscreen
@@ -45,9 +59,11 @@ fail=0
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components-app " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration " || fail=1
-exit $fail
 ")
-
+if (COA_BUILD_INTEGRATION_TESTS)
+  file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration || fail=1
+")
+endif()
+file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "exit $fail")
 configure_file(${TEST_OUTPUT_DIRECTORY}/test.sh ${TEST_OUTPUT_DIRECTORY}/test.sh 
                FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
