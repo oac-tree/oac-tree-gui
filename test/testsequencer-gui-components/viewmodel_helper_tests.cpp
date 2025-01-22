@@ -27,7 +27,8 @@
 #include <QStandardItemModel>
 #include <memory>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 class ViewmodelHelperTest : public ::testing::Test
 {
@@ -97,4 +98,6 @@ TEST_F(ViewmodelHelperTest, IterateFirstColumn)
                                                      data.item2->index(), data.item3->index()};
 
   EXPECT_EQ(visited_indices, expected_indices);
+}
+
 }

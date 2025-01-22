@@ -28,7 +28,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for WorkspaceFilterViewModel class.
 
@@ -129,3 +130,5 @@ TEST_F(WorkspaceFilterViewModelTest, FilterViewmodel)
   EXPECT_TRUE(viewmodel_proxy.filterAcceptsRow(0, index_local_item0));  // dynamicType property
   EXPECT_FALSE(viewmodel_proxy.filterAcceptsRow(0, index_local_item1));
 }
+
+}  // namespace sequencergui::test

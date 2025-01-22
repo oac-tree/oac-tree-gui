@@ -38,10 +38,12 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
 using ::testing::_;
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
+
+namespace sequencergui::test
+{
 
 class WorkspaceEditorActionHandlerTest : public ::testing::Test
 {
@@ -442,3 +444,5 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   EXPECT_EQ(inserted_variable0->GetDomainType(), domainconstants::kSystemClockVariableType);
   EXPECT_EQ(inserted_variable0->GetType(), UniversalVariableItem::Type);
 }
+
+}  // namespace sequencergui::test

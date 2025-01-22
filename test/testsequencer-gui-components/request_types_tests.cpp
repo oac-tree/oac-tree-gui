@@ -23,7 +23,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Test of classes in request_types.h
@@ -161,3 +162,5 @@ TEST_F(RequestTypesTest, UserInputResult)
     EXPECT_TRUE(res1 != res2);
   }
 }
+
+}  // namespace sequencergui::test

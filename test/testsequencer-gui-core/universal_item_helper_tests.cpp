@@ -32,7 +32,8 @@
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for helper methods from universal_item_helper.h
 
@@ -108,3 +109,5 @@ TEST_F(UniversalItemHelperTest, GetCollapsedItems)
   collapsed = GetCollapsedItems(container);
   EXPECT_EQ(collapsed, std::vector<const InstructionItem*>({sequence0, sequence1}));
 }
+
+}  // namespace sequencergui::test

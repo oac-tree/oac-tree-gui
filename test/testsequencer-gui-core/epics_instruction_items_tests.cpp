@@ -37,7 +37,8 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for items from instructionitems.h
 
@@ -602,3 +603,5 @@ TEST_F(EpicsInstructionItemsTest, LogInstructionItemToDomain)
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
+
+}  // namespace sequencergui::test

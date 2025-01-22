@@ -32,7 +32,8 @@ auto CreateTestData()
 }
 }  // namespace
 
-using namespace sequencergui::algorithm;
+namespace sequencergui::test
+{
 
 class AlignNodeTest : public ::testing::Test
 {
@@ -40,6 +41,8 @@ class AlignNodeTest : public ::testing::Test
 
 TEST_F(AlignNodeTest, InitialState)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   EXPECT_EQ(node.GetParent(), nullptr);
   EXPECT_EQ(node.GetSize(), 0);
@@ -65,6 +68,8 @@ TEST_F(AlignNodeTest, InitialState)
 
 TEST_F(AlignNodeTest, GetAndSet)
 {
+  using algorithm::AlignNode;
+
   AlignNode parent;
   AlignNode node;
 
@@ -87,6 +92,8 @@ TEST_F(AlignNodeTest, GetAndSet)
 
 TEST_F(AlignNodeTest, Add)
 {
+  using algorithm::AlignNode;
+
   auto [child0, child0_ptr] = CreateTestData<AlignNode>();
   auto [child1, child1_ptr] = CreateTestData<AlignNode>();
 
@@ -104,6 +111,8 @@ TEST_F(AlignNodeTest, Add)
 
 TEST_F(AlignNodeTest, LeftMostRightMost)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   auto child0 = node.Add<AlignNode>();
   auto child1 = node.Add<AlignNode>();
@@ -121,6 +130,8 @@ TEST_F(AlignNodeTest, LeftMostRightMost)
 
 TEST_F(AlignNodeTest, PreviousSiblingNextSibling)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   auto child0 = node.Add<AlignNode>();
   auto child1 = node.Add<AlignNode>();
@@ -138,6 +149,8 @@ TEST_F(AlignNodeTest, PreviousSiblingNextSibling)
 
 TEST_F(AlignNodeTest, GetLeftMostSibling)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   auto child0 = node.Add<AlignNode>();
   auto child1 = node.Add<AlignNode>();
@@ -150,6 +163,8 @@ TEST_F(AlignNodeTest, GetLeftMostSibling)
 
 TEST_F(AlignNodeTest, GetLeftMostChildGetRightMostChild)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   auto child0 = node.Add<AlignNode>();
   auto child1 = node.Add<AlignNode>();
@@ -161,6 +176,8 @@ TEST_F(AlignNodeTest, GetLeftMostChildGetRightMostChild)
 
 TEST_F(AlignNodeTest, GetIndex)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   auto child0 = node.Add<AlignNode>();
   auto child1 = node.Add<AlignNode>();
@@ -170,4 +187,6 @@ TEST_F(AlignNodeTest, GetIndex)
   EXPECT_EQ(child0->GetIndex(), 0);
   EXPECT_EQ(child1->GetIndex(), 1);
   EXPECT_EQ(child2->GetIndex(), 2);
+}
+
 }

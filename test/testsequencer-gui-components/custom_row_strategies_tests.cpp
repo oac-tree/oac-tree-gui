@@ -31,9 +31,8 @@
 
 #include <gtest/gtest.h>
 
-#include <QDebug>
-
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for strategies from custom_row_strategies.h.
 
@@ -123,4 +122,6 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
     EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("Sequence"));
     EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString("abc"));
   }
+}
+
 }

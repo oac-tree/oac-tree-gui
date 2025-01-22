@@ -38,10 +38,12 @@
 #include <QMimeData>
 #include <QSignalSpy>
 
-using namespace sequencergui;
 using ::testing::_;
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
+
+namespace sequencergui::test
+{
 
 //! Tests for InstructionEditorActionHandler class.
 
@@ -357,3 +359,5 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   // checking the request to select remaining item
   EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait1);
 }
+
+}  // namespace sequencergui::test

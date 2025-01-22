@@ -39,7 +39,8 @@
 #include <gtest/gtest.h>
 #include <testutils/standard_procedures.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests forhelper methods from procedure_item_transform_helper.h.
@@ -239,3 +240,5 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithPreamble)
   EXPECT_EQ(procedure_item->GetPreambleItem()->GetPluginPaths(), expected_paths);
   EXPECT_EQ(procedure_item->GetPreambleItem()->GetTypeRegistrations(), expected_info);
 }
+
+}  // namespace sequencergui::test

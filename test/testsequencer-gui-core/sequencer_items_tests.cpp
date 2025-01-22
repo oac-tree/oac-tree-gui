@@ -25,7 +25,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for items from instructionitems.h
 
@@ -57,3 +58,5 @@ TEST_F(SequencerItemsTest, ProcedureItem)
   item.SetName("efg");
   EXPECT_EQ(item.GetName(), "efg");
 }
+
+}  // namespace sequencergui::test

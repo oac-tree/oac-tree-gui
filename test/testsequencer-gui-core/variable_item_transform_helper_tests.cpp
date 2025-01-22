@@ -33,7 +33,8 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests of helper methods from variable_item_transform_helper.h
@@ -138,3 +139,5 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItemFromDomain)
   EXPECT_TRUE(test::IsEqual(*variables[0], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}));
   EXPECT_TRUE(test::IsEqual(*variables[1], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1}));
 }
+
+}  // namespace sequencergui::test

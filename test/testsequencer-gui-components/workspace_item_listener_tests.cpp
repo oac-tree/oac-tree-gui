@@ -31,11 +31,11 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 
+#include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
 
-using namespace sequencergui;
-
-#include <gtest/gtest.h>
+namespace sequencergui::test
+{
 
 //! Tests for WorkspaceItemListener class.
 
@@ -180,3 +180,5 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
   EXPECT_EQ(GetAnyValue(var_name0, m_workspace), new_value);
   EXPECT_EQ(GetAnyValue(var_name1, m_workspace), new_value);
 }
+
+}  // namespace sequencergui::test

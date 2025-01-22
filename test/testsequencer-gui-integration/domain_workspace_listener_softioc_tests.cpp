@@ -33,8 +33,10 @@
 
 #include <QTest>
 
-using namespace sequencergui;
 using testing::_;
+
+namespace sequencergui::test
+{
 
 namespace
 {
@@ -114,4 +116,6 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 1000));
+}
+
 }

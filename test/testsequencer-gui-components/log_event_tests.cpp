@@ -25,7 +25,8 @@
 #include <QDateTime>
 #include <QTime>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for LogEvent class.
 
@@ -63,3 +64,5 @@ TEST_F(LogEventTest, CreateLogEvent)
       QTime::fromString(QString::fromStdString(event.time), GetLogEventTimeFormat().c_str());
   EXPECT_TRUE(QDateTime(date, time).isValid());
 }
+
+}  // namespace sequencergui::test

@@ -30,7 +30,8 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for items from instructionitems.h
 
@@ -93,3 +94,5 @@ TEST_F(JobListViewModelTest, NotificationOnStatusChange)
   procedure0->SetStatus("abc");
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
+
+}  // namespace sequencergui::test

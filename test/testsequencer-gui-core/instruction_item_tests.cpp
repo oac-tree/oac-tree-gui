@@ -26,7 +26,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for InstructionItem base class.
 
@@ -68,3 +69,5 @@ TEST_F(InstructionItemsTest, TestItem)
   EXPECT_EQ(item.GetStatus(), "");
   EXPECT_TRUE(item.GetInstructions().empty());
 }
+
+}  // namespace sequencergui::test

@@ -34,7 +34,8 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 const std::string kSequenceTwoWaitsBody{
     R"RAW(
@@ -154,3 +155,5 @@ TEST_F(ProcedureItemJobInfoBuilderTest, BuildFromIncludeAfterSteup)
   EXPECT_EQ(builder.GetInstruction(2), sequence_item);
   EXPECT_EQ(builder.GetInstruction(3), wait_item);
 }
+
+}  // namespace sequencergui::test

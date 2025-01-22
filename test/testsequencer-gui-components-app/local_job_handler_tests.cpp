@@ -50,8 +50,10 @@
 #include <QTest>
 #include <chrono>
 
-using namespace sequencergui;
 using msec = std::chrono::milliseconds;
+
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests for LocalJobHandler class.
@@ -498,3 +500,5 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
     EXPECT_TRUE(QTest::qWaitFor(predicate3, 50));
   }
 }
+
+}  // namespace sequencergui::test

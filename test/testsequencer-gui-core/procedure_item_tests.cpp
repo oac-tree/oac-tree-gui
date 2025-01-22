@@ -30,7 +30,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Testing ProcedureItem class.
 
@@ -140,3 +141,5 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
 
   EXPECT_EQ(item.GetPreambleItem()->GetPluginPaths(), expected);
 }
+
+}  // namespace sequencergui::test

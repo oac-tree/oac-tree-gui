@@ -26,7 +26,8 @@
 #include <QTest>
 #include <future>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for UserInputProvider class.
 
@@ -79,3 +80,5 @@ TEST_F(UserInputProviderTest, SingleThreadAsksForUserInput)
   EXPECT_EQ(result.value, expected_value);
   EXPECT_EQ(result.processed, true);
 }
+
+}  // namespace sequencergui::test

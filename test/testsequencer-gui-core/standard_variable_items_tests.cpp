@@ -37,7 +37,8 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for items in standard_variable_items.h
 
@@ -502,4 +503,6 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     workspace_t ws;
     EXPECT_NO_THROW(domain_item->Setup(ws));
   }
+}
+
 }

@@ -41,8 +41,10 @@ const std::string kScalarChannelName(kTestPrefix + "scalar");
 const std::string kStructChannelName(kTestPrefix + "STRUCT");
 }  // namespace
 
-using namespace sequencergui;
 using testing::_;
+
+namespace sequencergui::test
+{
 
 //! Tests for DomainWorkspaceListener class.
 class DomainWorkspaceListenerPVAccessTest : public ::testing::Test
@@ -146,3 +148,5 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
   EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
   EXPECT_EQ(listener.GetEventCount(), 0);
 }
+
+}  // namespace sequencergui::test

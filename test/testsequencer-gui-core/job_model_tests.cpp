@@ -23,7 +23,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for JobModel class.
 
@@ -40,3 +41,5 @@ TEST_F(JobModelTest, InitialState)
   EXPECT_EQ(item->GetType(), ProcedureItem::Type);
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
 }
+
+}  // namespace sequencergui::test

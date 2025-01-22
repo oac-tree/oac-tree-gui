@@ -21,7 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for utility methods in job_utils.h
 
@@ -36,3 +37,5 @@ TEST_F(JobUtilsTest, GetRegExpPattern)
   EXPECT_EQ(GetRegExpPattern(std::vector<std::string>({"INFO", "DEBUG"})),
             std::string("(INFO|DEBUG)"));
 }
+
+}  // namespace sequencergui::test

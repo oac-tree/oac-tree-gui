@@ -23,7 +23,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 class InstructionContainerItemTest : public ::testing::Test
 {
@@ -44,4 +45,6 @@ TEST_F(InstructionContainerItemTest, InsertItem)
 
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait, sequence}));
   EXPECT_EQ(item.GetInstructionCount(), 2);
+}
+
 }

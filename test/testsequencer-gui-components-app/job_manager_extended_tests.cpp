@@ -46,8 +46,10 @@
 #include <QTest>
 #include <chrono>
 
-using namespace sequencergui;
 using msec = std::chrono::milliseconds;
+
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests for JobManager class by running actual sequencer procedures.
@@ -263,3 +265,5 @@ TEST_F(JobManagerExtendedTest, StopAllJobs)
 
   EXPECT_FALSE(manager.HasRunningJobs());
 }
+
+}  // namespace sequencergui::test

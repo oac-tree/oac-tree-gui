@@ -21,7 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for helper functions in job_log_severity.h
 
@@ -41,3 +42,5 @@ TEST_F(JobLogSeverityTest, SeverityToString)
   EXPECT_EQ(ToString(Severity::kDebug), std::string("DEBUG"));
   EXPECT_EQ(ToString(Severity::kTrace), std::string("TRACE"));
 }
+
+}  // namespace sequencergui::test

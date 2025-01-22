@@ -25,7 +25,8 @@
 
 #include <QMimeData>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for InstructionOperationViewModel class.
 
@@ -150,3 +151,5 @@ TEST_F(InstructionOperationViewModelTest, MimeFromTree)
   const std::unique_ptr<QMimeData> mime_b1(model.mimeData({index_b1}));
   EXPECT_EQ(GetNewInstructionType(mime_b1.get()), std::string("b1"));
 }
+
+}  // namespace sequencergui::test

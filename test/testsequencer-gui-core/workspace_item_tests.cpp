@@ -22,7 +22,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 class WorkspaceItemTest : public ::testing::Test
 {
@@ -38,4 +39,6 @@ TEST_F(WorkspaceItemTest, WorkspaceItem)
   auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
   EXPECT_EQ(item.GetVariableCount(), 2);
+}
+
 }

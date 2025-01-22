@@ -23,7 +23,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for RequestHandler class.
 
@@ -59,3 +60,5 @@ TEST_F(RequestHandlerTest, SetUserInput)
   EXPECT_EQ(result.index, 42);
   EXPECT_EQ(result.processed, true);
 }
+
+}  // namespace sequencergui::test

@@ -21,7 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests of InstructionEditorActionsTest class.
 
@@ -51,9 +52,12 @@ TEST_F(InstructionEditorActionsTest, NoDuplicates)
 
   const InstructionEditorActions editor_actions(/*handler*/ nullptr);
   auto actions = editor_actions.GetActions(all_action_keys);
-  EXPECT_EQ(actions.size(), static_cast<std::size_t>(InstructionEditorActions::ActionKey::kTotalCount));
+  EXPECT_EQ(actions.size(),
+            static_cast<std::size_t>(InstructionEditorActions::ActionKey::kTotalCount));
 
   // checking duplicates
   const std::set<QAction*> action_set(actions.begin(), actions.end());
   EXPECT_EQ(action_set.size(), actions.size());
 }
+
+}  // namespace sequencergui::test

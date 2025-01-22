@@ -39,8 +39,10 @@
 
 #include <QTest>
 
-using namespace sequencergui;
 using ::testing::_;
+
+namespace sequencergui::test
+{
 
 //! Tests for WorkspaceSynchronizer class.
 
@@ -211,3 +213,5 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 //   synchronizer->Shutdown();
 //   EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
 // }
+
+}  // namespace sequencergui::test

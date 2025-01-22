@@ -29,7 +29,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for utility functions from sequencer_utils.h
 
@@ -138,3 +139,5 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
   EXPECT_NE(GetStatusItem(test_item), nullptr);
   EXPECT_NE(GetBreakpointItem(test_item), nullptr);
 }
+
+}  // namespace sequencergui::test

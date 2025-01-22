@@ -36,7 +36,8 @@
 #include <QMimeData>
 #include <QSignalSpy>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for InstructionEditorViewModel class.
 
@@ -337,3 +338,5 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   EXPECT_EQ(view_model.rootItem()->GetRowCount(), 1);
   EXPECT_EQ(view_model.rootItem()->GetColumnCount(), 2);  // Failing here with, gives 1
 }
+
+}  // namespace sequencergui::test

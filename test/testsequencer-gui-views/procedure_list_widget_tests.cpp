@@ -33,9 +33,10 @@
 #include <QListView>
 #include <QSignalSpy>
 
-using namespace sequencergui;
-
 Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
+
+namespace sequencergui::test
+{
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
@@ -139,3 +140,5 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
 
   EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
 }
+
+}  // namespace sequencergui::test

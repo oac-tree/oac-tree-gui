@@ -33,7 +33,9 @@
 #include <QTest>
 
 using testing::_;
-using namespace sequencergui;
+
+namespace sequencergui::test
+{
 
 //! Tests for DomainWorkspaceListener class.
 class DomainWorkspaceListenerTest : public ::testing::Test
@@ -152,3 +154,5 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
 
   // expecting no calls
 }
+
+}  // namespace sequencergui::test

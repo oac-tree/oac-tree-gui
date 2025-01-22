@@ -33,11 +33,11 @@
 
 #include <gtest/gtest.h>
 
-#include <QDebug>
 #include <QPointF>
 #include <QRectF>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 namespace
 {
@@ -111,3 +111,5 @@ TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
   EXPECT_EQ(InsertSpaceAtCamelCase("NoCamelCase"), std::string("No Camel Case"));
   EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccessRead"), std::string("Channel Access Read"));
 }
+
+}  // namespace sequencergui::test

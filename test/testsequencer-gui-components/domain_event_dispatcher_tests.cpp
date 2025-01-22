@@ -24,8 +24,10 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>
 
-using namespace sequencergui;
 using ::testing::_;
+
+namespace sequencergui::test
+{
 
 //! Tests for DomainEventDispatcher class.
 
@@ -85,4 +87,6 @@ TEST_F(DomainEventDispatcherTest, JobStatusChanged)
   EXPECT_CALL(m_listener, OnJobStateChanged(expected_event)).Times(1);
 
   dispatcher->OnNewEvent();
+}
+
 }

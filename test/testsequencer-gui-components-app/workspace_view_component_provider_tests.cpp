@@ -30,7 +30,8 @@
 
 #include <QTreeView>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for WOrkspaceViewComponentProvider class.
 
@@ -64,3 +65,5 @@ TEST_F(WorkspaceViewComponentProviderTest, FilterViewmodel)
   provider.SetFilterPattern("A");
   EXPECT_EQ(view.model()->rowCount(), 2);
 }
+
+}  // namespace sequencergui::test

@@ -23,59 +23,60 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui::algorithm;
+namespace sequencergui::test
+{
 
 class AlignUtilsTest : public ::testing::Test
 {
 public:
   // Creates testing tree
-  std::unique_ptr<AlignNode> CreateBlueTree()
+  std::unique_ptr<algorithm::AlignNode> CreateBlueTree()
   {
-    auto result = std::make_unique<AlignNode>();
+    auto result = std::make_unique<algorithm::AlignNode>();
     result->SetPos(1.5, 1.0);
-    auto node_G = result->Add<AlignNode>();
+    auto node_G = result->Add<algorithm::AlignNode>();
     node_G->SetPos(1.0, 2.0);
-    auto node_M = result->Add<AlignNode>();
+    auto node_M = result->Add<algorithm::AlignNode>();
     node_M->SetPos(2.0, 2.0);
 
-    node_M->Add<AlignNode>()->SetPos(0.0, 3.0);
-    node_M->Add<AlignNode>()->SetPos(1.0, 3.0);
-    node_M->Add<AlignNode>()->SetPos(2.0, 3.0);
-    node_M->Add<AlignNode>()->SetPos(3.0, 3.0);
+    node_M->Add<algorithm::AlignNode>()->SetPos(0.0, 3.0);
+    node_M->Add<algorithm::AlignNode>()->SetPos(1.0, 3.0);
+    node_M->Add<algorithm::AlignNode>()->SetPos(2.0, 3.0);
+    node_M->Add<algorithm::AlignNode>()->SetPos(3.0, 3.0);
 
     return result;
   }
 
   // Creates testing tree
-  std::unique_ptr<AlignNode> CreateGreenTree()
+  std::unique_ptr<algorithm::AlignNode> CreateGreenTree()
   {
-    auto result = std::make_unique<AlignNode>();
+    auto result = std::make_unique<algorithm::AlignNode>();
     result->SetPos(0.5, 1.0);
-    auto node_A = result->Add<AlignNode>();
+    auto node_A = result->Add<algorithm::AlignNode>();
     node_A->SetPos(0.0, 2.0);
-    auto node_D = result->Add<AlignNode>();
+    auto node_D = result->Add<algorithm::AlignNode>();
     node_D->SetPos(1.0, 2.0);
 
-    node_D->Add<AlignNode>()->SetPos(0.5, 3.0);
-    node_D->Add<AlignNode>()->SetPos(1.5, 3.0);
+    node_D->Add<algorithm::AlignNode>()->SetPos(0.5, 3.0);
+    node_D->Add<algorithm::AlignNode>()->SetPos(1.5, 3.0);
 
     return result;
   }
 
   // Creates testing tree with `mod` parameter accumulated.
-  std::unique_ptr<AlignNode> CreateGreenTreeWithMod()
+  std::unique_ptr<algorithm::AlignNode> CreateGreenTreeWithMod()
   {
-    auto result = std::make_unique<AlignNode>();
+    auto result = std::make_unique<algorithm::AlignNode>();
     result->SetPos(0.5, 1.0);
     result->SetMod(1.0);
-    auto node_A = result->Add<AlignNode>();
+    auto node_A = result->Add<algorithm::AlignNode>();
     node_A->SetPos(0.0, 2.0);
-    auto node_D = result->Add<AlignNode>();
+    auto node_D = result->Add<algorithm::AlignNode>();
     node_D->SetPos(1.0, 2.0);
     node_D->SetMod(2.0);
 
-    node_D->Add<AlignNode>()->SetPos(0.5, 3.0);
-    node_D->Add<AlignNode>()->SetPos(1.5, 3.0);
+    node_D->Add<algorithm::AlignNode>()->SetPos(0.5, 3.0);
+    node_D->Add<algorithm::AlignNode>()->SetPos(1.5, 3.0);
 
     return result;
   }
@@ -83,6 +84,8 @@ public:
 
 TEST_F(AlignUtilsTest, InitializeNodes)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   auto child0 = node.Add<AlignNode>();
   auto child1 = node.Add<AlignNode>();
@@ -139,6 +142,8 @@ TEST_F(AlignUtilsTest, GetRightContourV2)
 
 TEST_F(AlignUtilsTest, CalculateInitialXSingleChild)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   node.SetX(42);
 
@@ -155,6 +160,8 @@ TEST_F(AlignUtilsTest, CalculateInitialXSingleChild)
 
 TEST_F(AlignUtilsTest, CalculateInitialXTwoChildren)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   node.SetX(42);
 
@@ -173,6 +180,8 @@ TEST_F(AlignUtilsTest, CalculateInitialXTwoChildren)
 
 TEST_F(AlignUtilsTest, CalculateInitialXTwoGrandChildren)
 {
+  using algorithm::AlignNode;
+
   AlignNode node;
   node.SetX(42);
 
@@ -202,3 +211,5 @@ TEST_F(AlignUtilsTest, CalculateInitialXTwoGrandChildren)
   EXPECT_EQ(child0->GetMod(), 0.0);
   EXPECT_EQ(child1->GetMod(), 1.0);
 }
+
+}  // namespace sequencergui::test

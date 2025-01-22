@@ -37,7 +37,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for methods from workspace_monitor_helper.h.
 
@@ -197,3 +198,5 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
   EXPECT_TRUE(variable_item.IsAvailable());
   EXPECT_EQ(value, GetAnyValue(variable_item));
 }
+
+}  // namespace sequencergui::test

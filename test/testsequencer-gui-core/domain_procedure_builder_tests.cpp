@@ -42,7 +42,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Testing DomainProcedureBuilder class.
 
@@ -308,3 +309,5 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
   EXPECT_EQ(domain_sequence->ChildInstructions().at(1)->GetType(),
             domainconstants::kWaitInstructionType);
 }
+
+}  // namespace sequencergui::test

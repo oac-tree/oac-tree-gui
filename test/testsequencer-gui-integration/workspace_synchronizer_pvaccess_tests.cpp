@@ -43,8 +43,10 @@
 
 #include <QTest>
 
-using namespace sequencergui;
 using ::testing::_;
+
+namespace sequencergui::test
+{
 
 namespace
 {
@@ -358,4 +360,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
   EXPECT_TRUE(test::IsEqual(*client_item, initial_value));
   EXPECT_TRUE(test::IsEqual(*server_item, initial_value));
+}
+
 }

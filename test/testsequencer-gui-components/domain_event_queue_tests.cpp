@@ -25,7 +25,9 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
+
+namespace sequencergui::test
+{
 
 //! Tests for DomainEventQueue class.
 
@@ -61,4 +63,6 @@ TEST_F(DomainEventQueueTest, PushAndPop)
   EXPECT_EQ(queue.GetEventCount(), 1);
   EXPECT_EQ(queue.PopEvent(), event2);
   EXPECT_EQ(queue.GetEventCount(), 0);
+}
+
 }

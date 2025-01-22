@@ -27,7 +27,8 @@
 
 //! Testing methods from main_window_helper.h
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 class MainWindowHelperTest : public test::FolderTest
 {
@@ -59,3 +60,5 @@ TEST_F(MainWindowHelperTest, GetProcedureFiles)
   found_files = GetProcedureFiles(file_name2);
   ASSERT_EQ(found_files.size(), 0);
 }
+
+}  // namespace sequencergui::test

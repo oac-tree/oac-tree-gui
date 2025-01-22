@@ -21,7 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests of ProcedureListActions class.
 
@@ -68,3 +69,5 @@ TEST_F(ProcedureListActionsTest, NoDuplicates)
   std::set<QAction*> action_set(actions.begin(), actions.end());
   EXPECT_EQ(action_set.size(), actions.size());
 }
+
+}  // namespace sequencergui::test

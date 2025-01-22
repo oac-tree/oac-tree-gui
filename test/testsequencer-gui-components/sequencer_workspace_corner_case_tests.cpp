@@ -30,7 +30,9 @@
 #include <testutils/test_utils.h>
 
 using ::testing::_;
-using namespace sequencergui;
+
+namespace sequencergui::test
+{
 
 namespace
 {
@@ -189,3 +191,5 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessClientAndServerVariables)
   // server variable reports immediately, client variable needs special waiting
   m_workspace.WaitForVariable(client_var_name, 2.0, true);
 }
+
+}  // namespace sequencergui::test

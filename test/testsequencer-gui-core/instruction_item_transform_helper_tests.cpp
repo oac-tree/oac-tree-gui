@@ -29,7 +29,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests of helper methods in instruction_item_transform_helper.h
@@ -145,3 +146,5 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionTreeFromRootInstruction)
   EXPECT_EQ(item_tree.indexes[2], wait_items[0]);
   EXPECT_EQ(item_tree.indexes[3], wait_items[1]);
 }
+
+}  // namespace sequencergui::test

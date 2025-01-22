@@ -25,7 +25,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests events defined in domain_events.h
 
@@ -163,3 +164,5 @@ TEST_F(DomainEventTest, NextLeavesChangedEvent)
     EXPECT_TRUE(event1 != event3);
   }
 }
+
+}  // namespace sequencergui::test

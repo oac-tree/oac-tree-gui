@@ -49,7 +49,8 @@
 #include <QSignalSpy>
 #include <QTest>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Complex scenario integration tests.
@@ -220,4 +221,6 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
   auto wait_items = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
   ASSERT_EQ(wait_items.size(), 1);
   EXPECT_EQ(wait_items.at(0)->GetTimeout(), 42);
+}
+
 }

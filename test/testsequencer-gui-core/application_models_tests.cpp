@@ -31,7 +31,8 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests of ApplicationModels class.
@@ -147,3 +148,5 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
 
   EXPECT_TRUE(mvvm::utils::IsExists(expected_path));
 }
+
+}  // namespace sequencergui::test

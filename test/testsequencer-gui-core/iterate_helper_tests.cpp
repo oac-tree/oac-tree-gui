@@ -23,7 +23,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for helper methods initerate_helper.h.
 
@@ -55,3 +56,5 @@ TEST_F(IterateHelperTest, IterateInstruction)
     EXPECT_EQ(items, std::vector<mvvm::SessionItem *>({&sequence, wait_item}));
   }
 }
+
+}  // namespace sequencergui::test

@@ -38,9 +38,11 @@
 #include <QTest>
 #include <thread>
 
-using namespace sequencergui;
 using ::testing::_;
 using ::testing::AtLeast;
+
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests for LocalDomainRunner class.
@@ -278,8 +280,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   const msec safety_gap(10);  // some additional waiting time safety gap
 
   // wait time after each step for procedure containing two Wait instructions
-  const msec max_after_step_wait_time(2 * (test::kDefaultWaitPrecision + wait_time)
-                                      + safety_gap);
+  const msec max_after_step_wait_time(2 * (test::kDefaultWaitPrecision + wait_time) + safety_gap);
 
   auto procedure = test::CreateSequenceWithTwoWaitsProcedure(wait_time, wait_time);
   auto procedure_ptr = procedure.get();
@@ -513,3 +514,5 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
   EXPECT_EQ(runner->GetJobState(), sup::sequencer::JobState::kFailed);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
+
+}  // namespace sequencergui::test

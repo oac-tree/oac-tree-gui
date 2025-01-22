@@ -27,7 +27,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for DomainJobObserver class.
 
@@ -56,3 +57,5 @@ TEST_F(DomainJobObserverTest, OnStateChange)
 
   observer.InstructionStateUpdated(0, InstructionState{false, ExecutionStatus::NOT_STARTED});
 }
+
+}  // namespace sequencergui::test

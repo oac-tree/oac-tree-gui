@@ -34,7 +34,8 @@
 
 #include <QMimeData>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for helper methods from drag_and_drop_helper.h
 
@@ -194,3 +195,5 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
   EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
   EXPECT_NE(dynamic_cast<WaitItem*>(reconstructed_item.get()), nullptr);
 }
+
+}  // namespace sequencergui::test

@@ -36,9 +36,10 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
-
 //! Tests for WorkspaceEditorViewModel class.
+
+namespace sequencergui::test
+{
 
 class WorkspaceEditorViewModelTest : public ::testing::Test
 {
@@ -188,3 +189,5 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   EXPECT_EQ(viewmodel.data(connected_name_index, Qt::DisplayRole).toString().toStdString(),
             std::string("connected"));
 }
+
+}  // namespace sequencergui::test

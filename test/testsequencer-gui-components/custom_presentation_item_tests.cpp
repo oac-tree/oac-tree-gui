@@ -25,7 +25,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for presentation items defined in custom_presentation_items.h
 
@@ -62,3 +63,5 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   EXPECT_EQ(presentation.GetQtRoles(mvvm::DataRole::kDisplay),
             QVector<int>({Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole}));
 }
+
+}  // namespace sequencergui::test

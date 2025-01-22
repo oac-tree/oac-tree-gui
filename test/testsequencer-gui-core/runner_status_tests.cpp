@@ -23,7 +23,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for utility methods in runner_status.h
 
@@ -54,3 +55,5 @@ TEST_F(RunnerStatusTest, GetRunnerStatus)
   EXPECT_EQ(GetRunnerStatus("Halted"), RunnerStatus::kHalted);
   EXPECT_THROW(GetRunnerStatus("abc"), RuntimeException);
 }
+
+}  // namespace sequencergui::test

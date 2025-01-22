@@ -23,7 +23,8 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for JobItem class.
 
@@ -71,3 +72,5 @@ TEST_F(JobLogTest, ClearLog)
   EXPECT_EQ(spy_appended.count(), 0);
   EXPECT_EQ(spy_cleared.count(), 1);
 }
+
+}  // namespace sequencergui::test

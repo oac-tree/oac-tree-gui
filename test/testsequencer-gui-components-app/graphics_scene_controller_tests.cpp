@@ -41,7 +41,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for GraphicsSceneController class.
 class GraphicsSceneControllerTest : public ::testing::Test
@@ -354,3 +355,5 @@ TEST_F(GraphicsSceneControllerTest, InsertAnyValueItem)
   EXPECT_NO_THROW(SetAnyValue(expected_anyvalue, *instruction_item));
   EXPECT_EQ(m_scene.GetConnectableViews(), std::vector<ConnectableView*>({instruction_view}));
 }
+
+}  // namespace sequencergui::test

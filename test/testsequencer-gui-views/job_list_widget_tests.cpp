@@ -31,9 +31,10 @@
 #include <QSignalSpy>
 #include <QTreeView>
 
-using namespace sequencergui;
-
 Q_DECLARE_METATYPE(sequencergui::JobItem*)
+
+namespace sequencergui::test
+{
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
@@ -121,3 +122,5 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
 
   EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
 }
+
+}  // namespace sequencergui::test

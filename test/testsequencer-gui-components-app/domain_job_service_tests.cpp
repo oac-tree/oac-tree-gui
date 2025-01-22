@@ -32,7 +32,8 @@
 #include <future>
 using ::testing::_;
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests for DomainJobService.
@@ -40,7 +41,7 @@ using namespace sequencergui;
 class DomainJobServiceTest : public ::testing::Test
 {
 public:
-  DomainJobServiceTest() : m_service(CreateService()){}
+  DomainJobServiceTest() : m_service(CreateService()) {}
   using mock_event_listener_t = ::testing::StrictMock<test::MockDomainEventListener>;
   using mock_user_listener_t = ::testing::StrictMock<test::MockUserContext>;
   using msec = std::chrono::milliseconds;
@@ -243,3 +244,5 @@ TEST_F(DomainJobServiceTest, NextInstructionsUpdated)
 
   EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
 }
+
+}  // namespace sequencergui::test

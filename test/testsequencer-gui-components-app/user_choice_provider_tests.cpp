@@ -24,7 +24,8 @@
 #include <QTest>
 #include <future>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for UserChoiceProvider class.
 
@@ -125,3 +126,5 @@ TEST_F(UserChoiceProviderTest, TwoThreadsAskForUserChoice)
   EXPECT_EQ(user_choices.at(0), 0);
   EXPECT_EQ(user_choices.at(1), 1);
 }
+
+}  // namespace sequencergui::test

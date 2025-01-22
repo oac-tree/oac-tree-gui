@@ -40,10 +40,12 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
 using ::testing::_;
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
+
+namespace sequencergui::test
+{
 
 //! Tests for InstructionEditorActionHandler class.
 
@@ -478,4 +480,6 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
 
   // checking that instruction still has old AnyValye
   EXPECT_EQ(GetAnyValueItem(*item), previous_anyvalue);
+}
+
 }

@@ -31,7 +31,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for strategies from standard_children_strategies.h
 
@@ -81,4 +82,6 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
     ASSERT_EQ(children.size(), 1);
     EXPECT_EQ(children.at(0)->GetType(), std::string(sup::gui::AnyValueStructItem::Type));
   }
+}
+
 }

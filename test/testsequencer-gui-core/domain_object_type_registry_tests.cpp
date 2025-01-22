@@ -21,7 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Testing DomainObjectTypeRegistry class.
 
@@ -68,3 +69,5 @@ TEST_F(DomainObjectTypeRegistryTest, GetObjectNames)
   EXPECT_EQ(registry.GetObjectNames("plugin2"), std::vector<std::string>({"a5"}));
   EXPECT_TRUE(registry.GetObjectNames("non-existing").empty());
 }
+
+}  // namespace sequencergui::test

@@ -31,7 +31,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests UniversalVariableItem.
 
@@ -133,3 +134,5 @@ TEST_F(UniversalVariableItemTest, SetDomainName)
 
   // more tests in standard_variable_item_tests.cpp
 }
+
+}  // namespace sequencergui::test

@@ -30,7 +30,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 /**
  * @brief Tests for BreakpointController class.
@@ -87,3 +88,5 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
     EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
   }
 }
+
+}  // namespace sequencergui::test

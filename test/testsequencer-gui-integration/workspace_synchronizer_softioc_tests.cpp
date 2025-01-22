@@ -39,7 +39,8 @@
 
 #include <QTest>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 namespace
 {
@@ -163,3 +164,5 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
 }
 
 }  // namespace sequencergui
+
+}  // namespace sequencergui::test

@@ -27,7 +27,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for JobItem class.
 
@@ -81,3 +82,5 @@ TEST_F(JobItemTest, SetProcedureInterModelContext)
   job_item->SetProcedure(procedure_item);
   EXPECT_EQ(job_item->GetProcedure(), procedure_item);
 }
+
+}  // namespace sequencergui::test

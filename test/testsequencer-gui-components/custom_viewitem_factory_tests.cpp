@@ -27,7 +27,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for factory functions defined in custom_viewitem_factory.h
 
@@ -83,3 +84,5 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
   EXPECT_FALSE(viewitem->SetData(QString("aaa"), Qt::DisplayRole));
   EXPECT_FALSE(viewitem->SetData(QString("bbb"), Qt::EditRole));
 }
+
+}  // namespace sequencergui::test

@@ -28,7 +28,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests of helper methods from domain_automation_helper.h
 
@@ -71,3 +72,5 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kValueAttribute), expected_value);
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
 }
+
+}  // namespace sequencergui::test

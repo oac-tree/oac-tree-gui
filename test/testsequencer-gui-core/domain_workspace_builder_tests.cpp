@@ -29,7 +29,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Testing DomainWorkspaceBuilder class.
 
@@ -99,3 +100,5 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
   domain_var0->GetValue(domain_value);
   EXPECT_EQ(domain_value, value);
 }
+
+}  // namespace sequencergui::test

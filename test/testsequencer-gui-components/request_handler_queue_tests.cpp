@@ -21,7 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Unit tests for RequestHandlerQueue class.
 
@@ -62,3 +63,5 @@ TEST_F(RequestHandlerQueueTest, SingleThreadAskForData)
   auto result = future_result.get();  // making sure thread has finished
   EXPECT_EQ(result, request_params.size());
 }
+
+}  // namespace sequencergui::test

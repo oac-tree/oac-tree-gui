@@ -24,7 +24,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Testing methods from composer_helper_tests.cpp
 class DomainObjectGroupHelperTests : public ::testing::Test
@@ -85,3 +86,5 @@ TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
   EXPECT_EQ(group_info.at(6).group_name, kMiscGroup);
   EXPECT_EQ(group_info.at(6).object_names, std::vector<std::string>({"pulse-counter1"}));
 }
+
+}  // namespace sequencergui::test

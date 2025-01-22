@@ -48,8 +48,10 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-using namespace sequencergui;
 using ::testing::_;
+
+namespace sequencergui::test
+{
 
 //! Tests for functions from anyvalue_item_transform_helper.h
 
@@ -366,3 +368,5 @@ TEST_F(AnyValueItemTransformHelperTest, GetAnyValueFromDomainWorkspace)
   workspace.Setup();
   EXPECT_EQ(GetAnyValue(var_name, workspace), initial_value);
 }
+
+}  // namespace sequencergui::test

@@ -33,7 +33,8 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for WorkspaceOperationViewModel class.
 class WorkspaceOperationViewModelTest : public ::testing::Test
@@ -202,3 +203,5 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
   EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DecorationRole).value<QColor>(),
             GetDisonnectedVariableColor());
 }
+
+}  // namespace sequencergui::test

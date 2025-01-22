@@ -41,10 +41,12 @@
 #include <QMimeData>
 #include <QSignalSpy>
 
-using namespace sequencergui;
 using ::testing::_;
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
+
+namespace sequencergui::test
+{
 
 //! Testing WorkspaceEditorActionHandler class (copy-and-paste scenarios).
 
@@ -239,3 +241,5 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   // checking the request to select remaining item
   EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), var1);
 }
+
+}  // namespace sequencergui::test

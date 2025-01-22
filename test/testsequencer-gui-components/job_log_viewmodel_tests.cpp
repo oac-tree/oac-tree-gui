@@ -25,7 +25,8 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for JobItem class.
 
@@ -186,4 +187,6 @@ TEST_F(JobLogViewModelTest, SwitchToAnotherJobLog)
 
   EXPECT_EQ(spy_insert.count(), 1);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 3);
+}
+
 }

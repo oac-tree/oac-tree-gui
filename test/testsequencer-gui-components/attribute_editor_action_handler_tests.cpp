@@ -32,9 +32,10 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
-using namespace sequencergui;
-
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
+
+namespace sequencergui::test
+{
 
 //! Tests for AttributeEditorActionHandler class.
 
@@ -148,3 +149,5 @@ TEST_F(AttributeEditorActionHandlerTest, OnSetPlaceholderTypeAndBack)
   handler->OnSetAsDefaultType();
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
 }
+
+}  // namespace sequencergui::test

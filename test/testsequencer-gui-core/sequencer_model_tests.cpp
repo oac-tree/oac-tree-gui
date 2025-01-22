@@ -33,7 +33,8 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for SequencerModel class.
 class SequencerModelTest : public test::FolderTest
@@ -170,3 +171,5 @@ TEST_F(SequencerModelTest, ClearAndCommandFramework)
   EXPECT_EQ(model.GetProcedures().size(), 0);
   ASSERT_EQ(model.GetCommandStack()->GetCommandCount(), 0);
 }
+
+}  // namespace sequencergui::test

@@ -21,7 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for WorkspaceSynchronizer class.
 
@@ -34,3 +35,5 @@ TEST_F(MonitorModelTest, InitialState)
   MonitorModel model;
   EXPECT_NE(model.GetWorkspaceItem(), nullptr);
 }
+
+}  // namespace sequencergui::test

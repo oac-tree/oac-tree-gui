@@ -30,7 +30,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 class BreakpointHelperTest : public ::testing::Test
 {
@@ -187,3 +188,5 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     EXPECT_THROW(SetBreakpointsFromInfo(info, *container), RuntimeException);
   }
 }
+
+}  // namespace sequencergui::test

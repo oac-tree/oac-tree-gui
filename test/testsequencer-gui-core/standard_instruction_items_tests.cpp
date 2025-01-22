@@ -37,7 +37,8 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for items from instructionitems.h
 
@@ -495,4 +496,6 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomainIsRootAttribute)
     auto domain_item = wait_item.CreateDomainInstruction();
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kIsRootAttribute));
   }
+}
+
 }

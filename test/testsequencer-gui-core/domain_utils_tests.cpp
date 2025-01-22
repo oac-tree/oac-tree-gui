@@ -28,8 +28,10 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
 using namespace sequencergui::domainconstants;
+
+namespace sequencergui::test
+{
 
 class DomainUtilsTest : public ::testing::Test
 {
@@ -173,4 +175,6 @@ TEST_F(DomainUtilsTest, GlobalDomainObjectTypeRegistry)
                 .GetPluginName(domainconstants::kPvAccessClientVariableType)
                 .value_or(undefined),
             domainconstants::kEpicsPVXSPluginName);
+}
+
 }

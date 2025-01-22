@@ -30,7 +30,8 @@
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests for utility functions related to the domain to presentation transformations.
 class TransformFromDomainTest : public ::testing::Test
@@ -180,3 +181,5 @@ TEST_F(TransformFromDomainTest, GetRunnerStatusFromDomain)
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kFailed), RunnerStatus::kFailed);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kHalted), RunnerStatus::kHalted);
 }
+
+}  // namespace sequencergui::test

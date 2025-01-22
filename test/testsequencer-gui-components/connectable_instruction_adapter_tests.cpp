@@ -28,7 +28,8 @@
 
 #include <QString>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Testing ConnectableInstructionAdapter class.
 
@@ -105,3 +106,5 @@ TEST_F(ConnectableInstructionAdapterTest, UndoRedoAndSetXAndSameY)
   EXPECT_EQ(item->GetX(), 1.0);
   EXPECT_EQ(item->GetY(), 2.0);
 }
+
+}  // namespace sequencergui::test

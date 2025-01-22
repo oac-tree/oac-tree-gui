@@ -29,7 +29,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests UniversalVariableItem.
 
@@ -189,3 +190,5 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
               std::string("false"));
   }
 }
+
+}  // namespace sequencergui::test

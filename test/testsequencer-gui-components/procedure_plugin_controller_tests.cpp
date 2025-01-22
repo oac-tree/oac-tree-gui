@@ -34,7 +34,8 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui;
+namespace sequencergui::test
+{
 
 //! Tests of ProcedurePluginController class.
 
@@ -96,3 +97,5 @@ TEST_F(ProcedurePluginControllerTest, EPICSPluginScenario)
             std::vector<std::string>(
                 {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName}));
 }
+
+}  // namespace sequencergui::test

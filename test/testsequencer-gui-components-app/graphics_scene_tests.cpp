@@ -40,8 +40,10 @@
 #include <QSignalSpy>
 #include <QTest>
 
-using namespace sequencergui;
 using ::testing::_;
+
+namespace sequencergui::test
+{
 
 //! Tests for GraphicsScene class. Supplements graphicscontroller.test.cpp
 class GraphicsSceneTest : public ::testing::Test
@@ -416,3 +418,5 @@ TEST_F(GraphicsSceneTest, ComplexAggregateRemoval)
   // the model should be empty
   EXPECT_EQ(GetInstructionContainer()->GetTotalItemCount(), 0);
 }
+
+}  // namespace sequencergui::test
