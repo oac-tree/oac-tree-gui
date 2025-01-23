@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -23,7 +23,7 @@
 //! @file
 //! Collection of utils to test sequencer.
 
-#include <sequencergui/domain/sequencer_types_fwd.h>
+#include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
@@ -75,7 +75,7 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string& name,
 /**
  * @brief Helper method to create JobInfo from procedure text body.
  */
-sup::sequencer::JobInfo CreateJobInfo(const std::string& procedure_text);
+sup::oac_tree::JobInfo CreateJobInfo(const std::string& procedure_text);
 
 /**
  * @brief Checks if the value caried inside VariableItem is equal to a given AnyValue.

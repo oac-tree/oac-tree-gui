@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -22,7 +22,7 @@
 
 //! Collection of domain procedures for testing purpose.
 
-#include <sequencergui/domain/sequencer_types_fwd.h>
+#include <oac-tree-gui/domain/sequencer_types_fwd.h>
 
 #include <chrono>
 #include <memory>

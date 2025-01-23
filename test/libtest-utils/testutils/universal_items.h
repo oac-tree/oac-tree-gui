@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -23,13 +23,13 @@
 //! @file
 //! Collection of utils to test sequencer.
 
-#include <sequencergui/domain/sequencer_types_fwd.h>
+#include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <sup/gui/core/dto_types_fwd.h>
 
-#include <sup/sequencer/instruction.h>
-#include <sup/sequencer/instruction_registry.h>
-#include <sup/sequencer/variable.h>
-#include <sup/sequencer/variable_registry.h>
+#include <sup/oac-tree/instruction.h>
+#include <sup/oac-tree/instruction_registry.h>
+#include <sup/oac-tree/variable.h>
+#include <sup/oac-tree/variable_registry.h>
 
 #include <string>
 
@@ -37,13 +37,13 @@ namespace sequencergui::test
 {
 
 //! Test instruction playing the role of domain instruction unknown to the GUI.
-class UnknownDomainInstruction : public ::sup::sequencer::Instruction
+class UnknownDomainInstruction : public ::sup::oac_tree::Instruction
 {
 public:
   UnknownDomainInstruction() : Instruction(Type) {}
 
-  ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface&,
-                                                      ::sup::sequencer::Workspace&) override
+  ::sup::oac_tree::ExecutionStatus ExecuteSingleImpl(::sup::oac_tree::UserInterface&,
+                                                      ::sup::oac_tree::Workspace&) override
   {
     return {};
   }
@@ -51,15 +51,15 @@ public:
 
   static void RegisterUnknownDomainInstruction()
   {
-    if (!sup::sequencer::GlobalInstructionRegistry().IsRegisteredInstructionName(Type))
+    if (!sup::oac_tree::GlobalInstructionRegistry().IsRegisteredInstructionName(Type))
     {
-      sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
+      sup::oac_tree::RegisterGlobalInstruction<UnknownDomainInstruction>();
     }
   }
 };
 
 //! Test instruction playing the role of domain variable unknown to the GUI.
-class UnknownDomainVariable : public ::sup::sequencer::Variable
+class UnknownDomainVariable : public ::sup::oac_tree::Variable
 {
 public:
   UnknownDomainVariable() : Variable(Type) {}
@@ -71,9 +71,9 @@ public:
 
   static void RegisterUnknownDomainVariable()
   {
-    if (!sup::sequencer::GlobalVariableRegistry().IsRegisteredVariableName(Type))
+    if (!sup::oac_tree::GlobalVariableRegistry().IsRegisteredVariableName(Type))
     {
-      sup::sequencer::RegisterGlobalVariable<UnknownDomainVariable>();
+      sup::oac_tree::RegisterGlobalVariable<UnknownDomainVariable>();
     }
   }
 };

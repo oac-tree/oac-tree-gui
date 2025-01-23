@@ -1,0 +1,176 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP oac-tree
+ *
+ * Description   : Integrated development environment for oac-tree procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2025 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "universal_instruction_item.h"
+
+#include <oac-tree-gui/core/exceptions.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/model/item_constants.h>
+#include <oac-tree-gui/model/universal_item_helper.h>
+#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+#include <oac-tree-gui/transform/attribute_item_transform_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/item_utils.h>
+
+#include <sup/oac-tree/instruction.h>
+
+namespace
+{
+const int kDomainTypeNameRole = 10;  // role to store type name
+
+// These attributes shouldn't be used from the domain to build properties.
+const std::vector<std::string> kSkipDomainAttributeList = {
+    sequencergui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
+    sequencergui::domainconstants::kValueAttribute  // handled via AnyValueItem
+};
+
+// these are properties that shouldn't go to domain
+const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::kAnyValueTag};
+
+}  // namespace
+
+namespace sequencergui
+{
+
+UniversalInstructionItem::UniversalInstructionItem(const std::string &item_type)
+    : InstructionItem(item_type)
+{
+  if (IsInstructionTypeAvailable(item_type))
+  {
+    SetDomainType(item_type);
+  }
+}
+
+std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
+{
+  return std::make_unique<UniversalInstructionItem>(*this);
+}
+
+void UniversalInstructionItem::SetDomainType(const std::string &domain_type)
+{
+  // temporary domain instruction is used to create default properties
+  auto domain_variable = ::sequencergui::CreateDomainInstruction(domain_type);
+  SetupFromDomain(domain_variable.get());
+}
+
+std::string UniversalInstructionItem::GetDomainType() const
+{
+  return HasData(kDomainTypeNameRole) ? Data<std::string>(kDomainTypeNameRole) : std::string();
+}
+
+//! Initialise instruction from domain item.
+
+void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (GetDomainType().empty())
+  {
+    SetupFromDomain(instruction);
+  }
+
+  std::vector<std::string> processed_attribute_names;
+  for (const auto &[attribute_name, item] : GetAttributeItems())
+  {
+    SetPropertyFromDomainAttribute(*instruction, attribute_name, *item);
+    processed_attribute_names.push_back(attribute_name);
+  }
+
+  // creating property items representing custom attributes not present in attribute definitions
+  for (const auto &[name, value] : instruction->GetStringAttributes())
+  {
+    if (!mvvm::utils::Contains(processed_attribute_names, name))
+    {
+      auto &property = AddProperty<sup::gui::AnyValueScalarItem>(name);
+      property.SetAnyTypeName(sup::dto::kStringTypeName);
+      property.SetDisplayName(name);
+      property.SetData(value);
+    }
+  }
+
+  if (mvvm::utils::HasTag(*this, sequencergui::itemconstants::kAnyValueTag))
+  {
+    // FIXME What to do with registry of types (see UniversalVariableItem::InitFromDomainImpl
+    SetAnyValueFromDomainInstruction(*instruction, *this);
+  }
+}
+
+void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  for (const auto &[attribute_name, item] : GetAttributeItems())
+  {
+    SetDomainAttribute(*item, attribute_name, *instruction);
+  }
+
+  auto anyvalue_item = GetAnyValueItem(*this);
+  if (anyvalue_item && GetAttributeExposedFlag(*anyvalue_item))
+  {
+    SetJsonAttributesFromItem(*anyvalue_item, *instruction);
+  }
+}
+
+std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAttributeItems() const
+{
+  std::vector<UniversalInstructionItem::Attribute> result;
+
+  // We need to collect all property items, which has correspondance  on the domain side and should
+  // be used for the domain update. These items, currently, satisfy simple criteria:
+  // - They are visible property items
+  // - They are derived from AnyValueItem
+
+  auto properties = mvvm::utils::SinglePropertyItems(*this);
+
+  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueItem>(properties))
+  {
+    auto tag = property->GetTagIndex().GetTag();
+
+    if (!mvvm::utils::Contains(kSkipItemTagList, tag))
+    {
+      // tag of property item should coincide with the domain attribute name
+      result.push_back({tag, property});
+    }
+  }
+
+  return result;
+}
+
+void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
+{
+  if (!GetDomainType().empty())
+  {
+    throw LogicErrorException("It is not possible to setup instruction twice");
+  }
+
+  SetData(instruction->GetType(), kDomainTypeNameRole);
+
+  SetDisplayName(instruction->GetType());
+
+  for (const auto &definition : instruction->GetAttributeDefinitions())
+  {
+    if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
+    {
+      AddPropertyFromDefinition(definition, *this);
+    }
+  }
+
+  RegisterChildrenTag(*instruction, *this);
+
+  RegisterCommonProperties();
+}
+
+}  // namespace sequencergui

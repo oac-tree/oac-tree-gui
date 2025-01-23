@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -19,18 +19,18 @@
 
 #include "sequencer_test_utils.h"
 
-#include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/domain_helper.h>
-#include <sequencergui/model/variable_item.h>
+#include <oac-tree-gui/domain/domain_constants.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/sequencer/instruction_map.h>
-#include <sup/sequencer/job_info.h>
-#include <sup/sequencer/job_info_utils.h>
-#include <sup/sequencer/sequence_parser.h>
-#include <sup/sequencer/workspace.h>
+#include <sup/oac-tree/instruction_map.h>
+#include <sup/oac-tree/job_info.h>
+#include <sup/oac-tree/job_info_utils.h>
+#include <sup/oac-tree/sequence_parser.h>
+#include <sup/oac-tree/workspace.h>
 
 #include <testutils/test_utils.h>
 
@@ -139,14 +139,14 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string &name,
                         initial_value, channel_name);
 }
 
-sup::sequencer::JobInfo CreateJobInfo(const std::string &procedure_text)
+sup::oac_tree::JobInfo CreateJobInfo(const std::string &procedure_text)
 {
   auto procedure =
-      sup::sequencer::ParseProcedureString(test::CreateProcedureString(procedure_text));
+      sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_text));
   procedure->Setup();
   auto root = procedure->RootInstruction();
-  const sup::sequencer::InstructionMap instr_map{root};
-  auto job_info = sup::sequencer::utils::CreateJobInfo(*procedure, instr_map);
+  const sup::oac_tree::InstructionMap instr_map{root};
+  auto job_info = sup::oac_tree::utils::CreateJobInfo(*procedure, instr_map);
 
   return job_info;
 }

@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_JOB_HANDLER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_JOB_HANDLER_H_
 
-#include <sequencergui/jobsystem/i_job_handler.h>
+#include <oac-tree-gui/jobsystem/i_job_handler.h>
 
 #include <gmock/gmock.h>
 

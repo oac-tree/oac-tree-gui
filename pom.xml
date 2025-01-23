@@ -2,9 +2,9 @@
  $HeadURL: $
  $Id: $
 
- Project       : SUP sequencer GUI
+ Project       : SUP oac-tree GUI
 
- Description   : SUP sequencer GUI.
+ Description   : SUP oac-tree GUI.
 
  Authors       : CODAC Operation Applications Team
 
@@ -23,12 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.iter.codac.units</groupId>
-    <artifactId>sequencer-gui</artifactId>
+    <artifactId>oac-tree-gui</artifactId>
     <packaging>codac</packaging>
     <!-- See ChangeLog file for details -->
     <version>1.6.0</version>
-    <name>SUP sequencer GUI</name>
-    <description>SUP sequencer GUI.</description>
+    <name>SUP oac-tree GUI</name>
+    <description>SUP oac-tree GUI.</description>
     <url>http://www.iter.org/</url>
 
     <!-- Project properties -->
@@ -44,7 +44,7 @@
         <!-- -->
         <sonar.language>cpp</sonar.language>
         <sonar.sources.cpp>src</sonar.sources.cpp>
-        <sonar.exclusions>src/app/**, src/lib/sequencer-gui-views/**</sonar.exclusions>
+        <sonar.exclusions>src/app/**, src/lib/oac-tree-gui-views/**</sonar.exclusions>
     </properties>
     <!-- Parent pom.xml -->
     <parent>
@@ -94,9 +94,9 @@
                             </include>
                             <!-- Programs -->
                             <include type="file" source="bin" target="bin">
-                                <include>sequencer-gui</include>
+                                <include>oac-tree-gui</include>
                                 <include>sup-pvmonitor</include>
-                                <include>sequencer-operation</include>
+                                <include>oac-tree-operation</include>
                             </include>
                             <!-- Shared resources -->
                             <include type="file" source="share/sup/icons" target="share/sup/icons">
@@ -105,31 +105,31 @@
                             <include type="file" source="-" targetroot="SYSTEM_ROOT" target="%{_datadir}/applications/codac-%{codac_version_mm}-sequencer-gui.desktop" rpmeval="true">
 <![CDATA[[Desktop Entry]
 Encoding=UTF-8
-Name=Sequencer GUI
+Name=oac-tree GUI
 Comment=
 Type=Application
-Exec=/opt/codac/bin/sequencer-gui
+Exec=/opt/codac/bin/oac-tree-gui
 Icon=/opt/codac/share/sup/icons/sequencer-gui-96.png
 Categories=CODAC-%{codac_version_mm};]]>
                             </include>
                             <include type="file" source="-" targetroot="SYSTEM_ROOT" target="%{_datadir}/applications/codac-%{codac_version_mm}-sequencer-operation.desktop" rpmeval="true">
 <![CDATA[[Desktop Entry]
 Encoding=UTF-8
-Name=Sequencer Operation
+Name=oac-tree Operation
 Comment=
 Type=Application
-Exec=/opt/codac/bin/sequencer-operation
+Exec=/opt/codac/bin/oac-tree-operation
 Icon=/opt/codac/share/sup/icons/sequencer-operation-96.png
 Categories=CODAC-%{codac_version_mm};]]>
                             </include>
                             <!-- Package dependencies -->
-                            <requires codac="true">sequencer</requires>
+                            <requires codac="true">oac-tree</requires>
                             <requires codac="true">sup-mvvm</requires>
                             <requires codac="true">sup-gui-core</requires>
                             <requires codac="true">sup-dto</requires>
                             <requires codac="true">sup-epics</requires>
                             <requires codac="true">sup-auto-server</requires>
-                            <requires codac="true" buildOnly="true">sequencer-devel</requires>
+                            <requires codac="true" buildOnly="true">oac-tree-devel</requires>
                             <requires codac="true" buildOnly="true">sup-mvvm-devel</requires>
                             <requires codac="true" buildOnly="true">sup-gui-core-devel</requires>
                             <requires codac="true" buildOnly="true">sup-dto-devel</requires>

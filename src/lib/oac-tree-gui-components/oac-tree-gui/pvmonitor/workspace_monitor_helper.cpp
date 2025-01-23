@@ -1,0 +1,132 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP oac-tree
+ *
+ * Description   : Integrated development environment for oac-tree procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2025 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "workspace_monitor_helper.h"
+
+#include <oac-tree-gui/core/exceptions.h>
+#include <oac-tree-gui/domain/domain_constants.h>
+#include <oac-tree-gui/jobsystem/domain_events.h>
+#include <oac-tree-gui/model/item_constants.h>
+#include <oac-tree-gui/model/sequencer_item_helper.h>
+#include <oac-tree-gui/model/variable_item.h>
+#include <oac-tree-gui/model/workspace_item.h>
+#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+#include <oac-tree-gui/transform/domain_workspace_builder.h>
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/item_utils.h>
+
+#include <sup/oac-tree/workspace.h>
+
+namespace
+{
+//! Returns vector of attributes which should be marked as readonly when workspace is running.
+std::vector<std::string> GetVariableReadonlyAttributesWhenRunning()
+{
+  return {sequencergui::domainconstants::kChannelAttribute,
+          sequencergui::domainconstants::kNameAttribute};
+}
+
+}  // namespace
+
+namespace sequencergui
+{
+
+void PopulateDomainWorkspace(const WorkspaceItem &item, workspace_t &workspace)
+{
+  DomainWorkspaceBuilder builder;
+  builder.PopulateDomainWorkspace(&item, &workspace);
+}
+
+void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item)
+{
+  static const auto attributes = GetVariableReadonlyAttributesWhenRunning();
+
+  for (auto variable : item.GetVariables())
+  {
+    for (const auto &attr : attributes)
+    {
+      if (mvvm::utils::HasTag(*variable, attr))
+      {
+        variable->GetItem(attr)->SetEditable(!is_running);
+      }
+    }
+  }
+}
+
+void SetupNewVariable(VariableItem *item, int total_variable_count)
+{
+  if (!item)
+  {
+    return;
+  }
+
+  item->SetName("var" + std::to_string(total_variable_count));
+
+  // Normally, we set scalar AnyValue to any VariableItem added to the WorkspaceItem. If user wants
+  // something else, he has to start AnyValueEditor.
+
+  if (item->GetType() == domainconstants::kPvAccessClientVariableType)
+  {
+    // PvAccessClient gets it's value from the network. Nethertheless, we
+    // set empty AnyValue to make it look the same in the editor, as others.
+    // Editor call will be disallowed.
+    SetAnyValue(sup::dto::AnyValue(), *item);
+  }
+  else
+  {
+    SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
+  }
+  if (auto available_item = GetIsAvailableItem(*item); available_item)
+  {
+    available_item->SetVisible(false);
+  }
+  item->GetAnyValueItem()->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
+}
+
+bool AreMatchingWorkspaces(const WorkspaceItem &workspace_item,
+                           const sup::oac_tree::Workspace &workspace)
+{
+  std::vector<std::string> variable_item_names;
+  for (const auto variable_item : workspace_item.GetVariables())
+  {
+    variable_item_names.push_back(variable_item->GetName());
+  }
+
+  return variable_item_names == workspace.VariableNames();
+}
+
+void UpdateVariableFromEvent(const VariableUpdatedEvent &event, VariableItem &item)
+{
+  UpdateVariableFromEvent(event.value, event.connected, item);
+}
+
+void UpdateVariableFromEvent(const sup::dto::AnyValue &value, bool connected, VariableItem &item)
+{
+  if (connected && sup::dto::IsEmptyValue(value) && !item.IsAvailable())
+  {
+    item.SetIsAvailable(connected);
+    return;
+  }
+
+  item.SetIsAvailable(connected);
+  UpdateAnyValue(value, item);
+}
+
+}  // namespace sequencergui

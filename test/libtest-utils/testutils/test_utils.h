@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -41,7 +41,7 @@ bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout)
 double GetTimeoutInSec(std::chrono::milliseconds timeout);
 
 /**
- * @brief Creates Sequencer XML procedure by wrapping the body into necessary Procedure directive.
+ * @brief Creates oac-tree XML procedure by wrapping the body into necessary Procedure directive.
  */
 std::string CreateProcedureString(const std::string& body, bool schema = true);
 

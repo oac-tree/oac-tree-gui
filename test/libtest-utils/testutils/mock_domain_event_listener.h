@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -20,8 +20,8 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_
 
-#include <sequencergui/jobsystem/domain_event_dispatcher_context.h>
-#include <sequencergui/jobsystem/domain_events.h>
+#include <oac-tree-gui/jobsystem/domain_event_dispatcher_context.h>
+#include <oac-tree-gui/jobsystem/domain_events.h>
 
 #include <gmock/gmock.h>
 

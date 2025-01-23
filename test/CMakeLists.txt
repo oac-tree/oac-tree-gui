@@ -17,12 +17,12 @@ find_package_message(
 include(GoogleTest)
 
 add_subdirectory(libtest-utils)
-add_subdirectory(testsequencer-gui-core)
-add_subdirectory(testsequencer-gui-components)
-add_subdirectory(testsequencer-gui-components-app)
-add_subdirectory(testsequencer-gui-views)
+add_subdirectory(testoac-tree-gui-core)
+add_subdirectory(testoac-tree-gui-components)
+add_subdirectory(testoac-tree-gui-components-app)
+add_subdirectory(testoac-tree-gui-views)
 if (COA_BUILD_INTEGRATION_TESTS)
-  add_subdirectory(testsequencer-gui-integration)
+  add_subdirectory(testoac-tree-gui-integration)
 endif()
 add_subdirectory(parasoft)
 
@@ -36,15 +36,15 @@ add_subdirectory(parasoft)
 
 add_custom_target(testall DEPENDS testall-cmd)
 add_custom_command(OUTPUT testall-cmd
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components-app
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-core
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-components
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-components-app
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-views
 )
 
 if (COA_BUILD_INTEGRATION_TESTS)
   add_custom_command(OUTPUT testall-cmd APPEND
-    COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration
+    COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-integration
   )
 endif()
 
@@ -55,13 +55,13 @@ file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
 "#!/bin/bash
 export QT_QPA_PLATFORM=offscreen
 fail=0
-" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components-app " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-core " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-components " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-components-app " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-views " || fail=1
 ")
 if (COA_BUILD_INTEGRATION_TESTS)
-  file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration || fail=1
+  file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-integration || fail=1
 ")
 endif()
 file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "exit $fail")

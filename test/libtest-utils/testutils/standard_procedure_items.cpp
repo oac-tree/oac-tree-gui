@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -21,15 +21,15 @@
 
 #include "test_utils.h"
 
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/universal_instruction_item.h>
-#include <sequencergui/model/universal_item_helper.h>
-#include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/anyvalue_item_transform_helper.h>
+#include <oac-tree-gui/model/instruction_container_item.h>
+#include <oac-tree-gui/model/procedure_item.h>
+#include <oac-tree-gui/model/sequencer_model.h>
+#include <oac-tree-gui/model/standard_instruction_items.h>
+#include <oac-tree-gui/model/standard_variable_items.h>
+#include <oac-tree-gui/model/universal_instruction_item.h>
+#include <oac-tree-gui/model/universal_item_helper.h>
+#include <oac-tree-gui/model/workspace_item.h>
+#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
 

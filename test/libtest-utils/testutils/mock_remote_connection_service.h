@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_REMOTE_CONNECTION_SERVICE_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_REMOTE_CONNECTION_SERVICE_H_
 
-#include <sequencergui/jobsystem/i_remote_connection_service.h>
+#include <oac-tree-gui/jobsystem/i_remote_connection_service.h>
 
 #include <gmock/gmock.h>
 

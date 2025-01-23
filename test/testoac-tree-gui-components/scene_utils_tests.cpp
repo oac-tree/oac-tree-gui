@@ -1,0 +1,115 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP oac-tree
+ *
+ * Description   : Integrated development environment for oac-tree procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2025 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "oac-tree-gui/nodeeditor/scene_utils.h"
+
+#include <oac-tree-gui/domain/domain_constants.h>
+#include <oac-tree-gui/model/instruction_container_item.h>
+#include <oac-tree-gui/model/procedure_item.h>
+#include <oac-tree-gui/model/sequencer_model.h>
+#include <oac-tree-gui/model/standard_instruction_items.h>
+
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/utils/numeric_utils.h>
+
+#include <sup/oac-tree/instruction.h>
+#include <sup/oac-tree/instruction_registry.h>
+
+#include <gtest/gtest.h>
+
+#include <QPointF>
+#include <QRectF>
+
+namespace sequencergui::test
+{
+
+namespace
+{
+bool operator==(const std::vector<QPointF>& lhs, const std::vector<QPointF>& rhs)
+{
+  using mvvm::utils::AreAlmostEqual;
+  if (lhs.size() != rhs.size())
+  {
+    return false;
+  }
+  for (std::size_t i = 0; i < lhs.size(); ++i)
+  {
+    if (lhs[i] != rhs[i])
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace
+
+//! Tests for items from instructionitems.h
+
+class SceneUtilsTest : public ::testing::Test
+{
+public:
+  using points_t = std::vector<QPointF>;
+};
+
+TEST_F(SceneUtilsTest, VectorOfPointsEquality)
+{
+  using points_t = std::vector<QPointF>;
+  EXPECT_TRUE(points_t{} == points_t{});
+  EXPECT_FALSE(points_t{QPointF(1.0, 2.0)} == points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)}));
+  EXPECT_TRUE(points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)})
+              == points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)}));
+  EXPECT_FALSE(points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)})
+               == points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.01)}));
+}
+
+TEST_F(SceneUtilsTest, GetPositions)
+{
+  const double width{10};
+  auto positions = GetPositions(QPointF(1.0, 2.0), 1, width);
+  EXPECT_TRUE(positions == points_t({QPointF(1.0, 2.0)}));
+
+  positions = GetPositions(QPointF(1.0, 2.0), 2, width);
+  ASSERT_EQ(positions.size(), 2);
+  EXPECT_EQ(positions[0], QPointF(-4.0, 2.0));
+  EXPECT_EQ(positions[1], QPointF(6.0, 2.0));
+
+  positions = GetPositions(QPointF(1.0, 2.0), 3, width);
+  ASSERT_EQ(positions.size(), 3);
+  EXPECT_EQ(positions[0], QPointF(-9.0, 2.0));
+  EXPECT_EQ(positions[1], QPointF(1.0, 2.0));
+  EXPECT_EQ(positions[2], QPointF(11.0, 2.0));
+}
+
+TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
+{
+  EXPECT_EQ(InsertSpaceAtCamelCase(""), std::string(""));
+  EXPECT_EQ(InsertSpaceAtCamelCase(" "), std::string(" "));
+  EXPECT_EQ(InsertSpaceAtCamelCase("abc"), std::string("abc"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("abc def"), std::string("abc def"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("Access"), std::string("Access"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("PVAccess"), std::string("PVAccess"));
+
+  EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccess"), std::string("Channel Access"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("PvAccess"), std::string("Pv Access"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("NoCamelCase"), std::string("No Camel Case"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccessRead"), std::string("Channel Access Read"));
+}
+
+}  // namespace sequencergui::test

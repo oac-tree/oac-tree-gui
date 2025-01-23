@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/components/custom_meta_types.h>
-#include <sequencergui/core/version.h>
-#include <sequencergui/domain/domain_helper.h>
-#include <sequencergui/mainwindow/command_line_options.h>
-#include <sequencergui/mainwindow/pvmonitor_main_window.h>
+#include <oac-tree-gui/components/custom_meta_types.h>
+#include <oac-tree-gui/core/version.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/mainwindow/command_line_options.h>
+#include <oac-tree-gui/mainwindow/pvmonitor_main_window.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <QApplication>

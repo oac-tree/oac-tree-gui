@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Graphical User Interface for SUP Sequencer
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : Integrated development environment for Sequencer procedures
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -22,7 +22,7 @@
 
 #include <sup/gui/model/anyvalue_utils.h>
 
-#include <sup/sequencer/workspace.h>
+#include <sup/oac-tree/workspace.h>
 
 #include <gmock/gmock.h>
 
@@ -35,7 +35,7 @@ namespace sequencergui::test
 class MockDomainWorkspaceListener
 {
 public:
-  explicit MockDomainWorkspaceListener(sup::sequencer::Workspace& workspace)
+  explicit MockDomainWorkspaceListener(sup::oac_tree::Workspace& workspace)
       : m_workspace(workspace)
   {
     m_guard = m_workspace.GetCallbackGuard(this);
@@ -49,8 +49,8 @@ public:
   MOCK_METHOD(void, OnEvent,
               (const std::string& name, const sup::dto::AnyValue& value, bool connected));
 
-  sup::sequencer::Workspace& m_workspace;
-  sup::sequencer::ScopeGuard m_guard;
+  sup::oac_tree::Workspace& m_workspace;
+  sup::oac_tree::ScopeGuard m_guard;
 };
 
 }  // namespace sequencergui::test

@@ -1,4 +1,3 @@
-add_subdirectory(sequencer-gui-core)
-add_subdirectory(sequencer-gui-components)
-add_subdirectory(sequencer-gui-views)
-
+add_subdirectory(oac-tree-gui-core)
+add_subdirectory(oac-tree-gui-components)
+add_subdirectory(oac-tree-gui-views)

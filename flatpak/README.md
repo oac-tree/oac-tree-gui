@@ -1,8 +1,8 @@
-# Sequencer FlatPak
+# oac-tree FlatPak
 
-This is a *proof of concept* for the packaging of the *CODAC* *COA* **Sequencer** GUI as a [FlatPak](https://www.flatpak.org).
+This is a *proof of concept* for the packaging of the *CODAC* *COA* **oac-tree** GUI as a [FlatPak](https://www.flatpak.org).
 
-This contains the manifest for the sequencer-gui, the sequencer *plugins*, and all the *COA* dependencies required to build them (including epics-base + epics-pvxs), the end target is a distributable build of the **Sequencer** GUI, with the sequencer plugins as optional extensions, all other *COA* manifests are included as baked in dependencies.
+This contains the manifest for the sequencer-gui, the sequencer *plugins*, and all the *COA* dependencies required to build them (including epics-base + epics-pvxs), the end target is a distributable build of the **oac-tree** GUI, with the sequencer plugins as optional extensions, all other *COA* manifests are included as baked in dependencies.
 
 The runtime used is org.kde.Platform, because it's provided out of the box and includes the required Qt dependencies.
 
