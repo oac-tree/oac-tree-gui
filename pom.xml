@@ -126,13 +126,13 @@ Icon=/opt/codac/share/sup/icons/sequencer-operation-96.png
 Categories=CODAC-%{codac_version_mm};]]>
                             </include>
                             <!-- Package dependencies -->
-                            <requires codac="true">oac-tree</requires>
+                            <requires codac="true">sequencer</requires>
                             <requires codac="true">sup-mvvm</requires>
                             <requires codac="true">sup-gui-core</requires>
                             <requires codac="true">sup-dto</requires>
                             <requires codac="true">sup-epics</requires>
                             <requires codac="true">sup-auto-server</requires>
-                            <requires codac="true" buildOnly="true">oac-tree-devel</requires>
+                            <requires codac="true" buildOnly="true">sequencer-devel</requires>
                             <requires codac="true" buildOnly="true">sup-mvvm-devel</requires>
                             <requires codac="true" buildOnly="true">sup-gui-core-devel</requires>
                             <requires codac="true" buildOnly="true">sup-dto-devel</requires>
