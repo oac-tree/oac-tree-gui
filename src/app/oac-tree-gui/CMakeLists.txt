@@ -1,4 +1,4 @@
-set(executable_name sequencer-gui)
+set(executable_name oac-tree-gui)
 
 add_executable(${executable_name} main.cpp)
 

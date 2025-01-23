@@ -1,4 +1,4 @@
-set(executable_name sequencer-operation)
+set(executable_name oac-tree-operation)
 
 add_executable(${executable_name} main.cpp)
 
