@@ -102,6 +102,9 @@
                             <include type="file" source="share/sup/icons" target="share/sup/icons">
                                 <include>*.*</include>
                             </include>
+                            <!-- Symlinks -->
+                            <include type="symlink" link="/bin/sequencer-bin" target="/bin/oac-tree-bin" linkroot="CODAC_ROOT" targetroot="CODAC_ROOT" />
+                            <include type="symlink" link="/bin/sequencer-operation" target="/bin/oac-tree-operation" linkroot="CODAC_ROOT" targetroot="CODAC_ROOT" />
                             <include type="file" source="-" targetroot="SYSTEM_ROOT" target="%{_datadir}/applications/codac-%{codac_version_mm}-sequencer-gui.desktop" rpmeval="true">
 <![CDATA[[Desktop Entry]
 Encoding=UTF-8
