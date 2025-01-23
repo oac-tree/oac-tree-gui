@@ -37,6 +37,6 @@ namespace sequencergui
 QIcon FindIcon(const QString& icon_name,
                sup::gui::IconColorFlavor icon_flavor = sup::gui::IconColorFlavor::kUnspecified);
 
-}  // namespace sequencergui\
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_STYLE_STYLE_HELPER_H_
