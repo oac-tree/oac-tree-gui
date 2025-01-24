@@ -36,16 +36,16 @@ namespace sequencergui::domainconstants
 //!< fictional name when only sequencer core libs are loaded
 const std::string kCorePluginName = "";
 
-const std::string kEpicsCAPluginName = "libsequencer-ca.so";
-const std::string kEpicsPVXSPluginName = "libsequencer-pvxs.so";
-const std::string kEpicsMiscPluginName = "libsequencer-misc.so";
-const std::string kControlPluginName = "libsequencer-control.so";
+const std::string kEpicsCAPluginName = "liboac-tree-ca.so";
+const std::string kEpicsPVXSPluginName = "liboac-tree-pvxs.so";
+const std::string kEpicsMiscPluginName = "liboac-tree-misc.so";
+const std::string kControlPluginName = "liboac-tree-control.so";
 const std::string kSupConfigPluginName = "libsequencer-sup-config.so";
 const std::string kSupTimingPluginName = "libsequencer-sup-timing.so";
 const std::string kSupPulseCounterPluginName = "libsequencer-sup-pulse-counter.so";
-const std::string kMathExprPluginName = "libsequencer-mathexpr.so";
-const std::string kSystemPluginName = "libsequencer-system.so";
-const std::string kStringPluginName = "libsequencer-strings.so";
+const std::string kMathExprPluginName = "liboac-tree-mathexpr.so";
+const std::string kSystemPluginName = "liboac-tree-system.so";
+const std::string kStringPluginName = "liboac-tree-strings.so";
 
 // instructions
 const std::string kChoiceInstructionType = "Choice";
