@@ -3,7 +3,7 @@
            name="Procedure for testing purposes"
            xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
            xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
-    <Plugin>libsequencer-control.so</Plugin>
+    <Plugin>liboac-tree-control.so</Plugin>
     <Sequence>
         <ParallelSequence successThreshold="2" failureThreshold="1">
             <WaitForCondition varNames="live" timeout="2.0">
