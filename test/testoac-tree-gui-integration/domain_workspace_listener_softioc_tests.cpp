@@ -56,6 +56,11 @@ public:
 
 TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariable)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   mock_client_t mock_client;
   const std::string var_name("abc");
 

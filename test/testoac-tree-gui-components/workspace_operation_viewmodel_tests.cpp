@@ -24,6 +24,7 @@
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <oac-tree-gui/domain/domain_helper.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -156,6 +157,11 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 //! checks, that the model emits dataChanged event on corresponding changes.
 TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   const std::string channel_name("CHANNEL");
   mvvm::ApplicationModel model;
 
