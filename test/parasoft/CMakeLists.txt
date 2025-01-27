@@ -28,5 +28,5 @@ target_link_libraries(oac-tree-gui-cpptest
   sup-gui-core::views
   oac-tree::oac-tree
   sup-epics::sup-epics
-  oac-tree-server-shared::oac-tree-server-shared
+  oac-tree-server::oac-tree-server
 )
