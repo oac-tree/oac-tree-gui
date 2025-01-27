@@ -59,7 +59,7 @@ file(MAKE_DIRECTORY ${SEQUENCERGUI_AUTOGEN_DIR})
 find_package(Threads)
 find_package(sup-gui-core REQUIRED)
 find_package(oac-tree REQUIRED)
-find_package(sup-auto-server REQUIRED)
+find_package(oac-tree-server-shared REQUIRED)
 find_package(sup-epics REQUIRED)
 
 # -----------------------------------------------------------------------------

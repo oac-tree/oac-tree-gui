@@ -27,7 +27,7 @@
 
 #include <memory>
 
-namespace sup::auto_server
+namespace sup::oac_tree_server
 {
 class IJobManager;
 }
@@ -58,7 +58,7 @@ public:
 
 private:
   std::string m_server_name;
-  std::unique_ptr<sup::auto_server::IJobManager> m_automation_job_manager;
+  std::unique_ptr<sup::oac_tree_server::IJobManager> m_automation_job_manager;
 };
 
 }  // namespace sequencergui

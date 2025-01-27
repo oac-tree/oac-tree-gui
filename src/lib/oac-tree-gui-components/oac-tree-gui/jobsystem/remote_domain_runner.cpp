@@ -22,20 +22,20 @@
 #include "domain_event_dispatcher_context.h"
 #include "user_context.h"
 
-#include <sup/auto-server/client_job.h>
-#include <sup/auto-server/epics_config_utils.h>
+#include <sup/oac-tree-server/client_job.h>
+#include <sup/oac-tree-server/epics_config_utils.h>
 
 namespace sequencergui
 {
 
 RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
                                        UserContext user_context,
-                                       sup::auto_server::IJobManager &manager,
+                                       sup::oac_tree_server::IJobManager &manager,
                                        std::size_t job_index)
     : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {
-  auto remote_job = sup::auto_server::CreateClientJob(
-      manager, job_index, sup::auto_server::utils::CreateEPICSIOClient, *GetJobInfoIO());
+  auto remote_job = sup::oac_tree_server::CreateClientJob(
+      manager, job_index, sup::oac_tree_server::utils::CreateEPICSIOClient, *GetJobInfoIO());
 
   SetDomainJob(std::move(remote_job));
 }

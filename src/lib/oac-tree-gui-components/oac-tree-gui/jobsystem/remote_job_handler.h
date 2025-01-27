@@ -23,7 +23,7 @@
 #include <oac-tree-gui/jobsystem/abstract_job_handler.h>
 #include <oac-tree-gui/jobsystem/user_context.h>
 
-namespace sup::auto_server
+namespace sup::oac_tree_server
 {
 class IJobManager;
 }
@@ -41,7 +41,7 @@ class RemoteJobHandler : public AbstractJobHandler
   Q_OBJECT
 
 public:
-  RemoteJobHandler(JobItem* job_item, sup::auto_server::IJobManager& manager, std::size_t job_index,
+  RemoteJobHandler(JobItem* job_item, sup::oac_tree_server::IJobManager& manager, std::size_t job_index,
                    UserContext user_context);
   ~RemoteJobHandler() override;
 

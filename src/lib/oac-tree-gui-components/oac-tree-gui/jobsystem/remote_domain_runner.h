@@ -23,7 +23,7 @@
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/jobsystem/abstract_domain_runner.h>
 
-#include <sup/auto-server/i_job_manager.h>
+#include <sup/oac-tree-server/i_job_manager.h>
 
 namespace sequencergui
 {
@@ -35,7 +35,7 @@ class RemoteDomainRunner : public AbstractDomainRunner
 {
 public:
   RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context,
-                     sup::auto_server::IJobManager &manager, std::size_t job_index);
+                     sup::oac_tree_server::IJobManager &manager, std::size_t job_index);
 };
 
 }  // namespace sequencergui

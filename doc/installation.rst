@@ -35,7 +35,7 @@ Checkout and install packages from `oac-tree repository collections <https://git
 * `sup-epics <https://github.com/oac-tree/sup-epics>`_
 * `oac-tree <https://github.com/oac-tree/oac-tree>`_
 * `oac-tree-epics <https://github.com/oac-tree/oac-tree-epics>`_
-* `sup-auto-server <https://github.com/oac-tree/sup-auto-server>`_
+* `oac-tree-server <https://github.com/oac-tree/oac-tree-server>`_
 * `sup-mvvm <https://github.com/oac-tree/sup-mvvm>`_
 * `sup-gui-extra <https://github.com/oac-tree/sup-gui-extra>`_
 * `sup-gui-core <https://github.com/oac-tree/sup-gui-core>`_

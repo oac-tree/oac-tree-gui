@@ -26,7 +26,7 @@
 #include <oac-tree-gui/model/variable_item.h>
 #include <oac-tree-gui/model/workspace_item.h>
 
-#include <sup/auto-server/epics_config_utils.h>
+#include <sup/oac-tree-server/epics_config_utils.h>
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
@@ -67,7 +67,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
 
   std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
-  auto manager = sup::auto_server::utils::CreateEPICSJobManager(server_name);
+  auto manager = sup::oac_tree_server::utils::CreateEPICSJobManager(server_name);
   EXPECT_EQ(manager->GetNumberOfJobs(), 1);
 
   RemoteJobHandler job_handler(m_job_item, *manager, 0, {});

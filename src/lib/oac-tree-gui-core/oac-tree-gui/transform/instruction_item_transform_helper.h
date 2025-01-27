@@ -37,7 +37,7 @@ class InstructionItem;
  * @brief The InstructionTree class contains a root instruction with all its children, and the
  * correspondence of automation index to instruction pointer.
  *
- * It is obtained from sup::auto_server::InstructionInfo.
+ * It is obtained from sup::oac_tree_server::InstructionInfo.
  */
 struct InstructionTree
 {

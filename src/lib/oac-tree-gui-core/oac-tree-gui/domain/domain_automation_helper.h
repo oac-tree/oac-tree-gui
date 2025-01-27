@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_
 
 //! @file
-//! Collection of helper functions related to the sup-auto-server.
+//! Collection of helper functions related to the oac-tree-server.
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 

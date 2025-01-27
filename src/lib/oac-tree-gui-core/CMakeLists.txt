@@ -3,7 +3,7 @@ set(library_name oac-tree-gui-core)
 add_library(${library_name} SHARED)
 
 target_link_libraries(${library_name}
-  PUBLIC pthread oac-tree::oac-tree sup-epics::sup-epics sup-auto-server::sup-auto-server sup-gui-core::core)
+  PUBLIC pthread oac-tree::oac-tree sup-epics::sup-epics oac-tree-server-shared::oac-tree-server-shared sup-gui-core::core)
 
 add_subdirectory(oac-tree-gui)
 
