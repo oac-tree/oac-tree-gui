@@ -53,9 +53,9 @@ TEST_F(SequencerModelTest, InitialState)
   EXPECT_TRUE(model.GetProcedures().empty());
 
   // trying to insert procedure to make sure that catalogue is there
-  auto item = model.InsertItem(mvvm::GetGlobalItemFactory().CreateItem(ProcedureItem::Type),
+  auto item = model.InsertItem(mvvm::GetGlobalItemFactory().CreateItem(ProcedureItem::GetStaticType()),
                                model.GetRootItem(), mvvm::TagIndex::Append());
-  EXPECT_EQ(item->GetType(), ProcedureItem::Type);
+  EXPECT_EQ(item->GetType(), ProcedureItem::GetStaticType());
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
 }
 

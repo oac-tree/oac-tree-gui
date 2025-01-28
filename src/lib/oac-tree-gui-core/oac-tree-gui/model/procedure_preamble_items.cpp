@@ -32,7 +32,7 @@ namespace sequencergui
 static const std::string kTypeRegistrationMode = "kTypeRegistrationMode";
 static const std::string kTypeRegistrationString = "kTypeRegistrationString";
 
-TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(Type)
+TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(GetStaticType())
 {
   AddProperty(kTypeRegistrationMode, mvvm::ComboProperty({"JSON file", "JSON string"}))
       .SetDisplayName("Mode");
@@ -40,6 +40,11 @@ TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(Type)
       .SetDisplayName("String")
       .SetToolTip(
           "JSON string or a filename for a file containing the JSON representation of the type");
+}
+
+std::string TypeRegistrationItem::GetStaticType()
+{
+return "TypeRegistrationItem";
 }
 
 std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone() const
@@ -77,10 +82,15 @@ void TypeRegistrationItem::SetRegistrationString(const std::string &value)
 static const std::string kTypeRegistrationContainerTag = "kTypeRegistrationContainerTag";
 static const std::string kPluginContainerTag = "kPluginContainerTag";
 
-ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(Type)
+ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(GetStaticType())
 {
   AddBranch<mvvm::ContainerItem>(kTypeRegistrationContainerTag).SetDisplayName("Type registration");
   AddBranch<mvvm::ContainerItem>(kPluginContainerTag).SetDisplayName("Plugins");
+}
+
+std::string ProcedurePreambleItem::GetStaticType()
+{
+return "ProcedurePreamble";
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone() const

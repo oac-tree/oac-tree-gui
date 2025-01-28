@@ -19,16 +19,17 @@
 
 #include "universal_variable_item.h"
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
-#include <oac-tree-gui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 
 #include <sup/oac-tree/variable.h>
+
+#include <oac-tree-gui/core/exceptions.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/model/item_constants.h>
+#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+#include <oac-tree-gui/transform/attribute_item_transform_helper.h>
 
 namespace
 {
@@ -50,12 +51,17 @@ namespace sequencergui
 {
 
 UniversalVariableItem::UniversalVariableItem(const std::string &item_type)
-    : VariableItem(item_type.empty() ? Type : item_type)
+    : VariableItem(item_type.empty() ? GetStaticType() : item_type)
 {
   if (IsVariableTypeAvailable(item_type))
   {
     SetDomainType(item_type);
   }
+}
+
+std::string UniversalVariableItem::GetStaticType()
+{
+  return "UniversalVariable";
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone() const

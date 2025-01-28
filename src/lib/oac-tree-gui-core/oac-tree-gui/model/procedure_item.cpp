@@ -81,7 +81,7 @@ static inline const std::string kWorkspace = "kWorkspace";
 static inline const std::string kPreamble = "kPreamble";
 static inline const std::string kFileName = "kFileName";
 
-ProcedureItem::ProcedureItem() : CompoundItem(Type)
+ProcedureItem::ProcedureItem() : CompoundItem(GetStaticType())
 {
   AddProperty(itemconstants::kName, std::string()).SetDisplayName("Name");
   AddProperty(itemconstants::kDescription, std::string()).SetDisplayName("Description");
@@ -91,6 +91,11 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
   AddBranch<ProcedurePreambleItem>(kPreamble).SetDisplayName("Preamble");
 
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);
+}
+
+std::string ProcedureItem::GetStaticType()
+{
+  return "Procedure";
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone() const

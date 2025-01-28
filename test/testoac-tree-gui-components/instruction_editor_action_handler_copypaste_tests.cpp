@@ -210,7 +210,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
+  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // validating request to select just inserted item
@@ -244,8 +244,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 
   // Wait instruction should be after Sequence instruction
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::Type);
-  EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::Type);
+  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
+  EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::GetStaticType());
 
   // Check coordinates of Wait instruction. It should be placed nearby to the original
   // instruction
@@ -284,7 +284,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
 
   // Wait instruction should be after Sequence instruction
   auto inserted_wait = sequence->GetInstructions().at(1);
-  EXPECT_EQ(inserted_wait->GetType(), WaitItem::Type);
+  EXPECT_EQ(inserted_wait->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(inserted_wait->GetDisplayName(), std::string("abc"));
 
   // Check coordinates of Wait instruction. It should be placed nearby to the selected one
@@ -320,7 +320,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
   ASSERT_EQ(instructions.size(), 1);
 
   // Wait instruction should be after Sequence instruction
-  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
+  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // Check coordinates of the instruction. It should be placed nearby to the original instruction.

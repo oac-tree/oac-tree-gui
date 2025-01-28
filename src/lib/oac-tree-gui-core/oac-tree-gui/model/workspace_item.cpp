@@ -26,9 +26,14 @@ namespace sequencergui
 
 static inline const std::string kVariableItems = "kVariableItems";
 
-WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
+WorkspaceItem::WorkspaceItem() : CompoundItem(GetStaticType())
 {
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
+}
+
+std::string WorkspaceItem::GetStaticType()
+{
+  return "Workspace";
 }
 
 std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone() const

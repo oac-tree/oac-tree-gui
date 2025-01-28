@@ -31,8 +31,9 @@ class VariableItem;
 class WorkspaceItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "Workspace";
   WorkspaceItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

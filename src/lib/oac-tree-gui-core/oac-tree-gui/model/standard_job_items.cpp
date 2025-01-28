@@ -19,10 +19,10 @@
 
 #include "standard_job_items.h"
 
+#include <mvvm/model/item_utils.h>
+
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/procedure_item.h>
-
-#include <mvvm/model/item_utils.h>
 
 namespace sequencergui
 {
@@ -37,7 +37,12 @@ const std::string kJobIndex = "kJobIndex";
 // LocalJobItem
 // ------------------------------------------------------------------------------------------------
 
-LocalJobItem::LocalJobItem() : JobItem(Type) {}
+LocalJobItem::LocalJobItem() : JobItem(GetStaticType()) {}
+
+std::string LocalJobItem::GetStaticType()
+{
+  return "LocalJob";
+}
 
 std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 {
@@ -48,9 +53,14 @@ std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 // ImportedJobItem
 // ------------------------------------------------------------------------------------------------
 
-ImportedJobItem::ImportedJobItem() : JobItem(Type)
+ImportedJobItem::ImportedJobItem() : JobItem(GetStaticType())
 {
-  RegisterTag(mvvm::TagInfo(kImportedProcedure, 0, 1, {ProcedureItem::Type}));
+  RegisterTag(mvvm::TagInfo(kImportedProcedure, 0, 1, {ProcedureItem::GetStaticType()}));
+}
+
+std::string ImportedJobItem::GetStaticType()
+{
+  return "ImportedJob";
 }
 
 std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
@@ -62,13 +72,18 @@ std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 // RemoteJobItem
 // ------------------------------------------------------------------------------------------------
 
-RemoteJobItem::RemoteJobItem() : JobItem(Type)
+RemoteJobItem::RemoteJobItem() : JobItem(GetStaticType())
 {
   AddProperty(kJobIndex, std::size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
 
   AddProperty(kServerName, std::string())
       .SetDisplayName("Server name")
       .SetToolTip("Remote server name");
+}
+
+std::string RemoteJobItem::GetStaticType()
+{
+  return "RemoteJob";
 }
 
 std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone() const
@@ -98,7 +113,8 @@ void RemoteJobItem::SetServerName(const std::string &name)
 
 std::vector<std::string> GetJobItemTypes()
 {
-  return {LocalJobItem::Type, ImportedJobItem::Type, RemoteJobItem::Type};
+  return {LocalJobItem::GetStaticType(), ImportedJobItem::GetStaticType(),
+          RemoteJobItem::GetStaticType()};
 }
 
 // ------------------------------------------------------------------------------------------------

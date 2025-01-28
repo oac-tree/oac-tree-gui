@@ -37,8 +37,9 @@ namespace sequencergui
 class LocalJobItem : public JobItem
 {
 public:
-  static inline const std::string Type = "LocalJob";
   LocalJobItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -53,9 +54,10 @@ public:
 class ImportedJobItem : public JobItem
 {
 public:
-  static inline const std::string Type = "ImportedJob";
   static inline const std::string kImportedProcedure = "kImportedProcedure";
   ImportedJobItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -67,8 +69,9 @@ public:
 class RemoteJobItem : public JobItem
 {
 public:
-  static inline const std::string Type = "RemoteJob";
   RemoteJobItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

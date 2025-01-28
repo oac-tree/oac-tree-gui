@@ -19,11 +19,11 @@
 
 #include "job_item.h"
 
+#include <mvvm/standarditems/linked_item.h>
+
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/procedure_item.h>
-
-#include <mvvm/standarditems/linked_item.h>
 
 namespace sequencergui
 {
@@ -38,7 +38,8 @@ JobItem::JobItem(const std::string &type) : CompoundItem(type)
   AddProperty(itemconstants::kTickTimeout, itemconstants::kDefaultTickTimeoutMsec)
       .SetDisplayName("Tick timeout");
 
-  RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::Type}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::GetStaticType()}),
+              /*as_default*/ true);
 
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }

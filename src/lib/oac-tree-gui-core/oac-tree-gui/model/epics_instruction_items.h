@@ -74,10 +74,9 @@ public:
 class ChannelAccessReadInstructionItem : public EpicsReadInstructionItem
 {
 public:
-  static inline const std::string Type =
-      sequencergui::domainconstants::kChannelAccessReadInstructionType;
-
   ChannelAccessReadInstructionItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -86,10 +85,9 @@ public:
 class ChannelAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
-  static inline const std::string Type =
-      sequencergui::domainconstants::kChannelAccessWriteInstructionType;
-
   ChannelAccessWriteInstructionItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -98,10 +96,9 @@ public:
 class PvAccessReadInstructionItem : public EpicsReadInstructionItem
 {
 public:
-  static inline const std::string Type =
-      sequencergui::domainconstants::kPvAccessReadInstructionType;
-
   PvAccessReadInstructionItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -110,10 +107,9 @@ public:
 class PvAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
-  static inline const std::string Type =
-      sequencergui::domainconstants::kPvAccessWriteInstructionType;
-
   PvAccessWriteInstructionItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -122,9 +118,9 @@ public:
 class RPCClientInstruction : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kRPCClientInstructionType;
-
   RPCClientInstruction();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -149,9 +145,9 @@ public:
 class SystemCallInstructionItem : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kSystemCallInstructionType;
-
   SystemCallInstructionItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -164,9 +160,9 @@ public:
 class LogInstructionItem : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kLogInstructionType;
-
   LogInstructionItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

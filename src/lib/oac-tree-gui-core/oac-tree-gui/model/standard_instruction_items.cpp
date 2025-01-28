@@ -30,7 +30,12 @@ namespace sequencergui
 // IncludeItem
 // ----------------------------------------------------------------------------
 
-IncludeItem::IncludeItem() : UniversalInstructionItem(Type) {}
+IncludeItem::IncludeItem() : UniversalInstructionItem(GetStaticType()) {}
+
+std::string IncludeItem::GetStaticType()
+{
+  return domainconstants::kIncludeInstructionType;
+}
 
 std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone() const
 {
@@ -61,7 +66,12 @@ void IncludeItem::SetPath(const std::string &value)
 // ParallelSequenceItem
 // ----------------------------------------------------------------------------
 
-ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(Type) {}
+ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(GetStaticType()) {}
+
+std::string ParallelSequenceItem::GetStaticType()
+{
+return domainconstants::kParallelInstructionType;
+}
 
 std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone() const
 {
@@ -92,9 +102,14 @@ void ParallelSequenceItem::SetFailureThreshold(mvvm::uint32 value)
 // RepeatItem
 // ----------------------------------------------------------------------------
 
-RepeatItem::RepeatItem() : UniversalInstructionItem(Type)
+RepeatItem::RepeatItem() : UniversalInstructionItem(GetStaticType())
 {
   SetRepeatCount(-1);
+}
+
+std::string RepeatItem::GetStaticType()
+{
+  return domainconstants::kRepeatInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone() const
@@ -115,7 +130,12 @@ void RepeatItem::SetRepeatCount(int value)
 // ----------------------------------------------------------------------------
 // SequenceItem
 // ----------------------------------------------------------------------------
-SequenceItem::SequenceItem() : UniversalInstructionItem(Type) {}
+SequenceItem::SequenceItem() : UniversalInstructionItem(GetStaticType()) {}
+
+std::string SequenceItem::GetStaticType()
+{
+  return domainconstants::kSequenceInstructionType;
+}
 
 std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone() const
 {
@@ -126,9 +146,14 @@ std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone() const
 // WaitItem
 // ----------------------------------------------------------------------------
 
-WaitItem::WaitItem() : UniversalInstructionItem(Type)
+WaitItem::WaitItem() : UniversalInstructionItem(GetStaticType())
 {
   SetTimeout(0.0);
+}
+
+std::string WaitItem::GetStaticType()
+{
+  return domainconstants::kWaitInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> WaitItem::Clone() const

@@ -19,11 +19,12 @@
 
 #include "epics_instruction_items.h"
 
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_utils.h>
+
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/transform/attribute_item_transform_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/anyvalue_item_utils.h>
 
 namespace
 {
@@ -136,8 +137,13 @@ void EpicsWriteInstructionItem::SetTimeout(double value)
 // ----------------------------------------------------------------------------
 
 ChannelAccessReadInstructionItem::ChannelAccessReadInstructionItem()
-    : EpicsReadInstructionItem(Type)
+    : EpicsReadInstructionItem(GetStaticType())
 {
+}
+
+std::string ChannelAccessReadInstructionItem::GetStaticType()
+{
+  return domainconstants::kChannelAccessReadInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone() const
@@ -150,8 +156,13 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone() con
 // ----------------------------------------------------------------------------
 
 ChannelAccessWriteInstructionItem::ChannelAccessWriteInstructionItem()
-    : EpicsWriteInstructionItem(Type)
+    : EpicsWriteInstructionItem(GetStaticType())
 {
+}
+
+std::string ChannelAccessWriteInstructionItem::GetStaticType()
+{
+  return domainconstants::kChannelAccessWriteInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone() const
@@ -163,7 +174,15 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone() co
 // PVAccessReadInstructionItem
 // ----------------------------------------------------------------------------
 
-PvAccessReadInstructionItem::PvAccessReadInstructionItem() : EpicsReadInstructionItem(Type) {}
+PvAccessReadInstructionItem::PvAccessReadInstructionItem()
+    : EpicsReadInstructionItem(GetStaticType())
+{
+}
+
+std::string PvAccessReadInstructionItem::GetStaticType()
+{
+  return domainconstants::kPvAccessReadInstructionType;
+}
 
 std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone() const
 {
@@ -174,7 +193,15 @@ std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone() const
 // PVAccessWriteInstructionItem
 // ----------------------------------------------------------------------------
 
-PvAccessWriteInstructionItem::PvAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type) {}
+PvAccessWriteInstructionItem::PvAccessWriteInstructionItem()
+    : EpicsWriteInstructionItem(GetStaticType())
+{
+}
+
+std::string PvAccessWriteInstructionItem::GetStaticType()
+{
+  return domainconstants::kPvAccessWriteInstructionType;
+}
 
 std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone() const
 {
@@ -185,10 +212,15 @@ std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone() const
 // RPCClientInstruction
 // ----------------------------------------------------------------------------
 
-RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(Type)
+RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(GetStaticType())
 {
   SetTimeout(1.0);
   InitDefaultAnyValue(*this);
+}
+
+std::string RPCClientInstruction::GetStaticType()
+{
+  return domainconstants::kRPCClientInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone() const
@@ -239,7 +271,14 @@ void RPCClientInstruction::SetOutput(const std::string &value)
 // SystemCallInstructionItem
 // ----------------------------------------------------------------------------
 
-SystemCallInstructionItem::SystemCallInstructionItem() : UniversalInstructionItem(Type) {}
+SystemCallInstructionItem::SystemCallInstructionItem() : UniversalInstructionItem(GetStaticType())
+{
+}
+
+std::string SystemCallInstructionItem::GetStaticType()
+{
+  return domainconstants::kSystemCallInstructionType;
+}
 
 std::unique_ptr<mvvm::SessionItem> SystemCallInstructionItem::Clone() const
 {
@@ -260,7 +299,12 @@ void SystemCallInstructionItem::SetCommand(const std::string &value)
 // LogInstructionItem
 // ----------------------------------------------------------------------------
 
-LogInstructionItem::LogInstructionItem() : UniversalInstructionItem(Type) {}
+LogInstructionItem::LogInstructionItem() : UniversalInstructionItem(GetStaticType()) {}
+
+std::string LogInstructionItem::GetStaticType()
+{
+  return domainconstants::kLogInstructionType;
+}
 
 std::unique_ptr<mvvm::SessionItem> LogInstructionItem::Clone() const
 {

@@ -30,9 +30,9 @@ class InstructionItem;
 class InstructionContainerItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "InstructionContainer";
-
   InstructionContainerItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

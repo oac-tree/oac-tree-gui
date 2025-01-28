@@ -32,9 +32,9 @@ class ProcedurePreambleItem;
 class ProcedureItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "Procedure";
-
   ProcedureItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

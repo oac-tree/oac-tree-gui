@@ -35,9 +35,9 @@ namespace sequencergui
 class TypeRegistrationItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "TypeRegistrationItem";
-
   TypeRegistrationItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -53,9 +53,9 @@ public:
 class ProcedurePreambleItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "ProcedurePreamble";
-
   ProcedurePreambleItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

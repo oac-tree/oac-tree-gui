@@ -103,7 +103,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
   EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(1);
 
   // adding variable
-  EXPECT_NO_THROW(actions.OnAddVariableRequest(LocalVariableItem::Type));
+  EXPECT_NO_THROW(actions.OnAddVariableRequest(LocalVariableItem::GetStaticType()));
 }
 
 //! Adding variables to an empty model.
@@ -119,7 +119,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // adding variable
-  handler->OnAddVariableRequest(LocalVariableItem::Type);
+  handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
 
   // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -140,7 +140,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
 
   // adding another variable
-  handler->OnAddVariableRequest(LocalVariableItem::Type);
+  handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 2);
   auto inserted_variable1 =
@@ -169,7 +169,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWHenNothingIsSelected)
   EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // adding variable
-  handler->OnAddVariableRequest(FileVariableItem::Type);
+  handler->OnAddVariableRequest(FileVariableItem::GetStaticType());
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -192,7 +192,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // adding variable
-  handler->OnAddVariableRequest(FileVariableItem::Type);
+  handler->OnAddVariableRequest(FileVariableItem::GetStaticType());
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -440,7 +440,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
   EXPECT_EQ(inserted_variable0->GetDomainType(), domainconstants::kSystemClockVariableType);
-  EXPECT_EQ(inserted_variable0->GetType(), UniversalVariableItem::Type);
+  EXPECT_EQ(inserted_variable0->GetType(), UniversalVariableItem::GetStaticType());
 }
 
 }  // namespace sequencergui::test

@@ -32,8 +32,9 @@ namespace sequencergui
 class IncludeItem : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kIncludeInstructionType;
   IncludeItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -50,8 +51,9 @@ public:
 class ParallelSequenceItem : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kParallelInstructionType;
   ParallelSequenceItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -68,8 +70,9 @@ public:
 class RepeatItem : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kRepeatInstructionType;
   RepeatItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -82,8 +85,9 @@ public:
 class SequenceItem : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kSequenceInstructionType;
   SequenceItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -92,8 +96,9 @@ public:
 class WaitItem : public UniversalInstructionItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kWaitInstructionType;
   WaitItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

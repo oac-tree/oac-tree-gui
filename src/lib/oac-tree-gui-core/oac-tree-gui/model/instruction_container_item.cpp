@@ -25,10 +25,15 @@
 namespace sequencergui
 {
 
-InstructionContainerItem::InstructionContainerItem() : CompoundItem(Type)
+InstructionContainerItem::InstructionContainerItem() : CompoundItem(GetStaticType())
 {
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
+}
+
+std::string InstructionContainerItem::GetStaticType()
+{
+  return "InstructionContainer";
 }
 
 std::unique_ptr<mvvm::SessionItem> InstructionContainerItem::Clone() const

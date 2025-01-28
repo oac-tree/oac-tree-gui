@@ -19,15 +19,16 @@
 
 #include "custom_children_strategies.h"
 
-#include <oac-tree-gui/model/sequencer_item_helper.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/workspace_item.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <algorithm>
+
+#include <oac-tree-gui/model/sequencer_item_helper.h>
+#include <oac-tree-gui/model/standard_variable_items.h>
+#include <oac-tree-gui/model/workspace_item.h>
 
 namespace sequencergui
 {
@@ -36,7 +37,8 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
     const mvvm::SessionItem *item) const
 {
   static const std::vector<std::string> allowed_types = {
-      WorkspaceItem::Type, sup::gui::AnyValueStructItem::Type, sup::gui::AnyValueArrayItem::Type};
+      WorkspaceItem::GetStaticType(), sup::gui::AnyValueStructItem::GetStaticType(),
+      sup::gui::AnyValueArrayItem::GetStaticType()};
 
   // for items from list we return all their children
   if (mvvm::utils::Contains(allowed_types, item->GetType()))
@@ -46,7 +48,7 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
 
   // items not from the list are variables, let's allow them to show struct and arrays beneath
   static const std::vector<std::string> allowed_variable_children_types = {
-      sup::gui::AnyValueStructItem::Type, sup::gui::AnyValueArrayItem::Type};
+      sup::gui::AnyValueStructItem::GetStaticType(), sup::gui::AnyValueArrayItem::GetStaticType()};
 
   std::vector<mvvm::SessionItem *> result;
   auto children = item->GetAllItems();

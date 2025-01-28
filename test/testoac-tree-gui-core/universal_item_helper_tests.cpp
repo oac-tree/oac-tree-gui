@@ -60,7 +60,7 @@ TEST_F(UniversalItemHelperTest, AddKnownInstruction)
   auto item = InsertInstruction(domainconstants::kWaitInstructionType,
                                 procedure->GetInstructionContainer());
 
-  EXPECT_EQ(item->GetType(), WaitItem::Type);
+  EXPECT_EQ(item->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
@@ -79,7 +79,7 @@ TEST_F(UniversalItemHelperTest, AddUnknownInstruction)
   auto item =
       InsertInstruction(UnknownDomainInstruction::Type, procedure->GetInstructionContainer());
 
-  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item->GetType(), UniversalInstructionItem::GetStaticType());
   EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }

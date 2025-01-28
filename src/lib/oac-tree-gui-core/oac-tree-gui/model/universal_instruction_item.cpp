@@ -58,6 +58,11 @@ UniversalInstructionItem::UniversalInstructionItem(const std::string &item_type)
   }
 }
 
+std::string UniversalInstructionItem::GetStaticType()
+{
+  return "UniversalInstruction";
+}
+
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
 {
   return std::make_unique<UniversalInstructionItem>(*this);

@@ -21,12 +21,6 @@
 
 #include "custom_viewitem_factory.h"
 
-#include <oac-tree-gui/model/instruction_item.h>
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/sequencer_item_helper.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/variable_item.h>
-#include <oac-tree-gui/style/style_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/style/style_helper.h>
 
@@ -36,6 +30,13 @@
 #include <QColor>
 #include <QIcon>
 #include <map>
+
+#include <oac-tree-gui/model/instruction_item.h>
+#include <oac-tree-gui/model/item_constants.h>
+#include <oac-tree-gui/model/sequencer_item_helper.h>
+#include <oac-tree-gui/model/standard_variable_items.h>
+#include <oac-tree-gui/model/variable_item.h>
+#include <oac-tree-gui/style/style_helper.h>
 
 namespace
 {
@@ -81,9 +82,9 @@ std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(sequencergui::VariableIte
 std::string GetTypeString(const mvvm::SessionItem &item)
 {
   static const std::map<std::string, std::string> kNameMap = {
-      {sequencergui::PvAccessClientVariableItem::Type, std::string("PVA-C")},
-      {sequencergui::PvAccessServerVariableItem::Type, std::string("PVA-S")},
-      {sequencergui::ChannelAccessVariableItem::Type, std::string("CA")},
+      {sequencergui::PvAccessClientVariableItem::GetStaticType(), std::string("PVA-C")},
+      {sequencergui::PvAccessServerVariableItem::GetStaticType(), std::string("PVA-S")},
+      {sequencergui::ChannelAccessVariableItem::GetStaticType(), std::string("CA")},
   };
 
   auto iter = kNameMap.find(item.GetType());

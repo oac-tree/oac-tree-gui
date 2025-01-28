@@ -153,7 +153,7 @@ TEST_F(TransformFromDomainTest, CreateUniversalInstruction)
   EXPECT_NE(universal_item, nullptr);
 
   EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainInstruction::Type);
-  EXPECT_EQ(universal_item->GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(universal_item->GetType(), UniversalInstructionItem::GetStaticType());
 }
 
 TEST_F(TransformFromDomainTest, CreateUniversalVariable)
@@ -167,7 +167,7 @@ TEST_F(TransformFromDomainTest, CreateUniversalVariable)
   EXPECT_NE(universal_item, nullptr);
 
   EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainVariable::Type);
-  EXPECT_EQ(universal_item->GetType(), UniversalVariableItem::Type);
+  EXPECT_EQ(universal_item->GetType(), UniversalVariableItem::GetStaticType());
 }
 
 TEST_F(TransformFromDomainTest, GetRunnerStatusFromDomain)

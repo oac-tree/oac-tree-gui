@@ -38,7 +38,7 @@ TEST_F(JobModelTest, InitialState)
 
   // trying to insert procedure to make sure that catalogue is there
   auto item = model.InsertItem<ProcedureItem>();
-  EXPECT_EQ(item->GetType(), ProcedureItem::Type);
+  EXPECT_EQ(item->GetType(), ProcedureItem::GetStaticType());
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
 }
 

@@ -50,8 +50,9 @@ public:
 class ChannelAccessVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kChannelAccessVariableType;
   ChannelAccessVariableItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -60,8 +61,9 @@ public:
 class FileVariableItem : public sequencergui::UniversalVariableItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kFileVariableType;
   FileVariableItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -74,8 +76,9 @@ public:
 class LocalVariableItem : public sequencergui::UniversalVariableItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kLocalVariableType;
   LocalVariableItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -84,8 +87,9 @@ public:
 class PvAccessClientVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kPvAccessClientVariableType;
   PvAccessClientVariableItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -94,9 +98,9 @@ public:
 class PvAccessServerVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = sequencergui::domainconstants::kPvAccessServerVariableType;
-
   PvAccessServerVariableItem();
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };

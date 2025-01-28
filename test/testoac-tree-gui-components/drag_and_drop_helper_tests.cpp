@@ -147,7 +147,7 @@ TEST_F(DragAndDropHelperTest, DropInstruction)
   auto item = DropInstruction(domainconstants::kWaitInstructionType,
                               procedure->GetInstructionContainer(), mvvm::TagIndex::Append());
 
-  EXPECT_EQ(item->GetType(), WaitItem::Type);
+  EXPECT_EQ(item->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
@@ -163,7 +163,7 @@ TEST_F(DragAndDropHelperTest, DropAggregate)
       "if-then-else", procedure->GetInstructionContainer(), mvvm::TagIndex::Append()));
   ASSERT_NE(item, nullptr);
 
-  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item->GetType(), UniversalInstructionItem::GetStaticType());
   EXPECT_EQ(item->GetDomainType(), domainconstants::kFallbackInstructionType);
 }
 

@@ -78,7 +78,7 @@ TEST_F(ApplicationModelsTest, FindItems)
 
   // default catalogue is capable of creating sequencer items
   auto procedure = models.GetSequencerModel()->InsertItem<ProcedureItem>();
-  EXPECT_EQ(procedure->GetType(), ProcedureItem::Type);
+  EXPECT_EQ(procedure->GetType(), ProcedureItem::GetStaticType());
 
   // second model can find alien item
   EXPECT_EQ(models.GetJobModel()->FindItem(procedure->GetIdentifier()), procedure);

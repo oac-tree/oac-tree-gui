@@ -19,13 +19,13 @@
 
 #include "standard_variable_items.h"
 
+#include <sup/oac-tree/variable.h>
+
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
-
-#include <sup/oac-tree/variable.h>
 
 namespace sequencergui
 {
@@ -70,7 +70,12 @@ void ConnectableVariableItem::SetIsAvailable(bool value)
 // ChannelAccessVariableItem
 // ----------------------------------------------------------------------------
 
-ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(Type) {}
+ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(GetStaticType()) {}
+
+std::string ChannelAccessVariableItem::GetStaticType()
+{
+  return domainconstants::kChannelAccessVariableType;
+}
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone() const
 {
@@ -80,7 +85,12 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone() const
 // ----------------------------------------------------------------------------
 // FileVariableItem
 // ----------------------------------------------------------------------------
-FileVariableItem::FileVariableItem() : sequencergui::UniversalVariableItem(Type) {}
+FileVariableItem::FileVariableItem() : sequencergui::UniversalVariableItem(GetStaticType()) {}
+
+std::string FileVariableItem::GetStaticType()
+{
+  return domainconstants::kFileVariableType;
+}
 
 std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone() const
 {
@@ -101,7 +111,12 @@ void FileVariableItem::SetFileName(const std::string &name)
 // LocalVariableItem
 // ----------------------------------------------------------------------------
 
-LocalVariableItem::LocalVariableItem() : sequencergui::UniversalVariableItem(Type) {}
+LocalVariableItem::LocalVariableItem() : sequencergui::UniversalVariableItem(GetStaticType()) {}
+
+std::string LocalVariableItem::GetStaticType()
+{
+  return domainconstants::kLocalVariableType;
+}
 
 std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone() const
 {
@@ -117,7 +132,14 @@ std::unique_ptr<mvvm::SessionItem> PvAccessClientVariableItem::Clone() const
   return std::make_unique<PvAccessClientVariableItem>(*this);
 }
 
-PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableItem(Type) {}
+PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableItem(GetStaticType())
+{
+}
+
+std::string PvAccessClientVariableItem::GetStaticType()
+{
+  return domainconstants::kPvAccessClientVariableType;
+}
 
 // ----------------------------------------------------------------------------
 // PvAccessServerVariableItem
@@ -128,6 +150,13 @@ std::unique_ptr<mvvm::SessionItem> PvAccessServerVariableItem::Clone() const
   return std::make_unique<PvAccessServerVariableItem>(*this);
 }
 
-PvAccessServerVariableItem::PvAccessServerVariableItem() : ConnectableVariableItem(Type) {}
+PvAccessServerVariableItem::PvAccessServerVariableItem() : ConnectableVariableItem(GetStaticType())
+{
+}
+
+std::string PvAccessServerVariableItem::GetStaticType()
+{
+  return domainconstants::kPvAccessServerVariableType;
+}
 
 }  // namespace sequencergui

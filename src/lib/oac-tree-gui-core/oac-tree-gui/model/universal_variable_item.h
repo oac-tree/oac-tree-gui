@@ -33,8 +33,6 @@ namespace sequencergui
 class UniversalVariableItem : public VariableItem
 {
 public:
-  static inline const std::string Type = "UniversalVariable";
-
   /**
    * @brief The parameterized c-tor for UniversalVariableItem.
    *
@@ -47,6 +45,8 @@ public:
    * call or after InitFromDomain call.
    */
   explicit UniversalVariableItem(const std::string& item_type = {});
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

@@ -44,7 +44,7 @@ TEST_F(UniversalVariableItemTest, InitialState)
 {
   UniversalVariableItem item;
 
-  EXPECT_EQ(item.GetDisplayName(), UniversalVariableItem::Type);
+  EXPECT_EQ(item.GetDisplayName(), UniversalVariableItem::GetStaticType());
 
   EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
   EXPECT_TRUE(item.GetDomainType().empty());
@@ -123,7 +123,7 @@ TEST_F(UniversalVariableItemTest, SetDomainName)
   item.SetDomainType(domainconstants::kLocalVariableType);
 
   // different wrt test below
-  EXPECT_EQ(item.GetType(), UniversalVariableItem::Type);
+  EXPECT_EQ(item.GetType(), UniversalVariableItem::GetStaticType());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
 
   item.SetDisplayName("abc");

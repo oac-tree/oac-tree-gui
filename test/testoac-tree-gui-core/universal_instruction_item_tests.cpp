@@ -42,7 +42,7 @@ TEST_F(UniversalInstructionItemTest, InitialState)
 {
   UniversalInstructionItem item;
 
-  EXPECT_EQ(item.GetDisplayName(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item.GetDisplayName(), UniversalInstructionItem::GetStaticType());
 
   std::vector<std::string> expected_tags({});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
@@ -119,7 +119,7 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   item.SetDomainType(domainconstants::kWaitInstructionType);
 
   // different wrt test above
-  EXPECT_EQ(item.GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item.GetType(), UniversalInstructionItem::GetStaticType());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
   item.SetProperty(domainconstants::kNameAttribute, "abc");

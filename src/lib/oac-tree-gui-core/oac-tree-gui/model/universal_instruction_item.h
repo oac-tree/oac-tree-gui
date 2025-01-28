@@ -39,8 +39,6 @@ namespace sequencergui
 class UniversalInstructionItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "UniversalInstruction";
-
   /**
    * @brief The parameterized c-tor for UniversalInstructionItem.
    *
@@ -52,7 +50,9 @@ public:
    * If item_type is empty, the resulting object can be used either after SetDomainType
    * call or after InitFromDomain call.
    */
-  explicit UniversalInstructionItem(const std::string& item_type = Type);
+  explicit UniversalInstructionItem(const std::string& item_type = GetStaticType());
+
+  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
