@@ -19,70 +19,20 @@
 
 #include "sequencer_item_helper.h"
 
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/sequencer_item_includes.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/model/item_catalogue.h>
-#include <mvvm/model/item_factory.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <vector>
-#include <iostream>
+
+#include <oac-tree-gui/domain/domain_constants.h>
+#include <oac-tree-gui/model/instruction_item.h>
+#include <oac-tree-gui/model/item_constants.h>
 
 namespace
 {
-
-bool RegisterSequencerItems()
-{
-  // instructions
-  std::cout << "ZZZ 1.1\n";
-  (void)mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
-  std::cout << "ZZZ 1.2\n";
-  (void)mvvm::RegisterGlobalItem<sequencergui::ParallelSequenceItem>();
-  std::cout << "ZZZ 1.\n";
-  (void)mvvm::RegisterGlobalItem<sequencergui::RepeatItem>();
-  std::cout << "ZZZ 1.4\n";
-  (void)mvvm::RegisterGlobalItem<sequencergui::SequenceItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::WaitItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::UniversalInstructionItem>();
-
-  // sequencer-plugin-epics instructions
-  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessReadInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessWriteInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessReadInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessWriteInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::RPCClientInstruction>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::SystemCallInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::LogInstructionItem>();
-
-  // variables
-  (void)mvvm::RegisterGlobalItem<sequencergui::FileVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::LocalVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::UniversalVariableItem>();
-
-  // variables sequencer-plugin-epics
-  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessClientVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessServerVariableItem>();
-
-  // other items
-  (void)mvvm::RegisterGlobalItem<sequencergui::InstructionContainerItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedureItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::WorkspaceItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::TypeRegistrationItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
-
-  (void)mvvm::RegisterGlobalItem<sequencergui::LocalJobItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ImportedJobItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::RemoteJobItem>();
-  std::cout << "ZZZ 1.2\n";
-
-  return true;
-}
 
 std::vector<std::string> GetDomainDecoratorNames()
 {
@@ -103,8 +53,6 @@ mvvm::SessionItem *GetPropertyItem(const mvvm::SessionItem &parent, const std::s
 
 namespace sequencergui
 {
-
-static bool sequencer_items_registered_flag = RegisterSequencerItems();
 
 bool IsCompoundInstruction(const InstructionItem *instruction)
 {

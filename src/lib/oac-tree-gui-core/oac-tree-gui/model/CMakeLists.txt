@@ -23,6 +23,8 @@ target_sources(${library_name} PRIVATE
   procedure_item.h
   procedure_preamble_items.cpp
   procedure_preamble_items.h
+  register_items.cpp
+  register_items.h
   runner_status.cpp
   runner_status.h
   sequencer_item_helper.cpp

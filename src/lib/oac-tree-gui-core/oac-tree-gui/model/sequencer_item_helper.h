@@ -34,8 +34,14 @@ namespace sequencergui
 class InstructionItem;
 class SequencerModel;
 
+/**
+ * @brief Checks if the given instruction represents a compound with multiple children.
+ */
 bool IsCompoundInstruction(const InstructionItem* instruction);
 
+/**
+ * @brief Checks if the given instruction represents a decorator instruction.
+ */
 bool IsDecoratorInstruction(const InstructionItem* instruction);
 
 /**
@@ -67,7 +73,6 @@ mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
  * have such property registered.
  */
 mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_OAC_TREE_ITEM_HELPER_H_

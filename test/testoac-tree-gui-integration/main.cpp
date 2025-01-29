@@ -17,13 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/components/custom_meta_types.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <QApplication>
+
+#include <oac-tree-gui/components/custom_meta_types.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/model/register_items.h>
 
 int main(int argc, char** argv)
 {
@@ -31,8 +32,8 @@ int main(int argc, char** argv)
   ::testing::InitGoogleMock(&argc, argv);
 
   sequencergui::RegisterCustomMetaTypes();
-
   sequencergui::LoadPlugins();
+  sequencergui::RegisterSequencerItems();
 
   QApplication app(argc, argv);
   Q_UNUSED(app)

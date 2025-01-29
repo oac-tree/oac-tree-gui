@@ -20,6 +20,7 @@
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/model/instruction_item.h>
+#include <oac-tree-gui/model/register_items.h>
 
 #include <sup/oac-tree/instruction.h>
 
@@ -32,6 +33,8 @@ int main(int argc, char** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
+
+  sequencergui::RegisterSequencerItems();
 
   qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
   qRegisterMetaType<const sequencergui::InstructionItem*>("const sequencergui::InstructionItem*");

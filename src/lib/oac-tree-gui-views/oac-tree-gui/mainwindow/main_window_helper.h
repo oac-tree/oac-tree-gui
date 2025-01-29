@@ -30,6 +30,7 @@
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
+#include <oac-tree-gui/model/register_items.h>
 
 #include <QApplication>
 #include <QSettings>
@@ -64,6 +65,7 @@ int RunApplication(int argc, char** argv)
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
   sequencergui::RegisterCustomMetaTypes();
+  sequencergui::RegisterSequencerItems();
 
   std::unique_ptr<sequencergui::SplashScreen> splash;
 

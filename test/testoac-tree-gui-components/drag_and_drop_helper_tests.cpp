@@ -17,24 +17,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/instruction_editor_viewmodel.h"
-
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/validate_utils.h>
-#include <mvvm/model/item_factory.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 
 #include <QMimeData>
-#include <iostream>
+
+#include "oac-tree-gui/viewmodel/instruction_editor_viewmodel.h"
+#include <oac-tree-gui/model/instruction_container_item.h>
+#include <oac-tree-gui/model/procedure_item.h>
+#include <oac-tree-gui/model/sequencer_model.h>
+#include <oac-tree-gui/model/standard_instruction_items.h>
+#include <oac-tree-gui/viewmodel/drag_and_drop_helper.h>
 
 namespace sequencergui::test
 {
@@ -185,12 +183,6 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
 TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
 {
   const QString mime_type = kCopyInstructionMimeType;
-
-  auto& factory = mvvm::GetGlobalItemFactory();
-  for(auto str : factory.GetItemTypes())
-  {
-    std::cout << "AAA" << str << "\n";
-  }
 
   const std::string expected_name("abc");
   WaitItem item;

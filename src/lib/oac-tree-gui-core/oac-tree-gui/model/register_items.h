@@ -17,20 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/components/custom_meta_types.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/register_items.h>
+#ifndef SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_
+#define SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_
 
-#include <gtest/gtest.h>
+//! @file
+//! Contains utility function for global item registration.
 
-int main(int argc, char** argv)
+namespace sequencergui
 {
-  ::testing::InitGoogleTest(&argc, argv);
 
-  sequencergui::LoadPlugins();
-  sequencergui::RegisterCustomMetaTypes();
-  sequencergui::RegisterSequencerItems();
+/**
+ * @brief Register all sequencer items in global factory.
+ */
+void RegisterSequencerItems();
 
-  // run all google tests
-  return RUN_ALL_TESTS();
-}
+}  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_
