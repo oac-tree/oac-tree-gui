@@ -17,20 +17,24 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include "load_resources.h"
 
-#include <QMetaType>
+#include <sup/gui/model/register_items.h>
 
-#include <oac-tree-gui/components/load_resources.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/model/register_items.h>
 
-int main(int argc, char** argv)
+namespace sequencergui
 {
-  ::testing::InitGoogleTest(&argc, argv);
-  ::testing::InitGoogleMock(&argc, argv);
 
-  sequencergui::LoadResources();
+void LoadResources()
+{
+  sup::gui::RegisterSessionItems();
+  RegisterSessionItems();
 
-  // run all google tests
-  return RUN_ALL_TESTS();
+  LoadPlugins();
+
+  RegisterCustomMetaTypes();
 }
+
+}  // namespace sequencergui

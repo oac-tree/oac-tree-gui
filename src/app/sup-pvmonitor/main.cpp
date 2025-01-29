@@ -17,16 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/components/custom_meta_types.h>
-#include <oac-tree-gui/core/version.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/mainwindow/command_line_options.h>
-#include <oac-tree-gui/mainwindow/pvmonitor_main_window.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <QApplication>
 #include <QMessageBox>
 #include <QMetaType>
+
+#include <oac-tree-gui/components/load_resources.h>
+#include <oac-tree-gui/core/version.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/mainwindow/command_line_options.h>
+#include <oac-tree-gui/mainwindow/pvmonitor_main_window.h>
 
 int main(int argc, char** argv)
 {
@@ -40,14 +41,7 @@ int main(int argc, char** argv)
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
-  sequencergui::RegisterCustomMetaTypes();
-  Q_INIT_RESOURCE(oac_tree_icons);
-
-  auto [success, message] = sequencergui::LoadPlugins();
-  if (!success)
-  {
-    QMessageBox::warning(nullptr, "Failed to load plugins", QString::fromStdString(message));
-  }
+  sequencergui::LoadResources();
 
   sequencergui::PvMonitorMainWindow win;
   win.show();

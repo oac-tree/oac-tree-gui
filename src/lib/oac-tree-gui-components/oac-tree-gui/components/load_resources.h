@@ -17,20 +17,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#ifndef SEQUENCERGUI_COMPONENTS_LOAD_RESOURCES_H_
+#define SEQUENCERGUI_COMPONENTS_LOAD_RESOURCES_H_
 
-#include <QMetaType>
+//! @file
+//! Main helper function to load resources
 
-#include <oac-tree-gui/components/load_resources.h>
+#include <oac-tree-gui/components/custom_meta_types.h>
 
-int main(int argc, char** argv)
+namespace sequencergui
 {
-  ::testing::InitGoogleTest(&argc, argv);
-  ::testing::InitGoogleMock(&argc, argv);
 
-  sequencergui::LoadResources();
+/**
+ * @brief Loads plugins, item factory and Qt metatypes.
+ */
+void LoadResources();
 
-  // run all google tests
-  return RUN_ALL_TESTS();
-}
+}  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_

@@ -23,14 +23,13 @@
 //! @file
 //! Collection of helper methods common for all sequencer main windows.
 
-#include <oac-tree-gui/components/custom_meta_types.h>
 #include <oac-tree-gui/mainwindow/command_line_options.h>
 #include <oac-tree-gui/mainwindow/splash_screen.h>
 #include <sup/gui/app/main_window_types.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
-#include <oac-tree-gui/model/register_items.h>
+#include <oac-tree-gui/components/load_resources.h>
 
 #include <QApplication>
 #include <QSettings>
@@ -57,15 +56,13 @@ int RunApplication(int argc, char** argv)
   auto options = sequencergui::ParseOptions(argc, argv);
   sup::gui::SetupHighDpiScaling(options.scale);
 
+  sequencergui::LoadResources();
+
   QApplication app(argc, argv);
 
   const auto default_font = app.font();
 
-  LoadMainPlugins();
-
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
-  sequencergui::RegisterCustomMetaTypes();
-  sequencergui::RegisterSessionItems();
 
   std::unique_ptr<sequencergui::SplashScreen> splash;
 

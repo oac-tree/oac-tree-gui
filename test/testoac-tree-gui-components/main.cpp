@@ -17,9 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/components/custom_meta_types.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/register_items.h>
+#include <oac-tree-gui/components/load_resources.h>
 
 #include <gtest/gtest.h>
 
@@ -27,9 +25,7 @@ int main(int argc, char** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
 
-  sequencergui::LoadPlugins();
-  sequencergui::RegisterCustomMetaTypes();
-  sequencergui::RegisterSessionItems();
+  sequencergui::LoadResources();
 
   // run all google tests
   return RUN_ALL_TESTS();

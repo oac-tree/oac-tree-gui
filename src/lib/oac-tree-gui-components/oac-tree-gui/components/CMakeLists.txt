@@ -7,5 +7,7 @@ target_sources(${library_name} PRIVATE
   component_types.h
   custom_meta_types.cpp
   custom_meta_types.h
+  load_resources.cpp
+  load_resources.h
 )
 
