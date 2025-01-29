@@ -30,6 +30,7 @@
 #include <mvvm/utils/container_utils.h>
 
 #include <vector>
+#include <iostream>
 
 namespace
 {
@@ -37,9 +38,13 @@ namespace
 bool RegisterSequencerItems()
 {
   // instructions
+  std::cout << "ZZZ 1.1\n";
   (void)mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
+  std::cout << "ZZZ 1.2\n";
   (void)mvvm::RegisterGlobalItem<sequencergui::ParallelSequenceItem>();
+  std::cout << "ZZZ 1.\n";
   (void)mvvm::RegisterGlobalItem<sequencergui::RepeatItem>();
+  std::cout << "ZZZ 1.4\n";
   (void)mvvm::RegisterGlobalItem<sequencergui::SequenceItem>();
   (void)mvvm::RegisterGlobalItem<sequencergui::WaitItem>();
   (void)mvvm::RegisterGlobalItem<sequencergui::UniversalInstructionItem>();
@@ -74,6 +79,7 @@ bool RegisterSequencerItems()
   (void)mvvm::RegisterGlobalItem<sequencergui::LocalJobItem>();
   (void)mvvm::RegisterGlobalItem<sequencergui::ImportedJobItem>();
   (void)mvvm::RegisterGlobalItem<sequencergui::RemoteJobItem>();
+  std::cout << "ZZZ 1.2\n";
 
   return true;
 }

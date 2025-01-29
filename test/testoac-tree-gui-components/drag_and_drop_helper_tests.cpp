@@ -28,11 +28,13 @@
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/validate_utils.h>
+#include <mvvm/model/item_factory.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 
 #include <QMimeData>
+#include <iostream>
 
 namespace sequencergui::test
 {
@@ -183,6 +185,12 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
 TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
 {
   const QString mime_type = kCopyInstructionMimeType;
+
+  auto& factory = mvvm::GetGlobalItemFactory();
+  for(auto str : factory.GetItemTypes())
+  {
+    std::cout << "AAA" << str << "\n";
+  }
 
   const std::string expected_name("abc");
   WaitItem item;
