@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 
   sequencergui::RegisterCustomMetaTypes();
   sequencergui::LoadPlugins();
-  sequencergui::RegisterSequencerItems();
+  sequencergui::RegisterSessionItems();
 
   QApplication app(argc, argv);
   Q_UNUSED(app)

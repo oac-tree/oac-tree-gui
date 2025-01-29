@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 
   sequencergui::LoadPlugins();
   sequencergui::RegisterCustomMetaTypes();
-  sequencergui::RegisterSequencerItems();
+  sequencergui::RegisterSessionItems();
 
   // run all google tests
   return RUN_ALL_TESTS();

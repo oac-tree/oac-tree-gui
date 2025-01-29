@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_
 
 //! @file
-//! Contains utility function for global item registration.
+//! Contains utility function to register items in global factory.
 
 namespace sequencergui
 {
@@ -29,7 +29,7 @@ namespace sequencergui
 /**
  * @brief Register all sequencer items in global factory.
  */
-void RegisterSequencerItems();
+void RegisterSessionItems();
 
 }  // namespace sequencergui
 

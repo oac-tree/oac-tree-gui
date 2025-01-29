@@ -34,7 +34,7 @@ int main(int argc, char** argv)
   ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
 
-  sequencergui::RegisterSequencerItems();
+  sequencergui::RegisterSessionItems();
 
   qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
   qRegisterMetaType<const sequencergui::InstructionItem*>("const sequencergui::InstructionItem*");

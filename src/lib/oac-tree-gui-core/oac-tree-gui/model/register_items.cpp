@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 
-void RegisterSequencerItems()
+void RegisterSessionItems()
 {
   // instructions
   (void)mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
