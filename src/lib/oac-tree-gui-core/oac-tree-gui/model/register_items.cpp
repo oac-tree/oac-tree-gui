@@ -19,6 +19,8 @@
 
 #include "register_items.h"
 
+#include <sup/gui/model/register_items.h>
+
 #include <mvvm/model/item_catalogue.h>
 #include <mvvm/model/item_factory.h>
 
@@ -29,6 +31,8 @@ namespace sequencergui
 
 void RegisterSessionItems()
 {
+  sup::gui::RegisterSessionItems();
+
   // instructions
   (void)mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
   (void)mvvm::RegisterGlobalItem<sequencergui::ParallelSequenceItem>();
