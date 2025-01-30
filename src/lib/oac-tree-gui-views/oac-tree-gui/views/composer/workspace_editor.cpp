@@ -31,6 +31,7 @@
 #include <oac-tree-gui/viewmodel/workspace_operation_viewmodel.h>
 #include <oac-tree-gui/views/composer/workspace_editor_actions.h>
 #include <oac-tree-gui/views/editors/anyvalue_editor_dialog_factory.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/message_helper.h>
 

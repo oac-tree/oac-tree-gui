@@ -40,6 +40,7 @@
 #include <oac-tree-gui/views/editors/user_input_dialogs.h>
 #include <oac-tree-gui/views/operation/procedure_action_handler.h>
 #include <oac-tree-gui/views/operation/remote_connection_dialog.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/widgets/custom_splitter.h>
@@ -132,10 +133,10 @@ void OperationMonitorView::StopAllJobs()
 
 void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppContext &context)
 {
-  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar, sup::gui::constants::kToggleLeftPanelCommandId,
-                                  context);
-  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar, sup::gui::constants::kToggleRightPanelCommandId,
-                                  context);
+  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar,
+                                  sup::gui::constants::kToggleLeftPanelCommandId, context);
+  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar,
+                                  sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
 void OperationMonitorView::showEvent(QShowEvent *event)

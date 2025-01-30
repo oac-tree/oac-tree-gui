@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/job_list_viewmodel.h"
-
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/sequencer_model.h>
 #include <oac-tree-gui/model/standard_instruction_items.h>
@@ -29,6 +27,8 @@
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
+
+#include "oac-tree-gui/viewmodel/job_list_viewmodel.h"
 
 namespace oac_tree_gui::test
 {

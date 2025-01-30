@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/procedure_preamble_items.h"
-
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/model/procedure_preamble_items.h"
 
 namespace oac_tree_gui::test
 {

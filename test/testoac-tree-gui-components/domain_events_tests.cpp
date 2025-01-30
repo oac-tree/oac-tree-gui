@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/domain_events.h"
-
 #include <oac-tree-gui/domain/domain_constants.h>
 
 #include <sup/oac-tree/instruction.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/jobsystem/domain_events.h"
 
 namespace oac_tree_gui::test
 {

@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/transform/procedure_item_job_info_builder.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/model/instruction_container_item.h>
@@ -33,6 +31,8 @@
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
+
+#include "oac-tree-gui/transform/procedure_item_job_info_builder.h"
 
 namespace oac_tree_gui::test
 {

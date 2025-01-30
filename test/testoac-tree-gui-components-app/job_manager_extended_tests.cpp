@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/job_manager.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/jobsystem/abstract_job_handler.h>
 #include <oac-tree-gui/jobsystem/user_context.h>
@@ -45,6 +43,8 @@
 #include <QSignalSpy>
 #include <QTest>
 #include <chrono>
+
+#include "oac-tree-gui/jobsystem/job_manager.h"
 
 using msec = std::chrono::milliseconds;
 

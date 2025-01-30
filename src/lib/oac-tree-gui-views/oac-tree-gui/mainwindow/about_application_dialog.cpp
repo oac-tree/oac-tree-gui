@@ -110,8 +110,8 @@ std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateTextLayout()
   auto result = std::make_unique<QVBoxLayout>();
 
   // title
-  auto about_title_label = new QLabel(
-      QString("oac-tree GUI version ").append(QString::fromStdString(ProjectVersion())));
+  auto about_title_label =
+      new QLabel(QString("oac-tree GUI version ").append(QString::fromStdString(ProjectVersion())));
   mvvm::utils::ScaleLabelFont(about_title_label, 1.2, true);
   about_title_label->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
 

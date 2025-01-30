@@ -22,6 +22,7 @@
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/nodeeditor/graphics_scene_types.h>
 #include <oac-tree-gui/style/style_helper.h>
+
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/widgets/widget_utils.h>

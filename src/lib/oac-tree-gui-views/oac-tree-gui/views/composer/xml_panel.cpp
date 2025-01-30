@@ -22,6 +22,7 @@
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/xml_utils.h>
 #include <oac-tree-gui/style/style_helper.h>
+
 #include <sup/gui/views/codeeditor/code_view.h>
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>

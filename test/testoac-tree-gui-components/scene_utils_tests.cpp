@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/nodeeditor/scene_utils.h"
-
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
@@ -35,6 +33,8 @@
 
 #include <QPointF>
 #include <QRectF>
+
+#include "oac-tree-gui/nodeeditor/scene_utils.h"
 
 namespace oac_tree_gui::test
 {

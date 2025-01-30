@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/nodeeditor/connectable_view_map.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/standard_instruction_items.h>
 #include <oac-tree-gui/nodeeditor/connectable_view.h>
 #include <oac-tree-gui/nodeeditor/connectable_view_factory.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/nodeeditor/connectable_view_map.h"
 
 namespace oac_tree_gui::test
 {

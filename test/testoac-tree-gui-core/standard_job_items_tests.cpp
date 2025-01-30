@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/standard_job_items.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/procedure_item.h>
 
 #include <mvvm/model/application_model.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/model/standard_job_items.h"
 
 namespace oac_tree_gui
 {

@@ -20,6 +20,7 @@
 #include "file_tree_view.h"
 
 #include <oac-tree-gui/style/style_helper.h>
+
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 

@@ -21,6 +21,7 @@
 
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/style/style_helper.h>
+
 #include <sup/gui/widgets/action_menu.h>
 
 #include <QMenu>

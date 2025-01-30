@@ -22,6 +22,7 @@
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 

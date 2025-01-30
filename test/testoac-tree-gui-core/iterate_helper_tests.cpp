@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/iterate_helper.h"
-
 #include <oac-tree-gui/model/standard_instruction_items.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/model/iterate_helper.h"
 
 namespace oac_tree_gui::test
 {

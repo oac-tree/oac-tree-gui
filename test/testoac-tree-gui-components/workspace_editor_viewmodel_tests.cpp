@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/workspace_editor_viewmodel.h"
-
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/sequencer_item_helper.h>
@@ -26,6 +24,7 @@
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/application_model.h>
@@ -35,6 +34,8 @@
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
+
+#include "oac-tree-gui/viewmodel/workspace_editor_viewmodel.h"
 
 //! Tests for WorkspaceEditorViewModel class.
 

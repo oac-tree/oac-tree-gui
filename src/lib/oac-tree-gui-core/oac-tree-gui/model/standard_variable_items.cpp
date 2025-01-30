@@ -19,13 +19,13 @@
 
 #include "standard_variable_items.h"
 
-#include <sup/oac-tree/variable.h>
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+
+#include <sup/oac-tree/variable.h>
 
 namespace oac_tree_gui
 {

@@ -17,7 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/remote_job_handler.h"
 #include "test_automation_server.h"
 
 #include <oac-tree-gui/model/job_model.h>
@@ -33,6 +32,8 @@
 
 #include <QTest>
 #include <thread>
+
+#include "oac-tree-gui/jobsystem/remote_job_handler.h"
 
 namespace oac_tree_gui
 {

@@ -24,6 +24,7 @@
 #include "user_input_provider.h"
 
 #include <oac-tree-gui/core/exceptions.h>
+
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/utils/string_utils.h>

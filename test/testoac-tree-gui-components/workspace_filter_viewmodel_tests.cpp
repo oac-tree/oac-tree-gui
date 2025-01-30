@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/workspace_filter_viewmodel.h"
-
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/workspace_item.h>
@@ -27,6 +25,8 @@
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/viewmodel/workspace_filter_viewmodel.h"
 
 namespace oac_tree_gui::test
 {

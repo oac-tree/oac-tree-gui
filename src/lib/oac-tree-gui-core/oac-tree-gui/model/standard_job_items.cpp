@@ -19,10 +19,10 @@
 
 #include "standard_job_items.h"
 
-#include <mvvm/model/item_utils.h>
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/procedure_item.h>
+
+#include <mvvm/model/item_utils.h>
 
 namespace oac_tree_gui
 {

@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/domain_event_dispatcher.h"
-
 #include <oac-tree-gui/jobsystem/domain_events.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>
+
+#include "oac-tree-gui/jobsystem/domain_event_dispatcher.h"
 
 namespace oac_tree_gui::test
 {
@@ -93,4 +93,4 @@ TEST_F(DomainEventDispatcherTest, JobStatusChanged)
   dispatcher->OnNewEvent();
 }
 
-}
+}  // namespace oac_tree_gui::test

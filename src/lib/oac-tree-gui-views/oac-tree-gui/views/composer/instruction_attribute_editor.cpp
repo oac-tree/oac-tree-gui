@@ -24,6 +24,7 @@
 #include <oac-tree-gui/composer/attribute_editor_action_handler.h>
 #include <oac-tree-gui/composer/attribute_editor_context.h>
 #include <oac-tree-gui/viewmodel/attribute_editor_viewmodel.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>

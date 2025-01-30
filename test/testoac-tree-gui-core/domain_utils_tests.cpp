@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/domain/domain_helper.h"
-
 #include <oac-tree-gui/domain/domain_object_type_registry.h>
 
 #include <sup/oac-tree/constants.h>
@@ -27,6 +25,8 @@
 #include <sup/oac-tree/variable.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/domain/domain_helper.h"
 
 using namespace oac_tree_gui::domainconstants;
 
@@ -177,4 +177,4 @@ TEST_F(DomainUtilsTest, GlobalDomainObjectTypeRegistry)
             domainconstants::kEpicsPVXSPluginName);
 }
 
-}
+}  // namespace oac_tree_gui::test

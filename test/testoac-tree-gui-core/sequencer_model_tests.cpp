@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/sequencer_model.h"
-
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/standard_instruction_items.h>
@@ -32,6 +30,8 @@
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
+
+#include "oac-tree-gui/model/sequencer_model.h"
 
 namespace oac_tree_gui::test
 {
@@ -53,8 +53,9 @@ TEST_F(SequencerModelTest, InitialState)
   EXPECT_TRUE(model.GetProcedures().empty());
 
   // trying to insert procedure to make sure that catalogue is there
-  auto item = model.InsertItem(mvvm::GetGlobalItemFactory().CreateItem(ProcedureItem::GetStaticType()),
-                               model.GetRootItem(), mvvm::TagIndex::Append());
+  auto item =
+      model.InsertItem(mvvm::GetGlobalItemFactory().CreateItem(ProcedureItem::GetStaticType()),
+                       model.GetRootItem(), mvvm::TagIndex::Append());
   EXPECT_EQ(item->GetType(), ProcedureItem::GetStaticType());
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
 }

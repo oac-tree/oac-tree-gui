@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/local_domain_runner.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/jobsystem/domain_events.h>
 #include <oac-tree-gui/jobsystem/user_context.h>
@@ -37,6 +35,8 @@
 
 #include <QTest>
 #include <thread>
+
+#include "oac-tree-gui/jobsystem/local_domain_runner.h"
 
 namespace oac_tree_gui::test
 {
@@ -80,8 +80,8 @@ public:
    * Provides additional waiting to complete all queued signals. The method shall be used when we
    * test the runner and are interested to receive and process all mock notifications.
    */
-  bool WaitForStateAndEmptyQueue(const LocalDomainRunner& runner,
-                                 sup::oac_tree::JobState job_state, msec msec_value)
+  bool WaitForStateAndEmptyQueue(const LocalDomainRunner& runner, sup::oac_tree::JobState job_state,
+                                 msec msec_value)
   {
     auto predicate = [this, &runner, job_state]()
     { return runner.GetJobState() == job_state && runner.GetEventCount() == 0; };

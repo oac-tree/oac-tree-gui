@@ -44,7 +44,7 @@ TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(GetStaticType())
 
 std::string TypeRegistrationItem::GetStaticType()
 {
-return "TypeRegistrationItem";
+  return "TypeRegistrationItem";
 }
 
 std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone() const
@@ -90,7 +90,7 @@ ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(GetStaticType())
 
 std::string ProcedurePreambleItem::GetStaticType()
 {
-return "ProcedurePreamble";
+  return "ProcedurePreamble";
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone() const

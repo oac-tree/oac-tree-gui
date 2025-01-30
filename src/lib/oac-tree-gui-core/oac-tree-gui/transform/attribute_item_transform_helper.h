@@ -25,6 +25,7 @@
 //! from/to domain attributes.
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/compound_item.h>

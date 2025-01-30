@@ -19,10 +19,10 @@
 
 #include "register_items.h"
 
+#include <oac-tree-gui/model/sequencer_item_includes.h>
+
 #include <mvvm/model/item_catalogue.h>
 #include <mvvm/model/item_factory.h>
-
-#include <oac-tree-gui/model/sequencer_item_includes.h>
 
 namespace oac_tree_gui
 {

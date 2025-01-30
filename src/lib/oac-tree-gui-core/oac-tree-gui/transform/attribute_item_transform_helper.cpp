@@ -21,6 +21,7 @@
 
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_constants.h>
+
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>

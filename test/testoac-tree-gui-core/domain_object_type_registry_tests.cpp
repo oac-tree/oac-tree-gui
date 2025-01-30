@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/domain/domain_object_type_registry.h"
-
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/domain/domain_object_type_registry.h"
 
 namespace oac_tree_gui::test
 {

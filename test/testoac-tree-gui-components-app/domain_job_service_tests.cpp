@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/domain_job_service.h"
-
 #include <oac-tree-gui/jobsystem/log_event.h>
 
 #include <sup/dto/anyvalue.h>
@@ -30,6 +28,8 @@
 
 #include <QTest>
 #include <future>
+
+#include "oac-tree-gui/jobsystem/domain_job_service.h"
 
 namespace oac_tree_gui::test
 {

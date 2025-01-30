@@ -23,6 +23,7 @@
 #include <oac-tree-gui/jobsystem/i_automation_client.h>
 #include <oac-tree-gui/jobsystem/remote_connection_info.h>
 #include <oac-tree-gui/jobsystem/remote_connection_service.h>
+
 #include <sup/gui/widgets/dialog_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>

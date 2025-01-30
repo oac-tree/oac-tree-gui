@@ -30,6 +30,7 @@
 #include <oac-tree-gui/viewmodel/instruction_editor_viewmodel.h>
 #include <oac-tree-gui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <oac-tree-gui/widgets/custom_tree_view_style.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/style/style_helper.h>

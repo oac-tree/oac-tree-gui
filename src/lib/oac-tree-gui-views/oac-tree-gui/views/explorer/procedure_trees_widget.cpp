@@ -20,6 +20,7 @@
 #include "procedure_trees_widget.h"
 
 #include <oac-tree-gui/model/procedure_item.h>
+
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/custom_splitter.h>

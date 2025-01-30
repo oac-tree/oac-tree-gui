@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/xml_utils.h"
-
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/standard_instruction_items.h>
@@ -32,6 +30,8 @@
 
 #include <testutils/folder_test.h>
 #include <testutils/test_utils.h>
+
+#include "oac-tree-gui/model/xml_utils.h"
 
 namespace oac_tree_gui
 {

@@ -114,7 +114,7 @@ void TopBottomPositionStrategy::SetPositionToTop(const QRectF &rect, NodePort *p
 
 void TopBottomPositionStrategy::SetPositionToBottom(const QRectF &rect, NodePort *port, int index)
 {
-  (void) index;
+  (void)index;
   port->GetLabel()->setVisible(false);
   port->setPos(rect.width() / 2, rect.height());
 }

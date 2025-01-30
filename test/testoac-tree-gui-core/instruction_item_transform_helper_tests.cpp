@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/transform/instruction_item_transform_helper.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/model/instruction_item.h>
@@ -28,6 +26,8 @@
 #include <sup/oac-tree/sequence_parser.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/transform/instruction_item_transform_helper.h"
 
 namespace oac_tree_gui::test
 {
@@ -44,8 +44,8 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
-                                             instruction_id,
-                                             {{domainconstants::kTimeoutAttribute, "42"}});
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"}});
 
   auto instruction_item = CreateInstructionItem(info);
 
@@ -60,8 +60,8 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
-                                             instruction_id,
-                                             {{domainconstants::kTimeoutAttribute, "42"}});
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"}});
 
   auto item_tree = CreateInstructionItemTree(info);
   ASSERT_EQ(item_tree.indexes.size(), 1);

@@ -23,6 +23,7 @@
 #include <oac-tree-gui/jobsystem/job_utils.h>
 #include <oac-tree-gui/style/style_helper.h>
 #include <oac-tree-gui/viewmodel/job_log_viewmodel.h>
+
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/steady_menu.h>
 

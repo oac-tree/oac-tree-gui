@@ -24,6 +24,7 @@
 //! Collection of helper functions to transform VariableItem from/to domain variables.
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
+
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>

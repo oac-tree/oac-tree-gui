@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/universal_item_helper.h"
-
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/item_constants.h>
@@ -31,6 +29,8 @@
 
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
+
+#include "oac-tree-gui/model/universal_item_helper.h"
 
 namespace oac_tree_gui::test
 {

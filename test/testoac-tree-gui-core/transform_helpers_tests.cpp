@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/transform/anyvalue_item_transform_helper.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
@@ -27,6 +25,7 @@
 #include <oac-tree-gui/model/standard_instruction_items.h>
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/universal_item_helper.h>
+
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_constants.h>
@@ -47,6 +46,8 @@
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
+
+#include "oac-tree-gui/transform/anyvalue_item_transform_helper.h"
 
 namespace oac_tree_gui::test
 {

@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/request_handler.h"
-
 #include <oac-tree-gui/jobsystem/request_types.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/jobsystem/request_handler.h"
 
 namespace oac_tree_gui::test
 {

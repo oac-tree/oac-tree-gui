@@ -19,11 +19,11 @@
 
 #include "job_item.h"
 
-#include <mvvm/standarditems/linked_item.h>
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/procedure_item.h>
+
+#include <mvvm/standarditems/linked_item.h>
 
 namespace oac_tree_gui
 {

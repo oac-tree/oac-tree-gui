@@ -17,7 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/job_manager.h"
 #include "test_automation_server.h"
 
 #include <oac-tree-gui/core/exceptions.h>
@@ -37,6 +36,8 @@
 #include <QTest>
 #include <chrono>
 #include <thread>
+
+#include "oac-tree-gui/jobsystem/job_manager.h"
 
 namespace oac_tree_gui
 {

@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/sequencer_item_helper.h"
-
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/sequencer_item_includes.h>
@@ -28,6 +26,8 @@
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/model/sequencer_item_helper.h"
 
 namespace oac_tree_gui::test
 {

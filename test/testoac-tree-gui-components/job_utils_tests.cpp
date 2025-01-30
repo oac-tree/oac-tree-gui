@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/job_utils.h"
-
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/jobsystem/job_utils.h"
 
 namespace oac_tree_gui::test
 {

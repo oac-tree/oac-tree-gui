@@ -41,4 +41,4 @@ TEST_F(WorkspaceItemTest, WorkspaceItem)
   EXPECT_EQ(item.GetVariableCount(), 2);
 }
 
-}
+}  // namespace oac_tree_gui::test

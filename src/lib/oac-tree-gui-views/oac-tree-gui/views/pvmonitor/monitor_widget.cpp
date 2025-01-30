@@ -26,6 +26,7 @@
 #include <oac-tree-gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac-tree-gui/pvmonitor/workspace_synchronizer.h>
 #include <oac-tree-gui/views/composer/workspace_editor_widget.h>
+
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>

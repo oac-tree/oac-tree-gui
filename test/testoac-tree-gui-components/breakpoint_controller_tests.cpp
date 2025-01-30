@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/operation/breakpoint_controller.h"
-
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/instruction_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
@@ -29,6 +27,8 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/operation/breakpoint_controller.h"
 
 namespace oac_tree_gui::test
 {

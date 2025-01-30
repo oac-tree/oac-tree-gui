@@ -28,6 +28,7 @@
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
 #include <oac-tree-gui/model/universal_item_helper.h>
+
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 

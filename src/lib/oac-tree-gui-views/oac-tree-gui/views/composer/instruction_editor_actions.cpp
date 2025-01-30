@@ -23,6 +23,7 @@
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/domain/domain_object_group_helper.h>
 #include <oac-tree-gui/style/style_helper.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/components/proxy_action.h>

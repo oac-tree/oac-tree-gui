@@ -26,6 +26,7 @@
 #include <oac-tree-gui/model/instruction_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
 #include <oac-tree-gui/views/nodeeditor/node_editor.h>
+
 #include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QVBoxLayout>

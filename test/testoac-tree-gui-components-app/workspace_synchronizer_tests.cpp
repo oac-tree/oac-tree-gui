@@ -17,14 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/pvmonitor/workspace_synchronizer.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/pvmonitor/monitor_model.h>
 #include <oac-tree-gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
@@ -38,6 +37,8 @@
 #include <testutils/mock_domain_workspace_listener.h>
 
 #include <QTest>
+
+#include "oac-tree-gui/pvmonitor/workspace_synchronizer.h"
 
 namespace oac_tree_gui::test
 {

@@ -19,10 +19,10 @@
 
 #include "load_resources.h"
 
-#include <sup/gui/model/register_items.h>
-
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/register_items.h>
+
+#include <sup/gui/model/register_items.h>
 
 namespace oac_tree_gui
 {

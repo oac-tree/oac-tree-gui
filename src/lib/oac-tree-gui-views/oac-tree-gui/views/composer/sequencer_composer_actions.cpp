@@ -23,6 +23,7 @@
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
 #include <oac-tree-gui/views/operation/procedure_action_handler.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 

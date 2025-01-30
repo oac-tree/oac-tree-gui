@@ -19,6 +19,10 @@
 
 #include "sequencer_item_helper.h"
 
+#include <oac-tree-gui/domain/domain_constants.h>
+#include <oac-tree-gui/model/instruction_item.h>
+#include <oac-tree-gui/model/item_constants.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -26,10 +30,6 @@
 #include <mvvm/utils/container_utils.h>
 
 #include <vector>
-
-#include <oac-tree-gui/domain/domain_constants.h>
-#include <oac-tree-gui/model/instruction_item.h>
-#include <oac-tree-gui/model/item_constants.h>
 
 namespace
 {

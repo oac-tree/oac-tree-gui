@@ -24,6 +24,7 @@
 #include <oac-tree-gui/components/component_helper.h>
 #include <oac-tree-gui/model/sequencer_model.h>
 #include <oac-tree-gui/style/style_helper.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>

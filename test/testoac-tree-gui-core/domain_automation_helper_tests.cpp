@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/domain/domain_automation_helper.h"
-
 #include <oac-tree-gui/domain/domain_constants.h>
 
 #include <sup/oac-tree/instruction.h>
@@ -27,6 +25,8 @@
 #include <sup/oac-tree/variable_info.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/domain/domain_automation_helper.h"
 
 namespace oac_tree_gui::test
 {
@@ -41,8 +41,8 @@ TEST_F(DomainAutomationHelperTest, CreateDomainInstruction)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
-                                             instruction_id,
-                                             {{domainconstants::kTimeoutAttribute, "42"}});
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"}});
 
   auto instruction = CreateDomainInstruction(info);
 
@@ -63,7 +63,7 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
        {domainconstants::kTypeAttribute, expected_type},
        {domainconstants::kValueAttribute, expected_value}});
   sup::oac_tree::VariableInfo info(oac_tree_gui::domainconstants::kLocalVariableType, variable_id,
-                                    attributes);
+                                   attributes);
 
   auto variable = CreateDomainVariable(info);
 

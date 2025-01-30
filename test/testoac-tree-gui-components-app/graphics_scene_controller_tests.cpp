@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/nodeeditor/graphics_scene_controller.h"
-
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/epics_instruction_items.h>
 #include <oac-tree-gui/model/instruction_container_item.h>
@@ -40,6 +38,8 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/nodeeditor/graphics_scene_controller.h"
 
 namespace oac_tree_gui::test
 {

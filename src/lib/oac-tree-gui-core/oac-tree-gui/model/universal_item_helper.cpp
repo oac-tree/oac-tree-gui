@@ -28,6 +28,7 @@
 #include <oac-tree-gui/model/iterate_helper.h>
 #include <oac-tree-gui/transform/attribute_item_transform_helper.h>
 #include <oac-tree-gui/transform/transform_from_domain.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/i_session_model.h>

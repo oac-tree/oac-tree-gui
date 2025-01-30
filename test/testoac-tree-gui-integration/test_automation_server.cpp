@@ -19,12 +19,12 @@
 
 #include "test_automation_server.h"
 
+#include <sup/epics/epics_protocol_factory.h>
 #include <sup/oac-tree-server/automation_server.h>
 #include <sup/oac-tree-server/control_protocol_server.h>
 #include <sup/oac-tree-server/epics_config_utils.h>
 #include <sup/oac-tree-server/info_protocol_server.h>
 #include <sup/oac-tree-server/oac_tree_protocol.h>
-#include <sup/epics/epics_protocol_factory.h>
 #include <sup/oac-tree/sequence_parser.h>
 
 #include <testutils/test_utils.h>
@@ -42,7 +42,8 @@ void TestAutomationServer::Start(const std::string &server_name,
     auto procedure =
         sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_string));
 
-    auto anyvalue_manager_registry = sup::oac_tree_server::utils::CreateEPICSAnyValueManagerRegistry(1);
+    auto anyvalue_manager_registry =
+        sup::oac_tree_server::utils::CreateEPICSAnyValueManagerRegistry(1);
     sup::oac_tree_server::AutomationServer auto_server{server_name, *anyvalue_manager_registry};
     auto_server.AddJob(std::move(procedure));
 

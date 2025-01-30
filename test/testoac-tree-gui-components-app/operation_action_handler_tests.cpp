@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/operation/operation_action_handler.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/jobsystem/abstract_job_handler.h>
 #include <oac-tree-gui/model/procedure_item.h>
@@ -35,6 +33,8 @@
 #include <testutils/mock_remote_connection_service.h>
 
 #include <QSignalSpy>
+
+#include "oac-tree-gui/operation/operation_action_handler.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 

@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/operation/operation_action_helper.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/jobsystem/local_job_handler.h>
 #include <oac-tree-gui/jobsystem/remote_connection_service.h>
@@ -32,6 +30,8 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_remote_connection_service.h>
 #include <testutils/standard_procedure_items.h>
+
+#include "oac-tree-gui/operation/operation_action_helper.h"
 
 namespace oac_tree_gui
 {

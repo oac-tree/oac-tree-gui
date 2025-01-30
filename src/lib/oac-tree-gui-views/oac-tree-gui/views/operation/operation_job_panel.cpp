@@ -27,6 +27,7 @@
 #include <oac-tree-gui/model/job_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
+
 #include <sup/gui/widgets/collapsible_list_view.h>
 
 #include <QVBoxLayout>

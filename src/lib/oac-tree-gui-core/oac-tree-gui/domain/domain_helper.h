@@ -26,6 +26,7 @@
 
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
+
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>

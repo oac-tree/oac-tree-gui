@@ -22,6 +22,7 @@
 #include <oac-tree-gui/model/job_item.h>
 #include <oac-tree-gui/model/job_model.h>
 #include <oac-tree-gui/viewmodel/job_list_viewmodel.h>
+
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/providers/item_view_component_provider.h>

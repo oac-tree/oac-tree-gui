@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/nodeeditor/sequencer_align_utils.h"
-
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
@@ -31,6 +29,8 @@
 #include <gtest/gtest.h>
 
 #include <QPointF>
+
+#include "oac-tree-gui/nodeeditor/sequencer_align_utils.h"
 
 namespace oac_tree_gui::test
 {

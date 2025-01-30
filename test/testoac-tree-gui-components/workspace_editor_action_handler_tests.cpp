@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/composer/workspace_editor_action_handler.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
@@ -26,6 +24,7 @@
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/pvmonitor/monitor_model.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/test/test_helper.h>
@@ -37,6 +36,8 @@
 #include <testutils/mock_dialog.h>
 
 #include <QSignalSpy>
+
+#include "oac-tree-gui/composer/workspace_editor_action_handler.h"
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 

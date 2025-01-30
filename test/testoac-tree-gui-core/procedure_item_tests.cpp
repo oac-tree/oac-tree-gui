@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/model/procedure_item.h"
-
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/epics_instruction_items.h>
@@ -29,6 +27,8 @@
 #include <oac-tree-gui/model/workspace_item.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/model/procedure_item.h"
 
 namespace oac_tree_gui::test
 {

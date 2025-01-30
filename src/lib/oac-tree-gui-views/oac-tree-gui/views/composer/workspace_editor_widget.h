@@ -20,10 +20,10 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
+#include <QWidget>
+
 #include "oac-tree-gui/components/component_types.h"
 #include "oac-tree-gui/model/procedure_item.h"
-
-#include <QWidget>
 
 class QTreeView;
 class QLineEdit;

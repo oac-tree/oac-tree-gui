@@ -17,11 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/composer/procedure_list_action_handler.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/viewmodel/drag_and_drop_helper.h>
+
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/application_model.h>
@@ -32,6 +31,8 @@
 
 #include <QMimeData>
 #include <QSignalSpy>
+
+#include "oac-tree-gui/composer/procedure_list_action_handler.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 

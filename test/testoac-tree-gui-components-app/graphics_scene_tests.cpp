@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/nodeeditor/graphics_scene.h"
-
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
@@ -39,6 +37,8 @@
 
 #include <QSignalSpy>
 #include <QTest>
+
+#include "oac-tree-gui/nodeeditor/graphics_scene.h"
 
 namespace oac_tree_gui::test
 {

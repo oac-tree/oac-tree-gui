@@ -24,6 +24,7 @@
 #include <oac-tree-gui/components/anyvalue_dialog_result.h>
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_helper.h>
+
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/views/anyvalueeditor/anyvalue_editor_dialog.h>
@@ -102,7 +103,7 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget
 
   auto option0_button = msg_box.addButton(selection_list.at(0), QMessageBox::AcceptRole);
   auto option1_button = msg_box.addButton(selection_list.at(1), QMessageBox::RejectRole);
-  (void) option1_button;
+  (void)option1_button;
 
   msg_box.exec();
 

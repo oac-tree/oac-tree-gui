@@ -100,4 +100,4 @@ TEST_F(ViewmodelHelperTest, IterateFirstColumn)
   EXPECT_EQ(visited_indices, expected_indices);
 }
 
-}
+}  // namespace oac_tree_gui::test

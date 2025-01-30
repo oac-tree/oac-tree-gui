@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/transform/domain_procedure_builder.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/domain_helper.h>
@@ -41,6 +39,8 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/transform/domain_procedure_builder.h"
 
 namespace oac_tree_gui::test
 {

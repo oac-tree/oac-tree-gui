@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/transform/transform_from_domain.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/epics_instruction_items.h>
@@ -29,6 +27,8 @@
 
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
+
+#include "oac-tree-gui/transform/transform_from_domain.h"
 
 namespace oac_tree_gui::test
 {

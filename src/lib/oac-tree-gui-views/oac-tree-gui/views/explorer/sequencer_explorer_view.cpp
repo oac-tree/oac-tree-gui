@@ -25,6 +25,7 @@
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
 #include <oac-tree-gui/views/operation/procedure_action_handler.h>
+
 #include <sup/gui/views/codeeditor/code_view.h>
 #include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/item_stack_widget.h>

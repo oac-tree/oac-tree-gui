@@ -28,6 +28,7 @@
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 #include <oac-tree-gui/transform/domain_workspace_builder.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>

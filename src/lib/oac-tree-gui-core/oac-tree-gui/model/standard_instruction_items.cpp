@@ -70,7 +70,7 @@ ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(GetStati
 
 std::string ParallelSequenceItem::GetStaticType()
 {
-return domainconstants::kParallelInstructionType;
+  return domainconstants::kParallelInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone() const

@@ -168,8 +168,7 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
   mvvm::test::CreateTextFile(main_file_name, test::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external.xml");
-  mvvm::test::CreateTextFile(external_file_name,
-                             test::CreateProcedureString(external_procedure));
+  mvvm::test::CreateTextFile(external_file_name, test::CreateProcedureString(external_procedure));
 
   auto procedure_item = oac_tree_gui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
@@ -202,8 +201,7 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
   mvvm::test::CreateTextFile(main_file_name, test::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external2.xml");
-  mvvm::test::CreateTextFile(external_file_name,
-                             test::CreateProcedureString(external_procedure));
+  mvvm::test::CreateTextFile(external_file_name, test::CreateProcedureString(external_procedure));
 
   auto procedure_item = oac_tree_gui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
@@ -223,4 +221,4 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
   EXPECT_EQ(wait_items.at(0)->GetTimeout(), 42);
 }
 
-}
+}  // namespace oac_tree_gui::test

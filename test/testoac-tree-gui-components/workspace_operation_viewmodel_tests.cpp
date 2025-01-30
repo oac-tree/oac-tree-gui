@@ -17,14 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/workspace_operation_viewmodel.h"
-
 #include <oac-tree-gui/components/component_helper.h>
+#include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+
 #include <sup/gui/model/anyvalue_item.h>
-#include <oac-tree-gui/domain/domain_helper.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -33,6 +32,8 @@
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
+
+#include "oac-tree-gui/viewmodel/workspace_operation_viewmodel.h"
 
 namespace oac_tree_gui::test
 {

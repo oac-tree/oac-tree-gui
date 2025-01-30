@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/pvmonitor/workspace_monitor_helper.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/domain_helper.h>
@@ -28,6 +26,7 @@
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -36,6 +35,8 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/pvmonitor/workspace_monitor_helper.h"
 
 namespace oac_tree_gui::test
 {

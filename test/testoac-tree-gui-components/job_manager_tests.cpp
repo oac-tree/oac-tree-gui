@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/jobsystem/job_manager.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/jobsystem/i_job_handler.h>
 #include <oac-tree-gui/model/standard_job_items.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_job_handler.h>
+
+#include "oac-tree-gui/jobsystem/job_manager.h"
 
 namespace oac_tree_gui
 {

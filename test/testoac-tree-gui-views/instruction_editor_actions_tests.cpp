@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/views/composer/instruction_editor_actions.h"
-
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/views/composer/instruction_editor_actions.h"
 
 namespace oac_tree_gui::test
 {

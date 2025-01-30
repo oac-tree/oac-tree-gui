@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/nodeeditor/align_node.h"
-
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/nodeeditor/align_node.h"
 
 namespace
 {
@@ -189,4 +189,4 @@ TEST_F(AlignNodeTest, GetIndex)
   EXPECT_EQ(child2->GetIndex(), 2);
 }
 
-}
+}  // namespace oac_tree_gui::test

@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/operation/instruction_tree_expand_controller.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/item_constants.h>
@@ -32,6 +30,8 @@
 #include <gtest/gtest.h>
 
 #include <QTreeView>
+
+#include "oac-tree-gui/operation/instruction_tree_expand_controller.h"
 
 namespace oac_tree_gui::test
 {

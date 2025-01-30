@@ -52,7 +52,8 @@ QPixmap CreatePixmap()
 namespace oac_tree_gui
 {
 
-InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent_widget) : QTreeView(parent_widget)
+InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent_widget)
+    : QTreeView(parent_widget)
 {
   auto on_double_click = [this](auto index)
   {
@@ -71,7 +72,7 @@ InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent_widget) : Q
 
 void InsructionToolKitTreeView::startDrag(Qt::DropActions supported_actions)
 {
-  (void) supported_actions;
+  (void)supported_actions;
 
   if (auto mime_data = model()->mimeData(selectedIndexes()); mime_data)
   {

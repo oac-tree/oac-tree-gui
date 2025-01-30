@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/composer/procedure_plugin_controller.h"
-
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/epics_instruction_items.h>
@@ -33,6 +31,8 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/composer/procedure_plugin_controller.h"
 
 namespace oac_tree_gui::test
 {

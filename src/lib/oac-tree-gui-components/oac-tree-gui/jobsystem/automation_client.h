@@ -20,12 +20,12 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 #define OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 
-#include "oac-tree-gui/jobsystem/user_context.h"
-
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/jobsystem/i_automation_client.h>
 
 #include <memory>
+
+#include "oac-tree-gui/jobsystem/user_context.h"
 
 namespace sup::oac_tree_server
 {

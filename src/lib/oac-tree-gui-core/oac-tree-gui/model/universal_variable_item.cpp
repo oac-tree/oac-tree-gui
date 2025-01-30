@@ -19,17 +19,17 @@
 
 #include "universal_variable_item.h"
 
-#include <sup/gui/model/anyvalue_item.h>
-
-#include <mvvm/model/item_utils.h>
-
-#include <sup/oac-tree/variable.h>
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 #include <oac-tree-gui/transform/attribute_item_transform_helper.h>
+
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/item_utils.h>
+
+#include <sup/oac-tree/variable.h>
 
 namespace
 {

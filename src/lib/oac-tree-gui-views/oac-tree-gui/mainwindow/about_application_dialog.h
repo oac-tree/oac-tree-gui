@@ -21,7 +21,6 @@
 #define OAC_TREE_GUI_MAINWINDOW_ABOUT_APPLICATION_DIALOG_H_
 
 #include <QDialog>
-
 #include <memory>
 
 class QBoxLayout;

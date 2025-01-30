@@ -17,20 +17,21 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/composer/attribute_editor_action_handler.h"
-
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/sequencer_item_helper.h>
 #include <oac-tree-gui/model/standard_instruction_items.h>
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 #include <oac-tree-gui/transform/attribute_item_transform_helper.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
+
+#include "oac-tree-gui/composer/attribute_editor_action_handler.h"
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 

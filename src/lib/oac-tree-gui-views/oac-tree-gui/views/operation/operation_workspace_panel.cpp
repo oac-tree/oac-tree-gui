@@ -21,6 +21,7 @@
 
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/views/composer/workspace_editor_widget.h>
+
 #include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QVBoxLayout>

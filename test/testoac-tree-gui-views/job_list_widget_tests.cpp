@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/views/operation/job_list_widget.h"
-
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/job_model.h>
 #include <oac-tree-gui/model/standard_job_items.h>
@@ -30,6 +28,8 @@
 
 #include <QSignalSpy>
 #include <QTreeView>
+
+#include "oac-tree-gui/views/operation/job_list_widget.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 

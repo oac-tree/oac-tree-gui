@@ -133,8 +133,7 @@ const std::string kSeverityAttribute = sup::oac_tree::Constants::SEVERITY_ATTRIB
 const std::string kMessageAttribute = sup::oac_tree::Constants::MESSAGE_ATTRIBUTE_NAME;
 const std::string kPrettyJsonAttribute = sup::oac_tree::Constants::PRETTY_JSON_ATTRIBUTE_NAME;
 const std::string kDynamicTypeAttribute = sup::oac_tree::Constants::IS_DYNAMIC_TYPE_ATTRIBUTE_NAME;
-const std::string kShowCollapsedAttribute =
-    sup::oac_tree::Constants::SHOW_COLLAPSED_ATTRIBUTE_NAME;
+const std::string kShowCollapsedAttribute = sup::oac_tree::Constants::SHOW_COLLAPSED_ATTRIBUTE_NAME;
 
 }  // namespace oac_tree_gui::domainconstants
 

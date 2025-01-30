@@ -32,6 +32,7 @@
 #include <oac-tree-gui/nodeeditor/graphics_scene_controller.h>
 #include <oac-tree-gui/nodeeditor/scene_utils.h>
 #include <oac-tree-gui/nodeeditor/sequencer_align_utils.h>
+
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 

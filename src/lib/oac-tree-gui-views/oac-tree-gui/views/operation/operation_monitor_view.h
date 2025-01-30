@@ -31,7 +31,7 @@ namespace sup::gui
 {
 class CustomSplitter;
 class AppContext;
-}
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {

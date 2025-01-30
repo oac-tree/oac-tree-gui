@@ -22,6 +22,7 @@
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/viewmodel/drag_and_drop_helper.h>
+
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/i_session_model.h>

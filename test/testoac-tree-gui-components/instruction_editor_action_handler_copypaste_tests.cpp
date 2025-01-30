@@ -17,14 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/composer/instruction_editor_action_handler.h"
-
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_model.h>
 #include <oac-tree-gui/model/standard_instruction_items.h>
 #include <oac-tree-gui/nodeeditor/scene_utils.h>
 #include <oac-tree-gui/viewmodel/drag_and_drop_helper.h>
+
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -37,6 +36,8 @@
 
 #include <QMimeData>
 #include <QSignalSpy>
+
+#include "oac-tree-gui/composer/instruction_editor_action_handler.h"
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 

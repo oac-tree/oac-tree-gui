@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <oac-tree-gui/components/load_resources.h>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <QMetaType>
-
-#include <oac-tree-gui/components/load_resources.h>
 
 int main(int argc, char** argv)
 {

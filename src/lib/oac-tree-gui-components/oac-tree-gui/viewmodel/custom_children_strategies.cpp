@@ -19,16 +19,16 @@
 
 #include "custom_children_strategies.h"
 
+#include <oac-tree-gui/model/sequencer_item_helper.h>
+#include <oac-tree-gui/model/standard_variable_items.h>
+#include <oac-tree-gui/model/workspace_item.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <algorithm>
-
-#include <oac-tree-gui/model/sequencer_item_helper.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/workspace_item.h>
 
 namespace oac_tree_gui
 {

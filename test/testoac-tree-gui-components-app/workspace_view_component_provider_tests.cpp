@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/operation/workspace_view_component_provider.h"
-
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/workspace_item.h>
@@ -29,6 +27,8 @@
 #include <gtest/gtest.h>
 
 #include <QTreeView>
+
+#include "oac-tree-gui/operation/workspace_view_component_provider.h"
 
 namespace oac_tree_gui::test
 {

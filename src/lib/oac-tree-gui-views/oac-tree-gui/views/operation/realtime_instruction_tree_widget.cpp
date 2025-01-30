@@ -28,6 +28,7 @@
 #include <oac-tree-gui/operation/instruction_tree_expand_controller.h>
 #include <oac-tree-gui/operation/tooltip_helper.h>
 #include <oac-tree-gui/viewmodel/instruction_operation_viewmodel.h>
+
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>

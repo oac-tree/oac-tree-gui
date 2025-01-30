@@ -23,6 +23,7 @@
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/style/style_helper.h>
 #include <oac-tree-gui/transform/attribute_item_transform_helper.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/action_menu.h>
 

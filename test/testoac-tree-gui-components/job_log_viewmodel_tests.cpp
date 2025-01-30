@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/job_log_viewmodel.h"
-
 #include <oac-tree-gui/jobsystem/job_log.h>
 
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
+
+#include "oac-tree-gui/viewmodel/job_log_viewmodel.h"
 
 namespace oac_tree_gui::test
 {
@@ -189,4 +189,4 @@ TEST_F(JobLogViewModelTest, SwitchToAnotherJobLog)
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 3);
 }
 
-}
+}  // namespace oac_tree_gui::test

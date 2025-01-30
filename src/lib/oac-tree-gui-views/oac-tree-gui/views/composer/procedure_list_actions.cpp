@@ -21,6 +21,7 @@
 
 #include <oac-tree-gui/composer/procedure_list_action_handler.h>
 #include <oac-tree-gui/style/style_helper.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context.h>

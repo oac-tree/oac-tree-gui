@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/nodeeditor/align_utils.h"
-
 #include <oac-tree-gui/nodeeditor/align_node.h>
 
 #include <gtest/gtest.h>
+
+#include "oac-tree-gui/nodeeditor/align_utils.h"
 
 namespace oac_tree_gui::test
 {

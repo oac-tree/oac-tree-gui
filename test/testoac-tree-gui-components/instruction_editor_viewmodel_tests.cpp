@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/instruction_editor_viewmodel.h"
-
 #include <oac-tree-gui/model/instruction_container_item.h>
 #include <oac-tree-gui/model/procedure_item.h>
 #include <oac-tree-gui/model/sequencer_item_helper.h>
@@ -35,6 +33,8 @@
 
 #include <QMimeData>
 #include <QSignalSpy>
+
+#include "oac-tree-gui/viewmodel/instruction_editor_viewmodel.h"
 
 namespace oac_tree_gui::test
 {

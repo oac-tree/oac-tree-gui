@@ -17,6 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <oac-tree-gui/core/exceptions.h>
+#include <oac-tree-gui/domain/domain_constants.h>
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/model/epics_instruction_items.h>
+#include <oac-tree-gui/model/instruction_container_item.h>
+#include <oac-tree-gui/model/procedure_item.h>
+#include <oac-tree-gui/model/sequencer_model.h>
+#include <oac-tree-gui/model/standard_instruction_items.h>
+#include <oac-tree-gui/model/universal_item_helper.h>
+#include <oac-tree-gui/nodeeditor/scene_utils.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -29,16 +40,6 @@
 #include <QSignalSpy>
 
 #include "oac-tree-gui/composer/instruction_editor_action_handler.h"
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/domain/domain_constants.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/epics_instruction_items.h>
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/universal_item_helper.h>
-#include <oac-tree-gui/nodeeditor/scene_utils.h>
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 

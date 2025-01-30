@@ -21,6 +21,7 @@
 #define OAC_TREE_GUI_MODEL_VARIABLE_ITEM_H_
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
+
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <mvvm/model/compound_item.h>

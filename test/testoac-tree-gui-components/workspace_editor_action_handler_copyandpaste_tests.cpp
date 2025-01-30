@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/composer/workspace_editor_action_handler.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/item_constants.h>
@@ -27,6 +25,7 @@
 #include <oac-tree-gui/pvmonitor/monitor_model.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 #include <oac-tree-gui/viewmodel/drag_and_drop_helper.h>
+
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -40,6 +39,8 @@
 
 #include <QMimeData>
 #include <QSignalSpy>
+
+#include "oac-tree-gui/composer/workspace_editor_action_handler.h"
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 

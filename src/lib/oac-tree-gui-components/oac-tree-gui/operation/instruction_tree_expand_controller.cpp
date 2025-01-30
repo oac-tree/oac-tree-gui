@@ -24,6 +24,7 @@
 #include <oac-tree-gui/model/instruction_item.h>
 #include <oac-tree-gui/model/universal_item_helper.h>
 #include <oac-tree-gui/viewmodel/viewmodel_helper.h>
+
 #include <sup/gui/components/tree_helper.h>
 
 #include <mvvm/viewmodel/viewmodel.h>

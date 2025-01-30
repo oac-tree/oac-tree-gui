@@ -20,6 +20,7 @@
 #include "monitor_main_window_actions.h"
 
 #include <oac-tree-gui/model/sequencer_model.h>
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 

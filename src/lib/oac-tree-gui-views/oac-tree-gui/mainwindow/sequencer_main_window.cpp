@@ -29,6 +29,7 @@
 #include <oac-tree-gui/views/composer/sequencer_composer_view.h>
 #include <oac-tree-gui/views/explorer/sequencer_explorer_view.h>
 #include <oac-tree-gui/views/operation/operation_monitor_view.h>
+
 #include <sup/gui/mainwindow/settings_helper.h>
 #include <sup/gui/model/settings_model.h>
 

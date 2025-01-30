@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/pvmonitor/domain_workspace_listener.h"
-
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/jobsystem/domain_events.h>
@@ -33,6 +31,8 @@
 #include <testutils/sequencer_test_utils.h>
 
 #include <QTest>
+
+#include "oac-tree-gui/pvmonitor/domain_workspace_listener.h"
 
 namespace
 {
