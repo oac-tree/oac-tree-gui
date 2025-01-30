@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
-#define SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
 
 #include <oac-tree-gui/jobsystem/request_handler_queue.h>
 #include <oac-tree-gui/jobsystem/request_types.h>
@@ -69,4 +69,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_

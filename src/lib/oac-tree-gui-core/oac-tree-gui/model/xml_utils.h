@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_XML_UTILS_H_
-#define SEQUENCERGUI_MODEL_XML_UTILS_H_
+#ifndef OAC_TREE_GUI_MODEL_XML_UTILS_H_
+#define OAC_TREE_GUI_MODEL_XML_UTILS_H_
 
 //! Collection of utility functions to import xml files from disk into SessionModel.
 
@@ -63,4 +63,4 @@ std::string ExportToXMLString(const ProcedureItem& procedure_item);
 std::string ReplaceQuotationMarks(const std::string& str);
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_XML_UTILS_H_
+#endif  // OAC_TREE_GUI_MODEL_XML_UTILS_H_

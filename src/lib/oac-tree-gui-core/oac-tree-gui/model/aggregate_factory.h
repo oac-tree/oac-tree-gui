@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_AGGREGATE_FACTORY_H_
-#define SEQUENCERGUI_MODEL_AGGREGATE_FACTORY_H_
+#ifndef OAC_TREE_GUI_MODEL_AGGREGATE_FACTORY_H_
+#define OAC_TREE_GUI_MODEL_AGGREGATE_FACTORY_H_
 
 #include <oac-tree-gui/core/factory.h>
 
@@ -42,4 +42,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_AGGREGATE_FACTORY_H_
+#endif  // OAC_TREE_GUI_MODEL_AGGREGATE_FACTORY_H_

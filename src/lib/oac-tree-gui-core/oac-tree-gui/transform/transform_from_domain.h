@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_
-#define SEQUENCERGUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_
+#ifndef OAC_TREE_GUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_
+#define OAC_TREE_GUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_
 
 //! @file
 //! Collection of utility functions to convert sup::oac_tree::Procedure into SessionModel.
@@ -54,4 +54,4 @@ RunnerStatus GetRunnerStatusFromDomain(sup::oac_tree::JobState job_state);
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_
+#endif  // OAC_TREE_GUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_

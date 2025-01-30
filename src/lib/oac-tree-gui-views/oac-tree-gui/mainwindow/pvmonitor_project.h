@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_PVMONITOR_PROJECT_H_
-#define SEQUENCERGUI_MAINWINDOW_PVMONITOR_PROJECT_H_
+#ifndef OAC_TREE_GUI_MAINWINDOW_PVMONITOR_PROJECT_H_
+#define OAC_TREE_GUI_MAINWINDOW_PVMONITOR_PROJECT_H_
 
 #include <mvvm/project/app_project.h>
 
@@ -44,4 +44,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_PVMONITOR_PROJECT_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_PVMONITOR_PROJECT_H_

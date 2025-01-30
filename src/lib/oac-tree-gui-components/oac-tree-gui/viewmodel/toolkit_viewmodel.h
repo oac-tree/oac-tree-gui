@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
-#define SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
+#ifndef OAC_TREE_GUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
+#define OAC_TREE_GUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
 
 #include <oac-tree-gui/domain/domain_object_group_helper.h>
 
@@ -59,4 +59,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
+#endif  // OAC_TREE_GUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_BREAKPOINT_HELPER_H_
-#define SEQUENCERGUI_OPERATION_BREAKPOINT_HELPER_H_
+#ifndef OAC_TREE_GUI_OPERATION_BREAKPOINT_HELPER_H_
+#define OAC_TREE_GUI_OPERATION_BREAKPOINT_HELPER_H_
 
 //! Collection of helper methods to handler breakpoints during instruction execution.
 
@@ -84,4 +84,4 @@ void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info,
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_OPERATION_BREAKPOINT_HELPER_H_
+#endif  // OAC_TREE_GUI_OPERATION_BREAKPOINT_HELPER_H_

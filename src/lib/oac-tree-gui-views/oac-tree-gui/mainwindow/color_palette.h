@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_COLOR_PALETTE_H_
-#define SEQUENCERGUI_MAINWINDOW_COLOR_PALETTE_H_
+#ifndef OAC_TREE_GUI_MAINWINDOW_COLOR_PALETTE_H_
+#define OAC_TREE_GUI_MAINWINDOW_COLOR_PALETTE_H_
 
 //! @file
 //! Collection of colors for light and dark themes.
@@ -35,4 +35,4 @@ QColor GetMainToolBarColor();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_COLOR_PALETTE_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_COLOR_PALETTE_H_

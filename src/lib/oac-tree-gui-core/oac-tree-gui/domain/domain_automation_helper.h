@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_
-#define SEQUENCERGUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_
+#ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_
+#define OAC_TREE_GUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_
 
 //! @file
 //! Collection of helper functions related to the oac-tree-server.
@@ -46,4 +46,4 @@ std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_
+#endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_

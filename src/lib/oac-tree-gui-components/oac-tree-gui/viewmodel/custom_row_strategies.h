@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_CUSTOM_ROW_STRATEGIES_H_
-#define SEQUENCERGUI_VIEWMODEL_CUSTOM_ROW_STRATEGIES_H_
+#ifndef OAC_TREE_GUI_VIEWMODEL_CUSTOM_ROW_STRATEGIES_H_
+#define OAC_TREE_GUI_VIEWMODEL_CUSTOM_ROW_STRATEGIES_H_
 
 //! @file
 //! Various strategies to construct row of properties representing instructions and variables.
@@ -81,4 +81,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_ROW_STRATEGIES_H_
+#endif  // OAC_TREE_GUI_VIEWMODEL_CUSTOM_ROW_STRATEGIES_H_

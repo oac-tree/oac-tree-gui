@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_ITERATE_HELPER_H_
-#define SEQUENCERGUI_MODEL_ITERATE_HELPER_H_
+#ifndef OAC_TREE_GUI_MODEL_ITERATE_HELPER_H_
+#define OAC_TREE_GUI_MODEL_ITERATE_HELPER_H_
 
 #include <functional>
 #include <stack>
@@ -65,4 +65,4 @@ void IterateInstructionContainer(const ContainerT& container, std::function<void
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_ITERATE_HELPER_H_
+#endif  // OAC_TREE_GUI_MODEL_ITERATE_HELPER_H_

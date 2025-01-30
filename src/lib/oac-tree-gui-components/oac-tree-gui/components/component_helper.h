@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_COMPONENT_HELPER_H_
-#define SEQUENCERGUI_COMPONENTS_COMPONENT_HELPER_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_COMPONENT_HELPER_H_
+#define OAC_TREE_GUI_COMPONENTS_COMPONENT_HELPER_H_
 
 //! @file
 //! Collection of helper function to retrieve values of presentation-related constants.
@@ -59,4 +59,4 @@ QString GetCustomToolTipStyle();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_COMPONENTS_COMPONENT_HELPER_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_COMPONENT_HELPER_H_

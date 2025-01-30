@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
-#define SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_JOB_UTILS_H_
+#define OAC_TREE_GUI_JOBSYSTEM_JOB_UTILS_H_
 
 //! @file
 //! Collection of various utility functions for job execution.
@@ -35,4 +35,4 @@ std::string GetRegExpPattern(const std::vector<std::string>& data);
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_JOB_UTILS_H_

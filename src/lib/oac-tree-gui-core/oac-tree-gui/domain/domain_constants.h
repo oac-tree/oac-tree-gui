@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
-#define SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
+#ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_CONSTANTS_H_
+#define OAC_TREE_GUI_DOMAIN_DOMAIN_CONSTANTS_H_
 
 //! Collection of constants used by domain objects. The existence of this file (and unavoidable data
 //! duplication) is dictated by the fact that many oac-tree's headers are not exposed, and many
@@ -138,4 +138,4 @@ const std::string kShowCollapsedAttribute =
 
 }  // namespace oac_tree_gui::domainconstants
 
-#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
+#endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_CONSTANTS_H_

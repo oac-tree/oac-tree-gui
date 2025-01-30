@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_
-#define SEQUENCERGUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_
+#ifndef OAC_TREE_GUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_
+#define OAC_TREE_GUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/model/variable_item.h>
@@ -83,4 +83,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_
+#endif  // OAC_TREE_GUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_

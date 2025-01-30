@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_OAC_TREE_ITEM_HELPER_H_
-#define SEQUENCERGUI_MODEL_OAC_TREE_ITEM_HELPER_H_
+#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_HELPER_H_
+#define OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_HELPER_H_
 
 //! @file
 //! Various auxiliary functions for sequencer items.
@@ -75,4 +75,4 @@ mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
 mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_OAC_TREE_ITEM_HELPER_H_
+#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_HELPER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
-#define SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
+#define OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
 
 #include <oac-tree-gui/nodeeditor/view_factory_interface.h>
 
@@ -42,4 +42,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_

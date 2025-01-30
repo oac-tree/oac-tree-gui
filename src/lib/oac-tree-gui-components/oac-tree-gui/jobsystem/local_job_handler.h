@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
-#define SEQUENCERGUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
 
 #include <oac-tree-gui/jobsystem/abstract_job_handler.h>
 
@@ -68,4 +68,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_

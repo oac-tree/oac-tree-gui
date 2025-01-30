@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
-#define SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
+#define OAC_TREE_GUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
 
 //! Provide log severity levels and accompanying utility functions.
 
@@ -47,4 +47,4 @@ std::string ToString(Severity severity);
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_

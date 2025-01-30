@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_PORT_INFO_H_
-#define SEQUENCERGUI_NODEEDITOR_PORT_INFO_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_PORT_INFO_H_
+#define OAC_TREE_GUI_NODEEDITOR_PORT_INFO_H_
 
 #include <string>
 
@@ -38,4 +38,4 @@ const static PortInfo kRootPortInfo = {"BasicPort", "indianred"};
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_PORT_INFO_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_PORT_INFO_H_

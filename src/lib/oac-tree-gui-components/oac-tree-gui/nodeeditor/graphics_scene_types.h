@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
-#define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
+#define OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
 
 namespace oac_tree_gui
 {
@@ -32,4 +32,4 @@ enum ESelectionModes
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_

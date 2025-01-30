@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_ALIGN_UTILS_H_
-#define SEQUENCERGUI_NODEEDITOR_ALIGN_UTILS_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_ALIGN_UTILS_H_
+#define OAC_TREE_GUI_NODEEDITOR_ALIGN_UTILS_H_
 
 //! Collection of utility function for node positioning of the general tree.
 //! The tree is represented by AlignNode classes.
@@ -56,4 +56,4 @@ void AlignNodes(AlignNode& node);
 
 }  // namespace oac_tree_gui::algorithm
 
-#endif  // SEQUENCERGUI_NODEEDITOR_ALIGN_UTILS_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_ALIGN_UTILS_H_

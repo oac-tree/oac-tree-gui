@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_FILE_TREE_VIEW_H_
-#define SEQUENCERGUI_WIDGETS_FILE_TREE_VIEW_H_
+#ifndef OAC_TREE_GUI_WIDGETS_FILE_TREE_VIEW_H_
+#define OAC_TREE_GUI_WIDGETS_FILE_TREE_VIEW_H_
 
 #include <QWidget>
 
@@ -113,4 +113,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_WIDGETS_FILE_TREE_VIEW_H_
+#endif  // OAC_TREE_GUI_WIDGETS_FILE_TREE_VIEW_H_

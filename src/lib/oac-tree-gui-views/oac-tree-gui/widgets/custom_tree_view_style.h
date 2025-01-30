@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_
-#define SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_
+#ifndef OAC_TREE_GUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_
+#define OAC_TREE_GUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_
 
 #include <QProxyStyle>
 
@@ -43,4 +43,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_
+#endif  // OAC_TREE_GUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_

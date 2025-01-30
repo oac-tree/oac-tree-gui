@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_DIALOG_RESULT_H_
-#define SEQUENCERGUI_COMPONENTS_ANYVALUE_DIALOG_RESULT_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_ANYVALUE_DIALOG_RESULT_H_
+#define OAC_TREE_GUI_COMPONENTS_ANYVALUE_DIALOG_RESULT_H_
 
 #include <memory>
 
@@ -44,4 +44,4 @@ struct AnyValueDialogResult
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_DIALOG_RESULT_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_ANYVALUE_DIALOG_RESULT_H_

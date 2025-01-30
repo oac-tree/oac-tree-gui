@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_
-#define SEQUENCERGUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_
+#ifndef OAC_TREE_GUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_
+#define OAC_TREE_GUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_
 
 #include <QAbstractTableModel>
 
@@ -80,4 +80,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_
+#endif  // OAC_TREE_GUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_STYLE_STYLE_HELPER_H_
-#define SEQUENCERGUI_STYLE_STYLE_HELPER_H_
+#ifndef OAC_TREE_GUI_STYLE_STYLE_HELPER_H_
+#define OAC_TREE_GUI_STYLE_STYLE_HELPER_H_
 
 #include <sup/gui/style/icon_color_flavor.h>
 
@@ -39,4 +39,4 @@ QIcon FindIcon(const QString& icon_name,
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_STYLE_STYLE_HELPER_H_
+#endif  // OAC_TREE_GUI_STYLE_STYLE_HELPER_H_

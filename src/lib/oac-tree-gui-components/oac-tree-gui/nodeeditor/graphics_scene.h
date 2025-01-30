@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
-#define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_H_
+#define OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_H_
 
 #include "sup/gui/core/message_handler_interface.h"
 
@@ -104,4 +104,4 @@ inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_H_

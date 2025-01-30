@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
-#define SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
+#ifndef OAC_TREE_GUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
+#define OAC_TREE_GUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
 
 //! @file
 //! Collection of helper methods common for all sequencer main windows.
@@ -133,4 +133,4 @@ void ImportProcedures(const QString& file_name,
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_

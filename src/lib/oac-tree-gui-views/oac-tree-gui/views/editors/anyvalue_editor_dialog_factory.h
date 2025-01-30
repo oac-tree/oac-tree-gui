@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
-#define SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
+#ifndef OAC_TREE_GUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
+#define OAC_TREE_GUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 
 #include <oac-tree-gui/components/anyvalue_dialog_result.h>
 
@@ -79,4 +79,4 @@ std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValu
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
+#endif  // OAC_TREE_GUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_
-#define SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_
+#ifndef OAC_TREE_GUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_
+#define OAC_TREE_GUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_
 
 #include <mvvm/viewmodel/standard_presentation_items.h>
 
@@ -51,4 +51,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_
+#endif  // OAC_TREE_GUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_

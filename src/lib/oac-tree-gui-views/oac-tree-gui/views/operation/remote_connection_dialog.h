@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
-#define SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
+#ifndef OAC_TREE_GUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
+#define OAC_TREE_GUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
 
 #include <QDialog>
 #include <memory>
@@ -105,4 +105,4 @@ std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
+#endif  // OAC_TREE_GUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_

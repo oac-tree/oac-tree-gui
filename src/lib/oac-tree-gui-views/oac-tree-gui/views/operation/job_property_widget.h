@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_OPERATION_JOB_PROPERTY_WIDGET_H_
-#define SEQUENCERGUI_VIEWS_OPERATION_JOB_PROPERTY_WIDGET_H_
+#ifndef OAC_TREE_GUI_VIEWS_OPERATION_JOB_PROPERTY_WIDGET_H_
+#define OAC_TREE_GUI_VIEWS_OPERATION_JOB_PROPERTY_WIDGET_H_
 
 #include <QWidget>
 
@@ -49,4 +49,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_OPERATION_JOB_PROPERTY_WIDGET_H_
+#endif  // OAC_TREE_GUI_VIEWS_OPERATION_JOB_PROPERTY_WIDGET_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_TOOLTIP_HELPER_H_
-#define SEQUENCERGUI_OPERATION_TOOLTIP_HELPER_H_
+#ifndef OAC_TREE_GUI_OPERATION_TOOLTIP_HELPER_H_
+#define OAC_TREE_GUI_OPERATION_TOOLTIP_HELPER_H_
 
 //! @file
 //! Collection of helper methods for tooltip generation.
@@ -37,4 +37,4 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item);
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_OPERATION_TOOLTIP_HELPER_H_
+#endif  // OAC_TREE_GUI_OPERATION_TOOLTIP_HELPER_H_

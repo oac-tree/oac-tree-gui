@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
-#define SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
+#define OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
 
 #include <set>
 #include <string>
@@ -38,4 +38,4 @@ struct RemoteConnectionInfo
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_

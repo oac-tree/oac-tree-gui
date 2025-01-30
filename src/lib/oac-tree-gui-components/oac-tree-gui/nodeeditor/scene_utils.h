@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
-#define SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_SCENE_UTILS_H_
+#define OAC_TREE_GUI_NODEEDITOR_SCENE_UTILS_H_
 
 //! @file
 //! Collection of utility functions for graphics scene.
@@ -118,4 +118,4 @@ double GetInstructionDropOffset();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_SCENE_UTILS_H_

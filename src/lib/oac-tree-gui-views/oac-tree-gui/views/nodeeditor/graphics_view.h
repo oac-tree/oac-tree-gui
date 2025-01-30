@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
-#define SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
+#ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
+#define OAC_TREE_GUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
 
 #include <oac-tree-gui/nodeeditor/graphics_scene_types.h>
 
@@ -57,4 +57,4 @@ protected:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
+#endif  // OAC_TREE_GUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_

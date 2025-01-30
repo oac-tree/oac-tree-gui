@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_COMPOSER_OAC_TREE_COMPOSER_VIEW_H_
-#define SEQUENCERGUI_VIEWS_COMPOSER_OAC_TREE_COMPOSER_VIEW_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
 
 #include <QWidget>
 
@@ -83,4 +83,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_COMPOSER_OAC_TREE_COMPOSER_VIEW_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_

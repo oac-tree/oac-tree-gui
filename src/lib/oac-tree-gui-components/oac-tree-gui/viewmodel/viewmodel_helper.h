@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_VIEWMODEL_HELPER_H_
-#define SEQUENCERGUI_VIEWMODEL_VIEWMODEL_HELPER_H_
+#ifndef OAC_TREE_GUI_VIEWMODEL_VIEWMODEL_HELPER_H_
+#define OAC_TREE_GUI_VIEWMODEL_VIEWMODEL_HELPER_H_
 
 //! @file
 //! Helper functions for view models.
@@ -41,4 +41,4 @@ void IterateFirstColumn(const QAbstractItemModel& viewmodel, const QModelIndex& 
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_VIEWMODEL_HELPER_H_
+#endif  // OAC_TREE_GUI_VIEWMODEL_VIEWMODEL_HELPER_H_

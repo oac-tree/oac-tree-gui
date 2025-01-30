@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
-#define SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
+#ifndef OAC_TREE_GUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
+#define OAC_TREE_GUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
 
 #include <QSize>
 #include <QString>
@@ -58,4 +58,4 @@ Options ParseOptions(int argc, char** argv);
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_

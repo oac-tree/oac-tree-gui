@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_
-#define SEQUENCERGUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_
+#ifndef OAC_TREE_GUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_
+#define OAC_TREE_GUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_
 
 //! @file
 //! Collection of helper functions to transform VariableItem and InstructionItem properties
@@ -188,4 +188,4 @@ extern template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::An
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_
+#endif  // OAC_TREE_GUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_

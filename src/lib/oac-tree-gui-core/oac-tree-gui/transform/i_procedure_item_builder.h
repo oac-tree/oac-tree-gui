@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_I_PROCEDURE_ITEM_BUILDER_H_
-#define SEQUENCERGUI_TRANSFORM_I_PROCEDURE_ITEM_BUILDER_H_
+#ifndef OAC_TREE_GUI_TRANSFORM_I_PROCEDURE_ITEM_BUILDER_H_
+#define OAC_TREE_GUI_TRANSFORM_I_PROCEDURE_ITEM_BUILDER_H_
 
 #include <cstddef>
 
@@ -56,4 +56,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_TRANSFORM_I_PROCEDURE_ITEM_BUILDER_H_
+#endif  // OAC_TREE_GUI_TRANSFORM_I_PROCEDURE_ITEM_BUILDER_H_

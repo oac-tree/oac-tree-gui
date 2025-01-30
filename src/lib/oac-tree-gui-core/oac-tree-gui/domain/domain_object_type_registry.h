@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_
-#define SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_
+#ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_
+#define OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_
 
 #include <map>
 #include <optional>
@@ -73,4 +73,4 @@ DomainObjectTypeRegistry& GlobalDomainObjectTypeRegistry();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_
+#endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_

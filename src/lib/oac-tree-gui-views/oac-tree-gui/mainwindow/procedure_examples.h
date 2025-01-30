@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_
-#define SEQUENCERGUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_
+#ifndef OAC_TREE_GUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_
+#define OAC_TREE_GUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_
 
 //! Collection of example procedures to populate the model for debugging purposes.
 
@@ -51,4 +51,4 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model);
 }  // namespace Examples
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_

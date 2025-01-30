@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_JOB_ITEM_H_
-#define SEQUENCERGUI_MODEL_JOB_ITEM_H_
+#ifndef OAC_TREE_GUI_MODEL_JOB_ITEM_H_
+#define OAC_TREE_GUI_MODEL_JOB_ITEM_H_
 
 #include <oac-tree-gui/model/runner_status.h>
 
@@ -93,4 +93,4 @@ RunnerStatus GetRunnerStatus(const JobItem* item);
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_JOB_ITEM_H_
+#endif  // OAC_TREE_GUI_MODEL_JOB_ITEM_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_OAC_TREE_ITEM_INCLUDES_H_
-#define SEQUENCERGUI_MODEL_OAC_TREE_ITEM_INCLUDES_H_
+#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
+#define OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
 
 //! @file
 //! Includes for all sequencer related items.
@@ -36,4 +36,4 @@
 #include <oac-tree-gui/model/universal_variable_item.h>
 #include <oac-tree-gui/model/workspace_item.h>
 
-#endif  // SEQUENCERGUI_MODEL_OAC_TREE_ITEM_INCLUDES_H_
+#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_

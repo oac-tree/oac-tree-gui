@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_LOG_H_
-#define SEQUENCERGUI_JOBSYSTEM_JOB_LOG_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_JOB_LOG_H_
+#define OAC_TREE_GUI_JOBSYSTEM_JOB_LOG_H_
 
 #include <oac-tree-gui/jobsystem/log_event.h>
 
@@ -56,4 +56,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_LOG_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_JOB_LOG_H_

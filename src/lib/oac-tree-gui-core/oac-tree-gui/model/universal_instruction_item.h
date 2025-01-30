@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_UNIVERSAL_INSTRUCTION_ITEM_H_
-#define SEQUENCERGUI_MODEL_UNIVERSAL_INSTRUCTION_ITEM_H_
+#ifndef OAC_TREE_GUI_MODEL_UNIVERSAL_INSTRUCTION_ITEM_H_
+#define OAC_TREE_GUI_MODEL_UNIVERSAL_INSTRUCTION_ITEM_H_
 
 //! Collection of classes to represent oac-tree instructions.
 
@@ -85,4 +85,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_UNIVERSAL_INSTRUCTION_ITEM_H_
+#endif  // OAC_TREE_GUI_MODEL_UNIVERSAL_INSTRUCTION_ITEM_H_

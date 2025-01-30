@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_WORKSPACE_VIEW_COMPONENT_PROVIDER_H_
-#define SEQUENCERGUI_OPERATION_WORKSPACE_VIEW_COMPONENT_PROVIDER_H_
+#ifndef OAC_TREE_GUI_OPERATION_WORKSPACE_VIEW_COMPONENT_PROVIDER_H_
+#define OAC_TREE_GUI_OPERATION_WORKSPACE_VIEW_COMPONENT_PROVIDER_H_
 
 #include <mvvm/providers/item_view_component_provider.h>
 
@@ -60,4 +60,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_OPERATION_WORKSPACE_VIEW_COMPONENT_PROVIDER_H_
+#endif  // OAC_TREE_GUI_OPERATION_WORKSPACE_VIEW_COMPONENT_PROVIDER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_
-#define SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_
+#ifndef OAC_TREE_GUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_
+#define OAC_TREE_GUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_
 
 //! @file
 //! Collection of helper functions to transform VariableItem from/to domain variables.
@@ -68,4 +68,4 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_
+#endif  // OAC_TREE_GUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_

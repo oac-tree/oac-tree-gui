@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_TYPES_H_
-#define SEQUENCERGUI_JOBSYSTEM_REQUEST_TYPES_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_REQUEST_TYPES_H_
+#define OAC_TREE_GUI_JOBSYSTEM_REQUEST_TYPES_H_
 
 #include <sup/dto/anyvalue.h>
 
@@ -80,4 +80,4 @@ struct UserInputResult
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_TYPES_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_REQUEST_TYPES_H_

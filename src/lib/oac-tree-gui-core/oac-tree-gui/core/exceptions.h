@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_EXCEPTIONS_H_
-#define SEQUENCERGUI_CORE_EXCEPTIONS_H_
+#ifndef OAC_TREE_GUI_CORE_EXCEPTIONS_H_
+#define OAC_TREE_GUI_CORE_EXCEPTIONS_H_
 
 #include <exception>
 #include <string>
@@ -113,4 +113,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_CORE_EXCEPTIONS_H_
+#endif  // OAC_TREE_GUI_CORE_EXCEPTIONS_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_
-#define SEQUENCERGUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/jobsystem/abstract_domain_runner.h>
@@ -40,4 +40,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_

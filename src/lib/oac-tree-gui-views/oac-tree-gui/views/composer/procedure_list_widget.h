@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_
-#define SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_
 
 #include <oac-tree-gui/views/composer/procedure_list_actions.h>
 
@@ -85,4 +85,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_

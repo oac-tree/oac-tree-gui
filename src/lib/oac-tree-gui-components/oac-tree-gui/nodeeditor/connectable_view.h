@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_H_
-#define SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_H_
+#define OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_H_
 
 #include <QGraphicsItem>
 #include <memory>
@@ -101,4 +101,4 @@ QList<T*> ConnectableView::GetPorts() const
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_SPLASH_SCREEN_H_
-#define SEQUENCERGUI_MAINWINDOW_SPLASH_SCREEN_H_
+#ifndef OAC_TREE_GUI_MAINWINDOW_SPLASH_SCREEN_H_
+#define OAC_TREE_GUI_MAINWINDOW_SPLASH_SCREEN_H_
 
 #include <QSplashScreen>
 
@@ -43,4 +43,4 @@ protected:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_SPLASH_SCREEN_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_SPLASH_SCREEN_H_

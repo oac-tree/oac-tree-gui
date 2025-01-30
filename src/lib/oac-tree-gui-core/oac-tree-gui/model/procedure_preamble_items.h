@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_
-#define SEQUENCERGUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_
+#ifndef OAC_TREE_GUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_
+#define OAC_TREE_GUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_
 
 #include <mvvm/model/compound_item.h>
 
@@ -77,4 +77,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_
+#endif  // OAC_TREE_GUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_

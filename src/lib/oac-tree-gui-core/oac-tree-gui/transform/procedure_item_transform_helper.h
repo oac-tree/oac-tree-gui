@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_
-#define SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_
+#ifndef OAC_TREE_GUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_
+#define OAC_TREE_GUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_
 
 //! @file
 //! Collection of utility functions to convert sup::oac_tree::Procedure into SessionModel.
@@ -48,4 +48,4 @@ std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t& procedure)
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_
+#endif  // OAC_TREE_GUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_

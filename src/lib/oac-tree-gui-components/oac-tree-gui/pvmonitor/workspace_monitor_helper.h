@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
-#define SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
+#ifndef OAC_TREE_GUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
+#define OAC_TREE_GUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 
@@ -96,4 +96,4 @@ void UpdateVariableFromEvent(const sup::dto::AnyValue& value, bool connected, Va
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
+#endif  // OAC_TREE_GUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_HELPER_H_
-#define SEQUENCERGUI_DOMAIN_DOMAIN_HELPER_H_
+#ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_HELPER_H_
+#define OAC_TREE_GUI_DOMAIN_DOMAIN_HELPER_H_
 
 //! @file
 //! Collection of utility functions to access/create various oac-tree-related objects. With this
@@ -105,4 +105,4 @@ std::pair<bool, std::string> LoadPlugins();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_HELPER_H_
+#endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_HELPER_H_

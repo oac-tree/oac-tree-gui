@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
-#define SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
 
 #include <vector>
 
@@ -120,4 +120,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_

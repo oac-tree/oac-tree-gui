@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_
-#define SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_USER_CONTEXT_H_
+#define OAC_TREE_GUI_JOBSYSTEM_USER_CONTEXT_H_
 
 #include <oac-tree-gui/jobsystem/request_types.h>
 
@@ -41,4 +41,4 @@ struct UserContext
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_USER_CONTEXT_H_

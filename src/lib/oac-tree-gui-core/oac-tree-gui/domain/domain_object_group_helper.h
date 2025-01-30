@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_
-#define SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_
+#ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_
+#define OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_
 
 //! @file
 //! Collection of helper functions for instruction and variable composition.
@@ -73,4 +73,4 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_
+#endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_

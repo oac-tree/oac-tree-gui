@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_OAC_TREE_TYPES_FWD_H_
-#define SEQUENCERGUI_DOMAIN_OAC_TREE_TYPES_FWD_H_
+#ifndef OAC_TREE_GUI_DOMAIN_SEQUENCER_TYPES_FWD_H_
+#define OAC_TREE_GUI_DOMAIN_SEQUENCER_TYPES_FWD_H_
 
 //! @file
 //! Forward declarations and type aliases to some of sequencer domain types.
@@ -49,4 +49,4 @@ using runner_t = sup::oac_tree::Runner;
 using variable_t = sup::oac_tree::Variable;
 using workspace_t = sup::oac_tree::Workspace;
 
-#endif  // SEQUENCERGUI_DOMAIN_OAC_TREE_TYPES_FWD_H_
+#endif  // OAC_TREE_GUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

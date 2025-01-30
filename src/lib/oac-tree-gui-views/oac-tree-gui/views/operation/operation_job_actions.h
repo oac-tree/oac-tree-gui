@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
-#define SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
+#ifndef OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
+#define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
 
 #include <sup/gui/components/action_map.h>
 
@@ -98,4 +98,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_
+#endif  // OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENTS_H_
-#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENTS_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENTS_H_
+#define OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENTS_H_
 
 //! @file
 //! Contains a collection of classes representing various events happening on the domain side during
@@ -96,4 +96,4 @@ std::string ToString(const domain_event_t& value);
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENTS_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENTS_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_
-#define SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_
+#ifndef OAC_TREE_GUI_MODEL_REGISTER_ITEMS_H_
+#define OAC_TREE_GUI_MODEL_REGISTER_ITEMS_H_
 
 //! @file
 //! Contains utility function to register items in global factory.
@@ -33,4 +33,4 @@ void RegisterSessionItems();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_
+#endif  // OAC_TREE_GUI_MODEL_REGISTER_ITEMS_H_

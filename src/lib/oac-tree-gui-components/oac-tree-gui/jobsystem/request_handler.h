@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_
-#define SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_REQUEST_HANDLER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_REQUEST_HANDLER_H_
 
 #include <future>
 
@@ -61,4 +61,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_REQUEST_HANDLER_H_

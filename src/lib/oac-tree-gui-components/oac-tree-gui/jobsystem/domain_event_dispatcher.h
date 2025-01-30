@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_DISPATCHER_H_
-#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_DISPATCHER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENT_DISPATCHER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENT_DISPATCHER_H_
 
 #include <oac-tree-gui/jobsystem/domain_event_dispatcher_context.h>
 #include <oac-tree-gui/jobsystem/domain_events.h>
@@ -61,4 +61,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_DISPATCHER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENT_DISPATCHER_H_

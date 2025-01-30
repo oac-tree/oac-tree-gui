@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_NODE_CONNECTION_H_
-#define SEQUENCERGUI_NODEEDITOR_NODE_CONNECTION_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_NODE_CONNECTION_H_
+#define OAC_TREE_GUI_NODEEDITOR_NODE_CONNECTION_H_
 
 //! Node editor: original code is taken from
 //! http://algoholic.eu/qnodeseditor-qt-nodesports-based-data-processing-flow-editor/
@@ -67,4 +67,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_NODE_CONNECTION_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_NODE_CONNECTION_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
-#define SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
+#define OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 
 #include "oac-tree-gui/jobsystem/user_context.h"
 
@@ -63,4 +63,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_MODEL_H_
-#define SEQUENCERGUI_PVMONITOR_MONITOR_MODEL_H_
+#ifndef OAC_TREE_GUI_PVMONITOR_MONITOR_MODEL_H_
+#define OAC_TREE_GUI_PVMONITOR_MONITOR_MODEL_H_
 
 #include <mvvm/model/application_model.h>
 
@@ -45,4 +45,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_MODEL_H_
+#endif  // OAC_TREE_GUI_PVMONITOR_MONITOR_MODEL_H_

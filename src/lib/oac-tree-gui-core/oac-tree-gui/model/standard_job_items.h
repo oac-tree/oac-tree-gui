@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_STANDARD_JOB_ITEMS_H_
-#define SEQUENCERGUI_MODEL_STANDARD_JOB_ITEMS_H_
+#ifndef OAC_TREE_GUI_MODEL_STANDARD_JOB_ITEMS_H_
+#define OAC_TREE_GUI_MODEL_STANDARD_JOB_ITEMS_H_
 
 //! @file
 //! Collection of items derived from JobItem class.
@@ -139,4 +139,4 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_nam
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_STANDARD_JOB_ITEMS_H_
+#endif  // OAC_TREE_GUI_MODEL_STANDARD_JOB_ITEMS_H_

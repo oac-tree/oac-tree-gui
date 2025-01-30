@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_
-#define SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_
+#ifndef OAC_TREE_GUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_
+#define OAC_TREE_GUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_
 
 #include <functional>
 #include <memory>
@@ -58,4 +58,4 @@ struct ProcedureListContext
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_
+#endif  // OAC_TREE_GUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_

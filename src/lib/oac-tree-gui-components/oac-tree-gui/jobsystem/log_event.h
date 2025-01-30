@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_LOG_EVENT_H_
-#define SEQUENCERGUI_JOBSYSTEM_LOG_EVENT_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_LOG_EVENT_H_
+#define OAC_TREE_GUI_JOBSYSTEM_LOG_EVENT_H_
 
 #include <oac-tree-gui/jobsystem/job_log_severity.h>
 
@@ -53,4 +53,4 @@ std::string GetLogEventTimeFormat();
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_LOG_EVENT_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_LOG_EVENT_H_

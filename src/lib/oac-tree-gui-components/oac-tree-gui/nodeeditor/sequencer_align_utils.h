@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_OAC_TREE_ALIGN_UTILS_H_
-#define SEQUENCERGUI_NODEEDITOR_OAC_TREE_ALIGN_UTILS_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_SEQUENCER_ALIGN_UTILS_H_
+#define OAC_TREE_GUI_NODEEDITOR_SEQUENCER_ALIGN_UTILS_H_
 
 //! Collection of utility functions to align oac-tree instruction tree on the graphics scene.
 
@@ -64,4 +64,4 @@ bool RequiresInitialAlignment(const std::vector<InstructionItem*>& instructions)
 
 }  // namespace oac_tree_gui::algorithm
 
-#endif  // SEQUENCERGUI_NODEEDITOR_OAC_TREE_ALIGN_UTILS_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_SEQUENCER_ALIGN_UTILS_H_

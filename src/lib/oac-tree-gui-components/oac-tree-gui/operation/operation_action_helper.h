@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_ACTION_HELPER_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_ACTION_HELPER_H_
+#ifndef OAC_TREE_GUI_OPERATION_OPERATION_ACTION_HELPER_H_
+#define OAC_TREE_GUI_OPERATION_OPERATION_ACTION_HELPER_H_
 
 //! @file
 //! Collection of stand-alone helper functions to handle operation actions, i.e. for import remote
@@ -54,4 +54,4 @@ std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_ACTION_HELPER_H_
+#endif  // OAC_TREE_GUI_OPERATION_OPERATION_ACTION_HELPER_H_

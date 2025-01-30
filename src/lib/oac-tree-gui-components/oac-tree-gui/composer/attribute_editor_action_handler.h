@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_
-#define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_
+#ifndef OAC_TREE_GUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_
+#define OAC_TREE_GUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_
 
 #include <oac-tree-gui/composer/attribute_editor_context.h>
 
@@ -117,4 +117,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_
+#endif  // OAC_TREE_GUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_

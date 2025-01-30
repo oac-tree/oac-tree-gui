@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
-#define SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
+#ifndef OAC_TREE_GUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
+#define OAC_TREE_GUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
 
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 
@@ -84,4 +84,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
+#endif  // OAC_TREE_GUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_

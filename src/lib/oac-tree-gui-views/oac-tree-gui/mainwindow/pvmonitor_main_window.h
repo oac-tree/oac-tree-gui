@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_
-#define SEQUENCERGUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_
+#ifndef OAC_TREE_GUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_
+#define OAC_TREE_GUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_
 
 #include <QMainWindow>
 #include <memory>
@@ -67,4 +67,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_

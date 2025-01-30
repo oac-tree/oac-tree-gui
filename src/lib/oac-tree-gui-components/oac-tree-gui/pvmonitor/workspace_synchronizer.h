@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
-#define SEQUENCERGUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
+#ifndef OAC_TREE_GUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
+#define OAC_TREE_GUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
 
 #include <QObject>
 #include <memory>
@@ -78,4 +78,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
+#endif  // OAC_TREE_GUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_

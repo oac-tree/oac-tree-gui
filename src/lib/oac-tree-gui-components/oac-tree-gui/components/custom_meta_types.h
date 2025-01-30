@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_
-#define SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_CUSTOM_META_TYPES_H_
+#define OAC_TREE_GUI_COMPONENTS_CUSTOM_META_TYPES_H_
 
 //! Registration of custom types in Qt meta type system to provide support in signal/slot and
 //! QVariant.
@@ -38,6 +38,6 @@ void RegisterCustomMetaTypes();
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 Q_DECLARE_METATYPE(oac_tree_gui::LogEvent)
 Q_DECLARE_METATYPE(QList<int>)
-#endif  // SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_META_TYPES_H_
 
-#endif  // SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_META_TYPES_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_
-#define SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_
+#define OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_
 
 #include <map>
 #include <vector>
@@ -61,4 +61,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_

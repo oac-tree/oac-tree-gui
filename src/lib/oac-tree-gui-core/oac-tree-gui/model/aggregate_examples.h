@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_AGGREGATE_EXAMPLES_H_
-#define SEQUENCERGUI_MODEL_AGGREGATE_EXAMPLES_H_
+#ifndef OAC_TREE_GUI_MODEL_AGGREGATE_EXAMPLES_H_
+#define OAC_TREE_GUI_MODEL_AGGREGATE_EXAMPLES_H_
 
 //! Collection of factory functions to create complex instructions.
 
@@ -37,4 +37,4 @@ std::unique_ptr<InstructionItem> CreateIfThenElseAggregate();
 }  // namespace Examples
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_MODEL_AGGREGATE_EXAMPLES_H_
+#endif  // OAC_TREE_GUI_MODEL_AGGREGATE_EXAMPLES_H_

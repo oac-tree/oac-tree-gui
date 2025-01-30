@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_
-#define SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_POSITION_STRATEGY_H_
+#define OAC_TREE_GUI_NODEEDITOR_POSITION_STRATEGY_H_
 
 class QRectF;
 
@@ -63,4 +63,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_POSITION_STRATEGY_H_
