@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/components/load_resources.h>
+#include <oac_tree_gui/components/load_resources.h>
 
 #include <gtest/gtest.h>
 

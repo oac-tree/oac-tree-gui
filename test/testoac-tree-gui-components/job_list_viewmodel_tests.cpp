@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/standard_job_items.h>
+#include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/standard_job_items.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -28,7 +28,7 @@
 
 #include <QSignalSpy>
 
-#include "oac-tree-gui/viewmodel/job_list_viewmodel.h"
+#include "oac_tree_gui/viewmodel/job_list_viewmodel.h"
 
 namespace oac_tree_gui::test
 {

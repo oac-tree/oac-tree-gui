@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_USER_CONTEXT_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_USER_CONTEXT_H_
 
-#include <oac-tree-gui/jobsystem/user_context.h>
+#include <oac_tree_gui/jobsystem/user_context.h>
 
 #include <gmock/gmock.h>
 

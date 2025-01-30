@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/pvmonitor/monitor_model.h"
+#include "oac_tree_gui/pvmonitor/monitor_model.h"
 
 namespace oac_tree_gui::test
 {

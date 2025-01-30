@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/workspace_item.h>
-#include <oac-tree-gui/pvmonitor/monitor_model.h>
-#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/pvmonitor/monitor_model.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/views/pvmonitor/monitor_widget.h"
+#include "oac_tree_gui/views/pvmonitor/monitor_widget.h"
 
 namespace oac_tree_gui
 {

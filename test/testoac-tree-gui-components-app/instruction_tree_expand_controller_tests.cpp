@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/sequencer_item_helper.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/viewmodel/instruction_operation_viewmodel.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/viewmodel/instruction_operation_viewmodel.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -31,7 +31,7 @@
 
 #include <QTreeView>
 
-#include "oac-tree-gui/operation/instruction_tree_expand_controller.h"
+#include "oac_tree_gui/operation/instruction_tree_expand_controller.h"
 
 namespace oac_tree_gui::test
 {

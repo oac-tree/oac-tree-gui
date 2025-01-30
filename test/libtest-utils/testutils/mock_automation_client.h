@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_AUTOMATION_CLIENT_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_AUTOMATION_CLIENT_H_
 
-#include <oac-tree-gui/jobsystem/i_automation_client.h>
+#include <oac_tree_gui/jobsystem/i_automation_client.h>
 
 #include <gmock/gmock.h>
 

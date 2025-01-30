@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/views/composer/procedure_list_actions.h"
+#include "oac_tree_gui/views/composer/procedure_list_actions.h"
 
 #include <gtest/gtest.h>
 

@@ -21,7 +21,7 @@
 
 #include "test_utils.h"
 
-#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 
 #include <sup/oac-tree/execution_status.h>
 #include <sup/oac-tree/instruction.h>

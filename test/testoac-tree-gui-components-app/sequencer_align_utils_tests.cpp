@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/nodeeditor/align_node.h>
-#include <oac-tree-gui/nodeeditor/scene_utils.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/nodeeditor/align_node.h>
+#include <oac_tree_gui/nodeeditor/scene_utils.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -30,7 +30,7 @@
 
 #include <QPointF>
 
-#include "oac-tree-gui/nodeeditor/sequencer_align_utils.h"
+#include "oac_tree_gui/nodeeditor/sequencer_align_utils.h"
 
 namespace oac_tree_gui::test
 {

@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/jobsystem/request_types.h"
+#include "oac_tree_gui/jobsystem/request_types.h"
 
 namespace oac_tree_gui::test
 {

@@ -23,7 +23,7 @@
 //! @file
 //! Collection of utils to test sequencer.
 
-#include <oac-tree-gui/domain/sequencer_types_fwd.h>
+#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>

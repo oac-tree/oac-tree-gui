@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/viewmodel/viewmodel_helper.h"
+#include "oac_tree_gui/viewmodel/viewmodel_helper.h"
 
 //! @file
 //! Testing helper methods from viewmodel_helper.h

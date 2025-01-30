@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/jobsystem/abstract_job_handler.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/standard_job_items.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/abstract_job_handler.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/standard_job_items.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
@@ -34,7 +34,7 @@
 
 #include <QSignalSpy>
 
-#include "oac-tree-gui/operation/operation_action_handler.h"
+#include "oac_tree_gui/operation/operation_action_handler.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 

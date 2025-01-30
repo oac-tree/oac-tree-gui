@@ -21,7 +21,7 @@
 
 #include <QSignalSpy>
 
-#include "oac-tree-gui/jobsystem/job_log.h"
+#include "oac_tree_gui/jobsystem/job_log.h"
 
 namespace oac_tree_gui::test
 {

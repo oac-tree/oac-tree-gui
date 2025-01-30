@@ -17,21 +17,21 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/jobsystem/job_log.h>
-#include <oac-tree-gui/jobsystem/job_utils.h>
-#include <oac-tree-gui/jobsystem/request_types.h>
-#include <oac-tree-gui/jobsystem/user_context.h>
-#include <oac-tree-gui/model/application_models.h>
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/job_model.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/standard_job_items.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/operation/breakpoint_helper.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/job_log.h>
+#include <oac_tree_gui/jobsystem/job_utils.h>
+#include <oac_tree_gui/jobsystem/request_types.h>
+#include <oac_tree_gui/jobsystem/user_context.h>
+#include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/job_model.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/operation/breakpoint_helper.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -48,7 +48,7 @@
 #include <QTest>
 #include <chrono>
 
-#include "oac-tree-gui/jobsystem/local_job_handler.h"
+#include "oac_tree_gui/jobsystem/local_job_handler.h"
 
 using msec = std::chrono::milliseconds;
 

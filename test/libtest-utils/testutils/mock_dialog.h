@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_DIALOG_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_DIALOG_H_
 
-#include <oac-tree-gui/components/anyvalue_dialog_result.h>
+#include <oac_tree_gui/components/anyvalue_dialog_result.h>
 
 #include <gmock/gmock.h>
 

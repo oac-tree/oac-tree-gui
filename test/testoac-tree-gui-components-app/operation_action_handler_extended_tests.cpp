@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/jobsystem/job_manager.h>
-#include <oac-tree-gui/jobsystem/job_utils.h>
-#include <oac-tree-gui/jobsystem/local_job_handler.h>
-#include <oac-tree-gui/jobsystem/user_context.h>
-#include <oac-tree-gui/model/application_models.h>
-#include <oac-tree-gui/model/job_item.h>
-#include <oac-tree-gui/model/job_model.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/operation/operation_action_helper.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/job_manager.h>
+#include <oac_tree_gui/jobsystem/job_utils.h>
+#include <oac_tree_gui/jobsystem/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/user_context.h>
+#include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/model/job_item.h>
+#include <oac_tree_gui/model/job_model.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/operation/operation_action_helper.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -41,7 +41,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "oac-tree-gui/operation/operation_action_handler.h"
+#include "oac_tree_gui/operation/operation_action_handler.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 

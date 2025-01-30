@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_JOB_MANAGER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_JOB_MANAGER_H_
 
-#include <oac-tree-gui/jobsystem/i_job_item_manager.h>
+#include <oac_tree_gui/jobsystem/i_job_item_manager.h>
 
 #include <gmock/gmock.h>
 

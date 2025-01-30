@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/jobsystem/domain_events.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/jobsystem/domain_events.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
@@ -31,7 +31,7 @@
 
 #include <QTest>
 
-#include "oac-tree-gui/pvmonitor/domain_workspace_listener.h"
+#include "oac_tree_gui/pvmonitor/domain_workspace_listener.h"
 
 using testing::_;
 

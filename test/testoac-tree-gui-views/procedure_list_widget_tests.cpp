@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
@@ -31,7 +31,7 @@
 #include <QListView>
 #include <QSignalSpy>
 
-#include "oac-tree-gui/views/composer/procedure_list_widget.h"
+#include "oac_tree_gui/views/composer/procedure_list_widget.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 

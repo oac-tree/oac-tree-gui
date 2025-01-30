@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_REMOTE_CONNECTION_SERVICE_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_REMOTE_CONNECTION_SERVICE_H_
 
-#include <oac-tree-gui/jobsystem/i_remote_connection_service.h>
+#include <oac_tree_gui/jobsystem/i_remote_connection_service.h>
 
 #include <gmock/gmock.h>
 

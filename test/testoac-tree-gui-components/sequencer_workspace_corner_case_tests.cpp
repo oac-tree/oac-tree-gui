@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/domain/sequencer_types_fwd.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/epics-test/unit_test_helper.h>

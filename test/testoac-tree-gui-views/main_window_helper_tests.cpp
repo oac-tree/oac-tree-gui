@@ -24,7 +24,7 @@
 
 #include <testutils/folder_test.h>
 
-#include "oac-tree-gui/mainwindow/main_window_helper.h"
+#include "oac_tree_gui/mainwindow/main_window_helper.h"
 
 //! Testing methods from main_window_helper.h
 

@@ -19,9 +19,9 @@
 
 #include "sequencer_test_utils.h"
 
-#include <oac-tree-gui/domain/domain_constants.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/variable_item.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
 

@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/domain/domain_constants.h>
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/instruction_item.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/variable_item.h>
-#include <oac-tree-gui/model/workspace_item.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/variable_item.h>
+#include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/oac-tree/job_info.h>
 #include <sup/oac-tree/procedure.h>
@@ -32,7 +32,7 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-#include "oac-tree-gui/transform/procedure_item_job_info_builder.h"
+#include "oac_tree_gui/transform/procedure_item_job_info_builder.h"
 
 namespace oac_tree_gui::test
 {

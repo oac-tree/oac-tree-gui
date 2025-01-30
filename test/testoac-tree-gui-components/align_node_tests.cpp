@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/nodeeditor/align_node.h"
+#include "oac_tree_gui/nodeeditor/align_node.h"
 
 namespace
 {

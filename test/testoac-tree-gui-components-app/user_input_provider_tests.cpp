@@ -24,7 +24,7 @@
 #include <QTest>
 #include <future>
 
-#include "oac-tree-gui/jobsystem/user_input_provider.h"
+#include "oac_tree_gui/jobsystem/user_input_provider.h"
 
 namespace oac_tree_gui::test
 {

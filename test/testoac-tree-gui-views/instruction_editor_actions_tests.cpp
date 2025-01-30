@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/views/composer/instruction_editor_actions.h"
+#include "oac_tree_gui/views/composer/instruction_editor_actions.h"
 
 namespace oac_tree_gui::test
 {

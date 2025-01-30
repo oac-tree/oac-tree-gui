@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/universal_item_helper.h>
-#include <oac-tree-gui/nodeeditor/connectable_instruction_adapter.h>
-#include <oac-tree-gui/nodeeditor/connectable_view.h>
-#include <oac-tree-gui/nodeeditor/graphics_scene_controller.h>
-#include <oac-tree-gui/nodeeditor/node_connection.h>
-#include <oac-tree-gui/nodeeditor/node_port.h>
-#include <oac-tree-gui/nodeeditor/scene_utils.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
+#include <oac_tree_gui/nodeeditor/connectable_view.h>
+#include <oac_tree_gui/nodeeditor/graphics_scene_controller.h>
+#include <oac_tree_gui/nodeeditor/node_connection.h>
+#include <oac_tree_gui/nodeeditor/node_port.h>
+#include <oac_tree_gui/nodeeditor/scene_utils.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
@@ -38,7 +38,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "oac-tree-gui/nodeeditor/graphics_scene.h"
+#include "oac_tree_gui/nodeeditor/graphics_scene.h"
 
 namespace oac_tree_gui::test
 {

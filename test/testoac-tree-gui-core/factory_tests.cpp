@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/core/factory.h"
+#include "oac_tree_gui/core/factory.h"
 
 namespace oac_tree_gui::test
 {

@@ -20,8 +20,8 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_OPERATION_ACTION_CONTEXT_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_OPERATION_ACTION_CONTEXT_H_
 
-#include <oac-tree-gui/jobsystem/remote_connection_info.h>
-#include <oac-tree-gui/operation/operation_action_context.h>
+#include <oac_tree_gui/jobsystem/remote_connection_info.h>
+#include <oac_tree_gui/operation/operation_action_context.h>
 
 #include <gmock/gmock.h>
 

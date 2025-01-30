@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/domain/domain_constants.h>
-#include <oac-tree-gui/domain/domain_object_type_registry.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/domain/domain_object_group_helper.h"
+#include "oac_tree_gui/domain/domain_object_group_helper.h"
 
 namespace oac_tree_gui::test
 {

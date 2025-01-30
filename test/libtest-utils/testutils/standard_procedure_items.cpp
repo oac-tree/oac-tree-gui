@@ -21,15 +21,15 @@
 
 #include "test_utils.h"
 
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/universal_instruction_item.h>
-#include <oac-tree-gui/model/universal_item_helper.h>
-#include <oac-tree-gui/model/workspace_item.h>
-#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
 

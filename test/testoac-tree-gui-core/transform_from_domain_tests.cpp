@@ -17,18 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/epics_instruction_items.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/epics_instruction_items.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <sup/oac-tree/procedure_preamble.h>
 
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
 
-#include "oac-tree-gui/transform/transform_from_domain.h"
+#include "oac_tree_gui/transform/transform_from_domain.h"
 
 namespace oac_tree_gui::test
 {

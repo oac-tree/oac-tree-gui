@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/domain/domain_constants.h>
-#include <oac-tree-gui/model/item_constants.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/model/instruction_item.h"
+#include "oac_tree_gui/model/instruction_item.h"
 
 namespace oac_tree_gui::test
 {

@@ -19,7 +19,7 @@
 
 #include "mock_automation_client.h"
 
-#include <oac-tree-gui/jobsystem/abstract_job_handler.h>
+#include <oac_tree_gui/jobsystem/abstract_job_handler.h>
 
 namespace oac_tree_gui::test
 {

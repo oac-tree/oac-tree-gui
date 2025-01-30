@@ -23,11 +23,11 @@
 #include <QMessageBox>
 #include <QMetaType>
 
-#include <oac-tree-gui/components/load_resources.h>
-#include <oac-tree-gui/core/version.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/mainwindow/command_line_options.h>
-#include <oac-tree-gui/mainwindow/pvmonitor_main_window.h>
+#include <oac_tree_gui/components/load_resources.h>
+#include <oac_tree_gui/core/version.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/mainwindow/command_line_options.h>
+#include <oac_tree_gui/mainwindow/pvmonitor_main_window.h>
 
 int main(int argc, char** argv)
 {

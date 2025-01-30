@@ -23,7 +23,7 @@
 #include <QDateTime>
 #include <QTime>
 
-#include "oac-tree-gui/jobsystem/log_event.h"
+#include "oac_tree_gui/jobsystem/log_event.h"
 
 namespace oac_tree_gui::test
 {

@@ -19,7 +19,7 @@
  * of the distribution package.
  ******************************************************************************/
 
-#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 
 #include <sup/epics-test/softioc_runner.h>
 

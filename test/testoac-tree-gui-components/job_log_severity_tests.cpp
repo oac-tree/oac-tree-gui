@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/jobsystem/job_log_severity.h"
+#include "oac_tree_gui/jobsystem/job_log_severity.h"
 
 namespace oac_tree_gui::test
 {

@@ -20,8 +20,8 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_
 
-#include <oac-tree-gui/jobsystem/domain_event_dispatcher_context.h>
-#include <oac-tree-gui/jobsystem/domain_events.h>
+#include <oac_tree_gui/jobsystem/domain_event_dispatcher_context.h>
+#include <oac_tree_gui/jobsystem/domain_events.h>
 
 #include <gmock/gmock.h>
 

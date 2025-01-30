@@ -19,14 +19,14 @@
 
 #include "test_automation_server.h"
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/jobsystem/automation_client.h>
-#include <oac-tree-gui/jobsystem/i_job_handler.h>
-#include <oac-tree-gui/jobsystem/remote_connection_service.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/standard_job_items.h>
-#include <oac-tree-gui/model/workspace_item.h>
-#include <oac-tree-gui/operation/operation_action_helper.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/automation_client.h>
+#include <oac_tree_gui/jobsystem/i_job_handler.h>
+#include <oac_tree_gui/jobsystem/remote_connection_service.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/operation/operation_action_helper.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -37,7 +37,7 @@
 #include <chrono>
 #include <thread>
 
-#include "oac-tree-gui/jobsystem/job_manager.h"
+#include "oac_tree_gui/jobsystem/job_manager.h"
 
 namespace oac_tree_gui
 {

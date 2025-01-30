@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/sequencer_item_includes.h>
-#include <oac-tree-gui/model/universal_instruction_item.h>
-#include <oac-tree-gui/model/universal_variable_item.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/sequencer_item_includes.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
+#include <oac_tree_gui/model/universal_variable_item.h>
 
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/model/sequencer_item_helper.h"
+#include "oac_tree_gui/model/sequencer_item_helper.h"
 
 namespace oac_tree_gui::test
 {

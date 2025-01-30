@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/workspace_item.h>
-#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/transform/domain_workspace_builder.h"
+#include "oac_tree_gui/transform/domain_workspace_builder.h"
 
 namespace oac_tree_gui::test
 {

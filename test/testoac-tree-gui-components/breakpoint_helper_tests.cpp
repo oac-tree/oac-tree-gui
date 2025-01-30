@@ -17,18 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/instruction_item.h>
-#include <oac-tree-gui/model/sequencer_item_helper.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <mvvm/model/model_utils.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/operation/breakpoint_helper.h"
+#include "oac_tree_gui/operation/breakpoint_helper.h"
 
 namespace oac_tree_gui::test
 {

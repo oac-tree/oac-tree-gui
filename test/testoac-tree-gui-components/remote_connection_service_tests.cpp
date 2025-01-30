@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/jobsystem/abstract_job_handler.h>
-#include <oac-tree-gui/jobsystem/i_automation_client.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/abstract_job_handler.h>
+#include <oac_tree_gui/jobsystem/i_automation_client.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/jobsystem/remote_connection_service.h"
+#include "oac_tree_gui/jobsystem/remote_connection_service.h"
 
 namespace oac_tree_gui
 {

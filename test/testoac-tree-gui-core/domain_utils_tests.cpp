@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/domain/domain_object_type_registry.h>
+#include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <sup/oac-tree/constants.h>
 #include <sup/oac-tree/instruction.h>
@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/domain/domain_helper.h"
+#include "oac_tree_gui/domain/domain_helper.h"
 
 using namespace oac_tree_gui::domainconstants;
 

@@ -19,11 +19,11 @@
 
 #include "test_automation_server.h"
 
-#include <oac-tree-gui/model/job_model.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/standard_job_items.h>
-#include <oac-tree-gui/model/variable_item.h>
-#include <oac-tree-gui/model/workspace_item.h>
+#include <oac_tree_gui/model/job_model.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/model/variable_item.h>
+#include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/oac-tree-server/epics_config_utils.h>
 
@@ -33,7 +33,7 @@
 #include <QTest>
 #include <thread>
 
-#include "oac-tree-gui/jobsystem/remote_job_handler.h"
+#include "oac_tree_gui/jobsystem/remote_job_handler.h"
 
 namespace oac_tree_gui
 {

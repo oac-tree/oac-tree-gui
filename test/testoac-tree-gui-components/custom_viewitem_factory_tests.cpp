@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/components/component_helper.h>
-#include <oac-tree-gui/domain/domain_constants.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
+#include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <mvvm/viewmodelbase/viewitem.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/viewmodel/custom_viewitem_factory.h"
+#include "oac_tree_gui/viewmodel/custom_viewitem_factory.h"
 
 namespace oac_tree_gui::test
 {

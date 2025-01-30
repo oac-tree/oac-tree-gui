@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/procedure_preamble_items.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/universal_item_helper.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/procedure_preamble_items.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -47,7 +47,7 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-#include "oac-tree-gui/transform/anyvalue_item_transform_helper.h"
+#include "oac_tree_gui/transform/anyvalue_item_transform_helper.h"
 
 namespace oac_tree_gui::test
 {

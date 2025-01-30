@@ -22,7 +22,7 @@
 
 //! Collection of domain procedures for testing purpose.
 
-#include <oac-tree-gui/domain/sequencer_types_fwd.h>
+#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <chrono>
 #include <memory>

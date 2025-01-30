@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/model/application_models.h>
-#include <oac-tree-gui/model/item_constants.h>
-#include <oac-tree-gui/model/job_model.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/job_model.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/model/job_item.h"
+#include "oac_tree_gui/model/job_item.h"
 
 namespace oac_tree_gui::test
 {

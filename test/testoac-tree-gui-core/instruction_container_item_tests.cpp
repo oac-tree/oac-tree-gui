@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/model/instruction_container_item.h"
+#include "oac_tree_gui/model/instruction_container_item.h"
 
 namespace oac_tree_gui::test
 {

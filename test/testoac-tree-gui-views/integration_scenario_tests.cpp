@@ -17,20 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/jobsystem/job_manager.h>
-#include <oac-tree-gui/jobsystem/local_job_handler.h>
-#include <oac-tree-gui/jobsystem/user_context.h>
-#include <oac-tree-gui/model/application_models.h>
-#include <oac-tree-gui/model/instruction_container_item.h>
-#include <oac-tree-gui/model/job_model.h>
-#include <oac-tree-gui/model/procedure_item.h>
-#include <oac-tree-gui/model/sequencer_model.h>
-#include <oac-tree-gui/model/standard_instruction_items.h>
-#include <oac-tree-gui/model/standard_job_items.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/workspace_item.h>
-#include <oac-tree-gui/model/xml_utils.h>
-#include <oac-tree-gui/operation/operation_action_helper.h>
+#include <oac_tree_gui/jobsystem/job_manager.h>
+#include <oac_tree_gui/jobsystem/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/user_context.h>
+#include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/job_model.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/model/xml_utils.h>
+#include <oac_tree_gui/operation/operation_action_helper.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>

@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/jobsystem/user_context.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/user_context.h>
 
 #include <sup/oac-tree/execution_status.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/jobsystem/domain_job_observer.h"
+#include "oac_tree_gui/jobsystem/domain_job_observer.h"
 
 namespace oac_tree_gui::test
 {

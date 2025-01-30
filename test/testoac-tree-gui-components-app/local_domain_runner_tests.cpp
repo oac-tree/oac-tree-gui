@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac-tree-gui/core/exceptions.h>
-#include <oac-tree-gui/jobsystem/domain_events.h>
-#include <oac-tree-gui/jobsystem/user_context.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/domain_events.h>
+#include <oac_tree_gui/jobsystem/user_context.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure.h>
@@ -36,7 +36,7 @@
 #include <QTest>
 #include <thread>
 
-#include "oac-tree-gui/jobsystem/local_domain_runner.h"
+#include "oac_tree_gui/jobsystem/local_domain_runner.h"
 
 namespace oac_tree_gui::test
 {

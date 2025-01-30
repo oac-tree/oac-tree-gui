@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-#include "oac-tree-gui/model/procedure_preamble_items.h"
+#include "oac_tree_gui/model/procedure_preamble_items.h"
 
 namespace oac_tree_gui::test
 {
