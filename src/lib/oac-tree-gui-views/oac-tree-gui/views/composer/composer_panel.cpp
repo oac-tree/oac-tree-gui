@@ -35,7 +35,7 @@
 
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -120,4 +120,4 @@ void ComposerPanel::WriteSettings()
   m_collapsible_list->WriteSettings();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

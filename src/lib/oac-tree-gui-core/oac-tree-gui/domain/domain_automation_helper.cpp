@@ -26,7 +26,7 @@
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_info.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::unique_ptr<sup::oac_tree::Instruction> CreateDomainInstruction(
@@ -45,4 +45,4 @@ std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

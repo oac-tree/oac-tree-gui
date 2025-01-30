@@ -25,7 +25,7 @@
 #include <QObject>
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobModel;
@@ -77,7 +77,7 @@ public:
   void SetActiveJob(JobItem* item) override;
 
 signals:
-  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
+  void NextLeavesChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
 
 private:
   /**
@@ -89,13 +89,13 @@ private:
    * @brief Process "Next Leaves" events from all job handlers, forwards active job notifications
    * up.
    */
-  void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
+  void OnNextLeavesChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
 
   std::vector<std::unique_ptr<IJobHandler>> m_job_handlers;
   JobItem* m_active_job{nullptr};  //!< job which is allowed to send signals up
   create_handler_func_t m_create_handler_func;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_

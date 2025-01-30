@@ -22,7 +22,7 @@
 
 #include <mvvm/model/compound_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class WorkspaceItem;
 class InstructionContainerItem;
@@ -66,6 +66,6 @@ std::vector<std::string> CollectPluginNames(const ProcedureItem& item);
  */
 void UpdatePluginNames(const ProcedureItem& item);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_PROCEDURE_ITEM_H_

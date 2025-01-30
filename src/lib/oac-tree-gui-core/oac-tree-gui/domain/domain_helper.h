@@ -32,7 +32,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -103,6 +103,6 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata);
  */
 std::pair<bool, std::string> LoadPlugins();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_HELPER_H_

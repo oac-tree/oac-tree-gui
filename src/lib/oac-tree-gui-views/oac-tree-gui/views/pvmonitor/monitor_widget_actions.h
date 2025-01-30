@@ -24,12 +24,12 @@
 
 #include <QObject>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class WorkspaceItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -65,6 +65,6 @@ private:
   QAction* m_stop_action{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_

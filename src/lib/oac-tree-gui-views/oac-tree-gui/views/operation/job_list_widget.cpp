@@ -35,7 +35,7 @@ namespace
 const QString kHeaderStateSettingName = "JobListWidget/header_state";
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 JobListWidget::JobListWidget(QWidget *parent_widget)
@@ -89,4 +89,4 @@ mvvm::ViewModel *JobListWidget::GetViewModel()
   return m_component_provider->GetViewModel();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

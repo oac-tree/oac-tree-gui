@@ -30,7 +30,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class BreakpointHelperTest : public ::testing::Test
@@ -189,4 +189,4 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
   }
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

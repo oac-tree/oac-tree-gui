@@ -22,7 +22,7 @@
 
 #include <future>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -59,6 +59,6 @@ private:
   std::promise<DataT> promise;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_

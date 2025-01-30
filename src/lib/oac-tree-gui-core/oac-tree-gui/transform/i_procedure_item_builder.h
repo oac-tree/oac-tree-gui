@@ -22,7 +22,7 @@
 
 #include <cstddef>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -54,6 +54,6 @@ public:
   virtual VariableItem* GetVariable(std::size_t index) const = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_I_PROCEDURE_ITEM_BUILDER_H_

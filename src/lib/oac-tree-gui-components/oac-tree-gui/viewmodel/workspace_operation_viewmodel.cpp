@@ -39,8 +39,8 @@ namespace
  */
 std::unique_ptr<mvvm::IViewModelController> CreateImpl(mvvm::ViewModelBase *viewmodel)
 {
-  auto children_strategy = std::make_unique<sequencergui::VariableTableChildrenStrategy>();
-  auto row_strategy = std::make_unique<sequencergui::VariableTableRowStrategy>();
+  auto children_strategy = std::make_unique<oac_tree_gui::VariableTableChildrenStrategy>();
+  auto row_strategy = std::make_unique<oac_tree_gui::VariableTableRowStrategy>();
 
   auto result = std::make_unique<mvvm::ViewModelControllerImpl>(
       viewmodel, std::move(children_strategy), std::move(row_strategy));
@@ -50,7 +50,7 @@ std::unique_ptr<mvvm::IViewModelController> CreateImpl(mvvm::ViewModelBase *view
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -139,4 +139,4 @@ int WorkspaceOperationViewModel::columnCount(const QModelIndex &parent) const
   return 4;  // "Name", "Value", "Type", "Channel"
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

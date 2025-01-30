@@ -43,7 +43,7 @@ const std::string kStructChannelName(kTestPrefix + "STRUCT");
 
 using testing::_;
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for DomainWorkspaceListener class.
@@ -149,4 +149,4 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
   EXPECT_EQ(listener.GetEventCount(), 0);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

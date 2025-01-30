@@ -29,7 +29,7 @@
 
 #include <sup/oac-tree/workspace.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,
@@ -64,4 +64,4 @@ std::function<void(const VariableUpdatedEvent&)> WorkspaceSynchronizer::CreateUp
 
   return result;
 }
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

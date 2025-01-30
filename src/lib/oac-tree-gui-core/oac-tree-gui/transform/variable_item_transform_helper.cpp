@@ -32,12 +32,12 @@
 #include <sup/oac-tree/workspace.h>
 #include <sup/oac-tree/workspace_info.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::unique_ptr<VariableItem> CreateVariableItem(const sup::oac_tree::VariableInfo& info)
 {
-  auto result = sequencergui::CreateVariableItem(info.GetType());
+  auto result = oac_tree_gui::CreateVariableItem(info.GetType());
 
   // We create domain variable only to be able to use InitFromDomain mechanism for attribute
   // propagation.
@@ -83,7 +83,7 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
 
   for (auto variable : workspace.GetVariables())
   {
-    auto item = sequencergui::CreateVariableItem(variable->GetType());
+    auto item = oac_tree_gui::CreateVariableItem(variable->GetType());
     item->InitFromDomain(variable, registry);
     result.push_back(item.get());
     workspace_item->InsertItem(std::move(item), mvvm::TagIndex::Append());
@@ -92,4 +92,4 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

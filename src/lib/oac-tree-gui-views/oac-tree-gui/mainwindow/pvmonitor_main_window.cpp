@@ -35,7 +35,7 @@ const QString kWindowSizeSettingName = kGroupName + "/" + "size";
 const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 PvMonitorMainWindow::PvMonitorMainWindow() : m_project(CreateProject())
@@ -97,4 +97,4 @@ std::unique_ptr<PvMonitorProject> PvMonitorMainWindow::CreateProject()
   return std::make_unique<PvMonitorProject>(context);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -42,7 +42,7 @@ QString GetZoomText(int scale)
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 NodeEditorActions::NodeEditorActions(QWidget *parent_widget)
     : QObject(parent_widget)
@@ -136,4 +136,4 @@ std::unique_ptr<QMenu> NodeEditorActions::CreateZoomMenu()
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

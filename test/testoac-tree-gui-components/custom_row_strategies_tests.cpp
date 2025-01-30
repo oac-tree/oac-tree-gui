@@ -31,7 +31,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for strategies from custom_row_strategies.h.

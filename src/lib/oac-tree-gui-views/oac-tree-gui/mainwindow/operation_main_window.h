@@ -27,7 +27,7 @@
 
 class QCloseEvent;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class OperationMonitorView;
@@ -63,6 +63,6 @@ private:
   OperationMonitorView* m_operation_view{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_

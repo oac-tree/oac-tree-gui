@@ -23,7 +23,7 @@
 #include <QModelIndex>
 #include <stack>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 void IterateFirstColumn(const QAbstractItemModel &viewmodel, const QModelIndex &parent,
@@ -52,4 +52,4 @@ void IterateFirstColumn(const QAbstractItemModel &viewmodel, const QModelIndex &
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

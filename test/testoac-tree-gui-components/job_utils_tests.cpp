@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for utility methods in job_utils.h
@@ -38,4 +38,4 @@ TEST_F(JobUtilsTest, GetRegExpPattern)
             std::string("(INFO|DEBUG)"));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

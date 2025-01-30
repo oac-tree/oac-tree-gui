@@ -19,7 +19,7 @@
 
 #include "job_log.h"
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 JobLog::JobLog(QObject* parent_object) : QObject(parent_object) {}
@@ -46,4 +46,4 @@ LogEvent& JobLog::At(int index)
   return m_records.at(index);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

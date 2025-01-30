@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for helper methods initerate_helper.h.
@@ -57,4 +57,4 @@ TEST_F(IterateHelperTest, IterateInstruction)
   }
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

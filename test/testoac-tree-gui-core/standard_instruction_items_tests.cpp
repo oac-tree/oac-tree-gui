@@ -37,7 +37,7 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for items from instructionitems.h
@@ -319,7 +319,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomainWhenNoSuccessThresh
 TEST_F(StandardInstructionItemsTest, RepeatItem)
 {
   // Correctly initialised item
-  sequencergui::RepeatItem item;
+  oac_tree_gui::RepeatItem item;
   EXPECT_EQ(item.GetRepeatCount(), -1);
 
   item.SetRepeatCount(42);

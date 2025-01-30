@@ -25,7 +25,7 @@
 
 class QCloseEvent;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class MonitorWidget;
@@ -65,6 +65,6 @@ private:
   MonitorMainWindowActions* m_actions{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_

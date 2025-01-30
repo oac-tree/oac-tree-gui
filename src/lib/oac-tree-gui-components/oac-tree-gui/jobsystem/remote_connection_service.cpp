@@ -27,7 +27,7 @@
 
 #include <algorithm>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 RemoteConnectionService::RemoteConnectionService(const create_client_t& create_connection)
@@ -121,4 +121,4 @@ std::unique_ptr<AbstractJobHandler> RemoteConnectionService::CreateJobHandler(
   return GetAutomationClient(server_name).CreateJobHandler(job_item, user_context);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

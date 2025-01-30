@@ -25,7 +25,7 @@
 #include <functional>
 #include <optional>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobItem;
@@ -48,6 +48,6 @@ struct OperationActionContext
   std::function<std::optional<RemoteConnectionInfo>()> get_remote_connection_info;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_OPERATION_ACTION_CONTEXT_H_

@@ -22,7 +22,7 @@
 #include <QDate>
 #include <QTime>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 bool LogEvent::operator==(const LogEvent& other) const
@@ -54,4 +54,4 @@ std::string GetLogEventTimeFormat()
   return {"hh:mm:ss.zzz"};
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -29,7 +29,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Tests of MonitorWidget class.
@@ -57,4 +57,4 @@ TEST_F(MonitorWidgetTest, StartStopStart)
   EXPECT_NO_FATAL_FAILURE(widget.OnStartMonitoringRequest());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -27,7 +27,7 @@ namespace mvvm
 class PropertyTreeView;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class JobItem;
 
@@ -47,6 +47,6 @@ private:
   mvvm::PropertyTreeView* m_property_tree_view{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_JOB_PROPERTY_WIDGET_H_

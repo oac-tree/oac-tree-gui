@@ -37,7 +37,7 @@ class CustomHeaderView;
 class CustomSplitter;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class SequencerModel;
@@ -71,6 +71,6 @@ private:
   sup::gui::CustomSplitter* m_splitter{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_EXPLORER_PROCEDURE_TREES_WIDGET_H_

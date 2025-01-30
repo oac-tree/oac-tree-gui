@@ -29,7 +29,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Testing DomainWorkspaceBuilder class.
@@ -101,4 +101,4 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
   EXPECT_EQ(domain_value, value);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

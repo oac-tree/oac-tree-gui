@@ -45,12 +45,12 @@ namespace
 
 QRectF GetDefaultSceneRect()
 {
-  return {sequencergui::GetGraphicsViewportOrigin(), sequencergui::GetGraphicsViewportSize()};
+  return {oac_tree_gui::GetGraphicsViewportOrigin(), oac_tree_gui::GetGraphicsViewportSize()};
 }
 
-sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *view)
+oac_tree_gui::InstructionItem *GetInstruction(oac_tree_gui::ConnectableView *view)
 {
-  return view ? const_cast<sequencergui::InstructionItem *>(
+  return view ? const_cast<oac_tree_gui::InstructionItem *>(
                     view->GetConnectableItem()->GetInstruction())
               : nullptr;
 }
@@ -58,7 +58,7 @@ sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *vie
 //! Returns name encoded in the drop event.
 std::string GetEncodedName(QGraphicsSceneDragDropEvent *event)
 {
-  return sequencergui::GetNewInstructionType(event->mimeData());
+  return oac_tree_gui::GetNewInstructionType(event->mimeData());
 }
 
 //! Returns domain type from the drop event. If domain_type can't be deduced from the event data,
@@ -70,7 +70,7 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 GraphicsScene::GraphicsScene(
     std::function<void(const sup::gui::MessageEvent &)> send_message_callback,
@@ -91,7 +91,7 @@ GraphicsScene::GraphicsScene(
   // If we use classical connection &GraphicsScene::onSelectionChanged program crashes
   // with the following warning:
 
-  //  ASSERT failure in sequencergui::GraphicsScene: "Called object is not of the correct type
+  //  ASSERT failure in oac_tree_gui::GraphicsScene: "Called object is not of the correct type
   //  (class destructor may have already run)", file /usr/include/qt6/QtCore/qobjectdefs_impl.h,
   //  line 155 Aborted (core dumped)
 
@@ -287,4 +287,4 @@ mvvm::ApplicationModel *GraphicsScene::GetModel()
   return m_root_item ? dynamic_cast<mvvm::ApplicationModel *>(m_root_item->GetModel()) : nullptr;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

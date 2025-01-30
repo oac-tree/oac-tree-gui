@@ -27,7 +27,7 @@ namespace mvvm
 class SessionItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -41,6 +41,6 @@ struct AttributeEditorContext
   std::function<mvvm::SessionItem*()> selected_item_callback;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_CONTEXT_H_

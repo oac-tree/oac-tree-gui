@@ -27,7 +27,7 @@
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 // ----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone() const
 // ----------------------------------------------------------------------------
 // FileVariableItem
 // ----------------------------------------------------------------------------
-FileVariableItem::FileVariableItem() : sequencergui::UniversalVariableItem(GetStaticType()) {}
+FileVariableItem::FileVariableItem() : oac_tree_gui::UniversalVariableItem(GetStaticType()) {}
 
 std::string FileVariableItem::GetStaticType()
 {
@@ -99,19 +99,19 @@ std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone() const
 
 std::string FileVariableItem::GetFileName() const
 {
-  return Property<std::string>(sequencergui::domainconstants::kFileNameAttribute);
+  return Property<std::string>(oac_tree_gui::domainconstants::kFileNameAttribute);
 }
 
 void FileVariableItem::SetFileName(const std::string &name)
 {
-  SetProperty(sequencergui::domainconstants::kFileNameAttribute, name);
+  SetProperty(oac_tree_gui::domainconstants::kFileNameAttribute, name);
 }
 
 // ----------------------------------------------------------------------------
 // LocalVariableItem
 // ----------------------------------------------------------------------------
 
-LocalVariableItem::LocalVariableItem() : sequencergui::UniversalVariableItem(GetStaticType()) {}
+LocalVariableItem::LocalVariableItem() : oac_tree_gui::UniversalVariableItem(GetStaticType()) {}
 
 std::string LocalVariableItem::GetStaticType()
 {
@@ -159,4 +159,4 @@ std::string PvAccessServerVariableItem::GetStaticType()
   return domainconstants::kPvAccessServerVariableType;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

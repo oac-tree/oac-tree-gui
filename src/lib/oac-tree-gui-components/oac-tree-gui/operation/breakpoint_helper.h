@@ -24,7 +24,7 @@
 
 #include <oac-tree-gui/operation/breakpoint_types.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -82,6 +82,6 @@ void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, Instruction
 void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info,
                             InstructionContainerItem& container);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_BREAKPOINT_HELPER_H_

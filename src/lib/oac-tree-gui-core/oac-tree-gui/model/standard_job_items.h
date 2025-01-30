@@ -25,7 +25,7 @@
 
 #include <oac-tree-gui/model/job_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -137,6 +137,6 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
 std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
                                                    std::size_t job_index);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_STANDARD_JOB_ITEMS_H_

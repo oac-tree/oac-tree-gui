@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests of ProcedureListActions class.
@@ -70,4 +70,4 @@ TEST_F(ProcedureListActionsTest, NoDuplicates)
   EXPECT_EQ(action_set.size(), actions.size());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

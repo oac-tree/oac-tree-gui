@@ -19,7 +19,7 @@
 
 #include "request_types.h"
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 // ----------------------------------------------------------------------------
@@ -78,4 +78,4 @@ bool UserInputResult::operator!=(const UserInputResult& other) const
   return !(*this == other);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

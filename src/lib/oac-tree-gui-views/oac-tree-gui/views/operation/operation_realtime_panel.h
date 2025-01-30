@@ -29,7 +29,7 @@ namespace sup::gui
 class CollapsibleListView;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -69,7 +69,7 @@ signals:
   void StopRequest();
   void ResetRequest();
   void ChangeDelayRequest(int msec);
-  void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
+  void ToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction);
 
 private:
   void ReadSettings();
@@ -83,6 +83,6 @@ private:
   MessagePanel* m_message_panel{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_REALTIME_PANEL_H_

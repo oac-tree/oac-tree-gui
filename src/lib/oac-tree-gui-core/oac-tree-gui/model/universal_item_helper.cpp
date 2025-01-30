@@ -34,23 +34,23 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/container_utils.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionItem *InsertInstruction(const std::string &domain_type, mvvm::SessionItem *parent,
                                    const mvvm::TagIndex &tag_index)
 {
-  return InsertInstruction(sequencergui::CreateInstructionItem(domain_type), parent, tag_index);
+  return InsertInstruction(oac_tree_gui::CreateInstructionItem(domain_type), parent, tag_index);
 }
 
 InstructionItem *InsertAggregate(const std::string &domain_type, mvvm::SessionItem *parent,
                                  const mvvm::TagIndex &tag_index)
 {
-  static ::sequencergui::AggregateFactory factory;
+  static ::oac_tree_gui::AggregateFactory factory;
   return InsertInstruction(factory.Create(domain_type), parent, tag_index);
 }
 
-InstructionItem *InsertInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
+InstructionItem *InsertInstruction(std::unique_ptr<oac_tree_gui::InstructionItem> item,
                                    mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index)
 {
   return static_cast<InstructionItem *>(
@@ -59,7 +59,7 @@ InstructionItem *InsertInstruction(std::unique_ptr<sequencergui::InstructionItem
 
 bool IsAggregateName(const std::string &name)
 {
-  static ::sequencergui::AggregateFactory factory;
+  static ::oac_tree_gui::AggregateFactory factory;
   return factory.Contains(name);
 }
 
@@ -132,9 +132,9 @@ std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContaine
 
 sup::gui::AnyValueItem *GetAnyValueItem(const InstructionItem &item)
 {
-  return mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag)
-             ? item.GetItem<sup::gui::AnyValueItem>(sequencergui::itemconstants::kAnyValueTag)
+  return mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag)
+             ? item.GetItem<sup::gui::AnyValueItem>(oac_tree_gui::itemconstants::kAnyValueTag)
              : nullptr;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

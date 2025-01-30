@@ -29,7 +29,7 @@
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class NodeConnection;
 class NodePort;
@@ -50,8 +50,8 @@ public:
   NodePort* findPort(const QPointF& pos);
 
 signals:
-  void connectionRequest(sequencergui::ConnectableView* childView,
-                         sequencergui::ConnectableView* parentView);
+  void connectionRequest(oac_tree_gui::ConnectableView* childView,
+                         oac_tree_gui::ConnectableView* parentView);
   void selectionModeChangeRequest(int);
 
 private:
@@ -64,6 +64,6 @@ private:
   NodeConnection* m_conn{nullptr};  //! Currently processed connection.
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_NODE_CONTROLLER_H_

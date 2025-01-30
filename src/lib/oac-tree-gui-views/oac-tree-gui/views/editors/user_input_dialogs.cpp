@@ -39,7 +39,7 @@
 
 namespace
 {
-QStringList GetSelectionList(const sequencergui::UserChoiceArgs &args)
+QStringList GetSelectionList(const oac_tree_gui::UserChoiceArgs &args)
 {
   QStringList result;
   for (const auto &option : args.options)
@@ -51,7 +51,7 @@ QStringList GetSelectionList(const sequencergui::UserChoiceArgs &args)
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget *parent)
@@ -147,4 +147,4 @@ UserContext CreateDefaultUserContext(QWidget *parent)
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

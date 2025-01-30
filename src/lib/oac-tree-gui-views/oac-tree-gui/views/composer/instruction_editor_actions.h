@@ -36,7 +36,7 @@ class ActionMenu;
 class AppContext;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionEditorActionHandler;
@@ -150,6 +150,6 @@ private:
   sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_

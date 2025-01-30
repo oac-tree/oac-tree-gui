@@ -29,7 +29,7 @@
 #include <memory>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -66,6 +66,6 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
                                                        const anytype_registry_t* registry,
                                                        WorkspaceItem* workspace_item);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_HELPER_H_

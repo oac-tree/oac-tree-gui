@@ -33,7 +33,7 @@
 
 #include <string>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Test instruction playing the role of domain instruction unknown to the GUI.
@@ -78,6 +78,6 @@ public:
   }
 };
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_UNIVERSAL_ITEMS_H_

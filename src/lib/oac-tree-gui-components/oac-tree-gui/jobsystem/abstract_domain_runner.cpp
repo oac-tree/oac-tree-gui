@@ -31,7 +31,7 @@
 
 #include <set>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AbstractDomainRunner::AbstractDomainRunner(DomainEventDispatcherContext dispatcher_context,
@@ -156,4 +156,4 @@ void AbstractDomainRunner::ValidateJob() const
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

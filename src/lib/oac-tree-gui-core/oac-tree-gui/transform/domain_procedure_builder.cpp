@@ -38,7 +38,7 @@ namespace
 {
 //! Creates domain instruction corresponding to a given InstructionItem, and pushes it
 //! to a given parent. Return newly created domain instruction to a user.
-instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instruction,
+instruction_t* ProcessInstruction(const oac_tree_gui::InstructionItem* instruction,
                                   instruction_t* parent)
 {
   auto domain_instruction = instruction->CreateDomainInstruction();
@@ -52,7 +52,7 @@ instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instructi
 
 //! Creates domain instruction corresponding to a given InstructionItem, and pushes it
 //! to a given procedure. Return newly created domain instruction to a user.
-instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instruction,
+instruction_t* ProcessInstruction(const oac_tree_gui::InstructionItem* instruction,
                                   procedure_t* procedure)
 {
   auto domain_instruction = instruction->CreateDomainInstruction();
@@ -63,11 +63,11 @@ instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instructi
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 DomainProcedureBuilder::~DomainProcedureBuilder() = default;
 
-void DomainProcedureBuilder::Iterate(const sequencergui::InstructionItem* instruction,
+void DomainProcedureBuilder::Iterate(const oac_tree_gui::InstructionItem* instruction,
                                      instruction_t* parent)
 {
   for (auto& instruction : instruction->GetInstructions())
@@ -141,4 +141,4 @@ std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

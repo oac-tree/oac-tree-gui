@@ -23,7 +23,7 @@
 
 #include <mvvm/model/session_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem *item,
@@ -66,4 +66,4 @@ QVector<int> ChannelPresentationItem::GetQtRoles(int data_role) const
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

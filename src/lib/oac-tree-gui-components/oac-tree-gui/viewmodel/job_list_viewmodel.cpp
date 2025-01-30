@@ -31,7 +31,7 @@
 #include <mvvm/viewmodel/viewmodel_controller_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobRowStrategy : public mvvm::AbstractRowStrategy
@@ -67,4 +67,4 @@ JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent_o
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

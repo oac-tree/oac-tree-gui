@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for presentation items defined in custom_presentation_items.h
@@ -64,4 +64,4 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
             QVector<int>({Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole}));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -26,7 +26,7 @@
 #include <memory>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class ProcedureItem;
 class InstructionItem;
@@ -52,7 +52,7 @@ public:
   std::string FindVariableItemIdentifier(const variable_t* variable) const;
 
 private:
-  void Iterate(const sequencergui::InstructionItem* instruction, instruction_t* parent);
+  void Iterate(const oac_tree_gui::InstructionItem* instruction, instruction_t* parent);
   void PopulateDomainInstructions(const InstructionContainerItem* container,
                                   procedure_t* procedure);
   void PopulateDomainWorkspace(const WorkspaceItem* workspace, procedure_t* procedure);
@@ -61,6 +61,6 @@ private:
   std::unique_ptr<DomainWorkspaceBuilder> m_workspace_builder;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_DOMAIN_PROCEDURE_BUILDER_H_

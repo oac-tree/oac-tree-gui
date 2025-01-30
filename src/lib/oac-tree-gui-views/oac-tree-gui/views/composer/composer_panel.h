@@ -30,7 +30,7 @@ class CollapsibleListView;
 class ItemStackWidget;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItemPanel;
@@ -61,7 +61,7 @@ public:
   void SetSelectedProcedure(ProcedureItem* procedure);
 
 signals:
-  void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
+  void ProcedureSelected(oac_tree_gui::ProcedureItem* procedureItem);
 
 private:
   void ReadSettings();
@@ -74,6 +74,6 @@ private:
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_COMPOSER_PANEL_H_

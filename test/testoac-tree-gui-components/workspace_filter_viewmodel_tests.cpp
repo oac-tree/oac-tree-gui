@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for WorkspaceFilterViewModel class.
@@ -131,4 +131,4 @@ TEST_F(WorkspaceFilterViewModelTest, FilterViewmodel)
   EXPECT_FALSE(viewmodel_proxy.filterAcceptsRow(0, index_local_item1));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

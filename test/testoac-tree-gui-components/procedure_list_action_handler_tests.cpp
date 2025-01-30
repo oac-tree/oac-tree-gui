@@ -33,9 +33,9 @@
 #include <QMimeData>
 #include <QSignalSpy>
 
-Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
+Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for ProcedureListActionHandler class.
@@ -338,4 +338,4 @@ TEST_F(ProcedureListActionHandlerTest, CutOperation)
   EXPECT_EQ(mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request), proc1);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -25,7 +25,7 @@
 
 #include <oac-tree-gui/components/custom_meta_types.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -33,6 +33,6 @@ namespace sequencergui
  */
 void LoadResources();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_

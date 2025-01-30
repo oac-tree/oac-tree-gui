@@ -31,7 +31,7 @@
 #include <oac-tree-gui/model/workspace_item.h>
 #include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for strategies from standard_children_strategies.h
@@ -85,4 +85,4 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
   }
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

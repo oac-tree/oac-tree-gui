@@ -36,7 +36,7 @@ double port_radius()
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 NodePort::NodePort(QGraphicsItem* parent, const PortInfo& info)
     : QGraphicsPathItem(parent), m_label(new QGraphicsTextItem(this)), m_port_info(info)
@@ -170,4 +170,4 @@ bool ParentPort::isChildPort() const
   return false;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

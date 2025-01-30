@@ -33,7 +33,7 @@ namespace
 const QString kCollapsibleListSettingName = "ExplorerPanel/collapsible_list";
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 ExplorerPanel::ExplorerPanel(QWidget *parent_widget)
     : QWidget(parent_widget)
@@ -85,4 +85,4 @@ void ExplorerPanel::WriteSettings()
   m_collapsible_list->WriteSettings();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

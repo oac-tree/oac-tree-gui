@@ -40,7 +40,7 @@
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for InstructionEditorActionHandler class.
@@ -358,4 +358,4 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait1);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

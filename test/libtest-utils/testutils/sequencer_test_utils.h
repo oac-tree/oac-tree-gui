@@ -29,7 +29,7 @@
 #include <memory>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class VariableItem;
@@ -80,10 +80,10 @@ sup::oac_tree::JobInfo CreateJobInfo(const std::string& procedure_text);
 /**
  * @brief Checks if the value caried inside VariableItem is equal to a given AnyValue.
  */
-bool IsEqual(const sequencergui::VariableItem& variable, const sup::dto::AnyValue& value);
+bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValue& value);
 
 }  // namespace test
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_EPICS_TEST_UTILS_H_

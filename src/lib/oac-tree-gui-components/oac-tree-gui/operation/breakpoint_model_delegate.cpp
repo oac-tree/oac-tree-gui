@@ -47,7 +47,7 @@ void PaintBreakpoint(QPainter *painter, const QRect &rect, const QColor &base_co
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 BreakpointModelDelegate::BreakpointModelDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
@@ -79,4 +79,4 @@ void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewIte
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -35,21 +35,21 @@ namespace
  *
  * A single group can contain more than one plugin.
  */
-std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
+std::vector<oac_tree_gui::ObjectGroupInfo> CreatePluginNameGroups()
 {
-  const std::vector<sequencergui::ObjectGroupInfo> result = {
-      {sequencergui::kCoreGroup, {sequencergui::domainconstants::kCorePluginName}},
-      {sequencergui::kMathGroup, {sequencergui::domainconstants::kMathExprPluginName}},
-      {sequencergui::kEPICSGroup,
-       {sequencergui::domainconstants::kEpicsCAPluginName,
-        sequencergui::domainconstants::kEpicsPVXSPluginName}},
-      {sequencergui::kControlGroup, {sequencergui::domainconstants::kControlPluginName}},
-      {sequencergui::kTimingGroup, {sequencergui::domainconstants::kSupTimingPluginName}},
-      {sequencergui::kConfigGroup, {sequencergui::domainconstants::kSupConfigPluginName}},
-      {sequencergui::kMiscGroup,
-       {sequencergui::domainconstants::kSystemPluginName,
-        sequencergui::domainconstants::kStringPluginName,
-        sequencergui::domainconstants::kSupPulseCounterPluginName}},
+  const std::vector<oac_tree_gui::ObjectGroupInfo> result = {
+      {oac_tree_gui::kCoreGroup, {oac_tree_gui::domainconstants::kCorePluginName}},
+      {oac_tree_gui::kMathGroup, {oac_tree_gui::domainconstants::kMathExprPluginName}},
+      {oac_tree_gui::kEPICSGroup,
+       {oac_tree_gui::domainconstants::kEpicsCAPluginName,
+        oac_tree_gui::domainconstants::kEpicsPVXSPluginName}},
+      {oac_tree_gui::kControlGroup, {oac_tree_gui::domainconstants::kControlPluginName}},
+      {oac_tree_gui::kTimingGroup, {oac_tree_gui::domainconstants::kSupTimingPluginName}},
+      {oac_tree_gui::kConfigGroup, {oac_tree_gui::domainconstants::kSupConfigPluginName}},
+      {oac_tree_gui::kMiscGroup,
+       {oac_tree_gui::domainconstants::kSystemPluginName,
+        oac_tree_gui::domainconstants::kStringPluginName,
+        oac_tree_gui::domainconstants::kSupPulseCounterPluginName}},
 
   };
   return result;
@@ -61,7 +61,7 @@ std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
 std::vector<std::string> GetInstructionNames(const std::vector<std::string>& names)
 {
   std::vector<std::string> result;
-  const static auto known_types = sequencergui::GetDomainInstructionNames();
+  const static auto known_types = oac_tree_gui::GetDomainInstructionNames();
 
   auto on_element = [](auto element) { return mvvm::utils::Contains(known_types, element); };
   std::copy_if(std::begin(names), std::end(names), std::back_inserter(result), on_element);
@@ -70,7 +70,7 @@ std::vector<std::string> GetInstructionNames(const std::vector<std::string>& nam
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
@@ -80,7 +80,7 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
   const static auto kPluginGroups = CreatePluginNameGroups();
 
   // groups with instruction names
-  std::vector<sequencergui::ObjectGroupInfo> result;
+  std::vector<oac_tree_gui::ObjectGroupInfo> result;
 
   // loop over all groups with plugin names
   for (const auto& plugin_group_info : kPluginGroups)
@@ -116,4 +116,4 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
   return group_infos;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

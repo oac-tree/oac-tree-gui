@@ -22,7 +22,7 @@
 #include <mvvm/model/combo_property.h>
 #include <mvvm/standarditems/container_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 // ----------------------------------------------------------------------------
@@ -163,4 +163,4 @@ void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string> &plugi
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

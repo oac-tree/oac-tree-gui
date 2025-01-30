@@ -28,7 +28,7 @@ class ViewModel;
 class SessionItem;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -66,6 +66,6 @@ private:
   QString m_pattern;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_WORKSPACE_FILTER_VIEWMODEL_H_

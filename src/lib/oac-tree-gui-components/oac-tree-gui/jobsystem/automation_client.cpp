@@ -28,7 +28,7 @@
 #include <sup/oac-tree-server/exceptions.h>
 #include <sup/oac-tree/job_info.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AutomationClient::AutomationClient(const std::string& server_name)
@@ -72,4 +72,4 @@ std::unique_ptr<AbstractJobHandler> AutomationClient::CreateJobHandler(
                                             user_context);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

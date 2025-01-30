@@ -26,7 +26,7 @@
 
 #include <QGraphicsPathItem>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class NodePort;
@@ -65,6 +65,6 @@ private:
   NodePort* m_port2{nullptr};  //! Connection end.
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_NODE_CONNECTION_H_

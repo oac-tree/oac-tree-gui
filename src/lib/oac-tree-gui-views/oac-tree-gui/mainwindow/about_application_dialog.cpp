@@ -69,7 +69,7 @@ std::unique_ptr<QLabel> CreateLogoLabel()
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AboutApplicationDialog::AboutApplicationDialog(QWidget* parent_widget) : QDialog(parent_widget)
@@ -156,4 +156,4 @@ std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateButtonLayout()
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

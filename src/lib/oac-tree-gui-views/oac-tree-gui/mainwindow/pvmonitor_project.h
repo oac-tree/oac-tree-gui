@@ -22,7 +22,7 @@
 
 #include <mvvm/project/app_project.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class MonitorModel;
@@ -42,6 +42,6 @@ public:
   MonitorModel* GetMonitorModel();
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_PVMONITOR_PROJECT_H_

@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -163,4 +163,4 @@ TEST_F(RequestTypesTest, UserInputResult)
   }
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

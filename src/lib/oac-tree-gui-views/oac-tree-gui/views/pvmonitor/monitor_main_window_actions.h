@@ -35,7 +35,7 @@ class ISessionModel;
 class ProjectHandler;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -74,6 +74,6 @@ private:
   std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_

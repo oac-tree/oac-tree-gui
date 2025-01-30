@@ -43,7 +43,7 @@ const QString kHeaderStateSettingName = "InstructionAttributeEditor/header_state
 const std::vector<int> kDefaultColumnStretch({2, 1, 1});
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent_widget)
@@ -101,4 +101,4 @@ AttributeEditorContext InstructionAttributeEditor::CreateActionContext()
   return {selected_item_callback};
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

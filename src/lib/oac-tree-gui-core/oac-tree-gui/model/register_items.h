@@ -23,7 +23,7 @@
 //! @file
 //! Contains utility function to register items in global factory.
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -31,6 +31,6 @@ namespace sequencergui
  */
 void RegisterSessionItems();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_REGISTER_ITEMS_H_

@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 enum ESelectionModes
 {
@@ -30,6 +30,6 @@ enum ESelectionModes
   kUnknownSelection
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_

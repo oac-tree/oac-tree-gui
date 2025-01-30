@@ -32,7 +32,7 @@ double port_radius()
 }
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 void LeftRightPositionStrategy::UpdatePosition(ConnectableView *view)
 {
@@ -119,4 +119,4 @@ void TopBottomPositionStrategy::SetPositionToBottom(const QRectF &rect, NodePort
   port->setPos(rect.width() / 2, rect.height());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

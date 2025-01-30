@@ -25,7 +25,7 @@
 
 #include <gmock/gmock.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -35,13 +35,13 @@ namespace sequencergui::test
 class MockOperationActionContext
 {
 public:
-  MOCK_METHOD(sequencergui::JobItem*, OnSelectedJob, (), ());
+  MOCK_METHOD(oac_tree_gui::JobItem*, OnSelectedJob, (), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
-  MOCK_METHOD(std::optional<sequencergui::RemoteConnectionInfo>, OnGetRemoteConnectionInfo, (), ());
+  MOCK_METHOD(std::optional<oac_tree_gui::RemoteConnectionInfo>, OnGetRemoteConnectionInfo, (), ());
 
-  sequencergui::OperationActionContext CreateContext();
+  oac_tree_gui::OperationActionContext CreateContext();
 };
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_

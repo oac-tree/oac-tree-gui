@@ -35,7 +35,7 @@
 
 using testing::_;
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 namespace

@@ -27,7 +27,7 @@ namespace sup::gui
 class CollapsibleListView;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobListWidget;
@@ -60,8 +60,8 @@ public:
   QList<QAction*> GetOperationMonitorViewActions();
 
 signals:
-  void JobSelected(sequencergui::JobItem* item);
-  void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
+  void JobSelected(oac_tree_gui::JobItem* item);
+  void SubmitProcedureRequest(oac_tree_gui::ProcedureItem* item);
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();
@@ -79,6 +79,6 @@ private:
   ApplicationModels* m_models{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_PANEL_H_

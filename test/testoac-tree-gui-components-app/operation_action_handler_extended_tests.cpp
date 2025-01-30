@@ -43,9 +43,9 @@
 #include <QSignalSpy>
 #include <QTest>
 
-Q_DECLARE_METATYPE(sequencergui::JobItem*)
+Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 using msec = std::chrono::milliseconds;
@@ -387,4 +387,4 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
       [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 100));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

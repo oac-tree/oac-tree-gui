@@ -21,7 +21,7 @@
 
 #include <QStyleOption>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 CustomTreeViewStyle::CustomTreeViewStyle(QStyle *style) : QProxyStyle(style) {}
@@ -42,4 +42,4 @@ void CustomTreeViewStyle::drawPrimitive(PrimitiveElement element, const QStyleOp
   QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

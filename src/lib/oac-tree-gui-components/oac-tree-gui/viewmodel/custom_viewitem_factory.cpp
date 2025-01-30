@@ -29,18 +29,18 @@
 
 #include <QString>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionItem &item)
 {
-  auto is_available_property = sequencergui::GetIsAvailableItem(item);
-  auto channel_property = sequencergui::GetChannelItem(item);
+  auto is_available_property = oac_tree_gui::GetIsAvailableItem(item);
+  auto channel_property = oac_tree_gui::GetChannelItem(item);
 
   if (is_available_property && channel_property)
   {
     auto channel_name = QString::fromStdString(channel_property->Data<std::string>());
-    auto presentation = std::make_unique<sequencergui::ChannelPresentationItem>(
+    auto presentation = std::make_unique<oac_tree_gui::ChannelPresentationItem>(
         is_available_property, channel_name);
     return std::make_unique<mvvm::ViewItem>(std::move(presentation));
   }
@@ -48,4 +48,4 @@ std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionI
   return mvvm::CreateLabelViewItem(&item);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

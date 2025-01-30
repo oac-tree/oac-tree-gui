@@ -25,7 +25,7 @@
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/model/universal_instruction_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Base for CA/PV read instructions.
@@ -179,6 +179,6 @@ public:
   void SetSeverity(const std::string& value);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_EPICS_INSTRUCTION_ITEMS_H_

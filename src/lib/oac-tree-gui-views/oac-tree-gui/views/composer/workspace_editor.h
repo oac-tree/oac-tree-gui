@@ -35,7 +35,7 @@ namespace mvvm
 class SessionItem;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class WorkspaceItem;
@@ -94,6 +94,6 @@ private:
   AttributeEditorActions* m_attribute_actions{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_H_

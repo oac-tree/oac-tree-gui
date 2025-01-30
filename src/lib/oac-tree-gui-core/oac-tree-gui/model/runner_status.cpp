@@ -27,19 +27,19 @@
 namespace
 {
 
-const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
-    {sequencergui::RunnerStatus::kInitial, "Initial"},
-    {sequencergui::RunnerStatus::kPaused, "Paused"},
-    {sequencergui::RunnerStatus::kStepping, "Stepping"},
-    {sequencergui::RunnerStatus::kRunning, "Running"},
-    {sequencergui::RunnerStatus::kSucceeded, "Success"},
-    {sequencergui::RunnerStatus::kFailed, "Failure"},
-    {sequencergui::RunnerStatus::kHalted, "Halted"},
-    {sequencergui::RunnerStatus::kUndefined, ""}};
+const std::map<oac_tree_gui::RunnerStatus, std::string> kRunnerStatusMap = {
+    {oac_tree_gui::RunnerStatus::kInitial, "Initial"},
+    {oac_tree_gui::RunnerStatus::kPaused, "Paused"},
+    {oac_tree_gui::RunnerStatus::kStepping, "Stepping"},
+    {oac_tree_gui::RunnerStatus::kRunning, "Running"},
+    {oac_tree_gui::RunnerStatus::kSucceeded, "Success"},
+    {oac_tree_gui::RunnerStatus::kFailed, "Failure"},
+    {oac_tree_gui::RunnerStatus::kHalted, "Halted"},
+    {oac_tree_gui::RunnerStatus::kUndefined, ""}};
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 std::string ToString(RunnerStatus status)
 {
@@ -63,4 +63,4 @@ RunnerStatus GetRunnerStatus(const std::string &status_name)
   return iter->first;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

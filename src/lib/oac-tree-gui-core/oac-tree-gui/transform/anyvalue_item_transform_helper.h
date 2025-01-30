@@ -38,7 +38,7 @@ namespace sup::gui
 class AnyValueItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class VariableItem;
@@ -111,6 +111,6 @@ sup::dto::AnyValue GetAnyValue(const VariableItem& item);
 sup::dto::AnyValue GetAnyValue(const std::string& var_name,
                                const sup::oac_tree::Workspace& workspace);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_ANYVALUE_ITEM_TRANSFORM_HELPER_H_

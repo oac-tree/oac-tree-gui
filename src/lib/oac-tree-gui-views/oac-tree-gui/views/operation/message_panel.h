@@ -39,7 +39,7 @@ class CustomHeaderView;
 class SteadyMenu;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobLog;
@@ -91,6 +91,6 @@ private:
   bool m_tree_at_the_bottom{false};
   QStringList m_unchecked_severitites;
 };
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_MESSAGE_PANEL_H_

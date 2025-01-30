@@ -24,7 +24,7 @@
 
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -40,6 +40,6 @@ public:
   std::unique_ptr<ConnectableView> CreateView(InstructionItem *item) override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_

@@ -23,7 +23,7 @@
 #include <map>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -59,6 +59,6 @@ private:
   std::map<const InstructionItem*, ConnectableView*> m_item_to_view;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_

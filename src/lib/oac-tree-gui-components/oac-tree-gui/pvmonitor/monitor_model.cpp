@@ -23,7 +23,7 @@
 
 #include <mvvm/model/model_utils.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
@@ -47,4 +47,4 @@ void MonitorModel::PopulateModel()
   InsertItem<WorkspaceItem>();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

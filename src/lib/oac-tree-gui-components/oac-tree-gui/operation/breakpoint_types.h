@@ -24,7 +24,7 @@
 
 #include <cstdint>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 enum class BreakpointStatus : std::uint8_t
@@ -40,6 +40,6 @@ struct BreakpointInfo
   mvvm::Path path;  //! path to the instruction item
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_BREAKPOINT_TYPES_H_

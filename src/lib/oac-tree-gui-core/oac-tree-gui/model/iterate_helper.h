@@ -23,7 +23,7 @@
 #include <functional>
 #include <stack>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -63,6 +63,6 @@ void IterateInstructionContainer(const ContainerT& container, std::function<void
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_ITERATE_HELPER_H_

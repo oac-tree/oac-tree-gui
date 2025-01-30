@@ -25,7 +25,7 @@
 
 #include <mvvm/viewmodel/abstract_row_strategy.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -79,6 +79,6 @@ private:
   std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_ROW_STRATEGIES_H_

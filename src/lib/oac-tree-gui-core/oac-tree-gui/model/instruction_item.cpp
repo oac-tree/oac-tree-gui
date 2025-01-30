@@ -30,7 +30,7 @@
 
 #include <sup/oac-tree/instruction.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 // ----------------------------------------------------------------------------
 // InstructionItem
@@ -50,7 +50,7 @@ void InstructionItem::InitFromDomain(const instruction_t *instruction)
 
 std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
 {
-  auto result = ::sequencergui::CreateDomainInstruction(GetDomainType());
+  auto result = ::oac_tree_gui::CreateDomainInstruction(GetDomainType());
   SetupDomainImpl(result.get());
   return result;
 }
@@ -133,4 +133,4 @@ void InstructionItem::RegisterCommonProperties()
   AddShowCollapsedProperty(*this);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

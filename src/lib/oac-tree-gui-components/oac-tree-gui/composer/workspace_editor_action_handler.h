@@ -29,7 +29,7 @@ namespace mvvm
 class ISessionModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class VariableItem;
@@ -115,6 +115,6 @@ private:
   WorkspaceEditorContext m_context;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_ACTION_HANDLER_H_

@@ -27,7 +27,7 @@
 #include <functional>
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class IRemoteConnectionService;
@@ -52,6 +52,6 @@ struct UserContext;
 std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
     const UserContext& user_context, IRemoteConnectionService& service);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_OPERATION_ACTION_HELPER_H_

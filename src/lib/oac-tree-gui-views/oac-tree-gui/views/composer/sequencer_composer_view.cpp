@@ -48,7 +48,7 @@ const QString kRightPanel = kGroupName + "/" + "right";
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
     : QWidget(parent_widget)
@@ -162,4 +162,4 @@ void SequencerComposerView::SetupWidgetActions()
           [this](auto) { m_right_panel->setVisible(!m_right_panel->isVisible()); });
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

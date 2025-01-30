@@ -22,7 +22,7 @@
 
 #include <QProxyStyle>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -41,6 +41,6 @@ public:
                      const QWidget* widget) const override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_

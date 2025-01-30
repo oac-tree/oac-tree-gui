@@ -24,7 +24,7 @@
 
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Represents a log event during sequencer procedure execution.
@@ -51,6 +51,6 @@ std::string GetLogEventDateFormat();
 //! For the moment using "hh:mm:ss.zzz".
 std::string GetLogEventTimeFormat();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_LOG_EVENT_H_

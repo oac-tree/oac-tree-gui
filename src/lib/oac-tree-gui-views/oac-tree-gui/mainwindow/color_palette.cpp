@@ -21,7 +21,7 @@
 
 #include <sup/gui/style/style_helper.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -40,4 +40,4 @@ QColor GetMainToolBarColor()
   return sup::gui::utils::IsDarkTheme() ? QColor(kChineseBlack) : QColor(kMediumElectricBlue);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

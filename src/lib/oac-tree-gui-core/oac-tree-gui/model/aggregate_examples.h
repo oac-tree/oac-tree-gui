@@ -24,7 +24,7 @@
 
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class InstructionItem;
 
@@ -35,6 +35,6 @@ namespace Examples
 std::unique_ptr<InstructionItem> CreateIfThenElseAggregate();
 
 }  // namespace Examples
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_AGGREGATE_EXAMPLES_H_

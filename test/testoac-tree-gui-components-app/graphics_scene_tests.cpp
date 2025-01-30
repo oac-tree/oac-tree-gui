@@ -40,7 +40,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for GraphicsScene class. Supplements graphicscontroller.test.cpp
@@ -417,4 +417,4 @@ TEST_F(GraphicsSceneTest, ComplexAggregateRemoval)
   EXPECT_EQ(GetInstructionContainer()->GetTotalItemCount(), 0);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

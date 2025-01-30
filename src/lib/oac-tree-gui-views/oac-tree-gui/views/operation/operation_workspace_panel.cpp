@@ -32,7 +32,7 @@ const QString kWorkspaceSettingsKey = "OperationWorkspacePanel/stack_widget";
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent_widget)
@@ -78,4 +78,4 @@ void OperationWorkspacePanel::WriteSettings()
   m_stack_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests events defined in domain_events.h
@@ -165,4 +165,4 @@ TEST_F(DomainEventTest, NextLeavesChangedEvent)
   }
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

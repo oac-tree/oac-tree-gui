@@ -30,7 +30,7 @@ class ViewModel;
 class SessionItem;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -101,6 +101,6 @@ private:
   std::vector<InstructionItem*> m_selection_preferences;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_INSTRUCTION_TREE_EXPAND_CONTROLLER_H_

@@ -37,7 +37,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for methods from workspace_monitor_helper.h.
@@ -199,4 +199,4 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
   EXPECT_EQ(value, GetAnyValue(variable_item));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

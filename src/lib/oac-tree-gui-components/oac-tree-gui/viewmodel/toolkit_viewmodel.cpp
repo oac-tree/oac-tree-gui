@@ -37,7 +37,7 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string& name, bool drag_ena
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ToolKitViewModel::ToolKitViewModel(QObject* parent_object) : QStandardItemModel(parent_object) {}
@@ -87,4 +87,4 @@ void ToolKitViewModel::PopulateModel(const std::vector<ObjectGroupInfo>& objects
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

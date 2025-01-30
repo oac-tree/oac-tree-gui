@@ -25,7 +25,7 @@
 #include <cstdint>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Defines severity levels for messages.
@@ -45,6 +45,6 @@ enum class Severity : std::uint8_t
 
 std::string ToString(Severity severity);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_

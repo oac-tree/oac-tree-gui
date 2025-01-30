@@ -28,7 +28,7 @@
 
 #include <QString>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Testing ConnectableInstructionAdapter class.
@@ -107,4 +107,4 @@ TEST_F(ConnectableInstructionAdapterTest, UndoRedoAndSetXAndSameY)
   EXPECT_EQ(item->GetY(), 2.0);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -49,7 +49,7 @@ const QString kHeaderStateSettingName("RealTimeInstructionTreeWidget/header_stat
 const std::vector<int> kDefaultColumnStretch({15, 5, 1});
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent_widget)
@@ -182,4 +182,4 @@ void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
   sup::gui::ScrollTreeViewportToSelection(*m_tree_view);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

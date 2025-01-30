@@ -34,7 +34,7 @@
 #include <oac-tree-gui/model/standard_instruction_items.h>
 #include <oac-tree-gui/viewmodel/drag_and_drop_helper.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for helper methods from drag_and_drop_helper.h
@@ -196,4 +196,4 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
   EXPECT_NE(dynamic_cast<WaitItem*>(reconstructed_item.get()), nullptr);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

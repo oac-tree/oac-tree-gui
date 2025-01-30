@@ -21,7 +21,7 @@
 
 #include <oac-tree-gui/model/variable_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 static inline const std::string kVariableItems = "kVariableItems";
@@ -51,4 +51,4 @@ int WorkspaceItem::GetVariableCount() const
   return static_cast<int>(GetVariables().size());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

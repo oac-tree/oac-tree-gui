@@ -22,7 +22,7 @@
 #include <oac-tree-gui/model/aggregate_examples.h>
 #include <oac-tree-gui/model/instruction_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AggregateFactory::AggregateFactory()
@@ -35,4 +35,4 @@ std::unique_ptr<InstructionItem> AggregateFactory::Create(const std::string &typ
   return GetValue(type_name)();  // call factory function
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

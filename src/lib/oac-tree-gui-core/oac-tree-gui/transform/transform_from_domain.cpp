@@ -30,7 +30,7 @@
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/workspace.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -135,4 +135,4 @@ RunnerStatus GetRunnerStatusFromDomain(sup::oac_tree::JobState job_state)
   return iter->second;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

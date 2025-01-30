@@ -29,7 +29,7 @@ namespace mvvm
 class FilterNameViewModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ToolKitViewModel;
@@ -60,6 +60,6 @@ private:
   QLineEdit* m_line_edit{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_ITEM_PANEL_H_

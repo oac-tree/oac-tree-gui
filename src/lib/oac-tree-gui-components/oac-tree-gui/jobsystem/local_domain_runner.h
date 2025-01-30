@@ -23,7 +23,7 @@
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/jobsystem/abstract_domain_runner.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -38,6 +38,6 @@ public:
                     std::unique_ptr<procedure_t> procedure);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_LOCAL_DOMAIN_RUNNER_H_

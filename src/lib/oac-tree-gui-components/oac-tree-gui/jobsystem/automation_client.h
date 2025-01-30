@@ -32,7 +32,7 @@ namespace sup::oac_tree_server
 class IJobManager;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class AbstractJobHandler;
@@ -61,6 +61,6 @@ private:
   std::unique_ptr<sup::oac_tree_server::IJobManager> m_automation_job_manager;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_AUTOMATION_CLIENT_H_

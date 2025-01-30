@@ -17,15 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac-tree-gui/pvmonitor/workspace_synchronizer.h"
-
-#include <oac-tree-gui/domain/domain_helper.h>
-#include <oac-tree-gui/model/sequencer_item_helper.h>
-#include <oac-tree-gui/model/standard_variable_items.h>
-#include <oac-tree-gui/model/workspace_item.h>
-#include <oac-tree-gui/pvmonitor/monitor_model.h>
-#include <oac-tree-gui/pvmonitor/workspace_monitor_helper.h>
-#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -39,7 +30,16 @@
 
 #include <QTest>
 
-namespace sequencergui::test
+#include "oac-tree-gui/pvmonitor/workspace_synchronizer.h"
+#include <oac-tree-gui/domain/domain_helper.h>
+#include <oac-tree-gui/model/sequencer_item_helper.h>
+#include <oac-tree-gui/model/standard_variable_items.h>
+#include <oac-tree-gui/model/workspace_item.h>
+#include <oac-tree-gui/pvmonitor/monitor_model.h>
+#include <oac-tree-gui/pvmonitor/workspace_monitor_helper.h>
+#include <oac-tree-gui/transform/anyvalue_item_transform_helper.h>
+
+namespace oac_tree_gui::test
 {
 
 namespace
@@ -53,9 +53,6 @@ record (longout,"WORKSPACE-SYNCHRONIZER-SOFTIOC-TESTS:INT")
 )RAW";
 
 }
-
-namespace sequencergui
-{
 
 //! Testing WorkspaceSynchronizer for a single SoftIoc variable in during connect/disconnect.
 class WorkspaceSynchronizerSoftiocTest : public ::testing::Test
@@ -163,6 +160,4 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   EXPECT_EQ(variable_item->GetAnyValueItem()->GetChildren().at(1)->Data<bool>(), false);
 }
 
-}  // namespace sequencergui
-
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

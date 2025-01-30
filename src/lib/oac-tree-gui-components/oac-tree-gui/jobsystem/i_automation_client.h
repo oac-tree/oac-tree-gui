@@ -23,7 +23,7 @@
 #include <memory>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class AbstractJobHandler;
@@ -69,6 +69,6 @@ public:
                                                                const UserContext& user_context) = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_

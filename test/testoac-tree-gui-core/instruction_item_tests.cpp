@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for InstructionItem base class.
@@ -70,4 +70,4 @@ TEST_F(InstructionItemsTest, TestItem)
   EXPECT_TRUE(item.GetInstructions().empty());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

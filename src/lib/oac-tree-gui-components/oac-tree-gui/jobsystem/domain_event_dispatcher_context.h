@@ -24,7 +24,7 @@
 
 #include <functional>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**

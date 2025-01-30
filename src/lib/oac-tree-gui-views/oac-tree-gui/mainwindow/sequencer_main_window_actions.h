@@ -43,7 +43,7 @@ namespace sup::gui
 class AppContextFocusController;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -121,6 +121,6 @@ private:
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_OAC_TREE_MAIN_WINDOW_ACTIONS_H_

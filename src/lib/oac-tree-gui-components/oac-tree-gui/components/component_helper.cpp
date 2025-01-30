@@ -23,7 +23,7 @@
 
 #include <QSettings>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 BehaviorTreeStyle GetBehaviorTreeStyle()
@@ -58,4 +58,4 @@ QString GetCustomToolTipStyle()
   return sup::gui::IsOnCodac() ? adwaita_style : style;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

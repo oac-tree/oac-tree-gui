@@ -32,7 +32,7 @@
 
 #include <QToolButton>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionEditorActions::InstructionEditorActions(InstructionEditorActionHandler *handler,
@@ -221,4 +221,4 @@ void InstructionEditorActions::AboutToShowInsertMenu()
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

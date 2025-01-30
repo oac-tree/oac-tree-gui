@@ -25,7 +25,7 @@
 
 #include <QKeyEvent>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 GraphicsView::GraphicsView(GraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
@@ -125,4 +125,4 @@ void GraphicsView::keyReleaseEvent(QKeyEvent* event)
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

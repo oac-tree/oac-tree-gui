@@ -28,7 +28,7 @@ namespace sup::oac_tree
 class Workspace;
 }  // namespace sup::oac_tree
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class WorkspaceItem;
@@ -76,6 +76,6 @@ private:
   std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_

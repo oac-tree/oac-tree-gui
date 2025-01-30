@@ -30,7 +30,7 @@ class QPushButton;
 class QStandardItemModel;
 class QHBoxLayout;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class RemoteConnectionService;
@@ -103,6 +103,6 @@ private:
 std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
     RemoteConnectionService& connection_service, QWidget* parent = nullptr);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_

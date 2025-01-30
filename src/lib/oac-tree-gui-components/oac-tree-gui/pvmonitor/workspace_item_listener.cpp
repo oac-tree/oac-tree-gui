@@ -31,7 +31,7 @@
 
 #include <sup/oac-tree/workspace.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceItemListener::WorkspaceItemListener(WorkspaceItem* workspace_item,
@@ -128,4 +128,4 @@ void WorkspaceItemListener::ProcessEventToDomain(VariableItem* variable_item)
   m_domain_workspace->SetValue(variable_item->GetName(), GetAnyValue(*variable_item));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

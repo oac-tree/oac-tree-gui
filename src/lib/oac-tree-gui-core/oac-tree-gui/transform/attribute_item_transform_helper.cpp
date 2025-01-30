@@ -42,7 +42,7 @@ bool IsSuitableForDomainAttribute(const std::string &attribute_string,
 {
   const bool not_empty = !attribute_value.empty();
   const bool not_isroot_false =
-      !(attribute_string == sequencergui::domainconstants::kIsRootAttribute
+      !(attribute_string == oac_tree_gui::domainconstants::kIsRootAttribute
         && attribute_value == "false");
   return not_empty && not_isroot_false;
 }
@@ -54,11 +54,11 @@ bool GetIsExposedFlag(const attribute_definition_t &attr)
 {
   // list of domain attributes that should be always marked as present
   static const std::vector<std::string> kAlwaysExposedAttributeList = {
-      sequencergui::domainconstants::kNameAttribute};
+      oac_tree_gui::domainconstants::kNameAttribute};
   return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysExposedAttributeList, attr.GetName());
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 bool IsPlaceholderAttribute(const std::string &attribute_value)
@@ -204,4 +204,4 @@ template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem
 template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem &item,
                                                        instruction_t &domain);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

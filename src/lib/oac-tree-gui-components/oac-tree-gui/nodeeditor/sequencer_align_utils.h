@@ -27,12 +27,12 @@
 
 class QPointF;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class InstructionItem;
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
-namespace sequencergui::algorithm
+namespace oac_tree_gui::algorithm
 {
 
 class AlignNode;
@@ -62,6 +62,6 @@ bool RequiresInitialAlignment(const InstructionItem& instruction);
 //! Returns true if given instructionrequire alignment on the graphics scene.
 bool RequiresInitialAlignment(const std::vector<InstructionItem*>& instructions);
 
-}  // namespace sequencergui::algorithm
+}  // namespace oac_tree_gui::algorithm
 
 #endif  // SEQUENCERGUI_NODEEDITOR_OAC_TREE_ALIGN_UTILS_H_

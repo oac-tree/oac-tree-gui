@@ -21,7 +21,7 @@
 
 #include <oac-tree-gui/model/sequencer_item_helper.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 JobModel::JobModel(std::shared_ptr<mvvm::ItemPool> pool)
@@ -29,4 +29,4 @@ JobModel::JobModel(std::shared_ptr<mvvm::ItemPool> pool)
 {
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

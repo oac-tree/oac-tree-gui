@@ -31,7 +31,7 @@ class ISessionModel;
 class ProjectContext;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class SequencerModel;
@@ -63,6 +63,6 @@ private:
   std::shared_ptr<mvvm::ItemPool> m_item_pool;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_APPLICATION_MODELS_H_

@@ -27,7 +27,7 @@ namespace sup::gui
 class ItemStackWidget;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionEditorWidget;
@@ -93,7 +93,7 @@ public:
   void WriteSettings();
 
 signals:
-  void InstructionSelected(sequencergui::InstructionItem* selected);
+  void InstructionSelected(oac_tree_gui::InstructionItem* selected);
   void ExportToFileRequest();
 
 private:
@@ -110,6 +110,6 @@ private:
   bool m_block_selection_notification{false};  //!< do not notify outside if selection changed
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_COMPOSER_WIDGET_PANEL_H_

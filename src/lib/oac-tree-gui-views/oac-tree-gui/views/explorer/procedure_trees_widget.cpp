@@ -40,7 +40,7 @@ const QString kProcedureHeaderStateSettingName = kGroupName + "/" + "header_stat
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent_widget)
@@ -100,4 +100,4 @@ void ProcedureTreesWidget::WriteSettings()
   m_splitter->WriteSettings();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -33,7 +33,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent_widget)
@@ -92,4 +92,4 @@ std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactScalarEditor::GetResult()
   return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(m_model.get()));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

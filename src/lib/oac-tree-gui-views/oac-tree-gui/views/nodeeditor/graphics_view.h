@@ -26,7 +26,7 @@
 
 class QKeyEvent;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class GraphicsScene;
 
@@ -55,6 +55,6 @@ protected:
   void keyReleaseEvent(QKeyEvent* event) override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_

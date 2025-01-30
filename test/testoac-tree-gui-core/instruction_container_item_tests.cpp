@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class InstructionContainerItemTest : public ::testing::Test

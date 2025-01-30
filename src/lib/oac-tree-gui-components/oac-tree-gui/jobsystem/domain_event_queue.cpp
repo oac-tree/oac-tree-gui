@@ -21,7 +21,7 @@
 
 #include <oac-tree-gui/core/exceptions.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 DomainEventQueue::DomainEventQueue(QObject *parent_object) : QObject(parent_object) {}
@@ -49,4 +49,4 @@ std::size_t DomainEventQueue::GetEventCount() const
   return m_domain_events.size();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

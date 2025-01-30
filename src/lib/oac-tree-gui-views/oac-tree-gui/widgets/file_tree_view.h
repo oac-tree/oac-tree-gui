@@ -38,7 +38,7 @@ namespace sup::gui
 class ActionMenu;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -111,6 +111,6 @@ private:
   std::unique_ptr<QMenu> m_bookmark_menu;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_WIDGETS_FILE_TREE_VIEW_H_

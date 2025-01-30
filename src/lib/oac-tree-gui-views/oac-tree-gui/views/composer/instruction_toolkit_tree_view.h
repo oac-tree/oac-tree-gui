@@ -22,7 +22,7 @@
 
 #include <QTreeView>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -44,6 +44,6 @@ protected:
   void startDrag(Qt::DropActions supported_actions) override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_

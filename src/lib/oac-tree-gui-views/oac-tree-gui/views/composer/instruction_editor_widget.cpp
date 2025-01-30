@@ -56,16 +56,16 @@ const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 /**
  * @brief Returns action keys intended for a toolbar.
  */
-std::vector<sequencergui::InstructionEditorActions::ActionKey> GetToolBarActionKeys()
+std::vector<oac_tree_gui::InstructionEditorActions::ActionKey> GetToolBarActionKeys()
 {
-  using ActionKey = sequencergui::InstructionEditorActions::ActionKey;
+  using ActionKey = oac_tree_gui::InstructionEditorActions::ActionKey;
   return {ActionKey::kInsertAfter, ActionKey::kInsertInto, ActionKey::kRemoveSelected,
           ActionKey::kMoveUp, ActionKey::kMoveDown};
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
@@ -259,4 +259,4 @@ void InstructionEditorWidget::OnContextMenuRequest(const QPoint &point)
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -33,7 +33,7 @@ namespace
 const std::string kProcedureExtension(".xml");
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 bool ShouldStopRunningJobs()
@@ -51,7 +51,7 @@ bool ShouldStopRunningJobs()
 
 void LoadMainPlugins()
 {
-  auto [success, message] = sequencergui::LoadPlugins();
+  auto [success, message] = oac_tree_gui::LoadPlugins();
   if (!success)
   {
     QMessageBox::warning(nullptr, "Failed to load plugins", QString::fromStdString(message));
@@ -92,4 +92,4 @@ void ImportProcedures(const QString& file_name, const std::function<bool(const Q
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

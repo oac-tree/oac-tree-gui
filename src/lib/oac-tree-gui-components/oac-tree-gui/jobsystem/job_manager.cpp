@@ -29,7 +29,7 @@
 
 #include <algorithm>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -194,4 +194,4 @@ void JobManager::InsertJobHandler(std::unique_ptr<IJobHandler> job_handler)
   m_job_handlers.push_back(std::move(job_handler));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

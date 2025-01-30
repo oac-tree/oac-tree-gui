@@ -34,7 +34,7 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 const std::string kSequenceTwoWaitsBody{
@@ -142,13 +142,13 @@ TEST_F(ProcedureItemJobInfoBuilderTest, BuildFromIncludeAfterSteup)
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto repeat_item = procedure_item->GetInstructionContainer()->GetItem<sequencergui::RepeatItem>(
+  auto repeat_item = procedure_item->GetInstructionContainer()->GetItem<oac_tree_gui::RepeatItem>(
       mvvm::TagIndex::Default(0));
 
-  auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>(mvvm::TagIndex::Default(0));
+  auto include_item = repeat_item->GetItem<oac_tree_gui::IncludeItem>(mvvm::TagIndex::Default(0));
   auto sequence_item =
-      include_item->GetItem<sequencergui::SequenceItem>(mvvm::TagIndex::Default(0));
-  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>(mvvm::TagIndex::Default(0));
+      include_item->GetItem<oac_tree_gui::SequenceItem>(mvvm::TagIndex::Default(0));
+  auto wait_item = sequence_item->GetItem<oac_tree_gui::WaitItem>(mvvm::TagIndex::Default(0));
 
   EXPECT_EQ(builder.GetInstruction(0), repeat_item);
   EXPECT_EQ(builder.GetInstruction(1), include_item);
@@ -156,4 +156,4 @@ TEST_F(ProcedureItemJobInfoBuilderTest, BuildFromIncludeAfterSteup)
   EXPECT_EQ(builder.GetInstruction(3), wait_item);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

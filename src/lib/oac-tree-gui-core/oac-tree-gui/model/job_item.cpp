@@ -25,7 +25,7 @@
 #include <oac-tree-gui/model/item_constants.h>
 #include <oac-tree-gui/model/procedure_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 static inline const std::string kLink = "kLink";
@@ -90,4 +90,4 @@ RunnerStatus GetRunnerStatus(const JobItem *item)
   return GetRunnerStatus(item->GetStatus());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

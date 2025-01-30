@@ -31,19 +31,19 @@
 
 int main(int argc, char** argv)
 {
-  auto version = QString::fromStdString(sequencergui::ProjectVersion());
+  auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("sup-pvmonitor", version);
 
-  auto options = sequencergui::ParseOptions(argc, argv);
+  auto options = oac_tree_gui::ParseOptions(argc, argv);
   sup::gui::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
-  sequencergui::LoadResources();
+  oac_tree_gui::LoadResources();
 
-  sequencergui::PvMonitorMainWindow win;
+  oac_tree_gui::PvMonitorMainWindow win;
   win.show();
 
   return app.exec();

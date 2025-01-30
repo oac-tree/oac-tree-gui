@@ -31,7 +31,7 @@ class ViewItem;
 class SessionItem;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -42,6 +42,6 @@ namespace sequencergui
  */
 std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionItem& item);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H_

@@ -27,7 +27,7 @@ namespace mvvm
 class ContainerItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Represents TypeRegistrationInfo.
@@ -75,6 +75,6 @@ public:
   void SetPluginPaths(const std::vector<std::string>& plugin_paths);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_

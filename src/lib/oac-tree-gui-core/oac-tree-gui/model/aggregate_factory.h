@@ -25,7 +25,7 @@
 #include <functional>
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class InstructionItem;
 
@@ -40,6 +40,6 @@ public:
   std::unique_ptr<InstructionItem> Create(const std::string& type_name);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_AGGREGATE_FACTORY_H_

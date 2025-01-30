@@ -31,7 +31,7 @@
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -281,4 +281,4 @@ JobItem *OperationActionHandler::GetSelectedJob()
   return m_operation_context.selected_job();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

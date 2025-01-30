@@ -48,7 +48,7 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for functions from anyvalue_item_transform_helper.h
@@ -367,4 +367,4 @@ TEST_F(AnyValueItemTransformHelperTest, GetAnyValueFromDomainWorkspace)
   EXPECT_EQ(GetAnyValue(var_name, workspace), initial_value);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -41,7 +41,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for GraphicsSceneController class.
@@ -356,4 +356,4 @@ TEST_F(GraphicsSceneControllerTest, InsertAnyValueItem)
   EXPECT_EQ(m_scene.GetConnectableViews(), std::vector<ConnectableView*>({instruction_view}));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -52,7 +52,7 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -288,4 +288,4 @@ QWidget *OperationMonitorView::CreateCentralPanel()
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

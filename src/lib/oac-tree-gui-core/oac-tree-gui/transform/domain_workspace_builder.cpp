@@ -26,7 +26,7 @@
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/workspace.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Populates empty sequencer workspace with the content of WorkspaceItem.
@@ -66,4 +66,4 @@ VariableItem* DomainWorkspaceBuilder::GetVariableItemFromDomainVariableName(
   return iter == m_domain_name_to_item.end() ? nullptr : iter->second;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

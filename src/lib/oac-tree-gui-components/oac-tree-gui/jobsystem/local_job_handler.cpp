@@ -35,7 +35,7 @@
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/workspace.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 LocalJobHandler::LocalJobHandler(JobItem *job_item, UserContext user_context)
@@ -88,4 +88,4 @@ void LocalJobHandler::SetupPropertyListener()
   m_property_listener->Connect<mvvm::PropertyChangedEvent>(on_event);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

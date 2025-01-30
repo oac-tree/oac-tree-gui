@@ -29,7 +29,7 @@
 
 #include <sup/oac-tree/variable.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
@@ -39,7 +39,7 @@ VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_typ
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {
-  auto result = ::sequencergui::CreateDomainVariable(GetDomainType());
+  auto result = ::oac_tree_gui::CreateDomainVariable(GetDomainType());
   SetupDomainImpl(result.get());
   return result;
 }
@@ -83,4 +83,4 @@ void VariableItem::RegisterAnyValueItemTag()
   RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

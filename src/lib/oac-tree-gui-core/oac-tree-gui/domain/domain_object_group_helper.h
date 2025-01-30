@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class DomainObjectTypeRegistry;
@@ -71,6 +71,6 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
  */
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_

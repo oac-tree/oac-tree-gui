@@ -24,7 +24,7 @@
 #include <future>
 #include <string>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -46,6 +46,6 @@ private:
   std::atomic<bool> m_continue{true};
 };
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

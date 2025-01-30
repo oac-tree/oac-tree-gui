@@ -23,7 +23,7 @@
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/model/variable_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -81,6 +81,6 @@ private:
   void SetupFromDomain(const variable_t* variable);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_

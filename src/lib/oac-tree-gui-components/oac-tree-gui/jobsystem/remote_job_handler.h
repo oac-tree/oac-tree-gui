@@ -28,7 +28,7 @@ namespace sup::oac_tree_server
 class IJobManager;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class WorkspaceItemListener;
@@ -49,6 +49,6 @@ private:
   void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_JOB_HANDLER_H_

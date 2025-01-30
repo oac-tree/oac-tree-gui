@@ -32,7 +32,7 @@ class ViewItem;
 class ApplicationModel;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class ConnectableView;
 class NodeController;
@@ -72,7 +72,7 @@ public:
   void onConnectionRequest(ConnectableView* child_view, ConnectableView* parent_view);
 
 signals:
-  void InstructionSelected(sequencergui::InstructionItem* selected);
+  void InstructionSelected(oac_tree_gui::InstructionItem* selected);
   void selectionModeChangeRequest(int);
 
 protected:
@@ -102,6 +102,6 @@ inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_

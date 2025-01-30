@@ -25,7 +25,7 @@
 #include <memory>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class ProcedureItem;
 
@@ -61,6 +61,6 @@ std::string ExportToXMLString(const ProcedureItem& procedure_item);
  */
 
 std::string ReplaceQuotationMarks(const std::string& str);
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_XML_UTILS_H_

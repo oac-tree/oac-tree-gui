@@ -27,7 +27,7 @@
 
 //! Testing methods from main_window_helper.h
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class MainWindowHelperTest : public test::FolderTest
@@ -61,4 +61,4 @@ TEST_F(MainWindowHelperTest, GetProcedureFiles)
   ASSERT_EQ(found_files.size(), 0);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -34,7 +34,7 @@
 
 using testing::_;
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for DomainWorkspaceListener class.
@@ -155,4 +155,4 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
   // expecting no calls
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -30,7 +30,7 @@
 
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -162,4 +162,4 @@ void ComposerWidgetPanel::SetupConnections()
           &ComposerWidgetPanel::ExportToFileRequest);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

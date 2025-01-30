@@ -22,7 +22,7 @@
 
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -39,6 +39,6 @@ public:
   virtual std::unique_ptr<ConnectableView> CreateView(InstructionItem*) = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_VIEW_FACTORY_INTERFACE_H_

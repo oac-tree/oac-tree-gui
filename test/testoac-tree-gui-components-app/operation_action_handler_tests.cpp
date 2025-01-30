@@ -36,9 +36,9 @@
 
 #include <QSignalSpy>
 
-Q_DECLARE_METATYPE(sequencergui::JobItem*)
+Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -423,4 +423,4 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobIsBroken)
   EXPECT_EQ(job_item.GetStatus(), std::string("abc"));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

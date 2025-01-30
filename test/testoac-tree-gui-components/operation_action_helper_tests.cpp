@@ -33,7 +33,7 @@
 #include <testutils/mock_remote_connection_service.h>
 #include <testutils/standard_procedure_items.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -106,4 +106,4 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForRemoteJob)
   auto job_handler = create_func(*job_item_ptr);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

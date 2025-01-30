@@ -31,7 +31,7 @@
 #include <memory>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -52,6 +52,6 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
  */
 RunnerStatus GetRunnerStatusFromDomain(sup::oac_tree::JobState job_state);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_

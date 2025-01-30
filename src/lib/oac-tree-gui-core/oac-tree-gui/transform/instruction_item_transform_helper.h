@@ -28,7 +28,7 @@
 #include <memory>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -64,6 +64,6 @@ InstructionTree CreateInstructionItemTree(const sup::oac_tree::InstructionInfo& 
  */
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_INSTRUCTION_ITEM_TRANSFORM_HELPER_H_

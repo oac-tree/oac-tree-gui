@@ -40,7 +40,7 @@
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/workspace.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
@@ -56,7 +56,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 
 void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
 {
-  if (!mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag))
+  if (!mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag))
   {
     throw LogicErrorException("This instruction is not inteded for storing AnyValueItem");
   }
@@ -193,4 +193,4 @@ sup::dto::AnyValue GetAnyValue(const std::string &var_name,
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

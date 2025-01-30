@@ -27,7 +27,7 @@
 class QColor;
 class QString;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -82,6 +82,6 @@ private:
   InstructionItem* m_instruction{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_INSTRUCTION_ADAPTER_H_

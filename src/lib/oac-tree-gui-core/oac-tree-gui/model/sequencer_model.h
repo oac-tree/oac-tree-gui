@@ -27,7 +27,7 @@ namespace mvvm
 class ContainerItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class ProcedureItem;
 
@@ -78,6 +78,6 @@ public:
   void Clear() override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_OAC_TREE_MODEL_H_

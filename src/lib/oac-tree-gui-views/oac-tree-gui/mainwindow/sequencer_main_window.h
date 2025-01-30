@@ -32,7 +32,7 @@ namespace mvvm
 class MainVerticalBarWidget;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class SequencerExplorerView;
@@ -101,6 +101,6 @@ private:
   OperationMonitorView* m_operation_view{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_OAC_TREE_MAIN_WINDOW_H_

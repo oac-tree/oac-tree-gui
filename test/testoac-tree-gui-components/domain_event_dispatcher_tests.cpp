@@ -24,7 +24,7 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for DomainEventDispatcher class.

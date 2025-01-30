@@ -28,7 +28,7 @@ class CollapsibleListView;
 class ItemStackWidget;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class FileTreeView;
@@ -66,6 +66,6 @@ private:
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_EXPLORER_EXPLORER_PANEL_H_

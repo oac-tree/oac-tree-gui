@@ -31,7 +31,7 @@
 
 #include <thread>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 void TestAutomationServer::Start(const std::string &server_name,
@@ -79,4 +79,4 @@ void TestAutomationServer::WaitForResult()
   m_future.wait();
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -31,7 +31,7 @@
 #include <QTest>
 #include <future>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -244,4 +244,4 @@ TEST_F(DomainJobServiceTest, NextInstructionsUpdated)
   EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -24,7 +24,7 @@
 #include <QString>
 #include <optional>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -56,6 +56,6 @@ struct Options
  */
 Options ParseOptions(int argc, char** argv);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_

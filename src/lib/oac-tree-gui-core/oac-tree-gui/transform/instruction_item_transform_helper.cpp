@@ -30,7 +30,7 @@
 
 #include <stack>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -43,7 +43,7 @@ namespace
 struct InstructionInfoStackNode
 {
   const sup::oac_tree::InstructionInfo& info;
-  sequencergui::InstructionItem& item;
+  oac_tree_gui::InstructionItem& item;
 };
 
 /**
@@ -53,14 +53,14 @@ struct InstructionInfoStackNode
 struct InstructionStackNode
 {
   const sup::oac_tree::Instruction& instruction;
-  sequencergui::InstructionItem& item;
+  oac_tree_gui::InstructionItem& item;
 };
 
 }  // namespace
 
 std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::oac_tree::InstructionInfo& info)
 {
-  auto result = sequencergui::CreateInstructionItem(info.GetType());
+  auto result = oac_tree_gui::CreateInstructionItem(info.GetType());
 
   // We create domain instruction only to be able to use InitFromDomain mechanism for attribute
   // propagation.
@@ -111,4 +111,4 @@ InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& inst
   return CreateInstructionItemTree(*instr_info);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

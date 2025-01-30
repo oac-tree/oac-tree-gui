@@ -38,7 +38,7 @@
 #include <QMimeData>
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ProcedureListWidget::ProcedureListWidget(QWidget *parent_widget)
@@ -148,4 +148,4 @@ void ProcedureListWidget::OnContextMenuRequest(const QPoint &point)
   menu.exec(m_list_view->mapToGlobal(point));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

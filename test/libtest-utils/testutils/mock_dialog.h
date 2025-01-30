@@ -29,7 +29,7 @@ namespace sup::gui
 class AnyValueItem;
 }
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -39,7 +39,7 @@ namespace sequencergui::test
 class MockDialog
 {
 public:
-  void SetItemToReturn(sequencergui::AnyValueDialogResult dialog_result)
+  void SetItemToReturn(oac_tree_gui::AnyValueDialogResult dialog_result)
   {
     m_dialog_result = std::move(dialog_result);
   }
@@ -47,18 +47,18 @@ public:
   MOCK_METHOD(void, OnEditingRequest, (const sup::gui::AnyValueItem* item));
 
   //! Creates a callback that mimicks editing request and returning the result to the user
-  std::function<sequencergui::AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateCallback()
+  std::function<oac_tree_gui::AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateCallback()
   {
-    return [this](const sup::gui::AnyValueItem* item) -> sequencergui::AnyValueDialogResult
+    return [this](const sup::gui::AnyValueItem* item) -> oac_tree_gui::AnyValueDialogResult
     {
       OnEditingRequest(item);
       return std::move(m_dialog_result);
     };
   }
 
-  sequencergui::AnyValueDialogResult m_dialog_result;
+  oac_tree_gui::AnyValueDialogResult m_dialog_result;
 };
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DIALOG_H_

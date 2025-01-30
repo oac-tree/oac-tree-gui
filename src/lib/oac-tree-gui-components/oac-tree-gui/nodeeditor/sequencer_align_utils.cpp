@@ -33,17 +33,17 @@
 
 namespace
 {
-sequencergui::algorithm::AlignNode *PopulateNode(const sequencergui::InstructionItem &item,
-                                                 sequencergui::algorithm::AlignNode &node)
+oac_tree_gui::algorithm::AlignNode *PopulateNode(const oac_tree_gui::InstructionItem &item,
+                                                 oac_tree_gui::algorithm::AlignNode &node)
 {
-  auto child = node.Add<sequencergui::algorithm::AlignNode>();
+  auto child = node.Add<oac_tree_gui::algorithm::AlignNode>();
   child->SetIdentifier(item.GetIdentifier());
   return child;
 }
 
 }  // namespace
 
-namespace sequencergui::algorithm
+namespace oac_tree_gui::algorithm
 {
 
 std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem *> instructions)
@@ -198,4 +198,4 @@ bool RequiresInitialAlignment(const std::vector<InstructionItem *> &instructions
                      [](auto it) { return RequiresInitialAlignment(*it); });
 }
 
-}  // namespace sequencergui::algorithm
+}  // namespace oac_tree_gui::algorithm

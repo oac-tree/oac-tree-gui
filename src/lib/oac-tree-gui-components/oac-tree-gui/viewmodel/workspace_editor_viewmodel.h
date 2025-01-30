@@ -27,7 +27,7 @@ namespace mvvm
 class ISessionModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -48,6 +48,6 @@ public:
   int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_

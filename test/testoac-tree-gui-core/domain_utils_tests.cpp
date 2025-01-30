@@ -28,9 +28,9 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui::domainconstants;
+using namespace oac_tree_gui::domainconstants;
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class DomainUtilsTest : public ::testing::Test

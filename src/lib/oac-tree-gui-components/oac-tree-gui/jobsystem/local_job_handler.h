@@ -27,7 +27,7 @@ namespace mvvm
 class ItemListener;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class WorkspaceItemListener;
@@ -66,6 +66,6 @@ private:
   std::unique_ptr<mvvm::ItemListener> m_property_listener;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_

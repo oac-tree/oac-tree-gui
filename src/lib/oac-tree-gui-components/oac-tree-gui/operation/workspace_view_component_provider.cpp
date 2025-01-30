@@ -25,7 +25,7 @@
 
 #include <QTreeView>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceViewComponentProvider::WorkspaceViewComponentProvider(
@@ -42,4 +42,4 @@ void WorkspaceViewComponentProvider::SetFilterPattern(const QString &pattern)
   m_filter_proxy_model->SetPattern(pattern);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

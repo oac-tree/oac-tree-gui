@@ -48,7 +48,7 @@
 
 using msec = std::chrono::milliseconds;
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -266,4 +266,4 @@ TEST_F(JobManagerExtendedTest, StopAllJobs)
   EXPECT_FALSE(manager.HasRunningJobs());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -26,7 +26,7 @@
 
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class DomainJobService;
@@ -140,6 +140,6 @@ private:
   std::unique_ptr<sup::oac_tree::IJob> m_domain_job;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_ABSTRACT_DOMAIN_RUNNER_H_

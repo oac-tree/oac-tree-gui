@@ -23,7 +23,7 @@
 #include <oac-tree-gui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AttributeEditorActionHandler::AttributeEditorActionHandler(AttributeEditorContext context,
@@ -103,4 +103,4 @@ bool AttributeEditorActionHandler::IsAnyValue() const
          && GetSelectedAttributeItem()->GetTagIndex().GetTag() == itemconstants::kAnyValueTag;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

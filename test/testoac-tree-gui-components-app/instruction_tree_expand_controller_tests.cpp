@@ -33,7 +33,7 @@
 
 #include <QTreeView>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class InstructionTreeExpandControllerTest : public ::testing::Test
@@ -151,4 +151,4 @@ TEST_F(InstructionTreeExpandControllerTest, SetDefaultExpandState)
   EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -28,7 +28,7 @@
 #include <functional>
 #include <mutex>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 struct UserContext;
@@ -110,6 +110,6 @@ private:
   int m_tick_timeout_msec{0};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_JOB_OBSERVER_H_

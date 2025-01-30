@@ -24,7 +24,7 @@
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/model/register_items.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 void LoadResources()
@@ -37,4 +37,4 @@ void LoadResources()
   RegisterCustomMetaTypes();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

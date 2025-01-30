@@ -36,7 +36,7 @@ namespace sup::gui
 class ActionMenu;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Instrument tool bar on top of NodeEditor
@@ -88,6 +88,6 @@ private:
   sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_

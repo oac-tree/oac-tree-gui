@@ -29,7 +29,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for utility functions from sequencer_utils.h
@@ -140,4 +140,4 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
   EXPECT_NE(GetBreakpointItem(test_item), nullptr);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -25,7 +25,7 @@
 #include <oac-tree-gui/jobsystem/remote_job_handler.h>
 #include <oac-tree-gui/model/standard_job_items.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
@@ -53,4 +53,4 @@ std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

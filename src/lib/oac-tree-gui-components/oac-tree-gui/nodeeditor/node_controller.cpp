@@ -34,7 +34,7 @@ const bool event_was_handled = true;
 const bool event_was_ignored = false;
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 NodeController::NodeController(QGraphicsScene* scene) : m_scene(scene)
 {
@@ -147,4 +147,4 @@ void NodeController::resetConnection()
   m_conn = nullptr;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

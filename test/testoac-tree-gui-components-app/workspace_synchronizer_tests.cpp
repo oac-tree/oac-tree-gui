@@ -39,7 +39,7 @@
 
 #include <QTest>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for WorkspaceSynchronizer class.
@@ -214,4 +214,4 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 //   EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
 // }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

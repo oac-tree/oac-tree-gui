@@ -25,7 +25,7 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/viewmodel.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceFilterViewModel::WorkspaceFilterViewModel(QObject *parent_object)
@@ -91,4 +91,4 @@ mvvm::ViewModel *WorkspaceFilterViewModel::GetViewModel() const
   return dynamic_cast<mvvm::ViewModel *>(sourceModel());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

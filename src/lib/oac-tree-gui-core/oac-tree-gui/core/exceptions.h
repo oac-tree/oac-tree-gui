@@ -23,7 +23,7 @@
 #include <exception>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Base Exception class with message.
@@ -111,6 +111,6 @@ public:
   explicit InvalidOperationException(const std::string& message);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_CORE_EXCEPTIONS_H_

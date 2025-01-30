@@ -24,7 +24,7 @@
 
 #include <gmock/gmock.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobItem;
@@ -39,19 +39,19 @@ namespace test
 class MockJobHandlerListener
 {
 public:
-  MOCK_METHOD(void, Start, (const sequencergui::IJobHandler*), ());
-  MOCK_METHOD(void, Pause, (const sequencergui::IJobHandler*), ());
-  MOCK_METHOD(void, Step, (const sequencergui::IJobHandler*), ());
-  MOCK_METHOD(void, Stop, (const sequencergui::IJobHandler*), ());
-  MOCK_METHOD(void, Reset, (const sequencergui::IJobHandler*), ());
-  MOCK_METHOD(bool, IsRunning, (const sequencergui::IJobHandler*), (const));
-  MOCK_METHOD(sequencergui::RunnerStatus, GetRunnerStatus, (const sequencergui::IJobHandler*),
+  MOCK_METHOD(void, Start, (const oac_tree_gui::IJobHandler*), ());
+  MOCK_METHOD(void, Pause, (const oac_tree_gui::IJobHandler*), ());
+  MOCK_METHOD(void, Step, (const oac_tree_gui::IJobHandler*), ());
+  MOCK_METHOD(void, Stop, (const oac_tree_gui::IJobHandler*), ());
+  MOCK_METHOD(void, Reset, (const oac_tree_gui::IJobHandler*), ());
+  MOCK_METHOD(bool, IsRunning, (const oac_tree_gui::IJobHandler*), (const));
+  MOCK_METHOD(oac_tree_gui::RunnerStatus, GetRunnerStatus, (const oac_tree_gui::IJobHandler*),
               (const));
-  MOCK_METHOD(sequencergui::JobLog*, GetJobLog, (const sequencergui::IJobHandler*), (const));
+  MOCK_METHOD(oac_tree_gui::JobLog*, GetJobLog, (const oac_tree_gui::IJobHandler*), (const));
   MOCK_METHOD(void, OnToggleBreakpointRequest,
-              (sequencergui::InstructionItem*, const sequencergui::IJobHandler*), ());
-  MOCK_METHOD(sequencergui::ProcedureItem*, GetExpandedProcedure,
-              (const sequencergui::IJobHandler*), (const));
+              (oac_tree_gui::InstructionItem*, const oac_tree_gui::IJobHandler*), ());
+  MOCK_METHOD(oac_tree_gui::ProcedureItem*, GetExpandedProcedure,
+              (const oac_tree_gui::IJobHandler*), (const));
 };
 
 /**
@@ -61,10 +61,10 @@ public:
  * It reports also own "this" so MockJobHandlerListener could distinguish which job handler calls
  * what.
  */
-class MockJobHandler : public sequencergui::IJobHandler
+class MockJobHandler : public oac_tree_gui::IJobHandler
 {
 public:
-  explicit MockJobHandler(MockJobHandlerListener& listener, sequencergui::JobItem* item)
+  explicit MockJobHandler(MockJobHandlerListener& listener, oac_tree_gui::JobItem* item)
       : m_listener(listener), m_job_item(item)
   {
   }
@@ -81,22 +81,22 @@ public:
 
   bool IsRunning() const override;
 
-  sequencergui::RunnerStatus GetRunnerStatus() const override;
+  oac_tree_gui::RunnerStatus GetRunnerStatus() const override;
 
-  sequencergui::JobLog* GetJobLog() const override;
+  oac_tree_gui::JobLog* GetJobLog() const override;
 
-  void OnToggleBreakpointRequest(sequencergui::InstructionItem* instruction) override;
+  void OnToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction) override;
 
-  sequencergui::JobItem* GetJobItem() override;
+  oac_tree_gui::JobItem* GetJobItem() override;
 
-  sequencergui::ProcedureItem* GetExpandedProcedure() const override;
+  oac_tree_gui::ProcedureItem* GetExpandedProcedure() const override;
 
   MockJobHandlerListener& m_listener;
-  sequencergui::JobItem* m_job_item{nullptr};
+  oac_tree_gui::JobItem* m_job_item{nullptr};
 };
 
 }  // namespace test
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_JOB_HANDLER_H_

@@ -40,7 +40,7 @@
 #include <QMimeData>
 #include <QTreeView>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceEditor::WorkspaceEditor(WorkspacePresentationType presentation, QTreeView *tree,
@@ -184,4 +184,4 @@ AttributeEditorContext WorkspaceEditor::CreateAttributeEditorContext()
   return {[this]() { return m_component_provider->GetSelectedItem(); }};
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

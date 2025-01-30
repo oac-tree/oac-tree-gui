@@ -22,7 +22,7 @@
 
 #include <oac-tree-gui/model/runner_status.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -102,6 +102,6 @@ public:
   virtual ProcedureItem* GetExpandedProcedure() const = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_I_JOB_HANDLER_H_

@@ -29,7 +29,7 @@ class ItemStackWidget;
 class CustomSplitter;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class SequencerModel;
@@ -74,6 +74,6 @@ private:
   SequencerModel* m_model{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_EXPLORER_OAC_TREE_EXPLORER_VIEW_H_

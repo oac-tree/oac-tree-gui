@@ -26,7 +26,7 @@
 
 #include <QObject>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -73,6 +73,6 @@ private:
   mvvm::threadsafe_queue<domain_event_t> m_domain_events;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_QUEUE_H_

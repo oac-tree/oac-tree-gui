@@ -23,7 +23,7 @@
 #include <oac-tree-gui/domain/domain_helper.h>
 #include <oac-tree-gui/transform/attribute_item_transform_helper.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 // ----------------------------------------------------------------------------
@@ -171,4 +171,4 @@ double WaitItem::GetTimeout() const
   return Property<double>(domainconstants::kTimeoutAttribute);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

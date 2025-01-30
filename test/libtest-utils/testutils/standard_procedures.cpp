@@ -29,7 +29,7 @@
 #include <sup/oac-tree/sequence_parser.h>
 #include <sup/oac-tree/variable.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds timeout)
@@ -71,9 +71,9 @@ std::unique_ptr<procedure_t> CreateMessageProcedure(const std::string &text)
 {
   auto result = std::make_unique<procedure_t>();
   auto message = CreateDomainInstruction(domainconstants::kMessageInstructionType);
-  message->AddAttribute(sequencergui::domainconstants::kNameAttribute,
+  message->AddAttribute(oac_tree_gui::domainconstants::kNameAttribute,
                         domainconstants::kMessageInstructionType);
-  message->AddAttribute(sequencergui::domainconstants::kTextAttribute, text);
+  message->AddAttribute(oac_tree_gui::domainconstants::kTextAttribute, text);
   result->PushInstruction(std::move(message));
 
   return result;
@@ -99,10 +99,10 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::mi
   auto result = std::make_unique<procedure_t>();
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute,
+  wait0->AddAttribute(oac_tree_gui::domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout1)));
   auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait1->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute,
+  wait1->AddAttribute(oac_tree_gui::domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout2)));
 
   sequence->InsertInstruction(std::move(wait0), 0);
@@ -117,7 +117,7 @@ std::unique_ptr<procedure_t> CreateSequenceWithSingleMessageProcedure()
   auto result = std::make_unique<procedure_t>();
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto message0 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
-  message0->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
+  message0->AddAttribute(oac_tree_gui::domainconstants::kTextAttribute, "abc");
 
   sequence->InsertInstruction(std::move(message0), 0);
 
@@ -130,9 +130,9 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoMessagesProcedure()
   auto result = std::make_unique<procedure_t>();
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto message0 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
-  message0->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
+  message0->AddAttribute(oac_tree_gui::domainconstants::kTextAttribute, "abc");
   auto message1 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
-  message1->AddAttribute(sequencergui::domainconstants::kTextAttribute, "efg");
+  message1->AddAttribute(oac_tree_gui::domainconstants::kTextAttribute, "efg");
 
   sequence->InsertInstruction(std::move(message0), 0);
   sequence->InsertInstruction(std::move(message1), 1);
@@ -167,11 +167,11 @@ std::unique_ptr<procedure_t> CreateUserChoiceProcedure()
   userchoice->AddAttribute(domainconstants::kDescriptionAttribute, "it's your choice");
 
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "10");  // 10 sec
+  wait0->AddAttribute(oac_tree_gui::domainconstants::kTimeoutAttribute, "10");  // 10 sec
 
   auto copy = CreateDomainInstruction(domainconstants::kCopyInstructionType);
-  copy->AddAttribute(sequencergui::domainconstants::kInputVariableNameAttribute, "var0");
-  copy->AddAttribute(sequencergui::domainconstants::kOutputVariableNameAttribute, "var1");
+  copy->AddAttribute(oac_tree_gui::domainconstants::kInputVariableNameAttribute, "var0");
+  copy->AddAttribute(oac_tree_gui::domainconstants::kOutputVariableNameAttribute, "var1");
 
   userchoice->InsertInstruction(std::move(wait0), 0);
   userchoice->InsertInstruction(std::move(copy), 1);
@@ -225,20 +225,20 @@ std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
 
   // Sequence with wait instruction
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
+  wait->AddAttribute(oac_tree_gui::domainconstants::kTimeoutAttribute, "42");
 
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  sequence->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MySequence");
+  sequence->AddAttribute(oac_tree_gui::domainconstants::kNameAttribute, "MySequence");
   sequence->InsertInstruction(std::move(wait), 0);
 
   // Repeat with include instruction
   auto include = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  include->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MyInclude");
-  include->AddAttribute(sequencergui::domainconstants::kPathAttribute, "MySequence");
+  include->AddAttribute(oac_tree_gui::domainconstants::kNameAttribute, "MyInclude");
+  include->AddAttribute(oac_tree_gui::domainconstants::kPathAttribute, "MySequence");
 
   auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
-  repeat->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
-  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute, "10");
+  repeat->AddAttribute(oac_tree_gui::domainconstants::kIsRootAttribute, "true");
+  repeat->AddAttribute(oac_tree_gui::domainconstants::kMaxCountAttribute, "10");
   repeat->InsertInstruction(std::move(include), 0);
 
   // procedure with two instructions
@@ -253,11 +253,11 @@ std::unique_ptr<procedure_t> CreateCounterProcedure(int n_repetitions)
   auto result = std::make_unique<procedure_t>();
 
   auto increment = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
-  increment->AddAttribute(sequencergui::domainconstants::kGenericVariableNameAttribute, "counter");
+  increment->AddAttribute(oac_tree_gui::domainconstants::kGenericVariableNameAttribute, "counter");
 
   // repeat instruction with increment inside
   auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
-  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute,
+  repeat->AddAttribute(oac_tree_gui::domainconstants::kMaxCountAttribute,
                        std::to_string(n_repetitions));
   repeat->InsertInstruction(std::move(increment), 0);
 
@@ -279,18 +279,18 @@ std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, i
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
 
   auto less_than = CreateDomainInstruction(domainconstants::kLessThanInstructionType);
-  less_than->AddAttribute(sequencergui::domainconstants::kLeftVariableNameAttribute, "counter");
-  less_than->AddAttribute(sequencergui::domainconstants::kRightVariableNameAttribute,
+  less_than->AddAttribute(oac_tree_gui::domainconstants::kLeftVariableNameAttribute, "counter");
+  less_than->AddAttribute(oac_tree_gui::domainconstants::kRightVariableNameAttribute,
                           "max_counter");
   sequence->InsertInstruction(std::move(less_than), 0);
 
   auto increment = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
-  increment->AddAttribute(sequencergui::domainconstants::kGenericVariableNameAttribute, "counter");
+  increment->AddAttribute(oac_tree_gui::domainconstants::kGenericVariableNameAttribute, "counter");
   sequence->InsertInstruction(std::move(increment), 0);
 
   // repeat instruction with increment inside
   auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
-  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute,
+  repeat->AddAttribute(oac_tree_gui::domainconstants::kMaxCountAttribute,
                        std::to_string(n_repetitions));
   repeat->InsertInstruction(std::move(sequence), 0);
 

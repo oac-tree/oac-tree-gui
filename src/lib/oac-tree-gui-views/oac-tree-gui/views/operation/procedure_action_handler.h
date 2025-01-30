@@ -25,7 +25,7 @@
 
 class QWidget;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -68,6 +68,6 @@ private:
   QString m_current_workdir;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_PROCEDURE_ACTION_HANDLER_H_

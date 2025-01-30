@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for InstructionViewItemMap class.
@@ -224,4 +224,4 @@ TEST_F(ConnectableViewMapTest, FindRelatedViewForChildrenTree)
   EXPECT_EQ(map.FindRelatedViews(&parent), expected);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

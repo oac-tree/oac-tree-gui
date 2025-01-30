@@ -30,7 +30,7 @@ namespace mvvm
 class ContainerItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -56,6 +56,6 @@ struct ProcedureListContext
   std::function<void(std::unique_ptr<QMimeData>)> set_mime_data;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_

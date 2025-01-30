@@ -24,7 +24,7 @@
 
 #include <mvvm/model/compound_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 //! Base class for all instruction items.
 class InstructionItem : public mvvm::CompoundItem
@@ -72,6 +72,6 @@ private:
   virtual void SetupDomainImpl(instruction_t* instruction) const = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_INSTRUCTION_ITEM_H_

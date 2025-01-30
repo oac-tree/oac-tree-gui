@@ -49,7 +49,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -171,7 +171,7 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
   mvvm::test::CreateTextFile(external_file_name,
                              test::CreateProcedureString(external_procedure));
 
-  auto procedure_item = sequencergui::ImportFromFile(main_file_name);
+  auto procedure_item = oac_tree_gui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
 
   auto model = GetSequencerModel();
@@ -205,7 +205,7 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
   mvvm::test::CreateTextFile(external_file_name,
                              test::CreateProcedureString(external_procedure));
 
-  auto procedure_item = sequencergui::ImportFromFile(main_file_name);
+  auto procedure_item = oac_tree_gui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
 
   auto model = GetSequencerModel();

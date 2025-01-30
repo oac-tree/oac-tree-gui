@@ -26,7 +26,7 @@
 #include <QListWidget>
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 JobPropertyWidget::JobPropertyWidget(QWidget *parent_widget)
@@ -46,4 +46,4 @@ void JobPropertyWidget::SetJob(JobItem *item)
   m_property_tree_view->SetItem(item);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

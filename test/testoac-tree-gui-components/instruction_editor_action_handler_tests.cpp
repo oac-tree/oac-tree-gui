@@ -42,7 +42,7 @@
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for InstructionEditorActionHandler class.
@@ -480,4 +480,4 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
   EXPECT_EQ(GetAnyValueItem(*item), previous_anyvalue);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -87,21 +87,21 @@ std::unique_ptr<variable_t> CreateVariable(const std::string &variable_type,
                                            const sup::dto::AnyValue &initial_value,
                                            const std::string &channel_name = {})
 {
-  using namespace sequencergui::domainconstants;
-  auto result = sequencergui::CreateDomainVariable(variable_type);
+  using namespace oac_tree_gui::domainconstants;
+  auto result = oac_tree_gui::CreateDomainVariable(variable_type);
   result->SetName(name);
   result->AddAttribute(kTypeAttribute, sup::gui::AnyTypeToJSONString(initial_value));
   result->AddAttribute(kValueAttribute, sup::gui::ValuesToJSONString(initial_value));
   if (!channel_name.empty())
   {
-    result->AddAttribute(sequencergui::domainconstants::kChannelAttribute, channel_name);
+    result->AddAttribute(oac_tree_gui::domainconstants::kChannelAttribute, channel_name);
   }
   return result;
 }
 
 }  // unnamed namespace
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 std::string GetEpicsDBContentString()
@@ -112,14 +112,14 @@ std::string GetEpicsDBContentString()
 std::unique_ptr<variable_t> CreateLocalVariable(const std::string &name,
                                                 const sup::dto::AnyValue &initial_value)
 {
-  return CreateVariable(sequencergui::domainconstants::kLocalVariableType, name, initial_value);
+  return CreateVariable(oac_tree_gui::domainconstants::kLocalVariableType, name, initial_value);
 }
 
 std::unique_ptr<variable_t> CreatePVAccessClientVariable(const std::string &name,
                                                          const sup::dto::AnyValue &initial_value,
                                                          const std::string &channel_name)
 {
-  return CreateVariable(sequencergui::domainconstants::kPvAccessClientVariableType, name,
+  return CreateVariable(oac_tree_gui::domainconstants::kPvAccessClientVariableType, name,
                         initial_value, channel_name);
 }
 
@@ -127,7 +127,7 @@ std::unique_ptr<variable_t> CreatePVAccessServerVariable(const std::string &name
                                                          const sup::dto::AnyValue &initial_value,
                                                          const std::string &channel_name)
 {
-  return CreateVariable(sequencergui::domainconstants::kPvAccessServerVariableType, name,
+  return CreateVariable(oac_tree_gui::domainconstants::kPvAccessServerVariableType, name,
                         initial_value, channel_name);
 }
 
@@ -135,7 +135,7 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string &name,
                                                         const sup::dto::AnyValue &initial_value,
                                                         const std::string &channel_name)
 {
-  return CreateVariable(sequencergui::domainconstants::kChannelAccessVariableType, name,
+  return CreateVariable(oac_tree_gui::domainconstants::kChannelAccessVariableType, name,
                         initial_value, channel_name);
 }
 
@@ -151,7 +151,7 @@ sup::oac_tree::JobInfo CreateJobInfo(const std::string &procedure_text)
   return job_info;
 }
 
-bool IsEqual(const sequencergui::VariableItem &variable, const sup::dto::AnyValue &value)
+bool IsEqual(const oac_tree_gui::VariableItem &variable, const sup::dto::AnyValue &value)
 {
   if (auto anyvalue_item = variable.GetAnyValueItem(); anyvalue_item)
   {
@@ -160,4 +160,4 @@ bool IsEqual(const sequencergui::VariableItem &variable, const sup::dto::AnyValu
   return false;
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

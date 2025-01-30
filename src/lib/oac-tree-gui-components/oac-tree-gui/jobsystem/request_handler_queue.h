@@ -27,7 +27,7 @@
 #include <mutex>
 #include <queue>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -122,6 +122,6 @@ private:
   std::queue<RequestPack*> m_stack;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_QUEUE_H_

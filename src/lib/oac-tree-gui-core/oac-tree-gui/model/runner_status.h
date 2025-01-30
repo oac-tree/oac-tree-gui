@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -54,6 +54,6 @@ std::string ToString(RunnerStatus status);
  */
 RunnerStatus GetRunnerStatus(const std::string& status_name);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_RUNNER_STATUS_H_

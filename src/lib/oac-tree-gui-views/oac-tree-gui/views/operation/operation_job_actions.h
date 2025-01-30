@@ -34,7 +34,7 @@ namespace sup::gui
 class ActionMenu;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -73,7 +73,7 @@ public:
   void SetAvailableProcedures(callback_t available_procedures);
 
 signals:
-  void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
+  void SubmitProcedureRequest(oac_tree_gui::ProcedureItem* item);
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();
@@ -96,6 +96,6 @@ private:
   sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_JOB_ACTIONS_H_

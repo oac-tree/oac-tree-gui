@@ -30,7 +30,7 @@
 
 #include <map>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 BreakpointStatus GetBreakpointStatus(const InstructionItem &item)
@@ -121,4 +121,4 @@ void SetBreakpointsFromInfo(const std::vector<BreakpointInfo> &info,
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

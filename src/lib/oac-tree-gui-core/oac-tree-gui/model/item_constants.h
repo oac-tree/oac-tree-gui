@@ -24,7 +24,7 @@
 
 #include <string>
 
-namespace sequencergui::itemconstants
+namespace oac_tree_gui::itemconstants
 {
 
 //! Constants to register property items.
@@ -47,6 +47,6 @@ const std::string kTickTimeout = "kTickTimeout";
 
 const int kDefaultTickTimeoutMsec = 20;
 
-}  // namespace sequencergui::itemconstants
+}  // namespace oac_tree_gui::itemconstants
 
 #endif  // SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H_

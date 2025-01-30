@@ -31,7 +31,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests UniversalVariableItem.
@@ -135,4 +135,4 @@ TEST_F(UniversalVariableItemTest, SetDomainName)
   // more tests in standard_variable_item_tests.cpp
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

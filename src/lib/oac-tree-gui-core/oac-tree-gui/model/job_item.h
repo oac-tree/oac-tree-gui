@@ -24,7 +24,7 @@
 
 #include <mvvm/model/compound_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -91,6 +91,6 @@ public:
  */
 RunnerStatus GetRunnerStatus(const JobItem* item);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_JOB_ITEM_H_

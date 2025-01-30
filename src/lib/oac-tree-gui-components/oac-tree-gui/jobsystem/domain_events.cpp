@@ -37,7 +37,7 @@ struct DomainEventToStringVisitor
     return std::string("monostate");
   }
 
-  std::string operator()(const ::sequencergui::InstructionStateUpdatedEvent &event) const
+  std::string operator()(const ::oac_tree_gui::InstructionStateUpdatedEvent &event) const
   {
     std::ostringstream ostr;
     ostr << "InstructionStateUpdated"
@@ -46,7 +46,7 @@ struct DomainEventToStringVisitor
     return ostr.str();
   }
 
-  std::string operator()(const ::sequencergui::VariableUpdatedEvent &event) const
+  std::string operator()(const ::oac_tree_gui::VariableUpdatedEvent &event) const
   {
     std::ostringstream ostr;
     ostr << std::string("VariableUpdatedEvent") << " " << ::sup::dto::PrintAnyValue(event.value);
@@ -54,20 +54,20 @@ struct DomainEventToStringVisitor
     return ostr.str();
   }
 
-  std::string operator()(const ::sequencergui::JobStateChangedEvent &event) const
+  std::string operator()(const ::oac_tree_gui::JobStateChangedEvent &event) const
   {
     return std::string("JobStatusChanged") + " " + ::sup::oac_tree::ToString(event.status);
   }
 
-  std::string operator()(const ::sequencergui::LogEvent &event) const
+  std::string operator()(const ::oac_tree_gui::LogEvent &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("LogEvent") << " " << ::sequencergui::ToString(event.severity);
+    ostr << std::string("LogEvent") << " " << ::oac_tree_gui::ToString(event.severity);
     ostr << " " << event.message;
     return ostr.str();
   }
 
-  std::string operator()(const ::sequencergui::NextLeavesChangedEvent &event) const
+  std::string operator()(const ::oac_tree_gui::NextLeavesChangedEvent &event) const
   {
     std::ostringstream ostr;
     ostr << std::string("NextLeavesChanged") << " " << event.leaves.size() << " ";
@@ -81,7 +81,7 @@ struct DomainEventToStringVisitor
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 // JobStatusChanged
@@ -143,4 +143,4 @@ bool VariableUpdatedEvent::operator!=(const VariableUpdatedEvent &other) const
   return !(*this == other);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

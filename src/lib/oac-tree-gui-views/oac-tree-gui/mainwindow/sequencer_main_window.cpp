@@ -39,7 +39,7 @@
 #include <QSettings>
 #include <QStatusBar>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -197,4 +197,4 @@ std::unique_ptr<ApplicationModels> SequencerMainWindow::CreateProject()
   return std::make_unique<ApplicationModels>(context);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

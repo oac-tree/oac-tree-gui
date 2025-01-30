@@ -30,7 +30,7 @@
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/workspace.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
@@ -148,4 +148,4 @@ void DomainWorkspaceListener::OnDomainVariableUpdated()
   p_impl->m_update_item_callback(event);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

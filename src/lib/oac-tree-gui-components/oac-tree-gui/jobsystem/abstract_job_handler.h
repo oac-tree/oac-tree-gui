@@ -28,7 +28,7 @@
 #include <QObject>
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItemJobInfoBuilder;
@@ -72,15 +72,15 @@ public:
 
   JobLog* GetJobLog() const override;
 
-  void OnToggleBreakpointRequest(sequencergui::InstructionItem* instruction) override;
+  void OnToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction) override;
 
   JobItem* GetJobItem() override;
 
   ProcedureItem* GetExpandedProcedure() const override;
 
 signals:
-  void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
-  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
+  void InstructionStatusChanged(oac_tree_gui::InstructionItem* instruction);
+  void NextLeavesChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
 
 protected:
   /**
@@ -122,7 +122,7 @@ private:
   /**
    * @brief Processes log events from the domain, and put them in GUI JobLog.
    */
-  void onLogEvent(const sequencergui::LogEvent& event);
+  void onLogEvent(const oac_tree_gui::LogEvent& event);
 
   /**
    * @brief Handles events reporting for changes in domain's next leaves.
@@ -172,6 +172,6 @@ private:
   JobItem* m_job_item{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_ABSTRACT_JOB_HANDLER_H_

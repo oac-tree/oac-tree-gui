@@ -29,7 +29,7 @@
 #include <QGraphicsObject>
 #include <QList>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class NodeConnection;
 class ConnectableView;
@@ -96,6 +96,6 @@ public:
   bool isChildPort() const override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_NODE_PORT_H_

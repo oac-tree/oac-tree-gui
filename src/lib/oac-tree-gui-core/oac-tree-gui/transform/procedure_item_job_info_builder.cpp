@@ -32,7 +32,7 @@
 #include <sup/oac-tree/variable_info.h>
 #include <sup/oac-tree/workspace_info.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ProcedureItemJobInfoBuilder::ProcedureItemJobInfoBuilder() = default;
@@ -78,4 +78,4 @@ VariableItem *ProcedureItemJobInfoBuilder::GetVariable(std::size_t index) const
                                             : nullptr;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

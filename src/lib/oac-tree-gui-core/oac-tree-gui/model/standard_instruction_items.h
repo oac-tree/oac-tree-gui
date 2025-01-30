@@ -25,7 +25,7 @@
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/model/universal_instruction_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Represent IncludeItem instruction.
@@ -107,6 +107,6 @@ public:
   double GetTimeout() const;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_STANDARD_INSTRUCTION_ITEMS_H_

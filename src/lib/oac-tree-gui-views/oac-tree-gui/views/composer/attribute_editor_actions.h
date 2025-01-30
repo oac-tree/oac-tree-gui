@@ -33,7 +33,7 @@ namespace sup::gui
 class ActionMenu;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class AttributeEditorActionHandler;
@@ -120,6 +120,6 @@ private:
   sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_

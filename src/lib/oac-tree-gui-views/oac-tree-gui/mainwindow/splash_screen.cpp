@@ -46,13 +46,13 @@ QString GetLoadingText(int dots_count)
 QString GetVersionText()
 {
   QString result =
-      QString("version ").append(QString::fromStdString(sequencergui::ProjectVersion()));
+      QString("version ").append(QString::fromStdString(oac_tree_gui::ProjectVersion()));
   return result;
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 SplashScreen::SplashScreen() : QSplashScreen(QPixmap(":/icons/splash-bg1.png"))
@@ -94,4 +94,4 @@ void SplashScreen::drawContents(QPainter* painter)
   style()->drawItemText(painter, loading_rect, 0, this->palette(), true, GetLoadingText(5));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

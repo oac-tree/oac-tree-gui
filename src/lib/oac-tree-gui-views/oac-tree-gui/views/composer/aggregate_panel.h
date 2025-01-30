@@ -22,7 +22,7 @@
 
 #include <QWidget>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ToolKitViewModel;
@@ -42,6 +42,6 @@ private:
   InsructionToolKitTreeView* m_tree_view{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_AGGREGATE_PANEL_H_

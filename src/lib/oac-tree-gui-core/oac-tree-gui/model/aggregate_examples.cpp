@@ -22,7 +22,7 @@
 #include <oac-tree-gui/domain/domain_constants.h>
 #include <oac-tree-gui/model/standard_instruction_items.h>
 
-namespace sequencergui::Examples
+namespace oac_tree_gui::Examples
 {
 
 std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
@@ -44,4 +44,4 @@ std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
   return result;
 }
 
-}  // namespace sequencergui::Examples
+}  // namespace oac_tree_gui::Examples

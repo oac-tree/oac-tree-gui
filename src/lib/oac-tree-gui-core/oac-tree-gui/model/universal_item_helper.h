@@ -38,7 +38,7 @@ namespace sup::gui
 class AnyValueItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -77,7 +77,7 @@ InstructionItem* InsertAggregate(const std::string& domain_type, mvvm::SessionIt
  *
  * @return Inserted item.
  */
-InstructionItem* InsertInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
+InstructionItem* InsertInstruction(std::unique_ptr<oac_tree_gui::InstructionItem> item,
                                    mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
@@ -142,6 +142,6 @@ std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainer
  */
 sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_UNIVERSAL_ITEM_HELPER_H_

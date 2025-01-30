@@ -33,7 +33,7 @@ namespace mvvm
 class ModelListener;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class VariableItem;
@@ -84,6 +84,6 @@ private:
   std::vector<VariableItem*> m_index_to_item;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_ITEM_LISTENER_H_

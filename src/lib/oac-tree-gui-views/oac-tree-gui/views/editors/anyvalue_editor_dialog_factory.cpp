@@ -26,7 +26,7 @@
 #include <sup/gui/views/anyvalueeditor/anyvalue_editor.h>
 #include <sup/gui/views/anyvalueeditor/anyvalue_editor_dialog.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
@@ -70,4 +70,4 @@ std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValu
   return edit_anyvalue_callback;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

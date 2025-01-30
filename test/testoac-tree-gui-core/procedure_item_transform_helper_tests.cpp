@@ -39,7 +39,7 @@
 #include <gtest/gtest.h>
 #include <testutils/standard_procedures.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -95,7 +95,7 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithSequence)
 
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   auto wait_ptr = wait.get();
-  wait->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
+  wait->AddAttribute(oac_tree_gui::domainconstants::kTimeoutAttribute, "42");
 
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();
@@ -107,8 +107,8 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithSequence)
   auto procedure_item = CreateProcedureItem(procedure);
 
   auto sequence_item =
-      procedure_item->GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("");
-  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
+      procedure_item->GetInstructionContainer()->GetItem<oac_tree_gui::SequenceItem>("");
+  auto wait_item = sequence_item->GetItem<oac_tree_gui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
 
@@ -138,7 +138,7 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithLocalVaria
 
   EXPECT_EQ(procedure_item->GetWorkspace()->GetTotalItemCount(), 1);
 
-  auto variable_item = procedure_item->GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
+  auto variable_item = procedure_item->GetWorkspace()->GetItem<oac_tree_gui::LocalVariableItem>("");
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 }
@@ -165,12 +165,12 @@ TEST_F(ProcedureItemTransformHelperTest, LocalIncludeProcedure)
 
   EXPECT_EQ(procedure_item->GetInstructionContainer()->GetTotalItemCount(), 2);
 
-  auto repeat_item = procedure_item->GetInstructionContainer()->GetItem<sequencergui::RepeatItem>(
+  auto repeat_item = procedure_item->GetInstructionContainer()->GetItem<oac_tree_gui::RepeatItem>(
       mvvm::TagIndex::Default(1));
   auto include_item = repeat_item->GetItem<IncludeItem>(mvvm::TagIndex::Default(0));
   auto sequence_item =
       procedure_item->GetInstructionContainer()->GetItem<SequenceItem>(mvvm::TagIndex::Default(0));
-  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>(mvvm::TagIndex::Default(0));
+  auto wait_item = sequence_item->GetItem<oac_tree_gui::WaitItem>(mvvm::TagIndex::Default(0));
   // include instruction doesn't have children yet (since no Setup has been called)
   EXPECT_EQ(include_item->GetInstructions().size(), 0);
 }
@@ -241,4 +241,4 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithPreamble)
   EXPECT_EQ(procedure_item->GetPreambleItem()->GetTypeRegistrations(), expected_info);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

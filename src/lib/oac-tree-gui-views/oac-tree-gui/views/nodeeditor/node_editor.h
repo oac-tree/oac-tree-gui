@@ -37,7 +37,7 @@ namespace mvvm
 class ApplicationModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class GraphicsView;
 class GraphicsScene;
@@ -63,7 +63,7 @@ public:
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions) const;
 
 signals:
-  void InstructionSelected(sequencergui::InstructionItem* selected);
+  void InstructionSelected(oac_tree_gui::InstructionItem* selected);
 
 private:
   void SetupConnections();
@@ -80,6 +80,6 @@ private:
   ProcedureItem* m_procedure_item{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_NODEEDITOR_NODE_EDITOR_H_

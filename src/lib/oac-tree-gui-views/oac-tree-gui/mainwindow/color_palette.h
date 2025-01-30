@@ -25,7 +25,7 @@
 
 #include <QColor>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -33,6 +33,6 @@ namespace sequencergui
  */
 QColor GetMainToolBarColor();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_COLOR_PALETTE_H_

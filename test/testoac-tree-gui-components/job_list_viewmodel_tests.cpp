@@ -30,7 +30,7 @@
 
 #include <QSignalSpy>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for items from instructionitems.h
@@ -95,4 +95,4 @@ TEST_F(JobListViewModelTest, NotificationOnStatusChange)
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

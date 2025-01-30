@@ -29,7 +29,7 @@ namespace sup::gui
 class AnyValueItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -83,6 +83,6 @@ private:
   void SetupFromDomain(const instruction_t* instruction);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_UNIVERSAL_INSTRUCTION_ITEM_H_

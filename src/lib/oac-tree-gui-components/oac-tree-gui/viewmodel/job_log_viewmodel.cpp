@@ -38,7 +38,7 @@ QStringList GetColumnNames()
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent)
@@ -188,4 +188,4 @@ void JobLogViewModel::SetConnected(bool value)
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -24,7 +24,7 @@
 
 #include <gmock/gmock.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -33,28 +33,28 @@ namespace sequencergui::test
 class MockUserContext
 {
 public:
-  MOCK_METHOD(sequencergui::UserInputResult, OnUserInputRequest,
-              (const sequencergui::UserInputArgs&), (const));
-  MOCK_METHOD(sequencergui::UserChoiceResult, OnUserChoiceRequest,
-              (const sequencergui::UserChoiceArgs&), (const));
+  MOCK_METHOD(oac_tree_gui::UserInputResult, OnUserInputRequest,
+              (const oac_tree_gui::UserInputArgs&), (const));
+  MOCK_METHOD(oac_tree_gui::UserChoiceResult, OnUserChoiceRequest,
+              (const oac_tree_gui::UserChoiceArgs&), (const));
 
   /**
    * @brief Creates a structure with callbacks to trigger mock methods.
    */
-  sequencergui::UserContext CreateContext()
+  oac_tree_gui::UserContext CreateContext()
   {
-    sequencergui::UserContext result;
+    oac_tree_gui::UserContext result;
 
-    result.user_input_callback = [this](const sequencergui::UserInputArgs& args)
+    result.user_input_callback = [this](const oac_tree_gui::UserInputArgs& args)
     { return OnUserInputRequest(args); };
 
-    result.user_choice_callback = [this](const sequencergui::UserChoiceArgs& args)
+    result.user_choice_callback = [this](const oac_tree_gui::UserChoiceArgs& args)
     { return OnUserChoiceRequest(args); };
 
     return result;
   }
 };
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_

@@ -34,7 +34,7 @@
 
 #include <QMimeData>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context,
@@ -233,4 +233,4 @@ void WorkspaceEditorActionHandler::SendMessage(const std::string &text,
   m_context.send_message_callback(message);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -34,14 +34,14 @@ namespace mvvm
 class SessionItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class WorkspaceItem;
 class VariableItem;
 class VariableUpdatedEvent;
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -94,6 +94,6 @@ void UpdateVariableFromEvent(const VariableUpdatedEvent& event, VariableItem& it
  */
 void UpdateVariableFromEvent(const sup::dto::AnyValue& value, bool connected, VariableItem& item);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_

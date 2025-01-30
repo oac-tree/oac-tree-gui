@@ -34,7 +34,7 @@
 
 #include <QSignalSpy>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for WorkspaceOperationViewModel class.
@@ -210,4 +210,4 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
             GetDisonnectedVariableColor());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

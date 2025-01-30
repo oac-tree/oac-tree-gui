@@ -42,14 +42,14 @@ QPixmap CreatePixmap()
   QPainter painter(&pixmap);
   painter.setRenderHint(QPainter::Antialiasing);
   painter.setPen(Qt::white);
-  painter.setBrush(sequencergui::ConnectableViewGradient(QColor(Qt::gray), rect));
+  painter.setBrush(oac_tree_gui::ConnectableViewGradient(QColor(Qt::gray), rect));
   painter.drawRoundedRect(rect, 5, 5);
   return pixmap;
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent_widget) : QTreeView(parent_widget)
@@ -85,4 +85,4 @@ void InsructionToolKitTreeView::startDrag(Qt::DropActions supported_actions)
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

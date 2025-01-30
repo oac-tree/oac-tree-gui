@@ -25,7 +25,7 @@
 
 #include <gmock/gmock.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionStatusChangedEvent;
@@ -47,15 +47,15 @@ public:
   /**
    * @brief Creates a callback for DomainRunner.
    */
-  std::function<void(const sequencergui::domain_event_t& event)> CreateCallback()
+  std::function<void(const oac_tree_gui::domain_event_t& event)> CreateCallback()
   {
-    return [this](const sequencergui::domain_event_t& arg) { OnEvent(arg); };
+    return [this](const oac_tree_gui::domain_event_t& arg) { OnEvent(arg); };
   }
 
   /**
    * @brief Distributes domain events to separate mocking methods.
    */
-  void OnEvent(const sequencergui::domain_event_t& event) { std::visit(*this, event); }
+  void OnEvent(const oac_tree_gui::domain_event_t& event) { std::visit(*this, event); }
 
   /**
    * @brief Operator to visit monostate.
@@ -65,7 +65,7 @@ public:
   /**
    * @brief Operator to visit InstructionStateUpdated and trigger mock method.
    */
-  void operator()(const sequencergui::InstructionStateUpdatedEvent& event) const
+  void operator()(const oac_tree_gui::InstructionStateUpdatedEvent& event) const
   {
     OnInstructionStateUpdated(event);
   }
@@ -73,7 +73,7 @@ public:
   /**
    * @brief Operator to visit VariableStateUpdated and trigger mock method.
    */
-  void operator()(const sequencergui::VariableUpdatedEvent& event) const
+  void operator()(const oac_tree_gui::VariableUpdatedEvent& event) const
   {
     OnVariableUpdated(event);
   }
@@ -81,7 +81,7 @@ public:
   /**
    * @brief Operator to visit JobStateChanged and trigger mock method.
    */
-  void operator()(const sequencergui::JobStateChangedEvent& event) const
+  void operator()(const oac_tree_gui::JobStateChangedEvent& event) const
   {
     OnJobStateChanged(event);
   }
@@ -89,43 +89,43 @@ public:
   /**
    * @brief Operator to visit LogEvent and trigger mock method.
    */
-  void operator()(const sequencergui::LogEvent& event) const { OnLogEvent(event); }
+  void operator()(const oac_tree_gui::LogEvent& event) const { OnLogEvent(event); }
 
   /**
    * @brief Operator to visit NextLeavesChanged and trigger mock method.
    */
-  void operator()(const sequencergui::NextLeavesChangedEvent& event) const
+  void operator()(const oac_tree_gui::NextLeavesChangedEvent& event) const
   {
     OnNextLeavesChanged(event);
   }
 
-  MOCK_METHOD(void, OnInstructionStateUpdated, (const sequencergui::InstructionStateUpdatedEvent&),
+  MOCK_METHOD(void, OnInstructionStateUpdated, (const oac_tree_gui::InstructionStateUpdatedEvent&),
               (const));
-  MOCK_METHOD(void, OnVariableUpdated, (const sequencergui::VariableUpdatedEvent&), (const));
-  MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
-  MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
-  MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChangedEvent&), (const));
+  MOCK_METHOD(void, OnVariableUpdated, (const oac_tree_gui::VariableUpdatedEvent&), (const));
+  MOCK_METHOD(void, OnJobStateChanged, (const oac_tree_gui::JobStateChangedEvent&), (const));
+  MOCK_METHOD(void, OnLogEvent, (const oac_tree_gui::LogEvent&), (const));
+  MOCK_METHOD(void, OnNextLeavesChanged, (const oac_tree_gui::NextLeavesChangedEvent&), (const));
 
   /**
    * @brief Creates a structure with callbacks to trigger mock methods.
    */
-  sequencergui::DomainEventDispatcherContext CreateDispatcherContext()
+  oac_tree_gui::DomainEventDispatcherContext CreateDispatcherContext()
   {
-    sequencergui::DomainEventDispatcherContext result;
+    oac_tree_gui::DomainEventDispatcherContext result;
 
     result.process_instruction_state_updated =
-        [this](const sequencergui::InstructionStateUpdatedEvent& event)
+        [this](const oac_tree_gui::InstructionStateUpdatedEvent& event)
     { OnInstructionStateUpdated(event); };
 
-    result.process_variable_updated = [this](const sequencergui::VariableUpdatedEvent& event)
+    result.process_variable_updated = [this](const oac_tree_gui::VariableUpdatedEvent& event)
     { OnVariableUpdated(event); };
 
-    result.process_job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
+    result.process_job_state_changed = [this](const oac_tree_gui::JobStateChangedEvent& event)
     { OnJobStateChanged(event); };
 
-    result.process_log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
+    result.process_log_event = [this](const oac_tree_gui::LogEvent& event) { OnLogEvent(event); };
 
-    result.next_leaves_changed_event = [this](const sequencergui::NextLeavesChangedEvent& event)
+    result.next_leaves_changed_event = [this](const oac_tree_gui::NextLeavesChangedEvent& event)
     { OnNextLeavesChanged(event); };
 
     return result;
@@ -134,6 +134,6 @@ public:
 
 }  // namespace test
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_

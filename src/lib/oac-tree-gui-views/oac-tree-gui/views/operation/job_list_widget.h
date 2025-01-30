@@ -36,7 +36,7 @@ namespace sup::gui
 class CustomHeaderView;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobModel;
@@ -65,7 +65,7 @@ public:
   mvvm::ViewModel* GetViewModel();
 
 signals:
-  void JobSelected(sequencergui::JobItem* job_item);
+  void JobSelected(oac_tree_gui::JobItem* job_item);
 
 private:
   QTreeView* m_tree_view{nullptr};
@@ -75,6 +75,6 @@ private:
   JobModel* m_model{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_JOB_LIST_WIDGET_H_

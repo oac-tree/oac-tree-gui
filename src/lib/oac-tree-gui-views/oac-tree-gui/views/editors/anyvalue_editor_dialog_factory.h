@@ -33,7 +33,7 @@ class AnyValueItem;
 class AnyValueEditorDialog;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -77,6 +77,6 @@ std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactScalarEdito
 std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(
     QWidget* parent);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_

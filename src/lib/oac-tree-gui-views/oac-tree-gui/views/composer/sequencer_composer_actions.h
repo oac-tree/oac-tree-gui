@@ -30,7 +30,7 @@ namespace sup::gui
 class AppContext;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -70,6 +70,6 @@ private:
   SequencerModel* m_model{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_OAC_TREE_COMPOSER_ACTIONS_H_

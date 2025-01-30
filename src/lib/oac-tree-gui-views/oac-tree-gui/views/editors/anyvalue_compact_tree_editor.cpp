@@ -33,7 +33,7 @@
 #include <QLabel>
 #include <QTreeView>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent_widget)
@@ -76,4 +76,4 @@ std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactTreeEditor::GetResult()
   return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(m_model.get()));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

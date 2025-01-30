@@ -23,7 +23,7 @@
 
 #include <algorithm>
 
-namespace sequencergui::algorithm
+namespace oac_tree_gui::algorithm
 {
 
 int AlignNode::GetSize() const
@@ -185,4 +185,4 @@ int AlignNode::GetIndex() const
   return GetParent() ? mvvm::utils::IndexOfItem(GetParent()->GetChildren(), this) : -1;
 }
 
-}  // namespace sequencergui::algorithm
+}  // namespace oac_tree_gui::algorithm

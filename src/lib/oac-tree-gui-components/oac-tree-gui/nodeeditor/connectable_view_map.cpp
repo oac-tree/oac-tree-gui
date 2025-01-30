@@ -25,7 +25,7 @@
 
 #include <stack>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ConnectableViewMap::ConnectableViewMap() = default;
@@ -148,4 +148,4 @@ int ConnectableViewMap::GetSize() const
   return static_cast<int>(m_item_to_view.size());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

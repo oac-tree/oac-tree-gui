@@ -22,7 +22,7 @@
 #include <oac-tree-gui/model/instruction_item.h>
 #include <oac-tree-gui/model/item_constants.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionContainerItem::InstructionContainerItem() : CompoundItem(GetStaticType())
@@ -51,4 +51,4 @@ int InstructionContainerItem::GetInstructionCount() const
   return static_cast<int>(GetInstructions().size());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

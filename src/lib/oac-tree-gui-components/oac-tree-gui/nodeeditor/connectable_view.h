@@ -23,7 +23,7 @@
 #include <QGraphicsItem>
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class ConnectableInstructionAdapter;
 class ChildPort;
@@ -99,6 +99,6 @@ QList<T*> ConnectableView::GetPorts() const
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_H_

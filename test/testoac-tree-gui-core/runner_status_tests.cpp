@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for utility methods in runner_status.h
@@ -56,4 +56,4 @@ TEST_F(RunnerStatusTest, GetRunnerStatus)
   EXPECT_THROW(GetRunnerStatus("abc"), RuntimeException);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

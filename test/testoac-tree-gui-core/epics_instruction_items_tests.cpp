@@ -37,7 +37,7 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for items from instructionitems.h
@@ -122,7 +122,7 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItem)
   EXPECT_TRUE(item.GetVariableName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
-  EXPECT_TRUE(mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag));
+  EXPECT_TRUE(mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag));
   EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetVariableName("abc");
@@ -293,7 +293,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItem)
   EXPECT_TRUE(item.GetVariableName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
-  EXPECT_TRUE(mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag));
+  EXPECT_TRUE(mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag));
   EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetVariableName("abc");
@@ -412,7 +412,7 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstruction)
   EXPECT_TRUE(item.GetRequestVar().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
   EXPECT_TRUE(item.GetOutput().empty());
-  EXPECT_TRUE(mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag));
+  EXPECT_TRUE(mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag));
   EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetService("service");
@@ -604,4 +604,4 @@ TEST_F(EpicsInstructionItemsTest, LogInstructionItemToDomain)
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

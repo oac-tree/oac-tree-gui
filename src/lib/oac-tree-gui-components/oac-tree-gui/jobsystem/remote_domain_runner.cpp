@@ -25,7 +25,7 @@
 #include <sup/oac-tree-server/client_job.h>
 #include <sup/oac-tree-server/epics_config_utils.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
@@ -40,4 +40,4 @@ RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_c
   SetDomainJob(std::move(remote_job));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

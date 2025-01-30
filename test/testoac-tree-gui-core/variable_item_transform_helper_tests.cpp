@@ -33,7 +33,7 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -140,4 +140,4 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItemFromDomain)
   EXPECT_TRUE(test::IsEqual(*variables[1], sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1}));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

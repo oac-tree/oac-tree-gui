@@ -32,7 +32,7 @@ namespace sup::gui
 class AnyValueItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -68,6 +68,6 @@ struct InstructionEditorContext
   std::function<void(std::unique_ptr<QMimeData>)> set_mime_data;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTEXT_H_

@@ -33,7 +33,7 @@ class CustomSplitter;
 class AppContext;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ApplicationModels;
@@ -88,7 +88,7 @@ private:
   void WriteSettings();
   void SetupConnections();
   void SetupWidgetActions();
-  void OnJobSelected(sequencergui::JobItem* item);
+  void OnJobSelected(oac_tree_gui::JobItem* item);
   OperationActionContext CreateOperationContext();
 
   OperationPresentationMode m_presentation_mode;
@@ -112,6 +112,6 @@ private:
   OperationActionHandler* m_action_handler{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_

@@ -19,7 +19,7 @@
 
 #include "mock_job_handler.h"
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 void MockJobHandler::Start()
@@ -52,29 +52,29 @@ bool MockJobHandler::IsRunning() const
   return m_listener.IsRunning(this);
 }
 
-sequencergui::RunnerStatus MockJobHandler::GetRunnerStatus() const
+oac_tree_gui::RunnerStatus MockJobHandler::GetRunnerStatus() const
 {
   return m_listener.GetRunnerStatus(this);
 }
 
-sequencergui::JobLog *MockJobHandler::GetJobLog() const
+oac_tree_gui::JobLog *MockJobHandler::GetJobLog() const
 {
   return m_listener.GetJobLog(this);
 }
 
-void MockJobHandler::OnToggleBreakpointRequest(sequencergui::InstructionItem *instruction)
+void MockJobHandler::OnToggleBreakpointRequest(oac_tree_gui::InstructionItem *instruction)
 {
   m_listener.OnToggleBreakpointRequest(instruction, this);
 }
 
-sequencergui::JobItem *MockJobHandler::GetJobItem()
+oac_tree_gui::JobItem *MockJobHandler::GetJobItem()
 {
   return m_job_item;
 }
 
-sequencergui::ProcedureItem *MockJobHandler::GetExpandedProcedure() const
+oac_tree_gui::ProcedureItem *MockJobHandler::GetExpandedProcedure() const
 {
   return m_listener.GetExpandedProcedure(this);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

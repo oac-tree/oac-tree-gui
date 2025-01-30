@@ -28,7 +28,7 @@ namespace mvvm
 class SessionItem;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -73,6 +73,6 @@ mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
  * have such property registered.
  */
 mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_OAC_TREE_ITEM_HELPER_H_

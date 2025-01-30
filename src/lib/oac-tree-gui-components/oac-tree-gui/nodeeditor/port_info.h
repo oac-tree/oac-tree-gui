@@ -22,7 +22,7 @@
 
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 //! Aggregate to hold basic port information (i.e. type and color) for NodePort class.
 //! Colors must be what QColor understands (i.e. https://www.w3.org/TR/css-color-3/#svg-color).
@@ -36,6 +36,6 @@ struct PortInfo
 const static PortInfo kBasicPortInfo = {"BasicPort", "navajowhite"};
 const static PortInfo kRootPortInfo = {"BasicPort", "indianred"};
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_PORT_INFO_H_

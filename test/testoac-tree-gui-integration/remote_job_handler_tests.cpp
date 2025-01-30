@@ -34,7 +34,7 @@
 #include <QTest>
 #include <thread>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class RemoteJobHandlerTest : public ::testing::Test
@@ -90,4 +90,4 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   server.Stop();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

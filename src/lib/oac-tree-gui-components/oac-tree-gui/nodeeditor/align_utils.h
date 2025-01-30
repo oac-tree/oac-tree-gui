@@ -29,7 +29,7 @@
 
 #include <map>
 
-namespace sequencergui::algorithm
+namespace oac_tree_gui::algorithm
 {
 
 class AlignNode;
@@ -54,6 +54,6 @@ void CalculateFinalPositions(AlignNode& node, double mod_sum = 0.0);
 //! Align nodes.
 void AlignNodes(AlignNode& node);
 
-}  // namespace sequencergui::algorithm
+}  // namespace oac_tree_gui::algorithm
 
 #endif  // SEQUENCERGUI_NODEEDITOR_ALIGN_UTILS_H_

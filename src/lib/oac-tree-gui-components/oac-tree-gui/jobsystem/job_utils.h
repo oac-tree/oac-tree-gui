@@ -26,13 +26,13 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Returns reg-exp pattern for vector with labels.
 //! example: {"INFO", "DEBUG"} -> "(INFO|DEBUG)"
 std::string GetRegExpPattern(const std::vector<std::string>& data);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_

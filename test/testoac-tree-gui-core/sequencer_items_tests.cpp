@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for items from instructionitems.h
@@ -59,4 +59,4 @@ TEST_F(SequencerItemsTest, ProcedureItem)
   EXPECT_EQ(item.GetName(), "efg");
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

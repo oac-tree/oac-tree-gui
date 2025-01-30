@@ -30,7 +30,7 @@
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for utility functions related to the domain to presentation transformations.
@@ -49,7 +49,7 @@ public:
   template <typename T>
   bool CanCreateInstructionForType(const std::string& domain_type)
   {
-    auto created = sequencergui::CreateInstructionItem(domain_type);
+    auto created = oac_tree_gui::CreateInstructionItem(domain_type);
     const bool is_correct_type = IsCorrectType<T>(created.get());
 
     // for now model type of Item coincides with model type of domain struction
@@ -63,7 +63,7 @@ public:
   template <typename T>
   bool CanCreateVariableForType(const std::string& seq_type)
   {
-    auto created = sequencergui::CreateVariableItem(seq_type);
+    auto created = oac_tree_gui::CreateVariableItem(seq_type);
     const bool is_correct_type = IsCorrectType<T>(created.get());
 
     // for now model type of Item coincides with model type of domain struction
@@ -77,28 +77,28 @@ public:
 
 TEST_F(TransformFromDomainTest, CreateVariableItem)
 {
-  using namespace sequencergui::domainconstants;
+  using namespace oac_tree_gui::domainconstants;
 
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::LocalVariableItem>(kLocalVariableType));
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::FileVariableItem>(kFileVariableType));
+  EXPECT_TRUE(CanCreateVariableForType<oac_tree_gui::LocalVariableItem>(kLocalVariableType));
+  EXPECT_TRUE(CanCreateVariableForType<oac_tree_gui::FileVariableItem>(kFileVariableType));
 }
 
 //! Validate CreateInstructionItem factory function (sequencer-plugin-epics).
 
 TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateVariableItem)
 {
-  using namespace sequencergui::domainconstants;
+  using namespace oac_tree_gui::domainconstants;
 
   if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
 
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
+  EXPECT_TRUE(CanCreateVariableForType<oac_tree_gui::ChannelAccessVariableItem>(
       kChannelAccessVariableType));
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessClientVariableItem>(
+  EXPECT_TRUE(CanCreateVariableForType<oac_tree_gui::PvAccessClientVariableItem>(
       kPvAccessClientVariableType));
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessServerVariableItem>(
+  EXPECT_TRUE(CanCreateVariableForType<oac_tree_gui::PvAccessServerVariableItem>(
       kPvAccessServerVariableType));
 }
 
@@ -106,39 +106,39 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateVariableItem)
 
 TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
-  using namespace sequencergui::domainconstants;
+  using namespace oac_tree_gui::domainconstants;
 
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::IncludeItem>(kIncludeInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::IncludeItem>(kIncludeInstructionType));
 
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::ParallelSequenceItem>(kParallelInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RepeatItem>(kRepeatInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SequenceItem>(kSequenceInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::WaitItem>(kWaitInstructionType));
+      CanCreateInstructionForType<oac_tree_gui::ParallelSequenceItem>(kParallelInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::RepeatItem>(kRepeatInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::SequenceItem>(kSequenceInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::WaitItem>(kWaitInstructionType));
 }
 
 //! Validate CreateInstructionItem factory function (sequencer-plugin-epics).
 
 TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
 {
-  using namespace sequencergui::domainconstants;
+  using namespace oac_tree_gui::domainconstants;
 
   if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
 
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChannelAccessReadInstructionItem>(
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::ChannelAccessReadInstructionItem>(
       kChannelAccessReadInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChannelAccessWriteInstructionItem>(
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::ChannelAccessWriteInstructionItem>(
       kChannelAccessWriteInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PvAccessReadInstructionItem>(
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::PvAccessReadInstructionItem>(
       kPvAccessReadInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PvAccessWriteInstructionItem>(
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::PvAccessWriteInstructionItem>(
       kPvAccessWriteInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::RPCClientInstruction>(kRPCClientInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SystemCallInstructionItem>(
+      CanCreateInstructionForType<oac_tree_gui::RPCClientInstruction>(kRPCClientInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::SystemCallInstructionItem>(
       kSystemCallInstructionType));
 }
 
@@ -182,4 +182,4 @@ TEST_F(TransformFromDomainTest, GetRunnerStatusFromDomain)
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kHalted), RunnerStatus::kHalted);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

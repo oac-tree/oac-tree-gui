@@ -43,7 +43,7 @@
 
 #include <QDebug>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AbstractJobHandler::AbstractJobHandler(JobItem *job_item)
@@ -184,7 +184,7 @@ void AbstractJobHandler::OnJobStateChanged(const JobStateChangedEvent &event)
   m_job_item->SetStatus(::sup::oac_tree::ToString(event.status));
 }
 
-void AbstractJobHandler::onLogEvent(const sequencergui::LogEvent &event)
+void AbstractJobHandler::onLogEvent(const oac_tree_gui::LogEvent &event)
 {
   m_job_log->Append(event);
 }
@@ -267,4 +267,4 @@ void AbstractJobHandler::PropagateBreakpointsToDomain()
       GetExpandedProcedure()->GetInstructionContainer()->GetInstructions(), func);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

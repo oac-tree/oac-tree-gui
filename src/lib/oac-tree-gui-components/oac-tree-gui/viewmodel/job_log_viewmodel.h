@@ -22,7 +22,7 @@
 
 #include <QAbstractTableModel>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobLog;
@@ -78,6 +78,6 @@ private:
   int m_row_count{0};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_

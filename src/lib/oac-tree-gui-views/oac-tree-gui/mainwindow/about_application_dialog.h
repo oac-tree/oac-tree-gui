@@ -26,7 +26,7 @@
 
 class QBoxLayout;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -45,6 +45,6 @@ private:
   std::unique_ptr<QBoxLayout> CreateButtonLayout();
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_ABOUT_APPLICATION_DIALOG_H_

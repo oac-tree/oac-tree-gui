@@ -30,7 +30,7 @@
 
 #include <sup/dto/anyvalue.h>
 
-namespace sequencergui::Examples
+namespace oac_tree_gui::Examples
 {
 
 ProcedureItem* AddCopyProcedure(SequencerModel* model)
@@ -207,4 +207,4 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
   return procedure_item;
 }
 
-}  // namespace sequencergui::Examples
+}  // namespace oac_tree_gui::Examples

@@ -28,7 +28,7 @@
 #include <QColor>
 #include <QFont>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace constants
@@ -57,6 +57,6 @@ QColor GetDisonnectedVariableColor();
  */
 QString GetCustomToolTipStyle();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPONENTS_COMPONENT_HELPER_H_

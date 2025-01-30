@@ -24,7 +24,7 @@
 
 #include <sup/oac-tree/local_job.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 LocalDomainRunner::LocalDomainRunner(DomainEventDispatcherContext dispatcher_context,
@@ -35,4 +35,4 @@ LocalDomainRunner::LocalDomainRunner(DomainEventDispatcherContext dispatcher_con
   SetDomainJob(std::make_unique<sup::oac_tree::LocalJob>(std::move(procedure), *GetJobInfoIO()));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

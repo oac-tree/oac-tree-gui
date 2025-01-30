@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class FactoryTest : public ::testing::Test
@@ -43,4 +43,4 @@ TEST_F(FactoryTest, DomainTypeConstants)
   EXPECT_EQ(factory.GetKeys(), std::vector<std::string>({"abc"}));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

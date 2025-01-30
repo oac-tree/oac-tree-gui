@@ -34,14 +34,14 @@ namespace
 /**
  * @brief Returns text representing instruction.
  */
-std::string GetText(const sequencergui::InstructionItem &item)
+std::string GetText(const oac_tree_gui::InstructionItem &item)
 {
   return item.GetName().empty() ? item.GetDisplayName() : item.GetName();
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionOperationRowStrategy : public mvvm::AbstractRowStrategy
@@ -90,4 +90,4 @@ int InstructionOperationViewModel::GetBreakpointColumn()
   return 2;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

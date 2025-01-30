@@ -25,7 +25,7 @@
 
 #include <QMimeData>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for InstructionOperationViewModel class.
@@ -152,4 +152,4 @@ TEST_F(InstructionOperationViewModelTest, MimeFromTree)
   EXPECT_EQ(GetNewInstructionType(mime_b1.get()), std::string("b1"));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

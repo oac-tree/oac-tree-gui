@@ -36,7 +36,7 @@ namespace sup::gui
 class CustomHeaderView;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class AttributeEditorActions;
@@ -81,6 +81,6 @@ private:
   AttributeEditorActions* m_attribute_actions{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_

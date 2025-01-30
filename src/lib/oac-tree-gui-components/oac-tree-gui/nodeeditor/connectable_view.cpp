@@ -56,7 +56,7 @@ int GetSmallFontSize()
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 ConnectableView::ConnectableView(std::unique_ptr<ConnectableInstructionAdapter> item)
     : m_item(std::move(item))
@@ -261,4 +261,4 @@ void ConnectableView::SetupPorts()
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

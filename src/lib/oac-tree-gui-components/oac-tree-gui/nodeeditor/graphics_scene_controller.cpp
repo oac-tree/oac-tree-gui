@@ -32,7 +32,7 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/signals/model_listener.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 struct GraphicsSceneController::GraphicsSceneControllerImpl
 {
@@ -229,4 +229,4 @@ void GraphicsSceneController::Init(InstructionContainerItem* root_item)
   p_impl->InitScene(root_item);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

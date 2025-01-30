@@ -22,7 +22,7 @@
 
 #include <mvvm/model/application_model.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! The model to hold running procedures.
@@ -33,6 +33,6 @@ public:
   explicit JobModel(std::shared_ptr<mvvm::ItemPool> pool = {});
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_JOB_MODEL_H_

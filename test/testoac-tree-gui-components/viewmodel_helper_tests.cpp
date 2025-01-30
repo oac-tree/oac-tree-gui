@@ -27,7 +27,7 @@
 #include <QStandardItemModel>
 #include <memory>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class ViewmodelHelperTest : public ::testing::Test

@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for JobModel class.
@@ -42,4 +42,4 @@ TEST_F(JobModelTest, InitialState)
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

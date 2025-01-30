@@ -28,15 +28,15 @@
 #include <QList>
 #include <QMetaType>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 void RegisterCustomMetaTypes();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-Q_DECLARE_METATYPE(sequencergui::LogEvent)
+Q_DECLARE_METATYPE(oac_tree_gui::LogEvent)
 Q_DECLARE_METATYPE(QList<int>)
 #endif  // SEQUENCERGUI_COMPONENTS_CUSTOM_META_TYPES_H_
 

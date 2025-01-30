@@ -28,7 +28,7 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/signals/model_listener.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ProcedurePluginController::ProcedurePluginController(mvvm::ISessionModel *model)
@@ -77,4 +77,4 @@ void ProcedurePluginController::OnItemRemovedEvent(const mvvm::ItemRemovedEvent 
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -37,7 +37,7 @@ class VisibilityAgentBase;
 class MessageHandlerInterface;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -93,6 +93,6 @@ private:
    std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_XML_PANEL_H_

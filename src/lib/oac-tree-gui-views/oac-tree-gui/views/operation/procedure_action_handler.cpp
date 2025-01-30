@@ -41,7 +41,7 @@ const QString kGroupName("ProcedureActionHandler");
 const QString kCurrentWorkdirSettingName = kGroupName + "/" + "workdir";
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ProcedureActionHandler::ProcedureActionHandler(QWidget *parent_widget) : QObject(parent_widget)
@@ -151,7 +151,7 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileInte
   try
   {
     auto procedure_name = mvvm::utils::GetPathStem(file_name.toStdString());
-    result = sequencergui::ImportFromFile(file_name.toStdString());
+    result = oac_tree_gui::ImportFromFile(file_name.toStdString());
     result->SetDisplayName(procedure_name);
   }
   catch (const std::exception &ex)
@@ -181,4 +181,4 @@ void ProcedureActionHandler::UpdateCurrentWorkdir(const QString &file_name)
   m_current_workdir = QString::fromStdString(parent_path);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

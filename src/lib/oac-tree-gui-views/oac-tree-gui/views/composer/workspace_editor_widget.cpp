@@ -42,7 +42,7 @@ const std::vector<int> kDefaultColumnStretch({3, 2, 2});
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentation,
@@ -142,4 +142,4 @@ void WorkspaceEditorWidget::SetWorkspaceItemIntern(WorkspaceItem *workspace_item
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

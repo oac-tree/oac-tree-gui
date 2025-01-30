@@ -44,15 +44,15 @@
 
 namespace
 {
-QList<QAction *> GetToolBarActions(sequencergui::NodeEditorActions *actions)
+QList<QAction *> GetToolBarActions(oac_tree_gui::NodeEditorActions *actions)
 {
-  using ActionKey = sequencergui::NodeEditorActions::ActionKey;
+  using ActionKey = oac_tree_gui::NodeEditorActions::ActionKey;
   return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kZoom,
                               ActionKey::kCenter, ActionKey::kAlign});
 }
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 NodeEditor::NodeEditor(QWidget *parent_widget)
@@ -198,4 +198,4 @@ void NodeEditor::SetupConnections()
           &NodeEditorActions::onViewSelectionMode);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -37,17 +37,17 @@ const int kDomainTypeNameRole = 10;  // role to store type name
 
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {
-    sequencergui::domainconstants::kNameAttribute,  // handled via display name
-    sequencergui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
-    sequencergui::domainconstants::kValueAttribute  // handled via AnyValueItem
+    oac_tree_gui::domainconstants::kNameAttribute,  // handled via display name
+    oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
+    oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
 };
 
 // these are properties that shouldn't go to domain
-const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::kAnyValueTag};
+const std::vector<std::string> kSkipItemTagList = {oac_tree_gui::itemconstants::kAnyValueTag};
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 UniversalVariableItem::UniversalVariableItem(const std::string &item_type)
@@ -77,7 +77,7 @@ std::string UniversalVariableItem::GetDomainType() const
 void UniversalVariableItem::SetDomainType(const std::string &domain_type)
 {
   // temporary domain variable is used to create default properties
-  auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
+  auto domain_variable = ::oac_tree_gui::CreateDomainVariable(domain_type);
   SetupFromDomain(domain_variable.get());
 }
 
@@ -155,4 +155,4 @@ void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
   RegisterAnyValueItemTag();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

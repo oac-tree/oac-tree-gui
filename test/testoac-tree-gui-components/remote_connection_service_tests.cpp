@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -132,4 +132,4 @@ TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
   EXPECT_THROW(service.GetAutomationClient("def"), RuntimeException);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

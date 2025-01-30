@@ -36,7 +36,7 @@ namespace sup::gui
 class QueryResult;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class SequencerModel;
@@ -209,6 +209,6 @@ private:
   InstructionEditorContext m_context;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTION_HANDLER_H_

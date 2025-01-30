@@ -31,7 +31,7 @@
 
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 OperationJobPanel::OperationJobPanel(QWidget *parent_widget)
@@ -112,4 +112,4 @@ void OperationJobPanel::OnJobSelectedIntern(JobItem *item)
   emit JobSelected(item);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

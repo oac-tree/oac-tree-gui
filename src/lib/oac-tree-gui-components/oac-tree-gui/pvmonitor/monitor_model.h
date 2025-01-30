@@ -22,12 +22,12 @@
 
 #include <mvvm/model/application_model.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class WorkspaceItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class MonitorModel : public mvvm::ApplicationModel
@@ -35,7 +35,7 @@ class MonitorModel : public mvvm::ApplicationModel
 public:
   MonitorModel();
 
-  sequencergui::WorkspaceItem* GetWorkspaceItem() const;
+  oac_tree_gui::WorkspaceItem* GetWorkspaceItem() const;
 
   void Clear() override;
 
@@ -43,6 +43,6 @@ private:
   void PopulateModel();
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_PVMONITOR_MONITOR_MODEL_H_

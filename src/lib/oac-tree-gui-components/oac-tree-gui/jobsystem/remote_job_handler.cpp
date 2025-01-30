@@ -32,7 +32,7 @@
 
 #include <iostream>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 RemoteJobHandler::RemoteJobHandler(JobItem *job_item, sup::oac_tree_server::IJobManager &manager,
@@ -64,4 +64,4 @@ void RemoteJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -22,7 +22,7 @@
 
 #include <mvvm/test/folder_output_based_test.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -48,6 +48,6 @@ std::string GetTestSuiteOutputDir();
  */
 std::string GetProjectSourceDir();
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_FOLDER_TEST_H_

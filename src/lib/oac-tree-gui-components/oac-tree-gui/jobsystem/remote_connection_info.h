@@ -23,7 +23,7 @@
 #include <set>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -36,6 +36,6 @@ struct RemoteConnectionInfo
   std::set<std::size_t> job_indexes;  //!< list of job indices to import into the job system
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_

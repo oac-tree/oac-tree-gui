@@ -38,7 +38,7 @@
 
 //! Tests for WorkspaceEditorViewModel class.
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class WorkspaceEditorViewModelTest : public ::testing::Test
@@ -190,4 +190,4 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
             std::string("connected"));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

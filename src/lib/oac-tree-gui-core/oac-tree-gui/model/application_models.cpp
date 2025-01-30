@@ -25,7 +25,7 @@
 
 #include <mvvm/model/item_pool.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ApplicationModels::ApplicationModels() : ApplicationModels(mvvm::ProjectContext{}) {}
@@ -66,4 +66,4 @@ std::shared_ptr<mvvm::ItemPool> ApplicationModels::GetItemPool()
   return m_item_pool;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

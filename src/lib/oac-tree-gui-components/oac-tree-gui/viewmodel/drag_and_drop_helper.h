@@ -35,7 +35,7 @@ class SessionItem;
 
 class QMimeData;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionItem;
@@ -115,6 +115,6 @@ mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
  */
 InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
                                  const mvvm::TagIndex& tag_index);
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_

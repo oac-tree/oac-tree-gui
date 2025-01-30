@@ -59,7 +59,7 @@ bool LoadPlugin(const std::string& name)
  */
 void UpdateGlobalDomainObjectTypeRegistry(const std::string& plugin_name)
 {
-  auto& registry = sequencergui::GlobalDomainObjectTypeRegistry();
+  auto& registry = oac_tree_gui::GlobalDomainObjectTypeRegistry();
   registry.Update(plugin_name,
                   sup::oac_tree::GlobalInstructionRegistry().RegisteredInstructionNames());
   registry.Update(plugin_name, sup::oac_tree::GlobalVariableRegistry().RegisteredVariableNames());
@@ -67,7 +67,7 @@ void UpdateGlobalDomainObjectTypeRegistry(const std::string& plugin_name)
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain_name)
 {
@@ -194,4 +194,4 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata)
   return false;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

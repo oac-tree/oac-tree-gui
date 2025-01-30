@@ -25,7 +25,7 @@
 
 #include <sup/oac-tree-server/i_job_manager.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -38,6 +38,6 @@ public:
                      sup::oac_tree_server::IJobManager &manager, std::size_t job_index);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_

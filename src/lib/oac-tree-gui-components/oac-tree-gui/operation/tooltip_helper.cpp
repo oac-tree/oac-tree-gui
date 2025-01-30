@@ -34,7 +34,7 @@
 namespace
 {
 const std::vector<std::string> kSkipDomainAttributeList = {
-    sequencergui::itemconstants::kName, sequencergui::domainconstants::kIsRootAttribute};
+    oac_tree_gui::itemconstants::kName, oac_tree_gui::domainconstants::kIsRootAttribute};
 
 bool IsPropertyToShow(const std::string& tag_name)
 {
@@ -81,7 +81,7 @@ void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 QString GetInstructionToolTipText(const mvvm::SessionItem* item)
@@ -110,4 +110,4 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
   return text_edit.toHtml();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

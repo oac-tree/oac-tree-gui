@@ -24,7 +24,7 @@
 
 #include <gmock/gmock.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobItem;
@@ -37,30 +37,30 @@ namespace test
  * @brief The MockJobManager class plays the role of JobManager while testing OperationActionHandler
  * machinery.
  */
-class MockJobManager : public sequencergui::IJobItemManager
+class MockJobManager : public oac_tree_gui::IJobItemManager
 {
 public:
   MOCK_METHOD(std::size_t, GetJobCount, (), (const, override));
-  MOCK_METHOD(std::vector<sequencergui::JobItem *>, GetJobItems, (), (const, override));
-  MOCK_METHOD(void, SubmitJob, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(std::vector<oac_tree_gui::JobItem *>, GetJobItems, (), (const, override));
+  MOCK_METHOD(void, SubmitJob, (oac_tree_gui::JobItem *), (override));
 
-  MOCK_METHOD(sequencergui::IJobHandler *, GetJobHandler, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(oac_tree_gui::IJobHandler *, GetJobHandler, (oac_tree_gui::JobItem *), (override));
 
-  MOCK_METHOD(void, Start, (sequencergui::JobItem *), (override));
-  MOCK_METHOD(void, Pause, (sequencergui::JobItem *), (override));
-  MOCK_METHOD(void, Stop, (sequencergui::JobItem *), (override));
-  MOCK_METHOD(void, Step, (sequencergui::JobItem *), (override));
-  MOCK_METHOD(void, Reset, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(void, Start, (oac_tree_gui::JobItem *), (override));
+  MOCK_METHOD(void, Pause, (oac_tree_gui::JobItem *), (override));
+  MOCK_METHOD(void, Stop, (oac_tree_gui::JobItem *), (override));
+  MOCK_METHOD(void, Step, (oac_tree_gui::JobItem *), (override));
+  MOCK_METHOD(void, Reset, (oac_tree_gui::JobItem *), (override));
 
-  MOCK_METHOD(void, RemoveJobHandler, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(void, RemoveJobHandler, (oac_tree_gui::JobItem *), (override));
   MOCK_METHOD(bool, HasRunningJobs, (), (const, override));
   MOCK_METHOD(void, StopAllJobs, (), (override));
 
-  MOCK_METHOD(void, SetActiveJob, (sequencergui::JobItem *), (override));
+  MOCK_METHOD(void, SetActiveJob, (oac_tree_gui::JobItem *), (override));
 };
 
 }  // namespace test
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_JOB_MANAGER_H_

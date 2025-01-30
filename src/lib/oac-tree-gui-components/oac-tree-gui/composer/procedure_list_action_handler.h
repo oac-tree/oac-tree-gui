@@ -33,7 +33,7 @@ class ISessionModel;
 class SessionItem;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureListActionHandler : public QObject
@@ -90,7 +90,7 @@ public:
   void Paste();
 
 signals:
-  void SelectProcedureRequest(sequencergui::ProcedureItem* item);
+  void SelectProcedureRequest(oac_tree_gui::ProcedureItem* item);
 
 private:
   mvvm::ContainerItem* GetProcedureContainer() const;
@@ -103,6 +103,6 @@ private:
   ProcedureListContext m_context;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_ACTION_HANDLER_H_

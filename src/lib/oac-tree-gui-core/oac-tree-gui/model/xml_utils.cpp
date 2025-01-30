@@ -73,7 +73,7 @@ std::size_t ReplaceHtmlQuotes(std::string &str, std::size_t pos1, std::size_t po
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
@@ -122,4 +122,4 @@ std::string ReplaceQuotationMarks(const std::string &str)
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

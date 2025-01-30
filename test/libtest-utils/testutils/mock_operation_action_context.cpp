@@ -19,16 +19,16 @@
 
 #include "mock_operation_action_context.h"
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
-sequencergui::OperationActionContext MockOperationActionContext::CreateContext()
+oac_tree_gui::OperationActionContext MockOperationActionContext::CreateContext()
 {
-  sequencergui::OperationActionContext result;
+  oac_tree_gui::OperationActionContext result;
   result.selected_job = [this]() { return OnSelectedJob(); };
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.get_remote_connection_info = [this]() { return OnGetRemoteConnectionInfo(); };
   return result;
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

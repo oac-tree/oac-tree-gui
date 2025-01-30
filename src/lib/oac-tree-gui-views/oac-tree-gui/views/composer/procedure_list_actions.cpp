@@ -28,7 +28,7 @@
 #include <QAction>
 #include <QMenu>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ProcedureListActions::ProcedureListActions(QObject *parent_object) : QObject(parent_object)
@@ -95,4 +95,4 @@ void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppContext 
   sup::gui::AppAddActionToCommand(m_paste_action, sup::gui::constants::kPasteCommandId, context);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

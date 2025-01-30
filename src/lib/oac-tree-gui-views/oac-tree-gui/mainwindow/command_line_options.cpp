@@ -28,7 +28,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -132,4 +132,4 @@ Options ParseOptions(int argc, char** argv)
   parser.process(app);
   return ParseOptions(parser);
 }
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

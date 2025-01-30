@@ -39,13 +39,13 @@ namespace
 //! Returns vector of attributes which should be marked as readonly when workspace is running.
 std::vector<std::string> GetVariableReadonlyAttributesWhenRunning()
 {
-  return {sequencergui::domainconstants::kChannelAttribute,
-          sequencergui::domainconstants::kNameAttribute};
+  return {oac_tree_gui::domainconstants::kChannelAttribute,
+          oac_tree_gui::domainconstants::kNameAttribute};
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 void PopulateDomainWorkspace(const WorkspaceItem &item, workspace_t &workspace)
@@ -129,4 +129,4 @@ void UpdateVariableFromEvent(const sup::dto::AnyValue &value, bool connected, Va
   UpdateAnyValue(value, item);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

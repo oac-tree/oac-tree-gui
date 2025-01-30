@@ -25,7 +25,7 @@
 #include <QDateTime>
 #include <QTime>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for LogEvent class.
@@ -65,4 +65,4 @@ TEST_F(LogEventTest, CreateLogEvent)
   EXPECT_TRUE(QDateTime(date, time).isValid());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -22,7 +22,7 @@
 
 class QRectF;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ConnectableView;
@@ -61,6 +61,6 @@ public:
   void SetPositionToBottom(const QRectF& rect, NodePort* port, int index);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_

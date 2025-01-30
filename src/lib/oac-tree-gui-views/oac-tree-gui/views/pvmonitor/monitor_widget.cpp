@@ -51,7 +51,7 @@ void SetEnabled(const QList<QAction *> &actions, bool is_enabled)
 }
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 MonitorWidget::MonitorWidget(QWidget *parent_widget)
@@ -153,4 +153,4 @@ void MonitorWidget::SetIsRunning(bool is_running)
   m_monitor_actions->SetIsRunning(is_running);
   UpdateVariableEditableProperty(is_running, *m_workspace_item);
 }
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

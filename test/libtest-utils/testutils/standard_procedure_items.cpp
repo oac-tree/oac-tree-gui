@@ -35,7 +35,7 @@
 
 #include <sup/dto/anyvalue.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -47,8 +47,8 @@ namespace
  * @param procedure The procedure.
  * @param model The model where the procedure will be created.
  */
-sequencergui::ProcedureItem* CreateProcedure(std::unique_ptr<sequencergui::ProcedureItem> procedure,
-                                             sequencergui::SequencerModel* model)
+oac_tree_gui::ProcedureItem* CreateProcedure(std::unique_ptr<oac_tree_gui::ProcedureItem> procedure,
+                                             oac_tree_gui::SequencerModel* model)
 {
   auto procedure_ptr = procedure.get();
   model->InsertItem(std::move(procedure), model->GetProcedureContainer(), mvvm::TagIndex::Append());
@@ -61,8 +61,8 @@ sequencergui::ProcedureItem* CreateProcedure(std::unique_ptr<sequencergui::Proce
  * @param func Pointer to the procedure creation function.
  * @param model The model where the procedure will be created.
  */
-sequencergui::ProcedureItem* CreateProcedure(std::unique_ptr<sequencergui::ProcedureItem> (*func)(),
-                                             sequencergui::SequencerModel* model)
+oac_tree_gui::ProcedureItem* CreateProcedure(std::unique_ptr<oac_tree_gui::ProcedureItem> (*func)(),
+                                             oac_tree_gui::SequencerModel* model)
 {
   return CreateProcedure(func(), model);
 }
@@ -72,19 +72,19 @@ sequencergui::ProcedureItem* CreateProcedure(std::unique_ptr<sequencergui::Proce
 namespace test
 {
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateInvalidProcedureItem()
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInvalidProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
   result->GetInstructionContainer()->InsertItem<UniversalInstructionItem>(mvvm::TagIndex::Append());
   return result;
 }
 
-sequencergui::ProcedureItem* CreateInvalidProcedureItem(sequencergui::SequencerModel* model)
+oac_tree_gui::ProcedureItem* CreateInvalidProcedureItem(oac_tree_gui::SequencerModel* model)
 {
   return CreateProcedure(&CreateInvalidProcedureItem, model);
 }
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateSingleWaitProcedureItem(
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateSingleWaitProcedureItem(
     std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<ProcedureItem>();
@@ -99,7 +99,7 @@ ProcedureItem* CreateSingleWaitProcedureItem(SequencerModel* model,
   return CreateProcedure(CreateSingleWaitProcedureItem(timeout), model);
 }
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateCopyProcedureItem()
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateCopyProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
   auto copy =
@@ -123,7 +123,7 @@ ProcedureItem* CreateCopyProcedureItem(SequencerModel* model)
   return CreateProcedure(&CreateCopyProcedureItem, model);
 }
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateIncludeProcedureItem()
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateIncludeProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
   auto sequence =
@@ -145,7 +145,7 @@ ProcedureItem* CreateIncludeProcedureItem(SequencerModel* model)
   return CreateProcedure(&CreateIncludeProcedureItem, model);
 }
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateInputProcedureItem()
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
   auto sequence =
@@ -170,7 +170,7 @@ ProcedureItem* CreateInputProcedureItem(SequencerModel* model)
   return CreateProcedure(&CreateInputProcedureItem, model);
 }
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateUserChoiceProcedureItem()
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateUserChoiceProcedureItem()
 {
   // UserChoice instruction will offer the user a choice between two instructions to execute
   // 0) Wait instruction
@@ -201,7 +201,7 @@ ProcedureItem* CreateUserChoiceProcedureItem(SequencerModel* model)
   return CreateProcedure(&CreateUserChoiceProcedureItem, model);
 }
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateMessageProcedureItem(const std::string& text)
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateMessageProcedureItem(const std::string& text)
 {
   auto result = std::make_unique<ProcedureItem>();
   auto message = InsertInstruction(domainconstants::kMessageInstructionType,
@@ -210,13 +210,13 @@ std::unique_ptr<sequencergui::ProcedureItem> CreateMessageProcedureItem(const st
   return result;
 }
 
-ProcedureItem* CreateMessageProcedureItem(sequencergui::SequencerModel* model,
+ProcedureItem* CreateMessageProcedureItem(oac_tree_gui::SequencerModel* model,
                                           const std::string& text)
 {
   return CreateProcedure(CreateMessageProcedureItem(text), model);
 }
 
-std::unique_ptr<sequencergui::ProcedureItem> CreateVariableResetProcedureItem()
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateVariableResetProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
 
@@ -248,7 +248,7 @@ std::unique_ptr<sequencergui::ProcedureItem> CreateVariableResetProcedureItem()
   return result;
 }
 
-ProcedureItem* CreateVariableResetProcedureItem(sequencergui::SequencerModel* model)
+ProcedureItem* CreateVariableResetProcedureItem(oac_tree_gui::SequencerModel* model)
 {
   return CreateProcedure(&CreateVariableResetProcedureItem, model);
 }
@@ -277,11 +277,11 @@ std::unique_ptr<ProcedureItem> CreateIncrementProcedureItem()
   return result;
 }
 
-ProcedureItem* CreateIncrementProcedureItem(sequencergui::SequencerModel* model)
+ProcedureItem* CreateIncrementProcedureItem(oac_tree_gui::SequencerModel* model)
 {
   return CreateProcedure(&CreateIncrementProcedureItem, model);
 }
 
 }  // namespace test
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

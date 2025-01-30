@@ -33,9 +33,9 @@
 #include <QListView>
 #include <QSignalSpy>
 
-Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
+Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for utility functions related to the domain to presentation transformations.
@@ -45,7 +45,7 @@ class ProcedureListWidgetTest : public test::FolderTest
 public:
   ProcedureListWidgetTest() : test::FolderTest("ProcedureListWidgetTest")
   {
-    qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
+    qRegisterMetaType<oac_tree_gui::ProcedureItem*>("oac_tree_gui::ProcedureItem*");
   }
 };
 
@@ -72,7 +72,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
 
   spy_selected.clear();
 
@@ -80,7 +80,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   view.SetSelectedProcedure(nullptr);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -101,7 +101,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
   view.SetSelectedProcedure(procedure);
 
   // checking selections
-  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<sequencergui::ProcedureItem*>({procedure}));
+  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<oac_tree_gui::ProcedureItem*>({procedure}));
 
   QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
 
@@ -109,7 +109,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
   model.RemoveItem(procedure);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -138,7 +138,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

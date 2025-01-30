@@ -23,7 +23,7 @@
 
 #include <QIcon>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 QIcon FindIcon(const QString &icon_name, sup::gui::IconColorFlavor icon_flavor)
@@ -32,4 +32,4 @@ QIcon FindIcon(const QString &icon_name, sup::gui::IconColorFlavor icon_flavor)
   return sup::gui::utils::GetIcon(QString(":/oac-tree/icons/%1.svg").arg(icon_name), icon_flavor);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

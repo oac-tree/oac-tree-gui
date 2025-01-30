@@ -34,7 +34,7 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for WorkspaceItemListener class.
@@ -181,4 +181,4 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
   EXPECT_EQ(GetAnyValue(var_name1, m_workspace), new_value);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

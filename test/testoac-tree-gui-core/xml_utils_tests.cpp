@@ -33,7 +33,7 @@
 #include <testutils/folder_test.h>
 #include <testutils/test_utils.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Testing methods from importutils.h
@@ -56,12 +56,12 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
   const auto file_name = GetFilePath("ProcedureWithSingleWait.xml");
   mvvm::test::CreateTextFile(file_name, test::CreateProcedureString(body));
 
-  auto procedure_item = sequencergui::ImportFromFile(file_name);
+  auto procedure_item = oac_tree_gui::ImportFromFile(file_name);
 
   EXPECT_EQ(procedure_item->GetFileName(), file_name);
 
   auto container = procedure_item->GetInstructionContainer();
-  auto wait_item = container->GetItem<sequencergui::WaitItem>("");
+  auto wait_item = container->GetItem<oac_tree_gui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
 
@@ -79,9 +79,9 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
   const auto file_name = GetFilePath("ProcedureWithSingleVariable.xml");
   mvvm::test::CreateTextFile(file_name, test::CreateProcedureString(body));
 
-  auto procedure_item = sequencergui::ImportFromFile(file_name);
+  auto procedure_item = oac_tree_gui::ImportFromFile(file_name);
 
-  auto variable_item = procedure_item->GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
+  auto variable_item = procedure_item->GetWorkspace()->GetItem<oac_tree_gui::LocalVariableItem>("");
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::UnsignedInteger32Type, 7);
   EXPECT_EQ(expected_anyvalue, GetAnyValue(*variable_item));
@@ -91,10 +91,10 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
 TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
 {
-  sequencergui::ProcedureItem procedure_item;
+  oac_tree_gui::ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto wait0 = container->InsertItem<sequencergui::WaitItem>(mvvm::TagIndex::Append());
+  auto wait0 = container->InsertItem<oac_tree_gui::WaitItem>(mvvm::TagIndex::Append());
   wait0->SetTimeout(42.0);
 
   const std::string body{R"(
@@ -104,12 +104,12 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
 
   // current ExportToXMLString doesn't know how export with schema
   auto expected_string = test::CreateProcedureString(body, /*schema*/ false);
-  EXPECT_EQ(sequencergui::ExportToXMLString(procedure_item), expected_string);
+  EXPECT_EQ(oac_tree_gui::ExportToXMLString(procedure_item), expected_string);
 }
 
 TEST_F(XmlUtilsTest, ReplaceQuotationMarks)
 {
-  using sequencergui::ReplaceQuotationMarks;
+  using oac_tree_gui::ReplaceQuotationMarks;
 
   // string stays the same
   EXPECT_EQ(ReplaceQuotationMarks(""), std::string());
@@ -136,4 +136,4 @@ TEST_F(XmlUtilsTest, ReplaceQuotationMarks)
   EXPECT_EQ(ReplaceQuotationMarks(long_str), expected);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

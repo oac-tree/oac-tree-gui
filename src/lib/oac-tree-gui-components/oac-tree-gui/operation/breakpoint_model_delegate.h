@@ -22,7 +22,7 @@
 
 #include <QStyledItemDelegate>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -40,6 +40,6 @@ public:
              const QModelIndex &index) const override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_BREAKPOINT_MODEL_DELEGATE_H_

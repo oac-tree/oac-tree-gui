@@ -24,7 +24,7 @@
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewmodel_controller_factory.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model,
@@ -42,4 +42,4 @@ int AttributeEditorViewModel::columnCount(const QModelIndex &parent) const
   return 3;  // Name, Value, TypeName
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

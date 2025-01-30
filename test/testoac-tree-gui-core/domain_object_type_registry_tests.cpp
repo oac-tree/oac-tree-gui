@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Testing DomainObjectTypeRegistry class.
@@ -70,4 +70,4 @@ TEST_F(DomainObjectTypeRegistryTest, GetObjectNames)
   EXPECT_TRUE(registry.GetObjectNames("non-existing").empty());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

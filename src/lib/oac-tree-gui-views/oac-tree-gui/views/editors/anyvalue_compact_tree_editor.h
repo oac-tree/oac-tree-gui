@@ -37,7 +37,7 @@ namespace sup::gui
 class AnyValueItem;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -70,6 +70,6 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_COMPACT_TREE_EDITOR_H_

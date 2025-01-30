@@ -29,7 +29,7 @@ int main(int argc, char** argv)
   ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
 
-  sequencergui::LoadResources();
+  oac_tree_gui::LoadResources();
 
   QApplication app(argc, argv);
   Q_UNUSED(app)

@@ -19,7 +19,7 @@
 
 #include "exceptions.h"
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 MessageException::MessageException(std::string message) : m_message{std::move(message)} {}
@@ -63,4 +63,4 @@ InvalidOperationException::InvalidOperationException(const std::string& message)
 {
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

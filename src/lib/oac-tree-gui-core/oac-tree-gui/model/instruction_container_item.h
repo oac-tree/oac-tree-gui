@@ -22,7 +22,7 @@
 
 #include <mvvm/model/compound_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class InstructionItem;
 
@@ -41,6 +41,6 @@ public:
   int GetInstructionCount() const;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_INSTRUCTION_CONTAINER_ITEM_H_

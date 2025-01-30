@@ -30,15 +30,15 @@ namespace
 {
 void InitDefaultAnyValue(mvvm::CompoundItem &item)
 {
-  item.RegisterTag(sup::gui::CreateAnyValueTag(sequencergui::itemconstants::kAnyValueTag), true);
+  item.RegisterTag(sup::gui::CreateAnyValueTag(oac_tree_gui::itemconstants::kAnyValueTag), true);
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
-  anyvalue_item->SetDisplayName(sequencergui::itemconstants::kAnyValueDefaultDisplayName);
-  sequencergui::SetAttributeExposedFlag(false, *anyvalue_item);
+  anyvalue_item->SetDisplayName(oac_tree_gui::itemconstants::kAnyValueDefaultDisplayName);
+  oac_tree_gui::SetAttributeExposedFlag(false, *anyvalue_item);
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 // ----------------------------------------------------------------------------
@@ -341,4 +341,4 @@ void LogInstructionItem::SetSeverity(const std::string &value)
   SetAttribute(*this, domainconstants::kSeverityAttribute, value);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

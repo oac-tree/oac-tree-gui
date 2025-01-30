@@ -22,7 +22,7 @@
 
 #include <QSplashScreen>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -41,6 +41,6 @@ protected:
   void drawContents(QPainter* painter) override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_SPLASH_SCREEN_H_

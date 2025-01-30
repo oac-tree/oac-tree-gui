@@ -26,7 +26,7 @@
 #include <QTest>
 #include <future>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for UserInputProvider class.
@@ -81,4 +81,4 @@ TEST_F(UserInputProviderTest, SingleThreadAsksForUserInput)
   EXPECT_EQ(result.processed, true);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -37,7 +37,7 @@ namespace
 const double kWindowSize = 10000;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 QSizeF GetGraphicsViewportSize()
@@ -62,12 +62,12 @@ QPointF GetGraphicsViewportCenter()
 
 double GetAlignmentGridWidth()
 {
-  return sequencergui::ConnectableViewRectangle().width() * 1.4;
+  return oac_tree_gui::ConnectableViewRectangle().width() * 1.4;
 }
 
 double GetAlignmentGridHeight()
 {
-  return sequencergui::ConnectableViewRectangle().height() * 1.4;
+  return oac_tree_gui::ConnectableViewRectangle().height() * 1.4;
 }
 
 QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
@@ -146,4 +146,4 @@ double GetInstructionDropOffset()
   return shift_of_child_wrt_parent;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

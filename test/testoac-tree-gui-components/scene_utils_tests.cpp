@@ -36,7 +36,7 @@
 #include <QPointF>
 #include <QRectF>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 namespace
@@ -112,4 +112,4 @@ TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
   EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccessRead"), std::string("Channel Access Read"));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

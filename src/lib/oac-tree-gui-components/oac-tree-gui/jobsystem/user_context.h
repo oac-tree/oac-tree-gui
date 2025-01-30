@@ -24,7 +24,7 @@
 
 #include <functional>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -39,6 +39,6 @@ struct UserContext
   std::function<UserChoiceResult(const UserChoiceArgs&)> user_choice_callback;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_

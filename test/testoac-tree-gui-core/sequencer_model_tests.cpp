@@ -33,7 +33,7 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for SequencerModel class.
@@ -172,4 +172,4 @@ TEST_F(SequencerModelTest, ClearAndCommandFramework)
   ASSERT_EQ(model.GetCommandStack()->GetCommandCount(), 0);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

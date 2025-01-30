@@ -30,7 +30,7 @@
 
 #include <QTreeView>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for WOrkspaceViewComponentProvider class.
@@ -66,4 +66,4 @@ TEST_F(WorkspaceViewComponentProviderTest, FilterViewmodel)
   EXPECT_EQ(view.model()->rowCount(), 2);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

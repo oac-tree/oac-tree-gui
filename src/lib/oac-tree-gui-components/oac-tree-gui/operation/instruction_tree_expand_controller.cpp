@@ -31,7 +31,7 @@
 
 #include <QTreeView>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionTreeExpandController::InstructionTreeExpandController(QTreeView *tree_view,
@@ -119,4 +119,4 @@ mvvm::ViewModel *InstructionTreeExpandController::GetViewModel() const
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

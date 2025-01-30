@@ -32,7 +32,7 @@
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/procedure_preamble.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -111,4 +111,4 @@ std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t& procedure)
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

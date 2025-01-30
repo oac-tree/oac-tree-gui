@@ -41,7 +41,7 @@ const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 SequencerExplorerView::SequencerExplorerView(QWidget *parent_widget)
@@ -134,4 +134,4 @@ void SequencerExplorerView::SetupConnections()
           &SequencerExplorerView::ImportProcedure);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

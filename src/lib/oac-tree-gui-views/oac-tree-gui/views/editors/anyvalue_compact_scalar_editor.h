@@ -39,7 +39,7 @@ namespace sup::gui
 class AnyValueItem;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -79,6 +79,6 @@ private:
   QWidget* m_editor{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_EDITORS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_

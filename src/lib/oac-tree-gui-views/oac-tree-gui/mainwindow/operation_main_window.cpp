@@ -41,7 +41,7 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<ApplicationModels>())
@@ -127,4 +127,4 @@ void OperationMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

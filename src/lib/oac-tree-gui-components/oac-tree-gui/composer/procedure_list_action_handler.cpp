@@ -30,7 +30,7 @@
 
 #include <QMimeData>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ProcedureListActionHandler::ProcedureListActionHandler(ProcedureListContext context,
@@ -152,4 +152,4 @@ mvvm::SessionItem *ProcedureListActionHandler::InsertProcedure(
   return procedure_item_ptr;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

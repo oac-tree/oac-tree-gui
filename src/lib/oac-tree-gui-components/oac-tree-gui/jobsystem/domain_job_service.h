@@ -24,7 +24,7 @@
 
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class DomainEventQueue;
@@ -86,6 +86,6 @@ private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_JOB_SERVICE_H_

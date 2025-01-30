@@ -31,7 +31,7 @@
 
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -186,6 +186,6 @@ extern template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyVa
 extern template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem& item,
                                                               instruction_t& domain);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_

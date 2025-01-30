@@ -36,7 +36,7 @@ namespace sup::gui
 class MessageEvent;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class IJobItemManager;
@@ -137,7 +137,7 @@ public:
   void OnToggleBreakpoint(InstructionItem* instruction);
 
 signals:
-  void MakeJobSelectedRequest(sequencergui::JobItem* item);
+  void MakeJobSelectedRequest(oac_tree_gui::JobItem* item);
 
 private:
   /**
@@ -174,6 +174,6 @@ private:
   int m_tick_timeout{0};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_OPERATION_ACTION_HANDLER_H_

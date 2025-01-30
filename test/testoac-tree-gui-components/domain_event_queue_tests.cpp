@@ -26,7 +26,7 @@
 #include <QSignalSpy>
 
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for DomainEventQueue class.

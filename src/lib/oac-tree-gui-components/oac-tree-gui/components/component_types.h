@@ -25,7 +25,7 @@
 
 #include <cstdint>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -58,6 +58,6 @@ enum class OperationPresentationMode : std::uint8_t
   kIdeMode         //!< widget is a part of sequencer-gui
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPONENTS_COMPONENT_TYPES_H_

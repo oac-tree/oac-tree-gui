@@ -25,7 +25,7 @@
 
 #include <QObject>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -67,6 +67,6 @@ private:
   RequestHandlerQueue<UserInputResult, UserInputArgs> m_request_queue;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_

@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui::algorithm
+namespace oac_tree_gui::algorithm
 {
 
 //! The node of the generic tree. Carries the information necessary for the alignment algorithm to
@@ -96,6 +96,6 @@ inline T* AlignNode::Add()
   return Add(std::make_unique<T>());
 }
 
-}  // namespace sequencergui::algorithm
+}  // namespace oac_tree_gui::algorithm
 
 #endif  // SEQUENCERGUI_NODEEDITOR_ALIGN_NODE_H_

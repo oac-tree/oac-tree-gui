@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -71,6 +71,6 @@ private:
 
 DomainObjectTypeRegistry& GlobalDomainObjectTypeRegistry();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_

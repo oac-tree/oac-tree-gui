@@ -37,7 +37,7 @@ class VisibilityAgentBase;
 class CustomSplitter;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -71,7 +71,7 @@ public:
   InstructionItem* GetSelectedInstruction() const;
 
 signals:
-  void InstructionSelected(sequencergui::InstructionItem* instruction);
+  void InstructionSelected(oac_tree_gui::InstructionItem* instruction);
 
 private:
   void ReadSettings();
@@ -100,6 +100,6 @@ private:
   CustomTreeViewStyle* m_tree_view_style{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_

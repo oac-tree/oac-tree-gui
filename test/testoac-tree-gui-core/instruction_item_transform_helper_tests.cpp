@@ -29,7 +29,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -43,7 +43,7 @@ class JobInfoTransformHelperTest : public ::testing::Test
 TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
 {
   const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
                                              instruction_id,
                                              {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -59,7 +59,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
 TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 {
   const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
                                              instruction_id,
                                              {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -78,7 +78,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 //! children.
 TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
 {
-  using namespace sequencergui::domainconstants;
+  using namespace oac_tree_gui::domainconstants;
   using sup::oac_tree::AttributeInfo;
   using sup::oac_tree::InstructionInfo;
 
@@ -147,4 +147,4 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionTreeFromRootInstruction)
   EXPECT_EQ(item_tree.indexes[3], wait_items[1]);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

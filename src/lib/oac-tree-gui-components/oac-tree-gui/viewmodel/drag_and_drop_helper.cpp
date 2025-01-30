@@ -35,7 +35,7 @@
 
 #include <QMimeData>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& indexes)
@@ -162,4 +162,4 @@ InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::Sess
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

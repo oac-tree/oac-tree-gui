@@ -52,7 +52,7 @@
 
 using msec = std::chrono::milliseconds;
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -501,4 +501,4 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   }
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

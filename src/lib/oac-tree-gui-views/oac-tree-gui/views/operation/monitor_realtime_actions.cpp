@@ -43,7 +43,7 @@ QString GetDelayText(int delay)
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent_object)
@@ -176,4 +176,4 @@ std::unique_ptr<QMenu> MonitorRealTimeActions::CreateSettingsMenu()
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

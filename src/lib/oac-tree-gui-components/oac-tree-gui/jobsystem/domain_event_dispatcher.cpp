@@ -21,7 +21,7 @@
 
 #include <oac-tree-gui/core/exceptions.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 DomainEventDispatcher::DomainEventDispatcher(get_event_callback_t get_event_callback,
@@ -88,4 +88,4 @@ void DomainEventDispatcher::operator()(const NextLeavesChangedEvent &event) cons
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

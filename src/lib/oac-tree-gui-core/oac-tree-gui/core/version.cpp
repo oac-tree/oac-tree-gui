@@ -21,7 +21,7 @@
 
 #include "version_constants.h"  // from <build>/autogen
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 int ProjectVersionMajor()
@@ -44,4 +44,4 @@ std::string ProjectVersion()
   return kProjectVersionString;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

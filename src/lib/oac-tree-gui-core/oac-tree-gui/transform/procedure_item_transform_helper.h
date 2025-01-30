@@ -27,7 +27,7 @@
 
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -46,6 +46,6 @@ void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreamble
  */
 std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t& procedure);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_TRANSFORM_HELPER_H_

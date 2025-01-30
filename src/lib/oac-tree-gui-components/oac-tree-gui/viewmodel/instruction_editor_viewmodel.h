@@ -27,7 +27,7 @@ namespace mvvm
 class ISessionModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -60,6 +60,6 @@ public:
   QStringList mimeTypes() const override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_INSTRUCTION_EDITOR_VIEWMODEL_H_

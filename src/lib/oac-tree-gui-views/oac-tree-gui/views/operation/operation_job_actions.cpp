@@ -26,7 +26,7 @@
 #include <QMenu>
 #include <QToolButton>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 OperationJobActions::OperationJobActions(QObject *parent_object)
@@ -112,4 +112,4 @@ void OperationJobActions::OnAboutToShowMenu()
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

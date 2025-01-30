@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -78,6 +78,6 @@ struct UserInputResult
   bool operator!=(const UserInputResult& other) const;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_TYPES_H_

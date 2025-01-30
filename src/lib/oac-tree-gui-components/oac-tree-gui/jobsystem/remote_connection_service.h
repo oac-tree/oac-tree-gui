@@ -24,7 +24,7 @@
 
 #include <functional>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -59,6 +59,6 @@ private:
   create_client_t m_create_client;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_REMOTE_CONNECTION_SERVICE_H_

@@ -32,7 +32,7 @@
 #include <QMenu>
 #include <QToolButton>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent_object)
@@ -118,7 +118,7 @@ std::unique_ptr<QMenu> WorkspaceEditorActions::CreateInsertAfterMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainVariableNames());
+  auto names = mvvm::utils::GetStringList(oac_tree_gui::GetDomainVariableNames());
   for (const auto &name : names)
   {
     auto action = result->addAction(name);
@@ -129,4 +129,4 @@ std::unique_ptr<QMenu> WorkspaceEditorActions::CreateInsertAfterMenu()
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

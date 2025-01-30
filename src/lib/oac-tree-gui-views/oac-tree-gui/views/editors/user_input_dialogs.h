@@ -28,7 +28,7 @@
 
 class QWidget;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -81,6 +81,6 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget
  */
 UserContext CreateDefaultUserContext(QWidget* parent);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_EDITORS_USER_INPUT_DIALOGS_H_

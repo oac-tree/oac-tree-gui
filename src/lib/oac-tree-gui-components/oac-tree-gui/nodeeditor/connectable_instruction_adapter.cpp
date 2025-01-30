@@ -35,7 +35,7 @@ const std::string ypos_attr = "ypos";
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem *instruction)
     : m_instruction(instruction)
@@ -103,4 +103,4 @@ void ConnectableInstructionAdapter::SetXY(double x, double y)
   mvvm::utils::EndMacro(*m_instruction);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

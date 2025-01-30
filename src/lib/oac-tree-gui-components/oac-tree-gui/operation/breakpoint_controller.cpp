@@ -23,7 +23,7 @@
 
 #include <oac-tree-gui/model/procedure_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 BreakpointController::BreakpointController() = default;
@@ -38,4 +38,4 @@ void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
   SetBreakpointsFromInfo(m_breakpoints, *procedure_item.GetInstructionContainer());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

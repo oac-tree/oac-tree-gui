@@ -29,7 +29,7 @@ namespace mvvm
 class ViewModel;
 }  // namespace mvvm
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class WorkspaceFilterViewModel;
@@ -58,6 +58,6 @@ private:
   WorkspaceFilterViewModel* m_filter_proxy_model{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_WORKSPACE_VIEW_COMPONENT_PROVIDER_H_

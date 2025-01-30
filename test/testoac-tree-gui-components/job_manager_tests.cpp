@@ -26,7 +26,7 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_job_handler.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -137,4 +137,4 @@ TEST_F(JobManagerTest, StepJob)
   }
   manager->Step(&job_item);
 }
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

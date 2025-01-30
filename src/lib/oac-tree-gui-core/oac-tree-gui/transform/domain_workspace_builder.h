@@ -25,7 +25,7 @@
 #include <map>
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class WorkspaceItem;
@@ -46,6 +46,6 @@ private:
   std::map<std::string, VariableItem*> m_domain_name_to_item;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_DOMAIN_WORKSPACE_BUILDER_H_

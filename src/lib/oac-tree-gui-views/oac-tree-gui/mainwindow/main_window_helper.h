@@ -37,7 +37,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -53,10 +53,10 @@ void LoadMainPlugins();
 template <typename MainWindowT>
 int RunApplication(int argc, char** argv)
 {
-  auto options = sequencergui::ParseOptions(argc, argv);
+  auto options = oac_tree_gui::ParseOptions(argc, argv);
   sup::gui::SetupHighDpiScaling(options.scale);
 
-  sequencergui::LoadResources();
+  oac_tree_gui::LoadResources();
 
   QApplication app(argc, argv);
 
@@ -64,12 +64,12 @@ int RunApplication(int argc, char** argv)
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
-  std::unique_ptr<sequencergui::SplashScreen> splash;
+  std::unique_ptr<oac_tree_gui::SplashScreen> splash;
 
   // splash screen will be shown only if there are procedures to load
   if (!options.file_name.isEmpty())
   {
-    splash = std::make_unique<sequencergui::SplashScreen>();
+    splash = std::make_unique<oac_tree_gui::SplashScreen>();
     splash->Start(/*show_during*/ 1000);
   }
 
@@ -131,6 +131,6 @@ std::vector<std::string> GetProcedureFiles(const std::string& path_name);
 void ImportProcedures(const QString& file_name,
                       const std::function<bool(const QString& name)>& func);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_

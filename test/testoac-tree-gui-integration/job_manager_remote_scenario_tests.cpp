@@ -38,7 +38,7 @@
 #include <chrono>
 #include <thread>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -179,4 +179,4 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

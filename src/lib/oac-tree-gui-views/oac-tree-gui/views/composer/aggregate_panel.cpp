@@ -26,7 +26,7 @@
 
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AggregatePanel::AggregatePanel(QWidget *parent_widget)
@@ -47,4 +47,4 @@ AggregatePanel::AggregatePanel(QWidget *parent_widget)
   m_toolkit_viewmodel->PopulateModel(factory.GetKeys());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

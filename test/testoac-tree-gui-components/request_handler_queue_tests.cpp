@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Unit tests for RequestHandlerQueue class.
@@ -64,4 +64,4 @@ TEST_F(RequestHandlerQueueTest, SingleThreadAskForData)
   EXPECT_EQ(result, request_params.size());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

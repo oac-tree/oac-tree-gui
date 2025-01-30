@@ -40,7 +40,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -87,7 +87,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
   // load procedure from XML
   auto filename = GetResourceFolder() + "/" + GetParam();
   EXPECT_TRUE(mvvm::utils::IsExists(filename));
-  auto procedure_item = sequencergui::ImportFromFile(filename);
+  auto procedure_item = oac_tree_gui::ImportFromFile(filename);
   EXPECT_TRUE(procedure_item);
 
   // insert procedure in the model
@@ -116,4 +116,4 @@ TEST_P(ResourceFolderTest, RunProcedure)
 INSTANTIATE_TEST_SUITE_P(FunctionalTests, ResourceFolderTest,
                          ::testing::Values("wait_for_condition.xml", "fallback.xml"));
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

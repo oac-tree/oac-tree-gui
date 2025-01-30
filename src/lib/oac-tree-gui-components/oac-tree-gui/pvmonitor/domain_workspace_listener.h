@@ -28,7 +28,7 @@ namespace sup::oac_tree
 class Workspace;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class VariableUpdatedEvent;
@@ -104,6 +104,6 @@ private:
   std::unique_ptr<DomainWorkspaceListenerImpl> p_impl;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_PVMONITOR_DOMAIN_WORKSPACE_LISTENER_H_

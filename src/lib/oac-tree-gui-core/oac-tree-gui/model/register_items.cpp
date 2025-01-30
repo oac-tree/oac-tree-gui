@@ -24,49 +24,49 @@
 
 #include <oac-tree-gui/model/sequencer_item_includes.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 void RegisterSessionItems()
 {
   // instructions
-  (void)mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ParallelSequenceItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::RepeatItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::SequenceItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::WaitItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::UniversalInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::IncludeItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ParallelSequenceItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::RepeatItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::SequenceItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::WaitItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::UniversalInstructionItem>();
 
   // sequencer-plugin-epics instructions
-  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessReadInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessWriteInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessReadInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessWriteInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::RPCClientInstruction>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::SystemCallInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::LogInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessReadInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessWriteInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessReadInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessWriteInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::RPCClientInstruction>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::SystemCallInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::LogInstructionItem>();
 
   // variables
-  (void)mvvm::RegisterGlobalItem<sequencergui::FileVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::LocalVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::UniversalVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::FileVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::LocalVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::UniversalVariableItem>();
 
   // variables sequencer-plugin-epics
-  (void)mvvm::RegisterGlobalItem<sequencergui::ChannelAccessVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessClientVariableItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::PvAccessServerVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessClientVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessServerVariableItem>();
 
   // other items
-  (void)mvvm::RegisterGlobalItem<sequencergui::InstructionContainerItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedureItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::WorkspaceItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::TypeRegistrationItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::InstructionContainerItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ProcedureItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::WorkspaceItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ProcedurePreambleItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::TypeRegistrationItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ProcedurePreambleItem>();
 
-  (void)mvvm::RegisterGlobalItem<sequencergui::LocalJobItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::ImportedJobItem>();
-  (void)mvvm::RegisterGlobalItem<sequencergui::RemoteJobItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::LocalJobItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ImportedJobItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::RemoteJobItem>();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -32,7 +32,7 @@
 #include <QMenu>
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
@@ -84,4 +84,4 @@ void InstructionItemPanel::OnContextMenuRequest(const QPoint& point)
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

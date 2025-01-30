@@ -42,7 +42,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Testing DomainProcedureBuilder class.
@@ -310,4 +310,4 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
             domainconstants::kWaitInstructionType);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

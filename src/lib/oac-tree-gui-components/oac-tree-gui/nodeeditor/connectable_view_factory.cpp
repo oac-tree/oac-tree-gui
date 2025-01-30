@@ -24,7 +24,7 @@
 #include <oac-tree-gui/nodeeditor/connectable_view.h>
 #include <oac-tree-gui/nodeeditor/position_strategy.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 ConnectableViewFactory::ConnectableViewFactory() {}
@@ -47,4 +47,4 @@ std::unique_ptr<ConnectableView> ConnectableViewFactory::CreateView(InstructionI
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

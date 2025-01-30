@@ -27,7 +27,7 @@ namespace sup::gui
 class ItemStackWidget;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -59,6 +59,6 @@ private:
   WorkspaceEditorWidget* m_workspace_table_widget{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_OPERATION_WORKSPACE_PANEL_H_

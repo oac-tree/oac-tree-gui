@@ -36,7 +36,7 @@
 #include <variant>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -94,6 +94,6 @@ bool IsValid(const domain_event_t& value);
 
 std::string ToString(const domain_event_t& value);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENTS_H_

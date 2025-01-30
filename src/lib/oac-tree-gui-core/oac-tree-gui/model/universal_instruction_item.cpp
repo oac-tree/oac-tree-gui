@@ -37,16 +37,16 @@ const int kDomainTypeNameRole = 10;  // role to store type name
 
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {
-    sequencergui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
-    sequencergui::domainconstants::kValueAttribute  // handled via AnyValueItem
+    oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
+    oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
 };
 
 // these are properties that shouldn't go to domain
-const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::kAnyValueTag};
+const std::vector<std::string> kSkipItemTagList = {oac_tree_gui::itemconstants::kAnyValueTag};
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 UniversalInstructionItem::UniversalInstructionItem(const std::string &item_type)
@@ -71,7 +71,7 @@ std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
 void UniversalInstructionItem::SetDomainType(const std::string &domain_type)
 {
   // temporary domain instruction is used to create default properties
-  auto domain_variable = ::sequencergui::CreateDomainInstruction(domain_type);
+  auto domain_variable = ::oac_tree_gui::CreateDomainInstruction(domain_type);
   SetupFromDomain(domain_variable.get());
 }
 
@@ -108,7 +108,7 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
     }
   }
 
-  if (mvvm::utils::HasTag(*this, sequencergui::itemconstants::kAnyValueTag))
+  if (mvvm::utils::HasTag(*this, oac_tree_gui::itemconstants::kAnyValueTag))
   {
     // FIXME What to do with registry of types (see UniversalVariableItem::InitFromDomainImpl
     SetAnyValueFromDomainInstruction(*instruction, *this);
@@ -178,4 +178,4 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
   RegisterCommonProperties();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

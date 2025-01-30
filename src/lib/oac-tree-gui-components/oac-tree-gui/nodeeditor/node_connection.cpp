@@ -26,7 +26,7 @@
 #include <QPainter>
 #include <QPen>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 NodeConnection::NodeConnection(QGraphicsScene* scene)
 {
@@ -159,4 +159,4 @@ ConnectableView* NodeConnection::childView() const
   return child_port->connectableView();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

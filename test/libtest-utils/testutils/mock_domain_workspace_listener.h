@@ -26,7 +26,7 @@
 
 #include <gmock/gmock.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -53,6 +53,6 @@ public:
   sup::oac_tree::ScopeGuard m_guard;
 };
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_WORKSPACE_LISTENER_H_

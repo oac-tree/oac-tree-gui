@@ -24,7 +24,7 @@
 #include "domain_job_observer.h"
 #include "user_context.h"
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 DomainJobService::DomainJobService(DomainEventDispatcherContext dispatcher_context,
@@ -82,4 +82,4 @@ std::function<domain_event_t()> DomainJobService::CreateGetEventCallback() const
   return [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

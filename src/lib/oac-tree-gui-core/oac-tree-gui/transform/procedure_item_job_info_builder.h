@@ -26,7 +26,7 @@
 #include <memory>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -61,6 +61,6 @@ private:
   std::vector<const VariableItem*> m_index_to_variable;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_TRANSFORM_PROCEDURE_ITEM_JOB_INFO_BUILDER_H_

@@ -33,7 +33,7 @@ class QPointF;
 class QString;
 class QSizeF;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class InstructionContainerItem;
@@ -116,6 +116,6 @@ std::string InsertSpaceAtCamelCase(std::string str);
  */
 double GetInstructionDropOffset();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_

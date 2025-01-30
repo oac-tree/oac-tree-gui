@@ -32,7 +32,7 @@
 #include <QMenu>
 #include <QMenuBar>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project, QMainWindow *mainwindow)
@@ -85,4 +85,4 @@ void MonitorMainWindowActions::SetupMenus()
   file_menu->addAction(m_exit_action);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

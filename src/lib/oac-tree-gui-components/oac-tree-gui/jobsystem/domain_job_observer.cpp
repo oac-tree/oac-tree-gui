@@ -34,7 +34,7 @@
 #include <sstream>
 #include <thread>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
@@ -183,4 +183,4 @@ void DomainJobObserver::SetTickTimeout(int msec)
   m_tick_timeout_msec = msec;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -44,17 +44,17 @@ const QString kGroupName("MessagePanel");
 const QString kUncheckedSeveritiesSettingName = kGroupName + "/" + "unchecked";
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 
-std::vector<sequencergui::Severity> kSeveritiesToSelect = {
-    sequencergui::Severity::kEmergency, sequencergui::Severity::kAlert,
-    sequencergui::Severity::kCritical,  sequencergui::Severity::kError,
-    sequencergui::Severity::kWarning,   sequencergui::Severity::kNotice,
-    sequencergui::Severity::kInfo,      sequencergui::Severity::kDebug,
-    sequencergui::Severity::kTrace};
+std::vector<oac_tree_gui::Severity> kSeveritiesToSelect = {
+    oac_tree_gui::Severity::kEmergency, oac_tree_gui::Severity::kAlert,
+    oac_tree_gui::Severity::kCritical,  oac_tree_gui::Severity::kError,
+    oac_tree_gui::Severity::kWarning,   oac_tree_gui::Severity::kNotice,
+    oac_tree_gui::Severity::kInfo,      oac_tree_gui::Severity::kDebug,
+    oac_tree_gui::Severity::kTrace};
 
 const std::vector<int> kDefaultColumnStretch({2, 2, 2, 1, 6});
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 MessagePanel::MessagePanel(QWidget* parent_widget)
@@ -111,7 +111,7 @@ void MessagePanel::ReadSettings()
   else
   {
     m_unchecked_severitites.push_back(
-        QString::fromStdString(ToString(sequencergui::Severity::kDebug)));
+        QString::fromStdString(ToString(oac_tree_gui::Severity::kDebug)));
   }
 }
 
@@ -206,4 +206,4 @@ void MessagePanel::UpdateSeverityFilter()
   m_proxy_model->setFilterRegularExpression(regexp);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -37,7 +37,7 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for items in standard_variable_items.h
@@ -204,7 +204,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   workspace_t ws;
   local_variable->Setup(ws);  // to propagate string attributes to AnyValues
 
-  sequencergui::FileVariableItem item;
+  oac_tree_gui::FileVariableItem item;
   item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
@@ -216,7 +216,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
   const std::string expected_name("abc");
   const std::string expected_file_name("edf");
 
-  sequencergui::FileVariableItem item;
+  oac_tree_gui::FileVariableItem item;
   item.SetName(expected_name);
   item.SetFileName(expected_file_name);
 
@@ -236,7 +236,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
 
 TEST_F(StandardVariableItemsTest, LocalVariableItem)
 {
-  sequencergui::LocalVariableItem item;
+  oac_tree_gui::LocalVariableItem item;
   EXPECT_FALSE(item.GetName().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   EXPECT_TRUE(item.IsAvailable());
@@ -279,7 +279,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   workspace_t ws;
   local_variable->Setup(ws);
 
-  sequencergui::LocalVariableItem item;
+  oac_tree_gui::LocalVariableItem item;
   item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
@@ -296,7 +296,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_dynamic_flag("false");
 
   {  // case when AnyValueItem is set
-    sequencergui::LocalVariableItem item;
+    oac_tree_gui::LocalVariableItem item;
     item.SetName(expected_name);
 
     sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
@@ -316,7 +316,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   }
 
   {  // case when AnyValueItem is not set
-    sequencergui::LocalVariableItem item;
+    oac_tree_gui::LocalVariableItem item;
     item.SetName(expected_name);
     EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 

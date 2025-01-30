@@ -32,7 +32,7 @@ auto CreateTestData()
 }
 }  // namespace
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class AlignNodeTest : public ::testing::Test

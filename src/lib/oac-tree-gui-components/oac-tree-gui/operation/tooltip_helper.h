@@ -30,11 +30,11 @@ namespace mvvm
 class SessionItem;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 QString GetInstructionToolTipText(const mvvm::SessionItem* item);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_TOOLTIP_HELPER_H_

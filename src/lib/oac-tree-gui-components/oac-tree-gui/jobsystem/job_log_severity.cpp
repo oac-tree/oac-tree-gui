@@ -35,24 +35,24 @@ const char* kInfoString = "INFO";
 const char* kDebugString = "DEBUG";
 const char* kTraceString = "TRACE";
 
-std::map<sequencergui::Severity, std::string> CreateSeverityMap()
+std::map<oac_tree_gui::Severity, std::string> CreateSeverityMap()
 {
-  std::map<sequencergui::Severity, std::string> result = {
-      {sequencergui::Severity::kEmergency, kEmergencyString},
-      {sequencergui::Severity::kAlert, kAlertString},
-      {sequencergui::Severity::kCritical, kCriticalString},
-      {sequencergui::Severity::kError, kErrorString},
-      {sequencergui::Severity::kWarning, kWarningString},
-      {sequencergui::Severity::kNotice, kNoticeString},
-      {sequencergui::Severity::kInfo, kInfoString},
-      {sequencergui::Severity::kDebug, kDebugString},
-      {sequencergui::Severity::kTrace, kTraceString}};
+  std::map<oac_tree_gui::Severity, std::string> result = {
+      {oac_tree_gui::Severity::kEmergency, kEmergencyString},
+      {oac_tree_gui::Severity::kAlert, kAlertString},
+      {oac_tree_gui::Severity::kCritical, kCriticalString},
+      {oac_tree_gui::Severity::kError, kErrorString},
+      {oac_tree_gui::Severity::kWarning, kWarningString},
+      {oac_tree_gui::Severity::kNotice, kNoticeString},
+      {oac_tree_gui::Severity::kInfo, kInfoString},
+      {oac_tree_gui::Severity::kDebug, kDebugString},
+      {oac_tree_gui::Severity::kTrace, kTraceString}};
   return result;
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::string ToString(Severity severity)
@@ -68,4 +68,4 @@ std::string ToString(Severity severity)
   return iter->second;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

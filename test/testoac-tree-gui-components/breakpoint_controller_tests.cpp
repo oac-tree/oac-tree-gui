@@ -30,7 +30,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -89,4 +89,4 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
   }
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

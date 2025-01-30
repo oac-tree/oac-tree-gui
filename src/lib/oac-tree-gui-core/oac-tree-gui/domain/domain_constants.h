@@ -28,7 +28,7 @@
 
 #include <string>
 
-namespace sequencergui::domainconstants
+namespace oac_tree_gui::domainconstants
 {
 
 // plugins
@@ -136,6 +136,6 @@ const std::string kDynamicTypeAttribute = sup::oac_tree::Constants::IS_DYNAMIC_T
 const std::string kShowCollapsedAttribute =
     sup::oac_tree::Constants::SHOW_COLLAPSED_ATTRIBUTE_NAME;
 
-}  // namespace sequencergui::domainconstants
+}  // namespace oac_tree_gui::domainconstants
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_

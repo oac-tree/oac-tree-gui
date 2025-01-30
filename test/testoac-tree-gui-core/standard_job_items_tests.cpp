@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -110,4 +110,4 @@ TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
   EXPECT_EQ(item->GetDisplayName(), "abc_42");
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

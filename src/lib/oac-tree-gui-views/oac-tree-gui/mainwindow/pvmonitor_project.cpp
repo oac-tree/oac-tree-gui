@@ -21,7 +21,7 @@
 
 #include <oac-tree-gui/pvmonitor/monitor_model.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 PvMonitorProject::PvMonitorProject(const mvvm::ProjectContext &context) : AppProject(context)
@@ -36,4 +36,4 @@ MonitorModel *PvMonitorProject::GetMonitorModel()
   return GetModelCount() > 0 ? GetModel<MonitorModel>() : nullptr;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

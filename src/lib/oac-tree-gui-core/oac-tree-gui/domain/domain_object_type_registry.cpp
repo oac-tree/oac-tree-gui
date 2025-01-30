@@ -19,7 +19,7 @@
 
 #include "domain_object_type_registry.h"
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 void DomainObjectTypeRegistry::Update(const std::string &plugin_name,
@@ -62,4 +62,4 @@ DomainObjectTypeRegistry &GlobalDomainObjectTypeRegistry()
   return registry;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

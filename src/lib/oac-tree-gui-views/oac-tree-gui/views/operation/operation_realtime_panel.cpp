@@ -35,9 +35,9 @@ namespace
 
 const QString kCollapsibleListSettingName = "OperationRealTimePanel/collapsible_list";
 
-QList<QAction *> GetToolBarActions(sequencergui::MonitorRealTimeActions *actions)
+QList<QAction *> GetToolBarActions(oac_tree_gui::MonitorRealTimeActions *actions)
 {
-  using ActionKey = sequencergui::MonitorRealTimeActions::ActionKey;
+  using ActionKey = oac_tree_gui::MonitorRealTimeActions::ActionKey;
   return actions->GetActions({ActionKey::kRun, ActionKey::kPause, ActionKey::kStep,
                               ActionKey::kStop, ActionKey::kReset, ActionKey::kDelay,
                               ActionKey::kSettings});
@@ -45,7 +45,7 @@ QList<QAction *> GetToolBarActions(sequencergui::MonitorRealTimeActions *actions
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent_widget)
@@ -138,4 +138,4 @@ void OperationRealTimePanel::SetupConnections()
           &RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

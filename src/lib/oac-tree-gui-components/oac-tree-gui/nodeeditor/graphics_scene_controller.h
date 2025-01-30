@@ -29,7 +29,7 @@ namespace mvvm
 class ISessionModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class GraphicsScene;
 class SequencerModel;
@@ -56,6 +56,6 @@ private:
   std::unique_ptr<GraphicsSceneControllerImpl> p_impl;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_

@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests of helper methods from domain_automation_helper.h
@@ -40,7 +40,7 @@ class DomainAutomationHelperTest : public ::testing::Test
 TEST_F(DomainAutomationHelperTest, CreateDomainInstruction)
 {
   const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(sequencergui::domainconstants::kWaitInstructionType,
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
                                              instruction_id,
                                              {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -62,7 +62,7 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
       {{domainconstants::kNameAttribute, expected_name},
        {domainconstants::kTypeAttribute, expected_type},
        {domainconstants::kValueAttribute, expected_value}});
-  sup::oac_tree::VariableInfo info(sequencergui::domainconstants::kLocalVariableType, variable_id,
+  sup::oac_tree::VariableInfo info(oac_tree_gui::domainconstants::kLocalVariableType, variable_id,
                                     attributes);
 
   auto variable = CreateDomainVariable(info);
@@ -73,4 +73,4 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

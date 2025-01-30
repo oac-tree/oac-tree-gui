@@ -50,7 +50,7 @@ namespace
 const QString kApplicationType = "oac-tree GUI";
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 SequencerMainWindowActions::SequencerMainWindowActions(mvvm::IProject* project,
@@ -255,4 +255,4 @@ void SequencerMainWindowActions::OnResetSettings()
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

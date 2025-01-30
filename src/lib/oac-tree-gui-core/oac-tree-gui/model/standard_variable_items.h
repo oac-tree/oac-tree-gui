@@ -26,7 +26,7 @@
 #include <oac-tree-gui/model/universal_variable_item.h>
 #include <oac-tree-gui/model/variable_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Represent EPICS variable.
@@ -58,7 +58,7 @@ public:
 };
 
 //! Represent FileVariable.
-class FileVariableItem : public sequencergui::UniversalVariableItem
+class FileVariableItem : public oac_tree_gui::UniversalVariableItem
 {
 public:
   FileVariableItem();
@@ -73,7 +73,7 @@ public:
 };
 
 //! Represent LocalVariable.
-class LocalVariableItem : public sequencergui::UniversalVariableItem
+class LocalVariableItem : public oac_tree_gui::UniversalVariableItem
 {
 public:
   LocalVariableItem();
@@ -105,6 +105,6 @@ public:
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MODEL_STANDARD_VARIABLE_ITEMS_H_

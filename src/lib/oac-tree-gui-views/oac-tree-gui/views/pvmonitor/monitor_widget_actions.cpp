@@ -23,7 +23,7 @@
 
 #include <QAction>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 MonitorWidgetActions::MonitorWidgetActions(QObject *parent_object)
@@ -54,4 +54,4 @@ void MonitorWidgetActions::SetIsRunning(bool is_running)
   m_stop_action->setEnabled(is_running);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -36,11 +36,11 @@ namespace
 
 std::vector<std::string> GetDomainDecoratorNames()
 {
-  std::vector<std::string> result{sequencergui::domainconstants::kForceSuccessInstructionType,
-                                  sequencergui::domainconstants::kIncludeInstructionType,
-                                  sequencergui::domainconstants::kListenInstructionType,
-                                  sequencergui::domainconstants::kRepeatInstructionType,
-                                  sequencergui::domainconstants::kInverterInstructionType};
+  std::vector<std::string> result{oac_tree_gui::domainconstants::kForceSuccessInstructionType,
+                                  oac_tree_gui::domainconstants::kIncludeInstructionType,
+                                  oac_tree_gui::domainconstants::kListenInstructionType,
+                                  oac_tree_gui::domainconstants::kRepeatInstructionType,
+                                  oac_tree_gui::domainconstants::kInverterInstructionType};
   return result;
 }
 
@@ -51,7 +51,7 @@ mvvm::SessionItem *GetPropertyItem(const mvvm::SessionItem &parent, const std::s
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 bool IsCompoundInstruction(const InstructionItem *instruction)
@@ -90,4 +90,4 @@ mvvm::SessionItem *GetChannelItem(const mvvm::SessionItem &parent)
   return GetPropertyItem(parent, domainconstants::kChannelAttribute);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

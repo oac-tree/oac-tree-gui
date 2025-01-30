@@ -24,7 +24,7 @@
 #include <oac-tree-gui/core/exceptions.h>
 #include <oac-tree-gui/model/procedure_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -163,4 +163,4 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_nam
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

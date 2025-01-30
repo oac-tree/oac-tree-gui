@@ -31,7 +31,7 @@
 #include <QAction>
 #include <QWidget>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -116,4 +116,4 @@ void SequencerComposerActions::SetupActions()
   connect(m_redo_action, &QAction::triggered, this, on_redo);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

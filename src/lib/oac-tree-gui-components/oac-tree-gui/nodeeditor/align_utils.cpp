@@ -34,14 +34,14 @@ namespace
 //! `depth` is a position in the hierarchy (o - root node, 1 - direct children, etc)
 //! `edge` is most left, or most right node coordinate at given level, depending on comparator
 template <typename T>
-std::map<int, double> GetCountour(sequencergui::algorithm::AlignNode& node, double mod_sum,
+std::map<int, double> GetCountour(oac_tree_gui::algorithm::AlignNode& node, double mod_sum,
                                   T comparator)
 {
   std::map<int, double> result;
 
   struct Data
   {
-    sequencergui::algorithm::AlignNode* node{nullptr};
+    oac_tree_gui::algorithm::AlignNode* node{nullptr};
     double mod_sum{0.0};
   };
 
@@ -82,7 +82,7 @@ int GetMaxKey(const std::map<int, double>& map)
 
 }  // namespace
 
-namespace sequencergui::algorithm
+namespace oac_tree_gui::algorithm
 {
 
 // Visits tree in preorder and sets initial values to the node parameters.
@@ -270,4 +270,4 @@ void AlignNodes(AlignNode& node)
   CalculateFinalPositions(node);
 }
 
-}  // namespace sequencergui::algorithm
+}  // namespace oac_tree_gui::algorithm

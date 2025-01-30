@@ -31,7 +31,7 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -149,4 +149,4 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
   EXPECT_TRUE(mvvm::utils::IsExists(expected_path));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

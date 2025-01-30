@@ -24,7 +24,7 @@
 
 #include <QStandardItemModel>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -57,6 +57,6 @@ public:
   void PopulateModel(const std::vector<ObjectGroupInfo>& objects_group_info);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_

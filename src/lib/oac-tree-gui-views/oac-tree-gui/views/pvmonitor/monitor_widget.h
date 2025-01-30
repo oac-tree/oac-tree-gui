@@ -33,7 +33,7 @@ namespace sup::gui
 class ItemStackWidget;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class MonitorModel;
@@ -82,6 +82,6 @@ private:
   QTabWidget* m_tab_widget{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_

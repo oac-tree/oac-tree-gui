@@ -21,7 +21,7 @@
 
 #include <numeric>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::string GetRegExpPattern(const std::vector<std::string>& data)
@@ -33,4 +33,4 @@ std::string GetRegExpPattern(const std::vector<std::string>& data)
              : "(" + std::accumulate(std::next(data.begin()), data.end(), data[0], fold) + ")";
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

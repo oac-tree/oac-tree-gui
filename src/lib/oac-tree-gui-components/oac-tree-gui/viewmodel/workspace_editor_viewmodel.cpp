@@ -24,7 +24,7 @@
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewmodel_controller_factory.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, bool show_hidden,
@@ -50,4 +50,4 @@ int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const
   return 3;  // Name, Value, TypeName
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

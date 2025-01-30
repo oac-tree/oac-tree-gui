@@ -27,7 +27,7 @@
 
 #include <memory>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -44,6 +44,6 @@ std::unique_ptr<sup::oac_tree::Instruction> CreateDomainInstruction(
 std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
     const sup::oac_tree::VariableInfo& info);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_AUTOMATION_HELPER_H_

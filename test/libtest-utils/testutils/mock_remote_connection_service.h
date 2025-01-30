@@ -24,7 +24,7 @@
 
 #include <gmock/gmock.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class IAutomationClient;
@@ -39,7 +39,7 @@ namespace test
  * @brief The MockRemoteConnectionService class is intended for usage *instead* of
  * RemoteConnectionService..
  */
-class MockRemoteConnectionService : public sequencergui::IRemoteConnectionService
+class MockRemoteConnectionService : public oac_tree_gui::IRemoteConnectionService
 {
 public:
   MOCK_METHOD(bool, Connect, (const std::string& server_name), (override));
@@ -47,14 +47,14 @@ public:
   MOCK_METHOD(bool, IsConnected, (const std::string& server_name), (const, override));
   MOCK_METHOD(bool, HasClient, (const std::string& server_name), (const, override));
   MOCK_METHOD(std::vector<std::string>, GetServerNames, (), (const, override));
-  MOCK_METHOD(sequencergui::IAutomationClient&, GetAutomationClient,
+  MOCK_METHOD(oac_tree_gui::IAutomationClient&, GetAutomationClient,
               (const std::string& server_name), (override));
-  MOCK_METHOD(std::unique_ptr<sequencergui::AbstractJobHandler>, CreateJobHandler,
-              (sequencergui::RemoteJobItem*, const sequencergui::UserContext&), (override));
+  MOCK_METHOD(std::unique_ptr<oac_tree_gui::AbstractJobHandler>, CreateJobHandler,
+              (oac_tree_gui::RemoteJobItem*, const oac_tree_gui::UserContext&), (override));
 };
 
 }  // namespace test
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_REMOTE_CONNECTION_SERVICE_H_

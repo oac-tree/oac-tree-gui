@@ -29,7 +29,7 @@
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/test_utils.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 namespace
@@ -194,4 +194,4 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessClientAndServerVariables)
   m_workspace.WaitForVariable(client_var_name, 2.0, true);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

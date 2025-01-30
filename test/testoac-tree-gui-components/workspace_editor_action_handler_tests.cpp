@@ -40,7 +40,7 @@
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class WorkspaceEditorActionHandlerTest : public ::testing::Test
@@ -443,4 +443,4 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   EXPECT_EQ(inserted_variable0->GetType(), UniversalVariableItem::GetStaticType());
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

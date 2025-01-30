@@ -33,7 +33,7 @@ class ISessionModel;
 
 class QListView;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class SequencerModel;
@@ -69,7 +69,7 @@ public:
   QList<QAction*> GetActions(const std::vector<ProcedureListActions::ActionKey>& action_keys);
 
 signals:
-  void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
+  void ProcedureSelected(oac_tree_gui::ProcedureItem* procedure_item);
 
 private:
   ProcedureListContext CreateContext();
@@ -83,6 +83,6 @@ private:
   SequencerModel* m_model{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_

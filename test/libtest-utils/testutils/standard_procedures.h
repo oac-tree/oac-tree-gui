@@ -27,7 +27,7 @@
 #include <chrono>
 #include <memory>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! hard-coded value in Wait instruction
@@ -107,6 +107,6 @@ std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, i
  */
 std::unique_ptr<procedure_t> CreateRepeatIncrementAndCompare();
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURES_H_

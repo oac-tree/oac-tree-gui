@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
 
-  sequencergui::LoadResources();
+  oac_tree_gui::LoadResources();
 
   // run all google tests
   return RUN_ALL_TESTS();

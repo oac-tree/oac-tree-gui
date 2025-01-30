@@ -31,9 +31,9 @@
 #include <QSignalSpy>
 #include <QTreeView>
 
-Q_DECLARE_METATYPE(sequencergui::JobItem*)
+Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for utility functions related to the domain to presentation transformations.
@@ -63,7 +63,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   view.SetSelectedJob(job);
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::JobItem*>(spy_selected), job);
 
   // removing selection
 
@@ -71,7 +71,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   EXPECT_EQ(view.GetSelectedJob(), nullptr);
   EXPECT_EQ(spy_selected.count(), 1);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::JobItem*>(spy_selected), nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -94,7 +94,7 @@ TEST_F(JobListWidgetTest, SelectionAfterRemoval)
   model.RemoveItem(job);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::JobItem*>(spy_selected), nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -120,7 +120,7 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
 
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
+  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::JobItem*>(spy_selected), job);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

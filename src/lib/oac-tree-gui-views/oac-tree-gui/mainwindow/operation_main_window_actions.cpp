@@ -39,7 +39,7 @@
 #include <QStatusBar>
 #include <QToolButton>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 OperationMainWindowActions::OperationMainWindowActions(QMainWindow *mainwindow)
@@ -172,4 +172,4 @@ void OperationMainWindowActions::OnResetSettings()
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

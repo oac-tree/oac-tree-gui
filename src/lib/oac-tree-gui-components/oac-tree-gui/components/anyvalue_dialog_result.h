@@ -27,7 +27,7 @@ namespace sup::gui
 class AnyValueItem;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -42,6 +42,6 @@ struct AnyValueDialogResult
   std::unique_ptr<sup::gui::AnyValueItem> result;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_DIALOG_RESULT_H_

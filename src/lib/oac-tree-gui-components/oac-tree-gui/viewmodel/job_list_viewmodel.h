@@ -27,7 +27,7 @@ namespace mvvm
 class ISessionModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -42,6 +42,6 @@ public:
   explicit JobListViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_JOB_LIST_VIEWMODEL_H_

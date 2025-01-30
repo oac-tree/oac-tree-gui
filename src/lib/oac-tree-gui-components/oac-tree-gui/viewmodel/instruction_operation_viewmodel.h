@@ -27,7 +27,7 @@ namespace mvvm
 class ISessionModel;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! View model to show instruction tree with three columns: display_name, name and status.
@@ -46,6 +46,6 @@ public:
   static int GetBreakpointColumn();
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_INSTRUCTION_OPERATION_VIEWMODEL_H_

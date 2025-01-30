@@ -19,7 +19,7 @@
 
 #include "user_input_provider.h"
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 UserInputProvider::UserInputProvider(provider_callback_t callback) : m_request_queue(callback)
@@ -42,4 +42,4 @@ void UserInputProvider::OnInputRequest()
   m_request_queue.OnDataRequest();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

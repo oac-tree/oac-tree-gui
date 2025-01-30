@@ -29,7 +29,7 @@ namespace sup::gui
 class AnyValueItem;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -115,6 +115,6 @@ private:
   AttributeEditorContext m_context;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_

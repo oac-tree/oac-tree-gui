@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 class AlignUtilsTest : public ::testing::Test
@@ -212,4 +212,4 @@ TEST_F(AlignUtilsTest, CalculateInitialXTwoGrandChildren)
   EXPECT_EQ(child1->GetMod(), 1.0);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

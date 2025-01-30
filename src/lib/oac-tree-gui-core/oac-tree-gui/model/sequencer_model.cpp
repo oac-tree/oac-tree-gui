@@ -27,7 +27,7 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 SequencerModel::SequencerModel(std::shared_ptr<mvvm::ItemPool> pool)
@@ -83,4 +83,4 @@ void SequencerProjectModel::Clear()
   CreateUntitledProcedure();
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

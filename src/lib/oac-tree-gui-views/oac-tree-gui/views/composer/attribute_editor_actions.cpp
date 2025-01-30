@@ -36,7 +36,7 @@ const QString kEditAnyValueToolTip =
     "some EPICS related instructions can have complex AnyValues";
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 AttributeEditorActions::AttributeEditorActions(const AttributeEditorActionHandler *handler,
@@ -135,4 +135,4 @@ void AttributeEditorActions::AddEditAnyValueAction(QMenu &menu)
   action->setEnabled(m_handler->CanEditAnyValue());
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

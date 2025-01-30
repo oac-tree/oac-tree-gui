@@ -28,7 +28,7 @@
 class QAbstractItemModel;
 class QModelIndex;
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -39,6 +39,6 @@ namespace sequencergui
 void IterateFirstColumn(const QAbstractItemModel& viewmodel, const QModelIndex& parent,
                         const std::function<void(const QModelIndex&)>& func);
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_VIEWMODEL_HELPER_H_

@@ -24,8 +24,8 @@
 
 int main(int argc, char** argv)
 {
-  auto version = QString::fromStdString(sequencergui::ProjectVersion());
+  auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("sequencer-operation", version);
 
-  return sequencergui::RunApplication<sequencergui::OperationMainWindow>(argc, argv);
+  return oac_tree_gui::RunApplication<oac_tree_gui::OperationMainWindow>(argc, argv);
 }

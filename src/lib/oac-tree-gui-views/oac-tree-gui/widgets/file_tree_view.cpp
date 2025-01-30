@@ -45,7 +45,7 @@ bool IsProcedureFile(const QFileInfo &info)
 }
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 FileTreeView::FileTreeView(QWidget *parent_widget)
@@ -203,4 +203,4 @@ void FileTreeView::OnAboutToShowBookmarkMenu()
   }
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -23,7 +23,7 @@
 #include <oac-tree-gui/domain/sequencer_types_fwd.h>
 #include <oac-tree-gui/operation/breakpoint_types.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -63,6 +63,6 @@ private:
   std::vector<BreakpointInfo> m_breakpoints;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_OPERATION_BREAKPOINT_CONTROLLER_H_

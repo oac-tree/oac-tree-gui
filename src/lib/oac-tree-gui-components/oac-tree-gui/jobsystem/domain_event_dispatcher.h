@@ -25,7 +25,7 @@
 
 #include <QObject>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -59,6 +59,6 @@ private:
   DomainEventDispatcherContext m_context;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_DISPATCHER_H_

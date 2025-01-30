@@ -32,7 +32,7 @@
 
 #include <QPointF>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for SequencerObserver class.
@@ -236,4 +236,4 @@ TEST_F(SequencerAlignUtilsTest, RequiresInitialAlignment)
   EXPECT_FALSE(algorithm::RequiresInitialAlignment({&item, &item}));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

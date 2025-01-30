@@ -34,7 +34,7 @@
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for AttributeEditorActionHandler class.
@@ -150,4 +150,4 @@ TEST_F(AttributeEditorActionHandlerTest, OnSetPlaceholderTypeAndBack)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

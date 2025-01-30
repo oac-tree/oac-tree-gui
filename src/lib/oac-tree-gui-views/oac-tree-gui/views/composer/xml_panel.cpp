@@ -33,7 +33,7 @@
 #include <QAction>
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 XmlPanel::XmlPanel(QWidget *parent_widget)
@@ -138,4 +138,4 @@ void XmlPanel::SendMessage(const std::string &what) const
   m_message_handler->SendMessage(message);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

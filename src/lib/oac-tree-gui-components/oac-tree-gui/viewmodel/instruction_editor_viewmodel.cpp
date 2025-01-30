@@ -31,7 +31,7 @@
 
 #include <QMimeData>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel *model,
@@ -186,4 +186,4 @@ QStringList InstructionEditorViewModel::mimeTypes() const
   return {kInstructionMoveMimeType, kNewInstructionMimeType};
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for helper functions in job_log_severity.h
@@ -43,4 +43,4 @@ TEST_F(JobLogSeverityTest, SeverityToString)
   EXPECT_EQ(ToString(Severity::kTrace), std::string("TRACE"));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

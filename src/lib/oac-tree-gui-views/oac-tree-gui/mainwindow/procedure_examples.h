@@ -22,7 +22,7 @@
 
 //! Collection of example procedures to populate the model for debugging purposes.
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 class SequencerModel;
 class ProcedureItem;
@@ -49,6 +49,6 @@ ProcedureItem* AddComplexAlignmentProcedure(SequencerModel* model);
 ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model);
 
 }  // namespace Examples
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_

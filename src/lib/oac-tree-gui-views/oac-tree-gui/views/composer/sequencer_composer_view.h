@@ -28,7 +28,7 @@ class CustomSplitter;
 class AppContext;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class SequencerModel;
@@ -81,6 +81,6 @@ private:
   std::unique_ptr<ProcedurePluginController> m_plugin_controller;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_OAC_TREE_COMPOSER_VIEW_H_

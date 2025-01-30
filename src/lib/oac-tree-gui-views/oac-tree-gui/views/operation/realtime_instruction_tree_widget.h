@@ -36,7 +36,7 @@ namespace sup::gui
 class CustomHeaderView;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class ProcedureItem;
@@ -65,7 +65,7 @@ public:
   void SetViewportFollowsSelectionFlag(bool value);
 
 signals:
-  void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
+  void ToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction);
 
 protected:
   bool event(QEvent* event) override;
@@ -89,6 +89,6 @@ private:
   bool m_viewport_follows_selection{true};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_OPERATION_REALTIME_INSTRUCTION_TREE_WIDGET_H_

@@ -29,7 +29,7 @@ namespace mvvm
 class ModelListener;
 }
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -72,6 +72,6 @@ private:
   std::unique_ptr<mvvm::ModelListener> m_listener;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_COMPOSER_PROCEDURE_PLUGIN_CONTROLLER_H_

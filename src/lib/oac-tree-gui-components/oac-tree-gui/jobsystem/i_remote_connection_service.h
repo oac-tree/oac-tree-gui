@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class IAutomationClient;
@@ -86,6 +86,6 @@ public:
                                                                const UserContext& user_context) = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_I_REMOTE_CONNECTION_SERVICE_H_

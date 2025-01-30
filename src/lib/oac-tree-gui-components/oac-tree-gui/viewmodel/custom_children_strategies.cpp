@@ -30,7 +30,7 @@
 #include <oac-tree-gui/model/standard_variable_items.h>
 #include <oac-tree-gui/model/workspace_item.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
@@ -59,4 +59,4 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

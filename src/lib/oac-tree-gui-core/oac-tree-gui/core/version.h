@@ -24,7 +24,7 @@
 
 #include <string>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 //! Returns major project version.
@@ -39,6 +39,6 @@ int ProjectVersionPatch();
 //! Returns project version string.
 std::string ProjectVersion();
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_CORE_VERSION_H_

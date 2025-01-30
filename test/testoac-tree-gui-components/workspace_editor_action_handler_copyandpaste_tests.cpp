@@ -43,7 +43,7 @@
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Testing WorkspaceEditorActionHandler class (copy-and-paste scenarios).
@@ -246,4 +246,4 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), var1);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -38,7 +38,7 @@ namespace
  */
 void CollectPluginName(const std::string &domain_type, std::set<std::string> &plugin_names)
 {
-  const auto &registry = sequencergui::GlobalDomainObjectTypeRegistry();
+  const auto &registry = oac_tree_gui::GlobalDomainObjectTypeRegistry();
   if (auto plugin_name = registry.GetPluginName(domain_type).value_or(std::string());
       !plugin_name.empty())
   {
@@ -49,7 +49,7 @@ void CollectPluginName(const std::string &domain_type, std::set<std::string> &pl
 /**
  * @brief Collects all plugin names necessary to handle variables in the given workspace.
  */
-void CollectVariablePluginNames(const sequencergui::WorkspaceItem &workspace_item,
+void CollectVariablePluginNames(const oac_tree_gui::WorkspaceItem &workspace_item,
                                 std::set<std::string> &plugin_names)
 {
   for (auto variable : workspace_item.GetVariables())
@@ -62,18 +62,18 @@ void CollectVariablePluginNames(const sequencergui::WorkspaceItem &workspace_ite
  * @brief Collects all plugin names necessary to handle instructions in the given instruction
  * container.
  */
-void CollectInstructionPluginNames(const sequencergui::InstructionContainerItem &container,
+void CollectInstructionPluginNames(const oac_tree_gui::InstructionContainerItem &container,
                                    std::set<std::string> &plugin_names)
 {
-  auto on_instruction = [&plugin_names](const sequencergui::InstructionItem *item)
+  auto on_instruction = [&plugin_names](const oac_tree_gui::InstructionItem *item)
   { CollectPluginName(item->GetDomainType(), plugin_names); };
-  sequencergui::IterateInstructionContainer<const sequencergui::InstructionItem *>(
+  oac_tree_gui::IterateInstructionContainer<const oac_tree_gui::InstructionItem *>(
       container.GetInstructions(), on_instruction);
 }
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 static inline const std::string kInstructions = "kInstructions";
@@ -164,4 +164,4 @@ void UpdatePluginNames(const ProcedureItem &item)
   item.GetPreambleItem()->SetPluginPaths(names);
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

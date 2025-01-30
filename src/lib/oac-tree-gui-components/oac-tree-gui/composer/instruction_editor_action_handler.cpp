@@ -46,17 +46,17 @@ namespace
 /**
  * @brief Updates child coordinate so it is located near the reference
  */
-void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm::SessionItem *child)
+void UpdateChildCoordinate(const oac_tree_gui::InstructionItem *reference, mvvm::SessionItem *child)
 {
-  const auto default_center = sequencergui::GetGraphicsViewportCenter();
-  if (auto inserted_instruction = dynamic_cast<sequencergui::InstructionItem *>(child);
+  const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
+  if (auto inserted_instruction = dynamic_cast<oac_tree_gui::InstructionItem *>(child);
       inserted_instruction)
   {
     inserted_instruction->SetX(reference
-                                   ? reference->GetX() + sequencergui::GetInstructionDropOffset()
+                                   ? reference->GetX() + oac_tree_gui::GetInstructionDropOffset()
                                    : default_center.x());
     inserted_instruction->SetY(reference
-                                   ? reference->GetY() + sequencergui::GetInstructionDropOffset()
+                                   ? reference->GetY() + oac_tree_gui::GetInstructionDropOffset()
                                    : default_center.y());
   }
 }
@@ -65,7 +65,7 @@ const std::string kFailedActionTitle = "Invalid Operation";
 
 }  // namespace
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context,
@@ -424,4 +424,4 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
   return result;
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

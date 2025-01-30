@@ -25,7 +25,7 @@
 #include <stdexcept>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 template <typename Key, typename Value>
@@ -70,6 +70,6 @@ private:
   std::map<Key, Value> m_object_map;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_CORE_FACTORY_H_

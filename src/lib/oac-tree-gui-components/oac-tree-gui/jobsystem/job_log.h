@@ -25,7 +25,7 @@
 #include <QObject>
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -54,6 +54,6 @@ private:
   std::vector<LogEvent> m_records;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_JOB_LOG_H_

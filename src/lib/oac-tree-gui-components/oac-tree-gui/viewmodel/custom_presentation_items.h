@@ -22,7 +22,7 @@
 
 #include <mvvm/viewmodel/standard_presentation_items.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -49,6 +49,6 @@ private:
   QString m_channel_name;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_

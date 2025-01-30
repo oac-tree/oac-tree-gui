@@ -50,16 +50,16 @@ IOCEnvironment::~IOCEnvironment() = default;
 
 void IOCEnvironment::SetUp()
 {
-  if (sequencergui::IsSequencerPluginEpicsAvailable())
+  if (oac_tree_gui::IsSequencerPluginEpicsAvailable())
   {
-    m_softioc_service.Start(sequencergui::test::GetEpicsDBContentString());
+    m_softioc_service.Start(oac_tree_gui::test::GetEpicsDBContentString());
     std::this_thread::sleep_for(std::chrono::milliseconds(20));
   }
 }
 
 void IOCEnvironment::TearDown()
 {
-  if (sequencergui::IsSequencerPluginEpicsAvailable())
+  if (oac_tree_gui::IsSequencerPluginEpicsAvailable())
   {
     m_softioc_service.Stop();
     std::this_thread::sleep_for(std::chrono::milliseconds(20));

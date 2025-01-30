@@ -39,7 +39,7 @@ class CustomHeaderView;
 class VisibilityAgentBase;
 }  // namespace sup::gui
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class WorkspaceItem;
@@ -84,6 +84,6 @@ private:
   WorkspaceItem* m_workspace_item{nullptr};
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_

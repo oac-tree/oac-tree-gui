@@ -25,7 +25,7 @@
 
 #include <mvvm/viewmodel/i_children_strategy.h>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 /**
@@ -40,6 +40,6 @@ public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_CHILDREN_STRATEGIES_H_

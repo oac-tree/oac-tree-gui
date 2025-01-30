@@ -37,7 +37,7 @@
 
 #include <gtest/gtest.h>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 //! Tests for functions from variable_item_transform_utils.h
@@ -381,4 +381,4 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromEmptyIt
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kValueAttribute));
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

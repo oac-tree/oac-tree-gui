@@ -39,7 +39,7 @@
 #include <QStandardItemModel>
 #include <QVBoxLayout>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 namespace
@@ -192,4 +192,4 @@ std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
   return {};
 }
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui

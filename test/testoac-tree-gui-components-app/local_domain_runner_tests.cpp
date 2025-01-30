@@ -38,7 +38,7 @@
 #include <QTest>
 #include <thread>
 
-namespace sequencergui::test
+namespace oac_tree_gui::test
 {
 
 /**
@@ -514,4 +514,4 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::FAILURE);
 }
 
-}  // namespace sequencergui::test
+}  // namespace oac_tree_gui::test

@@ -22,7 +22,7 @@
 
 #include <vector>
 
-namespace sequencergui
+namespace oac_tree_gui
 {
 
 class JobItem;
@@ -118,6 +118,6 @@ public:
   virtual void SetActiveJob(JobItem* item) = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace oac_tree_gui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_I_JOB_ITEM_MANAGER_H_
