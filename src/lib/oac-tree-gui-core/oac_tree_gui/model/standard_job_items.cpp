@@ -122,7 +122,10 @@ std::vector<std::string> GetJobItemTypes()
 // FileBasedJobItem
 // ------------------------------------------------------------------------------------------------
 
-FileBasedJobItem::FileBasedJobItem() : JobItem(GetStaticType()) {}
+FileBasedJobItem::FileBasedJobItem() : JobItem(GetStaticType())
+{
+  AddProperty(kFileName, std::string()).SetDisplayName("File name");
+}
 
 std::string FileBasedJobItem::GetStaticType()
 {
@@ -187,6 +190,14 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_nam
   result->SetServerName(server_name);
   result->SetRemoteJobIndex(job_index);
   result->SetDisplayName(server_name + "_" + std::to_string(job_index));
+  return result;
+}
+
+std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string &file_name, int tick_timeout_msec)
+{
+  auto result = std::make_unique<FileBasedJobItem>();
+  result->SetFileName(file_name);
+  result->SetTickTimeout(tick_timeout_msec);
   return result;
 }
 

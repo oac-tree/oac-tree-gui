@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/standard_job_items.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 
 #include <mvvm/model/application_model.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/standard_job_items.h"
 
 namespace oac_tree_gui
 {
@@ -35,8 +35,6 @@ namespace oac_tree_gui
 class StandardJobItemsTest : public ::testing::Test
 {
 };
-
-TEST_F(StandardJobItemsTest, ImportedJobItem) {}
 
 TEST_F(StandardJobItemsTest, RemoteJobItem)
 {
@@ -50,6 +48,16 @@ TEST_F(StandardJobItemsTest, RemoteJobItem)
 
   item.SetServerName("abc");
   EXPECT_EQ(item.GetServerName(), std::string("abc"));
+}
+
+TEST_F(StandardJobItemsTest, FileBasedJobItem)
+{
+  FileBasedJobItem item;
+
+  EXPECT_TRUE(item.GetFileName().empty());
+
+  item.SetFileName("abc");
+  EXPECT_EQ(item.GetFileName(), std::string("abc"));
 }
 
 TEST_F(StandardJobItemsTest, CreateLocalJobItem)
@@ -108,6 +116,21 @@ TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
   EXPECT_EQ(item->GetRemoteJobIndex(), job_index);
   EXPECT_EQ(item->GetServerName(), server_name);
   EXPECT_EQ(item->GetDisplayName(), "abc_42");
+}
+
+TEST_F(StandardJobItemsTest, CreateFileBasedJobItem)
+{
+  const std::string file_name("abc");
+
+  auto item = CreateFileBasedJobItem(file_name, 42);
+
+  EXPECT_EQ(item->GetTickTimeout(), 42);
+  EXPECT_EQ(item->GetProcedure(), nullptr);
+  EXPECT_EQ(item->GetDisplayName(), FileBasedJobItem::GetStaticType());
+
+  auto file_based_item = dynamic_cast<FileBasedJobItem*>(item.get());
+  ASSERT_NE(file_based_item, nullptr);
+  EXPECT_EQ(file_based_item->GetFileName(), std::string("abc"));
 }
 
 }  // namespace oac_tree_gui

@@ -99,6 +99,7 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<LocalJobItem>());
   EXPECT_TRUE(IsCloneImplemented<ImportedJobItem>());
   EXPECT_TRUE(IsCloneImplemented<RemoteJobItem>());
+  EXPECT_TRUE(IsCloneImplemented<FileBasedJobItem>());
 }
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)

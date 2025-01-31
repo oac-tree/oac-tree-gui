@@ -155,6 +155,16 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
 std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
                                                    std::size_t job_index);
 
+/**
+ * @brief Creates job item intended to import and run particular Sequencer XML file on disk.
+ *
+ * @param file_name The full path to Sequencer XML file.
+ * @param tick_timeout_msec Initial value of tick timeout during procedure execution.
+ * @return New job item.
+ */
+std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name,
+                                                int tick_timeout_msec = 0);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_STANDARD_JOB_ITEMS_H_

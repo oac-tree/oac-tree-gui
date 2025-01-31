@@ -67,6 +67,7 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::LocalJobItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ImportedJobItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::RemoteJobItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::FileBasedJobItem>();
 }
 
 }  // namespace oac_tree_gui
