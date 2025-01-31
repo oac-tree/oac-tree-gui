@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/operation/operation_action_handler.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/abstract_job_handler.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -33,8 +35,6 @@
 #include <testutils/mock_remote_connection_service.h>
 
 #include <QSignalSpy>
-
-#include "oac_tree_gui/operation/operation_action_handler.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 
@@ -183,6 +183,29 @@ TEST_F(OperationActionHandlerTest, SubmitImportedJob)
   EXPECT_EQ(job_item->GetProcedure(), procedure_item_ptr);
   EXPECT_EQ(job_item->GetItem(ImportedJobItem::kImportedProcedure), procedure_item_ptr);
   EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
+}
+
+TEST_F(OperationActionHandlerTest, SubmitFileBasedJob)
+{
+  auto operation_handler = CreateOperationHandler();
+  EXPECT_FALSE(operation_handler->SubmitLocalJob(nullptr));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(::testing::_));
+
+  QSignalSpy spy_selected_request(operation_handler.get(),
+                                  &OperationActionHandler::MakeJobSelectedRequest);
+
+  // actual name is not important since we are mocking JobManager
+  const std::string procedure_file("path-to-sequencer-file.xml");
+  EXPECT_TRUE(operation_handler->SubmitFileBasedJob(procedure_file));
+
+  // as a result of import request, a single FileBasedJobItem has been inserted into the model
+  auto job_items = GetJobs<FileBasedJobItem>();
+  ASSERT_EQ(job_items.size(), 1);
+
+  ASSERT_EQ(job_items.at(0)->GetFileName(), procedure_file);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_items.at(0));
 }
 
 //! Testing import of a single remote job.

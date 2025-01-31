@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/operation/operation_action_handler.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/job_manager.h>
 #include <oac_tree_gui/jobsystem/job_utils.h>
@@ -41,8 +43,6 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "oac_tree_gui/operation/operation_action_handler.h"
-
 Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 
 namespace oac_tree_gui
@@ -51,7 +51,8 @@ namespace oac_tree_gui
 using msec = std::chrono::milliseconds;
 
 /**
- * @brief Tests of OperationActionHandler class by running actual sequencer procedures.
+ * @brief Tests of OperationActionHandler class by submitting and/or running actual sequencer
+ * procedures.
  */
 class OperationActionHandlerExtendedTest : public ::testing::Test
 {
