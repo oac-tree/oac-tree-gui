@@ -58,13 +58,25 @@ namespace oac_tree_gui
 
 namespace
 {
+
 const QString kGroupName("OperationMonitorView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 
+/**
+ * @brief Creates factory function to create clients to talk with remote server.
+ */
 std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
 {
   return [](const std::string &server_name)
   { return std::make_unique<AutomationClient>(server_name); };
+}
+
+/**
+ * @brief Creates remote connection service to talk with sequencer remote server.
+ */
+std::unique_ptr<RemoteConnectionService> CreateRemoteConnectionService()
+{
+  return std::make_unique<RemoteConnectionService>(GetClientFactoryFunc());
 }
 
 }  // namespace
@@ -77,7 +89,7 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
     , m_left_panel(CreateLeftPanel())
     , m_workspace_panel{new OperationWorkspacePanel}
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
-    , m_connection_service(std::make_unique<RemoteConnectionService>(GetClientFactoryFunc()))
+    , m_connection_service(CreateRemoteConnectionService())
     , m_job_manager(new JobManager(
           GetJobHandlerFactoryFunc(CreateDefaultUserContext(this), *m_connection_service), this))
     , m_action_handler(new OperationActionHandler(m_job_manager, CreateOperationContext(), this))

@@ -62,7 +62,7 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string &name)
 
 }  // namespace
 
-RemoteConnectionDialog::RemoteConnectionDialog(RemoteConnectionService *connection_service,
+RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService *connection_service,
                                                QWidget *parent_widget)
     : QDialog(parent_widget)
     , m_server_name_line_edit(new QLineEdit)
@@ -182,7 +182,7 @@ void RemoteConnectionDialog::PopulateJobInfoModel(const std::string &server_name
 }
 
 std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
-    RemoteConnectionService &connection_service, QWidget *parent)
+    IRemoteConnectionService &connection_service, QWidget *parent)
 {
   RemoteConnectionDialog dialog(&connection_service, parent);
 

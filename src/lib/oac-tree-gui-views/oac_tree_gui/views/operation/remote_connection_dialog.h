@@ -33,7 +33,7 @@ class QHBoxLayout;
 namespace oac_tree_gui
 {
 
-class RemoteConnectionService;
+class IRemoteConnectionService;
 struct RemoteConnectionInfo;
 
 /**
@@ -45,7 +45,7 @@ class RemoteConnectionDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit RemoteConnectionDialog(RemoteConnectionService* connection_service,
+  explicit RemoteConnectionDialog(IRemoteConnectionService* connection_service,
                                   QWidget* parent_widget = nullptr);
   ~RemoteConnectionDialog() override;
 
@@ -88,7 +88,7 @@ private:
   QListView* m_job_list_view{nullptr};
   QStandardItemModel* m_job_info_model{nullptr};
 
-  RemoteConnectionService* m_connection_service{nullptr};
+  IRemoteConnectionService* m_connection_service{nullptr};
   std::string m_current_server_name;
 };
 
@@ -101,7 +101,7 @@ private:
  * @return Optional result of the user choice.
  */
 std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
-    RemoteConnectionService& connection_service, QWidget* parent = nullptr);
+    IRemoteConnectionService& connection_service, QWidget* parent = nullptr);
 
 }  // namespace oac_tree_gui
 
