@@ -45,8 +45,8 @@ public:
 };
 
 /**
- * @brief The ImportedJobItem class is intended to run the job based on procedure imported from
- * disk.
+ * @brief The ImportedJobItem class is intended to run the job based on ProcedureItem imported from
+ * somewhere.
  *
  * It carries the result of the import on board. Thus, imported procedure will be deleted, when
  * JobItem is removed from the model.
@@ -99,6 +99,24 @@ public:
 };
 
 /**
+ * @brief The FileBasedJobItem class is intended to run the job which is linked to particular
+ * Sequencer XML file on disk.
+ */
+class FileBasedJobItem : public JobItem
+{
+public:
+  FileBasedJobItem();
+
+  static std::string GetStaticType();
+
+  std::unique_ptr<SessionItem> Clone() const override;
+
+  std::string GetFileName() const;
+
+  void SetFileName(const std::string& value);
+};
+
+/**
  * @brief Return types of all available job items.
  */
 std::vector<std::string> GetJobItemTypes();
@@ -116,7 +134,7 @@ std::vector<std::string> GetJobItemTypes();
 std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_timeout_msec = 0);
 
 /**
- * @brief Creates job item intended to run procedure imported from XML file.
+ * @brief Creates job item intended to run ProcedureItem imported from somewhere.
  *
  * The procedure will be inserted in dedicated tag on board of this item. Ownership will be taken.
  *

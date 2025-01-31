@@ -31,6 +31,7 @@ namespace
 {
 const std::string kServerName = "kServerName";
 const std::string kJobIndex = "kJobIndex";
+const std::string kFileName = "kFileName";
 }  // namespace
 
 // ------------------------------------------------------------------------------------------------
@@ -115,6 +116,32 @@ std::vector<std::string> GetJobItemTypes()
 {
   return {LocalJobItem::GetStaticType(), ImportedJobItem::GetStaticType(),
           RemoteJobItem::GetStaticType()};
+}
+
+// ------------------------------------------------------------------------------------------------
+// FileBasedJobItem
+// ------------------------------------------------------------------------------------------------
+
+FileBasedJobItem::FileBasedJobItem() : JobItem(GetStaticType()) {}
+
+std::string FileBasedJobItem::GetStaticType()
+{
+  return "FileBasedJob";
+}
+
+std::unique_ptr<mvvm::SessionItem> FileBasedJobItem::Clone() const
+{
+  return std::make_unique<FileBasedJobItem>(*this);
+}
+
+std::string FileBasedJobItem::GetFileName() const
+{
+  return Property<std::string>(kFileName);
+}
+
+void FileBasedJobItem::SetFileName(const std::string &value)
+{
+  SetProperty(kFileName, value);
 }
 
 // ------------------------------------------------------------------------------------------------
