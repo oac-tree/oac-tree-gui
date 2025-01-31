@@ -39,4 +39,9 @@ std::string GetProjectSourceDir()
   return oac_tree_gui::TestConfig::ProjectSourceDir();  // defined in auto-generated testconfig.h
 }
 
+std::string GetResourceFolder()
+{
+  return GetProjectSourceDir() + "/test/resources/functional";
+}
+
 }  // namespace oac_tree_gui::test

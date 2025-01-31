@@ -43,19 +43,6 @@
 namespace oac_tree_gui
 {
 
-namespace
-{
-
-/**
- * @brief Returns full path to resource folder.
- */
-std::string GetResourceFolder()
-{
-  return test::GetProjectSourceDir() + "/test/resources/functional";
-}
-
-}  // namespace
-
 //! Tests for all XML procedures found in resource/functional folder.
 
 class ResourceFolderTest : public ::testing::TestWithParam<std::string>
@@ -85,7 +72,7 @@ public:
 TEST_P(ResourceFolderTest, RunProcedure)
 {
   // load procedure from XML
-  auto filename = GetResourceFolder() + "/" + GetParam();
+  auto filename = test::GetResourceFolder() + "/" + GetParam();
   EXPECT_TRUE(mvvm::utils::IsExists(filename));
   auto procedure_item = oac_tree_gui::ImportFromFile(filename);
   EXPECT_TRUE(procedure_item);

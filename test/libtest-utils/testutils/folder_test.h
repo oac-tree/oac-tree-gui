@@ -44,9 +44,13 @@ std::string GetTestSuiteOutputDir();
 
 /**
  * @brief Returns full path to repository source directory.
- * @return
  */
 std::string GetProjectSourceDir();
+
+/**
+ * @brief Returns full path to resource folder.
+ */
+std::string GetResourceFolder();
 
 }  // namespace oac_tree_gui::test
 
