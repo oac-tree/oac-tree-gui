@@ -20,7 +20,7 @@
 #include "remote_job_handler.h"
 
 #include "abstract_domain_runner.h"
-#include "domain_event_dispatcher_context.h"
+#include "domain_event_dispatcher_context.h"  // IWYU pragma: keep
 #include "remote_domain_runner.h"
 
 #include <oac_tree_gui/model/variable_item.h>

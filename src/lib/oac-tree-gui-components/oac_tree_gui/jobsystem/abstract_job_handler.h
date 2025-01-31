@@ -32,7 +32,7 @@ namespace oac_tree_gui
 {
 
 class ProcedureItemJobInfoBuilder;
-class LogEvent;
+struct LogEvent;
 class BreakpointController;
 class AbstractDomainRunner;
 struct DomainEventDispatcherContext;

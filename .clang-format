@@ -21,7 +21,7 @@ IncludeCategories:
   - Regex:           '<([A-Za-z0-9\Q/-_\E])+>'
     Priority:        7
   # Headers in "" from specific internal libraries.
-  - Regex:           '<(oac-tree-gui)\/'
+  - Regex:           '<(oac_tree_gui)\/'
     Priority:        2
   # Headers in "" from specific internal libraries.
   - Regex:           '<((sup)\/(gui))\/'
