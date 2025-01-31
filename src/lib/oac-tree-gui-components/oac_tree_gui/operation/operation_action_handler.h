@@ -81,6 +81,8 @@ public:
    */
   bool SubmitImportedJob(std::unique_ptr<ProcedureItem> procedure_item);
 
+  bool SubmitFileBasedJob(const std::string& file_name);
+
   /**
    * @brief Invokes dialogs to ask for remote connection info, and submits remote jobs.
    */

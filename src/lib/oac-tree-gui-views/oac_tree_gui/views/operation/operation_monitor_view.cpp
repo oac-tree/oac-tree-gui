@@ -38,7 +38,6 @@
 #include <oac_tree_gui/operation/operation_action_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/editors/user_input_dialogs.h>
-#include <oac_tree_gui/views/operation/procedure_action_handler.h>
 #include <oac_tree_gui/views/operation/remote_connection_dialog.h>
 
 #include <sup/gui/app/app_action_helper.h>
@@ -50,6 +49,7 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
+#include <QFileDialog>
 #include <QToolBar>
 #include <QVBoxLayout>
 
@@ -129,8 +129,18 @@ void OperationMonitorView::SetModels(ApplicationModels *models)
 
 bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
 {
-  ProcedureActionHandler handler;
-  return m_action_handler->SubmitImportedJob(handler.LoadProcedureFromFile(file_name));
+  auto path = file_name;
+  if (path.isEmpty())
+  {
+    path = QFileDialog::getOpenFileName(nullptr, "Open file", "", tr("Files (*.xml *.XML)"));
+  }
+
+  if (!path.isEmpty())
+  {
+    return m_action_handler->SubmitFileBasedJob(path.toStdString());
+  }
+
+  return false;
 }
 
 bool OperationMonitorView::HasRunningJobs() const

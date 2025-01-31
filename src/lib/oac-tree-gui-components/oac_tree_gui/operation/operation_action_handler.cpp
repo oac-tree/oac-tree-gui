@@ -110,6 +110,11 @@ bool OperationActionHandler::SubmitImportedJob(std::unique_ptr<ProcedureItem> pr
   return SubmitJob(CreateImportedJobItem(std::move(procedure_item), m_tick_timeout));
 }
 
+bool OperationActionHandler::SubmitFileBasedJob(const std::string &file_name)
+{
+  return SubmitJob(CreateFileBasedJobItem(file_name, m_tick_timeout));
+}
+
 bool OperationActionHandler::OnImportRemoteJobRequest()
 {
   if (!m_operation_context.get_remote_connection_info)

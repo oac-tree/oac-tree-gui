@@ -115,7 +115,7 @@ void RemoteJobItem::SetServerName(const std::string &name)
 std::vector<std::string> GetJobItemTypes()
 {
   return {LocalJobItem::GetStaticType(), ImportedJobItem::GetStaticType(),
-          RemoteJobItem::GetStaticType()};
+          RemoteJobItem::GetStaticType(), FileBasedJobItem::GetStaticType()};
 }
 
 // ------------------------------------------------------------------------------------------------
