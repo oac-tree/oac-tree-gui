@@ -24,9 +24,36 @@
 #include <oac_tree_gui/jobsystem/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/remote_job_handler.h>
 #include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/transform/domain_procedure_builder.h>
+
+#include <sup/oac-tree/procedure.h>
+#include <sup/oac-tree/sequence_parser.h>
 
 namespace oac_tree_gui
 {
+
+std::unique_ptr<procedure_t> CreateDomainProcedure(const JobItem& item)
+{
+  // FIXME shouldn't the code below be replaced with virtual JobItem::CreateProcedure() ?
+
+  if (item.GetType() == LocalJobItem::GetStaticType()
+      || item.GetType() == ImportedJobItem::GetStaticType())
+  {
+    if (!item.GetProcedure())
+    {
+      throw RuntimeException("Procedure doesn't exist");
+    }
+
+    return DomainProcedureBuilder::CreateProcedure(*item.GetProcedure());
+  }
+
+  if (auto file_based_job = dynamic_cast<const FileBasedJobItem*>(&item); file_based_job)
+  {
+    return sup::oac_tree::ParseProcedureFile(file_based_job->GetFileName());
+  }
+
+  throw RuntimeException("Can't create domain procedure");
+}
 
 std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
     const UserContext& user_context, IRemoteConnectionService& service)
@@ -36,7 +63,8 @@ std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
   {
     // local and imported JobItems' are handled by the same LocalJobHandler
     if (item.GetType() == LocalJobItem::GetStaticType()
-        || item.GetType() == ImportedJobItem::GetStaticType())
+        || item.GetType() == ImportedJobItem::GetStaticType()
+        || item.GetType() == FileBasedJobItem::GetStaticType())
     {
       return std::make_unique<LocalJobHandler>(&item, user_context_copy);
     }

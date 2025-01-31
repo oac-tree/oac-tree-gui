@@ -21,14 +21,14 @@
 
 #include "domain_event_dispatcher_context.h"  // IWYU pragma: keep
 #include "local_domain_runner.h"
+#include "user_context.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/operation/operation_action_helper.h>
 #include <oac_tree_gui/pvmonitor/workspace_item_listener.h>
-#include <oac_tree_gui/transform/domain_procedure_builder.h>
 
 #include <mvvm/signals/item_listener.h>
 
@@ -41,14 +41,9 @@ namespace oac_tree_gui
 LocalJobHandler::LocalJobHandler(JobItem *job_item, UserContext user_context)
     : AbstractJobHandler(job_item)
 {
-  if (!GetJobItem()->GetProcedure())
-  {
-    throw RuntimeException("Procedure doesn't exist");
-  }
-
   SetupPropertyListener();
 
-  auto domain_procedure = DomainProcedureBuilder::CreateProcedure(*GetJobItem()->GetProcedure());
+  auto domain_procedure = CreateDomainProcedure(*GetJobItem());
   auto domain_procedure_ptr = domain_procedure.get();
 
   auto runner = CreateDomainRunner(std::move(user_context), std::move(domain_procedure));

@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/operation/operation_action_helper.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
@@ -30,8 +32,7 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_remote_connection_service.h>
 #include <testutils/standard_procedure_items.h>
-
-#include "oac_tree_gui/operation/operation_action_helper.h"
+#include <testutils/folder_test.h>
 
 namespace oac_tree_gui
 {
@@ -104,6 +105,31 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForRemoteJob)
 
   auto create_func = GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
   auto job_handler = create_func(*job_item_ptr);
+}
+
+TEST_F(OperationActionHelperTest, CreateJobHandlerForFileBasedJobWhenFileIsAbsent)
+{
+  // all job handlers further down requres that procedure and job are part of models
+  auto job_item = CreateFileBasedJobItem("no-such-file");
+  auto job_item_ptr = job_item.get();
+  m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());
+
+  auto create_func = GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+
+  // throw from sup::xml about absent file, can't check since xml/exceptions.h are not exposed
+  EXPECT_ANY_THROW(create_func(*job_item_ptr));
+}
+
+TEST_F(OperationActionHelperTest, CreateJobHandlerForFileBasedJob)
+{
+  // all job handlers further down requres that procedure and job are part of models
+  auto job_item = CreateFileBasedJobItem(test::GetResourceFolder()+"/fallback.xml");
+  auto job_item_ptr = job_item.get();
+  m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());
+
+  auto create_func = GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service);
+  auto job_handler = create_func(*job_item_ptr);
+  ASSERT_NE(dynamic_cast<LocalJobHandler*>(job_handler.get()), nullptr);
 }
 
 }  // namespace oac_tree_gui

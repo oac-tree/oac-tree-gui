@@ -24,6 +24,8 @@
 //! Collection of stand-alone helper functions to handle operation actions, i.e. for import remote
 //! and local jobs.
 
+#include <oac_tree_gui/domain/sequencer_types_fwd.h>
+
 #include <functional>
 #include <memory>
 
@@ -34,6 +36,13 @@ class IRemoteConnectionService;
 class JobItem;
 class IJobHandler;
 struct UserContext;
+
+/**
+ * @brief Creates domain procedure from the given JobItem.
+ *
+ * Will throw if creation is not possible.
+ */
+std::unique_ptr<procedure_t> CreateDomainProcedure(const JobItem& item);
 
 /**
  * @brief Creates factory function which is capable of creating job handlers, when JobItem is given

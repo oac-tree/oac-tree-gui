@@ -164,7 +164,6 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_nam
  */
 std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name,
                                                 int tick_timeout_msec = 0);
-
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_STANDARD_JOB_ITEMS_H_
