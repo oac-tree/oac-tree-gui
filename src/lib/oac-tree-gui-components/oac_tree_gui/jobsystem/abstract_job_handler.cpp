@@ -181,7 +181,7 @@ void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdated
 
 void AbstractJobHandler::OnJobStateChanged(const JobStateChangedEvent &event)
 {
-  m_job_item->SetStatus(::sup::oac_tree::ToString(event.status));
+  m_job_item->SetStatus(::sup::oac_tree::ToString(event.state));
 }
 
 void AbstractJobHandler::onLogEvent(const oac_tree_gui::LogEvent &event)

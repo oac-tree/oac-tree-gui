@@ -67,12 +67,12 @@ struct VariableUpdatedEvent
 };
 
 /**
- * @brief The JobStateChangedEvent struct represents an event when instruction status has
+ * @brief The JobStateChangedEvent struct represents an event when domain job state has
  * changed.
  */
 struct JobStateChangedEvent
 {
-  sup::oac_tree::JobState status;
+  sup::oac_tree::JobState state;
 
   bool operator==(const JobStateChangedEvent& other) const;
   bool operator!=(const JobStateChangedEvent& other) const;

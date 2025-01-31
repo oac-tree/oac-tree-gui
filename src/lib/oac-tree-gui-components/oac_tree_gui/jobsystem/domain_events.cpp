@@ -56,7 +56,7 @@ struct DomainEventToStringVisitor
 
   std::string operator()(const ::oac_tree_gui::JobStateChangedEvent &event) const
   {
-    return std::string("JobStatusChanged") + " " + ::sup::oac_tree::ToString(event.status);
+    return std::string("JobStateChanged") + " " + ::sup::oac_tree::ToString(event.state);
   }
 
   std::string operator()(const ::oac_tree_gui::LogEvent &event) const
@@ -88,7 +88,7 @@ namespace oac_tree_gui
 
 bool JobStateChangedEvent::operator==(const JobStateChangedEvent &other) const
 {
-  return status == other.status;
+  return state == other.state;
 }
 
 bool JobStateChangedEvent::operator!=(const JobStateChangedEvent &other) const
