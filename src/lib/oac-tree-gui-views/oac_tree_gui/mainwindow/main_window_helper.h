@@ -132,6 +132,18 @@ std::vector<std::string> GetProcedureFiles(const std::string& path_name);
 void ImportProcedures(const QString& file_name,
                       const std::function<bool(const QString& name)>& func);
 
+/**
+ * @brief Returns the name of the Sequencer XML procedure file as selected by the user.
+ *
+ * Will invoke file selection dialog and return user choice. The name will be empty if the user has
+ * canceled the dialog. The last working directory will be saved in the persistence settings under
+ * the given key (if non-empty), so the next time dialog will be opened there.
+ *
+ * @param key The key to store the setting in the global application persistent setting file.
+ */
+QString GetOpenSequencerProcedureName(const QString& key = {});
+
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_

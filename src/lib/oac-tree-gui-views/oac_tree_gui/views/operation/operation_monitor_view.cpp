@@ -28,6 +28,7 @@
 #include <oac_tree_gui/jobsystem/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/remote_connection_info.h>
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
+#include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/job_item.h>
@@ -49,7 +50,6 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
-#include <QFileDialog>
 #include <QToolBar>
 #include <QVBoxLayout>
 
@@ -61,6 +61,7 @@ namespace
 
 const QString kGroupName("OperationMonitorView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kWorkdirSettingName = kGroupName + "/" + "workdir";
 
 /**
  * @brief Creates factory function to create clients to talk with remote server.
@@ -129,11 +130,7 @@ void OperationMonitorView::SetModels(ApplicationModels *models)
 
 bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
 {
-  auto path = file_name;
-  if (path.isEmpty())
-  {
-    path = QFileDialog::getOpenFileName(nullptr, "Open file", "", tr("Files (*.xml *.XML)"));
-  }
+  auto path = file_name.isEmpty() ? GetOpenSequencerProcedureName(kWorkdirSettingName) : file_name;
 
   if (!path.isEmpty())
   {
