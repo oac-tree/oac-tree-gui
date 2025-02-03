@@ -75,12 +75,8 @@ public:
   bool SubmitLocalJob(ProcedureItem* procedure_item);
 
   /**
-   * @brief Submits given procedure for execution as imported job.
-   *
-   * Imported job owns the procedure. Procedure will be removed together with the job.
+   * @brief Submit Sequencer XML procedure represented by the given file name for later execution.
    */
-  bool SubmitImportedJob(std::unique_ptr<ProcedureItem> procedure_item);
-
   bool SubmitFileBasedJob(const std::string& file_name);
 
   /**

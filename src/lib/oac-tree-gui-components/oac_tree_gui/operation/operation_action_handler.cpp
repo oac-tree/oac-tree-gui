@@ -100,16 +100,6 @@ bool OperationActionHandler::SubmitLocalJob(ProcedureItem *procedure_item)
   return SubmitJob(CreateLocalJobItem(procedure_item, m_tick_timeout));
 }
 
-bool OperationActionHandler::SubmitImportedJob(std::unique_ptr<ProcedureItem> procedure_item)
-{
-  if (!procedure_item)
-  {
-    return false;
-  }
-
-  return SubmitJob(CreateImportedJobItem(std::move(procedure_item), m_tick_timeout));
-}
-
 bool OperationActionHandler::SubmitFileBasedJob(const std::string &file_name)
 {
   return SubmitJob(CreateFileBasedJobItem(file_name, m_tick_timeout));

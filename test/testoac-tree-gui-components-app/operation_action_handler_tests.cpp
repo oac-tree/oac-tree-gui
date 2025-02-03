@@ -159,32 +159,6 @@ TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
   EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_items.at(0));
 }
 
-TEST_F(OperationActionHandlerTest, SubmitImportedJob)
-{
-  auto operation_handler = CreateOperationHandler();
-
-  auto procedure_item = std::make_unique<ProcedureItem>();
-  auto procedure_item_ptr = procedure_item.get();
-
-  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_job_manager, SubmitJob(::testing::_));
-
-  QSignalSpy spy_selected_request(operation_handler.get(),
-                                  &OperationActionHandler::MakeJobSelectedRequest);
-
-  EXPECT_TRUE(operation_handler->SubmitImportedJob(std::move(procedure_item)));
-
-  // as a result of import request, a single ImportedJobItem has been inserted into the model
-  auto job_items = GetJobs<ImportedJobItem>();
-  ASSERT_EQ(job_items.size(), 1);
-
-  auto job_item = job_items.at(0);
-
-  EXPECT_EQ(job_item->GetProcedure(), procedure_item_ptr);
-  EXPECT_EQ(job_item->GetItem(ImportedJobItem::kImportedProcedure), procedure_item_ptr);
-  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
-}
-
 TEST_F(OperationActionHandlerTest, SubmitFileBasedJob)
 {
   auto operation_handler = CreateOperationHandler();
