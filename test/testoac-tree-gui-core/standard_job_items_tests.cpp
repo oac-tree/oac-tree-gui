@@ -55,6 +55,7 @@ TEST_F(StandardJobItemsTest, FileBasedJobItem)
   FileBasedJobItem item;
 
   EXPECT_TRUE(item.GetFileName().empty());
+  EXPECT_EQ(item.GetDisplayName(), FileBasedJobItem::GetStaticType());
 
   item.SetFileName("abc");
   EXPECT_EQ(item.GetFileName(), std::string("abc"));
@@ -120,17 +121,17 @@ TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
 
 TEST_F(StandardJobItemsTest, CreateFileBasedJobItem)
 {
-  const std::string file_name("abc");
+  const std::string file_name("/home/user/abc.xml");
 
   auto item = CreateFileBasedJobItem(file_name, 42);
 
   EXPECT_EQ(item->GetTickTimeout(), 42);
   EXPECT_EQ(item->GetProcedure(), nullptr);
-  EXPECT_EQ(item->GetDisplayName(), FileBasedJobItem::GetStaticType());
 
   auto file_based_item = dynamic_cast<FileBasedJobItem*>(item.get());
   ASSERT_NE(file_based_item, nullptr);
-  EXPECT_EQ(file_based_item->GetFileName(), std::string("abc"));
+  EXPECT_EQ(file_based_item->GetFileName(), file_name);
+  EXPECT_EQ(file_based_item->GetDisplayName(), std::string("abc"));
 }
 
 }  // namespace oac_tree_gui

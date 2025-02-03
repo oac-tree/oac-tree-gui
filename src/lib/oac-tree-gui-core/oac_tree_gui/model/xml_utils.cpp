@@ -93,8 +93,7 @@ std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
 
 std::string ExportToXMLString(const ProcedureItem &procedure_item)
 {
-  DomainProcedureBuilder builder;
-  auto domain_procedure = builder.CreateProcedure(procedure_item);
+  auto domain_procedure = DomainProcedureBuilder::CreateProcedure(procedure_item);
   return ReplaceQuotationMarks(GetXMLString(*domain_procedure));
 }
 

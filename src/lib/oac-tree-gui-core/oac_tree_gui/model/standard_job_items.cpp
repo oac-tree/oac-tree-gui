@@ -23,6 +23,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/utils/file_utils.h>
 
 namespace oac_tree_gui
 {
@@ -198,6 +199,9 @@ std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string &file_name, in
   auto result = std::make_unique<FileBasedJobItem>();
   result->SetFileName(file_name);
   result->SetTickTimeout(tick_timeout_msec);
+  auto procedure_name = mvvm::utils::GetPathStem(file_name);
+  result->SetDisplayName(procedure_name);
+
   return result;
 }
 
