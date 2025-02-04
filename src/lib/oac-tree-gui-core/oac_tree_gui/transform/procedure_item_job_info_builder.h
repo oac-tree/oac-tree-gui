@@ -30,7 +30,7 @@ namespace oac_tree_gui
 {
 
 class ProcedureItem;
-class InstructionTree;
+struct InstructionTree;
 class InstructionItem;
 class VariableItem;
 

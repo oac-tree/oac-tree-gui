@@ -38,7 +38,7 @@ namespace oac_tree_gui
 {
 class WorkspaceItem;
 class VariableItem;
-class VariableUpdatedEvent;
+struct VariableUpdatedEvent;
 }  // namespace oac_tree_gui
 
 namespace oac_tree_gui

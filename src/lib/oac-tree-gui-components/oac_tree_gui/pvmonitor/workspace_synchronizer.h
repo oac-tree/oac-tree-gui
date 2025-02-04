@@ -34,7 +34,7 @@ namespace oac_tree_gui
 class WorkspaceItem;
 class DomainWorkspaceListener;
 class WorkspaceItemListener;
-class VariableUpdatedEvent;
+struct VariableUpdatedEvent;
 
 /**
  * @brief The WorkspaceSynchronizer class provides data synchronization between WorkspaceItem and
