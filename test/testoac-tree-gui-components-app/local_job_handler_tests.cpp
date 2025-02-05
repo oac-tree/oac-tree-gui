@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/local_job_handler.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/job_log.h>
 #include <oac_tree_gui/jobsystem/job_utils.h>
@@ -47,8 +49,6 @@
 #include <QSignalSpy>
 #include <QTest>
 #include <chrono>
-
-#include "oac_tree_gui/jobsystem/local_job_handler.h"
 
 using msec = std::chrono::milliseconds;
 
@@ -168,7 +168,7 @@ TEST_F(LocalJobHandlerTest, PrematureDeletion)
     job_handler.Start();
   }
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kUndefined);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kUndefined);
 }
 
 //! Normal execution of the procedure with single message instruction.
@@ -177,7 +177,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
   auto procedure = test::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kUndefined);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kUndefined);
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
@@ -196,7 +196,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
   ASSERT_EQ(instructions.size(), 1);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 }
 
 //! Normal execution of procedure with single wait. Validating signaling going from expanded
@@ -206,7 +206,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   auto procedure = test::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kUndefined);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kUndefined);
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
@@ -223,7 +223,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   QTest::qWait(50);
 
   EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 }
 
 TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
@@ -398,7 +398,7 @@ TEST_F(LocalJobHandlerTest, LogEvents)
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 
   ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 1);
 

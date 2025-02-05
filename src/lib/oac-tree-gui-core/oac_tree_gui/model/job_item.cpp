@@ -86,9 +86,4 @@ ProcedureItem *JobItem::GetExpandedProcedure()
   return GetItem<ProcedureItem>(kExpandedProcedure);
 }
 
-RunnerStatus GetRunnerStatus(const JobItem *item)
-{
-  return item->GetStatus();
-}
-
 }  // namespace oac_tree_gui

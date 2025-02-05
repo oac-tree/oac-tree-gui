@@ -177,7 +177,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this, job_item]()
-  { return GetRunnerStatus(job_item) == RunnerStatus::kInitial; };
+  { return job_item->GetStatus() == RunnerStatus::kInitial; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 5000));
 
   // validating internal expanded ProcedureItem
@@ -217,7 +217,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this, job_item]()
-  { return GetRunnerStatus(job_item) == RunnerStatus::kSucceeded; };
+  { return job_item->GetStatus() == RunnerStatus::kSucceeded; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());

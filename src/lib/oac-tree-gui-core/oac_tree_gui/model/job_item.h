@@ -86,11 +86,6 @@ public:
   ProcedureItem* GetExpandedProcedure();
 };
 
-/**
- * @brief Returns runner status corresponding to the state of the given job item.
- */
-RunnerStatus GetRunnerStatus(const JobItem* item);
-
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_JOB_ITEM_H_

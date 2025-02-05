@@ -90,11 +90,11 @@ TEST_P(ResourceFolderTest, RunProcedure)
   // starting procedure and waiting for completion
   job_handler.Start();
 
-  auto predicate = [this]() { return GetRunnerStatus(m_job_item) == RunnerStatus::kSucceeded; };
+  auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kSucceeded; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
 
   // validating some of parameters after job is complet
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kSucceeded);
   auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");

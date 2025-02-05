@@ -80,7 +80,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   job_handler.Start();
   QTest::qWait(50);
   EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(GetRunnerStatus(m_job_item), RunnerStatus::kSucceeded);
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 
   auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
