@@ -155,8 +155,10 @@ TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
   // of LocalJobItem, so the user can resubmit job later, after proper editing of bad procedure
   auto job_items = GetJobs<JobItem>();
   ASSERT_EQ(job_items.size(), 1);
-  ASSERT_EQ(job_items.at(0)->GetProcedure(), procedure_item);
-  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_items.at(0));
+  auto job = job_items.at(0);
+  ASSERT_EQ(job->GetProcedure(), procedure_item);
+  EXPECT_EQ(job->GetStatus(), RunnerStatus::kSubmitFailure);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job);
 }
 
 TEST_F(OperationActionHandlerTest, SubmitFileBasedJob)

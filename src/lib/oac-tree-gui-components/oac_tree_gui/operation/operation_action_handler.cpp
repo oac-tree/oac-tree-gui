@@ -50,7 +50,7 @@ bool InvokeAndCatch(T method, const std::string &text,
   {
     const sup::gui::MessageEvent message =
         sup::gui::CreateInvalidOperationMessage(text + " failed", ex.what());
-    send_message(message);    
+    send_message(message);
     return false;
   }
 
@@ -228,6 +228,11 @@ bool OperationActionHandler::SubmitJob(std::unique_ptr<JobItem> job_item)
 
   auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                                m_operation_context.send_message);
+
+  if (!result)
+  {
+    job->SetStatus(RunnerStatus::kSubmitFailure);
+  }
 
   // current implementation is that even if submission fails, JobItem remains in a list
   emit MakeJobSelectedRequest(job);

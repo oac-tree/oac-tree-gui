@@ -160,6 +160,8 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToSubmitMalformedProcedure)
 
   // After unsuccessfull submission JobItem remains there
   ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSubmitFailure);
 }
 
 //! Submit the job, when start and wait till the end.
