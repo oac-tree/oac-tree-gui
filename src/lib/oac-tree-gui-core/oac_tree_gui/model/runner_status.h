@@ -27,10 +27,11 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The RunnerStatus enum defines possible states that a runner can have during job execution.
+ * @brief The RunnerStatus enum defines possible states that a JobItem can have during its life
+ * circle.
  *
- * It reproduces the sequencer's domain JobStatus, except kUndefined when the domain doesn't exist
- * yet, or its status wasn't yet reported.
+ * The first 7 values reproduce the sequencer's domain sup::oac_tree::JobState, which are followed
+ * by additional states that make sense for the GUI.
  */
 enum class RunnerStatus : std::uint8_t
 {
@@ -41,7 +42,8 @@ enum class RunnerStatus : std::uint8_t
   kSucceeded,
   kFailed,
   kHalted,
-  kUndefined
+  kUndefined,     //!< job wasn't submitted yet, no domain counterpart exists
+  kSubmitFailure  //!< job submission has failed due to malformed procedure
 };
 
 /**

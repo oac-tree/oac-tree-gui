@@ -35,7 +35,8 @@ const std::map<oac_tree_gui::RunnerStatus, std::string> kRunnerStatusMap = {
     {oac_tree_gui::RunnerStatus::kSucceeded, "Success"},
     {oac_tree_gui::RunnerStatus::kFailed, "Failure"},
     {oac_tree_gui::RunnerStatus::kHalted, "Halted"},
-    {oac_tree_gui::RunnerStatus::kUndefined, ""}};
+    {oac_tree_gui::RunnerStatus::kUndefined, ""},
+    {oac_tree_gui::RunnerStatus::kSubmitFailure, "SubmitFailure"}};
 
 }  // namespace
 
@@ -51,10 +52,11 @@ std::string ToString(RunnerStatus status)
   return iter->second;
 }
 
-RunnerStatus GetRunnerStatus(const std::string &status_name)
+RunnerStatus GetRunnerStatus(const std::string& status_name)
 {
-  auto iter = std::find_if(kRunnerStatusMap.begin(), kRunnerStatusMap.end(),
-                           [status_name](auto element) { return element.second == status_name; });
+  auto iter =
+      std::find_if(kRunnerStatusMap.begin(), kRunnerStatusMap.end(),
+                   [status_name](const auto& element) { return element.second == status_name; });
 
   if (iter == kRunnerStatusMap.end())
   {

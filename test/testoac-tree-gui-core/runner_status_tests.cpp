@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/runner_status.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/runner_status.h"
 
 namespace oac_tree_gui::test
 {
@@ -42,6 +42,7 @@ TEST_F(RunnerStatusTest, ToString)
   EXPECT_EQ(ToString(RunnerStatus::kFailed), "Failure");
   EXPECT_EQ(ToString(RunnerStatus::kHalted), "Halted");
   EXPECT_EQ(ToString(RunnerStatus::kUndefined), "");
+  EXPECT_EQ(ToString(RunnerStatus::kSubmitFailure), "SubmitFailure");
 }
 
 TEST_F(RunnerStatusTest, GetRunnerStatus)
@@ -53,6 +54,7 @@ TEST_F(RunnerStatusTest, GetRunnerStatus)
   EXPECT_EQ(GetRunnerStatus("Success"), RunnerStatus::kSucceeded);
   EXPECT_EQ(GetRunnerStatus("Failure"), RunnerStatus::kFailed);
   EXPECT_EQ(GetRunnerStatus("Halted"), RunnerStatus::kHalted);
+  EXPECT_EQ(GetRunnerStatus("SubmitFailure"), RunnerStatus::kSubmitFailure);
   EXPECT_THROW(GetRunnerStatus("abc"), RuntimeException);
 }
 
