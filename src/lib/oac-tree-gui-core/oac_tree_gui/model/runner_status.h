@@ -27,8 +27,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The RunnerStatus enum defines possible states that a JobItem can have during its life
- * circle.
+ * @brief The RunnerStatus enum defines possible states that a JobItem can have.
  *
  * The first 7 values reproduce the sequencer's domain sup::oac_tree::JobState, which are followed
  * by additional states that make sense for the GUI.
