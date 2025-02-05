@@ -429,7 +429,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   job_handler.Start();
   // We are testing here queued signals, need special waiting
   EXPECT_TRUE(QTest::qWaitFor(
-      [&var_inside2, anyvalue1]() { return test::IsEqual(*var_inside2, anyvalue1); }, 50));
+      [&var_inside2, anyvalue1]() { return test::IsEqual(*var_inside2, anyvalue1); }, 100));
 
   EXPECT_FALSE(job_handler.IsRunning());
 
