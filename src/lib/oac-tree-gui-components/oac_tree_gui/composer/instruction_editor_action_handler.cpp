@@ -418,9 +418,9 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
   catch (const std::exception &ex)
   {
     std::ostringstream ostr;
-    ostr << "Can't insert instruction [" << item_type << "] into parent [" << parent->GetType()
-         << "]. Maximum allowed number of children exceeded?";
-    SendMessage(ostr.str());
+    ostr << "Exception was caught while trying to insert instruction [" << item_type
+         << "] into parent [" << parent->GetType() << "]";
+    SendMessage("Can't insert instruction", ostr.str(), ex.what());
   }
   return result;
 }
