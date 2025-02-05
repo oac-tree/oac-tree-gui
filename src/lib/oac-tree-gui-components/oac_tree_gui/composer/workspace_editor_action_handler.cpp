@@ -214,16 +214,16 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
 
   auto selected_item = GetSelectedVariable();
 
-  try
-  {
+  // try
+  // {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
     auto inserted = GetModel()->InsertItem(std::move(variable_item), GetWorkspaceItem(), tagindex);
     emit SelectItemRequest(inserted);
-  }
-  catch (const std::exception &ex)
-  {
-    SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
-  }
+  // }
+  // catch (const std::exception &ex)
+  // {
+  //   SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
+  // }
 }
 
 void WorkspaceEditorActionHandler::SendMessage(const std::string &text,
