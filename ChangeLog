@@ -1,5 +1,7 @@
 To the next Release:
 
+- Introduce status for jobs that failed during submission
+- Refactor file based job submission and directly submit imported domain jobs
 - Implement overlay error messages on NodeEditor and XMLPanel failures
 - Move overlay error message machinery to sup-gui-core
 
