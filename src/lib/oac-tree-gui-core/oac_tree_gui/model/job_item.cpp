@@ -50,14 +50,15 @@ std::unique_ptr<mvvm::SessionItem> JobItem::Clone() const
   throw NotImplementedException("Clone for JobItem is not implemented");
 }
 
-std::string JobItem::GetStatus() const
+RunnerStatus JobItem::GetStatus() const
 {
-  return Property<std::string>(itemconstants::kStatus);
+  return GetRunnerStatus(Property<std::string>(itemconstants::kStatus));
 }
 
-void JobItem::SetStatus(const std::string &status)
+void JobItem::SetStatus(RunnerStatus status)
 {
-  SetProperty(itemconstants::kStatus, status);
+  // internally we store status as a string so all views can show it
+  SetProperty(itemconstants::kStatus, ToString(status));
 }
 
 int JobItem::GetTickTimeout() const
@@ -87,7 +88,7 @@ ProcedureItem *JobItem::GetExpandedProcedure()
 
 RunnerStatus GetRunnerStatus(const JobItem *item)
 {
-  return GetRunnerStatus(item->GetStatus());
+  return item->GetStatus();
 }
 
 }  // namespace oac_tree_gui

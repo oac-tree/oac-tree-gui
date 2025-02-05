@@ -346,7 +346,7 @@ TEST_F(OperationActionHandlerTest, StartPauseStepStopResetJob)
 TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 {
   LocalJobItem job_item;
-  job_item.SetStatus("abc");
+  job_item.SetStatus(RunnerStatus::kSubmitFailure);
 
   auto operation_handler = CreateOperationHandler();
 
@@ -370,8 +370,10 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 //! Attempt to regenerate job when current job is still running.
 TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenRemovalFailed)
 {
+  const RunnerStatus expected_status = RunnerStatus::kRunning;
+
   LocalJobItem job_item;
-  job_item.SetStatus("abc");
+  job_item.SetStatus(expected_status);
 
   auto operation_handler = CreateOperationHandler();
 
@@ -390,14 +392,16 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenRemovalFailed)
   EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
 
   EXPECT_EQ(spy_selected_request.count(), 0);
-  EXPECT_EQ(job_item.GetStatus(), std::string("abc"));
+  EXPECT_EQ(job_item.GetStatus(), expected_status);
 }
 
 //! Attempt to regenerate job when submit is failing.
 TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobIsBroken)
 {
+  const RunnerStatus expected_status = RunnerStatus::kSubmitFailure;
+
   LocalJobItem job_item;
-  job_item.SetStatus("abc");
+  job_item.SetStatus(expected_status);
 
   auto operation_handler = CreateOperationHandler();
 
@@ -417,7 +421,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobIsBroken)
   EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
 
   EXPECT_EQ(spy_selected_request.count(), 0);
-  EXPECT_EQ(job_item.GetStatus(), std::string("abc"));
+  EXPECT_EQ(job_item.GetStatus(), expected_status);
 }
 
 }  // namespace oac_tree_gui

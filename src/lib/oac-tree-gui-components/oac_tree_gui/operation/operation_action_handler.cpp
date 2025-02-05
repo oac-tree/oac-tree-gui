@@ -50,7 +50,7 @@ bool InvokeAndCatch(T method, const std::string &text,
   {
     const sup::gui::MessageEvent message =
         sup::gui::CreateInvalidOperationMessage(text + " failed", ex.what());
-    send_message(message);
+    send_message(message);    
     return false;
   }
 
@@ -197,7 +197,7 @@ bool OperationActionHandler::OnRegenerateJobRequest()
 
     if (is_success)
     {
-      job->SetStatus({});
+      job->SetStatus(RunnerStatus::kUndefined);
       emit MakeJobSelectedRequest(job);
     }
   }

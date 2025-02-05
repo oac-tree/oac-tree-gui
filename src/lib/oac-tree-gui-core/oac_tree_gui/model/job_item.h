@@ -45,12 +45,12 @@ public:
   /**
    * @brief Returns job status.
    */
-  std::string GetStatus() const;
+  RunnerStatus GetStatus() const;
 
   /**
-   * @brief Sets the job status.
+   * @brief Sets the status of JobItem.
    */
-  void SetStatus(const std::string& status);
+  void SetStatus(RunnerStatus status);
 
   /**
    * @brief Returns the current value of sequencer ticks timeout in msec defined for this job.

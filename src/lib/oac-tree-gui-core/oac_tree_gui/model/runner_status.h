@@ -42,7 +42,7 @@ enum class RunnerStatus : std::uint8_t
   kSucceeded,
   kFailed,
   kHalted,
-  kUndefined,     //!< job wasn't submitted yet, no domain counterpart exists
+  kUndefined,     //!< job either wasn't submitted, or does not have domain counterpart yet
   kSubmitFailure  //!< job submission has failed due to malformed procedure
 };
 

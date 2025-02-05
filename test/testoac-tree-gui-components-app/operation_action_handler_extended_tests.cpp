@@ -284,7 +284,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);
 
-  job_item->SetStatus("abc");  // set arbitrary status
+  job_item->SetStatus(RunnerStatus::kHalted);  // set arbitrary status
 
   QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
 

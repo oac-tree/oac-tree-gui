@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/job_item.h"
+
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/job_model.h>
@@ -24,8 +26,6 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/job_item.h"
 
 namespace oac_tree_gui::test
 {
@@ -45,15 +45,17 @@ public:
 TEST_F(JobItemTest, JobItem)
 {
   TestItem item;
+  EXPECT_EQ(item.GetStatus(), RunnerStatus::kUndefined);
 
   EXPECT_EQ(item.GetTickTimeout(), itemconstants::kDefaultTickTimeoutMsec);
   item.SetTickTimeout(42);
   EXPECT_EQ(item.GetTickTimeout(), 42);
 
-  item.SetStatus("abc");
-  EXPECT_EQ(item.GetStatus(), "abc");
+  item.SetStatus(RunnerStatus::kInitial);
+  EXPECT_EQ(item.GetStatus(), RunnerStatus::kInitial);
 
   EXPECT_EQ(item.GetExpandedProcedure(), nullptr);
+
 }
 
 TEST_F(JobItemTest, SetProcedure)

@@ -47,10 +47,11 @@ public:
 
 TEST_F(JobListViewModelTest, SingleProcedure)
 {
+  const RunnerStatus expected_status = RunnerStatus::kInitial;
   TestModel model;
 
   auto item = model.InsertItem<LocalJobItem>();
-  item->SetStatus("abc");
+  item->SetStatus(expected_status);
 
   JobListViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(), 1);
@@ -69,7 +70,7 @@ TEST_F(JobListViewModelTest, SingleProcedure)
   EXPECT_EQ(viewmodel.data(displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("LocalJob"));
   EXPECT_EQ(viewmodel.data(status_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("abc"));
+            std::string(ToString(expected_status)));
 
   // there shouldn't be children below
   EXPECT_EQ(viewmodel.rowCount(displayname_index), 0);
@@ -89,9 +90,9 @@ TEST_F(JobListViewModelTest, NotificationOnStatusChange)
 
   auto status_index = viewmodel.index(0, 1);
 
-  QSignalSpy spy_data_changed(&viewmodel, &JobListViewModel::dataChanged);
+  const QSignalSpy spy_data_changed(&viewmodel, &JobListViewModel::dataChanged);
 
-  procedure0->SetStatus("abc");
+  procedure0->SetStatus(RunnerStatus::kInitial);
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
 
