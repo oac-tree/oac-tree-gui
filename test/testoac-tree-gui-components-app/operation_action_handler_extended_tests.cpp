@@ -36,9 +36,11 @@
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
+#include <testutils/folder_test.h>
 #include <testutils/mock_operation_action_context.h>
 #include <testutils/mock_remote_connection_service.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -54,11 +56,12 @@ using msec = std::chrono::milliseconds;
  * @brief Tests of OperationActionHandler class by submitting and/or running actual sequencer
  * procedures.
  */
-class OperationActionHandlerExtendedTest : public ::testing::Test
+class OperationActionHandlerExtendedTest : public test::FolderTest
 {
 public:
   OperationActionHandlerExtendedTest()
-      : m_job_manager(GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service))
+      : FolderTest("OperationActionHandlerExtendedTest")
+      , m_job_manager(GetJobHandlerFactoryFunc(m_user_context, m_mock_connection_service))
   {
     m_models.CreateEmpty();
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
@@ -178,7 +181,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   auto job_item = GetJobItems().at(0);
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item));
 
-  // sarting the job when no JobItem is selected
+  // starting the job when no JobItem is selected
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStartJobRequest();
 
@@ -327,7 +330,8 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequestWhenProcedureDe
   // deleting procedure
   GetSequencerModel()->RemoveItem(procedure);
 
-  QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
+  const QSignalSpy spy_selected_request(handler.get(),
+                                        &OperationActionHandler::MakeJobSelectedRequest);
 
   ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
@@ -365,7 +369,7 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   auto job_item = GetJobItems().at(0);
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item));
 
-  // sarting the job when now JobItem is selected
+  // starting the job when now JobItem is selected
   ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -388,6 +392,53 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   // check that JobManager sees correct state from async runner
   EXPECT_TRUE(QTest::qWaitFor(
       [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 100));
+}
+
+//! Submit file based job. First submit a file with the error in XML. Then make a fix of XML, and
+//! resubmit again. Finally run selected job.
+TEST_F(OperationActionHandlerExtendedTest, SubmitMalFormedFileBasedJobThenResubmit)
+{
+  const std::string body_with_xml_error{R"(
+  <Message text="Hello"
+)"};
+
+  // writing procedure in a file
+  const auto file_name = GetFilePath("ProcedureWithFixedError.xml");
+  mvvm::test::CreateTextFile(file_name, test::CreateProcedureString(body_with_xml_error));
+
+  auto handler = CreateOperationHandler();
+
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+  handler->SubmitFileBasedJob(file_name);
+
+  // After unsuccessfull submission JobItem remains there
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSubmitFailure);
+
+  // Fixing XML file (pretending user has properly edited it)
+  const std::string body_with_xml_fixed{R"(
+  <Message text="Hello" />
+)"};
+  mvvm::test::CreateTextFile(file_name, test::CreateProcedureString(body_with_xml_fixed));
+
+  // making item selected
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+
+  // resubmitting a job, it will use same file name, but content will be different
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(0);
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnRegenerateJobRequest();
+  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kUndefined); // not a failure anymore
+
+  // sarting the job
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
+
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+
+  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
+  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);
 }
 
 }  // namespace oac_tree_gui
