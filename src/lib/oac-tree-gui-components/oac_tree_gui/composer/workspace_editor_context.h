@@ -49,13 +49,13 @@ struct AnyValueDialogResult;
 struct WorkspaceEditorContext
 {
   //!< callback to retrieve current workspace to operate
-  std::function<WorkspaceItem*()> selected_workspace_callback;
+  std::function<WorkspaceItem*()> selected_workspace;
 
   //!< callback to retrieve currently selected item
   std::function<mvvm::SessionItem*()> selected_item_callback;
 
   //!< callback to report an error
-  std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
+  std::function<void(const sup::gui::MessageEvent&)> send_message;
 
   //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
   //!< AnyValueItem back

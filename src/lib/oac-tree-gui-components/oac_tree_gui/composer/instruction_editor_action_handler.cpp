@@ -83,7 +83,7 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
     throw RuntimeException("Callback to get selected instruction is not defined");
   }
 
-  if (!m_context.send_message_callback)
+  if (!m_context.send_message)
   {
     throw RuntimeException("Callback to send messages is not set");
   }
@@ -300,7 +300,7 @@ void InstructionEditorActionHandler::SendMessage(const std::string &text,
 
 void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent &message_event) const
 {
-  m_context.send_message_callback(message_event);
+  m_context.send_message(message_event);
 }
 
 const QMimeData *InstructionEditorActionHandler::GetMimeData() const

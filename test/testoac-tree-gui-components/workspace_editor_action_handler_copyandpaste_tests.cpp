@@ -17,14 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
-#include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/pvmonitor/monitor_model.h>
-#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
+#include "oac_tree_gui/composer/workspace_editor_action_handler.h"
 
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -34,13 +27,19 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/pvmonitor/monitor_model.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 #include <testutils/mock_dialog.h>
 #include <testutils/test_utils.h>
 
 #include <QMimeData>
 #include <QSignalSpy>
-
-#include "oac_tree_gui/composer/workspace_editor_action_handler.h"
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
@@ -68,8 +67,8 @@ public:
 
     // callback returns given item, pretending it is user's selection
     result.selected_item_callback = [selected_item]() { return selected_item; };
-    result.selected_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
-    result.send_message_callback = m_warning_listener.AsStdFunction();
+    result.selected_workspace = [this]() { return m_model.GetWorkspaceItem(); };
+    result.send_message = m_warning_listener.AsStdFunction();
     result.edit_anyvalue_callback = {};  // editing is not checked in this test
     result.get_mime_data = [current_mime, this]()
     { return current_mime ? current_mime : m_copy_result.get(); };
@@ -90,7 +89,7 @@ public:
         CreateContext(selected_item, current_mime));
   }
 
-  WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
+  WorkspaceItem* GetWorkspaceItem() const { return m_model.GetWorkspaceItem(); }
 
   MonitorModel m_model;
   testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;

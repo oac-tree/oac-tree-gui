@@ -68,7 +68,7 @@ public:
     InstructionEditorContext result;
     result.selected_procedure = [this]() { return m_procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
-    result.send_message_callback = m_warning_listener.AsStdFunction();
+    result.send_message = m_warning_listener.AsStdFunction();
     result.get_mime_data = [current_mime]() { return current_mime; };
     result.set_mime_data = [this](std::unique_ptr<QMimeData> data)
     { m_copy_result = std::move(data); };

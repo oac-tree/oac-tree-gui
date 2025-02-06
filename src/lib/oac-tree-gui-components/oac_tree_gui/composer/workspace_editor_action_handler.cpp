@@ -42,7 +42,7 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
                                                            QObject *parent_object)
     : QObject(parent_object), m_context(std::move(context))
 {
-  if (!m_context.selected_workspace_callback)
+  if (!m_context.selected_workspace)
   {
     throw RuntimeException("Absent callback to get Workspace");
   }
@@ -52,7 +52,7 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
     throw RuntimeException("Absent callback to retrieve currently selected item");
   }
 
-  if (!m_context.send_message_callback)
+  if (!m_context.send_message)
   {
     throw RuntimeException("Absent callback to send messages");
   }
@@ -191,7 +191,7 @@ mvvm::ISessionModel *WorkspaceEditorActionHandler::GetModel() const
 
 WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
 {
-  return m_context.selected_workspace_callback();
+  return m_context.selected_workspace();
 }
 
 VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
@@ -231,7 +231,7 @@ void WorkspaceEditorActionHandler::SendMessage(const std::string &text,
                                                const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
-  m_context.send_message_callback(message);
+  m_context.send_message(message);
 }
 
 }  // namespace oac_tree_gui

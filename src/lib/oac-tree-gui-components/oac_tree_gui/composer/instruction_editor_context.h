@@ -55,7 +55,7 @@ struct InstructionEditorContext
   std::function<InstructionItem*()> selected_instruction;
 
   //!< callback to report an error
-  std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
+  std::function<void(const sup::gui::MessageEvent&)> send_message;
 
   //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
   //!< AnyValueItem back

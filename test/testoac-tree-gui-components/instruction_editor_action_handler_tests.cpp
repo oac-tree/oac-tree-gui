@@ -78,7 +78,7 @@ public:
     InstructionEditorContext result;
     result.selected_procedure = [procedure]() { return procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
-    result.send_message_callback = m_warning_listener.AsStdFunction();
+    result.send_message = m_warning_listener.AsStdFunction();
     result.edit_anyvalue_callback = m_mock_dialog.CreateCallback();
     return result;
   }

@@ -163,12 +163,12 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   WorkspaceEditorContext result;
 
   auto selected_workspace_callback = [this]() { return m_workspace_item; };
-  result.selected_workspace_callback = selected_workspace_callback;
+  result.selected_workspace = selected_workspace_callback;
 
   result.selected_item_callback = [this]() { return GetSelectedItem(); };
 
   auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
-  result.send_message_callback = send_message_callback;
+  result.send_message = send_message_callback;
 
   result.edit_anyvalue_callback = CreateAnyValueDialogCallback(nullptr);
 
