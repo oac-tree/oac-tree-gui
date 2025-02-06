@@ -22,16 +22,17 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/procedure_preamble_items.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/pvmonitor/monitor_model.h>
-#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
-#include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/commands/i_command_stack.h>
+#include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/test_helper.h>
 
 #include <sup/dto/anyvalue.h>
@@ -57,11 +58,13 @@ class WorkspaceEditorActionHandlerUndoTest : public ::testing::Test
 public:
   WorkspaceEditorActionHandlerUndoTest()
   {
+    m_procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+
     m_model.InsertItem<WorkspaceItem>();
     m_model.SetUndoEnabled(true);
   }
 
-  WorkspaceItem* GetWorkspaceItem() const { return m_model.GetWorkspaceItem(); }
+  WorkspaceItem* GetWorkspaceItem() const { return m_procedure_item->GetWorkspace(); }
 
   /**
    * @brief Creates action handler.
@@ -73,7 +76,16 @@ public:
     return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
   }
 
-  MonitorModel m_model;
+  /**
+   * @brief Returns plugins defined in procedure's preamble.
+   */
+  std::vector<std::string> GetPluginPaths()
+  {
+    return m_procedure_item->GetPreambleItem()->GetPluginPaths();
+  }
+
+  ProcedureItem* m_procedure_item{nullptr};
+  SequencerModel m_model;
   test::MockWorkspaceEditorContext m_mock_context;
 };
 
@@ -103,17 +115,23 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 
   auto handler = CreateActionHandler(nullptr);
 
+  EXPECT_TRUE(GetPluginPaths().empty());
+
   // adding variable
   handler->OnAddVariableRequest(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsCAPluginName}));
+
   // undo
   m_model.GetCommandStack()->Undo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
+  EXPECT_TRUE(GetPluginPaths().empty());
 
   // redo
   m_model.GetCommandStack()->Redo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsCAPluginName}));
 }
 
 }  // namespace oac_tree_gui::test
