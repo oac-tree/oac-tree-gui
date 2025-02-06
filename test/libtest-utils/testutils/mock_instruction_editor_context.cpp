@@ -17,17 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "mock_operation_action_context.h"
+#include "mock_instruction_editor_context.h"
+
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <QMimeData>
 
 namespace oac_tree_gui::test
 {
 
-OperationActionContext MockOperationActionContext::CreateContext()
+InstructionEditorContext MockInstructionEditorContext::CreateContext()
 {
-  OperationActionContext result;
-  result.selected_job = [this]() { return OnSelectedJob(); };
-  result.send_message = [this](const auto& message) { OnMessage(message); };
-  result.get_remote_connection_info = [this]() { return OnGetRemoteConnectionInfo(); };
+  InstructionEditorContext result;
+
+  result.selected_procedure = [this]() { return OnSelectedProcedure(); };
+  result.selected_instruction = [this]() { return OnSelectedInstruction(); };
+  result.send_message_callback = [this](const auto& message) { OnMessage(message); };
+  result.get_mime_data = [this]() { return OnGetMimeData(); };
+  result.set_mime_data = [this](auto mime_data) { OnSetMimeData(std::move(mime_data)); };
+
   return result;
 }
 

@@ -17,31 +17,33 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBTEST_UTILS_TESTUTILS_MOCK_OPERATION_ACTION_CONTEXT_H_
-#define LIBTEST_UTILS_TESTUTILS_MOCK_OPERATION_ACTION_CONTEXT_H_
-
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
-#include <oac_tree_gui/operation/operation_action_context.h>
+#ifndef LIBTEST_UTILS_TESTUTILS_MOCK_INSTRUCTION_EDITOR_CONTEXT_H_
+#define LIBTEST_UTILS_TESTUTILS_MOCK_INSTRUCTION_EDITOR_CONTEXT_H_
 
 #include <gmock/gmock.h>
+#include <oac_tree_gui/components/anyvalue_dialog_result.h>
+#include <oac_tree_gui/composer/instruction_editor_context.h>
 
 namespace oac_tree_gui::test
 {
 
 /**
- * @brief The MockOperationActionContext class helps to test callbacks given to
- * OperationActionHandler via its context.
+ * @brief The MockInstructionEditorContext creates and listens callbacks used by
+ * InstructionEditorActionHandler.
  */
-class MockOperationActionContext
+class MockInstructionEditorContext
 {
 public:
-  MOCK_METHOD(JobItem*, OnSelectedJob, (), ());
+  MOCK_METHOD(ProcedureItem*, OnSelectedProcedure, (), ());
+  MOCK_METHOD(InstructionItem*, OnSelectedInstruction, (), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
-  MOCK_METHOD(std::optional<RemoteConnectionInfo>, OnGetRemoteConnectionInfo, (), ());
+  MOCK_METHOD(AnyValueDialogResult, OnEditAnyvalue, (const sup::gui::AnyValueItem*), ());
+  MOCK_METHOD(const QMimeData*, OnGetMimeData, (), ());
+  MOCK_METHOD(void, OnSetMimeData, (std::unique_ptr<QMimeData>), ());
 
-  OperationActionContext CreateContext();
+  oac_tree_gui::InstructionEditorContext CreateContext();
 };
 
 }  // namespace oac_tree_gui::test
 
-#endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_
+#endif  // LIBTEST_UTILS_TESTUTILS_MOCK_INSTRUCTION_EDITOR_CONTEXT_H_
