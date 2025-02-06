@@ -49,8 +49,6 @@ namespace oac_tree_gui::test
 
 /**
  * @brief Testing InstructionEditorActionHandler for basic editing scenarios.
- *
- * Add/remove child instructions to different parents.
  */
 class InstructionEditorActionHandlerTest : public ::testing::Test
 {
