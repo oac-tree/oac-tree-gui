@@ -39,7 +39,12 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(ProcedureIt
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem* item)
   { return OnEditAnyvalue(item); };
   result.get_mime_data = [this]() { return OnGetMimeData(); };
-  result.set_mime_data = [this](auto mime_data) { OnSetMimeData(std::move(mime_data)); };
+  result.set_mime_data = [this](auto mime_data)
+  {
+    // mimicking clipboard, saving copy result here
+    m_copy_result = std::move(mime_data);
+    OnSetMimeData();
+  };
 
   return result;
 }
@@ -48,6 +53,11 @@ std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::Cr
     ProcedureItem* procedure, InstructionItem* instruction)
 {
   return std::make_unique<InstructionEditorActionHandler>(CreateContext(procedure, instruction));
+}
+
+QMimeData *MockInstructionEditorContext::GetCopyResult() const
+{
+  return m_copy_result.get();
 }
 
 }  // namespace oac_tree_gui::test

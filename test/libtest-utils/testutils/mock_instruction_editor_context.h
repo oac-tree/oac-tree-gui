@@ -45,7 +45,7 @@ public:
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(AnyValueDialogResult, OnEditAnyvalue, (const sup::gui::AnyValueItem*), ());
   MOCK_METHOD(const QMimeData*, OnGetMimeData, (), ());
-  MOCK_METHOD(void, OnSetMimeData, (std::unique_ptr<QMimeData>), ());
+  MOCK_METHOD(void, OnSetMimeData, (), ());
 
   /**
    * @brief Creates context for InstructionEditorActionHandler.
@@ -64,6 +64,10 @@ public:
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(ProcedureItem* procedure,
                                                                       InstructionItem* instruction);
 
+  QMimeData* GetCopyResult() const;
+
+  //!< here we save copy result reported via set_mime_data callback
+  std::unique_ptr<QMimeData> m_copy_result;
 };
 
 }  // namespace oac_tree_gui::test
