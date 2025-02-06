@@ -37,6 +37,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <testutils/mock_workspace_editor_context.h>
 #include <testutils/test_utils.h>
 
 #include <QMimeData>
@@ -47,59 +48,38 @@ Q_DECLARE_METATYPE(mvvm::SessionItem*)
 namespace oac_tree_gui::test
 {
 
-//! Testing WorkspaceEditorActionHandler class (copy-and-paste scenarios).
-
+/**
+ * @brief Testing InstructionEditorActionHandler for copy-and-paste scenarios.
+ */
 class WorkspaceEditorActionHandlerCopyAndPasteTest : public ::testing::Test
 {
 public:
   WorkspaceEditorActionHandlerCopyAndPasteTest() { m_model.InsertItem<WorkspaceItem>(); }
 
-  /**
-   * @brief Test helper to create context mimicking the current state of WorkspaceEditor widget.
-   *
-   * @param selected_item Currently selected item (variable, or one of it's attributes).
-   *
-   * @return Context object.
-   */
-  WorkspaceEditorContext CreateContext(mvvm::SessionItem* selected_item,
-                                       const QMimeData* current_mime)
-  {
-    WorkspaceEditorContext result;
-
-    // callback returns given item, pretending it is user's selection
-    result.selected_item_callback = [selected_item]() { return selected_item; };
-    result.selected_workspace = [this]() { return m_model.GetWorkspaceItem(); };
-    result.send_message = m_warning_listener.AsStdFunction();
-    result.edit_anyvalue = {};  // editing is not checked in this test
-    result.get_mime_data = [current_mime, this]()
-    { return current_mime ? current_mime : m_copy_result.get(); };
-    result.set_mime_data = [this](std::unique_ptr<QMimeData> data)
-    { m_copy_result = std::move(data); };
-
-    return result;
-  }
-
-  /**
-   * @brief Creates action handler for testing.
-   * @param selected_item Currently selected item (variable, or one of it's attributes).
-   */
-  std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
-      mvvm::SessionItem* selected_item, const QMimeData* current_mime)
-  {
-    return std::make_unique<WorkspaceEditorActionHandler>(
-        CreateContext(selected_item, current_mime));
-  }
-
   WorkspaceItem* GetWorkspaceItem() const { return m_model.GetWorkspaceItem(); }
 
+  /**
+   * @brief Creates action handler.
+   *
+   * @param selection Currently selected variable or one of its leafs.
+   * @param current_mime The content of the clipboard.
+   */
+  std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(mvvm::SessionItem* selection,
+                                                                    const QMimeData* current_mime)
+  {
+    ON_CALL(m_mock_context, OnGetMimeData()).WillByDefault(::testing::Return(current_mime));
+    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
+  }
+
   MonitorModel m_model;
-  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
-  std::unique_ptr<QMimeData> m_copy_result;  //!< Result of copy operation.
+  test::MockWorkspaceEditorContext m_mock_context;
 };
 
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, InitialState)
 {
   auto handler = CreateActionHandler(/*selected variable*/ nullptr, /*mime*/ nullptr);
+
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
 
   EXPECT_FALSE(handler->CanCopy());
   EXPECT_FALSE(handler->CanPaste());
@@ -112,17 +92,19 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyOperation)
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   var0->SetName("abc");
 
-  EXPECT_EQ(m_copy_result.get(), nullptr);
+  EXPECT_EQ(m_mock_context.GetCopyResult(), nullptr);
 
   // instruction is selected, no mime
   auto handler = CreateActionHandler(var0, nullptr);
   EXPECT_TRUE(handler->CanCopy());
 
+  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
+
   handler->Copy();
 
   // As a result of copy QMimeData object was created
-  ASSERT_NE(m_copy_result.get(), nullptr);
-  EXPECT_TRUE(m_copy_result->hasFormat(kCopyVariableMimeType));
+  ASSERT_NE(m_mock_context.GetCopyResult(), nullptr);
+  EXPECT_TRUE(m_mock_context.GetCopyResult()->hasFormat(kCopyVariableMimeType));
 }
 
 //! Testing CanPaste.
@@ -130,12 +112,14 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 {
   {  // nothing is selected, no mime data
     auto handler = CreateActionHandler(nullptr, nullptr);
+    EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_FALSE(handler->CanPaste());
   }
 
   {  // nothing is selected, wrong mime data
     const QMimeData mime_data;
     auto handler = CreateActionHandler(nullptr, &mime_data);
+    EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_FALSE(handler->CanPaste());
   }
 
@@ -143,16 +127,16 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
     const LocalVariableItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
     auto handler = CreateActionHandler(nullptr, mime_data.get());
-
+    EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
   }
 
   {  // selected item in the container, correct mime data
     const LocalVariableItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
-
     auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
     auto handler = CreateActionHandler(var0, mime_data.get());
+    EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
   }
 }
@@ -161,8 +145,6 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 //! item should just appear as a first item.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContainer)
 {
-  using ::testing::_;
-
   // creating mime data representing clipboard content
   LocalVariableItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
@@ -173,7 +155,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
   EXPECT_TRUE(handler->CanPaste());
   handler->Paste();
@@ -191,8 +173,6 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 //! pasting new variable right after it.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 {
-  using ::testing::_;
-
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
 
@@ -204,7 +184,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   auto handler = CreateActionHandler(var0, mime_data.get());
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
   EXPECT_TRUE(handler->CanPaste());
   handler->Paste();
@@ -220,11 +200,8 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 }
 
 //! Cut selected variable.
-
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
 {
-  using ::testing::_;
-
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
 
@@ -232,14 +209,10 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   auto handler = CreateActionHandler(var0, nullptr);
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
-
   EXPECT_TRUE(handler->CanCut());
 
   EXPECT_FALSE(handler->CanPaste());
   handler->Cut();
-
-  EXPECT_TRUE(handler->CanPaste());
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 

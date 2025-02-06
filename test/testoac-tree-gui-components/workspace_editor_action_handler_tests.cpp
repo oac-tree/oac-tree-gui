@@ -46,16 +46,14 @@ namespace oac_tree_gui::test
 {
 
 /**
- * @brief Test WorkspaceEditorActionHandler for basic edit scenarios.
- *
- * We add/remove variables to/from workspace.
+ * @brief Test WorkspaceEditorActionHandler for basic editing scenarios.
  */
 class WorkspaceEditorActionHandlerTest : public ::testing::Test
 {
 public:
   WorkspaceEditorActionHandlerTest() { m_model.InsertItem<WorkspaceItem>(); }
 
-  WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
+  WorkspaceItem* GetWorkspaceItem() const { return m_model.GetWorkspaceItem(); }
 
   /**
    * @brief Creates action handler.
