@@ -37,7 +37,7 @@ ApplicationModels::ApplicationModels(const mvvm::ProjectContext &context) : AppP
     // Recreating item pool which will be used for both models. Here we rely on the fact, that
     // this lambda will be called first.
     m_item_pool = std::make_shared<mvvm::ItemPool>();
-    auto result = std::make_unique<SequencerProjectModel>(m_item_pool);
+    auto result = std::make_unique<SequencerModel>(m_item_pool);
     result->CreateUntitledProcedure();
     return result;
   };
