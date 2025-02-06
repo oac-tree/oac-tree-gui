@@ -61,7 +61,6 @@ public:
     m_procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
 
     m_model.InsertItem<WorkspaceItem>();
-    m_model.SetUndoEnabled(true);
   }
 
   WorkspaceItem* GetWorkspaceItem() const { return m_procedure_item->GetWorkspace(); }
@@ -79,7 +78,7 @@ public:
   /**
    * @brief Returns plugins defined in procedure's preamble.
    */
-  std::vector<std::string> GetPluginPaths()
+  std::vector<std::string> GetPluginPaths() const
   {
     return m_procedure_item->GetPreambleItem()->GetPluginPaths();
   }
@@ -91,6 +90,8 @@ public:
 
 TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
 {
+  m_model.SetUndoEnabled(true);
+
   auto handler = CreateActionHandler(nullptr);
 
   // adding variable
@@ -106,7 +107,8 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 }
 
-TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
+//! Checking that preamble is correctly updated.
+TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -121,7 +123,35 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
   handler->OnAddVariableRequest(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsCAPluginName}));
+  // we get plugin name in preamble
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+
+  // removing variable
+  m_mock_context.m_current_selection = GetWorkspaceItem()->GetVariables().at(0);
+
+  handler->OnRemoveVariableRequest();
+
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
+  EXPECT_TRUE(GetPluginPaths().empty());
+}
+
+TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  m_model.SetUndoEnabled(true);
+  auto handler = CreateActionHandler(nullptr);
+
+  EXPECT_TRUE(GetPluginPaths().empty());
+
+  // adding variable
+  handler->OnAddVariableRequest(PvAccessServerVariableItem::GetStaticType());
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
+
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
 
   // undo
   m_model.GetCommandStack()->Undo();
@@ -131,7 +161,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
   // redo
   m_model.GetCommandStack()->Redo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsCAPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
 }
 
 }  // namespace oac_tree_gui::test

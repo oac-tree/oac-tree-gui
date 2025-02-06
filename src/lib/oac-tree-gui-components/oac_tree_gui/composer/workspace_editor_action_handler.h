@@ -105,6 +105,11 @@ private:
   const QMimeData* GetMimeData() const;
 
   /**
+   * @brief Updates procedure preamble for plugin name required for given variable list.
+   */
+  void UpdateProcedurePreamble();
+
+  /**
    * @brief Inserts variable after currently selected item.
    */
   void InsertVariableAfterCurrentSelection(std::unique_ptr<mvvm::SessionItem> variable_item);

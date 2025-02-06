@@ -21,6 +21,7 @@
 
 #include <oac_tree_gui/components/anyvalue_dialog_result.h>
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
@@ -32,6 +33,7 @@
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
+#include <mvvm/model/model_utils.h>
 
 #include <QMimeData>
 
@@ -83,7 +85,12 @@ void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
   if (auto selected = GetSelectedVariable(); selected)
   {
     auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected);
+
+    mvvm::utils::BeginMacro(*GetModel(), "Remove variable");
     GetModel()->RemoveItem(selected);
+    UpdateProcedurePreamble();
+    mvvm::utils::EndMacro(*GetModel());
+
     if (next_to_select)
     {
       // suggest to select something else instead of just deleted variable
@@ -204,6 +211,15 @@ const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
+void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
+{
+  if (auto procedure_item = mvvm::utils::FindItemUp<ProcedureItem>(GetWorkspaceItem());
+      procedure_item)
+  {
+    UpdatePluginNames(*procedure_item);
+  }
+}
+
 void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> variable_item)
 {
@@ -217,13 +233,19 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
   try
   {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+
+    mvvm::utils::BeginMacro(*GetModel(), "Insert variable");
     auto inserted = GetModel()->InsertItem(std::move(variable_item), GetWorkspaceItem(), tagindex);
+    UpdateProcedurePreamble();
+    mvvm::utils::EndMacro(*GetModel());
+
     emit SelectItemRequest(inserted);
   }
   catch (const std::exception &ex)
   {
     SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
   }
+
 }
 
 void WorkspaceEditorActionHandler::SendMessage(const std::string &text,

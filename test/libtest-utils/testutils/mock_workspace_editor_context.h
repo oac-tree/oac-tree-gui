@@ -68,6 +68,7 @@ public:
 
   //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_copy_result;
+  mvvm::SessionItem* m_current_selection{nullptr};
 };
 
 }  // namespace oac_tree_gui::test
