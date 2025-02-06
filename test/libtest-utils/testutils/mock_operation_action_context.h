@@ -39,6 +39,9 @@ public:
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(std::optional<RemoteConnectionInfo>, OnGetRemoteConnectionInfo, (), ());
 
+  /**
+   * @brief Returns context necessary for OperationActionHandler to function.
+   */
   OperationActionContext CreateContext();
 };
 

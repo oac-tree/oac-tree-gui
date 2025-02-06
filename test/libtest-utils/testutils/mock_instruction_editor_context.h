@@ -20,9 +20,17 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_INSTRUCTION_EDITOR_CONTEXT_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_INSTRUCTION_EDITOR_CONTEXT_H_
 
-#include <gmock/gmock.h>
 #include <oac_tree_gui/components/anyvalue_dialog_result.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
+
+#include <gmock/gmock.h>
+
+#include <memory>
+
+namespace oac_tree_gui
+{
+class InstructionEditorActionHandler;
+}
 
 namespace oac_tree_gui::test
 {
@@ -34,14 +42,28 @@ namespace oac_tree_gui::test
 class MockInstructionEditorContext
 {
 public:
-  MOCK_METHOD(ProcedureItem*, OnSelectedProcedure, (), ());
-  MOCK_METHOD(InstructionItem*, OnSelectedInstruction, (), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(AnyValueDialogResult, OnEditAnyvalue, (const sup::gui::AnyValueItem*), ());
   MOCK_METHOD(const QMimeData*, OnGetMimeData, (), ());
   MOCK_METHOD(void, OnSetMimeData, (std::unique_ptr<QMimeData>), ());
 
-  oac_tree_gui::InstructionEditorContext CreateContext();
+  /**
+   * @brief Creates context for InstructionEditorActionHandler.
+   *
+   * @param procedure The procedure which will be reported as selected by the user.
+   * @param instruction The instruction which will be reported as selected by the user.
+   */
+  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction);
+
+  /**
+   * @brief Creates action handler.
+   *
+   * It is initialized with mock context pretending that the given procedure and instruction are
+   * selected by the user.
+   */
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(ProcedureItem* procedure,
+                                                                      InstructionItem* instruction);
+
 };
 
 }  // namespace oac_tree_gui::test

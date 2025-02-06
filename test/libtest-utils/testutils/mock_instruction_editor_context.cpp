@@ -19,6 +19,8 @@
 
 #include "mock_instruction_editor_context.h"
 
+#include <oac_tree_gui/composer/instruction_editor_action_handler.h>
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <QMimeData>
@@ -26,17 +28,24 @@
 namespace oac_tree_gui::test
 {
 
-InstructionEditorContext MockInstructionEditorContext::CreateContext()
+InstructionEditorContext MockInstructionEditorContext::CreateContext(ProcedureItem* procedure,
+                                                                     InstructionItem* instruction)
 {
   InstructionEditorContext result;
 
-  result.selected_procedure = [this]() { return OnSelectedProcedure(); };
-  result.selected_instruction = [this]() { return OnSelectedInstruction(); };
+  result.selected_procedure = [this, procedure]() { return procedure; };
+  result.selected_instruction = [this, instruction]() { return instruction; };
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.get_mime_data = [this]() { return OnGetMimeData(); };
   result.set_mime_data = [this](auto mime_data) { OnSetMimeData(std::move(mime_data)); };
 
   return result;
+}
+
+std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::CreateActionHandler(
+    ProcedureItem* procedure, InstructionItem* instruction)
+{
+  return std::make_unique<InstructionEditorActionHandler>(CreateContext(procedure, instruction));
 }
 
 }  // namespace oac_tree_gui::test
