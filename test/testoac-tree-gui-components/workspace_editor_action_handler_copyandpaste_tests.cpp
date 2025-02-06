@@ -89,7 +89,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, InitialState)
 //! Copy operation when item is selected.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyOperation)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   var0->SetName("abc");
 
   EXPECT_EQ(m_mock_context.GetCopyResult(), nullptr);
@@ -134,7 +134,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
   {  // selected item in the container, correct mime data
     const LocalVariableItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
-    auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+    auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
     auto handler = CreateActionHandler(var0, mime_data.get());
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
@@ -159,9 +159,9 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 
   EXPECT_TRUE(handler->CanPaste());
   handler->Paste();
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
-  auto inserted_variable0 = m_model.GetWorkspaceItem()->GetVariables().at(0);
+  auto inserted_variable0 = GetWorkspaceItem()->GetVariables().at(0);
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
 
@@ -173,8 +173,8 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 //! pasting new variable right after it.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
 
   LocalVariableItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
@@ -189,9 +189,9 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   EXPECT_TRUE(handler->CanPaste());
   handler->Paste();
 
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
 
-  auto inserted_variable0 = m_model.GetWorkspaceItem()->GetVariables().at(1);
+  auto inserted_variable0 = GetWorkspaceItem()->GetVariables().at(1);
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
 
@@ -202,8 +202,8 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 //! Cut selected variable.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
 
   // creating action handler mimicking `var0` instruction selected
   auto handler = CreateActionHandler(var0, nullptr);
@@ -214,7 +214,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   EXPECT_FALSE(handler->CanPaste());
   handler->Cut();
 
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // checking the request to select remaining item
   EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), var1);

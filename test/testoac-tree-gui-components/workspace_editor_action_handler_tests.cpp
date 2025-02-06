@@ -111,9 +111,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
 
   // validating default values of just inserted variable
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
   auto inserted_variable0 =
-      dynamic_cast<LocalVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(0));
+      dynamic_cast<LocalVariableItem*>(GetWorkspaceItem()->GetVariables().at(0));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
 
@@ -131,9 +131,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   // adding another variable
   handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
 
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 2);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 2);
   auto inserted_variable1 =
-      dynamic_cast<LocalVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(1));
+      dynamic_cast<LocalVariableItem*>(GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable1, nullptr);
   EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
 
@@ -144,8 +144,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
 
   // pretending that var0 is selected
   auto handler = CreateActionHandler(nullptr);
@@ -155,17 +155,17 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
   // adding variable
   handler->OnAddVariableRequest(FileVariableItem::GetStaticType());
 
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
-      dynamic_cast<FileVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(2));
+      dynamic_cast<FileVariableItem*>(GetWorkspaceItem()->GetVariables().at(2));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
 
   // pretending that var0 is selected
   auto handler = CreateActionHandler(var0);
@@ -173,17 +173,17 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   // adding variable
   handler->OnAddVariableRequest(FileVariableItem::GetStaticType());
 
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
-      dynamic_cast<FileVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(1));
+      dynamic_cast<FileVariableItem*>(GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
-  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // pretending that var0 is selected
   auto handler = CreateActionHandler(var0);
@@ -192,13 +192,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
   EXPECT_TRUE(handler->CanRemoveVariable());
   handler->OnRemoveVariableRequest();
 
-  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 0);
+  EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
-  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // nothing is selected
   auto handler = CreateActionHandler(nullptr);
@@ -207,7 +207,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
   handler->OnRemoveVariableRequest();
 
   // still same amount of variables
-  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 }
 
 //! Attempt to edit AnyValueItem when nothing is selected.
@@ -230,7 +230,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   const bool dialog_was_acccepted = true;
 
   // creating variable with AnyValue on board
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
   auto initial_anyvalue_item = var0->GetAnyValueItem();
 
@@ -264,7 +264,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
   const bool dialog_was_acccepted = true;
 
   // creating variable with AnyValue on board
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
   auto initial_anyvalue_item = var0->GetAnyValueItem();
 
@@ -296,7 +296,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   const bool dialog_was_acccepted = true;
 
   // creating variable with AnyValue on board
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
   auto initial_anyvalue_item = var0->GetAnyValueItem();
 
@@ -329,7 +329,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
   const bool dialog_was_acccepted = false;  // cancel button was pushed
 
   // creating variable with AnyValue on board
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
   auto initial_anyvalue_item = var0->GetAnyValueItem();
 
@@ -360,7 +360,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
   const bool dialog_was_acccepted = true;
 
   // creating variable with AnyValue on board
-  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
 
   // item mimicking editing result
@@ -401,9 +401,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   handler->OnAddVariableRequest(domainconstants::kSystemClockVariableType);
 
   // validating default values of just inserted variable
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
   auto inserted_variable0 =
-      dynamic_cast<UniversalVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(0));
+      dynamic_cast<UniversalVariableItem*>(GetWorkspaceItem()->GetVariables().at(0));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
   EXPECT_EQ(inserted_variable0->GetDomainType(), domainconstants::kSystemClockVariableType);
