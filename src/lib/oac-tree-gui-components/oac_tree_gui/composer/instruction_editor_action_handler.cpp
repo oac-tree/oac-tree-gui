@@ -183,7 +183,7 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 
   auto selected_anyvalue = GetAnyValueItem(*instruction_item);
 
-  auto dialog_result = m_context.edit_anyvalue_callback(selected_anyvalue);
+  auto dialog_result = m_context.edit_anyvalue(selected_anyvalue);
 
   // existent value means that the user exited from the dialog with OK
   if (dialog_result.is_accepted)

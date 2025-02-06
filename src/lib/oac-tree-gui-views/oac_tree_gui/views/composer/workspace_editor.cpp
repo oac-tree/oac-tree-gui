@@ -170,7 +170,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.send_message = send_message_callback;
 
-  result.edit_anyvalue_callback = CreateAnyValueDialogCallback(nullptr);
+  result.edit_anyvalue = CreateAnyValueDialogCallback(nullptr);
 
   result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };
 

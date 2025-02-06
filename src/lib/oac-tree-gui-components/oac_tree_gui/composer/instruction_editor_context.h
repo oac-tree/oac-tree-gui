@@ -59,7 +59,7 @@ struct InstructionEditorContext
 
   //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
   //!< AnyValueItem back
-  std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> edit_anyvalue_callback;
+  std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> edit_anyvalue;
 
   //! callback to get mime data from the clipboard
   std::function<const QMimeData*()> get_mime_data;

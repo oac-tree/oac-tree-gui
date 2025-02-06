@@ -110,7 +110,7 @@ void WorkspaceEditorActionHandler::OnEditAnyValueRequest()
 
   auto selected_anyvalue = selected_variable->GetAnyValueItem();
 
-  auto edited_anyvalue = m_context.edit_anyvalue_callback(selected_anyvalue);
+  auto edited_anyvalue = m_context.edit_anyvalue(selected_anyvalue);
 
   // existent value means that the user exited from the dialog with OK
   if (edited_anyvalue.is_accepted)

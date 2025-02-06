@@ -69,7 +69,7 @@ public:
     result.selected_item_callback = [selected_item]() { return selected_item; };
     result.selected_workspace = [this]() { return m_model.GetWorkspaceItem(); };
     result.send_message = m_warning_listener.AsStdFunction();
-    result.edit_anyvalue_callback = {};  // editing is not checked in this test
+    result.edit_anyvalue = {};  // editing is not checked in this test
     result.get_mime_data = [current_mime, this]()
     { return current_mime ? current_mime : m_copy_result.get(); };
     result.set_mime_data = [this](std::unique_ptr<QMimeData> data)
