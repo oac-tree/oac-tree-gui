@@ -289,7 +289,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelecte
 
   EXPECT_FALSE(handler->CanRemoveInstruction());
 
-  QSignalSpy spy_selection_request(handler.get(),
+  const QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
   // nothing selected, remove request does nothing
