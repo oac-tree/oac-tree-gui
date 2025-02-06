@@ -36,6 +36,8 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(ProcedureIt
   result.selected_procedure = [this, procedure]() { return procedure; };
   result.selected_instruction = [this, instruction]() { return instruction; };
   result.send_message = [this](const auto& message) { OnMessage(message); };
+  result.edit_anyvalue_callback = [this](const sup::gui::AnyValueItem* item)
+  { return OnEditAnyvalue(item); };
   result.get_mime_data = [this]() { return OnGetMimeData(); };
   result.set_mime_data = [this](auto mime_data) { OnSetMimeData(std::move(mime_data)); };
 

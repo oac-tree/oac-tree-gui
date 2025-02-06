@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/composer/instruction_editor_action_handler.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
@@ -35,19 +37,21 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <testutils/mock_dialog.h>
+#include <testutils/mock_instruction_editor_context.h>
 
+#include <QMimeData>
 #include <QSignalSpy>
-
-#include "oac_tree_gui/composer/instruction_editor_action_handler.h"
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 namespace oac_tree_gui::test
 {
 
-//! Tests for InstructionEditorActionHandler class.
-
+/**
+ * @brief Testing InstructionEditorActionHandler for basic editing scenarios.
+ *
+ * Add/remove child instructions to different parents.
+ */
 class InstructionEditorActionHandlerTest : public ::testing::Test
 {
 public:
@@ -57,69 +61,64 @@ public:
   }
 
   /**
-   * @brief Test helper to create context mimicking current InstructionEditor widget state.
+   * @brief Creates action handler.
    *
-   * It contains a callbacks to mimick currently selected procedure and instruction, callback to
-   * edit AnyValue and copy/paste activity.
-   *
-   * @param procedure Currently selected procedure.
-   * @param instruction Currently selected instruction
-   * @param dialog_result The data to return to the caller mimicking dialog answer.
-   * @param current_mime The content of the clipboard.
-   *
-   * @return Context object.
+   * It is initialized with mock context pretending that the given procedure and instruction are
+   * selected by the user.
    */
-  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction,
-                                         AnyValueDialogResult dialog_result = {},
-                                         const QMimeData* current_mime = nullptr)
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(ProcedureItem* procedure,
+                                                                      InstructionItem* instruction)
   {
-    m_mock_dialog.SetItemToReturn(std::move(dialog_result));
-
-    InstructionEditorContext result;
-    result.selected_procedure = [procedure]() { return procedure; };
-    result.selected_instruction = [instruction]() { return instruction; };
-    result.send_message = m_warning_listener.AsStdFunction();
-    result.edit_anyvalue_callback = m_mock_dialog.CreateCallback();
-    return result;
-  }
-
-  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      ProcedureItem* procedure, InstructionItem* instruction,
-      AnyValueDialogResult dialog_result = {})
-  {
-    return std::make_unique<InstructionEditorActionHandler>(
-        CreateContext(procedure, instruction, std::move(dialog_result)));
+    return m_mock_context.CreateActionHandler(procedure, instruction);
   }
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
-  ::testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
-  test::MockDialog m_mock_dialog;
+  test::MockInstructionEditorContext m_mock_context;
 };
 
-//! Attempt to insert an instruction when no procedure created upfront.
+TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialised)
+{
+  {  // no callbacks defined
+    const InstructionEditorContext context{};
+    EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
+  }
 
+  {  // only procedure callback defined
+    const InstructionEditorContext context{[]() -> ProcedureItem* { return nullptr; }};
+    EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
+  }
+
+  {  // only instruction callback defined
+    const InstructionEditorContext context{{}, []() -> InstructionItem* { return nullptr; }};
+    EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
+  }
+
+  {  // only message callback defined
+    const InstructionEditorContext context{{}, {}, [](const auto& message) { (void)message; }};
+    EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
+  }
+}
+
+//! Attempt to insert an instruction when no procedure created upfront.
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
   // creating the context pretending that no procedures/instructions are selected
   auto handler = CreateActionHandler(nullptr, nullptr);
 
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // it is not possible to add instruction when no procedure is selected, expecting callback
   EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType()));
 }
 
 //! Adding wait instruction.
-
 TEST_F(InstructionEditorActionHandlerTest, AddWait)
 {
   auto handler = CreateActionHandler(m_procedure, nullptr);
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
-
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
@@ -132,12 +131,9 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
 }
 
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
-
 TEST_F(InstructionEditorActionHandlerTest, AddChoice)
 {
   auto handler = CreateActionHandler(m_procedure, nullptr);
-
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(domainconstants::kChoiceInstructionType);
@@ -161,8 +157,6 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(m_procedure, sequence);
 
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
-
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
@@ -180,14 +174,10 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
 }
 
-//! Consequent insert of one instruction after the other, nothing is selected.
-
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating action handler mimicking "no instruction selected"
   auto handler = CreateActionHandler(m_procedure, nullptr);
-
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
@@ -202,8 +192,6 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
   EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::GetStaticType());
 }
 
-//! Insertion instruction after selected instruction, when no more insertions is allowed.
-
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
 {
   // inserting instruction in the container
@@ -216,16 +204,15 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
   EXPECT_FALSE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
 
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
-  // It is not possible to add second instruction to repeat instruction, expecting warning callback
+  // It is not possible to add second instruction to repeat instruction, expecting warning
   EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType()));
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
 
 //! Insertion instruction in the selected instruction.
-
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
 {
   // inserting instruction in the container
@@ -240,8 +227,6 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
 
   EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
   EXPECT_TRUE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
-
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
 
   // inserting instruction into selected instruction
   handler->OnInsertInstructionIntoRequest(WaitItem::GetStaticType());
@@ -267,7 +252,6 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
 }
 
 //! Attempt to insert instruction into the one, that can't have children.
-
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
 {
   // inserting instruction in the container
@@ -276,7 +260,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   // creating action handler mimicking `wait` instruction selected
   auto handler = CreateActionHandler(m_procedure, wait);
 
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // attempt to insert instruction into selected instruction, expecting callback
   EXPECT_NO_THROW(handler->OnInsertInstructionIntoRequest(WaitItem::GetStaticType()));
@@ -284,19 +268,17 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
 }
 
 //! Attempt to insert instruction into something, when nothing is selected.
-
 TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 {
   // creating action handler mimicking no instruction selected
   auto handler = CreateActionHandler(m_procedure, nullptr);
 
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   handler->OnInsertInstructionIntoRequest(WaitItem::GetStaticType());
 }
 
 //! Remove operation when nothing is selected.
-
 TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelected)
 {
   // inserting instruction in the container
@@ -341,7 +323,6 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
 }
 
 //! Move selected instruction up.
-
 TEST_F(InstructionEditorActionHandlerTest, MoveUp)
 {
   // inserting instruction in the container
@@ -368,7 +349,6 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
 }
 
 //! Move selected instruction up.
-
 TEST_F(InstructionEditorActionHandlerTest, MoveDown)
 {
   // inserting instruction in the container
@@ -395,7 +375,6 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
 }
 
 //! Attempt to edit AnyValueItem when nothing appropriate is selected.
-
 TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -404,13 +383,12 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
   auto handler = CreateActionHandler(m_procedure, sequence);
 
   // expecting warning callbacks complaining that sequence can't have AnyValueItem
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   handler->OnEditAnyvalueRequest();
 }
 
 //! Editing AnyValueItem when EPICS instruction is selected.
-
 TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelected)
 {
   if (!IsSequencerPluginEpicsAvailable())
@@ -429,15 +407,14 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
   // item mimicking editing result
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
+  AnyValueDialogResult dialog_result{dialog_was_acccepted, std::move(editing_result)};
 
-  // pretending that instruction is selected
-  auto handler =
-      CreateActionHandler(m_procedure, item, {dialog_was_acccepted, std::move(editing_result)});
+  ON_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue))
+      .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
-  // expecting no callbacks
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(0);
-  // expecting call to editing widget
-  EXPECT_CALL(m_mock_dialog, OnEditingRequest(::testing::_)).Times(1);
+  auto handler = CreateActionHandler(m_procedure, item);
+
+  EXPECT_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue)).Times(1);
 
   handler->OnEditAnyvalueRequest();
 
@@ -447,7 +424,6 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
 
 //! Simulating the case when user removes AnyValueItem in the editor.
 //! It shouldn't be allowed.
-
 TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
 {
   if (!IsSequencerPluginEpicsAvailable())
@@ -466,14 +442,17 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
   // item intentionally uninitialised to mimick item removal in the editor
   std::unique_ptr<sup::gui::AnyValueStructItem> editing_result;
 
-  // pretending that instruction is selected
-  auto handler =
-      CreateActionHandler(m_procedure, item, {dialog_was_acccepted, std::move(editing_result)});
+  AnyValueDialogResult dialog_result{dialog_was_acccepted, std::move(editing_result)};
+
+  ON_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue))
+      .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
+
+  auto handler = CreateActionHandler(m_procedure, item);
 
   // expecting error callback.
-  EXPECT_CALL(m_warning_listener, Call(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
   // expecting call to editing widget
-  EXPECT_CALL(m_mock_dialog, OnEditingRequest(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue)).Times(1);
 
   handler->OnEditAnyvalueRequest();
 
