@@ -347,9 +347,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
-  // inserting instruction into selected instruction
-  EXPECT_TRUE(handler->CanCut());
+  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
 
+  EXPECT_TRUE(handler->CanCut());
   handler->Cut();
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();

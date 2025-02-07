@@ -408,6 +408,8 @@ TEST_F(OperationActionHandlerExtendedTest, SubmitMalFormedFileBasedJobThenResubm
 
   auto handler = CreateOperationHandler();
 
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
   handler->SubmitFileBasedJob(file_name);
 

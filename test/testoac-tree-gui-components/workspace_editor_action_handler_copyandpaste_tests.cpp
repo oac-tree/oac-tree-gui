@@ -209,8 +209,10 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   auto handler = CreateActionHandler(var0, nullptr);
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
-  EXPECT_TRUE(handler->CanCut());
+  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
 
+  EXPECT_TRUE(handler->CanCut());
   EXPECT_FALSE(handler->CanPaste());
   handler->Cut();
 
