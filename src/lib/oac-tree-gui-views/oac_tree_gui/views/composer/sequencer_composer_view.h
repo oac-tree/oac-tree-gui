@@ -78,7 +78,6 @@ private:
   SequencerModel* m_model{nullptr};
 
   SequencerComposerActions* m_composer_actions{nullptr};
-  std::unique_ptr<ProcedurePluginController> m_plugin_controller;
 };
 
 }  // namespace oac_tree_gui

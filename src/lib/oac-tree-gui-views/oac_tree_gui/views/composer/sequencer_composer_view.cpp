@@ -23,7 +23,6 @@
 #include "composer_widget_panel.h"
 #include "sequencer_composer_actions.h"
 
-#include <oac_tree_gui/composer/procedure_plugin_controller.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -91,8 +90,6 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_composer_panel->SetModel(model);
   m_central_panel->SetModel(model);
   m_right_panel->SetModel(model);
-
-  m_plugin_controller = std::make_unique<ProcedurePluginController>(model);
 }
 
 void SequencerComposerView::RegisterActionsForContext(const sup::gui::AppContext &context)
