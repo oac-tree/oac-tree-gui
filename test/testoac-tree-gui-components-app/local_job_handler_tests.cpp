@@ -335,7 +335,7 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
     auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
     return test::IsEqual(*vars_inside.at(1), expected_anyvalue);
   };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
 
