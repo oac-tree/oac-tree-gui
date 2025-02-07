@@ -139,9 +139,15 @@ void InstructionEditorActionHandler::OnRemoveInstructionRequest()
     return;
   }
 
+  mvvm::utils::BeginMacro(*GetModel(), "Remove instruction");
+
   auto selected_instruction = GetSelectedInstruction();
   auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_instruction);
   GetModel()->RemoveItem(selected_instruction);
+  UpdateProcedurePreamble();
+
+  mvvm::utils::EndMacro(*GetModel());
+
   if (next_to_select)
   {
     // suggest to select something else instead of just deleted instruction
@@ -308,6 +314,15 @@ const QMimeData *InstructionEditorActionHandler::GetMimeData() const
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
+void InstructionEditorActionHandler::UpdateProcedurePreamble()
+{
+  if (auto procedure_item = mvvm::utils::FindItemUp<ProcedureItem>(GetInstructionContainer());
+      procedure_item)
+  {
+    UpdatePluginNames(*procedure_item);
+  }
+}
+
 sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
     const std::string &item_type) const
 {
@@ -379,20 +394,30 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
 void InstructionEditorActionHandler::InsertAfterCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> item)
 {
+  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
+
   auto selected_item = GetSelectedInstruction();
 
   auto parent = selected_item ? selected_item->GetParent() : GetInstructionContainer();
   auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
   auto child = InsertItem(std::move(item), parent, tagindex);
+  UpdateProcedurePreamble();
   UpdateChildCoordinate(selected_item, child);
+
+  mvvm::utils::EndMacro(*GetModel());
 }
 
 void InstructionEditorActionHandler::InsertIntoCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> item)
 {
+  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
+
   auto child = InsertItem(std::move(item), GetSelectedInstruction(), mvvm::TagIndex::Append());
+  UpdateProcedurePreamble();
   UpdateChildCoordinate(GetSelectedInstruction(), child);
+
+  mvvm::utils::EndMacro(*GetModel());
 }
 
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(

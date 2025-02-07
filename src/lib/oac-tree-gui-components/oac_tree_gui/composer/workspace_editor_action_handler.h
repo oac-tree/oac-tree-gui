@@ -105,7 +105,7 @@ private:
   const QMimeData* GetMimeData() const;
 
   /**
-   * @brief Updates procedure preamble for plugin name required for given variable list.
+   * @brief Updates procedure's plugin name preamble required for the current variable list.
    */
   void UpdateProcedurePreamble();
 

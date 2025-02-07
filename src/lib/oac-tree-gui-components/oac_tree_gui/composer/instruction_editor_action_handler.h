@@ -175,6 +175,11 @@ private:
   const QMimeData* GetMimeData() const;
 
   /**
+   * @brief Updates procedure's plugin name preamble required for the current instruction list.
+   */
+  void UpdateProcedurePreamble();
+
+  /**
    * @brief Checks if SessionItem of the given type can be inserted after the current selection.
    *
    * @param item_type Type of the SessionItem to insert.
