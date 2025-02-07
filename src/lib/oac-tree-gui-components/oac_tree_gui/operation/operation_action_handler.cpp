@@ -195,9 +195,9 @@ bool OperationActionHandler::OnRegenerateJobRequest()
     is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                                 m_operation_context.send_message);
 
+    job->SetStatus(is_success ? RunnerStatus::kUndefined : RunnerStatus::kSubmitFailure);
     if (is_success)
     {
-      job->SetStatus(RunnerStatus::kUndefined);
       emit MakeJobSelectedRequest(job);
     }
   }

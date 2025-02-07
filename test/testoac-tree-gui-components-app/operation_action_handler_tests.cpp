@@ -426,4 +426,34 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobIsBroken)
   EXPECT_EQ(job_item.GetStatus(), expected_status);
 }
 
+//! Previously successfull job was broken by the user. Attempt to reload
+//! such job should lead to the change of its status from Success to SubmitFailure.
+TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobBecomeBroken)
+{
+  const RunnerStatus expected_status = RunnerStatus::kSucceeded;
+
+  LocalJobItem job_item;
+  job_item.SetStatus(expected_status);
+
+  auto operation_handler = CreateOperationHandler();
+
+  const QSignalSpy spy_selected_request(operation_handler.get(),
+                                        &OperationActionHandler::MakeJobSelectedRequest);
+
+  // job_item will be reported as selected
+  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
+  ON_CALL(m_mock_job_manager, SubmitJob(::testing::_))
+      .WillByDefault(::testing::Throw(RuntimeException("Submit failure")));
+
+  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
+  EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+  EXPECT_CALL(m_mock_job_manager, SubmitJob(&job_item));
+
+  EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
+
+  EXPECT_EQ(spy_selected_request.count(), 0);
+  EXPECT_EQ(job_item.GetStatus(), RunnerStatus::kSubmitFailure);
+}
+
 }  // namespace oac_tree_gui
