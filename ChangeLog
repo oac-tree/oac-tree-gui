@@ -1,5 +1,7 @@
 To the next Release:
 
+- Refactor procedure preamble update on variable/instruction insert and remove
+- Fix bug with broken add/removal of EPICS instructions/variables when undo framework is on
 - Introduce status for jobs that failed during submission
 - Refactor file based job submission and directly submit imported domain jobs
 - Implement overlay error messages on NodeEditor and XMLPanel failures
