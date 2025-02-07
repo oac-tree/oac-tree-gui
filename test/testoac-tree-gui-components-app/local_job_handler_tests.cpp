@@ -337,7 +337,9 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
   };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
-  EXPECT_EQ(spy_instruction_status.count(), 4);
+  auto predicate2 = [this, &job_handler, &spy_instruction_status]()
+  { return !job_handler.IsRunning() && spy_instruction_status.count() == 4; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 100));
 
   // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
   // var1
