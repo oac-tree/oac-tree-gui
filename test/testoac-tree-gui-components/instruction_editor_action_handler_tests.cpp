@@ -61,13 +61,11 @@ public:
   /**
    * @brief Creates action handler.
    *
-   * It is initialized with mock context pretending that the given procedure and instruction are
-   * selected by the user.
+   * @param selection Instruction which will be reported as user selection.
    */
-  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(ProcedureItem* procedure,
-                                                                      InstructionItem* instruction)
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* selection)
   {
-    return m_mock_context.CreateActionHandler(procedure, instruction);
+    return m_mock_context.CreateActionHandler(m_procedure, selection);
   }
 
   SequencerModel m_model;
@@ -102,7 +100,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
   // creating the context pretending that no procedures/instructions are selected
-  auto handler = CreateActionHandler(nullptr, nullptr);
+  auto handler = m_mock_context.CreateActionHandler(nullptr, nullptr);
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
@@ -113,7 +111,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
 //! Adding wait instruction.
 TEST_F(InstructionEditorActionHandlerTest, AddWait)
 {
-  auto handler = CreateActionHandler(m_procedure, nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
@@ -131,7 +129,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
 TEST_F(InstructionEditorActionHandlerTest, AddChoice)
 {
-  auto handler = CreateActionHandler(m_procedure, nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(domainconstants::kChoiceInstructionType);
@@ -153,7 +151,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   sequence->SetY(sequence_y);
 
   // creating action handler mimicking `sequence` instruction selected
-  auto handler = CreateActionHandler(m_procedure, sequence);
+  auto handler = CreateActionHandler(sequence);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
@@ -175,7 +173,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating action handler mimicking "no instruction selected"
-  auto handler = CreateActionHandler(m_procedure, nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
@@ -197,7 +195,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   auto sequence = m_model.InsertItem<SequenceItem>(repeat);
 
   // creating action handler mimicking `sequence` instruction selected
-  auto handler = CreateActionHandler(m_procedure, sequence);
+  auto handler = CreateActionHandler(sequence);
 
   EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
   EXPECT_FALSE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
@@ -221,7 +219,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   sequence->SetY(sequence_y);
 
   // creating action handler mimicking `sequence` instruction selected
-  auto handler = CreateActionHandler(m_procedure, sequence);
+  auto handler = CreateActionHandler(sequence);
 
   EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
   EXPECT_TRUE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
@@ -256,7 +254,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking `wait` instruction selected
-  auto handler = CreateActionHandler(m_procedure, wait);
+  auto handler = CreateActionHandler(wait);
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
@@ -269,7 +267,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
 TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 {
   // creating action handler mimicking no instruction selected
-  auto handler = CreateActionHandler(m_procedure, nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
@@ -283,12 +281,12 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelecte
   m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking no instruction selected
-  auto handler = CreateActionHandler(m_procedure, nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   EXPECT_FALSE(handler->CanRemoveInstruction());
 
   const QSignalSpy spy_selection_request(handler.get(),
-                                   &InstructionEditorActionHandler::SelectItemRequest);
+                                         &InstructionEditorActionHandler::SelectItemRequest);
 
   // nothing selected, remove request does nothing
   handler->OnRemoveInstructionRequest();
@@ -304,7 +302,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
   auto sequence1 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking sequence0 is selected
-  auto handler = CreateActionHandler(m_procedure, sequence0);
+  auto handler = CreateActionHandler(sequence0);
   EXPECT_TRUE(handler->CanRemoveInstruction());
 
   EXPECT_TRUE(handler->CanRemoveInstruction());
@@ -330,7 +328,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   auto wait2 = m_model.InsertItem<WaitItem>(sequence);
 
   // creating action handler mimicking wait2 is selected
-  auto handler = CreateActionHandler(m_procedure, wait2);
+  auto handler = CreateActionHandler(wait2);
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
@@ -356,7 +354,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   auto wait2 = m_model.InsertItem<WaitItem>(sequence);
 
   // creating action handler mimicking wait0 is selected
-  auto handler = CreateActionHandler(m_procedure, wait0);
+  auto handler = CreateActionHandler(wait0);
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
@@ -378,7 +376,7 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
 
   // pretending that sequence is selected
-  auto handler = CreateActionHandler(m_procedure, sequence);
+  auto handler = CreateActionHandler(sequence);
 
   // expecting warning callbacks complaining that sequence can't have AnyValueItem
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
@@ -410,7 +408,7 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
   ON_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue))
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
-  auto handler = CreateActionHandler(m_procedure, item);
+  auto handler = CreateActionHandler(item);
 
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue)).Times(1);
 
@@ -445,7 +443,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
   ON_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue))
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
-  auto handler = CreateActionHandler(m_procedure, item);
+  auto handler = CreateActionHandler(item);
 
   // expecting error callback.
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);

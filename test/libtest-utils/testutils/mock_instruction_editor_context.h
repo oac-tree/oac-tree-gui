@@ -53,7 +53,7 @@ public:
    * @param procedure The procedure which will be reported as selected by the user.
    * @param instruction The instruction which will be reported as selected by the user.
    */
-  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction);
+  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* selected_item);
 
   /**
    * @brief Creates action handler.
@@ -61,13 +61,14 @@ public:
    * It is initialized with mock context pretending that the given procedure and instruction are
    * selected by the user.
    */
-  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(ProcedureItem* procedure,
-                                                                      InstructionItem* instruction);
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
+      ProcedureItem* procedure, InstructionItem* selected_item);
 
   QMimeData* GetCopyResult() const;
 
   //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_copy_result;
+  InstructionItem* m_current_selection{nullptr};
 };
 
 }  // namespace oac_tree_gui::test

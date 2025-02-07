@@ -29,12 +29,14 @@ namespace oac_tree_gui::test
 {
 
 InstructionEditorContext MockInstructionEditorContext::CreateContext(ProcedureItem* procedure,
-                                                                     InstructionItem* instruction)
+                                                                     InstructionItem* selected_item)
 {
   InstructionEditorContext result;
 
+  m_current_selection = selected_item;
+
   result.selected_procedure = [this, procedure]() { return procedure; };
-  result.selected_instruction = [this, instruction]() { return instruction; };
+  result.selected_instruction = [this]() { return m_current_selection; };
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem* item)
   { return OnEditAnyvalue(item); };
@@ -50,12 +52,12 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(ProcedureIt
 }
 
 std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::CreateActionHandler(
-    ProcedureItem* procedure, InstructionItem* instruction)
+    ProcedureItem* procedure, InstructionItem* selected_item)
 {
-  return std::make_unique<InstructionEditorActionHandler>(CreateContext(procedure, instruction));
+  return std::make_unique<InstructionEditorActionHandler>(CreateContext(procedure, selected_item));
 }
 
-QMimeData *MockInstructionEditorContext::GetCopyResult() const
+QMimeData* MockInstructionEditorContext::GetCopyResult() const
 {
   return m_copy_result.get();
 }

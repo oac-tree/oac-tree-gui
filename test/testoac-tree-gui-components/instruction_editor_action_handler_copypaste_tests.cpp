@@ -57,16 +57,16 @@ public:
   }
 
   /**
-   * @brief Test helper to create context mimicking current InstructionEditor widget state.
+   * @brief Creates action handler.
    *
-   * @param instruction Currently selected instruction
+   * @param selection Instruction which will be reported as user selection.
    * @param current_mime The content of the clipboard.
    */
-  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* instruction,
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* selection,
                                                                       const QMimeData* current_mime)
   {
     ON_CALL(m_mock_context, OnGetMimeData()).WillByDefault(::testing::Return(current_mime));
-    return m_mock_context.CreateActionHandler(m_procedure, instruction);
+    return m_mock_context.CreateActionHandler(m_procedure, selection);
   }
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};

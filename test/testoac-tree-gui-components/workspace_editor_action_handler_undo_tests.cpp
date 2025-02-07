@@ -27,15 +27,12 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/test_helper.h>
-
-#include <sup/dto/anyvalue.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -51,7 +48,7 @@ namespace oac_tree_gui::test
 {
 
 /**
- * @brief Testing InstructionEditorActionHandler with focus on undo scenario.
+ * @brief Testing WorkspaceEditorActionHandler with focus on undo scenario.
  */
 class WorkspaceEditorActionHandlerUndoTest : public ::testing::Test
 {
@@ -59,8 +56,6 @@ public:
   WorkspaceEditorActionHandlerUndoTest()
   {
     m_procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
-
-    m_model.InsertItem<WorkspaceItem>();
   }
 
   WorkspaceItem* GetWorkspaceItem() const { return m_procedure_item->GetWorkspace(); }
@@ -94,20 +89,17 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
 
   auto handler = CreateActionHandler(nullptr);
 
-  // adding variable
   handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
-  // undo
   m_model.GetCommandStack()->Undo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
 
-  // redo
   m_model.GetCommandStack()->Redo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 }
 
-//! Checking that preamble is correctly updated.
+//! Checking that preamble is correctly updated when EPICS variables is added and removed.
 TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 {
   if (!IsSequencerPluginEpicsAvailable())
@@ -119,7 +111,6 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  // adding variable
   handler->OnAddVariableRequest(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
@@ -128,13 +119,13 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 
   // removing variable
   m_mock_context.m_current_selection = GetWorkspaceItem()->GetVariables().at(0);
-
   handler->OnRemoveVariableRequest();
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
   EXPECT_TRUE(GetPluginPaths().empty());
 }
 
+//! Checking that preamble is correctly updated when EPICS variables is added and removed.
 TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 {
   if (!IsSequencerPluginEpicsAvailable())
@@ -147,18 +138,15 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  // adding variable
   handler->OnAddVariableRequest(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
 
-  // undo
   m_model.GetCommandStack()->Undo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  // redo
   m_model.GetCommandStack()->Redo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));

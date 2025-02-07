@@ -78,7 +78,7 @@ public:
   bool CanInsertInto(const std::string& item_type) const;
 
   /**
-   * @brief Inserts new instruction of given type after the current selection.
+   * @brief Inserts new instruction of given type into the current selection.
    *
    * @param item_type The item type name.
    */
