@@ -36,31 +36,36 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent_object)
-    : QObject(parent_object), m_add_variable_menu(CreateInsertAfterMenu())
+WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorActionHandler *handler,
+                                               QObject *parent_object)
+    : QObject(parent_object)
+    , m_action_handler(handler)
+    , m_add_variable_menu(CreateInsertAfterMenu())
 {
   SetupActions();
 }
+
+WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 
 QList<QAction *> WorkspaceEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
 
-void WorkspaceEditorActions::SetupMenu(QMenu &menu, WorkspaceEditorActionHandler *handler)
+void WorkspaceEditorActions::SetupMenu(QMenu &menu)
 {
   menu.addAction(m_add_variable_action);
   menu.addAction(m_remove_variable_action);
-  m_remove_variable_action->setEnabled(handler->CanRemoveVariable());
+  m_remove_variable_action->setEnabled(m_action_handler->CanRemoveVariable());
 
   menu.addSeparator();
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
   menu.addAction(m_paste_action);
 
-  m_cut_action->setEnabled(handler->CanCut());
-  m_copy_action->setEnabled(handler->CanCopy());
-  m_paste_action->setEnabled(handler->CanPaste());
+  m_cut_action->setEnabled(m_action_handler->CanCut());
+  m_copy_action->setEnabled(m_action_handler->CanCopy());
+  m_paste_action->setEnabled(m_action_handler->CanPaste());
 }
 
 void WorkspaceEditorActions::RegisterActionsForContext(const sup::gui::AppContext &context)
@@ -69,8 +74,6 @@ void WorkspaceEditorActions::RegisterActionsForContext(const sup::gui::AppContex
   sup::gui::AppAddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
   sup::gui::AppAddActionToCommand(m_paste_action, sup::gui::constants::kPasteCommandId, context);
 }
-
-WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 
 void WorkspaceEditorActions::SetupActions()
 {
@@ -87,7 +90,7 @@ void WorkspaceEditorActions::SetupActions()
   m_remove_variable_action->setIcon(FindIcon("beaker-remove-outline"));
   m_remove_variable_action->setToolTip("Remove currently selected variable");
   connect(m_remove_variable_action, &QAction::triggered, this,
-          &WorkspaceEditorActions::RemoveVariableRequest);
+          [this]() { m_action_handler->RemoveVariable(); });
 
   // remove action (own toolbar version to avoid disabled status)
   m_remove_variable_toolbar_action = new sup::gui::ProxyAction(this);
@@ -97,19 +100,19 @@ void WorkspaceEditorActions::SetupActions()
   m_cut_action = new QAction("Cut", this);
   m_cut_action->setShortcut(QKeySequence::Cut);
   m_cut_action->setToolTip("Cuts selected variable");
-  connect(m_cut_action, &QAction::triggered, this, &WorkspaceEditorActions::CutRequest);
+  connect(m_cut_action, &QAction::triggered, this, [this]() { m_action_handler->Cut(); });
   m_action_map.Add(ActionKey::kCut, m_cut_action);
 
   m_copy_action = new QAction("Copy", this);
   m_copy_action->setShortcut(QKeySequence::Copy);
   m_copy_action->setToolTip("Copies selected variable");
-  connect(m_copy_action, &QAction::triggered, this, &WorkspaceEditorActions::CopyRequest);
+  connect(m_copy_action, &QAction::triggered, this, [this]() { m_action_handler->Copy(); });
   m_action_map.Add(ActionKey::kCopy, m_copy_action);
 
   m_paste_action = new QAction("Paste", this);
   m_paste_action->setShortcut(QKeySequence::Paste);
   m_paste_action->setToolTip("Paste selected variable after current variable");
-  connect(m_paste_action, &QAction::triggered, this, &WorkspaceEditorActions::PasteRequest);
+  connect(m_paste_action, &QAction::triggered, this, [this]() { m_action_handler->Paste(); });
   m_action_map.Add(ActionKey::kPaste, m_paste_action);
 }
 
@@ -119,11 +122,10 @@ std::unique_ptr<QMenu> WorkspaceEditorActions::CreateInsertAfterMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = mvvm::utils::GetStringList(oac_tree_gui::GetDomainVariableNames());
-  for (const auto &name : names)
+  for (const auto &name : oac_tree_gui::GetDomainVariableNames())
   {
-    auto action = result->addAction(name);
-    auto on_action = [this, name]() { emit AddVariableRequest(name); };
+    auto action = result->addAction(QString::fromStdString(name));
+    auto on_action = [this, name]() { m_action_handler->AddVariable(name); };
     connect(action, &QAction::triggered, this, on_action);
   }
 

@@ -60,7 +60,8 @@ public:
     kTotalCount
   };
 
-  explicit WorkspaceEditorActions(QObject* parent_object = nullptr);
+  explicit WorkspaceEditorActions(WorkspaceEditorActionHandler* handler,
+                                  QObject* parent_object = nullptr);
   ~WorkspaceEditorActions() override;
 
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
@@ -68,7 +69,7 @@ public:
   /**
    * @brief Setup cut/copy/paste actions in given menu.
    */
-  void SetupMenu(QMenu& menu, WorkspaceEditorActionHandler* handler);
+  void SetupMenu(QMenu& menu);
 
   /**
    * @brief Registers actions for given context.
@@ -77,17 +78,12 @@ public:
    */
   void RegisterActionsForContext(const sup::gui::AppContext& context);
 
-signals:
-  void AddVariableRequest(const QString& name);
-  void RemoveVariableRequest();
-  void CutRequest();
-  void CopyRequest();
-  void PasteRequest();
-
 private:
   void SetupActions();
 
   std::unique_ptr<QMenu> CreateInsertAfterMenu();
+
+  WorkspaceEditorActionHandler* m_action_handler{nullptr};
 
   std::unique_ptr<QMenu> m_add_variable_menu;
   sup::gui::ActionMenu* m_add_variable_action{nullptr};
