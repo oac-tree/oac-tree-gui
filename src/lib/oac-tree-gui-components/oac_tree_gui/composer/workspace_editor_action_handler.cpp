@@ -40,9 +40,8 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context,
-                                                           QObject *parent_object)
-    : QObject(parent_object), m_context(std::move(context))
+WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context)
+    : m_context(std::move(context))
 {
   if (!m_context.selected_workspace)
   {
@@ -250,7 +249,6 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
   {
     SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
   }
-
 }
 
 void WorkspaceEditorActionHandler::SendMessage(const std::string &text,

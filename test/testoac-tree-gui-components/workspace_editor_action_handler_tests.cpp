@@ -73,20 +73,20 @@ TEST_F(WorkspaceEditorActionHandlerTest, InitialState)
 
   {  // no callbacks defined
     const WorkspaceEditorContext context{};
-    EXPECT_THROW(WorkspaceEditorActionHandler(context, nullptr), RuntimeException);
+    EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
   {  // item callback undefined
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
-    EXPECT_THROW(WorkspaceEditorActionHandler(context, nullptr), RuntimeException);
+    EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
   {  // select_notify callback is undefined
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
     context.selected_item_callback = []() -> mvvm::SessionItem* { return nullptr; };
-    EXPECT_THROW(WorkspaceEditorActionHandler(context, nullptr), RuntimeException);
+    EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
   {  // send_message callback is undefined
@@ -94,7 +94,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, InitialState)
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
     context.selected_item_callback = []() -> mvvm::SessionItem* { return nullptr; };
     context.select_notify = [](auto item) {};
-    EXPECT_THROW(WorkspaceEditorActionHandler(context, nullptr), RuntimeException);
+    EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 }
 
