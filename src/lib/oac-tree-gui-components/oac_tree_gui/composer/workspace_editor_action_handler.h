@@ -20,6 +20,7 @@
 #ifndef OAC_TREE_GUI_COMPOSER_WORKSPACE_EDITOR_ACTION_HANDLER_H_
 #define OAC_TREE_GUI_COMPOSER_WORKSPACE_EDITOR_ACTION_HANDLER_H_
 
+#include <oac_tree_gui/composer/i_workspace_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_context.h>
 
 #include <QObject>
@@ -39,7 +40,7 @@ class WorkspaceItem;
  * @brief The WorkspaceEditorActionHandler class logic to add/remove/edit variables, and to prform
  * standard cut/copy/paster operations.
  */
-class WorkspaceEditorActionHandler : public QObject
+class WorkspaceEditorActionHandler : public QObject, public IWorkspaceEditorActionHandler
 {
   Q_OBJECT
 
@@ -47,52 +48,52 @@ public:
   explicit WorkspaceEditorActionHandler(WorkspaceEditorContext context,
                                         QObject* parent_object = nullptr);
 
-  void OnAddVariableRequest(const std::string& variable_type_name);
+  void AddVariable(const std::string& variable_type_name) override;
 
   /**
    * @brief Checks if variable can be removed.
    */
-  bool CanRemoveVariable() const;
+  bool CanRemoveVariable() const override;
 
   /**
    * @brief Removes currently selected variable.
    */
-  void OnRemoveVariableRequest();
+  void RemoveVariable() override;
 
   /**
    * @brief Calls external AnyValue editor for currently selected attribute, if possible.
    */
-  void OnEditAnyValueRequest();
+  void EditAnyValue() override;
 
   /**
    * @brief Checks if cut operation is possible.
    */
-  bool CanCut() const;
+  bool CanCut() const override;
 
   /**
    * @brief Cut selected variable.
    */
-  void Cut();
+  void Cut() override;
 
   /**
    * @brief Checks if copy operation is possible.
    */
-  bool CanCopy() const;
+  bool CanCopy() const override;
 
   /**
    * @brief Copy selected variable.
    */
-  void Copy();
+  void Copy() override;
 
   /**
    * @brief Checks if paste operation is possible.
    */
-  bool CanPaste() const;
+  bool CanPaste() const override;
 
   /**
    * @brief Paste new variable after currently selected variable.
    */
-  void Paste();
+  void Paste() override;
 
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);

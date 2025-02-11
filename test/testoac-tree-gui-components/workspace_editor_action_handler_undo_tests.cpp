@@ -89,7 +89,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
 
   auto handler = CreateActionHandler(nullptr);
 
-  handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
+  handler->AddVariable(LocalVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   m_model.GetCommandStack()->Undo();
@@ -111,7 +111,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  handler->OnAddVariableRequest(PvAccessServerVariableItem::GetStaticType());
+  handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // we get plugin name in preamble
@@ -119,7 +119,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 
   // removing variable
   m_mock_context.m_current_selection = GetWorkspaceItem()->GetVariables().at(0);
-  handler->OnRemoveVariableRequest();
+  handler->RemoveVariable();
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
   EXPECT_TRUE(GetPluginPaths().empty());
@@ -138,7 +138,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  handler->OnAddVariableRequest(PvAccessServerVariableItem::GetStaticType());
+  handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));

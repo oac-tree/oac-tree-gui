@@ -43,7 +43,7 @@ public:
   /**
    * @brief Adds variable to the workspace.
    */
-  virtual void AddVariableRequest(const std::string& variable_type_name) = 0;
+  virtual void AddVariable(const std::string& variable_type_name) = 0;
 
   /**
    * @brief Checks if variable can be removed.

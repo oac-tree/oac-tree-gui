@@ -130,9 +130,9 @@ void WorkspaceEditor::SetupConnections()
 {
   // propagate variable related requests from WorkspaceEditorActions to WorkspaceEditorActionHandler
   connect(m_editor_actions, &WorkspaceEditorActions::AddVariableRequest, m_action_handler,
-          [this](auto str) { m_action_handler->OnAddVariableRequest(str.toStdString()); });
+          [this](auto str) { m_action_handler->AddVariable(str.toStdString()); });
   connect(m_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, m_action_handler,
-          &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
+          &WorkspaceEditorActionHandler::RemoveVariable);
   connect(m_editor_actions, &WorkspaceEditorActions::CutRequest, m_action_handler,
           &WorkspaceEditorActionHandler::Cut);
   connect(m_editor_actions, &WorkspaceEditorActions::CopyRequest, m_action_handler,
@@ -141,7 +141,7 @@ void WorkspaceEditor::SetupConnections()
           &WorkspaceEditorActionHandler::Paste);
 
   connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, m_action_handler,
-          &WorkspaceEditorActionHandler::OnEditAnyValueRequest);
+          &WorkspaceEditorActionHandler::EditAnyValue);
 
   // make inserted item selected, and tree branch expanded
   auto on_select_variable_request = [this](auto item)

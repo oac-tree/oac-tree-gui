@@ -60,7 +60,7 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
   }
 }
 
-void WorkspaceEditorActionHandler::OnAddVariableRequest(const std::string &variable_type_name)
+void WorkspaceEditorActionHandler::AddVariable(const std::string &variable_type_name)
 {
   if (!GetWorkspaceItem())
   {
@@ -80,7 +80,7 @@ bool WorkspaceEditorActionHandler::CanRemoveVariable() const
   return has_model && has_selection;
 }
 
-void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
+void WorkspaceEditorActionHandler::RemoveVariable()
 {
   if (auto selected = GetSelectedVariable(); selected)
   {
@@ -99,7 +99,7 @@ void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
   }
 }
 
-void WorkspaceEditorActionHandler::OnEditAnyValueRequest()
+void WorkspaceEditorActionHandler::EditAnyValue()
 {
   auto selected_item = m_context.selected_item_callback();
   if (!selected_item)
@@ -151,7 +151,7 @@ void WorkspaceEditorActionHandler::Cut()
   }
 
   Copy();
-  OnRemoveVariableRequest();
+  RemoveVariable();
 }
 
 bool WorkspaceEditorActionHandler::CanCopy() const

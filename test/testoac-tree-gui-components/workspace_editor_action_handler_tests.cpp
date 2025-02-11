@@ -97,7 +97,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // adding variable
-  EXPECT_NO_THROW(handler->OnAddVariableRequest(LocalVariableItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->AddVariable(LocalVariableItem::GetStaticType()));
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
@@ -108,7 +108,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
   // adding variable
-  handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
+  handler->AddVariable(LocalVariableItem::GetStaticType());
 
   // validating default values of just inserted variable
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
@@ -129,7 +129,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
 
   // adding another variable
-  handler->OnAddVariableRequest(LocalVariableItem::GetStaticType());
+  handler->AddVariable(LocalVariableItem::GetStaticType());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 2);
   auto inserted_variable1 =
@@ -138,8 +138,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
 
   // attempty to add unknown variable type
-  EXPECT_THROW(handler->OnAddVariableRequest("non-existing-type"),
-               sup::oac_tree::InvalidOperationException);
+  EXPECT_THROW(handler->AddVariable("non-existing-type"), sup::oac_tree::InvalidOperationException);
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
@@ -153,7 +152,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
   EXPECT_FALSE(handler->CanRemoveVariable());
 
   // adding variable
-  handler->OnAddVariableRequest(FileVariableItem::GetStaticType());
+  handler->AddVariable(FileVariableItem::GetStaticType());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -171,7 +170,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   auto handler = CreateActionHandler(var0);
 
   // adding variable
-  handler->OnAddVariableRequest(FileVariableItem::GetStaticType());
+  handler->AddVariable(FileVariableItem::GetStaticType());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -190,7 +189,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
 
   // removing variable
   EXPECT_TRUE(handler->CanRemoveVariable());
-  handler->OnRemoveVariableRequest();
+  handler->RemoveVariable();
 
   EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
 }
@@ -204,7 +203,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
   auto handler = CreateActionHandler(nullptr);
 
   // removing variable
-  handler->OnRemoveVariableRequest();
+  handler->RemoveVariable();
 
   // still same amount of variables
   EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
@@ -220,7 +219,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // removing variable
-  handler->OnEditAnyValueRequest();
+  handler->EditAnyValue();
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem. Initially we have
@@ -249,7 +248,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
 
   // editing request
-  handler->OnEditAnyValueRequest();
+  handler->EditAnyValue();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -283,7 +282,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
 
   // editing request
-  handler->OnEditAnyValueRequest();
+  handler->EditAnyValue();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -316,7 +315,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
 
   // editing request
-  handler->OnEditAnyValueRequest();
+  handler->EditAnyValue();
 
   // checking that previous AnyValueItem has been removed
   EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
@@ -347,7 +346,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
 
   // editing request
-  handler->OnEditAnyValueRequest();
+  handler->EditAnyValue();
 
   // checking that previous item remained the same
   EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
@@ -378,7 +377,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(::testing::_)).Times(1);
 
   // editing request
-  handler->OnEditAnyValueRequest();
+  handler->EditAnyValue();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -398,7 +397,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   auto handler = CreateActionHandler(nullptr);
 
   // adding variable
-  handler->OnAddVariableRequest(domainconstants::kSystemClockVariableType);
+  handler->AddVariable(domainconstants::kSystemClockVariableType);
 
   // validating default values of just inserted variable
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
