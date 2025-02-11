@@ -4,6 +4,7 @@ target_sources(${library_name} PRIVATE
   attribute_editor_action_handler.cpp
   attribute_editor_action_handler.h
   attribute_editor_context.h
+  i_workspace_editor_action_handler.h
   instruction_editor_action_handler.cpp
   instruction_editor_action_handler.h
   instruction_editor_context.h
