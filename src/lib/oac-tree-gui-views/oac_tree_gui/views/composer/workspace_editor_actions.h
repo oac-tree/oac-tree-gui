@@ -37,7 +37,7 @@ class AppContext;
 namespace oac_tree_gui
 {
 
-class WorkspaceEditorActionHandler;
+class IWorkspaceEditorActionHandler;
 
 /**
  * @brief The WorkspaceEditorActions class holds collection of Qt actions to construct variables in
@@ -60,7 +60,7 @@ public:
     kTotalCount
   };
 
-  explicit WorkspaceEditorActions(WorkspaceEditorActionHandler* handler,
+  explicit WorkspaceEditorActions(IWorkspaceEditorActionHandler* handler,
                                   QObject* parent_object = nullptr);
   ~WorkspaceEditorActions() override;
 
@@ -83,7 +83,7 @@ private:
 
   std::unique_ptr<QMenu> CreateInsertAfterMenu();
 
-  WorkspaceEditorActionHandler* m_action_handler{nullptr};
+  IWorkspaceEditorActionHandler* m_action_handler{nullptr};
 
   std::unique_ptr<QMenu> m_add_variable_menu;
   sup::gui::ActionMenu* m_add_variable_action{nullptr};

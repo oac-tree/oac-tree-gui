@@ -19,7 +19,7 @@
 
 #include "workspace_editor_actions.h"
 
-#include <oac_tree_gui/composer/workspace_editor_action_handler.h>
+#include <oac_tree_gui/composer/i_workspace_editor_action_handler.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 
@@ -36,7 +36,7 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorActionHandler *handler,
+WorkspaceEditorActions::WorkspaceEditorActions(IWorkspaceEditorActionHandler *handler,
                                                QObject *parent_object)
     : QObject(parent_object)
     , m_action_handler(handler)
