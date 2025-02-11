@@ -101,6 +101,7 @@ private:
   mvvm::ISessionModel* GetModel() const;
   WorkspaceItem* GetWorkspaceItem() const;
   VariableItem* GetSelectedVariable() const;
+  void SelectNotify(mvvm::SessionItem* item);
 
   const QMimeData* GetMimeData() const;
 

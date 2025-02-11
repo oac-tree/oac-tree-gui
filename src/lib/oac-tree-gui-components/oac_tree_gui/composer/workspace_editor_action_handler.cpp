@@ -98,7 +98,7 @@ void WorkspaceEditorActionHandler::RemoveVariable()
     if (next_to_select)
     {
       // suggest to select something else instead of just deleted variable
-      emit SelectItemRequest(next_to_select);
+      SelectNotify(next_to_select);
     }
   }
 }
@@ -210,6 +210,11 @@ VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
   return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
 }
 
+void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item)
+{
+  emit SelectItemRequest(item);
+}
+
 const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const
 {
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
@@ -243,7 +248,7 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
     UpdateProcedurePreamble();
     mvvm::utils::EndMacro(*GetModel());
 
-    emit SelectItemRequest(inserted);
+    SelectNotify(inserted);
   }
   catch (const std::exception &ex)
   {
