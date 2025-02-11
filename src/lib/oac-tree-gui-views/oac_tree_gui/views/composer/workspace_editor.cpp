@@ -129,22 +129,8 @@ std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceEditor::CreateProvider(
 
 void WorkspaceEditor::SetupConnections()
 {
-  connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, m_action_handler.get(),
-          &WorkspaceEditorActionHandler::EditAnyValue);
-
-  // make inserted item selected, and tree branch expanded
-  auto on_select_variable_request = [this](auto item)
-  {
-    m_component_provider->SetSelectedItem(item);
-
-    auto index_of_inserted = m_component_provider->GetViewIndexes(item);
-    if (!index_of_inserted.empty())
-    {
-      m_tree_view->setExpanded(index_of_inserted.front(), true);
-    }
-  };
-  connect(m_action_handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest, this,
-          on_select_variable_request);
+  connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, this,
+          [this]() { m_action_handler->EditAnyValue(); });
 }
 
 WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()

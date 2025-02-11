@@ -212,7 +212,7 @@ VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
 
 void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item)
 {
-  emit SelectItemRequest(item);
+  m_context.select_notify(item);
 }
 
 const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const

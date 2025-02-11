@@ -32,7 +32,6 @@
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/test/test_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -89,6 +88,8 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
 
   auto handler = CreateActionHandler(nullptr);
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+
   handler->AddVariable(LocalVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
@@ -110,6 +111,8 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
   auto handler = CreateActionHandler(nullptr);
 
   EXPECT_TRUE(GetPluginPaths().empty());
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
 
   handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
@@ -137,6 +140,8 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
   auto handler = CreateActionHandler(nullptr);
 
   EXPECT_TRUE(GetPluginPaths().empty());
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
 
   handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);

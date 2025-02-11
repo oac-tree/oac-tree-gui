@@ -29,8 +29,6 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/test/test_helper.h>
-
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/exceptions.h>
 
@@ -38,7 +36,6 @@
 #include <testutils/mock_workspace_editor_context.h>
 
 #include <QMimeData>
-#include <QSignalSpy>
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
@@ -113,7 +110,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   // pretending that nothing is selected
   auto handler = CreateActionHandler(nullptr);
 
-  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // adding variable
   handler->AddVariable(LocalVariableItem::GetStaticType());
@@ -126,7 +125,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
 
   // just inserted variable was selected
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
+  EXPECT_EQ(reported_item, inserted_variable0);
 
   // it has scalar AnyValueItem on board by default
   auto anyvalue_item =
@@ -135,6 +134,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
 
   // adding another variable
   handler->AddVariable(LocalVariableItem::GetStaticType());
@@ -403,6 +404,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
 
   // pretending that nothing is selected
   auto handler = CreateActionHandler(nullptr);
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
 
   // adding variable
   handler->AddVariable(domainconstants::kSystemClockVariableType);

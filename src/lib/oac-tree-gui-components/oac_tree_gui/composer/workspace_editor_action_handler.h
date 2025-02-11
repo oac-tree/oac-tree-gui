@@ -23,8 +23,6 @@
 #include <oac_tree_gui/composer/i_workspace_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_context.h>
 
-#include <QObject>
-
 namespace mvvm
 {
 class ISessionModel;
@@ -40,10 +38,8 @@ class WorkspaceItem;
  * @brief The WorkspaceEditorActionHandler class logic to add/remove/edit variables, and to prform
  * standard cut/copy/paster operations.
  */
-class WorkspaceEditorActionHandler : public QObject, public IWorkspaceEditorActionHandler
+class WorkspaceEditorActionHandler : public IWorkspaceEditorActionHandler
 {
-  Q_OBJECT
-
 public:
   explicit WorkspaceEditorActionHandler(WorkspaceEditorContext context);
 
@@ -93,9 +89,6 @@ public:
    * @brief Paste new variable after currently selected variable.
    */
   void Paste() override;
-
-signals:
-  void SelectItemRequest(mvvm::SessionItem* item);
 
 private:
   mvvm::ISessionModel* GetModel() const;

@@ -31,8 +31,6 @@
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/test/test_helper.h>
-
 #include <sup/dto/anyvalue.h>
 
 #include <gmock/gmock.h>
@@ -41,7 +39,6 @@
 #include <testutils/test_utils.h>
 
 #include <QMimeData>
-#include <QSignalSpy>
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
@@ -153,9 +150,10 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   // nothing is selected, copied item in a buffer
   auto handler = CreateActionHandler(nullptr, mime_data.get());
 
-  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
-
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   EXPECT_TRUE(handler->CanPaste());
   handler->Paste();
@@ -166,7 +164,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
 
   // validating request to select just inserted item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
+  EXPECT_EQ(reported_item, inserted_variable0);
 }
 
 //! Testing Paste for the following scenario: two variables in a model, the first one is selected,
@@ -182,8 +180,10 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 
   // creating action handler mimicking `var0` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler(var0, mime_data.get());
-  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
   EXPECT_TRUE(handler->CanPaste());
@@ -196,7 +196,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
 
   // validating request to select just inserted item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
+  EXPECT_EQ(reported_item, inserted_variable0);
 }
 
 //! Cut selected variable.
@@ -207,8 +207,10 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
 
   // creating action handler mimicking `var0` instruction selected
   auto handler = CreateActionHandler(var0, nullptr);
-  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
 
@@ -219,7 +221,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), var1);
+  EXPECT_EQ(reported_item, var1);
 }
 
 }  // namespace oac_tree_gui::test
