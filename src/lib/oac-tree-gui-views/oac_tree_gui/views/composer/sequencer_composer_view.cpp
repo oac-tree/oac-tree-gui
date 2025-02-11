@@ -23,6 +23,7 @@
 #include "composer_widget_panel.h"
 #include "sequencer_composer_actions.h"
 
+#include <oac_tree_gui/composer/procedure_editor.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -52,6 +53,7 @@ namespace oac_tree_gui
 {
 SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
     : QWidget(parent_widget)
+    , m_procedure_editor(std::make_unique<ProcedureEditor>())
     , m_composer_panel(new ComposerPanel)
     , m_central_panel(new ComposerWidgetPanel(kCentralPanel, ComposerWidgetPanel::kInstructionTree))
     , m_right_panel(new ComposerWidgetPanel(kRightPanel, ComposerWidgetPanel::kWorkspace))
@@ -122,6 +124,7 @@ void SequencerComposerView::SetupConnections()
     m_central_panel->SetProcedure(procedure_item);
     m_right_panel->SetProcedure(procedure_item);
     m_composer_actions->SetProcedure(procedure_item);
+    m_procedure_editor->SetProcedure(procedure_item);
   };
   connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);
 

@@ -22,6 +22,8 @@
 
 #include <QWidget>
 
+#include <memory>
+
 namespace sup::gui
 {
 class CustomSplitter;
@@ -37,6 +39,7 @@ class ComposerPanel;
 class ProcedureItem;
 class SequencerComposerActions;
 class ProcedurePluginController;
+class ProcedureEditor;
 
 /**
  * @brief The SequencerComposerView class is a main widget for model editing.
@@ -69,6 +72,8 @@ private:
 
   QAction* m_toggle_left_sidebar{nullptr};
   QAction* m_toggle_right_sidebar{nullptr};
+
+  std::unique_ptr<ProcedureEditor> m_procedure_editor;
 
   ComposerPanel* m_composer_panel{nullptr};
   ComposerWidgetPanel* m_central_panel{nullptr};
