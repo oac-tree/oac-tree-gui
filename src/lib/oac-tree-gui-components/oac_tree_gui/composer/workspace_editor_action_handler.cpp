@@ -54,6 +54,11 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
     throw RuntimeException("Absent callback to retrieve currently selected item");
   }
 
+  if (!m_context.select_notify)
+  {
+    throw RuntimeException("Absent callback to request item selection");
+  }
+
   if (!m_context.send_message)
   {
     throw RuntimeException("Absent callback to send messages");

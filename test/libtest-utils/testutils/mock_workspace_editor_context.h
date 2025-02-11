@@ -42,6 +42,7 @@ namespace oac_tree_gui::test
 class MockWorkspaceEditorContext
 {
 public:
+  MOCK_METHOD(void, SelectRequest, (mvvm::SessionItem*), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(AnyValueDialogResult, OnEditAnyvalue, (const sup::gui::AnyValueItem*), ());
   MOCK_METHOD(const QMimeData*, OnGetMimeData, (), ());

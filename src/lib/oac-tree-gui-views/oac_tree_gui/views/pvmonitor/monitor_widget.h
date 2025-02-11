@@ -39,7 +39,6 @@ namespace oac_tree_gui
 class MonitorModel;
 class WorkspaceSynchronizer;
 class WorkspaceEditorActionHandler;
-class WorkspaceEditorContext;
 class WorkspaceItem;
 class MonitorWidgetActions;
 class WorkspaceEditorWidget;

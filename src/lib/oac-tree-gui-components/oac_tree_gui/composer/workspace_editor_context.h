@@ -54,6 +54,9 @@ struct WorkspaceEditorContext
   //!< callback to retrieve currently selected item
   std::function<mvvm::SessionItem*()> selected_item_callback;
 
+  //!< callback to notify the user that the item was changed
+  std::function<void(mvvm::SessionItem*)> select_notify;
+
   //!< callback to report an error
   std::function<void(const sup::gui::MessageEvent&)> send_message;
 

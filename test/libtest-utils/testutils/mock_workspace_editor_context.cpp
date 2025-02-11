@@ -37,6 +37,7 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(WorkspaceItem *
 
   result.selected_workspace = [this, workspace]() { return workspace; };
   result.selected_item_callback = [this]() { return m_current_selection; };
+  result.select_notify = [this](auto item) { SelectRequest(item); };
   result.send_message = [this](const auto &message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem *item)
   { return OnEditAnyvalue(item); };

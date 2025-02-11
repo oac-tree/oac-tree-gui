@@ -167,6 +167,17 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
 
   result.selected_item_callback = [this]() { return GetSelectedItem(); };
 
+  result.select_notify = [this](auto item)
+  {
+    m_component_provider->SetSelectedItem(item);
+
+    auto index_of_inserted = m_component_provider->GetViewIndexes(item);
+    if (!index_of_inserted.empty())
+    {
+      m_tree_view->setExpanded(index_of_inserted.front(), true);
+    }
+  };
+
   auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.send_message = send_message_callback;
 
