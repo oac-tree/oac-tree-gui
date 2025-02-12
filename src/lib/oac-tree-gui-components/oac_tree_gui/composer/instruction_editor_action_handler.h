@@ -20,6 +20,7 @@
 #ifndef OAC_TREE_GUI_COMPOSER_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 #define OAC_TREE_GUI_COMPOSER_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 
+#include <oac_tree_gui/composer/i_instruction_editor_action_handler.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
 
 #include <QObject>
@@ -49,7 +50,7 @@ class InstructionContainerItem;
  * The handler uses callbacks to retrieve current selection and thus deduce where to insert and what
  * to remove.
  */
-class InstructionEditorActionHandler : public QObject
+class InstructionEditorActionHandler : public QObject, public IInstructionEditorActionHandler
 {
   Q_OBJECT
 
@@ -58,107 +59,39 @@ public:
                                           QObject* parent_object = nullptr);
   ~InstructionEditorActionHandler() override;
 
-  /**
-   * @brief Checks if SessionItem of the given type can be inserted after currently selected
-   * instruction.
-   */
-  bool CanInsertInstructionAfter(const std::string& item_type) const;
+  bool CanInsertInstructionAfter(const std::string& item_type) const override;
 
-  /**
-   * @brief Inserts new instruction of given type after the current selection.
-   *
-   * @param item_type The item type name.
-   */
-  void InsertInstructionAfter(const std::string& item_type);
+  void InsertInstructionAfter(const std::string& item_type) override;
 
-  /**
-   * @brief Checks if SessionItem of the given type can be inserted into currently selected
-   * instruction.
-   */
-  bool CanInsertInstructionInto(const std::string& item_type) const;
+  bool CanInsertInstructionInto(const std::string& item_type) const override;
 
-  /**
-   * @brief Inserts new instruction of given type into the current selection.
-   *
-   * @param item_type The item type name.
-   */
-  void InsertInstructionInto(const std::string& item_type);
+  void InsertInstructionInto(const std::string& item_type) override;
 
-  /**
-   * @brief Checks if currently selected instruction can be removed.
-   */
-  bool CanRemoveInstruction() const;
+  bool CanRemoveInstruction() const override;
 
-  /**
-   * @brief Removes currently selected instruction.
-   */
-  void RemoveInstruction();
+  void RemoveInstruction() override;
 
-  /**
-   * @brief Moves instruction up (decrement index) in parent's container.
-   *
-   * @details The method doesn't change a parent, so will do nothing for the first child.
-   */
-  void MoveUp();
+  void MoveUp() override;
 
-  /**
-   * @brief Moves instruction down (increment index) in parent's container.
-   *
-   * @details The method doesn't change a parent, so will do nothing for the last child.
-   */
-  void MoveDown();
+  void MoveDown() override;
 
-  /**
-   * @brief Cals external dialog for AnyValueItem editing.
-   */
-  void OnEditAnyvalueRequest();
+  void OnEditAnyvalueRequest() override;
 
-  /**
-   * @brief Checks if cut operation is possible.
-   */
-  bool CanCut() const;
+  bool CanCut() const override;
 
-  /**
-   * @brief Cut selected instruction.
-   */
-  void Cut();
+  void Cut() override;
 
-  /**
-   * @brief Checks if copy operation is possible.
-   */
-  bool CanCopy() const;
+  bool CanCopy() const override;
 
-  /**
-   * @brief Copy selected instruction.
-   */
-  void Copy();
+  void Copy() override;
 
-  /**
-   * @brief Checks if paste-after operation is possible.
-   *
-   * Paste-after operation inserts new item after the current selection.
-   */
-  bool CanPasteAfter() const;
+  bool CanPasteAfter() const override;
 
-  /**
-   * @brief Paste new instruction after the current selection.
-   */
-  void PasteAfter();
+  void PasteAfter() override;
 
-  /**
-   * @brief Checks if paste-into operation is possible.
-   *
-   * Paste-into operation appends a new child to existing children of currently selected
-   * instruction.
-   */
-  bool CanPasteInto() const;
+  bool CanPasteInto() const override;
 
-  /**
-   * @brief Paste instruction as a child into currently selected instruction.
-   *
-   * It will be appended to already existing children.
-   */
-  void PasteInto();
+  void PasteInto() override;
 
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);
