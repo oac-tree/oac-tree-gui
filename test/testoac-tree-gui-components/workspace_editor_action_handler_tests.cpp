@@ -64,29 +64,30 @@ public:
   test::MockWorkspaceEditorContext m_mock_context;
 };
 
-TEST_F(WorkspaceEditorActionHandlerTest, InitialState)
+//! Checking exceptions depending on how many callbacks left undefined.
+TEST_F(WorkspaceEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialised)
 {
   EXPECT_TRUE(m_model.GetWorkspaceItem()->GetVariables().empty());
 
-  {  // no callbacks defined
+  {
     const WorkspaceEditorContext context{};
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
-  {  // item callback undefined
+  {
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
-  {  // select_notify callback is undefined
+  {
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
     context.selected_item_callback = []() -> mvvm::SessionItem* { return nullptr; };
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
-  {  // send_message callback is undefined
+  {
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
     context.selected_item_callback = []() -> mvvm::SessionItem* { return nullptr; };

@@ -83,6 +83,11 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
     throw RuntimeException("Callback to get selected instruction is not defined");
   }
 
+  if (!m_context.select_notify)
+  {
+    throw RuntimeException("Callback to notify about selection is not defined");
+  }
+
   if (!m_context.send_message)
   {
     throw RuntimeException("Callback to send messages is not set");

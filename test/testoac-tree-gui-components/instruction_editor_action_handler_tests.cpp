@@ -73,25 +73,32 @@ public:
   test::MockInstructionEditorContext m_mock_context;
 };
 
+//! Checking exceptions depending on how many callbacks left undefined.
 TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialised)
 {
-  {  // no callbacks defined
+  {
     const InstructionEditorContext context{};
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
-  {  // only procedure callback defined
-    const InstructionEditorContext context{[]() -> ProcedureItem* { return nullptr; }};
+  {
+    InstructionEditorContext context;
+    context.selected_procedure = []() -> ProcedureItem* { return nullptr; };
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
-  {  // only instruction callback defined
-    const InstructionEditorContext context{{}, []() -> InstructionItem* { return nullptr; }};
+  {
+    InstructionEditorContext context;
+    context.selected_procedure = []() -> ProcedureItem* { return nullptr; };
+    context.selected_instruction = []() -> InstructionItem* { return nullptr; };
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
-  {  // only message callback defined
-    const InstructionEditorContext context{{}, {}, [](const auto& message) { (void)message; }};
+  {
+    InstructionEditorContext context;
+    context.selected_procedure = []() -> ProcedureItem* { return nullptr; };
+    context.selected_instruction = []() -> InstructionItem* { return nullptr; };
+    context.select_notify = [](auto item) {};
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 }
