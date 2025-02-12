@@ -25,7 +25,7 @@
 
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/views/nodeeditor/node_editor.h>
+#include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
 #include <sup/gui/widgets/item_stack_widget.h>
 
@@ -50,7 +50,7 @@ ComposerWidgetPanel::ComposerWidgetPanel(const QString& settings_group_name, Wid
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(
           new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
-    , m_node_editor(new NodeEditor)
+    , m_node_editor(new NodeEditorWidget)
     , m_xml_panel(new XmlPanel)
     , m_stack_widget(new sup::gui::ItemStackWidget(GetStackWidgetSettingsKey(settings_group_name)))
 {
@@ -143,7 +143,7 @@ void ComposerWidgetPanel::SetupConnections()
       m_block_selection_notification = false;
     }
   };
-  connect(m_node_editor, &NodeEditor::InstructionSelected, this, on_scene_instruction_selected);
+  connect(m_node_editor, &NodeEditorWidget::InstructionSelected, this, on_scene_instruction_selected);
 
   auto on_tree_instruction_selected = [this](auto instruction)
   {

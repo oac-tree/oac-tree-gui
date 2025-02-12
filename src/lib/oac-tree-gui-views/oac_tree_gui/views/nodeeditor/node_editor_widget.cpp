@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "node_editor.h"
+#include "node_editor_widget.h"
 
 #include "graphics_view.h"
 #include "node_editor_actions.h"
@@ -38,7 +38,6 @@
 
 #include <mvvm/model/application_model.h>
 
-#include <QDebug>
 #include <QPointF>
 #include <QVBoxLayout>
 #include <QWidgetAction>
@@ -56,7 +55,7 @@ QList<QAction *> GetToolBarActions(oac_tree_gui::NodeEditorActions *actions)
 namespace oac_tree_gui
 {
 
-NodeEditor::NodeEditor(QWidget *parent_widget)
+NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_actions(new NodeEditorActions)
     , m_graphics_scene(new GraphicsScene([this](const auto &message)
@@ -84,9 +83,9 @@ NodeEditor::NodeEditor(QWidget *parent_widget)
   addActions(GetToolBarActions(m_actions));
 }
 
-NodeEditor::~NodeEditor() = default;
+NodeEditorWidget::~NodeEditorWidget() = default;
 
-void NodeEditor::SetProcedure(ProcedureItem *procedure)
+void NodeEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
   if (m_procedure_item == procedure)
   {
@@ -106,12 +105,12 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
   SetupController();
 }
 
-std::vector<InstructionItem *> NodeEditor::GetSelectedInstructions() const
+std::vector<InstructionItem *> NodeEditorWidget::GetSelectedInstructions() const
 {
   return m_graphics_scene->GetSelectedInstructions();
 }
 
-void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions) const
+void NodeEditorWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions) const
 {
   if (isHidden())
   {
@@ -123,7 +122,7 @@ void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &i
 
 //! Provides node alignment on graphics view.
 
-void NodeEditor::OnAlignRequest()
+void NodeEditorWidget::OnAlignRequest()
 {
   auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
   if (selected.size() != 1)
@@ -136,7 +135,7 @@ void NodeEditor::OnAlignRequest()
   algorithm::AlignInstructionTreeWalker(view->pos(), item);
 }
 
-void NodeEditor::SetupController()
+void NodeEditorWidget::SetupController()
 {
   if (!m_procedure_item || !isVisible())
   {
@@ -166,7 +165,7 @@ void NodeEditor::SetupController()
   }
 }
 
-void NodeEditor::SetupConnections()
+void NodeEditorWidget::SetupConnections()
 {
   // Propagates delete request from the graphics view to the scene.
   connect(m_graphics_view, &GraphicsView::deleteSelectedRequest, m_graphics_scene,
@@ -174,7 +173,7 @@ void NodeEditor::SetupConnections()
 
   // Forward instruction selection from graphics scene
   connect(m_graphics_scene, &GraphicsScene::InstructionSelected, this,
-          &NodeEditor::InstructionSelected);
+          &NodeEditorWidget::InstructionSelected);
 
   // Propagate selection request from GraphicsScene to GraphicsView
   connect(m_graphics_scene, &GraphicsScene::selectionModeChangeRequest, m_graphics_view,
@@ -192,7 +191,7 @@ void NodeEditor::SetupConnections()
           &GraphicsView::onChangeScale);
 
   // alignment request from a toolbar
-  connect(m_actions, &NodeEditorActions::alignSelectedRequest, this, &NodeEditor::OnAlignRequest);
+  connect(m_actions, &NodeEditorActions::alignSelectedRequest, this, &NodeEditorWidget::OnAlignRequest);
 
   // Propagate selection mode change from GraphicsView to a toolBar
   connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_actions,

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_H_
-#define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_H_
+#ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
+#define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 
 #include <sup/gui/core/message_handler_interface.h>
 
@@ -39,6 +39,7 @@ class ApplicationModel;
 
 namespace oac_tree_gui
 {
+
 class GraphicsView;
 class GraphicsScene;
 class GraphicsSceneController;
@@ -46,15 +47,18 @@ class InstructionItem;
 class NodeEditorActions;
 class ProcedureItem;
 
-//! NodeEditor widget (central part of SequencerComposerView).
-
-class NodeEditor : public QWidget
+/**
+ * @brief The NodeEditorWidget class is a main widget with node editor for sequence composition.
+ *
+ * It is central part of SequencerComposerView.
+ */
+class NodeEditorWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit NodeEditor(QWidget* parent_widget = nullptr);
-  ~NodeEditor() override;
+  explicit NodeEditorWidget(QWidget* parent_widget = nullptr);
+  ~NodeEditorWidget() override;
 
   void SetProcedure(ProcedureItem* procedure);
 
@@ -82,4 +86,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_H_
+#endif  // OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_

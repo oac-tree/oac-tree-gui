@@ -35,7 +35,7 @@ class InstructionItem;
 class ProcedureItem;
 class SequencerModel;
 class WorkspaceEditorWidget;
-class NodeEditor;
+class NodeEditorWidget;
 class XmlPanel;
 
 /**
@@ -101,7 +101,7 @@ private:
 
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
-  NodeEditor* m_node_editor{nullptr};
+  NodeEditorWidget* m_node_editor{nullptr};
   XmlPanel* m_xml_panel{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 
