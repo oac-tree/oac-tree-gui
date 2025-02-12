@@ -44,6 +44,7 @@ namespace oac_tree_gui
 
 class WorkspaceItem;
 class WorkspaceEditor;
+class WorkspaceViewComponentProvider;
 
 /**
  * @brief The WorkspaceEditorWidget class is intended for editing of workspace variables.
@@ -62,11 +63,18 @@ public:
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
-  mvvm::SessionItem* GetSelectedItem() const;
-
 private:
+  void SetupConnections();
   void SetupTree();
   void AdjustTreeAppearance();
+
+  /**
+   * @brief Creates tree component provider for given type of workspace presentation.
+   *
+   * Tree will be equipped with the model, generating either variable tree, or variable table.
+   */
+  std::unique_ptr<WorkspaceViewComponentProvider> CreateProvider(
+      WorkspacePresentationType presentation) const;
 
   /**
    * @brief Summons custom tree context menu to modify attributes.
@@ -77,6 +85,7 @@ private:
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
   QLineEdit* m_line_edit{nullptr};
   WorkspaceEditor* m_editor{nullptr};

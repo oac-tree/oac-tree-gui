@@ -24,11 +24,7 @@
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_context.h>
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/operation/workspace_view_component_provider.h>
-#include <oac_tree_gui/viewmodel/workspace_editor_viewmodel.h>
-#include <oac_tree_gui/viewmodel/workspace_operation_viewmodel.h>
 #include <oac_tree_gui/views/composer/workspace_editor_actions.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 
@@ -39,16 +35,14 @@
 #include <QGuiApplication>
 #include <QMenu>
 #include <QMimeData>
-#include <QTreeView>
 
 namespace oac_tree_gui
 {
 
-WorkspaceEditor::WorkspaceEditor(WorkspacePresentationType presentation, QTreeView *tree,
+WorkspaceEditor::WorkspaceEditor(const std::function<mvvm::SessionItem *()> &selected_item,
                                  QWidget *parent_widget)
     : QObject(parent_widget)
-    , m_tree_view(tree)
-    , m_component_provider(CreateProvider(presentation))
+    , m_get_selected_item(selected_item)
     , m_action_handler(
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
     , m_editor_actions(new WorkspaceEditorActions(m_action_handler.get(), this))
@@ -66,12 +60,6 @@ WorkspaceEditor::~WorkspaceEditor() = default;
 void WorkspaceEditor::SetWorkspaceItem(WorkspaceItem *workspace)
 {
   m_workspace_item = workspace;
-  m_component_provider->SetItem(workspace);
-}
-
-mvvm::SessionItem *WorkspaceEditor::GetSelectedItem() const
-{
-  return m_component_provider->GetSelectedItem();
 }
 
 QList<QAction *> WorkspaceEditor::GetToolBarActions() const
@@ -84,11 +72,6 @@ QList<QAction *> WorkspaceEditor::GetToolBarActions() const
   return editor_toolbar_actions + attribute_toolbar_actions;
 }
 
-void WorkspaceEditor::SetFilterPattern(const QString &pattern)
-{
-  m_component_provider->SetFilterPattern(pattern);
-}
-
 void WorkspaceEditor::SetupContextMenu(QMenu &menu)
 {
   // populate cut/copy/paste menu
@@ -98,33 +81,6 @@ void WorkspaceEditor::SetupContextMenu(QMenu &menu)
   menu.addSeparator();
   auto attribute_menu = menu.addMenu("Modify attribute");
   m_attribute_actions->SetupMenu(*attribute_menu);
-}
-
-std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceEditor::CreateProvider(
-    WorkspacePresentationType presentation) const
-{
-  std::unique_ptr<WorkspaceViewComponentProvider> result;
-
-  if (presentation == WorkspacePresentationType::kWorkspaceTree)
-  {
-    result = std::make_unique<WorkspaceViewComponentProvider>(
-        std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view);
-  }
-  else if (presentation == WorkspacePresentationType::kWorkspaceTechTree)
-  {
-    result = std::make_unique<WorkspaceViewComponentProvider>(
-        std::make_unique<WorkspaceEditorViewModel>(nullptr, /*show_hidded*/ true), m_tree_view);
-  }
-  else if (presentation == WorkspacePresentationType::kWorkspaceTable)
-  {
-    result = std::make_unique<WorkspaceViewComponentProvider>(
-        std::make_unique<WorkspaceOperationViewModel>(nullptr), m_tree_view);
-  }
-  else
-  {
-    throw RuntimeException("Unknown presentation");
-  }
-  return result;
 }
 
 void WorkspaceEditor::SetupConnections()
@@ -140,18 +96,9 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   auto selected_workspace_callback = [this]() { return m_workspace_item; };
   result.selected_workspace = selected_workspace_callback;
 
-  result.selected_item_callback = [this]() { return GetSelectedItem(); };
+  result.selected_item_callback = m_get_selected_item;
 
-  result.select_notify = [this](auto item)
-  {
-    m_component_provider->SetSelectedItem(item);
-
-    auto index_of_inserted = m_component_provider->GetViewIndexes(item);
-    if (!index_of_inserted.empty())
-    {
-      m_tree_view->setExpanded(index_of_inserted.front(), true);
-    }
-  };
+  result.select_notify = [this](auto item) { emit ItemSelectRequest(item); };
 
   auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.send_message = send_message_callback;
@@ -168,7 +115,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
 
 AttributeEditorContext WorkspaceEditor::CreateAttributeEditorContext()
 {
-  return {[this]() { return m_component_provider->GetSelectedItem(); }};
+  return {m_get_selected_item};
 }
 
 }  // namespace oac_tree_gui

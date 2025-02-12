@@ -21,6 +21,12 @@
 
 #include "workspace_editor.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/operation/workspace_view_component_provider.h>
+#include <oac_tree_gui/viewmodel/workspace_editor_viewmodel.h>
+#include <oac_tree_gui/viewmodel/workspace_operation_viewmodel.h>
+
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -51,8 +57,10 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentat
     , m_tree_view(new QTreeView)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
+    , m_component_provider(CreateProvider(presentation))
     , m_line_edit(new QLineEdit)
-    , m_editor(new WorkspaceEditor(presentation, m_tree_view, this))
+    , m_editor(
+          new WorkspaceEditor([this]() { return m_component_provider->GetSelectedItem(); }, this))
 {
   setWindowTitle("Workspace");
 
@@ -76,8 +84,10 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentat
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 
-  auto on_text = [this]() { m_editor->SetFilterPattern(m_line_edit->text()); };
+  auto on_text = [this]() { m_component_provider->SetFilterPattern(m_line_edit->text()); };
   connect(m_line_edit, &QLineEdit::textChanged, this, on_text);
+
+  SetupConnections();
 }
 
 WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
@@ -97,9 +107,19 @@ void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
   }
 }
 
-mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
+void WorkspaceEditorWidget::SetupConnections()
 {
-  return m_editor->GetSelectedItem();
+  auto on_item_select_request = [this](auto item)
+  {
+    m_component_provider->SetSelectedItem(item);
+
+    auto index_of_inserted = m_component_provider->GetViewIndexes(item);
+    if (!index_of_inserted.empty())
+    {
+      m_tree_view->setExpanded(index_of_inserted.front(), true);
+    }
+  };
+  connect(m_editor, &WorkspaceEditor::ItemSelectRequest, this, on_item_select_request);
 }
 
 void WorkspaceEditorWidget::SetupTree()
@@ -119,6 +139,33 @@ void WorkspaceEditorWidget::AdjustTreeAppearance()
   m_custom_header->AdjustColumnsWidth();
 }
 
+std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceEditorWidget::CreateProvider(
+    WorkspacePresentationType presentation) const
+{
+  std::unique_ptr<WorkspaceViewComponentProvider> result;
+
+  if (presentation == WorkspacePresentationType::kWorkspaceTree)
+  {
+    result = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view);
+  }
+  else if (presentation == WorkspacePresentationType::kWorkspaceTechTree)
+  {
+    result = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<WorkspaceEditorViewModel>(nullptr, /*show_hidded*/ true), m_tree_view);
+  }
+  else if (presentation == WorkspacePresentationType::kWorkspaceTable)
+  {
+    result = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<WorkspaceOperationViewModel>(nullptr), m_tree_view);
+  }
+  else
+  {
+    throw RuntimeException("Unknown presentation");
+  }
+  return result;
+}
+
 void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
 {
   QMenu menu;
@@ -135,6 +182,7 @@ void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
 void WorkspaceEditorWidget::SetWorkspaceItemIntern(WorkspaceItem *workspace_item)
 {
   m_editor->SetWorkspaceItem(workspace_item);
+  m_component_provider->SetItem(workspace_item);
 
   if (workspace_item)
   {

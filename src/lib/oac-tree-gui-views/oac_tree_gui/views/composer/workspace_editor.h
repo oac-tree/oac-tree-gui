@@ -20,13 +20,9 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_H_
 
-#include <oac_tree_gui/components/component_types.h>
-
 #include <QObject>
 #include <memory>
 
-class QTreeView;
-class QWidget;
 class QAction;
 class QMenu;
 
@@ -45,48 +41,37 @@ class WorkspaceEditorActions;
 class AttributeEditorContext;
 class AttributeEditorActions;
 class AttributeEditorActionHandler;
-class WorkspaceViewComponentProvider;
 
 /**
  * @brief The WorkspaceEditor class contains all logic for editing of workspace variables.
  */
 class WorkspaceEditor : public QObject
 {
+  Q_OBJECT
+
 public:
-  explicit WorkspaceEditor(WorkspacePresentationType presentation, QTreeView* tree,
+  explicit WorkspaceEditor(const std::function<mvvm::SessionItem*()>& selected_item,
                            QWidget* parent_widget = nullptr);
   ~WorkspaceEditor() override;
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
-  mvvm::SessionItem* GetSelectedItem() const;
-
   QList<QAction*> GetToolBarActions() const;
-
-  void SetFilterPattern(const QString& pattern);
 
   /**
    * @brief Setups tree context menu with all available actions.
    */
   void SetupContextMenu(QMenu& menu);
 
+signals:
+  void ItemSelectRequest(mvvm::SessionItem*);
+
 private:
-  /**
-   * @brief Creates tree component provider for given type of workspace presentation.
-   *
-   * Tree will be equipped with the model, generating either variable tree, or variable table.
-   */
-  std::unique_ptr<WorkspaceViewComponentProvider> CreateProvider(
-      WorkspacePresentationType presentation) const;
-
   void SetupConnections();
-
   WorkspaceEditorContext CreateWorkspaceEditorContext();
-
   AttributeEditorContext CreateAttributeEditorContext();
 
-  QTreeView* m_tree_view{nullptr};
-  std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
+  std::function<mvvm::SessionItem*()> m_get_selected_item;
   WorkspaceItem* m_workspace_item{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
   WorkspaceEditorActions* m_editor_actions{nullptr};
