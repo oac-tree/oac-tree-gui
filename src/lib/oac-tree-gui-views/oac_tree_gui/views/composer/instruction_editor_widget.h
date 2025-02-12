@@ -93,7 +93,7 @@ private:
   sup::gui::CustomSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};
 
-  InstructionEditorActionHandler* m_action_handler{nullptr};
+  std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
   InstructionEditorActions* m_editor_actions{nullptr};
 
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};

@@ -76,8 +76,9 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
     , m_attribute_editor(new InstructionAttributeEditor)
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
-    , m_action_handler(new InstructionEditorActionHandler(CreateInstructionEditorContext(), this))
-    , m_editor_actions(new InstructionEditorActions(m_action_handler, this))
+    , m_action_handler(
+          std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
+    , m_editor_actions(new InstructionEditorActions(m_action_handler.get(), this))
     , m_tree_view_style(new CustomTreeViewStyle(style()))
 {
   setWindowTitle("Instruction Tree");
@@ -214,8 +215,8 @@ void InstructionEditorWidget::SetupConnections()
           on_selected_instruction_changed);
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
-  connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest, m_action_handler,
-          &InstructionEditorActionHandler::OnEditAnyvalueRequest);
+  connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest, this,
+          [this]() { m_action_handler->OnEditAnyvalueRequest(); });
 
   // propagate selection request from action handler component provider
   auto on_make_instruction_selected_request = [this](auto item)
@@ -227,7 +228,7 @@ void InstructionEditorWidget::SetupConnections()
       m_tree_view->setExpanded(index_of_inserted.front(), true);
     }
   };
-  connect(m_action_handler, &InstructionEditorActionHandler::SelectItemRequest, this,
+  connect(m_action_handler.get(), &InstructionEditorActionHandler::SelectItemRequest, this,
           on_make_instruction_selected_request);
 
   // selection change from tree view to update actions

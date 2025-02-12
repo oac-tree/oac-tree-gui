@@ -55,8 +55,7 @@ class InstructionEditorActionHandler : public QObject, public IInstructionEditor
   Q_OBJECT
 
 public:
-  explicit InstructionEditorActionHandler(InstructionEditorContext context,
-                                          QObject* parent_object = nullptr);
+  explicit InstructionEditorActionHandler(InstructionEditorContext context);
   ~InstructionEditorActionHandler() override;
 
   bool CanInsertInstructionAfter(const std::string& item_type) const override;

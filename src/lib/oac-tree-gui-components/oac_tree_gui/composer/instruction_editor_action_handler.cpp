@@ -69,9 +69,8 @@ const std::string kFailedActionTitle = "Invalid Operation";
 namespace oac_tree_gui
 {
 
-InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context,
-                                                               QObject *parent_object)
-    : QObject(parent_object), m_context(std::move(context))
+InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context)
+    : m_context(std::move(context))
 {
   if (!m_context.selected_procedure)
   {
