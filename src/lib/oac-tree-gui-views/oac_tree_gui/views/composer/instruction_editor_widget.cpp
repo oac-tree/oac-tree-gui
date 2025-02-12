@@ -218,19 +218,6 @@ void InstructionEditorWidget::SetupConnections()
   connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest, this,
           [this]() { m_action_handler->OnEditAnyvalueRequest(); });
 
-  // propagate selection request from action handler component provider
-  auto on_make_instruction_selected_request = [this](auto item)
-  {
-    m_component_provider->SetSelectedItem(item);
-    auto index_of_inserted = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
-    if (!index_of_inserted.empty())
-    {
-      m_tree_view->setExpanded(index_of_inserted.front(), true);
-    }
-  };
-  connect(m_action_handler.get(), &InstructionEditorActionHandler::SelectItemRequest, this,
-          on_make_instruction_selected_request);
-
   // selection change from tree view to update actions
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { m_editor_actions->UpdateEnabledStatus(); });
@@ -241,6 +228,18 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   InstructionEditorContext result;
   result.selected_procedure = [this]() { return m_procedure; };
   result.selected_instruction = [this]() { return GetSelectedInstruction(); };
+
+  auto on_select_request = [this](auto item)
+  {
+    m_component_provider->SetSelectedItem(item);
+    auto index_of_inserted = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
+    if (!index_of_inserted.empty())
+    {
+      m_tree_view->setExpanded(index_of_inserted.front(), true);
+    }
+  };
+  result.select_notify = on_select_request;
+
   result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.edit_anyvalue = CreateAnyValueDialogCallback(this);
   result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };

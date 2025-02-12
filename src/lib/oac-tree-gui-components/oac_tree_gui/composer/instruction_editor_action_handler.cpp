@@ -301,10 +301,9 @@ InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContaine
   return procedure ? procedure->GetInstructionContainer() : nullptr;
 }
 
-void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem *item)
+void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
 {
-  emit SelectItemRequest(item);
-  // m_context.select_notify(item);
+  m_context.select_notify(item);
 }
 
 void InstructionEditorActionHandler::SendMessage(const std::string &text,

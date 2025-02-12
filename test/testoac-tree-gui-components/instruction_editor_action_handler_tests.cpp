@@ -33,14 +33,12 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/test/test_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_instruction_editor_context.h>
 
 #include <QMimeData>
-#include <QSignalSpy>
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
@@ -120,8 +118,9 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
 {
   auto handler = CreateActionHandler(nullptr);
 
-  QSignalSpy spy_selection_request(handler.get(),
-                                   &InstructionEditorActionHandler::SelectItemRequest);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // appending instruction to the container
   handler->InsertInstructionAfter(WaitItem::GetStaticType());
@@ -130,7 +129,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
 
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
+  EXPECT_EQ(reported_item, instructions.at(0));
 }
 
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
@@ -292,14 +291,11 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelecte
 
   EXPECT_FALSE(handler->CanRemoveInstruction());
 
-  const QSignalSpy spy_selection_request(handler.get(),
-                                         &InstructionEditorActionHandler::SelectItemRequest);
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(0);
 
   // nothing selected, remove request does nothing
   handler->RemoveInstruction();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
-
-  EXPECT_EQ(spy_selection_request.count(), 0);
 }
 
 TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
@@ -314,15 +310,16 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
 
   EXPECT_TRUE(handler->CanRemoveInstruction());
 
-  QSignalSpy spy_selection_request(handler.get(),
-                                   &InstructionEditorActionHandler::SelectItemRequest);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // nothing selected, remove request does nothing
   handler->RemoveInstruction();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), sequence1);
+  EXPECT_EQ(reported_item, sequence1);
 }
 
 //! Move selected instruction up.
@@ -337,8 +334,9 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   // creating action handler mimicking wait2 is selected
   auto handler = CreateActionHandler(wait2);
 
-  QSignalSpy spy_selection_request(handler.get(),
-                                   &InstructionEditorActionHandler::SelectItemRequest);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // moving selected item up
   handler->MoveUp();
@@ -348,7 +346,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   EXPECT_EQ(sequence->GetInstructions(), expected);
 
   // checking the request to select just moved item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait2);
+  EXPECT_EQ(reported_item, wait2);
 }
 
 //! Move selected instruction up.
@@ -363,8 +361,9 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   // creating action handler mimicking wait0 is selected
   auto handler = CreateActionHandler(wait0);
 
-  QSignalSpy spy_selection_request(handler.get(),
-                                   &InstructionEditorActionHandler::SelectItemRequest);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // moving selected item up
   handler->MoveDown();
@@ -374,7 +373,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   EXPECT_EQ(sequence->GetInstructions(), expected);
 
   // checking the request to select just moved item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait0);
+  EXPECT_EQ(reported_item, wait0);
 }
 
 //! Attempt to edit AnyValueItem when nothing appropriate is selected.

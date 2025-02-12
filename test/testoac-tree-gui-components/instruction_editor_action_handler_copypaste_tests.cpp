@@ -207,8 +207,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   // nothing is selected, copied item in a buffer
   auto handler = CreateActionHandler(nullptr, mime_data.get());
 
-  QSignalSpy spy_selection_request(handler.get(),
-                                   &InstructionEditorActionHandler::SelectItemRequest);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   EXPECT_TRUE(handler->CanPasteAfter());
   handler->PasteAfter();
@@ -219,7 +220,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // validating request to select just inserted item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
+  EXPECT_EQ(reported_item, instructions.at(0));
 }
 
 //! Testing PasteAfter for the following scenario: sequence in a model, selected, pasting new
@@ -344,8 +345,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   // wait0 is selected
   auto handler = CreateActionHandler(wait0, nullptr);
 
-  QSignalSpy spy_selection_request(handler.get(),
-                                   &InstructionEditorActionHandler::SelectItemRequest);
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
 
@@ -356,7 +358,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   ASSERT_EQ(instructions.size(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait1);
+  EXPECT_EQ(reported_item, wait1);
 }
 
 }  // namespace oac_tree_gui::test

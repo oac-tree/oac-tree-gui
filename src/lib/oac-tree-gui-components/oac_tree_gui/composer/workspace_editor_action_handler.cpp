@@ -210,7 +210,7 @@ VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
   return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
 }
 
-void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item)
+void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
 {
   m_context.select_notify(item);
 }

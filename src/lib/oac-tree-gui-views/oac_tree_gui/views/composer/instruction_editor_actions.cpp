@@ -126,8 +126,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_move_up_action->setToolTip(
       "Move currently selected instruction up, works within the same parent");
   m_action_map.Add(ActionKey::kMoveUp, m_move_up_action);
-  connect(m_move_up_action, &QAction::triggered, this,
-          [this]() { m_action_handler->MoveUp(); });
+  connect(m_move_up_action, &QAction::triggered, this, [this]() { m_action_handler->MoveUp(); });
 
   m_move_down_action = new QAction("Move Down", this);
   m_move_down_action->setIcon(FindIcon("arrow-down-thin-circle-outline"));
@@ -209,12 +208,12 @@ void InstructionEditorActions::AboutToShowInsertMenu()
       }
       if (insert_into)
       {
-        connect(action, &QAction::triggered, m_action_handler,
+        connect(action, &QAction::triggered,
                 [this, name]() { m_action_handler->InsertInstructionInto(name); });
       }
       else
       {
-        connect(action, &QAction::triggered, m_action_handler,
+        connect(action, &QAction::triggered,
                 [this, name]() { m_action_handler->InsertInstructionAfter(name); });
       }
     };

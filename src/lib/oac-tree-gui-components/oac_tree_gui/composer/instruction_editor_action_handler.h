@@ -23,8 +23,6 @@
 #include <oac_tree_gui/composer/i_instruction_editor_action_handler.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
 
-#include <QObject>
-
 namespace mvvm
 {
 class SessionItem;
@@ -50,10 +48,8 @@ class InstructionContainerItem;
  * The handler uses callbacks to retrieve current selection and thus deduce where to insert and what
  * to remove.
  */
-class InstructionEditorActionHandler : public QObject, public IInstructionEditorActionHandler
+class InstructionEditorActionHandler : public IInstructionEditorActionHandler
 {
-  Q_OBJECT
-
 public:
   explicit InstructionEditorActionHandler(InstructionEditorContext context);
   ~InstructionEditorActionHandler() override;
@@ -92,14 +88,11 @@ public:
 
   void PasteInto() override;
 
-signals:
-  void SelectItemRequest(mvvm::SessionItem* item);
-
 private:
   InstructionItem* GetSelectedInstruction() const;
   mvvm::ISessionModel* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;
-  void SelectNotify(mvvm::SessionItem* item);
+  void SelectNotify(mvvm::SessionItem* item) const;
 
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {}) const;
