@@ -97,9 +97,10 @@ signals:
 
 private:
   InstructionItem* GetSelectedInstruction() const;
-
   mvvm::ISessionModel* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;
+  void SelectNotify(mvvm::SessionItem* item);
+
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {}) const;
   void SendMessage(const sup::gui::MessageEvent& message_event) const;

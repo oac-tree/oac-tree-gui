@@ -155,7 +155,7 @@ void InstructionEditorActionHandler::RemoveInstruction()
   if (next_to_select)
   {
     // suggest to select something else instead of just deleted instruction
-    emit SelectItemRequest(next_to_select);
+    SelectNotify(next_to_select);
   }
 }
 
@@ -165,7 +165,7 @@ void InstructionEditorActionHandler::MoveUp()
   {
     if (mvvm::utils::MoveUp(*instruction))
     {
-      emit SelectItemRequest(instruction);
+      SelectNotify(instruction);
     }
   }
 }
@@ -176,7 +176,7 @@ void InstructionEditorActionHandler::MoveDown()
   {
     if (mvvm::utils::MoveDown(*instruction))
     {
-      emit SelectItemRequest(instruction);
+      SelectNotify(instruction);
     }
   }
 }
@@ -299,6 +299,12 @@ InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContaine
 {
   auto procedure = m_context.selected_procedure();
   return procedure ? procedure->GetInstructionContainer() : nullptr;
+}
+
+void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem *item)
+{
+  emit SelectItemRequest(item);
+  // m_context.select_notify(item);
 }
 
 void InstructionEditorActionHandler::SendMessage(const std::string &text,
@@ -442,7 +448,7 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
   try
   {
     result = GetModel()->InsertItem(std::move(item), parent, index);
-    emit SelectItemRequest(result);
+    SelectNotify(result);
   }
   catch (const std::exception &ex)
   {
