@@ -26,7 +26,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The WorkspaceEditorActionHandler class is an interface to implement all operations with
+ * @brief The IWorkspaceEditorActionHandler class is an interface to implement all operations with
  * sequencer workspace variables.
  */
 class IWorkspaceEditorActionHandler

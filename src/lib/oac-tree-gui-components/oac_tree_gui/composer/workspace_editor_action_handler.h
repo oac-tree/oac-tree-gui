@@ -45,49 +45,22 @@ public:
 
   void AddVariable(const std::string& variable_type_name) override;
 
-  /**
-   * @brief Checks if variable can be removed.
-   */
   bool CanRemoveVariable() const override;
 
-  /**
-   * @brief Removes currently selected variable.
-   */
   void RemoveVariable() override;
 
-  /**
-   * @brief Calls external AnyValue editor for currently selected attribute, if possible.
-   */
   void EditAnyValue() override;
 
-  /**
-   * @brief Checks if cut operation is possible.
-   */
   bool CanCut() const override;
 
-  /**
-   * @brief Cut selected variable.
-   */
   void Cut() override;
 
-  /**
-   * @brief Checks if copy operation is possible.
-   */
   bool CanCopy() const override;
 
-  /**
-   * @brief Copy selected variable.
-   */
   void Copy() override;
 
-  /**
-   * @brief Checks if paste operation is possible.
-   */
   bool CanPaste() const override;
 
-  /**
-   * @brief Paste new variable after currently selected variable.
-   */
   void Paste() override;
 
 private:
@@ -98,14 +71,8 @@ private:
 
   const QMimeData* GetMimeData() const;
 
-  /**
-   * @brief Updates procedure's plugin name preamble required for the current variable list.
-   */
   void UpdateProcedurePreamble();
 
-  /**
-   * @brief Inserts variable after currently selected item.
-   */
   void InsertVariableAfterCurrentSelection(std::unique_ptr<mvvm::SessionItem> variable_item);
 
   void SendMessage(const std::string& text, const std::string& informative = {},
