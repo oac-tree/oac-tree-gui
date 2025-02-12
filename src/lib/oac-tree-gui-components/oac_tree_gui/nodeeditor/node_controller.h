@@ -31,13 +31,15 @@ class QGraphicsSceneMouseEvent;
 
 namespace oac_tree_gui
 {
+
 class NodeConnection;
 class NodePort;
 class ConnectableView;
 
-//! The main controller of NodeEditor machinery. Listens to mouse events of the graphics scene,
-//! updates connections between ports.
-
+/**
+ * @brief The NodeController class assists GraphicsScene in establishing a connection between two
+ * ports.
+ */
 class NodeController : public QObject
 {
   Q_OBJECT
@@ -47,21 +49,24 @@ public:
 
   bool eventFilter(QObject* object, QEvent* event) override;
 
-  NodePort* findPort(const QPointF& pos);
-
 signals:
   void connectionRequest(oac_tree_gui::ConnectableView* childView,
                          oac_tree_gui::ConnectableView* parentView);
   void selectionModeChangeRequest(int);
 
 private:
-  bool processMousePress(QGraphicsSceneMouseEvent* event);
-  bool processMouseMove(QGraphicsSceneMouseEvent* event);
-  bool processMouseRelease(QGraphicsSceneMouseEvent* event);
-  void resetConnection();
+  /**
+   * @brief Finds NodePort around given coordinate.
+   */
+  NodePort* FindPort(const QPointF& pos);
+
+  bool ProcessMousePress(QGraphicsSceneMouseEvent* event);
+  bool ProcessMouseMove(QGraphicsSceneMouseEvent* event);
+  bool ProcessMouseRelease(QGraphicsSceneMouseEvent* event);
+  void ResetConnection();
 
   QGraphicsScene* m_scene{nullptr};
-  NodeConnection* m_conn{nullptr};  //! Currently processed connection.
+  NodeConnection* m_current_connection{nullptr};
 };
 
 }  // namespace oac_tree_gui

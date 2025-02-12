@@ -30,8 +30,8 @@
 
 namespace
 {
-const bool event_was_handled = true;
-const bool event_was_ignored = false;
+const bool kEventWasHandled = true;
+const bool kEventWasIgnored = false;
 }  // namespace
 
 namespace oac_tree_gui
@@ -50,24 +50,22 @@ bool NodeController::eventFilter(QObject* object, QEvent* event)
   {
     if (event->type() == QEvent::GraphicsSceneMousePress)
     {
-      isProcessedEvent = processMousePress(mouseEvent);
+      isProcessedEvent = ProcessMousePress(mouseEvent);
     }
     else if (event->type() == QEvent::GraphicsSceneMouseMove)
     {
-      isProcessedEvent = processMouseMove(mouseEvent);
+      isProcessedEvent = ProcessMouseMove(mouseEvent);
     }
     else if (event->type() == QEvent::GraphicsSceneMouseRelease)
     {
-      isProcessedEvent = processMouseRelease(mouseEvent);
+      isProcessedEvent = ProcessMouseRelease(mouseEvent);
     }
   }
 
-  return isProcessedEvent ? event_was_handled : QObject::eventFilter(object, event);
+  return isProcessedEvent ? kEventWasHandled : QObject::eventFilter(object, event);
 }
 
-//! Finds NodePort around given coordinate.
-
-NodePort* NodeController::findPort(const QPointF& pos)
+NodePort* NodeController::FindPort(const QPointF& pos)
 {
   QRectF area(0, 0, 4, 4);
   area.moveCenter(pos);
@@ -82,69 +80,69 @@ NodePort* NodeController::findPort(const QPointF& pos)
   return nullptr;
 }
 
-bool NodeController::processMousePress(QGraphicsSceneMouseEvent* event)
+bool NodeController::ProcessMousePress(QGraphicsSceneMouseEvent* event)
 {
-  if (!m_conn && event->button() == Qt::LeftButton)
+  if (!m_current_connection && event->button() == Qt::LeftButton)
   {
-    if (auto port = findPort(event->scenePos()); port)
+    if (auto port = FindPort(event->scenePos()); port)
     {
       emit selectionModeChangeRequest(kSimpleSelection);
-      m_conn = new NodeConnection(m_scene);
-      m_conn->setPort1(port);
-      m_conn->setPos1(port->scenePos());
-      m_conn->setPos2(event->scenePos());
-      m_conn->updatePath();
-      return event_was_handled;
+      m_current_connection = new NodeConnection(m_scene);
+      m_current_connection->setPort1(port);
+      m_current_connection->setPos1(port->scenePos());
+      m_current_connection->setPos2(event->scenePos());
+      m_current_connection->updatePath();
+      return kEventWasHandled;
     }
   }
-  return event_was_ignored;
+  return kEventWasIgnored;
 }
 
-bool NodeController::processMouseMove(QGraphicsSceneMouseEvent* event)
+bool NodeController::ProcessMouseMove(QGraphicsSceneMouseEvent* event)
 {
-  if (m_conn)
+  if (m_current_connection)
   {
-    m_conn->setPos2(event->scenePos());
-    m_conn->updatePath();
-    return event_was_handled;
+    m_current_connection->setPos2(event->scenePos());
+    m_current_connection->updatePath();
+    return kEventWasHandled;
   }
-  return event_was_ignored;
+  return kEventWasIgnored;
 }
 
-bool NodeController::processMouseRelease(QGraphicsSceneMouseEvent* event)
+bool NodeController::ProcessMouseRelease(QGraphicsSceneMouseEvent* event)
 {
-  if (m_conn && event->button() == Qt::LeftButton)
+  if (m_current_connection && event->button() == Qt::LeftButton)
   {
     emit selectionModeChangeRequest(kRubberSelection);
-    if (auto port2 = findPort(event->scenePos()); port2)
+    if (auto port2 = FindPort(event->scenePos()); port2)
     {
-      auto port1 = m_conn->port1();
+      auto port1 = m_current_connection->port1();
       if (port1->isConnectable(port2))
       {
-        m_conn->setPort2(port2);
-        m_conn->updatePath();
+        m_current_connection->setPort2(port2);
+        m_current_connection->updatePath();
 
         // At this point we do not need NodeConnection object anymore.
         // It will be redrawn automatically, when the model process our request.
 
-        auto parent = m_conn->parentView();
-        auto child = m_conn->childView();
-        resetConnection();
+        auto parent = m_current_connection->parentView();
+        auto child = m_current_connection->childView();
+        ResetConnection();
 
         // Sending request for connection.
         emit connectionRequest(child, parent);
       }
     }
-    resetConnection();
-    return event_was_handled;
+    ResetConnection();
+    return kEventWasHandled;
   }
-  return event_was_ignored;
+  return kEventWasIgnored;
 }
 
-void NodeController::resetConnection()
+void NodeController::ResetConnection()
 {
-  delete m_conn;
-  m_conn = nullptr;
+  delete m_current_connection;
+  m_current_connection = nullptr;
 }
 
 }  // namespace oac_tree_gui
