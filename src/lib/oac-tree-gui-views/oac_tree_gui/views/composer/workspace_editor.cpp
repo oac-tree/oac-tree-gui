@@ -47,8 +47,8 @@ WorkspaceEditor::WorkspaceEditor(const std::function<mvvm::SessionItem *()> &sel
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
     , m_editor_actions(new WorkspaceEditorActions(m_action_handler.get(), this))
     , m_attribute_action_handler(
-          new AttributeEditorActionHandler(CreateAttributeEditorContext(), this))
-    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler, this))
+          std::make_unique<AttributeEditorActionHandler>(CreateAttributeEditorContext()))
+    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler.get(), this))
 {
   SetupConnections();
 

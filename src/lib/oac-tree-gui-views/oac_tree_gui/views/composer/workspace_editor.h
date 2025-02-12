@@ -75,7 +75,7 @@ private:
   WorkspaceItem* m_workspace_item{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
   WorkspaceEditorActions* m_editor_actions{nullptr};
-  AttributeEditorActionHandler* m_attribute_action_handler{nullptr};
+  std::unique_ptr<AttributeEditorActionHandler> m_attribute_action_handler;
   AttributeEditorActions* m_attribute_actions{nullptr};
 };
 

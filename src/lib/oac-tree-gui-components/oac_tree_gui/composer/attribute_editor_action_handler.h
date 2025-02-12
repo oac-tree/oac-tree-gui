@@ -22,8 +22,6 @@
 
 #include <oac_tree_gui/composer/attribute_editor_context.h>
 
-#include <QObject>
-
 namespace sup::gui
 {
 class AnyValueItem;
@@ -39,14 +37,11 @@ namespace oac_tree_gui
  * Actions itself are defined on the board of AttributeEditorActions. The handler uses a callback to
  * deduce which attribute is currently selected.
  */
-class AttributeEditorActionHandler : public QObject
+class AttributeEditorActionHandler
 {
-  Q_OBJECT
-
 public:
-  explicit AttributeEditorActionHandler(AttributeEditorContext context,
-                                        QObject* parent_object = nullptr);
-  ~AttributeEditorActionHandler() override;
+  explicit AttributeEditorActionHandler(AttributeEditorContext context);
+  ~AttributeEditorActionHandler();
 
   /**
    * @brief Checks if one can manipulate exposed flag for the currently selected attribute.

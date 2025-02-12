@@ -61,7 +61,7 @@ public:
     kTotalCount
   };
 
-  explicit AttributeEditorActions(const AttributeEditorActionHandler* handler,
+  explicit AttributeEditorActions(AttributeEditorActionHandler* handler,
                                   QObject* parent_object = nullptr);
   ~AttributeEditorActions() override;
 
@@ -106,7 +106,7 @@ private:
    */
   void AddEditAnyValueAction(QMenu& menu);
 
-  const AttributeEditorActionHandler* m_handler{nullptr};
+  AttributeEditorActionHandler* m_handler{nullptr};
 
   //!< the menu attached to action, generated on the fly
   std::unique_ptr<QMenu> m_modify_attribute_menu;

@@ -54,8 +54,9 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent_widget)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
-    , m_attribute_action_handler(new AttributeEditorActionHandler(CreateActionContext(), this))
-    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler, this))
+    , m_attribute_action_handler(
+          std::make_unique<AttributeEditorActionHandler>(CreateActionContext()))
+    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler.get(), this))
 {
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());

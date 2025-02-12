@@ -27,9 +27,8 @@
 namespace oac_tree_gui
 {
 
-AttributeEditorActionHandler::AttributeEditorActionHandler(AttributeEditorContext context,
-                                                           QObject *parent_object)
-    : QObject(parent_object), m_context(std::move(context))
+AttributeEditorActionHandler::AttributeEditorActionHandler(AttributeEditorContext context)
+    : m_context(std::move(context))
 {
 }
 

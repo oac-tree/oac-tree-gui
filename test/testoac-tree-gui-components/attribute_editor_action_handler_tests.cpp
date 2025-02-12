@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/composer/attribute_editor_action_handler.h"
+
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -26,14 +28,12 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/model/session_item.h>
+
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
-
-#include "oac_tree_gui/composer/attribute_editor_action_handler.h"
-
-Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 namespace oac_tree_gui::test
 {
@@ -120,7 +120,7 @@ TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
 
 TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlag)
 {
-  WaitItem item;
+  const WaitItem item;
   auto name_attribute = dynamic_cast<sup::gui::AnyValueItem*>(GetNameItem(item));
 
   auto handler = CreateActionHandler(name_attribute);

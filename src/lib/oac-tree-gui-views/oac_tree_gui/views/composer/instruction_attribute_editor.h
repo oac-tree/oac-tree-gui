@@ -77,7 +77,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  AttributeEditorActionHandler* m_attribute_action_handler{nullptr};
+  std::unique_ptr<AttributeEditorActionHandler> m_attribute_action_handler;
   AttributeEditorActions* m_attribute_actions{nullptr};
 };
 
