@@ -20,7 +20,7 @@
 #ifndef OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
 #define OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
 
-#include <oac_tree_gui/nodeeditor/view_factory_interface.h>
+#include <oac_tree_gui/nodeeditor/i_connectable_view_factory.h>
 
 #include <memory>
 
@@ -31,12 +31,9 @@ namespace oac_tree_gui
  * @brief The ConnectableViewFactory class is a factory to construct ConnectableViews from
  * corresponding items.
  */
-class ConnectableViewFactory : public ViewFactoryInterface
+class ConnectableViewFactory : public IConnectableViewFactory
 {
 public:
-  ConnectableViewFactory();
-  ~ConnectableViewFactory() override;
-
   std::unique_ptr<ConnectableView> CreateView(InstructionItem *item) override;
 };
 

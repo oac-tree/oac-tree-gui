@@ -27,10 +27,6 @@
 namespace oac_tree_gui
 {
 
-ConnectableViewFactory::ConnectableViewFactory() {}
-
-ConnectableViewFactory::~ConnectableViewFactory() = default;
-
 std::unique_ptr<ConnectableView> ConnectableViewFactory::CreateView(InstructionItem *item)
 {
   auto adapter = std::make_unique<ConnectableInstructionAdapter>(item);

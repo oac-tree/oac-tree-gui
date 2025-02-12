@@ -26,7 +26,7 @@
 #include <oac_tree_gui/nodeeditor/connectable_view_factory.h>
 #include <oac_tree_gui/nodeeditor/connectable_view_map.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene.h>
-#include <oac_tree_gui/nodeeditor/view_factory_interface.h>
+#include <oac_tree_gui/nodeeditor/i_connectable_view_factory.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
@@ -41,7 +41,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   InstructionContainerItem* m_root_item{nullptr};
   ConnectableViewMap m_instruction_to_view;
   bool m_block_update{false};
-  std::unique_ptr<ViewFactoryInterface> m_view_factory;
+  std::unique_ptr<IConnectableViewFactory> m_view_factory;
   std::unique_ptr<mvvm::ModelListener> m_listener;
 
   GraphicsSceneControllerImpl(mvvm::ISessionModel* model, GraphicsScene* graphics_scene)

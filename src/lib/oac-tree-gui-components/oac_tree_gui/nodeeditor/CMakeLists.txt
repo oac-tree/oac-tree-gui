@@ -16,6 +16,7 @@ target_sources(${library_name} PRIVATE
   graphics_scene_controller.cpp
   graphics_scene_controller.h
   graphics_scene_types.h
+  i_connectable_view_factory.h
   node_connection.cpp
   node_connection.h
   node_controller.cpp
@@ -29,5 +30,4 @@ target_sources(${library_name} PRIVATE
   scene_utils.h
   sequencer_align_utils.cpp
   sequencer_align_utils.h
-  view_factory_interface.h
 )
