@@ -62,27 +62,27 @@ public:
    * @brief Checks if SessionItem of the given type can be inserted after currently selected
    * instruction.
    */
-  bool CanInsertAfter(const std::string& item_type) const;
+  bool CanInsertInstructionAfter(const std::string& item_type) const;
 
   /**
    * @brief Inserts new instruction of given type after the current selection.
    *
    * @param item_type The item type name.
    */
-  void OnInsertInstructionAfterRequest(const std::string& item_type);
+  void InsertInstructionAfter(const std::string& item_type);
 
   /**
    * @brief Checks if SessionItem of the given type can be inserted into currently selected
    * instruction.
    */
-  bool CanInsertInto(const std::string& item_type) const;
+  bool CanInsertInstructionInto(const std::string& item_type) const;
 
   /**
    * @brief Inserts new instruction of given type into the current selection.
    *
    * @param item_type The item type name.
    */
-  void OnInsertInstructionIntoRequest(const std::string& item_type);
+  void InsertInstructionInto(const std::string& item_type);
 
   /**
    * @brief Checks if currently selected instruction can be removed.
@@ -92,21 +92,21 @@ public:
   /**
    * @brief Removes currently selected instruction.
    */
-  void OnRemoveInstructionRequest();
+  void RemoveInstruction();
 
   /**
    * @brief Moves instruction up (decrement index) in parent's container.
    *
    * @details The method doesn't change a parent, so will do nothing for the first child.
    */
-  void OnMoveUpRequest();
+  void MoveUp();
 
   /**
    * @brief Moves instruction down (increment index) in parent's container.
    *
    * @details The method doesn't change a parent, so will do nothing for the last child.
    */
-  void OnMoveDownRequest();
+  void MoveDown();
 
   /**
    * @brief Cals external dialog for AnyValueItem editing.

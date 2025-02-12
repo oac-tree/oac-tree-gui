@@ -93,7 +93,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertSequenceUndoRedo)
 
   auto handler = CreateActionHandler(nullptr);
 
-  handler->OnInsertInstructionAfterRequest(SequenceItem::GetStaticType());
+  handler->InsertInstructionAfter(SequenceItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   m_model.GetCommandStack()->Undo();
@@ -115,14 +115,14 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfter)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  handler->OnInsertInstructionAfterRequest(PvAccessReadInstructionItem::GetStaticType());
+  handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   // we get plugin name in preamble
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
 
   m_mock_context.m_current_selection = GetInstructionContainer()->GetInstructions().at(0);
-  handler->OnRemoveInstructionRequest();
+  handler->RemoveInstruction();
 
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 0);
   EXPECT_TRUE(GetPluginPaths().empty());
@@ -142,7 +142,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfterAndUnd
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  handler->OnInsertInstructionAfterRequest(PvAccessReadInstructionItem::GetStaticType());
+  handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
@@ -169,7 +169,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  handler->OnInsertInstructionAfterRequest(SequenceItem::GetStaticType());
+  handler->InsertInstructionAfter(SequenceItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
   EXPECT_TRUE(GetPluginPaths().empty());
 
@@ -177,7 +177,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
   auto inserted_sequence = GetInstructionContainer()->GetInstructions().at(0);
   m_mock_context.m_current_selection = inserted_sequence;
 
-  handler->OnInsertInstructionIntoRequest(PvAccessReadInstructionItem::GetStaticType());
+  handler->InsertInstructionInto(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(inserted_sequence->GetInstructions().size(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));

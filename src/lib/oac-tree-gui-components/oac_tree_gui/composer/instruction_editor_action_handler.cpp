@@ -89,14 +89,14 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
   }
 }
 
-bool InstructionEditorActionHandler::CanInsertAfter(const std::string &item_type) const
+bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string &item_type) const
 {
   return CanInsertTypeAfterCurrentSelection(item_type).IsSuccess();
 }
 
 InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
-void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const std::string &item_type)
+void InstructionEditorActionHandler::InsertInstructionAfter(const std::string &item_type)
 {
   auto querry = CanInsertTypeAfterCurrentSelection(item_type);
   if (!querry.IsSuccess())
@@ -108,12 +108,12 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const std::
   InsertAfterCurrentSelection(CreateInstructionItem(item_type));
 }
 
-bool InstructionEditorActionHandler::CanInsertInto(const std::string &item_type) const
+bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string &item_type) const
 {
   return CanInsertTypeIntoCurrentSelection(item_type).IsSuccess();
 }
 
-void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const std::string &item_type)
+void InstructionEditorActionHandler::InsertInstructionInto(const std::string &item_type)
 {
   auto querry = CanInsertTypeIntoCurrentSelection(item_type);
   if (!querry.IsSuccess())
@@ -132,7 +132,7 @@ bool InstructionEditorActionHandler::CanRemoveInstruction() const
   return has_model && has_selection;
 }
 
-void InstructionEditorActionHandler::OnRemoveInstructionRequest()
+void InstructionEditorActionHandler::RemoveInstruction()
 {
   if (!CanRemoveInstruction())
   {
@@ -155,7 +155,7 @@ void InstructionEditorActionHandler::OnRemoveInstructionRequest()
   }
 }
 
-void InstructionEditorActionHandler::OnMoveUpRequest()
+void InstructionEditorActionHandler::MoveUp()
 {
   if (auto instruction = GetSelectedInstruction(); instruction)
   {
@@ -166,7 +166,7 @@ void InstructionEditorActionHandler::OnMoveUpRequest()
   }
 }
 
-void InstructionEditorActionHandler::OnMoveDownRequest()
+void InstructionEditorActionHandler::MoveDown()
 {
   if (auto instruction = GetSelectedInstruction(); instruction)
   {
@@ -225,7 +225,7 @@ void InstructionEditorActionHandler::Cut()
   }
 
   Copy();
-  OnRemoveInstructionRequest();
+  RemoveInstruction();
 }
 
 bool InstructionEditorActionHandler::CanCopy() const

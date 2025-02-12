@@ -114,7 +114,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_remove_action->setIcon(FindIcon("beaker-remove-outline"));
   m_remove_action->setToolTip("Remove currently selected instruction together with its children");
   connect(m_remove_action, &QAction::triggered, this,
-          [this]() { m_action_handler->OnRemoveInstructionRequest(); });
+          [this]() { m_action_handler->RemoveInstruction(); });
 
   // remove action (own toolbar version to avoid disabled status)
   m_remove_toolbar_action = new sup::gui::ProxyAction(this);
@@ -127,7 +127,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
       "Move currently selected instruction up, works within the same parent");
   m_action_map.Add(ActionKey::kMoveUp, m_move_up_action);
   connect(m_move_up_action, &QAction::triggered, this,
-          [this]() { m_action_handler->OnMoveUpRequest(); });
+          [this]() { m_action_handler->MoveUp(); });
 
   m_move_down_action = new QAction("Move Down", this);
   m_move_down_action->setIcon(FindIcon("arrow-down-thin-circle-outline"));
@@ -135,7 +135,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
       "Move currently selected instruction down, works within the same parent");
   m_action_map.Add(ActionKey::kMoveDown, m_move_down_action);
   connect(m_move_down_action, &QAction::triggered, this,
-          [this]() { m_action_handler->OnMoveDownRequest(); });
+          [this]() { m_action_handler->MoveDown(); });
 }
 
 void InstructionEditorActions::SetupCutCopyPasteActions()
@@ -201,8 +201,8 @@ void InstructionEditorActions::AboutToShowInsertMenu()
     for (const auto &name : group_info.object_names)
     {
       auto action = group_menu->addAction(QString::fromStdString(name));
-      if (insert_into ? m_action_handler->CanInsertInto(name)
-                      : m_action_handler->CanInsertAfter(name))
+      if (insert_into ? m_action_handler->CanInsertInstructionInto(name)
+                      : m_action_handler->CanInsertInstructionAfter(name))
       {
         action->setEnabled(true);
         ++enabled_actions_count;
@@ -210,12 +210,12 @@ void InstructionEditorActions::AboutToShowInsertMenu()
       if (insert_into)
       {
         connect(action, &QAction::triggered, m_action_handler,
-                [this, name]() { m_action_handler->OnInsertInstructionIntoRequest(name); });
+                [this, name]() { m_action_handler->InsertInstructionInto(name); });
       }
       else
       {
         connect(action, &QAction::triggered, m_action_handler,
-                [this, name]() { m_action_handler->OnInsertInstructionAfterRequest(name); });
+                [this, name]() { m_action_handler->InsertInstructionAfter(name); });
       }
     };
     group_menu->setEnabled(enabled_actions_count > 0);

@@ -105,7 +105,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // it is not possible to add instruction when no procedure is selected, expecting callback
-  EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->InsertInstructionAfter(WaitItem::GetStaticType()));
 }
 
 //! Adding wait instruction.
@@ -117,7 +117,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
+  handler->InsertInstructionAfter(WaitItem::GetStaticType());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -132,7 +132,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddChoice)
   auto handler = CreateActionHandler(nullptr);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(domainconstants::kChoiceInstructionType);
+  handler->InsertInstructionAfter(domainconstants::kChoiceInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -154,7 +154,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   auto handler = CreateActionHandler(sequence);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
+  handler->InsertInstructionAfter(WaitItem::GetStaticType());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -176,11 +176,11 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
   auto handler = CreateActionHandler(nullptr);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType());
+  handler->InsertInstructionAfter(WaitItem::GetStaticType());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(SequenceItem::GetStaticType());
+  handler->InsertInstructionAfter(SequenceItem::GetStaticType());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -197,13 +197,13 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(sequence);
 
-  EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
-  EXPECT_FALSE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
+  EXPECT_TRUE(handler->CanInsertInstructionInto(domainconstants::kMessageInstructionType));
+  EXPECT_FALSE(handler->CanInsertInstructionAfter(domainconstants::kMessageInstructionType));
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // It is not possible to add second instruction to repeat instruction, expecting warning
-  EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(WaitItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->InsertInstructionAfter(WaitItem::GetStaticType()));
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
@@ -221,15 +221,15 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(sequence);
 
-  EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
-  EXPECT_TRUE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
+  EXPECT_TRUE(handler->CanInsertInstructionInto(domainconstants::kMessageInstructionType));
+  EXPECT_TRUE(handler->CanInsertInstructionAfter(domainconstants::kMessageInstructionType));
 
   // inserting instruction into selected instruction
-  handler->OnInsertInstructionIntoRequest(WaitItem::GetStaticType());
+  handler->InsertInstructionInto(WaitItem::GetStaticType());
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   // inserting second instruction
-  handler->OnInsertInstructionIntoRequest(domainconstants::kMessageInstructionType);
+  handler->InsertInstructionInto(domainconstants::kMessageInstructionType);
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -259,7 +259,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // attempt to insert instruction into selected instruction, expecting callback
-  EXPECT_NO_THROW(handler->OnInsertInstructionIntoRequest(WaitItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->InsertInstructionInto(WaitItem::GetStaticType()));
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 }
 
@@ -271,7 +271,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
-  handler->OnInsertInstructionIntoRequest(WaitItem::GetStaticType());
+  handler->InsertInstructionInto(WaitItem::GetStaticType());
 }
 
 //! Remove operation when nothing is selected.
@@ -289,7 +289,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelecte
                                          &InstructionEditorActionHandler::SelectItemRequest);
 
   // nothing selected, remove request does nothing
-  handler->OnRemoveInstructionRequest();
+  handler->RemoveInstruction();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   EXPECT_EQ(spy_selection_request.count(), 0);
@@ -311,7 +311,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
   // nothing selected, remove request does nothing
-  handler->OnRemoveInstructionRequest();
+  handler->RemoveInstruction();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // checking the request to select remaining item
@@ -334,7 +334,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
   // moving selected item up
-  handler->OnMoveUpRequest();
+  handler->MoveUp();
 
   // checking that the order of instructions has changed
   const std::vector<InstructionItem*> expected({wait0, wait2, wait1});
@@ -360,7 +360,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
   // moving selected item up
-  handler->OnMoveDownRequest();
+  handler->MoveDown();
 
   // checking that the order of instructions has changed
   const std::vector<InstructionItem*> expected({wait1, wait0, wait2});
