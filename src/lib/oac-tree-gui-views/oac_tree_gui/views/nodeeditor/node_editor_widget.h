@@ -50,7 +50,8 @@ class ProcedureItem;
 /**
  * @brief The NodeEditorWidget class is a main widget with node editor for sequence composition.
  *
- * It is central part of SequencerComposerView.
+ * Contains graphics scene with nodes, graphics view, and all action buttons. It is a central part
+ * of SequencerComposerView.
  */
 class NodeEditorWidget : public QWidget
 {

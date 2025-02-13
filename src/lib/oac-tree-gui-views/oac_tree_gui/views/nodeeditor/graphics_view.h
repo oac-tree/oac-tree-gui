@@ -28,10 +28,13 @@ class QKeyEvent;
 
 namespace oac_tree_gui
 {
+
 class GraphicsScene;
 
-//! Graphics view for the graphics scene.
-
+/**
+ * @brief The GraphicsView class shows GraphicsScene and is responsible for zoom/selection/centering
+ * activities.
+ */
 class GraphicsView : public QGraphicsView
 {
   Q_OBJECT
@@ -39,7 +42,7 @@ class GraphicsView : public QGraphicsView
 public:
   GraphicsView(GraphicsScene* scene, QWidget* parent_widget);
 
-  void onCenterView();
+  void CenterView();
 
   ESelectionModes GetSelectionModes();
 

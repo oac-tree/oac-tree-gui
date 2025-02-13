@@ -37,7 +37,7 @@ GraphicsView::GraphicsView(GraphicsScene* scene, QWidget* parent_widget)
   setDragMode(QGraphicsView::RubberBandDrag);
 }
 
-void GraphicsView::onCenterView()
+void GraphicsView::CenterView()
 {
   centerOn(scene()->itemsBoundingRect().center());
 }

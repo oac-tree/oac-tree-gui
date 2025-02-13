@@ -110,7 +110,8 @@ std::vector<InstructionItem *> NodeEditorWidget::GetSelectedInstructions() const
   return m_graphics_scene->GetSelectedInstructions();
 }
 
-void NodeEditorWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions) const
+void NodeEditorWidget::SetSelectedInstructions(
+    const std::vector<InstructionItem *> &instructions) const
 {
   if (isHidden())
   {
@@ -156,13 +157,6 @@ void NodeEditorWidget::SetupController()
       std::make_unique<GraphicsSceneController>(m_procedure_item->GetModel(), m_graphics_scene);
 
   m_scene_controller->Init(m_procedure_item->GetInstructionContainer());
-
-  static bool is_first_recenter = true;
-  if (is_first_recenter)
-  {
-    is_first_recenter = false;
-    m_graphics_view->onCenterView();
-  }
 }
 
 void NodeEditorWidget::SetupConnections()
@@ -184,14 +178,15 @@ void NodeEditorWidget::SetupConnections()
           &GraphicsView::onSelectionMode);
 
   // Center view from toolBar to GraphicsView
-  connect(m_actions, &NodeEditorActions::centerView, m_graphics_view, &GraphicsView::onCenterView);
+  connect(m_actions, &NodeEditorActions::centerView, m_graphics_view, &GraphicsView::CenterView);
 
   // Propagate zoom request from a toolbar to GraphicsView
   connect(m_actions, &NodeEditorActions::changeScale, m_graphics_view,
           &GraphicsView::onChangeScale);
 
   // alignment request from a toolbar
-  connect(m_actions, &NodeEditorActions::alignSelectedRequest, this, &NodeEditorWidget::OnAlignRequest);
+  connect(m_actions, &NodeEditorActions::alignSelectedRequest, this,
+          &NodeEditorWidget::OnAlignRequest);
 
   // Propagate selection mode change from GraphicsView to a toolBar
   connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_actions,
