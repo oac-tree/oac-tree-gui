@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/nodeeditor/scene_utils.h"
+
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -33,8 +35,6 @@
 
 #include <QPointF>
 #include <QRectF>
-
-#include "oac_tree_gui/nodeeditor/scene_utils.h"
 
 namespace oac_tree_gui::test
 {
@@ -110,6 +110,14 @@ TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
   EXPECT_EQ(InsertSpaceAtCamelCase("PvAccess"), std::string("Pv Access"));
   EXPECT_EQ(InsertSpaceAtCamelCase("NoCamelCase"), std::string("No Camel Case"));
   EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccessRead"), std::string("Channel Access Read"));
+}
+
+TEST_F(SceneUtilsTest, GetNodeDropPosition)
+{
+  const auto bounding_box = ConnectableViewRectangle();
+
+  const QPointF left_top_corner{0.0, 0.0};
+  EXPECT_EQ(GetNodeDropPosition(bounding_box.center()), left_top_corner);
 }
 
 }  // namespace oac_tree_gui::test

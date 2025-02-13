@@ -146,4 +146,11 @@ double GetInstructionDropOffset()
   return shift_of_child_wrt_parent;
 }
 
+QPointF GetNodeDropPosition(const QPointF& scene_pos)
+{
+  static const QRectF view_bbox = ConnectableViewRectangle();
+  // we want the center of instruction node to be right under the coursor tip
+  return {scene_pos.x() - (view_bbox.width() / 2), scene_pos.y() - (view_bbox.height() / 2)};
+}
+
 }  // namespace oac_tree_gui

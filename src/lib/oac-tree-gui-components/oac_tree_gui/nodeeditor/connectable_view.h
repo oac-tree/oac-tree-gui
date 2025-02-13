@@ -25,17 +25,22 @@
 
 namespace oac_tree_gui
 {
+
 class ConnectableInstructionAdapter;
 class ChildPort;
 class ParentPort;
 class NodeConnection;
 class PositionStrategyInterface;
 
-//! Represents ConnectableItem on QGraphicsScene. Shown as a reactangle with rounded corners,
-//! gradient, label, and set of input/output ports to connect.
-//! In current design, ConnectableView can have only single output port and multiple input ports
-//! of different type.
-
+/**
+ * @brief The ConnectableView class represents ConnectableItem on the graphics scene.
+ *
+ * Shown as a rectangle with rounded corners, gradient, label, and set of input/output ports to
+ * connect. In the current design, ConnectableView can have only a single output port and multiple input
+ * ports of different types.
+ *
+ * Coordinates (0, 0) corresponds to the upper left corner of the bounding box.
+ */
 class ConnectableView : public QGraphicsItem
 {
 public:
@@ -48,8 +53,14 @@ public:
 
   void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
+  /**
+   * @brief  Connects children's output port to appropriate input port.
+   */
   void MakeChildConnected(ConnectableView* child_view);
 
+  /**
+   * @brief Returns list of input ports of given
+   */
   QList<ChildPort*> GetChildPorts() const;
 
   ChildPort* GetChildPort() const;
@@ -64,6 +75,9 @@ public:
 
   void UpdateViewFromItem();
 
+  /**
+   * @brief Returns list of ports of required type.
+   */
   template <typename T>
   QList<T*> GetPorts() const;
 
@@ -72,8 +86,19 @@ protected:
   QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
 private:
+  /**
+   * @brief Return base color of this item.
+   */
   QColor GetColor() const;
+
+  /**
+   * @brief Returns node main text label.
+   */
   QString GetLabel() const;
+
+  /**
+   * @brief Initial setup of all ports.
+   */
   void SetupPorts();
 
   QRectF m_rect;                                          //!< Bounding rectangle.
@@ -82,8 +107,6 @@ private:
   bool m_block_item_update{false};
   std::unique_ptr<PositionStrategyInterface> m_strategy;
 };
-
-//! Return list of ports of required type.
 
 template <typename T>
 QList<T*> ConnectableView::GetPorts() const

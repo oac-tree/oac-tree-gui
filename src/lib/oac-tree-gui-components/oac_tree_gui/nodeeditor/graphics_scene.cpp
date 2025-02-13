@@ -252,8 +252,6 @@ void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-  // for later coordinate calculation, where to drop
-  static const QRectF ref_view_rectangle = ConnectableViewRectangle();
 
   if (!HasContext())
   {
@@ -262,13 +260,11 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     return;
   }
 
-  const QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
-                         event->scenePos().y() - ref_view_rectangle.height() / 2);
-
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
     auto instruction = DropInstruction(domain_type, m_root_item, mvvm::TagIndex::Append());
-    algorithm::AlignInstructionTreeWalker(drop_pos, instruction);
+    const auto ref_point = GetNodeDropPosition(event->scenePos());
+    algorithm::AlignInstructionTreeWalker(ref_point, instruction);
   }
 }
 

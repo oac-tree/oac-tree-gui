@@ -32,10 +32,14 @@
 
 namespace
 {
-const int round_par = 5;
 
-//! Returns rectangle to display ConnectableView label. Takes bounding box of a view as input
-//! parameter.
+const int kRoundPar = 5;
+
+/**
+ * @brief Returns rectangle to display ConnectableView label.
+ *
+ * Takes bounding box of a view as input parameter.
+ */
 QRectF GetLabelRectangle(const QRectF& rect)
 {
   // take a rectangle which is a half in height of the view's rectangle
@@ -48,7 +52,10 @@ QRectF GetLabelRectangle(const QRectF& rect)
       QMarginsF(side_gap, top_gap, side_gap, 0.0));  // left, top, right, bottom
 }
 
-int GetSmallFontSize()
+/**
+ * @brief Returns label font size to display the name of the instruction.
+ */
+int GetLabelFontSize()
 {
   static const int kSmallFontSize(mvvm::utils::SystemPointSize() * 0.8);
   return kSmallFontSize;
@@ -58,6 +65,7 @@ int GetSmallFontSize()
 
 namespace oac_tree_gui
 {
+
 ConnectableView::ConnectableView(std::unique_ptr<ConnectableInstructionAdapter> item)
     : m_item(std::move(item))
 {
@@ -102,10 +110,10 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
   }
 
   painter->setBrush(ConnectableViewGradient(GetColor(), boundingRect()));
-  painter->drawRoundedRect(boundingRect(), round_par, round_par);
+  painter->drawRoundedRect(boundingRect(), kRoundPar, kRoundPar);
 
   painter->setPen(Qt::black);
-  QFont serifFont("Monospace", GetSmallFontSize(), QFont::Normal);
+  QFont serifFont("Monospace", GetLabelFontSize(), QFont::Normal);
   serifFont.setWordSpacing(-mvvm::utils::UnitSize(0.25));  // decrease word spacing
   painter->setFont(serifFont);
 
@@ -120,8 +128,6 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
     painter->drawPixmap(rect, pixmap, QRectF(0.0, 0.0, pixmap.width(), pixmap.height()));
   }
 }
-
-//! Connects children's output port to appropriate input port.
 
 void ConnectableView::MakeChildConnected(ConnectableView* child_view)
 {
@@ -145,8 +151,6 @@ void ConnectableView::MakeChildConnected(ConnectableView* child_view)
     connection->updatePath();
   }
 }
-
-//! Returns list of input ports of given
 
 QList<ChildPort*> ConnectableView::GetChildPorts() const
 {
@@ -223,21 +227,15 @@ QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& 
   return value;
 }
 
-//! Returns base color of this item.
-
 QColor ConnectableView::GetColor() const
 {
   return m_item ? m_item->GetColor() : QColor(Qt::red);
 }
 
-//! Returns label of this item.
-
 QString ConnectableView::GetLabel() const
 {
   return m_item ? m_item->GetDisplayName() : QString("Unnamed");
 }
-
-//! Init ports to connect.
 
 void ConnectableView::SetupPorts()
 {

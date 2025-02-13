@@ -116,6 +116,14 @@ std::string InsertSpaceAtCamelCase(std::string str);
  */
 double GetInstructionDropOffset();
 
+/**
+ * @brief Returns drop coordinates of instruction node.
+ *
+ * @param scene_pos The coordinate of the scene where the user has released mouse button.
+ * @return Coordinates of instruction to set.
+ */
+QPointF GetNodeDropPosition(const QPointF& scene_pos);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_NODEEDITOR_SCENE_UTILS_H_
