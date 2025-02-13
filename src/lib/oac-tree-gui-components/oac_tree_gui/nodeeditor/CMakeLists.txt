@@ -19,8 +19,8 @@ target_sources(${library_name} PRIVATE
   i_connectable_view_factory.h
   node_connection.cpp
   node_connection.h
-  node_controller.cpp
-  node_controller.h
+  node_connection_controller.cpp
+  node_connection_controller.h
   node_port.cpp
   node_port.h
   port_info.h

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "node_controller.h"
+#include "node_connection_controller.h"
 
 #include "graphics_scene_types.h"
 
@@ -36,13 +36,13 @@ const bool kEventWasIgnored = false;
 
 namespace oac_tree_gui
 {
-NodeController::NodeController(QGraphicsScene* scene) : m_scene(scene)
+NodeConnectionController::NodeConnectionController(QGraphicsScene* scene) : m_scene(scene)
 {
   setParent(m_scene);
   m_scene->installEventFilter(this);
 }
 
-bool NodeController::eventFilter(QObject* object, QEvent* event)
+bool NodeConnectionController::eventFilter(QObject* object, QEvent* event)
 {
   bool isProcessedEvent(false);
 
@@ -65,7 +65,7 @@ bool NodeController::eventFilter(QObject* object, QEvent* event)
   return isProcessedEvent ? kEventWasHandled : QObject::eventFilter(object, event);
 }
 
-NodePort* NodeController::FindPort(const QPointF& pos)
+NodePort* NodeConnectionController::FindPort(const QPointF& pos)
 {
   QRectF area(0, 0, 4, 4);
   area.moveCenter(pos);
@@ -80,7 +80,7 @@ NodePort* NodeController::FindPort(const QPointF& pos)
   return nullptr;
 }
 
-bool NodeController::ProcessMousePress(QGraphicsSceneMouseEvent* event)
+bool NodeConnectionController::ProcessMousePress(QGraphicsSceneMouseEvent* event)
 {
   if (!m_current_connection && event->button() == Qt::LeftButton)
   {
@@ -98,7 +98,7 @@ bool NodeController::ProcessMousePress(QGraphicsSceneMouseEvent* event)
   return kEventWasIgnored;
 }
 
-bool NodeController::ProcessMouseMove(QGraphicsSceneMouseEvent* event)
+bool NodeConnectionController::ProcessMouseMove(QGraphicsSceneMouseEvent* event)
 {
   if (m_current_connection)
   {
@@ -109,7 +109,7 @@ bool NodeController::ProcessMouseMove(QGraphicsSceneMouseEvent* event)
   return kEventWasIgnored;
 }
 
-bool NodeController::ProcessMouseRelease(QGraphicsSceneMouseEvent* event)
+bool NodeConnectionController::ProcessMouseRelease(QGraphicsSceneMouseEvent* event)
 {
   if (m_current_connection && event->button() == Qt::LeftButton)
   {
@@ -139,7 +139,7 @@ bool NodeController::ProcessMouseRelease(QGraphicsSceneMouseEvent* event)
   return kEventWasIgnored;
 }
 
-void NodeController::ResetConnection()
+void NodeConnectionController::ResetConnection()
 {
   delete m_current_connection;
   m_current_connection = nullptr;

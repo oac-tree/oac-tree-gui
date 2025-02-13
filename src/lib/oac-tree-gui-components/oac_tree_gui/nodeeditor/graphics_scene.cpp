@@ -27,7 +27,7 @@
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
-#include <oac_tree_gui/nodeeditor/node_controller.h>
+#include <oac_tree_gui/nodeeditor/node_connection_controller.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
@@ -76,15 +76,15 @@ GraphicsScene::GraphicsScene(
     std::function<void(const sup::gui::MessageEvent &)> send_message_callback,
     QObject *parent_object)
     : QGraphicsScene(parent_object)
-    , m_node_controller(new NodeController(this))
+    , m_node_controller(new NodeConnectionController(this))
     , m_send_message_callback(send_message_callback)
 {
   setSceneRect(GetDefaultSceneRect());
 
-  connect(m_node_controller.get(), &NodeController::connectionRequest, this,
+  connect(m_node_controller.get(), &NodeConnectionController::connectionRequest, this,
           &GraphicsScene::onConnectionRequest);
 
-  connect(m_node_controller.get(), &NodeController::selectionModeChangeRequest, this,
+  connect(m_node_controller.get(), &NodeConnectionController::selectionModeChangeRequest, this,
           &GraphicsScene::selectionModeChangeRequest);
 
   // Strange bug in Qt6.3: if we use connection via lambda, as in code below, everyting works.

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_NODEEDITOR_NODE_CONTROLLER_H_
-#define OAC_TREE_GUI_NODEEDITOR_NODE_CONTROLLER_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_NODE_CONNECTION_CONTROLLER_H_
+#define OAC_TREE_GUI_NODEEDITOR_NODE_CONNECTION_CONTROLLER_H_
 
 //! Node editor: original code is taken from
 //! http://algoholic.eu/qnodeseditor-qt-nodesports-based-data-processing-flow-editor/
@@ -37,15 +37,15 @@ class NodePort;
 class ConnectableView;
 
 /**
- * @brief The NodeController class assists GraphicsScene in establishing a connection between two
- * ports.
+ * @brief The NodeConnectionController class assists GraphicsScene in establishing a connection
+ * between two ports.
  */
-class NodeController : public QObject
+class NodeConnectionController : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit NodeController(QGraphicsScene* scene);
+  explicit NodeConnectionController(QGraphicsScene* scene);
 
   bool eventFilter(QObject* object, QEvent* event) override;
 
@@ -71,4 +71,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_NODEEDITOR_NODE_CONTROLLER_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_NODE_CONNECTION_CONTROLLER_H_
