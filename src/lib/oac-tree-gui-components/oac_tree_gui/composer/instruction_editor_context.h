@@ -64,6 +64,9 @@ struct InstructionEditorContext
   //!< just removed.
   std::function<void(mvvm::SessionItem*)> select_notify;
 
+  //! optional factory function that allows to create single instructions and complex aggregates
+  std::function<std::unique_ptr<InstructionItem>(const std::string&)> create_instruction;
+
   //!< callback to report an error
   std::function<void(const sup::gui::MessageEvent&)> send_message;
 

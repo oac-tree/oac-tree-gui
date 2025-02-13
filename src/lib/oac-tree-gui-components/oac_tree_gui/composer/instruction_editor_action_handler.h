@@ -94,6 +94,11 @@ private:
   InstructionContainerItem* GetInstructionContainer() const;
   void SelectNotify(mvvm::SessionItem* item) const;
 
+  /**
+   * @brief Creates a single instruction or complex instruction aggregate.
+   */
+  std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& item_type);
+
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {}) const;
   void SendMessage(const sup::gui::MessageEvent& message_event) const;

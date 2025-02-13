@@ -91,6 +91,12 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
   {
     throw RuntimeException("Callback to send messages is not set");
   }
+
+  if (!m_context.create_instruction)
+  {
+    m_context.create_instruction = [](const auto &item_type)
+    { return CreateInstructionItem(item_type); };
+  }
 }
 
 bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string &item_type) const
@@ -109,7 +115,7 @@ void InstructionEditorActionHandler::InsertInstructionAfter(const std::string &i
     return;
   }
 
-  InsertAfterCurrentSelection(CreateInstructionItem(item_type));
+  InsertAfterCurrentSelection(CreateInstructionTree(item_type));
 }
 
 bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string &item_type) const
@@ -126,7 +132,7 @@ void InstructionEditorActionHandler::InsertInstructionInto(const std::string &it
     return;
   }
 
-  InsertIntoCurrentSelection(CreateInstructionItem(item_type));
+  InsertIntoCurrentSelection(CreateInstructionTree(item_type));
 }
 
 bool InstructionEditorActionHandler::CanRemoveInstruction() const
@@ -304,6 +310,12 @@ InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContaine
 void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
 {
   m_context.select_notify(item);
+}
+
+std::unique_ptr<InstructionItem> InstructionEditorActionHandler::CreateInstructionTree(
+    const std::string &item_type)
+{
+  return m_context.create_instruction(item_type);
 }
 
 void InstructionEditorActionHandler::SendMessage(const std::string &text,

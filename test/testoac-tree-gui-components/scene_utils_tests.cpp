@@ -116,8 +116,8 @@ TEST_F(SceneUtilsTest, GetNodeDropPosition)
 {
   const auto bounding_box = ConnectableViewRectangle();
 
-  const QPointF left_top_corner{0.0, 0.0};
-  EXPECT_EQ(GetNodeDropPosition(bounding_box.center()), left_top_corner);
+  const QPointF top_left_corner{0.0, 0.0};
+  EXPECT_EQ(GetNodeDropPosition(bounding_box.center()), top_left_corner);
 }
 
 }  // namespace oac_tree_gui::test
