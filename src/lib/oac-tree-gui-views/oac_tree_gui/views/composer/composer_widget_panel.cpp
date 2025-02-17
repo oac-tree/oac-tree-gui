@@ -83,7 +83,8 @@ void ComposerWidgetPanel::SetModel(SequencerModel* model)
 void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
 {
   m_procedure = procedure;
-  m_instruction_editor_widget->SetProcedure(m_procedure);
+  m_instruction_editor_widget->SetInstructionContainer(
+      m_procedure ? m_procedure->GetInstructionContainer() : nullptr);
   m_workspace_editor_widget->SetWorkspaceItem(m_procedure ? m_procedure->GetWorkspace() : nullptr);
   m_node_editor->SetProcedure(m_procedure);
   m_xml_panel->SetProcedure(m_procedure);
@@ -143,7 +144,8 @@ void ComposerWidgetPanel::SetupConnections()
       m_block_selection_notification = false;
     }
   };
-  connect(m_node_editor, &NodeEditorWidget::InstructionSelected, this, on_scene_instruction_selected);
+  connect(m_node_editor, &NodeEditorWidget::InstructionSelected, this,
+          on_scene_instruction_selected);
 
   auto on_tree_instruction_selected = [this](auto instruction)
   {

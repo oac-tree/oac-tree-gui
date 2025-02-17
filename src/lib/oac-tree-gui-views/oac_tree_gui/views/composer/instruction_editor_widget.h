@@ -40,7 +40,7 @@ class CustomSplitter;
 namespace oac_tree_gui
 {
 
-class ProcedureItem;
+class InstructionContainerItem;
 class InstructionItem;
 class InstructionEditorContext;
 class InstructionEditorActionHandler;
@@ -62,7 +62,7 @@ public:
   explicit InstructionEditorWidget(QWidget* parent_widget = nullptr);
   ~InstructionEditorWidget() override;
 
-  void SetProcedure(ProcedureItem* procedure);
+  void SetInstructionContainer(InstructionContainerItem* instruction_container);
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
 
@@ -78,7 +78,7 @@ private:
   void WriteSettings();
   void SetupTree();
   void AdjustTreeAppearance();
-  void SetProcedureIntern(ProcedureItem* procedure);
+  void SetInstructionContainerIntern(InstructionContainerItem* instruction_container);
 
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
@@ -91,7 +91,7 @@ private:
   InstructionAttributeEditor* m_attribute_editor{nullptr};
 
   sup::gui::CustomSplitter* m_splitter{nullptr};
-  ProcedureItem* m_procedure{nullptr};
+  InstructionContainerItem* m_instruction_container{nullptr};
 
   std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
   InstructionEditorActions* m_editor_actions{nullptr};

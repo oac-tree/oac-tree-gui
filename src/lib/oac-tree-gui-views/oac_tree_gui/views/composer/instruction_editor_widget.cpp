@@ -103,9 +103,9 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
   // Add toolbar actions to the list of widget's actions to use in ItemStackWidget context.
   addActions(m_editor_actions->GetActions(GetToolBarActionKeys()));
 
-  auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
+  auto on_subscribe = [this]() { SetInstructionContainerIntern(m_instruction_container); };
 
-  auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
+  auto on_unsubscribe = [this]() { SetInstructionContainerIntern(nullptr); };
 
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
@@ -119,18 +119,19 @@ InstructionEditorWidget::~InstructionEditorWidget()
   sup::gui::AppUnregisterWidgetUniqueId(this);
 }
 
-void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
+void InstructionEditorWidget::SetInstructionContainer(
+    InstructionContainerItem *instruction_container)
 {
-  if (procedure == m_procedure)
+  if (instruction_container == m_instruction_container)
   {
     return;
   }
 
-  m_procedure = procedure;
+  m_instruction_container = instruction_container;
 
-  if (m_procedure && isVisible())
+  if (m_instruction_container && isVisible())
   {
-    SetProcedureIntern(m_procedure);
+    SetInstructionContainerIntern(m_instruction_container);
   }
 }
 
@@ -190,16 +191,13 @@ void InstructionEditorWidget::AdjustTreeAppearance()
   m_custom_header->AdjustColumnsWidth();
 }
 
-void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
+void InstructionEditorWidget::SetInstructionContainerIntern(
+    InstructionContainerItem *instruction_container)
 {
-  if (procedure)
+  m_component_provider->SetItem(instruction_container);
+  if (instruction_container)
   {
-    m_component_provider->SetItem(procedure->GetInstructionContainer());
     AdjustTreeAppearance();
-  }
-  else
-  {
-    m_component_provider->SetItem(nullptr);
   }
 }
 
@@ -226,7 +224,7 @@ void InstructionEditorWidget::SetupConnections()
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()
 {
   InstructionEditorContext result;
-  result.selected_procedure = [this]() { return m_procedure; };
+  result.instruction_container = [this]() { return m_instruction_container; };
   result.selected_instruction = [this]() { return GetSelectedInstruction(); };
 
   auto on_select_request = [this](auto item)

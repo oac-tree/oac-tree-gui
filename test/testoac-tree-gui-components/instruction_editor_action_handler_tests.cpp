@@ -63,7 +63,7 @@ public:
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* selection)
   {
-    return m_mock_context.CreateActionHandler(m_procedure, selection);
+    return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), selection);
   }
 
   SequencerModel m_model;
@@ -81,20 +81,20 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
 
   {
     InstructionEditorContext context;
-    context.selected_procedure = []() -> ProcedureItem* { return nullptr; };
+    context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
   {
     InstructionEditorContext context;
-    context.selected_procedure = []() -> ProcedureItem* { return nullptr; };
+    context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     context.selected_instruction = []() -> InstructionItem* { return nullptr; };
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
   {
     InstructionEditorContext context;
-    context.selected_procedure = []() -> ProcedureItem* { return nullptr; };
+    context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     context.selected_instruction = []() -> InstructionItem* { return nullptr; };
     context.select_notify = [](auto item) {};
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);

@@ -51,19 +51,20 @@ public:
   /**
    * @brief Creates context for InstructionEditorActionHandler.
    *
-   * @param procedure The procedure which will be reported as selected by the user.
+   * @param instruction_container Current container with instructions.
    * @param instruction The instruction which will be reported as selected by the user.
    */
-  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* selected_item);
+  InstructionEditorContext CreateContext(InstructionContainerItem* instruction_container,
+                                         InstructionItem* selected_item);
 
   /**
    * @brief Creates action handler.
    *
-   * It is initialized with mock context pretending that the given procedure and instruction are
-   * selected by the user.
+   * It is initialized with mock context pretending that the given instruction is selected by the
+   * user.
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      ProcedureItem* procedure, InstructionItem* selected_item);
+      InstructionContainerItem* instruction_container, InstructionItem* selected_item);
 
   QMimeData* GetCopyResult() const;
 

@@ -71,7 +71,8 @@ public:
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* selection)
   {
-    return m_mock_context.CreateActionHandler(m_procedure_item, selection);
+    return m_mock_context.CreateActionHandler(m_procedure_item->GetInstructionContainer(),
+                                              selection);
   }
 
   /**

@@ -72,9 +72,9 @@ namespace oac_tree_gui
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context)
     : m_context(std::move(context))
 {
-  if (!m_context.selected_procedure)
+  if (!m_context.instruction_container)
   {
-    throw RuntimeException("Callback to retrieve current procedure is not defined");
+    throw RuntimeException("Callback to retrieve current instruction container is not defined");
   }
 
   if (!m_context.selected_instruction)
@@ -303,8 +303,7 @@ mvvm::ISessionModel *InstructionEditorActionHandler::GetModel() const
 
 InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContainer() const
 {
-  auto procedure = m_context.selected_procedure();
-  return procedure ? procedure->GetInstructionContainer() : nullptr;
+  return m_context.instruction_container();
 }
 
 void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
