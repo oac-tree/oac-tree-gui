@@ -20,6 +20,7 @@
 #include "procedure_list_widget.h"
 
 #include <oac_tree_gui/composer/procedure_list_action_handler.h>
+#include <oac_tree_gui/mainwindow/clipboard_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -32,11 +33,8 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/viewmodel/top_items_viewmodel.h>
 
-#include <QClipboard>
-#include <QGuiApplication>
 #include <QListView>
 #include <QMenu>
-#include <QMimeData>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -129,17 +127,13 @@ QList<QAction *> ProcedureListWidget::GetActions(
 
 ProcedureListContext ProcedureListWidget::CreateContext()
 {
-  auto get_container_callback = [this]()
+  ProcedureListContext result;
+  result.procedure_container = [this]()
   { return m_model ? m_model->GetProcedureContainer() : nullptr; };
-  auto get_selected_procedure_callback = [this]() { return GetSelectedProcedure(); };
-
-  auto get_mime_data_callback = []() { return QGuiApplication::clipboard()->mimeData(); };
-
-  auto set_mime_data_callback = [](std::unique_ptr<QMimeData> data)
-  { return QGuiApplication::clipboard()->setMimeData(data.release()); };
-
-  return {get_container_callback, get_selected_procedure_callback, get_mime_data_callback,
-          set_mime_data_callback};
+  result.selected_procedure = [this]() { return GetSelectedProcedure(); };
+  result.get_mime_data = DefaultClipboardGetFunc();
+  result.set_mime_data = DefaultClipboardSetFunc();
+  return result;
 }
 
 void ProcedureListWidget::OnContextMenuRequest(const QPoint &point)

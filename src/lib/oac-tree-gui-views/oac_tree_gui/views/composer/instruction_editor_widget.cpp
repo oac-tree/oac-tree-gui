@@ -24,6 +24,7 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
+#include <oac_tree_gui/mainwindow/clipboard_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -42,9 +43,6 @@
 #include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/views/property_tree_view.h>
 
-#include <QClipboard>
-#include <QGuiApplication>
-#include <QMimeData>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -240,9 +238,8 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
 
   result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.edit_anyvalue = CreateAnyValueDialogCallback(this);
-  result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };
-  result.set_mime_data = [](std::unique_ptr<QMimeData> data)
-  { QGuiApplication::clipboard()->setMimeData(data.release()); };
+  result.get_mime_data = DefaultClipboardGetFunc();
+  result.set_mime_data = DefaultClipboardSetFunc();
 
   return result;
 }
