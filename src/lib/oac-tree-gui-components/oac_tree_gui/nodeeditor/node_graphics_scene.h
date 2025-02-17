@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_H_
-#define OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_
+#define OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_
 
 #include "sup/gui/core/message_handler_interface.h"
 
@@ -28,26 +28,30 @@
 
 namespace mvvm
 {
-class ViewItem;
 class ApplicationModel;
 }  // namespace mvvm
 
 namespace oac_tree_gui
 {
+
 class ConnectableView;
 class NodeConnectionController;
 class NodeConnection;
 class InstructionItem;
 class InstructionContainerItem;
 
-class GraphicsScene : public QGraphicsScene
+/**
+ * @brief The NodeGraphicsScene class is the main graphics scene of the node editor.
+ */
+class NodeGraphicsScene : public QGraphicsScene
 {
   Q_OBJECT
 
 public:
-  explicit GraphicsScene(std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
-                         QObject* parent_object = nullptr);
-  ~GraphicsScene() override;
+  explicit NodeGraphicsScene(
+      std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
+      QObject* parent_object = nullptr);
+  ~NodeGraphicsScene() override;
 
   void SetInstructionContainer(InstructionContainerItem* root_item);
 
@@ -89,7 +93,7 @@ private:
 };
 
 template <typename T>
-inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
+inline std::vector<T*> NodeGraphicsScene::GetSelectedViewItems() const
 {
   std::vector<T*> result;
   for (auto item : selectedItems())
@@ -104,4 +108,4 @@ inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_

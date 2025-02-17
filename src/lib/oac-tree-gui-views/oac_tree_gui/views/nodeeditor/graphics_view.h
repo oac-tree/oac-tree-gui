@@ -29,7 +29,7 @@ class QKeyEvent;
 namespace oac_tree_gui
 {
 
-class GraphicsScene;
+class NodeGraphicsScene;
 
 /**
  * @brief The GraphicsView class shows GraphicsScene and is responsible for zoom/selection/centering
@@ -40,7 +40,7 @@ class GraphicsView : public QGraphicsView
   Q_OBJECT
 
 public:
-  GraphicsView(GraphicsScene* scene, QWidget* parent_widget);
+  GraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget);
 
   void CenterView();
 

@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/nodeeditor/node_graphics_scene.h"
+
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -38,16 +40,16 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "oac_tree_gui/nodeeditor/graphics_scene.h"
-
 namespace oac_tree_gui::test
 {
 
-//! Tests for GraphicsScene class. Supplements graphicscontroller.test.cpp
-class GraphicsSceneTest : public ::testing::Test
+/**
+ * @brief Tests for GraphicsSceneClass.
+ */
+class NodeGraphicsSceneTest : public ::testing::Test
 {
 public:
-  GraphicsSceneTest() : m_scene(m_mock_handler.AsStdFunction())
+  NodeGraphicsSceneTest() : m_scene(m_mock_handler.AsStdFunction())
   {
     m_model.InsertItem<ProcedureItem>();
     m_scene.SetInstructionContainer(GetInstructionContainer());
@@ -99,17 +101,17 @@ public:
 
   testing::MockFunction<void(const sup::gui::MessageEvent&)> m_mock_handler;
   SequencerModel m_model;
-  GraphicsScene m_scene;
+  NodeGraphicsScene m_scene;
 };
 
-TEST_F(GraphicsSceneTest, InitialState)
+TEST_F(NodeGraphicsSceneTest, InitialState)
 {
-  GraphicsScene scene({});
+  NodeGraphicsScene scene({});
   EXPECT_FALSE(scene.HasContext());
 }
 
 //! Scene with single instruction. Make it selected and emit delete request.
-TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)
+TEST_F(NodeGraphicsSceneTest, onDeleteSelectedRequest)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
 
@@ -128,7 +130,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)
 }
 
 //! Scene with two instructions. One gets connected with another.
-TEST_F(GraphicsSceneTest, onConnectionRequest)
+TEST_F(NodeGraphicsSceneTest, onConnectionRequest)
 {
   auto controller = CreateController();
 
@@ -169,7 +171,7 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 
 //! Scene with two instructions not intended for connection. One tries to get connected with
 //! another.
-TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
+TEST_F(NodeGraphicsSceneTest, OnInvalidConnectionRequest)
 {
   auto controller = CreateController();
 
@@ -190,7 +192,7 @@ TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
 
 //! Scene with two instructions. One connected with the another, when we delete connection.
 //! Children instruction should move on top of the container.
-TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
+TEST_F(NodeGraphicsSceneTest, onConnectionDeletionViaDisconnect)
 {
   auto controller = CreateController();
 
@@ -234,7 +236,7 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
 }
 
 //! Scene with two instructions. One connected with the another, when we delete child.
-TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
+TEST_F(NodeGraphicsSceneTest, onDeleteSelectedChild)
 {
   auto controller = CreateController();
 
@@ -276,7 +278,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
 
 //! Scene with two instructions. One connected with the another, when we delete parent. Child should
 //! gets disconnected and survive.
-TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
+TEST_F(NodeGraphicsSceneTest, onDeleteSelectedParent)
 {
   auto controller = CreateController();
 
@@ -312,7 +314,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   EXPECT_EQ(new_wait_view->GetConnectableItem()->GetInstruction(), wait);
 }
 
-TEST_F(GraphicsSceneTest, GetSelectedInstructions)
+TEST_F(NodeGraphicsSceneTest, GetSelectedInstructions)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
@@ -334,7 +336,7 @@ TEST_F(GraphicsSceneTest, GetSelectedInstructions)
             Sorted(std::vector<InstructionItem*>({sequence, wait1})));
 }
 
-TEST_F(GraphicsSceneTest, SetSelectedInstructions)
+TEST_F(NodeGraphicsSceneTest, SetSelectedInstructions)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
@@ -361,7 +363,7 @@ TEST_F(GraphicsSceneTest, SetSelectedInstructions)
 
 //! Check selection after the removal
 
-TEST_F(GraphicsSceneTest, SelectionAfterRemoval)
+TEST_F(NodeGraphicsSceneTest, SelectionAfterRemoval)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
@@ -385,7 +387,7 @@ TEST_F(GraphicsSceneTest, SelectionAfterRemoval)
 //! Scenario with complex 3-level instruction tree. Everything is selected and deleted all together.
 //! The model should be empty at the end. This validates that no connection is deleted twice.
 
-TEST_F(GraphicsSceneTest, ComplexAggregateRemoval)
+TEST_F(NodeGraphicsSceneTest, ComplexAggregateRemoval)
 {
   auto controller = CreateController();
   auto item = InsertAggregate("if-then-else", GetInstructionContainer());

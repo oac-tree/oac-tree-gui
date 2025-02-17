@@ -28,8 +28,8 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
-#include <oac_tree_gui/nodeeditor/graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_controller.h>
+#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 
@@ -58,9 +58,9 @@ namespace oac_tree_gui
 NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_actions(new NodeEditorActions)
-    , m_graphics_scene(new GraphicsScene([this](const auto &message)
-                                         { m_graphics_view_message_handler->SendMessage(message); },
-                                         this))
+    , m_graphics_scene(new NodeGraphicsScene(
+          [this](const auto &message) { m_graphics_view_message_handler->SendMessage(message); },
+          this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
@@ -163,14 +163,14 @@ void NodeEditorWidget::SetupConnections()
 {
   // Propagates delete request from the graphics view to the scene.
   connect(m_graphics_view, &GraphicsView::deleteSelectedRequest, m_graphics_scene,
-          &GraphicsScene::OnDeleteSelectedRequest);
+          &NodeGraphicsScene::OnDeleteSelectedRequest);
 
   // Forward instruction selection from graphics scene
-  connect(m_graphics_scene, &GraphicsScene::InstructionSelected, this,
+  connect(m_graphics_scene, &NodeGraphicsScene::InstructionSelected, this,
           &NodeEditorWidget::InstructionSelected);
 
   // Propagate selection request from GraphicsScene to GraphicsView
-  connect(m_graphics_scene, &GraphicsScene::selectionModeChangeRequest, m_graphics_view,
+  connect(m_graphics_scene, &NodeGraphicsScene::selectionModeChangeRequest, m_graphics_view,
           &GraphicsView::onSelectionMode);
 
   // Propagate selection mode change from toolbar to GraphicsView

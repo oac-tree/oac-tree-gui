@@ -25,8 +25,8 @@
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
 #include <oac_tree_gui/nodeeditor/connectable_view_factory.h>
 #include <oac_tree_gui/nodeeditor/connectable_view_map.h>
-#include <oac_tree_gui/nodeeditor/graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/i_connectable_view_factory.h>
+#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
@@ -37,14 +37,14 @@ namespace oac_tree_gui
 struct GraphicsSceneController::GraphicsSceneControllerImpl
 {
   mvvm::ISessionModel* m_model{nullptr};
-  GraphicsScene* m_graphics_scene{nullptr};
+  NodeGraphicsScene* m_graphics_scene{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
   ConnectableViewMap m_instruction_to_view;
   bool m_block_update{false};
   std::unique_ptr<IConnectableViewFactory> m_view_factory;
   std::unique_ptr<mvvm::ModelListener> m_listener;
 
-  GraphicsSceneControllerImpl(mvvm::ISessionModel* model, GraphicsScene* graphics_scene)
+  GraphicsSceneControllerImpl(mvvm::ISessionModel* model, NodeGraphicsScene* graphics_scene)
       : m_model(model)
       , m_graphics_scene(graphics_scene)
       , m_listener(std::make_unique<mvvm::ModelListener>(model))
@@ -170,7 +170,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
 };
 
 GraphicsSceneController::GraphicsSceneController(mvvm::ISessionModel* model,
-                                                 GraphicsScene* graphics_scene)
+                                                 NodeGraphicsScene* graphics_scene)
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {
   p_impl->m_listener->Connect<mvvm::DataChangedEvent>(this, &GraphicsSceneController::OnModelEvent);

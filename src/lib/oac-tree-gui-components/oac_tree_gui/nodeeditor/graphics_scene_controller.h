@@ -31,7 +31,7 @@ class ISessionModel;
 
 namespace oac_tree_gui
 {
-class GraphicsScene;
+class NodeGraphicsScene;
 class SequencerModel;
 class InstructionContainerItem;
 
@@ -40,7 +40,7 @@ class InstructionContainerItem;
 class GraphicsSceneController
 {
 public:
-  GraphicsSceneController(mvvm::ISessionModel *model, GraphicsScene *graphics_scene);
+  GraphicsSceneController(mvvm::ISessionModel *model, NodeGraphicsScene *graphics_scene);
   ~GraphicsSceneController();
 
   void OnModelEvent(const mvvm::ItemInsertedEvent &event);

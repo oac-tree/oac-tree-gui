@@ -11,8 +11,6 @@ target_sources(${library_name} PRIVATE
   connectable_view_factory.h
   connectable_view_map.cpp
   connectable_view_map.h
-  graphics_scene.cpp
-  graphics_scene.h
   graphics_scene_controller.cpp
   graphics_scene_controller.h
   graphics_scene_types.h
@@ -21,6 +19,8 @@ target_sources(${library_name} PRIVATE
   node_connection.h
   node_connection_controller.cpp
   node_connection_controller.h
+  node_graphics_scene.cpp
+  node_graphics_scene.h
   node_port.cpp
   node_port.h
   port_info.h

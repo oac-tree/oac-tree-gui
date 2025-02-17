@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/nodeeditor/graphics_scene_controller.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -25,8 +27,8 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
-#include <oac_tree_gui/nodeeditor/graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
+#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/node_port.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -38,8 +40,6 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/nodeeditor/graphics_scene_controller.h"
 
 namespace oac_tree_gui::test
 {
@@ -73,7 +73,7 @@ public:
   }
 
   SequencerModel m_model;
-  GraphicsScene m_scene;
+  NodeGraphicsScene m_scene;
   ProcedureItem* m_procedure_item{nullptr};
 };
 

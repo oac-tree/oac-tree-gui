@@ -19,7 +19,7 @@
 
 #include "graphics_view.h"
 
-#include <oac_tree_gui/nodeeditor/graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -27,7 +27,7 @@
 
 namespace oac_tree_gui
 {
-GraphicsView::GraphicsView(GraphicsScene* scene, QWidget* parent_widget)
+GraphicsView::GraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
 {
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

@@ -41,7 +41,7 @@ namespace oac_tree_gui
 {
 
 class GraphicsView;
-class GraphicsScene;
+class NodeGraphicsScene;
 class GraphicsSceneController;
 class InstructionItem;
 class NodeEditorActions;
@@ -76,7 +76,7 @@ private:
   void SetupController();
 
   NodeEditorActions* m_actions{nullptr};
-  GraphicsScene* m_graphics_scene{nullptr};
+  NodeGraphicsScene* m_graphics_scene{nullptr};
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_graphics_view_message_handler;

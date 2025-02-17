@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "graphics_scene.h"
+#include "node_graphics_scene.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/aggregate_factory.h>
@@ -72,7 +72,7 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 
 namespace oac_tree_gui
 {
-GraphicsScene::GraphicsScene(
+NodeGraphicsScene::NodeGraphicsScene(
     std::function<void(const sup::gui::MessageEvent &)> send_message_callback,
     QObject *parent_object)
     : QGraphicsScene(parent_object)
@@ -82,10 +82,10 @@ GraphicsScene::GraphicsScene(
   setSceneRect(GetDefaultSceneRect());
 
   connect(m_node_controller.get(), &NodeConnectionController::connectionRequest, this,
-          &GraphicsScene::onConnectionRequest);
+          &NodeGraphicsScene::onConnectionRequest);
 
   connect(m_node_controller.get(), &NodeConnectionController::selectionModeChangeRequest, this,
-          &GraphicsScene::selectionModeChangeRequest);
+          &NodeGraphicsScene::selectionModeChangeRequest);
 
   // Strange bug in Qt6.3: if we use connection via lambda, as in code below, everyting works.
   // If we use classical connection &GraphicsScene::onSelectionChanged program crashes
@@ -95,34 +95,34 @@ GraphicsScene::GraphicsScene(
   //  (class destructor may have already run)", file /usr/include/qt6/QtCore/qobjectdefs_impl.h,
   //  line 155 Aborted (core dumped)
 
-  connect(this, &GraphicsScene::selectionChanged, this, [this]() { onSelectionChanged(); });
+  connect(this, &NodeGraphicsScene::selectionChanged, this, [this]() { onSelectionChanged(); });
   //  connect(this, &GraphicsScene::selectionChanged, this, &GraphicsScene::onSelectionChanged); <--
   //  crashes in Qt6.3
 }
 
-GraphicsScene::~GraphicsScene() = default;
+NodeGraphicsScene::~NodeGraphicsScene() = default;
 
-void GraphicsScene::SetInstructionContainer(InstructionContainerItem *root_item)
+void NodeGraphicsScene::SetInstructionContainer(InstructionContainerItem *root_item)
 {
   m_root_item = root_item;
 }
 
 //! Returns true if given scene is initialised (has model and instruction container assigned).
 
-bool GraphicsScene::HasContext()
+bool NodeGraphicsScene::HasContext()
 {
   return GetModel() && m_root_item;
 }
 
 //! Resets context, removes and deletes objects on scene.
 
-void GraphicsScene::ResetContext()
+void NodeGraphicsScene::ResetContext()
 {
   clear();
   m_root_item = nullptr;
 }
 
-std::vector<ConnectableView *> GraphicsScene::GetConnectableViews()
+std::vector<ConnectableView *> NodeGraphicsScene::GetConnectableViews()
 {
   std::vector<ConnectableView *> result;
   for (auto &item : items())
@@ -138,7 +138,7 @@ std::vector<ConnectableView *> GraphicsScene::GetConnectableViews()
   return result;
 }
 
-ConnectableView *GraphicsScene::FindViewForInstruction(InstructionItem *instruction)
+ConnectableView *NodeGraphicsScene::FindViewForInstruction(InstructionItem *instruction)
 {
   auto views = GetConnectableViews();
   for (auto view : views)
@@ -151,7 +151,7 @@ ConnectableView *GraphicsScene::FindViewForInstruction(InstructionItem *instruct
   return nullptr;
 }
 
-void GraphicsScene::OnDeleteSelectedRequest()
+void NodeGraphicsScene::OnDeleteSelectedRequest()
 {
   if (!HasContext())
   {
@@ -188,7 +188,7 @@ void GraphicsScene::OnDeleteSelectedRequest()
   mvvm::utils::EndMacro(*GetModel());
 }
 
-void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
+void NodeGraphicsScene::disconnectConnectedViews(NodeConnection *connection)
 {
   // No actual view disconnection is going on here. We act on underlying ConnectableItem's.
   // All children items connected to the parents via this connection will be moved to the top of
@@ -201,7 +201,7 @@ void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
   // ports.
 }
 
-void GraphicsScene::SetSelectedInstructions(const std::vector<InstructionItem *> &to_select)
+void NodeGraphicsScene::SetSelectedInstructions(const std::vector<InstructionItem *> &to_select)
 {
   clearSelection();
   for (auto instruction : to_select)
@@ -213,7 +213,7 @@ void GraphicsScene::SetSelectedInstructions(const std::vector<InstructionItem *>
   }
 }
 
-std::vector<InstructionItem *> GraphicsScene::GetSelectedInstructions() const
+std::vector<InstructionItem *> NodeGraphicsScene::GetSelectedInstructions() const
 {
   std::vector<InstructionItem *> result;
   for (const auto view : GetSelectedViewItems<ConnectableView>())
@@ -223,7 +223,7 @@ std::vector<InstructionItem *> GraphicsScene::GetSelectedInstructions() const
   return result;
 }
 
-void GraphicsScene::onConnectionRequest(ConnectableView *child_view, ConnectableView *parent_view)
+void NodeGraphicsScene::onConnectionRequest(ConnectableView *child_view, ConnectableView *parent_view)
 {
   auto child_instruction = GetInstruction(child_view);
   auto parent_instruction = GetInstruction(parent_view);
@@ -238,7 +238,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
   }
 }
 
-void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
   if (event->mimeData()->hasFormat(kNewInstructionMimeType))
   {
@@ -250,7 +250,7 @@ void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
   }
 }
 
-void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
+void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
 
   if (!HasContext())
@@ -268,7 +268,7 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
   }
 }
 
-void GraphicsScene::onSelectionChanged()
+void NodeGraphicsScene::onSelectionChanged()
 {
   auto selected = GetSelectedViewItems<ConnectableView>();
   if (selected.empty())
@@ -278,7 +278,7 @@ void GraphicsScene::onSelectionChanged()
   emit InstructionSelected(GetInstruction(selected.at(0)));
 }
 
-mvvm::ApplicationModel *GraphicsScene::GetModel()
+mvvm::ApplicationModel *NodeGraphicsScene::GetModel()
 {
   return m_root_item ? dynamic_cast<mvvm::ApplicationModel *>(m_root_item->GetModel()) : nullptr;
 }
