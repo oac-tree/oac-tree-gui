@@ -32,6 +32,7 @@
 #include <oac_tree_gui/nodeeditor/node_connection_controller.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
+#include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/core/exceptions.h>
@@ -41,6 +42,9 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QMessageBox>
 #include <QMimeData>
+
+namespace oac_tree_gui
+{
 
 namespace
 {
@@ -70,16 +74,31 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
   return GetEncodedName(event);
 }
 
+/**
+ * @brief Creates a single instruction or instruction aggregate.
+ *
+ * @param name The type of single instruction, or the name of registered aggregate.
+ * @return Constructed single instruction or instruction tree.
+ */
+std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string &name)
+{
+  static ::oac_tree_gui::AggregateFactory factory;
+  if (factory.Contains(name))
+  {
+    return factory.Create(name);
+  }
+  return oac_tree_gui::CreateInstructionItem(name);
+}
+
 }  // namespace
 
-namespace oac_tree_gui
-{
 NodeGraphicsScene::NodeGraphicsScene(
     std::function<void(const sup::gui::MessageEvent &)> send_message_callback,
     QObject *parent_object)
     : QGraphicsScene(parent_object)
     , m_node_controller(new NodeConnectionController(this))
     , m_send_message_callback(send_message_callback)
+    , m_action_handler(std::make_unique<NodeGraphicsSceneActionHandler>(CreateContext()))
 {
   setSceneRect(GetDefaultSceneRect());
 
@@ -106,14 +125,14 @@ NodeGraphicsScene::~NodeGraphicsScene() = default;
 
 void NodeGraphicsScene::SetInstructionContainer(InstructionContainerItem *root_item)
 {
-  m_root_item = root_item;
+  m_instruction_container = root_item;
 }
 
 //! Returns true if given scene is initialised (has model and instruction container assigned).
 
 bool NodeGraphicsScene::HasContext()
 {
-  return GetModel() && m_root_item;
+  return GetModel() && m_instruction_container;
 }
 
 //! Resets context, removes and deletes objects on scene.
@@ -121,7 +140,7 @@ bool NodeGraphicsScene::HasContext()
 void NodeGraphicsScene::ResetContext()
 {
   clear();
-  m_root_item = nullptr;
+  m_instruction_container = nullptr;
 }
 
 std::vector<ConnectableView *> NodeGraphicsScene::GetConnectableViews()
@@ -198,7 +217,7 @@ void NodeGraphicsScene::disconnectConnectedViews(NodeConnection *connection)
   // corresponding ConnectableView recreation.
 
   auto instruction = GetInstruction(connection->childView());
-  GetModel()->MoveItem(instruction, m_root_item, mvvm::TagIndex::Append());
+  GetModel()->MoveItem(instruction, m_instruction_container, mvvm::TagIndex::Append());
   // No need to delete the connection explicitly. It will be done by ConnectableView via its
   // ports.
 }
@@ -241,6 +260,12 @@ void NodeGraphicsScene::onConnectionRequest(ConnectableView *child_view,
   }
 }
 
+void NodeGraphicsScene::DropInstructionTree(const std::string &name, const QPointF &ref_pos)
+{
+  m_action_handler->InsertInstructionAfter(name);
+
+}
+
 void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
   if (event->mimeData()->hasFormat(kNewInstructionMimeType))
@@ -264,9 +289,12 @@ void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-    auto instruction = DropInstruction(domain_type, m_root_item, mvvm::TagIndex::Append());
-    const auto ref_point = GetNodeDropPosition(event->scenePos());
-    algorithm::AlignInstructionTreeWalker(ref_point, instruction);
+    // auto instruction =
+    //     DropInstruction(domain_type, m_instruction_container, mvvm::TagIndex::Append());
+    // const auto ref_point = GetNodeDropPosition(event->scenePos());
+    // algorithm::AlignInstructionTreeWalker(ref_point, instruction);
+
+    m_action_handler->InsertInstructionAfter(domain_type);
   }
 }
 
@@ -282,12 +310,31 @@ void NodeGraphicsScene::onSelectionChanged()
 
 mvvm::ApplicationModel *NodeGraphicsScene::GetModel()
 {
-  return m_root_item ? dynamic_cast<mvvm::ApplicationModel *>(m_root_item->GetModel()) : nullptr;
+  return m_instruction_container
+             ? dynamic_cast<mvvm::ApplicationModel *>(m_instruction_container->GetModel())
+             : nullptr;
 }
 
 InstructionEditorContext NodeGraphicsScene::CreateContext()
 {
-  return {};
+  InstructionEditorContext result;
+  result.instruction_container = [this]() { return m_instruction_container; };
+  result.selected_instruction = [this]()
+  {
+    auto selected = GetSelectedInstructions();
+    return selected.empty() ? nullptr : selected.at(0);
+  };
+  result.select_notify = [this](auto item)
+  {
+    const std::vector<InstructionItem *> to_select({dynamic_cast<InstructionItem *>(item)});
+    SetSelectedInstructions(to_select);
+  };
+
+  result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
+
+  result.send_message = m_send_message_callback;
+
+  return result;
 }
 
 }  // namespace oac_tree_gui

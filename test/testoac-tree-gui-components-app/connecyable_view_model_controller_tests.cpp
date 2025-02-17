@@ -44,11 +44,10 @@
 namespace oac_tree_gui::test
 {
 
-
 class ConnectableViewModelControllerTest : public ::testing::Test
 {
 public:
-  ConnectableViewModelControllerTest() : m_scene({})
+  ConnectableViewModelControllerTest() : m_scene([](auto item) { (void)item; })
   {
     m_procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }

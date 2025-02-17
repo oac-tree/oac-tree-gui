@@ -41,17 +41,17 @@ namespace oac_tree_gui
 InstructionItem *InsertInstruction(const std::string &domain_type, mvvm::SessionItem *parent,
                                    const mvvm::TagIndex &tag_index)
 {
-  return InsertInstruction(oac_tree_gui::CreateInstructionItem(domain_type), parent, tag_index);
+  return InsertInstruction(CreateInstructionItem(domain_type), parent, tag_index);
 }
 
 InstructionItem *InsertAggregate(const std::string &domain_type, mvvm::SessionItem *parent,
                                  const mvvm::TagIndex &tag_index)
 {
-  static ::oac_tree_gui::AggregateFactory factory;
+  static AggregateFactory factory;
   return InsertInstruction(factory.Create(domain_type), parent, tag_index);
 }
 
-InstructionItem *InsertInstruction(std::unique_ptr<oac_tree_gui::InstructionItem> item,
+InstructionItem *InsertInstruction(std::unique_ptr<InstructionItem> item,
                                    mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index)
 {
   return static_cast<InstructionItem *>(
@@ -60,7 +60,7 @@ InstructionItem *InsertInstruction(std::unique_ptr<oac_tree_gui::InstructionItem
 
 bool IsAggregateName(const std::string &name)
 {
-  static ::oac_tree_gui::AggregateFactory factory;
+  static AggregateFactory factory;
   return factory.Contains(name);
 }
 
@@ -133,8 +133,8 @@ std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContaine
 
 sup::gui::AnyValueItem *GetAnyValueItem(const InstructionItem &item)
 {
-  return mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag)
-             ? item.GetItem<sup::gui::AnyValueItem>(oac_tree_gui::itemconstants::kAnyValueTag)
+  return mvvm::utils::HasTag(item, itemconstants::kAnyValueTag)
+             ? item.GetItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
              : nullptr;
 }
 

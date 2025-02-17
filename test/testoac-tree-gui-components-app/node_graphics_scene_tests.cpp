@@ -106,7 +106,7 @@ public:
 
 TEST_F(NodeGraphicsSceneTest, InitialState)
 {
-  NodeGraphicsScene scene({});
+  NodeGraphicsScene scene([](auto item) { (void)item; });
   EXPECT_FALSE(scene.HasContext());
 }
 

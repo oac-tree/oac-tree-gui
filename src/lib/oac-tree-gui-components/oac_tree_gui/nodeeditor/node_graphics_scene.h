@@ -75,6 +75,14 @@ public:
 
   void onConnectionRequest(ConnectableView* child_view, ConnectableView* parent_view);
 
+  /**
+   * @brief Creates a new single instruction or sub-tree at given coordinate.
+   *
+   * @param name The type of single instruction or the name of registered sub-tree.
+   * @param ref_pos Coordinates on scene.
+   */
+  void DropInstructionTree(const std::string& name, const QPointF& ref_pos);
+
 signals:
   void InstructionSelected(oac_tree_gui::InstructionItem* selected);
   void selectionModeChangeRequest(int);
@@ -88,7 +96,7 @@ private:
   mvvm::ApplicationModel* GetModel();
   InstructionEditorContext CreateContext();
 
-  InstructionContainerItem* m_root_item{nullptr};
+  InstructionContainerItem* m_instruction_container{nullptr};
   std::unique_ptr<NodeConnectionController> m_node_controller;
   std::function<void(const sup::gui::MessageEvent&)> m_send_message_callback;
   std::unique_ptr<NodeGraphicsSceneActionHandler> m_action_handler;
