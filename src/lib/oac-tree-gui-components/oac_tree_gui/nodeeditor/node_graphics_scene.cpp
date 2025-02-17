@@ -19,6 +19,8 @@
 
 #include "node_graphics_scene.h"
 
+#include "node_graphics_scene_action_handler.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/aggregate_factory.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -223,7 +225,8 @@ std::vector<InstructionItem *> NodeGraphicsScene::GetSelectedInstructions() cons
   return result;
 }
 
-void NodeGraphicsScene::onConnectionRequest(ConnectableView *child_view, ConnectableView *parent_view)
+void NodeGraphicsScene::onConnectionRequest(ConnectableView *child_view,
+                                            ConnectableView *parent_view)
 {
   auto child_instruction = GetInstruction(child_view);
   auto parent_instruction = GetInstruction(parent_view);
@@ -252,7 +255,6 @@ void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-
   if (!HasContext())
   {
     qWarning("Error in GraphicsScene: context is not initialised");
@@ -281,6 +283,11 @@ void NodeGraphicsScene::onSelectionChanged()
 mvvm::ApplicationModel *NodeGraphicsScene::GetModel()
 {
   return m_root_item ? dynamic_cast<mvvm::ApplicationModel *>(m_root_item->GetModel()) : nullptr;
+}
+
+InstructionEditorContext NodeGraphicsScene::CreateContext()
+{
+  return {};
 }
 
 }  // namespace oac_tree_gui

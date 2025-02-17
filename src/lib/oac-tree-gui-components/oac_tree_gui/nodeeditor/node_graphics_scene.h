@@ -22,8 +22,6 @@
 
 #include "sup/gui/core/message_handler_interface.h"
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
-
 #include <QGraphicsScene>
 
 namespace mvvm
@@ -39,6 +37,8 @@ class NodeConnectionController;
 class NodeConnection;
 class InstructionItem;
 class InstructionContainerItem;
+class NodeGraphicsSceneActionHandler;
+class InstructionEditorContext;
 
 /**
  * @brief The NodeGraphicsScene class is the main graphics scene of the node editor.
@@ -86,10 +86,12 @@ protected:
 private:
   void onSelectionChanged();
   mvvm::ApplicationModel* GetModel();
+  InstructionEditorContext CreateContext();
 
   InstructionContainerItem* m_root_item{nullptr};
   std::unique_ptr<NodeConnectionController> m_node_controller;
   std::function<void(const sup::gui::MessageEvent&)> m_send_message_callback;
+  std::unique_ptr<NodeGraphicsSceneActionHandler> m_action_handler;
 };
 
 template <typename T>

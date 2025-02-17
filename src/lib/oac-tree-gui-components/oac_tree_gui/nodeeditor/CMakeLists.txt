@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   node_connection_controller.h
   node_graphics_scene.cpp
   node_graphics_scene.h
+  node_graphics_scene_action_handler.cpp
+  node_graphics_scene_action_handler.h
   node_port.cpp
   node_port.h
   port_info.h
