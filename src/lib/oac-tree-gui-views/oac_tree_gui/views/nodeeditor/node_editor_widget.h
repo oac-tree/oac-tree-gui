@@ -40,7 +40,7 @@ class ApplicationModel;
 namespace oac_tree_gui
 {
 
-class GraphicsView;
+class NodeGraphicsView;
 class NodeGraphicsScene;
 class GraphicsSceneController;
 class InstructionItem;
@@ -77,7 +77,7 @@ private:
 
   NodeEditorActions* m_actions{nullptr};
   NodeGraphicsScene* m_graphics_scene{nullptr};
-  GraphicsView* m_graphics_view{nullptr};
+  NodeGraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_graphics_view_message_handler;
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};

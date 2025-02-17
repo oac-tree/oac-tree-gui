@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
-#define OAC_TREE_GUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
+#ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_H_
+#define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_H_
 
 #include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 
@@ -32,15 +32,15 @@ namespace oac_tree_gui
 class NodeGraphicsScene;
 
 /**
- * @brief The GraphicsView class shows GraphicsScene and is responsible for zoom/selection/centering
- * activities.
+ * @brief The NodeGraphicsView class shows NodeGraphicsScene and is responsible for
+ * zoom/selection/centering activities.
  */
-class GraphicsView : public QGraphicsView
+class NodeGraphicsView : public QGraphicsView
 {
   Q_OBJECT
 
 public:
-  GraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget);
+  NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget);
 
   void CenterView();
 
@@ -60,4 +60,4 @@ protected:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
+#endif  // OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_H_

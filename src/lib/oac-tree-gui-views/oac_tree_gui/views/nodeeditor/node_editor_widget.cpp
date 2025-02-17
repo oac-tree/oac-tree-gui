@@ -19,8 +19,8 @@
 
 #include "node_editor_widget.h"
 
-#include "graphics_view.h"
 #include "node_editor_actions.h"
+#include "node_graphics_view.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -61,7 +61,7 @@ NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
     , m_graphics_scene(new NodeGraphicsScene(
           [this](const auto &message) { m_graphics_view_message_handler->SendMessage(message); },
           this))
-    , m_graphics_view(new GraphicsView(m_graphics_scene, this))
+    , m_graphics_view(new NodeGraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
   setWindowTitle("NodeEditor");
@@ -162,7 +162,7 @@ void NodeEditorWidget::SetupController()
 void NodeEditorWidget::SetupConnections()
 {
   // Propagates delete request from the graphics view to the scene.
-  connect(m_graphics_view, &GraphicsView::deleteSelectedRequest, m_graphics_scene,
+  connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, m_graphics_scene,
           &NodeGraphicsScene::OnDeleteSelectedRequest);
 
   // Forward instruction selection from graphics scene
@@ -171,25 +171,26 @@ void NodeEditorWidget::SetupConnections()
 
   // Propagate selection request from GraphicsScene to GraphicsView
   connect(m_graphics_scene, &NodeGraphicsScene::selectionModeChangeRequest, m_graphics_view,
-          &GraphicsView::onSelectionMode);
+          &NodeGraphicsView::onSelectionMode);
 
   // Propagate selection mode change from toolbar to GraphicsView
   connect(m_actions, &NodeEditorActions::selectionMode, m_graphics_view,
-          &GraphicsView::onSelectionMode);
+          &NodeGraphicsView::onSelectionMode);
 
   // Center view from toolBar to GraphicsView
-  connect(m_actions, &NodeEditorActions::centerView, m_graphics_view, &GraphicsView::CenterView);
+  connect(m_actions, &NodeEditorActions::centerView, m_graphics_view,
+          &NodeGraphicsView::CenterView);
 
   // Propagate zoom request from a toolbar to GraphicsView
   connect(m_actions, &NodeEditorActions::changeScale, m_graphics_view,
-          &GraphicsView::onChangeScale);
+          &NodeGraphicsView::onChangeScale);
 
   // alignment request from a toolbar
   connect(m_actions, &NodeEditorActions::alignSelectedRequest, this,
           &NodeEditorWidget::OnAlignRequest);
 
   // Propagate selection mode change from GraphicsView to a toolBar
-  connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_actions,
+  connect(m_graphics_view, &NodeGraphicsView::selectionModeChanged, m_actions,
           &NodeEditorActions::onViewSelectionMode);
 }
 

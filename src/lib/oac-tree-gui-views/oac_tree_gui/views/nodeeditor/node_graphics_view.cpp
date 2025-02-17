@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "graphics_view.h"
+#include "node_graphics_view.h"
 
 #include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 
@@ -27,7 +27,7 @@
 
 namespace oac_tree_gui
 {
-GraphicsView::GraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget)
+NodeGraphicsView::NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
 {
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -37,12 +37,12 @@ GraphicsView::GraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget)
   setDragMode(QGraphicsView::RubberBandDrag);
 }
 
-void GraphicsView::CenterView()
+void NodeGraphicsView::CenterView()
 {
   centerOn(scene()->itemsBoundingRect().center());
 }
 
-ESelectionModes GraphicsView::GetSelectionModes()
+ESelectionModes NodeGraphicsView::GetSelectionModes()
 {
   static const std::map<QGraphicsView::DragMode, ESelectionModes> mode_map{
       {QGraphicsView::NoDrag, kSimpleSelection},
@@ -53,7 +53,7 @@ ESelectionModes GraphicsView::GetSelectionModes()
   return it == mode_map.end() ? kUnknownSelection : it->second;
 }
 
-void GraphicsView::onSelectionMode(int mode)
+void NodeGraphicsView::onSelectionMode(int mode)
 {
   switch (mode)
   {
@@ -77,7 +77,7 @@ void GraphicsView::onSelectionMode(int mode)
   }
 }
 
-void GraphicsView::onChangeScale(double new_scale)
+void NodeGraphicsView::onChangeScale(double new_scale)
 {
   QTransform oldMatrix = transform();
   resetTransform();
@@ -87,7 +87,7 @@ void GraphicsView::onChangeScale(double new_scale)
 
 //! Handles mouse press events.
 
-void GraphicsView::keyPressEvent(QKeyEvent* event)
+void NodeGraphicsView::keyPressEvent(QKeyEvent* event)
 {
   switch (event->key())
   {
@@ -104,7 +104,7 @@ void GraphicsView::keyPressEvent(QKeyEvent* event)
 
 //! Handles mouse release events.
 
-void GraphicsView::keyReleaseEvent(QKeyEvent* event)
+void NodeGraphicsView::keyReleaseEvent(QKeyEvent* event)
 {
   switch (event->key())
   {
