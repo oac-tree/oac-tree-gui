@@ -39,9 +39,11 @@ class ActionMenu;
 namespace oac_tree_gui
 {
 
-//! Instrument tool bar on top of NodeEditor
-
-class NodeEditorActions : public QObject
+/**
+ * @brief The NodeGraphicsViewActions class contains a collection of actions related to node
+ * graphics view (zoom/pan/center and similar).
+ */
+class NodeGraphicsViewActions : public QObject
 {
   Q_OBJECT
 
@@ -55,8 +57,8 @@ public:
     kAlign
   };
 
-  explicit NodeEditorActions(QWidget* parent_widget = nullptr);
-  ~NodeEditorActions() override;
+  explicit NodeGraphicsViewActions(QWidget* parent_widget = nullptr);
+  ~NodeGraphicsViewActions() override;
 
   void onViewSelectionMode(int mode);
 

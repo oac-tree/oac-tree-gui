@@ -44,7 +44,7 @@ class NodeGraphicsView;
 class NodeGraphicsScene;
 class GraphicsSceneController;
 class InstructionItem;
-class NodeEditorActions;
+class NodeGraphicsViewActions;
 class ProcedureItem;
 
 /**
@@ -75,7 +75,7 @@ private:
   void OnAlignRequest();
   void SetupController();
 
-  NodeEditorActions* m_actions{nullptr};
+  NodeGraphicsViewActions* m_view_actions{nullptr};
   NodeGraphicsScene* m_graphics_scene{nullptr};
   NodeGraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;

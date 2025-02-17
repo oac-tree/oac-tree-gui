@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "node_editor_actions.h"
+#include "node_graphics_view_actions.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
@@ -45,7 +45,7 @@ QString GetZoomText(int scale)
 
 namespace oac_tree_gui
 {
-NodeEditorActions::NodeEditorActions(QWidget *parent_widget)
+NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
     : QObject(parent_widget)
     , m_pointer_mode_group(new QButtonGroup(this))
     , m_pointer_button(new QToolButton)
@@ -77,7 +77,8 @@ NodeEditorActions::NodeEditorActions(QWidget *parent_widget)
 
   m_pointer_mode_group->addButton(m_pointer_button, kRubberSelection);
   m_pointer_mode_group->addButton(m_pan_button, kHandDrag);
-  connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, &NodeEditorActions::selectionMode);
+  connect(m_pointer_mode_group, &QButtonGroup::idClicked, this,
+          &NodeGraphicsViewActions::selectionMode);
 
   m_zoom_action->setText(GetZoomText(kDefaultZoomLevel));
   m_zoom_action->setIcon(FindIcon("magnify-plus-outline"));
@@ -88,19 +89,20 @@ NodeEditorActions::NodeEditorActions(QWidget *parent_widget)
   m_center_action->setText("Center");
   m_center_action->setIcon(FindIcon("camera-metering-center"));
   m_center_action->setToolTip("Center view");
-  connect(m_center_action, &QAction::triggered, this, &NodeEditorActions::centerView);
+  connect(m_center_action, &QAction::triggered, this, &NodeGraphicsViewActions::centerView);
   m_action_map.Add(ActionKey::kCenter, m_center_action);
 
   m_align_action->setText("Align");
   m_align_action->setIcon(FindIcon("dots-triangle"));
   m_align_action->setToolTip("Align children of currently selected item");
-  connect(m_align_action, &QAction::triggered, this, &NodeEditorActions::alignSelectedRequest);
+  connect(m_align_action, &QAction::triggered, this,
+          &NodeGraphicsViewActions::alignSelectedRequest);
   m_action_map.Add(ActionKey::kAlign, m_align_action);
 }
 
-NodeEditorActions::~NodeEditorActions() = default;
+NodeGraphicsViewActions::~NodeGraphicsViewActions() = default;
 
-void NodeEditorActions::onViewSelectionMode(int mode)
+void NodeGraphicsViewActions::onViewSelectionMode(int mode)
 {
   if (mode == kRubberSelection || mode == kHandDrag)
   {
@@ -108,12 +110,13 @@ void NodeEditorActions::onViewSelectionMode(int mode)
   }
 }
 
-QList<QAction *> NodeEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
+QList<QAction *> NodeGraphicsViewActions::GetActions(
+    const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
 
-std::unique_ptr<QMenu> NodeEditorActions::CreateZoomMenu()
+std::unique_ptr<QMenu> NodeGraphicsViewActions::CreateZoomMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);

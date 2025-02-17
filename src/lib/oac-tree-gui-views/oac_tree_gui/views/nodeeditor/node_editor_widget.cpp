@@ -19,8 +19,8 @@
 
 #include "node_editor_widget.h"
 
-#include "node_editor_actions.h"
 #include "node_graphics_view.h"
+#include "node_graphics_view_actions.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -44,9 +44,9 @@
 
 namespace
 {
-QList<QAction *> GetToolBarActions(oac_tree_gui::NodeEditorActions *actions)
+QList<QAction *> GetToolBarActions(oac_tree_gui::NodeGraphicsViewActions *actions)
 {
-  using ActionKey = oac_tree_gui::NodeEditorActions::ActionKey;
+  using ActionKey = oac_tree_gui::NodeGraphicsViewActions::ActionKey;
   return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kZoom,
                               ActionKey::kCenter, ActionKey::kAlign});
 }
@@ -57,7 +57,7 @@ namespace oac_tree_gui
 
 NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
     : QWidget(parent_widget)
-    , m_actions(new NodeEditorActions)
+    , m_view_actions(new NodeGraphicsViewActions)
     , m_graphics_scene(new NodeGraphicsScene(
           [this](const auto &message) { m_graphics_view_message_handler->SendMessage(message); },
           this))
@@ -80,7 +80,7 @@ NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 
-  addActions(GetToolBarActions(m_actions));
+  addActions(GetToolBarActions(m_view_actions));
 }
 
 NodeEditorWidget::~NodeEditorWidget() = default;
@@ -174,24 +174,24 @@ void NodeEditorWidget::SetupConnections()
           &NodeGraphicsView::onSelectionMode);
 
   // Propagate selection mode change from toolbar to GraphicsView
-  connect(m_actions, &NodeEditorActions::selectionMode, m_graphics_view,
+  connect(m_view_actions, &NodeGraphicsViewActions::selectionMode, m_graphics_view,
           &NodeGraphicsView::onSelectionMode);
 
   // Center view from toolBar to GraphicsView
-  connect(m_actions, &NodeEditorActions::centerView, m_graphics_view,
+  connect(m_view_actions, &NodeGraphicsViewActions::centerView, m_graphics_view,
           &NodeGraphicsView::CenterView);
 
   // Propagate zoom request from a toolbar to GraphicsView
-  connect(m_actions, &NodeEditorActions::changeScale, m_graphics_view,
+  connect(m_view_actions, &NodeGraphicsViewActions::changeScale, m_graphics_view,
           &NodeGraphicsView::onChangeScale);
 
   // alignment request from a toolbar
-  connect(m_actions, &NodeEditorActions::alignSelectedRequest, this,
+  connect(m_view_actions, &NodeGraphicsViewActions::alignSelectedRequest, this,
           &NodeEditorWidget::OnAlignRequest);
 
   // Propagate selection mode change from GraphicsView to a toolBar
-  connect(m_graphics_view, &NodeGraphicsView::selectionModeChanged, m_actions,
-          &NodeEditorActions::onViewSelectionMode);
+  connect(m_graphics_view, &NodeGraphicsView::selectionModeChanged, m_view_actions,
+          &NodeGraphicsViewActions::onViewSelectionMode);
 }
 
 }  // namespace oac_tree_gui
