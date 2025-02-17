@@ -28,7 +28,7 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
-#include <oac_tree_gui/nodeeditor/graphics_scene_controller.h>
+#include <oac_tree_gui/nodeeditor/connectable_view_model_controller.h>
 #include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
@@ -154,7 +154,7 @@ void NodeEditorWidget::SetupController()
   }
 
   m_scene_controller =
-      std::make_unique<GraphicsSceneController>(m_procedure_item->GetModel(), m_graphics_scene);
+      std::make_unique<ConnectableViewModelController>(m_procedure_item->GetModel(), m_graphics_scene);
 
   m_scene_controller->Init(m_procedure_item->GetInstructionContainer());
 }

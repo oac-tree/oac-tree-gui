@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
-#define OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_MODEL_CONTROLLER_H_
+#define OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_MODEL_CONTROLLER_H_
 
 #include <mvvm/signals/event_types.h>
 
@@ -31,17 +31,20 @@ class ISessionModel;
 
 namespace oac_tree_gui
 {
+
 class NodeGraphicsScene;
 class SequencerModel;
 class InstructionContainerItem;
 
-//! Listens for changes in SequencerModel and updates GraphicsScene.
-
-class GraphicsSceneController
+/**
+ * @brief The ConnectableViewModelController class listens for changes in instruction container and
+ * updates connectable nodes on the graphics scene.
+ */
+class ConnectableViewModelController
 {
 public:
-  GraphicsSceneController(mvvm::ISessionModel *model, NodeGraphicsScene *graphics_scene);
-  ~GraphicsSceneController();
+  ConnectableViewModelController(mvvm::ISessionModel *model, NodeGraphicsScene *graphics_scene);
+  ~ConnectableViewModelController();
 
   void OnModelEvent(const mvvm::ItemInsertedEvent &event);
 
@@ -52,10 +55,10 @@ public:
   void Init(InstructionContainerItem *root_item);
 
 private:
-  struct GraphicsSceneControllerImpl;
-  std::unique_ptr<GraphicsSceneControllerImpl> p_impl;
+  struct ConnectableViewModelControllerImpl;
+  std::unique_ptr<ConnectableViewModelControllerImpl> p_impl;
 };
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_VIEW_MODEL_CONTROLLER_H_

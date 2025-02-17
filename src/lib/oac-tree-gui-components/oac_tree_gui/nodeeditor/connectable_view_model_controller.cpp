@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "graphics_scene_controller.h"
+#include "connectable_view_model_controller.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -34,7 +34,8 @@
 
 namespace oac_tree_gui
 {
-struct GraphicsSceneController::GraphicsSceneControllerImpl
+
+struct ConnectableViewModelController::ConnectableViewModelControllerImpl
 {
   mvvm::ISessionModel* m_model{nullptr};
   NodeGraphicsScene* m_graphics_scene{nullptr};
@@ -44,7 +45,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   std::unique_ptr<IConnectableViewFactory> m_view_factory;
   std::unique_ptr<mvvm::ModelListener> m_listener;
 
-  GraphicsSceneControllerImpl(mvvm::ISessionModel* model, NodeGraphicsScene* graphics_scene)
+  ConnectableViewModelControllerImpl(mvvm::ISessionModel* model, NodeGraphicsScene* graphics_scene)
       : m_model(model)
       , m_graphics_scene(graphics_scene)
       , m_listener(std::make_unique<mvvm::ModelListener>(model))
@@ -169,21 +170,22 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   }
 };
 
-GraphicsSceneController::GraphicsSceneController(mvvm::ISessionModel* model,
-                                                 NodeGraphicsScene* graphics_scene)
-    : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
+ConnectableViewModelController::ConnectableViewModelController(mvvm::ISessionModel* model,
+                                                               NodeGraphicsScene* graphics_scene)
+    : p_impl(std::make_unique<ConnectableViewModelControllerImpl>(model, graphics_scene))
 {
-  p_impl->m_listener->Connect<mvvm::DataChangedEvent>(this, &GraphicsSceneController::OnModelEvent);
+  p_impl->m_listener->Connect<mvvm::DataChangedEvent>(
+      this, &ConnectableViewModelController::OnModelEvent);
 
-  p_impl->m_listener->Connect<mvvm::ItemInsertedEvent>(this,
-                                                       &GraphicsSceneController::OnModelEvent);
-  p_impl->m_listener->Connect<mvvm::AboutToRemoveItemEvent>(this,
-                                                            &GraphicsSceneController::OnModelEvent);
+  p_impl->m_listener->Connect<mvvm::ItemInsertedEvent>(
+      this, &ConnectableViewModelController::OnModelEvent);
+  p_impl->m_listener->Connect<mvvm::AboutToRemoveItemEvent>(
+      this, &ConnectableViewModelController::OnModelEvent);
 }
 
-GraphicsSceneController::~GraphicsSceneController() = default;
+ConnectableViewModelController::~ConnectableViewModelController() = default;
 
-void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
+void ConnectableViewModelController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
 {
   if (event.tag_index.GetTag() == itemconstants::kAnyValueTag)
   {
@@ -196,7 +198,7 @@ void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
   }
 }
 
-void GraphicsSceneController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& event)
+void ConnectableViewModelController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& event)
 {
   auto [parent, tag_index] = event;
   auto item_to_remove = parent->GetItem(tag_index);
@@ -219,12 +221,12 @@ void GraphicsSceneController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& e
   }
 }
 
-void GraphicsSceneController::OnModelEvent(const mvvm::DataChangedEvent& event)
+void ConnectableViewModelController::OnModelEvent(const mvvm::DataChangedEvent& event)
 {
   p_impl->OnDataChanged(event.item, event.data_role);
 }
 
-void GraphicsSceneController::Init(InstructionContainerItem* root_item)
+void ConnectableViewModelController::Init(InstructionContainerItem* root_item)
 {
   p_impl->InitScene(root_item);
 }

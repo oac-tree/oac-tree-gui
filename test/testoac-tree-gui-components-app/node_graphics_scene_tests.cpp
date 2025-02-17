@@ -26,7 +26,7 @@
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
-#include <oac_tree_gui/nodeeditor/graphics_scene_controller.h>
+#include <oac_tree_gui/nodeeditor/connectable_view_model_controller.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
 #include <oac_tree_gui/nodeeditor/node_port.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
@@ -70,9 +70,9 @@ public:
     return result;
   }
 
-  std::unique_ptr<GraphicsSceneController> CreateController()
+  std::unique_ptr<ConnectableViewModelController> CreateController()
   {
-    auto result = std::make_unique<GraphicsSceneController>(&m_model, &m_scene);
+    auto result = std::make_unique<ConnectableViewModelController>(&m_model, &m_scene);
     result->Init(GetInstructionContainer());
     return result;
   }
