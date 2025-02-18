@@ -110,6 +110,24 @@ TEST_F(NodeGraphicsSceneTest, InitialState)
   EXPECT_FALSE(scene.HasContext());
 }
 
+TEST_F(NodeGraphicsSceneTest, DropInstruction)
+{
+  const double expected_x{42.0};
+  const double expected_y{43.0};
+
+  // auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
+  auto controller = CreateController();
+
+  m_scene.DropInstructionTree(SequenceItem::GetStaticType(), {expected_x, expected_y});
+  ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
+  auto inserted_sequence = GetInstructionContainer()->GetInstructions().at(0);
+
+  EXPECT_EQ(inserted_sequence->GetX(), expected_x);
+  EXPECT_EQ(inserted_sequence->GetY(), expected_y);
+
+  EXPECT_NE(m_scene.FindViewForInstruction(inserted_sequence), nullptr);
+}
+
 //! Scene with single instruction. Make it selected and emit delete request.
 TEST_F(NodeGraphicsSceneTest, onDeleteSelectedRequest)
 {

@@ -132,6 +132,31 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   EXPECT_EQ(reported_item, instructions.at(0));
 }
 
+TEST_F(InstructionEditorActionHandlerTest, DropInstruction)
+{
+  const double expected_x{42.0};
+  const double expected_y{43.0};
+
+  auto handler = CreateActionHandler(nullptr);
+
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
+
+  // appending instruction to the container
+  handler->DropInstruction(WaitItem::GetStaticType(), {expected_x, expected_y});
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+  auto inserted_instruction = instructions.at(0);
+  EXPECT_EQ(inserted_instruction->GetType(), WaitItem::GetStaticType());
+
+  EXPECT_EQ(reported_item, inserted_instruction);
+  EXPECT_EQ(inserted_instruction->GetX(), expected_x);
+  EXPECT_EQ(inserted_instruction->GetY(), expected_y);
+}
+
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
 TEST_F(InstructionEditorActionHandlerTest, AddChoice)
 {

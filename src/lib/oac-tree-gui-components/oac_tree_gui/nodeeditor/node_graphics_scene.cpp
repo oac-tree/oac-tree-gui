@@ -262,8 +262,7 @@ void NodeGraphicsScene::onConnectionRequest(ConnectableView *child_view,
 
 void NodeGraphicsScene::DropInstructionTree(const std::string &name, const QPointF &ref_pos)
 {
-  m_action_handler->InsertInstructionAfter(name);
-
+  m_action_handler->DropInstruction(name, {ref_pos.x(), ref_pos.y()});
 }
 
 void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
@@ -289,12 +288,7 @@ void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-    // auto instruction =
-    //     DropInstruction(domain_type, m_instruction_container, mvvm::TagIndex::Append());
-    // const auto ref_point = GetNodeDropPosition(event->scenePos());
-    // algorithm::AlignInstructionTreeWalker(ref_point, instruction);
-
-    m_action_handler->InsertInstructionAfter(domain_type);
+    DropInstructionTree(domain_type, GetNodeDropPosition(event->scenePos()));
   }
 }
 

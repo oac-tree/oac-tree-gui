@@ -27,6 +27,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
+#include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
@@ -47,27 +48,32 @@ namespace oac_tree_gui
 namespace
 {
 
-QPointF GetReferenceCoordinate(oac_tree_gui::InstructionItem *reference)
+/**
+ * @brief Returns coordinate located not far from the given reference.
+ */
+IInstructionEditorActionHandler::position_t GetCoordinateNearby(
+    oac_tree_gui::InstructionItem *reference)
 {
-  return reference ? QPointF(reference->GetX(), reference->GetY())
-                   : oac_tree_gui::GetGraphicsViewportCenter();
+  const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
+  const double x =
+      reference ? reference->GetX() + oac_tree_gui::GetInstructionDropOffset() : default_center.x();
+  const double y =
+      reference ? reference->GetY() + oac_tree_gui::GetInstructionDropOffset() : default_center.y();
+
+  return {x, y};
 }
 
 /**
- * @brief Updates child coordinate so it is located near the reference
+ * @brief Updates child coordinate so it is located near the reference.
  */
-void UpdateChildCoordinate(const oac_tree_gui::InstructionItem *reference, mvvm::SessionItem *child)
+void UpdateChildCoordinate(const IInstructionEditorActionHandler::position_t &ref_point,
+                           mvvm::SessionItem *child)
 {
-  const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
   if (auto inserted_instruction = dynamic_cast<oac_tree_gui::InstructionItem *>(child);
       inserted_instruction)
   {
-    inserted_instruction->SetX(reference
-                                   ? reference->GetX() + oac_tree_gui::GetInstructionDropOffset()
-                                   : default_center.x());
-    inserted_instruction->SetY(reference
-                                   ? reference->GetY() + oac_tree_gui::GetInstructionDropOffset()
-                                   : default_center.y());
+    algorithm::AlignInstructionTreeWalker({ref_point.first, ref_point.second},
+                                          inserted_instruction);
   }
 }
 
@@ -108,8 +114,8 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
 void InstructionEditorActionHandler::DropInstruction(const std::string &item_type,
                                                      const position_t &pos)
 {
-  (void)item_type;
-  (void)pos;
+  InsertItem(CreateInstructionTree(item_type), GetInstructionContainer(), mvvm::TagIndex::Append(),
+             pos);
 }
 
 bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string &item_type) const
@@ -430,13 +436,15 @@ void InstructionEditorActionHandler::InsertAfterCurrentSelection(
   auto selected_item = GetSelectedInstruction();
   auto parent = selected_item ? selected_item->GetParent() : GetInstructionContainer();
   auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-  InsertItem(std::move(item), parent, tagindex);
+  InsertItem(std::move(item), parent, tagindex, GetCoordinateNearby(selected_item));
 }
 
 void InstructionEditorActionHandler::InsertIntoCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> item)
 {
-  InsertItem(std::move(item), GetSelectedInstruction(), mvvm::TagIndex::Append());
+  auto selected_item = GetSelectedInstruction();
+  InsertItem(std::move(item), selected_item, mvvm::TagIndex::Append(),
+             GetCoordinateNearby(selected_item));
 }
 
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
@@ -461,7 +469,7 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
   {
     result = GetModel()->InsertItem(std::move(item), parent, index);
     UpdateProcedurePreamble();
-    UpdateChildCoordinate(GetSelectedInstruction(), result);
+    UpdateChildCoordinate(position, result);
 
     SelectNotify(result);
   }
