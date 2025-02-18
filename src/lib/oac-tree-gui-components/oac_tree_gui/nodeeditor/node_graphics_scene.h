@@ -20,7 +20,9 @@
 #ifndef OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_
 #define OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_
 
-#include "sup/gui/core/message_handler_interface.h"
+#include <sup/gui/core/message_event.h>
+
+#include <mvvm/utils/container_utils.h>
 
 #include <QGraphicsScene>
 
@@ -66,6 +68,15 @@ public:
 
   void disconnectConnectedViews(NodeConnection* connection);
 
+  /**
+   * @brief Returns vector of scene items casted to a specified type.
+   */
+  template <typename T>
+  std::vector<T*> GetViewItems() const;
+
+  /**
+   * @brief Returns vector of selected items casted to a specified type.
+   */
   template <typename T>
   std::vector<T*> GetSelectedViewItems() const;
 
@@ -103,17 +114,15 @@ private:
 };
 
 template <typename T>
+inline std::vector<T*> NodeGraphicsScene::GetViewItems() const
+{
+  return mvvm::utils::CastItems<T>(items());
+}
+
+template <typename T>
 inline std::vector<T*> NodeGraphicsScene::GetSelectedViewItems() const
 {
-  std::vector<T*> result;
-  for (auto item : selectedItems())
-  {
-    if (auto casted = dynamic_cast<T*>(item); casted)
-    {
-      result.push_back(casted);
-    }
-  }
-  return result;
+  return mvvm::utils::CastItems<T>(selectedItems());
 }
 
 }  // namespace oac_tree_gui

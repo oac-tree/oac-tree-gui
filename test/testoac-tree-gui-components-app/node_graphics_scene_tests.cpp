@@ -88,15 +88,7 @@ public:
   template <typename T>
   std::vector<T*> GetSceneItems()
   {
-    std::vector<T*> result;
-    for (auto item : m_scene.items())
-    {
-      if (auto casted = dynamic_cast<T*>(item); casted)
-      {
-        result.push_back(casted);
-      }
-    }
-    return result;
+    return m_scene.GetViewItems<T>();
   }
 
   testing::MockFunction<void(const sup::gui::MessageEvent&)> m_mock_handler;
