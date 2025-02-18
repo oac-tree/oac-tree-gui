@@ -41,8 +41,17 @@
 #include <QPointF>
 #include <sstream>
 
+namespace oac_tree_gui
+{
+
 namespace
 {
+
+QPointF GetReferenceCoordinate(oac_tree_gui::InstructionItem *reference)
+{
+  return reference ? QPointF(reference->GetX(), reference->GetY())
+                   : oac_tree_gui::GetGraphicsViewportCenter();
+}
 
 /**
  * @brief Updates child coordinate so it is located near the reference
@@ -65,9 +74,6 @@ void UpdateChildCoordinate(const oac_tree_gui::InstructionItem *reference, mvvm:
 const std::string kFailedActionTitle = "Invalid Operation";
 
 }  // namespace
-
-namespace oac_tree_gui
-{
 
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context)
     : m_context(std::move(context))
@@ -97,6 +103,13 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
     m_context.create_instruction = [](const auto &item_type)
     { return CreateInstructionItem(item_type); };
   }
+}
+
+void InstructionEditorActionHandler::DropInstruction(const std::string &item_type,
+                                                     const position_t &pos)
+{
+  (void)item_type;
+  (void)pos;
 }
 
 bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string &item_type) const
@@ -414,34 +427,21 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
 void InstructionEditorActionHandler::InsertAfterCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> item)
 {
-  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
-
   auto selected_item = GetSelectedInstruction();
-
   auto parent = selected_item ? selected_item->GetParent() : GetInstructionContainer();
   auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-
-  auto child = InsertItem(std::move(item), parent, tagindex);
-  UpdateProcedurePreamble();
-  UpdateChildCoordinate(selected_item, child);
-
-  mvvm::utils::EndMacro(*GetModel());
+  InsertItem(std::move(item), parent, tagindex);
 }
 
 void InstructionEditorActionHandler::InsertIntoCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> item)
 {
-  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
-
-  auto child = InsertItem(std::move(item), GetSelectedInstruction(), mvvm::TagIndex::Append());
-  UpdateProcedurePreamble();
-  UpdateChildCoordinate(GetSelectedInstruction(), child);
-
-  mvvm::utils::EndMacro(*GetModel());
+  InsertItem(std::move(item), GetSelectedInstruction(), mvvm::TagIndex::Append());
 }
 
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
-    std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index)
+    std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index,
+    const position_t &position)
 {
   if (!GetModel())
   {
@@ -453,11 +453,16 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
     throw RuntimeException("Uninitialised parent");
   }
 
+  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
+
   mvvm::SessionItem *result{nullptr};
   const auto item_type = item->GetType();
   try
   {
     result = GetModel()->InsertItem(std::move(item), parent, index);
+    UpdateProcedurePreamble();
+    UpdateChildCoordinate(GetSelectedInstruction(), result);
+
     SelectNotify(result);
   }
   catch (const std::exception &ex)
@@ -467,6 +472,9 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
          << "] into parent [" << parent->GetType() << "]";
     SendMessage("Can't insert instruction", ostr.str(), ex.what());
   }
+
+  mvvm::utils::EndMacro(*GetModel());
+
   return result;
 }
 

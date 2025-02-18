@@ -54,6 +54,8 @@ public:
   explicit InstructionEditorActionHandler(InstructionEditorContext context);
   ~InstructionEditorActionHandler() override;
 
+  void DropInstruction(const std::string& item_type, const position_t& pos) override;
+
   bool CanInsertInstructionAfter(const std::string& item_type) const override;
 
   void InsertInstructionAfter(const std::string& item_type) override;
@@ -140,7 +142,7 @@ private:
    * @brief Inserts given item in the given parent.
    */
   mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem* parent,
-                                const mvvm::TagIndex& index);
+                                const mvvm::TagIndex& index, const position_t& position = {});
 
   InstructionEditorContext m_context;
 };

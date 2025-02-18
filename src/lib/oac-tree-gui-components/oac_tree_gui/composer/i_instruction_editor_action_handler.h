@@ -21,6 +21,7 @@
 #define OAC_TREE_GUI_COMPOSER_I_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 
 #include <string>
+#include <utility>
 
 namespace oac_tree_gui
 {
@@ -32,6 +33,8 @@ namespace oac_tree_gui
 class IInstructionEditorActionHandler
 {
 public:
+  using position_t = std::pair<double, double>;
+
   IInstructionEditorActionHandler() = default;
   virtual ~IInstructionEditorActionHandler() = default;
 
@@ -41,7 +44,18 @@ public:
   IInstructionEditorActionHandler& operator=(IInstructionEditorActionHandler&&) = delete;
 
   /**
-   * @brief Checks if SessionItem of the given type can be inserted after currently selected
+   * @brief Drops instruction on the canvas.
+   *
+   * The method ignores existing selection and simply appends an instruction to the instruction
+   * container.
+   *
+   * @param item_type The type name of a single instruction or the name of a registered sub-tree.
+   * @param pos The position of instruction on graphics canvas.
+   */
+  virtual void DropInstruction(const std::string& item_type, const position_t& pos) = 0;
+
+  /**
+   * @brief Checks if instruction of the given type can be inserted after currently selected
    * instruction.
    */
   virtual bool CanInsertInstructionAfter(const std::string& item_type) const = 0;
@@ -49,7 +63,7 @@ public:
   /**
    * @brief Inserts new instruction of given type after the current selection.
    *
-   * @param item_type The item type name.
+   * @param item_type The type name of a single instruction or the name of a registered sub-tree.
    */
   virtual void InsertInstructionAfter(const std::string& item_type) = 0;
 
@@ -62,7 +76,7 @@ public:
   /**
    * @brief Inserts new instruction of given type into the current selection.
    *
-   * @param item_type The item type name.
+   * @param item_type The type name of a single instruction or the name of a registered sub-tree.
    */
   virtual void InsertInstructionInto(const std::string& item_type) = 0;
 
