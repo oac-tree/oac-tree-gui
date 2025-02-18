@@ -92,7 +92,10 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent_object)
   m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
   m_delay_button->setIcon(FindIcon("speedometer-slow"));
   m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_delay_button->setToolTip("Artificial delay after each change of instruction status");
+  m_delay_button->setToolTip(
+      "Artificial delay after each change of instruction status.\n"
+      "Delays < 5msec might make the GUI hang for procedures with tight\n"
+      "sequence loops and/or frequent variable updates");
   m_delay_button->setMenu(m_delay_menu.get());
   m_delay_button->setPopupMode(QToolButton::InstantPopup);
   m_delay_action->setDefaultWidget(m_delay_button);
@@ -141,7 +144,10 @@ void MonitorRealTimeActions::WriteSettings()
 
 std::unique_ptr<QMenu> MonitorRealTimeActions::CreateDelayMenu()
 {
-  const std::vector<int> delay_values = {10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+  const std::vector<int> delay_values = {0,   2,   5,    10,   20,   50,   100,
+                                         200, 500, 1000, 2000, 5000, 10000};
+
+  // small delays < 5msec might make the GUI hang for procedures with lots of instruction
 
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
