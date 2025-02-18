@@ -64,12 +64,15 @@ IInstructionEditorActionHandler::position_t GetCoordinateNearby(
 }
 
 /**
- * @brief Updates child coordinate so it is located near the reference.
+ * @brief Updates instruction coordinate, as well as coordinates of all possible children, so it is
+ * nicely aligned.
+ *
+ * @param ref_point Coordinates of parent instructions.
  */
-void UpdateChildCoordinate(const IInstructionEditorActionHandler::position_t &ref_point,
-                           mvvm::SessionItem *child)
+void AlignInstructionTree(const IInstructionEditorActionHandler::position_t &ref_point,
+                          mvvm::SessionItem *instruction)
 {
-  if (auto inserted_instruction = dynamic_cast<oac_tree_gui::InstructionItem *>(child);
+  if (auto inserted_instruction = dynamic_cast<oac_tree_gui::InstructionItem *>(instruction);
       inserted_instruction)
   {
     algorithm::AlignInstructionTreeWalker({ref_point.first, ref_point.second},
@@ -469,7 +472,7 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
   {
     result = GetModel()->InsertItem(std::move(item), parent, index);
     UpdateProcedurePreamble();
-    UpdateChildCoordinate(position, result);
+    AlignInstructionTree(position, result);
 
     SelectNotify(result);
   }
