@@ -84,25 +84,9 @@ void NodeGraphicsView::SetOperationMode(int mode)
 {
   m_operation_mode = static_cast<GraphicsViewOperationMode>(mode);
 
-  switch (mode)
-  {
-  case kSimpleSelection:
-    setDragMode(GetQtDragMode(m_operation_mode));
-    setInteractive(true);
-    break;
-  case kRubberSelection:
-    setDragMode(GetQtDragMode(m_operation_mode));
-    setInteractive(true);
-    break;
-  case kHandDrag:
-    setDragMode(GetQtDragMode(m_operation_mode));
-    setInteractive(false);
-    break;
-  default:
-    break;
-  }
-
-  emit OperationModeChanged(mode);
+  setDragMode(GetQtDragMode(m_operation_mode));
+  setInteractive(m_operation_mode != kHandDrag);  // non-interactive for kHandDrag
+  emit OperationModeChanged(m_operation_mode);
 }
 
 void NodeGraphicsView::onChangeScale(double new_scale)
@@ -112,8 +96,6 @@ void NodeGraphicsView::onChangeScale(double new_scale)
   translate(oldMatrix.dx(), oldMatrix.dy());
   scale(new_scale, new_scale);
 }
-
-//! Handles mouse press events.
 
 void NodeGraphicsView::keyPressEvent(QKeyEvent* event)
 {
