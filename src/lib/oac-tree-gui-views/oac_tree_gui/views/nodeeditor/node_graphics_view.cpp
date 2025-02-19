@@ -19,6 +19,7 @@
 
 #include "node_graphics_view.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
@@ -28,6 +29,29 @@
 
 namespace oac_tree_gui
 {
+
+namespace
+{
+
+/**
+ * @brief Returns Qt drag mode suitable for the given operation mode.
+ */
+QGraphicsView::DragMode GetQtDragMode(GraphicsViewOperationMode operation_mode)
+{
+  static const std::map<GraphicsViewOperationMode, QGraphicsView::DragMode> mode_map{
+      {kSimpleSelection, QGraphicsView::NoDrag},
+      {kRubberSelection, QGraphicsView::RubberBandDrag},
+      {kHandDrag, QGraphicsView::ScrollHandDrag}};
+
+  auto iter = mode_map.find(operation_mode);
+  if (iter == mode_map.end())
+  {
+    throw RuntimeException("Can't define Qt drag mode");
+  }
+  return iter->second;
+}
+
+}  // namespace
 
 NodeGraphicsView::NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
@@ -53,37 +77,32 @@ void NodeGraphicsView::CenterView()
 
 GraphicsViewOperationMode NodeGraphicsView::GetOperationMode()
 {
-  static const std::map<QGraphicsView::DragMode, GraphicsViewOperationMode> mode_map{
-      {QGraphicsView::NoDrag, kSimpleSelection},
-      {QGraphicsView::RubberBandDrag, kRubberSelection},
-      {QGraphicsView::ScrollHandDrag, kHandDrag}};
-
-  auto it = mode_map.find(dragMode());
-  return it == mode_map.end() ? kUnknownMode : it->second;
+  return m_operation_mode;
 }
 
 void NodeGraphicsView::SetOperationMode(int mode)
 {
+  m_operation_mode = static_cast<GraphicsViewOperationMode>(mode);
+
   switch (mode)
   {
   case kSimpleSelection:
-    setDragMode(QGraphicsView::NoDrag);
+    setDragMode(GetQtDragMode(m_operation_mode));
     setInteractive(true);
-    emit selectionModeChanged(kSimpleSelection);
     break;
   case kRubberSelection:
-    setDragMode(QGraphicsView::RubberBandDrag);
+    setDragMode(GetQtDragMode(m_operation_mode));
     setInteractive(true);
-    emit selectionModeChanged(kRubberSelection);
     break;
   case kHandDrag:
-    setDragMode(QGraphicsView::ScrollHandDrag);
+    setDragMode(GetQtDragMode(m_operation_mode));
     setInteractive(false);
-    emit selectionModeChanged(kHandDrag);
     break;
   default:
     break;
   }
+
+  emit selectionModeChanged(mode);
 }
 
 void NodeGraphicsView::onChangeScale(double new_scale)
@@ -110,8 +129,6 @@ void NodeGraphicsView::keyPressEvent(QKeyEvent* event)
     QGraphicsView::keyPressEvent(event);
   }
 }
-
-//! Handles mouse release events.
 
 void NodeGraphicsView::keyReleaseEvent(QKeyEvent* event)
 {

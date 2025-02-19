@@ -66,6 +66,9 @@ signals:
 protected:
   void keyPressEvent(QKeyEvent* event) override;
   void keyReleaseEvent(QKeyEvent* event) override;
+
+private:
+  GraphicsViewOperationMode m_operation_mode{kSimpleSelection};
 };
 
 }  // namespace oac_tree_gui
