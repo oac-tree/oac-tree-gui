@@ -40,7 +40,7 @@ class NodeGraphicsView : public QGraphicsView
   Q_OBJECT
 
 public:
-  NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget);
+  explicit NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget = nullptr);
 
   void CenterView();
 

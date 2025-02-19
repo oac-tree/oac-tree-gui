@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/nodeeditor/connectable_instruction_adapter.h"
+
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <mvvm/commands/i_command_stack.h>
@@ -25,8 +27,6 @@
 #include <gtest/gtest.h>
 
 #include <QString>
-
-#include "oac_tree_gui/nodeeditor/connectable_instruction_adapter.h"
 
 namespace oac_tree_gui::test
 {
