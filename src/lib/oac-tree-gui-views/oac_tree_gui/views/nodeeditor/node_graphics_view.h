@@ -42,11 +42,21 @@ class NodeGraphicsView : public QGraphicsView
 public:
   explicit NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget = nullptr);
 
+  /**
+   * @brief Center view on the center of bounding rectangle surrounding all items.
+   */
   void CenterView();
 
-  GraphicsViewOperationMode GetSelectionModes();
+  /**
+   * @brief Returns current operation mode.
+   */
+  GraphicsViewOperationMode GetOperationMode();
 
-  void onSelectionMode(int);
+  /**
+   * @brief Sets current operation mode.
+   */
+  void SetOperationMode(int);
+
   void onChangeScale(double new_scale);
 
 signals:

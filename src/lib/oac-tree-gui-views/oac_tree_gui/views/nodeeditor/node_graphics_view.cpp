@@ -51,7 +51,7 @@ void NodeGraphicsView::CenterView()
   }
 }
 
-GraphicsViewOperationMode NodeGraphicsView::GetSelectionModes()
+GraphicsViewOperationMode NodeGraphicsView::GetOperationMode()
 {
   static const std::map<QGraphicsView::DragMode, GraphicsViewOperationMode> mode_map{
       {QGraphicsView::NoDrag, kSimpleSelection},
@@ -62,7 +62,7 @@ GraphicsViewOperationMode NodeGraphicsView::GetSelectionModes()
   return it == mode_map.end() ? kUnknownMode : it->second;
 }
 
-void NodeGraphicsView::onSelectionMode(int mode)
+void NodeGraphicsView::SetOperationMode(int mode)
 {
   switch (mode)
   {
@@ -101,9 +101,9 @@ void NodeGraphicsView::keyPressEvent(QKeyEvent* event)
   switch (event->key())
   {
   case Qt::Key_Space:
-    if (GetSelectionModes() != kHandDrag && !event->isAutoRepeat())
+    if (GetOperationMode() != kHandDrag && !event->isAutoRepeat())
     {
-      onSelectionMode(kHandDrag);
+      SetOperationMode(kHandDrag);
     }
     break;
   default:
@@ -118,9 +118,9 @@ void NodeGraphicsView::keyReleaseEvent(QKeyEvent* event)
   switch (event->key())
   {
   case Qt::Key_Space:
-    if (GetSelectionModes() != kRubberSelection && !event->isAutoRepeat())
+    if (GetOperationMode() != kRubberSelection && !event->isAutoRepeat())
     {
-      onSelectionMode(kRubberSelection);  // space released
+      SetOperationMode(kRubberSelection);  // space released
     }
     break;
   case Qt::Key_Delete:

@@ -171,11 +171,11 @@ void NodeEditorWidget::SetupConnections()
 
   // Propagate selection request from GraphicsScene to GraphicsView
   connect(m_graphics_scene, &NodeGraphicsScene::selectionModeChangeRequest, m_graphics_view,
-          &NodeGraphicsView::onSelectionMode);
+          &NodeGraphicsView::SetOperationMode);
 
   // Propagate selection mode change from toolbar to GraphicsView
   connect(m_view_actions, &NodeGraphicsViewActions::selectionMode, m_graphics_view,
-          &NodeGraphicsView::onSelectionMode);
+          &NodeGraphicsView::SetOperationMode);
 
   // Center view from toolBar to GraphicsView
   connect(m_view_actions, &NodeGraphicsViewActions::centerView, m_graphics_view,
