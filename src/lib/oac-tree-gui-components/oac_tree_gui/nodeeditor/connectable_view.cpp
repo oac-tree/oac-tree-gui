@@ -19,14 +19,17 @@
 
 #include "connectable_view.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
 #include <oac_tree_gui/nodeeditor/node_port.h>
 #include <oac_tree_gui/nodeeditor/position_strategy.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
@@ -225,6 +228,24 @@ QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& 
     UpdateItemFromView();
   }
   return value;
+}
+
+void ConnectableView::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+  if (event->button() == Qt::LeftButton)
+  {
+    mvvm::utils::BeginMacro(*m_item->GetInstruction(), "Move ConnectableView");
+  }
+  QGraphicsItem::mousePressEvent(event);
+}
+
+void ConnectableView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+  if (event->button() == Qt::LeftButton)
+  {
+    mvvm::utils::EndMacro(*m_item->GetInstruction());
+  }
+  QGraphicsItem::mouseReleaseEvent(event);
 }
 
 QColor ConnectableView::GetColor() const

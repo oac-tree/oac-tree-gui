@@ -244,12 +244,6 @@ TEST_F(ConnectableViewModelControllerTest, OnViewMoveUndo)
   EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
 
   ASSERT_EQ(m_model.GetCommandStack()->GetCommandCount(), 1);
-  auto command_stack = m_model.GetCommandStack();
-  auto macro1 = dynamic_cast<const mvvm::MacroCommand*>(command_stack->GetCommands().at(0));
-  ASSERT_FALSE(macro1->IsObsolete());
-  ASSERT_NE(macro1, nullptr);
-  ASSERT_EQ(macro1->GetCommandCount(), 1);
-
   EXPECT_NO_FATAL_FAILURE(m_model.GetCommandStack()->Undo());
 
   EXPECT_EQ(sequence->GetX(), 42.0);

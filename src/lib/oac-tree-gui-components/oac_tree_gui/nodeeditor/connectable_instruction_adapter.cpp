@@ -20,10 +20,9 @@
 #include "connectable_instruction_adapter.h"
 
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
-#include <mvvm/model/model_utils.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <QColor>
@@ -97,10 +96,8 @@ bool ConnectableInstructionAdapter::IsRoot() const
 
 void ConnectableInstructionAdapter::SetXY(double x, double y)
 {
-  mvvm::utils::BeginMacro(*m_instruction, "SetXY");
   m_instruction->SetX(x);
   m_instruction->SetY(y);
-  mvvm::utils::EndMacro(*m_instruction);
 }
 
 }  // namespace oac_tree_gui
