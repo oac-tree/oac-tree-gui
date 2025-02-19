@@ -23,6 +23,7 @@
 #include <sup/gui/core/message_event.h>
 
 #include <mvvm/utils/container_utils.h>
+#include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 
 #include <QGraphicsScene>
 
@@ -96,7 +97,7 @@ public:
 
 signals:
   void InstructionSelected(oac_tree_gui::InstructionItem* selected);
-  void selectionModeChangeRequest(int);
+  void OperationModeChangeRequest(oac_tree_gui::GraphicsViewOperationMode);
 
 protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;

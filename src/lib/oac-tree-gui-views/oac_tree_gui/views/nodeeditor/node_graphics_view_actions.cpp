@@ -77,8 +77,14 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
 
   m_pointer_mode_group->addButton(m_pointer_button, kRubberSelection);
   m_pointer_mode_group->addButton(m_pan_button, kHandDrag);
-  connect(m_pointer_mode_group, &QButtonGroup::idClicked, this,
-          &NodeGraphicsViewActions::OperationModeChangeRequest);
+  auto on_button_clicked = [this](int button_id)
+  {
+    if (button_id >= 0)
+    {
+      emit OperationModeChangeRequest(static_cast<GraphicsViewOperationMode>(button_id));
+    }
+  };
+  connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, on_button_clicked);
 
   m_zoom_action->setText(GetZoomText(kDefaultZoomLevel));
   m_zoom_action->setIcon(FindIcon("magnify-plus-outline"));

@@ -52,6 +52,7 @@ void RegisterCustomMetaTypes()
     (void)qRegisterMetaType<LogEvent>("oac_tree_gui::LogEvent");
     (void)qRegisterMetaType<oac_tree_gui::RunnerStatus>("oac_tree_gui::RunnerStatus");
     (void)qRegisterMetaType<QList<int>>("QList<int>");
+    (void)qRegisterMetaType<oac_tree_gui::GraphicsViewOperationMode>("oac_tree_gui::GraphicsViewOperationMode");
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<QList<int>>("QList<int>");

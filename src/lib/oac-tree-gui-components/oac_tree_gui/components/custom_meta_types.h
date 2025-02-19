@@ -24,6 +24,7 @@
 //! QVariant.
 
 #include <oac_tree_gui/jobsystem/log_event.h>
+#include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 
 #include <QList>
 #include <QMetaType>
@@ -38,6 +39,7 @@ void RegisterCustomMetaTypes();
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 Q_DECLARE_METATYPE(oac_tree_gui::LogEvent)
 Q_DECLARE_METATYPE(QList<int>)
+Q_DECLARE_METATYPE(oac_tree_gui::GraphicsViewOperationMode)
 #endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_META_TYPES_H_
 
 #endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_META_TYPES_H_

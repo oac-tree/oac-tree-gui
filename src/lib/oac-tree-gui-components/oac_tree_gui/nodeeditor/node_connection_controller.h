@@ -25,6 +25,7 @@
 //! Copyright (c) 2012, STANISLAW ADASZEWSKI
 
 #include <QObject>
+#include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
@@ -52,7 +53,7 @@ public:
 signals:
   void connectionRequest(oac_tree_gui::ConnectableView* childView,
                          oac_tree_gui::ConnectableView* parentView);
-  void selectionModeChangeRequest(int);
+  void OperationModeChangeRequest(oac_tree_gui::GraphicsViewOperationMode);
 
 private:
   /**

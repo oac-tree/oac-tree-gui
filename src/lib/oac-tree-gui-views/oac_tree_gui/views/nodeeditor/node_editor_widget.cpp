@@ -170,7 +170,7 @@ void NodeEditorWidget::SetupConnections()
           &NodeEditorWidget::InstructionSelected);
 
   // Propagate selection request from GraphicsScene to GraphicsView
-  connect(m_graphics_scene, &NodeGraphicsScene::selectionModeChangeRequest, m_graphics_view,
+  connect(m_graphics_scene, &NodeGraphicsScene::OperationModeChangeRequest, m_graphics_view,
           &NodeGraphicsView::SetOperationMode);
 
   // Propagate selection mode change from toolbar to GraphicsView

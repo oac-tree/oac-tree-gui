@@ -80,9 +80,9 @@ GraphicsViewOperationMode NodeGraphicsView::GetOperationMode()
   return m_operation_mode;
 }
 
-void NodeGraphicsView::SetOperationMode(int mode)
+void NodeGraphicsView::SetOperationMode(GraphicsViewOperationMode mode)
 {
-  m_operation_mode = static_cast<GraphicsViewOperationMode>(mode);
+  m_operation_mode = mode;
 
   setDragMode(GetQtDragMode(m_operation_mode));
   setInteractive(m_operation_mode != kHandDrag);  // non-interactive for kHandDrag

@@ -55,7 +55,7 @@ public:
   /**
    * @brief Sets current operation mode.
    */
-  void SetOperationMode(int mode);
+  void SetOperationMode(GraphicsViewOperationMode mode);
 
   void onChangeScale(double new_scale);
 

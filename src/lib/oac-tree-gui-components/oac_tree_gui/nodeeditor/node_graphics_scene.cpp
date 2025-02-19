@@ -105,8 +105,8 @@ NodeGraphicsScene::NodeGraphicsScene(
   connect(m_node_controller.get(), &NodeConnectionController::connectionRequest, this,
           &NodeGraphicsScene::onConnectionRequest);
 
-  connect(m_node_controller.get(), &NodeConnectionController::selectionModeChangeRequest, this,
-          &NodeGraphicsScene::selectionModeChangeRequest);
+  connect(m_node_controller.get(), &NodeConnectionController::OperationModeChangeRequest, this,
+          &NodeGraphicsScene::OperationModeChangeRequest);
 
   // Strange bug in Qt6.3: if we use connection via lambda, as in code below, everyting works.
   // If we use classical connection &GraphicsScene::onSelectionChanged program crashes

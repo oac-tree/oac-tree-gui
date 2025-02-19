@@ -86,7 +86,7 @@ bool NodeConnectionController::ProcessMousePress(QGraphicsSceneMouseEvent* event
   {
     if (auto port = FindPort(event->scenePos()); port)
     {
-      emit selectionModeChangeRequest(kSimpleSelection);
+      emit OperationModeChangeRequest(kSimpleSelection);
       m_current_connection = new NodeConnection(m_scene);
       m_current_connection->setPort1(port);
       m_current_connection->setPos1(port->scenePos());
@@ -113,7 +113,7 @@ bool NodeConnectionController::ProcessMouseRelease(QGraphicsSceneMouseEvent* eve
 {
   if (m_current_connection && event->button() == Qt::LeftButton)
   {
-    emit selectionModeChangeRequest(kRubberSelection);
+    emit OperationModeChangeRequest(kRubberSelection);
     if (auto port2 = FindPort(event->scenePos()); port2)
     {
       auto port1 = m_current_connection->port1();

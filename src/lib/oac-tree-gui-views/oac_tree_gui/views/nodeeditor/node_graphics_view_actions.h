@@ -21,6 +21,7 @@
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
 
 #include <sup/gui/components/action_map.h>
+#include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 
 #include <QObject>
 #include <memory>
@@ -68,7 +69,7 @@ public:
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
 signals:
-  void OperationModeChangeRequest(int);
+  void OperationModeChangeRequest(oac_tree_gui::GraphicsViewOperationMode);
   void changeScale(double);
   void centerView();
   void alignSelectedRequest();
