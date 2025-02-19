@@ -20,14 +20,18 @@
 #ifndef OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
 #define OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
 
+#include <cstdint>
+
 namespace oac_tree_gui
 {
-enum ESelectionModes
+
+enum GraphicsViewOperationMode : std::uint8_t
 {
   kSimpleSelection,
   kRubberSelection,
   kHandDrag,
-  kUnknownSelection
+  kUnknownMode,
+  kOperationModeCount
 };
 
 }  // namespace oac_tree_gui

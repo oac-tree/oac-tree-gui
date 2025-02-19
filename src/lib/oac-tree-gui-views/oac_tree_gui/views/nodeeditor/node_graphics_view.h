@@ -44,7 +44,7 @@ public:
 
   void CenterView();
 
-  ESelectionModes GetSelectionModes();
+  GraphicsViewOperationMode GetSelectionModes();
 
   void onSelectionMode(int);
   void onChangeScale(double new_scale);

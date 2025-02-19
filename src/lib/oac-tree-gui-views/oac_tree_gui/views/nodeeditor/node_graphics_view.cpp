@@ -51,15 +51,15 @@ void NodeGraphicsView::CenterView()
   }
 }
 
-ESelectionModes NodeGraphicsView::GetSelectionModes()
+GraphicsViewOperationMode NodeGraphicsView::GetSelectionModes()
 {
-  static const std::map<QGraphicsView::DragMode, ESelectionModes> mode_map{
+  static const std::map<QGraphicsView::DragMode, GraphicsViewOperationMode> mode_map{
       {QGraphicsView::NoDrag, kSimpleSelection},
       {QGraphicsView::RubberBandDrag, kRubberSelection},
       {QGraphicsView::ScrollHandDrag, kHandDrag}};
 
   auto it = mode_map.find(dragMode());
-  return it == mode_map.end() ? kUnknownSelection : it->second;
+  return it == mode_map.end() ? kUnknownMode : it->second;
 }
 
 void NodeGraphicsView::onSelectionMode(int mode)
