@@ -61,7 +61,7 @@ public:
   explicit NodeGraphicsViewActions(QWidget* parent_widget = nullptr);
   ~NodeGraphicsViewActions() override;
 
-  void UpdateButtonsToOperationMode(int mode);
+  void UpdateButtonsToOperationMode(GraphicsViewOperationMode mode);
 
   /**
    * @brief Returns list of actions according to provided flags.

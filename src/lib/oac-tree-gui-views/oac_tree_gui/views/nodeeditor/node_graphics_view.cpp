@@ -38,13 +38,13 @@ namespace
  */
 QGraphicsView::DragMode GetQtDragMode(GraphicsViewOperationMode operation_mode)
 {
-  static const std::map<GraphicsViewOperationMode, QGraphicsView::DragMode> mode_map{
-      {kSimpleSelection, QGraphicsView::NoDrag},
-      {kRubberSelection, QGraphicsView::RubberBandDrag},
-      {kHandDrag, QGraphicsView::ScrollHandDrag}};
+  static const std::map<GraphicsViewOperationMode, QGraphicsView::DragMode> kModeMap{
+      {GraphicsViewOperationMode::kSimpleSelection, QGraphicsView::NoDrag},
+      {GraphicsViewOperationMode::kRubberSelection, QGraphicsView::RubberBandDrag},
+      {GraphicsViewOperationMode::kHandDrag, QGraphicsView::ScrollHandDrag}};
 
-  auto iter = mode_map.find(operation_mode);
-  if (iter == mode_map.end())
+  auto iter = kModeMap.find(operation_mode);
+  if (iter == kModeMap.end())
   {
     throw RuntimeException("Can't define Qt drag mode");
   }
@@ -85,7 +85,8 @@ void NodeGraphicsView::SetOperationMode(GraphicsViewOperationMode mode)
   m_operation_mode = mode;
 
   setDragMode(GetQtDragMode(m_operation_mode));
-  setInteractive(m_operation_mode != kHandDrag);  // non-interactive for kHandDrag
+  setInteractive(m_operation_mode
+                 != GraphicsViewOperationMode::kHandDrag);  // non-interactive for kHandDrag
   emit OperationModeChanged(m_operation_mode);
 }
 
@@ -102,9 +103,9 @@ void NodeGraphicsView::keyPressEvent(QKeyEvent* event)
   switch (event->key())
   {
   case Qt::Key_Space:
-    if (GetOperationMode() != kHandDrag && !event->isAutoRepeat())
+    if (GetOperationMode() != GraphicsViewOperationMode::kHandDrag && !event->isAutoRepeat())
     {
-      SetOperationMode(kHandDrag);
+      SetOperationMode(GraphicsViewOperationMode::kHandDrag);
     }
     break;
   default:
@@ -117,14 +118,12 @@ void NodeGraphicsView::keyReleaseEvent(QKeyEvent* event)
   switch (event->key())
   {
   case Qt::Key_Space:
-    if (GetOperationMode() != kRubberSelection && !event->isAutoRepeat())
+    if (GetOperationMode() != GraphicsViewOperationMode::kRubberSelection && !event->isAutoRepeat())
     {
-      SetOperationMode(kRubberSelection);  // space released
+      SetOperationMode(GraphicsViewOperationMode::kRubberSelection);  // space released
     }
     break;
   case Qt::Key_Delete:
-    emit deleteSelectedRequest();
-    break;
   case Qt::Key_Backspace:
     emit deleteSelectedRequest();
     break;

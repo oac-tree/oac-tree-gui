@@ -61,14 +61,14 @@ public:
 
 signals:
   void deleteSelectedRequest();
-  void OperationModeChanged(int);
+  void OperationModeChanged(oac_tree_gui::GraphicsViewOperationMode);
 
 protected:
   void keyPressEvent(QKeyEvent* event) override;
   void keyReleaseEvent(QKeyEvent* event) override;
 
 private:
-  GraphicsViewOperationMode m_operation_mode{kSimpleSelection};
+  GraphicsViewOperationMode m_operation_mode{GraphicsViewOperationMode::kSimpleSelection};
 };
 
 }  // namespace oac_tree_gui

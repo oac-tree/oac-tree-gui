@@ -75,8 +75,10 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
   m_pan_action->setDefaultWidget(m_pan_button);
   m_action_map.Add(ActionKey::kPan, m_pan_action);
 
-  m_pointer_mode_group->addButton(m_pointer_button, kRubberSelection);
-  m_pointer_mode_group->addButton(m_pan_button, kHandDrag);
+  m_pointer_mode_group->addButton(m_pointer_button,
+                                  static_cast<int>(GraphicsViewOperationMode::kRubberSelection));
+  m_pointer_mode_group->addButton(m_pan_button,
+                                  static_cast<int>(GraphicsViewOperationMode::kHandDrag));
   auto on_button_clicked = [this](int button_id)
   {
     if (button_id >= 0)
@@ -108,11 +110,12 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
 
 NodeGraphicsViewActions::~NodeGraphicsViewActions() = default;
 
-void NodeGraphicsViewActions::UpdateButtonsToOperationMode(int mode)
+void NodeGraphicsViewActions::UpdateButtonsToOperationMode(GraphicsViewOperationMode mode)
 {
-  if (mode == kRubberSelection || mode == kHandDrag)
+  if (mode == GraphicsViewOperationMode::kRubberSelection
+      || mode == GraphicsViewOperationMode::kHandDrag)
   {
-    m_pointer_mode_group->button(mode)->setChecked(true);
+    m_pointer_mode_group->button(static_cast<int>(mode))->setChecked(true);
   }
 }
 

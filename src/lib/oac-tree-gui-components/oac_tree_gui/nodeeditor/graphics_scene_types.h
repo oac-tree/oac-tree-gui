@@ -25,7 +25,7 @@
 namespace oac_tree_gui
 {
 
-enum GraphicsViewOperationMode : std::uint8_t
+enum class GraphicsViewOperationMode : std::uint8_t
 {
   kSimpleSelection,
   kRubberSelection,
