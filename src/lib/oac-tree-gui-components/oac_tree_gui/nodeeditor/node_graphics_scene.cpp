@@ -292,18 +292,6 @@ void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
   }
 }
 
-void NodeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-  qDebug() << "AAA PRESSED";
-  QGraphicsScene::mousePressEvent(event);
-}
-
-void NodeGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-  qDebug() << "AAA RELEASED";
-  QGraphicsScene::mouseReleaseEvent(event);
-}
-
 void NodeGraphicsScene::onSelectionChanged()
 {
   auto selected = GetSelectedViewItems<ConnectableView>();

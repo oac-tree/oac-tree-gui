@@ -218,7 +218,6 @@ void ConnectableView::UpdateViewFromItem()
 
 void ConnectableView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
-  qDebug() << "ConnectableView mouseMoveEvent" << x() << y();
   QGraphicsItem::mouseMoveEvent(event);
 }
 
@@ -226,7 +225,6 @@ QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& 
 {
   if (change == ItemScenePositionHasChanged)
   {
-    qDebug() << "ConnectableView ITEMCHANGE" << x() << y();
     UpdateItemFromView();
   }
   return value;
@@ -234,7 +232,6 @@ QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& 
 
 void ConnectableView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-  qDebug() << "ConnectableView PRESSED";
   if (event->button() == Qt::LeftButton)
   {
     mvvm::utils::BeginMacro(*m_item->GetInstruction(), "Move ConnectableView");
@@ -244,7 +241,6 @@ void ConnectableView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void ConnectableView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-  qDebug() << "ConnectableView RELEASED";
   if (event->button() == Qt::LeftButton)
   {
     mvvm::utils::EndMacro(*m_item->GetInstruction());

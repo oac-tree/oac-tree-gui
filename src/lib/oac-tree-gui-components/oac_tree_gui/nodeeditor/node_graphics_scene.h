@@ -101,8 +101,6 @@ signals:
 protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;
   void dropEvent(QGraphicsSceneDragDropEvent* event) override;
-  void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
   void onSelectionChanged();

@@ -28,6 +28,7 @@
 #include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
 #include <oac_tree_gui/views/nodeeditor/node_graphics_view.h>
 
+#include <mvvm/commands/i_command_stack.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
@@ -77,13 +78,15 @@ TEST_F(ConnectableViewTest, CoordinateSynchronization)
   EXPECT_EQ(item->GetY(), 2.0);
 }
 
-//! Emu
+//! Emulate clicking on instruction Node and dragging it to another scene's point.
+//! Single undo command should bring it back.
 TEST_F(ConnectableViewTest, UndoComplexMove)
 {
-  qDebug() << "1.1";
   NodeGraphicsView graphics_view(&m_scene);
   graphics_view.setMouseTracking(true);
   graphics_view.setFocus();
+
+  m_model.SetUndoEnabled(true);
 
   auto item = m_model.InsertItem<SequenceItem>();
   auto adapter = std::make_unique<ConnectableInstructionAdapter>(item);
@@ -100,36 +103,49 @@ TEST_F(ConnectableViewTest, UndoComplexMove)
 
   // Out view is a rectangle with top-left-origin at (0,0). Selecting press coordinate so it is
   // inside this rectangle.
-  QPointF scene_press_coordinate{10, 10};
-  QPointF scene_move1_pos{400, 500};
+  const QPointF scene_press_coordinate{10, 10};
+  const QPointF scene_move1_pos{100, 200};
+  const QPointF scene_move2_pos{500, 600};
 
-  qDebug() << ")))" << scene_press_coordinate << graphics_view.mapFromScene(scene_press_coordinate) << graphics_view.viewport()->mapFromParent(graphics_view.mapFromScene(scene_press_coordinate));
+  {  // simulating drag-and-move
 
-  QPoint viewport_press_voordinate =
-      graphics_view.viewport()->mapFromParent(graphics_view.mapFromScene(scene_press_coordinate));
+    const QPoint viewport_press_coordinate =
+        graphics_view.viewport()->mapFromParent(graphics_view.mapFromScene(scene_press_coordinate));
 
-  QPoint viewport_move1_pos =
-      graphics_view.viewport()->mapFromParent(graphics_view.mapFromScene(scene_move1_pos));
+    const QPoint viewport_move1_pos =
+        graphics_view.viewport()->mapFromParent(graphics_view.mapFromScene(scene_move1_pos));
 
-  QTest::mousePress(graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
-                    viewport_press_voordinate);
-  QCoreApplication::processEvents();
+    const QPoint viewport_move2_pos =
+        graphics_view.viewport()->mapFromParent(graphics_view.mapFromScene(scene_move2_pos));
 
-  QTest::mouseEvent(QTest::MouseMove, graphics_view.viewport(), Qt::NoButton, Qt::NoModifier,
-                    viewport_move1_pos);
-  QCoreApplication::processEvents();
+    QTest::mousePress(graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
+                      viewport_press_coordinate);
 
-  // QTest::mouseEvent(QTest::MouseMove, graphics_view.viewport(), Qt::LeftButton,
-  //                   Qt::NoModifier, move2_pos);
-  QCoreApplication::processEvents();
+    QTest::mouseEvent(QTest::MouseMove, graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
+                      viewport_move1_pos);
+    QTest::mouseEvent(QTest::MouseMove, graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
+                      viewport_move2_pos);
 
-  QTest::mouseRelease(graphics_view.viewport(), Qt::LeftButton);
-  QCoreApplication::processEvents();
+    QTest::mouseRelease(graphics_view.viewport(), Qt::LeftButton);
 
-  // QPointF final_coordinate = graphics_view.mapToScene(move1_pos);
+    QCoreApplication::processEvents();
+  }
 
-  EXPECT_FLOAT_EQ(item->GetX(), scene_move1_pos.x());
-  EXPECT_FLOAT_EQ(item->GetY(), scene_move1_pos.y());
+  // new coordinates of item's top-left corner
+  const double expected_final_item_x = scene_move2_pos.x() - scene_press_coordinate.x();
+  const double expected_final_item_y = scene_move2_pos.y() - scene_press_coordinate.y();
+
+  EXPECT_FLOAT_EQ(item->GetX(), expected_final_item_x);
+  EXPECT_FLOAT_EQ(item->GetY(), expected_final_item_y);
+
+  // single undo should bring it back without intermediate moves
+  m_model.GetCommandStack()->Undo();
+  EXPECT_EQ(item->GetX(), 0.0);
+  EXPECT_EQ(item->GetY(), 0.0);
+
+  m_model.GetCommandStack()->Redo();
+  EXPECT_FLOAT_EQ(item->GetX(), expected_final_item_x);
+  EXPECT_FLOAT_EQ(item->GetY(), expected_final_item_y);
 }
 
 }  // namespace oac_tree_gui::test
