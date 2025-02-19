@@ -20,6 +20,7 @@
 #include "node_graphics_view.h"
 
 #include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/scene_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -27,6 +28,7 @@
 
 namespace oac_tree_gui
 {
+
 NodeGraphicsView::NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
 {
@@ -39,7 +41,14 @@ NodeGraphicsView::NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_wid
 
 void NodeGraphicsView::CenterView()
 {
-  centerOn(scene()->itemsBoundingRect().center());
+  if (scene()->items().isEmpty())
+  {
+    centerOn(GetGraphicsViewportCenter());
+  }
+  else
+  {
+    centerOn(scene()->itemsBoundingRect().center());
+  }
 }
 
 ESelectionModes NodeGraphicsView::GetSelectionModes()
