@@ -82,6 +82,11 @@ TEST_F(ConnectableViewTest, CoordinateSynchronization)
 //! Single undo command should bring it back.
 TEST_F(ConnectableViewTest, UndoComplexMove)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  // QTest::mouseEvent seems having problems, see https://bugreports.qt.io/browse/QTBUG-5232
+  GTEST_SKIP();
+#endif
+
   NodeGraphicsView graphics_view(&m_scene);
   graphics_view.setMouseTracking(true);
   graphics_view.setFocus();
@@ -130,6 +135,9 @@ TEST_F(ConnectableViewTest, UndoComplexMove)
 
     QCoreApplication::processEvents();
   }
+
+  // instruction insert, and single macro with moves
+  ASSERT_EQ(m_model.GetCommandStack()->GetCommandCount(), 2);
 
   // new coordinates of item's top-left corner
   const double expected_final_item_x = scene_move2_pos.x() - scene_press_coordinate.x();
