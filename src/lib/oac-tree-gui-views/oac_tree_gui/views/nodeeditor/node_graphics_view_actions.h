@@ -60,7 +60,7 @@ public:
   explicit NodeGraphicsViewActions(QWidget* parent_widget = nullptr);
   ~NodeGraphicsViewActions() override;
 
-  void onViewSelectionMode(int mode);
+  void UpdateButtonsToOperationMode(int mode);
 
   /**
    * @brief Returns list of actions according to provided flags.
@@ -68,7 +68,7 @@ public:
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
 signals:
-  void selectionMode(int);
+  void OperationModeChangeRequest(int);
   void changeScale(double);
   void centerView();
   void alignSelectedRequest();

@@ -174,7 +174,7 @@ void NodeEditorWidget::SetupConnections()
           &NodeGraphicsView::SetOperationMode);
 
   // Propagate selection mode change from toolbar to GraphicsView
-  connect(m_view_actions, &NodeGraphicsViewActions::selectionMode, m_graphics_view,
+  connect(m_view_actions, &NodeGraphicsViewActions::OperationModeChangeRequest, m_graphics_view,
           &NodeGraphicsView::SetOperationMode);
 
   // Center view from toolBar to GraphicsView
@@ -190,8 +190,8 @@ void NodeEditorWidget::SetupConnections()
           &NodeEditorWidget::OnAlignRequest);
 
   // Propagate selection mode change from GraphicsView to a toolBar
-  connect(m_graphics_view, &NodeGraphicsView::selectionModeChanged, m_view_actions,
-          &NodeGraphicsViewActions::onViewSelectionMode);
+  connect(m_graphics_view, &NodeGraphicsView::OperationModeChanged, m_view_actions,
+          &NodeGraphicsViewActions::UpdateButtonsToOperationMode);
 }
 
 }  // namespace oac_tree_gui

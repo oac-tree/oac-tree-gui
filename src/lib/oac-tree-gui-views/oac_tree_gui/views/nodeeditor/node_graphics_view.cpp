@@ -102,7 +102,7 @@ void NodeGraphicsView::SetOperationMode(int mode)
     break;
   }
 
-  emit selectionModeChanged(mode);
+  emit OperationModeChanged(mode);
 }
 
 void NodeGraphicsView::onChangeScale(double new_scale)

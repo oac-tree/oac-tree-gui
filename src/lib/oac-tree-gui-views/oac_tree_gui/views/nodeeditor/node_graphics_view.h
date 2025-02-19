@@ -61,7 +61,7 @@ public:
 
 signals:
   void deleteSelectedRequest();
-  void selectionModeChanged(int);
+  void OperationModeChanged(int);
 
 protected:
   void keyPressEvent(QKeyEvent* event) override;
