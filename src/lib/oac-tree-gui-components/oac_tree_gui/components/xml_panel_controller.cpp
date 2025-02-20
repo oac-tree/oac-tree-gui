@@ -54,7 +54,10 @@ XmlPanelController::XmlPanelController(ProcedureItem *procedure, send_xml_func_t
   UpdateXml();
 }
 
-XmlPanelController::~XmlPanelController() = default;
+XmlPanelController::~XmlPanelController()
+{
+  qDebug() << "~XmlPanelController::~XmlPanelController()";
+}
 
 void XmlPanelController::SetupListener()
 {
@@ -62,6 +65,8 @@ void XmlPanelController::SetupListener()
   m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
   m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
   m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanelController::OnDataChangedEvent);
+  m_listener->Connect<mvvm::AboutToRemoveItemEvent>(this,
+                                                    &XmlPanelController::OnAboutToRemoveItemEvent);
 }
 
 void XmlPanelController::UpdateXml()
@@ -93,6 +98,16 @@ void XmlPanelController::OnDataChangedEvent(const mvvm::DataChangedEvent &event)
   if (tag != itemconstants::kXpos && tag != itemconstants::kYpos)
   {
     UpdateXml();
+  }
+}
+
+void XmlPanelController::OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent &event)
+{
+  if (event.item->GetItem(event.tag_index) == m_procedure)
+  {
+    m_send_xml_func(std::string());
+    m_procedure = nullptr;
+    m_listener.reset();
   }
 }
 

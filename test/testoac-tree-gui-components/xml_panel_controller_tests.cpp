@@ -77,6 +77,16 @@ TEST_F(XmlPanelControllerTest, CheckInitialUpdate)
   auto controller = CreateController();
 }
 
+TEST_F(XmlPanelControllerTest, NotificationOnProcedureRemoval)
+{
+  EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);
+  auto controller = CreateController();
+
+  EXPECT_CALL(m_mock_send_xml, Call(std::string())).Times(1);
+  m_model.RemoveItem(m_procedure_item);
+}
+
+
 TEST_F(XmlPanelControllerTest, XmlUpdateOnItemInsert)
 {
   const std::string expected_xml(R"RAW(<?xml version="1.0" encoding="UTF-8"?>

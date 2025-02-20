@@ -68,6 +68,8 @@ private:
   void SetupListener();
   void UpdateXml();
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
+  void OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event);
+
   /**
    * @brief Notifies the user that XML generation went wrong.
    */
