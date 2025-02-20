@@ -28,7 +28,6 @@
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
-#include <mvvm/model/application_model.h>
 #include <mvvm/model/session_item.h>
 
 #include <QAction>
@@ -58,8 +57,6 @@ XmlPanel::XmlPanel(QWidget *parent_widget)
 }
 
 XmlPanel::~XmlPanel() = default;
-
-void XmlPanel::SetModel(mvvm::ISessionModel *model) {}
 
 void XmlPanel::SetProcedure(ProcedureItem *procedure)
 {

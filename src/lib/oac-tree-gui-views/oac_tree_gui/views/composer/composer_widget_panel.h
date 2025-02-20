@@ -33,7 +33,6 @@ namespace oac_tree_gui
 class InstructionEditorWidget;
 class InstructionItem;
 class ProcedureItem;
-class SequencerModel;
 class WorkspaceEditorWidget;
 class NodeEditorWidget;
 class XmlPanel;
@@ -73,8 +72,6 @@ public:
                                QWidget* parent_widget = nullptr);
   ~ComposerWidgetPanel() override;
 
-  void SetModel(SequencerModel* model);
-
   void SetProcedure(ProcedureItem* procedure);
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
@@ -106,7 +103,6 @@ private:
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 
   ProcedureItem* m_procedure{nullptr};
-  SequencerModel* m_model{nullptr};
   bool m_block_selection_notification{false};  //!< do not notify outside if selection changed
 };
 

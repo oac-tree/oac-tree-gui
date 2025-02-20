@@ -51,8 +51,6 @@ public:
   explicit XmlPanel(QWidget* parent_widget = nullptr);
   ~XmlPanel() override;
 
-  void SetModel(mvvm::ISessionModel* model);
-
   void SetProcedure(ProcedureItem* procedure);
 
 signals:

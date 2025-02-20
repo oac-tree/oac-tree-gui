@@ -24,7 +24,6 @@
 #include "xml_panel.h"
 
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
 #include <sup/gui/widgets/item_stack_widget.h>
@@ -73,12 +72,6 @@ ComposerWidgetPanel::ComposerWidgetPanel(const QString& settings_group_name, Wid
 }
 
 ComposerWidgetPanel::~ComposerWidgetPanel() = default;
-
-void ComposerWidgetPanel::SetModel(SequencerModel* model)
-{
-  m_model = model;
-  m_xml_panel->SetModel(model);
-}
 
 void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
 {

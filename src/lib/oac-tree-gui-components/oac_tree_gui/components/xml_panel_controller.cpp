@@ -54,10 +54,7 @@ XmlPanelController::XmlPanelController(ProcedureItem *procedure, send_xml_func_t
   UpdateXml();
 }
 
-XmlPanelController::~XmlPanelController()
-{
-  qDebug() << "~XmlPanelController::~XmlPanelController()";
-}
+XmlPanelController::~XmlPanelController() = default;
 
 void XmlPanelController::SetupListener()
 {
