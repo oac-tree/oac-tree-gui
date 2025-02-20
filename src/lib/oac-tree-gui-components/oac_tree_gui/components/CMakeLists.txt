@@ -9,5 +9,7 @@ target_sources(${library_name} PRIVATE
   custom_meta_types.h
   load_resources.cpp
   load_resources.h
+  xml_panel_controller.cpp
+  xml_panel_controller.h
 )
 
