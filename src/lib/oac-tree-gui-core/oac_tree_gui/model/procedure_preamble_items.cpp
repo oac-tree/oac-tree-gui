@@ -148,10 +148,9 @@ std::vector<std::string> ProcedurePreambleItem::GetPluginPaths() const
 void ProcedurePreambleItem::AddPluginPath(const std::string &value)
 {
   auto property_item = std::make_unique<mvvm::PropertyItem>();
-  auto property_item_ptr = property_item.get();
+  property_item->SetData(value);
   (void)mvvm::utils::InsertItem(std::move(property_item), GetPluginContainer(),
                                 mvvm::TagIndex::Append());
-  property_item_ptr->SetData(value);
 }
 
 void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string> &plugin_paths)

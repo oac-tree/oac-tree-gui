@@ -26,8 +26,6 @@
 
 #include <mvvm/signals/model_listener.h>
 
-#include <iostream>
-
 namespace oac_tree_gui
 {
 
@@ -73,7 +71,6 @@ void XmlPanelController::UpdateXml()
     try
     {
       const std::string xml = ExportToXMLString(*m_procedure);
-      std::cout << "xml \n" << xml << "x\n";
       m_send_xml_func(xml);
     }
     catch (const std::exception &ex)

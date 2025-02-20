@@ -21,14 +21,14 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/epics_instruction_items.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -104,6 +104,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForSequence)
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 0);
 }
 
+//! Check that update of XML contains correct preamble when EPICS instruction is added to procedure.
 TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
 {
   const std::string expected_xml1(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
@@ -116,6 +117,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
 <Procedure>
   <PvAccessRead timeout="1.0"/>
   <Workspace/>
+</Procedure>
 )RAW");
 
   const std::string expected_xml3(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
@@ -125,7 +127,6 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
   <Workspace/>
 </Procedure>
 )RAW");
-
 
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -139,13 +140,30 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml1)).Times(1);
   auto controller = CreateController();
 
+  EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(0);
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml2)).Times(1);
-  EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(2);
+  EXPECT_CALL(m_mock_send_xml, Call(expected_xml3)).Times(1);
   handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
+
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
-}
+  const std::string expected_xml4(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
+<Procedure>
+  <PvAccessRead timeout="1.0"/>
+  <Workspace/>
+</Procedure>
+)RAW");
 
+  const std::string expected_xml5(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
+<Procedure>
+  <Workspace/>
+</Procedure>
+)RAW");
+
+  EXPECT_CALL(m_mock_send_xml, Call(expected_xml4)).Times(1);
+  EXPECT_CALL(m_mock_send_xml, Call(expected_xml5)).Times(1);
+  m_model.GetCommandStack()->Undo();
+}
 
 }  // namespace oac_tree_gui::test
