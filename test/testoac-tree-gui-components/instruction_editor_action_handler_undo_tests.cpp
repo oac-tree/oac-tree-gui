@@ -94,6 +94,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertSequenceUndoRedo)
 
   auto handler = CreateActionHandler(nullptr);
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
   handler->InsertInstructionAfter(SequenceItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
@@ -116,6 +117,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfter)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
   handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
@@ -143,6 +145,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfterAndUnd
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
   handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
@@ -170,6 +173,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(2);
   handler->InsertInstructionAfter(SequenceItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
   EXPECT_TRUE(GetPluginPaths().empty());
