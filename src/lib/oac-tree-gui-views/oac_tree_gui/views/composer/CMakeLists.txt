@@ -34,5 +34,6 @@ target_sources(${library_name} PRIVATE
   workspace_editor_widget.cpp
   workspace_editor_widget.h
   xml_panel.cpp
-  xml_panel.h)
+  xml_panel.h
+)
 
