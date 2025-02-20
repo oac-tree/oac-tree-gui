@@ -19,6 +19,7 @@
 
 #include "xml_panel.h"
 
+#include <oac_tree_gui/components/xml_panel_controller.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/xml_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
@@ -29,7 +30,6 @@
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/session_item.h>
-#include <mvvm/signals/model_listener.h>
 
 #include <QAction>
 #include <QVBoxLayout>
@@ -47,25 +47,33 @@ XmlPanel::XmlPanel(QWidget *parent_widget)
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-
   layout->addWidget(m_xml_view);
 
   SetupActions();
 
-  SetupListener();
+  auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
+  auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
+  // will be deleted as a child of QObject
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 XmlPanel::~XmlPanel() = default;
 
-void XmlPanel::SetModel(mvvm::ISessionModel *model)
-{
-  m_model = model;
-}
+void XmlPanel::SetModel(mvvm::ISessionModel *model) {}
 
 void XmlPanel::SetProcedure(ProcedureItem *procedure)
 {
+  if (m_procedure == procedure)
+  {
+    return;
+  }
+
   m_procedure = procedure;
-  UpdateXml();
+
+  if (m_procedure && isVisible())
+  {
+    SetProcedureIntern(m_procedure);
+  }
 }
 
 void XmlPanel::SetupActions()
@@ -78,65 +86,22 @@ void XmlPanel::SetupActions()
   addAction(m_export_action);
 }
 
-void XmlPanel::SetupListener()
+void XmlPanel::SetProcedureIntern(ProcedureItem *procedure)
 {
-  auto on_subscribe = [this]()
+  if (procedure)
   {
-    m_listener = std::make_unique<mvvm::ModelListener>(m_model);
-    m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
-    m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
-    m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnDataChangedEvent);
+    auto on_xml_update = [this](const auto &xml)
+    { m_xml_view->SetContent(QString::fromStdString(xml)); };
 
-    UpdateXml();
-  };
+    auto on_message = [this](const auto &message) { m_message_handler->SendMessage(message); };
 
-  auto on_unsubscribe = [this]() { m_listener.reset(); };
-
-  // will be deleted as a child of QObject
-  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
-}
-
-void XmlPanel::OnDataChangedEvent(const mvvm::DataChangedEvent &event)
-{
-  auto [item, role] = event;
-
-  auto tag = item->GetTagIndex().GetTag();
-
-  //   instruction node coordinates are not relevant for the XML of the procedure
-  if (tag != itemconstants::kXpos && tag != itemconstants::kYpos)
-  {
-    UpdateXml();
-  }
-}
-
-void XmlPanel::UpdateXml()
-{
-  if (m_procedure && isVisible())
-  {
-    try
-    {
-      m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(*m_procedure)));
-    }
-    catch (const std::exception &ex)
-    {
-      // Procedure is in inconsistent state. For example, variable items all have the same names
-      // which makes domain's Workspace unhappy.
-      m_xml_view->ClearText();
-      SendMessage(ex.what());
-    }
+    m_panel_controller = std::make_unique<XmlPanelController>(procedure, on_xml_update, on_message);
   }
   else
   {
+    m_panel_controller.reset();
     m_xml_view->ClearText();
   }
-}
-
-void XmlPanel::SendMessage(const std::string &what) const
-{
-  const std::string title("XML generation failed");
-  const std::string text("The current procedure is in inconsistent state:");
-  sup::gui::MessageEvent message{title, text, what, ""};
-  m_message_handler->SendMessage(message);
 }
 
 }  // namespace oac_tree_gui

@@ -23,12 +23,8 @@
 #include <mvvm/signals/event_types.h>
 
 #include <QWidget>
-class QAction;
 
-namespace mvvm
-{
-class ModelListener;
-}
+class QAction;
 
 namespace sup::gui
 {
@@ -41,6 +37,7 @@ namespace oac_tree_gui
 {
 
 class ProcedureItem;
+class XmlPanelController;
 
 /**
  * @brief The XmlPanel class represent a simple read-only text view to show XML content of the
@@ -63,31 +60,11 @@ signals:
 
 private:
   void SetupActions();
-
-  /**
-   * @brief Sets up listener to regenerate XML on model change.
-   *
-   * It also takes care, that XML is not regenerated, when widget is hidden.
-   */
-  void SetupListener();
-
-  void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
-
-  /**
-   * @brief Regenerates XML in text viewer.
-   */
-  void UpdateXml();
-
-  /**
-   * @brief Notifies the user that XML generation went wrong.
-   */
-  void SendMessage(const std::string& what) const;
+  void SetProcedureIntern(ProcedureItem* procedure);
 
   QAction* m_export_action{nullptr};
-
   sup::gui::CodeView* m_xml_view{nullptr};
-  mvvm::ISessionModel* m_model{nullptr};
-  std::unique_ptr<mvvm::ModelListener> m_listener;
+  std::unique_ptr<XmlPanelController> m_panel_controller;
   ProcedureItem* m_procedure{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
