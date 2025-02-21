@@ -30,8 +30,7 @@ enum class GraphicsViewOperationMode : std::uint8_t
   kSimpleSelection,
   kRubberSelection,
   kHandDrag,
-  kUnknownMode,
-  kOperationModeCount
+  kUnknownMode
 };
 
 }  // namespace oac_tree_gui
