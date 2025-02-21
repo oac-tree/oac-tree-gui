@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/instruction_editor_viewmodel.h"
+
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
@@ -34,13 +36,12 @@
 #include <QMimeData>
 #include <QSignalSpy>
 
-#include "oac_tree_gui/viewmodel/instruction_editor_viewmodel.h"
-
 namespace oac_tree_gui::test
 {
 
-//! Tests for InstructionEditorViewModel class.
-
+/**
+ * @brief Tests for InstructionEditorViewModel class.
+ */
 class InstructionEditorViewModelTest : public ::testing::Test
 {
 public:
@@ -51,7 +52,6 @@ public:
 };
 
 //! Single instruction in a model. ViewModel should see single row and 2 columns.
-
 TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
@@ -78,7 +78,6 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 }
 
 //! Sequence with a child in a model.
-
 TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
@@ -102,7 +101,6 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 }
 
 //! Check that view model send notification on name change.
-
 TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
@@ -117,7 +115,6 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
 }
 
 //! Validating method CanDropMimeData for move operation.
-
 TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
 {
   // Include
@@ -157,8 +154,7 @@ TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
   EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
 }
 
-//! Validating method CanDropMimeData for insert new operation.
-
+//! Validating method CanDropMimeData: insert new operation.
 TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
 {
   // Sequence
@@ -189,9 +185,8 @@ TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
   EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, wait1_index));
 }
 
-//! Validating method dropMimeData.
-//! Item is moved from one parent to another and inserted between its children
-
+//! Validating method dropMimeData: item is moved from one parent to another and inserted between
+//! its children
 TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
 {
   // Include
@@ -224,9 +219,8 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait0, incl, wait1}));
 }
 
-//! Validating method dropMimeData.
-//! Item is moved within athe same parent from first position to the last.
-
+//! Validating method dropMimeData: item is moved within the same parent from first position to the
+//! last.
 TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
 {
   // Sequence
@@ -253,9 +247,8 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait1, wait2, wait0}));
 }
 
-//! Validating method dropMimeData.
-//! Item is moved within athe same parent from first position to the last.
-
+//! Validating method dropMimeData: item is moved within the same parent from first position to the
+//! last.
 TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
 {
   // Sequence
@@ -283,7 +276,6 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
 }
 
 //! New item is created by dropping between two children.
-
 TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
 {
   // Sequence
@@ -312,7 +304,6 @@ TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
 }
 
 //! Single instruction in a model. ViewModel should see single row and 2 columns.
-
 TEST_F(InstructionEditorViewModelTest, ModelReset)
 {
   SequencerModel model;
@@ -326,17 +317,16 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   EXPECT_EQ(view_model.rowCount(), 1);
   EXPECT_EQ(view_model.columnCount(), 2);
 
-  // Mimicking load of the procedure from disk. The procedure doesn't contain instruction container
-  // and is not suitable for displaying by InstructionEditorViewModel.
+  // Mimicking the reset of the document. The viewmodel will be reset to show top level item, no
+  // crash occur.
   auto root_item = mvvm::utils::CreateEmptyRootItem();
   auto procedure_container = root_item->InsertItem<mvvm::ContainerItem>(mvvm::TagIndex::Append());
   model.ReplaceRootItem(std::move(root_item));
 
   EXPECT_EQ(view_model.rowCount(), 1);
   EXPECT_EQ(view_model.columnCount(), 2);
-
   EXPECT_EQ(view_model.rootItem()->GetRowCount(), 1);
-  EXPECT_EQ(view_model.rootItem()->GetColumnCount(), 2);  // Failing here with, gives 1
+  EXPECT_EQ(view_model.rootItem()->GetColumnCount(), 2);
 }
 
 }  // namespace oac_tree_gui::test
