@@ -1,7 +1,7 @@
 To the next Release:
 
 - Provide possibility to undo instruction move in the NodeEditor
-- Provide correct plugin list update in XML on  NodeEditor drop
+- Provide correct plugin list update in XML on instruction drop into NodeEditor
 - Provide possibility for zero tick timeout during sequence execution
 - Refactor procedure preamble update on variable/instruction insert and remove
 - Fix bug with broken add/removal of EPICS instructions/variables when undo framework is on
