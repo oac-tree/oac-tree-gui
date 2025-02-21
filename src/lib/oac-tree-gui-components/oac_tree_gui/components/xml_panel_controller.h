@@ -32,11 +32,6 @@ namespace mvvm
 class ModelListener;
 }
 
-namespace mvvm
-{
-class ModelListener;
-}
-
 namespace oac_tree_gui
 {
 

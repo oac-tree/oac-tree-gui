@@ -102,6 +102,7 @@ void XmlPanelController::OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemE
 {
   if (event.item->GetItem(event.tag_index) == m_procedure)
   {
+    // procedure was deleted, stopping listening
     m_send_xml_func(std::string());
     m_procedure = nullptr;
     m_listener.reset();
