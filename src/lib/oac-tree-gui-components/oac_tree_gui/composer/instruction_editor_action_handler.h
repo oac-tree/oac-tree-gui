@@ -90,6 +90,9 @@ public:
 
   void PasteInto() override;
 
+  mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem* parent,
+                                const mvvm::TagIndex& index, const position_t& position) override;
+
 private:
   InstructionItem* GetSelectedInstruction() const;
   mvvm::ISessionModel* GetModel() const;
@@ -137,12 +140,6 @@ private:
    * @brief Inserts given item into current selection.
    */
   void InsertIntoCurrentSelection(std::unique_ptr<mvvm::SessionItem> item);
-
-  /**
-   * @brief Inserts given item in the given parent.
-   */
-  mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem* parent,
-                                const mvvm::TagIndex& index, const position_t& position = {});
 
   InstructionEditorContext m_context;
 };

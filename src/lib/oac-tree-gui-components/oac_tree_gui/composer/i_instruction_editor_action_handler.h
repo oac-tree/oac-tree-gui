@@ -20,8 +20,16 @@
 #ifndef OAC_TREE_GUI_COMPOSER_I_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 #define OAC_TREE_GUI_COMPOSER_I_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 
+#include <memory>
 #include <string>
 #include <utility>
+
+namespace mvvm
+{
+class SessionItem;
+class TagIndex;
+class ISessionModel;
+}  // namespace mvvm
 
 namespace oac_tree_gui
 {
@@ -155,6 +163,13 @@ public:
    * It will be appended to already existing children.
    */
   virtual void PasteInto() = 0;
+
+  /**
+   * @brief Inserts given item in the given parent.
+   */
+  virtual mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item,
+                                        mvvm::SessionItem* parent, const mvvm::TagIndex& index,
+                                        const position_t& position = {}) = 0;
 };
 
 }  // namespace oac_tree_gui

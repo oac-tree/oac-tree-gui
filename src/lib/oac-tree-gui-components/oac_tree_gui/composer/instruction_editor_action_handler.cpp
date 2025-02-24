@@ -313,6 +313,45 @@ void InstructionEditorActionHandler::PasteInto()
   InsertIntoCurrentSelection(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
 }
 
+mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
+    std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index,
+    const position_t &position)
+{
+  if (!GetModel())
+  {
+    throw RuntimeException("Uninitialised model");
+  }
+
+  if (parent == nullptr)
+  {
+    throw RuntimeException("Uninitialised parent");
+  }
+
+  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
+
+  mvvm::SessionItem *result{nullptr};
+  const auto item_type = item->GetType();
+  try
+  {
+    result = GetModel()->InsertItem(std::move(item), parent, index);
+    UpdateProcedurePreamble();
+    AlignInstructionTree(position, result);
+
+    SelectNotify(result);
+  }
+  catch (const std::exception &ex)
+  {
+    std::ostringstream ostr;
+    ostr << "Exception was caught while trying to insert instruction [" << item_type
+         << "] into parent [" << parent->GetType() << "]";
+    SendMessage("Can't insert instruction", ostr.str(), ex.what());
+  }
+
+  mvvm::utils::EndMacro(*GetModel());
+
+  return result;
+}
+
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
 {
   return m_context.selected_instruction();
@@ -448,45 +487,6 @@ void InstructionEditorActionHandler::InsertIntoCurrentSelection(
   auto selected_item = GetSelectedInstruction();
   InsertItem(std::move(item), selected_item, mvvm::TagIndex::Append(),
              GetCoordinateNearby(selected_item));
-}
-
-mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
-    std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index,
-    const position_t &position)
-{
-  if (!GetModel())
-  {
-    throw RuntimeException("Uninitialised model");
-  }
-
-  if (parent == nullptr)
-  {
-    throw RuntimeException("Uninitialised parent");
-  }
-
-  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
-
-  mvvm::SessionItem *result{nullptr};
-  const auto item_type = item->GetType();
-  try
-  {
-    result = GetModel()->InsertItem(std::move(item), parent, index);
-    UpdateProcedurePreamble();
-    AlignInstructionTree(position, result);
-
-    SelectNotify(result);
-  }
-  catch (const std::exception &ex)
-  {
-    std::ostringstream ostr;
-    ostr << "Exception was caught while trying to insert instruction [" << item_type
-         << "] into parent [" << parent->GetType() << "]";
-    SendMessage("Can't insert instruction", ostr.str(), ex.what());
-  }
-
-  mvvm::utils::EndMacro(*GetModel());
-
-  return result;
 }
 
 }  // namespace oac_tree_gui
