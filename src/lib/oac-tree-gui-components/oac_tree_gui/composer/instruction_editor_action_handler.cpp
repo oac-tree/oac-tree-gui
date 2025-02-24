@@ -362,7 +362,7 @@ mvvm::ISessionModel *InstructionEditorActionHandler::GetModel() const
   return GetInstructionContainer() ? GetInstructionContainer()->GetModel() : nullptr;
 }
 
-InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContainer() const
+mvvm::SessionItem *InstructionEditorActionHandler::GetInstructionContainer() const
 {
   return m_context.instruction_container();
 }

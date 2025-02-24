@@ -96,7 +96,7 @@ public:
 private:
   InstructionItem* GetSelectedInstruction() const;
   mvvm::ISessionModel* GetModel() const;
-  InstructionContainerItem* GetInstructionContainer() const;
+  mvvm::SessionItem *GetInstructionContainer() const;
   void SelectNotify(mvvm::SessionItem* item) const;
 
   /**

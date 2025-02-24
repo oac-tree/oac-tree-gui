@@ -54,7 +54,7 @@ struct AnyValueDialogResult;
 struct InstructionEditorContext
 {
   //! callback to get current instruction container to operate
-  std::function<InstructionContainerItem*()> instruction_container;
+  std::function<mvvm::SessionItem*()> instruction_container;
 
   //! callback to get currently selected instruction
   std::function<InstructionItem*()> selected_instruction;
