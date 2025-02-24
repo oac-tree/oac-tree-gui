@@ -19,6 +19,7 @@
 
 #include "oac_tree_gui/composer/procedure_editor.h"
 
+#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -40,6 +41,10 @@ public:
   {
     m_procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }
+  InstructionContainerItem* GetInstructionContainer() const
+  {
+    return m_procedure->GetInstructionContainer();
+  }
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
@@ -51,9 +56,19 @@ TEST_F(ProcedureEditorTest, AttemptToCreateWhenNoContextIsInitialised)
 
   EXPECT_TRUE(editor.GetInstructionInFocus().empty());
   SequenceItem item;
-  std::vector<InstructionItem*> instructions({&item});
+  const std::vector<InstructionItem*> instructions({&item});
   editor.SetInstructionsInFocus(instructions);
   EXPECT_EQ(editor.GetInstructionInFocus(), instructions);
+}
+
+TEST_F(ProcedureEditorTest, InsertInstructionFromToolBox)
+{
+  ProcedureEditor editor;
+
+  editor.SetProcedure(m_procedure);
+
+  editor.InsertInstructionFromToolBox(QString::fromStdString(SequenceItem::GetStaticType()));
+  EXPECT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 }
 
 }  // namespace oac_tree_gui::test

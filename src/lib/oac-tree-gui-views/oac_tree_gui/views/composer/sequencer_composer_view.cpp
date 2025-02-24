@@ -144,6 +144,10 @@ void SequencerComposerView::SetupConnections()
   };
   connect(m_central_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
   connect(m_right_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
+
+  // instruction toolbox requests form left panel
+  connect(m_composer_panel, &ComposerPanel::ToolBoxInstructionRequest, m_procedure_editor.get(),
+          &ProcedureEditor::InsertInstructionFromToolBox);
 }
 
 void SequencerComposerView::SetupWidgetActions()

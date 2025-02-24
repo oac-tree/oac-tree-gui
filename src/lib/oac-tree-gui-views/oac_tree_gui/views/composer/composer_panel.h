@@ -63,6 +63,12 @@ public:
 signals:
   void ProcedureSelected(oac_tree_gui::ProcedureItem* procedureItem);
 
+  /**
+   * @brief Emmited when the user double clicks on instruction/aggregate name in the left
+   * instruction tool box.
+   */
+  void ToolBoxInstructionRequest(const QString& name);
+
 private:
   void ReadSettings();
   void WriteSettings();

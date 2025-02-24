@@ -23,11 +23,8 @@
 #include "instruction_item_panel.h"
 #include "procedure_list_widget.h"
 
-#include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
@@ -71,16 +68,8 @@ ComposerPanel::ComposerPanel(QWidget *parent_widget)
   connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
 
-  auto append_instruction = [this](const QString &name)
-  {
-    if (auto procedure = GetSelectedProcedure(); procedure)
-    {
-      InsertInstruction(name.toStdString(), procedure->GetInstructionContainer(),
-                        mvvm::TagIndex::Append());
-    }
-  };
   connect(m_instruction_panel, &InstructionItemPanel::InstructionDoubleClicked, this,
-          append_instruction);
+          &ComposerPanel::ToolBoxInstructionRequest);
 
   ReadSettings();
 }

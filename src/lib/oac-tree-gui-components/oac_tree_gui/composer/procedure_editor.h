@@ -73,7 +73,12 @@ public:
    */
   std::vector<InstructionItem*> GetInstructionInFocus();
 
-
+  /**
+   * @brief Insert instruction from toolbox to the instruction container.
+   *
+   * Where to insert will depend on the last selection.
+   */
+  void InsertInstructionFromToolBox(const QString& name);
 
 signals:
   void SelectInstructionRequest(mvvm::SessionItem* item);
