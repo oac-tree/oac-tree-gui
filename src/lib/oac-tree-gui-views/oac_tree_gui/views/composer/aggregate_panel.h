@@ -37,6 +37,9 @@ class AggregatePanel : public QWidget
 public:
   explicit AggregatePanel(QWidget* parent_widget = nullptr);
 
+signals:
+  void InstructionDoubleClicked(const QString& name);
+
 private:
   ToolKitViewModel* m_toolkit_viewmodel{nullptr};
   InsructionToolKitTreeView* m_tree_view{nullptr};

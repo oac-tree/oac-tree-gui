@@ -70,6 +70,8 @@ ComposerPanel::ComposerPanel(QWidget *parent_widget)
 
   connect(m_instruction_panel, &InstructionItemPanel::InstructionDoubleClicked, this,
           &ComposerPanel::ToolBoxInstructionRequest);
+  connect(m_aggregate_panel, &AggregatePanel::InstructionDoubleClicked, this,
+          &ComposerPanel::ToolBoxInstructionRequest);
 
   ReadSettings();
 }

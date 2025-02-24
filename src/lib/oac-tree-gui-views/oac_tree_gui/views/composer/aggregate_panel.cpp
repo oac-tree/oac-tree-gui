@@ -45,6 +45,9 @@ AggregatePanel::AggregatePanel(QWidget *parent_widget)
 
   const AggregateFactory factory;
   m_toolkit_viewmodel->PopulateModel(factory.GetKeys());
+
+  connect(m_tree_view, &InsructionToolKitTreeView::InstructionDoubleClicked, this,
+          &AggregatePanel::InstructionDoubleClicked);
 }
 
 }  // namespace oac_tree_gui
