@@ -142,24 +142,4 @@ mvvm::TagIndex GetDropTagIndex(int drop_indicator_row)
   return {"", static_cast<std::size_t>(drop_indicator_row)};
 }
 
-InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
-                                 const mvvm::TagIndex& tag_index)
-{
-  InstructionItem* result{nullptr};
-
-  if (!instruction_type.empty())
-  {
-    if (IsAggregateName(instruction_type))
-    {
-      result = InsertAggregate(instruction_type, parent, tag_index);
-    }
-    else
-    {
-      result = InsertInstruction(instruction_type, parent, tag_index);
-    }
-  }
-
-  return result;
-}
-
 }  // namespace oac_tree_gui

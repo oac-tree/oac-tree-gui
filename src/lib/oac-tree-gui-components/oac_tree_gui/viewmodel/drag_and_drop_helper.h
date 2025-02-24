@@ -102,19 +102,6 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
  * @return TagIndex to use for move operation
  */
 mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
-
-/**
- * @brief Process drop instruction request by creating and inserting corresponding item to given
- * parent.
- *
- * @param instruction_name Instruction type, or name of complex instruction aggregate.
- * @param parent Parent to insert an instruction.
- * @param tag_index Where to insert.
- *
- * @return Pointer to just inserted object.
- */
-InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
-                                 const mvvm::TagIndex& tag_index);
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_

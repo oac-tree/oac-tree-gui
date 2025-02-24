@@ -140,34 +140,6 @@ TEST_F(DragAndDropHelperTest, GetDropTagIndex)
   EXPECT_TRUE(GetDropTagIndex(42) == mvvm::TagIndex("", 42));
 }
 
-TEST_F(DragAndDropHelperTest, DropInstruction)
-{
-  SequencerModel model;
-  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-
-  auto item = DropInstruction(domainconstants::kWaitInstructionType,
-                              procedure->GetInstructionContainer(), mvvm::TagIndex::Append());
-
-  EXPECT_EQ(item->GetType(), WaitItem::GetStaticType());
-  EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
-}
-
-//! Checking adding instruction aggregate.
-
-TEST_F(DragAndDropHelperTest, DropAggregate)
-{
-  SequencerModel model;
-  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-
-  auto item = dynamic_cast<UniversalInstructionItem*>(DropInstruction(
-      "if-then-else", procedure->GetInstructionContainer(), mvvm::TagIndex::Append()));
-  ASSERT_NE(item, nullptr);
-
-  EXPECT_EQ(item->GetType(), UniversalInstructionItem::GetStaticType());
-  EXPECT_EQ(item->GetDomainType(), domainconstants::kFallbackInstructionType);
-}
-
 TEST_F(DragAndDropHelperTest, CanInsertType)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
