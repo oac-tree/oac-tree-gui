@@ -165,11 +165,10 @@ public:
   virtual void PasteInto() = 0;
 
   /**
-   * @brief Inserts given item in the given parent.
+   * @brief Inserts given item type in the given parent.
    */
-  virtual mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item,
-                                        mvvm::SessionItem* parent, const mvvm::TagIndex& index,
-                                        const position_t& position = {}) = 0;
+  virtual void InsertItem(const std::string& item_type, mvvm::SessionItem* parent,
+                          const mvvm::TagIndex& index) = 0;
 };
 
 }  // namespace oac_tree_gui
