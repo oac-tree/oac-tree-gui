@@ -51,8 +51,8 @@ InstructionItem *InsertAggregate(const std::string &domain_type, mvvm::SessionIt
   return InsertInstruction(factory.Create(domain_type), parent, tag_index);
 }
 
-InstructionItem *InsertInstruction(std::unique_ptr<InstructionItem> item,
-                                   mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index)
+InstructionItem *InsertInstruction(std::unique_ptr<InstructionItem> item, mvvm::SessionItem *parent,
+                                   const mvvm::TagIndex &tag_index)
 {
   return static_cast<InstructionItem *>(
       mvvm::utils::InsertItem(std::move(item), parent, tag_index));
@@ -136,6 +136,16 @@ sup::gui::AnyValueItem *GetAnyValueItem(const InstructionItem &item)
   return mvvm::utils::HasTag(item, itemconstants::kAnyValueTag)
              ? item.GetItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
              : nullptr;
+}
+
+std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string &name)
+{
+  static ::oac_tree_gui::AggregateFactory factory;
+  if (factory.Contains(name))
+  {
+    return factory.Create(name);
+  }
+  return CreateInstructionItem(name);
 }
 
 }  // namespace oac_tree_gui

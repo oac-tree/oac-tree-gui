@@ -142,6 +142,14 @@ std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainer
  */
 sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
 
+/**
+ * @brief Creates a single instruction or instruction aggregate.
+ *
+ * @param name The type of single instruction, or the name of registered aggregate.
+ * @return Constructed single instruction or instruction tree.
+ */
+std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& name);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_

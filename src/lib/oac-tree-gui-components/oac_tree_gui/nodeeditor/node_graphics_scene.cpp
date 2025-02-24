@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
@@ -72,22 +73,6 @@ std::string GetEncodedName(QGraphicsSceneDragDropEvent *event)
 std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 {
   return GetEncodedName(event);
-}
-
-/**
- * @brief Creates a single instruction or instruction aggregate.
- *
- * @param name The type of single instruction, or the name of registered aggregate.
- * @return Constructed single instruction or instruction tree.
- */
-std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string &name)
-{
-  static ::oac_tree_gui::AggregateFactory factory;
-  if (factory.Contains(name))
-  {
-    return factory.Create(name);
-  }
-  return oac_tree_gui::CreateInstructionItem(name);
 }
 
 }  // namespace
