@@ -20,26 +20,72 @@
 #ifndef OAC_TREE_GUI_COMPOSER_PROCEDURE_EDITOR_H_
 #define OAC_TREE_GUI_COMPOSER_PROCEDURE_EDITOR_H_
 
+#include <QObject>
+#include <memory>
+#include <vector>
+
+namespace mvvm
+{
+class SessionItem;
+}
+
 namespace oac_tree_gui
 {
 
 class ProcedureItem;
+class InstructionEditorActionHandler;
+class InstructionEditorContext;
+class InstructionItem;
 
 /**
  * @brief The ProcedureEditor class is an envelope around all action handlers participating in
  * procedure editing.
  *
- * Contains all logic to add/remove instructions and variables, provide copy and paste, undo-redo,
- * etc.
+ * For the moment, it contains only logic to build an instruction tree via
+ * InstructionEditorActionHandler and is used to handle double clicks in instruction tool box in the
+ * same manner, as in other widgets.
+ *
+ * Other widgets (NodeEditor, InstructionTreeEditor) might contain their instances of
+ * InstructionEditorActionHandler for instruction tree manipulation. Later on, they can be cleaned
+ * up in the favor of this central class.
  */
-class ProcedureEditor
+class ProcedureEditor : public QObject
 {
+  Q_OBJECT
+
 public:
+  explicit ProcedureEditor(QObject* parent_object = nullptr);
+  ~ProcedureEditor() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
+  /**
+   * @brief Sets instructions which are currently selected in widgets with active focus.
+   *
+   * This method can be called from any widget (NodeGraphicsScene, InstructionEditorWidget instances
+   * located in left and right panels). Thus, it reflects sort of the last user choice. This
+   * information can be used by widgets, which have no own machinery for instruction selection.
+   */
+  void SetInstructionsInFocus(const std::vector<InstructionItem*>& instructions);
+
+  /**
+   * @brief returns selected instructions.
+   */
+  std::vector<InstructionItem*> GetInstructionInFocus();
+
+
+
+signals:
+  void SelectInstructionRequest(mvvm::SessionItem* item);
+
 private:
+  InstructionEditorContext CreateInstructionEditorContext();
+
+  InstructionItem* GetSelectedInstruction();
+
   ProcedureItem* m_current_procedure{nullptr};
+  std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
+  std::vector<InstructionItem*> m_selected_instructions;
 };
 
 }  // namespace oac_tree_gui
