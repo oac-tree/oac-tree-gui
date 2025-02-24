@@ -30,6 +30,9 @@ class ISessionModel;
 namespace oac_tree_gui
 {
 
+class IInstructionEditorActionHandler;
+class InstructionEditorContext;
+
 /**
  * @brief The InstructionEditorViewModel class is a model with two columns: display name and
  * editable description.
@@ -42,6 +45,7 @@ class MVVM_VIEWMODEL_EXPORT InstructionEditorViewModel : public mvvm::ViewModel
 
 public:
   explicit InstructionEditorViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
+  ~InstructionEditorViewModel() override;
 
   Qt::ItemFlags flags(const QModelIndex& index) const override;
 
@@ -58,6 +62,10 @@ public:
                     const QModelIndex& parent) override;
 
   QStringList mimeTypes() const override;
+
+private:
+  InstructionEditorContext CreateInstructionEditorContext();
+  std::unique_ptr<IInstructionEditorActionHandler> m_action_handler;
 };
 
 }  // namespace oac_tree_gui

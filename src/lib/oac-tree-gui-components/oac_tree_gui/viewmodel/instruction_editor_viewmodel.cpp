@@ -21,9 +21,14 @@
 
 #include "drag_and_drop_helper.h"
 
+#include <oac_tree_gui/composer/instruction_editor_action_handler.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/viewmodel/custom_row_strategies.h>
 
 #include <mvvm/model/i_session_model.h>
+#include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/validate_utils.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
@@ -37,11 +42,15 @@ namespace oac_tree_gui
 InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel *model,
                                                        QObject *parent_object)
     : ViewModel(parent_object)
+    // , m_action_handler(
+    //       std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
 {
   SetController(
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionEditorRowStrategy>(model,
                                                                                             this));
 }
+
+InstructionEditorViewModel::~InstructionEditorViewModel() = default;
 
 Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex &index) const
 {
@@ -174,6 +183,8 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
     if (auto drop_type = GetNewInstructionType(data); !drop_type.empty())
     {
       DropInstruction(drop_type, parent_item, GetDropTagIndex(row));
+      // m_action_handler->InsertItem(CreateInstructionTree(drop_type), parent_item,
+      //                              GetDropTagIndex(row));
     }
     return true;
   }
@@ -184,6 +195,26 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
 QStringList InstructionEditorViewModel::mimeTypes() const
 {
   return {kInstructionMoveMimeType, kNewInstructionMimeType};
+}
+
+InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorContext()
+{
+  // no need to fully configure the context, here we are using only its limited part
+  InstructionEditorContext result;
+  result.instruction_container = [this]()
+  { return mvvm::utils::FindItemUp<InstructionContainerItem>(GetRootSessionItem()); };
+  result.selected_instruction = []() { return nullptr; };
+  auto on_select_request = [](mvvm::SessionItem *item) { (void)item; };
+
+  result.select_notify = on_select_request;
+  result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
+  result.send_message = [](const auto &event)
+  {
+    (void)event;
+    qDebug() << "unexpected event";
+  };
+
+  return result;
 }
 
 }  // namespace oac_tree_gui

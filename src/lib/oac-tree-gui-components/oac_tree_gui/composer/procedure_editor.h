@@ -33,7 +33,7 @@ namespace oac_tree_gui
 {
 
 class ProcedureItem;
-class InstructionEditorActionHandler;
+class IInstructionEditorActionHandler;
 class InstructionEditorContext;
 class InstructionItem;
 
@@ -89,7 +89,7 @@ private:
   InstructionItem* GetSelectedInstruction();
 
   ProcedureItem* m_current_procedure{nullptr};
-  std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
+  std::unique_ptr<IInstructionEditorActionHandler> m_action_handler;
   std::vector<InstructionItem*> m_selected_instructions;
 };
 

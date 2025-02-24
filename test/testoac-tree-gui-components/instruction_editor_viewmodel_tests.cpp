@@ -282,11 +282,13 @@ TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
   //    Wait0
   //    Wait1
 
-  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence = m_model.InsertItem<SequenceItem>(container);
   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
 
-  auto sequence_index = m_view_model.index(0, 0);
+  auto container_index = m_view_model.index(0, 0);
+  auto sequence_index = m_view_model.index(0, 0, container_index);
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
 
