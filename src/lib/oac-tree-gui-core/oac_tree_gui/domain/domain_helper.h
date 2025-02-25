@@ -104,6 +104,23 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata);
  */
 std::pair<bool, std::string> LoadPlugins();
 
+/**
+ * @brief Converts the name of the plugin to library file name.
+ *
+ * Takes OS platform in the account.
+ *
+ * Linux: sequencer -> libsequencer.so
+ *        libsequencer.so -> libsequencer.so
+ *        libsequencer.dylib -> libsequencer.so
+ *
+ * MacOs: sequencer -> libsequencer.dylib
+ *        libsequencer.so -> libsequencer.dylib
+ *        libsequencer.dylib -> libsequencer.dylib
+ *
+ * Windows: not implemented, will return the same name
+ */
+std::string GetPluginFileName(const std::string& plugin_name);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_HELPER_H_

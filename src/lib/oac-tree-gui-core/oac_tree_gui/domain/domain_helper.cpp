@@ -20,9 +20,11 @@
 #include "domain_helper.h"
 
 #include "domain_object_type_registry.h"
+#include "oac_tree_gui/domain/domain_constants.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 
+#include <mvvm/core/platform.h>
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction.h>
@@ -35,10 +37,9 @@
 #include <iostream>
 #include <sstream>
 
-#include "oac_tree_gui/domain/domain_constants.h"
-
 namespace
 {
+
 bool LoadPlugin(const std::string& name)
 {
   bool is_success{false};
@@ -64,6 +65,21 @@ void UpdateGlobalDomainObjectTypeRegistry(const std::string& plugin_name)
   registry.Update(plugin_name,
                   sup::oac_tree::GlobalInstructionRegistry().RegisteredInstructionNames());
   registry.Update(plugin_name, sup::oac_tree::GlobalVariableRegistry().RegisteredVariableNames());
+}
+
+std::string_view RemovePrefix(std::string_view name, const std::string& prefix)
+{
+  name.remove_prefix(std::min(name.find_first_not_of(prefix), name.size()));
+  return name;
+}
+
+std::string_view RemoveSuffix(std::string_view name, const std::string& suffix)
+{
+  if (name.rfind(suffix) == (name.size() - suffix.size()))
+  {
+    name.remove_suffix(suffix.size());
+  }
+  return name;
 }
 
 }  // namespace
@@ -193,6 +209,31 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata)
   }
 
   return false;
+}
+
+std::string GetPluginFileName(const std::string& plugin_name)
+{
+  if (plugin_name.empty() || mvvm::IsWindowsHost())
+  {
+    return plugin_name;
+  }
+
+  std::string_view view = plugin_name;
+  view = RemovePrefix(view, "lib");
+  view = RemoveSuffix(view, ".so");
+  view = RemoveSuffix(view, ".dylib");
+
+  if (mvvm::IsLinuxHost())
+  {
+    return "lib" + std::string(view) + ".so";
+  }
+
+  if (mvvm::IsMacHost())
+  {
+    return "lib" + std::string(view) + ".dylib";
+  }
+
+  return plugin_name;
 }
 
 }  // namespace oac_tree_gui

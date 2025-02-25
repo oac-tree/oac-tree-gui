@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/application_models.h"
+
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -28,8 +30,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
-
-#include "oac_tree_gui/model/application_models.h"
 
 namespace oac_tree_gui::test
 {
