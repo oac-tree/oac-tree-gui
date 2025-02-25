@@ -97,7 +97,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     context.selected_instruction = []() -> InstructionItem* { return nullptr; };
     context.select_notify = [](auto item) {};
-    EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
+    EXPECT_NO_THROW(InstructionEditorActionHandler{context});
   }
 }
 
@@ -130,6 +130,21 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
 
   EXPECT_EQ(reported_item, instructions.at(0));
+}
+
+TEST_F(InstructionEditorActionHandlerTest, AddToWrongPlaceWhenNoMessageCallbackDefined)
+{
+  InstructionEditorContext context;
+  context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
+  context.selected_instruction = []() -> InstructionItem* { return nullptr; };
+  context.select_notify = [](auto item) {};
+
+  InstructionEditorActionHandler handler{context};
+
+  EXPECT_THROW(
+      handler.InsertItem(SequenceItem::GetStaticType(), m_procedure->GetInstructionContainer(),
+                         mvvm::TagIndex{"no-such-tag", 0}),
+      RuntimeException);
 }
 
 TEST_F(InstructionEditorActionHandlerTest, DropInstruction)

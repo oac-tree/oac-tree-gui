@@ -102,11 +102,6 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
     throw RuntimeException("Callback to notify about selection is not defined");
   }
 
-  if (!m_context.send_message)
-  {
-    throw RuntimeException("Callback to send messages is not set");
-  }
-
   if (!m_context.create_instruction)
   {
     m_context.create_instruction = [](const auto &item_type)
@@ -314,8 +309,8 @@ void InstructionEditorActionHandler::PasteInto()
 }
 
 void InstructionEditorActionHandler::InsertItem(const std::string &item_type,
-                                                              mvvm::SessionItem *parent,
-                                                              const mvvm::TagIndex &index)
+                                                mvvm::SessionItem *parent,
+                                                const mvvm::TagIndex &index)
 {
   InsertItem(CreateInstructionTree(item_type), parent, index, GetCoordinateNearby(nullptr));
 }
@@ -355,7 +350,14 @@ void InstructionEditorActionHandler::SendMessage(const std::string &text,
 
 void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent &message_event) const
 {
-  m_context.send_message(message_event);
+  if (m_context.send_message)
+  {
+    m_context.send_message(message_event);
+  }
+  else
+  {
+    throw RuntimeException(message_event.detailed);
+  }
 }
 
 const QMimeData *InstructionEditorActionHandler::GetMimeData() const

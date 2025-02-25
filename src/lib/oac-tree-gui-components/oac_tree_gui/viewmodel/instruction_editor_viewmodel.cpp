@@ -202,15 +202,8 @@ InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorCont
   result.instruction_container = [this]() { return GetRootSessionItem(); };
   result.selected_instruction = []() { return nullptr; };
   auto on_select_request = [](mvvm::SessionItem *item) { (void)item; };
-
   result.select_notify = on_select_request;
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
-  result.send_message = [](const auto &event)
-  {
-    (void)event;
-    qDebug() << "unexpected event";
-  };
-
   return result;
 }
 

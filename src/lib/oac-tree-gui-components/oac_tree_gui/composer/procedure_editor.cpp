@@ -26,8 +26,6 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 
-#include <QDebug>
-
 namespace oac_tree_gui
 {
 
@@ -47,7 +45,6 @@ void ProcedureEditor::SetProcedure(ProcedureItem *procedure_item)
 
 void ProcedureEditor::SetInstructionsInFocus(const std::vector<InstructionItem *> &instructions)
 {
-  qDebug() << QList<InstructionItem *>(instructions.begin(), instructions.end());
   m_selected_instructions = instructions;
 }
 
@@ -67,18 +64,9 @@ InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext()
   result.instruction_container = [this]()
   { return m_current_procedure ? m_current_procedure->GetInstructionContainer() : nullptr; };
   result.selected_instruction = [this]() { return GetSelectedInstruction(); };
-
   auto on_select_request = [this](mvvm::SessionItem *item) { emit SelectInstructionRequest(item); };
   result.select_notify = on_select_request;
-
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
-
-  result.send_message = [](const auto &event)
-  {
-    (void)event;
-    qDebug() << "unexpected event";
-  };
-
   return result;
 }
 
