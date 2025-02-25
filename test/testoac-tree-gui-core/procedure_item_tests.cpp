@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/procedure_item.h"
+
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
@@ -27,8 +29,6 @@
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/procedure_item.h"
 
 namespace oac_tree_gui::test
 {
@@ -105,7 +105,8 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
     const ProcedureItem item;
     item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
 
-    const std::vector<std::string> expected({domainconstants::kEpicsCAPluginName});
+    const std::vector<std::string> expected(
+        {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName)});
     EXPECT_EQ(CollectPluginNames(item), expected);
   }
 
@@ -116,7 +117,8 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
         mvvm::TagIndex::Append());
 
     const std::vector<std::string> expected(
-        {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
+        {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName),
+         oac_tree_gui::GetPluginFileName(domainconstants::kEpicsPVXSPluginName)});
     EXPECT_EQ(CollectPluginNames(item), expected);
   }
 }
@@ -137,7 +139,8 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
   UpdatePluginNames(item);
 
   const std::vector<std::string> expected(
-      {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
+      {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName),
+       oac_tree_gui::GetPluginFileName(domainconstants::kEpicsPVXSPluginName)});
 
   EXPECT_EQ(item.GetPreambleItem()->GetPluginPaths(), expected);
 }

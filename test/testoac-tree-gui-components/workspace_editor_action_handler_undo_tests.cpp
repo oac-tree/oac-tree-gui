@@ -117,8 +117,9 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
   handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
-  // we get plugin name in preamble
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  // we get plugin file name in preamble
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 
   // removing variable
   m_mock_context.m_current_selection = GetWorkspaceItem()->GetVariables().at(0);
@@ -146,7 +147,8 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
   handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 
   m_model.GetCommandStack()->Undo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);
@@ -154,7 +156,8 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 
   m_model.GetCommandStack()->Redo();
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 }
 
 }  // namespace oac_tree_gui::test

@@ -122,7 +122,8 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfter)
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   // we get plugin name in preamble
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 
   m_mock_context.m_current_selection = GetInstructionContainer()->GetInstructions().at(0);
   handler->RemoveInstruction();
@@ -149,7 +150,8 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfterAndUnd
   handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 
   m_model.GetCommandStack()->Undo();
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 0);
@@ -157,7 +159,8 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfterAndUnd
 
   m_model.GetCommandStack()->Redo();
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 }
 
 //! Inserts EPICS instruction into sequence and undo.
@@ -185,7 +188,8 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
   handler->InsertInstructionInto(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(inserted_sequence->GetInstructions().size(), 1);
 
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 
   m_model.GetCommandStack()->Undo();
   ASSERT_EQ(inserted_sequence->GetInstructions().size(), 0);
@@ -194,7 +198,8 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
 
   m_model.GetCommandStack()->Redo();
   ASSERT_EQ(inserted_sequence->GetInstructions().size(), 1);
-  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));
+  EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
+                                  domainconstants::kEpicsPVXSPluginName)}));
 }
 
 }  // namespace oac_tree_gui::test

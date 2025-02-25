@@ -36,16 +36,18 @@ namespace oac_tree_gui::domainconstants
 //!< fictional name when only sequencer core libs are loaded
 const std::string kCorePluginName = "";
 
-const std::string kEpicsCAPluginName = "liboac-tree-ca.so";
-const std::string kEpicsPVXSPluginName = "liboac-tree-pvxs.so";
-const std::string kEpicsMiscPluginName = "liboac-tree-misc.so";
-const std::string kControlPluginName = "liboac-tree-control.so";
-const std::string kSupConfigPluginName = "libsequencer-sup-config.so";
-const std::string kSupTimingPluginName = "libsequencer-sup-timing.so";
-const std::string kSupPulseCounterPluginName = "libsequencer-sup-pulse-counter.so";
-const std::string kMathExprPluginName = "liboac-tree-mathexpr.so";
-const std::string kSystemPluginName = "liboac-tree-system.so";
-const std::string kStringPluginName = "liboac-tree-strings.so";
+//!< Plugin names must coincide with shared plugin library names, with preffix "lib" and suffixes
+//! ".so" or ".dylib" stripped off. Windows is not yet supported.
+const std::string kEpicsCAPluginName = "oac-tree-ca";
+const std::string kEpicsPVXSPluginName = "oac-tree-pvxs";
+const std::string kEpicsMiscPluginName = "oac-tree-misc";
+const std::string kControlPluginName = "oac-tree-control";
+const std::string kSupConfigPluginName = "sequencer-sup-config";
+const std::string kSupTimingPluginName = "sequencer-sup-timing";
+const std::string kSupPulseCounterPluginName = "sequencer-sup-pulse-counter";
+const std::string kMathExprPluginName = "oac-tree-mathexpr";
+const std::string kSystemPluginName = "oac-tree-system";
+const std::string kStringPluginName = "oac-tree-strings";
 
 // instructions
 const std::string kChoiceInstructionType = "Choice";

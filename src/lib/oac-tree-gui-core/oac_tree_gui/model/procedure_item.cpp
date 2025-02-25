@@ -19,6 +19,7 @@
 
 #include "procedure_item.h"
 
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -36,13 +37,14 @@ namespace
 /**
  * @brief Adds plugin name coresponding to a given domain type into the container.
  */
-void CollectPluginName(const std::string &domain_type, std::set<std::string> &plugin_names)
+void CollectPluginFileNames(const std::string &domain_type,
+                            std::set<std::string> &plugin_file_names)
 {
   const auto &registry = oac_tree_gui::GlobalDomainObjectTypeRegistry();
   if (auto plugin_name = registry.GetPluginName(domain_type).value_or(std::string());
       !plugin_name.empty())
   {
-    plugin_names.insert(plugin_name);
+    plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
   }
 }
 
@@ -54,7 +56,7 @@ void CollectVariablePluginNames(const oac_tree_gui::WorkspaceItem &workspace_ite
 {
   for (auto variable : workspace_item.GetVariables())
   {
-    CollectPluginName(variable->GetDomainType(), plugin_names);
+    CollectPluginFileNames(variable->GetDomainType(), plugin_names);
   }
 }
 
@@ -66,7 +68,7 @@ void CollectInstructionPluginNames(const oac_tree_gui::InstructionContainerItem 
                                    std::set<std::string> &plugin_names)
 {
   auto on_instruction = [&plugin_names](const oac_tree_gui::InstructionItem *item)
-  { CollectPluginName(item->GetDomainType(), plugin_names); };
+  { CollectPluginFileNames(item->GetDomainType(), plugin_names); };
   oac_tree_gui::IterateInstructionContainer<const oac_tree_gui::InstructionItem *>(
       container.GetInstructions(), on_instruction);
 }
