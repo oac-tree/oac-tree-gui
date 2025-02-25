@@ -150,13 +150,14 @@ std::pair<bool, std::string> LoadPlugins()
 
   for (const auto& name : plugins)
   {
-    if (LoadPlugin(name))
+    const auto file_name = GetPluginFileName(name);
+    if (LoadPlugin(file_name))
     {
       UpdateGlobalDomainObjectTypeRegistry(name);
     }
     else
     {
-      failed_plugins.push_back(name);
+      failed_plugins.push_back(file_name);
     }
   }
 
