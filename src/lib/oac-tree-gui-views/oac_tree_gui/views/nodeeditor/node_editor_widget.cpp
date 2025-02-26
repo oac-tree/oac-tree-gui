@@ -57,7 +57,7 @@ namespace oac_tree_gui
 
 NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
     : QWidget(parent_widget)
-    , m_view_actions(new NodeGraphicsViewActions)
+    , m_view_actions(new NodeGraphicsViewActions(this))
     , m_graphics_scene(new NodeGraphicsScene(
           [this](const auto &message) { m_graphics_view_message_handler->SendMessage(message); },
           this))

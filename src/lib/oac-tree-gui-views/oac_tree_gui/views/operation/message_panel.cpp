@@ -63,7 +63,7 @@ MessagePanel::MessagePanel(QWidget* parent_widget)
     , m_tree_view(new QTreeView)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
-    , m_view_model(new JobLogViewModel(nullptr))
+    , m_view_model(new JobLogViewModel(nullptr, this))
     , m_proxy_model(new QSortFilterProxyModel(this))
     , m_severity_selector_action(new QWidgetAction(this))
 {

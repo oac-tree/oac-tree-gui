@@ -56,7 +56,7 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent_object)
     , m_reset_action(new QAction("Reset", this))
     , m_delay_button(new QToolButton)
     , m_delay_action(new QWidgetAction(this))
-    , m_settings_action(new sup::gui::ActionMenu)
+    , m_settings_action(new sup::gui::ActionMenu(this))
     , m_delay_menu(CreateDelayMenu())
     , m_settings_menu(CreateSettingsMenu())
 {
