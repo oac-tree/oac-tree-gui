@@ -26,7 +26,7 @@
     <artifactId>sequencer-gui</artifactId>
     <packaging>codac</packaging>
     <!-- See ChangeLog file for details -->
-    <version>1.6.0</version>
+    <version>1.7.0</version>
     <name>SUP oac-tree GUI</name>
     <description>SUP oac-tree GUI.</description>
     <url>http://www.iter.org/</url>

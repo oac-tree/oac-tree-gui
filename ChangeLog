@@ -1,11 +1,16 @@
-To the next Release:
+Changes for 1.7.0:
 
+- COA Release v3.0, CODAC Core System Release 7.3, March 2025
+- Provide MacOs build
+- Support plugin load with *.dylib extension
 - Provide possibility to undo instruction move in the NodeEditor
 - Provide correct plugin list update in XML on instruction drop into NodeEditor
 - Provide possibility for zero tick timeout during sequence execution
+- Simplify instruction/variable action handler and remove QObject from inheritance
 - Refactor procedure preamble update on variable/instruction insert and remove
-- Fix bug with broken add/removal of EPICS instructions/variables when undo framework is on
+- Fix bug with broken add/removal of EPICS instructions/variables when undo framework is active
 - Introduce status for jobs that failed during submission
+- Move all heavy EPICS related tests to integration folder
 - Refactor file based job submission and directly submit imported domain jobs
 - Implement overlay error messages on NodeEditor and XMLPanel failures
 - Move overlay error message machinery to sup-gui-core
