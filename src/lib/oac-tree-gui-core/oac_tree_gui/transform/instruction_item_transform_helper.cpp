@@ -46,16 +46,6 @@ struct InstructionInfoStackNode
   oac_tree_gui::InstructionItem& item;
 };
 
-/**
- * @brief The InstructionStackNode structs stores stack information during traversing of
- * domain Instruction object.
- */
-struct InstructionStackNode
-{
-  const sup::oac_tree::Instruction& instruction;
-  oac_tree_gui::InstructionItem& item;
-};
-
 }  // namespace
 
 std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::oac_tree::InstructionInfo& info)
