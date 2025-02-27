@@ -32,9 +32,6 @@
 
 namespace oac_tree_gui
 {
-// ----------------------------------------------------------------------------
-// InstructionItem
-// ----------------------------------------------------------------------------
 
 InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type) {}
 
@@ -54,8 +51,6 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
   SetupDomainImpl(result.get());
   return result;
 }
-
-//! Returns all children instruction, if exist.
 
 std::vector<InstructionItem *> InstructionItem::GetInstructions() const
 {

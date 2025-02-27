@@ -26,7 +26,11 @@
 
 namespace oac_tree_gui
 {
-//! Base class for all instruction items.
+
+/**
+ * @brief The InstructionItem class is a base for all GUI items representind Sequencer domain
+ * instructions.
+ */
 class InstructionItem : public mvvm::CompoundItem
 {
 public:
@@ -34,41 +38,95 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
+  /**
+   * @brief Returns domain type.
+   */
   virtual std::string GetDomainType() const = 0;
 
-  //! Init given item from the domain instruction.
+  /**
+   * @brief Inits given item from the domain instruction.
+   */
   void InitFromDomain(const instruction_t* instruction);
 
-  //! Creates domain instruction corresponding to given item.
+  /**
+   * @brief Creates domain counterpart.
+   */
   std::unique_ptr<instruction_t> CreateDomainInstruction() const;
 
+  /**
+   * @brief Returns all child instrucitons.
+   */
   std::vector<InstructionItem*> GetInstructions() const;
 
+  /**
+   * @brief Checks if this instruction has root flag set.
+   */
   bool IsRoot() const;
 
+  /**
+   * @brief Sets root flag to a given value.
+   */
   void SetIsRootFlag(bool value);
 
+  /**
+   * @brief Returns instruction name.
+   *
+   * This is where domain description information is stored.
+   */
   std::string GetName() const;
 
+  /**
+   * @brief Sets the name to a given value.
+   */
   void SetName(const std::string& name);
 
+  /**
+   * @brief Returns instruction status.
+   */
   std::string GetStatus() const;
 
+  /**
+   * @brief Sets status to a given value.
+   */
   void SetStatus(const std::string& status);
 
+  /**
+   * @brief Retuns x-coordinate of instruction on NodeEditor graphics scene.
+   */
   double GetX() const;
 
+  /**
+   * @brief Set NodeEditor graphics scene x-coordinate to a given value.
+   */
   void SetX(double value);
 
+  /**
+   * @brief Retuns y-coordinate of instruction on NodeEditor graphics scene.
+   */
   double GetY() const;
 
+  /**
+   * @brief Set NodeEditor graphics scene y-coordinate to a given value.
+   */
   void SetY(double value);
 
 protected:
+  /**
+   * @brief Creates item properties common for all instructions.
+   *
+   * These are execution status, (x,y) coordinates and breakpoint information.
+   */
   void RegisterCommonProperties();
 
 private:
+  /**
+   * @brief Init this item from domain information.
+   */
   virtual void InitFromDomainImpl(const instruction_t* instruction) = 0;
+
+  /**
+   * @brief Setup domain instruction using current property values.
+   */
   virtual void SetupDomainImpl(instruction_t* instruction) const = 0;
 };
 
