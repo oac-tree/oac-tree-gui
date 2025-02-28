@@ -71,8 +71,8 @@ std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
 void UniversalInstructionItem::SetDomainType(const std::string &domain_type)
 {
   // temporary domain instruction is used to create default properties
-  auto domain_variable = ::oac_tree_gui::CreateDomainInstruction(domain_type);
-  SetupFromDomain(domain_variable.get());
+  auto domain_instruction = ::oac_tree_gui::CreateDomainInstruction(domain_type);
+  SetupFromDomain(domain_instruction.get());
 }
 
 void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instruction)

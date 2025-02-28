@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/instruction_item.h"
+
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/instruction_item.h"
 
 namespace oac_tree_gui::test
 {
@@ -51,6 +51,11 @@ TEST_F(InstructionItemsTest, TestItem)
   TestItem item;
 
   EXPECT_EQ(item.GetType(), "test");
+
+  EXPECT_TRUE(item.GetDomainType().empty());
+  const std::string expected_domain_type = "SomeDomainInstruction";
+  item.SetDomainType(expected_domain_type);
+  EXPECT_EQ(item.GetDomainType(), expected_domain_type);
 
   // these attributes are coming from the sequencer domain
   EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kNameAttribute));

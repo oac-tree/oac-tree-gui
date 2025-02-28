@@ -61,7 +61,7 @@ public:
    *
    * @details This function can be called only once.
    */
-  void SetDomainType(const std::string& domain_type);
+  void SetDomainType(const std::string& domain_type) override;
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;

@@ -44,6 +44,11 @@ public:
   std::string GetDomainType() const;
 
   /**
+   * @brief Set the domain type.
+   */
+  virtual void SetDomainType(const std::string& domain_type);
+
+  /**
    * @brief Inits given item from the domain instruction.
    */
   void InitFromDomain(const instruction_t* instruction);

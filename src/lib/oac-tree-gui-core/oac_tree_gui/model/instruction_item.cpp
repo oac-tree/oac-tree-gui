@@ -42,6 +42,11 @@ std::string InstructionItem::GetDomainType() const
              : std::string();
 }
 
+void InstructionItem::SetDomainType(const std::string &domain_type)
+{
+  SetData(domain_type, itemconstants::kDomainTypeNameRole);
+}
+
 std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone() const
 {
   throw NotImplementedException("InstructionItem::clone() should not be used");
