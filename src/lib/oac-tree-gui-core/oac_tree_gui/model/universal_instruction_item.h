@@ -63,8 +63,6 @@ public:
    */
   void SetDomainType(const std::string& domain_type);
 
-  std::string GetDomainType() const override;
-
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;

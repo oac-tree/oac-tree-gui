@@ -35,6 +35,13 @@ namespace oac_tree_gui
 
 InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type) {}
 
+std::string InstructionItem::GetDomainType() const
+{
+  return HasData(itemconstants::kDomainTypeNameRole)
+             ? Data<std::string>(itemconstants::kDomainTypeNameRole)
+             : std::string();
+}
+
 std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone() const
 {
   throw NotImplementedException("InstructionItem::clone() should not be used");

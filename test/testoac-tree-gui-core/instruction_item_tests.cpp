@@ -39,8 +39,6 @@ public:
   public:
     TestItem() : InstructionItem("test") { RegisterCommonProperties(); }
 
-    std::string GetDomainType() const override { return "domain_name"; }
-
   private:
     void InitFromDomainImpl(const instruction_t* instruction) override {};
     void SetupDomainImpl(instruction_t* instruction) const override {};

@@ -41,7 +41,7 @@ public:
   /**
    * @brief Returns domain type.
    */
-  virtual std::string GetDomainType() const = 0;
+  std::string GetDomainType() const;
 
   /**
    * @brief Inits given item from the domain instruction.

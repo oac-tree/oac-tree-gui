@@ -39,6 +39,8 @@ const std::string kIsAvailable = "connected";
 const std::string kBreakpoint = "breakpoint";
 const std::string kJobType = "kJobType";
 
+const int kDomainTypeNameRole = 10;  // role to store domain type name
+
 const std::string kAnyValueDefaultDisplayName = "value";
 
 const std::string kDefaultPlaceholderAttributeValue = "$par";

@@ -34,7 +34,6 @@
 
 namespace
 {
-const int kDomainTypeNameRole = 10;  // role to store type name
 
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {
@@ -75,13 +74,6 @@ void UniversalInstructionItem::SetDomainType(const std::string &domain_type)
   auto domain_variable = ::oac_tree_gui::CreateDomainInstruction(domain_type);
   SetupFromDomain(domain_variable.get());
 }
-
-std::string UniversalInstructionItem::GetDomainType() const
-{
-  return HasData(kDomainTypeNameRole) ? Data<std::string>(kDomainTypeNameRole) : std::string();
-}
-
-//! Initialise instruction from domain item.
 
 void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
@@ -162,7 +154,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
     throw LogicErrorException("It is not possible to setup instruction twice");
   }
 
-  SetData(instruction->GetType(), kDomainTypeNameRole);
+  SetData(instruction->GetType(), itemconstants::kDomainTypeNameRole);
 
   SetDisplayName(instruction->GetType());
 
