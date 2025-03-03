@@ -51,8 +51,22 @@ struct InstructionTree
  * @brief Creates InstructionItem from the automation server information.
  *
  * This method ignores all possible children instructions.
+ *
+ * Method temporarily creates domain object and thus requires that plugins are loaded.
  */
 std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::oac_tree::InstructionInfo& info);
+
+/**
+ * @brief Creates InstructionInfoItem from the automation server information.
+ *
+ * The method ignores all possible children's instructions.
+ *
+ * InstructionInfoItem is a simplified instruction which doesn't have editable attributes and which
+ * is used to represent the instruction tree obtained from JobInfo information during procedure
+ * execution. The method doesn't need that plugins are properly loaded.
+ */
+std::unique_ptr<InstructionItem> CreateInstructionInfoItem(
+    const sup::oac_tree::InstructionInfo& info);
 
 /**
  * @brief Creates InstructionItem with all its children from the automation server information.

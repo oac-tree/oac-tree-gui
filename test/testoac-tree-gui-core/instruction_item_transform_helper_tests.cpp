@@ -17,8 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/transform/instruction_item_transform_helper.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
@@ -26,8 +29,6 @@
 #include <sup/oac-tree/sequence_parser.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/transform/instruction_item_transform_helper.h"
 
 namespace oac_tree_gui::test
 {
@@ -40,7 +41,7 @@ class JobInfoTransformHelperTest : public ::testing::Test
 };
 
 //! Testing CreateInstructionItem helper method.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
+TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFromInfoObject)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
@@ -52,6 +53,20 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFronInfoObject)
   auto wait_item = dynamic_cast<WaitItem*>(instruction_item.get());
   ASSERT_NE(wait_item, nullptr);
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
+}
+
+//! Testing CreateInstructionInfoItem method.
+TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemFromInfoObject)
+{
+  const std::size_t instruction_id{0};
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"}});
+
+  auto instruction_item = CreateInstructionInfoItem(info);
+
+  auto wait_item = dynamic_cast<InstructionInfoItem*>(instruction_item.get());
+  ASSERT_NE(wait_item, nullptr);
 }
 
 //! Testing CreateInstructionItemTree for automation InstructionInfo containing a single

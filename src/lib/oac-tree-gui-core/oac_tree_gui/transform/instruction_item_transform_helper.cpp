@@ -20,7 +20,7 @@
 #include "instruction_item_transform_helper.h"
 
 #include <oac_tree_gui/domain/domain_automation_helper.h>
-#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <sup/oac-tree/instruction.h>
@@ -56,6 +56,15 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::oac_tree::Inst
   // propagation.
   auto domain = CreateDomainInstruction(info);
   result->InitFromDomain(domain.get());
+
+  return result;
+}
+
+std::unique_ptr<InstructionItem> CreateInstructionInfoItem(
+    const sup::oac_tree::InstructionInfo& info)
+{
+  auto result = std::make_unique<InstructionInfoItem>();
+  result->InitFromDomainInfo(info);
 
   return result;
 }
@@ -96,7 +105,7 @@ InstructionTree CreateInstructionItemTree(const sup::oac_tree::InstructionInfo& 
 
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction)
 {
-  sup::oac_tree::InstructionMap instr_map{&instruction};
+  const sup::oac_tree::InstructionMap instr_map{&instruction};
   auto instr_info = sup::oac_tree::utils::CreateInstructionInfoTree(instruction, instr_map);
   return CreateInstructionItemTree(*instr_info);
 }

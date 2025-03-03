@@ -40,7 +40,7 @@ class InstructionInfoItemTest : public ::testing::Test
 
 TEST_F(InstructionInfoItemTest, InitialState)
 {
-  InstructionInfoItem item;
+  const InstructionInfoItem item;
 
   EXPECT_TRUE(item.GetDomainType().empty());
   EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
