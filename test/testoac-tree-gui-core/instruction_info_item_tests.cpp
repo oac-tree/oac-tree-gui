@@ -20,12 +20,14 @@
 #include "oac_tree_gui/model/instruction_info_item.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>
 
 #include <sup/oac-tree/exceptions.h>
 #include <sup/oac-tree/instruction.h>
+#include <sup/oac-tree/instruction_info.h>
 
 #include <gtest/gtest.h>
 
@@ -44,6 +46,18 @@ TEST_F(InstructionInfoItemTest, InitialState)
   EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
 
   EXPECT_THROW(item.CreateDomainInstruction(), sup::oac_tree::InvalidOperationException);
+}
+
+TEST_F(InstructionInfoItemTest, InitFromInstructionInfo)
+{
+  const std::size_t instruction_id{0};
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"}});
+
+  InstructionInfoItem item;
+  item.InitFromDomainInfo(info);
+  EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kWaitInstructionType);
 }
 
 }  // namespace oac_tree_gui::test

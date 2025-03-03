@@ -22,6 +22,9 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/item_constants.h>
 
+#include <sup/oac-tree/instruction_info.h>
+#include <sup/oac-tree/instruction_info_utils.h>
+
 namespace oac_tree_gui
 {
 
@@ -35,6 +38,12 @@ InstructionInfoItem::InstructionInfoItem() : InstructionItem(GetStaticType())
 std::string InstructionInfoItem::GetStaticType()
 {
   return "InstructionInfoItem";
+}
+
+void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInfo &info)
+{
+  SetDomainType(info.GetType());
+  SetDisplayName(info.GetType());
 }
 
 void InstructionInfoItem::InitFromDomainImpl(const instruction_t *instruction)

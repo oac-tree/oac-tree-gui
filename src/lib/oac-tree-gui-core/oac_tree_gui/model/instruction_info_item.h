@@ -38,6 +38,8 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
+  void InitFromDomainInfo(const sup::oac_tree::InstructionInfo& info);
+
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
