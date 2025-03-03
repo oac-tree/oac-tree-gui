@@ -40,17 +40,21 @@ class UniversalInstructionItem : public InstructionItem
 {
 public:
   /**
+   * @brief Main c-tor.
+   *
+   * Constructed item can be used either after SetDomainType call or after InitFromDomain call.
+   */
+  UniversalInstructionItem();
+
+  /**
    * @brief The parameterized c-tor for UniversalInstructionItem.
    *
    * @param item_type The item type.
    *
    * If item_type coincides with the existing domain name, the resulting object will be initialised
    * with corresponding domain attributes.
-   *
-   * If item_type is empty, the resulting object can be used either after SetDomainType
-   * call or after InitFromDomain call.
    */
-  explicit UniversalInstructionItem(const std::string& item_type = GetStaticType());
+  explicit UniversalInstructionItem(const std::string& item_type);
 
   static std::string GetStaticType();
 
