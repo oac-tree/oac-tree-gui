@@ -36,6 +36,7 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::SequenceItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::WaitItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::UniversalInstructionItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::InstructionInfoItem>();
 
   // sequencer-plugin-epics instructions
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessReadInstructionItem>();

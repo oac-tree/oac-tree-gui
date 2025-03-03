@@ -84,6 +84,7 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<SequenceItem>());
   EXPECT_TRUE(IsCloneImplemented<WaitItem>());
   EXPECT_TRUE(IsCloneImplemented<UniversalInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<InstructionInfoItem>());
 
   // variables
   EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
