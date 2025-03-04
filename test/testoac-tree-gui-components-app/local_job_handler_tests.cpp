@@ -20,6 +20,7 @@
 #include "oac_tree_gui/jobsystem/local_job_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/jobsystem/job_log.h>
 #include <oac_tree_gui/jobsystem/job_utils.h>
 #include <oac_tree_gui/jobsystem/request_types.h>
@@ -68,14 +69,14 @@ public:
   }
 
   /**
-   * @brief Finds UniversalInstructionItem representing given domain type.
+   * @brief Finds InstructionItem representing given domain type.
    *
    * Search is performed in JobModel, where JobHandler builds expanded procedure).
    */
-  std::vector<UniversalInstructionItem*> FindExpandedInstructions(const std::string& domain_type)
+  std::vector<InstructionItem*> FindExpandedInstructions(const std::string& domain_type)
   {
-    std::vector<UniversalInstructionItem*> result;
-    auto candidates = mvvm::utils::FindItems<UniversalInstructionItem>(m_models.GetJobModel());
+    std::vector<InstructionItem*> result;
+    auto candidates = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
     for (auto universal_instruction : candidates)
     {
       if (universal_instruction->GetDomainType() == domain_type)
@@ -276,8 +277,13 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
 
-  auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
-  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+  auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
+  ASSERT_EQ(instructions.size(), 4);
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kRepeatInstructionType);
+  EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kIncludeInstructionType);
+  EXPECT_EQ(instructions.at(2)->GetDomainType(), domainconstants::kSequenceInstructionType);
+  EXPECT_EQ(instructions.at(3)->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(instructions.at(3)->GetStatus(), "Success");
 }
 
 TEST_F(LocalJobHandlerTest, UserInputScenario)
