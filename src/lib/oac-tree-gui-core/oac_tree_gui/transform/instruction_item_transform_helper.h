@@ -34,7 +34,7 @@ namespace oac_tree_gui
 class InstructionItem;
 
 /**
- * @brief The InstructionTree class contains a root instruction with all its children, and the
+ * @brief The InstructionTree struct contains a root instruction with all its children, and the
  * correspondence of automation index to instruction pointer.
  *
  * It is obtained from sup::oac_tree_server::InstructionInfo.
@@ -70,11 +70,22 @@ std::unique_ptr<InstructionItem> CreateInstructionInfoItem(
 
 /**
  * @brief Creates InstructionItem with all its children from the automation server information.
+ *
+ * Method requires that all plugins are loaded.
  */
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::InstructionInfo& info);
 
 /**
+ * @brief Creates simplfied InstructionInfoItem tree from automation server information.
+ *
+ * Method doesn't require plugin load.
+ */
+InstructionTree CreateInstructionInfoItemTree(const sup::oac_tree::InstructionInfo& info);
+
+/**
  * @brief Creates InstructionItem with all its children from domain instruction.
+ *
+ * Method requires that all plugins are loaded.
  */
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction);
 

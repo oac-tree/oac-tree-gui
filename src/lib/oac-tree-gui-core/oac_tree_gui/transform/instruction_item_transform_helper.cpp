@@ -46,6 +46,53 @@ struct InstructionInfoStackNode
   oac_tree_gui::InstructionItem& item;
 };
 
+/**
+ * @brief Creates instruction tree from provided domain information.
+ *
+ * Depending on light_tree flag, the resulting tree can be either InstructionInfoItem based, or will
+ * contain a proper InstructionItem hierarchy.
+ *
+ * @param info Instruction info from the domain
+ * @param info_based Output tree will be based of InstructionInfoItem if true
+ * @return Instruction tree.
+ */
+InstructionTree CreateInstructionItemTreeIntern(const sup::oac_tree::InstructionInfo& info,
+                                                bool light_tree)
+{
+  std::stack<InstructionInfoStackNode> stack;
+
+  std::unique_ptr<InstructionItem> result =
+      light_tree ? CreateInstructionInfoItem(info) : CreateInstructionItem(info);
+  std::map<const InstructionItem*, std::size_t> item_to_index;
+
+  stack.push({info, *result});
+  item_to_index[result.get()] = info.GetIndex();
+
+  while (!stack.empty())
+  {
+    auto node = stack.top();
+    stack.pop();
+
+    for (auto child_info : node.info.Children())
+    {
+      auto child_item =
+          light_tree ? CreateInstructionInfoItem(*child_info) : CreateInstructionItem(*child_info);
+      auto child_item_ptr = child_item.get();
+      item_to_index[child_item_ptr] = child_info->GetIndex();
+
+      node.item.InsertItem(std::move(child_item), mvvm::TagIndex::Append());
+
+      stack.push({*child_info, *child_item_ptr});
+    }
+  }
+
+  std::vector<const InstructionItem*> index_list(item_to_index.size());
+  std::for_each(item_to_index.begin(), item_to_index.end(),
+                [&index_list](auto it) { index_list[it.second] = it.first; });
+
+  return {std::move(result), std::move(index_list)};
+}
+
 }  // namespace
 
 std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::oac_tree::InstructionInfo& info)
@@ -71,36 +118,12 @@ std::unique_ptr<InstructionItem> CreateInstructionInfoItem(
 
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::InstructionInfo& info)
 {
-  std::stack<InstructionInfoStackNode> stack;
+  return CreateInstructionItemTreeIntern(info, /*light_tree*/ false);
+}
 
-  std::unique_ptr<InstructionItem> result = CreateInstructionItem(info);
-  std::map<const InstructionItem*, std::size_t> item_to_index;
-
-  stack.push({info, *result});
-  item_to_index[result.get()] = info.GetIndex();
-
-  while (!stack.empty())
-  {
-    auto node = stack.top();
-    stack.pop();
-
-    for (auto child_info : node.info.Children())
-    {
-      auto child_item = CreateInstructionItem(*child_info);
-      auto child_item_ptr = child_item.get();
-      item_to_index[child_item_ptr] = child_info->GetIndex();
-
-      node.item.InsertItem(std::move(child_item), mvvm::TagIndex::Append());
-
-      stack.push({*child_info, *child_item_ptr});
-    }
-  }
-
-  std::vector<const InstructionItem*> index_list(item_to_index.size());
-  std::for_each(item_to_index.begin(), item_to_index.end(),
-                [&index_list](auto it) { index_list[it.second] = it.first; });
-
-  return {std::move(result), std::move(index_list)};
+InstructionTree CreateInstructionInfoItemTree(const sup::oac_tree::InstructionInfo& info)
+{
+  return CreateInstructionItemTreeIntern(info, /*light_tree*/ true);
 }
 
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction)

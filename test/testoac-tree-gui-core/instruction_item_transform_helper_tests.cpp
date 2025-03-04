@@ -125,6 +125,39 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
   EXPECT_EQ(item_tree.indexes[2], wait_items[1]);
 }
 
+//! Creates simplified InstructionInfoItem tree.
+TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemTreeForSequenceInfo)
+{
+  using namespace oac_tree_gui::domainconstants;
+  using sup::oac_tree::AttributeInfo;
+  using sup::oac_tree::InstructionInfo;
+
+  InstructionInfo sequence_info(kSequenceInstructionType, 0, {});
+  auto child0 = std::make_unique<InstructionInfo>(
+      kWaitInstructionType, 1, std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
+  auto child0_ptr = child0.get();
+  auto child1 = std::make_unique<InstructionInfo>(
+      kWaitInstructionType, 2, std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
+  auto child1_ptr = child0.get();
+
+  sequence_info.AppendChild(std::move(child0));
+  sequence_info.AppendChild(std::move(child1));
+
+  auto item_tree = CreateInstructionInfoItemTree(sequence_info);
+
+  ASSERT_EQ(item_tree.indexes.size(), 3);
+
+  auto sequence_item = dynamic_cast<InstructionInfoItem*>(item_tree.root.get());
+  ASSERT_NE(sequence_item, nullptr);
+  ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
+  auto wait_items = sequence_item->GetItems<InstructionInfoItem>(mvvm::TagIndex::kDefaultTag);
+  ASSERT_EQ(wait_items.size(), 2);
+
+  EXPECT_EQ(item_tree.indexes[0], sequence_item);
+  EXPECT_EQ(item_tree.indexes[1], wait_items[0]);
+  EXPECT_EQ(item_tree.indexes[2], wait_items[1]);
+}
+
 TEST_F(JobInfoTransformHelperTest, CreateInstructionTreeFromRootInstruction)
 {
   const std::string procedure_xml = R"RAW(
