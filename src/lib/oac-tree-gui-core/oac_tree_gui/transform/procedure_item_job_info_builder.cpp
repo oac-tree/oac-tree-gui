@@ -35,6 +35,14 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+// Allows to build light version of procedure based on InstructionInfoItem and VariableInfoItem.
+// This doesn't require any plugin loaded.
+const bool kUseLightInfoObjects = true;
+}
+
 ProcedureItemJobInfoBuilder::ProcedureItemJobInfoBuilder() = default;
 
 std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
@@ -44,7 +52,9 @@ std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
 
   result->SetDisplayName(job_info.GetProcedureName());
 
-  auto instruction_tree = CreateInstructionItemTree(*job_info.GetRootInstructionInfo());
+  auto instruction_tree = kUseLightInfoObjects
+                              ? CreateInstructionInfoItemTree(*job_info.GetRootInstructionInfo())
+                              : CreateInstructionItemTree(*job_info.GetRootInstructionInfo());
   m_index_to_instruction = std::move(instruction_tree.indexes);
   result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
                                                 mvvm::TagIndex::Append());
