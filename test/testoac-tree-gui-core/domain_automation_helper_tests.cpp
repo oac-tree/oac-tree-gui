@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/domain/domain_automation_helper.h"
+
 #include <oac_tree_gui/domain/domain_constants.h>
 
 #include <sup/oac-tree/instruction.h>
@@ -26,13 +28,12 @@
 
 #include <gtest/gtest.h>
 
-#include "oac_tree_gui/domain/domain_automation_helper.h"
-
 namespace oac_tree_gui::test
 {
 
-//! Tests of helper methods from domain_automation_helper.h
-
+/**
+ * @brief Tests of helper methods from domain_automation_helper.h
+ */
 class DomainAutomationHelperTest : public ::testing::Test
 {
 };
@@ -71,6 +72,19 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kNameAttribute), expected_name);
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kValueAttribute), expected_value);
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
+}
+
+TEST_F(DomainAutomationHelperTest, GetAttribute)
+{
+  const std::size_t instruction_id{0};
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"}});
+
+  auto instruction = CreateDomainInstruction(info);
+
+  EXPECT_EQ(GetAttribute(info, domainconstants::kTimeoutAttribute).value_or(""), std::string("42"));
+  EXPECT_EQ(GetAttribute(info, "non-existing").value_or(""), std::string(""));
 }
 
 }  // namespace oac_tree_gui::test

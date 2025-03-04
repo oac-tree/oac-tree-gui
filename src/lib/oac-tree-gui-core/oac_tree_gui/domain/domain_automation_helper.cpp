@@ -26,6 +26,8 @@
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_info.h>
 
+#include <algorithm>
+
 namespace oac_tree_gui
 {
 
@@ -43,6 +45,16 @@ std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
   auto result = CreateDomainVariable(info.GetType());
   result->AddAttributes(info.GetAttributes());
   return result;
+}
+
+std::optional<std::string> GetAttribute(const sup::oac_tree::InstructionInfo &info,
+                                        const std::string &attribute_name)
+{
+  auto attributes = info.GetAttributes();
+  auto pos =
+      std::find_if(attributes.begin(), attributes.end(), [&attribute_name](const auto &element)
+                   { return element.first == attribute_name; });
+  return pos == attributes.end() ? std::optional<std::string>{} : pos->second;
 }
 
 }  // namespace oac_tree_gui
