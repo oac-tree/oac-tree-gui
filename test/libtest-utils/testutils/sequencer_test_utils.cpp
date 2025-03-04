@@ -21,9 +21,13 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/variable_item.h>
+
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
+
+#include <mvvm/model/model_utils.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/instruction_map.h>
@@ -141,8 +145,7 @@ std::unique_ptr<variable_t> CreateChannelAccessVariable(const std::string &name,
 
 sup::oac_tree::JobInfo CreateJobInfo(const std::string &procedure_text)
 {
-  auto procedure =
-      sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_text));
+  auto procedure = sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_text));
   procedure->Setup();
   auto root = procedure->RootInstruction();
   const sup::oac_tree::InstructionMap instr_map{root};
@@ -158,6 +161,21 @@ bool IsEqual(const oac_tree_gui::VariableItem &variable, const sup::dto::AnyValu
     return sup::gui::CreateAnyValue(*anyvalue_item) == value;
   }
   return false;
+}
+
+std::vector<InstructionItem *> FindInstructions(const mvvm::ISessionModel &model,
+                                                const std::string &domain_type)
+{
+  std::vector<InstructionItem *> result;
+  auto candidates = mvvm::utils::FindItems<InstructionItem>(&model);
+  for (auto instruction : candidates)
+  {
+    if (instruction->GetDomainType() == domain_type)
+    {
+      result.push_back(instruction);
+    }
+  }
+  return result;
 }
 
 }  // namespace oac_tree_gui::test

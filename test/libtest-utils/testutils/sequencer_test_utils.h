@@ -24,15 +24,23 @@
 //! Collection of utils to test sequencer.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
 #include <string>
+#include <vector>
+
+namespace mvvm
+{
+class ISessionModel;
+}
 
 namespace oac_tree_gui
 {
 
 class VariableItem;
+class InstructionItem;
 
 namespace test
 {
@@ -81,6 +89,12 @@ sup::oac_tree::JobInfo CreateJobInfo(const std::string& procedure_text);
  * @brief Checks if the value caried inside VariableItem is equal to a given AnyValue.
  */
 bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValue& value);
+
+/**
+ * @brief Finds InstructionItem representing given domain type.
+ */
+std::vector<InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
+                                               const std::string& domain_type);
 
 }  // namespace test
 

@@ -75,16 +75,7 @@ public:
    */
   std::vector<InstructionItem*> FindExpandedInstructions(const std::string& domain_type)
   {
-    std::vector<InstructionItem*> result;
-    auto candidates = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
-    for (auto universal_instruction : candidates)
-    {
-      if (universal_instruction->GetDomainType() == domain_type)
-      {
-        result.push_back(universal_instruction);
-      }
-    }
-    return result;
+    return test::FindInstructions(*m_models.GetJobModel(), domain_type);
   }
 
   ApplicationModels m_models;

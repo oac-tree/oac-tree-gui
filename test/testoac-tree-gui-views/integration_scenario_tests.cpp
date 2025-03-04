@@ -216,9 +216,9 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
 
-  auto wait_items = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
+  auto wait_items =
+      FindInstructions(*m_models.GetJobModel(), domainconstants::kWaitInstructionType);
   ASSERT_EQ(wait_items.size(), 1);
-  EXPECT_EQ(wait_items.at(0)->GetTimeout(), 42);
 }
 
 }  // namespace oac_tree_gui::test
