@@ -45,6 +45,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFromInfoObject)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            sup::oac_tree::Instruction::Category::kAction,
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -60,6 +61,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemFromInfoObject)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            sup::oac_tree::Instruction::Category::kAction,
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -75,6 +77,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            sup::oac_tree::Instruction::Category::kAction,
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
@@ -97,12 +100,15 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
   using sup::oac_tree::AttributeInfo;
   using sup::oac_tree::InstructionInfo;
 
-  InstructionInfo sequence_info(kSequenceInstructionType, 0, {});
+  InstructionInfo sequence_info(kSequenceInstructionType,
+                                sup::oac_tree::Instruction::Category::kCompound, 0, {});
   auto child0 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, 1, std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
+      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 1,
+      std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
   auto child0_ptr = child0.get();
   auto child1 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, 2, std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
+      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 2,
+      std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
   auto child1_ptr = child0.get();
 
   sequence_info.AppendChild(std::move(child0));
@@ -132,12 +138,15 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemTreeForSequenceInfo)
   using sup::oac_tree::AttributeInfo;
   using sup::oac_tree::InstructionInfo;
 
-  InstructionInfo sequence_info(kSequenceInstructionType, 0, {});
+  InstructionInfo sequence_info(kSequenceInstructionType,
+                                sup::oac_tree::Instruction::Category::kCompound, 0, {});
   auto child0 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, 1, std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
+      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 1,
+      std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
   auto child0_ptr = child0.get();
   auto child1 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, 2, std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
+      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 2,
+      std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
   auto child1_ptr = child0.get();
 
   sequence_info.AppendChild(std::move(child0));

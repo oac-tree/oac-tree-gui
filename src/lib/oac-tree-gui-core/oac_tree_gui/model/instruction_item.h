@@ -28,7 +28,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The InstructionItem class is a base for all GUI items representind Sequencer domain
+ * @brief The InstructionItem class is a base for all GUI items representing Sequencer domain
  * instructions.
  */
 class InstructionItem : public mvvm::CompoundItem

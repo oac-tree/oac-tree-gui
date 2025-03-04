@@ -53,6 +53,7 @@ TEST_F(InstructionInfoItemTest, InitFromInstructionInfo)
   const std::string expected_name("MySpecialWait");
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            sup::oac_tree::Instruction::Category::kAction,
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"},
                                              {domainconstants::kNameAttribute, expected_name}});

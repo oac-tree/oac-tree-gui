@@ -27,7 +27,7 @@ namespace oac_tree_gui
 
 /**
  * @brief The InstructionInfoItem is a simplified instruction with status and description used to
- * build simplified instruction tree using JobInfo domain information.
+ * build instruction tree from JobInfo domain information.
  */
 class InstructionInfoItem : public InstructionItem
 {

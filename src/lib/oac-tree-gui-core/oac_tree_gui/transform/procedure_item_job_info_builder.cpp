@@ -38,10 +38,10 @@ namespace oac_tree_gui
 namespace
 {
 
-// Allows to build light version of procedure based on InstructionInfoItem and VariableInfoItem.
-// This doesn't require any plugin loaded.
+// Allows to build light version of procedure based on InstructionInfoItem and VariableInfoItem (to
+// be implemented). This doesn't require any plugin loaded.
 const bool kUseLightInfoObjects = true;
-}
+}  // namespace
 
 ProcedureItemJobInfoBuilder::ProcedureItemJobInfoBuilder() = default;
 
