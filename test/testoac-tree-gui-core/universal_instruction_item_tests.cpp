@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/universal_instruction_item.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
@@ -26,8 +28,6 @@
 #include <sup/oac-tree/instruction.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/universal_instruction_item.h"
 
 namespace oac_tree_gui::test
 {
@@ -70,15 +70,15 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
   // registered tags should coincide with instruction attribute and AnyValueTag
-  std::vector<std::string> expected_tags(
+  const std::vector<std::string> expected_tags(
       {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
-       domainconstants::kTimeoutAttribute, itemconstants::kStatus, itemconstants::kXpos,
-       itemconstants::kYpos, itemconstants::kBreakpoint});
+       domainconstants::kTimeoutAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
+       itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should provide an access to underlying values
   auto properties = mvvm::utils::SinglePropertyItems(item);
-  ASSERT_EQ(properties.size(), 3);
+  ASSERT_EQ(properties.size(), 4);
   EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
   EXPECT_TRUE(item.Property<std::string>(domainconstants::kNameAttribute).empty());
 

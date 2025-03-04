@@ -49,6 +49,12 @@ const std::string kTickTimeout = "kTickTimeout";
 
 const int kDefaultTickTimeoutMsec = 20;
 
+const std::string kBehaviorTag = "Behavior";
+const std::string kNativeBehavior = "Native";
+const std::string kHiddenBehavior = "Hidden";
+const std::string kSucceedBehavior = "Succeed";
+const std::string kFailBehavior = "Fail";
+
 }  // namespace oac_tree_gui::itemconstants
 
 #endif  // OAC_TREE_GUI_MODEL_ITEM_CONSTANTS_H_

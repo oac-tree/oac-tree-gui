@@ -33,6 +33,23 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+mvvm::ComboProperty CreateBehaviorProperty()
+{
+  mvvm::ComboProperty result({itemconstants::kNativeBehavior, itemconstants::kHiddenBehavior,
+                              itemconstants::kSucceedBehavior, itemconstants::kFailBehavior});
+
+  result.SetToolTips({"Instruction behaves according to the implementation",
+                      "Instruction will be invisible and will not be executed",
+                      "Instruction will always succeed", "Instruction will always fail"});
+
+  return result;
+}
+
+}  // namespace
+
 InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type) {}
 
 std::string InstructionItem::GetDomainType() const
@@ -126,6 +143,8 @@ void InstructionItem::SetY(double value)
 
 void InstructionItem::RegisterCommonProperties()
 {
+  AddProperty(itemconstants::kBehaviorTag, CreateBehaviorProperty())
+      .SetToolTip("Modifier that allows to change the behavior");
   AddProperty(itemconstants::kStatus, std::string())
       .SetDisplayName("Status")
       .SetVisible(false)
