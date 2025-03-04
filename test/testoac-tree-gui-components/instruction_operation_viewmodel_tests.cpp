@@ -19,6 +19,7 @@
 
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 
@@ -123,5 +124,34 @@ TEST_F(InstructionOperationViewModelTest, NotificationOnStatusChange)
   sequence->SetStatus("abc");
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
+
+//! Validating how view model depicts simplified tree made of InstructionInfoItem.
+TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
+{
+  TestModel model;
+
+  auto sequence = model.InsertItem<InstructionInfoItem>();
+  auto wait0 = model.InsertItem<InstructionInfoItem>(sequence);
+  wait0->SetDisplayName("Wait");
+  auto wait1 = model.InsertItem<InstructionInfoItem>(sequence);
+  wait1->SetDisplayName("Wait");
+
+  InstructionOperationViewModel viewmodel(&model);
+  auto sequence_ndex = viewmodel.index(0, 0);
+  EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
+  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 3);
+
+  auto wait0_displayname_index = viewmodel.index(0, 0, sequence_ndex);
+  auto wait1_displayname_index = viewmodel.index(1, 0, sequence_ndex);
+
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(wait0_displayname_index), wait0);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(wait1_displayname_index), wait1);
+
+  EXPECT_EQ(viewmodel.data(wait0_displayname_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("Wait"));
+  EXPECT_EQ(viewmodel.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("Wait"));
+}
+
 
 }  // namespace oac_tree_gui::test

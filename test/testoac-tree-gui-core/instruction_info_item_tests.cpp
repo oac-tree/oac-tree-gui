@@ -50,14 +50,17 @@ TEST_F(InstructionInfoItemTest, InitialState)
 
 TEST_F(InstructionInfoItemTest, InitFromInstructionInfo)
 {
+  const std::string expected_name("MySpecialWait");
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
                                             instruction_id,
-                                            {{domainconstants::kTimeoutAttribute, "42"}});
+                                            {{domainconstants::kTimeoutAttribute, "42"},
+                                             {domainconstants::kNameAttribute, expected_name}});
 
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kWaitInstructionType);
+  EXPECT_EQ(item.GetName(), expected_name);
 }
 
 }  // namespace oac_tree_gui::test
