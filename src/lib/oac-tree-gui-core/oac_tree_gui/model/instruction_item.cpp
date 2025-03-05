@@ -141,6 +141,18 @@ void InstructionItem::SetY(double value)
   SetProperty(itemconstants::kYpos, value);
 }
 
+void InstructionItem::SetBehavior(const std::string &behavior_name)
+{
+  auto property = Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag);
+  property.SetValue(behavior_name);
+  SetProperty(itemconstants::kBehaviorTag, property);
+}
+
+std::string InstructionItem::GetBehavior() const
+{
+  return Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag).GetValue();
+}
+
 void InstructionItem::RegisterCommonProperties()
 {
   AddProperty(itemconstants::kBehaviorTag, CreateBehaviorProperty())

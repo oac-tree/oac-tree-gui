@@ -115,6 +115,18 @@ public:
    */
   void SetY(double value);
 
+  /**
+   * @brief Sets instruction behavior to the given value.
+   *
+   * The value must be one from kNativeBehavior, kHiddenBehavior, kSucceedBehavior or kFailBehavior.
+   */
+  void SetBehavior(const std::string& behavior_name);
+
+  /**
+   * @brief Returns the vlue of behavior property.
+   */
+  std::string GetBehavior() const;
+
 protected:
   /**
    * @brief Creates item properties common for all instructions.

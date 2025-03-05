@@ -131,6 +131,15 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   // more tests in standard_instruction_item_tests.cpp
 }
 
+TEST_F(UniversalInstructionItemTest, Behavior)
+{
+  UniversalInstructionItem item(domainconstants::kWaitInstructionType);;
+
+  EXPECT_EQ(item.GetBehavior(), itemconstants::kNativeBehavior);
+  item.SetBehavior(itemconstants::kHiddenBehavior);
+  EXPECT_EQ(item.GetBehavior(), itemconstants::kHiddenBehavior);
+}
+
 TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
 {
   {  // domain doesn't have ShowCollapsed defined
@@ -169,7 +178,7 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
   }
 
   {  // creating domain, when GUI has ShowCollapsed set to true
-    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    const UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
     EXPECT_TRUE(IsCollapsed(item));
 
     auto domain = item.CreateDomainInstruction();
