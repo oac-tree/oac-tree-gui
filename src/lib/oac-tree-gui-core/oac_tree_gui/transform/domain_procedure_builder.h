@@ -28,6 +28,7 @@
 
 namespace oac_tree_gui
 {
+
 class ProcedureItem;
 class InstructionItem;
 class InstructionContainerItem;

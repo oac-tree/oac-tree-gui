@@ -104,8 +104,7 @@ void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure
   std::unique_ptr<procedure_t> domain_procedure;
   try
   {
-    const DomainProcedureBuilder builder;
-    domain_procedure = builder.CreateProcedure(*procedure_item);
+    domain_procedure = DomainProcedureBuilder::CreateProcedure(*procedure_item);
     domain_procedure->Setup();
   }
   catch (std::exception &ex)

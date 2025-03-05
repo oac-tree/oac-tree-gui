@@ -34,53 +34,26 @@
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/workspace.h>
 
-namespace
-{
-//! Creates domain instruction corresponding to a given InstructionItem, and pushes it
-//! to a given parent. Return newly created domain instruction to a user.
-instruction_t* ProcessInstruction(const oac_tree_gui::InstructionItem* instruction,
-                                  instruction_t* parent)
-{
-  auto domain_instruction = instruction->CreateDomainInstruction();
-  auto ptr = domain_instruction.get();
-  if (!parent->InsertInstruction(std::move(domain_instruction), parent->ChildrenCount()))
-  {
-    throw std::runtime_error("Error while trying to insert instruction");
-  }
-  return ptr;
-}
-
-//! Creates domain instruction corresponding to a given InstructionItem, and pushes it
-//! to a given procedure. Return newly created domain instruction to a user.
-instruction_t* ProcessInstruction(const oac_tree_gui::InstructionItem* instruction,
-                                  procedure_t* procedure)
-{
-  auto domain_instruction = instruction->CreateDomainInstruction();
-  auto ptr = domain_instruction.get();
-  procedure->PushInstruction(std::move(domain_instruction));
-  return ptr;
-}
-
-}  // namespace
+#include <stack>
 
 namespace oac_tree_gui
 {
-DomainProcedureBuilder::~DomainProcedureBuilder() = default;
 
-void DomainProcedureBuilder::Iterate(const oac_tree_gui::InstructionItem* instruction,
-                                     instruction_t* parent)
+namespace
 {
-  for (auto& instruction : instruction->GetInstructions())
-  {
-    auto domain_instruction = ProcessInstruction(instruction, parent);
-    m_instruction_to_id.insert({domain_instruction, instruction->GetIdentifier()});
 
-    if (domain_instruction)
-    {
-      Iterate(instruction, domain_instruction);
-    }
-  }
-}
+/**
+ * @brief The InstructionStackNode class stores information during traversing SessionItem hierarchy.
+ */
+struct InstructionStackNode
+{
+  const InstructionItem& item;
+  instruction_t& domain_instruction;
+};
+
+}  // namespace
+
+DomainProcedureBuilder::~DomainProcedureBuilder() = default;
 
 void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContainerItem* container,
                                                         procedure_t* procedure)
@@ -92,14 +65,32 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
 
   m_instruction_to_id.clear();
 
-  for (const auto instruction_item : container->GetInstructions())
-  {
-    auto domain_instruction = ProcessInstruction(instruction_item, procedure);
-    m_instruction_to_id.insert({domain_instruction, instruction_item->GetIdentifier()});
+  std::stack<InstructionStackNode> stack;
 
-    if (domain_instruction)
+  for (const auto item : container->GetInstructions())
+  {
+    auto domain_instruction = item->CreateDomainInstruction();
+    auto domain_instruction_ptr = domain_instruction.get();
+    procedure->PushInstruction(std::move(domain_instruction));
+    m_instruction_to_id.insert({domain_instruction_ptr, item->GetIdentifier()});
+
+    stack.push({*item, *domain_instruction_ptr});
+  }
+
+  while (!stack.empty())
+  {
+    auto node = stack.top();
+    stack.pop();
+
+    for (auto child_item : node.item.GetInstructions())
     {
-      Iterate(instruction_item, domain_instruction);
+      auto domain_instruction = child_item->CreateDomainInstruction();
+      auto domain_instruction_ptr = domain_instruction.get();
+      node.domain_instruction.InsertInstruction(std::move(domain_instruction),
+                                                node.domain_instruction.ChildrenCount());
+      m_instruction_to_id.insert({domain_instruction_ptr, child_item->GetIdentifier()});
+
+      stack.push({*child_item, *domain_instruction_ptr});
     }
   }
 }

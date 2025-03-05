@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/transform/domain_procedure_builder.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
@@ -40,25 +42,22 @@
 
 #include <gtest/gtest.h>
 
-#include "oac_tree_gui/transform/domain_procedure_builder.h"
-
 namespace oac_tree_gui::test
 {
 
-//! Testing DomainProcedureBuilder class.
-
+/**
+ * @brief Tests of DomainProcedureBuilder class.
+ */
 class DomainProcedureBuilderTest : public ::testing::Test
 {
 };
-
-//! Building domain procedure from empty ProcedureItem.
 
 TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
 {
   ProcedureItem procedure_item;
   procedure_item.SetFileName("aaa.xml");
 
-  DomainProcedureBuilder builder;
+  const DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   EXPECT_EQ(procedure->GetFilename(), "aaa.xml");
@@ -74,15 +73,13 @@ TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
   EXPECT_TRUE(procedure->VariableNames().empty());
 }
 
-//! Building domain procedure from ProcedureItem containing a preamble.
-
 TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   procedure_item.GetPreambleItem()->AddPluginPath("plugin_path");
   procedure_item.GetPreambleItem()->AddTypeRegistration(1, "json_type");
 
-  DomainProcedureBuilder builder;
+  const DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   std::vector<std::string> expected_paths{"plugin_path"};
@@ -92,16 +89,14 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
   EXPECT_EQ(procedure->GetPreamble().GetTypeRegistrations().at(0).GetString(), "json_type");
 }
 
-//! Building domain procedure from ProcedureItem with a single sequence.
-
 TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence_item = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
-  DomainProcedureBuilder builder;
+  const DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
@@ -112,11 +107,9 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
   EXPECT_TRUE(procedure->VariableNames().empty());
 }
 
-//! Building domain procedure from ProcedureItem with two instructions.
-
 TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto wait0 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
@@ -124,7 +117,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   auto wait1 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
   wait1->SetTimeout(0.2);
 
-  DomainProcedureBuilder builder;
+  const DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
@@ -138,17 +131,15 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   EXPECT_EQ(instructions.at(1)->GetAttributeString(domainconstants::kTimeoutAttribute), "0.2");
 }
 
-//! Building domain procedure from ProcedureItem containing Sequence and wait in it.
-
 TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
   auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
-  DomainProcedureBuilder builder;
+  const DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
