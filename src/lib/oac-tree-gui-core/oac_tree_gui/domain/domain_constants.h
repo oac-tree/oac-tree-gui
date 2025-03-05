@@ -71,6 +71,8 @@ const std::string kUserChoiceInstructionType = "UserChoice";
 const std::string kVariableResetInstructionType = "ResetVariable";
 const std::string kWaitInstructionType = "Wait";
 const std::string kUserConfirmationInstructionType = "UserConfirmation";
+const std::string kSucceedInstructionType = "Succeed";
+const std::string kFailedInstructionType = "Fail";
 
 // equality instructions
 const std::string kLessThanInstructionType = "LessThan";
