@@ -21,7 +21,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -82,7 +81,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
   DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
-  std::vector<std::string> expected_paths{"plugin_path"};
+  const std::vector<std::string> expected_paths{"plugin_path"};
   EXPECT_EQ(procedure->GetPreamble().GetPluginPaths(), expected_paths);
   ASSERT_EQ(procedure->GetPreamble().GetTypeRegistrations().size(), 1);
   EXPECT_EQ(procedure->GetPreamble().GetTypeRegistrations().at(0).GetRegistrationMode(), 1);
@@ -152,10 +151,6 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
             domainconstants::kWaitInstructionType);
 }
 
-//! Building domain procedure from ProcedureItem containing Sequence and wait in it.
-//! Using build with BuildProcedure method, check correspondance between domain objects in
-//! InstructionItems.
-
 TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
 {
   ProcedureItem procedure_item;
@@ -181,11 +176,9 @@ TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_wait), wait->GetIdentifier());
 }
 
-//! Procedure containing inverter instruction with sequence, containing in turn a wait instruction
-
 TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto inverter = InsertInstruction(domainconstants::kInverterInstructionType, container);
@@ -218,11 +211,9 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_wait), wait->GetIdentifier());
 }
 
-//! Procedure containing inverter instruction with sequence, containing in turn a wait instruction
-
 TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto repeater = container->InsertItem<RepeatItem>(mvvm::TagIndex::Append());
@@ -249,11 +240,9 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_sequence), sequence->GetIdentifier());
 }
 
-//! Building domain procedure from ProcedureItem with a single sequence.
-
 TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   auto workspace = procedure_item.GetWorkspace();
 
   auto var_item0 = workspace->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -279,7 +268,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
 {
-  ProcedureItem procedure_item;
+  const ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence = container->InsertItem<ParallelSequenceItem>(mvvm::TagIndex::Append());
