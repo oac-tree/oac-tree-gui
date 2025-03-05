@@ -24,6 +24,7 @@
 #include <oac_tree_gui/jobsystem/domain_events.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
 #include <oac_tree_gui/operation/breakpoint_types.h>
+#include <oac_tree_gui/model/instruction_item.h>
 
 #include <QObject>
 #include <memory>
@@ -173,5 +174,7 @@ private:
 };
 
 }  // namespace oac_tree_gui
+
+Q_DECLARE_METATYPE(oac_tree_gui::InstructionItem*)
 
 #endif  // OAC_TREE_GUI_JOBSYSTEM_ABSTRACT_JOB_HANDLER_H_
