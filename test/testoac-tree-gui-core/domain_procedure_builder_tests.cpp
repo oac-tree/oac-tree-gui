@@ -57,7 +57,7 @@ TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
   ProcedureItem procedure_item;
   procedure_item.SetFileName("aaa.xml");
 
-  const DomainProcedureBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   EXPECT_EQ(procedure->GetFilename(), "aaa.xml");
@@ -79,7 +79,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
   procedure_item.GetPreambleItem()->AddPluginPath("plugin_path");
   procedure_item.GetPreambleItem()->AddTypeRegistration(1, "json_type");
 
-  const DomainProcedureBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   std::vector<std::string> expected_paths{"plugin_path"};
@@ -96,7 +96,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
 
   auto sequence_item = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
-  const DomainProcedureBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
@@ -117,7 +117,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   auto wait1 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
   wait1->SetTimeout(0.2);
 
-  const DomainProcedureBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
@@ -139,7 +139,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
   auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
   auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
-  const DomainProcedureBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list

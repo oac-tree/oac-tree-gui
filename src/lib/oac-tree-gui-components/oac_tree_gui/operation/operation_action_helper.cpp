@@ -44,7 +44,7 @@ std::unique_ptr<procedure_t> CreateDomainProcedure(const JobItem& item)
       throw RuntimeException("Procedure doesn't exist");
     }
 
-    return DomainProcedureBuilder::CreateProcedure(*item.GetProcedure());
+    return CreateDomainProcedure(*item.GetProcedure());
   }
 
   if (auto file_based_job = dynamic_cast<const FileBasedJobItem*>(&item); file_based_job)

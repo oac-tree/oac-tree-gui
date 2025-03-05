@@ -42,7 +42,7 @@ class ProcedurePreambleItem;
 class DomainProcedureBuilder
 {
 public:
-  static std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem& procedure_item);
+  std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem& procedure_item);
 
   ~DomainProcedureBuilder();
 
@@ -61,6 +61,11 @@ private:
   std::map<const instruction_t*, std::string> m_instruction_to_id;
   std::unique_ptr<DomainWorkspaceBuilder> m_workspace_builder;
 };
+
+/**
+ * @brief Creates domain procedure from  its GUI counterpart.
+ */
+std::unique_ptr<procedure_t> CreateDomainProcedure(const ProcedureItem& procedure_item);
 
 }  // namespace oac_tree_gui
 

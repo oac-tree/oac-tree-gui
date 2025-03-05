@@ -55,6 +55,15 @@ struct InstructionStackNode
 
 DomainProcedureBuilder::~DomainProcedureBuilder() = default;
 
+std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
+    const ProcedureItem& procedure_item)
+{
+  DomainProcedureBuilder builder;
+  auto result = std::make_unique<procedure_t>(procedure_item.GetFileName());
+  builder.PopulateProcedure(procedure_item, *result);
+  return result;
+}
+
 void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContainerItem* container,
                                                         procedure_t* procedure)
 {
@@ -123,13 +132,10 @@ std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t*
       ->GetIdentifier();
 }
 
-std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
-    const ProcedureItem& procedure_item)
+std::unique_ptr<procedure_t> CreateDomainProcedure(const ProcedureItem& procedure_item)
 {
   DomainProcedureBuilder builder;
-  auto result = std::make_unique<procedure_t>(procedure_item.GetFileName());
-  builder.PopulateProcedure(procedure_item, *result);
-  return result;
+  return builder.CreateProcedure(procedure_item);
 }
 
 }  // namespace oac_tree_gui
