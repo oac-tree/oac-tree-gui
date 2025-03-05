@@ -31,7 +31,7 @@
 #include <mvvm/model/session_model.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
-#include <mvvm/widgets/widget_utils.h>
+#include <mvvm/viewmodel/qtcore_helper.h>
 
 #include <QMimeData>
 
