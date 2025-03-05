@@ -20,8 +20,10 @@
 #include "domain_procedure_builder.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -51,6 +53,32 @@ struct InstructionStackNode
   instruction_t& domain_instruction;
 };
 
+/**
+ * @brief CreateAdjustedDomainInstruction
+ */
+std::unique_ptr<instruction_t> CreateAdjustedDomainInstruction(const InstructionItem& item)
+{
+  const auto behavior = item.GetBehavior();
+
+  if (behavior == itemconstants::kNativeBehavior)
+  {
+    return item.CreateDomainInstruction();
+  }
+
+  if (behavior == itemconstants::kSucceedBehavior)
+  {
+    return CreateDomainInstruction(domainconstants::kSucceedInstructionType);
+  }
+
+  if (behavior == itemconstants::kFailBehavior)
+  {
+    return CreateDomainInstruction(domainconstants::kFailedInstructionType);
+  }
+
+  // kInvisibleBehavior, or any other unsupported behavior returns empty domain instruction
+  return {};
+}
+
 }  // namespace
 
 DomainProcedureBuilder::~DomainProcedureBuilder() = default;
@@ -78,12 +106,14 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
 
   for (const auto item : container->GetInstructions())
   {
-    auto domain_instruction = item->CreateDomainInstruction();
-    auto domain_instruction_ptr = domain_instruction.get();
-    procedure->PushInstruction(std::move(domain_instruction));
-    m_instruction_to_id.insert({domain_instruction_ptr, item->GetIdentifier()});
+    if (auto domain_instruction = CreateAdjustedDomainInstruction(*item); domain_instruction)
+    {
+      auto domain_instruction_ptr = domain_instruction.get();
+      procedure->PushInstruction(std::move(domain_instruction));
+      m_instruction_to_id.insert({domain_instruction_ptr, item->GetIdentifier()});
 
-    stack.push({*item, *domain_instruction_ptr});
+      stack.push({*item, *domain_instruction_ptr});
+    }
   }
 
   while (!stack.empty())
@@ -93,13 +123,16 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
 
     for (auto child_item : node.item.GetInstructions())
     {
-      auto domain_instruction = child_item->CreateDomainInstruction();
-      auto domain_instruction_ptr = domain_instruction.get();
-      node.domain_instruction.InsertInstruction(std::move(domain_instruction),
-                                                node.domain_instruction.ChildrenCount());
-      m_instruction_to_id.insert({domain_instruction_ptr, child_item->GetIdentifier()});
+      if (auto domain_instruction = CreateAdjustedDomainInstruction(*child_item);
+          domain_instruction)
+      {
+        auto domain_instruction_ptr = domain_instruction.get();
+        node.domain_instruction.InsertInstruction(std::move(domain_instruction),
+                                                  node.domain_instruction.ChildrenCount());
+        m_instruction_to_id.insert({domain_instruction_ptr, child_item->GetIdentifier()});
 
-      stack.push({*child_item, *domain_instruction_ptr});
+        stack.push({*child_item, *domain_instruction_ptr});
+      }
     }
   }
 }

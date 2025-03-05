@@ -126,7 +126,7 @@ TEST_F(JobManagerExtendedTest, AttemptToSubmitMalformedProcedure)
 
   JobManager manager(GetContext());
 
-  EXPECT_THROW(manager.SubmitJob(m_job_item), sup::oac_tree::InvalidOperationException);
+  EXPECT_THROW(manager.SubmitJob(m_job_item), sup::oac_tree::ProcedureSetupException);
 }
 
 //! Set first procedure to the JobManager and execute it.

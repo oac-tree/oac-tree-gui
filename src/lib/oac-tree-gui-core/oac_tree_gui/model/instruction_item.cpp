@@ -150,7 +150,12 @@ void InstructionItem::SetBehavior(const std::string &behavior_name)
 
 std::string InstructionItem::GetBehavior() const
 {
-  return Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag).GetValue();
+  if (mvvm::utils::HasTag(*this, itemconstants::kBehaviorTag))
+  {
+    return Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag).GetValue();
+  }
+
+  return {};
 }
 
 void InstructionItem::RegisterCommonProperties()

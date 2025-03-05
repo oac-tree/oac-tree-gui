@@ -75,7 +75,8 @@ namespace test
 std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInvalidProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
-  result->GetInstructionContainer()->InsertItem<UniversalInstructionItem>(mvvm::TagIndex::Append());
+  auto instruction = result->GetInstructionContainer()->InsertItem<UniversalInstructionItem>(
+      mvvm::TagIndex::Append());
   return result;
 }
 

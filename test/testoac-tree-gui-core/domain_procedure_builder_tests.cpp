@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -288,6 +289,51 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
             domainconstants::kWaitInstructionType);
   EXPECT_EQ(domain_sequence->ChildInstructions().at(1)->GetType(),
             domainconstants::kWaitInstructionType);
+}
+
+TEST_F(DomainProcedureBuilderTest, SequenceWIthFourChildrenAndAdjustedBehavior)
+{
+  const ProcedureItem procedure_item;
+  auto container = procedure_item.GetInstructionContainer();
+
+  auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait0 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  wait0->SetBehavior(itemconstants::kFailBehavior);
+  auto wait1 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  wait1->SetBehavior(itemconstants::kSucceedBehavior);
+  auto wait2 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  wait2->SetBehavior(itemconstants::kHiddenBehavior);
+  auto wait3 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  wait3->SetBehavior(itemconstants::kNativeBehavior);
+
+  auto procedure = std::make_unique<procedure_t>();
+  DomainProcedureBuilder builder;
+  builder.PopulateProcedure(procedure_item, *procedure);
+
+  EXPECT_TRUE(procedure->RootInstruction() != nullptr);
+  ASSERT_EQ(procedure->GetInstructionCount(), 1);
+  auto domain_sequence = procedure->GetTopInstructions().at(0);
+
+  EXPECT_EQ(domain_sequence->GetType(), domainconstants::kSequenceInstructionType);
+  ASSERT_EQ(domain_sequence->ChildrenCount(), 3);
+  EXPECT_EQ(builder.FindInstructionIdentifier(domain_sequence), sequence->GetIdentifier());
+
+  // counterpart of wait0 is Fail instruction
+  auto domain0 = domain_sequence->ChildInstructions().at(0);
+  EXPECT_EQ(domain0->GetType(), domainconstants::kFailedInstructionType);
+  EXPECT_EQ(builder.FindInstructionIdentifier(domain0), wait0->GetIdentifier());
+
+  // counterpart of wait1   is Succeed instruction
+  auto domain1 = domain_sequence->ChildInstructions().at(1);
+  EXPECT_EQ(domain1->GetType(), domainconstants::kSucceedInstructionType);
+  EXPECT_EQ(builder.FindInstructionIdentifier(domain1), wait1->GetIdentifier());
+
+  // wait2 wasn't propagated to the domain
+
+  // counterpart of wait3
+  auto domain2 = domain_sequence->ChildInstructions().at(2);
+  EXPECT_EQ(domain2->GetType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(builder.FindInstructionIdentifier(domain2), wait3->GetIdentifier());
 }
 
 }  // namespace oac_tree_gui::test
