@@ -19,6 +19,7 @@
 
 #include "node_editor_widget.h"
 
+#include "node_editor_navigation_toolbar.h"
 #include "node_graphics_view.h"
 #include "node_graphics_view_actions.h"
 
@@ -62,6 +63,7 @@ NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
           [this](const auto &message) { m_graphics_view_message_handler->SendMessage(message); },
           this))
     , m_graphics_view(new NodeGraphicsView(m_graphics_scene, this))
+    , m_navigation_toolbar(new NodeEditorNavigationToolBar)
     , m_graphics_view_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
   setWindowTitle("NodeEditor");
@@ -70,6 +72,7 @@ NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_graphics_view);
+  layout->addWidget(m_navigation_toolbar);
 
   SetupConnections();
 
@@ -153,8 +156,8 @@ void NodeEditorWidget::SetupController()
     algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
   }
 
-  m_scene_controller =
-      std::make_unique<ConnectableViewModelController>(m_procedure_item->GetModel(), m_graphics_scene);
+  m_scene_controller = std::make_unique<ConnectableViewModelController>(
+      m_procedure_item->GetModel(), m_graphics_scene);
 
   m_scene_controller->Init(m_procedure_item->GetInstructionContainer());
 }

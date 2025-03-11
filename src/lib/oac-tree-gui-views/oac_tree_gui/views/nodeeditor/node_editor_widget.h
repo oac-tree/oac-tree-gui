@@ -46,6 +46,7 @@ class ConnectableViewModelController;
 class InstructionItem;
 class NodeGraphicsViewActions;
 class ProcedureItem;
+class NodeEditorNavigationToolBar;
 
 /**
  * @brief The NodeEditorWidget class is a main widget with node editor for sequence composition.
@@ -78,6 +79,7 @@ private:
   NodeGraphicsViewActions* m_view_actions{nullptr};
   NodeGraphicsScene* m_graphics_scene{nullptr};
   NodeGraphicsView* m_graphics_view{nullptr};
+  NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
   std::unique_ptr<ConnectableViewModelController> m_scene_controller;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_graphics_view_message_handler;
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
