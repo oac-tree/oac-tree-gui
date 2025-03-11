@@ -26,12 +26,15 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QKeyEvent>
+#include <QWheelEvent>
 
 namespace oac_tree_gui
 {
 
 namespace
 {
+
+const double kWheelDefaultZoomInFactor = 1.3;
 
 /**
  * @brief Returns Qt drag mode suitable for the given operation mode.
@@ -98,6 +101,13 @@ void NodeGraphicsView::onChangeScale(double new_scale)
   scale(new_scale, new_scale);
 }
 
+void NodeGraphicsView::Zoom(double factor)
+{
+  const QTransform oldMatrix = transform();
+  translate(oldMatrix.dx(), oldMatrix.dy());
+  scale(factor, factor);
+}
+
 void NodeGraphicsView::keyPressEvent(QKeyEvent* event)
 {
   switch (event->key())
@@ -130,6 +140,13 @@ void NodeGraphicsView::keyReleaseEvent(QKeyEvent* event)
   default:
     QGraphicsView::keyPressEvent(event);
   }
+}
+
+void NodeGraphicsView::wheelEvent(QWheelEvent* event)
+{
+  const double factor =
+      event->angleDelta().y() > 0 ? kWheelDefaultZoomInFactor : 1. / kWheelDefaultZoomInFactor;
+  Zoom(factor);
 }
 
 }  // namespace oac_tree_gui

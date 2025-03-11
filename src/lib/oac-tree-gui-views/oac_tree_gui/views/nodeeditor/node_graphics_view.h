@@ -59,6 +59,13 @@ public:
 
   void onChangeScale(double new_scale);
 
+  /**
+   * @brief Zooms into the view by the custom factor factor.
+   *
+   * A factor over 1.0 zooms into the view and a factor between 0.0 and 1.0 zooms out of it.
+   */
+  void Zoom(double factor);
+
 signals:
   void deleteSelectedRequest();
   void OperationModeChanged(oac_tree_gui::GraphicsViewOperationMode);
@@ -66,6 +73,7 @@ signals:
 protected:
   void keyPressEvent(QKeyEvent* event) override;
   void keyReleaseEvent(QKeyEvent* event) override;
+  void wheelEvent(QWheelEvent* event) override;
 
 private:
   GraphicsViewOperationMode m_operation_mode{GraphicsViewOperationMode::kSimpleSelection};
