@@ -59,7 +59,7 @@ double GetZoomFactor(int slider_value)
 QString GetZoomText(double zoom_factor)
 {
   const int kFieldCount = 3;
-  int zoom_value = static_cast<int>(zoom_factor*100);
+  int zoom_value = static_cast<int>(zoom_factor * 100);
   return QString(" %1%2").arg(zoom_value, kFieldCount).arg(kPercentSign);
 }
 
@@ -84,11 +84,19 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
 
   auto on_slider_changed = [this](int value)
   {
-    qDebug() << "on_slider_value_changed" << value << GetZoomFactor(value) << GetZoomText(GetZoomFactor(value));
+    qDebug() << "on_slider_value_changed" << value << GetZoomFactor(value) << m_is_interactive
+    << GetZoomText(GetZoomFactor(value));
     m_zoom_label->setText(GetZoomText(GetZoomFactor(value)));
-    emit ZoomFactorRequest(GetZoomFactor(value));
+    if (m_is_interactive)
+    {
+      qDebug() << "on_slider_value_changed emiting";
+      emit ZoomFactorRequest(GetZoomFactor(value));
+    }
   };
-  connect(m_zoom_slider, &QSlider::valueChanged, on_slider_changed);
+  connect(m_zoom_slider, &QSlider::valueChanged, this, on_slider_changed);
+
+  connect(m_zoom_slider, &QSlider::sliderPressed, this, [this]() { m_is_interactive = true; });
+  connect(m_zoom_slider, &QSlider::sliderReleased, this, [this]() { m_is_interactive = false; });
 
   SetZoomFactor(1.0);
 }

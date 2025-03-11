@@ -45,6 +45,7 @@ private:
 
   QSlider* m_zoom_slider{nullptr};
   QLabel* m_zoom_label{nullptr};
+  bool m_is_interactive{false};
 };
 
 }  // namespace oac_tree_gui
