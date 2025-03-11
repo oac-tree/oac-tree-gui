@@ -95,11 +95,10 @@ void NodeGraphicsView::SetOperationMode(GraphicsViewOperationMode mode)
 
 void NodeGraphicsView::SetZoomFactor(double factor)
 {
-  const QTransform oldMatrix = transform();
-  resetTransform();
-  translate(oldMatrix.dx(), oldMatrix.dy());
+  const auto anchor = transformationAnchor();
+  setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
   scale(factor, factor);
-  qDebug() << "NodeGraphicsView::SetZoomFactor " << factor;
+  setTransformationAnchor(anchor);
   emit ZoomFactorChanged(factor);
 }
 
@@ -139,9 +138,16 @@ void NodeGraphicsView::keyReleaseEvent(QKeyEvent* event)
 
 void NodeGraphicsView::wheelEvent(QWheelEvent* event)
 {
-  const double factor =
-      event->angleDelta().y() > 0 ? kWheelDefaultZoomInFactor : 1. / kWheelDefaultZoomInFactor;
-  SetZoomFactor(factor);
+  if (event->modifiers() & Qt::ControlModifier)
+  {
+    const double factor =
+        event->angleDelta().y() > 0 ? kWheelDefaultZoomInFactor : 1. / kWheelDefaultZoomInFactor;
+    SetZoomFactor(factor);
+  }
+  else
+  {
+    QGraphicsView::wheelEvent(event);
+  }
 }
 
 }  // namespace oac_tree_gui

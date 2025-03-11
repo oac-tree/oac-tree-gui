@@ -188,6 +188,14 @@ void NodeEditorWidget::SetupConnections()
   connect(m_view_actions, &NodeGraphicsViewActions::changeScale, m_graphics_view,
           &NodeGraphicsView::SetZoomFactor);
 
+  // Propagate zoom results from GraphicsView to bottom toolbar
+  connect(m_graphics_view, &NodeGraphicsView::ZoomFactorChanged, m_navigation_toolbar,
+          &NodeEditorNavigationToolBar::SetZoomFactor);
+
+  // Propagate zoom request from a bottom navigation panel to GraphicsView
+  connect(m_navigation_toolbar, &NodeEditorNavigationToolBar::ZoomFactorRequest, m_graphics_view,
+          &NodeGraphicsView::SetZoomFactor);
+
   // alignment request from a toolbar
   connect(m_view_actions, &NodeGraphicsViewActions::alignSelectedRequest, this,
           &NodeEditorWidget::OnAlignRequest);
