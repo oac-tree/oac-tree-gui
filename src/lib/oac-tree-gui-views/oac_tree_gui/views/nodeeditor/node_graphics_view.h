@@ -64,6 +64,11 @@ public:
    */
   void SetZoomFactor(double value);
 
+  /**
+   * @brief Returns current zoom factor.
+   */
+  double GetZoomFactor() const;
+
 signals:
   void deleteSelectedRequest();
   void OperationModeChanged(oac_tree_gui::GraphicsViewOperationMode);
@@ -75,6 +80,16 @@ protected:
   void wheelEvent(QWheelEvent* event) override;
 
 private:
+  /**
+   * @brief If zoom factor can be bigger.
+   */
+  bool CanZoomIn() const;
+
+  /**
+   * @brief If zoom factor can be smaller.
+   */
+  bool CanZoomOut() const;
+
   GraphicsViewOperationMode m_operation_mode{GraphicsViewOperationMode::kSimpleSelection};
 };
 

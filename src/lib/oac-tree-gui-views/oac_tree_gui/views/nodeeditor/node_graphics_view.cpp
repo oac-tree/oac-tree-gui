@@ -34,7 +34,9 @@ namespace oac_tree_gui
 namespace
 {
 
-const double kWheelDefaultZoomInFactor = 1.3;
+const double kWheelDefaultZoomInFactor = 1.075;
+const double kMinZoomFactor = 0.1;
+const double kMaxZoomFactor = 2.0;
 
 /**
  * @brief Returns Qt drag mode suitable for the given operation mode.
@@ -95,11 +97,15 @@ void NodeGraphicsView::SetOperationMode(GraphicsViewOperationMode mode)
 
 void NodeGraphicsView::SetZoomFactor(double factor)
 {
-  const auto anchor = transformationAnchor();
-  setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-  scale(factor, factor);
-  setTransformationAnchor(anchor);
+  QTransform matrix;
+  matrix.scale(factor, factor);
+  setTransform(matrix);
   emit ZoomFactorChanged(factor);
+}
+
+double NodeGraphicsView::GetZoomFactor() const
+{
+  return transform().m11();
 }
 
 void NodeGraphicsView::keyPressEvent(QKeyEvent* event)
@@ -140,14 +146,46 @@ void NodeGraphicsView::wheelEvent(QWheelEvent* event)
 {
   if (event->modifiers() & Qt::ControlModifier)
   {
+    const bool zoom_in_wheel = event->angleDelta().y() > 0;
+    const bool zoom_out_wheel = !zoom_in_wheel;
+
     const double factor =
-        event->angleDelta().y() > 0 ? kWheelDefaultZoomInFactor : 1. / kWheelDefaultZoomInFactor;
-    SetZoomFactor(factor);
+        zoom_in_wheel ? kWheelDefaultZoomInFactor : 1. / kWheelDefaultZoomInFactor;
+
+    if (zoom_in_wheel && !CanZoomIn())
+    {
+      return;
+    }
+
+    if (zoom_out_wheel && !CanZoomOut())
+    {
+      return;
+    }
+
+    qDebug() << "NodeGraphicsView::wheelEvent " << factor << GetZoomFactor()
+             << event->angleDelta().y();
+
+    // zoom in/out while holding the focus on cursor position
+    const auto anchor = transformationAnchor();
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    scale(factor, factor);
+    setTransformationAnchor(anchor);
+    emit ZoomFactorChanged(GetZoomFactor());
   }
   else
   {
     QGraphicsView::wheelEvent(event);
   }
+}
+
+bool NodeGraphicsView::CanZoomIn() const
+{
+  return GetZoomFactor() < kMaxZoomFactor;
+}
+
+bool NodeGraphicsView::CanZoomOut() const
+{
+  return GetZoomFactor() > kMinZoomFactor;
 }
 
 }  // namespace oac_tree_gui
