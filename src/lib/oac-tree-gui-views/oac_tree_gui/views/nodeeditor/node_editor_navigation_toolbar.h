@@ -35,6 +35,11 @@ class NodeEditorNavigationToolBar : public QToolBar
 public:
   explicit NodeEditorNavigationToolBar(QWidget* parent_widget = nullptr);
 
+  void SetZoomFactor(double value);
+
+signals:
+  void ZoomFactorRequest(double value);
+
 private:
   void InsertStrech();
 

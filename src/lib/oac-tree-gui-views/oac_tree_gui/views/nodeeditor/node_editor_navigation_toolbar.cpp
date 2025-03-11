@@ -37,10 +37,30 @@ const int kZoomMaxValue = 200;
 const int kZoomInitialValue = 100;
 const QString kPercentSign("%");
 
-QString GetZoomText(int value)
+/**
+ * @brief Returns slider value from the given zoom factor.
+ */
+int GetSliderValue(double zoom_factor)
 {
-  const int kFieledCount = 3;
-  return QString(" %1%2").arg(value, kFieledCount).arg(kPercentSign);
+  return static_cast<int>(zoom_factor * 100.0);
+}
+
+/**
+ * @brief Returns zoom factor from the given slider value.
+ */
+double GetZoomFactor(int slider_value)
+{
+  return slider_value / 100.0;
+}
+
+/**
+ * @brief Returns text for the label representing zoom factor.
+ */
+QString GetZoomText(double zoom_factor)
+{
+  const int kFieldCount = 3;
+  int zoom_value = static_cast<int>(zoom_factor*100);
+  return QString(" %1%2").arg(zoom_value, kFieldCount).arg(kPercentSign);
 }
 
 }  // namespace
@@ -55,18 +75,27 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
   m_zoom_slider->setRange(kZoomMinValue, kZoomMaxValue);
   m_zoom_slider->setOrientation(Qt::Horizontal);
   m_zoom_slider->setRange(kZoomMinValue, kZoomMaxValue);
-  m_zoom_slider->setValue(kZoomInitialValue);
-  m_zoom_slider->setMaximumWidth(mvvm::utils::UnitSize(12));
+  m_zoom_slider->setMaximumWidth(mvvm::utils::UnitSize(10));
   m_zoom_slider->setToolTip("Zoom (also Ctrl+scroll)");
-
-  m_zoom_label->setText(GetZoomText(kZoomInitialValue));
   m_zoom_label->setFixedWidth(mvvm::utils::UnitSize(3));
 
   addWidget(m_zoom_slider);
   addWidget(m_zoom_label);
 
-  auto on_slider_changed = [this](int value) { m_zoom_label->setText(GetZoomText(value)); };
+  auto on_slider_changed = [this](int value)
+  {
+    qDebug() << "on_slider_value_changed" << value << GetZoomFactor(value) << GetZoomText(GetZoomFactor(value));
+    m_zoom_label->setText(GetZoomText(GetZoomFactor(value)));
+    emit ZoomFactorRequest(GetZoomFactor(value));
+  };
   connect(m_zoom_slider, &QSlider::valueChanged, on_slider_changed);
+
+  SetZoomFactor(1.0);
+}
+
+void NodeEditorNavigationToolBar::SetZoomFactor(double value)
+{
+  m_zoom_slider->setValue(GetSliderValue(value));
 }
 
 void NodeEditorNavigationToolBar::InsertStrech()

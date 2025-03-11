@@ -186,7 +186,7 @@ void NodeEditorWidget::SetupConnections()
 
   // Propagate zoom request from a toolbar to GraphicsView
   connect(m_view_actions, &NodeGraphicsViewActions::changeScale, m_graphics_view,
-          &NodeGraphicsView::onChangeScale);
+          &NodeGraphicsView::SetZoomFactor);
 
   // alignment request from a toolbar
   connect(m_view_actions, &NodeGraphicsViewActions::alignSelectedRequest, this,
