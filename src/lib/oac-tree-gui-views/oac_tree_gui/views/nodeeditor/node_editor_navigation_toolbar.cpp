@@ -19,6 +19,8 @@
 
 #include "node_editor_navigation_toolbar.h"
 
+#include <oac_tree_gui/nodeeditor/scene_constants.h>
+
 #include <sup/gui/style/style_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -32,9 +34,8 @@ namespace oac_tree_gui
 namespace
 {
 
-const int kZoomMinValue = 1;
-const int kZoomMaxValue = 200;
-const int kZoomInitialValue = 100;
+const int kSliderMinValue = 0;
+const int kSliderMaxValue = 100;
 const QString kPercentSign("%");
 
 /**
@@ -42,7 +43,10 @@ const QString kPercentSign("%");
  */
 int GetSliderValue(double zoom_factor)
 {
-  return static_cast<int>(zoom_factor * 100.0);
+  const double ratio =
+      (kSliderMaxValue - kSliderMinValue) / (constants::kMaxZoomFactor - constants::kMinZoomFactor);
+  qDebug() << "ratio " << ratio << zoom_factor << kSliderMinValue + ratio * (zoom_factor - constants::kMinZoomFactor);
+  return kSliderMinValue + ratio * (zoom_factor - constants::kMinZoomFactor);
 }
 
 /**
@@ -50,7 +54,9 @@ int GetSliderValue(double zoom_factor)
  */
 double GetZoomFactor(int slider_value)
 {
-  return slider_value / 100.0;
+  const double ratio =
+      (constants::kMaxZoomFactor - constants::kMinZoomFactor) / (kSliderMaxValue - kSliderMinValue);
+  return constants::kMinZoomFactor + ratio * (slider_value - kSliderMinValue);
 }
 
 /**
@@ -59,8 +65,8 @@ double GetZoomFactor(int slider_value)
 QString GetZoomText(double zoom_factor)
 {
   const int kFieldCount = 3;
-  int zoom_value = static_cast<int>(zoom_factor * 100);
-  return QString(" %1%2").arg(zoom_value, kFieldCount).arg(kPercentSign);
+  const int percents = static_cast<int>(zoom_factor * 100);
+  return QString(" %1%2").arg(percents, kFieldCount).arg(kPercentSign);
 }
 
 }  // namespace
@@ -72,9 +78,8 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
 
   InsertStrech();
 
-  m_zoom_slider->setRange(kZoomMinValue, kZoomMaxValue);
+  m_zoom_slider->setRange(kSliderMinValue, kSliderMaxValue);
   m_zoom_slider->setOrientation(Qt::Horizontal);
-  m_zoom_slider->setRange(kZoomMinValue, kZoomMaxValue);
   m_zoom_slider->setMaximumWidth(mvvm::utils::UnitSize(10));
   m_zoom_slider->setToolTip("Zoom (also Ctrl+scroll)");
   m_zoom_label->setFixedWidth(mvvm::utils::UnitSize(3));
@@ -85,7 +90,7 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
   auto on_slider_changed = [this](int value)
   {
     qDebug() << "on_slider_value_changed" << value << GetZoomFactor(value) << m_is_interactive
-    << GetZoomText(GetZoomFactor(value));
+             << GetZoomText(GetZoomFactor(value));
     m_zoom_label->setText(GetZoomText(GetZoomFactor(value)));
     if (m_is_interactive)
     {
@@ -103,6 +108,7 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
 
 void NodeEditorNavigationToolBar::SetZoomFactor(double value)
 {
+  qDebug() << "XZXX " << value << GetSliderValue(value);
   m_zoom_slider->setValue(GetSliderValue(value));
 }
 

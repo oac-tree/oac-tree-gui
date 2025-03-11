@@ -21,6 +21,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/scene_constants.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -33,10 +34,6 @@ namespace oac_tree_gui
 
 namespace
 {
-
-const double kWheelDefaultZoomInFactor = 1.075;
-const double kMinZoomFactor = 0.1;
-const double kMaxZoomFactor = 2.0;
 
 /**
  * @brief Returns Qt drag mode suitable for the given operation mode.
@@ -149,8 +146,8 @@ void NodeGraphicsView::wheelEvent(QWheelEvent* event)
     const bool zoom_in_wheel = event->angleDelta().y() > 0;
     const bool zoom_out_wheel = !zoom_in_wheel;
 
-    const double factor =
-        zoom_in_wheel ? kWheelDefaultZoomInFactor : 1. / kWheelDefaultZoomInFactor;
+    const double factor = zoom_in_wheel ? constants::kWheelDefaultZoomInFactor
+                                        : 1. / constants::kWheelDefaultZoomInFactor;
 
     if (zoom_in_wheel && !CanZoomIn())
     {
@@ -180,12 +177,12 @@ void NodeGraphicsView::wheelEvent(QWheelEvent* event)
 
 bool NodeGraphicsView::CanZoomIn() const
 {
-  return GetZoomFactor() < kMaxZoomFactor;
+  return GetZoomFactor() < constants::kMaxZoomFactor;
 }
 
 bool NodeGraphicsView::CanZoomOut() const
 {
-  return GetZoomFactor() > kMinZoomFactor;
+  return GetZoomFactor() > constants::kMinZoomFactor;
 }
 
 }  // namespace oac_tree_gui

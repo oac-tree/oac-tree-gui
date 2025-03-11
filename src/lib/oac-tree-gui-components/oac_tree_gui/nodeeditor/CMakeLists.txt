@@ -30,6 +30,7 @@ target_sources(${library_name} PRIVATE
   position_strategy.h
   scene_utils.cpp
   scene_utils.h
+  scene_constants.h
   sequencer_align_utils.cpp
   sequencer_align_utils.h
 )
