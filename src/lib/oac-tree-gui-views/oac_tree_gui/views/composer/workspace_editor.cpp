@@ -37,10 +37,10 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditor::WorkspaceEditor(const std::function<mvvm::SessionItem *()> &selected_item,
-                                 QWidget *parent_widget)
+WorkspaceEditor::WorkspaceEditor(
+    const std::function<std::vector<mvvm::SessionItem *>()> &selected_items, QWidget *parent_widget)
     : QObject(parent_widget)
-    , m_get_selected_item(selected_item)
+    , m_get_selected_items(selected_items)
     , m_action_handler(
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
     , m_editor_actions(new WorkspaceEditorActions(m_action_handler.get(), this))
@@ -93,15 +93,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
 
   auto selected_workspace_callback = [this]() { return m_workspace_item; };
   result.selected_workspace = selected_workspace_callback;
-
-  auto get_selected_items = [this]() -> std::vector<mvvm::SessionItem *>
-  {
-    auto selected_item = m_get_selected_item();
-    return selected_item ? std::vector<mvvm::SessionItem *>({selected_item})
-                         : std::vector<mvvm::SessionItem *>();
-  };
-  result.selected_items_callback = get_selected_items;
-
+  result.selected_items_callback = m_get_selected_items;
   result.select_notify = [this](auto item) { emit ItemSelectRequest(item); };
 
   auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
@@ -116,14 +108,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
 
 AttributeEditorContext WorkspaceEditor::CreateAttributeEditorContext()
 {
-  auto get_selected_items = [this]() -> std::vector<mvvm::SessionItem *>
-  {
-    auto selected_item = m_get_selected_item();
-    return selected_item ? std::vector<mvvm::SessionItem *>({selected_item})
-                         : std::vector<mvvm::SessionItem *>();
-  };
-
-  return {get_selected_items};
+  return {m_get_selected_items};
 }
 
 }  // namespace oac_tree_gui

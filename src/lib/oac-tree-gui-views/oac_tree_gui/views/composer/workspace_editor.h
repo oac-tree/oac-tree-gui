@@ -50,7 +50,7 @@ class WorkspaceEditor : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditor(const std::function<mvvm::SessionItem*()>& selected_item,
+  explicit WorkspaceEditor(const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
                            QWidget* parent_widget = nullptr);
   ~WorkspaceEditor() override;
 
@@ -71,7 +71,7 @@ private:
   WorkspaceEditorContext CreateWorkspaceEditorContext();
   AttributeEditorContext CreateAttributeEditorContext();
 
-  std::function<mvvm::SessionItem*()> m_get_selected_item;
+  std::function<std::vector<mvvm::SessionItem*>()> m_get_selected_items;
   WorkspaceItem* m_workspace_item{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
   WorkspaceEditorActions* m_editor_actions{nullptr};

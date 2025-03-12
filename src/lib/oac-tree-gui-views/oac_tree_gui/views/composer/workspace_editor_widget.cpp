@@ -60,7 +60,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentat
     , m_component_provider(CreateProvider(presentation))
     , m_line_edit(new QLineEdit)
     , m_editor(
-          new WorkspaceEditor([this]() { return m_component_provider->GetSelectedItem(); }, this))
+          new WorkspaceEditor([this]() { return m_component_provider->GetSelectedItems(); }, this))
 {
   setWindowTitle("Workspace");
 
