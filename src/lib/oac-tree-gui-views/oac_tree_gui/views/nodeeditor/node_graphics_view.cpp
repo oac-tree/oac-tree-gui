@@ -159,9 +159,6 @@ void NodeGraphicsView::wheelEvent(QWheelEvent* event)
       return;
     }
 
-    qDebug() << "NodeGraphicsView::wheelEvent " << factor << GetZoomFactor()
-             << event->angleDelta().y();
-
     // zoom in/out while holding the focus on cursor position
     const auto anchor = transformationAnchor();
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
