@@ -19,6 +19,8 @@
 
 #include "zoom_factor_converter.h"
 
+#include <cmath>
+
 namespace oac_tree_gui
 {
 
@@ -66,7 +68,7 @@ double ZoomFactorConverter::GetZoomFactor(int slider_value) const
   return m_zoom_factor_min + ratio * (slider_value - kSliderMinValue);
 }
 
-QString ZoomFactorConverter::GetSliderText(double zoom_factor)
+QString ZoomFactorConverter::GetZoomText(double zoom_factor)
 {
   const int kFieldCount = 3;
   const int percents = static_cast<int>(zoom_factor * 100);

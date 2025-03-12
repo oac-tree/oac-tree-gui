@@ -36,8 +36,8 @@ namespace oac_tree_gui
 class ZoomFactorConverter
 {
 public:
-  inline static const int kSliderMinValue = 0;
-  inline static const int kSliderMaxValue = 100;
+  inline static const int kSliderMinValue = 10;
+  inline static const int kSliderMaxValue = 200;
 
   /**
    * @brief Main c-tor with zoom limits defined.
@@ -82,7 +82,7 @@ public:
    *
    * Example: "100.0%", "  9.3%".
    */
-  static QString GetSliderText(double zoom_factor);
+  static QString GetZoomText(double zoom_factor);
 
 private:
   double m_zoom_factor_min{0};

@@ -22,6 +22,8 @@
 
 #include <QToolBar>
 
+#include <oac_tree_gui/views/nodeeditor/zoom_factor_converter.h>
+
 class QSlider;
 class QLabel;
 
@@ -35,10 +37,10 @@ class NodeEditorNavigationToolBar : public QToolBar
 public:
   explicit NodeEditorNavigationToolBar(QWidget* parent_widget = nullptr);
 
-  void SetZoomFactor(double value);
+  void SetZoomFactor(double zoom_factor);
 
 signals:
-  void ZoomFactorRequest(double value);
+  void ZoomFactorRequest(double zoom_factor);
 
 private:
   void InsertStrech();
@@ -46,6 +48,7 @@ private:
   QSlider* m_zoom_slider{nullptr};
   QLabel* m_zoom_label{nullptr};
   bool m_is_interactive{false};
+  ZoomFactorConverter m_zoom_factor_converter;
 };
 
 }  // namespace oac_tree_gui

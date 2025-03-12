@@ -30,7 +30,6 @@ const double kWheelDefaultZoomInFactor = 1.075;
 const double kMinZoomFactor = 0.1;
 const double kMaxZoomFactor = 2.0;
 
-
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_NODEEDITOR_SCENE_CONSTANTS_H_

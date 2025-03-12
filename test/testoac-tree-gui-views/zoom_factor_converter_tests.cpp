@@ -42,12 +42,13 @@ TEST_F(ZoomFactorConverterTest, InitialState)
   EXPECT_EQ(converter.GetSliderMaxValue(), ZoomFactorConverter::kSliderMaxValue);
 }
 
-TEST_F(ZoomFactorConverterTest, GetSliderText)
+TEST_F(ZoomFactorConverterTest, GetZoomText)
 {
   const ZoomFactorConverter converter(1.0, 2.0);
-  EXPECT_EQ(converter.GetSliderText(1.0), QString("100%"));
-  EXPECT_EQ(converter.GetSliderText(0.99), QString(" 99%"));
-  EXPECT_EQ(converter.GetSliderText(0.1), QString(" 10%"));
+  EXPECT_EQ(converter.GetZoomText(2.0), QString("200%"));
+  EXPECT_EQ(converter.GetZoomText(1.0), QString("100%"));
+  EXPECT_EQ(converter.GetZoomText(0.99), QString(" 99%"));
+  EXPECT_EQ(converter.GetZoomText(0.1), QString(" 10%"));
 }
 
 TEST_F(ZoomFactorConverterTest, GetSliderValue)

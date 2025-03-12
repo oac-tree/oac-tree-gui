@@ -31,54 +31,19 @@
 namespace oac_tree_gui
 {
 
-namespace
-{
-
-const int kSliderMinValue = 0;
-const int kSliderMaxValue = 100;
-const QString kPercentSign("%");
-
-/**
- * @brief Returns slider value from the given zoom factor.
- */
-int GetSliderValue(double zoom_factor)
-{
-  const double ratio =
-      (kSliderMaxValue - kSliderMinValue) / (constants::kMaxZoomFactor - constants::kMinZoomFactor);
-  qDebug() << "ratio " << ratio << zoom_factor << kSliderMinValue + ratio * (zoom_factor - constants::kMinZoomFactor);
-  return kSliderMinValue + ratio * (zoom_factor - constants::kMinZoomFactor);
-}
-
-/**
- * @brief Returns zoom factor from the given slider value.
- */
-double GetZoomFactor(int slider_value)
-{
-  const double ratio =
-      (constants::kMaxZoomFactor - constants::kMinZoomFactor) / (kSliderMaxValue - kSliderMinValue);
-  return constants::kMinZoomFactor + ratio * (slider_value - kSliderMinValue);
-}
-
-/**
- * @brief Returns text for the label representing zoom factor.
- */
-QString GetZoomText(double zoom_factor)
-{
-  const int kFieldCount = 3;
-  const int percents = static_cast<int>(zoom_factor * 100);
-  return QString(" %1%2").arg(percents, kFieldCount).arg(kPercentSign);
-}
-
-}  // namespace
-
 NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
-    : QToolBar(parent_widget), m_zoom_slider(new QSlider), m_zoom_label(new QLabel)
+    : QToolBar(parent_widget)
+    , m_zoom_slider(new QSlider)
+    , m_zoom_label(new QLabel)
+    , m_zoom_factor_converter(constants::kMinZoomFactor, constants::kMaxZoomFactor)
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
 
   InsertStrech();
 
-  m_zoom_slider->setRange(kSliderMinValue, kSliderMaxValue);
+  m_zoom_slider->setRange(m_zoom_factor_converter.GetSliderMinValue(),
+                          m_zoom_factor_converter.GetSliderMaxValue());
+
   m_zoom_slider->setOrientation(Qt::Horizontal);
   m_zoom_slider->setMaximumWidth(mvvm::utils::UnitSize(10));
   m_zoom_slider->setToolTip("Zoom (also Ctrl+scroll)");
@@ -89,13 +54,11 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
 
   auto on_slider_changed = [this](int value)
   {
-    qDebug() << "on_slider_value_changed" << value << GetZoomFactor(value) << m_is_interactive
-             << GetZoomText(GetZoomFactor(value));
-    m_zoom_label->setText(GetZoomText(GetZoomFactor(value)));
+    const double zoom_factor = m_zoom_factor_converter.GetZoomFactor(value);
+    m_zoom_label->setText(ZoomFactorConverter::GetZoomText(zoom_factor));
     if (m_is_interactive)
     {
-      qDebug() << "on_slider_value_changed emiting";
-      emit ZoomFactorRequest(GetZoomFactor(value));
+      emit ZoomFactorRequest(zoom_factor);
     }
   };
   connect(m_zoom_slider, &QSlider::valueChanged, this, on_slider_changed);
@@ -106,10 +69,9 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
   SetZoomFactor(1.0);
 }
 
-void NodeEditorNavigationToolBar::SetZoomFactor(double value)
+void NodeEditorNavigationToolBar::SetZoomFactor(double zoom_factor)
 {
-  qDebug() << "XZXX " << value << GetSliderValue(value);
-  m_zoom_slider->setValue(GetSliderValue(value));
+  m_zoom_slider->setValue(m_zoom_factor_converter.GetSliderValue(zoom_factor));
 }
 
 void NodeEditorNavigationToolBar::InsertStrech()
