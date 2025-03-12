@@ -52,9 +52,10 @@ public:
    * @brief Creates context for InstructionEditorActionHandler.
    *
    * @param workspace The workspace which will be reported as selected by the user.
-   * @param selected_item The selected_item which will be reported as selected by the user.
+   * @param selected_items The list of items that will be reported as selected by the user.
    */
-  WorkspaceEditorContext CreateContext(WorkspaceItem* workspace, mvvm::SessionItem* selected_item);
+  WorkspaceEditorContext CreateContext(WorkspaceItem* workspace,
+                                       const std::vector<mvvm::SessionItem*>& selection);
 
   /**
    * @brief Creates action handler.
@@ -63,13 +64,13 @@ public:
    * selected by the user.
    */
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
-      WorkspaceItem* workspace, mvvm::SessionItem* selected_item);
+      WorkspaceItem* workspace, const std::vector<mvvm::SessionItem*>& selection);
 
   QMimeData* GetCopyResult() const;
 
   //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_copy_result;
-  mvvm::SessionItem* m_current_selection{nullptr};
+  std::vector<mvvm::SessionItem*> m_current_selection;
 };
 
 }  // namespace oac_tree_gui::test

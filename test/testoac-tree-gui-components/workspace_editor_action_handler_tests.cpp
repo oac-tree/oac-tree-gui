@@ -55,7 +55,8 @@ public:
   /**
    * @brief Creates action handler.
    */
-  std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(mvvm::SessionItem* selection)
+  std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
+      const std::vector<mvvm::SessionItem*>& selection)
   {
     return m_mock_context.CreateActionHandler(m_model.GetWorkspaceItem(), selection);
   }
@@ -98,7 +99,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialis
 
 TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbsent)
 {
-  auto handler = m_mock_context.CreateActionHandler(nullptr, nullptr);
+  auto handler = m_mock_context.CreateActionHandler(nullptr, {});
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
@@ -109,7 +110,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 {
   // pretending that nothing is selected
-  auto handler = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler({});
 
   mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
@@ -157,7 +158,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
   auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
 
   // pretending that var0 is selected
-  auto handler = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler({});
 
   EXPECT_FALSE(handler->CanRemoveVariable());
 
@@ -177,7 +178,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
 
   // pretending that var0 is selected
-  auto handler = CreateActionHandler(var0);
+  auto handler = CreateActionHandler({var0});
 
   // adding variable
   handler->AddVariable(FileVariableItem::GetStaticType());
@@ -195,7 +196,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
   EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // pretending that var0 is selected
-  auto handler = CreateActionHandler(var0);
+  auto handler = CreateActionHandler({var0});
 
   // removing variable
   EXPECT_TRUE(handler->CanRemoveVariable());
@@ -210,7 +211,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
   EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // nothing is selected
-  auto handler = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler({});
 
   // removing variable
   handler->RemoveVariable();
@@ -223,7 +224,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
 TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
   // nothing is selected
-  auto handler = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler({});
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
@@ -250,7 +251,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
   // preparing handler
-  auto handler = CreateActionHandler(var0);
+  auto handler = CreateActionHandler({var0});
 
   // expecting call to editing widget
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
@@ -284,7 +285,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
   // preparing handler
-  auto handler = CreateActionHandler(initial_anyvalue_item);
+  auto handler = CreateActionHandler({initial_anyvalue_item});
 
   // expecting call to editing widget
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
@@ -315,7 +316,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   ON_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item))
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
-  auto handler = CreateActionHandler(initial_anyvalue_item);
+  auto handler = CreateActionHandler({initial_anyvalue_item});
 
   // expecting no warning callbacks
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
@@ -348,7 +349,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
   // preparing handler
-  auto handler = CreateActionHandler(initial_anyvalue_item);
+  auto handler = CreateActionHandler({initial_anyvalue_item});
 
   // expecting call to editing widget
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
@@ -379,7 +380,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
   // preparing handler
-  auto handler = CreateActionHandler(var0);
+  auto handler = CreateActionHandler({var0});
 
   // expecting call to editing widget
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(::testing::_)).Times(1);
@@ -402,7 +403,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   }
 
   // pretending that nothing is selected
-  auto handler = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler({});
 
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
 

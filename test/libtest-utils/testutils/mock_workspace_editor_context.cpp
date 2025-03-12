@@ -28,19 +28,15 @@
 namespace oac_tree_gui::test
 {
 
-WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(WorkspaceItem *workspace,
-                                                                 mvvm::SessionItem *selected_item)
+WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
+    WorkspaceItem *workspace, const std::vector<mvvm::SessionItem *> &selection)
 {
   WorkspaceEditorContext result;
 
-  m_current_selection = selected_item;
+  m_current_selection = selection;
 
   result.selected_workspace = [this, workspace]() { return workspace; };
-  result.selected_items_callback = [this]()
-  {
-    return m_current_selection ? std::vector<mvvm::SessionItem *>({m_current_selection})
-                               : std::vector<mvvm::SessionItem *>();
-  };
+  result.selected_items_callback = [this]() { return m_current_selection; };
   result.select_notify = [this](auto item) { SelectRequest(item); };
   result.send_message = [this](const auto &message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem *item)
@@ -57,9 +53,9 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(WorkspaceItem *
 }
 
 std::unique_ptr<WorkspaceEditorActionHandler> MockWorkspaceEditorContext::CreateActionHandler(
-    WorkspaceItem *workspace, mvvm::SessionItem *selected_item)
+    WorkspaceItem *workspace, const std::vector<mvvm::SessionItem *> &selection)
 {
-  return std::make_unique<WorkspaceEditorActionHandler>(CreateContext(workspace, selected_item));
+  return std::make_unique<WorkspaceEditorActionHandler>(CreateContext(workspace, selection));
 }
 
 QMimeData *MockWorkspaceEditorContext::GetCopyResult() const

@@ -66,7 +66,7 @@ public:
    */
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(mvvm::SessionItem* selection)
   {
-    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
+    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), {selection});
   }
 
   /**
@@ -122,7 +122,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
                                   domainconstants::kEpicsPVXSPluginName)}));
 
   // removing variable
-  m_mock_context.m_current_selection = GetWorkspaceItem()->GetVariables().at(0);
+  m_mock_context.m_current_selection = {GetWorkspaceItem()->GetVariables().at(0)};
   handler->RemoveVariable();
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 0);

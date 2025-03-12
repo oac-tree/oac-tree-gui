@@ -65,7 +65,7 @@ public:
                                                                     const QMimeData* current_mime)
   {
     ON_CALL(m_mock_context, OnGetMimeData()).WillByDefault(::testing::Return(current_mime));
-    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
+    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), {selection});
   }
 
   MonitorModel m_model;
