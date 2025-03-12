@@ -24,10 +24,10 @@
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_context.h>
+#include <oac_tree_gui/mainwindow/clipboard_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/views/composer/workspace_editor_actions.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
-#include <oac_tree_gui/mainwindow/clipboard_helper.h>
 
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/message_helper.h>
@@ -94,7 +94,13 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   auto selected_workspace_callback = [this]() { return m_workspace_item; };
   result.selected_workspace = selected_workspace_callback;
 
-  result.selected_item_callback = m_get_selected_item;
+  auto get_selected_items = [this]() -> std::vector<mvvm::SessionItem *>
+  {
+    auto selected_item = m_get_selected_item();
+    return selected_item ? std::vector<mvvm::SessionItem *>({selected_item})
+                         : std::vector<mvvm::SessionItem *>();
+  };
+  result.selected_items_callback = get_selected_items;
 
   result.select_notify = [this](auto item) { emit ItemSelectRequest(item); };
 

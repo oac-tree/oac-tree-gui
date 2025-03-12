@@ -48,9 +48,9 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
     throw RuntimeException("Absent callback to get Workspace");
   }
 
-  if (!m_context.selected_item_callback)
+  if (!m_context.selected_items_callback)
   {
-    throw RuntimeException("Absent callback to retrieve currently selected item");
+    throw RuntimeException("Absent callback to retrieve currently selected items");
   }
 
   if (!m_context.select_notify)
@@ -105,14 +105,16 @@ void WorkspaceEditorActionHandler::RemoveVariable()
 
 void WorkspaceEditorActionHandler::EditAnyValue()
 {
-  auto selected_item = m_context.selected_item_callback();
-  if (!selected_item)
+  auto selected_items = m_context.selected_items_callback();
+  if (selected_items.empty())
   {
     SendMessage(
         "Please select Workspace variable (or any of it's leaves) to modify corresponding "
         "AnyValue.");
     return;
   }
+
+  auto selected_item = selected_items.front();
 
   auto selected_variable =
       GetSelectedVariable()
@@ -207,7 +209,8 @@ WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
 
 VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
 {
-  return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
+  auto items = m_context.selected_items_callback();
+  return items.empty() ? nullptr : dynamic_cast<VariableItem *>(items.front());
 }
 
 void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const

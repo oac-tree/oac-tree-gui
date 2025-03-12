@@ -83,14 +83,14 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialis
   {
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
-    context.selected_item_callback = []() -> mvvm::SessionItem* { return nullptr; };
+    context.selected_items_callback = []() -> std::vector<mvvm::SessionItem*> { return {}; };
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
   {
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
-    context.selected_item_callback = []() -> mvvm::SessionItem* { return nullptr; };
+    context.selected_items_callback = []() -> std::vector<mvvm::SessionItem*> { return {}; };
     context.select_notify = [](auto item) {};
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
@@ -220,15 +220,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
 }
 
 //! Attempt to edit AnyValueItem when nothing is selected.
-
 TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
-  // pretending that var0 is selected
+  // nothing is selected
   auto handler = CreateActionHandler(nullptr);
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
-  // removing variable
   handler->EditAnyValue();
 }
 

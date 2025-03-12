@@ -36,7 +36,11 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(WorkspaceItem *
   m_current_selection = selected_item;
 
   result.selected_workspace = [this, workspace]() { return workspace; };
-  result.selected_item_callback = [this]() { return m_current_selection; };
+  result.selected_items_callback = [this]()
+  {
+    return m_current_selection ? std::vector<mvvm::SessionItem *>({m_current_selection})
+                               : std::vector<mvvm::SessionItem *>();
+  };
   result.select_notify = [this](auto item) { SelectRequest(item); };
   result.send_message = [this](const auto &message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem *item)
