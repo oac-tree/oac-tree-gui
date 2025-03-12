@@ -116,7 +116,14 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
 
 AttributeEditorContext WorkspaceEditor::CreateAttributeEditorContext()
 {
-  return {m_get_selected_item};
+  auto get_selected_items = [this]() -> std::vector<mvvm::SessionItem *>
+  {
+    auto selected_item = m_get_selected_item();
+    return selected_item ? std::vector<mvvm::SessionItem *>({selected_item})
+                         : std::vector<mvvm::SessionItem *>();
+  };
+
+  return {get_selected_items};
 }
 
 }  // namespace oac_tree_gui

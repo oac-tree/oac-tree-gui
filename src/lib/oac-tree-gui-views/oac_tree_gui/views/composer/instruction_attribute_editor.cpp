@@ -98,9 +98,9 @@ void InstructionAttributeEditor::OnTreeContextMenuRequest(const QPoint &point)
 
 AttributeEditorContext InstructionAttributeEditor::CreateActionContext()
 {
-  auto selected_item_callback = [this]() { return m_component_provider->GetSelectedItem(); };
+  auto selected_items_callback = [this]() { return m_component_provider->GetSelectedItems(); };
 
-  return {selected_item_callback};
+  return {selected_items_callback};
 }
 
 }  // namespace oac_tree_gui

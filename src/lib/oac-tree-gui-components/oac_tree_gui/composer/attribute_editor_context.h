@@ -21,6 +21,7 @@
 #define OAC_TREE_GUI_COMPOSER_ATTRIBUTE_EDITOR_CONTEXT_H_
 
 #include <functional>
+#include <vector>
 
 namespace mvvm
 {
@@ -38,7 +39,7 @@ namespace oac_tree_gui
  */
 struct AttributeEditorContext
 {
-  std::function<mvvm::SessionItem*()> selected_item_callback;
+  std::function<std::vector<mvvm::SessionItem*>()> selected_item_callback;
 };
 
 }  // namespace oac_tree_gui

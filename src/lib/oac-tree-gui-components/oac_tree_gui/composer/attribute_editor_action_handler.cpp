@@ -92,9 +92,14 @@ bool AttributeEditorActionHandler::CanEditAnyValue() const
 
 sup::gui::AnyValueItem *AttributeEditorActionHandler::GetSelectedAttributeItem() const
 {
-  return m_context.selected_item_callback
-             ? dynamic_cast<sup::gui::AnyValueItem *>(m_context.selected_item_callback())
-             : nullptr;
+  if (m_context.selected_item_callback)
+  {
+    auto selected_items = m_context.selected_item_callback();
+    return selected_items.empty() ? nullptr
+                                  : dynamic_cast<sup::gui::AnyValueItem *>(selected_items.front());
+  }
+
+  return nullptr;
 }
 
 bool AttributeEditorActionHandler::IsAnyValue() const
