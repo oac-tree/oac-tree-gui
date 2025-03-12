@@ -7,4 +7,6 @@ target_sources(${library_name} PRIVATE
   node_graphics_view.h
   node_graphics_view_actions.cpp
   node_graphics_view_actions.h
+  zoom_factor_converter.cpp
+  zoom_factor_converter.h
 )
