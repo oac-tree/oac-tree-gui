@@ -34,7 +34,7 @@
 
 namespace
 {
-const double kWindowSize = 10000;
+const double kWindowSize = 16000;
 }
 
 namespace oac_tree_gui
