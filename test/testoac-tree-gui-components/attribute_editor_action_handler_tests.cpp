@@ -51,7 +51,7 @@ public:
   AttributeEditorContext CreateContext(mvvm::SessionItem* selected_item)
   {
     AttributeEditorContext result;
-    result.selected_item_callback = [selected_item]() -> std::vector<mvvm::SessionItem*>
+    result.selected_items_callback = [selected_item]() -> std::vector<mvvm::SessionItem*>
     { return {selected_item}; };
     return result;
   }

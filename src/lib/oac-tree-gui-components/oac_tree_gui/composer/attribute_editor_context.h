@@ -39,7 +39,7 @@ namespace oac_tree_gui
  */
 struct AttributeEditorContext
 {
-  std::function<std::vector<mvvm::SessionItem*>()> selected_item_callback;
+  std::function<std::vector<mvvm::SessionItem*>()> selected_items_callback;
 };
 
 }  // namespace oac_tree_gui
