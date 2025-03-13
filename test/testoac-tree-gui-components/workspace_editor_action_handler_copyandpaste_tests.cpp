@@ -64,8 +64,7 @@ public:
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
       const std::vector<mvvm::SessionItem*>& selection, const QMimeData* current_mime)
   {
-    ON_CALL(m_mock_context, OnGetMimeData()).WillByDefault(::testing::Return(current_mime));
-    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
+    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection, current_mime);
   }
 
   MonitorModel m_model;

@@ -43,12 +43,13 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
   { return OnEditAnyvalue(item); };
   result.get_mime_data = [this]()
   {
-    return OnGetMimeData();
+    OnGetMimeData();
+    return m_clipboard_content.get();
   };
   result.set_mime_data = [this](auto mime_data)
   {
     // mimicking clipboard, saving copy result here
-    m_copy_result = std::move(mime_data);
+    m_clipboard_content = std::move(mime_data);
     OnSetMimeData();
   };
 
@@ -61,9 +62,14 @@ std::unique_ptr<WorkspaceEditorActionHandler> MockWorkspaceEditorContext::Create
   return std::make_unique<WorkspaceEditorActionHandler>(CreateContext(workspace, selection));
 }
 
-QMimeData *MockWorkspaceEditorContext::GetCopyResult() const
+QMimeData *MockWorkspaceEditorContext::GetClipboardContent() const
 {
-  return m_copy_result.get();
+  return m_clipboard_content.get();
+}
+
+void MockWorkspaceEditorContext::SetClipboardContent(std::unique_ptr<QMimeData> clipboard)
+{
+  m_clipboard_content = std::move(clipboard);
 }
 
 }  // namespace oac_tree_gui::test
