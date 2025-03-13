@@ -42,11 +42,15 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem* item)
   { return OnEditAnyvalue(item); };
-  result.get_mime_data = [this]() { return OnGetMimeData(); };
+  result.get_mime_data = [this]()
+  {
+    OnGetMimeData();
+    return m_clipboard_content.get();
+  };
   result.set_mime_data = [this](auto mime_data)
   {
     // mimicking clipboard, saving copy result here
-    m_copy_result = std::move(mime_data);
+    m_clipboard_content = std::move(mime_data);
     OnSetMimeData();
   };
 
@@ -60,9 +64,14 @@ std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::Cr
       CreateContext(instruction_container, selected_item));
 }
 
-QMimeData* MockInstructionEditorContext::GetCopyResult() const
+QMimeData* MockInstructionEditorContext::GetClipboardContent() const
 {
-  return m_copy_result.get();
+  return m_clipboard_content.get();
+}
+
+void MockInstructionEditorContext::SetClipboardContent(std::unique_ptr<QMimeData> clipboard)
+{
+  m_clipboard_content = std::move(clipboard);
 }
 
 }  // namespace oac_tree_gui::test

@@ -66,10 +66,12 @@ public:
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
       InstructionContainerItem* instruction_container, InstructionItem* selected_item);
 
-  QMimeData* GetCopyResult() const;
+  QMimeData* GetClipboardContent() const;
+
+  void SetClipboardContent(std::unique_ptr<QMimeData> clipboard);
 
   //!< here we save copy result reported via set_mime_data callback
-  std::unique_ptr<QMimeData> m_copy_result;
+  std::unique_ptr<QMimeData> m_clipboard_content;
   InstructionItem* m_current_selection{nullptr};
 };
 
