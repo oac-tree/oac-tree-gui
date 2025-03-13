@@ -131,6 +131,7 @@ void WorkspaceEditorWidget::SetupTree()
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           &WorkspaceEditorWidget::OnTreeContextMenuRequest);
+  m_tree_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 void WorkspaceEditorWidget::AdjustTreeAppearance()
