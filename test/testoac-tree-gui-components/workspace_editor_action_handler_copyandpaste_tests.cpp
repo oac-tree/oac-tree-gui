@@ -61,11 +61,11 @@ public:
    * @param selection Currently selected variable or one of its leafs.
    * @param current_mime The content of the clipboard.
    */
-  std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(mvvm::SessionItem* selection,
-                                                                    const QMimeData* current_mime)
+  std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
+      const std::vector<mvvm::SessionItem*>& selection, const QMimeData* current_mime)
   {
     ON_CALL(m_mock_context, OnGetMimeData()).WillByDefault(::testing::Return(current_mime));
-    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), {selection});
+    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
   }
 
   MonitorModel m_model;
@@ -74,7 +74,7 @@ public:
 
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, InitialState)
 {
-  auto handler = CreateActionHandler(/*selected variable*/ nullptr, /*mime*/ nullptr);
+  auto handler = CreateActionHandler(/*selected variable*/ {}, /*mime*/ nullptr);
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
 
@@ -92,7 +92,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyOperation)
   EXPECT_EQ(m_mock_context.GetCopyResult(), nullptr);
 
   // instruction is selected, no mime
-  auto handler = CreateActionHandler(var0, nullptr);
+  auto handler = CreateActionHandler({var0}, nullptr);
   EXPECT_TRUE(handler->CanCopy());
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
@@ -108,14 +108,14 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyOperation)
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 {
   {  // nothing is selected, no mime data
-    auto handler = CreateActionHandler(nullptr, nullptr);
+    auto handler = CreateActionHandler({}, nullptr);
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_FALSE(handler->CanPaste());
   }
 
   {  // nothing is selected, wrong mime data
     const QMimeData mime_data;
-    auto handler = CreateActionHandler(nullptr, &mime_data);
+    auto handler = CreateActionHandler({}, &mime_data);
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_FALSE(handler->CanPaste());
   }
@@ -123,7 +123,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
   {  // nothing is selected, correct mime data
     const LocalVariableItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
-    auto handler = CreateActionHandler(nullptr, mime_data.get());
+    auto handler = CreateActionHandler({}, mime_data.get());
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
   }
@@ -132,7 +132,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
     const LocalVariableItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
     auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
-    auto handler = CreateActionHandler(var0, mime_data.get());
+    auto handler = CreateActionHandler({var0}, mime_data.get());
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
   }
@@ -148,7 +148,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
 
   // nothing is selected, copied item in a buffer
-  auto handler = CreateActionHandler(nullptr, mime_data.get());
+  auto handler = CreateActionHandler({}, mime_data.get());
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
   mvvm::SessionItem* reported_item{nullptr};
@@ -179,7 +179,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
 
   // creating action handler mimicking `var0` instruction selected, and mime data in a buffer
-  auto handler = CreateActionHandler(var0, mime_data.get());
+  auto handler = CreateActionHandler({var0}, mime_data.get());
 
   mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
@@ -206,7 +206,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
 
   // creating action handler mimicking `var0` instruction selected
-  auto handler = CreateActionHandler(var0, nullptr);
+  auto handler = CreateActionHandler({var0}, nullptr);
 
   mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
