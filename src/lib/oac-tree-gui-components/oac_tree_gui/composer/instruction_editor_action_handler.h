@@ -93,9 +93,11 @@ public:
   void InsertItem(const std::string& item_type, mvvm::SessionItem* parent,
                   const mvvm::TagIndex& index) override;
 
-private:
   InstructionItem* GetSelectedInstruction() const;
+
   std::vector<InstructionItem*> GetSelectedInstructions() const;
+
+private:
 
   mvvm::ISessionModel* GetModel() const;
   mvvm::SessionItem* GetInstructionContainer() const;
