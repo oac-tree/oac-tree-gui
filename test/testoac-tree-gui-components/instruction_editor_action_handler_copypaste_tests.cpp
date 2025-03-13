@@ -62,8 +62,8 @@ public:
    * @param selection Instruction which will be reported as user selection.
    * @param current_mime The content of the clipboard.
    */
-  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* selection,
-                                                                      std::unique_ptr<QMimeData> clipboard = {})
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
+      InstructionItem* selection, std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));
     return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), selection);
@@ -122,7 +122,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
   }
 
   {  // nothing is selected, wrong mime data
-   auto mime_data = std::make_unique<QMimeData>();
+    auto mime_data = std::make_unique<QMimeData>();
     auto handler = CreateActionHandler(nullptr, std::move(mime_data));
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
     EXPECT_FALSE(handler->CanPasteAfter());
@@ -239,6 +239,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   item_to_paste.SetDisplayName("abc");
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
   // creating action handler mimicking `sequence` instruction selected, and mime data in a buffer
@@ -259,6 +262,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
+
+  // validating request to select just inserted item
+  EXPECT_EQ(reported_item, instructions.at(1));
 }
 
 //! Testing PasteAfter for the following scenario: sequence has two items, the first one selected,
@@ -279,6 +285,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   item_to_paste.SetDisplayName("abc");
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
   // wait0 is selected
@@ -297,10 +306,10 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   const double offset = GetInstructionDropOffset();
   EXPECT_DOUBLE_EQ(inserted_wait->GetX(), offset + wait0_x);
   EXPECT_DOUBLE_EQ(inserted_wait->GetY(), offset + wait0_y);
+  EXPECT_EQ(reported_item, inserted_wait);
 }
 
-//! Insertion instruction in the selected instruction.
-TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -314,6 +323,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
   item_to_paste.SetDisplayName("abc");
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
   // creating action handler mimicking `sequence` instruction selected
@@ -333,6 +345,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
 
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetY(), offset + sequence_y);
+  EXPECT_EQ(reported_item, instructions.at(0));
 }
 
 //! Cut selected instruction.

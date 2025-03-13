@@ -177,6 +177,8 @@ TEST_F(InstructionEditorActionHandlerTest, AddChoice)
 {
   auto handler = CreateActionHandler(nullptr);
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+
   // appending instruction to the container
   handler->InsertInstructionAfter(domainconstants::kChoiceInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
@@ -199,6 +201,8 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(sequence);
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+
   // appending instruction to the container
   handler->InsertInstructionAfter(WaitItem::GetStaticType());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
@@ -220,6 +224,8 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
 {
   // creating action handler mimicking "no instruction selected"
   auto handler = CreateActionHandler(nullptr);
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(2);
 
   // appending instruction to the container
   handler->InsertInstructionAfter(WaitItem::GetStaticType());
@@ -270,9 +276,13 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   EXPECT_TRUE(handler->CanInsertInstructionInto(domainconstants::kMessageInstructionType));
   EXPECT_TRUE(handler->CanInsertInstructionAfter(domainconstants::kMessageInstructionType));
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+
   // inserting instruction into selected instruction
   handler->InsertInstructionInto(WaitItem::GetStaticType());
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
 
   // inserting second instruction
   handler->InsertInstructionInto(domainconstants::kMessageInstructionType);
