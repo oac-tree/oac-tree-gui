@@ -251,7 +251,6 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
   auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   var1->SetDisplayName("var1");
 
-  // both iveriables are selected
   auto handler = CreateActionHandler({var0, var1});
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
@@ -265,8 +264,15 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
   handler->Paste();
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 4);
-  EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(2)->GetDisplayName(), std::string("var0"));
+  EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(0)->GetDisplayName(), std::string("var0"));
+  EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(0), var0);
+
+  // appeared in-between of two original variables, since algorith used var0 as first selection
+  EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(1)->GetDisplayName(), std::string("var0"));
+  EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(2)->GetDisplayName(), std::string("var1"));
+
   EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(3)->GetDisplayName(), std::string("var1"));
+  EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(3), var1);
 }
 
 }  // namespace oac_tree_gui::test

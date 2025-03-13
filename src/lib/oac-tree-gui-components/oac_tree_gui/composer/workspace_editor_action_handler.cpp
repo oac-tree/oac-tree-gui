@@ -221,7 +221,6 @@ VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
 
 std::vector<VariableItem *> WorkspaceEditorActionHandler::GetSelectedVariables() const
 {
-  // explicitely finds all top-level selected variables
   return mvvm::utils::CastItems<VariableItem>(m_context.selected_items_callback());
 }
 
@@ -274,7 +273,7 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
     for (auto &item : variable_item)
     {
       inserted = GetModel()->InsertItem(std::move(item), GetWorkspaceItem(), tagindex);
-      tagindex = inserted->GetTagIndex();
+      tagindex = inserted->GetTagIndex().Next();
     }
     UpdateProcedurePreamble();
 
