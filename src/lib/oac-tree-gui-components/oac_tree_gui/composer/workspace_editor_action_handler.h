@@ -76,7 +76,8 @@ private:
 
   void UpdateProcedurePreamble();
 
-  void InsertVariableAfterCurrentSelection(std::unique_ptr<mvvm::SessionItem> variable_item);
+  void InsertVariableAfterCurrentSelection(
+      std::vector<std::unique_ptr<mvvm::SessionItem> >& variable_item);
 
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});

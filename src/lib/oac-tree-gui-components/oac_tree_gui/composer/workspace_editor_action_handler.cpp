@@ -87,7 +87,9 @@ void WorkspaceEditorActionHandler::AddVariable(const std::string &variable_type_
 
   auto variable_item = CreateVariableItem(variable_type_name);
   SetupNewVariable(variable_item.get(), GetWorkspaceItem()->GetVariableCount());
-  InsertVariableAfterCurrentSelection(std::move(variable_item));
+  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
+  items.push_back(std::move(variable_item));
+  InsertVariableAfterCurrentSelection(items);
 }
 
 bool WorkspaceEditorActionHandler::CanRemoveVariable() const
@@ -208,13 +210,7 @@ void WorkspaceEditorActionHandler::Paste()
   }
 
   auto items = sup::gui::CreateSessionItems(GetMimeData(), kCopyVariableMimeType);
-  mvvm::utils::BeginMacro(*GetModel(), "Insert variables");
-
-  for (auto &item : items)
-  {
-    InsertVariableAfterCurrentSelection(std::move(item));
-  }
-  mvvm::utils::EndMacro(*GetModel());
+  InsertVariableAfterCurrentSelection(items);
 }
 
 VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
@@ -225,9 +221,6 @@ VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
 
 std::vector<VariableItem *> WorkspaceEditorActionHandler::GetSelectedVariables() const
 {
-  // Find all variables even if only part of it is selected
-  // return mvvm::utils::FindItemsUp<VariableItem>(m_context.selected_items_callback());
-
   // explicitely finds all top-level selected variables
   return mvvm::utils::CastItems<VariableItem>(m_context.selected_items_callback());
 }
@@ -262,7 +255,7 @@ void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
 }
 
 void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
-    std::unique_ptr<mvvm::SessionItem> variable_item)
+    std::vector<std::unique_ptr<mvvm::SessionItem>> &variable_item)
 {
   if (!GetModel())
   {
@@ -271,14 +264,19 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
 
   auto selected_item = GetSelectedVariable();
 
+  mvvm::utils::BeginMacro(*GetModel(), "Insert variable");
+
   try
   {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
-    mvvm::utils::BeginMacro(*GetModel(), "Insert variable");
-    auto inserted = GetModel()->InsertItem(std::move(variable_item), GetWorkspaceItem(), tagindex);
+    mvvm::SessionItem *inserted{nullptr};
+    for (auto &item : variable_item)
+    {
+      inserted = GetModel()->InsertItem(std::move(item), GetWorkspaceItem(), tagindex);
+      tagindex = inserted->GetTagIndex();
+    }
     UpdateProcedurePreamble();
-    mvvm::utils::EndMacro(*GetModel());
 
     SelectNotify(inserted);
   }
@@ -286,6 +284,8 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
   {
     SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
   }
+
+  mvvm::utils::EndMacro(*GetModel());
 }
 
 void WorkspaceEditorActionHandler::SendMessage(const std::string &text,

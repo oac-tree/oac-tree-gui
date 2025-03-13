@@ -260,7 +260,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(2);
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
 
   handler->Paste();
 
