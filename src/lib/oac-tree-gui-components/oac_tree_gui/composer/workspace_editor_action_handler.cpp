@@ -99,20 +99,21 @@ bool WorkspaceEditorActionHandler::CanRemoveVariable() const
 
 void WorkspaceEditorActionHandler::RemoveVariable()
 {
-  if (auto selected = GetSelectedVariable(); selected)
+  mvvm::SessionItem *next_to_select{nullptr};
+
+  mvvm::utils::BeginMacro(*GetModel(), "Remove variable");
+  for (auto selected : GetSelectedVariables())
   {
-    auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected);
-
-    mvvm::utils::BeginMacro(*GetModel(), "Remove variable");
+    next_to_select = mvvm::utils::FindNextSiblingToSelect(selected);
     GetModel()->RemoveItem(selected);
-    UpdateProcedurePreamble();
-    mvvm::utils::EndMacro(*GetModel());
+  }
+  UpdateProcedurePreamble();
+  mvvm::utils::EndMacro(*GetModel());
 
-    if (next_to_select)
-    {
-      // suggest to select something else instead of just deleted variable
-      SelectNotify(next_to_select);
-    }
+  if (next_to_select)
+  {
+    // suggest to select something else instead of just deleted variable
+    SelectNotify(next_to_select);
   }
 }
 

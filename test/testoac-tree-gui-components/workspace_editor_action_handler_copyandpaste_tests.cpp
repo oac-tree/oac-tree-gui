@@ -224,6 +224,26 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   EXPECT_EQ(reported_item, var1);
 }
 
+TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, RemoveTwoVariables)
+{
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var2 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+
+  // both iveriables are selected
+  auto handler = CreateActionHandler({var0, var1});
+
+  mvvm::SessionItem* reported_item{nullptr};
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+      .WillOnce(::testing::SaveArg<0>(&reported_item));
+
+  handler->RemoveVariable();
+
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
+  EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(0), var2);
+  EXPECT_EQ(reported_item, var2);
+}
+
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
@@ -244,7 +264,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
 
   handler->Paste();
 
-  EXPECT_EQ(GetWorkspaceItem()->GetVariableCount(), 4);
+  ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 4);
   EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(2)->GetDisplayName(), std::string("var0"));
   EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(3)->GetDisplayName(), std::string("var1"));
 }
