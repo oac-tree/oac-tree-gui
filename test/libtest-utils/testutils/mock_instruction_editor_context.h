@@ -55,7 +55,7 @@ public:
    * @param instruction The instruction which will be reported as selected by the user.
    */
   InstructionEditorContext CreateContext(InstructionContainerItem* instruction_container,
-                                         InstructionItem* selected_item);
+                                         const std::vector<InstructionItem*>& current_selection);
 
   /**
    * @brief Creates action handler.
@@ -64,7 +64,8 @@ public:
    * user.
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      InstructionContainerItem* instruction_container, InstructionItem* selected_item);
+      InstructionContainerItem* instruction_container,
+      const std::vector<InstructionItem*>& current_selection);
 
   QMimeData* GetClipboardContent() const;
 
@@ -72,7 +73,7 @@ public:
 
   //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_clipboard_content;
-  InstructionItem* m_current_selection{nullptr};
+  std::vector<InstructionItem*> m_current_selection;
 };
 
 }  // namespace oac_tree_gui::test

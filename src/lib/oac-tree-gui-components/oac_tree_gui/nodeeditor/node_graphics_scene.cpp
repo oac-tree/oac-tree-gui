@@ -298,11 +298,7 @@ InstructionEditorContext NodeGraphicsScene::CreateContext()
 {
   InstructionEditorContext result;
   result.instruction_container = [this]() { return m_instruction_container; };
-  result.selected_instruction = [this]()
-  {
-    auto selected = GetSelectedInstructions();
-    return selected.empty() ? nullptr : selected.at(0);
-  };
+  result.selected_instructions = [this]() { return GetSelectedInstructions(); };
   result.select_notify = [this](auto item)
   {
     const std::vector<InstructionItem *> to_select({dynamic_cast<InstructionItem *>(item)});

@@ -223,7 +223,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
 {
   InstructionEditorContext result;
   result.instruction_container = [this]() { return m_instruction_container; };
-  result.selected_instruction = [this]() { return GetSelectedInstruction(); };
+  result.selected_instructions = [this]() { return GetSelectedInstructions(); };
 
   auto on_select_request = [this](auto item)
   {

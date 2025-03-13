@@ -63,16 +63,16 @@ InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext()
   InstructionEditorContext result;
   result.instruction_container = [this]()
   { return m_current_procedure ? m_current_procedure->GetInstructionContainer() : nullptr; };
-  result.selected_instruction = [this]() { return GetSelectedInstruction(); };
+  result.selected_instructions = [this]() { return GetSelectedInstructions(); };
   auto on_select_request = [this](mvvm::SessionItem *item) { emit SelectInstructionRequest(item); };
   result.select_notify = on_select_request;
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
   return result;
 }
 
-InstructionItem *ProcedureEditor::GetSelectedInstruction()
+std::vector<InstructionItem *> ProcedureEditor::GetSelectedInstructions()
 {
-  return m_selected_instructions.empty() ? nullptr : m_selected_instructions.front();
+  return m_selected_instructions;
 }
 
 }  // namespace oac_tree_gui

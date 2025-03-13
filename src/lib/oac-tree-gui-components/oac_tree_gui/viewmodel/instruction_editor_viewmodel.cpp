@@ -200,7 +200,7 @@ InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorCont
   // no need to fully configure the context, here we are using only its limited part
   InstructionEditorContext result;
   result.instruction_container = [this]() { return GetRootSessionItem(); };
-  result.selected_instruction = []() { return nullptr; };
+  result.selected_instructions = []() { return std::vector<InstructionItem *>(); };
   auto on_select_request = [](mvvm::SessionItem *item) { (void)item; };
   result.select_notify = on_select_request;
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };

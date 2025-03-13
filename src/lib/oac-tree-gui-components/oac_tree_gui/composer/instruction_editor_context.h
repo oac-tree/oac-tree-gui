@@ -56,8 +56,8 @@ struct InstructionEditorContext
   //! callback to get current instruction container to operate
   std::function<mvvm::SessionItem*()> instruction_container;
 
-  //! callback to get currently selected instruction
-  std::function<InstructionItem*()> selected_instruction;
+  //! callback to get currently selected instructions
+  std::function<std::vector<InstructionItem*>()> selected_instructions;
 
   //!< A callback to notify the user that the item should be selected in a widget. This can
   //!< happen when a new item was just inserted, or some other item should be selected instead of

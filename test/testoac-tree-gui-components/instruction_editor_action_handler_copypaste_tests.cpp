@@ -66,7 +66,7 @@ public:
       InstructionItem* selection, std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));
-    return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), selection);
+    return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), {selection});
   }
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};

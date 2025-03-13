@@ -30,14 +30,15 @@ namespace oac_tree_gui::test
 {
 
 InstructionEditorContext MockInstructionEditorContext::CreateContext(
-    InstructionContainerItem* instruction_container, InstructionItem* selected_item)
+    InstructionContainerItem* instruction_container,
+    const std::vector<InstructionItem*>& current_selection)
 {
   InstructionEditorContext result;
 
-  m_current_selection = selected_item;
+  m_current_selection = current_selection;
 
   result.instruction_container = [this, instruction_container]() { return instruction_container; };
-  result.selected_instruction = [this]() { return m_current_selection; };
+  result.selected_instructions = [this]() { return m_current_selection; };
   result.select_notify = [this](auto item) { SelectRequest(item); };
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem* item)
@@ -58,10 +59,11 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
 }
 
 std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::CreateActionHandler(
-    InstructionContainerItem* instruction_container, InstructionItem* selected_item)
+    InstructionContainerItem* instruction_container,
+    const std::vector<InstructionItem *> &current_selection)
 {
   return std::make_unique<InstructionEditorActionHandler>(
-      CreateContext(instruction_container, selected_item));
+      CreateContext(instruction_container, current_selection));
 }
 
 QMimeData* MockInstructionEditorContext::GetClipboardContent() const

@@ -92,7 +92,7 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
     throw RuntimeException("Callback to retrieve current instruction container is not defined");
   }
 
-  if (!m_context.selected_instruction)
+  if (!m_context.selected_instructions)
   {
     throw RuntimeException("Callback to get selected instruction is not defined");
   }
@@ -317,7 +317,13 @@ void InstructionEditorActionHandler::InsertItem(const std::string &item_type,
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
 {
-  return m_context.selected_instruction();
+  auto instructions = GetSelectedInstructions();
+  return instructions.empty() ? nullptr : instructions.front();
+}
+
+std::vector<InstructionItem *> InstructionEditorActionHandler::GetSelectedInstructions() const
+{
+  return m_context.selected_instructions();
 }
 
 mvvm::ISessionModel *InstructionEditorActionHandler::GetModel() const

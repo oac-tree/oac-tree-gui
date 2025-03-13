@@ -95,6 +95,8 @@ public:
 
 private:
   InstructionItem* GetSelectedInstruction() const;
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
+
   mvvm::ISessionModel* GetModel() const;
   mvvm::SessionItem* GetInstructionContainer() const;
   void SelectNotify(mvvm::SessionItem* item) const;

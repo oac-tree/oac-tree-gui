@@ -86,7 +86,7 @@ signals:
 private:
   InstructionEditorContext CreateInstructionEditorContext();
 
-  InstructionItem* GetSelectedInstruction();
+  std::vector<InstructionItem*> GetSelectedInstructions();
 
   ProcedureItem* m_current_procedure{nullptr};
   std::unique_ptr<IInstructionEditorActionHandler> m_action_handler;

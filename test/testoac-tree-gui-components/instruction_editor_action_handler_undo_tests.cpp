@@ -72,7 +72,7 @@ public:
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* selection)
   {
     return m_mock_context.CreateActionHandler(m_procedure_item->GetInstructionContainer(),
-                                              selection);
+                                              {selection});
   }
 
   /**
@@ -125,7 +125,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfter)
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
                                   domainconstants::kEpicsPVXSPluginName)}));
 
-  m_mock_context.m_current_selection = GetInstructionContainer()->GetInstructions().at(0);
+  m_mock_context.m_current_selection = {GetInstructionContainer()->GetInstructions().at(0)};
   handler->RemoveInstruction();
 
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 0);
@@ -183,7 +183,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
 
   // inserting EPICS instruction into a sequence
   auto inserted_sequence = GetInstructionContainer()->GetInstructions().at(0);
-  m_mock_context.m_current_selection = inserted_sequence;
+  m_mock_context.m_current_selection = {inserted_sequence};
 
   handler->InsertInstructionInto(PvAccessReadInstructionItem::GetStaticType());
   ASSERT_EQ(inserted_sequence->GetInstructions().size(), 1);
