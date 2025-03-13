@@ -180,6 +180,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
   // pretending that var0 is selected
   auto handler = CreateActionHandler({});
 
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+
   EXPECT_FALSE(handler->CanRemoveVariable());
 
   // adding variable
@@ -199,6 +201,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
 
   // pretending that var0 is selected
   auto handler = CreateActionHandler({var0});
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
 
   // adding variable
   handler->AddVariable(FileVariableItem::GetStaticType());
