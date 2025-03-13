@@ -267,7 +267,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
   EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(0)->GetDisplayName(), std::string("var0"));
   EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(0), var0);
 
-  // appeared in-between of two original variables, since algorith used var0 as first selection
+  // appeared in-between of two original variables, since algorithm used var0 as first selection
   EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(1)->GetDisplayName(), std::string("var0"));
   EXPECT_EQ(GetWorkspaceItem()->GetVariables().at(2)->GetDisplayName(), std::string("var1"));
 
