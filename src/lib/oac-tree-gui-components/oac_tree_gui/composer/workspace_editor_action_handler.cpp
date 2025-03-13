@@ -40,6 +40,19 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+std::vector<const mvvm::SessionItem *> GetItemVector(const std::vector<VariableItem *> &vec)
+{
+  std::vector<const mvvm::SessionItem *> result;
+  std::transform(vec.begin(), vec.end(), std::back_inserter(result),
+                 [](auto element) { return element; });
+  return result;
+}
+
+}  // namespace
+
 WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context)
     : m_context(std::move(context))
 {
@@ -175,8 +188,8 @@ void WorkspaceEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(
-      sup::gui::CreateCopyMimeData(*GetSelectedVariable(), kCopyVariableMimeType));
+  auto items = GetItemVector(GetSelectedVariables());
+  m_context.set_mime_data(sup::gui::CreateCopyMimeData(items, kCopyVariableMimeType));
 }
 
 bool WorkspaceEditorActionHandler::CanPaste() const
@@ -193,8 +206,14 @@ void WorkspaceEditorActionHandler::Paste()
     return;
   }
 
-  InsertVariableAfterCurrentSelection(
-      sup::gui::CreateSessionItem(GetMimeData(), kCopyVariableMimeType));
+  auto items = sup::gui::CreateSessionItems(GetMimeData(), kCopyVariableMimeType);
+  mvvm::utils::BeginMacro(*GetModel(), "Insert variables");
+
+  for (auto &item : items)
+  {
+    InsertVariableAfterCurrentSelection(std::move(item));
+  }
+  mvvm::utils::EndMacro(*GetModel());
 }
 
 VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const

@@ -41,7 +41,10 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
   result.send_message = [this](const auto &message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem *item)
   { return OnEditAnyvalue(item); };
-  result.get_mime_data = [this]() { return OnGetMimeData(); };
+  result.get_mime_data = [this]()
+  {
+    return OnGetMimeData();
+  };
   result.set_mime_data = [this](auto mime_data)
   {
     // mimicking clipboard, saving copy result here
