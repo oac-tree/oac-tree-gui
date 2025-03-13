@@ -107,6 +107,26 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
   EXPECT_NO_THROW(handler->AddVariable(LocalVariableItem::GetStaticType()));
 }
 
+TEST_F(WorkspaceEditorActionHandlerTest, SelectedVariables)
+{
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
+  auto initial_anyvalue_item = var0->GetAnyValueItem();
+
+  {
+    auto handler = CreateActionHandler({var0, var1});
+    EXPECT_EQ(handler->GetSelectedVariable(), var0);
+    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<VariableItem*>({var0, var1}));
+  }
+
+  {  // part of var0 is selected, and var1
+    auto handler = CreateActionHandler({initial_anyvalue_item, var1});
+    EXPECT_EQ(handler->GetSelectedVariable(), var1);
+    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<VariableItem*>({var1}));
+  }
+}
+
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 {
   // pretending that nothing is selected

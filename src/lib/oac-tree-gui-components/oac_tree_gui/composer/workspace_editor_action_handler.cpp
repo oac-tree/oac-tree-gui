@@ -197,6 +197,21 @@ void WorkspaceEditorActionHandler::Paste()
       sup::gui::CreateSessionItem(GetMimeData(), kCopyVariableMimeType));
 }
 
+VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
+{
+  auto selected_variables = GetSelectedVariables();
+  return selected_variables.empty() ? nullptr : selected_variables.front();
+}
+
+std::vector<VariableItem *> WorkspaceEditorActionHandler::GetSelectedVariables() const
+{
+  // Find all variables even if only part of it is selected
+  // return mvvm::utils::FindItemsUp<VariableItem>(m_context.selected_items_callback());
+
+  // explicitely finds all top-level selected variables
+  return mvvm::utils::CastItems<VariableItem>(m_context.selected_items_callback());
+}
+
 mvvm::ISessionModel *WorkspaceEditorActionHandler::GetModel() const
 {
   return GetWorkspaceItem() ? GetWorkspaceItem()->GetModel() : nullptr;
@@ -205,12 +220,6 @@ mvvm::ISessionModel *WorkspaceEditorActionHandler::GetModel() const
 WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
 {
   return m_context.selected_workspace();
-}
-
-VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
-{
-  auto items = m_context.selected_items_callback();
-  return items.empty() ? nullptr : dynamic_cast<VariableItem *>(items.front());
 }
 
 void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
