@@ -38,11 +38,11 @@ Other applications:
 - gtest >= 1.12
 - libxml2
 - Qt6 (base, tools, charts, svg)
-- oak-tree and plugins
+- oac-tree and plugins
 
 *Note:* Qt5 is also possible with `-DCOA_USE_QT6=OFF` flag
 
-**oak-tree and plugins**
+**oac-tree and plugins**
 
 - sup-utils
 - sup-dto
@@ -63,7 +63,7 @@ Other applications:
     using the `vcpkg` dependency manager. While it is not yet ready, one has to install oac-tree packages
     one by one using the standard ``CMake/make/make install`` chain.
 
-All oak-tree packages are ordinary CMake packages and they can be compiled and installed on any Linux
+All oac-tree packages are ordinary CMake packages and they can be compiled and installed on any Linux
 of user choice like any other CMake project. Here we show the installation of `sup-utils` package. 
 All others have to be installed in a similar way in the order given by the list above.
 We assume that the user wants to install all dependencies into `<path-to-local-install>` (e.g. /opt/local).
@@ -95,7 +95,7 @@ make -j4; ctest
 ### Installation from RPMs
 
 ```bash
-yum install codac-core-7.2-sequencer-gui.x86_64
+yum install codac-core-7.3-sequencer-gui.x86_64
 ```
 
 ## Run on CODAC
@@ -109,7 +109,7 @@ yum install codac-core-7.2-sequencer-gui.x86_64
 
 ```bash
 # prerequisites
-yum install codac-core-7.2-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
+yum install codac-core-7.3-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
 yum install qt5-qtbase-devel.x86_64 qt5-qtsvg-devel.x86_64 qt5-qttools-devel.x86_64 qt5-qtbase-gui.x86_64 qt5-qtcharts-devel.x86_64 adwaita-qt5.x86_64 mesa-libGL-devel.x86_64
 ```
 
