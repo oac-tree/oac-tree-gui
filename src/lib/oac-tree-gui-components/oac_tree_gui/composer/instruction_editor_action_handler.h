@@ -145,7 +145,7 @@ private:
    */
   void InsertIntoCurrentSelection(std::unique_ptr<mvvm::SessionItem> item);
 
-  mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem* parent,
+  void InsertItem(std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem* parent,
                                 const mvvm::TagIndex& index, const position_t& position);
 
   InstructionEditorContext m_context;

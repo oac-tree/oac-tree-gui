@@ -116,8 +116,8 @@ InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 void InstructionEditorActionHandler::DropInstruction(const std::string &item_type,
                                                      const position_t &pos)
 {
-  (void)InsertItem(CreateInstructionTree(item_type), GetInstructionContainer(),
-                   mvvm::TagIndex::Append(), pos);
+  InsertItem(CreateInstructionTree(item_type), GetInstructionContainer(), mvvm::TagIndex::Append(),
+             pos);
 }
 
 bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string &item_type) const
@@ -313,7 +313,7 @@ void InstructionEditorActionHandler::InsertItem(const std::string &item_type,
                                                 mvvm::SessionItem *parent,
                                                 const mvvm::TagIndex &index)
 {
-  (void)InsertItem(CreateInstructionTree(item_type), parent, index, GetCoordinateNearby(nullptr));
+  InsertItem(CreateInstructionTree(item_type), parent, index, GetCoordinateNearby(nullptr));
 }
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
@@ -455,20 +455,21 @@ void InstructionEditorActionHandler::InsertAfterCurrentSelection(
   auto selected_item = GetSelectedInstruction();
   auto parent = selected_item ? selected_item->GetParent() : GetInstructionContainer();
   auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-  (void)InsertItem(std::move(item), parent, tagindex, GetCoordinateNearby(selected_item));
+  InsertItem(std::move(item), parent, tagindex, GetCoordinateNearby(selected_item));
 }
 
 void InstructionEditorActionHandler::InsertIntoCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> item)
 {
   auto selected_item = GetSelectedInstruction();
-  (void)InsertItem(std::move(item), selected_item, mvvm::TagIndex::Append(),
-                   GetCoordinateNearby(selected_item));
+  InsertItem(std::move(item), selected_item, mvvm::TagIndex::Append(),
+             GetCoordinateNearby(selected_item));
 }
 
-mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
-    std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index,
-    const position_t &position)
+void InstructionEditorActionHandler::InsertItem(std::unique_ptr<mvvm::SessionItem> item,
+                                                mvvm::SessionItem *parent,
+                                                const mvvm::TagIndex &index,
+                                                const position_t &position)
 {
   if (!GetModel())
   {
@@ -501,8 +502,6 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
   }
 
   mvvm::utils::EndMacro(*GetModel());
-
-  return result;
 }
 
 }  // namespace oac_tree_gui
