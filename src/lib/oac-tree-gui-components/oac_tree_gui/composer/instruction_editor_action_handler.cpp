@@ -280,7 +280,7 @@ void InstructionEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateInstructionTreeCopyMimeData(*GetSelectedInstruction()));
+  m_context.set_mime_data(CreateInstructionSelectionCopyMimeData(GetSelectedInstructions()));
 }
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
@@ -297,9 +297,7 @@ void InstructionEditorActionHandler::PasteAfter()
     return;
   }
 
-  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
-  items.push_back(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
-  InsertAfterCurrentSelection(std::move(items));
+  InsertAfterCurrentSelection(CreateInstructions(GetMimeData()));
 }
 
 bool InstructionEditorActionHandler::CanPasteInto() const
@@ -315,9 +313,8 @@ void InstructionEditorActionHandler::PasteInto()
   {
     return;
   }
-  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
-  items.push_back(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
-  InsertIntoCurrentSelection(std::move(items));
+
+  InsertIntoCurrentSelection(CreateInstructions(GetMimeData()));
 }
 
 void InstructionEditorActionHandler::InsertItem(const std::string &item_type,
@@ -518,12 +515,12 @@ void InstructionEditorActionHandler::InsertItem(
     }
   }
 
+  mvvm::utils::EndMacro(*GetModel());
+
   for (auto item : to_notify)
   {
     SelectNotify(item);
   }
-
-  mvvm::utils::EndMacro(*GetModel());
 }
 
 }  // namespace oac_tree_gui
