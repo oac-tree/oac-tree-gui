@@ -1,5 +1,6 @@
 Changes for 1.8.0:
 
+- Provide copy-and-paste for multiple instruction selection
 - Provide copy-and-paste and removal for multiple variable selection
 - Provide zoom in/out in NodeEditor with the mouse Ctrl-wheel
 - Introduce behavior modifier for all instructions
