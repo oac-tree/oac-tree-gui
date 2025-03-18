@@ -116,8 +116,10 @@ InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 void InstructionEditorActionHandler::DropInstruction(const std::string &item_type,
                                                      const position_t &pos)
 {
-  InsertItem(CreateInstructionTree(item_type), GetInstructionContainer(), mvvm::TagIndex::Append(),
-             pos);
+  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
+  items.push_back(CreateInstructionTree(item_type));
+
+  InsertItem(std::move(items), GetInstructionContainer(), mvvm::TagIndex::Append(), pos);
 }
 
 bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string &item_type) const
@@ -134,7 +136,10 @@ void InstructionEditorActionHandler::InsertInstructionAfter(const std::string &i
     return;
   }
 
-  InsertAfterCurrentSelection(CreateInstructionTree(item_type));
+  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
+  items.push_back(CreateInstructionTree(item_type));
+
+  InsertAfterCurrentSelection(std::move(items));
 }
 
 bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string &item_type) const
@@ -151,7 +156,10 @@ void InstructionEditorActionHandler::InsertInstructionInto(const std::string &it
     return;
   }
 
-  InsertIntoCurrentSelection(CreateInstructionTree(item_type));
+  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
+  items.push_back(CreateInstructionTree(item_type));
+
+  InsertIntoCurrentSelection(std::move(items));
 }
 
 bool InstructionEditorActionHandler::CanRemoveInstruction() const
@@ -289,7 +297,9 @@ void InstructionEditorActionHandler::PasteAfter()
     return;
   }
 
-  InsertAfterCurrentSelection(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
+  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
+  items.push_back(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
+  InsertAfterCurrentSelection(std::move(items));
 }
 
 bool InstructionEditorActionHandler::CanPasteInto() const
@@ -305,15 +315,18 @@ void InstructionEditorActionHandler::PasteInto()
   {
     return;
   }
-
-  InsertIntoCurrentSelection(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
+  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
+  items.push_back(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
+  InsertIntoCurrentSelection(std::move(items));
 }
 
 void InstructionEditorActionHandler::InsertItem(const std::string &item_type,
                                                 mvvm::SessionItem *parent,
                                                 const mvvm::TagIndex &index)
 {
-  InsertItem(CreateInstructionTree(item_type), parent, index, GetCoordinateNearby(nullptr));
+  std::vector<std::unique_ptr<mvvm::SessionItem>> items;
+  items.push_back(CreateInstructionTree(item_type));
+  InsertItem(std::move(items), parent, index, GetCoordinateNearby(nullptr));
 }
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
@@ -450,26 +463,25 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
 }
 
 void InstructionEditorActionHandler::InsertAfterCurrentSelection(
-    std::unique_ptr<mvvm::SessionItem> item)
+    std::vector<std::unique_ptr<mvvm::SessionItem>> items)
 {
   auto selected_item = GetSelectedInstruction();
   auto parent = selected_item ? selected_item->GetParent() : GetInstructionContainer();
   auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-  InsertItem(std::move(item), parent, tagindex, GetCoordinateNearby(selected_item));
+  InsertItem(std::move(items), parent, tagindex, GetCoordinateNearby(selected_item));
 }
 
 void InstructionEditorActionHandler::InsertIntoCurrentSelection(
-    std::unique_ptr<mvvm::SessionItem> item)
+    std::vector<std::unique_ptr<mvvm::SessionItem>> items)
 {
   auto selected_item = GetSelectedInstruction();
-  InsertItem(std::move(item), selected_item, mvvm::TagIndex::Append(),
+  InsertItem(std::move(items), selected_item, mvvm::TagIndex::Append(),
              GetCoordinateNearby(selected_item));
 }
 
-void InstructionEditorActionHandler::InsertItem(std::unique_ptr<mvvm::SessionItem> item,
-                                                mvvm::SessionItem *parent,
-                                                const mvvm::TagIndex &index,
-                                                const position_t &position)
+void InstructionEditorActionHandler::InsertItem(
+    std::vector<std::unique_ptr<mvvm::SessionItem>> items, mvvm::SessionItem *parent,
+    const mvvm::TagIndex &index, const position_t &position)
 {
   if (!GetModel())
   {
@@ -483,22 +495,32 @@ void InstructionEditorActionHandler::InsertItem(std::unique_ptr<mvvm::SessionIte
 
   mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
 
-  mvvm::SessionItem *result{nullptr};
-  const auto item_type = item->GetType();
-  try
+  auto last_tag_index = index;
+  std::vector<mvvm::SessionItem *> to_notify;
+  for (auto &item : items)
   {
-    result = GetModel()->InsertItem(std::move(item), parent, index);
-    UpdateProcedurePreamble();
-    AlignInstructionTree(position, result);
-
-    SelectNotify(result);
+    mvvm::SessionItem *result{nullptr};
+    const auto item_type = item->GetType();
+    try
+    {
+      result = GetModel()->InsertItem(std::move(item), parent, last_tag_index);
+      to_notify.push_back(result);
+      last_tag_index = result->GetTagIndex().Next();
+      UpdateProcedurePreamble();
+      AlignInstructionTree(position, result);
+    }
+    catch (const std::exception &ex)
+    {
+      std::ostringstream ostr;
+      ostr << "Exception was caught while trying to insert instruction [" << item_type
+           << "] into parent [" << parent->GetType() << "]";
+      SendMessage("Can't insert instruction", ostr.str(), ex.what());
+    }
   }
-  catch (const std::exception &ex)
+
+  for (auto item : to_notify)
   {
-    std::ostringstream ostr;
-    ostr << "Exception was caught while trying to insert instruction [" << item_type
-         << "] into parent [" << parent->GetType() << "]";
-    SendMessage("Can't insert instruction", ostr.str(), ex.what());
+    SelectNotify(item);
   }
 
   mvvm::utils::EndMacro(*GetModel());

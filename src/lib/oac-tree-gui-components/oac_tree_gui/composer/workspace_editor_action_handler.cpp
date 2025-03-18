@@ -254,7 +254,7 @@ void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
 }
 
 void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
-    std::vector<std::unique_ptr<mvvm::SessionItem>> &variable_item)
+    std::vector<std::unique_ptr<mvvm::SessionItem>> &variable_items)
 {
   if (!GetModel())
   {
@@ -270,7 +270,7 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
     mvvm::SessionItem *inserted{nullptr};
-    for (auto &item : variable_item)
+    for (auto &item : variable_items)
     {
       inserted = GetModel()->InsertItem(std::move(item), GetWorkspaceItem(), tagindex);
       tagindex = inserted->GetTagIndex().Next();

@@ -98,7 +98,6 @@ public:
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
 private:
-
   mvvm::ISessionModel* GetModel() const;
   mvvm::SessionItem* GetInstructionContainer() const;
   void SelectNotify(mvvm::SessionItem* item) const;
@@ -138,15 +137,15 @@ private:
   /**
    * @brief Inserts given item after current selection.
    */
-  void InsertAfterCurrentSelection(std::unique_ptr<mvvm::SessionItem> item);
+  void InsertAfterCurrentSelection(std::vector<std::unique_ptr<mvvm::SessionItem>> items);
 
   /**
    * @brief Inserts given item into current selection.
    */
-  void InsertIntoCurrentSelection(std::unique_ptr<mvvm::SessionItem> item);
+  void InsertIntoCurrentSelection(std::vector<std::unique_ptr<mvvm::SessionItem>> items);
 
-  void InsertItem(std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem* parent,
-                                const mvvm::TagIndex& index, const position_t& position);
+  void InsertItem(std::vector<std::unique_ptr<mvvm::SessionItem>> items, mvvm::SessionItem* parent,
+                  const mvvm::TagIndex& index, const position_t& position);
 
   InstructionEditorContext m_context;
 };
