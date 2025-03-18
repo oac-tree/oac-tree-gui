@@ -60,4 +60,27 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionCopyMimeData)
   EXPECT_TRUE(reconstructed_sequence->GetInstructions().empty());
 }
 
+TEST_F(InstructionCopyHelperTest, CreateInstructionTreeCopyMimeData)
+{
+  mvvm::ApplicationModel model;
+
+  auto sequence = model.InsertItem<SequenceItem>();
+  sequence->SetDisplayName("abc");
+  auto wait = model.InsertItem<WaitItem>(sequence);
+  wait->SetDisplayName("def");
+
+  auto mime_data = CreateInstructionTreeCopyMimeData(*sequence);
+
+  auto reconstructed_items = CreateInstructions(mime_data.get());
+  ASSERT_EQ(reconstructed_items.size(), 1);
+
+  auto reconstructed_sequence = dynamic_cast<SequenceItem*>(reconstructed_items.at(0).get());
+  ASSERT_NE(reconstructed_sequence, nullptr);
+  EXPECT_EQ(reconstructed_sequence->GetDisplayName(), std::string("abc"));
+
+  // children were copied
+  ASSERT_EQ(reconstructed_sequence->GetInstructions().size(), 1);
+  EXPECT_EQ(reconstructed_sequence->GetInstructions().at(0)->GetDisplayName(), std::string("def"));
+}
+
 }  // namespace oac_tree_gui::test

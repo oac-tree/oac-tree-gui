@@ -43,6 +43,11 @@ class InstructionItem;
 std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& instruction);
 
 /**
+ * @brief Creates copy of instruction, all children included.
+ */
+std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction);
+
+/**
  * @brief Returns vector of instructions from given mime data.
  */
 std::vector<std::unique_ptr<mvvm::SessionItem>> CreateInstructions(const QMimeData* mime_data);

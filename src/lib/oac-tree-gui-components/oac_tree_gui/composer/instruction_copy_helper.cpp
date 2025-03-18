@@ -46,4 +46,9 @@ std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeD
   return sup::gui::CreateSessionItems(mime_data, kCopyInstructionMimeType);
 }
 
+std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction)
+{
+  return sup::gui::CreateCopyMimeData(instruction, kCopyInstructionMimeType, {});
+}
+
 }  // namespace oac_tree_gui

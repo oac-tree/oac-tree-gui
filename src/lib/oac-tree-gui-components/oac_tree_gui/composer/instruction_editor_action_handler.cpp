@@ -19,6 +19,8 @@
 
 #include "instruction_editor_action_handler.h"
 
+#include "instruction_copy_helper.h"
+
 #include <oac_tree_gui/components/anyvalue_dialog_result.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -270,8 +272,7 @@ void InstructionEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(
-      sup::gui::CreateCopyMimeData(*GetSelectedInstruction(), kCopyInstructionMimeType));
+  m_context.set_mime_data(CreateInstructionTreeCopyMimeData(*GetSelectedInstruction()));
 }
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
