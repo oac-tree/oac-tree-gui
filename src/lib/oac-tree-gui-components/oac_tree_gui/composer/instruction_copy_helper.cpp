@@ -20,6 +20,7 @@
 #include "instruction_copy_helper.h"
 
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
 #include <sup/gui/components/copy_and_paste_helper.h>
@@ -50,9 +51,15 @@ std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeD
 std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
     const std::vector<InstructionItem*>& selection)
 {
-  // accept all items that are in selection list
+  // accept all items that are instructions and in the selection list, accept all properties
   auto filter_func = [&selection](const mvvm::SessionItem& item)
-  { return mvvm::utils::Contains(selection, &item); };
+  {
+    if (item.GetTagIndex().GetTag() == itemconstants::kChildInstructions)
+    {
+      return mvvm::utils::Contains(selection, &item);
+    }
+    return true; // all properties
+  };
 
   // FIXME Find the way to fix this CastItems/MakeConst mess
   auto top_level_selection =

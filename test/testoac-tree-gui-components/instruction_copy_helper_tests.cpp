@@ -103,14 +103,18 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
   // parent and two children
   auto sequence0 = model.InsertItem<SequenceItem>();
   sequence0->SetDisplayName("sequence0");
+  sequence0->SetX(42);
   auto wait0 = model.InsertItem<WaitItem>(sequence0);
   wait0->SetDisplayName("wait0");
+  wait0->SetX(43);
   auto sequence1 = model.InsertItem<SequenceItem>(sequence0);
   sequence1->SetDisplayName("sequence1");
+  sequence1->SetX(44);
 
   // grandchildren
   auto wait1 = model.InsertItem<WaitItem>(sequence1);
   wait1->SetDisplayName("wait1");
+  wait1->SetX(45);
 
   {  // user selection contains two children only
     const std::vector<InstructionItem*> selection({wait0, sequence1});
@@ -139,16 +143,19 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
     ASSERT_EQ(reconstructed_instructions.size(), 1);
     auto reconstructed_parent = reconstructed_instructions.at(0);
     EXPECT_EQ(reconstructed_parent->GetDisplayName(), std::string("sequence0"));
+    EXPECT_EQ(reconstructed_parent->GetX(), 42);
 
     // checking child
     ASSERT_EQ(reconstructed_parent->GetInstructions().size(), 1);
     auto reconstructed_child = reconstructed_parent->GetInstructions().at(0);
     EXPECT_EQ(reconstructed_child->GetDisplayName(), std::string("sequence1"));
+    EXPECT_EQ(reconstructed_child->GetX(), 44);
 
     // checking grandchild
     ASSERT_EQ(reconstructed_child->GetInstructions().size(), 1);
     auto reconstructed_grandchild = reconstructed_child->GetInstructions().at(0);
     EXPECT_EQ(reconstructed_grandchild->GetDisplayName(), std::string("wait1"));
+    EXPECT_EQ(reconstructed_grandchild->GetX(), 45);
   }
 }
 
