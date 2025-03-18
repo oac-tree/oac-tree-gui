@@ -39,7 +39,11 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
 
   result.instruction_container = [this, instruction_container]() { return instruction_container; };
   result.selected_instructions = [this]() { return m_current_selection; };
-  result.select_notify = [this](auto item) { SelectRequest(item); };
+  result.select_notify = [this](auto item)
+  {
+    m_select_requests.push_back(item);
+    SelectRequest(item);
+  };
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem* item)
   { return OnEditAnyvalue(item); };
@@ -60,7 +64,7 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
 
 std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::CreateActionHandler(
     InstructionContainerItem* instruction_container,
-    const std::vector<InstructionItem *> &current_selection)
+    const std::vector<InstructionItem*>& current_selection)
 {
   return std::make_unique<InstructionEditorActionHandler>(
       CreateContext(instruction_container, current_selection));
@@ -74,6 +78,11 @@ QMimeData* MockInstructionEditorContext::GetClipboardContent() const
 void MockInstructionEditorContext::SetClipboardContent(std::unique_ptr<QMimeData> clipboard)
 {
   m_clipboard_content = std::move(clipboard);
+}
+
+std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetSelectRequests()
+{
+  return m_select_requests;
 }
 
 }  // namespace oac_tree_gui::test

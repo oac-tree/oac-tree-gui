@@ -71,9 +71,14 @@ public:
 
   void SetClipboardContent(std::unique_ptr<QMimeData> clipboard);
 
+  std::vector<mvvm::SessionItem*> GetSelectRequests();
+
   //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_clipboard_content;
   std::vector<InstructionItem*> m_current_selection;
+
+  //!< buffer to save all selection requests
+  std::vector<mvvm::SessionItem*> m_select_requests;
 };
 
 }  // namespace oac_tree_gui::test
