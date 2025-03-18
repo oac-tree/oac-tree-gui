@@ -63,10 +63,10 @@ public:
    * @param current_mime The content of the clipboard.
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      InstructionItem* selection, std::unique_ptr<QMimeData> clipboard = {})
+      const std::vector<InstructionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));
-    return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), {selection});
+    return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), selection);
   }
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
@@ -77,7 +77,7 @@ public:
 //! Available operations when nothing is selected.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyPasteWhenNothingIsSelected)
 {
-  auto handler = CreateActionHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
+  auto handler = CreateActionHandler(/*selected instruction*/ {}, /*mime*/ nullptr);
 
   EXPECT_FALSE(handler->CanCopy());
 
@@ -99,7 +99,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
   EXPECT_EQ(m_mock_context.GetClipboardContent(), nullptr);
 
   // instruction is selected, no mime
-  auto handler = CreateActionHandler(sequence, nullptr);
+  auto handler = CreateActionHandler({sequence}, nullptr);
   EXPECT_TRUE(handler->CanCopy());
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
@@ -115,7 +115,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 {
   {  // nothing is selected, no mime data
-    auto handler = CreateActionHandler(/*selected instruction*/ nullptr, /*mime*/ {});
+    auto handler = CreateActionHandler(/*selected instruction*/ {}, /*mime*/ {});
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
     EXPECT_FALSE(handler->CanPasteAfter());
     EXPECT_FALSE(handler->CanPasteInto());
@@ -123,7 +123,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // nothing is selected, wrong mime data
     auto mime_data = std::make_unique<QMimeData>();
-    auto handler = CreateActionHandler(nullptr, std::move(mime_data));
+    auto handler = CreateActionHandler({}, std::move(mime_data));
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
     EXPECT_FALSE(handler->CanPasteAfter());
     EXPECT_FALSE(handler->CanPasteInto());
@@ -132,7 +132,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
   {  // nothing is selected, correct mime data
     const WaitItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
-    auto handler = CreateActionHandler(nullptr, std::move(mime_data));
+    auto handler = CreateActionHandler({}, std::move(mime_data));
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -150,7 +150,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
     auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-    auto handler = CreateActionHandler(sequence, std::move(mime_data));
+    auto handler = CreateActionHandler({sequence}, std::move(mime_data));
     EXPECT_TRUE(handler->CanPasteAfter());
     EXPECT_TRUE(handler->CanPasteInto());
   }
@@ -164,7 +164,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-    auto handler = CreateActionHandler(sequence, std::move(mime_data));
+    auto handler = CreateActionHandler({sequence}, std::move(mime_data));
 
     // it shouldn't be possible to paste after a sequence, since repeat can hold only one
     // instruction
@@ -183,7 +183,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-    auto handler = CreateActionHandler(sequence1, std::move(mime_data));
+    auto handler = CreateActionHandler({sequence1}, std::move(mime_data));
 
     // It is possible to paste inside a sequence0, right after sequence1
     EXPECT_TRUE(handler->CanPasteAfter());
@@ -205,7 +205,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
   // nothing is selected, copied item in a buffer
-  auto handler = CreateActionHandler(nullptr, std::move(mime_data));
+  auto handler = CreateActionHandler({nullptr}, std::move(mime_data));
 
   mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
@@ -245,7 +245,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
   // creating action handler mimicking `sequence` instruction selected, and mime data in a buffer
-  auto handler = CreateActionHandler(sequence, std::move(mime_data));
+  auto handler = CreateActionHandler({sequence}, std::move(mime_data));
 
   // appending instruction to the container
   handler->PasteAfter();
@@ -291,7 +291,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
   // wait0 is selected
-  auto handler = CreateActionHandler(wait0, std::move(mime_data));
+  auto handler = CreateActionHandler({wait0}, std::move(mime_data));
 
   // appending instruction to the container
   handler->PasteAfter();
@@ -329,7 +329,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
   // creating action handler mimicking `sequence` instruction selected
-  auto handler = CreateActionHandler(sequence, std::move(mime_data));
+  auto handler = CreateActionHandler({sequence}, std::move(mime_data));
 
   // inserting instruction into selected instruction
   handler->PasteInto();
@@ -356,7 +356,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   auto wait1 = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
 
   // wait0 is selected
-  auto handler = CreateActionHandler(wait0, nullptr);
+  auto handler = CreateActionHandler({wait0}, nullptr);
 
   mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
