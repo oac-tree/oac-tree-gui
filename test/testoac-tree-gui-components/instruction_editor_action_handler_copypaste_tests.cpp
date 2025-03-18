@@ -374,4 +374,46 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   EXPECT_EQ(reported_item, wait1);
 }
 
+//! Testing PasteAfter for the following scenario: sequence in a model, selected, pasting new
+//! instruction right after it.
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  const double sequence_x = 10;
+  const double sequence_y = 20;
+  sequence->SetX(sequence_x);
+  sequence->SetY(sequence_y);
+
+  auto handler = CreateActionHandler({sequence});
+
+  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
+
+  handler->Copy();
+
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+
+  // appending instruction to the container
+  handler->PasteAfter();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
+
+  // Wait instruction should be after Sequence instruction
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
+  EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::GetStaticType());
+
+  // Check coordinates of Wait instruction. It should be placed nearby to the original
+  // instruction
+  const double offset = GetInstructionDropOffset();
+
+  EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
+  EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
+
+  // validating request to select just inserted item
+  EXPECT_EQ(m_mock_context.GetSelectRequests(),
+            std::vector<mvvm::SessionItem*>({instructions.at(1)}));
+}
+
 }  // namespace oac_tree_gui::test
