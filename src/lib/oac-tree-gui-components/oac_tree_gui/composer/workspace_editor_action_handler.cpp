@@ -89,7 +89,7 @@ void WorkspaceEditorActionHandler::AddVariable(const std::string &variable_type_
   SetupNewVariable(variable_item.get(), GetWorkspaceItem()->GetVariableCount());
   std::vector<std::unique_ptr<mvvm::SessionItem>> items;
   items.push_back(std::move(variable_item));
-  InsertVariableAfterCurrentSelection(items);
+  InsertVariableAfterCurrentSelection(std::move(items));
 }
 
 bool WorkspaceEditorActionHandler::CanRemoveVariable() const
@@ -209,8 +209,7 @@ void WorkspaceEditorActionHandler::Paste()
     return;
   }
 
-  auto items = sup::gui::CreateSessionItems(GetMimeData(), kCopyVariableMimeType);
-  InsertVariableAfterCurrentSelection(items);
+  InsertVariableAfterCurrentSelection(sup::gui::CreateSessionItems(GetMimeData(), kCopyVariableMimeType));
 }
 
 VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
@@ -254,7 +253,7 @@ void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
 }
 
 void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
-    std::vector<std::unique_ptr<mvvm::SessionItem>> &variable_items)
+    std::vector<std::unique_ptr<mvvm::SessionItem> > variable_items)
 {
   if (!GetModel())
   {
