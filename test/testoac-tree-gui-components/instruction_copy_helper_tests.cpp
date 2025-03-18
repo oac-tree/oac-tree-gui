@@ -57,6 +57,7 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionCopyMimeData)
 
   auto sequence = model.InsertItem<SequenceItem>();
   sequence->SetDisplayName("abc");
+  sequence->SetX(42);
   auto wait = model.InsertItem<WaitItem>(sequence);
 
   auto mime_data = CreateInstructionCopyMimeData(*sequence);
@@ -68,6 +69,7 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionCopyMimeData)
   auto reconstructed_sequence = reconstructed_instructions.at(0);
   ASSERT_NE(reconstructed_sequence, nullptr);
   EXPECT_EQ(reconstructed_sequence->GetDisplayName(), std::string("abc"));
+  EXPECT_EQ(reconstructed_sequence->GetX(), 42);
 
   // children instruction wasn't copied
   EXPECT_TRUE(reconstructed_sequence->GetInstructions().empty());

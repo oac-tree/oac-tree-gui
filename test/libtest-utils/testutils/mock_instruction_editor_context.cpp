@@ -85,4 +85,10 @@ std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetSelectRequests(
   return m_select_requests;
 }
 
+void MockInstructionEditorContext::SetCurrentSelection(
+    const std::vector<InstructionItem*>& selection)
+{
+  m_current_selection = selection;
+}
+
 }  // namespace oac_tree_gui::test

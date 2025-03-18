@@ -36,14 +36,14 @@ namespace oac_tree_gui
 class InstructionItem;
 
 /**
- * @brief Creates copy object for single instruction, children ignored.
+ * @brief Creates copy object for single instruction (children ignored).
  *
  * Instructions properties are included, children instructions are ignored.
  */
 std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& instruction);
 
 /**
- * @brief Creates copy objecrt for single instruction, all children included.
+ * @brief Creates copy objecrt for single instruction (children included).
  */
 std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction);
 
@@ -59,7 +59,7 @@ std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionIt
  *   Message <- selected
  *
  * Selection list [sequence, message] will generate copy object for top level "sequence" containing
- * a single child "message".
+ * a single child "message". "Wait" child will ve ingored.
  */
 std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
     const std::vector<InstructionItem*>& selection);

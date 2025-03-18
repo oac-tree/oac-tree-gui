@@ -73,6 +73,8 @@ public:
 
   std::vector<mvvm::SessionItem*> GetSelectRequests();
 
+  void SetCurrentSelection(const std::vector<InstructionItem*>& selection);
+
   //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_clipboard_content;
   std::vector<InstructionItem*> m_current_selection;
