@@ -36,16 +36,33 @@ namespace oac_tree_gui
 class InstructionItem;
 
 /**
- * @brief Creates copy of instruction.
+ * @brief Creates copy object for single instruction, children ignored.
  *
- * Instructions properties are included, children ignored.
+ * Instructions properties are included, children instructions are ignored.
  */
 std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& instruction);
 
 /**
- * @brief Creates copy of instruction, all children included.
+ * @brief Creates copy objecrt for single instruction, all children included.
  */
 std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction);
+
+/**
+ * @brief Creates copy object for selection tree.
+ *
+ * Selection tree is a list of instructions obtained when the user manually picks parent and child
+ * instructions from a large instruction tree.
+ *
+ * Example:
+ * Sequence  <- selected
+ *   Wait
+ *   Message <- selected
+ *
+ * Selection list [sequence, message] will generate copy object for top level "sequence" containing
+ * a single child "message".
+ */
+std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
+    const std::vector<InstructionItem*>& selection);
 
 /**
  * @brief Returns vector of instructions from given mime data.

@@ -22,6 +22,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
+#include <sup/gui/components/copy_and_paste_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/utils/container_utils.h>
@@ -44,6 +45,20 @@ std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& 
 std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeData* mime_data)
 {
   return sup::gui::CreateSessionItems(mime_data, kCopyInstructionMimeType);
+}
+
+std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
+    const std::vector<InstructionItem*>& selection)
+{
+  // accept all items that are in selection list
+  auto filter_func = [&selection](const mvvm::SessionItem& item)
+  { return mvvm::utils::Contains(selection, &item); };
+
+  // FIXME Find the way to fix this CastItems/MakeConst mess
+  auto top_level_selection =
+      sup::gui::GetTopLevelSelection(mvvm::utils::CastItems<mvvm::SessionItem>(selection));
+  return sup::gui::CreateCopyMimeData(mvvm::utils::MakeConst(top_level_selection),
+                                      kCopyInstructionMimeType, filter_func);
 }
 
 std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction)
