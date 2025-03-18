@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   attribute_editor_action_handler.h
   attribute_editor_context.h
   i_workspace_editor_action_handler.h
+  instruction_copy_helper.cpp
+  instruction_copy_helper.h
   instruction_editor_action_handler.cpp
   instruction_editor_action_handler.h
   instruction_editor_context.h
