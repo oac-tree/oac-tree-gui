@@ -36,16 +36,13 @@ namespace oac_tree_gui
 class ZoomFactorConverter
 {
 public:
-  inline static const int kSliderMinValue = 10;
-  inline static const int kSliderMaxValue = 200;
-
   /**
    * @brief Main c-tor with zoom limits defined.
    *
    * @param zoom_factor_min The minimum possible value of the zoom factor.
    * @param zoom_factor_max The maximum possible value of the zoom factor.
    */
-  ZoomFactorConverter(double zoom_factor_min, double zoom_factor_max);
+  ZoomFactorConverter(const std::vector<double>& zoom_values);
 
   /**
    * @brief Returns min value of slider's range.
@@ -85,9 +82,17 @@ public:
   static QString GetZoomText(double zoom_factor);
 
 private:
-  double m_zoom_factor_min{0};
-  double m_zoom_factor_max{0};
+  std::vector<double> m_zoom_values;
 };
+
+/**
+ * @brief Creates vector of zoom values evenly distributed in the given interval.
+ *
+ * @param zoom_min Min available zoom value (corresponds to array index 0)
+ * @param zoom_max Max available zoom value (corresponds to array index nbins-1)
+ * @param nbins Length of array with values
+ */
+std::vector<double> CreateZoomPoints(double zoom_min, double zoom_max, size_t nbins);
 
 }  // namespace oac_tree_gui
 

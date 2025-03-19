@@ -35,7 +35,8 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
     : QToolBar(parent_widget)
     , m_zoom_slider(new QSlider)
     , m_zoom_label(new QLabel)
-    , m_zoom_factor_converter(constants::kMinZoomFactor, constants::kMaxZoomFactor)
+    , m_zoom_factor_converter(
+          CreateZoomPoints(constants::kMinZoomFactor, constants::kMaxZoomFactor, 200))
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
 
