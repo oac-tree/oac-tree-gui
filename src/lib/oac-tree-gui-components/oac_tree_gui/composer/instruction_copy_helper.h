@@ -38,12 +38,12 @@ class InstructionItem;
 /**
  * @brief Creates copy object for single instruction (children ignored).
  *
- * Instructions properties are included, children instructions are ignored.
+ * Instructions properties are included, but children's instructions are ignored.
  */
 std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& instruction);
 
 /**
- * @brief Creates copy objecrt for single instruction (children included).
+ * @brief Creates copy object for single instruction (children included).
  */
 std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction);
 
@@ -58,8 +58,8 @@ std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionIt
  *   Wait
  *   Message <- selected
  *
- * Selection list [sequence, message] will generate copy object for top level "sequence" containing
- * a single child "message". "Wait" child will ve ingored.
+ * Selection list [sequence, message] will generate a copy object for the level "sequence"
+ * containing a single child "message". "Wait" child will be ignored.
  */
 std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
     const std::vector<InstructionItem*>& selection);
