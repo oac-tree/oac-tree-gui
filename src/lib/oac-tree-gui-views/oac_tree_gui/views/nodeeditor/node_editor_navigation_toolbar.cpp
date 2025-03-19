@@ -20,11 +20,13 @@
 #include "node_editor_navigation_toolbar.h"
 
 #include <oac_tree_gui/nodeeditor/scene_constants.h>
+#include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/style/style_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QAction>
 #include <QLabel>
 #include <QSlider>
 
@@ -52,11 +54,30 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
     , m_zoom_slider(new QSlider)
     , m_zoom_label(new QLabel)
     , m_zoom_factor_converter(CreateSliderPoints())
+    , m_fit_to_view_action(new QAction(this))
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
 
   InsertStrech();
 
+  SetupActions();
+  SetupSlider();
+}
+
+void NodeEditorNavigationToolBar::SetZoomFactor(double zoom_factor)
+{
+  m_zoom_slider->setValue(m_zoom_factor_converter.GetSliderValue(zoom_factor));
+}
+
+void NodeEditorNavigationToolBar::InsertStrech()
+{
+  auto empty = new QWidget(this);
+  empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+  addWidget(empty);
+}
+
+void NodeEditorNavigationToolBar::SetupSlider()
+{
   m_zoom_slider->setRange(m_zoom_factor_converter.GetSliderMinValue(),
                           m_zoom_factor_converter.GetSliderMaxValue());
 
@@ -85,16 +106,15 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
   SetZoomFactor(1.0);
 }
 
-void NodeEditorNavigationToolBar::SetZoomFactor(double zoom_factor)
+void NodeEditorNavigationToolBar::SetupActions()
 {
-  m_zoom_slider->setValue(m_zoom_factor_converter.GetSliderValue(zoom_factor));
-}
+  m_fit_to_view_action->setText("Center");
+  m_fit_to_view_action->setIcon(FindIcon("fit-to-page-outline"));
+  m_fit_to_view_action->setToolTip("Center view");
 
-void NodeEditorNavigationToolBar::InsertStrech()
-{
-  auto empty = new QWidget(this);
-  empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-  addWidget(empty);
+  connect(m_fit_to_view_action, &QAction::triggered, this,
+          &NodeEditorNavigationToolBar::FitToViewRequest);
+  addAction(m_fit_to_view_action);
 }
 
 }  // namespace oac_tree_gui

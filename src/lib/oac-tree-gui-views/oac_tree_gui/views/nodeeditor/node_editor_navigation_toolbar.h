@@ -26,6 +26,7 @@
 
 class QSlider;
 class QLabel;
+class QAction;
 
 namespace oac_tree_gui
 {
@@ -41,14 +42,18 @@ public:
 
 signals:
   void ZoomFactorRequest(double zoom_factor);
+  void FitToViewRequest();
 
 private:
   void InsertStrech();
+  void SetupSlider();
+  void SetupActions();
 
   QSlider* m_zoom_slider{nullptr};
   QLabel* m_zoom_label{nullptr};
   bool m_is_interactive{false};
   ZoomFactorConverter m_zoom_factor_converter;
+  QAction* m_fit_to_view_action{nullptr};
 };
 
 }  // namespace oac_tree_gui

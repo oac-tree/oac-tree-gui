@@ -196,6 +196,10 @@ void NodeEditorWidget::SetupConnections()
   connect(m_navigation_toolbar, &NodeEditorNavigationToolBar::ZoomFactorRequest, m_graphics_view,
           &NodeGraphicsView::SetZoomFactor);
 
+  // alignment request from a bottom toolbar
+  connect(m_navigation_toolbar, &NodeEditorNavigationToolBar::FitToViewRequest, m_graphics_view,
+          &NodeGraphicsView::CenterView);
+
   // alignment request from a toolbar
   connect(m_view_actions, &NodeGraphicsViewActions::alignSelectedRequest, this,
           &NodeEditorWidget::OnAlignRequest);
