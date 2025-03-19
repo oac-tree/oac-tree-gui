@@ -108,9 +108,9 @@ void NodeEditorNavigationToolBar::SetupSlider()
 
 void NodeEditorNavigationToolBar::SetupActions()
 {
-  m_fit_to_view_action->setText("Center");
+  m_fit_to_view_action->setText("Fit in view");
   m_fit_to_view_action->setIcon(FindIcon("fit-to-page-outline"));
-  m_fit_to_view_action->setToolTip("Center view");
+  m_fit_to_view_action->setToolTip("Fit in view");
 
   connect(m_fit_to_view_action, &QAction::triggered, this,
           &NodeEditorNavigationToolBar::FitToViewRequest);

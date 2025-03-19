@@ -48,6 +48,11 @@ public:
   void CenterView();
 
   /**
+   * @brief Zoom view and re-center to fit everything in a view.
+   */
+  void FitView();
+
+  /**
    * @brief Returns current operation mode.
    */
   GraphicsViewOperationMode GetOperationMode();

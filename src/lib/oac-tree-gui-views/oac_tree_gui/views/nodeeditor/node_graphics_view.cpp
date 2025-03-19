@@ -77,6 +77,21 @@ void NodeGraphicsView::CenterView()
   }
 }
 
+void NodeGraphicsView::FitView()
+{
+  if (scene()->items().isEmpty())
+  {
+    centerOn(GetGraphicsViewportCenter());
+    SetZoomFactor(1.0);
+  }
+  else
+  {
+    auto rect = scene()->itemsBoundingRect();
+    QGraphicsView::fitInView(rect, Qt::KeepAspectRatio);
+    emit ZoomFactorChanged(GetZoomFactor());
+  }
+}
+
 GraphicsViewOperationMode NodeGraphicsView::GetOperationMode()
 {
   return m_operation_mode;
