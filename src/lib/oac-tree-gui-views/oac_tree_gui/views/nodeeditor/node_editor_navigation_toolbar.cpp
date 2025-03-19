@@ -31,12 +31,27 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+/**
+ * @brief Creates a vector with slider zoom value.
+ */
+std::vector<double> CreateSliderPoints()
+{
+  // dirst 200 points of the slider with be for zoom < 1.0, only 50 points for zoom >1.0
+  std::vector<double> range1 = CreateZoomPoints(constants::kMinZoomFactor, 1.0, 200);
+  const std::vector<double> range2 = CreateZoomPoints(1.0, constants::kMaxZoomFactor, 50);
+  range1.insert(range1.end(), range2.begin(), range2.end());
+  return range1;
+}
+}  // namespace
+
 NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
     : QToolBar(parent_widget)
     , m_zoom_slider(new QSlider)
     , m_zoom_label(new QLabel)
-    , m_zoom_factor_converter(
-          CreateZoomPoints(constants::kMinZoomFactor, constants::kMaxZoomFactor, 200))
+    , m_zoom_factor_converter(CreateSliderPoints())
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
 
