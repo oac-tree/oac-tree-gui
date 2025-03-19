@@ -22,6 +22,8 @@
 
 #include <QString>
 
+#include <vector>
+
 namespace oac_tree_gui
 {
 
