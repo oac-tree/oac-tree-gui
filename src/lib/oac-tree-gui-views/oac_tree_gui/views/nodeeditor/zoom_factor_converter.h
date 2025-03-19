@@ -21,6 +21,7 @@
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_ZOOM_FACTOR_CONVERTER_H_
 
 #include <QString>
+#include <vector>
 
 #include <vector>
 
