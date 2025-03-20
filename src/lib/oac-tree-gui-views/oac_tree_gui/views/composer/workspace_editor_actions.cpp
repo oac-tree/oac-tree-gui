@@ -73,6 +73,8 @@ void WorkspaceEditorActions::RegisterActionsForContext(const sup::gui::AppContex
   sup::gui::AppAddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   sup::gui::AppAddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
   sup::gui::AppAddActionToCommand(m_paste_action, sup::gui::constants::kPasteCommandId, context);
+  sup::gui::AppAddActionToCommand(m_remove_variable_action,
+                                  sup::gui::constants::kRemoveSelectedCommandId, context);
 }
 
 void WorkspaceEditorActions::SetupActions()

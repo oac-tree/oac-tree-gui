@@ -1,5 +1,6 @@
 Changes for 1.8.0:
 
+- Support removal of multiple-selected instructions
 - Provide zoom slider and fit-to-view button
 - Provide copy-and-paste for multiple instruction selection
 - Provide copy-and-paste and removal for multiple variable selection
