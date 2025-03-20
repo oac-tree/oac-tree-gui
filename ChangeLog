@@ -1,5 +1,6 @@
 Changes for 1.8.0:
 
+- Provide zoom slider and fit-to-view button
 - Provide copy-and-paste for multiple instruction selection
 - Provide copy-and-paste and removal for multiple variable selection
 - Provide zoom in/out in NodeEditor with the mouse Ctrl-wheel

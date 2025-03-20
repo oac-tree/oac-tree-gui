@@ -379,8 +379,6 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
   auto handler = CreateActionHandler({sequence0});
   EXPECT_TRUE(handler->CanRemoveInstruction());
 
-  EXPECT_TRUE(handler->CanRemoveInstruction());
-
   mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
@@ -391,6 +389,45 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
 
   // checking the request to select remaining item
   EXPECT_EQ(reported_item, sequence1);
+}
+
+TEST_F(InstructionEditorActionHandlerTest, RemoveTwoInstructions)
+{
+  // inserting instruction in the container
+  auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence1 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence2 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+
+  // creating action handler mimicking sequence0 is selected
+  auto handler = CreateActionHandler({sequence0, sequence1});
+  EXPECT_TRUE(handler->CanRemoveInstruction());
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+
+  // nothing selected, remove request does nothing
+  handler->RemoveInstruction();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
+
+  // checking the request to select remaining item
+  EXPECT_EQ(m_mock_context.GetSelectRequests(), std::vector<mvvm::SessionItem*>({sequence2}));
+}
+
+TEST_F(InstructionEditorActionHandlerTest, RemoveParentAndChild)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto wait = m_model.InsertItem<SequenceItem>(sequence);
+
+  // creating action handler mimicking sequence0 is selected
+  auto handler = CreateActionHandler({sequence, wait});
+  EXPECT_TRUE(handler->CanRemoveInstruction());
+
+  // nothing selected, remove request does nothing
+  handler->RemoveInstruction();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
+
+  // checking the request to select remaining item
+  EXPECT_TRUE(m_mock_context.GetSelectRequests().empty());
 }
 
 //! Move selected instruction up.

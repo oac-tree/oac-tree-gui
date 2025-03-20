@@ -33,6 +33,7 @@
 #include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
+#include <sup/gui/components/copy_and_paste_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/core/query_result.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -178,9 +179,16 @@ void InstructionEditorActionHandler::RemoveInstruction()
 
   mvvm::utils::BeginMacro(*GetModel(), "Remove instruction");
 
-  auto selected_instruction = GetSelectedInstruction();
-  auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_instruction);
-  GetModel()->RemoveItem(selected_instruction);
+  mvvm::SessionItem *next_to_select{nullptr};
+
+  // remove children from the selection list to avoid double delete
+  auto selected = mvvm::utils::CastItems<mvvm::SessionItem>(GetSelectedInstructions());
+  for (auto item : sup::gui::FilterOutChildren(selected))
+  {
+    next_to_select = mvvm::utils::FindNextSiblingToSelect(item);
+    GetModel()->RemoveItem(item);
+  }
+
   UpdateProcedurePreamble();
 
   mvvm::utils::EndMacro(*GetModel());
