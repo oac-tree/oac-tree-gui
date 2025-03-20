@@ -52,7 +52,7 @@ public:
 
 TEST_F(ProcedureEditorTest, AttemptToCreateWhenNoContextIsInitialised)
 {
-  ProcedureEditor editor;
+  ProcedureEditor editor({});
 
   EXPECT_TRUE(editor.GetInstructionInFocus().empty());
   SequenceItem item;
@@ -63,7 +63,7 @@ TEST_F(ProcedureEditorTest, AttemptToCreateWhenNoContextIsInitialised)
 
 TEST_F(ProcedureEditorTest, InsertInstructionFromToolBox)
 {
-  ProcedureEditor editor;
+  ProcedureEditor editor({});
 
   editor.SetProcedure(m_procedure);
 

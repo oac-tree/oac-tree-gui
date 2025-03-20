@@ -33,6 +33,7 @@
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/widgets/custom_splitter.h>
+#include <sup/gui/widgets/message_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -51,9 +52,11 @@ const QString kRightPanel = kGroupName + "/" + "right";
 
 namespace oac_tree_gui
 {
+
 SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
     : QWidget(parent_widget)
-    , m_procedure_editor(std::make_unique<ProcedureEditor>())
+    , m_procedure_editor(std::make_unique<ProcedureEditor>(
+          [](const auto &event) { sup::gui::SendWarningMessage(event); }))
     , m_composer_panel(new ComposerPanel)
     , m_central_panel(new ComposerWidgetPanel(kCentralPanel, ComposerWidgetPanel::kInstructionTree))
     , m_right_panel(new ComposerWidgetPanel(kRightPanel, ComposerWidgetPanel::kWorkspace))

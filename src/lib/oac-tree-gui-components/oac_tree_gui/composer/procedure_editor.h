@@ -20,6 +20,8 @@
 #ifndef OAC_TREE_GUI_COMPOSER_PROCEDURE_EDITOR_H_
 #define OAC_TREE_GUI_COMPOSER_PROCEDURE_EDITOR_H_
 
+#include <sup/gui/core/message_event.h>
+
 #include <QObject>
 #include <memory>
 #include <vector>
@@ -54,7 +56,8 @@ class ProcedureEditor : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureEditor(QObject* parent_object = nullptr);
+  explicit ProcedureEditor(std::function<void(const sup::gui::MessageEvent&)> send_message,
+                           QObject* parent_object = nullptr);
   ~ProcedureEditor() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
@@ -84,7 +87,7 @@ signals:
   void SelectInstructionRequest(mvvm::SessionItem* item);
 
 private:
-  InstructionEditorContext CreateInstructionEditorContext();
+  InstructionEditorContext CreateInstructionEditorContext(std::function<void(const sup::gui::MessageEvent&)> send_message);
 
   std::vector<InstructionItem*> GetSelectedInstructions();
 

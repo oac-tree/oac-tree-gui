@@ -29,10 +29,11 @@
 namespace oac_tree_gui
 {
 
-ProcedureEditor::ProcedureEditor(QObject *parent_object)
+ProcedureEditor::ProcedureEditor(std::function<void(const sup::gui::MessageEvent &)> send_message,
+                                 QObject *parent_object)
     : QObject(parent_object)
-    , m_action_handler(
-          std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
+    , m_action_handler(std::make_unique<InstructionEditorActionHandler>(
+          CreateInstructionEditorContext(send_message)))
 {
 }
 
@@ -58,7 +59,8 @@ void ProcedureEditor::InsertInstructionFromToolBox(const QString &name)
   m_action_handler->InsertInstructionAfter(name.toStdString());
 }
 
-InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext()
+InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext(
+    std::function<void(const sup::gui::MessageEvent &)> send_message)
 {
   InstructionEditorContext result;
   result.instruction_container = [this]()
@@ -66,6 +68,7 @@ InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext()
   result.selected_instructions = [this]() { return GetSelectedInstructions(); };
   auto on_select_request = [this](mvvm::SessionItem *item) { emit SelectInstructionRequest(item); };
   result.select_notify = on_select_request;
+  result.send_message = send_message;
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
   return result;
 }
