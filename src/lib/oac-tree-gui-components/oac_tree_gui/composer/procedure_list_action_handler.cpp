@@ -28,6 +28,7 @@
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/model/model_utils.h>
 
 #include <QMimeData>
 
@@ -45,9 +46,11 @@ ProcedureListActionHandler::ProcedureListActionHandler(ProcedureListContext cont
 }
 
 void ProcedureListActionHandler::OnCreateNewProcedureRequest()
-{
+{  
+  mvvm::utils::BeginMacro(*GetModel(), "New procedure");
   auto result = InsertProcedure(std::make_unique<ProcedureItem>());
   result->SetDisplayName("Untitled");
+  mvvm::utils::EndMacro(*GetModel());
 }
 
 bool ProcedureListActionHandler::CanRemove() const
