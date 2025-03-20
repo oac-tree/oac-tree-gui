@@ -120,7 +120,7 @@ void NodeEditorNavigationToolBar::SetupActions()
 {
   m_center_action->setText("Center");
   m_center_action->setIcon(FindIcon("camera-metering-center"));
-  m_center_action->setToolTip("Center view");
+  m_center_action->setToolTip("Center view (zoom unchanged, move where items are)");
   connect(m_center_action, &QAction::triggered, this,
           &NodeEditorNavigationToolBar::CenterViewRequest);
   m_action_map.Add(ActionKey::kCenter, m_center_action);
