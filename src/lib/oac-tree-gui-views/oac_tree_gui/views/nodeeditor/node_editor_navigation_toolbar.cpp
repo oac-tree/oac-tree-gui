@@ -99,15 +99,9 @@ void NodeEditorNavigationToolBar::SetupSlider()
     const double zoom_factor = m_zoom_factor_converter.GetZoomFactor(value);
     const auto text = ZoomFactorConverter::GetZoomText(zoom_factor);
     m_zoom_action->setText(text);
-    if (m_is_interactive)
-    {
-      emit ZoomFactorRequest(zoom_factor);
-    }
+    emit ZoomFactorRequest(zoom_factor);
   };
   connect(m_zoom_slider, &QSlider::valueChanged, this, on_slider_changed);
-
-  connect(m_zoom_slider, &QSlider::sliderPressed, this, [this]() { m_is_interactive = true; });
-  connect(m_zoom_slider, &QSlider::sliderReleased, this, [this]() { m_is_interactive = false; });
 
   SetZoomFactor(1.0);
 }
@@ -145,11 +139,7 @@ std::unique_ptr<QMenu> NodeEditorNavigationToolBar::CreateZoomMenu()
     auto text = ZoomFactorConverter::GetZoomText(scale);
     auto action = result->addAction(text);
     scale_to_action[scale] = action;
-    auto on_action = [this, scale, text]()
-    {
-      SetZoomFactor(scale);
-      m_zoom_action->setText(text);
-    };
+    auto on_action = [this, scale, text]() { SetZoomFactor(scale); };
     connect(action, &QAction::triggered, this, on_action);
   }
 

@@ -65,7 +65,6 @@ private:
   std::unique_ptr<QMenu> CreateZoomMenu();
 
   QSlider* m_zoom_slider{nullptr};
-  bool m_is_interactive{false};
   ZoomFactorConverter m_zoom_factor_converter;
 
   QAction* m_center_action{nullptr};
