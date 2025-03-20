@@ -167,17 +167,7 @@ void NodeGraphicsScene::OnDeleteSelectedRequest()
 
   mvvm::utils::BeginMacro(*GetModel(), "OnDeleteSelectedRequest");
 
-  for (auto instruction : GetSelectedInstructions())
-  {
-    auto view = FindViewForInstruction(instruction);
-    // If the parent is intended to the deletion and has input connections, they have to be
-    // disconnected first. This will prevent child item to be deleted when the parent is gone.
-    for (auto connection : view->GetOutputConnections())
-    {
-      disconnectConnectedViews(connection);
-    }
-    GetModel()->RemoveItem(instruction);
-  }
+  m_action_handler->RemoveInstruction();
 
   // Break remaining explicitely selected connections.
   auto selected_connections = GetSelectedViewItems<NodeConnection>();

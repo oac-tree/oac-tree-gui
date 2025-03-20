@@ -286,9 +286,7 @@ TEST_F(NodeGraphicsSceneTest, onDeleteSelectedChild)
   EXPECT_EQ(GetConnectedChildren(sequence_view).size(), 0);
 }
 
-//! Scene with two instructions. One connected with the another, when we delete parent. Child should
-//! gets disconnected and survive.
-TEST_F(NodeGraphicsSceneTest, onDeleteSelectedParent)
+TEST_F(NodeGraphicsSceneTest, OnDeleteSelectedParent)
 {
   auto controller = CreateController();
 
@@ -314,14 +312,12 @@ TEST_F(NodeGraphicsSceneTest, onDeleteSelectedParent)
 
   ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
 
-  auto predicate = [sequence_view, this]() { return m_scene.GetConnectableViews().size() == 1; };
+  auto predicate = [sequence_view, this]() { return m_scene.GetConnectableViews().empty(); };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
-  // WaitView vas regenerated on the move of ViewItem on top.
-  auto new_wait_view = m_scene.FindViewForInstruction(wait);
-  (void)new_wait_view;  // wait_view != new_wait_view, but not always
+  EXPECT_EQ(GetInstructionContainer()->GetInstructionCount(), 0);
 
-  EXPECT_EQ(new_wait_view->GetConnectableItem()->GetInstruction(), wait);
+  // current behavior that the removal parent view removes everything
 }
 
 TEST_F(NodeGraphicsSceneTest, GetSelectedInstructions)
