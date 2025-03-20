@@ -29,6 +29,7 @@
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
+#include <sup/gui/components/proxy_action.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/mainwindow/settings_editor_dialog.h>
 #include <sup/gui/mainwindow/settings_helper.h>
@@ -197,6 +198,11 @@ void SequencerMainWindowActions::SetupEditMenu()
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
                                           sup::gui::constants::kPasteSpecialCommandId);
   command->SetText("Paste Special").SetShortcut(QKeySequence("Ctrl+Shift+V"));
+
+  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                          sup::gui::constants::kRemoveSelectedCommandId);
+  command->SetText("Remove selected");
+  // command->GetProxyAction()->setShortcuts(QKeySequence::Delete);
 }
 
 void SequencerMainWindowActions::SetupViewMenu()

@@ -79,6 +79,8 @@ void InstructionEditorActions::RegisterActionsForContext(const sup::gui::AppCont
                                   context);
   sup::gui::AppAddActionToCommand(m_paste_into_action, sup::gui::constants::kPasteSpecialCommandId,
                                   context);
+  // sup::gui::AppAddActionToCommand(m_remove_action, sup::gui::constants::kRemoveSelectedCommandId,
+  //                                 context);
 }
 
 void InstructionEditorActions::UpdateEnabledStatus()
@@ -119,6 +121,9 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   // remove action (own toolbar version to avoid disabled status)
   m_remove_toolbar_action = new sup::gui::ProxyAction(this);
   m_remove_toolbar_action->SetAction(m_remove_action);
+  m_remove_toolbar_action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+  m_remove_toolbar_action->setShortcut(QKeySequence(Qt::Key_Backspace));
+  // m_remove_toolbar_action->setShortcuts({QKeySequence(Qt::Key_Backspace), QKeySequence(Qt::Key_Delete)});
   m_action_map.Add(ActionKey::kRemoveSelected, m_remove_toolbar_action);
 
   m_move_up_action = new QAction("Move Up", this);
