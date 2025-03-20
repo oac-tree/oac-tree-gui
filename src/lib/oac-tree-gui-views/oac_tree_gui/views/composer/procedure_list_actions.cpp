@@ -41,12 +41,12 @@ ProcedureListActions::ProcedureListActions(QObject *parent_object) : QObject(par
           &ProcedureListActions::CreateNewProcedureRequest);
   m_action_map.Add(ActionKey::kCreateNew, m_new_procedure_action);
 
-  m_remove_selected_action = new QAction("Remove Procedure", this);
-  m_remove_selected_action->setToolTip("Removes selected procedure");
-  m_remove_selected_action->setIcon(FindIcon("file-remove-outline"));
-  connect(m_remove_selected_action, &QAction::triggered, this,
+  m_remove_action = new QAction("Remove Procedure", this);
+  m_remove_action->setToolTip("Removes selected procedure");
+  m_remove_action->setIcon(FindIcon("file-remove-outline"));
+  connect(m_remove_action, &QAction::triggered, this,
           &ProcedureListActions::RemoveProcedureRequest);
-  m_action_map.Add(ActionKey::kRemoveSelected, m_remove_selected_action);
+  m_action_map.Add(ActionKey::kRemoveSelected, m_remove_action);
 
   m_cut_action = new QAction("Cut", this);
   m_cut_action->setToolTip("Cuts selected procedure");
@@ -76,8 +76,8 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
 {
   menu.setToolTipsVisible(true);
   menu.addAction(m_new_procedure_action);
-  menu.addAction(m_remove_selected_action);
-  m_remove_selected_action->setEnabled(handler->CanRemove());
+  menu.addAction(m_remove_action);
+  m_remove_action->setEnabled(handler->CanRemove());
 
   menu.addSeparator();
   menu.addAction(m_cut_action);
@@ -94,6 +94,8 @@ void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppContext 
   sup::gui::AppAddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   sup::gui::AppAddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
   sup::gui::AppAddActionToCommand(m_paste_action, sup::gui::constants::kPasteCommandId, context);
+  sup::gui::AppAddActionToCommand(m_remove_action, sup::gui::constants::kRemoveSelectedCommandId,
+                                  context);
 }
 
 }  // namespace oac_tree_gui

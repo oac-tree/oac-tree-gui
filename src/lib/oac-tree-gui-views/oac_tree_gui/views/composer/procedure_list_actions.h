@@ -86,7 +86,7 @@ signals:
 
 private:
   QAction* m_new_procedure_action{nullptr};
-  QAction* m_remove_selected_action{nullptr};
+  QAction* m_remove_action{nullptr};
   QAction* m_cut_action{nullptr};
   QAction* m_copy_action{nullptr};
   QAction* m_paste_action{nullptr};
