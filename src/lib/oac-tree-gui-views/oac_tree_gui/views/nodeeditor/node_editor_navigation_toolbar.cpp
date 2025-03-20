@@ -37,18 +37,28 @@ namespace oac_tree_gui
 namespace
 {
 
-/**  QAction* m_center_action{nullptr};
+void AppendRange(std::vector<double> &values, double zmin, double zmax, int npoints)
+{
+  const std::vector<double> range = CreateZoomPoints(zmin, zmax, npoints);
+  values.insert(values.end(), range.begin(), range.end());
+}
 
+/**  QAction* m_center_action{nullptr};
  * @brief Creates a vector with slider zoom value.
  */
 std::vector<double> CreateSliderPoints()
 {
-  // dirst 200 points of the slider with be for zoom < 1.0, only 50 points for zoom >1.0
-  std::vector<double> range1 = CreateZoomPoints(constants::kMinZoomFactor, 1.0, 200);
-  const std::vector<double> range2 = CreateZoomPoints(1.0, constants::kMaxZoomFactor, 50);
-  range1.insert(range1.end(), range2.begin(), range2.end());
-  return range1;
+  std::vector<double> result;
+  for (size_t i_point = 0; i_point < constants::kZoomStops.size() - 1; ++i_point)
+  {
+    // make slider for zoom<1.0 longer than for zoom >1.0
+    const int npoints = constants::kZoomStops[i_point] < 1.0 ? 100 : 50;
+    AppendRange(result, constants::kZoomStops[i_point], constants::kZoomStops[i_point + 1],
+                npoints);
+  }
+  return result;
 }
+
 }  // namespace
 
 NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
@@ -132,18 +142,17 @@ std::unique_ptr<QMenu> NodeEditorNavigationToolBar::CreateZoomMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  const std::vector<double> scales = {0.25, 0.5, 0.75, 1.0, 1.5, 2.0};
-  std::map<double, QAction *> scale_to_action;
-  for (auto scale : scales)
+  std::map<double, QAction *> zoom_factor_to_action;
+  for (auto zoom_factor : constants::kZoomStops)
   {
-    auto text = ZoomFactorConverter::GetZoomText(scale);
+    auto text = ZoomFactorConverter::GetZoomText(zoom_factor);
     auto action = result->addAction(text);
-    scale_to_action[scale] = action;
-    auto on_action = [this, scale, text]() { SetZoomFactor(scale); };
+    zoom_factor_to_action[zoom_factor] = action;
+    auto on_action = [this, zoom_factor, text]() { SetZoomFactor(zoom_factor); };
     connect(action, &QAction::triggered, this, on_action);
   }
 
-  result->setActiveAction(scale_to_action[1.0]);
+  result->setActiveAction(zoom_factor_to_action[1.0]);
   return result;
 }
 

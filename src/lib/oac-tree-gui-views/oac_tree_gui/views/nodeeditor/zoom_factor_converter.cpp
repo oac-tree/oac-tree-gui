@@ -23,7 +23,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 
 namespace oac_tree_gui
 {
@@ -80,7 +79,8 @@ QString ZoomFactorConverter::GetZoomText(double zoom_factor)
 {
   const int kFieldCount = 3;
   const int percents = static_cast<int>(zoom_factor * 100);
-  return QString("%1%2").arg(percents, kFieldCount).arg(kPercentSign);
+  const int base = 10;
+  return QString("%1%2").arg(percents, kFieldCount, base, QChar(' ')).arg(kPercentSign);
 }
 
 std::vector<double> CreateZoomPoints(double zoom_min, double zoom_max, size_t nbins)
