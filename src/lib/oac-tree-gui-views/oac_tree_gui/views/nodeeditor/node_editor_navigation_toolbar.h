@@ -23,9 +23,9 @@
 #include <QToolBar>
 
 #include <oac_tree_gui/views/nodeeditor/zoom_factor_converter.h>
+#include <sup/gui/components/action_map.h>
 
 class QSlider;
-class QLabel;
 class QAction;
 class QMenu;
 
@@ -42,6 +42,13 @@ class NodeEditorNavigationToolBar : public QToolBar
   Q_OBJECT
 
 public:
+  enum class ActionKey : std::uint8_t
+  {
+    kCenter,
+    kFitToView,
+    kFixedZoomLevel
+  };
+
   explicit NodeEditorNavigationToolBar(QWidget* parent_widget = nullptr);
 
   void SetZoomFactor(double zoom_factor);
@@ -58,7 +65,6 @@ private:
   std::unique_ptr<QMenu> CreateZoomMenu();
 
   QSlider* m_zoom_slider{nullptr};
-  QLabel* m_zoom_label{nullptr};
   bool m_is_interactive{false};
   ZoomFactorConverter m_zoom_factor_converter;
 
@@ -67,6 +73,7 @@ private:
   sup::gui::ActionMenu* m_zoom_action{nullptr};
 
   std::unique_ptr<QMenu> m_zoom_menu;
+  sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace oac_tree_gui

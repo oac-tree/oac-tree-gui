@@ -28,7 +28,6 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
-#include <QLabel>
 #include <QMenu>
 #include <QSlider>
 
@@ -55,7 +54,6 @@ std::vector<double> CreateSliderPoints()
 NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
     : QToolBar(parent_widget)
     , m_zoom_slider(new QSlider)
-    , m_zoom_label(new QLabel)
     , m_zoom_factor_converter(CreateSliderPoints())
     , m_center_action(new QAction(this))
     , m_fit_to_view_action(new QAction(this))
@@ -68,6 +66,11 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
 
   SetupActions();
   SetupSlider();
+
+  addAction(m_action_map.GetAction(ActionKey::kCenter));
+  addAction(m_action_map.GetAction(ActionKey::kFitToView));
+  addWidget(m_zoom_slider);
+  addAction(m_action_map.GetAction(ActionKey::kFixedZoomLevel));
 }
 
 void NodeEditorNavigationToolBar::SetZoomFactor(double zoom_factor)
@@ -90,16 +93,11 @@ void NodeEditorNavigationToolBar::SetupSlider()
   m_zoom_slider->setOrientation(Qt::Horizontal);
   m_zoom_slider->setMaximumWidth(mvvm::utils::UnitSize(10));
   m_zoom_slider->setToolTip("Zoom (also Ctrl+scroll)");
-  m_zoom_label->setFixedWidth(mvvm::utils::UnitSize(3));
-
-  addWidget(m_zoom_slider);
-  addWidget(m_zoom_label);
 
   auto on_slider_changed = [this](int value)
   {
     const double zoom_factor = m_zoom_factor_converter.GetZoomFactor(value);
     const auto text = ZoomFactorConverter::GetZoomText(zoom_factor);
-    m_zoom_label->setText(text);
     m_zoom_action->setText(text);
     if (m_is_interactive)
     {
@@ -121,18 +119,18 @@ void NodeEditorNavigationToolBar::SetupActions()
   m_center_action->setToolTip("Center view");
   connect(m_center_action, &QAction::triggered, this,
           &NodeEditorNavigationToolBar::CenterViewRequest);
-  addAction(m_center_action);
+  m_action_map.Add(ActionKey::kCenter, m_center_action);
 
   m_fit_to_view_action->setText("Fit in view");
   m_fit_to_view_action->setIcon(FindIcon("fit-to-page-outline"));
   m_fit_to_view_action->setToolTip("Fit in view");
   connect(m_fit_to_view_action, &QAction::triggered, this,
           &NodeEditorNavigationToolBar::FitToViewRequest);
-  addAction(m_fit_to_view_action);
+  m_action_map.Add(ActionKey::kFitToView, m_fit_to_view_action);
 
   m_zoom_action->setMenu(m_zoom_menu.get());
   m_zoom_action->setToolTip("Zoom");
-  addAction(m_zoom_action);
+  m_action_map.Add(ActionKey::kFixedZoomLevel, m_zoom_action);
 }
 
 std::unique_ptr<QMenu> NodeEditorNavigationToolBar::CreateZoomMenu()
