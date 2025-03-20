@@ -71,7 +71,6 @@ public:
 signals:
   void OperationModeChangeRequest(oac_tree_gui::GraphicsViewOperationMode);
   void changeScale(double);
-  void centerView();
   void alignSelectedRequest();
 
 private:
@@ -82,7 +81,6 @@ private:
   QWidgetAction* m_pointer_action{nullptr};
   QToolButton* m_pan_button{nullptr};
   QWidgetAction* m_pan_action{nullptr};
-  QAction* m_center_action{nullptr};
   sup::gui::ActionMenu* m_zoom_action{nullptr};
   QAction* m_align_action{nullptr};
 

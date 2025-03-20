@@ -180,10 +180,6 @@ void NodeEditorWidget::SetupConnections()
   connect(m_view_actions, &NodeGraphicsViewActions::OperationModeChangeRequest, m_graphics_view,
           &NodeGraphicsView::SetOperationMode);
 
-  // Center view from toolBar to GraphicsView
-  connect(m_view_actions, &NodeGraphicsViewActions::centerView, m_graphics_view,
-          &NodeGraphicsView::CenterView);
-
   // Propagate zoom request from a toolbar to GraphicsView
   connect(m_view_actions, &NodeGraphicsViewActions::changeScale, m_graphics_view,
           &NodeGraphicsView::SetZoomFactor);
@@ -197,6 +193,8 @@ void NodeEditorWidget::SetupConnections()
           &NodeGraphicsView::SetZoomFactor);
 
   // alignment request from a bottom toolbar
+  connect(m_navigation_toolbar, &NodeEditorNavigationToolBar::CenterViewRequest, m_graphics_view,
+          &NodeGraphicsView::CenterView);
   connect(m_navigation_toolbar, &NodeEditorNavigationToolBar::FitToViewRequest, m_graphics_view,
           &NodeGraphicsView::FitView);
 

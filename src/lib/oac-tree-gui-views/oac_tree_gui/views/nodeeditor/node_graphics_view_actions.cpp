@@ -52,7 +52,6 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
     , m_pointer_action(new QWidgetAction(this))
     , m_pan_button(new QToolButton)
     , m_pan_action(new QWidgetAction(this))
-    , m_center_action(new QAction(this))
     , m_zoom_action(new sup::gui::ActionMenu(this))
     , m_align_action(new QAction(this))
     , m_zoom_menu(CreateZoomMenu())
@@ -93,12 +92,6 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
   m_zoom_action->setMenu(m_zoom_menu.get());
   m_zoom_action->setToolTip("Zoom");
   m_action_map.Add(ActionKey::kZoom, m_zoom_action);
-
-  m_center_action->setText("Center");
-  m_center_action->setIcon(FindIcon("camera-metering-center"));
-  m_center_action->setToolTip("Center view");
-  connect(m_center_action, &QAction::triggered, this, &NodeGraphicsViewActions::centerView);
-  m_action_map.Add(ActionKey::kCenter, m_center_action);
 
   m_align_action->setText("Align");
   m_align_action->setIcon(FindIcon("dots-triangle"));

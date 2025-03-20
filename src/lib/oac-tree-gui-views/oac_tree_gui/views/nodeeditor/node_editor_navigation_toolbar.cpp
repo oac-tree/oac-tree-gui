@@ -36,7 +36,8 @@ namespace oac_tree_gui
 namespace
 {
 
-/**
+/**  QAction* m_center_action{nullptr};
+
  * @brief Creates a vector with slider zoom value.
  */
 std::vector<double> CreateSliderPoints()
@@ -54,6 +55,7 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
     , m_zoom_slider(new QSlider)
     , m_zoom_label(new QLabel)
     , m_zoom_factor_converter(CreateSliderPoints())
+    , m_center_action(new QAction(this))
     , m_fit_to_view_action(new QAction(this))
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
@@ -108,10 +110,16 @@ void NodeEditorNavigationToolBar::SetupSlider()
 
 void NodeEditorNavigationToolBar::SetupActions()
 {
+  m_center_action->setText("Center");
+  m_center_action->setIcon(FindIcon("camera-metering-center"));
+  m_center_action->setToolTip("Center view");
+  connect(m_center_action, &QAction::triggered, this,
+          &NodeEditorNavigationToolBar::CenterViewRequest);
+  addAction(m_center_action);
+
   m_fit_to_view_action->setText("Fit in view");
   m_fit_to_view_action->setIcon(FindIcon("fit-to-page-outline"));
   m_fit_to_view_action->setToolTip("Fit in view");
-
   connect(m_fit_to_view_action, &QAction::triggered, this,
           &NodeEditorNavigationToolBar::FitToViewRequest);
   addAction(m_fit_to_view_action);
