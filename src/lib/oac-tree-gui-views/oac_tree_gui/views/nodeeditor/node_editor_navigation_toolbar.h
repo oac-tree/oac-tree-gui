@@ -27,6 +27,12 @@
 class QSlider;
 class QLabel;
 class QAction;
+class QMenu;
+
+namespace sup::gui
+{
+class ActionMenu;
+}
 
 namespace oac_tree_gui
 {
@@ -49,6 +55,7 @@ private:
   void InsertStrech();
   void SetupSlider();
   void SetupActions();
+  std::unique_ptr<QMenu> CreateZoomMenu();
 
   QSlider* m_zoom_slider{nullptr};
   QLabel* m_zoom_label{nullptr};
@@ -57,6 +64,9 @@ private:
 
   QAction* m_center_action{nullptr};
   QAction* m_fit_to_view_action{nullptr};
+  sup::gui::ActionMenu* m_zoom_action{nullptr};
+
+  std::unique_ptr<QMenu> m_zoom_menu;
 };
 
 }  // namespace oac_tree_gui

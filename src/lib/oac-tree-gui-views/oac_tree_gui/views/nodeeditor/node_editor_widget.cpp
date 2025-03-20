@@ -48,8 +48,7 @@ namespace
 QList<QAction *> GetToolBarActions(oac_tree_gui::NodeGraphicsViewActions *actions)
 {
   using ActionKey = oac_tree_gui::NodeGraphicsViewActions::ActionKey;
-  return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kZoom,
-                              ActionKey::kCenter, ActionKey::kAlign});
+  return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign});
 }
 }  // namespace
 
@@ -179,10 +178,6 @@ void NodeEditorWidget::SetupConnections()
   // Propagate selection mode change from toolbar to GraphicsView
   connect(m_view_actions, &NodeGraphicsViewActions::OperationModeChangeRequest, m_graphics_view,
           &NodeGraphicsView::SetOperationMode);
-
-  // Propagate zoom request from a toolbar to GraphicsView
-  connect(m_view_actions, &NodeGraphicsViewActions::changeScale, m_graphics_view,
-          &NodeGraphicsView::SetZoomFactor);
 
   // Propagate zoom results from GraphicsView to bottom toolbar
   connect(m_graphics_view, &NodeGraphicsView::ZoomFactorChanged, m_navigation_toolbar,

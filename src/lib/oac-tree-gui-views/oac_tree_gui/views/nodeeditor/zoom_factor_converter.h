@@ -80,7 +80,9 @@ public:
   /**
    * @brief Returns text for the label representing zoom factor.
    *
-   * Example: "100.0%", "  9.3%".
+   * Example:
+   * 1.0  -> "100.0%"
+   * 0.93 ->"  9.3%".
    */
   static QString GetZoomText(double zoom_factor);
 

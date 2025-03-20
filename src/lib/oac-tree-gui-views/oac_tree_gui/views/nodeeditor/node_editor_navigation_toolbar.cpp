@@ -23,11 +23,13 @@
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/style/style_helper.h>
+#include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
 #include <QLabel>
+#include <QMenu>
 #include <QSlider>
 
 namespace oac_tree_gui
@@ -57,6 +59,8 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
     , m_zoom_factor_converter(CreateSliderPoints())
     , m_center_action(new QAction(this))
     , m_fit_to_view_action(new QAction(this))
+    , m_zoom_action(new sup::gui::ActionMenu(this))
+    , m_zoom_menu(CreateZoomMenu())
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
 
@@ -94,7 +98,9 @@ void NodeEditorNavigationToolBar::SetupSlider()
   auto on_slider_changed = [this](int value)
   {
     const double zoom_factor = m_zoom_factor_converter.GetZoomFactor(value);
-    m_zoom_label->setText(ZoomFactorConverter::GetZoomText(zoom_factor));
+    const auto text = ZoomFactorConverter::GetZoomText(zoom_factor);
+    m_zoom_label->setText(text);
+    m_zoom_action->setText(text);
     if (m_is_interactive)
     {
       emit ZoomFactorRequest(zoom_factor);
@@ -123,6 +129,34 @@ void NodeEditorNavigationToolBar::SetupActions()
   connect(m_fit_to_view_action, &QAction::triggered, this,
           &NodeEditorNavigationToolBar::FitToViewRequest);
   addAction(m_fit_to_view_action);
+
+  m_zoom_action->setMenu(m_zoom_menu.get());
+  m_zoom_action->setToolTip("Zoom");
+  addAction(m_zoom_action);
+}
+
+std::unique_ptr<QMenu> NodeEditorNavigationToolBar::CreateZoomMenu()
+{
+  auto result = std::make_unique<QMenu>();
+  result->setToolTipsVisible(true);
+
+  const std::vector<double> scales = {0.25, 0.5, 0.75, 1.0, 1.5, 2.0};
+  std::map<double, QAction *> scale_to_action;
+  for (auto scale : scales)
+  {
+    auto text = ZoomFactorConverter::GetZoomText(scale);
+    auto action = result->addAction(text);
+    scale_to_action[scale] = action;
+    auto on_action = [this, scale, text]()
+    {
+      SetZoomFactor(scale);
+      m_zoom_action->setText(text);
+    };
+    connect(action, &QAction::triggered, this, on_action);
+  }
+
+  result->setActiveAction(scale_to_action[1.0]);
+  return result;
 }
 
 }  // namespace oac_tree_gui

@@ -32,17 +32,6 @@
 #include <QToolButton>
 #include <QWidgetAction>
 
-namespace
-{
-const int kDefaultZoomLevel = 100;
-
-QString GetZoomText(int scale)
-{
-  return QString("Zoom %1").arg(scale);
-}
-
-}  // namespace
-
 namespace oac_tree_gui
 {
 NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
@@ -52,9 +41,7 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
     , m_pointer_action(new QWidgetAction(this))
     , m_pan_button(new QToolButton)
     , m_pan_action(new QWidgetAction(this))
-    , m_zoom_action(new sup::gui::ActionMenu(this))
     , m_align_action(new QAction(this))
-    , m_zoom_menu(CreateZoomMenu())
 {
   m_pointer_button->setText("Select");
   m_pointer_button->setIcon(FindIcon("arrow-top-left"));
@@ -87,12 +74,6 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
   };
   connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, on_button_clicked);
 
-  m_zoom_action->setText(GetZoomText(kDefaultZoomLevel));
-  m_zoom_action->setIcon(FindIcon("magnify-plus-outline"));
-  m_zoom_action->setMenu(m_zoom_menu.get());
-  m_zoom_action->setToolTip("Zoom");
-  m_action_map.Add(ActionKey::kZoom, m_zoom_action);
-
   m_align_action->setText("Align");
   m_align_action->setIcon(FindIcon("dots-triangle"));
   m_align_action->setToolTip("Align children of currently selected item");
@@ -116,30 +97,6 @@ QList<QAction *> NodeGraphicsViewActions::GetActions(
     const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
-}
-
-std::unique_ptr<QMenu> NodeGraphicsViewActions::CreateZoomMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
-
-  const std::vector<int> scales = {10, 15, 25, 50, 75, 100, 125, 150};
-  std::map<int, QAction *> scale_to_action;
-  for (auto scale : scales)
-  {
-    auto text = GetZoomText(scale);
-    auto action = result->addAction(text);
-    scale_to_action[scale] = action;
-    auto on_action = [this, scale, text]()
-    {
-      m_zoom_action->setText(text);
-      emit changeScale(scale / 100.);
-    };
-    connect(action, &QAction::triggered, this, on_action);
-  }
-
-  result->setActiveAction(scale_to_action[kDefaultZoomLevel]);
-  return result;
 }
 
 }  // namespace oac_tree_gui
