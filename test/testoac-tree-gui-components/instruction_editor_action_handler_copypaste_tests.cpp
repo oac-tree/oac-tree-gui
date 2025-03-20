@@ -447,4 +447,37 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTr
   EXPECT_EQ(copied_message->GetDomainType(), domainconstants::kMessageInstructionType);
 }
 
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTreeIntoRepeat)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
+  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+
+  auto handler = CreateActionHandler({sequence, message});
+
+  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+
+  handler->Cut();
+   // mimicking dissapearance of selection after item removal
+  m_mock_context.SetCurrentSelection({});
+
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
+
+  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+
+  // appending instruction to the container
+  m_mock_context.SetCurrentSelection({repeat});
+
+  handler->PasteInto();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+  ASSERT_EQ(repeat->GetInstructions().size(), 1);
+  auto copied_sequence = repeat->GetInstructions().at(0);
+  ASSERT_EQ(copied_sequence->GetInstructions().size(), 1);
+  auto copied_message = copied_sequence->GetInstructions().at(0);
+  EXPECT_EQ(copied_message->GetDomainType(), domainconstants::kMessageInstructionType);
+}
+
 }  // namespace oac_tree_gui::test
