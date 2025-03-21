@@ -67,26 +67,6 @@ void AppendLittleVerticalGap(QTextEdit& text_edit)
   text_edit.setCurrentFont(base_font);
 }
 
-void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
-                         QTextEdit& text_edit)
-{
-  static const QString pattern(R"RAW(
-<tr>
-<td width="%1">%2</td>
-<td width="%1">%3</td>
-</tr>
-)RAW");
-
-  const auto base_font = text_edit.font();
-  const QFont f("Monospace", base_font.pointSize());
-  text_edit.setCurrentFont(f);
-
-  const QString name = QString::fromStdString(s_name);
-  const QString value = QString::fromStdString(s_value);
-
-  text_edit.insertHtml(pattern.arg(base_font.pointSize() * 20).arg(name).arg(value));
-}
-
 }  // namespace
 
 namespace oac_tree_gui
@@ -122,8 +102,8 @@ std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::strin
     result = mvvm::utils::StringFormat("<table width=\"%1\">").arg(std::to_string(total_width));
     for (auto& [name, value] : attributes)
     {
-      const int width1 = total_width * 0.3;
-      const int width2 = total_width * 0.7;
+      const int width1 = static_cast<int>(total_width * 0.3);
+      const int width2 = static_cast<int>(total_width * 0.7);
       std::string str = mvvm::utils::StringFormat(cell_pattern)
                             .arg(std::to_string(width1))
                             .arg(name)
@@ -147,6 +127,7 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
   }
 
   QTextEdit text_edit;
+  const auto base_font = text_edit.font();
 
   AppendTitle(instruction->GetDomainType(), text_edit);
   AppendDescription(instruction->GetName(), text_edit);
@@ -155,18 +136,8 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
   auto attributes = CollectToolTipAttributes(item);
   if (!attributes.empty())
   {
-    text_edit.insertHtml("<table width=\"500\">");
-
-    text_edit.insertHtml("</table>");
-  }
-
-  for (auto property : mvvm::utils::SinglePropertyItems(*instruction))
-  {
-    if (IsPropertyToShow(property->GetTagIndex().GetTag()))
-    {
-      AppendNameValuePair(property->GetDisplayName(), mvvm::utils::ValueToString(property->Data()),
-                          text_edit);
-    }
+    text_edit.insertHtml(
+        QString::fromStdString(GetAttributeHtml(attributes, base_font.pointSize() * 55)));
   }
 
   return text_edit.toHtml();

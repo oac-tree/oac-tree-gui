@@ -57,7 +57,7 @@ TEST_F(ToolTipHelperTest, CollectToolTipAttributes)
 
 TEST_F(ToolTipHelperTest, GetAttributeHtml)
 {
-  std::vector<std::pair<std::string, std::string>> attributes = {{"timeout", "42"}};
+  const std::vector<std::pair<std::string, std::string>> attributes = {{"timeout", "42"}};
 
   const std::string expected(R"RAW(<table width="100">
 <tr>
@@ -67,6 +67,25 @@ TEST_F(ToolTipHelperTest, GetAttributeHtml)
 </table>)RAW");
 
   EXPECT_EQ(GetAttributeHtml(attributes, 100), expected);
+}
+
+TEST_F(ToolTipHelperTest, GetInstructionToolTipText)
+{
+  InstructionInfoItem item;
+  const std::string expected_name("MySpecialWait");
+  const std::size_t instruction_id{0};
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            sup::oac_tree::Instruction::Category::kAction,
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"},
+                                             {domainconstants::kNameAttribute, expected_name}});
+
+  item.InitFromDomainInfo(info);
+
+  auto tooltip = GetInstructionToolTipText(&item);
+  EXPECT_FALSE(tooltip.isEmpty());
+  EXPECT_TRUE(tooltip.contains(QString::fromStdString(expected_name)));
+  // should be enough to win code coverage chocolate context
 }
 
 }  // namespace oac_tree_gui::test
