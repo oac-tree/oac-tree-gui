@@ -20,9 +20,11 @@
 #include "instruction_info_item.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_automation_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
+
+#include <mvvm/model/item_utils.h>
 
 #include <sup/oac-tree/instruction_info.h>
 #include <sup/oac-tree/instruction_info_utils.h>
@@ -51,10 +53,24 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
   SetDomainType(info.GetType());
   SetDisplayName(info.GetType());
 
-  if (auto name_attribute = GetAttribute(info, domainconstants::kNameAttribute);
-      name_attribute.has_value())
+  for (auto &[attr_name, attr_value] : info.GetAttributes())
   {
-    SetName(name_attribute.value());
+    if (attr_name == domainconstants::kNameAttribute)
+    {
+      SetName(attr_value);
+    }
+    else
+    {
+      // creating string properties from attributes solely for tooltips
+      if (!mvvm::utils::HasTag(*this, attr_name))
+      {
+        AddProperty(attr_name, attr_value).SetEditable(false);
+      }
+      else
+      {
+        SetProperty(attr_name, attr_value);
+      }
+    }
   }
 }
 

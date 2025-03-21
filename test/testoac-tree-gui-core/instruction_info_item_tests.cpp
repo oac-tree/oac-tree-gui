@@ -62,6 +62,31 @@ TEST_F(InstructionInfoItemTest, InitFromInstructionInfo)
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kWaitInstructionType);
   EXPECT_EQ(item.GetName(), expected_name);
+
+  ASSERT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kTimeoutAttribute), "42");
+}
+
+//! Same as previous test, except that we init from InstructionInfo twice. This checks that there is
+//! no attempts to recreate existing properties.
+TEST_F(InstructionInfoItemTest, InitFromInstructionInfoTwice)
+{
+  const std::string expected_name("MySpecialWait");
+  const std::size_t instruction_id{0};
+  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+                                            sup::oac_tree::Instruction::Category::kAction,
+                                            instruction_id,
+                                            {{domainconstants::kTimeoutAttribute, "42"},
+                                             {domainconstants::kNameAttribute, expected_name}});
+
+  InstructionInfoItem item;
+  item.InitFromDomainInfo(info);
+  item.InitFromDomainInfo(info);
+  EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kWaitInstructionType);
+  EXPECT_EQ(item.GetName(), expected_name);
+
+  ASSERT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kTimeoutAttribute), "42");
 }
 
 }  // namespace oac_tree_gui::test
