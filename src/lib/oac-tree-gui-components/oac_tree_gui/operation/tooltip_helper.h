@@ -33,6 +33,9 @@ class SessionItem;
 namespace oac_tree_gui
 {
 
+std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
+    const mvvm::SessionItem* item);
+
 QString GetInstructionToolTipText(const mvvm::SessionItem* item);
 
 }  // namespace oac_tree_gui

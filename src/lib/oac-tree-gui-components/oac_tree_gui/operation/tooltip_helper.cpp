@@ -28,7 +28,6 @@
 #include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
 
-#include <QDebug>
 #include <QFont>
 #include <QTextEdit>
 
@@ -92,6 +91,20 @@ void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
 namespace oac_tree_gui
 {
 
+std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
+    const mvvm::SessionItem* item)
+{
+  std::vector<std::pair<std::string, std::string>> result;
+  for (auto property : mvvm::utils::SinglePropertyItems(*item))
+  {
+    if (IsPropertyToShow(property->GetTagIndex().GetTag()))
+    {
+      result.emplace_back(property->GetDisplayName(), mvvm::utils::ValueToString(property->Data()));
+    }
+  }
+  return result;
+}
+
 QString GetInstructionToolTipText(const mvvm::SessionItem* item)
 {
   const auto instruction = mvvm::utils::FindItemUp<InstructionItem>(item);
@@ -116,8 +129,6 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
     }
   }
   text_edit.insertHtml("</table>");
-
-  qDebug() << "AAA " << text_edit.toHtml();
 
   return text_edit.toHtml();
 }
