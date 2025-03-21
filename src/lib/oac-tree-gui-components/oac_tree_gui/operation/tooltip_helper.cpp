@@ -34,12 +34,13 @@
 namespace
 {
 
-const std::vector<std::string> kSkipDomainAttributeList = {
-    oac_tree_gui::itemconstants::kName, oac_tree_gui::domainconstants::kIsRootAttribute};
+const std::vector<std::string> kSkipAttributeList = {
+    oac_tree_gui::itemconstants::kName, oac_tree_gui::domainconstants::kIsRootAttribute,
+    oac_tree_gui::itemconstants::kBehaviorTag};
 
 bool IsPropertyToShow(const std::string& tag_name)
 {
-  return !mvvm::utils::Contains(kSkipDomainAttributeList, tag_name);
+  return !mvvm::utils::Contains(kSkipAttributeList, tag_name);
 }
 
 void AppendTitle(const std::string& text, QTextEdit& text_edit)
@@ -79,7 +80,7 @@ void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
   name.resize(name_field_length, ' ');
   const QString value = QString::fromStdString(s_value);
 
-  text_edit.append(pattern.arg(base_font.pointSize()*25).arg(name).arg(value));
+  text_edit.append(pattern.arg(base_font.pointSize() * 25).arg(name).arg(value));
 }
 
 }  // namespace
