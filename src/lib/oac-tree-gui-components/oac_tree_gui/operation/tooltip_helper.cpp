@@ -33,6 +33,7 @@
 
 namespace
 {
+
 const std::vector<std::string> kSkipDomainAttributeList = {
     oac_tree_gui::itemconstants::kName, oac_tree_gui::domainconstants::kIsRootAttribute};
 
@@ -56,9 +57,9 @@ void AppendDescription(const std::string& text, QTextEdit& text_edit)
 
 void AppendLittleVerticalGap(QTextEdit& text_edit)
 {
-  auto base_font = text_edit.font();
+  const auto base_font = text_edit.font();
   auto new_font = base_font;
-  new_font.setPointSize(5);
+  new_font.setPointSize(static_cast<int>(base_font.pointSize()*0.25));
   text_edit.setCurrentFont(new_font);
   text_edit.append(" ");
   text_edit.setCurrentFont(base_font);
@@ -67,14 +68,15 @@ void AppendLittleVerticalGap(QTextEdit& text_edit)
 void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
                          QTextEdit& text_edit)
 {
-  auto base_font = text_edit.font();
+  const int name_field_length{18};
+  const auto base_font = text_edit.font();
 
-  QFont f("Monospace", base_font.pointSize());
+  const QFont f("Monospace", base_font.pointSize());
   text_edit.setCurrentFont(f);
 
   QString name = QString::fromStdString(s_name);
-  name.resize(18, ' ');
-  QString value = QString::fromStdString(s_value);
+  name.resize(name_field_length, ' ');
+  const QString value = QString::fromStdString(s_value);
 
   text_edit.append("<div style=\"width=500px\"><pre>" + name + " : " + value + "</pre></div>");
 }
