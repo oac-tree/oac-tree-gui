@@ -55,4 +55,18 @@ TEST_F(ToolTipHelperTest, CollectToolTipAttributes)
   EXPECT_EQ(tooltip_attributes.at(0).second, "42");
 }
 
+TEST_F(ToolTipHelperTest, GetAttributeHtml)
+{
+  std::vector<std::pair<std::string, std::string>> attributes = {{"timeout", "42"}};
+
+  const std::string expected(R"RAW(<table width="100">
+<tr>
+<td width="30">timeout</td>
+<td width="70">42</td>
+</tr>
+</table>)RAW");
+
+  EXPECT_EQ(GetAttributeHtml(attributes, 100), expected);
+}
+
 }  // namespace oac_tree_gui::test

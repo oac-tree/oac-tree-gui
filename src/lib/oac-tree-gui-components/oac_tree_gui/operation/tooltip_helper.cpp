@@ -27,6 +27,7 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
+#include <mvvm/utils/string_format.h>
 
 #include <QFont>
 #include <QTextEdit>
@@ -105,6 +106,38 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
   return result;
 }
 
+std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::string>>& attributes,
+                             int total_width)
+{
+  static const std::string cell_pattern(R"RAW(
+<tr>
+<td width="%1">%2</td>
+<td width="%3">%4</td>
+</tr>
+)RAW");
+
+  std::string result;
+  if (!attributes.empty())
+  {
+    result = mvvm::utils::StringFormat("<table width=\"%1\">").arg(std::to_string(total_width));
+    for (auto& [name, value] : attributes)
+    {
+      const int width1 = total_width * 0.3;
+      const int width2 = total_width * 0.7;
+      std::string str = mvvm::utils::StringFormat(cell_pattern)
+                            .arg(std::to_string(width1))
+                            .arg(name)
+                            .arg(std::to_string(width2))
+                            .arg(value);
+      result += str;
+    }
+
+    result += "</table>";
+  }
+
+  return result;
+}
+
 QString GetInstructionToolTipText(const mvvm::SessionItem* item)
 {
   const auto instruction = mvvm::utils::FindItemUp<InstructionItem>(item);
@@ -119,7 +152,14 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
   AppendDescription(instruction->GetName(), text_edit);
   AppendLittleVerticalGap(text_edit);
 
-  text_edit.insertHtml("<table width=\"500\">");
+  auto attributes = CollectToolTipAttributes(item);
+  if (!attributes.empty())
+  {
+    text_edit.insertHtml("<table width=\"500\">");
+
+    text_edit.insertHtml("</table>");
+  }
+
   for (auto property : mvvm::utils::SinglePropertyItems(*instruction))
   {
     if (IsPropertyToShow(property->GetTagIndex().GetTag()))
@@ -128,7 +168,6 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
                           text_edit);
     }
   }
-  text_edit.insertHtml("</table>");
 
   return text_edit.toHtml();
 }

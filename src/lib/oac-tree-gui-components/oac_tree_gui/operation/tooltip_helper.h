@@ -36,6 +36,9 @@ namespace oac_tree_gui
 std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
     const mvvm::SessionItem* item);
 
+std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::string>>& attributes,
+                             int total_width);
+
 QString GetInstructionToolTipText(const mvvm::SessionItem* item);
 
 }  // namespace oac_tree_gui
