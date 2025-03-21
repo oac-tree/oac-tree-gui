@@ -23,29 +23,30 @@
 #include <QString>
 #include <vector>
 
-#include <vector>
-
 namespace oac_tree_gui
 {
 
 /**
- * @brief The ZoomFactorConverter class is a helper to convert the slider's linear limits to zoom
- * factor.
+ * @brief The ZoomFactorConverter class is a helper to convert QSLider linear integer values to
+ * zoom factor and back.
  *
  * Zoom factor is used by NodeGraphicsView to zoom in and out. The value over 1.0 zooms into the
  * view (objects look large). Zoom value between 0.0 and 1.0 zooms out of the view (objects look
  * small).
+ *
+ * This class relies on a provided vector of sorted zoom values and simply uses this array to
+ * convert zoom factor to index (corresponding to QSlider values) and back. No interpolation is
+ * provided.
  */
 class ZoomFactorConverter
 {
 public:
   /**
-   * @brief Main c-tor with zoom limits defined.
+   * @brief Main c-tor with zoom values.
    *
-   * @param zoom_factor_min The minimum possible value of the zoom factor.
-   * @param zoom_factor_max The maximum possible value of the zoom factor.
+   * @param zoom_values Sorted vector of all zoom values.
    */
-  ZoomFactorConverter(const std::vector<double>& zoom_values);
+  explicit ZoomFactorConverter(const std::vector<double>& zoom_values);
 
   /**
    * @brief Returns min value of slider's range.
