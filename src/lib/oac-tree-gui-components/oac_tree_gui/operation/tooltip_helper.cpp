@@ -28,6 +28,7 @@
 #include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
 
+#include <QDebug>
 #include <QFont>
 #include <QTextEdit>
 
@@ -60,7 +61,7 @@ void AppendLittleVerticalGap(QTextEdit& text_edit)
 {
   const auto base_font = text_edit.font();
   auto new_font = base_font;
-  new_font.setPointSize(static_cast<int>(base_font.pointSize() * 0.25));
+  new_font.setPointSize(static_cast<int>(base_font.pointSize() * 0.3));
   text_edit.setCurrentFont(new_font);
   text_edit.append(" ");
   text_edit.setCurrentFont(base_font);
@@ -69,18 +70,21 @@ void AppendLittleVerticalGap(QTextEdit& text_edit)
 void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
                          QTextEdit& text_edit)
 {
-  static const QString pattern(R"RAW(<div style="width=%1px"><pre>%2:%3</pre></div>)RAW");
-  const int name_field_length{18};
-  const auto base_font = text_edit.font();
+  static const QString pattern(R"RAW(
+<tr>
+<td width="%1">%2</td>
+<td width="%1">%3</td>
+</tr>
+)RAW");
 
+  const auto base_font = text_edit.font();
   const QFont f("Monospace", base_font.pointSize());
   text_edit.setCurrentFont(f);
 
-  QString name = QString::fromStdString(s_name);
-  name.resize(name_field_length, ' ');
+  const QString name = QString::fromStdString(s_name);
   const QString value = QString::fromStdString(s_value);
 
-  text_edit.append(pattern.arg(base_font.pointSize() * 25).arg(name).arg(value));
+  text_edit.insertHtml(pattern.arg(base_font.pointSize() * 20).arg(name).arg(value));
 }
 
 }  // namespace
@@ -102,6 +106,7 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
   AppendDescription(instruction->GetName(), text_edit);
   AppendLittleVerticalGap(text_edit);
 
+  text_edit.insertHtml("<table width=\"500\">");
   for (auto property : mvvm::utils::SinglePropertyItems(*instruction))
   {
     if (IsPropertyToShow(property->GetTagIndex().GetTag()))
@@ -110,6 +115,9 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
                           text_edit);
     }
   }
+  text_edit.insertHtml("</table>");
+
+  qDebug() << "AAA " << text_edit.toHtml();
 
   return text_edit.toHtml();
 }
