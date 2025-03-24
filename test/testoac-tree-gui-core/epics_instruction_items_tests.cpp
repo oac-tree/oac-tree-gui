@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/epics_instruction_items.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
@@ -35,8 +37,6 @@
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
-
-#include "oac_tree_gui/model/epics_instruction_items.h"
 
 namespace oac_tree_gui::test
 {
@@ -123,7 +123,7 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItem)
   EXPECT_TRUE(item.GetVariableName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
-  EXPECT_TRUE(mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag));
+  EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kAnyValueTag));
   EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetVariableName("abc");
@@ -207,8 +207,6 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItemToDomain)
 
   {  // case when AnyValueItem marked as non-present
     const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-    const std::string expected_type(R"RAW({"type":"int32"})RAW");
-    const std::string expected_value("42");
 
     ChannelAccessWriteInstructionItem item;
     item.SetChannel("def");
@@ -294,7 +292,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItem)
   EXPECT_TRUE(item.GetVariableName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
-  EXPECT_TRUE(mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag));
+  EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kAnyValueTag));
   EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetVariableName("abc");
@@ -332,6 +330,14 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemFromDomain)
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
   EXPECT_EQ(item.GetChannel(), std::string("def"));
   EXPECT_EQ(item.GetTimeout(), 42.0);
+
+  const std::vector<std::string> expected_tags(
+      {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
+       domainconstants::kChannelAttribute, domainconstants::kGenericVariableNameAttribute,
+       domainconstants::kTimeoutAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
+       itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint,
+       itemconstants::kAnyValueTag});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 }
 
 TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemToDomain)
@@ -378,8 +384,6 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemToDomain)
 
   {  // case when AnyValueItem marked as non-present
     const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-    const std::string expected_type(R"RAW({"type":"int32"})RAW");
-    const std::string expected_value("42");
 
     PvAccessWriteInstructionItem item;
     item.SetChannel("def");
@@ -413,7 +417,7 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstruction)
   EXPECT_TRUE(item.GetRequestVar().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
   EXPECT_TRUE(item.GetOutput().empty());
-  EXPECT_TRUE(mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag));
+  EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kAnyValueTag));
   EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetService("service");
