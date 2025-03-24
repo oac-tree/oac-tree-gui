@@ -35,11 +35,19 @@
 namespace
 {
 
-// These attributes shouldn't be used from the domain to build properties.
-const std::vector<std::string> kSkipDomainAttributeList = {
-    oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
-    oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
-};
+//! @brief Checks if given attribute shall be exposed to the GUI.
+//! Some domain attributes shall not be used to build GUI item properties.
+//!
+//! @param domain_attribute_name The name of the attribute in domain attribute definition.
+bool IsDomainAttributeToExpose(const std::string &domain_attribute_name)
+{
+  static const std::vector<std::string> kSkipDomainAttributeList = {
+      oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
+      oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
+  };
+
+  return !mvvm::utils::Contains(kSkipDomainAttributeList, domain_attribute_name);
+}
 
 // these are properties that shouldn't go to domain
 const std::vector<std::string> kSkipItemTagList = {oac_tree_gui::itemconstants::kAnyValueTag};
@@ -91,7 +99,7 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   // creating property items representing custom attributes not present in attribute definitions
   for (const auto &[name, value] : instruction->GetStringAttributes())
   {
-    if (!mvvm::utils::Contains(processed_attribute_names, name))
+    if (!mvvm::utils::Contains(processed_attribute_names, name) && IsDomainAttributeToExpose(name))
     {
       auto &property = AddProperty<sup::gui::AnyValueScalarItem>(name);
       property.SetAnyTypeName(sup::dto::kStringTypeName);
@@ -159,7 +167,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
 
   for (const auto &definition : instruction->GetAttributeDefinitions())
   {
-    if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
+    if (IsDomainAttributeToExpose(definition.GetName()))
     {
       AddPropertyFromDefinition(definition, *this);
     }
