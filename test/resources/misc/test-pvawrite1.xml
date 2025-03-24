@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/oac-tree" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/oac-tree oac-tree.xsd">
+    <Plugin>liboac-tree-pvxs.so</Plugin>
+    <RegisterType jsontype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"float32"}}]}'/>
+    <Sequence>
+        <Copy inputVar="old-pvxs-value" outputVar="pvxs-variable"/>
+        <Equals leftVar="pvxs-variable" rightVar="old-pvxs-value"/>
+        <PvAccessWrite name="write to pv"
+                       channel="seq::test::variable"
+                       varName="new-pvxs-value"
+                       timeout="5.0" />
+        <Equals leftVar="pvxs-variable" rightVar="new-pvxs-value"/>
+    </Sequence>
+    <Workspace>
+        <PvAccessServer name="pvxs-variable"
+                        channel="seq::test::variable"
+                        type='{"type":"seq::test::Type/v1.0"}'/>
+        <Local name="old-pvxs-value"
+               type='{"type":"seq::test::Type/v1.0"}'
+               value='{"value":1.0}'/>
+        <Local name="new-pvxs-value"
+               type='{"type":"seq::test::Type/v1.0"}'
+               value='{"value":12.5}'/>
+    </Workspace>
+</Procedure>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/oac-tree" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/oac-tree oac-tree.xsd">
+    <Plugin>liboac-tree-pvxs.so</Plugin>
+    <RPCClient name="client"
+        service="rpc@service"
+        type='{"type":"rpcStruct","attributes":[{"value":{"type":"uint64"}}]}'
+        value='{"value":0}'
+        reply="reply"
+        timeout="3.0"/>
+    <Workspace>
+        <Local name="reply"/>
+    </Workspace>
+</Procedure>
