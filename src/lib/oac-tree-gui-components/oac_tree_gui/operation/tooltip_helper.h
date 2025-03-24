@@ -24,6 +24,7 @@
 //! Collection of helper methods for tooltip generation.
 
 #include <QString>
+#include <vector>
 
 namespace mvvm
 {
@@ -33,12 +34,25 @@ class SessionItem;
 namespace oac_tree_gui
 {
 
+/**
+ * @brief Extracts item attributes that should go into tooltips of real-time instruction tree.
+ */
 std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
     const mvvm::SessionItem* item);
 
+/**
+ * @brief Constructs html string containing a table with attribute <name, value> attributes.
+ *
+ * @param attributes The list of pairs name, and value for attribute as defined in InstructionInfo.
+ * @param Total width of a tooltip in pixels.
+ */
 std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::string>>& attributes,
                              int total_width);
 
+/**
+ * @brief Returns multi-line string representing the tooltip of instruction for real-time
+ * instruction tree.
+ */
 QString GetInstructionToolTipText(const mvvm::SessionItem* item);
 
 }  // namespace oac_tree_gui

@@ -39,7 +39,7 @@ TEST_F(ToolTipHelperTest, CollectToolTipAttributes)
 {
   const std::string expected_name("MySpecialWait");
   const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+  const sup::oac_tree::InstructionInfo info(domainconstants::kWaitInstructionType,
                                             sup::oac_tree::Instruction::Category::kAction,
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"},
@@ -59,6 +59,7 @@ TEST_F(ToolTipHelperTest, GetAttributeHtml)
 {
   const std::vector<std::pair<std::string, std::string>> attributes = {{"timeout", "42"}};
 
+  // cell width is distributed in the ratio 30/70 as hardcoded in GetAttributeHtml()
   const std::string expected(R"RAW(<table width="100">
 <tr>
 <td width="30">timeout</td>
@@ -74,7 +75,7 @@ TEST_F(ToolTipHelperTest, GetInstructionToolTipText)
   InstructionInfoItem item;
   const std::string expected_name("MySpecialWait");
   const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
+  const sup::oac_tree::InstructionInfo info(domainconstants::kWaitInstructionType,
                                             sup::oac_tree::Instruction::Category::kAction,
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"},
@@ -85,7 +86,8 @@ TEST_F(ToolTipHelperTest, GetInstructionToolTipText)
   auto tooltip = GetInstructionToolTipText(&item);
   EXPECT_FALSE(tooltip.isEmpty());
   EXPECT_TRUE(tooltip.contains(QString::fromStdString(expected_name)));
-  // should be enough to win code coverage chocolate context
+  EXPECT_TRUE(tooltip.contains(QString::fromStdString(domainconstants::kWaitInstructionType)));
+  EXPECT_TRUE(tooltip.contains(QString::fromStdString(domainconstants::kTimeoutAttribute)));
 }
 
 }  // namespace oac_tree_gui::test
