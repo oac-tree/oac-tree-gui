@@ -91,6 +91,10 @@ void WorkspaceEditorActions::SetupActions()
   m_remove_variable_action = new sup::gui::ActionMenu("Remove variable", this);
   m_remove_variable_action->setIcon(FindIcon("beaker-remove-outline"));
   m_remove_variable_action->setToolTip("Remove currently selected variable");
+  // Shortcut are here only to provide visual helper in the context menu. They are not triggered
+  // since m_remove_action is not attached to any particular widget. Real shortcuts are handled by
+  // global proxy actions.
+  m_remove_variable_action->setShortcuts({Qt::Key_Delete, Qt::Key_Backspace});
   connect(m_remove_variable_action, &QAction::triggered, this,
           [this]() { m_action_handler->RemoveVariable(); });
 

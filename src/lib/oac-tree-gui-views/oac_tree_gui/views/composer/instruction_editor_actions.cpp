@@ -115,18 +115,16 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_remove_action = new QAction("Remove", this);
   m_remove_action->setIcon(FindIcon("beaker-remove-outline"));
   m_remove_action->setToolTip("Remove currently selected instruction together with its children");
-  // shortcut is here only for the record in the context menu, in fact it is handled via global
-  // proxy action shortcuts
-  m_remove_action->setShortcuts({Qt::Key_Backspace, Qt::Key_Delete});
+  // Shortcut are here only to provide visual helper in the context menu. They are not triggered
+  // since m_remove_action is not attached to any particular widget. Real shortcuts are handled by
+  // global proxy actions.
+  m_remove_action->setShortcuts({Qt::Key_Delete, Qt::Key_Backspace});
   connect(m_remove_action, &QAction::triggered, this,
           [this]() { m_action_handler->RemoveInstruction(); });
 
   // remove action (own toolbar version to avoid disabled status)
   m_remove_toolbar_action = new sup::gui::ProxyAction(this);
   m_remove_toolbar_action->SetAction(m_remove_action);
-  // NOTE: commented to not to conflict with global action shortcut
-  // m_remove_toolbar_action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-  // m_remove_toolbar_action->setShortcuts({Qt::Key_Backspace, Qt::Key_Delete});
   m_action_map.Add(ActionKey::kRemoveSelected, m_remove_toolbar_action);
 
   m_move_up_action = new QAction("Move Up", this);

@@ -202,8 +202,7 @@ void SequencerMainWindowActions::SetupEditMenu()
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
                                           sup::gui::constants::kRemoveSelectedCommandId);
   command->SetText("Remove selected");
-  // NOTE can't make Qt::Key_Delete working
-  command->GetProxyAction()->setShortcuts({Qt::Key_Backspace, Qt::Key_Delete});
+  command->GetProxyAction()->setShortcuts({Qt::Key_Delete, Qt::Key_Backspace});
 }
 
 void SequencerMainWindowActions::SetupViewMenu()
