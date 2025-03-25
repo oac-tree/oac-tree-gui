@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_XML_PANEL_CONTROLLER_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_XML_PANEL_CONTROLLER_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_XML_PANEL_CONTROLLER_H_
+#define OAC_TREE_GUI_COMPONENTS_XML_PANEL_CONTROLLER_H_
 
 #include <sup/gui/core/message_event.h>
 
@@ -78,4 +78,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_XML_PANEL_CONTROLLER_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_XML_PANEL_CONTROLLER_H_

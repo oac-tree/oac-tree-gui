@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
-#define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
+#ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_ACTIONS_H_
+#define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_ACTIONS_H_
 
 #include <sup/gui/components/action_map.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
@@ -85,4 +85,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
+#endif  // OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_ACTIONS_H_

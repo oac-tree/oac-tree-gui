@@ -49,4 +49,4 @@ set_mime_data_func_t DefaultClipboardSetFunc();
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_MAINWINDOW_COLOR_PALETTE_H_
+#endif  // OAC_TREE_GUI_MAINWINDOW_CLIPBOARD_HELPER_H_
