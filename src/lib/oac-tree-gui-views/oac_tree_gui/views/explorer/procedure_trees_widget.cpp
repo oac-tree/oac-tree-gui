@@ -25,8 +25,8 @@
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/custom_splitter.h>
 
-#include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/viewmodel/top_items_viewmodel.h>
+#include <mvvm/views/component_provider_helper.h>
 #include <mvvm/views/property_tree_view.h>
 
 #include <QTreeView>

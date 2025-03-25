@@ -33,7 +33,7 @@
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
-#include <mvvm/providers/item_view_component_provider.h>
+#include <mvvm/views/component_provider_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QEvent>

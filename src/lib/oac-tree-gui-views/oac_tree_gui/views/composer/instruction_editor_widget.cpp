@@ -40,7 +40,7 @@
 #include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
-#include <mvvm/providers/item_view_component_provider.h>
+#include <mvvm/views/component_provider_helper.h>
 #include <mvvm/views/property_tree_view.h>
 
 #include <QTreeView>
