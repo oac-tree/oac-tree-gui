@@ -87,7 +87,8 @@ signals:
   void SelectInstructionRequest(mvvm::SessionItem* item);
 
 private:
-  InstructionEditorContext CreateInstructionEditorContext(std::function<void(const sup::gui::MessageEvent&)> send_message);
+  InstructionEditorContext CreateInstructionEditorContext(
+      std::function<void(const sup::gui::MessageEvent&)> send_message);
 
   std::vector<InstructionItem*> GetSelectedInstructions();
 

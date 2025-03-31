@@ -44,7 +44,7 @@ class AttributeEditorActionHandler;
 class AttributeEditorContext;
 
 /**
- * @brief The InstructionAttributeEditor provides a toolbar and two-column tree for editing
+ * @brief The InstructionAttributeEditor provides a toolbar and three-column tree for editing
  * instruction attributes.
  *
  * It is located at the bottom of the InstructionEditorWidget (main SequencerComposerView).

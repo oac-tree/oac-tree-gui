@@ -11,6 +11,8 @@ target_sources(${library_name} PRIVATE
   composer_widget_panel.h
   instruction_attribute_editor.cpp
   instruction_attribute_editor.h
+  custom_celleditor_factory.cpp
+  custom_celleditor_factory.h
   instruction_editor_actions.cpp
   instruction_editor_actions.h
   instruction_editor_widget.cpp
