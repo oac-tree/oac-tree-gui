@@ -26,12 +26,18 @@
 #include <string>
 #include <vector>
 
+#include <QStringList>
+
+namespace mvvm
+{
+class SessionItem;
+}
+
 namespace oac_tree_gui
 {
 
 /**
- * @brief The CustomCellEditorFactory class is a custom factory to create sequencer specific cell
- * editors.
+ * @brief The CustomCellEditorFactory creates sequencer specific cell editors.
  *
  * Intended to create cell editors for InstructionItem attributes with variable name auto-complete
  * features.
@@ -39,13 +45,29 @@ namespace oac_tree_gui
 class CustomCellEditorFactory : public mvvm::DefaultEditorFactory
 {
 public:
-  using string_list_func_t = std::function<std::vector<std::string>()>;
+  explicit CustomCellEditorFactory(const std::function<QStringList()>& string_list_func);
 
-  explicit CustomCellEditorFactory(const string_list_func_t& string_list_func);
+  mvvm::editor_t CreateEditor(const QModelIndex& index) const override;
 
 private:
-  string_list_func_t m_string_list_func;
+  std::function<QStringList()> m_string_list_func;
 };
+
+/**
+ * @brief Checks if the given display name repersents a property carrying a variable name.
+ */
+bool IsVariableNameRelatedDisplayName(const std::string& name);
+
+/**
+ * @brief Checks if the given item repersents a property carrying a variable name.
+ */
+bool IsVariableNameRelatedProperty(const mvvm::SessionItem& item);
+
+/**
+ * @brief Checks if the given index is related to the variable name property.
+ */
+bool IsVariableNameRelatedCell(const QModelIndex& index);
+
 
 }  // namespace oac_tree_gui
 
