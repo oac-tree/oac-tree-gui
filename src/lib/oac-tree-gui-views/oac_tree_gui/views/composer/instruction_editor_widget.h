@@ -79,6 +79,7 @@ private:
   void SetupTree();
   void AdjustTreeAppearance();
   void SetInstructionContainerIntern(InstructionContainerItem* instruction_container);
+  std::function<QStringList()> CreateVariableNameFunc();
 
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();

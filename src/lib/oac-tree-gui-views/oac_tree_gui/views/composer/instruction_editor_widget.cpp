@@ -28,6 +28,7 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <oac_tree_gui/widgets/custom_tree_view_style.h>
@@ -40,6 +41,8 @@
 #include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
+#include <mvvm/model/item_utils.h>
+#include <mvvm/viewmodel/qtcore_helper.h>
 #include <mvvm/views/component_provider_helper.h>
 #include <mvvm/views/property_tree_view.h>
 
@@ -72,7 +75,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
-    , m_attribute_editor(new InstructionAttributeEditor({}))
+    , m_attribute_editor(new InstructionAttributeEditor(CreateVariableNameFunc()))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_action_handler(
           std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
@@ -197,6 +200,18 @@ void InstructionEditorWidget::SetInstructionContainerIntern(
   {
     AdjustTreeAppearance();
   }
+}
+
+std::function<QStringList()> InstructionEditorWidget::CreateVariableNameFunc()
+{
+  return [this]() -> QStringList
+  {
+    if (auto procedure = mvvm::utils::FindItemUp<ProcedureItem>(m_instruction_container); procedure)
+    {
+      return mvvm::utils::GetStringList(procedure->GetWorkspace()->GetVariableNames());
+    }
+    return {};
+  };
 }
 
 void InstructionEditorWidget::SetupConnections()
