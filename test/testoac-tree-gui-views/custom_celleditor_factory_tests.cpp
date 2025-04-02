@@ -50,8 +50,14 @@ public:
 TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedDisplayName)
 {
   EXPECT_FALSE(IsVariableNameRelatedDisplayName(itemconstants::kName));
+  EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kEqualVariableAttributeName));
+  EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kFromVariableAttributeName));
+  EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kGenericVariableNameAttribute));
   EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kInputVariableNameAttribute));
+  EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kLeftVariableNameAttribute));
   EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kOutputVariableNameAttribute));
+  EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kRequestAttribute));
+  EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kRightVariableNameAttribute));
 }
 
 TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedProperty)

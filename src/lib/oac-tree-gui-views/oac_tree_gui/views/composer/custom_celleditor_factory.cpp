@@ -50,7 +50,15 @@ mvvm::editor_t CustomCellEditorFactory::CreateEditor(const QModelIndex &index) c
 bool IsVariableNameRelatedDisplayName(const std::string &name)
 {
   static const std::vector<std::string> kVariableNameRelated = {
-      domainconstants::kInputVariableNameAttribute, domainconstants::kOutputVariableNameAttribute};
+      domainconstants::kEqualVariableAttributeName,
+      domainconstants::kFromVariableAttributeName,
+      domainconstants::kGenericVariableNameAttribute,
+      domainconstants::kInputVariableNameAttribute,
+      domainconstants::kLeftVariableNameAttribute,
+      domainconstants::kOutputVariableNameAttribute,
+      domainconstants::kRequestAttribute,
+      domainconstants::kRightVariableNameAttribute
+  };
   return mvvm::utils::Contains(kVariableNameRelated, name);
 }
 
