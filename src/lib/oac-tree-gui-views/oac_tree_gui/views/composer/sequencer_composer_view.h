@@ -35,7 +35,7 @@ namespace oac_tree_gui
 
 class SequencerModel;
 class ComposerWidgetPanel;
-class ComposerPanel;
+class ComposerToolsPanel;
 class ProcedureItem;
 class SequencerComposerActions;
 class ProcedurePluginController;
@@ -74,8 +74,7 @@ private:
   QAction* m_toggle_right_sidebar{nullptr};
 
   std::unique_ptr<ProcedureEditor> m_procedure_editor;
-
-  ComposerPanel* m_composer_panel{nullptr};
+  ComposerToolsPanel* m_composer_panel{nullptr};
   ComposerWidgetPanel* m_central_panel{nullptr};
   ComposerWidgetPanel* m_right_panel{nullptr};
 

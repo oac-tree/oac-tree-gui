@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "composer_panel.h"
+#include "composer_tools_panel.h"
 
 #include "aggregate_panel.h"
 #include "instruction_item_panel.h"
@@ -41,7 +41,7 @@ namespace
 const QString &kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
 }
 
-ComposerPanel::ComposerPanel(QWidget *parent_widget)
+ComposerToolsPanel::ComposerToolsPanel(QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_procedure_list_view(new ProcedureListWidget)
@@ -66,22 +66,22 @@ ComposerPanel::ComposerPanel(QWidget *parent_widget)
   m_stack_widget->AddWidget(m_collapsible_list, toolbar_actions);
 
   connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
-          &ComposerPanel::ProcedureSelected);
+          &ComposerToolsPanel::ProcedureSelected);
 
   connect(m_instruction_panel, &InstructionItemPanel::InstructionDoubleClicked, this,
-          &ComposerPanel::ToolBoxInstructionRequest);
+          &ComposerToolsPanel::ToolBoxInstructionRequest);
   connect(m_aggregate_panel, &AggregatePanel::InstructionDoubleClicked, this,
-          &ComposerPanel::ToolBoxInstructionRequest);
+          &ComposerToolsPanel::ToolBoxInstructionRequest);
 
   ReadSettings();
 }
 
-ComposerPanel::~ComposerPanel()
+ComposerToolsPanel::~ComposerToolsPanel()
 {
   WriteSettings();
 }
 
-void ComposerPanel::SetModel(SequencerModel *model)
+void ComposerToolsPanel::SetModel(SequencerModel *model)
 {
   m_procedure_list_view->SetModel(model);
 
@@ -92,22 +92,22 @@ void ComposerPanel::SetModel(SequencerModel *model)
   }
 }
 
-ProcedureItem *ComposerPanel::GetSelectedProcedure()
+ProcedureItem *ComposerToolsPanel::GetSelectedProcedure()
 {
   return m_procedure_list_view->GetSelectedProcedure();
 }
 
-void ComposerPanel::SetSelectedProcedure(ProcedureItem *procedure)
+void ComposerToolsPanel::SetSelectedProcedure(ProcedureItem *procedure)
 {
   m_procedure_list_view->SetSelectedProcedure(procedure);
 }
 
-void ComposerPanel::ReadSettings()
+void ComposerToolsPanel::ReadSettings()
 {
   m_collapsible_list->ReadSettings();
 }
 
-void ComposerPanel::WriteSettings()
+void ComposerToolsPanel::WriteSettings()
 {
   m_collapsible_list->WriteSettings();
 }

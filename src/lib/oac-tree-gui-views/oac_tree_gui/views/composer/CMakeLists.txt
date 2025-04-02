@@ -5,14 +5,14 @@ target_sources(${library_name} PRIVATE
   aggregate_panel.h
   attribute_editor_actions.cpp
   attribute_editor_actions.h
-  composer_panel.cpp
-  composer_panel.h
+  composer_tools_panel.cpp
+  composer_tools_panel.h
   composer_widget_panel.cpp
   composer_widget_panel.h
-  instruction_attribute_editor.cpp
-  instruction_attribute_editor.h
   custom_celleditor_factory.cpp
   custom_celleditor_factory.h
+  instruction_attribute_editor.cpp
+  instruction_attribute_editor.h
   instruction_editor_actions.cpp
   instruction_editor_actions.h
   instruction_editor_widget.cpp

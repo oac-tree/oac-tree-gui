@@ -19,7 +19,7 @@
 
 #include "sequencer_composer_view.h"
 
-#include "composer_panel.h"
+#include "composer_tools_panel.h"
 #include "composer_widget_panel.h"
 #include "sequencer_composer_actions.h"
 
@@ -57,7 +57,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_procedure_editor(std::make_unique<ProcedureEditor>(
           [](const auto &event) { sup::gui::SendWarningMessage(event); }))
-    , m_composer_panel(new ComposerPanel)
+    , m_composer_panel(new ComposerToolsPanel)
     , m_central_panel(new ComposerWidgetPanel(kCentralPanel, ComposerWidgetPanel::kInstructionTree))
     , m_right_panel(new ComposerWidgetPanel(kRightPanel, ComposerWidgetPanel::kWorkspace))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
@@ -127,7 +127,7 @@ void SequencerComposerView::SetupConnections()
     m_composer_actions->SetProcedure(procedure_item);
     m_procedure_editor->SetProcedure(procedure_item);
   };
-  connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);
+  connect(m_composer_panel, &ComposerToolsPanel::ProcedureSelected, this, on_procedure_selected);
 
   // propagate selection from central panel to the right panel
   auto on_central_selection = [this](auto)
@@ -149,7 +149,7 @@ void SequencerComposerView::SetupConnections()
   connect(m_right_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
 
   // instruction toolbox requests form left panel
-  connect(m_composer_panel, &ComposerPanel::ToolBoxInstructionRequest, m_procedure_editor.get(),
+  connect(m_composer_panel, &ComposerToolsPanel::ToolBoxInstructionRequest, m_procedure_editor.get(),
           &ProcedureEditor::InsertInstructionFromToolBox);
 }
 

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_PANEL_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_PANEL_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_TOOLS_PANEL_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_TOOLS_PANEL_H_
 
 #include <QWidget>
 
@@ -40,19 +40,18 @@ class ProcedureItem;
 class AggregatePanel;
 
 /**
- * @brief The ComposerPanel class represent a left panel of SequencerComposerView (second main
+ * @brief The ComposerToolsPanel class represent a left panel of SequencerComposerView (second main
  * view).
  *
- * Contains list of opened procedures, list of available instruction, and list of available
- * variables.
+ * Contains list of opened procedures, lists of available instructions and aggregates.
  */
-class ComposerPanel : public QWidget
+class ComposerToolsPanel : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit ComposerPanel(QWidget* parent_widget = nullptr);
-  ~ComposerPanel() override;
+  explicit ComposerToolsPanel(QWidget* parent_widget = nullptr);
+  ~ComposerToolsPanel() override;
 
   void SetModel(SequencerModel* model);
 
@@ -82,4 +81,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_PANEL_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_TOOLS_PANEL_H_
