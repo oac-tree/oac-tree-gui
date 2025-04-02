@@ -57,21 +57,14 @@ public:
   explicit InstructionAttributeEditor(QWidget* parent_widget = nullptr);
   ~InstructionAttributeEditor() override;
 
-  void SetItem(mvvm::SessionItem* item);
+  void SetInstruction(mvvm::SessionItem* instruction_item);
 
 signals:
   void EditAnyvalueRequest();
 
 private:
-  /**
-   * @brief Summons custom tree context menu to modify attributes.
-   */
-  void OnTreeContextMenuRequest(const QPoint& point);
-
-  /**
-   * @brief Returns context necessary to setup context menu and toolbar actions.
-   */
-  AttributeEditorContext CreateActionContext();
+  void SummonContextMenu(const QPoint& point);
+  AttributeEditorContext CreateAttributeEditorActionContext();
 
   QToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};

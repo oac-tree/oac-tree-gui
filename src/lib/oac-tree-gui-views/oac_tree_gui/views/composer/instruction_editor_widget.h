@@ -49,7 +49,7 @@ class InstructionAttributeEditor;
 class CustomTreeViewStyle;
 
 /**
- * @brief The InstructionEditorWidget class is a main panel to compose instruction tree.
+ * @brief The InstructionEditorWidget is a main panel to compose instruction tree.
  *
  * Belongs to SequencerComposerView (the second main widget). Contains instruction tree on top, and
  * attribute editor at the bottom.

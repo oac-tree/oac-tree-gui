@@ -55,7 +55,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent_widget)
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
     , m_attribute_action_handler(
-          std::make_unique<AttributeEditorActionHandler>(CreateActionContext()))
+          std::make_unique<AttributeEditorActionHandler>(CreateAttributeEditorActionContext()))
     , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler.get(), this))
 {
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -75,7 +75,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent_widget)
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          &InstructionAttributeEditor::OnTreeContextMenuRequest);
+          &InstructionAttributeEditor::SummonContextMenu);
 
   connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, this,
           &InstructionAttributeEditor::EditAnyvalueRequest);
@@ -83,20 +83,20 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent_widget)
 
 InstructionAttributeEditor::~InstructionAttributeEditor() = default;
 
-void InstructionAttributeEditor::SetItem(mvvm::SessionItem *item)
+void InstructionAttributeEditor::SetInstruction(mvvm::SessionItem *instruction_item)
 {
-  m_component_provider->SetItem(item);
+  m_component_provider->SetItem(instruction_item);
   m_custom_header->AdjustColumnsWidth();
 }
 
-void InstructionAttributeEditor::OnTreeContextMenuRequest(const QPoint &point)
+void InstructionAttributeEditor::SummonContextMenu(const QPoint &point)
 {
   QMenu menu;
   m_attribute_actions->SetupMenu(menu);
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
-AttributeEditorContext InstructionAttributeEditor::CreateActionContext()
+AttributeEditorContext InstructionAttributeEditor::CreateAttributeEditorActionContext()
 {
   auto selected_items_callback = [this]() { return m_component_provider->GetSelectedItems(); };
 

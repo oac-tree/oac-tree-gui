@@ -204,7 +204,7 @@ void InstructionEditorWidget::SetupConnections()
   auto on_selected_instruction_changed = [this](auto)
   {
     auto selected = GetSelectedInstruction();
-    m_attribute_editor->SetItem(selected);
+    m_attribute_editor->SetInstruction(selected);
     emit InstructionSelected(selected);
   };
   connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
