@@ -20,7 +20,9 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_
 
+#include <QStringList>
 #include <QWidget>
+#include <functional>
 
 class QTreeView;
 class QToolBar;
@@ -54,7 +56,9 @@ class InstructionAttributeEditor : public QWidget
   Q_OBJECT
 
 public:
-  explicit InstructionAttributeEditor(QWidget* parent_widget = nullptr);
+  using variable_names_func_t = std::function<QStringList()>;
+  explicit InstructionAttributeEditor(variable_names_func_t variable_names_func,
+                                      QWidget* parent_widget = nullptr);
   ~InstructionAttributeEditor() override;
 
   void SetInstruction(mvvm::SessionItem* instruction_item);
@@ -65,6 +69,9 @@ signals:
 private:
   void SummonContextMenu(const QPoint& point);
   AttributeEditorContext CreateAttributeEditorActionContext();
+  std::unique_ptr<mvvm::ItemViewComponentProvider> CreateTreeComponentProvider();
+
+  variable_names_func_t m_variable_names_func;
 
   QToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};

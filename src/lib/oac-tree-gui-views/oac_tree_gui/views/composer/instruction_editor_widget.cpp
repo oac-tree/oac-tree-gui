@@ -72,7 +72,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
-    , m_attribute_editor(new InstructionAttributeEditor)
+    , m_attribute_editor(new InstructionAttributeEditor({}))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_action_handler(
           std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))

@@ -20,6 +20,7 @@
 #include "instruction_attribute_editor.h"
 
 #include "attribute_editor_actions.h"
+#include "custom_celleditor_factory.h"
 
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
 #include <oac_tree_gui/composer/attribute_editor_context.h>
@@ -47,13 +48,15 @@ const std::vector<int> kDefaultColumnStretch({2, 1, 1});
 namespace oac_tree_gui
 {
 
-InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent_widget)
+InstructionAttributeEditor::InstructionAttributeEditor(variable_names_func_t variable_names_func,
+                                                       QWidget *parent_widget)
     : QWidget(parent_widget)
+    , m_variable_names_func(std::move(variable_names_func))
     , m_tool_bar(new QToolBar)
     , m_tree_view(new QTreeView)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
-    , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
+    , m_component_provider(CreateTreeComponentProvider())
     , m_attribute_action_handler(
           std::make_unique<AttributeEditorActionHandler>(CreateAttributeEditorActionContext()))
     , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler.get(), this))
@@ -101,6 +104,15 @@ AttributeEditorContext InstructionAttributeEditor::CreateAttributeEditorActionCo
   auto selected_items_callback = [this]() { return m_component_provider->GetSelectedItems(); };
 
   return {selected_items_callback};
+}
+
+std::unique_ptr<mvvm::ItemViewComponentProvider>
+InstructionAttributeEditor::CreateTreeComponentProvider()
+{
+  return mvvm::CreateProvider()
+      .Factory<CustomCellEditorFactory>(m_variable_names_func)
+      .ViewModel<AttributeEditorViewModel>()
+      .View(m_tree_view);
 }
 
 }  // namespace oac_tree_gui
