@@ -41,4 +41,17 @@ TEST_F(WorkspaceItemTest, WorkspaceItem)
   EXPECT_EQ(item.GetVariableCount(), 2);
 }
 
+TEST_F(WorkspaceItemTest, GetVariableNames)
+{
+  WorkspaceItem item;
+  EXPECT_TRUE(item.GetVariableNames().empty());
+
+  auto var0 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  var0->SetName("var0");
+  auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  var1->SetName("var1");
+
+  EXPECT_EQ(item.GetVariableNames(), std::vector<std::string>({"var0", "var1"}));
+}
+
 }  // namespace oac_tree_gui::test

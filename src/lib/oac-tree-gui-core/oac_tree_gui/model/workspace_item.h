@@ -24,10 +24,12 @@
 
 namespace oac_tree_gui
 {
+
 class VariableItem;
 
-//! Represents a Workspace.
-
+/**
+ * @brief The WorkspaceItem class represents sequencer's domain workspace.
+ */
 class WorkspaceItem : public mvvm::CompoundItem
 {
 public:
@@ -38,6 +40,8 @@ public:
   std::unique_ptr<SessionItem> Clone() const override;
 
   std::vector<VariableItem*> GetVariables() const;
+
+  std::vector<std::string> GetVariableNames() const;
 
   int GetVariableCount() const;
 };

@@ -21,6 +21,8 @@
 
 #include <oac_tree_gui/model/variable_item.h>
 
+#include <algorithm>
+
 namespace oac_tree_gui
 {
 
@@ -44,6 +46,16 @@ std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone() const
 std::vector<VariableItem *> WorkspaceItem::GetVariables() const
 {
   return GetItems<VariableItem>(kVariableItems);
+}
+
+std::vector<std::string> WorkspaceItem::GetVariableNames() const
+{
+  std::vector<std::string> result;
+  auto variables = GetVariables();
+  result.reserve(variables.size());
+  std::transform(variables.begin(), variables.end(), std::back_inserter(result),
+                 [](auto element) { return element->GetName(); });
+  return result;
 }
 
 int WorkspaceItem::GetVariableCount() const
