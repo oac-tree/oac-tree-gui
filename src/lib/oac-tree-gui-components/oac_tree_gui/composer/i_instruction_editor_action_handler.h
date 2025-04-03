@@ -20,7 +20,6 @@
 #ifndef OAC_TREE_GUI_COMPOSER_I_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 #define OAC_TREE_GUI_COMPOSER_I_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 
-#include <memory>
 #include <string>
 #include <utility>
 
