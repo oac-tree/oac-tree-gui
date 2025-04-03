@@ -92,7 +92,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialis
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
     context.selected_items_callback = []() -> std::vector<mvvm::SessionItem*> { return {}; };
-    context.select_notify = [](auto item) {};
+    context.notify_request = [](auto item) {};
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 }

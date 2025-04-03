@@ -94,7 +94,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   auto selected_workspace_callback = [this]() { return m_workspace_item; };
   result.selected_workspace = selected_workspace_callback;
   result.selected_items_callback = m_get_selected_items;
-  result.select_notify = [this](auto item) { emit ItemSelectRequest(item); };
+  result.notify_request = [this](auto item) { emit ItemSelectRequest(item); };
 
   auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.send_message = send_message_callback;

@@ -100,7 +100,7 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
     throw RuntimeException("Callback to get selected instruction is not defined");
   }
 
-  if (!m_context.select_notify)
+  if (!m_context.notify_request)
   {
     throw RuntimeException("Callback to notify about selection is not defined");
   }
@@ -357,7 +357,7 @@ mvvm::SessionItem *InstructionEditorActionHandler::GetInstructionContainer() con
 
 void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
 {
-  m_context.select_notify(item);
+  m_context.notify_request(item);
 }
 
 std::unique_ptr<InstructionItem> InstructionEditorActionHandler::CreateInstructionTree(

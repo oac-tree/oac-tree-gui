@@ -62,7 +62,7 @@ struct InstructionEditorContext
   //!< A callback to notify the user that the item should be selected in a widget. This can
   //!< happen when a new item was just inserted, or some other item should be selected instead of
   //!< just removed.
-  std::function<void(mvvm::SessionItem*)> select_notify;
+  std::function<void(mvvm::SessionItem*)> notify_request;
 
   //! optional factory function that allows to create single instructions and complex aggregates
   std::function<std::unique_ptr<InstructionItem>(const std::string&)> create_instruction;

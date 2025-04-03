@@ -66,8 +66,8 @@ InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext(
   result.instruction_container = [this]()
   { return m_current_procedure ? m_current_procedure->GetInstructionContainer() : nullptr; };
   result.selected_instructions = [this]() { return GetSelectedInstructions(); };
-  auto on_select_request = [this](mvvm::SessionItem *item) { emit SelectInstructionRequest(item); };
-  result.select_notify = on_select_request;
+  auto on_notify_request = [this](mvvm::SessionItem *item) { emit SelectInstructionRequest(item); };
+  result.notify_request = on_notify_request;
   result.send_message = send_message;
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
   return result;

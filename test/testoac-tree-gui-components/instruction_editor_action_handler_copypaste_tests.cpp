@@ -436,7 +436,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTr
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
 
   // appending instruction to the container
-  m_mock_context.SetCurrentSelection({repeat});
+  m_mock_context.SetAsCurrentSelection({repeat});
 
   handler->PasteInto();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
@@ -462,14 +462,14 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTre
 
   handler->Cut();
    // mimicking dissapearance of selection after item removal
-  m_mock_context.SetCurrentSelection({});
+  m_mock_context.SetAsCurrentSelection({});
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
   EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
 
   // appending instruction to the container
-  m_mock_context.SetCurrentSelection({repeat});
+  m_mock_context.SetAsCurrentSelection({repeat});
 
   handler->PasteInto();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);

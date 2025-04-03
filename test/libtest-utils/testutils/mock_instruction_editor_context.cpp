@@ -39,9 +39,9 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
 
   result.instruction_container = [this, instruction_container]() { return instruction_container; };
   result.selected_instructions = [this]() { return m_current_selection; };
-  result.select_notify = [this](auto item)
+  result.notify_request = [this](auto item)
   {
-    m_select_requests.push_back(item);
+    m_notify_requests.push_back(item);
     SelectRequest(item);
   };
   result.send_message = [this](const auto& message) { OnMessage(message); };
@@ -82,10 +82,10 @@ void MockInstructionEditorContext::SetClipboardContent(std::unique_ptr<QMimeData
 
 std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetSelectRequests()
 {
-  return m_select_requests;
+  return m_notify_requests;
 }
 
-void MockInstructionEditorContext::SetCurrentSelection(
+void MockInstructionEditorContext::SetAsCurrentSelection(
     const std::vector<InstructionItem*>& selection)
 {
   m_current_selection = selection;

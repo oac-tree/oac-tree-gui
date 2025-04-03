@@ -52,17 +52,11 @@ public:
    * @brief Creates context for InstructionEditorActionHandler.
    *
    * @param instruction_container Current container with instructions.
-   * @param instruction The instruction which will be reported as selected by the user.
+   * @param current_selection The instructions which will be reported as selected by the user.
    */
   InstructionEditorContext CreateContext(InstructionContainerItem* instruction_container,
                                          const std::vector<InstructionItem*>& current_selection);
 
-  /**
-   * @brief Creates action handler.
-   *
-   * It is initialized with mock context pretending that the given instruction is selected by the
-   * user.
-   */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
       InstructionContainerItem* instruction_container,
       const std::vector<InstructionItem*>& current_selection);
@@ -73,14 +67,11 @@ public:
 
   std::vector<mvvm::SessionItem*> GetSelectRequests();
 
-  void SetCurrentSelection(const std::vector<InstructionItem*>& selection);
+  void SetAsCurrentSelection(const std::vector<InstructionItem*>& selection);
 
-  //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_clipboard_content;
   std::vector<InstructionItem*> m_current_selection;
-
-  //!< buffer to save all selection requests
-  std::vector<mvvm::SessionItem*> m_select_requests;
+  std::vector<mvvm::SessionItem*> m_notify_requests;
 };
 
 }  // namespace oac_tree_gui::test

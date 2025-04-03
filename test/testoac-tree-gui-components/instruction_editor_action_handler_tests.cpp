@@ -97,7 +97,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
     InstructionEditorContext context;
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
-    context.select_notify = [](auto item) {};
+    context.notify_request = [](auto item) {};
     EXPECT_NO_THROW(InstructionEditorActionHandler{context});
   }
 }
@@ -158,7 +158,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddToWrongPlaceWhenNoMessageCallbackD
   InstructionEditorContext context;
   context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
   context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
-  context.select_notify = [](auto item) {};
+  context.notify_request = [](auto item) {};
 
   InstructionEditorActionHandler handler{context};
 

@@ -66,7 +66,7 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
     throw RuntimeException("Absent callback to retrieve currently selected items");
   }
 
-  if (!m_context.select_notify)
+  if (!m_context.notify_request)
   {
     throw RuntimeException("Absent callback to request item selection");
   }
@@ -235,7 +235,7 @@ WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
 
 void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
 {
-  m_context.select_notify(item);
+  m_context.notify_request(item);
 }
 
 const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const

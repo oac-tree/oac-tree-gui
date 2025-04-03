@@ -202,7 +202,7 @@ InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorCont
   result.instruction_container = [this]() { return GetRootSessionItem(); };
   result.selected_instructions = []() { return std::vector<InstructionItem *>(); };
   auto on_select_request = [](mvvm::SessionItem *item) { (void)item; };
-  result.select_notify = on_select_request;
+  result.notify_request = on_select_request;
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
   return result;
 }

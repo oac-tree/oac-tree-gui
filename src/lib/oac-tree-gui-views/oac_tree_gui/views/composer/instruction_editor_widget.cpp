@@ -240,7 +240,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.instruction_container = [this]() { return m_instruction_container; };
   result.selected_instructions = [this]() { return GetSelectedInstructions(); };
 
-  auto on_select_request = [this](auto item)
+  auto on_notify_request = [this](auto item)
   {
     m_component_provider->SetSelectedItem(item);
     auto index_of_inserted = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
@@ -249,7 +249,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
       m_tree_view->setExpanded(index_of_inserted.front(), true);
     }
   };
-  result.select_notify = on_select_request;
+  result.notify_request = on_notify_request;
 
   result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.edit_anyvalue = CreateAnyValueDialogCallback(this);
