@@ -33,15 +33,11 @@
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/standarditems/container_item.h>
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_workspace_editor_context.h>
 #include <testutils/test_utils.h>
 
 #include <QMimeData>
-#include <QSignalSpy>
-
-Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 namespace oac_tree_gui::test
 {

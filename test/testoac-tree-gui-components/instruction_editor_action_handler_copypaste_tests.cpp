@@ -39,9 +39,6 @@
 #include <testutils/test_utils.h>
 
 #include <QMimeData>
-#include <QSignalSpy>
-
-Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 namespace oac_tree_gui::test
 {

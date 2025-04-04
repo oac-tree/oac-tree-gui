@@ -40,8 +40,6 @@
 
 #include <QMimeData>
 
-Q_DECLARE_METATYPE(mvvm::SessionItem*)
-
 namespace oac_tree_gui::test
 {
 

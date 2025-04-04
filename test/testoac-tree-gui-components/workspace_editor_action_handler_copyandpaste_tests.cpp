@@ -33,14 +33,11 @@
 
 #include <sup/dto/anyvalue.h>
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_workspace_editor_context.h>
 #include <testutils/test_utils.h>
 
 #include <QMimeData>
-
-Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 namespace oac_tree_gui::test
 {
