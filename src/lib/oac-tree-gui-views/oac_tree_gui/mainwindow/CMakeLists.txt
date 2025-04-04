@@ -1,8 +1,6 @@
 target_sources(${library_name} PRIVATE
   about_application_dialog.cpp
   about_application_dialog.h
-  clipboard_helper.cpp
-  clipboard_helper.h
   color_palette.cpp
   color_palette.h
   command_line_options.cpp

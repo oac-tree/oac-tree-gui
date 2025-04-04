@@ -20,12 +20,12 @@
 #include "procedure_list_widget.h"
 
 #include <oac_tree_gui/composer/procedure_list_action_handler.h>
-#include <oac_tree_gui/mainwindow/clipboard_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/mainwindow/clipboard_helper.h>
 #include <sup/gui/style/style_helper.h>
 
 #include <mvvm/model/item_utils.h>
@@ -131,8 +131,8 @@ ProcedureListContext ProcedureListWidget::CreateContext()
   result.procedure_container = [this]()
   { return m_model ? m_model->GetProcedureContainer() : nullptr; };
   result.selected_procedure = [this]() { return GetSelectedProcedure(); };
-  result.get_mime_data = DefaultClipboardGetFunc();
-  result.set_mime_data = DefaultClipboardSetFunc();
+  result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
+  result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
   return result;
 }
 

@@ -24,12 +24,12 @@
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_context.h>
-#include <oac_tree_gui/mainwindow/clipboard_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/views/composer/workspace_editor_actions.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/mainwindow/clipboard_helper.h>
 #include <sup/gui/widgets/message_helper.h>
 
 #include <QMenu>
@@ -100,8 +100,8 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   result.send_message = send_message_callback;
 
   result.edit_anyvalue = CreateAnyValueDialogCallback(nullptr);
-  result.get_mime_data = DefaultClipboardGetFunc();
-  result.set_mime_data = DefaultClipboardSetFunc();
+  result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
+  result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
 
   return result;
 }

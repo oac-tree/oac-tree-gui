@@ -24,7 +24,6 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
-#include <oac_tree_gui/mainwindow/clipboard_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -35,6 +34,7 @@
 
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/components/tree_helper.h>
+#include <sup/gui/mainwindow/clipboard_helper.h>
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/custom_splitter.h>
@@ -253,8 +253,8 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
 
   result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.edit_anyvalue = CreateAnyValueDialogCallback(this);
-  result.get_mime_data = DefaultClipboardGetFunc();
-  result.set_mime_data = DefaultClipboardSetFunc();
+  result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
+  result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
 
   return result;
 }
