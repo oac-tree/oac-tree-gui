@@ -131,7 +131,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   auto handler = CreateActionHandler({});
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // adding variable
@@ -155,7 +155,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // adding another variable
   handler->AddVariable(LocalVariableItem::GetStaticType());
@@ -178,7 +178,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
   // pretending that var0 is selected
   auto handler = CreateActionHandler({});
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   EXPECT_FALSE(handler->CanRemoveVariable());
 
@@ -200,7 +200,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   // pretending that var0 is selected
   auto handler = CreateActionHandler({var0});
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // adding variable
   handler->AddVariable(FileVariableItem::GetStaticType());
@@ -427,7 +427,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   // pretending that nothing is selected
   auto handler = CreateActionHandler({});
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // adding variable
   handler->AddVariable(domainconstants::kSystemClockVariableType);

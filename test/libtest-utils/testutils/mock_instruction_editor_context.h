@@ -42,7 +42,7 @@ namespace oac_tree_gui::test
 class MockInstructionEditorContext
 {
 public:
-  MOCK_METHOD(void, SelectRequest, (mvvm::SessionItem*), ());
+  MOCK_METHOD(void, NotifyRequest, (mvvm::SessionItem*), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(AnyValueDialogResult, OnEditAnyvalue, (const sup::gui::AnyValueItem*), ());
   MOCK_METHOD(const QMimeData*, OnGetMimeData, (), ());
@@ -65,7 +65,7 @@ public:
 
   void SetClipboardContent(std::unique_ptr<QMimeData> clipboard);
 
-  std::vector<mvvm::SessionItem*> GetSelectRequests();
+  std::vector<mvvm::SessionItem*> GetNotifyRequests();
 
   void SetAsCurrentSelection(const std::vector<InstructionItem*>& selection);
 

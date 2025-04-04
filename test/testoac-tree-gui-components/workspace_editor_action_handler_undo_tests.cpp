@@ -84,7 +84,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
 
   auto handler = CreateActionHandler(nullptr);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   handler->AddVariable(LocalVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
@@ -108,7 +108,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
@@ -138,7 +138,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 
   EXPECT_TRUE(GetPluginPaths().empty());
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);

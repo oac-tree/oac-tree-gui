@@ -138,7 +138,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   auto handler = CreateActionHandler({});
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // appending instruction to the container
@@ -174,7 +174,7 @@ TEST_F(InstructionEditorActionHandlerTest, DropInstruction)
   auto handler = CreateActionHandler({});
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // appending instruction to the container
@@ -196,7 +196,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddChoice)
 {
   auto handler = CreateActionHandler({});
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // appending instruction to the container
   handler->InsertInstructionAfter(domainconstants::kChoiceInstructionType);
@@ -220,7 +220,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler({sequence});
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // appending instruction to the container
   handler->InsertInstructionAfter(WaitItem::GetStaticType());
@@ -244,7 +244,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
   // creating action handler mimicking "no instruction selected"
   auto handler = CreateActionHandler({});
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(2);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(2);
 
   // appending instruction to the container
   handler->InsertInstructionAfter(WaitItem::GetStaticType());
@@ -295,13 +295,13 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   EXPECT_TRUE(handler->CanInsertInstructionInto(domainconstants::kMessageInstructionType));
   EXPECT_TRUE(handler->CanInsertInstructionAfter(domainconstants::kMessageInstructionType));
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // inserting instruction into selected instruction
   handler->InsertInstructionInto(WaitItem::GetStaticType());
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_));
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // inserting second instruction
   handler->InsertInstructionInto(domainconstants::kMessageInstructionType);
@@ -360,7 +360,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelecte
 
   EXPECT_FALSE(handler->CanRemoveInstruction());
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(0);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(0);
 
   // nothing selected, remove request does nothing
   handler->RemoveInstruction();
@@ -378,7 +378,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
   EXPECT_TRUE(handler->CanRemoveInstruction());
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // nothing selected, remove request does nothing
@@ -400,14 +400,14 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveTwoInstructions)
   auto handler = CreateActionHandler({sequence0, sequence1});
   EXPECT_TRUE(handler->CanRemoveInstruction());
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
 
   // nothing selected, remove request does nothing
   handler->RemoveInstruction();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(m_mock_context.GetSelectRequests(), std::vector<mvvm::SessionItem*>({sequence2}));
+  EXPECT_EQ(m_mock_context.GetNotifyRequests(), std::vector<mvvm::SessionItem*>({sequence2}));
 }
 
 TEST_F(InstructionEditorActionHandlerTest, RemoveParentAndChild)
@@ -425,7 +425,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveParentAndChild)
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
 
   // checking the request to select remaining item
-  EXPECT_TRUE(m_mock_context.GetSelectRequests().empty());
+  EXPECT_TRUE(m_mock_context.GetNotifyRequests().empty());
 }
 
 //! Move selected instruction up.
@@ -441,7 +441,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   auto handler = CreateActionHandler({wait2});
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // moving selected item up
@@ -468,7 +468,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   auto handler = CreateActionHandler({wait0});
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // moving selected item up

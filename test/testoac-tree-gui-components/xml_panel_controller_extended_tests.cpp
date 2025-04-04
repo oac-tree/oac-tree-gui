@@ -94,7 +94,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForSequence)
   EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);
   auto controller = CreateController();
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);
   handler->InsertInstructionAfter(SequenceItem::GetStaticType());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
@@ -141,7 +141,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
   auto controller = CreateController();
 
   EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(0);
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml2)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml3)).Times(1);
   handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());

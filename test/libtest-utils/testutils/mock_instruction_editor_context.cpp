@@ -42,7 +42,7 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
   result.notify_request = [this](auto item)
   {
     m_notify_requests.push_back(item);
-    SelectRequest(item);
+    NotifyRequest(item);
   };
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.edit_anyvalue = [this](const sup::gui::AnyValueItem* item)
@@ -80,7 +80,7 @@ void MockInstructionEditorContext::SetClipboardContent(std::unique_ptr<QMimeData
   m_clipboard_content = std::move(clipboard);
 }
 
-std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetSelectRequests()
+std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetNotifyRequests()
 {
   return m_notify_requests;
 }

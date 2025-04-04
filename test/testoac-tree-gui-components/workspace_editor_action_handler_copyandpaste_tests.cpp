@@ -149,7 +149,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   EXPECT_TRUE(handler->CanPaste());
@@ -179,7 +179,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   auto handler = CreateActionHandler({var0}, std::move(mime_data));
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
@@ -206,7 +206,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   auto handler = CreateActionHandler({var0}, nullptr);
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
@@ -231,7 +231,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, RemoveTwoVariables)
   auto handler = CreateActionHandler({var0, var1});
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   handler->RemoveVariable();
@@ -256,7 +256,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
 
   handler->Paste();
 

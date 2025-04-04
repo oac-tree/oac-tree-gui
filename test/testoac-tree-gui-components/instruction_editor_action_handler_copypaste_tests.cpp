@@ -206,7 +206,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   auto handler = CreateActionHandler({nullptr}, std::move(mime_data));
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   EXPECT_TRUE(handler->CanPasteAfter());
@@ -238,7 +238,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -284,7 +284,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -322,7 +322,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -357,7 +357,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   auto handler = CreateActionHandler({wait0}, nullptr);
 
   mvvm::SessionItem* reported_item{nullptr};
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_))
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
@@ -391,7 +391,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
 
   // appending instruction to the container
   handler->PasteAfter();
@@ -410,7 +410,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
 
   // validating request to select just inserted item
-  EXPECT_EQ(m_mock_context.GetSelectRequests(),
+  EXPECT_EQ(m_mock_context.GetNotifyRequests(),
             std::vector<mvvm::SessionItem*>({instructions.at(1)}));
 }
 
@@ -430,7 +430,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTr
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
 
   // appending instruction to the container
   m_mock_context.SetAsCurrentSelection({repeat});
@@ -455,7 +455,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTre
   auto handler = CreateActionHandler({sequence, message});
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
 
   handler->Cut();
    // mimicking dissapearance of selection after item removal
@@ -463,7 +463,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTre
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-  EXPECT_CALL(m_mock_context, SelectRequest(testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
 
   // appending instruction to the container
   m_mock_context.SetAsCurrentSelection({repeat});
