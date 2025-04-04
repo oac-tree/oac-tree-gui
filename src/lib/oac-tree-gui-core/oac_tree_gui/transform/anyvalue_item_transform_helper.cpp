@@ -52,7 +52,8 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  mvvm::utils::InsertItem(sup::gui::CreateItem(anyvalue), &variable_item, mvvm::TagIndex::First());
+  mvvm::utils::InsertItem(sup::gui::CreateAnyValueItem(anyvalue), &variable_item,
+                          mvvm::TagIndex::First());
 }
 
 void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
@@ -67,7 +68,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  mvvm::utils::InsertItem(sup::gui::CreateItem(anyvalue), &item, mvvm::TagIndex::First());
+  mvvm::utils::InsertItem(sup::gui::CreateAnyValueItem(anyvalue), &item, mvvm::TagIndex::First());
 }
 
 void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,
@@ -117,7 +118,7 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
     // updating existing AnyValueItem using temporary AnyValueItem
     try
     {
-      auto temp_anyvalue_item = sup::gui::CreateItem(anyvalue);
+      auto temp_anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
       sup::gui::UpdateAnyValueItemData(*temp_anyvalue_item, *existing_anyvalue_item);
       return;
     }

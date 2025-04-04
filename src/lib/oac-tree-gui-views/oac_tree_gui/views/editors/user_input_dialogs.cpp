@@ -116,7 +116,7 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget
 {
   auto parent_widget = parent ? parent : mvvm::utils::FindMainWindow();
 
-  auto anyvalue_item = sup::gui::CreateItem(args.value);
+  auto anyvalue_item = sup::gui::CreateAnyValueItem(args.value);
   std::unique_ptr<sup::gui::AnyValueEditorDialog> dialog;
   if (anyvalue_item->IsScalar())
   {

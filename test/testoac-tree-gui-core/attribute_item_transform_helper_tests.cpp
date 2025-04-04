@@ -304,7 +304,7 @@ TEST_F(AttributeItemTransformHelperTest, HasAttributeDefinition)
 TEST_F(AttributeItemTransformHelperTest, SetLocalVariableJsonAttributesFromItem)
 {
   sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
   SetJsonAttributesFromItem(*anyvalue_item, *variable);
@@ -325,7 +325,7 @@ TEST_F(AttributeItemTransformHelperTest, SetChannelAccessVariableJsonAttributesF
   }
 
   sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   auto variable = CreateDomainVariable(domainconstants::kChannelAccessVariableType);
   SetJsonAttributesFromItem(*anyvalue_item, *variable);
@@ -346,7 +346,7 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromItem)
   }
 
   sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   // PvAccessWriteInstruction should get attributes
   auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
@@ -372,7 +372,7 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromEmptyIt
   }
 
   sup::dto::AnyValue anyvalue;
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   // PvAccessWriteInstruction should get attributes
   auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
