@@ -254,10 +254,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
   EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::GetStaticType());
 
-  // Check coordinates of Wait instruction. It should be placed nearby to the original
-  // instruction
+  // cordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
-
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
 
@@ -300,7 +298,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   EXPECT_EQ(inserted_wait->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(inserted_wait->GetDisplayName(), std::string("abc"));
 
-  // Check coordinates of Wait instruction. It should be placed nearby to the selected one
+  // cordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
   EXPECT_DOUBLE_EQ(inserted_wait->GetX(), offset + wait0_x);
   EXPECT_DOUBLE_EQ(inserted_wait->GetY(), offset + wait0_y);
@@ -338,9 +336,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
-  // Check coordinates of the instruction. It should be placed nearby to the original instruction.
+  // cordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
-
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetY(), offset + sequence_y);
   EXPECT_EQ(reported_item, instructions.at(0));
@@ -402,10 +399,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
   EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
   EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::GetStaticType());
 
-  // Check coordinates of Wait instruction. It should be placed nearby to the original
-  // instruction
+  // cordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
-
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
 
@@ -458,7 +453,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTre
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
 
   handler->Cut();
-   // mimicking dissapearance of selection after item removal
+  // mimicking dissapearance of selection after item removal
   m_mock_context.SetAsCurrentSelection({});
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
