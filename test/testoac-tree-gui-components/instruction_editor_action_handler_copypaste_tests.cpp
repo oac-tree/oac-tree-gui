@@ -254,7 +254,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
   EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::GetStaticType());
 
-  // cordinates of the inserted instruction should be near the original one
+  // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
@@ -298,7 +298,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   EXPECT_EQ(inserted_wait->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(inserted_wait->GetDisplayName(), std::string("abc"));
 
-  // cordinates of the inserted instruction should be near the original one
+  // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
   EXPECT_DOUBLE_EQ(inserted_wait->GetX(), offset + wait0_x);
   EXPECT_DOUBLE_EQ(inserted_wait->GetY(), offset + wait0_y);
@@ -336,7 +336,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
-  // cordinates of the inserted instruction should be near the original one
+  // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetY(), offset + sequence_y);
@@ -399,7 +399,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
   EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
   EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::GetStaticType());
 
-  // cordinates of the inserted instruction should be near the original one
+  // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
