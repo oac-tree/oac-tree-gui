@@ -31,7 +31,7 @@
 #include <oac_tree_gui/nodeeditor/node_port.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
-#include <mvvm/core/exceptions.h>
+#include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/model_utils.h>
 
 #include <gmock/gmock.h>

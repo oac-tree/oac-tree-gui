@@ -36,7 +36,7 @@
 #include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
-#include <mvvm/core/exceptions.h>
+#include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 

@@ -25,7 +25,7 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
-#include <mvvm/core/exceptions.h>
+#include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QLinearGradient>
