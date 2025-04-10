@@ -172,8 +172,6 @@ void InstructionItem::RegisterCommonProperties()
       .SetDisplayName("breakpoint")
       .SetEditable(false)
       .SetVisible(false);
-
-  AddShowCollapsedProperty(*this);
 }
 
 }  // namespace oac_tree_gui

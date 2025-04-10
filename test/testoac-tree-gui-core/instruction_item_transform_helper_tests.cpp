@@ -27,6 +27,8 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
+#include <sup/gui/model/anyvalue_item.h>
+
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item_container.h>
 #include <mvvm/model/tagged_items.h>
@@ -270,6 +272,35 @@ TEST_F(InstructionItemTransformHelperTest, RegisterChildrenTagUsingCategory)
     auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
     EXPECT_EQ(taginfo.GetMax(), 1);
     EXPECT_EQ(taginfo.GetMin(), 0);
+  }
+}
+
+TEST_F(InstructionItemTransformHelperTest, RegisterShowCollapsedProperty)
+{
+  using Category = sup::oac_tree::Instruction::Category;
+
+  {
+    mvvm::CompoundItem item;
+    RegisterShowCollapsedProperty(Category::kCompound, domainconstants::kSequenceInstructionType,
+                                  item);
+    EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
+    auto property = item.GetItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
+    EXPECT_FALSE(property->Data<bool>());  // expanded by default
+  }
+
+  {
+    mvvm::CompoundItem item;
+    RegisterShowCollapsedProperty(Category::kDecorator, domainconstants::kIncludeInstructionType,
+                                  item);
+    EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
+    auto property = item.GetItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
+    EXPECT_TRUE(property->Data<bool>());  // collapsed by default
+  }
+
+  {
+    mvvm::CompoundItem item;
+    RegisterShowCollapsedProperty(Category::kAction, domainconstants::kWaitInstructionType, item);
+    EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
   }
 }
 

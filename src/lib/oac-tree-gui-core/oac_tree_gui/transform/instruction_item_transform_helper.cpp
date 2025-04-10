@@ -20,9 +20,14 @@
 #include "instruction_item_transform_helper.h"
 
 #include <oac_tree_gui/domain/domain_automation_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
+
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/item_utils.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>
@@ -150,6 +155,23 @@ void RegisterChildrenTag(instruction_t::Category category, mvvm::CompoundItem& i
   {
     item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
                      /*as_default*/ true);
+  }
+}
+
+void RegisterShowCollapsedProperty(instruction_t::Category category, const std::string& domain_type,
+                                   mvvm::CompoundItem& item)
+{
+  static const std::vector<std::string> kCollapsedByDefault{
+      domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
+
+  if (category != sup::oac_tree::Instruction::kAction)
+  {
+    auto& property =
+        item.AddProperty<sup::gui::AnyValueScalarItem>(domainconstants::kShowCollapsedAttribute);
+    property.SetAnyTypeName(sup::dto::kBooleanTypeName);
+    property.SetDisplayName("Show collapsed");
+    property.SetToolTip("Show child branch collapsed duing procedure execution");
+    property.SetData(mvvm::utils::Contains(kCollapsedByDefault, domain_type));
   }
 }
 

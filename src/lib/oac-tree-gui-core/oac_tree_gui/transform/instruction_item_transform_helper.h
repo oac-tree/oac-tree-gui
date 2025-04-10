@@ -24,6 +24,7 @@
 //! Collection of helper functions to transform InstructionItem from/to domain instructions.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+
 #include <sup/oac-tree/instruction.h>
 
 #include <memory>
@@ -110,6 +111,19 @@ void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& i
  * @param item An item where tag will be registered.
  */
 void RegisterChildrenTag(instruction_t::Category category, mvvm::CompoundItem& item);
+
+/**
+ * @brief Registers show collapsed property.
+ *
+ * Domain category is used to decide if show_collapsed property is necessary. Domain type is used to
+ * guess what can be the default value.
+ *
+ * @param category Domain instruction category.
+ * @param domain_type The type of the domain instruction
+ * @param item An item where to register property.
+ */
+void RegisterShowCollapsedProperty(instruction_t::Category category, const std::string& domain_type,
+                                   mvvm::CompoundItem& item);
 
 }  // namespace oac_tree_gui
 

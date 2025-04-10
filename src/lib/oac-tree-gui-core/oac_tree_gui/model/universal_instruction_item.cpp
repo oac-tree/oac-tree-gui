@@ -24,8 +24,8 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -177,6 +177,8 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
   RegisterChildrenTag(*instruction, *this);
 
   RegisterCommonProperties();
+
+  AddShowCollapsedProperty(*this);
 }
 
 }  // namespace oac_tree_gui

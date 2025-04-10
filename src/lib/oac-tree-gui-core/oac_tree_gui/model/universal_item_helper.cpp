@@ -89,6 +89,7 @@ void SetVariableName(const std::string &value, InstructionItem *item)
   item->SetProperty(domainconstants::kGenericVariableNameAttribute, value);
 }
 
+// FIXME merge with RegisterShowCollapsedProperty
 void AddShowCollapsedProperty(InstructionItem &item)
 {
   static const std::vector<std::string> collapsed_by_default{
