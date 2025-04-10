@@ -35,9 +35,9 @@ static const std::string kTypeRegistrationString = "kTypeRegistrationString";
 
 TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(GetStaticType())
 {
-  AddProperty(kTypeRegistrationMode, mvvm::ComboProperty({"JSON file", "JSON string"}))
+  (void)AddProperty(kTypeRegistrationMode, mvvm::ComboProperty({"JSON file", "JSON string"}))
       .SetDisplayName("Mode");
-  AddProperty(kTypeRegistrationString, std::string())
+  (void)AddProperty(kTypeRegistrationString, std::string())
       .SetDisplayName("String")
       .SetToolTip(
           "JSON string or a filename for a file containing the JSON representation of the type");
@@ -85,8 +85,9 @@ static const std::string kPluginContainerTag = "kPluginContainerTag";
 
 ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(GetStaticType())
 {
-  AddBranch<mvvm::ContainerItem>(kTypeRegistrationContainerTag).SetDisplayName("Type registration");
-  AddBranch<mvvm::ContainerItem>(kPluginContainerTag).SetDisplayName("Plugins");
+  (void)AddBranch<mvvm::ContainerItem>(kTypeRegistrationContainerTag)
+      .SetDisplayName("Type registration");
+  (void)AddBranch<mvvm::ContainerItem>(kPluginContainerTag).SetDisplayName("Plugins");
 }
 
 std::string ProcedurePreambleItem::GetStaticType()
@@ -148,7 +149,7 @@ std::vector<std::string> ProcedurePreambleItem::GetPluginPaths() const
 void ProcedurePreambleItem::AddPluginPath(const std::string &value)
 {
   auto property_item = std::make_unique<mvvm::PropertyItem>();
-  property_item->SetData(value);
+  (void)property_item->SetData(value);
   (void)mvvm::utils::InsertItem(std::move(property_item), GetPluginContainer(),
                                 mvvm::TagIndex::Append());
 }
