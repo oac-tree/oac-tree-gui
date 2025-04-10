@@ -24,6 +24,7 @@
 //! Collection of helper functions to transform InstructionItem from/to domain instructions.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+#include <sup/oac-tree/instruction.h>
 
 #include <memory>
 #include <vector>
@@ -101,6 +102,14 @@ InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& inst
  * @param item An item where tag will be registered.
  */
 void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item);
+
+/**
+ * @brief Register tag in instruction item to be able to add other instructions as children.
+ *
+ * @param category The category of the domain instruction.
+ * @param item An item where tag will be registered.
+ */
+void RegisterChildrenTag(const instruction_t::Category& category, mvvm::CompoundItem& item);
 
 }  // namespace oac_tree_gui
 

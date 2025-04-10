@@ -21,8 +21,8 @@
 
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
-#include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>
@@ -134,14 +134,19 @@ InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& inst
   return CreateInstructionItemTree(*instr_info);
 }
 
-void RegisterChildrenTag(const instruction_t &instruction, mvvm::CompoundItem &item)
+void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item)
 {
-  if (instruction.GetCategory() == sup::oac_tree::Instruction::kCompound)
+  RegisterChildrenTag(instruction.GetCategory(), item);
+}
+
+void RegisterChildrenTag(const instruction_t::Category& category, mvvm::CompoundItem& item)
+{
+  if (category == sup::oac_tree::Instruction::kCompound)
   {
     item.RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
                      /*as_default*/ true);
   }
-  else if (instruction.GetCategory() == sup::oac_tree::Instruction::kDecorator)
+  else if (category == sup::oac_tree::Instruction::kDecorator)
   {
     item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
                      /*as_default*/ true);
