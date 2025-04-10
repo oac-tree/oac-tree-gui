@@ -101,6 +101,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
 }
 
 INSTANTIATE_TEST_SUITE_P(FunctionalTests, ResourceFolderTest,
-                         ::testing::Values("wait_for_condition.xml", "fallback.xml"));
+                         ::testing::Values("wait_for_condition.xml", "fallback.xml",
+                                           "local_message.xml"));
 
 }  // namespace oac_tree_gui

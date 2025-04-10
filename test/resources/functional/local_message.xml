@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/oac-tree" version="1.0"
+           name="Procedure for testing local Include instruction"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/oac-tree oac-tree.xsd">
+    <Message name="ConcreteMessage" text="$text" />
+    <Sequence name="MessageSequence">
+        <Include name="FirstMessage" path="ConcreteMessage" text="$par1" />
+        <Message text="$par2" />
+    </Sequence>
+    <Sequence isRoot="True">
+        <Include name="My first message include" path="MessageSequence" par1="hello one" par2="hello two" />
+        <Include name="My second message include" path="MessageSequence.FirstMessage" par1="hello again" />
+    </Sequence>
+</Procedure>
