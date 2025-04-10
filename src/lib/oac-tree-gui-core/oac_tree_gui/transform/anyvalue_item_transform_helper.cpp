@@ -138,20 +138,6 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   SetAnyValue(anyvalue, variable_item);
 }
 
-void RegisterChildrenTag(const instruction_t &instruction, mvvm::CompoundItem &item)
-{
-  if (instruction.GetCategory() == sup::oac_tree::Instruction::kCompound)
-  {
-    item.RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-                     /*as_default*/ true);
-  }
-  else if (instruction.GetCategory() == sup::oac_tree::Instruction::kDecorator)
-  {
-    item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
-                     /*as_default*/ true);
-  }
-}
-
 void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &preamble)
 {
   using sup::oac_tree::TypeRegistrationInfo;

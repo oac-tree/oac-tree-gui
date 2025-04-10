@@ -29,11 +29,6 @@
 
 #include <string>
 
-namespace mvvm
-{
-class CompoundItem;
-}  // namespace mvvm
-
 namespace sup::gui
 {
 class AnyValueItem;
@@ -84,14 +79,6 @@ void SetAnyValueFromDomainInstruction(const instruction_t& instruction, Instruct
  * @details It is expected that the layout of existing AnyValueItem matches the layout of anyvalue.
  */
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
-
-/**
- * @brief Register tag in instruction item to be able to add other instructions as children.
- *
- * @param instruction The domain instruction is used to deduce category (compound, decorator).
- * @param item An item where tag will be registered.
- */
-void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item);
 
 /**
  * @brief Populates domain preamble from ProcedurePreambleItem.

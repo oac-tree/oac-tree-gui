@@ -28,6 +28,11 @@
 #include <memory>
 #include <vector>
 
+namespace mvvm
+{
+class CompoundItem;
+}  // namespace mvvm
+
 namespace oac_tree_gui
 {
 
@@ -88,6 +93,14 @@ InstructionTree CreateInstructionInfoItemTree(const sup::oac_tree::InstructionIn
  * Method requires that all plugins are loaded.
  */
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction);
+
+/**
+ * @brief Register tag in instruction item to be able to add other instructions as children.
+ *
+ * @param instruction The domain instruction is used to deduce category (compound, decorator).
+ * @param item An item where tag will be registered.
+ */
+void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item);
 
 }  // namespace oac_tree_gui
 

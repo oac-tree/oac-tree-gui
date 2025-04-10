@@ -17,6 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/transform/anyvalue_item_transform_helper.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -31,9 +33,6 @@
 #include <sup/gui/model/anyvalue_item_constants.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 
-#include <mvvm/model/item_utils.h>
-#include <mvvm/model/session_item_container.h>
-#include <mvvm/model/tagged_items.h>
 #include <mvvm/test/mock_model_listener.h>
 
 #include <sup/dto/anytype.h>
@@ -46,8 +45,6 @@
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
-
-#include "oac_tree_gui/transform/anyvalue_item_transform_helper.h"
 
 namespace oac_tree_gui::test
 {
@@ -265,38 +262,6 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainInstruction)
   ASSERT_NE(GetAnyValueItem(item), nullptr);
   auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(item));
   EXPECT_EQ(expected_anyvalue, stored_anyvalue);
-}
-
-TEST_F(AnyValueItemTransformHelperTest, RegisterChildrenTag)
-{
-  {  // case when variable has no children
-    auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(*instruction, item);
-    EXPECT_FALSE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-  }
-
-  {  // case when variable has no children
-    auto instruction = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(*instruction, item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-
-    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
-    EXPECT_EQ(taginfo.GetMax(), -1);
-    EXPECT_EQ(taginfo.GetMin(), 0);
-  }
-
-  {  // case when variable has no children
-    auto instruction = CreateDomainInstruction(domainconstants::kInverterInstructionType);
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(*instruction, item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-
-    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
-    EXPECT_EQ(taginfo.GetMax(), 1);
-    EXPECT_EQ(taginfo.GetMin(), 0);
-  }
 }
 
 TEST_F(AnyValueItemTransformHelperTest, PopulateProcedurePreambleFromItem)

@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>

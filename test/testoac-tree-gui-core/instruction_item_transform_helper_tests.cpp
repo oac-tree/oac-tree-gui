@@ -21,9 +21,15 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <mvvm/model/tagged_items.h>
+#include <mvvm/model/session_item_container.h>
+
+#include <mvvm/model/item_utils.h>
 
 #include <sup/oac-tree/instruction_info.h>
 #include <sup/oac-tree/sequence_parser.h>
@@ -36,12 +42,12 @@ namespace oac_tree_gui::test
 /**
  * @brief Tests of helper methods in instruction_item_transform_helper.h
  */
-class JobInfoTransformHelperTest : public ::testing::Test
+class InstructionItemTransformHelperTest : public ::testing::Test
 {
 };
 
 //! Testing CreateInstructionItem helper method.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFromInfoObject)
+TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemFromInfoObject)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
@@ -57,7 +63,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemFromInfoObject)
 }
 
 //! Testing CreateInstructionInfoItem method.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemFromInfoObject)
+TEST_F(InstructionItemTransformHelperTest, CreateInstructionInfoItemFromInfoObject)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
@@ -73,7 +79,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemFromInfoObject)
 
 //! Testing CreateInstructionItemTree for automation InstructionInfo containing a single
 //! instruction.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
+TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
@@ -94,7 +100,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
 
 //! Testing CreateInstructionItemTree for automation InstructionInfo containing a sequence with two
 //! children.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
+TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
 {
   using namespace oac_tree_gui::domainconstants;
   using sup::oac_tree::AttributeInfo;
@@ -132,7 +138,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
 }
 
 //! Creates simplified InstructionInfoItem tree.
-TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemTreeForSequenceInfo)
+TEST_F(InstructionItemTransformHelperTest, CreateInstructionInfoItemTreeForSequenceInfo)
 {
   using namespace oac_tree_gui::domainconstants;
   using sup::oac_tree::AttributeInfo;
@@ -167,7 +173,7 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionInfoItemTreeForSequenceInfo)
   EXPECT_EQ(item_tree.indexes[2], wait_items[1]);
 }
 
-TEST_F(JobInfoTransformHelperTest, CreateInstructionTreeFromRootInstruction)
+TEST_F(InstructionItemTransformHelperTest, CreateInstructionTreeFromRootInstruction)
 {
   const std::string procedure_xml = R"RAW(
 <Procedure>
@@ -202,6 +208,38 @@ TEST_F(JobInfoTransformHelperTest, CreateInstructionTreeFromRootInstruction)
   EXPECT_EQ(item_tree.indexes[1], sequence_item);
   EXPECT_EQ(item_tree.indexes[2], wait_items[0]);
   EXPECT_EQ(item_tree.indexes[3], wait_items[1]);
+}
+
+TEST_F(InstructionItemTransformHelperTest, RegisterChildrenTag)
+{
+  {  // case when variable has no children
+    auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    mvvm::CompoundItem item;
+    RegisterChildrenTag(*instruction, item);
+    EXPECT_FALSE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
+  }
+
+  {  // case when variable has no children
+    auto instruction = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+    mvvm::CompoundItem item;
+    RegisterChildrenTag(*instruction, item);
+    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
+
+    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
+    EXPECT_EQ(taginfo.GetMax(), -1);
+    EXPECT_EQ(taginfo.GetMin(), 0);
+  }
+
+  {  // case when instruction has no children
+    auto instruction = CreateDomainInstruction(domainconstants::kInverterInstructionType);
+    mvvm::CompoundItem item;
+    RegisterChildrenTag(*instruction, item);
+    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
+
+    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
+    EXPECT_EQ(taginfo.GetMax(), 1);
+    EXPECT_EQ(taginfo.GetMin(), 0);
+  }
 }
 
 }  // namespace oac_tree_gui::test
