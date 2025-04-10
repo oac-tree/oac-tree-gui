@@ -109,7 +109,7 @@ void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& i
  * @param category The category of the domain instruction.
  * @param item An item where tag will be registered.
  */
-void RegisterChildrenTag(const instruction_t::Category& category, mvvm::CompoundItem& item);
+void RegisterChildrenTag(instruction_t::Category category, mvvm::CompoundItem& item);
 
 }  // namespace oac_tree_gui
 

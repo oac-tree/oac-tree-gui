@@ -39,6 +39,7 @@ class JobInfo;
 class WorkspaceInfo;
 class IJobInfoIO;
 class IJob;
+class InstructionInfo;
 }  // namespace sup::oac_tree
 
 using attribute_definition_t = sup::oac_tree::AttributeDefinition;

@@ -17,20 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/instruction_operation_viewmodel.h"
+
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 
 #include <mvvm/model/application_model.h>
 
+#include <sup/oac-tree/instruction.h>
+#include <sup/oac-tree/instruction_info.h>
+
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QDebug>
 #include <QSignalSpy>
-
-#include "oac_tree_gui/viewmodel/instruction_operation_viewmodel.h"
 
 namespace oac_tree_gui::test
 {
@@ -40,6 +45,16 @@ namespace oac_tree_gui::test
 class InstructionOperationViewModelTest : public ::testing::Test
 {
 public:
+  /**
+   * @brief Test helper which initializes given InstructionInfoItem with all content for given
+   * domain type.
+   */
+  static void InitFromDomainType(const std::string& domain_type, InstructionInfoItem& info_item)
+  {
+    auto instruction = CreateDomainInstruction(domain_type);
+    info_item.InitFromDomainInfo(test::CreateInstructionInfo(*instruction));
+  }
+
   class TestModel : public mvvm::ApplicationModel
   {
   public:
@@ -131,9 +146,16 @@ TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
   TestModel model;
 
   auto sequence = model.InsertItem<InstructionInfoItem>();
+  InitFromDomainType(domainconstants::kSequenceInstructionType,
+                     *sequence);  // to get children tag initialized
+
   auto wait0 = model.InsertItem<InstructionInfoItem>(sequence);
+  InitFromDomainType(domainconstants::kWaitInstructionType,
+                     *wait0);  // to get children tag initialized
   wait0->SetDisplayName("Wait");
   auto wait1 = model.InsertItem<InstructionInfoItem>(sequence);
+  InitFromDomainType(domainconstants::kWaitInstructionType,
+                     *wait1);  // to get children tag initialized
   wait1->SetDisplayName("Wait");
 
   InstructionOperationViewModel viewmodel(&model);
@@ -152,6 +174,5 @@ TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
   EXPECT_EQ(viewmodel.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Wait"));
 }
-
 
 }  // namespace oac_tree_gui::test

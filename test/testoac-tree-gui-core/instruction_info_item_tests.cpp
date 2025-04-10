@@ -31,19 +31,13 @@
 #include <sup/oac-tree/instruction_info.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
 
 class InstructionInfoItemTest : public ::testing::Test
 {
-public:
-  static sup::oac_tree::InstructionInfo CreateInstructionInfo(
-      const sup::oac_tree::Instruction& instruction, sup::dto::uint32 index)
-  {
-    return {instruction.GetType(), instruction.GetCategory(), index,
-            instruction.GetStringAttributes()};
-  }
 };
 
 TEST_F(InstructionInfoItemTest, InitialState)
@@ -51,8 +45,7 @@ TEST_F(InstructionInfoItemTest, InitialState)
   const InstructionInfoItem item;
 
   EXPECT_TRUE(item.GetDomainType().empty());
-  EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
   EXPECT_THROW(item.CreateDomainInstruction(), sup::oac_tree::InvalidOperationException);
 }
 
@@ -75,9 +68,9 @@ TEST_F(InstructionInfoItemTest, InitFromWaitInstructionInfo)
   EXPECT_EQ(item.Property<std::string>(domainconstants::kTimeoutAttribute), "42");
 
   const std::vector<std::string> expected_tags(
-      {itemconstants::kChildInstructions, domainconstants::kNameAttribute,
-       itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
-       itemconstants::kYpos, itemconstants::kBreakpoint, domainconstants::kTimeoutAttribute});
+      {domainconstants::kNameAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
+       itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint,
+       domainconstants::kTimeoutAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 }
 
@@ -85,19 +78,19 @@ TEST_F(InstructionInfoItemTest, InitFromWaitInstructionInfo)
 //! no attempts to recreate existing properties.
 TEST_F(InstructionInfoItemTest, InitFromInstructionInfoTwice)
 {
-  const std::string expected_name("MySpecialWait");
+  const std::string expected_value("MySpecialWait");
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
                                             sup::oac_tree::Instruction::Category::kAction,
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"},
-                                             {domainconstants::kNameAttribute, expected_name}});
+                                             {domainconstants::kNameAttribute, expected_value}});
 
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kWaitInstructionType);
-  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetName(), expected_value);
 
   ASSERT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
   EXPECT_EQ(item.Property<std::string>(domainconstants::kTimeoutAttribute), "42");
@@ -105,18 +98,18 @@ TEST_F(InstructionInfoItemTest, InitFromInstructionInfoTwice)
 
 TEST_F(InstructionInfoItemTest, InitFromSequenceInstructionInfo)
 {
-  const std::string expected_name = "expected_name";
+  const std::string expected_value = "expected_value";
   auto instruction = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  instruction->AddAttribute(domainconstants::kNameAttribute, expected_name);
-  auto info = CreateInstructionInfo(*instruction.get(), 42);
+  instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
+  auto info = CreateInstructionInfo(*instruction, 42);
 
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kSequenceInstructionType);
-  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetName(), expected_value);
 
   const std::vector<std::string> expected_tags(
-      {itemconstants::kChildInstructions, domainconstants::kNameAttribute,
+      {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
        itemconstants::kYpos, itemconstants::kBreakpoint});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
@@ -124,18 +117,18 @@ TEST_F(InstructionInfoItemTest, InitFromSequenceInstructionInfo)
 
 TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfo)
 {
-  const std::string expected_name = "expected_name";
+  const std::string expected_value = "expected_value";
   auto instruction = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  instruction->AddAttribute(domainconstants::kNameAttribute, expected_name);
+  instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
   auto info = CreateInstructionInfo(*instruction, 42);
 
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kIncludeInstructionType);
-  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetName(), expected_value);
 
   const std::vector<std::string> expected_tags(
-      {itemconstants::kChildInstructions, domainconstants::kNameAttribute,
+      {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
        itemconstants::kYpos, itemconstants::kBreakpoint});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
@@ -143,19 +136,19 @@ TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfo)
 
 TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfoWithCollapsedAttributeSet)
 {
-  const std::string expected_name = "expected_name";
+  const std::string expected_value = "expected_value";
   auto instruction = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  instruction->AddAttribute(domainconstants::kNameAttribute, expected_name);
+  instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
   instruction->AddAttribute(domainconstants::kShowCollapsedAttribute, "true");
   auto info = CreateInstructionInfo(*instruction, 42);
 
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kIncludeInstructionType);
-  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetName(), expected_value);
 
   const std::vector<std::string> expected_tags(
-      {itemconstants::kChildInstructions, domainconstants::kNameAttribute,
+      {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
        itemconstants::kYpos, itemconstants::kBreakpoint, domainconstants::kShowCollapsedAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);

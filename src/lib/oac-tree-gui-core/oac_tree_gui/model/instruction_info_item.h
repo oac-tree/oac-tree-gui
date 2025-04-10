@@ -43,6 +43,9 @@ public:
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
+
+  void SetupFromDomain(const sup::oac_tree::InstructionInfo& info);
+
 };
 
 }  // namespace oac_tree_gui

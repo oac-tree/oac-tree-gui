@@ -139,7 +139,7 @@ void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& i
   RegisterChildrenTag(instruction.GetCategory(), item);
 }
 
-void RegisterChildrenTag(const instruction_t::Category& category, mvvm::CompoundItem& item)
+void RegisterChildrenTag(instruction_t::Category category, mvvm::CompoundItem& item)
 {
   if (category == sup::oac_tree::Instruction::kCompound)
   {

@@ -40,13 +40,10 @@ class UniversalInstructionItemTest : public ::testing::Test
 
 TEST_F(UniversalInstructionItemTest, InitialState)
 {
-  UniversalInstructionItem item;
+  const UniversalInstructionItem item;
 
   EXPECT_EQ(item.GetDisplayName(), UniversalInstructionItem::GetStaticType());
-
-  std::vector<std::string> expected_tags({});
-  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
-
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
   EXPECT_TRUE(item.GetDomainType().empty());
 }
 
@@ -54,7 +51,7 @@ TEST_F(UniversalInstructionItemTest, InitialState)
 
 TEST_F(UniversalInstructionItemTest, AttemptToCreateDomainVariable)
 {
-  UniversalInstructionItem item;
+  const UniversalInstructionItem item;
   EXPECT_THROW(item.CreateDomainInstruction(), sup::oac_tree::InvalidOperationException);
 }
 

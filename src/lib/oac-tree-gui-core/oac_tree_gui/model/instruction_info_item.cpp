@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -34,11 +35,6 @@ namespace oac_tree_gui
 
 InstructionInfoItem::InstructionInfoItem() : InstructionItem(GetStaticType())
 {
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
-
-  AddProperty(itemconstants::kName, std::string());
-  RegisterCommonProperties();
 }
 
 std::string InstructionInfoItem::GetStaticType()
@@ -46,8 +42,18 @@ std::string InstructionInfoItem::GetStaticType()
   return "InstructionInfoItem";
 }
 
+std::unique_ptr<mvvm::SessionItem> InstructionInfoItem::Clone() const
+{
+  return std::make_unique<InstructionInfoItem>(*this);
+}
+
 void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInfo &info)
 {
+  if (GetDomainType().empty())
+  {
+    SetupFromDomain(info);
+  }
+
   SetDomainType(info.GetType());
   SetDisplayName(info.GetType());
 
@@ -87,9 +93,11 @@ void InstructionInfoItem::SetupDomainImpl(instruction_t *instruction) const
   throw RuntimeException("This instruction is not intended to create domain instructions");
 }
 
-std::unique_ptr<mvvm::SessionItem> InstructionInfoItem::Clone() const
+void InstructionInfoItem::SetupFromDomain(const sup::oac_tree::InstructionInfo &info)
 {
-  return std::make_unique<InstructionInfoItem>(*this);
+  AddProperty(itemconstants::kName, std::string());
+  RegisterChildrenTag(info.GetCategory(), *this);
+  RegisterCommonProperties();
 }
 
 }  // namespace oac_tree_gui
