@@ -26,89 +26,95 @@
 namespace oac_tree_gui
 {
 
-//! Base Exception class with message.
-
+/**
+ * @brief The MessageException class is a base exception with the message.
+ */
 class MessageException : public std::exception
 {
 public:
   explicit MessageException(std::string message);
+  ~MessageException() override = default;
+
   const char* what() const noexcept override;
+
+protected:
+  MessageException(const MessageException& other) = default;
+  MessageException& operator=(const MessageException& other) & = default;
+  MessageException(MessageException&&) = default;
+  MessageException& operator=(MessageException&&) = default;
 
 private:
   std::string m_message;
 };
 
-//! Exception is thrown when method is not implemented
-
-class NotImplementedException : public MessageException
-{
-public:
-  explicit NotImplementedException(const std::string& message);
-};
-
-//! Generic exception to throw at runtime.
-
+/**
+ * @brief The RuntimeException class shall be used for generic errors happening at runtime.
+ */
 class RuntimeException : public MessageException
 {
 public:
   explicit RuntimeException(const std::string& message);
+  ~RuntimeException() override = default;
+  RuntimeException(const RuntimeException& other) = default;
+  RuntimeException& operator=(const RuntimeException& other) & = default;
+  RuntimeException(RuntimeException&&) = default;
+  RuntimeException& operator=(RuntimeException&&) = default;
 };
 
-//! Generic exception to throw as a consequence of faulty logic (viloated preconditions etc).
-
-class LogicErrorException : public MessageException
+/**
+ * @brief The NullArgumentException class shall be used when the argument is nullptr.
+ */
+class NullArgumentException : public MessageException
 {
 public:
-  explicit LogicErrorException(const std::string& message);
+  explicit NullArgumentException(const std::string& message);
+  ~NullArgumentException() override = default;
+  NullArgumentException(const NullArgumentException& other) = default;
+  NullArgumentException& operator=(const NullArgumentException& other) & = default;
+  NullArgumentException(NullArgumentException&&) = default;
+  NullArgumentException& operator=(NullArgumentException&&) = default;
 };
 
-//! Error detected in the oac-tree domain during the attempt to convert UI classes to
-//! sequencer classes.
-
-class TransformToDomainException : public MessageException
+/**
+ * @brief The NotImplementedException class shall be used when code is not implemented.
+ */
+class NotImplementedException : public MessageException
 {
 public:
-  explicit TransformToDomainException(const std::string& message);
+  explicit NotImplementedException(const std::string& message);
+  ~NotImplementedException() override = default;
+  NotImplementedException(const NotImplementedException& other) = default;
+  NotImplementedException& operator=(const NotImplementedException& other) & = default;
+  NotImplementedException(NotImplementedException&&) = default;
+  NotImplementedException& operator=(NotImplementedException&&) = default;
 };
 
-//! Exception is thrown when no such key exists in a map.
-
-class NotFoundKeyException : public MessageException
-{
-public:
-  explicit NotFoundKeyException(const std::string& message);
-};
-
-//! Exception is thrown when no such value exists in a map.
-
-class NotFoundValueException : public MessageException
-{
-public:
-  explicit NotFoundValueException(const std::string& message);
-};
-
-//! Exception is thrown when such key already exists in the map.
-
-class ExistingKeyException : public MessageException
-{
-public:
-  explicit ExistingKeyException(const std::string& message);
-};
-
-//! Exception is thrown when the argument is nullptr.
-
-class NullException : public MessageException
-{
-public:
-  explicit NullException(const std::string& message);
-};
-
-//! Exception is thrown on invalid operation.
-
+/**
+ * @brief The InvalidOperationException class shall be used on attempt to perform invalid operation.
+ */
 class InvalidOperationException : public MessageException
 {
 public:
   explicit InvalidOperationException(const std::string& message);
+  ~InvalidOperationException() override = default;
+  InvalidOperationException(const InvalidOperationException& other) = default;
+  InvalidOperationException& operator=(const InvalidOperationException& other) & = default;
+  InvalidOperationException(InvalidOperationException&&) = default;
+  InvalidOperationException& operator=(InvalidOperationException&&) = default;
+};
+
+/**
+ * @brief The LogicErrorException class shall be used when faulty logic is discovered.
+ */
+class LogicErrorException : public MessageException
+{
+public:
+  explicit LogicErrorException(const std::string& message);
+  ~LogicErrorException() override = default;
+  LogicErrorException(const LogicErrorException& other) = default;
+  LogicErrorException& operator=(const LogicErrorException& other) & = default;
+  LogicErrorException(LogicErrorException&&) = default;
+  LogicErrorException& operator=(LogicErrorException&&) = default;
 };
 
 }  // namespace oac_tree_gui

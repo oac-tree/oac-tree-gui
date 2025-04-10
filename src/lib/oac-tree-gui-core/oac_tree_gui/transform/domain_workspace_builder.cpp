@@ -49,7 +49,7 @@ void DomainWorkspaceBuilder::PopulateDomainWorkspace(const WorkspaceItem* item,
     auto iter = m_domain_name_to_item.find(variable_item->GetName());
     if (iter != m_domain_name_to_item.end())
     {
-      throw ExistingKeyException("Variable name '" + variable_item->GetName() + "' already exist");
+      throw RuntimeException("Variable name '" + variable_item->GetName() + "' already exist");
     }
 
     m_domain_variable_to_item.insert({domain_variable.get(), variable_item});

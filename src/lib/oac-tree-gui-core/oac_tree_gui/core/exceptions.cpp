@@ -29,38 +29,22 @@ const char* MessageException::what() const noexcept
   return m_message.c_str();
 }
 
+RuntimeException::RuntimeException(const std::string& message) : MessageException{message} {}
+
+NullArgumentException::NullArgumentException(const std::string& message) : MessageException{message}
+{
+}
+
 NotImplementedException::NotImplementedException(const std::string& message)
     : MessageException{message}
 {
 }
 
-RuntimeException::RuntimeException(const std::string& message) : MessageException{message} {}
-
-LogicErrorException::LogicErrorException(const std::string& message) : MessageException{message} {}
-
-TransformToDomainException::TransformToDomainException(const std::string& message)
-    : MessageException{message}
-{
-}
-
-NotFoundKeyException::NotFoundKeyException(const std::string& message) : MessageException{message}
-{
-}
-
-NotFoundValueException::NotFoundValueException(const std::string& message)
-    : MessageException{message}
-{
-}
-
-ExistingKeyException::ExistingKeyException(const std::string& message) : MessageException{message}
-{
-}
-
-NullException::NullException(const std::string& message) : MessageException{message} {}
-
 InvalidOperationException::InvalidOperationException(const std::string& message)
     : MessageException{message}
 {
 }
+
+LogicErrorException::LogicErrorException(const std::string& message) : MessageException{message} {}
 
 }  // namespace oac_tree_gui

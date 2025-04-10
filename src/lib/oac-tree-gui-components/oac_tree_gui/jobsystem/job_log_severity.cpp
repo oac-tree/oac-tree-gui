@@ -62,7 +62,7 @@ std::string ToString(Severity severity)
 
   if (iter == severity_map.end())
   {
-    throw NotFoundKeyException("No severity found");
+    throw RuntimeException("No severity found");
   }
 
   return iter->second;

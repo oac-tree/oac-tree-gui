@@ -62,7 +62,7 @@ TEST_F(ConnectableViewMapTest, InsertThenFind)
 
   // it is not possible to insert another view for given instruction
   auto another_view = ConnectableViewFactory().CreateView(&instruction);
-  EXPECT_THROW(map.Insert(&instruction, another_view.get()), ExistingKeyException);
+  EXPECT_THROW(map.Insert(&instruction, another_view.get()), RuntimeException);
 
   map.Clear();
   EXPECT_FALSE(map.FindView(&instruction));
@@ -86,7 +86,7 @@ TEST_F(ConnectableViewMapTest, RemoveUsingItem)
   EXPECT_FALSE(map.FindView(&instruction));
 
   // it is not possible to remove what was already removed
-  EXPECT_THROW(map.Remove(&instruction), NotFoundKeyException);
+  EXPECT_THROW(map.Remove(&instruction), RuntimeException);
 }
 
 //! Testing Remove method intended for views.
@@ -106,7 +106,7 @@ TEST_F(ConnectableViewMapTest, RemoveUsingView)
   EXPECT_FALSE(map.FindView(&instruction));
 
   // it is not possible to remove what was already removed
-  EXPECT_THROW(map.Remove(view.get()), NotFoundValueException);
+  EXPECT_THROW(map.Remove(view.get()), RuntimeException);
 }
 
 //! Testing InsertOrAssign method.
@@ -149,7 +149,7 @@ TEST_F(ConnectableViewMapTest, TakeView)
   EXPECT_EQ(map.FindView(&instruction0), nullptr);
 
   // it is not possible to take a view again
-  EXPECT_THROW(map.TakeView(&instruction0), NotFoundKeyException);
+  EXPECT_THROW(map.TakeView(&instruction0), RuntimeException);
 
   // another view is in the map
   EXPECT_EQ(map.FindView(&instruction1), view1.get());

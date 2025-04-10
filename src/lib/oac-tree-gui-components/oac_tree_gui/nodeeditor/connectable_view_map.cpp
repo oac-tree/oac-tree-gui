@@ -38,7 +38,7 @@ void ConnectableViewMap::Insert(const InstructionItem *item, ConnectableView *vi
   auto it = m_item_to_view.find(item);
   if (it != m_item_to_view.end())
   {
-    throw ExistingKeyException("Connectable view already exists for given instruction");
+    throw RuntimeException("Connectable view already exists for given instruction");
   }
   m_item_to_view.insert(it, {item, view_item});
 }
@@ -71,7 +71,7 @@ void ConnectableViewMap::Remove(const InstructionItem *item)
   }
   else
   {
-    throw NotFoundKeyException("No connectable view found for given instruction item");
+    throw RuntimeException("No connectable view found for given instruction item");
   }
 }
 
@@ -88,7 +88,7 @@ void ConnectableViewMap::Remove(ConnectableView *view)
   }
   else
   {
-    throw NotFoundValueException("No connectable view found");
+    throw RuntimeException("No connectable view found");
   }
 }
 
@@ -104,7 +104,7 @@ ConnectableView *ConnectableViewMap::TakeView(const InstructionItem *item)
   }
   else
   {
-    throw NotFoundKeyException("No connectable view found for given instruction item");
+    throw RuntimeException("No connectable view found for given instruction item");
   }
 
   return it->second;
