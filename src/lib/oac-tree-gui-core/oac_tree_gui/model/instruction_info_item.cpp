@@ -29,8 +29,6 @@
 #include <sup/oac-tree/instruction_info.h>
 #include <sup/oac-tree/instruction_info_utils.h>
 
-#include <optional>
-
 namespace oac_tree_gui
 {
 
@@ -59,6 +57,7 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
     {
       SetName(attr_value);
     }
+
     else
     {
       // creating string properties from attributes solely for tooltips
