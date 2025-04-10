@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -101,7 +102,7 @@ TEST_F(InstructionInfoItemTest, InitFromSequenceInstructionInfo)
   const std::string expected_value = "expected_value";
   auto instruction = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
-  auto info = CreateInstructionInfo(*instruction, 42);
+  auto info = CreateInstructionInfo(*instruction);
 
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
@@ -111,8 +112,10 @@ TEST_F(InstructionInfoItemTest, InitFromSequenceInstructionInfo)
   const std::vector<std::string> expected_tags(
       {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
-       itemconstants::kYpos, itemconstants::kBreakpoint});
+       itemconstants::kYpos, itemconstants::kBreakpoint, domainconstants::kShowCollapsedAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+
+  EXPECT_FALSE(IsCollapsed(item));  // Sequence by default is expanded
 }
 
 TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfo)
@@ -120,27 +123,7 @@ TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfo)
   const std::string expected_value = "expected_value";
   auto instruction = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
   instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
-  auto info = CreateInstructionInfo(*instruction, 42);
-
-  InstructionInfoItem item;
-  item.InitFromDomainInfo(info);
-  EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kIncludeInstructionType);
-  EXPECT_EQ(item.GetName(), expected_value);
-
-  const std::vector<std::string> expected_tags(
-      {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
-       itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
-       itemconstants::kYpos, itemconstants::kBreakpoint});
-  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
-}
-
-TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfoWithCollapsedAttributeSet)
-{
-  const std::string expected_value = "expected_value";
-  auto instruction = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
-  instruction->AddAttribute(domainconstants::kShowCollapsedAttribute, "true");
-  auto info = CreateInstructionInfo(*instruction, 42);
+  auto info = CreateInstructionInfo(*instruction);
 
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
@@ -152,6 +135,36 @@ TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfoWithCollapsedAttri
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
        itemconstants::kYpos, itemconstants::kBreakpoint, domainconstants::kShowCollapsedAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+
+  EXPECT_TRUE(IsCollapsed(item));  // Inclusde by default is collapsed
+}
+
+TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfoWithCollapsedAttributeSetTrue)
+{
+  const std::string expected_value = "expected_value";
+  auto instruction = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+  instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
+  instruction->AddAttribute(domainconstants::kShowCollapsedAttribute, "true");
+  auto info = CreateInstructionInfo(*instruction);
+
+  InstructionInfoItem item;
+  item.InitFromDomainInfo(info);
+
+  EXPECT_TRUE(IsCollapsed(item));
+}
+
+TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfoWithCollapsedAttributeSetFalse)
+{
+  const std::string expected_value = "expected_value";
+  auto instruction = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+  instruction->AddAttribute(domainconstants::kNameAttribute, expected_value);
+  instruction->AddAttribute(domainconstants::kShowCollapsedAttribute, "false");
+  auto info = CreateInstructionInfo(*instruction);
+
+  InstructionInfoItem item;
+  item.InitFromDomainInfo(info);
+
+  EXPECT_FALSE(IsCollapsed(item));
 }
 
 }  // namespace oac_tree_gui::test

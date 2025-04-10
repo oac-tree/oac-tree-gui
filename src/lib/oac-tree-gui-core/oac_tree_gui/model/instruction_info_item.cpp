@@ -26,6 +26,7 @@
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction_info.h>
 #include <sup/oac-tree/instruction_info_utils.h>
@@ -33,9 +34,7 @@
 namespace oac_tree_gui
 {
 
-InstructionInfoItem::InstructionInfoItem() : InstructionItem(GetStaticType())
-{
-}
+InstructionInfoItem::InstructionInfoItem() : InstructionItem(GetStaticType()) {}
 
 std::string InstructionInfoItem::GetStaticType()
 {
@@ -62,6 +61,12 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
     if (attr_name == domainconstants::kNameAttribute)
     {
       SetName(attr_value);
+    }
+
+    else if (attr_name == domainconstants::kShowCollapsedAttribute)
+    {
+      // show_collapsed came as string, need to convert it to bool
+      SetProperty(domainconstants::kShowCollapsedAttribute, mvvm::utils::StringToBool(attr_value));
     }
 
     else
@@ -98,6 +103,7 @@ void InstructionInfoItem::SetupFromDomain(const sup::oac_tree::InstructionInfo &
   AddProperty(itemconstants::kName, std::string());
   RegisterChildrenTag(info.GetCategory(), *this);
   RegisterCommonProperties();
+  RegisterShowCollapsedProperty(info.GetCategory(), info.GetType(), *this);
 }
 
 }  // namespace oac_tree_gui
