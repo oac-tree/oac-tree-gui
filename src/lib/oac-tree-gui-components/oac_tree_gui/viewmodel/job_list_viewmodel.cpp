@@ -38,7 +38,7 @@ namespace oac_tree_gui
 class JobRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
-  int GetSize() const override { return 2; }
+  std::size_t GetSize() const override { return 2U; }
 
   QStringList GetHorizontalHeaderLabels() const override
   {

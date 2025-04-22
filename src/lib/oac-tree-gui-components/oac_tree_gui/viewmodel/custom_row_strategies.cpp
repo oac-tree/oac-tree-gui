@@ -176,9 +176,9 @@ namespace oac_tree_gui
 //! VariableRowStrategy
 //! ---------------------------------------------------------------------------
 
-int VariableRowStrategy::GetSize() const
+std::size_t VariableRowStrategy::GetSize() const
 {
-  return 3;
+  return 3U;
 }
 
 QStringList VariableRowStrategy::GetHorizontalHeaderLabels() const
@@ -215,9 +215,9 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRowIm
 // For channel access variable with scalar on board
 // | var0       | 42      | CA      | [x] PV_CHANNEL0 |
 
-int VariableTableRowStrategy::GetSize() const
+std::size_t VariableTableRowStrategy::GetSize() const
 {
-  return 4;
+  return 4U;
 }
 
 QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
@@ -249,9 +249,9 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
 //! ---------------------------------------------------------------------------
 //! InstructionEditorRowStrategy
 //! ---------------------------------------------------------------------------
-int InstructionEditorRowStrategy::GetSize() const
+std::size_t InstructionEditorRowStrategy::GetSize() const
 {
-  return 2;
+  return 2U;
 }
 
 QStringList InstructionEditorRowStrategy::GetHorizontalHeaderLabels() const
