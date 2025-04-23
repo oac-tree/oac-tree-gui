@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 
-#include <sup/gui/core/message_handler_interface.h>
+#include <sup/gui/core/i_message_handler.h>
 
 #include <QWidget>
 
@@ -29,7 +29,7 @@ class QKeyEvent;
 
 namespace sup::gui
 {
-class MessageHandlerInterface;
+class IMessageHandler;
 class VisibilityAgentBase;
 }  // namespace sup::gui
 
@@ -82,7 +82,7 @@ private:
   NodeGraphicsView* m_graphics_view{nullptr};
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
   std::unique_ptr<ConnectableViewModelController> m_scene_controller;
-  std::unique_ptr<sup::gui::MessageHandlerInterface> m_graphics_view_message_handler;
+  std::unique_ptr<sup::gui::IMessageHandler> m_graphics_view_message_handler;
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};

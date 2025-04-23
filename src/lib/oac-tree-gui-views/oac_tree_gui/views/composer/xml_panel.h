@@ -31,7 +31,7 @@ namespace sup::gui
 {
 class CodeView;
 class VisibilityAgentBase;
-class MessageHandlerInterface;
+class IMessageHandler;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -66,7 +66,7 @@ private:
   std::unique_ptr<XmlPanelController> m_panel_controller;
   ProcedureItem* m_procedure{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
-  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
+  std::unique_ptr<sup::gui::IMessageHandler> m_message_handler;
 };
 
 }  // namespace oac_tree_gui
