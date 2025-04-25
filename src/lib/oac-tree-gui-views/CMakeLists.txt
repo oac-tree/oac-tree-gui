@@ -4,6 +4,11 @@ set(CMAKE_AUTOMOC ON)
 
 add_library(${library_name} SHARED)
 
+set_target_properties(${library_name} PROPERTIES
+  VERSION ${LIBVERSION}
+  SOVERSION ${LIBSOVERSION}
+)
+
 target_link_libraries(${library_name} PUBLIC pthread oac-tree-gui-components sup-gui-core::views)
 
 add_subdirectory(oac_tree_gui)

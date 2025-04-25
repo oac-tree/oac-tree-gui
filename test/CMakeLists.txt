@@ -34,8 +34,8 @@ add_subdirectory(parasoft)
 # connection. In certain cases `make testall` will be faster than `ctest -j4` because of fewer
 # instantiations of QApplication.
 
-add_custom_target(testall DEPENDS testall-cmd)
-add_custom_command(OUTPUT testall-cmd
+add_custom_target(testall DEPENDS oac-tree-gui-testall-cmd)
+add_custom_command(OUTPUT oac-tree-gui-testall-cmd
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-core
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-components
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-components-app
@@ -43,7 +43,7 @@ add_custom_command(OUTPUT testall-cmd
 )
 
 if (COA_BUILD_INTEGRATION_TESTS)
-  add_custom_command(OUTPUT testall-cmd APPEND
+  add_custom_command(OUTPUT oac-tree-gui-testall-cmd APPEND
     COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-integration
   )
 endif()

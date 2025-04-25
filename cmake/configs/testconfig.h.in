@@ -28,8 +28,8 @@
 
 namespace oac_tree_gui::TestConfig {
 
-inline std::string CMakeSourceDir() { return "@CMAKE_SOURCE_DIR@"; }
-inline std::string CMakeBinaryDir() { return "@CMAKE_BINARY_DIR@"; }
+inline std::string CMakeSourceDir() { return "@CMAKE_CURRENT_SOURCE_DIR@"; }
+inline std::string CMakeBinaryDir() { return "@CMAKE_CURRENT_BINARY_DIR@"; }
 inline std::string TestOutputDir() { return "@SEQUENCERGUI_TESTRESULT_DIR@"; }
 inline std::string ProjectSourceDir() { return "@SEQUENCERGUI_PROJECT_DIR@"; }
 

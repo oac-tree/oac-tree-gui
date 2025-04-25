@@ -2,6 +2,11 @@ set(library_name oac-tree-gui-core)
 
 add_library(${library_name} SHARED)
 
+set_target_properties(${library_name} PROPERTIES
+  VERSION ${LIBVERSION}
+  SOVERSION ${LIBSOVERSION}
+)
+
 target_link_libraries(${library_name}
   PUBLIC pthread oac-tree::oac-tree sup-epics::sup-epics oac-tree-server::oac-tree-server sup-gui-core::core)
 
