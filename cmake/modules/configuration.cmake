@@ -24,6 +24,7 @@ file(MAKE_DIRECTORY ${SEQUENCERGUI_APP_RUNTIME_DIR})
 # -----------------------------------------------------------------------------
 # Dependencies
 # -----------------------------------------------------------------------------
+include(FetchGithubDeps)
 find_package(Threads)
 find_package(sup-gui-core REQUIRED)
 find_package(oac-tree REQUIRED)
