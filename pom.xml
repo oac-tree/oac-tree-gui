@@ -91,7 +91,7 @@
                         <package>
                             <!-- Libraries  -->
                             <include type="file" source="lib" target="lib">
-                                <include>*.so</include>
+                                <include>*.so.*</include>
                             </include>
                             <!-- Programs -->
                             <include type="file" source="bin" target="bin">
