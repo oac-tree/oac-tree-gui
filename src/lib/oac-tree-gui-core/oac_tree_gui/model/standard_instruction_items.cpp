@@ -150,6 +150,7 @@ std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone() const
 WaitItem::WaitItem() : UniversalInstructionItem(GetStaticType())
 {
   SetTimeout(0.0);
+  SetBlocking(false);
 }
 
 std::string WaitItem::GetStaticType()
@@ -170,6 +171,16 @@ void WaitItem::SetTimeout(double value)
 double WaitItem::GetTimeout() const
 {
   return Property<double>(domainconstants::kTimeoutAttribute);
+}
+
+bool WaitItem::IsBlocking() const
+{
+  return Property<bool>(domainconstants::kBlockingAttribute);
+}
+
+void WaitItem::SetBlocking(bool value)
+{
+  SetAttribute(*this, domainconstants::kBlockingAttribute, value);
 }
 
 }  // namespace oac_tree_gui

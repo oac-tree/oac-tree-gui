@@ -92,6 +92,7 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateSingleWaitProcedureItem(
   auto result = std::make_unique<ProcedureItem>();
   auto wait = result->GetInstructionContainer()->InsertItem<WaitItem>(mvvm::TagIndex::Append());
   wait->SetTimeout(GetTimeoutInSec(timeout));
+  wait->SetBlocking(true);
   return result;
 }
 

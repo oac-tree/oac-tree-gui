@@ -106,6 +106,10 @@ public:
   void SetTimeout(double value);
 
   double GetTimeout() const;
+
+  bool IsBlocking() const;
+
+  void SetBlocking(bool value);
 };
 
 }  // namespace oac_tree_gui

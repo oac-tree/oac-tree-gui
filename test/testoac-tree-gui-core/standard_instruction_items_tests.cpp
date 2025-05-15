@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/standard_instruction_items.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
@@ -36,8 +38,6 @@
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
-
-#include "oac_tree_gui/model/standard_instruction_items.h"
 
 namespace oac_tree_gui::test
 {
@@ -395,13 +395,13 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   }
 
   {  // when IsRoot and collapsed = false
-    SequenceItem item;
+    const SequenceItem item;
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
     EXPECT_THROW(domain_item->Setup(m_procedure), sup::oac_tree::InstructionSetupException);
     // validating that no SessionItem related properties were propagated to the domain
-    std::vector<std::pair<std::string, std::string>> expected = {};
+    const std::vector<std::pair<std::string, std::string>> expected = {};
     EXPECT_EQ(domain_item->GetStringAttributes(), expected);
   }
 }
@@ -422,6 +422,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 
     wait_item.InitFromDomain(wait.get());
     EXPECT_EQ(wait_item.GetTimeout(), 42.0);
+    EXPECT_FALSE(wait_item.IsBlocking());
   }
 
   // Wait instruction without timeout without attribute
@@ -430,12 +431,14 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
     auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
     EXPECT_NO_THROW(wait_item.InitFromDomain(wait.get()));
     EXPECT_EQ(wait_item.GetTimeout(), 0.0);
+    EXPECT_FALSE(wait_item.IsBlocking());
   }
 
   // Wait instruction with name
   {
     auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
     wait->AddAttribute(domainconstants::kNameAttribute, "First");
+    wait->AddAttribute(domainconstants::kBlockingAttribute, "true");
 
     WaitItem wait_item;
     wait_item.InitFromDomain(wait.get());
@@ -443,6 +446,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
     EXPECT_EQ(wait_item.GetDisplayName(), "Wait");
     EXPECT_EQ(wait_item.Property<std::string>(itemconstants::kName), "First");
     EXPECT_EQ(wait_item.GetTimeout(), 0.0);
+    EXPECT_TRUE(wait_item.IsBlocking());
   }
 }
 
