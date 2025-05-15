@@ -49,7 +49,7 @@ namespace oac_tree_gui
 
 AbstractJobHandler::AbstractJobHandler(JobItem *job_item)
     : m_procedure_item_builder(std::make_unique<ProcedureItemJobInfoBuilder>())
-    , m_job_log(new JobLog)
+    , m_job_log(new JobLog(this))
     , m_job_item(job_item)
 {
   if (!job_item)
