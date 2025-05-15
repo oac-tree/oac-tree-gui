@@ -1,5 +1,6 @@
 Changes for 1.8.0:
 
+- Fix bug on ConnectableView removal in NodeEditor
 - Fix crash on attempt to import and run local_include.xml
 - Cell editors for varName instruction attributes now are aware of current variable list
 - Support removal of multiple-selected instructions
