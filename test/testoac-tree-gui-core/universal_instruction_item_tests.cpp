@@ -70,13 +70,14 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
   // registered tags should coincide with instruction attribute and AnyValueTag
   const std::vector<std::string> expected_tags(
       {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
-       domainconstants::kTimeoutAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
-       itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint});
+       domainconstants::kTimeoutAttribute, domainconstants::kBlockingAttribute,
+       itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
+       itemconstants::kYpos, itemconstants::kBreakpoint});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should provide an access to underlying values
   auto properties = mvvm::utils::SinglePropertyItems(item);
-  ASSERT_EQ(properties.size(), 4);
+  ASSERT_EQ(properties.size(), 5);
   EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
   EXPECT_TRUE(item.Property<std::string>(domainconstants::kNameAttribute).empty());
 
@@ -131,7 +132,8 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
 
 TEST_F(UniversalInstructionItemTest, Behavior)
 {
-  UniversalInstructionItem item(domainconstants::kWaitInstructionType);;
+  UniversalInstructionItem item(domainconstants::kWaitInstructionType);
+  ;
 
   EXPECT_EQ(item.GetBehavior(), itemconstants::kNativeBehavior);
   item.SetBehavior(itemconstants::kHiddenBehavior);

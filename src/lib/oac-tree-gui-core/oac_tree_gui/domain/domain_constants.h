@@ -143,6 +143,8 @@ const std::string kFromVariableAttributeName =
     sup::oac_tree::Constants::FROM_VARIABLE_ATTRIBUTE_NAME;
 const std::string kEqualVariableAttributeName =
     sup::oac_tree::Constants::EQUALS_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kBlockingAttribute =
+    sup::oac_tree::Constants::BLOCKING_ATTRIBUTE_NAME;
 
 }  // namespace oac_tree_gui::domainconstants
 
