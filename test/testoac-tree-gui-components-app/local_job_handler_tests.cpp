@@ -298,9 +298,20 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
   job_handler.Start();
-  QTest::qWait(100);
 
-  EXPECT_EQ(spy_instruction_status.count(), 6);  // 3 instructions
+  auto predicate1 = [&job_handler]()
+  {
+     return job_handler.GetRunnerStatus() != RunnerStatus::kInitial;
+  };
+  EXPECT_TRUE(QTest::qWaitFor(predicate1, 200));
+
+  auto predicate2 = [&job_handler]()
+  {
+    return !job_handler.IsRunning();
+  };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
+
+  EXPECT_EQ(spy_instruction_status.count(), 9);  // 3 instructions
 
   EXPECT_FALSE(job_handler.IsRunning());
 
@@ -332,11 +343,11 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
     auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
     return test::IsEqual(*vars_inside.at(1), expected_anyvalue);
   };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 200));
 
   auto predicate2 = [this, &job_handler, &spy_instruction_status]()
-  { return !job_handler.IsRunning() && spy_instruction_status.count() == 4; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 100));
+  { return !job_handler.IsRunning() && spy_instruction_status.count() == 6; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
 
   // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
   // var1

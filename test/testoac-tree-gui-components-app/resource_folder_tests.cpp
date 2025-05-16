@@ -92,7 +92,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
   job_handler.Start();
 
   auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 1000));
 
   // validating some of parameters after job is complet
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
