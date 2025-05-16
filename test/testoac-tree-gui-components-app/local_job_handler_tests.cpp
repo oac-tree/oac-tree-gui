@@ -311,6 +311,12 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   };
   EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
 
+  auto predicate3 = [&spy_instruction_status]()
+  {
+    return spy_instruction_status.count() == 9;
+  };
+  EXPECT_TRUE(QTest::qWaitFor(predicate3, 200));
+
   EXPECT_EQ(spy_instruction_status.count(), 9);  // 3 instructions
 
   EXPECT_FALSE(job_handler.IsRunning());
