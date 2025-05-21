@@ -75,7 +75,6 @@ std::unique_ptr<mvvm::ItemCatalogue<InstructionItem>> CreateInstructionItemCatal
   result->RegisterItem<PvAccessReadInstructionItem>();
   result->RegisterItem<PvAccessWriteInstructionItem>();
   result->RegisterItem<RPCClientInstruction>();
-  result->RegisterItem<SystemCallInstructionItem>();
   result->RegisterItem<LogInstructionItem>();
 
   return result;

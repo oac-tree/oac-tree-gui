@@ -119,7 +119,6 @@ TEST_F(SequencerItemHelperTest, ClonePlugin)
   EXPECT_TRUE(IsCloneImplemented<PvAccessReadInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<PvAccessWriteInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<RPCClientInstruction>());
-  EXPECT_TRUE(IsCloneImplemented<SystemCallInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<LogInstructionItem>());
 
   // variables
@@ -131,13 +130,13 @@ TEST_F(SequencerItemHelperTest, ClonePlugin)
 TEST_F(SequencerItemHelperTest, GetPropertyItem)
 {
   // item doesn't have property items
-  mvvm::SessionItem item;
+  const mvvm::SessionItem item;
   EXPECT_EQ(GetNameItem(item), nullptr);
   EXPECT_EQ(GetStatusItem(item), nullptr);
   EXPECT_EQ(GetBreakpointItem(item), nullptr);
 
   // test item has property items
-  TestItem test_item;
+  const TestItem test_item;
   EXPECT_NE(GetNameItem(test_item), nullptr);
   EXPECT_NE(GetStatusItem(test_item), nullptr);
   EXPECT_NE(GetBreakpointItem(test_item), nullptr);

@@ -518,44 +518,6 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstructionToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// SystemCallInstructionItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(EpicsInstructionItemsTest, SystemCallInstructionItem)
-{
-  SystemCallInstructionItem item;
-  EXPECT_TRUE(item.GetCommand().empty());
-
-  item.SetCommand("abc");
-  EXPECT_EQ(item.GetCommand(), std::string("abc"));
-}
-
-TEST_F(EpicsInstructionItemsTest, SystemCallInstructionItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kSystemCallInstructionType);
-  input->AddAttribute(domainconstants::kCommandAttribute, "abc");
-
-  SystemCallInstructionItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetCommand(), std::string("abc"));
-}
-
-TEST_F(EpicsInstructionItemsTest, SystemCallInstructionItemToDomain)
-{
-  SystemCallInstructionItem item;
-  item.SetCommand("abc");
-  item.SetIsRootFlag(true);
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kSystemCallInstructionType);
-
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kCommandAttribute), "abc");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // LogInstructionItem tests
 // ----------------------------------------------------------------------------
 

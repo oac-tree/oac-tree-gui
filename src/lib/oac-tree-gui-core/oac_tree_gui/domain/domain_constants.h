@@ -73,6 +73,7 @@ const std::string kWaitInstructionType = "Wait";
 const std::string kUserConfirmationInstructionType = "UserConfirmation";
 const std::string kSucceedInstructionType = "Succeed";
 const std::string kFailedInstructionType = "Fail";
+const std::string kLogInstructionType = "Log";
 
 // equality instructions
 const std::string kLessThanInstructionType = "LessThan";
@@ -87,8 +88,6 @@ const std::string kChannelAccessWriteInstructionType = "ChannelAccessWrite";
 const std::string kPvAccessReadInstructionType = "PvAccessRead";
 const std::string kPvAccessWriteInstructionType = "PvAccessWrite";
 const std::string kRPCClientInstructionType = "RPCClient";
-const std::string kSystemCallInstructionType = "SystemCall";
-const std::string kLogInstructionType = "Log";
 
 // sup-sequencer-plugin-control instructions
 const std::string kWaitForConditionInstructionType = "WaitForCondition";

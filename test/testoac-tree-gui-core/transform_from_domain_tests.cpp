@@ -139,8 +139,6 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
       kPvAccessWriteInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<oac_tree_gui::RPCClientInstruction>(kRPCClientInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<oac_tree_gui::SystemCallInstructionItem>(
-      kSystemCallInstructionType));
 }
 
 TEST_F(TransformFromDomainTest, CreateUniversalInstruction)

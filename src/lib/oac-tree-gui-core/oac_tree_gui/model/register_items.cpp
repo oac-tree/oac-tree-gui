@@ -45,7 +45,6 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessReadInstructionItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessWriteInstructionItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::RPCClientInstruction>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::SystemCallInstructionItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::LogInstructionItem>();
 
   // variables

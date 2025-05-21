@@ -269,34 +269,6 @@ void RPCClientInstruction::SetOutput(const std::string &value)
 }
 
 // ----------------------------------------------------------------------------
-// SystemCallInstructionItem
-// ----------------------------------------------------------------------------
-
-SystemCallInstructionItem::SystemCallInstructionItem() : UniversalInstructionItem(GetStaticType())
-{
-}
-
-std::string SystemCallInstructionItem::GetStaticType()
-{
-  return domainconstants::kSystemCallInstructionType;
-}
-
-std::unique_ptr<mvvm::SessionItem> SystemCallInstructionItem::Clone() const
-{
-  return std::make_unique<SystemCallInstructionItem>(*this);
-}
-
-std::string SystemCallInstructionItem::GetCommand() const
-{
-  return Property<std::string>(domainconstants::kCommandAttribute);
-}
-
-void SystemCallInstructionItem::SetCommand(const std::string &value)
-{
-  SetAttribute(*this, domainconstants::kCommandAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // LogInstructionItem
 // ----------------------------------------------------------------------------
 

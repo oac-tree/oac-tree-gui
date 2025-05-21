@@ -78,7 +78,6 @@ TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainInstructionTypeConstants)
                                                  kPvAccessReadInstructionType,
                                                  kPvAccessWriteInstructionType,
                                                  kRPCClientInstructionType,
-                                                 kSystemCallInstructionType,
                                                  kLogInstructionType};
   for (const auto& domain_type : domain_types)
   {

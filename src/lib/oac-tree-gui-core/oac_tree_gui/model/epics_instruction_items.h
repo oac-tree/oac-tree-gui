@@ -142,21 +142,6 @@ public:
   void SetOutput(const std::string& value);
 };
 
-//! SystemCall instruction.
-class SystemCallInstructionItem : public UniversalInstructionItem
-{
-public:
-  SystemCallInstructionItem();
-
-  static std::string GetStaticType();
-
-  std::unique_ptr<SessionItem> Clone() const override;
-
-  std::string GetCommand() const;
-
-  void SetCommand(const std::string& value);
-};
-
 //! LogInstructionItem instruction.
 class LogInstructionItem : public UniversalInstructionItem
 {
