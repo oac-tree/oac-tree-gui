@@ -41,7 +41,6 @@ const std::string kCorePluginName = "";
 //! ".so" or ".dylib" stripped off. Windows is not yet supported.
 const std::string kEpicsCAPluginName = "oac-tree-ca";
 const std::string kEpicsPVXSPluginName = "oac-tree-pvxs";
-const std::string kEpicsMiscPluginName = "oac-tree-misc";
 const std::string kControlPluginName = "oac-tree-control";
 const std::string kSupConfigPluginName = "sequencer-sup-config";
 const std::string kSupTimingPluginName = "sequencer-sup-timing";

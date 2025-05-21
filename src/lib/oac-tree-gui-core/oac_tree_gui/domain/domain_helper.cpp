@@ -143,11 +143,11 @@ std::pair<bool, std::string> LoadPlugins()
   UpdateGlobalDomainObjectTypeRegistry(domainconstants::kCorePluginName);
 
   static const std::vector<std::string> plugins = {
-      domainconstants::kEpicsCAPluginName,   domainconstants::kEpicsPVXSPluginName,
-      domainconstants::kEpicsMiscPluginName, domainconstants::kControlPluginName,
-      domainconstants::kSupConfigPluginName, domainconstants::kSupPulseCounterPluginName,
-      domainconstants::kMathExprPluginName,  domainconstants::kSupTimingPluginName,
-      domainconstants::kSystemPluginName,    domainconstants::kStringPluginName};
+      domainconstants::kEpicsCAPluginName,         domainconstants::kEpicsPVXSPluginName,
+      domainconstants::kControlPluginName,         domainconstants::kSupConfigPluginName,
+      domainconstants::kSupPulseCounterPluginName, domainconstants::kMathExprPluginName,
+      domainconstants::kSupTimingPluginName,       domainconstants::kSystemPluginName,
+      domainconstants::kStringPluginName};
 
   for (const auto& name : plugins)
   {
