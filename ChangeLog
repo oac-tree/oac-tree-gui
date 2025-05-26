@@ -1,5 +1,8 @@
+Changes for 1.9.0:
+
 Changes for 1.8.0:
 
+- GitHub oac-tree 1.0 release
 - Fix bug on ConnectableView removal in NodeEditor
 - Fix crash on attempt to import and run local_include.xml
 - Cell editors for varName instruction attributes now are aware of current variable list
