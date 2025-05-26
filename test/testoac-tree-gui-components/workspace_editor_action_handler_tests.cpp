@@ -420,7 +420,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
 //! variables (real-life bug).
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
 {
-  if (!IsSequencerPluginEpicsAvailable())
+  if (!IsVariableTypeAvailable(domainconstants::kSystemClockVariableType))
   {
     GTEST_SKIP();
   }
