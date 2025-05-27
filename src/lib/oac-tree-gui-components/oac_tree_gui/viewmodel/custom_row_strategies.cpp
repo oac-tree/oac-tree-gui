@@ -139,7 +139,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(VariableItem 
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
   result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
   result.emplace_back(mvvm::CreateLabelViewItem(&item));
-  result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetType()));
+  result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetDomainType()));
 
   return result;
 }

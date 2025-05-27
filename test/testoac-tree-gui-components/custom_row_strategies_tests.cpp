@@ -18,6 +18,10 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/custom_row_strategies.h"
+
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -31,8 +35,6 @@
 
 #include <gtest/gtest.h>
 
-#include "oac_tree_gui/viewmodel/custom_row_strategies.h"
-
 namespace oac_tree_gui::test
 {
 
@@ -42,21 +44,41 @@ class CustomRowStrategiesTest : public ::testing::Test
 {
 };
 
-TEST_F(CustomRowStrategiesTest, VariableRowStrategy)
+TEST_F(CustomRowStrategiesTest, VariableRowStrategyForLocalVariable)
 {
-  {  // single local variable
-    LocalVariableItem item;
-    item.SetName("abc");
+  LocalVariableItem item;
+  item.SetName("abc");
 
-    VariableRowStrategy strategy;
-    auto view_items = strategy.ConstructRow(&item);
+  VariableRowStrategy strategy;
+  auto view_items = strategy.ConstructRow(&item);
 
-    // expectind two elements in a row looking at DisplayName and Name
-    ASSERT_EQ(view_items.size(), 3);
-    EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
-    EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString(""));
-    EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("Local"));
+  // expectind two elements in a row looking at DisplayName and Name
+  ASSERT_EQ(view_items.size(), 3);
+  EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
+  EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString(""));
+  EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("Local"));
+}
+
+TEST_F(CustomRowStrategiesTest, VariableRowStrategyForUniversalItem)
+{
+  if (!IsVariableTypeAvailable(domainconstants::kSystemClockVariableType))
+  {
+    GTEST_SKIP();
   }
+
+  UniversalVariableItem item;
+  item.SetDomainType(domainconstants::kSystemClockVariableType);
+  item.SetName("abc");
+
+  VariableRowStrategy strategy;
+  auto view_items = strategy.ConstructRow(&item);
+
+  // expectind two elements in a row looking at DisplayName and Name
+  ASSERT_EQ(view_items.size(), 3);
+  EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
+  EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString(""));
+  EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(),
+            QString::fromStdString(domainconstants::kSystemClockVariableType));
 }
 
 TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
