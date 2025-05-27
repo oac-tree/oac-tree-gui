@@ -39,6 +39,9 @@
 #include <QIcon>
 #include <map>
 
+namespace oac_tree_gui
+{
+
 namespace
 {
 
@@ -56,7 +59,7 @@ QVariant GetValueIcon()
 /**
  * @brief Creates view item representing AnyValue in a column.
  */
-std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(oac_tree_gui::VariableItem &item)
+std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem &item)
 {
   const std::string kSeeBelowPlaceholder("---");
   auto anyvalue_item = item.GetAnyValueItem();
@@ -83,9 +86,9 @@ std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(oac_tree_gui::VariableIte
 std::string GetTypeString(const mvvm::SessionItem &item)
 {
   static const std::map<std::string, std::string> kNameMap = {
-      {oac_tree_gui::PvAccessClientVariableItem::GetStaticType(), std::string("PVA-C")},
-      {oac_tree_gui::PvAccessServerVariableItem::GetStaticType(), std::string("PVA-S")},
-      {oac_tree_gui::ChannelAccessVariableItem::GetStaticType(), std::string("CA")},
+      {PvAccessClientVariableItem::GetStaticType(), std::string("PVA-C")},
+      {PvAccessServerVariableItem::GetStaticType(), std::string("PVA-S")},
+      {ChannelAccessVariableItem::GetStaticType(), std::string("CA")},
   };
 
   auto iter = kNameMap.find(item.GetType());
@@ -109,8 +112,7 @@ std::string GetTypeStringForVariableTree(const mvvm::SessionItem &item)
  * @brief Returns row of the table representing variable.
  */
 
-std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(
-    oac_tree_gui::VariableItem &item)
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(VariableItem &item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
@@ -132,7 +134,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(
 /**
  * @brief Returns row of the table representing variable.
  */
-std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(oac_tree_gui::VariableItem &item)
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(VariableItem &item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
   result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
@@ -150,7 +152,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
   // If it's a tag corresponding to AnyValue, let's place an icon before display name.
-  if (item.GetTagIndex().GetTag() == oac_tree_gui::itemconstants::kAnyValueTag)
+  if (item.GetTagIndex().GetTag() == itemconstants::kAnyValueTag)
   {
     auto view_item = mvvm::CreateFixedDataViewItem(&item);
     view_item->SetData(GetValueIcon(), Qt::DecorationRole);
@@ -168,9 +170,6 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
 }
 
 }  // namespace
-
-namespace oac_tree_gui
-{
 
 //! ---------------------------------------------------------------------------
 //! VariableRowStrategy
