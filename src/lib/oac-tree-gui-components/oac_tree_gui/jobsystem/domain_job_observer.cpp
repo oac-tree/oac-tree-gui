@@ -36,7 +36,6 @@
 #include <cmath>
 #include <sstream>
 #include <thread>
-#include <iostream>
 
 namespace oac_tree_gui
 {
