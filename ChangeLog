@@ -1,5 +1,8 @@
 Changes for 1.9.0:
 
+- Adapt to the new domain API related to the active instruction selection
+- Fix variable type name in the thrid column of the workspace table
+
 Changes for 1.8.0:
 
 - GitHub oac-tree 1.0 release
