@@ -45,8 +45,8 @@ struct DomainEventDispatcherContext
   //! a callback to process log event
   std::function<void(const LogEvent&)> process_log_event;
 
-  //! a callback to process next-leaves-changed event
-  std::function<void(const ActiveInstructionChangedEvent&)> next_leaves_changed_event;
+  //! a callback to process change in active instruction leaves
+  std::function<void(const ActiveInstructionChangedEvent&)> active_instruction_changed_event;
 };
 
 }  // namespace sequencergui

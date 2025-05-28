@@ -147,7 +147,7 @@ DomainEventDispatcherContext AbstractJobHandler::CreateEventDispatcherContext()
 
   result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
 
-  result.next_leaves_changed_event = [this](const ActiveInstructionChangedEvent &event)
+  result.active_instruction_changed_event = [this](const ActiveInstructionChangedEvent &event)
   { OnActiveInstructionChangedEvent(event); };
 
   return result;
@@ -193,7 +193,7 @@ void AbstractJobHandler::onLogEvent(const oac_tree_gui::LogEvent &event)
 void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstructionChangedEvent &event)
 {
   std::vector<InstructionItem *> items;
-  for (auto instruction_index : event.leaves)
+  for (auto instruction_index : event.instr_idx)
   {
     if (auto *item = m_procedure_item_builder->GetInstruction(instruction_index); item)
     {

@@ -79,9 +79,15 @@ struct JobStateChangedEvent
   bool operator!=(const JobStateChangedEvent& other) const;
 };
 
+/**
+ * @brief The ActiveInstructionChangedEvent struct represents an event when list of domain's active
+ * instructions change.
+ *
+ * Active instructions are those that are currently running or has unfinised state
+ */
 struct ActiveInstructionChangedEvent
 {
-  std::vector<sup::dto::uint32> leaves;
+  std::vector<sup::dto::uint32> instr_idx;
 
   bool operator==(const ActiveInstructionChangedEvent& other) const;
   bool operator!=(const ActiveInstructionChangedEvent& other) const;

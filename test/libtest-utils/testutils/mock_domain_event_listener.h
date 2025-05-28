@@ -127,7 +127,7 @@ public:
 
     result.process_log_event = [this](const oac_tree_gui::LogEvent& event) { OnLogEvent(event); };
 
-    result.next_leaves_changed_event =
+    result.active_instruction_changed_event =
         [this](const oac_tree_gui::ActiveInstructionChangedEvent& event)
     { OnActiveInstructionChanged(event); };
 

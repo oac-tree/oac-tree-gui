@@ -71,8 +71,8 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::oac_tree_gui::ActiveInstructionChangedEvent &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("ActiveInstructionChanged") << " size: " << event.leaves.size() << " indx:";
-    for (auto instr_index : event.leaves)
+    ostr << std::string("ActiveInstructionChanged") << " size: " << event.instr_idx.size() << " indx:";
+    for (auto instr_index : event.instr_idx)
     {
       ostr << instr_index << " ";
     }
@@ -97,7 +97,7 @@ bool JobStateChangedEvent::operator!=(const JobStateChangedEvent &other) const
 
 bool ActiveInstructionChangedEvent::operator==(const ActiveInstructionChangedEvent &other) const
 {
-  return leaves == other.leaves;
+  return instr_idx == other.instr_idx;
 }
 
 bool ActiveInstructionChangedEvent::operator!=(const ActiveInstructionChangedEvent &other) const
