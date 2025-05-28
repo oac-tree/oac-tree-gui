@@ -71,7 +71,7 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::oac_tree_gui::NextLeavesChangedEvent &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("NextLeavesChanged") << " " << event.leaves.size() << " ";
+    ostr << std::string("NextLeavesChanged") << " size: " << event.leaves.size() << " indx:";
     for (auto instr_index : event.leaves)
     {
       ostr << instr_index << " ";

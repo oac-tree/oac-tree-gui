@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/local_domain_runner.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
@@ -36,8 +38,6 @@
 
 #include <QTest>
 #include <thread>
-
-#include "oac_tree_gui/jobsystem/local_domain_runner.h"
 
 namespace oac_tree_gui::test
 {
@@ -128,6 +128,9 @@ TEST_F(LocalDomainRunnerTest, ShortProcedureThatExecutesNormally)
         instruction_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event3)).Times(1);
 
+    const NextLeavesChangedEvent event4{{0}};
+    EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event4)).Times(1);
+
     // message instruction (too difficult to make proper comparison because of time stamp)
     EXPECT_CALL(m_event_listener, OnLogEvent(::testing::_)).Times(1);
 
@@ -135,11 +138,11 @@ TEST_F(LocalDomainRunnerTest, ShortProcedureThatExecutesNormally)
                                               InstructionState{false, ExecutionStatus::SUCCESS}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event5)).Times(1);
 
-    const JobStateChangedEvent event6{JobState::kSucceeded};
-    EXPECT_CALL(m_event_listener, OnJobStateChanged(event6)).Times(1);
+    const NextLeavesChangedEvent event6;
+    EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event6)).Times(1);
 
-    const NextLeavesChangedEvent event7;
-    EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event7)).Times(1);
+    const JobStateChangedEvent event7{JobState::kSucceeded};
+    EXPECT_CALL(m_event_listener, OnJobStateChanged(event7)).Times(1);
   }
 
   auto runner = CreateRunner(std::move(procedure));
@@ -300,15 +303,21 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepMode)
         sequence_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event2)).Times(1);
 
+    const NextLeavesChangedEvent event2a{{sequence_index}};
+    EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event2a)).Times(1);
+
     const InstructionStateUpdatedEvent event3{
         wait0_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event3)).Times(1);
+
+    const NextLeavesChangedEvent event3a{{sequence_index, wait0_index}};
+    EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event3a)).Times(1);
 
     const InstructionStateUpdatedEvent event4{wait0_index,
                                               InstructionState{false, ExecutionStatus::SUCCESS}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event4)).Times(1);
 
-    const NextLeavesChangedEvent event4a{std::vector<sup::dto::uint32>({wait1_index})};
+    const NextLeavesChangedEvent event4a{std::vector<sup::dto::uint32>({sequence_index})};
     EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event4a)).Times(1);
 
     const JobStateChangedEvent event5{JobState::kPaused};
@@ -338,15 +347,22 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepMode)
         wait1_index, InstructionState{false, ExecutionStatus::NOT_FINISHED}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event2)).Times(1);
 
+    const NextLeavesChangedEvent event2a{
+        std::vector<sup::dto::uint32>({sequence_index, wait1_index})};
+    EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event2a)).Times(1);
+
     const InstructionStateUpdatedEvent event3{wait1_index,
                                               InstructionState{false, ExecutionStatus::SUCCESS}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event3)).Times(1);
+
+    const NextLeavesChangedEvent event3a{std::vector<sup::dto::uint32>({sequence_index})};
+    EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event3a)).Times(1);
 
     const InstructionStateUpdatedEvent event4{sequence_index,
                                               InstructionState{false, ExecutionStatus::SUCCESS}};
     EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(event4)).Times(1);
 
-    const NextLeavesChangedEvent event4a;
+    const NextLeavesChangedEvent event4a{std::vector<sup::dto::uint32>({})};
     EXPECT_CALL(m_event_listener, OnNextLeavesChanged(event4a)).Times(1);
 
     const JobStateChangedEvent event5{JobState::kSucceeded};
@@ -405,7 +421,7 @@ TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
   // Instruction: repeat (not finished) + one increment (not finished, success)
   EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(_)).Times(3);
   EXPECT_CALL(m_event_listener, OnVariableUpdated(_)).Times(1);  // variable changed (increment 1)
-  EXPECT_CALL(m_event_listener, OnNextLeavesChanged(_)).Times(3);
+  EXPECT_CALL(m_event_listener, OnNextLeavesChanged(_)).Times(8);
 
   auto runner = CreateRunner(std::move(procedure));
 

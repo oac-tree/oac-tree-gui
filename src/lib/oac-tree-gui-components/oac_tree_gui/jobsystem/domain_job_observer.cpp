@@ -36,6 +36,7 @@
 #include <cmath>
 #include <sstream>
 #include <thread>
+#include <iostream>
 
 namespace oac_tree_gui
 {
@@ -61,7 +62,7 @@ DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
 
   auto callback = [this](const auto &instr_idx)
   {
-    std::vector<sup::dto::uint32> leaves(instr_idx.begin(), instr_idx.end());
+    const std::vector<sup::dto::uint32> leaves(instr_idx.begin(), instr_idx.end());
     NextInstructionsUpdated(leaves);
   };
   m_active_instruction_monitor =
@@ -78,8 +79,8 @@ void DomainJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                 sup::oac_tree::InstructionState state)
 {
-  m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
+  m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
 }
 
 void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue &value,

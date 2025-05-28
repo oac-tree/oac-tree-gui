@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/domain_job_service.h"
+
 #include <oac_tree_gui/jobsystem/log_event.h>
 
 #include <sup/dto/anyvalue.h>
@@ -29,8 +31,6 @@
 
 #include <QTest>
 #include <future>
-
-#include "oac_tree_gui/jobsystem/domain_job_service.h"
 
 namespace oac_tree_gui::test
 {
@@ -78,9 +78,12 @@ TEST_F(DomainJobServiceTest, InstructionStateUpdated)
 
   const InstructionState expected_state{false, ExecutionStatus::NOT_FINISHED};
   const sup::dto::uint32 expected_index{42};
+  const std::vector<sup::dto::uint32> expected_active({42});
 
-  const InstructionStateUpdatedEvent expected_event{expected_index, expected_state};
-  EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(expected_event)).Times(1);
+  const InstructionStateUpdatedEvent expected_state_event{expected_index, expected_state};
+  EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(expected_state_event)).Times(1);
+  const NextLeavesChangedEvent expected_active_event{expected_active};
+  EXPECT_CALL(m_event_listener, OnNextLeavesChanged(expected_active_event)).Times(1);
 
   m_service->GetJobInfoIO()->InstructionStateUpdated(expected_index, expected_state);
 
@@ -228,19 +231,6 @@ TEST_F(DomainJobServiceTest, Log)
   EXPECT_CALL(m_event_listener, OnLogEvent(::testing::_)).Times(1);
 
   m_service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
-
-  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
-}
-
-TEST_F(DomainJobServiceTest, NextInstructionsUpdated)
-{
-  const std::vector<sup::dto::uint32> indices({42, 43});
-
-  const NextLeavesChangedEvent expected_event{indices};
-
-  EXPECT_CALL(m_event_listener, OnNextLeavesChanged(expected_event)).Times(1);
-
-  m_service->GetJobInfoIO()->NextInstructionsUpdated(indices);
 
   EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
 }
