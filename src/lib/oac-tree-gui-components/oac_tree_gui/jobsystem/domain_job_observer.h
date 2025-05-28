@@ -29,6 +29,11 @@
 #include <functional>
 #include <mutex>
 
+namespace sup::oac_tree
+{
+class ActiveInstructionMonitor;
+}
+
 namespace oac_tree_gui
 {
 
@@ -79,7 +84,9 @@ public:
 
   void Log(int severity, const std::string& message) override;
 
-  void NextInstructionsUpdated(const std::vector<sup::dto::uint32>& instr_indices) override;
+  void NextInstructionsUpdated(const std::vector<sup::dto::uint32>& instr_indices);
+
+  void ProcedureTicked() override;
 
   /**
    * @brief Returns last reported job state.
@@ -105,6 +112,8 @@ private:
   post_event_callback_t m_post_event_callback;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
+  std::unique_ptr<sup::oac_tree::ActiveInstructionMonitor> m_active_instruction_monitor;
+
   sup::oac_tree::JobState m_state{sup::oac_tree::JobState::kInitial};
   mutable std::mutex m_mutex;
   mutable std::condition_variable m_cv;

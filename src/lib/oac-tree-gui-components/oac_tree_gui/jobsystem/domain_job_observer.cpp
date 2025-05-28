@@ -30,6 +30,7 @@
 
 #include <mvvm/utils/string_utils.h>
 
+#include <sup/oac-tree/active_instruction_monitor.h>
 #include <sup/oac-tree/instruction.h>
 
 #include <cmath>
@@ -57,6 +58,14 @@ DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
   {
     m_input_provider = std::make_unique<UserInputProvider>(user_context.user_input_callback);
   }
+
+  auto callback = [this](const auto &instr_idx)
+  {
+    std::vector<sup::dto::uint32> leaves(instr_idx.begin(), instr_idx.end());
+    NextInstructionsUpdated(leaves);
+  };
+  m_active_instruction_monitor =
+      std::make_unique<sup::oac_tree::ActiveInstructionMonitor>(callback);
 }
 
 DomainJobObserver::~DomainJobObserver() = default;
@@ -69,6 +78,7 @@ void DomainJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                 sup::oac_tree::InstructionState state)
 {
+  m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 }
 
@@ -146,10 +156,12 @@ void DomainJobObserver::Log(int severity, const std::string &message)
 
 void DomainJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint32> &instr_indices)
 {
-  std::unique_lock<std::mutex> lock{m_mutex};
-
   m_post_event_callback(NextLeavesChangedEvent{instr_indices});
+}
 
+void DomainJobObserver::ProcedureTicked()
+{
+  std::unique_lock<std::mutex> lock{m_mutex};
   if (m_tick_timeout_msec > 0)
   {
     lock.unlock();
