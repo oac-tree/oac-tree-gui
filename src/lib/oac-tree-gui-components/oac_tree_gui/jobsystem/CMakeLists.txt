@@ -9,6 +9,8 @@ target_sources(${library_name} PRIVATE
   automation_client.h
   domain_event_dispatcher.cpp
   domain_event_dispatcher.h
+  domain_event_helper.cpp
+  domain_event_helper.h
   domain_event_queue.cpp
   domain_event_queue.h
   domain_events.cpp

@@ -47,7 +47,7 @@ namespace oac_tree_gui
 struct InstructionStateUpdatedEvent
 {
   std::size_t index{0};
-  sup::oac_tree::InstructionState state;
+  sup::oac_tree::InstructionState state{false, sup::oac_tree::ExecutionStatus::NOT_STARTED};
 
   bool operator==(const InstructionStateUpdatedEvent& other) const;
   bool operator!=(const InstructionStateUpdatedEvent& other) const;

@@ -20,67 +20,7 @@
 
 #include "domain_events.h"
 
-#include <sup/gui/model/anyvalue_utils.h>
-
-#include <sup/dto/anyvalue_helper.h>
-#include <sup/oac-tree/instruction.h>
-
-#include <sstream>
-
-namespace
-{
-
-struct DomainEventToStringVisitor
-{
-  std::string operator()(const std::monostate &event) const
-  {
-    (void)event;
-    return {"monostate"};
-  }
-
-  std::string operator()(const ::oac_tree_gui::InstructionStateUpdatedEvent &event) const
-  {
-    std::ostringstream ostr;
-    ostr << "InstructionStateUpdated"
-         << " " << (event.index) << " "
-         << ::sup::oac_tree::StatusToString(event.state.m_execution_status);
-    return ostr.str();
-  }
-
-  std::string operator()(const ::oac_tree_gui::VariableUpdatedEvent &event) const
-  {
-    std::ostringstream ostr;
-    ostr << std::string("VariableUpdatedEvent") << " " << ::sup::dto::PrintAnyValue(event.value);
-    ostr << " connected:" << event.connected;
-    return ostr.str();
-  }
-
-  std::string operator()(const ::oac_tree_gui::JobStateChangedEvent &event) const
-  {
-    return std::string("JobStateChanged") + " " + ::sup::oac_tree::ToString(event.state);
-  }
-
-  std::string operator()(const ::oac_tree_gui::LogEvent &event) const
-  {
-    std::ostringstream ostr;
-    ostr << std::string("LogEvent") << " " << ::oac_tree_gui::ToString(event.severity);
-    ostr << " " << event.message;
-    return ostr.str();
-  }
-
-  std::string operator()(const ::oac_tree_gui::ActiveInstructionChangedEvent &event) const
-  {
-    std::ostringstream ostr;
-    ostr << std::string("ActiveInstructionChanged") << " size: " << event.instr_idx.size() << " indx:";
-    for (auto instr_index : event.instr_idx)
-    {
-      ostr << instr_index << " ";
-    }
-    return ostr.str();
-  }
-};
-
-}  // namespace
+#include "domain_event_helper.h"
 
 namespace oac_tree_gui
 {
@@ -105,16 +45,6 @@ bool ActiveInstructionChangedEvent::operator!=(const ActiveInstructionChangedEve
   return !(*this == other);
 }
 
-bool IsValid(const domain_event_t &value)
-{
-  return value.index() != 0;  // index==0 corresponds to `monostate`
-}
-
-std::string ToString(const domain_event_t &value)
-{
-  return std::visit(DomainEventToStringVisitor{}, value);
-}
-
 bool InstructionStateUpdatedEvent::operator==(const InstructionStateUpdatedEvent &other) const
 {
   return index == other.index && state.m_breakpoint_set == other.state.m_breakpoint_set
@@ -134,6 +64,16 @@ bool VariableUpdatedEvent::operator==(const VariableUpdatedEvent &other) const
 bool VariableUpdatedEvent::operator!=(const VariableUpdatedEvent &other) const
 {
   return !(*this == other);
+}
+
+bool IsValid(const domain_event_t &value)
+{
+  return value.index() != 0;  // index==0 corresponds to `monostate`
+}
+
+std::string ToString(const domain_event_t &value)
+{
+  return std::visit(DomainEventToStringVisitor{}, value);
 }
 
 }  // namespace oac_tree_gui
