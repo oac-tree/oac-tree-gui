@@ -158,14 +158,14 @@ void JobManager::SetActiveJob(JobItem *item)
   m_active_job = item;
 }
 
-void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
+void JobManager::OnActiveInstructionChanged(const std::vector<InstructionItem *> &leaves)
 {
   auto sending_job_handler = qobject_cast<AbstractJobHandler *>(sender());
 
   // we want to send notifications only from the job the user is currently looking at
   if (sending_job_handler->GetJobItem() == m_active_job)
   {
-    emit NextLeavesChanged(leaves);
+    emit ActiveInstructionChanged(leaves);
   }
 }
 
@@ -188,8 +188,8 @@ void JobManager::InsertJobHandler(std::unique_ptr<IJobHandler> job_handler)
 
   if (auto abstract_handler = dynamic_cast<AbstractJobHandler *>(job_handler.get()))
   {
-    connect(abstract_handler, &AbstractJobHandler::NextLeavesChanged, this,
-            &JobManager::OnNextLeavesChanged);
+    connect(abstract_handler, &AbstractJobHandler::ActiveInstructionChanged, this,
+            &JobManager::OnActiveInstructionChanged);
   }
 
   m_job_handlers.push_back(std::move(job_handler));

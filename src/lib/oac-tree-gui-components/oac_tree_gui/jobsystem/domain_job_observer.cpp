@@ -157,7 +157,7 @@ void DomainJobObserver::Log(int severity, const std::string &message)
 
 void DomainJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint32> &instr_indices)
 {
-  m_post_event_callback(NextLeavesChangedEvent{instr_indices});
+  m_post_event_callback(ActiveInstructionChangedEvent{instr_indices});
 }
 
 void DomainJobObserver::ProcedureTicked()

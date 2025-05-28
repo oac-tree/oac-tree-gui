@@ -217,7 +217,7 @@ void OperationMonitorView::SetupConnections()
   m_action_handler->OnSetTickTimeoutRequest(m_realtime_panel->GetCurrentTickTimeout());
 
   // instruction next leave request from JobManager to OperationRealTimePanel
-  connect(m_job_manager, &JobManager::NextLeavesChanged, m_realtime_panel,
+  connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_realtime_panel,
           &OperationRealTimePanel::SetSelectedInstructions);
 
   // job selection request from MonitorPanel

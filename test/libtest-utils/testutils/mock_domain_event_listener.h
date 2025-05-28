@@ -93,11 +93,11 @@ public:
   void operator()(const oac_tree_gui::LogEvent& event) const { OnLogEvent(event); }
 
   /**
-   * @brief Operator to visit NextLeavesChanged and trigger mock method.
+   * @brief Operator to visit ActiveInstructionChangedEvent and trigger mock method.
    */
-  void operator()(const oac_tree_gui::NextLeavesChangedEvent& event) const
+  void operator()(const oac_tree_gui::ActiveInstructionChangedEvent& event) const
   {
-    OnNextLeavesChanged(event);
+    OnActiveInstructionChanged(event);
   }
 
   MOCK_METHOD(void, OnInstructionStateUpdated, (const oac_tree_gui::InstructionStateUpdatedEvent&),
@@ -105,7 +105,8 @@ public:
   MOCK_METHOD(void, OnVariableUpdated, (const oac_tree_gui::VariableUpdatedEvent&), (const));
   MOCK_METHOD(void, OnJobStateChanged, (const oac_tree_gui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const oac_tree_gui::LogEvent&), (const));
-  MOCK_METHOD(void, OnNextLeavesChanged, (const oac_tree_gui::NextLeavesChangedEvent&), (const));
+  MOCK_METHOD(void, OnActiveInstructionChanged,
+              (const oac_tree_gui::ActiveInstructionChangedEvent&), (const));
 
   /**
    * @brief Creates a structure with callbacks to trigger mock methods.
@@ -126,8 +127,9 @@ public:
 
     result.process_log_event = [this](const oac_tree_gui::LogEvent& event) { OnLogEvent(event); };
 
-    result.next_leaves_changed_event = [this](const oac_tree_gui::NextLeavesChangedEvent& event)
-    { OnNextLeavesChanged(event); };
+    result.next_leaves_changed_event =
+        [this](const oac_tree_gui::ActiveInstructionChangedEvent& event)
+    { OnActiveInstructionChanged(event); };
 
     return result;
   }

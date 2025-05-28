@@ -79,17 +79,17 @@ struct JobStateChangedEvent
   bool operator!=(const JobStateChangedEvent& other) const;
 };
 
-struct NextLeavesChangedEvent
+struct ActiveInstructionChangedEvent
 {
   std::vector<sup::dto::uint32> leaves;
 
-  bool operator==(const NextLeavesChangedEvent& other) const;
-  bool operator!=(const NextLeavesChangedEvent& other) const;
+  bool operator==(const ActiveInstructionChangedEvent& other) const;
+  bool operator!=(const ActiveInstructionChangedEvent& other) const;
 };
 
 using domain_event_t =
     std::variant<std::monostate, InstructionStateUpdatedEvent, VariableUpdatedEvent,
-                 JobStateChangedEvent, LogEvent, NextLeavesChangedEvent>;
+                 JobStateChangedEvent, LogEvent, ActiveInstructionChangedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

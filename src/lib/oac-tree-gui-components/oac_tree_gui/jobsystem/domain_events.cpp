@@ -35,7 +35,7 @@ struct DomainEventToStringVisitor
   std::string operator()(const std::monostate &event) const
   {
     (void)event;
-    return std::string("monostate");
+    return {"monostate"};
   }
 
   std::string operator()(const ::oac_tree_gui::InstructionStateUpdatedEvent &event) const
@@ -68,10 +68,10 @@ struct DomainEventToStringVisitor
     return ostr.str();
   }
 
-  std::string operator()(const ::oac_tree_gui::NextLeavesChangedEvent &event) const
+  std::string operator()(const ::oac_tree_gui::ActiveInstructionChangedEvent &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("NextLeavesChanged") << " size: " << event.leaves.size() << " indx:";
+    ostr << std::string("ActiveInstructionChanged") << " size: " << event.leaves.size() << " indx:";
     for (auto instr_index : event.leaves)
     {
       ostr << instr_index << " ";
@@ -85,8 +85,6 @@ struct DomainEventToStringVisitor
 namespace oac_tree_gui
 {
 
-// JobStatusChanged
-
 bool JobStateChangedEvent::operator==(const JobStateChangedEvent &other) const
 {
   return state == other.state;
@@ -97,14 +95,12 @@ bool JobStateChangedEvent::operator!=(const JobStateChangedEvent &other) const
   return !(*this == other);
 }
 
-// NextLeavesChanged
-
-bool NextLeavesChangedEvent::operator==(const NextLeavesChangedEvent &other) const
+bool ActiveInstructionChangedEvent::operator==(const ActiveInstructionChangedEvent &other) const
 {
   return leaves == other.leaves;
 }
 
-bool NextLeavesChangedEvent::operator!=(const NextLeavesChangedEvent &other) const
+bool ActiveInstructionChangedEvent::operator!=(const ActiveInstructionChangedEvent &other) const
 {
   return !(*this == other);
 }
@@ -119,8 +115,6 @@ std::string ToString(const domain_event_t &value)
   return std::visit(DomainEventToStringVisitor{}, value);
 }
 
-// InstructionStateUpdatedEvent
-
 bool InstructionStateUpdatedEvent::operator==(const InstructionStateUpdatedEvent &other) const
 {
   return index == other.index && state.m_breakpoint_set == other.state.m_breakpoint_set
@@ -131,8 +125,6 @@ bool InstructionStateUpdatedEvent::operator!=(const InstructionStateUpdatedEvent
 {
   return !(*this == other);
 }
-
-// InstructionStateUpdatedEvent
 
 bool VariableUpdatedEvent::operator==(const VariableUpdatedEvent &other) const
 {

@@ -82,8 +82,8 @@ TEST_F(DomainJobServiceTest, InstructionStateUpdated)
 
   const InstructionStateUpdatedEvent expected_state_event{expected_index, expected_state};
   EXPECT_CALL(m_event_listener, OnInstructionStateUpdated(expected_state_event)).Times(1);
-  const NextLeavesChangedEvent expected_active_event{expected_active};
-  EXPECT_CALL(m_event_listener, OnNextLeavesChanged(expected_active_event)).Times(1);
+  const ActiveInstructionChangedEvent expected_active_event{expected_active};
+  EXPECT_CALL(m_event_listener, OnActiveInstructionChanged(expected_active_event)).Times(1);
 
   m_service->GetJobInfoIO()->InstructionStateUpdated(expected_index, expected_state);
 

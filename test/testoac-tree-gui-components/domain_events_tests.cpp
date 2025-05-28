@@ -18,13 +18,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/domain_events.h"
+
 #include <oac_tree_gui/domain/domain_constants.h>
 
 #include <sup/oac-tree/instruction.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/jobsystem/domain_events.h"
 
 namespace oac_tree_gui::test
 {
@@ -144,21 +144,21 @@ TEST_F(DomainEventTest, JobStateChangedEvent)
   }
 }
 
-TEST_F(DomainEventTest, NextLeavesChangedEvent)
+TEST_F(DomainEventTest, ActiveInstructionChangedEvent)
 {
   using ::sup::oac_tree::ExecutionStatus;
 
   {  // default constructed
-    const NextLeavesChangedEvent event1{};
-    const NextLeavesChangedEvent event2{};
+    const ActiveInstructionChangedEvent event1{};
+    const ActiveInstructionChangedEvent event2{};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // instruction
-    const NextLeavesChangedEvent event1{{1}};
-    const NextLeavesChangedEvent event2{{1}};
-    const NextLeavesChangedEvent event3{{2}};
+    const ActiveInstructionChangedEvent event1{{1}};
+    const ActiveInstructionChangedEvent event2{{1}};
+    const ActiveInstructionChangedEvent event3{{2}};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);

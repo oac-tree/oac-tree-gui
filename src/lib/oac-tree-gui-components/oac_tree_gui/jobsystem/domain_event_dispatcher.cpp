@@ -81,7 +81,7 @@ void DomainEventDispatcher::operator()(const LogEvent &event) const
   }
 }
 
-void DomainEventDispatcher::operator()(const NextLeavesChangedEvent &event) const
+void DomainEventDispatcher::operator()(const ActiveInstructionChangedEvent &event) const
 {
   if (m_context.next_leaves_changed_event)
   {

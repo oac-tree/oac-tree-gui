@@ -147,8 +147,8 @@ DomainEventDispatcherContext AbstractJobHandler::CreateEventDispatcherContext()
 
   result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
 
-  result.next_leaves_changed_event = [this](const NextLeavesChangedEvent &event)
-  { OnNextLeavesChangedEvent(event); };
+  result.next_leaves_changed_event = [this](const ActiveInstructionChangedEvent &event)
+  { OnActiveInstructionChangedEvent(event); };
 
   return result;
 }
@@ -190,7 +190,7 @@ void AbstractJobHandler::onLogEvent(const oac_tree_gui::LogEvent &event)
   m_job_log->Append(event);
 }
 
-void AbstractJobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
+void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstructionChangedEvent &event)
 {
   std::vector<InstructionItem *> items;
   for (auto instruction_index : event.leaves)
@@ -205,7 +205,7 @@ void AbstractJobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &
     }
   }
 
-  emit NextLeavesChanged(items);
+  emit ActiveInstructionChanged(items);
 }
 
 void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)

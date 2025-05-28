@@ -53,7 +53,7 @@ public:
   void operator()(const VariableUpdatedEvent& event) const;
   void operator()(const JobStateChangedEvent& event) const;
   void operator()(const LogEvent& event) const;
-  void operator()(const NextLeavesChangedEvent& event) const;
+  void operator()(const ActiveInstructionChangedEvent& event) const;
 
 private:
   get_event_callback_t m_get_event;

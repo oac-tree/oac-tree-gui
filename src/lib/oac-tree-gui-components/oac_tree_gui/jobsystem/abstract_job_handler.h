@@ -82,7 +82,7 @@ public:
 
 signals:
   void InstructionStatusChanged(oac_tree_gui::InstructionItem* instruction);
-  void NextLeavesChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
+  void ActiveInstructionChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
 
 protected:
   /**
@@ -127,9 +127,9 @@ private:
   void onLogEvent(const oac_tree_gui::LogEvent& event);
 
   /**
-   * @brief Handles events reporting for changes in domain's next leaves.
+   * @brief Handles events reporting for changes in domain's active instructions.
    */
-  void OnNextLeavesChangedEvent(const NextLeavesChangedEvent& event);
+  void OnActiveInstructionChangedEvent(const ActiveInstructionChangedEvent& event);
 
   /**
    * @brief Handles events reporting update in the domain variable.
