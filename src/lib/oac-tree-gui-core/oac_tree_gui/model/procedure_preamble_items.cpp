@@ -21,7 +21,6 @@
 #include "procedure_preamble_items.h"
 
 #include <mvvm/model/combo_property.h>
-#include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
 namespace oac_tree_gui
@@ -115,8 +114,7 @@ void ProcedurePreambleItem::AddTypeRegistration(int mode, const std::string &str
 {
   auto type_item = std::make_unique<TypeRegistrationItem>();
   auto type_item_ptr = type_item.get();
-  (void)mvvm::utils::InsertItem(std::move(type_item), GetTypeRegistrationContainer(),
-                                mvvm::TagIndex::Append());
+  (void)GetTypeRegistrationContainer()->InsertItem(std::move(type_item), mvvm::TagIndex::Append());
 
   type_item_ptr->SetRegistrationMode(mode);
   type_item_ptr->SetRegistrationString(str);
@@ -151,8 +149,7 @@ void ProcedurePreambleItem::AddPluginPath(const std::string &value)
 {
   auto property_item = std::make_unique<mvvm::PropertyItem>();
   (void)property_item->SetData(value);
-  (void)mvvm::utils::InsertItem(std::move(property_item), GetPluginContainer(),
-                                mvvm::TagIndex::Append());
+  (void)GetPluginContainer()->InsertItem(std::move(property_item), mvvm::TagIndex::Append());
 }
 
 void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string> &plugin_paths)

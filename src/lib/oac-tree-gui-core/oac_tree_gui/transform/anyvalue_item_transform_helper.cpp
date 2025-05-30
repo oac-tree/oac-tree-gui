@@ -53,8 +53,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  mvvm::utils::InsertItem(sup::gui::CreateAnyValueItem(anyvalue), &variable_item,
-                          mvvm::TagIndex::First());
+  (void)variable_item.InsertItem(sup::gui::CreateAnyValueItem(anyvalue), mvvm::TagIndex::First());
 }
 
 void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
@@ -69,7 +68,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  mvvm::utils::InsertItem(sup::gui::CreateAnyValueItem(anyvalue), &item, mvvm::TagIndex::First());
+  (void) item.InsertItem(sup::gui::CreateAnyValueItem(anyvalue), mvvm::TagIndex::First());
 }
 
 void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,

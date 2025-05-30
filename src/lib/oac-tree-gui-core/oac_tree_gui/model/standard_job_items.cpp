@@ -23,7 +23,6 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 
-#include <mvvm/model/item_utils.h>
 #include <mvvm/utils/file_utils.h>
 
 namespace oac_tree_gui
@@ -180,8 +179,8 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
   result->SetTickTimeout(tick_timeout_msec);
 
   // inserting imported procedure into own container and thus taking an ownership
-  mvvm::utils::InsertItem(std::move(procedure), result.get(),
-                          mvvm::TagIndex::Append(ImportedJobItem::kImportedProcedure));
+  (void)result->InsertItem(std::move(procedure),
+                           mvvm::TagIndex::Append(ImportedJobItem::kImportedProcedure));
   return result;
 }
 

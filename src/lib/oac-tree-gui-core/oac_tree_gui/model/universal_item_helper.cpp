@@ -55,8 +55,7 @@ InstructionItem *InsertAggregate(const std::string &domain_type, mvvm::SessionIt
 InstructionItem *InsertInstruction(std::unique_ptr<InstructionItem> item, mvvm::SessionItem *parent,
                                    const mvvm::TagIndex &tag_index)
 {
-  return static_cast<InstructionItem *>(
-      mvvm::utils::InsertItem(std::move(item), parent, tag_index));
+  return static_cast<InstructionItem *>(parent->InsertItem(std::move(item), tag_index));
 }
 
 bool IsAggregateName(const std::string &name)

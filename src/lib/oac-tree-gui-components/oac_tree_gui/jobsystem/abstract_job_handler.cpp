@@ -236,7 +236,7 @@ void AbstractJobHandler::SetupExpandedProcedureItem()
       m_procedure_item_builder->CreateProcedureItem(m_domain_runner->GetJobInfo());
   auto expanded_procedure_ptr = expanded_procedure.get();
 
-  mvvm::utils::InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+  (void)m_job_item->InsertItem(std::move(expanded_procedure), mvvm::TagIndex::Append());
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 
   PropagateBreakpointsToDomain();
