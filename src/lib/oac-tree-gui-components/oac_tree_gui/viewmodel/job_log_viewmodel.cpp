@@ -48,7 +48,7 @@ JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent)
   if (m_job_log)
   {
     m_row_count = m_job_log->GetSize();
-    SetConnected(true);
+    SetConnected();
   }
 }
 
@@ -61,7 +61,7 @@ void JobLogViewModel::SetLog(JobLog *job_log)
 
   if (m_job_log)
   {
-    SetConnected(false);
+    SetDisconnected();
   }
 
   beginResetModel();
@@ -71,7 +71,7 @@ void JobLogViewModel::SetLog(JobLog *job_log)
 
   if (m_job_log)
   {
-    SetConnected(true);
+    SetConnected();
   }
 }
 
@@ -174,28 +174,21 @@ void JobLogViewModel::OnLogDestroyed()
   OnLogCleared();
 }
 
-void JobLogViewModel::SetConnected(bool value)
+void JobLogViewModel::SetConnected()
 {
-  if (!m_job_log)
-  {
-    throw LogicErrorException("Can't connect or disconnect non existing log");
-  }
+  connect(m_job_log, &JobLog::LogEventAppended, this, &JobLogViewModel::OnLogEventAppended,
+          Qt::UniqueConnection);
+  connect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared,
+          Qt::UniqueConnection);
+  connect(m_job_log, &JobLog::destroyed, this, &JobLogViewModel::OnLogDestroyed,
+          Qt::UniqueConnection);
+}
 
-  if (value)
-  {
-    connect(m_job_log, &JobLog::LogEventAppended, this, &JobLogViewModel::OnLogEventAppended,
-            Qt::UniqueConnection);
-    connect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared,
-            Qt::UniqueConnection);
-    connect(m_job_log, &JobLog::destroyed, this, &JobLogViewModel::OnLogDestroyed,
-            Qt::UniqueConnection);
-  }
-  else
-  {
-    disconnect(m_job_log, &JobLog::LogEventAppended, this, &JobLogViewModel::OnLogEventAppended);
-    disconnect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared);
-    disconnect(m_job_log, &JobLog::destroyed, this, &JobLogViewModel::OnLogDestroyed);
-  }
+void JobLogViewModel::SetDisconnected()
+{
+  disconnect(m_job_log, &JobLog::LogEventAppended, this, &JobLogViewModel::OnLogEventAppended);
+  disconnect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared);
+  disconnect(m_job_log, &JobLog::destroyed, this, &JobLogViewModel::OnLogDestroyed);
 }
 
 }  // namespace oac_tree_gui

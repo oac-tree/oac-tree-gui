@@ -70,9 +70,14 @@ private:
   void OnLogDestroyed();
 
   /**
-   * @brief Set model connected/disconnected with JobLog events.
+   * @brief Connect the model to listen JobLog.
    */
-  void SetConnected(bool value);
+  void SetConnected();
+
+  /**
+   * @brief Disonnect the model from JobLog.
+   */
+  void SetDisconnected();
 
   //!< current container with LogEvents
   JobLog *m_job_log{nullptr};
