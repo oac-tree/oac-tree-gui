@@ -168,6 +168,12 @@ void JobLogViewModel::OnLogCleared()
   endResetModel();
 }
 
+void JobLogViewModel::OnLogDestroyed()
+{
+  m_job_log = nullptr;
+  OnLogCleared();
+}
+
 void JobLogViewModel::SetConnected(bool value)
 {
   if (!m_job_log)
@@ -181,11 +187,14 @@ void JobLogViewModel::SetConnected(bool value)
             Qt::UniqueConnection);
     connect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared,
             Qt::UniqueConnection);
+    connect(m_job_log, &JobLog::destroyed, this, &JobLogViewModel::OnLogDestroyed,
+            Qt::UniqueConnection);
   }
   else
   {
     disconnect(m_job_log, &JobLog::LogEventAppended, this, &JobLogViewModel::OnLogEventAppended);
     disconnect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared);
+    disconnect(m_job_log, &JobLog::destroyed, this, &JobLogViewModel::OnLogDestroyed);
   }
 }
 

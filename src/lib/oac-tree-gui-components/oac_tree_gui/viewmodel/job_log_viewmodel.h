@@ -60,11 +60,14 @@ private:
   void OnLogEventAppended();
 
   /**
-   * @brief Clears the model.
-   *
-   * Called when log is cleared.
+   * @brief Clears the model when log is cleared.
    */
   void OnLogCleared();
+
+  /**
+   * @brief Clears the model when log is destroyed
+   */
+  void OnLogDestroyed();
 
   /**
    * @brief Set model connected/disconnected with JobLog events.
