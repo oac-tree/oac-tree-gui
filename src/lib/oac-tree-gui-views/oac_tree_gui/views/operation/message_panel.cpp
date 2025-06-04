@@ -135,7 +135,7 @@ void MessagePanel::WriteSettings()
 
 std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()
 {
-  m_severity_selector_menu = std::move(CreateSeveritySelectorMenu());
+  m_severity_selector_menu = CreateSeveritySelectorMenu();
 
   auto result = std::make_unique<QToolButton>();
   result->setText("Severity");

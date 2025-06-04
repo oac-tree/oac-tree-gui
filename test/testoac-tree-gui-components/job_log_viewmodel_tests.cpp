@@ -18,13 +18,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/job_log_viewmodel.h"
+
 #include <oac_tree_gui/jobsystem/job_log.h>
 
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
-
-#include "oac_tree_gui/viewmodel/job_log_viewmodel.h"
 
 namespace oac_tree_gui::test
 {
@@ -39,7 +39,7 @@ TEST_F(JobLogViewModelTest, InitialState)
 {
   JobLog job_log;
 
-  JobLogViewModel view_model(&job_log);
+  const JobLogViewModel view_model(&job_log);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
   EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);  // date, time, severity, source, message
 }
@@ -50,10 +50,10 @@ TEST_F(JobLogViewModelTest, InitialState)
 TEST_F(JobLogViewModelTest, SingleRowData)
 {
   JobLog job_log;
-  LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
+  const LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
   job_log.Append(log_event);
 
-  JobLogViewModel view_model(&job_log);
+  const JobLogViewModel view_model(&job_log);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
   EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);
 
@@ -67,7 +67,7 @@ TEST_F(JobLogViewModelTest, SingleRowData)
 TEST_F(JobLogViewModelTest, HeaderData)
 {
   JobLog job_log;
-  JobLogViewModel view_model(&job_log);
+  const JobLogViewModel view_model(&job_log);
 
   EXPECT_EQ(view_model.headerData(0, Qt::Horizontal, Qt::DisplayRole), QString("date"));
   EXPECT_EQ(view_model.headerData(1, Qt::Horizontal, Qt::DisplayRole), QString("time"));
@@ -79,10 +79,10 @@ TEST_F(JobLogViewModelTest, HeaderData)
 TEST_F(JobLogViewModelTest, Flags)
 {
   JobLog job_log;
-  LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
+  const LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
   job_log.Append(log_event);
 
-  JobLogViewModel view_model(&job_log);
+  const JobLogViewModel view_model(&job_log);
 
   for (int col = 0; col < 5; ++col)
   {
@@ -104,7 +104,7 @@ TEST_F(JobLogViewModelTest, AppendRow)
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
   EXPECT_EQ(spy_insert.count(), 1);
 
-  QList<QVariant> arguments = spy_insert.takeFirst();
+  const QList<QVariant> arguments = spy_insert.takeFirst();
   EXPECT_EQ(arguments.size(), 3);  // QModelIndex &parent, int first, int last
   EXPECT_EQ(arguments.at(0).value<QModelIndex>(), QModelIndex());
   EXPECT_EQ(arguments.at(1).value<int>(), 0);
@@ -118,8 +118,8 @@ TEST_F(JobLogViewModelTest, ResetJobLog)
 
   JobLogViewModel view_model(&job_log);
 
-  QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
-  QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
+  const QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
+  const QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
 
@@ -138,8 +138,8 @@ TEST_F(JobLogViewModelTest, ResetJobLogToNull)
 
   JobLogViewModel view_model(&job_log);
 
-  QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
-  QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
+  const QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
+  const QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
 
@@ -166,9 +166,9 @@ TEST_F(JobLogViewModelTest, SwitchToAnotherJobLog)
   // initialise ViewModel with the first log
   JobLogViewModel view_model(&job_log1);
 
-  QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
-  QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
-  QSignalSpy spy_insert(&view_model, &JobLogViewModel::rowsInserted);
+  const QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
+  const QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
+  const QSignalSpy spy_insert(&view_model, &JobLogViewModel::rowsInserted);
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
 
@@ -188,6 +188,23 @@ TEST_F(JobLogViewModelTest, SwitchToAnotherJobLog)
 
   EXPECT_EQ(spy_insert.count(), 1);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 3);
+}
+
+TEST_F(JobLogViewModelTest, JobLogDestroyed)
+{
+  auto job_log = std::make_unique<JobLog>();
+  job_log->Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
+
+  JobLogViewModel view_model(job_log.get());
+
+  const QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
+  const QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
+
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+
+  // deleting JobLog
+  job_log.reset();
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
 }
 
 }  // namespace oac_tree_gui::test
