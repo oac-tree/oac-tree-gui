@@ -34,7 +34,7 @@
 #include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
-#include <sup/gui/components/copy_and_paste_helper.h>
+#include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/core/query_result.h>
 #include <sup/gui/model/anyvalue_item.h>
