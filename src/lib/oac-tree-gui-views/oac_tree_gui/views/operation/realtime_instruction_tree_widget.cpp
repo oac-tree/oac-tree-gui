@@ -30,6 +30,7 @@
 #include <oac_tree_gui/operation/tooltip_helper.h>
 #include <oac_tree_gui/viewmodel/instruction_operation_viewmodel.h>
 
+#include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -181,7 +182,12 @@ void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
     return;
   }
 
-  sup::gui::ScrollTreeViewportToSelection(*m_tree_view);
+  auto filtered = sup::gui::GetBottomLevelSelection(m_component_provider->GetSelectedItems());
+  if (!filtered.empty())
+  {
+    auto indexes = m_component_provider->GetViewIndexes(filtered.front());
+    sup::gui::ScrollTreeViewportToIndex(indexes.front(), *m_tree_view);
+  }
 }
 
 }  // namespace oac_tree_gui

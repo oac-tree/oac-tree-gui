@@ -1,5 +1,6 @@
 Changes for 1.9.0:
 
+- Fix running instruction tree recentering
 - Fix application crash on attempt to reload the job from modified procedure
 - Make the type of scalar field changeable after it is created
 - Simplify object insertion following sup-mvvm API change
