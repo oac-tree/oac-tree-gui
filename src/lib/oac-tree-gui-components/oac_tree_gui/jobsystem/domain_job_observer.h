@@ -65,6 +65,8 @@ public:
   void InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                sup::oac_tree::InstructionState state) override;
 
+  void BreakpointInstructionUpdated(sup::dto::uint32 instr_idx) override;
+
   void VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue& value,
                        bool connected) override;
 

@@ -82,6 +82,11 @@ void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
   m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
 }
 
+void DomainJobObserver::BreakpointInstructionUpdated(sup::dto::uint32 instr_idx)
+{
+  (void)instr_idx;
+}
+
 void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue &value,
                                         bool connected)
 {
