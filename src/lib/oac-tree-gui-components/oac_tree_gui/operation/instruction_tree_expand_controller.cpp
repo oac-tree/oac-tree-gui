@@ -24,11 +24,11 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
-#include <oac_tree_gui/viewmodel/viewmodel_helper.h>
 
 #include <sup/gui/components/tree_helper.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
+#include <mvvm/viewmodel/viewmodel_iterate_helper.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
 
 #include <QTreeView>
