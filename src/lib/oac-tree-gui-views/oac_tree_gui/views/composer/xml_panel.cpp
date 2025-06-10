@@ -89,7 +89,10 @@ void XmlPanel::SetProcedureIntern(ProcedureItem *procedure)
   if (procedure)
   {
     auto on_xml_update = [this](const auto &xml)
-    { m_xml_view->SetContent(QString::fromStdString(xml)); };
+    {
+      m_message_handler->ClearMessages();
+      m_xml_view->SetContent(QString::fromStdString(xml));
+    };
 
     auto on_message = [this](const auto &message)
     {
