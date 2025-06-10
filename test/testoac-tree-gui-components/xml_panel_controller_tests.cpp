@@ -136,7 +136,6 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)
                                                    mvvm::TagIndex::Append());
 
   // making names of variables the same and expecting error report
-  // EXPECT_CALL(m_mock_send_xml, Call(std::string())).Times(1);
   EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(1);
   var1->SetDisplayName("File0");
 }

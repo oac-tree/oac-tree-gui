@@ -1,5 +1,6 @@
 Changes for 1.9.0:
 
+- Switch to new controller to generate JSON on model change
 - Fix running instruction tree recentering
 - Fix application crash on attempt to reload the job from modified procedure
 - Make the type of scalar field changeable after it is created
