@@ -91,7 +91,11 @@ void XmlPanel::SetProcedureIntern(ProcedureItem *procedure)
     auto on_xml_update = [this](const auto &xml)
     { m_xml_view->SetContent(QString::fromStdString(xml)); };
 
-    auto on_message = [this](const auto &message) { m_message_handler->SendMessage(message); };
+    auto on_message = [this](const auto &message)
+    {
+      m_xml_view->ClearText();
+      m_message_handler->SendMessage(message);
+    };
 
     m_panel_controller = std::make_unique<XmlPanelController>(procedure, on_xml_update, on_message);
   }

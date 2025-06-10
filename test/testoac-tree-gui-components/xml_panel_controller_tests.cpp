@@ -20,13 +20,14 @@
 
 #include "oac_tree_gui/components/xml_panel_controller.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
+
+#include <sup/gui/core/sup_gui_core_exceptions.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -55,15 +56,15 @@ public:
 
   ProcedureItem* m_procedure_item{nullptr};
   SequencerModel m_model;
-  ::testing::MockFunction<XmlPanelController::send_xml_func_t> m_mock_send_xml;
+  ::testing::MockFunction<XmlPanelController::send_text_func_t> m_mock_send_xml;
   ::testing::MockFunction<XmlPanelController::send_message_func_t> m_mock_send_message;
 };
 
 TEST_F(XmlPanelControllerTest, ConstructorParameter)
 {
-  EXPECT_THROW(XmlPanelController(nullptr, {}, {}), RuntimeException);
-  EXPECT_THROW(XmlPanelController(m_procedure_item, {}, {}), RuntimeException);
-  EXPECT_THROW(XmlPanelController(m_procedure_item, [](auto) {}, {}), RuntimeException);
+  EXPECT_THROW(XmlPanelController(nullptr, {}, {}), sup::gui::RuntimeException);
+  EXPECT_THROW(XmlPanelController(m_procedure_item, {}, {}), sup::gui::RuntimeException);
+  EXPECT_THROW(XmlPanelController(m_procedure_item, [](auto) {}, {}), sup::gui::RuntimeException);
 }
 
 TEST_F(XmlPanelControllerTest, CheckInitialUpdate)
@@ -86,7 +87,6 @@ TEST_F(XmlPanelControllerTest, NotificationOnProcedureRemoval)
   EXPECT_CALL(m_mock_send_xml, Call(std::string())).Times(1);
   m_model.RemoveItem(m_procedure_item);
 }
-
 
 TEST_F(XmlPanelControllerTest, XmlUpdateOnItemInsert)
 {
@@ -136,10 +136,9 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)
                                                    mvvm::TagIndex::Append());
 
   // making names of variables the same and expecting error report
-  EXPECT_CALL(m_mock_send_xml, Call(std::string())).Times(1);
+  // EXPECT_CALL(m_mock_send_xml, Call(std::string())).Times(1);
   EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(1);
   var1->SetDisplayName("File0");
 }
-
 
 }  // namespace oac_tree_gui::test

@@ -81,7 +81,7 @@ public:
 
   ProcedureItem* m_procedure_item{nullptr};
   SequencerModel m_model;
-  ::testing::MockFunction<XmlPanelController::send_xml_func_t> m_mock_send_xml;
+  ::testing::MockFunction<XmlPanelController::send_text_func_t> m_mock_send_xml;
   ::testing::MockFunction<XmlPanelController::send_message_func_t> m_mock_send_message;
   test::MockInstructionEditorContext m_mock_context;
 };

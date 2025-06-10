@@ -21,17 +21,7 @@
 #ifndef OAC_TREE_GUI_COMPONENTS_XML_PANEL_CONTROLLER_H_
 #define OAC_TREE_GUI_COMPONENTS_XML_PANEL_CONTROLLER_H_
 
-#include <sup/gui/core/message_event.h>
-
-#include <mvvm/signals/event_types.h>
-
-#include <functional>
-#include <memory>
-
-namespace mvvm
-{
-class ModelListener;
-}
+#include <sup/gui/components/abstract_text_content_controller.h>
 
 namespace oac_tree_gui
 {
@@ -42,12 +32,9 @@ class ProcedureItem;
  * @brief The XmlPanelController class assists to XmlPanel in generation of XML when procedure
  * changes.
  */
-class XmlPanelController
+class XmlPanelController : public sup::gui::AbstractTextContentController
 {
 public:
-  using send_xml_func_t = std::function<void(const std::string&)>;
-  using send_message_func_t = std::function<void(const sup::gui::MessageEvent& message)>;
-
   /**
    * @brief XmlPanelController
    *
@@ -55,16 +42,18 @@ public:
    * @param send_xml_func A function to send generated xml.
    * @param send_message_func A function to report errors.
    */
-  XmlPanelController(ProcedureItem* procedure, send_xml_func_t send_xml_func,
+  XmlPanelController(ProcedureItem* procedure, send_text_func_t send_xml_func,
                      send_message_func_t send_message_func);
 
-  ~XmlPanelController();
+  ~XmlPanelController() override;
+  XmlPanelController(const XmlPanelController&) = delete;
+  XmlPanelController& operator=(const XmlPanelController&) = delete;
+  XmlPanelController(XmlPanelController&&) = delete;
+  XmlPanelController& operator=(XmlPanelController&&) = delete;
 
 private:
-  void SetupListener();
-  void UpdateXml();
-  void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
-  void OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event);
+  std::string GenerateText() override;
+  void OnDataChangedEvent(const mvvm::DataChangedEvent& event) override;
 
   /**
    * @brief Notifies the user that XML generation went wrong.
@@ -72,9 +61,6 @@ private:
   void SendMessage(const std::string& what) const;
 
   ProcedureItem* m_procedure{nullptr};
-  send_xml_func_t m_send_xml_func;
-  send_message_func_t m_send_message_func;
-  std::unique_ptr<mvvm::ModelListener> m_listener;
 };
 
 }  // namespace oac_tree_gui
