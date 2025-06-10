@@ -63,12 +63,4 @@ void XmlPanelController::OnDataChangedEvent(const mvvm::DataChangedEvent &event)
   sup::gui::AbstractTextContentController::OnDataChangedEvent(event);
 }
 
-// void XmlPanelController::SendMessage(const std::string &what) const
-// {
-//   const std::string title("XML generation failed");
-//   const std::string text("The current procedure is in inconsistent state:");
-//   const sup::gui::MessageEvent message{title, text, what, ""};
-//   m_send_message_func(message);
-// }
-
 }  // namespace oac_tree_gui

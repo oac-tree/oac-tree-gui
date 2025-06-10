@@ -55,11 +55,6 @@ private:
   std::string GenerateText() override;
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event) override;
 
-  /**
-   * @brief Notifies the user that XML generation went wrong.
-   */
-  void SendMessage(const std::string& what) const;
-
   ProcedureItem* m_procedure{nullptr};
 };
 
