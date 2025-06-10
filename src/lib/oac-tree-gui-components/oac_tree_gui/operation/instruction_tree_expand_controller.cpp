@@ -44,6 +44,8 @@ InstructionTreeExpandController::InstructionTreeExpandController(QTreeView *tree
   connect(tree_view, &QTreeView::expanded, this, [this](auto) { emit VisibilityHasChanged(); });
 }
 
+InstructionTreeExpandController::~InstructionTreeExpandController() = default;
+
 void InstructionTreeExpandController::SetInstructionContainer(
     InstructionContainerItem *instruction_container)
 {
@@ -80,8 +82,6 @@ mvvm::SessionItem *InstructionTreeExpandController::FindVisibleInstruction(
 
   return nullptr;
 }
-
-InstructionTreeExpandController::~InstructionTreeExpandController() = default;
 
 void InstructionTreeExpandController::SetDefaultExpandState()
 {

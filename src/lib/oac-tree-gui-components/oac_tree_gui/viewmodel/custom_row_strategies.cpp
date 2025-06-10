@@ -33,7 +33,7 @@
 #include <sup/gui/style/style_helper.h>
 
 #include <mvvm/viewmodel/viewitem_factory.h>
-#include <mvvm/viewmodelbase/viewitem.h>
+#include <mvvm/viewmodel/viewitem.h>
 
 #include <QColor>
 #include <QIcon>
