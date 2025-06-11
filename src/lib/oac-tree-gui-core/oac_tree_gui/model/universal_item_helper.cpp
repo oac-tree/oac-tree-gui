@@ -89,6 +89,11 @@ void SetVariableName(const std::string &value, InstructionItem *item)
   item->SetProperty(domainconstants::kGenericVariableNameAttribute, value);
 }
 
+bool IsCollapsible(const InstructionItem &item)
+{
+  return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute);
+}
+
 // FIXME merge with RegisterShowCollapsedProperty
 void AddShowCollapsedProperty(InstructionItem &item)
 {

@@ -113,6 +113,11 @@ void SetText(const std::string& value, InstructionItem* item);
 void SetVariableName(const std::string& value, InstructionItem* item);
 
 /**
+ * @brief Checks if item can be collapsed or expanded.
+ */
+bool IsCollapsible(const InstructionItem& item);
+
+/**
  * @brief Add property to show children as collapsed branch.
  *
  * @details This property will be added to all instructions which can have children. For
