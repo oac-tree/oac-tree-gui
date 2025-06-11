@@ -40,8 +40,10 @@ InstructionTreeExpandController::InstructionTreeExpandController(QTreeView *tree
                                                                  QObject *parent_object)
     : QObject(parent_object), m_tree_view(tree_view)
 {
-  connect(tree_view, &QTreeView::collapsed, this, [this](auto) { emit VisibilityHasChanged(); });
-  connect(tree_view, &QTreeView::expanded, this, [this](auto) { emit VisibilityHasChanged(); });
+  connect(tree_view, &QTreeView::collapsed, this,
+          &InstructionTreeExpandController::OnTreeCollapsedChange);
+  connect(tree_view, &QTreeView::expanded, this,
+          &InstructionTreeExpandController::OnTreeCollapsedChange);
 }
 
 InstructionTreeExpandController::~InstructionTreeExpandController() = default;
@@ -85,28 +87,24 @@ mvvm::SessionItem *InstructionTreeExpandController::FindVisibleInstruction(
 
 void InstructionTreeExpandController::SetDefaultExpandState()
 {
-  auto viewmodel = GetViewModel();
-
   if (!m_instruction_container)
   {
     throw RuntimeException("Instruction container is not initialised");
   }
 
-  auto on_index = [this, viewmodel](const auto &index)
+  auto on_index = [this](const auto &index)
   {
     if (!index.isValid())
     {
       return;
     }
 
-    if (auto instruction =
-            mvvm::utils::GetItemFromView<InstructionItem>(viewmodel->itemFromIndex(index));
-        instruction)
+    if (auto instruction = GetInstruction(index); instruction)
     {
       m_tree_view->setExpanded(index, !IsCollapsed(*instruction));
     }
   };
-  IterateFirstColumn(*viewmodel, QModelIndex(), on_index);
+  IterateFirstColumn(*GetViewModel(), QModelIndex(), on_index);
 }
 
 mvvm::ViewModel *InstructionTreeExpandController::GetViewModel() const
@@ -119,6 +117,17 @@ mvvm::ViewModel *InstructionTreeExpandController::GetViewModel() const
   }
 
   return result;
+}
+
+void InstructionTreeExpandController::OnTreeCollapsedChange(const QModelIndex &index)
+{
+  (void) index;
+  emit VisibilityHasChanged();
+}
+
+InstructionItem *InstructionTreeExpandController::GetInstruction(const QModelIndex &index)
+{
+  return mvvm::utils::GetItemFromView<InstructionItem>(GetViewModel()->itemFromIndex(index));
 }
 
 }  // namespace oac_tree_gui
