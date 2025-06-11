@@ -135,6 +135,13 @@ void AddShowCollapsedProperty(InstructionItem& item);
 bool IsCollapsed(const InstructionItem& item);
 
 /**
+ * @brief Set collapsed status of instruction to a given value.
+ *
+ * Will do nothing, if  instruction is not collapsible.
+ */
+void SetCollapsed(bool value, InstructionItem& item);
+
+/**
  * @brief Returns vector of instructions which wants their children's branch shown as collapsed.
  */
 std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainerItem& container);

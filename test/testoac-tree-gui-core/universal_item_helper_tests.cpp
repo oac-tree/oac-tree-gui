@@ -90,8 +90,11 @@ TEST_F(UniversalItemHelperTest, IsCollapsed)
   SequenceItem item;
   EXPECT_FALSE(IsCollapsed(item));
 
-  item.SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  SetCollapsed(true, item);
   EXPECT_TRUE(IsCollapsed(item));
+
+  SetCollapsed(false, item);
+  EXPECT_FALSE(IsCollapsed(item));
 }
 
 TEST_F(UniversalItemHelperTest, IsCollapsible)

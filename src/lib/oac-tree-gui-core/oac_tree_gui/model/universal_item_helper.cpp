@@ -120,6 +120,14 @@ bool IsCollapsed(const InstructionItem &item)
              : false;
 }
 
+void SetCollapsed(bool value, InstructionItem &item)
+{
+  if (IsCollapsible(item))
+  {
+    item.SetProperty(domainconstants::kShowCollapsedAttribute, value);
+  }
+}
+
 std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContainerItem &container)
 {
   std::vector<const InstructionItem *> result;
