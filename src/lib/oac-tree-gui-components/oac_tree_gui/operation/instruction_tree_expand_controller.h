@@ -83,12 +83,9 @@ public:
   mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem* item) const;
 
   /**
-   * @brief Sets the instruction tree view to the default expand state.
-   *
-   * @details The default expand state is what follows from is_collapsed property on board of
-   * instruction items.
+   * @brief Sets the QTreeView to the expand state of instructions.
    */
-  void SetDefaultExpandState();
+  void SetTreeViewToInstructionExpandState();
 
 signals:
   void VisibilityHasChanged();

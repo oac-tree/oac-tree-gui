@@ -85,7 +85,7 @@ mvvm::SessionItem *InstructionTreeExpandController::FindVisibleInstruction(
   return nullptr;
 }
 
-void InstructionTreeExpandController::SetDefaultExpandState()
+void InstructionTreeExpandController::SetTreeViewToInstructionExpandState()
 {
   if (!m_instruction_container)
   {
@@ -121,7 +121,11 @@ mvvm::ViewModel *InstructionTreeExpandController::GetViewModel() const
 
 void InstructionTreeExpandController::OnTreeCollapsedChange(const QModelIndex &index)
 {
-  (void) index;
+  if (auto instruction = GetInstruction(index); instruction)
+  {
+    SetCollapsed(!m_tree_view->isExpanded(index), *instruction);
+  }
+
   emit VisibilityHasChanged();
 }
 

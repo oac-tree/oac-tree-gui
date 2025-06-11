@@ -107,7 +107,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 
   if (procedure_item)
   {
-    m_expand_controller->SetDefaultExpandState();
+    m_expand_controller->SetTreeViewToInstructionExpandState();
     m_custom_header->AdjustColumnsWidth();
   }
 }
@@ -169,7 +169,7 @@ void RealTimeInstructionTreeWidget::OnCustomContextMenuRequested(const QPoint &p
   selective_expand_action->setToolTip(
       "Expand all except instructions with property 'show as collapsed' set.");
 
-  auto on_action = [this]() { m_expand_controller->SetDefaultExpandState(); };
+  auto on_action = [this]() { m_expand_controller->SetTreeViewToInstructionExpandState(); };
   QObject::connect(selective_expand_action, &QAction::triggered, this, on_action);
 
   menu.exec(m_tree_view->mapToGlobal(pos));

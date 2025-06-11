@@ -18,12 +18,15 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/operation/instruction_tree_expand_controller.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/viewmodel/instruction_operation_viewmodel.h>
 
 #include <mvvm/model/application_model.h>
@@ -31,8 +34,6 @@
 #include <gtest/gtest.h>
 
 #include <QTreeView>
-
-#include "oac_tree_gui/operation/instruction_tree_expand_controller.h"
 
 namespace oac_tree_gui::test
 {
@@ -106,10 +107,7 @@ TEST_F(InstructionTreeExpandControllerTest, SelectWaitInCollapsedBranch)
   EXPECT_EQ(controller.GetInstructionsToSelect(), std::vector<mvvm::SessionItem*>({sequence1}));
 }
 
-//! Validating SetDefaultExpandState method. We create a procedure with nestes sequence and mark it
-//! as collapsed. Tree view should have corresponding branches reflecting this state.
-
-TEST_F(InstructionTreeExpandControllerTest, SetDefaultExpandState)
+TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandState)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = m_model.InsertItem<SequenceItem>(container);
@@ -126,30 +124,59 @@ TEST_F(InstructionTreeExpandControllerTest, SetDefaultExpandState)
 
   InstructionTreeExpandController controller(&tree);
 
-  // expanding all
-  tree.expandAll();
-
   // container should be set first
-  EXPECT_THROW(controller.SetDefaultExpandState(), RuntimeException);
+  EXPECT_THROW(controller.SetTreeViewToInstructionExpandState(), RuntimeException);
 
-  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0)));
-  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0)));
-  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
+  // initial expand state of tree (everything is collapsed)
+  EXPECT_FALSE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0)));
+  EXPECT_FALSE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0)));
+  EXPECT_FALSE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
 
   controller.SetInstructionContainer(container);
 
-  // checking expand state when initially everything was expanding
-  EXPECT_NO_THROW(controller.SetDefaultExpandState());
+  // checking tree expand state corresponding to instruction state
+  EXPECT_NO_THROW(controller.SetTreeViewToInstructionExpandState());
   EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0)));
   EXPECT_FALSE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0)));
   EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
+}
 
-  // checking expand state when initially everything was collapsed
+TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstructions)
+{
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
+  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+
+  EXPECT_EQ(m_viewmodel.rowCount(), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+
+  auto container_index = m_viewmodel.index(0, 0);
+  auto sequence0_index = m_viewmodel.index(0, 0, container_index);
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  auto selection_model = tree.selectionModel();
+
+  InstructionTreeExpandController controller(&tree);
+  controller.SetInstructionContainer(container);
+  controller.SetTreeViewToInstructionExpandState();
+  EXPECT_FALSE(IsCollapsed(*sequence0));
+  EXPECT_TRUE(IsCollapsed(*sequence1));
+
+  tree.expandAll();
+
+  EXPECT_FALSE(IsCollapsed(*sequence0));
+  EXPECT_FALSE(IsCollapsed(*sequence1));
+
   tree.collapseAll();
-  controller.SetDefaultExpandState();
-  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0)));
-  EXPECT_FALSE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0)));
-  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
+  EXPECT_TRUE(IsCollapsed(*sequence0));
+  EXPECT_TRUE(IsCollapsed(*sequence1));
+
+  tree.expand(sequence0_index);
+  EXPECT_FALSE(IsCollapsed(*sequence0));
+  EXPECT_TRUE(IsCollapsed(*sequence1));
 }
 
 }  // namespace oac_tree_gui::test
