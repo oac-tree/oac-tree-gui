@@ -49,6 +49,22 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::oac_tree_gui::ActiveInstructionChangedEvent &event) const;
 };
 
+/**
+ * @brief Creates a filter to removes active instructions if not all of their ancestors are
+ * active too.
+ */
+active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::InstructionInfo &info);
+
+/**
+ * @brief Creates a filter that mutes all active instruction notifications.
+ */
+active_filter_t CreateInstructionMuteAllFilter();
+
+/**
+ * @brief Creates a filter that simply forward all notifications without change.
+ */
+active_filter_t CreateInstructionIdentityFilter();
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENTS_H_

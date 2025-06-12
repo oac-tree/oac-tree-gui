@@ -33,12 +33,16 @@
 #include <sup/oac-tree/instruction_state.h>
 #include <sup/oac-tree/job_states.h>
 
+#include <set>
 #include <string>
 #include <variant>
 #include <vector>
 
 namespace oac_tree_gui
 {
+
+using active_filter_t =
+    std::function<std::set<sup::dto::uint32>(const std::set<sup::dto::uint32>&)>;
 
 /**
  * @brief The InstructionStateUpdatedEvent class represents automation server event when

@@ -29,8 +29,6 @@ namespace oac_tree_gui
 
 /**
  * @brief The LocalDomainRunner class runs locally the sequencer domain procedure.
- *
- * Sequencer's IJob has to be created outside and moved here via SetJob method.
  */
 class LocalDomainRunner : public AbstractDomainRunner
 {

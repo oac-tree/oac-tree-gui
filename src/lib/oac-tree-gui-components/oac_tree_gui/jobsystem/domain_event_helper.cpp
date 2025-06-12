@@ -24,6 +24,9 @@
 
 #include <sup/dto/anyvalue_helper.h>
 #include <sup/oac-tree/instruction.h>
+#include <sup/oac-tree/instruction_filters.h>
+#include <sup/oac-tree/instruction_info.h>
+#include <sup/oac-tree/instruction_info_utils.h>
 
 #include <sstream>
 
@@ -76,6 +79,22 @@ std::string DomainEventToStringVisitor::operator()(const ActiveInstructionChange
     ostr << instr_index << " ";
   }
   return ostr.str();
+}
+
+active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::InstructionInfo &info)
+{
+  auto parent_indices = sup::oac_tree::utils::GetParentIndices(info);
+  return sup::oac_tree::AncestorsActiveFilter{parent_indices};
+}
+
+active_filter_t CreateInstructionMuteAllFilter()
+{
+  return [](const auto &) { return std::set<sup::dto::uint32>(); };
+}
+
+active_filter_t CreateInstructionIdentityFilter()
+{
+  return [](const auto &indices) { return indices; };
 }
 
 }  // namespace oac_tree_gui
