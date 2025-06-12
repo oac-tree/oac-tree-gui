@@ -112,7 +112,7 @@ public:
   void SetTickTimeout(int msec);
 
   /**
-   * @brief Sets filter to suppres active instruction filter notifications.
+   * @brief Sets filter to suppress active instruction notifications.
    */
   void SetInstructionActiveFilter(const active_filter_t& filter);
 

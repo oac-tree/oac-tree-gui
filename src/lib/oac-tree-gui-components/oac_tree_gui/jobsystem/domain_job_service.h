@@ -71,6 +71,11 @@ public:
    */
   std::size_t GetEventCount() const;
 
+  /**
+   * @brief Sets filter to suppress active instruction notifications.
+   */
+  void SetInstructionActiveFilter(const active_filter_t& filter);
+
 private:
   /**
    * @brief Creates a callback to publish domain events.

@@ -21,6 +21,7 @@
 #include "abstract_domain_runner.h"
 
 #include "domain_event_dispatcher_context.h"
+#include "domain_event_helper.h"
 #include "domain_job_observer.h"
 #include "domain_job_service.h"
 #include "user_context.h"
@@ -28,6 +29,8 @@
 #include <oac_tree_gui/core/exceptions.h>
 
 #include <sup/oac-tree/i_job.h>
+#include <sup/oac-tree/instruction_info.h>
+#include <sup/oac-tree/job_info.h>
 #include <sup/oac-tree/job_states.h>
 
 #include <set>
@@ -147,6 +150,9 @@ const sup::oac_tree::JobInfo &AbstractDomainRunner::GetJobInfo() const
 void AbstractDomainRunner::SetDomainJob(std::unique_ptr<sup::oac_tree::IJob> job)
 {
   m_domain_job = std::move(job);
+  const auto filter =
+      CreateInstructionAncestorFilter(*m_domain_job->GetInfo().GetRootInstructionInfo());
+  m_domain_job_service->SetInstructionActiveFilter(filter);
 }
 
 void AbstractDomainRunner::ValidateJob() const

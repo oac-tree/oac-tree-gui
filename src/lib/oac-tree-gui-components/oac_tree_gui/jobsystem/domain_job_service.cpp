@@ -73,6 +73,11 @@ std::size_t DomainJobService::GetEventCount() const
   return m_event_queue->GetEventCount();
 }
 
+void DomainJobService::SetInstructionActiveFilter(const active_filter_t &filter)
+{
+  m_job_observer->SetInstructionActiveFilter(filter);
+}
+
 std::function<void(const domain_event_t &)> DomainJobService::CreatePostEventCallback() const
 {
   return [this](const domain_event_t &event) { m_event_queue->PushEvent(event); };
