@@ -49,6 +49,7 @@ class DomainJobObserver : public sup::oac_tree::IJobInfoIO
 {
 public:
   using post_event_callback_t = std::function<void(const domain_event_t& event)>;
+  using active_monitor_t = sup::oac_tree::ActiveInstructionMonitor;
 
   /**
    * @brief The main c-tor.
@@ -110,11 +111,18 @@ public:
    */
   void SetTickTimeout(int msec);
 
+  /**
+   * @brief Sets filter to suppres active instruction filter notifications.
+   */
+  void SetInstructionActiveFilter(const active_filter_t& filter);
+
 private:
+  std::unique_ptr<active_monitor_t> CreateActiveInstructionMonitor(const active_filter_t& filter);
+
   post_event_callback_t m_post_event_callback;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
-  std::unique_ptr<sup::oac_tree::ActiveInstructionMonitor> m_active_instruction_monitor;
+  std::unique_ptr<active_monitor_t> m_active_instruction_monitor;
 
   sup::oac_tree::JobState m_state{sup::oac_tree::JobState::kInitial};
   mutable std::mutex m_mutex;

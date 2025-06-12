@@ -43,6 +43,7 @@ namespace oac_tree_gui
 DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
                                      const UserContext &user_context)
     : m_post_event_callback(std::move(post_event_callback))
+    , m_active_instruction_monitor(CreateActiveInstructionMonitor({}))
 {
   if (!m_post_event_callback)
   {
@@ -58,14 +59,6 @@ DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
   {
     m_input_provider = std::make_unique<UserInputProvider>(user_context.user_input_callback);
   }
-
-  auto callback = [this](const auto &instr_idx)
-  {
-    const std::vector<sup::dto::uint32> leaves(instr_idx.begin(), instr_idx.end());
-    NextInstructionsUpdated(leaves);
-  };
-  m_active_instruction_monitor =
-      std::make_unique<sup::oac_tree::ActiveInstructionMonitor>(callback);
 }
 
 DomainJobObserver::~DomainJobObserver() = default;
@@ -79,7 +72,11 @@ void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                 sup::oac_tree::InstructionState state)
 {
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
-  m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
+
+  {
+    const std::lock_guard<std::mutex> lock{m_mutex};
+    m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
+  }
 }
 
 void DomainJobObserver::BreakpointInstructionUpdated(sup::dto::uint32 instr_idx)
@@ -200,6 +197,29 @@ void DomainJobObserver::SetTickTimeout(int msec)
 {
   const std::unique_lock<std::mutex> lock{m_mutex};
   m_tick_timeout_msec = msec;
+}
+
+void DomainJobObserver::SetInstructionActiveFilter(const active_filter_t &filter)
+{
+  const std::unique_lock<std::mutex> lock{m_mutex};
+  m_active_instruction_monitor = CreateActiveInstructionMonitor(filter);
+}
+
+std::unique_ptr<DomainJobObserver::active_monitor_t>
+DomainJobObserver::CreateActiveInstructionMonitor(const active_filter_t &filter)
+{
+  auto callback = [this](const auto &instr_idx)
+  {
+    const std::vector<sup::dto::uint32> leaves(instr_idx.begin(), instr_idx.end());
+    NextInstructionsUpdated(leaves);
+  };
+
+  if (filter)
+  {
+    return std::make_unique<sup::oac_tree::ActiveInstructionMonitor>(callback, filter);
+  }
+
+  return std::make_unique<sup::oac_tree::ActiveInstructionMonitor>(callback);
 }
 
 }  // namespace oac_tree_gui

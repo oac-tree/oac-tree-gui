@@ -18,7 +18,10 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/domain_job_observer.h"
+
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/domain_event_helper.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 
 #include <sup/oac-tree/execution_status.h>
@@ -26,13 +29,12 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "oac_tree_gui/jobsystem/domain_job_observer.h"
-
 namespace oac_tree_gui::test
 {
 
-//! Tests for DomainJobObserver class.
-
+/**
+ * @brief Tests for DomainJobObserver class.
+ */
 class DomainJobObserverTest : public ::testing::Test
 {
 public:
@@ -51,12 +53,59 @@ TEST_F(DomainJobObserverTest, OnStateChange)
 
   DomainJobObserver observer(m_event_listener.AsStdFunction(), {});
 
-  domain_event_t expected_event(
+  const domain_event_t expected_event(
       InstructionStateUpdatedEvent{0, InstructionState{false, ExecutionStatus::NOT_STARTED}});
 
   EXPECT_CALL(m_event_listener, Call(expected_event)).Times(1);
 
   observer.InstructionStateUpdated(0, InstructionState{false, ExecutionStatus::NOT_STARTED});
+}
+
+TEST_F(DomainJobObserverTest, ActiveInstructionUpdated)
+{
+  using ::sup::oac_tree::ExecutionStatus;
+  using ::sup::oac_tree::InstructionState;
+
+  DomainJobObserver observer(m_event_listener.AsStdFunction(), {});
+
+  const domain_event_t expected_event1(
+      InstructionStateUpdatedEvent{0, InstructionState{false, ExecutionStatus::NOT_STARTED}});
+  const domain_event_t expected_event2(
+      InstructionStateUpdatedEvent{0, InstructionState{false, ExecutionStatus::NOT_FINISHED}});
+  const domain_event_t expected_event3(
+      ActiveInstructionChangedEvent{std::vector<sup::dto::uint32>({0})});
+
+  EXPECT_CALL(m_event_listener, Call(expected_event1)).Times(1);
+  EXPECT_CALL(m_event_listener, Call(expected_event2)).Times(1);
+  EXPECT_CALL(m_event_listener, Call(expected_event3)).Times(1);
+
+  observer.InstructionStateUpdated(0, InstructionState{false, ExecutionStatus::NOT_STARTED});
+  observer.InstructionStateUpdated(0, InstructionState{false, ExecutionStatus::NOT_FINISHED});
+}
+
+TEST_F(DomainJobObserverTest, ActiveInstructionUpdatedWhenMonitorIsMuted)
+{
+  using ::sup::oac_tree::ExecutionStatus;
+  using ::sup::oac_tree::InstructionState;
+
+  DomainJobObserver observer(m_event_listener.AsStdFunction(), {});
+
+  observer.SetInstructionActiveFilter(CreateInstructionMuteAllFilter());
+
+  const domain_event_t expected_event1(
+      InstructionStateUpdatedEvent{0, InstructionState{false, ExecutionStatus::NOT_STARTED}});
+  const domain_event_t expected_event2(
+      InstructionStateUpdatedEvent{0, InstructionState{false, ExecutionStatus::NOT_FINISHED}});
+  // empty list of active instructions will be reported
+  const domain_event_t expected_event3(
+      ActiveInstructionChangedEvent{std::vector<sup::dto::uint32>({})});
+
+  EXPECT_CALL(m_event_listener, Call(expected_event1)).Times(1);
+  EXPECT_CALL(m_event_listener, Call(expected_event2)).Times(1);
+  EXPECT_CALL(m_event_listener, Call(expected_event3)).Times(1);
+
+  observer.InstructionStateUpdated(0, InstructionState{false, ExecutionStatus::NOT_STARTED});
+  observer.InstructionStateUpdated(0, InstructionState{false, ExecutionStatus::NOT_FINISHED});
 }
 
 }  // namespace oac_tree_gui::test
