@@ -11,8 +11,8 @@
     </Sequence>
     <Workspace>
         <Local name="var1" type='{"type":"bool"}' />
-        <Local name="var2" type='{"type":"string"}' />
-        <Local name="var3" type='{"type":"uint64"}'/>
+        <Local name="var2" type='{"type":"string"}'/>
+        <Local name="var3" type='{"type":"uint64"}' value="43"/>
         <Local name="alt_descr" type='{"type":"string"}' value='"Your age"' />
         <Local name="var4" type='{"type":"","attributes":[{"field0":{"type":"int8"}},{"field1":{"type":"uint8"}},{"field2":{"type":"string"}},{"field3":{"type":"float32"}}]}' value='{"field0":42,"field1":43,"field2":"","field3":0.0}'/>
     </Workspace>

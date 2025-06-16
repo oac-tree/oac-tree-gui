@@ -148,7 +148,8 @@ ProcedureItem* CreateIncludeProcedureItem(SequencerModel* model)
   return CreateProcedure(&CreateIncludeProcedureItem, model);
 }
 
-std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem()
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem(
+    const sup::dto::AnyValue& initial_value)
 {
   auto result = std::make_unique<ProcedureItem>();
   auto sequence =
@@ -163,14 +164,15 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem()
 
   auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var1->SetName("var1");
-  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var1);
+  SetAnyValue(initial_value, *var1);
 
   return result;
 }
 
-ProcedureItem* CreateInputProcedureItem(SequencerModel* model)
+ProcedureItem* CreateInputProcedureItem(SequencerModel* model,
+                                        const sup::dto::AnyValue& initial_value)
 {
-  return CreateProcedure(&CreateInputProcedureItem, model);
+  return CreateProcedure(CreateInputProcedureItem(initial_value), model);
 }
 
 std::unique_ptr<oac_tree_gui::ProcedureItem> CreateUserChoiceProcedureItem()

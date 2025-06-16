@@ -26,6 +26,8 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
+#include <sup/gui/core/dto_types_fwd.h>
+
 #include <chrono>
 #include <memory>
 
@@ -91,14 +93,16 @@ oac_tree_gui::ProcedureItem* CreateIncludeProcedureItem(oac_tree_gui::SequencerM
 /**
  * @brief Creates procedure that requires input from the user.
  */
-std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem();
+std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem(
+    const sup::dto::AnyValue& initial_value);
 
 /**
  * @brief Creates procedure that requires input from the user.
  *
  * The procedure is created in the procedure container of the given model.
  */
-oac_tree_gui::ProcedureItem* CreateInputProcedureItem(oac_tree_gui::SequencerModel* model);
+oac_tree_gui::ProcedureItem* CreateInputProcedureItem(oac_tree_gui::SequencerModel* model,
+                                                      const sup::dto::AnyValue& initial_value);
 
 /**
  * @brief Creates procedure that requires user choice.

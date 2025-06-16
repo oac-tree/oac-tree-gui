@@ -282,7 +282,7 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   // value defined in test::CreateInputProcedureItem
   const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 0};
 
-  auto procedure = test::CreateInputProcedureItem(m_models.GetSequencerModel());
+  auto procedure = test::CreateInputProcedureItem(m_models.GetSequencerModel(), initial_value);
 
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
   ASSERT_EQ(vars_inside.size(), 1);
@@ -300,21 +300,13 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   job_handler.Start();
 
   auto predicate1 = [&job_handler]()
-  {
-     return job_handler.GetRunnerStatus() != RunnerStatus::kInitial;
-  };
+  { return job_handler.GetRunnerStatus() != RunnerStatus::kInitial; };
   EXPECT_TRUE(QTest::qWaitFor(predicate1, 200));
 
-  auto predicate2 = [&job_handler]()
-  {
-    return !job_handler.IsRunning();
-  };
+  auto predicate2 = [&job_handler]() { return !job_handler.IsRunning(); };
   EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
 
-  auto predicate3 = [&spy_instruction_status]()
-  {
-    return spy_instruction_status.count() == 9;
-  };
+  auto predicate3 = [&spy_instruction_status]() { return spy_instruction_status.count() == 9; };
   EXPECT_TRUE(QTest::qWaitFor(predicate3, 200));
 
   EXPECT_EQ(spy_instruction_status.count(), 9);  // 3 instructions
