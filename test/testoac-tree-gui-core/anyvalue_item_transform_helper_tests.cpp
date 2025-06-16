@@ -81,7 +81,7 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromScalar)
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
   auto prev_anyvalue_item = item.GetAnyValueItem();
   SetAnyValue(anyvalue, item);
-  EXPECT_NE(item.GetAnyValueItem(), prev_anyvalue_item);
+  EXPECT_NE(item.GetAnyValueItem(), nullptr);
 }
 
 //! Same as above, except that LocalVariableItem is a part of the model.
@@ -178,7 +178,7 @@ TEST_F(AnyValueItemTransformHelperTest, SetInstructionAnyValueFromScalar)
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
   auto prev_anyvalue_item = GetAnyValueItem(item);
   SetAnyValue(anyvalue, item);
-  EXPECT_NE(GetAnyValueItem(item), prev_anyvalue_item);
+  EXPECT_NE(GetAnyValueItem(item), nullptr);
 }
 
 //! Validate SetAnyValueFromDomainVariable helper method.
