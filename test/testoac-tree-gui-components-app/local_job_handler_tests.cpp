@@ -318,6 +318,53 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), new_value));
 }
 
+TEST_F(LocalJobHandlerTest, UserInputIncrementScenario)
+{
+  // value defined in test::CreateInputProcedureItem
+  const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 42};
+
+  auto procedure = test::CreateInputProcedureItem(m_models.GetSequencerModel(), initial_value);
+
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
+  ASSERT_EQ(vars_inside.size(), 1);
+  EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), initial_value));
+
+  m_job_item->SetProcedure(procedure);
+
+  const sup::dto::AnyValue expected_new_value{sup::dto::SignedInteger32Type, 43};
+
+  auto on_user_input = [](const UserInputArgs& args)
+  {
+    auto initial_value = args.value;
+    sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, initial_value.As<int>() + 1};
+    return UserInputResult{new_value, true};
+  };
+
+  LocalJobHandler job_handler(m_job_item, UserContext{on_user_input});
+
+  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+
+  job_handler.Start();
+
+  auto predicate1 = [&job_handler]()
+  { return job_handler.GetRunnerStatus() != RunnerStatus::kInitial; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate1, 200));
+
+  auto predicate2 = [&job_handler]() { return !job_handler.IsRunning(); };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
+
+  auto predicate3 = [&spy_instruction_status]() { return spy_instruction_status.count() == 9; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate3, 200));
+
+  EXPECT_EQ(spy_instruction_status.count(), 9);  // 3 instructions
+
+  EXPECT_FALSE(job_handler.IsRunning());
+
+  vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  ASSERT_EQ(vars_inside.size(), 1);
+  EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), expected_new_value));
+}
+
 TEST_F(LocalJobHandlerTest, UserChoiceScenario)
 {
   // value defined in test::CreateUserChoiceProcedureItem
