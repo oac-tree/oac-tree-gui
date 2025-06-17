@@ -36,7 +36,6 @@
 #include <cmath>
 #include <sstream>
 #include <thread>
-#include <iostream>
 
 namespace oac_tree_gui
 {
@@ -117,7 +116,6 @@ bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue &va
   if (m_input_provider)
   {
     auto value_string = sup::gui::ValuesToJSONString(value);
-    std::cout << "XXXX " << value_string << std::endl;
     auto result = m_input_provider->GetUserInput({value, description});
     value = result.value;
     return result.processed;
