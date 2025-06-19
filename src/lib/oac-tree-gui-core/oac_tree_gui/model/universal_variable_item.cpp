@@ -51,13 +51,12 @@ const std::vector<std::string> kSkipItemTagList = {oac_tree_gui::itemconstants::
 namespace oac_tree_gui
 {
 
+UniversalVariableItem::UniversalVariableItem() : VariableItem(GetStaticType()) {}
+
 UniversalVariableItem::UniversalVariableItem(const std::string &item_type)
     : VariableItem(item_type.empty() ? GetStaticType() : item_type)
 {
-  if (IsVariableTypeAvailable(item_type))
-  {
-    SetDomainType(item_type);
-  }
+  SetDomainType(item_type);
 }
 
 std::string UniversalVariableItem::GetStaticType()

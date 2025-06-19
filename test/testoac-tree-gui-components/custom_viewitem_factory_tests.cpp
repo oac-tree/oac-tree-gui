@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <mvvm/viewmodel/viewitem.h>
@@ -31,29 +32,20 @@
 namespace oac_tree_gui::test
 {
 
-//! Tests for factory functions defined in custom_viewitem_factory.h
-
+/**
+ * @brief Tests for factory functions defined in custom_viewitem_factory.h
+ */
 class CustomViewItemFactoryTest : public ::testing::Test
 {
-public:
-  class TestVariableItem : public ConnectableVariableItem
-  {
-  public:
-    TestVariableItem() : ConnectableVariableItem("TestVariableItem")
-    {
-      AddProperty(domainconstants::kChannelAttribute, std::string(""));
-    }
-  };
 };
 
-//! Validating view item presenting channel and is_available status for LocalVariable.
-//! It should be just empty non-editable placeholder.
 TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForLocalVariable)
 {
   LocalVariableItem item;
 
   auto viewitem = CreateChannelPresentationViewItem(item);
 
+  // it should be just empty non-editable placeholder.
   EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
   EXPECT_TRUE(viewitem->Data(Qt::DisplayRole).isValid());
   EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString());
@@ -64,17 +56,21 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForLocalVariable)
   EXPECT_FALSE(viewitem->SetData(QString("bbb"), Qt::EditRole));
 }
 
-//! Validating view item presenting channel and is_available status for LocalVariable.
-//! It should be just empty non-editable placeholder.
 TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   const std::string channel_name("CHANNEL");
-  TestVariableItem item;
+  PvAccessClientVariableItem item;
   item.SetChannel(channel_name);
   item.SetIsAvailable(true);
 
   auto viewitem = CreateChannelPresentationViewItem(item);
 
+  // it should be just empty non-editable placeholder.
   EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
   EXPECT_TRUE(viewitem->Data(Qt::DisplayRole).isValid());
   EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString::fromStdString(channel_name));

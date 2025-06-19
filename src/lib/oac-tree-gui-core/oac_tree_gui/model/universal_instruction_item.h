@@ -52,8 +52,8 @@ public:
    *
    * @param item_type The item type.
    *
-   * If item_type coincides with the existing domain name, the resulting object will be initialised
-   * with corresponding domain attributes.
+   * It is expected, that item_type coincides with the name of the registered domain instruction.
+   * Temporary domain instruction is created to initialize item properties.
    */
   explicit UniversalInstructionItem(const std::string& item_type);
 
