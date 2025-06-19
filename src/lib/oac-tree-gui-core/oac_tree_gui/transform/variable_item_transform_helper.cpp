@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_automation_helper.h>
+#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
@@ -44,6 +45,14 @@ std::unique_ptr<VariableItem> CreateVariableItem(const sup::oac_tree::VariableIn
   // propagation.
   auto domain = CreateDomainVariable(info);
   result->InitFromDomain(domain.get());
+
+  return result;
+}
+
+std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info)
+{
+  auto result = std::make_unique<VariableInfoItem>();
+  result->InitFromDomainInfo(info);
 
   return result;
 }

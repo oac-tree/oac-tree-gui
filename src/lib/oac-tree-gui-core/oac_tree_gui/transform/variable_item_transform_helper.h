@@ -44,6 +44,11 @@ class WorkspaceItem;
 std::unique_ptr<VariableItem> CreateVariableItem(const sup::oac_tree::VariableInfo& info);
 
 /**
+ * @brief Creates VariableInfoItem from the automation server information.
+ */
+std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info);
+
+/**
  * @brief Populates empty workspace workspace item with variables from the automation server
  * information.
  *

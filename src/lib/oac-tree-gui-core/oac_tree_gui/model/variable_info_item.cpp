@@ -54,6 +54,9 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
       SetName(attr_value);
     }
   }
+
+  // We do not create AnyValueItem from type/value attributes.
+  // Will get AnyValue's on first Workspace update
 }
 
 std::unique_ptr<mvvm::SessionItem> VariableInfoItem::Clone() const

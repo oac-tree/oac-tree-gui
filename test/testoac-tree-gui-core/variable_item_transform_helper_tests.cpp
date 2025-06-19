@@ -18,8 +18,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/transform/variable_item_transform_helper.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -33,8 +36,6 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-#include "oac_tree_gui/transform/variable_item_transform_helper.h"
-
 namespace oac_tree_gui::test
 {
 
@@ -45,7 +46,6 @@ class VariableItemTransformHelperTest : public ::testing::Test
 {
 };
 
-//! Testing CreateVariableItem helper method.
 TEST_F(VariableItemTransformHelperTest, CreateVariableItem)
 {
   const std::size_t variable_id{0};
@@ -57,14 +57,39 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItem)
       {{domainconstants::kNameAttribute, expected_name},
        {domainconstants::kTypeAttribute, expected_type},
        {domainconstants::kValueAttribute, expected_value}});
-  sup::oac_tree::VariableInfo info(domainconstants::kLocalVariableType, variable_id, attributes);
+  const sup::oac_tree::VariableInfo info(domainconstants::kLocalVariableType, variable_id,
+                                         attributes);
 
   auto variable_item = CreateVariableItem(info);
 
   EXPECT_EQ(variable_item->GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
+}
+
+TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
+{
+  const std::size_t variable_id{0};
+  const std::string expected_name("abc");
+  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
+  const std::string expected_value("42");
+
+  const std::vector<sup::oac_tree::AttributeInfo> attributes(
+      {{domainconstants::kNameAttribute, expected_name},
+       {domainconstants::kTypeAttribute, expected_type},
+       {domainconstants::kValueAttribute, expected_value}});
+  const sup::oac_tree::VariableInfo info(domainconstants::kLocalVariableType, variable_id,
+                                         attributes);
+
+  auto variable_item = CreateVariableInfoItem(info);
+
+  EXPECT_EQ(variable_item->GetType(), VariableInfoItem::GetStaticType());
+  EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
+
+  EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
 }
 
 TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
