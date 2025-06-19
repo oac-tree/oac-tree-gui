@@ -42,8 +42,13 @@ VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_typ
 std::string VariableItem::GetDomainType() const
 {
   return HasData(itemconstants::kDomainTypeNameRole)
-  ? Data<std::string>(itemconstants::kDomainTypeNameRole)
-  : std::string();
+             ? Data<std::string>(itemconstants::kDomainTypeNameRole)
+             : std::string();
+}
+
+void VariableItem::SetDomainType(const std::string &domain_type)
+{
+  SetData(domain_type, itemconstants::kDomainTypeNameRole);
 }
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const

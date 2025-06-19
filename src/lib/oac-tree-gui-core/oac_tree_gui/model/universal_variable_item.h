@@ -55,12 +55,7 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  /**
-   * @brief Set the domain type and performs attribute initialization.
-   *
-   * @details This function can be called only once.
-   */
-  void SetDomainType(const std::string& domain_type);
+  void SetDomainType(const std::string& domain_type) override;
 
 private:
   struct Attribute

@@ -79,7 +79,7 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
   // setting up domain variable and repeat initialisation
   domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
-  workspace_t ws;
+  const workspace_t ws;
   domain_variable->Setup(ws);
   EXPECT_NO_THROW(item.InitFromDomain(domain_variable.get()));
 
@@ -90,7 +90,7 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
 TEST_F(UniversalVariableItemTest, AttemptToCreateDomainVariable)
 {
-  UniversalVariableItem item;
+  const UniversalVariableItem item;
   EXPECT_THROW(item.CreateDomainVariable(), sup::oac_tree::InvalidOperationException);
 }
 

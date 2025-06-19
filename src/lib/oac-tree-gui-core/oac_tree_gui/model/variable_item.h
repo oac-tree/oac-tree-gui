@@ -49,6 +49,13 @@ public:
   std::string GetDomainType() const;
 
   /**
+   * @brief Set the domain type and performs attribute initialization.
+   *
+   * @details This function can be called only once.
+   */
+  virtual void SetDomainType(const std::string& domain_type);
+
+  /**
    * @brief Inits given item from the domain variable.
    *
    * @param variable The domain variable.

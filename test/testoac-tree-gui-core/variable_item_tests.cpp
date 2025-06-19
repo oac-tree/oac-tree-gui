@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/model/instruction_item.h"
+#include "oac_tree_gui/model/variable_item.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -31,48 +31,50 @@ namespace oac_tree_gui::test
 {
 
 /**
- * @brief Tests for InstructionItem base class.
+ * @brief Tests for VariableItem base class.
  */
-class InstructionItemTest : public ::testing::Test
+class VariableItemTest : public ::testing::Test
 {
 public:
-  class TestItem : public InstructionItem
+  class TestItem : public VariableItem
   {
   public:
-    TestItem() : InstructionItem("test") { RegisterCommonProperties(); }
+    TestItem() : VariableItem("test") {}
+
+    void ResiterOtherTags() { RegisterAnyValueItemTag(); }
 
   private:
-    void InitFromDomainImpl(const instruction_t* instruction) override {};
-    void SetupDomainImpl(instruction_t* instruction) const override {};
+    void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry) override
+    {
+      (void)variable;
+      (void)registry;
+    }
+
+    void SetupDomainImpl(variable_t* variable) const override { (void)variable; }
   };
 };
 
-TEST_F(InstructionItemTest, TestItem)
+TEST_F(VariableItemTest, SetDomainType)
 {
-  // Correctly initialised item
   TestItem item;
 
   EXPECT_EQ(item.GetType(), "test");
 
   EXPECT_TRUE(item.GetDomainType().empty());
-  const std::string expected_domain_type = "SomeDomainInstruction";
+  const std::string expected_domain_type = "SomeDomainVariable";
   item.SetDomainType(expected_domain_type);
   EXPECT_EQ(item.GetDomainType(), expected_domain_type);
+}
 
-  // these attributes are coming from the sequencer domain
-  EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kNameAttribute));
-  EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kIsRootAttribute));
+TEST_F(VariableItemTest, RegisterAnyValueTags)
+{
+  TestItem item;
 
-  EXPECT_EQ(item.GetX(), 0);
-  EXPECT_EQ(item.GetY(), 0);
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
 
-  item.SetX(1.1);
-  item.SetY(1.2);
-  EXPECT_EQ(item.GetX(), 1.1);
-  EXPECT_EQ(item.GetY(), 1.2);
-
-  EXPECT_EQ(item.GetStatus(), "");
-  EXPECT_TRUE(item.GetInstructions().empty());
+  item.ResiterOtherTags();
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item),
+            std::vector<std::string>({itemconstants::kAnyValueTag}));
 }
 
 }  // namespace oac_tree_gui::test
