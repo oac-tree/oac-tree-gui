@@ -51,6 +51,7 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::FileVariableItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::LocalVariableItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::UniversalVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::VariableInfoItem>();
 
   // variables sequencer-plugin-epics
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessVariableItem>();

@@ -46,6 +46,8 @@ target_sources(${library_name} PRIVATE
   universal_item_helper.h
   universal_variable_item.cpp
   universal_variable_item.h
+  variable_info_item.cpp
+  variable_info_item.h
   variable_item.cpp
   variable_item.h
   workspace_item.cpp
