@@ -39,6 +39,13 @@ VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_typ
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
 
+std::string VariableItem::GetDomainType() const
+{
+  return HasData(itemconstants::kDomainTypeNameRole)
+  ? Data<std::string>(itemconstants::kDomainTypeNameRole)
+  : std::string();
+}
+
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {
   auto result = ::oac_tree_gui::CreateDomainVariable(GetDomainType());

@@ -36,18 +36,17 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The VariableItem class is a base for all variable items.
+ * @brief The VariableItem class is a base for all GUI items representing domain variables.
  */
 class VariableItem : public mvvm::CompoundItem
 {
 public:
-  using CompoundItem::CompoundItem;
   explicit VariableItem(const std::string& item_type);
 
   /**
    * @brief Returns domain type.
    */
-  virtual std::string GetDomainType() const = 0;
+  std::string GetDomainType() const;
 
   /**
    * @brief Inits given item from the domain variable.

@@ -55,8 +55,6 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  std::string GetDomainType() const override;
-
   /**
    * @brief Set the domain type and performs attribute initialization.
    *

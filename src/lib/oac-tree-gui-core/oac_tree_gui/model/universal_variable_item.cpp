@@ -34,7 +34,6 @@
 
 namespace
 {
-const int kDomainTypeNameRole = 10;  // role to store type name
 
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {
@@ -67,11 +66,6 @@ std::string UniversalVariableItem::GetStaticType()
 std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone() const
 {
   return std::make_unique<UniversalVariableItem>(*this);
-}
-
-std::string UniversalVariableItem::GetDomainType() const
-{
-  return HasData(kDomainTypeNameRole) ? Data<std::string>(kDomainTypeNameRole) : std::string();
 }
 
 void UniversalVariableItem::SetDomainType(const std::string &domain_type)
@@ -142,7 +136,7 @@ void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
     throw LogicErrorException("It is not possible to setup variable twice");
   }
 
-  SetData(variable->GetType(), kDomainTypeNameRole);
+  SetData(variable->GetType(), itemconstants::kDomainTypeNameRole);
 
   for (const auto &definition : variable->GetAttributeDefinitions())
   {
