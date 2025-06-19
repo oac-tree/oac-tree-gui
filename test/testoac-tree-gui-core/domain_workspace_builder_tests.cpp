@@ -44,7 +44,7 @@ class DomainWorkspaceBuilderTest : public ::testing::Test
 TEST_F(DomainWorkspaceBuilderTest, EmptyWorkspace)
 {
   sup::oac_tree::Workspace workspace;
-  WorkspaceItem workspace_item;
+ const  WorkspaceItem workspace_item;
 
   DomainWorkspaceBuilder builder;
   builder.PopulateDomainWorkspace(&workspace_item, &workspace);
@@ -76,7 +76,7 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
 
-  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
+  const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   SetAnyValue(value, *var_item0);
   auto var_item1 = workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());

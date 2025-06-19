@@ -42,15 +42,12 @@
 namespace oac_tree_gui::test
 {
 
-//! Tests for items in standard_variable_items.h
-
+/**
+ * @brief Tests for items in standard_variable_items.h
+ */
 class StandardVariableItemsTest : public ::testing::Test
 {
 };
-
-//! ---------------------------------------------------------------------------
-//! ChannelAccessItem
-//! ---------------------------------------------------------------------------
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
 {
@@ -74,8 +71,6 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
   EXPECT_TRUE(item.IsAvailable());
 }
 
-//! Testing appearance of properties.
-
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
 {
   if (!IsSequencerPluginEpicsAvailable())
@@ -83,7 +78,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
     GTEST_SKIP();
   }
 
-  ChannelAccessVariableItem item;
+  const ChannelAccessVariableItem item;
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 2);
@@ -113,8 +108,8 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
-  workspace_t ws;
-  ca_variable->Setup(ws);
+  const workspace_t workspace;
+  ca_variable->Setup(workspace);
 
   ChannelAccessVariableItem item;
   item.InitFromDomain(ca_variable.get());
@@ -143,7 +138,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
 
-    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
+    const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
@@ -153,14 +148,10 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
               expected_channel);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
 
-    workspace_t ws;
-    EXPECT_NO_THROW(domain_item->Setup(ws));
+    const workspace_t workspace;
+    EXPECT_NO_THROW(domain_item->Setup(workspace));
   }
 }
-
-//! ---------------------------------------------------------------------------
-//! FileVariableItem
-//! ---------------------------------------------------------------------------
 
 TEST_F(StandardVariableItemsTest, FileVariableItem)
 {
@@ -176,11 +167,9 @@ TEST_F(StandardVariableItemsTest, FileVariableItem)
   EXPECT_EQ(item.GetFileName(), std::string("edf"));
 }
 
-//! Testing appearance of properties.
-
 TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
 {
-  FileVariableItem item;
+  const FileVariableItem item;
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 2);
@@ -203,8 +192,8 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   local_variable->AddAttribute(domainconstants::kFileNameAttribute, expected_file_name);
 
-  workspace_t ws;
-  local_variable->Setup(ws);  // to propagate string attributes to AnyValues
+  const workspace_t workspace;
+  local_variable->Setup(workspace);  // to propagate string attributes to AnyValues
 
   oac_tree_gui::FileVariableItem item;
   item.InitFromDomain(local_variable.get());
@@ -228,13 +217,9 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFileNameAttribute),
             expected_file_name);
 
-  workspace_t ws;
-  EXPECT_NO_THROW(domain_item->Setup(ws));
+  const workspace_t workspace;
+  EXPECT_NO_THROW(domain_item->Setup(workspace));
 }
-
-//! ---------------------------------------------------------------------------
-//! LocalVariableItem
-//! ---------------------------------------------------------------------------
 
 TEST_F(StandardVariableItemsTest, LocalVariableItem)
 {
@@ -252,11 +237,9 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
   EXPECT_NO_THROW(item.SetIsAvailable(true));
 }
 
-//! Testing appearance of properties.
-
 TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
 {
-  LocalVariableItem item;
+  const LocalVariableItem item;
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 1);
@@ -278,8 +261,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   local_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
   local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
-  workspace_t ws;
-  local_variable->Setup(ws);
+  const workspace_t workspace;
+  local_variable->Setup(workspace);
 
   oac_tree_gui::LocalVariableItem item;
   item.InitFromDomain(local_variable.get());
@@ -295,13 +278,12 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
-  const std::string expected_dynamic_flag("false");
 
   {  // case when AnyValueItem is set
     oac_tree_gui::LocalVariableItem item;
     item.SetName(expected_name);
 
-    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
+    const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
@@ -313,8 +295,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
 
-    workspace_t ws;
-    EXPECT_NO_THROW(domain_item->Setup(ws));
+    const workspace_t workspace;
+    EXPECT_NO_THROW(domain_item->Setup(workspace));
   }
 
   {  // case when AnyValueItem is not set
@@ -330,18 +312,14 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
 
-    workspace_t ws;
-    ws.AddVariable(expected_name, std::move(domain_item));
-    ws.Setup();
+    workspace_t workspace;
+    workspace.AddVariable(expected_name, std::move(domain_item));
+    workspace.Setup();
 
     sup::dto::AnyValue anyvalue;
-    EXPECT_FALSE(ws.GetValue(expected_name, anyvalue));
+    EXPECT_FALSE(workspace.GetValue(expected_name, anyvalue));
   }
 }
-
-//! ---------------------------------------------------------------------------
-//! PVClientVariableItem
-//! ---------------------------------------------------------------------------
 
 TEST_F(StandardVariableItemsTest, PvAccessClientVariableItem)
 {
@@ -378,8 +356,8 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
   pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
-  workspace_t ws;
-  pv_variable->Setup(ws);
+  const workspace_t workspace;
+  pv_variable->Setup(workspace);
 
   PvAccessClientVariableItem item;
   item.InitFromDomain(pv_variable.get());
@@ -407,7 +385,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
 
-    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
+    const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
@@ -418,10 +396,6 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
   }
 }
-
-//! ---------------------------------------------------------------------------
-//! PVServerVariableItem
-//! ---------------------------------------------------------------------------
 
 TEST_F(StandardVariableItemsTest, PvAccessServerVariableItem)
 {
@@ -460,8 +434,8 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
   pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
   pvxs_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
-  workspace_t ws;
-  pvxs_variable->Setup(ws);
+  const workspace_t workspace;
+  pvxs_variable->Setup(workspace);
 
   PvAccessServerVariableItem item;
   item.InitFromDomain(pvxs_variable.get());
@@ -502,8 +476,8 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
 
-    workspace_t ws;
-    EXPECT_NO_THROW(domain_item->Setup(ws));
+    workspace_t workspace;
+    EXPECT_NO_THROW(domain_item->Setup(workspace));
   }
 }
 

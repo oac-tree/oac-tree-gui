@@ -21,7 +21,12 @@
 #include "variable_info_item.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
+
+#include <mvvm/model/item_utils.h>
+
+#include <sup/oac-tree/variable_info.h>
 
 namespace oac_tree_gui
 {
@@ -35,7 +40,20 @@ std::string VariableInfoItem::GetStaticType()
 
 void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& info)
 {
-  (void)info;
+  if (GetDomainType().empty())
+  {
+    SetupFromDomain(info);
+  }
+
+  SetDomainType(info.GetType());
+
+  for (auto& [attr_name, attr_value] : info.GetAttributes())
+  {
+    if (attr_name == domainconstants::kNameAttribute)
+    {
+      SetName(attr_value);
+    }
+  }
 }
 
 std::unique_ptr<mvvm::SessionItem> VariableInfoItem::Clone() const
@@ -61,6 +79,7 @@ void VariableInfoItem::SetupDomainImpl(variable_t* variable) const
 void VariableInfoItem::SetupFromDomain(const sup::oac_tree::VariableInfo& info)
 {
   (void)info;
+  RegisterAnyValueItemTag();
 }
 
 }  // namespace oac_tree_gui
