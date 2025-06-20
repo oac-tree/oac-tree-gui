@@ -83,7 +83,7 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
   const sup::oac_tree::VariableInfo info(domainconstants::kLocalVariableType, variable_id,
                                          attributes);
 
-  auto variable_item = CreateVariableInfoItem(info);
+  auto variable_item = ::oac_tree_gui::CreateVariableInfoItem(info);
 
   EXPECT_EQ(variable_item->GetType(), VariableInfoItem::GetStaticType());
   EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);

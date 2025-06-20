@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/model/variable_info_item.h"
 
+#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -30,7 +31,6 @@
 #include <sup/oac-tree/exceptions.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_info.h>
-#include <sup/oac-tree/variable_utils.h>
 
 #include <gtest/gtest.h>
 
@@ -66,7 +66,7 @@ TEST_F(VariableInfoItemTest, InitFromDomainInfoBeforeSetup)
   local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
   // constructing VariableInfo
-  auto var_info = sup::oac_tree::utils::CreateVariableInfo(local_variable.get(), expected_index);
+  auto var_info = CreateVariableInfo(*local_variable, expected_index);
   EXPECT_EQ(var_info.GetType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(var_info.GetIndex(), expected_index);
 

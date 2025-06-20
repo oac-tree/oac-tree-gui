@@ -20,9 +20,11 @@
 
 #include "sequencer_test_utils.h"
 
+#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
@@ -176,6 +178,18 @@ std::vector<InstructionItem *> FindInstructions(const mvvm::ISessionModel &model
       result.push_back(instruction);
     }
   }
+  return result;
+}
+
+std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string &domain_type,
+                                                         sup::dto::uint32 index)
+{
+  auto domain = CreateDomainVariable(domain_type);
+  auto info = ::oac_tree_gui::CreateVariableInfo(*domain, index);
+
+  auto result = std::make_unique<VariableInfoItem>();
+  result->InitFromDomainInfo(info);
+
   return result;
 }
 

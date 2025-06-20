@@ -32,8 +32,8 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/style/style_helper.h>
 
-#include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodel/viewitem.h>
+#include <mvvm/viewmodel/viewitem_factory.h>
 
 #include <QColor>
 #include <QIcon>
@@ -83,7 +83,7 @@ std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem &item)
 /**
  * @brief Returns string representing type in 3rd column of variable table.
  */
-std::string GetTypeString(const mvvm::SessionItem &item)
+std::string GetTypeString(const std::string &item_type)
 {
   static const std::map<std::string, std::string> kNameMap = {
       {PvAccessClientVariableItem::GetStaticType(), std::string("PVA-C")},
@@ -91,8 +91,8 @@ std::string GetTypeString(const mvvm::SessionItem &item)
       {ChannelAccessVariableItem::GetStaticType(), std::string("CA")},
   };
 
-  auto iter = kNameMap.find(item.GetType());
-  return iter == kNameMap.end() ? item.GetType() : iter->second;
+  auto iter = kNameMap.find(item_type);
+  return iter == kNameMap.end() ? item_type : iter->second;
 }
 
 /**
@@ -123,7 +123,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(VariableItem
   result.emplace_back(CreateAnyValueViewItem(item));
 
   // column #2: type of the variable (CA, Local, PVA-C, PVA-S
-  result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item)));
+  result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item.GetDomainType())));
 
   // column #3: Channel and is_available properties
   result.emplace_back(CreateChannelPresentationViewItem(item));
