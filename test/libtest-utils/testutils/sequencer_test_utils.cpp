@@ -179,11 +179,4 @@ std::vector<InstructionItem *> FindInstructions(const mvvm::ISessionModel &model
   return result;
 }
 
-sup::oac_tree::InstructionInfo CreateInstructionInfo(const sup::oac_tree::Instruction &instruction,
-                                                     sup::dto::uint32 index)
-{
-  return {instruction.GetType(), instruction.GetCategory(), index,
-          instruction.GetStringAttributes()};
-}
-
 }  // namespace oac_tree_gui::test

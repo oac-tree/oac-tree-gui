@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/viewmodel/instruction_operation_viewmodel.h"
 
+#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
@@ -53,7 +54,7 @@ public:
   static void InitFromDomainType(const std::string& domain_type, InstructionInfoItem& info_item)
   {
     auto instruction = CreateDomainInstruction(domain_type);
-    info_item.InitFromDomainInfo(test::CreateInstructionInfo(*instruction));
+    info_item.InitFromDomainInfo(CreateInstructionInfo(*instruction));
   }
 
   class TestModel : public mvvm::ApplicationModel

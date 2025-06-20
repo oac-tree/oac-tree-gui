@@ -97,12 +97,6 @@ bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValu
 std::vector<InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
                                                const std::string& domain_type);
 
-/**
- * @brief Constructs InstructionInfo object from given instruction.
- */
-sup::oac_tree::InstructionInfo CreateInstructionInfo(const sup::oac_tree::Instruction& instruction,
-                                                     sup::dto::uint32 index = 0);
-
 }  // namespace test
 
 }  // namespace oac_tree_gui

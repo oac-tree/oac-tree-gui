@@ -26,6 +26,7 @@
 #include <sup/oac-tree/instruction_info.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_info.h>
+#include <sup/oac-tree/variable_utils.h>
 
 #include <algorithm>
 
@@ -48,6 +49,19 @@ std::optional<std::string> GetAttribute(const std::vector<sup::oac_tree::Attribu
 }
 
 }  // namespace
+
+sup::oac_tree::InstructionInfo CreateInstructionInfo(const sup::oac_tree::Instruction &instruction,
+                                                     sup::dto::uint32 index)
+{
+  return {instruction.GetType(), instruction.GetCategory(), index,
+          instruction.GetStringAttributes()};
+}
+
+sup::oac_tree::VariableInfo CreateVariableInfo(const sup::oac_tree::Variable &variable,
+                                               sup::dto::uint32 index)
+{
+  return sup::oac_tree::utils::CreateVariableInfo(&variable, index);
+}
 
 std::unique_ptr<sup::oac_tree::Instruction> CreateDomainInstruction(
     const sup::oac_tree::InstructionInfo &info)

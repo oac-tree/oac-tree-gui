@@ -26,11 +26,25 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
+#include <sup/gui/core/dto_types_fwd.h>
+
 #include <memory>
 #include <optional>
 
 namespace oac_tree_gui
 {
+
+/**
+ * @brief Constructs InstructionInfo object from the given instruction.
+ */
+sup::oac_tree::InstructionInfo CreateInstructionInfo(const sup::oac_tree::Instruction& instruction,
+                                                     sup::dto::uint32 index = 0);
+
+/**
+ * @brief Constructs VariableInfo object from the given variable.
+ */
+sup::oac_tree::VariableInfo CreateVariableInfo(const sup::oac_tree::Variable& variable,
+                                               sup::dto::uint32 index = 0);
 
 /**
  * @brief Creates domain instruction from automation InstructionInfo presentation.
@@ -51,16 +65,16 @@ std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
  *
  * The value will be empty, if attribute is not present.
  */
-std::optional<std::string> GetAttribute(const sup::oac_tree::InstructionInfo &info,
-                                        const std::string &attribute_name);
+std::optional<std::string> GetAttribute(const sup::oac_tree::InstructionInfo& info,
+                                        const std::string& attribute_name);
 
 /**
  * @brief Returns optional value of the attribute with the given name.
  *
  * The value will be empty, if attribute is not present.
  */
-std::optional<std::string> GetAttribute(const sup::oac_tree::VariableInfo &info,
-                                        const std::string &attribute_name);
+std::optional<std::string> GetAttribute(const sup::oac_tree::VariableInfo& info,
+                                        const std::string& attribute_name);
 
 }  // namespace oac_tree_gui
 
