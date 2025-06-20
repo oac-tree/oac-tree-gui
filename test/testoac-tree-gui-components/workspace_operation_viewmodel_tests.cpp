@@ -18,9 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/workspace_operation_viewmodel.h"
+
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -31,10 +34,9 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QSignalSpy>
-
-#include "oac_tree_gui/viewmodel/workspace_operation_viewmodel.h"
 
 namespace oac_tree_gui::test
 {
@@ -89,6 +91,43 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValue)
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
   variable_item->SetName("abc");
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+  EXPECT_EQ(viewmodel.rowCount(), 1);
+  EXPECT_EQ(viewmodel.columnCount(), 4);
+
+  // checking viewmodel layout
+
+  EXPECT_EQ(viewmodel.rowCount(), 1);
+  EXPECT_EQ(viewmodel.columnCount(), 4);
+
+  auto variable_name_index = viewmodel.index(0, 0);
+  auto variable_value_index = viewmodel.index(0, 1);
+  auto variable_type_index = viewmodel.index(0, 2);
+  auto variable_channel_index = viewmodel.index(0, 3);
+
+  // reading data from cell
+  EXPECT_EQ(viewmodel.data(variable_name_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("abc"));
+  // the scalar value
+  EXPECT_EQ(viewmodel.data(variable_value_index, Qt::DisplayRole).toInt(), 42);
+  EXPECT_EQ(viewmodel.data(variable_type_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("Local"));
+}
+
+TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValueConstructedAsInfoItem)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+
+  auto variable_item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  SetAnyValue(anyvalue, *variable_item);
+  variable_item->SetName("abc");
+
+  model.InsertItem(std::move(variable_item), workspace_item, mvvm::TagIndex::Append());
 
   WorkspaceOperationViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
@@ -201,11 +240,11 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
   variable_item->SetIsAvailable(false);
 
   ASSERT_EQ(spy_data_changed.count(), 1);
-  QList<QVariant> arguments = spy_data_changed.takeFirst();
+  const QList<QVariant> arguments = spy_data_changed.takeFirst();
   EXPECT_EQ(arguments.size(), 3);  // QModelIndex left, QModelIndex right, QVector<int> roles
   EXPECT_EQ(arguments.at(0).value<QModelIndex>(), variable_channel_index);
   EXPECT_EQ(arguments.at(1).value<QModelIndex>(), variable_channel_index);
-  QVector<int> expectedRoles = {Qt::DecorationRole};
+  const QVector<int> expectedRoles = {Qt::DecorationRole};
   EXPECT_EQ(arguments.at(2).value<QVector<int>>(), expectedRoles);
 
   EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DecorationRole).value<QColor>(),

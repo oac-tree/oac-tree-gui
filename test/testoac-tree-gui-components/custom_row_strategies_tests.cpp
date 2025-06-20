@@ -128,7 +128,6 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
     EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
     EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toInt(), 42);
     EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("Local"));
-    qDebug() << "AAAA " << view_items.at(2)->Data(Qt::DisplayRole);
     EXPECT_EQ(view_items.at(3)->Data(Qt::DisplayRole).toString(), QString(""));  // channel
   }
 
