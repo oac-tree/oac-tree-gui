@@ -18,16 +18,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/components/load_resources.h>
-
-#include <gtest/gtest.h>
+#include <testutils/init_tests.h>
 
 int main(int argc, char** argv)
 {
-  ::testing::InitGoogleTest(&argc, argv);
+  oac_tree_gui::test::InitTests(argc, argv);
 
-  oac_tree_gui::LoadResources();
-
-  // run all google tests
   return RUN_ALL_TESTS();
 }

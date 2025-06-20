@@ -18,18 +18,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/components/load_resources.h>
+#ifndef LIBTEST_UTILS_TESTUTILS_INIT_TESTS_H
+#define LIBTEST_UTILS_TESTUTILS_INIT_TESTS_H
 
-#include <testutils/init_tests.h>
+//! @file
+//! Collection of utility functions for various unit tests.
 
-#include <QApplication>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-int main(int argc, char** argv)
+namespace oac_tree_gui::test
 {
-  oac_tree_gui::test::InitTests(argc, argv);
 
-  const QApplication app(argc, argv);
-  Q_UNUSED(app)
+void InitTests(int argc, char** argv);
 
-  return RUN_ALL_TESTS();
-}
+}  // namespace oac_tree_gui::test
+
+#endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

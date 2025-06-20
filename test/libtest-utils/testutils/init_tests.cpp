@@ -18,18 +18,23 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "init_tests.h"
+
 #include <oac_tree_gui/components/load_resources.h>
 
-#include <testutils/init_tests.h>
-
-#include <QApplication>
-
-int main(int argc, char** argv)
+namespace oac_tree_gui::test
 {
-  oac_tree_gui::test::InitTests(argc, argv);
 
-  const QApplication app(argc, argv);
-  Q_UNUSED(app)
+void InitTests(int argc, char **argv)
+{
+  RegisterCustomMetaTypes();
 
-  return RUN_ALL_TESTS();
+  ::testing::InitGoogleTest(&argc, argv);
+  ::testing::InitGoogleMock(&argc, argv);
+
+  LoadOacTreeDomainPlugins();
+
+  LoadOacTreeItems();
 }
+
+}  // namespace oac_tree_gui::test
