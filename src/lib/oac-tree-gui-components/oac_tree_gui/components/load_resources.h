@@ -30,9 +30,14 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief Loads plugins, item factory and Qt metatypes.
+ * @brief Load items in a factory.
  */
-void LoadResources();
+void LoadOacTreeItems();
+
+/**
+ * @brief Load sequencer domain plugins.
+ */
+void LoadOacTreeDomainPlugins();
 
 }  // namespace oac_tree_gui
 

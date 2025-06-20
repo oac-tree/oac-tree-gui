@@ -53,15 +53,6 @@ bool ShouldStopRunningJobs()
   return msgBox.clickedButton() == yes_button;
 }
 
-void LoadMainPlugins()
-{
-  auto [success, message] = oac_tree_gui::LoadPlugins();
-  if (!success)
-  {
-    QMessageBox::warning(nullptr, "Failed to load plugins", QString::fromStdString(message));
-  }
-}
-
 std::vector<std::string> GetProcedureFiles(const std::string& path_name)
 {
   std::vector<std::string> result;

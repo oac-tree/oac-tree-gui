@@ -136,7 +136,7 @@ bool IsSequencerControlPluginAvailable()
       domainconstants::kWaitForConditionInstructionType);  // simplified check
 }
 
-std::pair<bool, std::string> LoadPlugins()
+std::pair<bool, std::string> LoadOacTreePlugins()
 {
   std::vector<std::string> failed_plugins;
 

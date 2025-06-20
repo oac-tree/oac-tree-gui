@@ -43,11 +43,6 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief Loads plugins and provide warning dialog if something went wrong.
- */
-void LoadMainPlugins();
-
-/**
  * @brief Create QApplication and main window.
  * @tparam MainWindowT The type of main window to create.
  */
@@ -58,7 +53,7 @@ int RunApplication(int argc, char** argv)
   auto options = oac_tree_gui::ParseOptions(argc, argv);
   sup::gui::SetupHighDpiScaling(options.scale);
 
-  oac_tree_gui::LoadResources();
+  oac_tree_gui::LoadOacTreeItems();
 
   QApplication app(argc, argv);
 

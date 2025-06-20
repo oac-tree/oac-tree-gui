@@ -25,8 +25,10 @@
 
 int main(int argc, char** argv)
 {
+  oac_tree_gui::RegisterCustomMetaTypes(); // before InitCoreApplication
+
   auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
-  sup::gui::InitCoreApplication("sequencer-operation", version);
+  sup::gui::InitCoreApplication("oac-tree-operation", version);
 
   return oac_tree_gui::RunApplication<oac_tree_gui::OperationMainWindow>(argc, argv);
 }

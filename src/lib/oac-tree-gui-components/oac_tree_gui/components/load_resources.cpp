@@ -28,14 +28,15 @@
 namespace oac_tree_gui
 {
 
-void LoadResources()
+void LoadOacTreeItems()
 {
   sup::gui::RegisterSessionItems();
-  RegisterSessionItems();
+  oac_tree_gui::RegisterSessionItems();
+}
 
-  LoadPlugins();
-
-  RegisterCustomMetaTypes();
+void LoadOacTreeDomainPlugins()
+{
+  (void) LoadOacTreePlugins();
 }
 
 }  // namespace oac_tree_gui

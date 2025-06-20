@@ -32,17 +32,20 @@
 
 int main(int argc, char** argv)
 {
+  oac_tree_gui::RegisterCustomMetaTypes();
+
   auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("sup-pvmonitor", version);
 
   auto options = oac_tree_gui::ParseOptions(argc, argv);
   sup::gui::SetupHighDpiScaling(options.scale);
 
-  QApplication app(argc, argv);
+  const QApplication app(argc, argv);
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
-  oac_tree_gui::LoadResources();
+  oac_tree_gui::LoadOacTreeDomainPlugins();
+  oac_tree_gui::LoadOacTreeItems();
 
   oac_tree_gui::PvMonitorMainWindow win;
   win.show();
