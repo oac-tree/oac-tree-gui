@@ -161,7 +161,7 @@ TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
   // We are testing here queued signals, need special waiting to let procedure complete
 
   // variables inside are changed
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(GetJobModel());
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 

@@ -124,7 +124,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   QTest::qWait(20);
 
   // variables inside are changed
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(GetJobModel());
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
