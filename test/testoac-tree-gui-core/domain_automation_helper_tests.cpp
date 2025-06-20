@@ -65,8 +65,8 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
       {{domainconstants::kNameAttribute, expected_name},
        {domainconstants::kTypeAttribute, expected_type},
        {domainconstants::kValueAttribute, expected_value}});
-  sup::oac_tree::VariableInfo info(oac_tree_gui::domainconstants::kLocalVariableType, variable_id,
-                                   attributes);
+  const sup::oac_tree::VariableInfo info(oac_tree_gui::domainconstants::kLocalVariableType,
+                                         variable_id, attributes);
 
   auto variable = CreateDomainVariable(info);
 
@@ -76,7 +76,7 @@ TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
 }
 
-TEST_F(DomainAutomationHelperTest, GetAttribute)
+TEST_F(DomainAutomationHelperTest, GetAttributeFromInstructionInfo)
 {
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
@@ -84,10 +84,17 @@ TEST_F(DomainAutomationHelperTest, GetAttribute)
                                             instruction_id,
                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
-  auto instruction = CreateDomainInstruction(info);
-
   EXPECT_EQ(GetAttribute(info, domainconstants::kTimeoutAttribute).value_or(""), std::string("42"));
   EXPECT_EQ(GetAttribute(info, "non-existing").value_or(""), std::string(""));
+}
+
+TEST_F(DomainAutomationHelperTest, GetAttributeFromVariableInfo)
+{
+  const std::size_t variable_id{0};
+  const sup::oac_tree::VariableInfo info("abc", variable_id, {{"abc", "def"}});
+
+  EXPECT_EQ(GetAttribute(info, "abc").value_or(""), std::string("def"));
+  EXPECT_FALSE(GetAttribute(info, "non-existing").has_value());
 }
 
 }  // namespace oac_tree_gui::test
