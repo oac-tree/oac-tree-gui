@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -56,6 +57,7 @@ TEST_F(VariableInfoItemTest, InitFromDomainInfoBeforeSetup)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
   const sup::dto::uint32 expected_index = 42U;
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::UnsignedInteger32Type, 42U);
 
   // constructing LocalVariable
   auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
@@ -88,7 +90,8 @@ TEST_F(VariableInfoItemTest, InitFromDomainInfoBeforeSetup)
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(item.GetType(), VariableInfoItem::GetStaticType());
-  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  EXPECT_NE(item.GetAnyValueItem(), nullptr);
+  EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
 }
 
 }  // namespace oac_tree_gui::test

@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -55,8 +56,7 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
     }
   }
 
-  // We do not create AnyValueItem from type/value attributes.
-  // Will get AnyValue's on first Workspace update
+  SetAnyValueFromDomainVariableInfo(info, *this);
 }
 
 std::unique_ptr<mvvm::SessionItem> VariableInfoItem::Clone() const

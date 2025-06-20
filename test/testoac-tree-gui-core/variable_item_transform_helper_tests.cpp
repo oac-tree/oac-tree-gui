@@ -89,7 +89,9 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
   EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
 
-  EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+  EXPECT_NE(variable_item->GetAnyValueItem(), nullptr);
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+  EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 }
 
 TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
@@ -98,7 +100,7 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
     WorkspaceItem workspace_item;
     workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
-    sup::oac_tree::WorkspaceInfo info;
+    const sup::oac_tree::WorkspaceInfo info;
     EXPECT_THROW(PopulateWorkspaceItem(info, &workspace_item), RuntimeException);
   }
 
