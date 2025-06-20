@@ -39,13 +39,9 @@ class VariableItem;
 class WorkspaceItem;
 
 /**
- * @brief Creates VariableItem from the automation server information.
- */
-// FIXME remove
-std::unique_ptr<VariableItem> CreateVariableItem(const sup::oac_tree::VariableInfo& info);
-
-/**
  * @brief Creates VariableInfoItem from the automation server information.
+ *
+ * The underlying type will be VariableInfoItem.
  */
 std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info);
 

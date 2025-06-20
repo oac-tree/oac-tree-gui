@@ -37,18 +37,6 @@
 namespace oac_tree_gui
 {
 
-std::unique_ptr<VariableItem> CreateVariableItem(const sup::oac_tree::VariableInfo& info)
-{
-  auto result = oac_tree_gui::CreateVariableItem(info.GetType());
-
-  // We create domain variable only to be able to use InitFromDomain mechanism for attribute
-  // propagation.
-  auto domain = CreateDomainVariable(info);
-  result->InitFromDomain(domain.get());
-
-  return result;
-}
-
 std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info)
 {
   auto result = std::make_unique<VariableInfoItem>();

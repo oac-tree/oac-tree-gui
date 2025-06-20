@@ -46,29 +46,6 @@ class VariableItemTransformHelperTest : public ::testing::Test
 {
 };
 
-TEST_F(VariableItemTransformHelperTest, CreateVariableItem)
-{
-  const std::size_t variable_id{0};
-  const std::string expected_name("abc");
-  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
-  const std::string expected_value("42");
-
-  const std::vector<sup::oac_tree::AttributeInfo> attributes(
-      {{domainconstants::kNameAttribute, expected_name},
-       {domainconstants::kTypeAttribute, expected_type},
-       {domainconstants::kValueAttribute, expected_value}});
-  const sup::oac_tree::VariableInfo info(domainconstants::kLocalVariableType, variable_id,
-                                         attributes);
-
-  auto variable_item = CreateVariableItem(info);
-
-  EXPECT_EQ(variable_item->GetType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
-}
-
 TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
 {
   const std::size_t variable_id{0};
