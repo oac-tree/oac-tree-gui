@@ -226,7 +226,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   auto procedure = test::CreateCopyProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  auto vars = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
+  auto vars = mvvm::utils::FindItems<VariableItem>(m_models.GetSequencerModel());
   ASSERT_EQ(vars.size(), 2);
   auto var0 = vars.at(0);
   auto var1 = vars.at(1);
@@ -237,7 +237,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
   // expanded procedure has different variables
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetJobModel());
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
@@ -284,7 +284,7 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
 
   auto procedure = test::CreateInputProcedureItem(m_models.GetSequencerModel(), initial_value);
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetSequencerModel());
   ASSERT_EQ(vars_inside.size(), 1);
   EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), initial_value));
 
@@ -313,7 +313,7 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
 
   EXPECT_FALSE(job_handler.IsRunning());
 
-  vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetJobModel());
   ASSERT_EQ(vars_inside.size(), 1);
   EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), new_value));
 }
@@ -325,7 +325,7 @@ TEST_F(LocalJobHandlerTest, UserInputIncrementScenario)
 
   auto procedure = test::CreateInputProcedureItem(m_models.GetSequencerModel(), initial_value);
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetSequencerModel());
   ASSERT_EQ(vars_inside.size(), 1);
   EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), initial_value));
 
@@ -360,7 +360,7 @@ TEST_F(LocalJobHandlerTest, UserInputIncrementScenario)
 
   EXPECT_FALSE(job_handler.IsRunning());
 
-  vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetJobModel());
   ASSERT_EQ(vars_inside.size(), 1);
   EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), expected_new_value));
 }
@@ -385,7 +385,7 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
 
   auto predicate = [this, &expected_anyvalue]()
   {
-    auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+    auto vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetJobModel());
     return test::IsEqual(*vars_inside.at(1), expected_anyvalue);
   };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 200));
@@ -396,7 +396,7 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
 
   // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
   // var1
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetJobModel());
   EXPECT_TRUE(test::IsEqual(*vars_inside.at(1), expected_anyvalue));
   EXPECT_FALSE(job_handler.IsRunning());
 }
@@ -470,7 +470,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
   // expanded procedure has different variables
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetJobModel());
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
   auto var_inside2 = vars_inside.at(2);
@@ -505,7 +505,7 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
   // expanded procedure has different variables and instructions
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(m_models.GetJobModel());
   auto instructions_inside = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
   ASSERT_EQ(vars_inside.size(), 2);          // var0, var1
   ASSERT_EQ(instructions_inside.size(), 3);  // sequence, increment0, increment1
