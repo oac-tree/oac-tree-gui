@@ -67,6 +67,13 @@ void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& var
                                    const anytype_registry_t* registry = nullptr);
 
 /**
+ * @brief Sets AnyValueItem on board of variable item using domain variable info.
+ */
+void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo& variable_info,
+                                       VariableItem& variable_item,
+                                       const anytype_registry_t* registry = nullptr);
+
+/**
  * @brief Sets AnyValueItem on board of instruction item using domain instruction.
  *
  * @param instruction Domain instruction with JSON type and value attribute defined.

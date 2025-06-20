@@ -21,6 +21,7 @@
 #include "anyvalue_item_transform_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -68,7 +69,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  (void) item.InsertItem(sup::gui::CreateAnyValueItem(anyvalue), mvvm::TagIndex::First());
+  (void)item.InsertItem(sup::gui::CreateAnyValueItem(anyvalue), mvvm::TagIndex::First());
 }
 
 void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,
@@ -89,7 +90,30 @@ void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &var
       return sup::dto::AnyValue(anytype);
     };
 
-    sup::dto::AnyValue anyvalue = get_anyvalue();  // executing lambda at initialisation
+    const sup::dto::AnyValue anyvalue = get_anyvalue();  // executing lambda at initialisation
+    SetAnyValue(anyvalue, variable_item);
+  }
+}
+
+void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo &variable_info,
+                                       VariableItem &variable_item,
+                                       const anytype_registry_t *registry)
+{
+  if (auto attr = GetAttribute(variable_info, domainconstants::kTypeAttribute); attr.has_value())
+  {
+    auto anytype = sup::gui::AnyTypeFromJSONString(attr.value(), registry);
+
+    auto get_anyvalue = [&anytype, &variable_info]()
+    {
+      if (auto value_attr = GetAttribute(variable_info, domainconstants::kValueAttribute);
+          value_attr.has_value())
+      {
+        return sup::gui::AnyValueFromJSONString(anytype, value_attr.value());
+      }
+      return sup::dto::AnyValue(anytype);
+    };
+
+    const sup::dto::AnyValue anyvalue = get_anyvalue();  // executing lambda at initialisation
     SetAnyValue(anyvalue, variable_item);
   }
 }

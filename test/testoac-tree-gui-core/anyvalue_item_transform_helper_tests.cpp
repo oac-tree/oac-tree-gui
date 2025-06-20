@@ -21,6 +21,7 @@
 #include "oac_tree_gui/transform/anyvalue_item_transform_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
@@ -42,6 +43,7 @@
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure_preamble.h>
 #include <sup/oac-tree/variable.h>
+#include <sup/oac-tree/variable_info.h>
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
@@ -222,13 +224,54 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariable)
   }
 }
 
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableInfo)
+{
+  {  // when domain variable has type attribute
+    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
+    auto info = CreateVariableInfo(*variable, 42U);
+
+    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
+
+    LocalVariableItem item;
+
+    SetAnyValueFromDomainVariableInfo(info, item);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
+  }
+
+  {  // when domain variable has type and value attribute
+    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
+    variable->AddAttribute(domainconstants::kValueAttribute, "42");
+    auto info = CreateVariableInfo(*variable, 42U);
+
+    const sup::dto::AnyValue expected_anyvalue(
+        sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+    LocalVariableItem item;
+    SetAnyValueFromDomainVariableInfo(info, item);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
+  }
+
+  {  // when domain variable has only value attribute
+    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    variable->AddAttribute(domainconstants::kValueAttribute, "42");
+    auto info = CreateVariableInfo(*variable, 42U);
+
+    LocalVariableItem item;
+    SetAnyValueFromDomainVariableInfo(info, item);
+
+    EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  }
+}
+
 //! Validate SetAnyValueFromDomainVariable helper method. Json type is preregistered.
 
 TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableWithRegistry)
 {
   sup::dto::AnyTypeRegistry registry;
-  std::string one_scalar_name = "OneScalar";
-  sup::dto::AnyType one_scalar{{{"value", sup::dto::SignedInteger32Type}}, one_scalar_name};
+  const std::string one_scalar_name = "OneScalar";
+  const sup::dto::AnyType one_scalar{{{"value", sup::dto::SignedInteger32Type}}, one_scalar_name};
   registry.RegisterType(one_scalar);
 
   auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
@@ -238,8 +281,8 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableWithRegistr
   LocalVariableItem item;
   SetAnyValueFromDomainVariable(*variable, item, &registry);
 
-  sup::dto::AnyValue expected_anyvalue = {{{"value", {sup::dto::SignedInteger32Type, 42}}},
-                                          one_scalar_name};
+  const sup::dto::AnyValue expected_anyvalue = {{{"value", {sup::dto::SignedInteger32Type, 42}}},
+                                                one_scalar_name};
 
   EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
 }
@@ -269,7 +312,7 @@ TEST_F(AnyValueItemTransformHelperTest, PopulateProcedurePreambleFromItem)
 {
   {  // empty
     sup::oac_tree::ProcedurePreamble preamble;
-    ProcedurePreambleItem item;
+    const ProcedurePreambleItem item;
     PopulateProcedurePreamble(item, preamble);
 
     EXPECT_TRUE(preamble.GetPluginPaths().empty());
@@ -287,7 +330,7 @@ TEST_F(AnyValueItemTransformHelperTest, PopulateProcedurePreambleFromItem)
     sup::oac_tree::ProcedurePreamble preamble;
     PopulateProcedurePreamble(item, preamble);
 
-    std::vector<std::string> expected_paths{"abc", "def"};
+    const std::vector<std::string> expected_paths{"abc", "def"};
     EXPECT_EQ(preamble.GetPluginPaths(), expected_paths);
     ASSERT_EQ(preamble.GetTypeRegistrations().size(), 1);
     EXPECT_EQ(preamble.GetTypeRegistrations().at(0).GetRegistrationMode(), 1);
@@ -297,7 +340,7 @@ TEST_F(AnyValueItemTransformHelperTest, PopulateProcedurePreambleFromItem)
   {  // attempt to add in non-empty preamble
     using sup::oac_tree::TypeRegistrationInfo;
 
-    ProcedurePreambleItem item;
+    const ProcedurePreambleItem item;
 
     sup::oac_tree::ProcedurePreamble preamble;
     preamble.AddPluginPath("abc");
