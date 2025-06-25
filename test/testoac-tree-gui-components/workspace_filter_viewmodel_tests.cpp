@@ -18,27 +18,29 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/workspace_filter_viewmodel.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/viewmodel/workspace_filter_viewmodel.h"
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
 
-//! Tests for WorkspaceFilterViewModel class.
-
+/**
+ * @brief Tests for WorkspaceFilterViewModel class.
+ */
 class WorkspaceFilterViewModelTest : public ::testing::Test
 {
 };
 
-//! Testing method IsValidName.
 TEST_F(WorkspaceFilterViewModelTest, IsValidName)
 {
   WorkspaceFilterViewModel viewmodel;
@@ -50,7 +52,6 @@ TEST_F(WorkspaceFilterViewModelTest, IsValidName)
   EXPECT_FALSE(viewmodel.IsValidName(""));
 }
 
-//! Testing method IsValidItem for item name match.
 TEST_F(WorkspaceFilterViewModelTest, IsItemAccepted)
 {
   WorkspaceItem workspace;
@@ -68,7 +69,26 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAccepted)
   EXPECT_FALSE(viewmodel.IsItemAccepted(local_item1));
 }
 
-//! Testing method IsValidItem for channel name case.
+TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForVariableInfoCase)
+{
+  WorkspaceItem workspace;
+
+  auto local_item0 = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  local_item0->SetDisplayName("ABC");
+  auto local_item1 = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  local_item1->SetDisplayName("AB");
+
+  auto local_item0_ptr = workspace.InsertItem(std::move(local_item0), mvvm::TagIndex::Append());
+  auto local_item1_ptr = workspace.InsertItem(std::move(local_item1), mvvm::TagIndex::Append());
+
+  WorkspaceFilterViewModel viewmodel;
+  viewmodel.SetPattern("ABC");
+
+  EXPECT_FALSE(viewmodel.IsItemAccepted(nullptr));
+  EXPECT_TRUE(viewmodel.IsItemAccepted(local_item0_ptr));
+  EXPECT_FALSE(viewmodel.IsItemAccepted(local_item1_ptr));
+}
+
 TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelName)
 {
   if (!IsSequencerPluginEpicsAvailable())
