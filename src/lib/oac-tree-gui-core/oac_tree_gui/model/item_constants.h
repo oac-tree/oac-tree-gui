@@ -56,6 +56,11 @@ const std::string kHiddenBehavior = "Hidden";
 const std::string kSucceedBehavior = "Succeed";
 const std::string kFailBehavior = "Fail";
 
+//! Debug constant. When false, we do not try to provide initial value of AnyValueItem on board of
+//! VariableInfo. The variable will get its value after first update from the workspace.
+//! FIXME consider variable removal and update the code as if the value is "false".
+constexpr bool kProvideVariableInfoInitialValue = false;
+
 }  // namespace oac_tree_gui::itemconstants
 
 #endif  // OAC_TREE_GUI_MODEL_ITEM_CONSTANTS_H_

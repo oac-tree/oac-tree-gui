@@ -241,8 +241,16 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
-  EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
-  EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
+    EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
+    EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
+  }
+  else
+  {
+    EXPECT_EQ(var_inside0->GetAnyValueItem(), nullptr);
+    EXPECT_EQ(var_inside1->GetAnyValueItem(), nullptr);
+  }
 
   job_handler.Start();
   // We are testing here queued signals, need special waiting
@@ -291,7 +299,7 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   m_job_item->SetProcedure(procedure);
 
   const sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, 42};
-  auto on_user_input = [new_value](auto) { return UserInputResult{new_value, true}; };
+  auto on_user_input = [&new_value](auto) { return UserInputResult{new_value, true}; };
 
   LocalJobHandler job_handler(m_job_item, UserContext{on_user_input});
 
@@ -336,7 +344,7 @@ TEST_F(LocalJobHandlerTest, UserInputIncrementScenario)
   auto on_user_input = [](const UserInputArgs& args)
   {
     auto initial_value = args.value;
-    sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, initial_value.As<int>() + 1};
+    const sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, initial_value.As<int>() + 1};
     return UserInputResult{new_value, true};
   };
 
@@ -478,8 +486,16 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::StringType, "abc"};
 
-  EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
-  EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
+    EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
+    EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
+  }
+  else
+  {
+    EXPECT_EQ(var_inside0->GetAnyValueItem(), nullptr);
+    EXPECT_EQ(var_inside1->GetAnyValueItem(), nullptr);
+  }
 
   job_handler.Start();
   // We are testing here queued signals, need special waiting
@@ -513,11 +529,18 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
-  {  // initial values in expanded procedure
+  // initial values in expanded procedure
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
     const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 0};
     const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 10};
     EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
     EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
+  }
+  else
+  {
+    EXPECT_EQ(var_inside0->GetAnyValueItem(), nullptr);
+    EXPECT_EQ(var_inside1->GetAnyValueItem(), nullptr);
   }
 
   // breakpoint on second increment will make it stop just before

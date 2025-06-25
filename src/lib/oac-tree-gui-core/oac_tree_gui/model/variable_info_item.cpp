@@ -56,7 +56,10 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
     }
   }
 
-  SetAnyValueFromDomainVariableInfo(info, *this);
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
+    SetAnyValueFromDomainVariableInfo(info, *this);
+  }
 }
 
 std::unique_ptr<mvvm::SessionItem> VariableInfoItem::Clone() const

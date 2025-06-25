@@ -21,6 +21,7 @@
 #include "oac_tree_gui/transform/variable_item_transform_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
@@ -66,9 +67,16 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
   EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
 
-  EXPECT_NE(variable_item->GetAnyValueItem(), nullptr);
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
+    EXPECT_NE(variable_item->GetAnyValueItem(), nullptr);
+    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+    EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
+  }
+  else
+  {
+    EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+  }
 }
 
 TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
@@ -112,11 +120,19 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
   EXPECT_EQ(variable_items[0], index_to_variable_item[0]);
   EXPECT_EQ(variable_items[1], index_to_variable_item[1]);
 
-  const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(GetAnyValue(*variable_items[0]), expected_anyvalue0);
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
+    const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
+    EXPECT_EQ(GetAnyValue(*variable_items[0]), expected_anyvalue0);
 
-  const sup::dto::AnyValue expected_anyvalue1(sup::dto::SignedInteger32Type, 43);
-  EXPECT_EQ(GetAnyValue(*variable_items[1]), expected_anyvalue1);
+    const sup::dto::AnyValue expected_anyvalue1(sup::dto::SignedInteger32Type, 43);
+    EXPECT_EQ(GetAnyValue(*variable_items[1]), expected_anyvalue1);
+  }
+  else
+  {
+    EXPECT_EQ(variable_items[0]->GetAnyValueItem(), nullptr);
+    EXPECT_EQ(variable_items[1]->GetAnyValueItem(), nullptr);
+  }
 }
 
 TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItemFromDomain)

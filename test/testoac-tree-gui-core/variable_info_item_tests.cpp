@@ -90,8 +90,15 @@ TEST_F(VariableInfoItemTest, InitFromDomainInfoBeforeSetup)
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(item.GetType(), VariableInfoItem::GetStaticType());
-  EXPECT_NE(item.GetAnyValueItem(), nullptr);
-  EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
+    EXPECT_NE(item.GetAnyValueItem(), nullptr);
+    EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
+  }
+  else
+  {
+    EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  }
 }
 
 }  // namespace oac_tree_gui::test
