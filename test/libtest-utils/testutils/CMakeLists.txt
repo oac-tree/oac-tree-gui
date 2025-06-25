@@ -1,6 +1,10 @@
 target_sources(${library_name} PRIVATE
+  cmake_info.cpp
+  cmake_info.h
   folder_test.cpp
   folder_test.h
+  init_tests.cpp
+  init_tests.h
   mock_automation_client.cpp
   mock_automation_client.h
   mock_domain_event_listener.h
@@ -24,7 +28,5 @@ target_sources(${library_name} PRIVATE
   standard_procedures.h
   test_utils.cpp
   test_utils.h
-  init_tests.cpp
-  init_tests.h
   universal_items.h
 )

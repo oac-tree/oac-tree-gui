@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Operational Applications UI Foundation
+ * Project       : Graphical User Interface for SUP oac-tree
  *
- * Description   : The model-view-viewmodel library of generic UI components
+ * Description   : Integrated development environment for oac-tree procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef AUTOGEN_SEQUENCERGUI_CORE_VERSION_H_
-#define AUTOGEN_SEQUENCERGUI_CORE_VERSION_H_
+#ifndef AUTOGEN_OAC_TREE_GUI_VERSION_CONSTANTS_H_
+#define AUTOGEN_OAC_TREE_GUI_VERSION_CONSTANTS_H_
 
 //! Automatically generated from version_constants.h.in
 
@@ -35,4 +35,4 @@ const std::string kProjectVersionString = "@PROJECT_VERSION@";
 
 }  // namespace
 
-#endif  // AUTOGEN_SEQUENCERGUI_CORE_VERSION_H_
+#endif  // AUTOGEN_OAC_TREE_GUI_VERSION_CONSTANTS_H_

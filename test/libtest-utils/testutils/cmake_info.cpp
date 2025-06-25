@@ -18,16 +18,36 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "folder_test.h"
-
 #include "cmake_info.h"
+
+#include "cmake_info_constants.h"  // from <build>/autogen
 
 namespace oac_tree_gui::test
 {
 
-FolderTest::FolderTest(std::string test_home_dirname)
-    : FolderOutputBasedTest(TestOutputDir(), std::move(test_home_dirname))
+std::string CMakeSourceDir()
 {
+  return kCMakeSourceDir;
+}
+
+std::string CMakeBinaryDir()
+{
+  return kCMakeBinaryDir;
+}
+
+std::string TestOutputDir()
+{
+  return kTestOutputDir;
+}
+
+std::string ProjectSourceDir()
+{
+  return kProjectSourceDir;
+}
+
+std::string ProjectResourceDir()
+{
+  return ProjectSourceDir() + "/test/resources/functional";
 }
 
 }  // namespace oac_tree_gui::test

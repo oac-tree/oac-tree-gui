@@ -35,7 +35,7 @@ find_package(sup-epics REQUIRED)
 # Generating config files
 # -----------------------------------------------------------------------------
 get_filename_component(SEQUENCERGUI_PROJECT_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
-configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/testconfig.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/testconfig.h @ONLY)
+configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/cmake_info_constants.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/cmake_info_constants.h @ONLY)
 configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version_constants.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/version_constants.h @ONLY)
 
 # -----------------------------------------------------------------------------

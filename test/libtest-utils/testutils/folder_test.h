@@ -23,6 +23,8 @@
 
 #include <mvvm/test/folder_output_based_test.h>
 
+#include <testutils/cmake_info.h>
+
 namespace oac_tree_gui::test
 {
 
@@ -35,23 +37,6 @@ class FolderTest : public mvvm::test::FolderOutputBasedTest
 public:
   explicit FolderTest(std::string test_home_dirname);
 };
-
-/**
- * @brief  Returns full path to the main test folder, as defined by CMake at compile time.
- *
- * Shoud point to CMAKE_CURRENT_BINARY_DIR/test_output
- */
-std::string GetTestSuiteOutputDir();
-
-/**
- * @brief Returns full path to repository source directory.
- */
-std::string GetProjectSourceDir();
-
-/**
- * @brief Returns full path to resource folder.
- */
-std::string GetResourceFolder();
 
 }  // namespace oac_tree_gui::test
 

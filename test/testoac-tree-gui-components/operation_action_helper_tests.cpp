@@ -124,7 +124,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForFileBasedJobWhenFileIsAbsen
 TEST_F(OperationActionHelperTest, CreateJobHandlerForFileBasedJob)
 {
   // all job handlers further down requres that procedure and job are part of models
-  auto job_item = CreateFileBasedJobItem(test::GetResourceFolder()+"/fallback.xml");
+  auto job_item = CreateFileBasedJobItem(test::ProjectResourceDir()+"/fallback.xml");
   auto job_item_ptr = job_item.get();
   m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());
 

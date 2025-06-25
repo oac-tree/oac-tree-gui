@@ -73,7 +73,7 @@ public:
 TEST_P(ResourceFolderTest, RunProcedure)
 {
   // load procedure from XML
-  auto filename = test::GetResourceFolder() + "/" + GetParam();
+  auto filename = test::ProjectResourceDir() + "/" + GetParam();
   EXPECT_TRUE(mvvm::utils::IsExists(filename));
   auto procedure_item = oac_tree_gui::ImportFromFile(filename);
   EXPECT_TRUE(procedure_item);

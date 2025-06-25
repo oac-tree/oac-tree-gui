@@ -18,16 +18,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "folder_test.h"
+#ifndef AUTOGEN_OAC_TREE_GUI_CMAKE_INFO_CONSTANTS_H_
+#define AUTOGEN_OAC_TREE_GUI_CMAKE_INFO_CONSTANTS_H_
 
-#include "cmake_info.h"
+//! Automatically generated from cmake_info_constants.h.in. Should be used via API provided by
+//! <testutils/cmake_info.h>
+
+#include <string>
 
 namespace oac_tree_gui::test
 {
 
-FolderTest::FolderTest(std::string test_home_dirname)
-    : FolderOutputBasedTest(TestOutputDir(), std::move(test_home_dirname))
-{
-}
+const std::string kCMakeSourceDir = "@CMAKE_SOURCE_DIR@";
+const std::string kCMakeBinaryDir = "@CMAKE_CURRENT_BINARY_DIR@";
+const std::string kTestOutputDir = "@SEQUENCERGUI_TESTRESULT_DIR@";
+std::string kProjectSourceDir = "@SEQUENCERGUI_PROJECT_DIR@";
 
 }  // namespace oac_tree_gui::test
+
+#endif  // AUTOGEN_OAC_TREE_GUI_CMAKE_INFO_CONSTANTS_H_
