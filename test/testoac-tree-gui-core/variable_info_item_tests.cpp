@@ -24,6 +24,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
@@ -99,6 +100,36 @@ TEST_F(VariableInfoItemTest, InitFromDomainInfoBeforeSetup)
   {
     EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   }
+}
+
+TEST_F(VariableInfoItemTest, InitialConnectableItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  // building domain variable
+  const std::string expected_name("expected_name");
+  const std::string expected_channel("TEST-CHANNEL-PvAccessServerVariableItemFromDomain");
+  const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
+  const std::string expected_value("42");
+
+  auto domain_variable = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
+  domain_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
+  domain_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
+  domain_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
+  domain_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
+
+  auto variable_info = CreateVariableInfo(*domain_variable);
+
+  // building VariableInfoItem
+  VariableInfoItem item;
+  item.InitFromDomainInfo(variable_info);
+
+  EXPECT_EQ(item.GetName(), expected_name);
+  ASSERT_NE(GetChannelItem(item), nullptr);
+  EXPECT_EQ(GetChannelItem(item)->Data<std::string>(), expected_channel);
 }
 
 }  // namespace oac_tree_gui::test

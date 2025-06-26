@@ -21,6 +21,7 @@
 #include "oac_tree_gui/viewmodel/workspace_filter_viewmodel.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -39,6 +40,7 @@ namespace oac_tree_gui::test
  */
 class WorkspaceFilterViewModelTest : public ::testing::Test
 {
+public:
 };
 
 TEST_F(WorkspaceFilterViewModelTest, IsValidName)
@@ -113,6 +115,42 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelName)
   pv_access_item->SetChannel("AB");
   pv_access_item->SetDisplayName("ABC");
   EXPECT_TRUE(viewmodel.IsItemAccepted(pv_access_item));  // name matches
+}
+
+TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelNameInfoCase)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  WorkspaceItem workspace;
+  auto local_item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  auto pv_access_item = CreateVariableInfoItem(domainconstants::kPvAccessServerVariableType);
+
+  // we have to create "channel" property manually, since domain Variable doesn't have channel
+  // attribute by default
+  pv_access_item->AddProperty(domainconstants::kChannelAttribute, std::string());
+
+  local_item->SetDisplayName("A");
+  // info item doesn't have API to set a channel name
+  GetChannelItem(*pv_access_item)->SetData("ABC");
+
+  auto local_item_ptr = workspace.InsertItem(std::move(local_item), mvvm::TagIndex::Append());
+  auto pv_access_item_ptr =
+      workspace.InsertItem(std::move(pv_access_item), mvvm::TagIndex::Append());
+
+  WorkspaceFilterViewModel viewmodel;
+  viewmodel.SetPattern("ABC");
+
+  EXPECT_FALSE(viewmodel.IsItemAccepted(nullptr));
+  EXPECT_FALSE(viewmodel.IsItemAccepted(local_item_ptr));
+  EXPECT_TRUE(viewmodel.IsItemAccepted(pv_access_item_ptr));  // channel name matches
+
+  GetChannelItem(*pv_access_item_ptr)->SetData("AB");
+  pv_access_item_ptr->SetDisplayName("ABC");
+
+  EXPECT_TRUE(viewmodel.IsItemAccepted(pv_access_item_ptr));  // name matches
 }
 
 //! Full test of the proxy model looking to the viewmodel with the workspace.

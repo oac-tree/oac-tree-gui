@@ -54,6 +54,19 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
     {
       SetName(attr_value);
     }
+
+    else if (attr_name == domainconstants::kChannelAttribute)
+    {
+      // creating string properties from attributes solely for tooltips
+      if (!mvvm::utils::HasTag(*this, attr_name))
+      {
+        AddProperty(attr_name, attr_value).SetEditable(false);
+      }
+      else
+      {
+        SetProperty(attr_name, attr_value);
+      }
+    }
   }
 
   if (itemconstants::kProvideVariableInfoInitialValue)
