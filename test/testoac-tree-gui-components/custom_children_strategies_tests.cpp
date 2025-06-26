@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/custom_children_strategies.h"
+
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
@@ -31,13 +33,12 @@
 
 #include <gtest/gtest.h>
 
-#include "oac_tree_gui/viewmodel/custom_children_strategies.h"
-
 namespace oac_tree_gui::test
 {
 
-//! Tests for strategies from standard_children_strategies.h
-
+/**
+ * @brief Testing custom strategies from custom_children_strategies.h
+ */
 class CustomChildrenStrategiesTest : public ::testing::Test
 {
 public:
@@ -51,7 +52,7 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
     auto variable0 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
     auto variable1 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
-    VariableTableChildrenStrategy strategy;
+    const VariableTableChildrenStrategy strategy;
     auto children = strategy.GetChildren(&workspace);
     EXPECT_EQ(children, std::vector<mvvm::SessionItem*>({variable0, variable1}));
   }
@@ -63,7 +64,7 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
     SetAnyValue(anyvalue, item);
     item.SetName("abc");
 
-    VariableTableChildrenStrategy strategy;
+    const VariableTableChildrenStrategy strategy;
     auto children = strategy.GetChildren(&item);
 
     // row of children is empty
@@ -77,13 +78,17 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
     SetAnyValue(anyvalue, item);
     item.SetName("abc");
 
-    VariableTableChildrenStrategy strategy;
+    const VariableTableChildrenStrategy strategy;
     auto children = strategy.GetChildren(&item);
 
     // row of should contain our struct item
     ASSERT_EQ(children.size(), 1);
     EXPECT_EQ(children.at(0)->GetType(),
               std::string(sup::gui::AnyValueStructItem::GetStaticType()));
+
+    // struct has to contain only one child (no additional items representing a type
+    children = strategy.GetChildren(item.GetAnyValueItem());
+    ASSERT_EQ(children.size(), 1);
   }
 }
 

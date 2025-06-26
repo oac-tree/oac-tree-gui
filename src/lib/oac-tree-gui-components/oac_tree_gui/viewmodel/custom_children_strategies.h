@@ -30,10 +30,12 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The VariableTableChildrenStrategy class reports which items should be in the tree
+ * @brief The VariableTableChildrenStrategy class reports which items should be in the table
  * representing WorkspaceItem.
  *
- * All variable's properties are hidden, except AnyValueStructItem.
+ * This strategy is intended to work with WorkspaceOperationViewModel. The main feature of it is to
+ * show scalar variables in one row with variable names, and struct/arrays as separate branch
+ * beneath.
  */
 class VariableTableChildrenStrategy : public mvvm::IChildrenStrategy
 {

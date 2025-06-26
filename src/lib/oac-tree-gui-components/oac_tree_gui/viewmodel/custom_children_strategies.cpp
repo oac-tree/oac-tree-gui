@@ -26,6 +26,7 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
 
@@ -37,17 +38,24 @@ namespace oac_tree_gui
 std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
     const mvvm::SessionItem *item) const
 {
-  static const std::vector<std::string> allowed_types = {
-      WorkspaceItem::GetStaticType(), sup::gui::AnyValueStructItem::GetStaticType(),
-      sup::gui::AnyValueArrayItem::GetStaticType()};
-
-  // for items from list we return all their children
-  if (mvvm::utils::Contains(allowed_types, item->GetType()))
+  // workspace shows all its variables
+  if (item->GetType() == WorkspaceItem::GetStaticType())
   {
     return item->GetAllItems();
   }
 
-  // items not from the list are variables, let's allow them to show struct and arrays beneath
+  // struct and arrays shows all children's of AnyValueItem base type
+  if (item->GetType() == sup::gui::AnyValueStructItem::GetStaticType())
+  {
+    return mvvm::utils::SinglePropertyItems(*item);
+  }
+
+  if (item->GetType() == sup::gui::AnyValueArrayItem::GetStaticType())
+  {
+    return mvvm::utils::SinglePropertyItems(*item);
+  }
+
+  // remaining items are variables, let's allow them to show struct and arrays beneath
   static const std::vector<std::string> allowed_variable_children_types = {
       sup::gui::AnyValueStructItem::GetStaticType(), sup::gui::AnyValueArrayItem::GetStaticType()};
 
