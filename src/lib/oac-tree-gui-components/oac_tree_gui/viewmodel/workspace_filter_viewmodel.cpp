@@ -21,6 +21,7 @@
 #include "workspace_filter_viewmodel.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <mvvm/model/item_utils.h>
@@ -28,6 +29,23 @@
 
 namespace oac_tree_gui
 {
+
+namespace
+{
+
+/**
+ * @brief Returns channel name, if VariableItem has it.
+ */
+std::optional<std::string> GetChannelName(const VariableItem &item)
+{
+  if (auto channel_item = GetChannelItem(item); channel_item)
+  {
+    return channel_item->Data<std::string>();
+  }
+  return {};
+}
+
+}  // namespace
 
 WorkspaceFilterViewModel::WorkspaceFilterViewModel(QObject *parent_object)
     : QSortFilterProxyModel(parent_object)
@@ -61,20 +79,13 @@ bool WorkspaceFilterViewModel::filterAcceptsRow(int source_row,
 
 bool WorkspaceFilterViewModel::IsItemAccepted(const mvvm::SessionItem *item) const
 {
-  if (!item)
+  if (auto variable_item = mvvm::utils::FindItemUp<VariableItem>(item); variable_item)
   {
-    return false;
-  }
-
-  // check if parent is connectable variable, and check its channel name
-  if (auto variable_item = mvvm::utils::FindItemUp<ConnectableVariableItem>(item); variable_item)
-  {
-    return IsValidName(variable_item->GetChannel()) ? true : IsValidName(variable_item->GetName());
-  }
-
-  // if not a channel, check variable name
-  if (auto variable_item = mvvm::utils::FindItemUp<LocalVariableItem>(item); variable_item)
-  {
+    if (auto channel_name = GetChannelName(*variable_item); channel_name.has_value())
+    {
+      // either channel name fits, or the name of variable
+      return IsValidName(channel_name.value()) ? true : IsValidName(variable_item->GetName());
+    }
     return IsValidName(variable_item->GetName());
   }
 
