@@ -70,11 +70,12 @@ TEST_F(VariableItemTest, RegisterAnyValueTags)
 {
   TestItem item;
 
-  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item),
+            std::vector<std::string>({itemconstants::kIsAvailable}));
 
   item.ResiterOtherTags();
   EXPECT_EQ(mvvm::utils::RegisteredTags(item),
-            std::vector<std::string>({itemconstants::kAnyValueTag}));
+            std::vector<std::string>({itemconstants::kIsAvailable, itemconstants::kAnyValueTag}));
 }
 
 }  // namespace oac_tree_gui::test

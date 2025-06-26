@@ -38,7 +38,6 @@ namespace oac_tree_gui
 ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_type)
     : UniversalVariableItem(variable_type)
 {
-  AddProperty(itemconstants::kIsAvailable, false).SetDisplayName("connected").SetEditable(false);
 }
 
 std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone() const
@@ -55,16 +54,6 @@ std::string ConnectableVariableItem::GetChannel() const
 void ConnectableVariableItem::SetChannel(const std::string &value)
 {
   SetProperty(domainconstants::kChannelAttribute, value);
-}
-
-bool ConnectableVariableItem::IsAvailable() const
-{
-  return Property<bool>(itemconstants::kIsAvailable);
-}
-
-void ConnectableVariableItem::SetIsAvailable(bool value)
-{
-  SetProperty(itemconstants::kIsAvailable, value);
 }
 
 // ----------------------------------------------------------------------------

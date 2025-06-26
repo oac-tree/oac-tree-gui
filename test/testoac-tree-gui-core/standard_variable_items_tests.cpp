@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/standard_variable_items.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -36,8 +38,6 @@
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
-
-#include "oac_tree_gui/model/standard_variable_items.h"
 
 namespace oac_tree_gui::test
 {
@@ -83,13 +83,13 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
 
   ASSERT_EQ(children.size(), 2);
 
-  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
-  ASSERT_NE(channel, nullptr);
-  EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
-
-  auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
+  auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
   ASSERT_NE(available, nullptr);
   EXPECT_EQ(available->GetDisplayName(), itemconstants::kIsAvailable);
+
+  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  ASSERT_NE(channel, nullptr);
+  EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
@@ -158,7 +158,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItem)
   FileVariableItem item;
   EXPECT_FALSE(item.GetName().empty());
   EXPECT_TRUE(item.GetFileName().empty());
-  EXPECT_TRUE(item.IsAvailable());
+  EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -172,13 +172,16 @@ TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
   const FileVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 2);
+  ASSERT_EQ(children.size(), 3);
 
-  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
+  auto available_name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
+  ASSERT_NE(available_name, nullptr);
+
+  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(file_name, nullptr);
   EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileNameAttribute);
 
-  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(2));
   ASSERT_NE(json_attr, nullptr);
   EXPECT_EQ(json_attr->GetDisplayName(), domainconstants::kPrettyJsonAttribute);
 }
@@ -226,7 +229,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
   oac_tree_gui::LocalVariableItem item;
   EXPECT_FALSE(item.GetName().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
-  EXPECT_TRUE(item.IsAvailable());
+  EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -235,6 +238,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
   EXPECT_EQ(item.GetAnyValueItem(), anyvalue_item);
 
   EXPECT_NO_THROW(item.SetIsAvailable(true));
+  EXPECT_TRUE(item.IsAvailable());
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
@@ -242,9 +246,9 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   const LocalVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 1);
+  ASSERT_EQ(children.size(), 2);
 
-  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
+  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
   EXPECT_FALSE(GetAttributeExposedFlag(*dynamic_type_item));
@@ -476,7 +480,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
 
-    workspace_t workspace;
+    const workspace_t workspace;
     EXPECT_NO_THROW(domain_item->Setup(workspace));
   }
 }

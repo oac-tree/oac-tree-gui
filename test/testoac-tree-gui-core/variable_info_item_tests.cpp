@@ -48,7 +48,8 @@ TEST_F(VariableInfoItemTest, InitialState)
   const VariableInfoItem item;
 
   EXPECT_TRUE(item.GetDomainType().empty());
-  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
+  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
   EXPECT_THROW(item.CreateDomainVariable(), sup::oac_tree::InvalidOperationException);
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 }
@@ -86,7 +87,7 @@ TEST_F(VariableInfoItemTest, InitFromDomainInfoBeforeSetup)
   item.InitFromDomainInfo(var_info);
 
   EXPECT_EQ(mvvm::utils::RegisteredTags(item),
-            std::vector<std::string>({itemconstants::kAnyValueTag}));
+            std::vector<std::string>({itemconstants::kIsAvailable, itemconstants::kAnyValueTag}));
 
   EXPECT_EQ(item.GetDisplayName(), expected_name);
   EXPECT_EQ(item.GetName(), expected_name);
@@ -126,6 +127,8 @@ TEST_F(VariableInfoItemTest, InitialConnectableItem)
   EXPECT_EQ(item->GetName(), expected_name);
   ASSERT_NE(GetChannelItem(*item), nullptr);
   EXPECT_EQ(GetChannelItem(*item)->Data<std::string>(), expected_channel);
+  ASSERT_NE(GetIsAvailableItem(*item), nullptr);
+  EXPECT_FALSE(GetIsAvailableItem(*item)->Data<bool>());
 }
 
 }  // namespace oac_tree_gui::test

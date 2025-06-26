@@ -34,8 +34,6 @@
 
 #include "oac_tree_gui/pvmonitor/domain_workspace_listener.h"
 
-using testing::_;
-
 namespace oac_tree_gui::test
 {
 

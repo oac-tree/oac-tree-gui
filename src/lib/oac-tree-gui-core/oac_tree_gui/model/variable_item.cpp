@@ -37,6 +37,10 @@ namespace oac_tree_gui
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
 {
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);
+  AddProperty(itemconstants::kIsAvailable, false)
+      .SetDisplayName("connected")
+      .SetEditable(false)
+      .SetVisible(false);
 }
 
 std::string VariableItem::GetDomainType() const
@@ -82,14 +86,12 @@ sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const
 
 bool VariableItem::IsAvailable() const
 {
-  return true;
+  return Property<bool>(itemconstants::kIsAvailable);
 }
 
 void VariableItem::SetIsAvailable(bool value)
 {
-  // Nothing to do for the base class. ConnectableItem::SetIsAvailable overrides that to show
-  // connectable status in UI.
-  (void)value;
+  SetProperty(itemconstants::kIsAvailable, value);
 }
 
 void VariableItem::RegisterAnyValueItemTag()

@@ -169,14 +169,13 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   EXPECT_FALSE(viewmodel.setData(variable_emptylabel_index, "cant_change", Qt::EditRole));
   EXPECT_EQ(variable_item->GetName(), std::string("new_name"));
 
-  EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 3);
+  EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 2);
   EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 3);
 
   auto channel_name_index = viewmodel.index(0, 0, variable_displayname_index);
   auto channel_value_index = viewmodel.index(0, 1, variable_displayname_index);
   auto anyvalue_name_index = viewmodel.index(1, 0, variable_displayname_index);
   auto anyvalue_value_index = viewmodel.index(1, 1, variable_displayname_index);
-  auto connected_name_index = viewmodel.index(2, 0, variable_displayname_index);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(anyvalue_name_index),
             variable_item->GetAnyValueItem());
@@ -187,9 +186,6 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
             std::string("channel"));
   EXPECT_EQ(viewmodel.data(anyvalue_name_index, Qt::DisplayRole).toString().toStdString(),
             std::string("scalar"));
-
-  EXPECT_EQ(viewmodel.data(connected_name_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("connected"));
 }
 
 }  // namespace oac_tree_gui::test

@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/universal_variable_item.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -30,8 +32,6 @@
 
 #include <gtest/gtest.h>
 
-#include "oac_tree_gui/model/universal_variable_item.h"
-
 namespace oac_tree_gui::test
 {
 
@@ -43,14 +43,15 @@ class UniversalVariableItemTest : public ::testing::Test
 
 TEST_F(UniversalVariableItemTest, InitialState)
 {
-  UniversalVariableItem item;
+  const UniversalVariableItem item;
 
   EXPECT_EQ(item.GetDisplayName(), UniversalVariableItem::GetStaticType());
 
-  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
+  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
   EXPECT_TRUE(item.GetDomainType().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
-  EXPECT_TRUE(item.IsAvailable());
+  EXPECT_FALSE(item.IsAvailable());
 }
 
 //! Initialisation from default constructed domain variable.
@@ -66,8 +67,9 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
   // registered tags should coincide with name and dynamicType attributes, and AnyValueTag
   // (json type and value are filtered out)
-  const std::vector<std::string> expected_tags(
-      {domainconstants::kDynamicTypeAttribute, itemconstants::kAnyValueTag});
+  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable,
+                                                domainconstants::kDynamicTypeAttribute,
+                                                itemconstants::kAnyValueTag});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should give an access
@@ -79,8 +81,8 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
   // setting up domain variable and repeat initialisation
   domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
-  const workspace_t ws;
-  domain_variable->Setup(ws);
+  const workspace_t workspace;
+  domain_variable->Setup(workspace);
   EXPECT_NO_THROW(item.InitFromDomain(domain_variable.get()));
 
   EXPECT_EQ(item.GetDisplayName(), std::string("abc"));

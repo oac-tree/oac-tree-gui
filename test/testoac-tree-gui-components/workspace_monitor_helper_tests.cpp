@@ -108,7 +108,7 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
   }
 
   WorkspaceItem workspace_item;
-  sup::oac_tree::Workspace workspace;
+  const sup::oac_tree::Workspace workspace;
 
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   auto var_item1 = workspace_item.InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
@@ -138,7 +138,7 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   EXPECT_EQ(var_item0->GetName(), "var1");
   EXPECT_EQ(var_item1->GetName(), "var2");
 
-  sup::dto::AnyValue expected_value(sup::dto::SignedInteger32Type, 0);
+  const sup::dto::AnyValue expected_value(sup::dto::SignedInteger32Type, 0);
 
   ASSERT_TRUE(var_item0->GetAnyValueItem());
   EXPECT_EQ(sup::gui::CreateAnyValue(*var_item0->GetAnyValueItem()), expected_value);
@@ -152,7 +152,7 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   }
 
   auto var_item2 = workspace_item.InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
-  EXPECT_TRUE(GetIsAvailableItem(*var_item2)->IsVisible());
+  EXPECT_FALSE(GetIsAvailableItem(*var_item2)->IsVisible());
   SetupNewVariable(var_item2, workspace_item.GetVariableCount());
 
   // "connected" property should be invisible, when variable is constructed via editor
@@ -187,14 +187,14 @@ TEST_F(WorkspaceMonitorHelperTest, AreMatchingWorkspaces)
 
 TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
 {
-  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
+  const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   LocalVariableItem variable_item;
 
   // initially VariableItem doesn't have AnyValueItem
   EXPECT_EQ(variable_item.GetAnyValueItem(), nullptr);
 
-  std::size_t unused_variable_index{0};
+  const std::size_t unused_variable_index{0};
   UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, variable_item);
 
   EXPECT_TRUE(variable_item.IsAvailable());

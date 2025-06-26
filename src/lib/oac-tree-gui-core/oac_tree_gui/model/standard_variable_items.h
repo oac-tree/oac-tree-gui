@@ -41,10 +41,6 @@ public:
   std::string GetChannel() const;
 
   void SetChannel(const std::string& value);
-
-  bool IsAvailable() const override;
-
-  void SetIsAvailable(bool value) override;
 };
 
 //! Represent ChannelAccessVariable.

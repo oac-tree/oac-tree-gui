@@ -18,7 +18,10 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/pvmonitor/workspace_synchronizer.h"
+
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
@@ -38,8 +41,6 @@
 #include <testutils/mock_domain_workspace_listener.h>
 
 #include <QTest>
-
-#include "oac_tree_gui/pvmonitor/workspace_synchronizer.h"
 
 namespace oac_tree_gui::test
 {
@@ -89,7 +90,12 @@ TEST_F(WorkspaceSynchronizerTest, InitialState)
 
   mock_listener_t model_listener(&m_model);
 
+  auto expected_event =
+      mvvm::DataChangedEvent{GetIsAvailableItem(*variable_item_ptr), mvvm::DataRole::kData};
+
   auto synchronizer = CreateSynchronizer();
+
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
   m_workspace.Setup();
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
@@ -98,8 +104,8 @@ TEST_F(WorkspaceSynchronizerTest, InitialState)
   EXPECT_EQ(GetAnyValue(*variable_item_ptr), initial_value);
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), initial_value);
 
-  // no signals from mock model listener expected here, since initial values of AnyValue coincide
-  // for both workspaces
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
+  synchronizer.reset();
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
@@ -116,6 +122,11 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
   mock_listener_t model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizer();
+
+  auto expected_event =
+      mvvm::DataChangedEvent{GetIsAvailableItem(*variable_item_ptr), mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
+
   m_workspace.Setup();
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
@@ -127,7 +138,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
   auto prev_anyvalue_item = variable_item_ptr->GetAnyValueItem();
 
   // preparing expectation for signals from the model
-  auto expected_event =
+  expected_event =
       mvvm::DataChangedEvent{variable_item_ptr->GetAnyValueItem(), mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
 
@@ -139,6 +150,11 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
 
   EXPECT_EQ(variable_item_ptr->GetAnyValueItem(), prev_anyvalue_item);
   EXPECT_EQ(GetAnyValue(*variable_item_ptr), new_value);
+
+  expected_event =
+      mvvm::DataChangedEvent{GetIsAvailableItem(*variable_item_ptr), mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
+  synchronizer.reset();
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
