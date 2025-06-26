@@ -47,6 +47,8 @@ class InstructionItem;
 namespace test
 {
 
+using attribute_list_t = std::vector<std::pair<std::string, std::string>>;
+
 /**
  * @brief Returns string representing EPICS database file with several testing variables.
  */
@@ -102,7 +104,8 @@ std::vector<InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
  * @brief Creates VariableItem from string representing the type of sup::oac_tree::Variable.
  */
 std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& domain_type,
-                                                     sup::dto::uint32 index = 0U);
+                                                         sup::dto::uint32 index = 0U,
+                                                         const attribute_list_t& attributes = {});
 
 }  // namespace test
 

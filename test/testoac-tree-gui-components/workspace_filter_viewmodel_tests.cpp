@@ -126,11 +126,10 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelNameInfoCase)
 
   WorkspaceItem workspace;
   auto local_item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
-  auto pv_access_item = CreateVariableInfoItem(domainconstants::kPvAccessServerVariableType);
 
-  // we have to create "channel" property manually, since domain Variable doesn't have channel
-  // attribute by default
-  pv_access_item->AddProperty(domainconstants::kChannelAttribute, std::string());
+  auto pv_access_item =
+      CreateVariableInfoItem(domainconstants::kPvAccessServerVariableType, 0,
+                             {{domainconstants::kChannelAttribute, std::string()}});
 
   local_item->SetDisplayName("A");
   // info item doesn't have API to set a channel name

@@ -182,9 +182,13 @@ std::vector<InstructionItem *> FindInstructions(const mvvm::ISessionModel &model
 }
 
 std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string &domain_type,
-                                                         sup::dto::uint32 index)
+                                                         sup::dto::uint32 index,
+                                                         const attribute_list_t &attributes)
 {
   auto domain = CreateDomainVariable(domain_type);
+
+  domain->AddAttributes(attributes);
+
   auto info = ::oac_tree_gui::CreateVariableInfo(*domain, index);
 
   auto result = std::make_unique<VariableInfoItem>();

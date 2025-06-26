@@ -34,6 +34,7 @@
 #include <sup/oac-tree/variable_info.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -115,21 +116,16 @@ TEST_F(VariableInfoItemTest, InitialConnectableItem)
   const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
   const std::string expected_value("42");
 
-  auto domain_variable = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
-  domain_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
-  domain_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
-  domain_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
-  domain_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
+  const attribute_list_t attributes = {{domainconstants::kNameAttribute, expected_name},
+                                       {domainconstants::kChannelAttribute, expected_channel},
+                                       {domainconstants::kTypeAttribute, expected_datatype},
+                                       {domainconstants::kValueAttribute, expected_value}};
 
-  auto variable_info = CreateVariableInfo(*domain_variable);
+  auto item = CreateVariableInfoItem(domainconstants::kPvAccessServerVariableType, 0, attributes);
 
-  // building VariableInfoItem
-  VariableInfoItem item;
-  item.InitFromDomainInfo(variable_info);
-
-  EXPECT_EQ(item.GetName(), expected_name);
-  ASSERT_NE(GetChannelItem(item), nullptr);
-  EXPECT_EQ(GetChannelItem(item)->Data<std::string>(), expected_channel);
+  EXPECT_EQ(item->GetName(), expected_name);
+  ASSERT_NE(GetChannelItem(*item), nullptr);
+  EXPECT_EQ(GetChannelItem(*item)->Data<std::string>(), expected_channel);
 }
 
 }  // namespace oac_tree_gui::test
