@@ -40,6 +40,13 @@ public:
   {
   public:
     TestItem() : JobItem("TestItem") {}
+
+    static std::string GetStaticType() { return "TestItem"; }
+
+    std::unique_ptr<SessionItem> Clone() const override
+    {
+      return std::make_unique<TestItem>(*this);
+    }
   };
 };
 
@@ -56,7 +63,6 @@ TEST_F(JobItemTest, JobItem)
   EXPECT_EQ(item.GetStatus(), RunnerStatus::kInitial);
 
   EXPECT_EQ(item.GetExpandedProcedure(), nullptr);
-
 }
 
 TEST_F(JobItemTest, SetProcedure)
