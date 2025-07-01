@@ -3,7 +3,9 @@
   <Repeat name="" isRoot="false" maxCount="100">
     <Sequence name="" isRoot="false">
       <Wait name="" isRoot="false" timeout="0.5"/>
-      <Message name="" isRoot="false" text="Hello"/>
+      <Message name="" isRoot="false" text="Hello A"/>
+      <Message name="" isRoot="false" text="Hello B"/>
+      <Message name="" isRoot="false" text="Hello C"/>
       <Wait name="" isRoot="false" timeout="0.5"/>
       <Output name="" isRoot="false" fromVar="monitor" description=""/>
     </Sequence>

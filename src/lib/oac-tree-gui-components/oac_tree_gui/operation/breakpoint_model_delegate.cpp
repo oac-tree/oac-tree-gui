@@ -68,6 +68,14 @@ void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     if (status == BreakpointStatus::kSet)
     {
       PaintBreakpoint(painter, option.rect, kBreakpointSetColor);
+
+      QPen pen(Qt::green, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+      painter->setPen(pen);
+      auto top_left = option.rect.topLeft();
+      QLine line(QPoint(0, top_left.y()), option.rect.topRight());
+      qDebug() << option.rect;
+      painter->drawLine(line);
+
     }
     else if (status == BreakpointStatus::kDisabled)
     {

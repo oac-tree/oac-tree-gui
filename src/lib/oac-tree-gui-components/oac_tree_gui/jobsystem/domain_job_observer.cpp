@@ -34,6 +34,7 @@
 #include <sup/oac-tree/instruction.h>
 
 #include <cmath>
+#include <iostream>
 #include <sstream>
 #include <thread>
 
@@ -73,6 +74,10 @@ void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
 {
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 
+  std::cout << " InstructionStateUpdated " << instr_idx << " "
+            << sup::oac_tree::StatusToString(state.m_execution_status) << " breakpoint set"
+            << state.m_breakpoint_set << std::endl;
+
   {
     const std::lock_guard<std::mutex> lock{m_mutex};
     m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
@@ -81,6 +86,7 @@ void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
 
 void DomainJobObserver::BreakpointInstructionUpdated(sup::dto::uint32 instr_idx)
 {
+  std::cout << " BreakpointInstructionUpdated " << instr_idx << "\n";
   (void)instr_idx;
 }
 
