@@ -53,7 +53,7 @@ std::string ConnectableVariableItem::GetChannel() const
 
 void ConnectableVariableItem::SetChannel(const std::string &value)
 {
-  SetProperty(domainconstants::kChannelAttribute, value);
+  (void) SetProperty(domainconstants::kChannelAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ std::string FileVariableItem::GetFileName() const
 
 void FileVariableItem::SetFileName(const std::string &name)
 {
-  SetProperty(oac_tree_gui::domainconstants::kFileNameAttribute, name);
+  (void) SetProperty(oac_tree_gui::domainconstants::kFileNameAttribute, name);
 }
 
 // ----------------------------------------------------------------------------

@@ -112,7 +112,7 @@ TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandState)
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = m_model.InsertItem<SequenceItem>(container);
   auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
-  sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  (void) sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
   auto wait = m_model.InsertItem<SequenceItem>(sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(), 1);
@@ -146,7 +146,7 @@ TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstruction
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = m_model.InsertItem<SequenceItem>(container);
   auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
-  sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  (void) sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
   auto wait = m_model.InsertItem<SequenceItem>(sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(), 1);

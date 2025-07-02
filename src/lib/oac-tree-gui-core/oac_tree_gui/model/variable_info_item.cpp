@@ -64,7 +64,7 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
       }
       else
       {
-        SetProperty(attr_name, attr_value);
+        (void) SetProperty(attr_name, attr_value);
       }
     }
   }

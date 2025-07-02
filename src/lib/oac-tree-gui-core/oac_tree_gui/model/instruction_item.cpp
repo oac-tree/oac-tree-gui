@@ -109,7 +109,7 @@ std::string InstructionItem::GetName() const
 
 void InstructionItem::SetName(const std::string &name)
 {
-  SetProperty(itemconstants::kName, name);
+  (void) SetProperty(itemconstants::kName, name);
 }
 
 std::string InstructionItem::GetStatus() const
@@ -119,7 +119,7 @@ std::string InstructionItem::GetStatus() const
 
 void InstructionItem::SetStatus(const std::string &status)
 {
-  SetProperty(itemconstants::kStatus, status);
+  (void) SetProperty(itemconstants::kStatus, status);
 }
 
 double InstructionItem::GetX() const
@@ -129,7 +129,7 @@ double InstructionItem::GetX() const
 
 void InstructionItem::SetX(double value)
 {
-  SetProperty(itemconstants::kXpos, value);
+  (void) SetProperty(itemconstants::kXpos, value);
 }
 
 double InstructionItem::GetY() const
@@ -139,14 +139,14 @@ double InstructionItem::GetY() const
 
 void InstructionItem::SetY(double value)
 {
-  SetProperty(itemconstants::kYpos, value);
+  (void) SetProperty(itemconstants::kYpos, value);
 }
 
 void InstructionItem::SetBehavior(const std::string &behavior_name)
 {
   auto property = Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag);
   property.SetValue(behavior_name);
-  SetProperty(itemconstants::kBehaviorTag, property);
+  (void) SetProperty(itemconstants::kBehaviorTag, property);
 }
 
 std::string InstructionItem::GetBehavior() const

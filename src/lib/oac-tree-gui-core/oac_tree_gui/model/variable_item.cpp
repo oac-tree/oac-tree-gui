@@ -91,7 +91,7 @@ bool VariableItem::IsAvailable() const
 
 void VariableItem::SetIsAvailable(bool value)
 {
-  SetProperty(itemconstants::kIsAvailable, value);
+  (void) SetProperty(itemconstants::kIsAvailable, value);
 }
 
 void VariableItem::RegisterAnyValueItemTag()

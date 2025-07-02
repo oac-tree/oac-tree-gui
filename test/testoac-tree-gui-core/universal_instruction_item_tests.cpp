@@ -94,7 +94,7 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
 TEST_F(UniversalInstructionItemTest, CreateUsingDomainName)
 {
   UniversalInstructionItem item(domainconstants::kWaitInstructionType);
-  item.SetProperty(domainconstants::kNameAttribute, "abc");
+  (void) item.SetProperty(domainconstants::kNameAttribute, "abc");
 
   // different wrt test below
   EXPECT_EQ(item.GetType(), domainconstants::kWaitInstructionType);
@@ -121,7 +121,7 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   EXPECT_EQ(item.GetType(), UniversalInstructionItem::GetStaticType());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
-  item.SetProperty(domainconstants::kNameAttribute, "abc");
+  (void) item.SetProperty(domainconstants::kNameAttribute, "abc");
 
   auto domain_instruction = item.CreateDomainInstruction();
   EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
@@ -189,7 +189,7 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
 
   {  // creating domain, when GUI has ShowCollapsed set to false
     UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
-    item.SetProperty(domainconstants::kShowCollapsedAttribute, false);
+    (void) item.SetProperty(domainconstants::kShowCollapsedAttribute, false);
     EXPECT_FALSE(IsCollapsed(item));
 
     auto domain = item.CreateDomainInstruction();

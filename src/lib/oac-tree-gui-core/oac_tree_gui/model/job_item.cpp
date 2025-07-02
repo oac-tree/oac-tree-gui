@@ -59,7 +59,7 @@ RunnerStatus JobItem::GetStatus() const
 void JobItem::SetStatus(RunnerStatus status)
 {
   // internally we store status as a string so all views can show it
-  SetProperty(itemconstants::kStatus, ToString(status));
+  (void) SetProperty(itemconstants::kStatus, ToString(status));
 }
 
 int JobItem::GetTickTimeout() const
@@ -69,7 +69,7 @@ int JobItem::GetTickTimeout() const
 
 void JobItem::SetTickTimeout(int msec)
 {
-  SetProperty(itemconstants::kTickTimeout, msec);
+  (void) SetProperty(itemconstants::kTickTimeout, msec);
 }
 
 void JobItem::SetProcedure(const ProcedureItem *item)

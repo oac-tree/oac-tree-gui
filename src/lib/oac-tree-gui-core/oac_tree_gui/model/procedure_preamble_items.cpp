@@ -63,7 +63,7 @@ void TypeRegistrationItem::SetRegistrationMode(int value)
 {
   auto combo = Property<mvvm::ComboProperty>(kTypeRegistrationMode);
   combo.SetCurrentIndex(value);
-  SetProperty(kTypeRegistrationMode, combo);
+  (void) SetProperty(kTypeRegistrationMode, combo);
 }
 
 std::string TypeRegistrationItem::GetRegistrationString() const
@@ -73,7 +73,7 @@ std::string TypeRegistrationItem::GetRegistrationString() const
 
 void TypeRegistrationItem::SetRegistrationString(const std::string &value)
 {
-  SetProperty(kTypeRegistrationString, value);
+  (void) SetProperty(kTypeRegistrationString, value);
 }
 
 // ----------------------------------------------------------------------------

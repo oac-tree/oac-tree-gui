@@ -67,7 +67,7 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
     else if (attr_name == domainconstants::kShowCollapsedAttribute)
     {
       // show_collapsed came as string, need to convert it to bool
-      SetProperty(domainconstants::kShowCollapsedAttribute, mvvm::utils::StringToBool(attr_value));
+      (void) SetProperty(domainconstants::kShowCollapsedAttribute, mvvm::utils::StringToBool(attr_value));
     }
 
     else
@@ -79,7 +79,7 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
       }
       else
       {
-        SetProperty(attr_name, attr_value);
+        (void) SetProperty(attr_name, attr_value);
       }
     }
   }

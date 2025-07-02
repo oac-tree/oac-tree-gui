@@ -100,7 +100,7 @@ std::size_t RemoteJobItem::GetRemoteJobIndex() const
 
 void RemoteJobItem::SetRemoteJobIndex(std::size_t value)
 {
-  SetProperty(kJobIndex, value);
+  (void) SetProperty(kJobIndex, value);
 }
 
 std::string RemoteJobItem::GetServerName() const
@@ -110,7 +110,7 @@ std::string RemoteJobItem::GetServerName() const
 
 void RemoteJobItem::SetServerName(const std::string &name)
 {
-  SetProperty(kServerName, name);
+  (void) SetProperty(kServerName, name);
 }
 
 std::vector<std::string> GetJobItemTypes()
@@ -145,7 +145,7 @@ std::string FileBasedJobItem::GetFileName() const
 
 void FileBasedJobItem::SetFileName(const std::string &value)
 {
-  SetProperty(kFileName, value);
+  (void) SetProperty(kFileName, value);
 }
 
 // ------------------------------------------------------------------------------------------------

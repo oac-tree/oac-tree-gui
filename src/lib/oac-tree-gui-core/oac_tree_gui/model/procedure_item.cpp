@@ -113,7 +113,7 @@ std::string ProcedureItem::GetName() const
 
 void ProcedureItem::SetName(const std::string &value)
 {
-  SetProperty(itemconstants::kName, value);
+  (void) SetProperty(itemconstants::kName, value);
 }
 
 std::string ProcedureItem::GetDescription() const
@@ -123,7 +123,7 @@ std::string ProcedureItem::GetDescription() const
 
 void ProcedureItem::SetDescription(const std::string &value)
 {
-  SetProperty(itemconstants::kDescription, value);
+  (void) SetProperty(itemconstants::kDescription, value);
 }
 
 std::string ProcedureItem::GetFileName() const
@@ -133,7 +133,7 @@ std::string ProcedureItem::GetFileName() const
 
 void ProcedureItem::SetFileName(const std::string &value)
 {
-  SetProperty(kFileName, value);
+  (void) SetProperty(kFileName, value);
 }
 
 InstructionContainerItem *ProcedureItem::GetInstructionContainer() const
