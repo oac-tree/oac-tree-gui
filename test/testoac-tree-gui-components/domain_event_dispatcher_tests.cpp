@@ -18,12 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/domain_event_dispatcher.h"
+
 #include <oac_tree_gui/jobsystem/domain_events.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>
-
-#include "oac_tree_gui/jobsystem/domain_event_dispatcher.h"
 
 namespace oac_tree_gui::test
 {
@@ -56,40 +56,45 @@ public:
 
 TEST_F(DomainEventDispatcherTest, EmptyEvent)
 {
-  using ::testing::_;
-
   const domain_event_t event;
   auto dispatcher = CreateDispatcher(event);
 
-  EXPECT_CALL(m_listener, OnInstructionStateUpdated(_)).Times(0);
-  EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(0);
+  EXPECT_CALL(m_listener, OnInstructionStateUpdated(::testing::_)).Times(0);
+  EXPECT_CALL(m_listener, OnJobStateChanged(::testing::_)).Times(0);
 
   dispatcher->OnNewEvent();
 }
 
 TEST_F(DomainEventDispatcherTest, InstructionStateUpdatedChanged)
 {
-  using ::testing::_;
-
   InstructionStateUpdatedEvent expected_event{
       0, sup::oac_tree::InstructionState{false, ::sup::oac_tree::ExecutionStatus::NOT_STARTED}};
   auto dispatcher = CreateDispatcher(expected_event);
 
   EXPECT_CALL(m_listener, OnInstructionStateUpdated(expected_event)).Times(1);
-  EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(0);
+  EXPECT_CALL(m_listener, OnJobStateChanged(::testing::_)).Times(0);
 
   dispatcher->OnNewEvent();
 }
 
 TEST_F(DomainEventDispatcherTest, JobStatusChanged)
 {
-  using ::testing::_;
-
   JobStateChangedEvent expected_event{::sup::oac_tree::JobState::kInitial};
   auto dispatcher = CreateDispatcher(expected_event);
 
-  EXPECT_CALL(m_listener, OnInstructionStateUpdated(_)).Times(0);
+  EXPECT_CALL(m_listener, OnInstructionStateUpdated(::testing::_)).Times(0);
   EXPECT_CALL(m_listener, OnJobStateChanged(expected_event)).Times(1);
+
+  dispatcher->OnNewEvent();
+}
+
+TEST_F(DomainEventDispatcherTest, BreakpointHitChanged)
+{
+  const sup::dto::uint32 expected_index{42U};
+  BreakpointHitEvent expected_event{expected_index};
+  auto dispatcher = CreateDispatcher(expected_event);
+
+  EXPECT_CALL(m_listener, OnBreakpointHitEvent(expected_event)).Times(1);
 
   dispatcher->OnNewEvent();
 }

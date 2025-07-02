@@ -118,6 +118,18 @@ TEST_F(DomainJobServiceTest, JobStateUpdated)
   EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
 }
 
+TEST_F(DomainJobServiceTest, BreakpointHitUpdated)
+{
+  const sup::dto::uint32 expected_index{42U};
+
+  const BreakpointHitEvent expected_event{expected_index};
+  EXPECT_CALL(m_event_listener, OnBreakpointHitEvent(expected_event)).Times(1);
+
+  m_service->GetJobInfoIO()->BreakpointInstructionUpdated(expected_index);
+
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
+}
+
 TEST_F(DomainJobServiceTest, PutValue)
 {
   auto service = CreateService();

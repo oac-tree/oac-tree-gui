@@ -127,6 +127,9 @@ public:
     result.active_instruction_changed_event = [this](const ActiveInstructionChangedEvent& event)
     { OnActiveInstructionChanged(event); };
 
+    result.breakpoint_hit_updated = [this](const BreakpointHitEvent& event)
+    { OnBreakpointHitEvent(event); };
+
     return result;
   }
 };

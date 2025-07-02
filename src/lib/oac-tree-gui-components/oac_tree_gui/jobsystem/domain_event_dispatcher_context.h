@@ -47,6 +47,9 @@ struct DomainEventDispatcherContext
 
   //! a callback to process change in active instruction leaves
   std::function<void(const ActiveInstructionChangedEvent&)> active_instruction_changed_event;
+
+  //! a callback to process breakpoint hit event
+  std::function<void(const BreakpointHitEvent&)> breakpoint_hit_updated;
 };
 
 }  // namespace sequencergui
