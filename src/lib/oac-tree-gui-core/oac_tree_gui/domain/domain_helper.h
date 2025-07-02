@@ -122,6 +122,11 @@ std::pair<bool, std::string> LoadOacTreePlugins();
  */
 std::string GetPluginFileName(const std::string& plugin_name);
 
+/**
+ * @brief Checks if given index represents a valid instruction index.
+ */
+bool IsValidInstructionIndex(sup::dto::uint32 index);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_HELPER_H_

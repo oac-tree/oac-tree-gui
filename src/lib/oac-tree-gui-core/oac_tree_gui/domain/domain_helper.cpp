@@ -21,13 +21,14 @@
 #include "domain_helper.h"
 
 #include "domain_object_type_registry.h"
-#include "oac_tree_gui/domain/domain_constants.h"
+#include "domain_constants.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 
 #include <mvvm/core/platform.h>
 #include <mvvm/utils/string_utils.h>
 
+#include <sup/oac-tree/i_job_info_io.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_registry.h>
 #include <sup/oac-tree/sequence_parser.h>
@@ -236,6 +237,11 @@ std::string GetPluginFileName(const std::string& plugin_name)
   }
 
   return plugin_name;
+}
+
+bool IsValidInstructionIndex(sup::dto::uint32 index)
+{
+  return index != sup::oac_tree::kInvalidInstructionIndex;
 }
 
 }  // namespace oac_tree_gui

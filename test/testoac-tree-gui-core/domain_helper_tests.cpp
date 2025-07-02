@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <sup/oac-tree/constants.h>
+#include <sup/oac-tree/i_job_info_io.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/user_interface.h>
 #include <sup/oac-tree/variable.h>
@@ -173,6 +174,13 @@ TEST_F(DomainHelperTest, GlobalDomainObjectTypeRegistry)
                 .GetPluginName(domainconstants::kPvAccessClientVariableType)
                 .value_or(undefined),
             domainconstants::kEpicsPVXSPluginName);
+}
+
+TEST_F(DomainHelperTest, IsValidInstructionIndex)
+{
+  EXPECT_TRUE(IsValidInstructionIndex(0));
+  EXPECT_TRUE(IsValidInstructionIndex(42));
+  EXPECT_FALSE(IsValidInstructionIndex(sup::oac_tree::kInvalidInstructionIndex));
 }
 
 }  // namespace oac_tree_gui::test
