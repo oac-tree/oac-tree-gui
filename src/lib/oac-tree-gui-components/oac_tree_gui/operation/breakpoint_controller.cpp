@@ -42,6 +42,8 @@ void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
 
 void BreakpointController::SetAsActiveBreakpoint(InstructionItem *instruction)
 {
+  ResetCurrentActiveBreakpoint();
+
   m_active_breakpoint_instruction = instruction;
   SetBreakpointStatus(*instruction, BreakpointStatus::kSetAndHit);
 }
@@ -50,6 +52,8 @@ void BreakpointController::ResetCurrentActiveBreakpoint()
 {
   if (m_active_breakpoint_instruction)
   {
+    // Current simplified logic is that if the breakpoint was Hit, it means it was Set before.
+    // Let's return it to Set
     SetBreakpointStatus(*m_active_breakpoint_instruction, BreakpointStatus::kSet);
     m_active_breakpoint_instruction = nullptr;
   }

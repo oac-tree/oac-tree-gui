@@ -114,6 +114,13 @@ TEST_F(BreakpointControllerTest, SetAsActiveBreakpoint)
   // second time doesn't change anything
   controller.ResetCurrentActiveBreakpoint();
   EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kSet);
+
+  // trying to set several active breakpoints
+  EXPECT_NO_THROW(controller.SetAsActiveBreakpoint(sequence0));
+  EXPECT_NO_THROW(controller.SetAsActiveBreakpoint(wait0));
+
+  EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kSet);
+  EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kSetAndHit);
 }
 
 }  // namespace oac_tree_gui::test
