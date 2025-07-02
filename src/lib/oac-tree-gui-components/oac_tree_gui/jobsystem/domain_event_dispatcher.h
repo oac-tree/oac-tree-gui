@@ -54,6 +54,7 @@ public:
   void operator()(const JobStateChangedEvent& event) const;
   void operator()(const LogEvent& event) const;
   void operator()(const ActiveInstructionChangedEvent& event) const;
+  void operator()(const BreakpointHitEvent& event) const;
 
 private:
   get_event_callback_t m_get_event;

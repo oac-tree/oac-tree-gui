@@ -81,6 +81,13 @@ std::string DomainEventToStringVisitor::operator()(const ActiveInstructionChange
   return ostr.str();
 }
 
+std::string DomainEventToStringVisitor::operator()(const BreakpointHitEvent &event) const
+{
+  std::ostringstream ostr;
+  ostr << std::string("BreakpointHitEvent") << " index: " << event.index;
+  return ostr.str();
+}
+
 active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::InstructionInfo &info)
 {
   auto parent_indices = sup::oac_tree::utils::GetParentIndices(info);

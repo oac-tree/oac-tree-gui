@@ -107,7 +107,7 @@ struct BreakpointHitEvent
 
 using domain_event_t =
     std::variant<std::monostate, InstructionStateUpdatedEvent, VariableUpdatedEvent,
-                 JobStateChangedEvent, LogEvent, ActiveInstructionChangedEvent>;
+                 JobStateChangedEvent, LogEvent, ActiveInstructionChangedEvent, BreakpointHitEvent>;
 
 bool IsValid(const domain_event_t& value);
 

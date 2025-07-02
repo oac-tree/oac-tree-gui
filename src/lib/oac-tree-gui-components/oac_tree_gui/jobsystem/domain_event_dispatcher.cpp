@@ -89,4 +89,8 @@ void DomainEventDispatcher::operator()(const ActiveInstructionChangedEvent &even
   }
 }
 
+void DomainEventDispatcher::operator()(const BreakpointHitEvent &event) const
+{
+}
+
 }  // namespace oac_tree_gui

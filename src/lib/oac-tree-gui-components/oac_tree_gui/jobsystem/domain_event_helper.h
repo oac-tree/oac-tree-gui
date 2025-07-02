@@ -47,6 +47,8 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::oac_tree_gui::LogEvent &event) const;
 
   std::string operator()(const ::oac_tree_gui::ActiveInstructionChangedEvent &event) const;
+
+  std::string operator()(const ::oac_tree_gui::BreakpointHitEvent &event) const;
 };
 
 /**
