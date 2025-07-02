@@ -25,6 +25,7 @@
 #include "job_log.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/iterate_helper.h>
@@ -82,11 +83,13 @@ void AbstractJobHandler::Step()
 void AbstractJobHandler::Stop()
 {
   m_domain_runner->Stop();
+  m_breakpoint_controller->ResetCurrentActiveBreakpoint();
 }
 
 void AbstractJobHandler::Reset()
 {
   m_domain_runner->Reset();
+  m_breakpoint_controller->ResetCurrentActiveBreakpoint();
 }
 
 bool AbstractJobHandler::IsRunning() const
@@ -219,9 +222,15 @@ void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &even
 
 void AbstractJobHandler::OnBreakpointHitEvent(const BreakpointHitEvent &event)
 {
+  if (!IsValidInstructionIndex(event.index))
+  {
+    m_breakpoint_controller->ResetCurrentActiveBreakpoint();
+    return;
+  }
+
   if (auto *item = m_procedure_item_builder->GetInstruction(event.index); item)
   {
-    SetBreakpointStatus(*item, BreakpointStatus::kSetAndHit);
+    m_breakpoint_controller->SetAsActiveBreakpoint(item);
   }
   else
   {

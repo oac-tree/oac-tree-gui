@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/operation/breakpoint_controller.h"
+
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -28,8 +30,6 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/operation/breakpoint_controller.h"
 
 namespace oac_tree_gui::test
 {
@@ -88,6 +88,32 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
     EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kSet);
     EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
   }
+}
+
+TEST_F(BreakpointControllerTest, SetAsActiveBreakpoint)
+{
+  BreakpointController controller({});
+
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  auto container = procedure->GetInstructionContainer();
+  auto sequence0 = model.InsertItem<SequenceItem>(container);
+  auto sequence1 = model.InsertItem<SequenceItem>(container);
+  auto wait0 = model.InsertItem<WaitItem>(sequence0);
+  auto wait1 = model.InsertItem<WaitItem>(sequence1);
+
+  EXPECT_NO_THROW(controller.SetAsActiveBreakpoint(sequence0));
+
+  controller.SetAsActiveBreakpoint(sequence0);
+  EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kSetAndHit);
+
+  controller.ResetCurrentActiveBreakpoint();
+  EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kSet);
+
+  // second time doesn't change anything
+  controller.ResetCurrentActiveBreakpoint();
+  EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kSet);
 }
 
 }  // namespace oac_tree_gui::test

@@ -22,6 +22,7 @@
 
 #include "breakpoint_helper.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 
 namespace oac_tree_gui
@@ -31,12 +32,27 @@ BreakpointController::BreakpointController() = default;
 
 void BreakpointController::SaveBreakpoints(const ProcedureItem &procedure_item)
 {
-  m_breakpoints = std::move(CollectBreakpointInfo(*procedure_item.GetInstructionContainer()));
+  m_breakpoints = CollectBreakpointInfo(*procedure_item.GetInstructionContainer());
 }
 
 void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
 {
   SetBreakpointsFromInfo(m_breakpoints, *procedure_item.GetInstructionContainer());
+}
+
+void BreakpointController::SetAsActiveBreakpoint(InstructionItem *instruction)
+{
+  m_active_breakpoint_instruction = instruction;
+  SetBreakpointStatus(*instruction, BreakpointStatus::kSetAndHit);
+}
+
+void BreakpointController::ResetCurrentActiveBreakpoint()
+{
+  if (m_active_breakpoint_instruction)
+  {
+    SetBreakpointStatus(*m_active_breakpoint_instruction, BreakpointStatus::kSet);
+    m_active_breakpoint_instruction = nullptr;
+  }
 }
 
 }  // namespace oac_tree_gui

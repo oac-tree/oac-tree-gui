@@ -28,6 +28,7 @@ namespace oac_tree_gui
 {
 
 class ProcedureItem;
+class InstructionItem;
 
 /**
  * @brief The BreakpointController class stores information about breakpoints, and controls its
@@ -59,9 +60,19 @@ public:
    */
   void RestoreBreakpoints(ProcedureItem& procedure_item);
 
-private:
-  //! information
+  /**
+   * @brief Sets the breakpoint of given instruction as "hit".
+   */
+  void SetAsActiveBreakpoint(InstructionItem* instruction);
+
+  /**
+   * @brief Reset
+   */
+  void ResetCurrentActiveBreakpoint();
+
+private:  
   std::vector<BreakpointInfo> m_breakpoints;
+  InstructionItem* m_active_breakpoint_instruction{nullptr};
 };
 
 }  // namespace oac_tree_gui
