@@ -553,6 +553,12 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   { return job_handler.GetRunnerStatus() == RunnerStatus::kPaused; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
 
+  auto predicate2 = [&instructions_inside]()
+  { return GetBreakpointStatus(*instructions_inside.at(2)) == BreakpointStatus::kSetAndHit; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 50));
+
+  EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSetAndHit);
+
   {  // values when on pause
     const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 1};
     const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 10};
@@ -560,14 +566,12 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
     EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));  // same as before
   }
 
-  EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSetAndHit);
-
   // run till the end
   job_handler.Start();
 
-  auto predicate2 = [&job_handler]()
+  auto predicate3 = [&job_handler]()
   { return job_handler.GetRunnerStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate3, 50));
 
   {  // values at the end
     const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 1};
@@ -575,12 +579,14 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
     EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), anyvalue0));
 
     // it takes time to propagate values to the domain
-    auto predicate3 = [&vars_inside, &anyvalue1]()
+    auto predicate4 = [&vars_inside, &anyvalue1]()
     { return test::IsEqual(*vars_inside.at(1), anyvalue1); };
-    EXPECT_TRUE(QTest::qWaitFor(predicate3, 50));
+    EXPECT_TRUE(QTest::qWaitFor(predicate4, 50));
   }
 
-  EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSet);
+  auto predicate5 = [&instructions_inside]()
+  { return GetBreakpointStatus(*instructions_inside.at(2)) == BreakpointStatus::kSet; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate5, 50));
 }
 
 }  // namespace oac_tree_gui::test
