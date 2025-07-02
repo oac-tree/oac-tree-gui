@@ -166,4 +166,26 @@ TEST_F(DomainEventTest, ActiveInstructionChangedEvent)
   }
 }
 
+TEST_F(DomainEventTest, BreakpointHitEvent)
+{
+  using ::sup::oac_tree::ExecutionStatus;
+
+  {  // default constructed
+    const BreakpointHitEvent event1{};
+    const BreakpointHitEvent event2{};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // instruction
+    const BreakpointHitEvent event1{1U};
+    const BreakpointHitEvent event2{1U};
+    const BreakpointHitEvent event3{2U};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+    EXPECT_FALSE(event1 == event3);
+    EXPECT_TRUE(event1 != event3);
+  }
+}
+
 }  // namespace oac_tree_gui::test

@@ -32,6 +32,7 @@ enum class BreakpointStatus : std::uint8_t
 {
   kNotSet,
   kSet,
+  kSetAndHit,
   kDisabled
 };
 

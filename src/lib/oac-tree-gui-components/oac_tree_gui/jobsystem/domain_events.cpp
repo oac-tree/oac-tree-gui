@@ -66,6 +66,17 @@ bool VariableUpdatedEvent::operator!=(const VariableUpdatedEvent &other) const
   return !(*this == other);
 }
 
+
+bool BreakpointHitEvent::operator==(const BreakpointHitEvent &other) const
+{
+  return index == other.index;
+}
+
+bool BreakpointHitEvent::operator!=(const BreakpointHitEvent &other) const
+{
+  return !(*this == other);
+}
+
 bool IsValid(const domain_event_t &value)
 {
   return value.index() != 0;  // index==0 corresponds to `monostate`

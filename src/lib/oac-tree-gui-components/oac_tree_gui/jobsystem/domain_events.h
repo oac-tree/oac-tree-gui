@@ -97,6 +97,14 @@ struct ActiveInstructionChangedEvent
   bool operator!=(const ActiveInstructionChangedEvent& other) const;
 };
 
+struct BreakpointHitEvent
+{
+  std::size_t index{0};
+
+  bool operator==(const BreakpointHitEvent& other) const;
+  bool operator!=(const BreakpointHitEvent& other) const;
+};
+
 using domain_event_t =
     std::variant<std::monostate, InstructionStateUpdatedEvent, VariableUpdatedEvent,
                  JobStateChangedEvent, LogEvent, ActiveInstructionChangedEvent>;
