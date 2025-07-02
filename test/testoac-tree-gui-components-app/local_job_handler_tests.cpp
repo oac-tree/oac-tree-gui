@@ -560,6 +560,8 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
     EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));  // same as before
   }
 
+  EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSetAndHit);
+
   // run till the end
   job_handler.Start();
 
@@ -577,6 +579,8 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
     { return test::IsEqual(*vars_inside.at(1), anyvalue1); };
     EXPECT_TRUE(QTest::qWaitFor(predicate3, 50));
   }
+
+  EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSet);
 }
 
 }  // namespace oac_tree_gui::test
