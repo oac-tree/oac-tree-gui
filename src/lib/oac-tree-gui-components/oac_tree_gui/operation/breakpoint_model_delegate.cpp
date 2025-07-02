@@ -36,6 +36,7 @@ const QColor kBreakpointDisabledColor("#ecd0d1");
 void PaintBreakpoint(QPainter *painter, const QPointF &center, const QPen &pen, const QBrush &brush,
                      double scale = 0.8)
 {
+  painter->save();
   painter->setRenderHint(QPainter::Antialiasing);
   painter->setPen(pen);
   painter->setBrush(brush);
@@ -45,6 +46,7 @@ void PaintBreakpoint(QPainter *painter, const QPointF &center, const QPen &pen, 
   QRectF ellipse_rect(0.0, 0.0, x_size, x_size);
   ellipse_rect.moveCenter(center);
   painter->drawEllipse(ellipse_rect);
+  painter->restore();
 }
 
 void PaintSetBreakpoint(QPainter *painter, const QPointF &center)
