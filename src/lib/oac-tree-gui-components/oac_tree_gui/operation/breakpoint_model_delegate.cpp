@@ -33,17 +33,34 @@ const QColor kBreakpointPenColor("#df5050");
 const QColor kBreakpointSetColor("#df5050");
 const QColor kBreakpointDisabledColor("#ecd0d1");
 
-void PaintBreakpoint(QPainter *painter, const QRect &rect, const QColor &base_color)
+void PaintBreakpoint(QPainter *painter, const QPointF &center, const QPen &pen, const QBrush &brush,
+                     double scale = 0.8)
 {
   painter->setRenderHint(QPainter::Antialiasing);
-  painter->setPen(kBreakpointPenColor);
-  painter->setBrush(QBrush(base_color));
+  painter->setPen(pen);
+  painter->setBrush(brush);
 
-  const auto x_size = mvvm::utils::UnitSize() * 0.8;
+  const auto x_size = mvvm::utils::UnitSize() * scale;
 
-  QRect ellipse_rect(0.0, 0.0, x_size, x_size);
-  ellipse_rect.moveCenter(rect.center());
+  QRectF ellipse_rect(0.0, 0.0, x_size, x_size);
+  ellipse_rect.moveCenter(center);
   painter->drawEllipse(ellipse_rect);
+}
+
+void PaintSetBreakpoint(QPainter *painter, const QPointF &center)
+{
+  PaintBreakpoint(painter, center, kBreakpointSetColor, kBreakpointSetColor);
+}
+
+void PaintDisabledBreakpoint(QPainter *painter, const QPointF &center)
+{
+  PaintBreakpoint(painter, center, kBreakpointSetColor, kBreakpointDisabledColor);
+}
+
+void PaintHitBreakpoint(QPainter *painter, const QPointF &center)
+{
+  PaintBreakpoint(painter, center, kBreakpointSetColor, Qt::NoBrush, 1.2);
+  PaintSetBreakpoint(painter, center);
 }
 
 }  // namespace
@@ -67,19 +84,11 @@ void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     BreakpointStatus status = static_cast<BreakpointStatus>(index.data().toInt());
     if (status == BreakpointStatus::kSet)
     {
-      PaintBreakpoint(painter, option.rect, kBreakpointSetColor);
-
-      QPen pen(Qt::green, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
-      painter->setPen(pen);
-      auto top_left = option.rect.topLeft();
-      QLine line(QPoint(0, top_left.y()), option.rect.topRight());
-      qDebug() << option.rect;
-      painter->drawLine(line);
-
+      PaintSetBreakpoint(painter, option.rect.center());
     }
     else if (status == BreakpointStatus::kDisabled)
     {
-      PaintBreakpoint(painter, option.rect, kBreakpointDisabledColor);
+      PaintDisabledBreakpoint(painter, option.rect.center());
     }
   }
   else
