@@ -38,7 +38,7 @@ enum class BreakpointStatus : std::uint8_t
 
 struct BreakpointInfo
 {
-  BreakpointStatus status;
+  BreakpointStatus status{BreakpointStatus::kNotSet};
   mvvm::Path path;  //! path to the instruction item
 };
 

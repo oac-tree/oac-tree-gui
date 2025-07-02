@@ -90,6 +90,10 @@ void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     {
       PaintDisabledBreakpoint(painter, option.rect.center());
     }
+    else if (status == BreakpointStatus::kSetAndHit)
+    {
+      PaintHitBreakpoint(painter, option.rect.center());
+    }
   }
   else
   {

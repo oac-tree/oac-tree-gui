@@ -150,6 +150,9 @@ DomainEventDispatcherContext AbstractJobHandler::CreateEventDispatcherContext()
   result.active_instruction_changed_event = [this](const ActiveInstructionChangedEvent &event)
   { OnActiveInstructionChangedEvent(event); };
 
+  result.breakpoint_hit_updated = [this](const BreakpointHitEvent &event)
+  { OnBreakpointHitEvent(event); };
+
   return result;
 }
 
@@ -176,7 +179,7 @@ void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdated
   }
   else
   {
-    qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
+    qWarning() << "Error in AbstractJobHandler: can't find domain instruction counterpart";
   }
 }
 
@@ -201,7 +204,7 @@ void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstruction
     }
     else
     {
-      qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
+      qWarning() << "Error in AbstractJobHandler: can't find domain instruction counterpart";
     }
   }
 
@@ -212,6 +215,18 @@ void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &even
 {
   (void)event;
   throw RuntimeException("AbstractJobHandler::OnVariableUpdatedEvent is not implemented");
+}
+
+void AbstractJobHandler::OnBreakpointHitEvent(const BreakpointHitEvent &event)
+{
+  if (auto *item = m_procedure_item_builder->GetInstruction(event.index); item)
+  {
+    SetBreakpointStatus(*item, BreakpointStatus::kSetAndHit);
+  }
+  else
+  {
+    qWarning() << "Error in AbstractJobHandler: can't find domain instruction counterpart";
+  }
 }
 
 void AbstractJobHandler::SetupBreakpointController()

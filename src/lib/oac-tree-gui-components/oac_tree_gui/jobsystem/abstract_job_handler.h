@@ -137,6 +137,11 @@ private:
   virtual void OnVariableUpdatedEvent(const VariableUpdatedEvent& event);
 
   /**
+   * @brief Handles event reporting breakpoint hits.
+   */
+  virtual void OnBreakpointHitEvent(const BreakpointHitEvent& event);
+
+  /**
    * @brief Setups breakpoint controller.
    */
   void SetupBreakpointController();
