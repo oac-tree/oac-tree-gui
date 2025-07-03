@@ -29,7 +29,6 @@
 #include <oac_tree_gui/viewmodel/workspace_operation_viewmodel.h>
 
 #include <sup/gui/components/tree_helper.h>
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
@@ -125,8 +124,6 @@ void WorkspaceEditorWidget::SetupConnections()
 
 void WorkspaceEditorWidget::SetupTree()
 {
-  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
-
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);

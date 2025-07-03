@@ -36,7 +36,6 @@
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/message_helper.h>
@@ -170,8 +169,6 @@ void InstructionEditorWidget::WriteSettings()
 
 void InstructionEditorWidget::SetupTree()
 {
-  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
-
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);

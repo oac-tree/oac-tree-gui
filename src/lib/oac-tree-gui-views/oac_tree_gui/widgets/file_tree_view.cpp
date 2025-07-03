@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/project/recent_project_settings.h>
@@ -80,8 +79,6 @@ FileTreeView::FileTreeView(QWidget *parent_widget)
   connect(m_tree_view, &QTreeView::clicked, this, [this](auto index) { OnTreeSingleClick(index); });
 
   SetCurrentDir(m_recent_dirs->GetCurrentWorkdir());
-
-  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 
   SetupActions();
 }

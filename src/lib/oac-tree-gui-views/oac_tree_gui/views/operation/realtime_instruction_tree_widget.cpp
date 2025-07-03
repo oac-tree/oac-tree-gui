@@ -32,7 +32,6 @@
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/tree_helper.h>
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/views/component_provider_helper.h>
@@ -88,8 +87,6 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent_wid
   };
   connect(m_expand_controller.get(), &InstructionTreeExpandController::VisibilityHasChanged, this,
           on_branch_change);
-
-  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 
   setStyleSheet(GetCustomToolTipStyle());
 }
