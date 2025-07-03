@@ -1,6 +1,0 @@
-name: sup-gui-extra
-buildsystem: cmake
-sources:
-  - type: git
-    url: ssh://git@git.iter.org/coa/sup-gui-extra.git
-    tag: v1.4

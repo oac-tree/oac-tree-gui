@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=SUP PVMonitor
-Comment=Integrated development environment for oac-tree procedures
-Categories=Development
-Type=Application
-Terminal=false
-Icon=org.iter.sequencer.sup-pvmonitor
-Exec=sup-pvmonitor
