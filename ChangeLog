@@ -1,5 +1,7 @@
 Changes for 1.9.0:
 
+- Prefer Breeze theme if it exists on the system (also fixes Hyprland)
+- Paint active breakpoint differently than non-active.
 - Fix oac-tree-operation GUI so it can run procedures with RegisterType preamble
 - Remove requirement to load plugins for sequencer-operation
 - Switch sequencer-operation to a new VariableInfo
