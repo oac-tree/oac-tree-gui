@@ -56,9 +56,11 @@ const QString kApplicationType = "oac-tree GUI";
 namespace oac_tree_gui
 {
 
-SequencerMainWindowActions::SequencerMainWindowActions(mvvm::IProject* project,
+SequencerMainWindowActions::SequencerMainWindowActions(mvvm::ISessionModel* settings,
+                                                       mvvm::IProject* project,
                                                        QMainWindow* mainwindow)
     : QObject(mainwindow)
+    , m_settings(settings)
     , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
     , m_focus_controller(sup::gui::CreateGlobalFocusController())
 {
@@ -247,11 +249,14 @@ void SequencerMainWindowActions::OnChangeSystemFont()
 
 void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
-  sup::gui::SettingsEditorDialog dialog;
-  dialog.SetInitialValues(sup::gui::GetGlobalSettings());
+  if (!m_settings)
+  {
+    return;
+  }
+  sup::gui::SettingsEditorDialog dialog(*m_settings);
   if (dialog.exec() == QDialog::Accepted)
   {
-    SaveSettingsInPersistentStorage(*dialog.GetResult());
+    dialog.PropagateSettingsToModel(*m_settings);
   }
 }
 

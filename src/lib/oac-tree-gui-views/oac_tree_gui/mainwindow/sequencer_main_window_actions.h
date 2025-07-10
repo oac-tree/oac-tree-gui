@@ -37,6 +37,7 @@ namespace mvvm
 {
 class IProject;
 class ProjectHandler;
+class ISessionModel;
 }  // namespace mvvm
 
 namespace sup::gui
@@ -55,7 +56,8 @@ class SequencerMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerMainWindowActions(mvvm::IProject* project, QMainWindow* mainwindow);
+  explicit SequencerMainWindowActions(mvvm::ISessionModel* settings, mvvm::IProject* project,
+                                      QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 
   /**
@@ -118,6 +120,7 @@ private:
   QToolButton* m_toggle_left_sidebar_button{nullptr};
   QToolButton* m_toggle_right_sidebar_button{nullptr};
 
+  mvvm::ISessionModel* m_settings{nullptr};
   std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };

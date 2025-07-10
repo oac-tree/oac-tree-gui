@@ -52,7 +52,8 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 }  // namespace
 
-SequencerMainWindow::SequencerMainWindow() : m_models(CreateProject())
+SequencerMainWindow::SequencerMainWindow()
+    : m_settings(std::make_unique<sup::gui::SettingsModel>()), m_models(CreateProject())
 {
   InitApplication();
 
@@ -87,7 +88,7 @@ void SequencerMainWindow::InitComponents()
 {
   using sup::gui::IconColorFlavor;
 
-  m_action_manager = new SequencerMainWindowActions(m_models.get(), this);
+  m_action_manager = new SequencerMainWindowActions(m_settings.get(), m_models.get(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor(GetMainToolBarColor());
@@ -126,8 +127,7 @@ void SequencerMainWindow::ReadSettings()
   const auto default_pos = QPoint(mvvm::utils::UnitSize(20), mvvm::utils::UnitSize(40));
   move(settings.value(kWindowPosSettingName, default_pos).toPoint());
 
-  // global persistent setting stored in SettingsModel
-  sup::gui::ReadGlobalSettings();
+  ::sup::gui::ReadApplicationSettings(*m_settings);
 }
 
 void SequencerMainWindow::WriteSettings()
@@ -135,6 +135,7 @@ void SequencerMainWindow::WriteSettings()
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
+  ::sup::gui::WriteApplicationSettings(*m_settings);
 }
 
 bool SequencerMainWindow::CanCloseApplication()
@@ -171,10 +172,8 @@ void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 
 void SequencerMainWindow::OnProjectLoad()
 {
-  const auto enable_undo =
-      sup::gui::GetGlobalSettings().Data<bool>(sup::gui::constants::kUseUndoSetting);
-  const auto undo_limit =
-      sup::gui::GetGlobalSettings().Data<int>(sup::gui::constants::kUndoLimitSetting);
+  const auto enable_undo = m_settings->Data<bool>(sup::gui::constants::kUseUndoSetting);
+  const auto undo_limit = m_settings->Data<int>(sup::gui::constants::kUndoLimitSetting);
   m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());

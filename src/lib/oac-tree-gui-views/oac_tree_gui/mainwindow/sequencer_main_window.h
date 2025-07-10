@@ -33,6 +33,11 @@ namespace mvvm
 class MainVerticalBarWidget;
 }
 
+namespace sup::gui
+{
+class SettingsModel;
+}
+
 namespace oac_tree_gui
 {
 
@@ -92,6 +97,7 @@ private:
 
   std::unique_ptr<ApplicationModels> CreateProject();
 
+  std::unique_ptr<sup::gui::SettingsModel> m_settings;
   std::unique_ptr<ApplicationModels> m_models;
 
   SequencerMainWindowActions* m_action_manager{nullptr};
