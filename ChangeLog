@@ -1,3 +1,7 @@
+Changes for 2.0.0:
+
+- Refactor application settings mechanism
+
 Changes for 1.9.0:
 
 - Experimental Flatpack machinery removed
