@@ -74,7 +74,7 @@ void AnyValueCompactTreeEditor::SetInitialValue(const sup::gui::AnyValueItem *it
 
 std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactTreeEditor::GetResult()
 {
-  return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(m_model.get()));
+  return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(*m_model));
 }
 
 }  // namespace oac_tree_gui

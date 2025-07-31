@@ -170,7 +170,7 @@ std::vector<InstructionItem *> FindInstructions(const mvvm::ISessionModel &model
                                                 const std::string &domain_type)
 {
   std::vector<InstructionItem *> result;
-  auto candidates = mvvm::utils::FindItems<InstructionItem>(&model);
+  auto candidates = mvvm::utils::FindItems<InstructionItem>(model);
   for (auto instruction : candidates)
   {
     if (instruction->GetDomainType() == domain_type)

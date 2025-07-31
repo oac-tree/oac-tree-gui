@@ -82,7 +82,7 @@ public:
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
-  std::vector<JobItem*> GetJobItems() { return mvvm::utils::GetTopItems<JobItem>(GetJobModel()); }
+  std::vector<JobItem*> GetJobItems() { return mvvm::utils::GetTopItems<JobItem>(*GetJobModel()); }
 
   static bool IsCompleted(JobItem* job_item)
   {

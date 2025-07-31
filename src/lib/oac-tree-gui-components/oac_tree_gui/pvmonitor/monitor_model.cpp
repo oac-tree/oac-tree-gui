@@ -34,7 +34,7 @@ MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
 
 WorkspaceItem *MonitorModel::GetWorkspaceItem() const
 {
-  return mvvm::utils::GetTopItem<WorkspaceItem>(this);
+  return mvvm::utils::GetTopItem<WorkspaceItem>(*this);
 }
 
 void MonitorModel::Clear()

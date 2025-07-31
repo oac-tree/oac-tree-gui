@@ -58,7 +58,7 @@ public:
 
   InstructionContainerItem* GetInstructionContainer()
   {
-    return ::mvvm::utils::GetTopItem<ProcedureItem>(&m_model)->GetInstructionContainer();
+    return ::mvvm::utils::GetTopItem<ProcedureItem>(m_model)->GetInstructionContainer();
   }
 
   std::vector<ConnectableView*> GetConnectedChildren(ConnectableView* parent)

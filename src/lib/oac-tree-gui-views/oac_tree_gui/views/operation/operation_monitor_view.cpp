@@ -164,7 +164,7 @@ void OperationMonitorView::showEvent(QShowEvent *event)
   Q_UNUSED(event);
   if (!m_job_panel->GetSelectedJob())
   {
-    if (auto job = ::mvvm::utils::GetTopItem<JobItem>(m_models->GetJobModel()); job)
+    if (auto job = ::mvvm::utils::GetTopItem<JobItem>(*m_models->GetJobModel()); job)
     {
       m_job_panel->SetSelectedJob(job);
     }

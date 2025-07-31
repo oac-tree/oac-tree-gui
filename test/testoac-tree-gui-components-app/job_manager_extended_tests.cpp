@@ -161,7 +161,7 @@ TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
   // We are testing here queued signals, need special waiting to let procedure complete
 
   // variables inside are changed
-  auto vars_inside = mvvm::utils::FindItems<VariableItem>(GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(*GetJobModel());
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
@@ -179,7 +179,7 @@ TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));
 
   // variables at original model remained unchanged
-  auto inside = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
+  auto inside = mvvm::utils::FindItems<LocalVariableItem>(*GetSequencerModel());
   auto var0 = inside.at(0);
   auto var1 = inside.at(1);
   EXPECT_TRUE(test::IsEqual(*var0, anyvalue0));

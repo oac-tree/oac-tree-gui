@@ -124,7 +124,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   QTest::qWait(20);
 
   // variables inside are changed
-  auto vars_inside = mvvm::utils::FindItems<VariableItem>(GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<VariableItem>(*GetJobModel());
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
@@ -144,7 +144,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));
 
   // variables at original model remained unchanged
-  auto vars = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
+  auto vars = mvvm::utils::FindItems<LocalVariableItem>(*GetSequencerModel());
   auto var0 = vars.at(0);
   auto var1 = vars.at(1);
 

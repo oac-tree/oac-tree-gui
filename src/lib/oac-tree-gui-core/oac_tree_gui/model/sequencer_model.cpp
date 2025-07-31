@@ -40,7 +40,7 @@ SequencerModel::SequencerModel(std::shared_ptr<mvvm::ItemPool> pool)
 
 mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
 {
-  return mvvm::utils::GetTopItem<mvvm::ContainerItem>(this);
+  return mvvm::utils::GetTopItem<mvvm::ContainerItem>(*this);
 }
 
 std::vector<ProcedureItem *> SequencerModel::GetProcedures() const

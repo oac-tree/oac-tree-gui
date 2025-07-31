@@ -97,7 +97,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
   // validating some of parameters after job is complet
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kSucceeded);
-  auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
+  auto instructions = mvvm::utils::FindItems<InstructionItem>(*m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 }
 

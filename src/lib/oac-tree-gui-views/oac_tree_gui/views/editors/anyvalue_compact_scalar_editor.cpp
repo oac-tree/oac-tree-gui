@@ -90,7 +90,7 @@ void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem *
 std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactScalarEditor::GetResult()
 {
   m_widget_mapper->submit();
-  return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(m_model.get()));
+  return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(*m_model));
 }
 
 }  // namespace oac_tree_gui
