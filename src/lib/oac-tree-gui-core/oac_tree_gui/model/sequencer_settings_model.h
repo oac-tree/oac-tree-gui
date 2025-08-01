@@ -29,6 +29,11 @@
 namespace oac_tree_gui
 {
 
+namespace constants
+{
+const std::string kPluginList = "kPluginList";
+}
+
 /**
  * @brief Contains common application settings.
  *

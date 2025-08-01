@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/sequencer_item_helper.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_includes.h>
@@ -27,8 +29,6 @@
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/sequencer_item_helper.h"
 
 namespace oac_tree_gui::test
 {
@@ -104,6 +104,8 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<ImportedJobItem>());
   EXPECT_TRUE(IsCloneImplemented<RemoteJobItem>());
   EXPECT_TRUE(IsCloneImplemented<FileBasedJobItem>());
+
+  EXPECT_TRUE(IsCloneImplemented<PluginSettingsItem>());
 }
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)

@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   job_item.h
   job_model.cpp
   job_model.h
+  plugin_settings_item.cpp
+  plugin_settings_item.h
   procedure_item.cpp
   procedure_item.h
   procedure_preamble_items.cpp
