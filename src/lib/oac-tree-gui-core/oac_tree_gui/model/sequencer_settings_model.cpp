@@ -20,6 +20,8 @@
 
 #include "sequencer_settings_model.h"
 
+#include "plugin_settings_item.h"
+
 #include <sup/gui/model/settings_item.h>
 
 #include <mvvm/model/model_utils.h>
@@ -51,6 +53,7 @@ std::vector<mvvm::CompoundItem*> SequencerSettingsModel::GetSettingsItems() cons
 void SequencerSettingsModel::PopulateModel()
 {
   (void)InsertItem<sup::gui::CommonSettingsItem>();
+  (void)InsertItem<PluginSettingsItem>();
 }
 
 }  // namespace oac_tree_gui

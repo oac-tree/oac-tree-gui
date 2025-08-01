@@ -39,7 +39,7 @@ TEST_F(SequencerSettingsModelTest, InitialState)
 {
   const SequencerSettingsModel model;
 
-  EXPECT_EQ(model.GetSettingsItems().size(), 1);
+  EXPECT_EQ(model.GetSettingsItems().size(), 2);
 
   EXPECT_EQ(model.Data<bool>(sup::gui::constants::kUseUndoSetting),
             sup::gui::constants::kUseUndoDefault);
@@ -56,7 +56,7 @@ TEST_F(SequencerSettingsModelTest, Clear)
   model.Clear();
 
   // after clearing all setting items, and their values have been re-initialised
-  ASSERT_EQ(model.GetSettingsItems().size(), 1);
+  ASSERT_EQ(model.GetSettingsItems().size(), 2);
   EXPECT_EQ(model.Data<bool>(sup::gui::constants::kUseUndoSetting),
             sup::gui::constants::kUseUndoDefault);
   EXPECT_EQ(model.Data<int>(sup::gui::constants::kUndoLimitSetting),
@@ -68,7 +68,7 @@ TEST_F(SequencerSettingsModelTest, AutoDisableSettings)
   const SequencerSettingsModel model;
 
   auto common_settings = model.GetSettingsItems().at(0);
-  ASSERT_EQ(model.GetSettingsItems().size(), 1);
+  ASSERT_EQ(model.GetSettingsItems().size(), 2);
 
   EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUseUndoSetting)->IsEnabled());
   EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUndoLimitSetting)->IsEnabled());
@@ -87,7 +87,7 @@ TEST_F(SequencerSettingsModelTest, Clone)
   auto clone = model.Clone();
   auto cloned_model = dynamic_cast<SequencerSettingsModel*>(clone.get());
   ASSERT_NE(cloned_model, nullptr);
-  EXPECT_EQ(cloned_model->GetSettingsItems().size(), 1);
+  EXPECT_EQ(cloned_model->GetSettingsItems().size(), 2);
   EXPECT_EQ(cloned_model->Data<bool>(sup::gui::constants::kUseUndoSetting),
             sup::gui::constants::kUseUndoDefault);
   EXPECT_EQ(cloned_model->Data<int>(sup::gui::constants::kUndoLimitSetting),
