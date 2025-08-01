@@ -33,19 +33,15 @@ namespace mvvm
 class MainVerticalBarWidget;
 }
 
-namespace sup::gui
-{
-class SettingsModel;
-}
-
 namespace oac_tree_gui
 {
 
-class SequencerExplorerView;
+class ApplicationModels;
 class OperationMonitorView;
 class SequencerComposerView;
+class SequencerExplorerView;
 class SequencerMainWindowActions;
-class ApplicationModels;
+class SequencerSettingsModel;
 
 /**
  * @brief The SequencerMainWindow class is the main window of sequencer-gui application.
@@ -97,7 +93,7 @@ private:
 
   std::unique_ptr<ApplicationModels> CreateProject();
 
-  std::unique_ptr<sup::gui::SettingsModel> m_settings;
+  std::unique_ptr<SequencerSettingsModel> m_settings;
   std::unique_ptr<ApplicationModels> m_models;
 
   SequencerMainWindowActions* m_action_manager{nullptr};

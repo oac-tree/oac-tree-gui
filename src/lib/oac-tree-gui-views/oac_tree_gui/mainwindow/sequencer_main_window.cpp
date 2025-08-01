@@ -26,13 +26,13 @@
 
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
 #include <oac_tree_gui/views/explorer/sequencer_explorer_view.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
 
 #include <sup/gui/mainwindow/settings_helper.h>
-#include <sup/gui/model/settings_model.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -53,7 +53,7 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 }  // namespace
 
 SequencerMainWindow::SequencerMainWindow()
-    : m_settings(std::make_unique<sup::gui::SettingsModel>()), m_models(CreateProject())
+    : m_settings(std::make_unique<SequencerSettingsModel>()), m_models(CreateProject())
 {
   InitApplication();
 
