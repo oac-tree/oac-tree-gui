@@ -23,6 +23,8 @@
 
 #include <sup/gui/mainwindow/session_item_widget.h>
 
+class QTextEdit;
+
 namespace oac_tree_gui
 {
 
@@ -36,7 +38,10 @@ class PluginSettingsEditor : public sup::gui::SessionItemWidget
 public:
   explicit PluginSettingsEditor(QWidget* parent_widget = nullptr);
 
-  virtual void SetItem(mvvm::SessionItem* item) override;
+  void SetItem(mvvm::SessionItem* item) override;
+
+private:
+  QTextEdit* m_text_edit{nullptr};
 };
 
 }  // namespace oac_tree_gui

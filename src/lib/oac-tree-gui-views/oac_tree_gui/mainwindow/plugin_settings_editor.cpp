@@ -20,18 +20,43 @@
 
 #include "plugin_settings_editor.h"
 
+#include <oac_tree_gui/model/sequencer_settings_model.h>
+
+#include <mvvm/utils/string_utils.h>
+#include <mvvm/widgets/widget_utils.h>
+
+#include <QLabel>
+#include <QTextEdit>
+#include <QVBoxLayout>
+
 namespace oac_tree_gui
 {
 
-PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
-    : sup::gui::SessionItemWidget(parent_widget)
+namespace
 {
 
+QString GetFormattedContent(const std::string &str)
+{
+  auto formatted = mvvm::utils::ReplaceSubString(str, ",", "\n");
+  return QString::fromStdString(formatted);
+}
+
+}  // namespace
+
+PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
+    : sup::gui::SessionItemWidget(parent_widget), m_text_edit(new QTextEdit)
+{
+  auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, 0, 0);
+  layout->setSpacing(0);
+  layout->addWidget(m_text_edit);
 }
 
 void PluginSettingsEditor::SetItem(mvvm::SessionItem *item)
 {
-  (void) item;
+  const QString content =
+      GetFormattedContent(item->GetItem(constants::kPluginList)->Data<std::string>());
+  m_text_edit->setText(content);
 }
 
 }  // namespace oac_tree_gui
