@@ -11,6 +11,8 @@ target_sources(${library_name} PRIVATE
   operation_main_window.h
   operation_main_window_actions.cpp
   operation_main_window_actions.h
+  plugin_settings_editor.cpp
+  plugin_settings_editor.h
   procedure_examples.cpp
   procedure_examples.h
   pvmonitor_main_window.cpp
