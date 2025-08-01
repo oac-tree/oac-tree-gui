@@ -20,8 +20,8 @@
 
 #include "domain_helper.h"
 
-#include "domain_object_type_registry.h"
 #include "domain_constants.h"
+#include "domain_object_type_registry.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 
@@ -137,20 +137,24 @@ bool IsSequencerControlPluginAvailable()
       domainconstants::kWaitForConditionInstructionType);  // simplified check
 }
 
+std::vector<std::string> GetDefaultPluginList()
+{
+  static const std::vector<std::string> kPluginList = {
+      domainconstants::kEpicsCAPluginName,         domainconstants::kEpicsPVXSPluginName,
+      domainconstants::kControlPluginName,         domainconstants::kSupConfigPluginName,
+      domainconstants::kSupPulseCounterPluginName, domainconstants::kMathExprPluginName,
+      domainconstants::kSupTimingPluginName,       domainconstants::kSystemPluginName,
+      domainconstants::kStringPluginName};
+  return kPluginList;
+}
+
 std::pair<bool, std::string> LoadOacTreePlugins()
 {
   std::vector<std::string> failed_plugins;
 
   UpdateGlobalDomainObjectTypeRegistry(domainconstants::kCorePluginName);
 
-  static const std::vector<std::string> plugins = {
-      domainconstants::kEpicsCAPluginName,         domainconstants::kEpicsPVXSPluginName,
-      domainconstants::kControlPluginName,         domainconstants::kSupConfigPluginName,
-      domainconstants::kSupPulseCounterPluginName, domainconstants::kMathExprPluginName,
-      domainconstants::kSupTimingPluginName,       domainconstants::kSystemPluginName,
-      domainconstants::kStringPluginName};
-
-  for (const auto& name : plugins)
+  for (const auto& name : GetDefaultPluginList())
   {
     const auto file_name = GetPluginFileName(name);
     if (LoadPlugin(file_name))

@@ -22,12 +22,25 @@
 
 #include "sequencer_settings_model.h"
 
+#include <oac_tree_gui/domain/domain_helper.h>
+
+#include <mvvm/utils/string_utils.h>
+
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+std::string GetDefaultPluginString()
+{
+  return mvvm::utils::VectorToString(GetDefaultPluginList());
+}
+}  // namespace
+
 PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
 {
-  AddProperty(constants::kPluginList, std::string());
+  AddProperty(constants::kPluginList, GetDefaultPluginString());
 }
 
 std::string PluginSettingsItem::GetStaticType()
