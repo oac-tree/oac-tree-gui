@@ -21,8 +21,10 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
+#include "plugin_settings_editor.h"
 
 #include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 
@@ -254,6 +256,8 @@ void SequencerMainWindowActions::OnApplicationSettingsDialog()
     return;
   }
   sup::gui::SettingsEditorDialog dialog(*m_settings);
+  dialog.RegisterWidget(PluginSettingsItem::GetStaticType(),
+                        []() { return std::make_unique<PluginSettingsEditor>(); });
   if (dialog.exec() == QDialog::Accepted)
   {
     dialog.PropagateSettingsToModel(*m_settings);
