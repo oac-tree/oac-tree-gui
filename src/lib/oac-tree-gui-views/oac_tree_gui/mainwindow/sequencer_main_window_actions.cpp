@@ -64,7 +64,7 @@ SequencerMainWindowActions::SequencerMainWindowActions(mvvm::ISessionModel* sett
     : QObject(mainwindow)
     , m_settings(settings)
     , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
-    , m_focus_controller(sup::gui::CreateGlobalFocusController())
+    , m_focus_controller(sup::gui::CreateAppFocusController())
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
                                {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
