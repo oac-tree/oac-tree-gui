@@ -151,7 +151,7 @@ void OperationMonitorView::StopAllJobs()
   m_job_manager->StopAllJobs();
 }
 
-void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppContext &context)
+void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
 {
   sup::gui::AppAddActionToCommand(m_toggle_left_sidebar,
                                   sup::gui::constants::kToggleLeftPanelCommandId, context);

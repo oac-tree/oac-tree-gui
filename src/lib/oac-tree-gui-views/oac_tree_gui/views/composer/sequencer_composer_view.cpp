@@ -96,7 +96,7 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_composer_panel->SetModel(model);
 }
 
-void SequencerComposerView::RegisterActionsForContext(const sup::gui::AppContext &context)
+void SequencerComposerView::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
 {
   m_composer_actions->RegisterActionsForContext(context);
   sup::gui::AppAddActionToCommand(m_toggle_left_sidebar,

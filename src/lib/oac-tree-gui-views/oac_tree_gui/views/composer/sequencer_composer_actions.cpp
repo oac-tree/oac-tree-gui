@@ -68,7 +68,7 @@ void SequencerComposerActions::SetProcedure(ProcedureItem *procedure_item)
   m_procedure_item = procedure_item;
 }
 
-void SequencerComposerActions::RegisterActionsForContext(const sup::gui::AppContext &context)
+void SequencerComposerActions::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
 {
   sup::gui::AppAddActionToCommand(m_validate_procedure_action,
                                   constants::kValidateProcedureCommandId, context);

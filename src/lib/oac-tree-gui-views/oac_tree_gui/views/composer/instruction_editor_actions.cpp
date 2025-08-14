@@ -72,7 +72,7 @@ void InstructionEditorActions::SetupMenu(QMenu &menu)
   UpdateEnabledStatus();
 }
 
-void InstructionEditorActions::RegisterActionsForContext(const sup::gui::AppContext &context)
+void InstructionEditorActions::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
 {
   sup::gui::AppAddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   sup::gui::AppAddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);

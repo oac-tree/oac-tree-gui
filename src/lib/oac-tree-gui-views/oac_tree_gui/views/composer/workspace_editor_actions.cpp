@@ -69,7 +69,7 @@ void WorkspaceEditorActions::SetupMenu(QMenu &menu)
   m_paste_action->setEnabled(m_action_handler->CanPaste());
 }
 
-void WorkspaceEditorActions::RegisterActionsForContext(const sup::gui::AppContext &context)
+void WorkspaceEditorActions::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
 {
   sup::gui::AppAddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   sup::gui::AppAddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);

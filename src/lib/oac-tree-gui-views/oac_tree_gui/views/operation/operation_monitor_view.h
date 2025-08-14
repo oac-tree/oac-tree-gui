@@ -31,7 +31,7 @@ class QShowEvent;
 namespace sup::gui
 {
 class CustomSplitter;
-class AppContext;
+class AppCommandContext;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -78,7 +78,7 @@ public:
   /**
    * @brief Registers actions for given context.
    */
-  void RegisterActionsForContext(const sup::gui::AppContext& context);
+  void RegisterActionsForContext(const sup::gui::AppCommandContext &context);
 
 protected:
   void showEvent(QShowEvent* event) override;
