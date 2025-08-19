@@ -100,7 +100,7 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget->AddWidget(m_explorer_view, "Explore",
                           FindIcon("file-search-outline", IconColorFlavor::kForDarkThemes));
 
-  m_composer_view = new SequencerComposerView;
+  m_composer_view = new SequencerComposerView(m_context.GetCommandService());
   m_tab_widget->AddWidget(m_composer_view, "Compose",
                           FindIcon("graph-outline", IconColorFlavor::kForDarkThemes));
 

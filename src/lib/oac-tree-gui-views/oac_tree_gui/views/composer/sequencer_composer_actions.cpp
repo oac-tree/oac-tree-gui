@@ -25,8 +25,8 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/operation/procedure_action_handler.h>
 
-#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/app/i_app_command_service.h>
 
 #include <mvvm/commands/i_command_stack.h>
 
@@ -68,15 +68,16 @@ void SequencerComposerActions::SetProcedure(ProcedureItem *procedure_item)
   m_procedure_item = procedure_item;
 }
 
-void SequencerComposerActions::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
+void SequencerComposerActions::RegisterActionsForContext(
+    const sup::gui::AppCommandContext &context, sup::gui::IAppCommandService &command_service)
 {
-  sup::gui::AppAddActionToCommand(m_validate_procedure_action,
-                                  constants::kValidateProcedureCommandId, context);
+  command_service.AddActionToCommand(m_validate_procedure_action,
+                                     constants::kValidateProcedureCommandId, context);
 
-  sup::gui::AppAddActionToCommand(m_export_xml_action, constants::kExportXmlCommandId, context);
+  command_service.AddActionToCommand(m_export_xml_action, constants::kExportXmlCommandId, context);
 
-  sup::gui::AppAddActionToCommand(m_undo_action, sup::gui::constants::kUndoCommandId, context);
-  sup::gui::AppAddActionToCommand(m_redo_action, sup::gui::constants::kRedoCommandId, context);
+  command_service.AddActionToCommand(m_undo_action, sup::gui::constants::kUndoCommandId, context);
+  command_service.AddActionToCommand(m_redo_action, sup::gui::constants::kRedoCommandId, context);
 }
 
 void SequencerComposerActions::SetupActions()

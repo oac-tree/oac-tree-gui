@@ -22,13 +22,13 @@
 #define OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
 
 #include <QWidget>
-
 #include <memory>
 
 namespace sup::gui
 {
 class CustomSplitter;
 class AppCommandContext;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -55,21 +55,24 @@ class SequencerComposerView : public QWidget
   Q_OBJECT
 
 public:
-  explicit SequencerComposerView(QWidget* parent_widget = nullptr);
+  explicit SequencerComposerView(sup::gui::IAppCommandService& command_service,
+                                 QWidget* parent_widget = nullptr);
   ~SequencerComposerView() override;
 
   void SetModel(SequencerModel* model);
 
   /**
-   * @brief Registers actions for given context.
+   * @brief Registers global actions.
    */
-  void RegisterActionsForContext(const sup::gui::AppCommandContext &context);
+  void RegisterActions();
 
 private:
   void ReadSettings();
   void WriteSettings();
   void SetupConnections();
   void SetupWidgetActions();
+
+  sup::gui::IAppCommandService& m_command_service;
 
   QAction* m_toggle_left_sidebar{nullptr};
   QAction* m_toggle_right_sidebar{nullptr};

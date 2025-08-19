@@ -31,8 +31,9 @@
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/operation/procedure_action_handler.h>
 
-#include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/message_helper.h>
 
@@ -54,8 +55,10 @@ const QString kRightPanel = kGroupName + "/" + "right";
 namespace oac_tree_gui
 {
 
-SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
+SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &command_service,
+                                             QWidget *parent_widget)
     : QWidget(parent_widget)
+    , m_command_service(command_service)
     , m_procedure_editor(std::make_unique<ProcedureEditor>(
           [](const auto &event) { sup::gui::SendWarningMessage(event); }))
     , m_composer_panel(new ComposerToolsPanel)
@@ -80,13 +83,13 @@ SequencerComposerView::SequencerComposerView(QWidget *parent_widget)
   m_right_panel->setVisible(false);
 
   ReadSettings();
-  RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
+  RegisterActions();
 }
 
 SequencerComposerView::~SequencerComposerView()
 {
   WriteSettings();
-  sup::gui::AppUnregisterWidgetUniqueId(this);
+  m_command_service.UnregisterWidgetUniqueId(this);
 }
 
 void SequencerComposerView::SetModel(SequencerModel *model)
@@ -96,13 +99,14 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_composer_panel->SetModel(model);
 }
 
-void SequencerComposerView::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
+void SequencerComposerView::RegisterActions()
 {
-  m_composer_actions->RegisterActionsForContext(context);
-  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar,
-                                  sup::gui::constants::kToggleLeftPanelCommandId, context);
-  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar,
-                                  sup::gui::constants::kToggleRightPanelCommandId, context);
+  auto context = m_command_service.RegisterWidgetUniqueId(this);
+  m_composer_actions->RegisterActionsForContext(context, m_command_service);
+  m_command_service.AddActionToCommand(m_toggle_left_sidebar,
+                                       sup::gui::constants::kToggleLeftPanelCommandId, context);
+  m_command_service.AddActionToCommand(m_toggle_right_sidebar,
+                                       sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
 void SequencerComposerView::ReadSettings()
@@ -150,8 +154,8 @@ void SequencerComposerView::SetupConnections()
   connect(m_right_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
 
   // instruction toolbox requests form left panel
-  connect(m_composer_panel, &ComposerToolsPanel::ToolBoxInstructionRequest, m_procedure_editor.get(),
-          &ProcedureEditor::InsertInstructionFromToolBox);
+  connect(m_composer_panel, &ComposerToolsPanel::ToolBoxInstructionRequest,
+          m_procedure_editor.get(), &ProcedureEditor::InsertInstructionFromToolBox);
 }
 
 void SequencerComposerView::SetupWidgetActions()
