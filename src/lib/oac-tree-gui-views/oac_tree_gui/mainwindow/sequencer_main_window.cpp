@@ -96,7 +96,7 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor(GetMainToolBarColor());
 
-  m_explorer_view = new SequencerExplorerView;
+  m_explorer_view = new SequencerExplorerView(m_context.GetCommandService());
   m_tab_widget->AddWidget(m_explorer_view, "Explore",
                           FindIcon("file-search-outline", IconColorFlavor::kForDarkThemes));
 

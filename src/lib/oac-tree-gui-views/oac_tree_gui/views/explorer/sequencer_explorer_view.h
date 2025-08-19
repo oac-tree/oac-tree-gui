@@ -28,6 +28,7 @@ namespace sup::gui
 class CodeView;
 class ItemStackWidget;
 class CustomSplitter;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -51,7 +52,8 @@ class SequencerExplorerView : public QWidget
   Q_OBJECT
 
 public:
-  explicit SequencerExplorerView(QWidget* parent_widget = nullptr);
+  explicit SequencerExplorerView(sup::gui::IAppCommandService& command_service,
+                                 QWidget* parent_widget = nullptr);
   ~SequencerExplorerView() override;
 
   void SetModel(SequencerModel* model);

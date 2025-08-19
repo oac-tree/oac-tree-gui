@@ -29,6 +29,7 @@ namespace sup::gui
 {
 class CollapsibleListView;
 class ItemStackWidget;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -51,7 +52,8 @@ class ComposerToolsPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit ComposerToolsPanel(QWidget* parent_widget = nullptr);
+  explicit ComposerToolsPanel(sup::gui::IAppCommandService& command_service,
+                              QWidget* parent_widget = nullptr);
   ~ComposerToolsPanel() override;
 
   void SetModel(SequencerModel* model);

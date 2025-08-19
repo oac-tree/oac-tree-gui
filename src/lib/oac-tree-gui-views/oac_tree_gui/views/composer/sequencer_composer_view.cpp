@@ -61,7 +61,7 @@ SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &comma
     , m_command_service(command_service)
     , m_procedure_editor(std::make_unique<ProcedureEditor>(
           [](const auto &event) { sup::gui::SendWarningMessage(event); }))
-    , m_composer_panel(new ComposerToolsPanel)
+    , m_composer_panel(new ComposerToolsPanel(command_service))
     , m_central_panel(new ComposerWidgetPanel(command_service, kCentralPanel,
                                               ComposerWidgetPanel::kInstructionTree))
     , m_right_panel(

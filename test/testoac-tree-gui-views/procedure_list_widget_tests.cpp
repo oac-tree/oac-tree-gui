@@ -18,8 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/views/composer/procedure_list_widget.h"
+
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+
+#include <sup/gui/app/null_command_service.h>
 
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
@@ -31,8 +35,6 @@
 
 #include <QListView>
 #include <QSignalSpy>
-
-#include "oac_tree_gui/views/composer/procedure_list_widget.h"
 
 Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 
@@ -48,11 +50,13 @@ public:
   {
     qRegisterMetaType<oac_tree_gui::ProcedureItem*>("oac_tree_gui::ProcedureItem*");
   }
+
+  sup::gui::NullCommandService m_command_service;
 };
 
 TEST_F(ProcedureListWidgetTest, InitialState)
 {
-  ProcedureListWidget view;
+  ProcedureListWidget view(m_command_service);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
   EXPECT_TRUE(view.GetSelectedProcedures().empty());
 }
@@ -62,7 +66,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListWidget view;
+  ProcedureListWidget view(m_command_service);
   QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
 
   view.SetModel(&model);
@@ -95,7 +99,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListWidget view;
+  ProcedureListWidget view(m_command_service);
   view.SetModel(&model);
 
   // selecting single item
@@ -124,7 +128,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListWidget view;
+  ProcedureListWidget view(m_command_service);
   QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
 
   view.SetModel(&model);

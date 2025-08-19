@@ -46,9 +46,10 @@ const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 namespace oac_tree_gui
 {
 
-SequencerExplorerView::SequencerExplorerView(QWidget *parent_widget)
+SequencerExplorerView::SequencerExplorerView(sup::gui::IAppCommandService &command_service,
+                                             QWidget *parent_widget)
     : QWidget(parent_widget)
-    , m_explorer_panel(new ExplorerPanel)
+    , m_explorer_panel(new ExplorerPanel(command_service))
     , m_trees_widget(new ProcedureTreesWidget)
     , m_xml_view(new sup::gui::CodeView)
     , m_right_panel(new sup::gui::ItemStackWidget)

@@ -27,7 +27,6 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
 
-#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 

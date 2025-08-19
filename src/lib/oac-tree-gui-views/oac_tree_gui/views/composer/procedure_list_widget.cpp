@@ -25,7 +25,8 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
-#include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_command_context.h>
+#include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
 #include <sup/gui/style/style_helper.h>
 
@@ -41,8 +42,10 @@
 namespace oac_tree_gui
 {
 
-ProcedureListWidget::ProcedureListWidget(QWidget *parent_widget)
+ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService &command_service,
+                                         QWidget *parent_widget)
     : QWidget(parent_widget)
+    , m_command_service(command_service)
     , m_list_view(new QListView)
     , m_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
     , m_actions(new ProcedureListActions(this))
@@ -77,12 +80,13 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent_widget)
   connect(m_list_view, &QListView::customContextMenuRequested, this,
           &ProcedureListWidget::OnContextMenuRequest);
 
-  m_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
+  auto context = m_command_service.RegisterWidgetUniqueId(this);
+  m_actions->RegisterActionsForContext(context, m_command_service);
 }
 
 ProcedureListWidget::~ProcedureListWidget()
 {
-  sup::gui::AppUnregisterWidgetUniqueId(this);
+  m_command_service.UnregisterWidgetUniqueId(this);
 }
 
 void ProcedureListWidget::SetModel(SequencerModel *model)

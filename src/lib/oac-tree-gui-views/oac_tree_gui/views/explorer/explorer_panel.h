@@ -27,6 +27,7 @@ namespace sup::gui
 {
 class CollapsibleListView;
 class ItemStackWidget;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -48,7 +49,7 @@ class ExplorerPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit ExplorerPanel(QWidget* parent_widget = nullptr);
+  explicit ExplorerPanel(sup::gui::IAppCommandService& command_service, QWidget* parent_widget = nullptr);
   ~ExplorerPanel() override;
 
   void SetModel(SequencerModel* model);

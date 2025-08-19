@@ -23,9 +23,9 @@
 #include <oac_tree_gui/composer/procedure_list_action_handler.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/app/i_app_command_service.h>
 
 #include <QAction>
 #include <QMenu>
@@ -90,13 +90,14 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
   m_paste_action->setEnabled(handler->CanPaste());
 }
 
-void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
+void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppCommandContext &context,
+                                                     sup::gui::IAppCommandService &command_service)
 {
-  sup::gui::AppAddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
-  sup::gui::AppAddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
-  sup::gui::AppAddActionToCommand(m_paste_action, sup::gui::constants::kPasteCommandId, context);
-  sup::gui::AppAddActionToCommand(m_remove_action, sup::gui::constants::kRemoveSelectedCommandId,
-                                  context);
+  command_service.AddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
+  command_service.AddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
+  command_service.AddActionToCommand(m_paste_action, sup::gui::constants::kPasteCommandId, context);
+  command_service.AddActionToCommand(m_remove_action, sup::gui::constants::kRemoveSelectedCommandId,
+                                     context);
 }
 
 }  // namespace oac_tree_gui

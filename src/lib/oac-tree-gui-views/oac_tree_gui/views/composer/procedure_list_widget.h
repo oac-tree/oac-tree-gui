@@ -32,6 +32,11 @@ class ItemViewComponentProvider;
 class ISessionModel;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class IAppCommandService;
+}  // namespace sup::gui
+
 class QListView;
 
 namespace oac_tree_gui
@@ -53,7 +58,7 @@ class ProcedureListWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit ProcedureListWidget(QWidget* parent_widget = nullptr);
+  explicit ProcedureListWidget(sup::gui::IAppCommandService& command_service, QWidget* parent_widget = nullptr);
   ~ProcedureListWidget() override;
 
   void SetModel(SequencerModel* model);
@@ -75,6 +80,8 @@ signals:
 private:
   ProcedureListContext CreateContext();
   void OnContextMenuRequest(const QPoint& point);
+
+  sup::gui::IAppCommandService& m_command_service;
 
   QListView* m_list_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;

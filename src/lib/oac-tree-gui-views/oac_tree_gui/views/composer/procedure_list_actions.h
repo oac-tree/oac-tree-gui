@@ -30,6 +30,7 @@ class QMenu;
 namespace sup::gui
 {
 class AppCommandContext;
+class IAppCommandService;
 }
 
 namespace oac_tree_gui
@@ -76,7 +77,7 @@ public:
    *
    * The context is normally provided by the parent widget.
    */
-  void RegisterActionsForContext(const sup::gui::AppCommandContext &context);
+  void RegisterActionsForContext(const sup::gui::AppCommandContext &context, sup::gui::IAppCommandService& command_service);
 
 signals:
   void CreateNewProcedureRequest();
