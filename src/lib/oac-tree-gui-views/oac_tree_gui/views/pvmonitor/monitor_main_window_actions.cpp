@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/model/sequencer_model.h>
 
-#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 
 #include <mvvm/project/project_handler.h>
@@ -37,13 +36,12 @@
 namespace oac_tree_gui
 {
 
-MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project, QMainWindow *mainwindow)
-    : QObject(mainwindow), m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
+MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project,
+                                                   QMainWindow *main_window)
+    : QObject(main_window), m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
 {
-  sup::gui::AppRegisterMenuBar(mainwindow->menuBar(), {sup::gui::constants::kFileMenu});
-
-  CreateActions(mainwindow);
-  SetupMenus();
+  CreateActions(main_window);
+  SetupMenus(main_window->menuBar());
 }
 
 MonitorMainWindowActions::~MonitorMainWindowActions() = default;
@@ -66,9 +64,9 @@ void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
   connect(m_exit_action, &QAction::triggered, mainwindow, &QMainWindow::close);
 }
 
-void MonitorMainWindowActions::SetupMenus()
+void MonitorMainWindowActions::SetupMenus(QMenuBar *menu_bar)
 {
-  auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
+  auto file_menu = menu_bar->addMenu(sup::gui::constants::kFileMenu);
 
   auto about_to_show_menu = [this]()
   { mvvm::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };

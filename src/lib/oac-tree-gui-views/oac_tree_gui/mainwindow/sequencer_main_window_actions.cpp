@@ -28,10 +28,10 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
+#include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/components/proxy_action.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/mainwindow/settings_editor_dialog.h>
@@ -60,20 +60,22 @@ namespace oac_tree_gui
 
 SequencerMainWindowActions::SequencerMainWindowActions(
     mvvm::ISessionModel* settings, mvvm::IProject* project,
-    sup::gui::IAppCommandService& command_service, QMainWindow* mainwindow)
-    : QObject(mainwindow)
+    sup::gui::IAppCommandService& command_service, QMainWindow* main_window)
+    : QObject(main_window)
     , m_settings(settings)
     , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
     , m_command_service(command_service)
-    , m_focus_controller(sup::gui::CreateAppFocusController())
 {
-  sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
-                               {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
-                                sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
-                                sup::gui::constants::kHelpMenu});
+  m_command_service.AppRegisterMenuBar(
+      main_window->menuBar(), {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
+                               sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
+                               sup::gui::constants::kHelpMenu});
 
-  CreateActions(mainwindow);
+  CreateActions(main_window);
   SetupMenus();
+
+  (void)QObject::connect(qApp, &QApplication::focusChanged, this, [this](QWidget* old, QWidget* now)
+                         { m_command_service.OnFocusWidgetUpdate(old, now); });
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
@@ -95,13 +97,15 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
   m_toggle_left_sidebar_button = new QToolButton;
   m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
-  auto action = sup::gui::FindProxyAction(sup::gui::constants::kToggleLeftPanelCommandId);
+  auto action = m_command_service.GetCommand(sup::gui::constants::kToggleLeftPanelCommandId)
+                    ->GetProxyAction();
   sup::gui::SetupStatusBarButton(m_toggle_left_sidebar_button, action);
 
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
-  action = sup::gui::FindProxyAction(sup::gui::constants::kToggleRightPanelCommandId);
+  action = m_command_service.GetCommand(sup::gui::constants::kToggleRightPanelCommandId)
+               ->GetProxyAction();
   sup::gui::SetupStatusBarButton(m_toggle_right_sidebar_button, action);
 
   status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
@@ -150,7 +154,7 @@ void SequencerMainWindowActions::SetupMenus()
 
 void SequencerMainWindowActions::SetupFileMenu()
 {
-  auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
+  auto file_menu = m_command_service.AppGetMenu(sup::gui::constants::kFileMenu);
 
   auto about_to_show_menu = [this]()
   { mvvm::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
@@ -179,60 +183,59 @@ void SequencerMainWindowActions::SetupFileMenu()
 
 void SequencerMainWindowActions::SetupEditMenu()
 {
-  auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kUndoCommandId);
+  auto command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                    sup::gui::constants::kUndoCommandId);
   command->SetText("Undo").SetShortcut(QKeySequence::Undo);
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          sup::gui::constants::kRedoCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                               sup::gui::constants::kRedoCommandId);
   command->SetText("Redo").SetShortcut(QKeySequence::Redo);
 
-  sup::gui::AppGetMenu(sup::gui::constants::kEditMenu)->addSeparator();
-
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          sup::gui::constants::kCutCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                               sup::gui::constants::kCutCommandId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          sup::gui::constants::kCopyCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                               sup::gui::constants::kCopyCommandId);
   command->SetText("Copy").SetShortcut(QKeySequence::Copy);
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          sup::gui::constants::kPasteCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                               sup::gui::constants::kPasteCommandId);
   command->SetText("Paste").SetShortcut(QKeySequence::Paste);
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          sup::gui::constants::kPasteSpecialCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                               sup::gui::constants::kPasteSpecialCommandId);
   command->SetText("Paste Special").SetShortcut(QKeySequence("Ctrl+Shift+V"));
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          sup::gui::constants::kRemoveSelectedCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                               sup::gui::constants::kRemoveSelectedCommandId);
   command->SetText("Remove selected");
   command->GetProxyAction()->setShortcuts({Qt::Key_Delete, Qt::Key_Backspace});
 }
 
 void SequencerMainWindowActions::SetupViewMenu()
 {
-  auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu,
-                                               sup::gui::constants::kToggleLeftPanelCommandId);
+  auto command = m_command_service.AddCommandToMenu(sup::gui::constants::kViewMenu,
+                                                    sup::gui::constants::kToggleLeftPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+0"));
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu,
-                                          sup::gui::constants::kToggleRightPanelCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kViewMenu,
+                                               sup::gui::constants::kToggleRightPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+Shift+0"));
 }
 
 void SequencerMainWindowActions::SetupToolsMenu()
 {
-  sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu,
-                                constants::kValidateProcedureCommandId);
+  m_command_service.AddCommandToMenu(sup::gui::constants::kToolsMenu,
+                                     constants::kValidateProcedureCommandId);
 
-  sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu, constants::kExportXmlCommandId);
+  m_command_service.AddCommandToMenu(sup::gui::constants::kToolsMenu,
+                                     constants::kExportXmlCommandId);
 }
 
 void SequencerMainWindowActions::SetupHelpMenu()
 {
-  auto help_menu = sup::gui::AppGetMenu(sup::gui::constants::kHelpMenu);
+  auto help_menu = m_command_service.AppGetMenu(sup::gui::constants::kHelpMenu);
   help_menu->addAction(m_about_action);
 }
 

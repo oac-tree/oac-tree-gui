@@ -24,15 +24,17 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/app/i_app_command_service.h>
+#include <sup/gui/components/proxy_action.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/mainwindow/status_bar_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
+#include <QApplication>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -43,22 +45,20 @@ namespace oac_tree_gui
 {
 
 OperationMainWindowActions::OperationMainWindowActions(
-    sup::gui::IAppCommandService &command_service, QMainWindow *mainwindow)
-    : QObject(mainwindow)
-    , m_command_service(command_service)
+    sup::gui::IAppCommandService &command_service, QMainWindow *main_window)
+    : QObject(main_window), m_command_service(command_service)
+{
+  m_command_service.AppRegisterMenuBar(
+      main_window->menuBar(), {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
+                               sup::gui::constants::kHelpMenu});
 
-  command_service.AppRegisterMenuBar(
-      main_window->menuBar(),
-      {constants::kFileMenu, constants::kEditMenu, constants::kViewMenu, constants::kHelpMenu});
-
-  sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
-                               {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
-                                sup::gui::constants::kHelpMenu});
-
-  CreateActions(mainwindow);
+  CreateActions(main_window);
   SetupMenus();
 
-  SetupStatusBar(mainwindow->statusBar());
+  SetupStatusBar(main_window->statusBar());
+
+  (void)QObject::connect(qApp, &QApplication::focusChanged, this, [this](QWidget *old, QWidget *now)
+                         { m_command_service.OnFocusWidgetUpdate(old, now); });
 }
 
 void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
@@ -66,13 +66,15 @@ void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
   m_toggle_left_sidebar_button = new QToolButton;
   m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
-  auto action = sup::gui::FindProxyAction(sup::gui::constants::kToggleLeftPanelCommandId);
+  auto action = m_command_service.GetCommand(sup::gui::constants::kToggleLeftPanelCommandId)
+                    ->GetProxyAction();
   sup::gui::SetupStatusBarButton(m_toggle_left_sidebar_button, action);
 
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
-  action = sup::gui::FindProxyAction(sup::gui::constants::kToggleRightPanelCommandId);
+  action = m_command_service.GetCommand(sup::gui::constants::kToggleRightPanelCommandId)
+               ->GetProxyAction();
   sup::gui::SetupStatusBarButton(m_toggle_right_sidebar_button, action);
 
   status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
@@ -124,7 +126,7 @@ void OperationMainWindowActions::SetupMenus()
 
 void OperationMainWindowActions::SetupFileMenu()
 {
-  auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
+  auto file_menu = m_command_service.AppGetMenu(sup::gui::constants::kFileMenu);
 
   file_menu->addAction(m_open_action);
 
@@ -141,18 +143,18 @@ void OperationMainWindowActions::SetupFileMenu()
 
 void OperationMainWindowActions::SetupViewMenu()
 {
-  auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu,
-                                               sup::gui::constants::kToggleLeftPanelCommandId);
+  auto command = m_command_service.AddCommandToMenu(sup::gui::constants::kViewMenu,
+                                                    sup::gui::constants::kToggleLeftPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+0"));
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kViewMenu,
-                                          sup::gui::constants::kToggleRightPanelCommandId);
+  command = m_command_service.AddCommandToMenu(sup::gui::constants::kViewMenu,
+                                               sup::gui::constants::kToggleRightPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+Shift+0"));
 }
 
 void OperationMainWindowActions::SetupHelpMenu()
 {
-  auto help_menu = sup::gui::AppGetMenu(sup::gui::constants::kHelpMenu);
+  auto help_menu = m_command_service.AppGetMenu(sup::gui::constants::kHelpMenu);
   help_menu->addAction(m_about_action);
 }
 
