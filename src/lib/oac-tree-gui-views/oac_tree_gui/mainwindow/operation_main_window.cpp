@@ -46,7 +46,8 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 namespace oac_tree_gui
 {
 
-OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<ApplicationModels>())
+OperationMainWindow::OperationMainWindow(SequencerMainWindowContext& context)
+    : m_context(context), m_models(std::make_unique<ApplicationModels>())
 {
   m_models->CreateEmpty();
 

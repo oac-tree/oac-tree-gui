@@ -34,6 +34,7 @@ namespace oac_tree_gui
 class OperationMonitorView;
 class OperationMainWindowActions;
 class ApplicationModels;
+class SequencerMainWindowContext;
 
 //! The main window of sequencer-operation applcation
 
@@ -42,7 +43,7 @@ class OperationMainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  OperationMainWindow();
+  OperationMainWindow(SequencerMainWindowContext& context);
   ~OperationMainWindow() override;
 
   bool ImportProcedure(const QString& file_name);
@@ -57,6 +58,7 @@ private:
   bool CanCloseApplication();
   void OnRestartRequest(sup::gui::AppExitCode exit_code);
 
+  SequencerMainWindowContext& m_context;
   std::unique_ptr<ApplicationModels> m_models;
 
   OperationMainWindowActions* m_action_manager{nullptr};

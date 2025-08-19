@@ -42,6 +42,7 @@ class SequencerComposerView;
 class SequencerExplorerView;
 class SequencerMainWindowActions;
 class SequencerSettingsModel;
+class SequencerMainWindowContext;
 
 /**
  * @brief The SequencerMainWindow class is the main window of sequencer-gui application.
@@ -51,7 +52,7 @@ class SequencerMainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  SequencerMainWindow();
+  SequencerMainWindow(SequencerMainWindowContext& context);
   ~SequencerMainWindow() override;
 
   bool ImportProcedure(const QString& file_name);
@@ -93,6 +94,7 @@ private:
 
   std::unique_ptr<ApplicationModels> CreateProject();
 
+  SequencerMainWindowContext& m_context;
   std::unique_ptr<SequencerSettingsModel> m_settings;
   std::unique_ptr<ApplicationModels> m_models;
 

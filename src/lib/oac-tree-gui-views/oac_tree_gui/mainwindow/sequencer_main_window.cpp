@@ -52,8 +52,8 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 }  // namespace
 
-SequencerMainWindow::SequencerMainWindow()
-    : m_settings(std::make_unique<SequencerSettingsModel>()), m_models(CreateProject())
+SequencerMainWindow::SequencerMainWindow(SequencerMainWindowContext &context)
+    : m_context(context), m_settings(std::make_unique<SequencerSettingsModel>()), m_models(CreateProject())
 {
   InitApplication();
 

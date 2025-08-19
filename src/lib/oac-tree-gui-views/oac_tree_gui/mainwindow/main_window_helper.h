@@ -26,6 +26,7 @@
 
 #include <oac_tree_gui/components/load_resources.h>
 #include <oac_tree_gui/mainwindow/command_line_options.h>
+#include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/mainwindow/splash_screen.h>
 
 #include <sup/gui/app/main_window_types.h>
@@ -80,7 +81,8 @@ int RunApplication(int argc, char** argv)
       mvvm::utils::SetApplicationFont(default_font);
     }
 
-    MainWindowT win;
+    SequencerMainWindowContext context;
+    MainWindowT win(context);
     if (options.window_size.has_value())
     {
       win.resize(options.window_size.value());
@@ -136,7 +138,6 @@ void ImportProcedures(const QString& file_name,
  * @param key The key to store the setting in the global application persistent setting file.
  */
 QString GetOpenSequencerProcedureName(const QString& key = {});
-
 
 }  // namespace oac_tree_gui
 
