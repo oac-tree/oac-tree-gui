@@ -104,7 +104,8 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget->AddWidget(m_composer_view, "Compose",
                           FindIcon("graph-outline", IconColorFlavor::kForDarkThemes));
 
-  m_operation_view = new OperationMonitorView(OperationPresentationMode::kIdeMode);
+  m_operation_view =
+      new OperationMonitorView(m_context.GetCommandService(), OperationPresentationMode::kIdeMode);
   m_tab_widget->AddWidget(
       m_operation_view, "Run",
       FindIcon("chevron-right-circle-outline", IconColorFlavor::kForDarkThemes));

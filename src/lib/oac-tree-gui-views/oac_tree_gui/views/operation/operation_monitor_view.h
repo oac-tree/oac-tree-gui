@@ -32,6 +32,7 @@ namespace sup::gui
 {
 class CustomSplitter;
 class AppCommandContext;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -58,7 +59,8 @@ class OperationMonitorView : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationMonitorView(OperationPresentationMode mode, QWidget* parent_widget = nullptr);
+  explicit OperationMonitorView(sup::gui::IAppCommandService& command_service,
+                                OperationPresentationMode mode, QWidget* parent_widget = nullptr);
   ~OperationMonitorView() override;
 
   void SetModels(ApplicationModels* models);
@@ -78,7 +80,7 @@ public:
   /**
    * @brief Registers actions for given context.
    */
-  void RegisterActionsForContext(const sup::gui::AppCommandContext &context);
+  void RegisterActionsForContext(const sup::gui::AppCommandContext& context);
 
 protected:
   void showEvent(QShowEvent* event) override;
@@ -91,6 +93,8 @@ private:
   void SetupWidgetActions();
   void OnJobSelected(oac_tree_gui::JobItem* item);
   OperationActionContext CreateOperationContext();
+
+  sup::gui::IAppCommandService& m_command_service;
 
   OperationPresentationMode m_presentation_mode;
 

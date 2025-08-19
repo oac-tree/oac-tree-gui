@@ -82,7 +82,8 @@ void OperationMainWindow::InitApplication()
   connect(m_action_manager, &OperationMainWindowActions::RestartApplicationRequest, this,
           &OperationMainWindow::OnRestartRequest);
 
-  m_operation_view = new OperationMonitorView(OperationPresentationMode::kOperationMode, this);
+  m_operation_view = new OperationMonitorView(m_context.GetCommandService(),
+                                              OperationPresentationMode::kOperationMode, this);
   m_operation_view->SetModels(m_models.get());
 
   setCentralWidget(m_operation_view);

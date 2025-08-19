@@ -42,8 +42,9 @@
 #include <oac_tree_gui/views/editors/user_input_dialogs.h>
 #include <oac_tree_gui/views/operation/remote_connection_dialog.h>
 
-#include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
+#include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
@@ -83,8 +84,10 @@ std::unique_ptr<RemoteConnectionService> CreateRemoteConnectionService()
 
 }  // namespace
 
-OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidget *parent_widget)
+OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService &command_service,
+                                           OperationPresentationMode mode, QWidget *parent_widget)
     : QWidget(parent_widget)
+    , m_command_service(command_service)
     , m_presentation_mode(mode)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
@@ -113,13 +116,14 @@ OperationMonitorView::OperationMonitorView(OperationPresentationMode mode, QWidg
 
   ReadSettings();
 
-  RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
+  auto context = m_command_service.RegisterWidgetUniqueId(this);
+  RegisterActionsForContext(context);
 }
 
 OperationMonitorView::~OperationMonitorView()
 {
   WriteSettings();
-  sup::gui::AppUnregisterWidgetUniqueId(this);
+  m_command_service.UnregisterWidgetUniqueId(this);
 }
 
 void OperationMonitorView::SetModels(ApplicationModels *models)
@@ -153,10 +157,10 @@ void OperationMonitorView::StopAllJobs()
 
 void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
 {
-  sup::gui::AppAddActionToCommand(m_toggle_left_sidebar,
-                                  sup::gui::constants::kToggleLeftPanelCommandId, context);
-  sup::gui::AppAddActionToCommand(m_toggle_right_sidebar,
-                                  sup::gui::constants::kToggleRightPanelCommandId, context);
+  m_command_service.AddActionToCommand(m_toggle_left_sidebar,
+                                       sup::gui::constants::kToggleLeftPanelCommandId, context);
+  m_command_service.AddActionToCommand(m_toggle_right_sidebar,
+                                       sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
 void OperationMonitorView::showEvent(QShowEvent *event)
