@@ -23,6 +23,8 @@ target_sources(${library_name} PRIVATE
   sequencer_main_window.h
   sequencer_main_window_actions.cpp
   sequencer_main_window_actions.h
+  sequencer_main_window_context.cpp
+  sequencer_main_window_context.h
   splash_screen.cpp
   splash_screen.h
 )
