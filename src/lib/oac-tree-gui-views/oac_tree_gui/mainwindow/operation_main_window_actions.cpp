@@ -27,7 +27,6 @@
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
-#include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/mainwindow/status_bar_helper.h>
 
@@ -43,9 +42,15 @@
 namespace oac_tree_gui
 {
 
-OperationMainWindowActions::OperationMainWindowActions(QMainWindow *mainwindow)
-    : QObject(mainwindow), m_focus_controller(sup::gui::CreateAppFocusController())
-{
+OperationMainWindowActions::OperationMainWindowActions(
+    sup::gui::IAppCommandService &command_service, QMainWindow *mainwindow)
+    : QObject(mainwindow)
+    , m_command_service(command_service)
+
+  command_service.AppRegisterMenuBar(
+      main_window->menuBar(),
+      {constants::kFileMenu, constants::kEditMenu, constants::kViewMenu, constants::kHelpMenu});
+
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
                                {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
                                 sup::gui::constants::kHelpMenu});

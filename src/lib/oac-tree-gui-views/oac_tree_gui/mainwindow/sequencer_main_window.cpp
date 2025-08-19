@@ -52,8 +52,10 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 }  // namespace
 
-SequencerMainWindow::SequencerMainWindow(SequencerMainWindowContext &context)
-    : m_context(context), m_settings(std::make_unique<SequencerSettingsModel>()), m_models(CreateProject())
+SequencerMainWindow::SequencerMainWindow(SequencerMainWindowContext& context)
+    : m_context(context)
+    , m_settings(std::make_unique<SequencerSettingsModel>())
+    , m_models(CreateProject())
 {
   InitApplication();
 
@@ -88,7 +90,8 @@ void SequencerMainWindow::InitComponents()
 {
   using sup::gui::IconColorFlavor;
 
-  m_action_manager = new SequencerMainWindowActions(m_settings.get(), m_models.get(), this);
+  m_action_manager = new SequencerMainWindowActions(m_settings.get(), m_models.get(),
+                                                    m_context.GetCommandService(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor(GetMainToolBarColor());

@@ -58,12 +58,13 @@ const QString kApplicationType = "oac-tree GUI";
 namespace oac_tree_gui
 {
 
-SequencerMainWindowActions::SequencerMainWindowActions(mvvm::ISessionModel* settings,
-                                                       mvvm::IProject* project,
-                                                       QMainWindow* mainwindow)
+SequencerMainWindowActions::SequencerMainWindowActions(
+    mvvm::ISessionModel* settings, mvvm::IProject* project,
+    sup::gui::IAppCommandService& command_service, QMainWindow* mainwindow)
     : QObject(mainwindow)
     , m_settings(settings)
     , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
+    , m_command_service(command_service)
     , m_focus_controller(sup::gui::CreateAppFocusController())
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),

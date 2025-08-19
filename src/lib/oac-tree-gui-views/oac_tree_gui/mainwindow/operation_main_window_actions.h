@@ -35,6 +35,7 @@ class QToolButton;
 namespace sup::gui
 {
 class AppContextFocusController;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -48,7 +49,7 @@ class OperationMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit OperationMainWindowActions(QMainWindow* mainwindow);
+  explicit OperationMainWindowActions(sup::gui::IAppCommandService& command_service, QMainWindow* mainwindow);
   ~OperationMainWindowActions() override;
 
   /**
@@ -81,6 +82,7 @@ private:
   QToolButton* m_toggle_left_sidebar_button{nullptr};
   QToolButton* m_toggle_right_sidebar_button{nullptr};
 
+  sup::gui::IAppCommandService& m_command_service;
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };
 

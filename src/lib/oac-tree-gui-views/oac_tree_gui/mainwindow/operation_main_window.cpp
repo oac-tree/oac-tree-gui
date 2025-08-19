@@ -79,7 +79,7 @@ void OperationMainWindow::InitApplication()
 {
   ReadSettings();
 
-  m_action_manager = new OperationMainWindowActions(this);
+  m_action_manager = new OperationMainWindowActions(m_context.GetCommandService(), this);
   connect(m_action_manager, &OperationMainWindowActions::RestartApplicationRequest, this,
           &OperationMainWindow::OnRestartRequest);
 

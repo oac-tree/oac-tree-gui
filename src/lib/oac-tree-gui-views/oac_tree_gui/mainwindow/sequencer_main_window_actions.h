@@ -43,6 +43,7 @@ class ISessionModel;
 namespace sup::gui
 {
 class AppContextFocusController;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -57,6 +58,7 @@ class SequencerMainWindowActions : public QObject
 
 public:
   explicit SequencerMainWindowActions(mvvm::ISessionModel* settings, mvvm::IProject* project,
+                                      sup::gui::IAppCommandService& command_service,
                                       QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 
@@ -122,6 +124,7 @@ private:
 
   mvvm::ISessionModel* m_settings{nullptr};
   std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
+  sup::gui::IAppCommandService& m_command_service;
   std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };
 
