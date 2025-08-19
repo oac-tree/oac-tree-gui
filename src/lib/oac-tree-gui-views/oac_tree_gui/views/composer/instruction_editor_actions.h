@@ -35,6 +35,7 @@ namespace sup::gui
 class ProxyAction;
 class ActionMenu;
 class AppCommandContext;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -96,7 +97,8 @@ public:
    *
    * The context is normally provided by the parent widget.
    */
-  void RegisterActionsForContext(const sup::gui::AppCommandContext &context);
+  void RegisterActionsForContext(const sup::gui::AppCommandContext& context,
+                                 sup::gui::IAppCommandService& command_service);
 
   /**
    * @brief Update enabled/disabled status of all actions.

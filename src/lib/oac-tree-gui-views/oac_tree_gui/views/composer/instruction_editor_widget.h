@@ -36,6 +36,7 @@ namespace sup::gui
 class CustomHeaderView;
 class VisibilityAgentBase;
 class CustomSplitter;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -60,7 +61,8 @@ class InstructionEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit InstructionEditorWidget(QWidget* parent_widget = nullptr);
+  explicit InstructionEditorWidget(sup::gui::IAppCommandService& command_service,
+                                   QWidget* parent_widget = nullptr);
   ~InstructionEditorWidget() override;
 
   void SetInstructionContainer(InstructionContainerItem* instruction_container);
@@ -86,6 +88,8 @@ private:
   InstructionEditorContext CreateInstructionEditorContext();
 
   void OnContextMenuRequest(const QPoint& point);
+
+  sup::gui::IAppCommandService& m_command_service;
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};

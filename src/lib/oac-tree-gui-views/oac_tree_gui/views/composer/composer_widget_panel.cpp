@@ -44,10 +44,11 @@ QString GetStackWidgetSettingsKey(const QString& settings_group_name)
 
 }  // namespace
 
-ComposerWidgetPanel::ComposerWidgetPanel(const QString& settings_group_name, WidgetType widget_type,
+ComposerWidgetPanel::ComposerWidgetPanel(sup::gui::IAppCommandService& command_service,
+                                         const QString& settings_group_name, WidgetType widget_type,
                                          QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_instruction_editor_widget(new InstructionEditorWidget)
+    , m_instruction_editor_widget(new InstructionEditorWidget(command_service))
     , m_workspace_editor_widget(
           new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
     , m_node_editor(new NodeEditorWidget)

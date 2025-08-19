@@ -26,7 +26,8 @@
 namespace sup::gui
 {
 class ItemStackWidget;
-}
+class IAppCommandService;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -69,7 +70,8 @@ public:
    * @param widget_type The type of the panel to show at first start.
    * @param parent_widget The parent widget.
    */
-  explicit ComposerWidgetPanel(const QString& settings_group_name, WidgetType widget_type,
+  explicit ComposerWidgetPanel(sup::gui::IAppCommandService& command_service,
+                               const QString& settings_group_name, WidgetType widget_type,
                                QWidget* parent_widget = nullptr);
   ~ComposerWidgetPanel() override;
 

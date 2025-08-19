@@ -33,7 +33,8 @@
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <oac_tree_gui/widgets/custom_tree_view_style.h>
 
-#include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_command_context.h>
+#include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -70,8 +71,10 @@ std::vector<oac_tree_gui::InstructionEditorActions::ActionKey> GetToolBarActionK
 namespace oac_tree_gui
 {
 
-InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
+InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService &command_service,
+                                                 QWidget *parent_widget)
     : QWidget(parent_widget)
+    , m_command_service(command_service)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
@@ -111,13 +114,14 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent_widget)
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 
-  m_editor_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
+  auto context = m_command_service.RegisterWidgetUniqueId(this);
+  m_editor_actions->RegisterActionsForContext(context, m_command_service);
 }
 
 InstructionEditorWidget::~InstructionEditorWidget()
 {
   WriteSettings();
-  sup::gui::AppUnregisterWidgetUniqueId(this);
+  m_command_service.UnregisterWidgetUniqueId(this);
 }
 
 void InstructionEditorWidget::SetInstructionContainer(

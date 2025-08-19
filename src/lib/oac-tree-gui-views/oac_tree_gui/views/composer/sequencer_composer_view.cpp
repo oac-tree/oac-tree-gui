@@ -62,8 +62,10 @@ SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &comma
     , m_procedure_editor(std::make_unique<ProcedureEditor>(
           [](const auto &event) { sup::gui::SendWarningMessage(event); }))
     , m_composer_panel(new ComposerToolsPanel)
-    , m_central_panel(new ComposerWidgetPanel(kCentralPanel, ComposerWidgetPanel::kInstructionTree))
-    , m_right_panel(new ComposerWidgetPanel(kRightPanel, ComposerWidgetPanel::kWorkspace))
+    , m_central_panel(new ComposerWidgetPanel(command_service, kCentralPanel,
+                                              ComposerWidgetPanel::kInstructionTree))
+    , m_right_panel(
+          new ComposerWidgetPanel(command_service, kRightPanel, ComposerWidgetPanel::kWorkspace))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_composer_actions(new SequencerComposerActions(this))
 {
