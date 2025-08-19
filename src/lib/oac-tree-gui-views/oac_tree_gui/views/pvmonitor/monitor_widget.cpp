@@ -56,12 +56,14 @@ void SetEnabled(const QList<QAction *> &actions, bool is_enabled)
 namespace oac_tree_gui
 {
 
-MonitorWidget::MonitorWidget(QWidget *parent_widget)
+MonitorWidget::MonitorWidget(sup::gui::IAppCommandService &command_service, QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
-    , m_workspace_tree(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTechTree))
-    , m_workspace_table(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTable))
+    , m_workspace_tree(
+          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTechTree))
+    , m_workspace_table(
+          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTable))
     , m_tool_bar(new QToolBar)
     , m_tab_widget(new QTabWidget)
 {

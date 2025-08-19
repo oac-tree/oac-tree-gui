@@ -37,12 +37,14 @@ const QString kWorkspaceSettingsKey = "OperationWorkspacePanel/stack_widget";
 namespace oac_tree_gui
 {
 
-OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent_widget)
+OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService &command_service,
+                                                 QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_stack_widget(new sup::gui::ItemStackWidget(kWorkspaceSettingsKey))
-    , m_workspace_tree_widget(new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
+    , m_workspace_tree_widget(
+          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table_widget(
-          new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTable))
+          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTable))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

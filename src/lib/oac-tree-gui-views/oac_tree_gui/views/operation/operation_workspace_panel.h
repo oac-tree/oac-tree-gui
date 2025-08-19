@@ -28,6 +28,11 @@ namespace sup::gui
 class ItemStackWidget;
 }
 
+namespace sup::gui
+{
+class IAppCommandService;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
@@ -46,7 +51,8 @@ class OperationWorkspacePanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationWorkspacePanel(QWidget* parent_widget = nullptr);
+  explicit OperationWorkspacePanel(sup::gui::IAppCommandService& command_service,
+                                   QWidget* parent_widget = nullptr);
   ~OperationWorkspacePanel() override;
 
   void SetProcedure(ProcedureItem* item);

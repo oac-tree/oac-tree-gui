@@ -51,7 +51,8 @@ const std::vector<int> kDefaultColumnStretch({3, 2, 2});
 namespace oac_tree_gui
 {
 
-WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentation,
+WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService &command_service,
+                                             WorkspacePresentationType presentation,
                                              QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
@@ -59,8 +60,8 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(WorkspacePresentationType presentat
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_component_provider(CreateProvider(presentation))
     , m_line_edit(new QLineEdit)
-    , m_editor(
-          new WorkspaceEditor([this]() { return m_component_provider->GetSelectedItems(); }, this))
+    , m_editor(new WorkspaceEditor(
+          command_service, [this]() { return m_component_provider->GetSelectedItems(); }, this))
 {
   setWindowTitle("Workspace");
 

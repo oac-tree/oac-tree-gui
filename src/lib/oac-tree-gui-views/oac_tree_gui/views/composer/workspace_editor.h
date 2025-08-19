@@ -32,6 +32,11 @@ namespace mvvm
 class SessionItem;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class IAppCommandService;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
@@ -51,7 +56,7 @@ class WorkspaceEditor : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditor(const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
+  explicit WorkspaceEditor(sup::gui::IAppCommandService& command_service, const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
                            QWidget* parent_widget = nullptr);
   ~WorkspaceEditor() override;
 

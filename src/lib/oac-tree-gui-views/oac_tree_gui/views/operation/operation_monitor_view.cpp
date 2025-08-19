@@ -92,7 +92,7 @@ OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService &command
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
     , m_left_panel(CreateLeftPanel())
-    , m_workspace_panel{new OperationWorkspacePanel}
+    , m_workspace_panel{new OperationWorkspacePanel(command_service)}
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_connection_service(CreateRemoteConnectionService())
     , m_job_manager(new JobManager(

@@ -21,10 +21,10 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
-#include <QWidget>
-
 #include "oac_tree_gui/components/component_types.h"
 #include "oac_tree_gui/model/procedure_item.h"
+
+#include <QWidget>
 
 class QTreeView;
 class QLineEdit;
@@ -38,6 +38,7 @@ namespace sup::gui
 {
 class CustomHeaderView;
 class VisibilityAgentBase;
+class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -58,7 +59,8 @@ class WorkspaceEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorWidget(WorkspacePresentationType presentation,
+  explicit WorkspaceEditorWidget(sup::gui::IAppCommandService& command_service,
+                                 WorkspacePresentationType presentation,
                                  QWidget* parent_widget = nullptr);
   ~WorkspaceEditorWidget() override;
 

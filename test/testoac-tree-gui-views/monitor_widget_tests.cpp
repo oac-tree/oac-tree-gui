@@ -18,18 +18,19 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/views/pvmonitor/monitor_widget.h"
+
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
+#include <sup/gui/app/null_command_service.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/views/pvmonitor/monitor_widget.h"
 
 namespace oac_tree_gui
 {
@@ -38,6 +39,8 @@ namespace oac_tree_gui
 
 class MonitorWidgetTest : public ::testing::Test
 {
+public:
+  sup::gui::NullCommandService m_command_service;
 };
 
 TEST_F(MonitorWidgetTest, StartStopStart)
@@ -51,7 +54,7 @@ TEST_F(MonitorWidgetTest, StartStopStart)
   variable_item0->SetName("abc");
   SetAnyValue(value0, *variable_item0);
 
-  MonitorWidget widget;
+  MonitorWidget widget(m_command_service);
   widget.SetModel(&model);
 
   EXPECT_NO_FATAL_FAILURE(widget.OnStartMonitoringRequest());

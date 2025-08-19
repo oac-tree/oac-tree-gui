@@ -50,7 +50,7 @@ ComposerWidgetPanel::ComposerWidgetPanel(sup::gui::IAppCommandService& command_s
     : QWidget(parent_widget)
     , m_instruction_editor_widget(new InstructionEditorWidget(command_service))
     , m_workspace_editor_widget(
-          new WorkspaceEditorWidget(WorkspacePresentationType::kWorkspaceTree))
+          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
     , m_node_editor(new NodeEditorWidget)
     , m_xml_panel(new XmlPanel)
     , m_stack_widget(new sup::gui::ItemStackWidget(GetStackWidgetSettingsKey(settings_group_name)))

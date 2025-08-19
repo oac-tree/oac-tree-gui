@@ -28,8 +28,9 @@
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/views/composer/workspace_editor_actions.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
+#include <sup/gui/app/app_command_context.h>
+#include <sup/gui/app/i_app_command_service.h>
 
-#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
 #include <sup/gui/widgets/message_helper.h>
 
@@ -38,8 +39,8 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditor::WorkspaceEditor(
-    const std::function<std::vector<mvvm::SessionItem *>()> &selected_items, QWidget *parent_widget)
+WorkspaceEditor::WorkspaceEditor(sup::gui::IAppCommandService &command_service,
+                                 const std::function<std::vector<mvvm::SessionItem *>()> &selected_items, QWidget *parent_widget)
     : QObject(parent_widget)
     , m_get_selected_items(selected_items)
     , m_action_handler(
@@ -51,7 +52,8 @@ WorkspaceEditor::WorkspaceEditor(
 {
   SetupConnections();
 
-  m_editor_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(parent_widget));
+  auto context = command_service.RegisterWidgetUniqueId(parent_widget);
+  m_editor_actions->RegisterActionsForContext(context, command_service);
 }
 
 WorkspaceEditor::~WorkspaceEditor() = default;

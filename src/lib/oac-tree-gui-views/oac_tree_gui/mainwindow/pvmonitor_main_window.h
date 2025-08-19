@@ -26,6 +26,12 @@
 
 class QCloseEvent;
 
+namespace sup::gui
+{
+class IAppCommandService;
+}
+
+
 namespace oac_tree_gui
 {
 
@@ -61,6 +67,7 @@ private:
 
   std::unique_ptr<PvMonitorProject> CreateProject();
 
+  std::unique_ptr<sup::gui::IAppCommandService> m_command_service;
   std::unique_ptr<PvMonitorProject> m_project;
   MonitorWidget* m_monitor_widget{nullptr};
   MonitorMainWindowActions* m_actions{nullptr};

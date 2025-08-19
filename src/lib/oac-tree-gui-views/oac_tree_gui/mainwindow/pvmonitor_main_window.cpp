@@ -26,6 +26,8 @@
 #include <oac_tree_gui/views/pvmonitor/monitor_main_window_actions.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_widget.h>
 
+#include <sup/gui/app/null_command_service.h>
+
 #include <QMenuBar>
 #include <QSettings>
 
@@ -39,7 +41,9 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 namespace oac_tree_gui
 {
 
-PvMonitorMainWindow::PvMonitorMainWindow() : m_project(CreateProject())
+PvMonitorMainWindow::PvMonitorMainWindow()
+    : m_command_service(std::make_unique<sup::gui::NullCommandService>())
+    , m_project(CreateProject())
 {
   InitApplication();
 
@@ -59,7 +63,7 @@ void PvMonitorMainWindow::InitApplication()
   ReadSettings();
   m_actions = new MonitorMainWindowActions(m_project.get(), this);
 
-  m_monitor_widget = new MonitorWidget;
+  m_monitor_widget = new MonitorWidget(*m_command_service);
   setCentralWidget(m_monitor_widget);
 }
 
