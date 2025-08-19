@@ -61,14 +61,14 @@ void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
   m_toggle_left_sidebar_button = new QToolButton;
   m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
-  sup::gui::SetupStatusBarButton(m_toggle_left_sidebar_button,
-                                 sup::gui::constants::kToggleLeftPanelCommandId);
+  auto action = sup::gui::FindProxyAction(sup::gui::constants::kToggleLeftPanelCommandId);
+  sup::gui::SetupStatusBarButton(m_toggle_left_sidebar_button, action);
 
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
-  sup::gui::SetupStatusBarButton(m_toggle_right_sidebar_button,
-                                 sup::gui::constants::kToggleRightPanelCommandId);
+  action = sup::gui::FindProxyAction(sup::gui::constants::kToggleRightPanelCommandId);
+  sup::gui::SetupStatusBarButton(m_toggle_right_sidebar_button, action);
 
   status_bar->addPermanentWidget(m_toggle_left_sidebar_button, 0);
   sup::gui::AddPermanentStretch(status_bar);
