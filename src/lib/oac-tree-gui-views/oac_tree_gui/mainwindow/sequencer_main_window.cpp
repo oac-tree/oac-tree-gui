@@ -165,7 +165,6 @@ void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 {
   if (CanCloseApplication())
   {
-    sup::gui::ShutdownApplication();
     QCoreApplication::exit(exit_code);
   }
 }
