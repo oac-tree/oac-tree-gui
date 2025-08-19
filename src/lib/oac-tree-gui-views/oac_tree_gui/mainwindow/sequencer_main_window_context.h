@@ -32,7 +32,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The AnyValueEditorAppContext contains all common resources for AnyValueEditor application.
+ * @brief The SequencerMainWindowContext contains all common resources for SequencerMainWindow.
  */
 class SequencerMainWindowContext
 {
