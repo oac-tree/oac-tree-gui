@@ -45,7 +45,7 @@
         <!-- -->
         <sonar.language>cpp</sonar.language>
         <sonar.sources.cpp>src</sonar.sources.cpp>
-        <sonar.exclusions>src/app/**, src/lib/oac-tree-gui-views/**, **/objects/**</sonar.exclusions>
+        <sonar.exclusions>src/app/**, src/lib/oac-tree-gui-views/**, **/objects/**, **/viewmodel/**</sonar.exclusions>
     </properties>
     <!-- Parent pom.xml -->
     <parent>
