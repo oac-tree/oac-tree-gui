@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_COMPOSER_PROCEDURE_EDITOR_H_
-#define OAC_TREE_GUI_COMPOSER_PROCEDURE_EDITOR_H_
+#ifndef OAC_TREE_GUI_COMPOSER_OBJECTS_PROCEDURE_EDITOR_H_
+#define OAC_TREE_GUI_COMPOSER_OBJECTS_PROCEDURE_EDITOR_H_
 
 #include <sup/gui/core/message_event.h>
 
@@ -100,4 +100,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_COMPOSER_PROCEDURE_EDITOR_H_
+#endif  // OAC_TREE_GUI_COMPOSER_OBJECTS_PROCEDURE_EDITOR_H_

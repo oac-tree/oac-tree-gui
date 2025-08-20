@@ -24,7 +24,7 @@
 #include "composer_widget_panel.h"
 #include "sequencer_composer_actions.h"
 
-#include <oac_tree_gui/composer/procedure_editor.h>
+#include <oac_tree_gui/composer/objects/procedure_editor.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>

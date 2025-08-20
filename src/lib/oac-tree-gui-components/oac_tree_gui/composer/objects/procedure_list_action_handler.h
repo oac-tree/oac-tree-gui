@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_COMPOSER_PROCEDURE_LIST_ACTION_HANDLER_H_
-#define OAC_TREE_GUI_COMPOSER_PROCEDURE_LIST_ACTION_HANDLER_H_
+#ifndef OAC_TREE_GUI_COMPOSER_OBJECTS_PROCEDURE_LIST_ACTION_HANDLER_H_
+#define OAC_TREE_GUI_COMPOSER_OBJECTS_PROCEDURE_LIST_ACTION_HANDLER_H_
 
 #include <oac_tree_gui/composer/procedure_list_context.h>
 
@@ -106,4 +106,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_COMPOSER_PROCEDURE_LIST_ACTION_HANDLER_H_
+#endif  // OAC_TREE_GUI_COMPOSER_OBJECTS_PROCEDURE_LIST_ACTION_HANDLER_H_

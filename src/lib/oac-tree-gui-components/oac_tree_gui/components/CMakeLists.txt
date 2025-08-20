@@ -1,4 +1,4 @@
-# Collection of sequencer-related components that are used in more than one window.
+# This folder contains QObject derived classes (they are excluded from the Sonar analysis)
 
 target_sources(${library_name} PRIVATE
   anyvalue_dialog_result.h

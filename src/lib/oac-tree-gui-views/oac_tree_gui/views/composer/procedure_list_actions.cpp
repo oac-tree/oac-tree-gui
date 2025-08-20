@@ -20,7 +20,7 @@
 
 #include "procedure_list_actions.h"
 
-#include <oac_tree_gui/composer/procedure_list_action_handler.h>
+#include <oac_tree_gui/composer/objects/procedure_list_action_handler.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_command_context.h>

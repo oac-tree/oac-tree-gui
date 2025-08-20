@@ -1,5 +1,4 @@
-# Collection of classes to submit oac-tree procedures as jobs running in a separate thread.
-# Here QObject derived classes are used to exclude from sonar analysis
+# This folder contains QObject derived classes (they are excluded from the Sonar analysis)
 
 target_sources(${library_name} PRIVATE
   abstract_job_handler.cpp
