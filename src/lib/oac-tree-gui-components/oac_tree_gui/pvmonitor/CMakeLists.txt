@@ -1,6 +1,4 @@
 target_sources(${library_name} PRIVATE
-  domain_workspace_listener.cpp
-  domain_workspace_listener.h
   monitor_model.cpp
   monitor_model.h
   workspace_item_listener.cpp
@@ -10,3 +8,5 @@ target_sources(${library_name} PRIVATE
   workspace_synchronizer.cpp
   workspace_synchronizer.h
 )
+
+add_subdirectory(objects)

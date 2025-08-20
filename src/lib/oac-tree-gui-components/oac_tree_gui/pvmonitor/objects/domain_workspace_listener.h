@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_PVMONITOR_DOMAIN_WORKSPACE_LISTENER_H_
-#define OAC_TREE_GUI_PVMONITOR_DOMAIN_WORKSPACE_LISTENER_H_
+#ifndef OAC_TREE_GUI_PVMONITOR_OBJECTS_DOMAIN_WORKSPACE_LISTENER_H_
+#define OAC_TREE_GUI_PVMONITOR_OBJECTS_DOMAIN_WORKSPACE_LISTENER_H_
 
 #include <QObject>
 #include <memory>
@@ -107,4 +107,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_PVMONITOR_DOMAIN_WORKSPACE_LISTENER_H_
+#endif  // OAC_TREE_GUI_PVMONITOR_OBJECTS_DOMAIN_WORKSPACE_LISTENER_H_
