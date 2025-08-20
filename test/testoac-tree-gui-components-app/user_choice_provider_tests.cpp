@@ -18,12 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/objects/user_choice_provider.h"
+
 #include <gtest/gtest.h>
 
 #include <QTest>
 #include <future>
-
-#include "oac_tree_gui/jobsystem/user_choice_provider.h"
 
 namespace oac_tree_gui::test
 {

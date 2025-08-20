@@ -21,9 +21,9 @@
 #include "oac_tree_gui/operation/operation_action_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/remote_job_handler.h>
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
-#include <oac_tree_gui/jobsystem/remote_job_handler.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
@@ -31,9 +31,9 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <testutils/folder_test.h>
 #include <testutils/mock_remote_connection_service.h>
 #include <testutils/standard_procedure_items.h>
-#include <testutils/folder_test.h>
 
 namespace oac_tree_gui
 {
@@ -124,7 +124,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForFileBasedJobWhenFileIsAbsen
 TEST_F(OperationActionHelperTest, CreateJobHandlerForFileBasedJob)
 {
   // all job handlers further down requres that procedure and job are part of models
-  auto job_item = CreateFileBasedJobItem(test::ProjectResourceDir()+"/fallback.xml");
+  auto job_item = CreateFileBasedJobItem(test::ProjectResourceDir() + "/fallback.xml");
   auto job_item_ptr = job_item.get();
   m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());
 

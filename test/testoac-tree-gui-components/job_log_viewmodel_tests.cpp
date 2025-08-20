@@ -20,7 +20,7 @@
 
 #include "oac_tree_gui/viewmodel/job_log_viewmodel.h"
 
-#include <oac_tree_gui/jobsystem/job_log.h>
+#include <oac_tree_gui/jobsystem/objects/job_log.h>
 
 #include <gtest/gtest.h>
 

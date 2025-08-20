@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_
-#define OAC_TREE_GUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_USER_INPUT_PROVIDER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_USER_INPUT_PROVIDER_H_
 
 #include <oac_tree_gui/jobsystem/request_handler_queue.h>
 #include <oac_tree_gui/jobsystem/request_types.h>
@@ -70,4 +70,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_USER_INPUT_PROVIDER_H_

@@ -18,38 +18,43 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JOBSYSTEM_REMOTE_JOB_HANDLER_H_
-#define OAC_TREE_GUI_JOBSYSTEM_REMOTE_JOB_HANDLER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_JOB_LOG_H_
+#define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_JOB_LOG_H_
 
-#include <oac_tree_gui/jobsystem/abstract_job_handler.h>
-#include <oac_tree_gui/jobsystem/user_context.h>
+#include <oac_tree_gui/jobsystem/log_event.h>
 
-namespace sup::oac_tree_server
-{
-class IJobManager;
-}
+#include <QObject>
+#include <vector>
 
 namespace oac_tree_gui
 {
 
-class WorkspaceItemListener;
-
 /**
- * @brief The RemoteJobHandler class is intended to run a remote job represented by the JobItem.
+ * @brief The JobLog class holds all messages of running job in chronological order.
  */
-class RemoteJobHandler : public AbstractJobHandler
+class JobLog : public QObject
 {
   Q_OBJECT
 
 public:
-  RemoteJobHandler(JobItem* job_item, sup::oac_tree_server::IJobManager& manager,
-                   std::size_t job_index, UserContext user_context);
-  ~RemoteJobHandler() override;
+  explicit JobLog(QObject* parent_object = nullptr);
+
+  void Append(const LogEvent& log_event);
+
+  void ClearLog();
+
+  int GetSize() const;
+
+  LogEvent& At(int index);
+
+signals:
+  void LogEventAppended();
+  void LogCleared();
 
 private:
-  void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;
+  std::vector<LogEvent> m_records;
 };
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_REMOTE_JOB_HANDLER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_JOB_LOG_H_

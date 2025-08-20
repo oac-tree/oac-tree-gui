@@ -25,8 +25,8 @@
 #include "operation_workspace_panel.h"
 
 #include <oac_tree_gui/jobsystem/automation_client.h>
-#include <oac_tree_gui/jobsystem/job_manager.h>
-#include <oac_tree_gui/jobsystem/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/job_manager.h>
+#include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/remote_connection_info.h>
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
 #include <oac_tree_gui/mainwindow/main_window_helper.h>

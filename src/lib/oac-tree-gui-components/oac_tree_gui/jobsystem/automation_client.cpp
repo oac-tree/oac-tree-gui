@@ -21,7 +21,7 @@
 #include "automation_client.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/remote_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/remote_job_handler.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 

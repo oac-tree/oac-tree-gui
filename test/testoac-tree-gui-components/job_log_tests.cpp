@@ -18,11 +18,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/objects/job_log.h"
+
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
-
-#include "oac_tree_gui/jobsystem/job_log.h"
 
 namespace oac_tree_gui::test
 {

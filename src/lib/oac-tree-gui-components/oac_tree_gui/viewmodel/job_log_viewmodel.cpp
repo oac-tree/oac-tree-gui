@@ -21,8 +21,8 @@
 #include "job_log_viewmodel.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/job_log.h>
 #include <oac_tree_gui/jobsystem/job_log_severity.h>
+#include <oac_tree_gui/jobsystem/objects/job_log.h>
 
 namespace
 {

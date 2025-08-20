@@ -19,7 +19,8 @@
  *****************************************************************************/
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/abstract_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/job_manager.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -44,8 +45,6 @@
 #include <QSignalSpy>
 #include <QTest>
 #include <chrono>
-
-#include "oac_tree_gui/jobsystem/job_manager.h"
 
 using msec = std::chrono::milliseconds;
 

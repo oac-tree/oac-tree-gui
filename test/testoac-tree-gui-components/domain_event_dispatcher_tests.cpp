@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/jobsystem/domain_event_dispatcher.h"
+#include "oac_tree_gui/jobsystem/objects/domain_event_dispatcher.h"
 
 #include <oac_tree_gui/jobsystem/domain_events.h>
 

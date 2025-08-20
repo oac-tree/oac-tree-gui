@@ -21,9 +21,9 @@
 #include "oac_tree_gui/operation/operation_action_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/job_manager.h>
 #include <oac_tree_gui/jobsystem/job_utils.h>
-#include <oac_tree_gui/jobsystem/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/job_manager.h>
+#include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/job_item.h>
@@ -432,7 +432,7 @@ TEST_F(OperationActionHandlerExtendedTest, SubmitMalFormedFileBasedJobThenResubm
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(0);
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnRegenerateJobRequest();
-  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kUndefined); // not a failure anymore
+  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kUndefined);  // not a failure anymore
 
   // sarting the job
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);

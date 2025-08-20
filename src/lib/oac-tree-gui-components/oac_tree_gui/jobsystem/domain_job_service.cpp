@@ -20,10 +20,11 @@
 
 #include "domain_job_service.h"
 
-#include "domain_event_dispatcher.h"
-#include "domain_event_queue.h"
 #include "domain_job_observer.h"
 #include "user_context.h"
+
+#include <oac_tree_gui/jobsystem/objects/domain_event_dispatcher.h>
+#include <oac_tree_gui/jobsystem/objects/domain_event_queue.h>
 
 namespace oac_tree_gui
 {

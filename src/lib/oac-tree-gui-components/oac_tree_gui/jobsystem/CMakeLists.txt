@@ -3,16 +3,10 @@
 target_sources(${library_name} PRIVATE
   abstract_domain_runner.cpp
   abstract_domain_runner.h
-  abstract_job_handler.cpp
-  abstract_job_handler.h
   automation_client.cpp
   automation_client.h
-  domain_event_dispatcher.cpp
-  domain_event_dispatcher.h
   domain_event_helper.cpp
   domain_event_helper.h
-  domain_event_queue.cpp
-  domain_event_queue.h
   domain_events.cpp
   domain_events.h
   domain_job_observer.cpp
@@ -23,18 +17,12 @@ target_sources(${library_name} PRIVATE
   i_job_handler.h
   i_job_item_manager.h
   i_remote_connection_service.h
-  job_log.cpp
-  job_log.h
   job_log_severity.cpp
   job_log_severity.h
-  job_manager.cpp
-  job_manager.h
   job_utils.cpp
   job_utils.h
   local_domain_runner.cpp
   local_domain_runner.h
-  local_job_handler.cpp
-  local_job_handler.h
   log_event.cpp
   log_event.h
   remote_connection_info.h
@@ -42,15 +30,11 @@ target_sources(${library_name} PRIVATE
   remote_connection_service.h
   remote_domain_runner.cpp
   remote_domain_runner.h
-  remote_job_handler.cpp
-  remote_job_handler.h
   request_handler.h
   request_handler_queue.h
   request_types.cpp
-  request_types.h
-  user_choice_provider.cpp
-  user_choice_provider.h
   user_context.h
-  user_input_provider.cpp
-  user_input_provider.h
 )
+
+add_subdirectory(objects)
+

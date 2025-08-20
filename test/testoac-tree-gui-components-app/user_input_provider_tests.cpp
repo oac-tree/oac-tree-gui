@@ -18,14 +18,14 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/objects/user_input_provider.h"
+
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
 
 #include <QTest>
 #include <future>
-
-#include "oac_tree_gui/jobsystem/user_input_provider.h"
 
 namespace oac_tree_gui::test
 {

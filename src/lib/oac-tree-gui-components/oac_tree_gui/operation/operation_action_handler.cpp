@@ -21,8 +21,8 @@
 #include "operation_action_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/job_manager.h>
-#include <oac_tree_gui/jobsystem/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/job_manager.h>
+#include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/remote_connection_info.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/job_item.h>

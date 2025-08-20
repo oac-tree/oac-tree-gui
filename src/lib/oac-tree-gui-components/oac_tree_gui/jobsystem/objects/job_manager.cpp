@@ -21,7 +21,7 @@
 #include "job_manager.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/model/instruction_item.h>
 
 #include <mvvm/utils/container_utils.h>

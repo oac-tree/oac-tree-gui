@@ -18,13 +18,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/objects/domain_event_queue.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
-
-#include "oac_tree_gui/jobsystem/domain_event_queue.h"
 
 namespace oac_tree_gui::test
 {

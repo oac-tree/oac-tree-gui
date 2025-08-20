@@ -18,12 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/jobsystem/local_job_handler.h"
+#include "oac_tree_gui/jobsystem/objects/local_job_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/jobsystem/job_log.h>
 #include <oac_tree_gui/jobsystem/job_utils.h>
+#include <oac_tree_gui/jobsystem/objects/job_log.h>
 #include <oac_tree_gui/jobsystem/request_types.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/application_models.h>

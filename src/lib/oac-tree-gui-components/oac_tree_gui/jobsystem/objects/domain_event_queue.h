@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENT_QUEUE_H_
-#define OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENT_QUEUE_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_DOMAIN_EVENT_QUEUE_H_
+#define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_DOMAIN_EVENT_QUEUE_H_
 
 #include <oac_tree_gui/jobsystem/domain_events.h>
 
@@ -76,4 +76,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENT_QUEUE_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_DOMAIN_EVENT_QUEUE_H_

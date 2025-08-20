@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JOBSYSTEM_ABSTRACT_JOB_HANDLER_H_
-#define OAC_TREE_GUI_JOBSYSTEM_ABSTRACT_JOB_HANDLER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_ABSTRACT_JOB_HANDLER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_ABSTRACT_JOB_HANDLER_H_
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
@@ -183,4 +183,4 @@ private:
 
 Q_DECLARE_METATYPE(oac_tree_gui::InstructionItem*)
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_ABSTRACT_JOB_HANDLER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_ABSTRACT_JOB_HANDLER_H_

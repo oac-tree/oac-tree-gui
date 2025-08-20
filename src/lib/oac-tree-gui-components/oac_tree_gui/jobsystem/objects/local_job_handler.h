@@ -18,10 +18,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
-#define OAC_TREE_GUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_LOCAL_JOB_HANDLER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_LOCAL_JOB_HANDLER_H_
 
-#include <oac_tree_gui/jobsystem/abstract_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
 
 namespace mvvm
 {
@@ -69,4 +69,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_LOCAL_JOB_HANDLER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_LOCAL_JOB_HANDLER_H_

@@ -18,12 +18,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/operation/operation_action_handler.h"
 #include "test_automation_server.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/automation_client.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
-#include <oac_tree_gui/jobsystem/job_manager.h>
+#include <oac_tree_gui/jobsystem/objects/job_manager.h>
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/job_model.h>
@@ -42,8 +43,6 @@
 #include <QTest>
 #include <chrono>
 #include <thread>
-
-#include "oac_tree_gui/operation/operation_action_handler.h"
 
 namespace oac_tree_gui
 {
@@ -177,8 +176,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   EXPECT_TRUE(m_remote_connection_service.HasClient(kServerName));
 
   // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this, job_item]()
-  { return job_item->GetStatus() == RunnerStatus::kInitial; };
+  auto predicate = [this, job_item]() { return job_item->GetStatus() == RunnerStatus::kInitial; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 5000));
 
   // validating internal expanded ProcedureItem
@@ -217,8 +215,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   handler->OnStartJobRequest();
 
   // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this, job_item]()
-  { return job_item->GetStatus() == RunnerStatus::kSucceeded; };
+  auto predicate = [this, job_item]() { return job_item->GetStatus() == RunnerStatus::kSucceeded; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());

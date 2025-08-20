@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JOBSYSTEM_JOB_MANAGER_H_
-#define OAC_TREE_GUI_JOBSYSTEM_JOB_MANAGER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_JOB_MANAGER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_JOB_MANAGER_H_
 
 #include <oac_tree_gui/jobsystem/i_job_item_manager.h>
 
@@ -99,4 +99,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_JOB_MANAGER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_JOB_MANAGER_H_

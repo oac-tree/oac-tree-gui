@@ -22,8 +22,8 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/i_remote_connection_service.h>
-#include <oac_tree_gui/jobsystem/local_job_handler.h>
-#include <oac_tree_gui/jobsystem/remote_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/remote_job_handler.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/transform/domain_procedure_builder.h>
 

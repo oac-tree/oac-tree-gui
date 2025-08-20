@@ -20,12 +20,12 @@
 
 #include "abstract_job_handler.h"
 
-#include "abstract_domain_runner.h"
-#include "domain_event_dispatcher_context.h"
 #include "job_log.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/jobsystem/abstract_domain_runner.h>
+#include <oac_tree_gui/jobsystem/domain_event_dispatcher_context.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/iterate_helper.h>

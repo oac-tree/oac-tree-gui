@@ -20,11 +20,11 @@
 
 #include "domain_job_observer.h"
 
-#include "user_choice_provider.h"
 #include "user_context.h"
-#include "user_input_provider.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/objects/user_choice_provider.h>
+#include <oac_tree_gui/jobsystem/objects/user_input_provider.h>
 
 #include <sup/gui/model/anyvalue_utils.h>
 
