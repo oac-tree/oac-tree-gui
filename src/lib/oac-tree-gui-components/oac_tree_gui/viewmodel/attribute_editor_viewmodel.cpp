@@ -20,7 +20,7 @@
 
 #include "attribute_editor_viewmodel.h"
 
-#include "custom_row_strategies.h"
+#include <oac_tree_gui/components/custom_row_strategies.h>
 
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewmodel_controller_factory.h>

@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/viewmodel/custom_viewitem_factory.h"
+#include "oac_tree_gui/components/custom_viewitem_factory.h"
 
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>

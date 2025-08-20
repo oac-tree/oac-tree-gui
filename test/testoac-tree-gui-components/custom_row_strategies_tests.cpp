@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/viewmodel/custom_row_strategies.h"
+#include "oac_tree_gui/components/custom_row_strategies.h"
 
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>

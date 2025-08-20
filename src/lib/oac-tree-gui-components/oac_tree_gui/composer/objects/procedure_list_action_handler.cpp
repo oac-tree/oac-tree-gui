@@ -20,16 +20,16 @@
 
 #include "procedure_list_action_handler.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
-#include <mvvm/standarditems/container_item.h>
 #include <mvvm/model/model_utils.h>
+#include <mvvm/standarditems/container_item.h>
 
 #include <QMimeData>
 
@@ -47,7 +47,7 @@ ProcedureListActionHandler::ProcedureListActionHandler(ProcedureListContext cont
 }
 
 void ProcedureListActionHandler::OnCreateNewProcedureRequest()
-{  
+{
   mvvm::utils::BeginMacro(*GetModel(), "New procedure");
   auto result = InsertProcedure(std::make_unique<ProcedureItem>());
   result->SetDisplayName("Untitled");

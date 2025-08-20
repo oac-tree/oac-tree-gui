@@ -27,7 +27,7 @@
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>

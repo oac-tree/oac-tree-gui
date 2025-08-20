@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H_
-#define OAC_TREE_GUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_CUSTOM_VIEWITEM_FACTORY_H_
+#define OAC_TREE_GUI_COMPONENTS_CUSTOM_VIEWITEM_FACTORY_H_
 
 //! @file
 //! Collection of factory functions to create custom view items.
@@ -45,4 +45,4 @@ std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionI
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_VIEWITEM_FACTORY_H_

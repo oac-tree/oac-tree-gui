@@ -18,13 +18,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/components/custom_presentation_items.h"
+
 #include <oac_tree_gui/components/component_helper.h>
 
 #include <mvvm/model/compound_item.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/viewmodel/custom_presentation_items.h"
 
 namespace oac_tree_gui::test
 {

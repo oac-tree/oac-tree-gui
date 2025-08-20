@@ -20,8 +20,8 @@
 
 #include "workspace_operation_viewmodel.h"
 
-#include "custom_children_strategies.h"
-#include "custom_row_strategies.h"
+#include <oac_tree_gui/components/custom_children_strategies.h>
+#include <oac_tree_gui/components/custom_row_strategies.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 

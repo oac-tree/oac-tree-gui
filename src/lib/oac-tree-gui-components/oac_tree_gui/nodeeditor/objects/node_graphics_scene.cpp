@@ -20,6 +20,7 @@
 
 #include "node_graphics_scene.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/aggregate_factory.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -34,7 +35,6 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/model_utils.h>

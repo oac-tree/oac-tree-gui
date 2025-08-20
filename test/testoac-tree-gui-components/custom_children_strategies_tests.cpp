@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/viewmodel/custom_children_strategies.h"
+#include "oac_tree_gui/components/custom_children_strategies.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>

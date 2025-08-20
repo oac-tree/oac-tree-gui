@@ -20,13 +20,12 @@
 
 #include "instruction_editor_viewmodel.h"
 
-#include "drag_and_drop_helper.h"
-
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
-#include <oac_tree_gui/viewmodel/custom_row_strategies.h>
+#include <oac_tree_gui/components/custom_row_strategies.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>

@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_
-#define OAC_TREE_GUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_
+#define OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_
 
 //! Helper functions for drag-and-drop operations.
 
@@ -105,4 +105,4 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
 mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_

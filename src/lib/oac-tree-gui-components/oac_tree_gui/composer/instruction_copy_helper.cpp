@@ -20,9 +20,9 @@
 
 #include "instruction_copy_helper.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
@@ -59,7 +59,7 @@ std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
     {
       return mvvm::utils::Contains(selection, &item);
     }
-    return true; // all properties
+    return true;  // all properties
   };
 
   // FIXME Find the way to fix this CastItems/MakeConst mess

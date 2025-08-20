@@ -23,6 +23,7 @@
 #include "instruction_copy_helper.h"
 
 #include <oac_tree_gui/components/anyvalue_dialog_result.h>
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -32,7 +33,6 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>

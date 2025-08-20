@@ -20,7 +20,7 @@
 
 #include "toolkit_viewmodel.h"
 
-#include <oac_tree_gui/viewmodel/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 
 #include <QMimeData>
 #include <memory>
