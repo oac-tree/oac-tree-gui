@@ -27,7 +27,7 @@
 
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/i_app_command_service.h>
-#include <sup/gui/components/proxy_action.h>
+#include <sup/gui/component_objects/proxy_action.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/widgets/widget_utils.h>
