@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_OPERATION_BREAKPOINT_MODEL_DELEGATE_H_
-#define OAC_TREE_GUI_OPERATION_BREAKPOINT_MODEL_DELEGATE_H_
+#ifndef OAC_TREE_GUI_OPERATION_OBJECTS_BREAKPOINT_MODEL_DELEGATE_H_
+#define OAC_TREE_GUI_OPERATION_OBJECTS_BREAKPOINT_MODEL_DELEGATE_H_
 
 #include <QStyledItemDelegate>
 
@@ -43,4 +43,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_OPERATION_BREAKPOINT_MODEL_DELEGATE_H_
+#endif  // OAC_TREE_GUI_OPERATION_OBJECTS_BREAKPOINT_MODEL_DELEGATE_H_

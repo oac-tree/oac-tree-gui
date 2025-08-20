@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/operation/operation_action_handler.h"
+#include "oac_tree_gui/operation/objects/operation_action_handler.h"
 #include "test_automation_server.h"
 
 #include <oac_tree_gui/core/exceptions.h>

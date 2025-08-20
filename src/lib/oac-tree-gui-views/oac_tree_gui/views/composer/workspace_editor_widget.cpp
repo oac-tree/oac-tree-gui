@@ -24,7 +24,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/operation/workspace_view_component_provider.h>
+#include <oac_tree_gui/operation/objects/workspace_view_component_provider.h>
 #include <oac_tree_gui/viewmodel/workspace_editor_viewmodel.h>
 #include <oac_tree_gui/viewmodel/workspace_operation_viewmodel.h>
 

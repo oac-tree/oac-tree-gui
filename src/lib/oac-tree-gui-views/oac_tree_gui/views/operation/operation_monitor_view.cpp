@@ -36,7 +36,7 @@
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/operation/operation_action_handler.h>
+#include <oac_tree_gui/operation/objects/operation_action_handler.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/editors/user_input_dialogs.h>

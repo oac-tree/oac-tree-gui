@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_OPERATION_OPERATION_ACTION_HANDLER_H_
-#define OAC_TREE_GUI_OPERATION_OPERATION_ACTION_HANDLER_H_
+#ifndef OAC_TREE_GUI_OPERATION_OBJECTS_OPERATION_ACTION_HANDLER_H_
+#define OAC_TREE_GUI_OPERATION_OBJECTS_OPERATION_ACTION_HANDLER_H_
 
 #include <oac_tree_gui/operation/operation_action_context.h>
 
@@ -175,4 +175,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_OPERATION_OPERATION_ACTION_HANDLER_H_
+#endif  // OAC_TREE_GUI_OPERATION_OBJECTS_OPERATION_ACTION_HANDLER_H_
