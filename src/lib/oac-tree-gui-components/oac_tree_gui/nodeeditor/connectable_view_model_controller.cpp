@@ -27,7 +27,7 @@
 #include <oac_tree_gui/nodeeditor/connectable_view_factory.h>
 #include <oac_tree_gui/nodeeditor/connectable_view_map.h>
 #include <oac_tree_gui/nodeeditor/i_connectable_view_factory.h>
-#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>

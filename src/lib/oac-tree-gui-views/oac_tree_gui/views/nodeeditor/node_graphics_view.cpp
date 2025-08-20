@@ -21,7 +21,7 @@
 #include "node_graphics_view.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_constants.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 

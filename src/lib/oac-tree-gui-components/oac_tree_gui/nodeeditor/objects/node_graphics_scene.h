@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_
-#define OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_
+#define OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_
 
 #include <sup/gui/core/message_event.h>
 
@@ -129,4 +129,4 @@ inline std::vector<T*> NodeGraphicsScene::GetSelectedViewItems() const
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_NODEEDITOR_NODE_GRAPHICS_SCENE_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_

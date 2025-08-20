@@ -29,7 +29,7 @@
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
-#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/node_port.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 

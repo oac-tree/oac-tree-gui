@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/nodeeditor/node_graphics_scene.h"
+#include "oac_tree_gui/nodeeditor/objects/node_graphics_scene.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>

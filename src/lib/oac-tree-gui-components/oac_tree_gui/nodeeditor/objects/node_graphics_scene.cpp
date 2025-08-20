@@ -20,8 +20,6 @@
 
 #include "node_graphics_scene.h"
 
-#include "node_graphics_scene_action_handler.h"
-
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/aggregate_factory.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -31,7 +29,8 @@
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
-#include <oac_tree_gui/nodeeditor/node_connection_controller.h>
+#include <oac_tree_gui/nodeeditor/node_graphics_scene_action_handler.h>
+#include <oac_tree_gui/nodeeditor/objects/node_connection_controller.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>

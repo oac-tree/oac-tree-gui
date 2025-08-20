@@ -17,10 +17,6 @@ target_sources(${library_name} PRIVATE
   i_connectable_view_factory.h
   node_connection.cpp
   node_connection.h
-  node_connection_controller.cpp
-  node_connection_controller.h
-  node_graphics_scene.cpp
-  node_graphics_scene.h
   node_graphics_scene_action_handler.cpp
   node_graphics_scene_action_handler.h
   node_port.cpp
@@ -34,3 +30,5 @@ target_sources(${library_name} PRIVATE
   sequencer_align_utils.cpp
   sequencer_align_utils.h
 )
+
+add_subdirectory(objects)

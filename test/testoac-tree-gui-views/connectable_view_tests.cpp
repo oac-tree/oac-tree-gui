@@ -26,7 +26,7 @@
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
 #include <oac_tree_gui/nodeeditor/connectable_view_model_controller.h>
-#include <oac_tree_gui/nodeeditor/node_graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/views/nodeeditor/node_graphics_view.h>
 
 #include <mvvm/commands/i_command_stack.h>

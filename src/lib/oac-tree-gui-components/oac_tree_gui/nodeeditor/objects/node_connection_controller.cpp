@@ -20,8 +20,7 @@
 
 #include "node_connection_controller.h"
 
-#include "graphics_scene_types.h"
-
+#include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 #include <oac_tree_gui/nodeeditor/node_connection.h>
 #include <oac_tree_gui/nodeeditor/node_port.h>
 
