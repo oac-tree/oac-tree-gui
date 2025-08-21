@@ -30,10 +30,21 @@
 namespace oac_tree_gui
 {
 
+/**
+ * @brief The DomainLibraryLoader class is responsible for handling shared library loading.
+ *
+ * It tracks successfully loaded libraries, it unloads libraries on own destruction.
+ */
 class DomainLibraryLoader
 {
 public:
-  // Loads all libraries passed in; tracks successfully loaded names.
+  /**
+   * @brief Main c-tor.
+   *
+   * Loads the list of shared libraries on own construction.
+   *
+   * @param library_names List of all libraries to load.
+   */
   explicit DomainLibraryLoader(const std::vector<std::string>& library_names);
   ~DomainLibraryLoader();
 
@@ -42,7 +53,9 @@ public:
   DomainLibraryLoader(DomainLibraryLoader&&) noexcept = default;
   DomainLibraryLoader& operator=(DomainLibraryLoader&&) noexcept = default;
 
-  // Returns names of successfully loaded libraries (as provided to the ctor).
+  /**
+   * @brief Returns names of successfully loaded libraries (as provided to the ctor).
+   */
   const std::vector<std::string>& GetLoadedLibraries() const { return m_loaded_libraries; }
 
 private:

@@ -20,78 +20,58 @@
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
 
+#include <dlfcn.h>
 #include <gtest/gtest.h>
-#if defined(__linux__)
-#  include <dlfcn.h>
-#endif
 
 namespace oac_tree_gui::test
 {
 
-TEST(DomainLibraryLoaderTests, EmptyLibraryList)
+/**
+ * @brief Tests for DomainLibraryLoader class.
+ */
+class DomainLibraryLoaderTests : public ::testing::Test
 {
-  // Arrange
-  std::vector<std::string> libraries;  // empty
+};
 
-  // Act
-  DomainLibraryLoader loader(libraries);
-
-  // Assert
+TEST_F(DomainLibraryLoaderTests, EmptyLibraryList)
+{
+  const std::vector<std::string> libraries;
+  const DomainLibraryLoader loader(libraries);
   EXPECT_TRUE(loader.GetLoadedLibraries().empty());
 }
 
-TEST(DomainLibraryLoaderTests, NonEmptyList_AllMissing)
+TEST_F(DomainLibraryLoaderTests, NonEmptyListAllMissing)
 {
-  // Arrange: choose file names that should not exist on the system
-  const std::vector<std::string> libraries = {
-      "lib__nonexistent_1_9be2c2e7d2__.so",
-      "/tmp/lib__nonexistent_2_c1a4deadbeef__.so",
-      "./lib__surely_missing__4f3a2c1b.so"};
-
-  // Act
-  DomainLibraryLoader loader(libraries);
-
-  // Assert: none should load
+  const std::vector<std::string> libraries = {"lib_nonexistent1.so", "lib_nonexistent2.so"};
+  const DomainLibraryLoader loader(libraries);
   EXPECT_TRUE(loader.GetLoadedLibraries().empty());
 }
 
-TEST(DomainLibraryLoaderTests, LoadsExistingDummyLibrary)
+TEST_F(DomainLibraryLoaderTests, LoadsExistingDummyLibrary)
 {
-#ifdef DUMMY_LIB_PATH
-  // Arrange: include both a bogus path and the actual dummy lib path
-  const std::vector<std::string> libraries = {
-      "./lib__definitely_missing__abc123.so",
-      std::string(DUMMY_LIB_PATH)};
+  const std::vector<std::string> libraries = {"./lib_nonexistent1.so", std::string(DUMMY_LIB_PATH)};
 
-  // Act
-  DomainLibraryLoader loader(libraries);
-
-  // Assert: only one should load, and it should be the dummy path
+  const DomainLibraryLoader loader(libraries);
+  // only one should load, and it should be the dummy path
   const auto& loaded = loader.GetLoadedLibraries();
-  ASSERT_EQ(loaded.size(), 1u);
-  EXPECT_EQ(loaded[0], std::string(DUMMY_LIB_PATH));
-#else
-  GTEST_SKIP() << "DUMMY_LIB_PATH is not defined";
-#endif
+  EXPECT_EQ(loaded, std::vector<std::string>({DUMMY_LIB_PATH}));
 }
 
-#if defined(__linux__)
-TEST(DomainLibraryLoaderTests, DummyLibraryUnloadedOnDestruction)
+TEST_F(DomainLibraryLoaderTests, DummyLibraryUnloadedOnDestruction)
 {
-#ifdef DUMMY_LIB_PATH
   const std::string path = std::string(DUMMY_LIB_PATH);
 
   // Baseline: is it already loaded by someone else?
   void* baseline = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
   const bool baseline_loaded = (baseline != nullptr);
-  if (baseline)
+  if (baseline_loaded)
   {
     dlclose(baseline);
   }
 
   {
     // Load via DomainLibraryLoader
-    DomainLibraryLoader loader({path});
+    const DomainLibraryLoader loader({path});
     void* during = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
     EXPECT_NE(during, nullptr) << "Library should be present while loader is alive";
     if (during)
@@ -102,22 +82,12 @@ TEST(DomainLibraryLoaderTests, DummyLibraryUnloadedOnDestruction)
 
   // After destruction: should return to baseline state
   void* after = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
-  if (baseline_loaded)
-  {
-    EXPECT_NE(after, nullptr) << "Library must remain loaded if it was already loaded before";
-  }
-  else
-  {
-    EXPECT_EQ(after, nullptr) << "Library should be unloaded after loader destruction";
-  }
+  EXPECT_EQ(after, nullptr) << "Library should be unloaded after loader destruction";
+
   if (after)
   {
     dlclose(after);
   }
-#else
-  GTEST_SKIP() << "DUMMY_LIB_PATH is not defined";
-#endif
 }
-#endif  // __linux__
 
 }  // namespace oac_tree_gui::test
