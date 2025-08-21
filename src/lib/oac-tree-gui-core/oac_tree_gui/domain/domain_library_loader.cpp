@@ -41,7 +41,7 @@ std::pair<bool, void*> TryOpenLibrary(const std::string& path)
   HMODULE handle = ::LoadLibraryA(path.c_str());
   return {handle != nullptr, reinterpret_cast<void*>(handle)};
 #else
-  void* handle = ::dlopen(path.c_str(), RTLD_LAZY | RTLD_LOCAL);
+  void* handle = ::dlopen(path.c_str(), RTLD_NOW);
   return {handle != nullptr, handle};
 #endif
 }

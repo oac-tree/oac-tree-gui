@@ -21,9 +21,6 @@
 #ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_LIBRARY_LOADER_H_
 #define OAC_TREE_GUI_DOMAIN_DOMAIN_LIBRARY_LOADER_H_
 
-//! @file
-//! Placeholder for a class responsible for handling domain library loading.
-
 #include <string>
 #include <vector>
 
