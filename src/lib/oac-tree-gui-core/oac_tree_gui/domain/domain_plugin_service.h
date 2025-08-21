@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_DOMAIN_PLUGIN_SERVICE_H_
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/i_domain_plugin_service.h>
 
 namespace oac_tree_gui
@@ -90,7 +91,7 @@ inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::LoadPlugins(
   UpdateObjectTypeRegistry(domainconstants::kCorePluginName);
   for (const auto& name : plugin_names)
   {
-    m_library_loader.LoadLibrary(name);
+    m_library_loader.LoadLibrary(GetPluginFileName(name));
     UpdateObjectTypeRegistry(name);
   }
 }

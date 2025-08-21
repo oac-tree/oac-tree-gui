@@ -70,7 +70,7 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
   plugin_service->LoadPlugins({"non-existing-plugin"});
 
   EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
-  const std::vector<std::pair<std::string, bool>> expected_info = {{"non-existing-plugin", false}};
+  const std::vector<std::pair<std::string, bool>> expected_info = {{"libnon-existing-plugin.so", false}};
   EXPECT_EQ(plugin_service->GetPluginLoadInfo(), expected_info);
 
   // check that core instruction and variables are there

@@ -146,9 +146,9 @@ TEST_F(DomainPluginServiceTests, LoadNonEmptyList)
   {
     const ::testing::InSequence seq;
     EXPECT_CALL(object_registry, Update(domainconstants::kCorePluginName)).Times(1);
-    EXPECT_CALL(library_loader, LoadLibrary("plugin1")).Times(1);
+    EXPECT_CALL(library_loader, LoadLibrary("libplugin1.so")).Times(1);
     EXPECT_CALL(object_registry, Update("plugin1")).Times(1);
-    EXPECT_CALL(library_loader, LoadLibrary("plugin2")).Times(1);
+    EXPECT_CALL(library_loader, LoadLibrary("libplugin2.so")).Times(1);
     EXPECT_CALL(object_registry, Update("plugin2")).Times(1);
   }
 
