@@ -54,7 +54,7 @@ public:
   virtual std::vector<std::pair<std::string, bool>> GetPluginLoadInfo() const = 0;
 
   /**
-   * @brief Returns objects names registered for the given plugin name.
+   * @brief Returns objects names registered in the given plugin name.
    */
   virtual std::vector<std::string> GetObjectNames(const std::string& plugin_name) const = 0;
 };
