@@ -59,7 +59,7 @@ public:
   DomainLibraryLoader& operator=(DomainLibraryLoader&&) noexcept = default;
 
   /**
-   * @brief Returns names of successfully loaded libraries (as provided to the ctor).
+   * @brief Returns names of successfully loaded libraries.
    */
   std::vector<std::string> GetLoadedLibraries() const;
 
