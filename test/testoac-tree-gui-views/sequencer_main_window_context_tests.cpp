@@ -39,15 +39,20 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
 {
   SequencerMainWindowContext context;
 
+  // check type registry
+  EXPECT_TRUE(
+      context.GetObjectTypeRegistry().GetObjectNames(domainconstants::kCorePluginName).empty());
+
+  // check command service
   EXPECT_NE(dynamic_cast<sup::gui::AppCommandService*>(&context.GetCommandService()), nullptr);
 
+  // check plugin service
   auto plugin_service =
       dynamic_cast<DomainPluginService<DomainLibraryLoader, DomainObjectTypeRegistry>*>(
           &context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
   EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
   EXPECT_EQ(plugin_service->GetPluginLoadInfo().size(), 0);
-
   EXPECT_TRUE(plugin_service->GetObjectNames(domainconstants::kCorePluginName).empty());
 }
 

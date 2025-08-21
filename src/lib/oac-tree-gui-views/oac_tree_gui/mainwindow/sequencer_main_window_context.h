@@ -51,6 +51,8 @@ public:
 
   sup::gui::IAppCommandService& GetCommandService();
 
+  DomainObjectTypeRegistry& GetObjectTypeRegistry();
+
   IDomainPluginService& GetDomainPluginService();
 
 private:

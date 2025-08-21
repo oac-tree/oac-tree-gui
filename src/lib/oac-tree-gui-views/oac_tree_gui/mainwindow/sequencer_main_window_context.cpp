@@ -51,6 +51,11 @@ sup::gui::IAppCommandService &SequencerMainWindowContext::GetCommandService()
   return *m_command_service;
 }
 
+DomainObjectTypeRegistry &SequencerMainWindowContext::GetObjectTypeRegistry()
+{
+  return *m_object_type_registry;
+}
+
 IDomainPluginService &SequencerMainWindowContext::GetDomainPluginService()
 {
   return *m_domain_plugin_service;
