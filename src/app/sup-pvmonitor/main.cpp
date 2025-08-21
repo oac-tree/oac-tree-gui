@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
-  oac_tree_gui::LoadOacTreeDomainPlugins();
+  oac_tree_gui::LoadOacTreePlugins();
   oac_tree_gui::LoadOacTreeItems();
 
   oac_tree_gui::PvMonitorMainWindow win;

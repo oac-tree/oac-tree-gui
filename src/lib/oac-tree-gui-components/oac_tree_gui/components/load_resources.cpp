@@ -34,9 +34,4 @@ void LoadOacTreeItems()
   oac_tree_gui::RegisterSessionItems();
 }
 
-void LoadOacTreeDomainPlugins()
-{
-  (void) LoadOacTreePlugins();
-}
-
 }  // namespace oac_tree_gui

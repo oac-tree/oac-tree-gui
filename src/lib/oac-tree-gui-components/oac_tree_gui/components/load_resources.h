@@ -34,11 +34,6 @@ namespace oac_tree_gui
  */
 void LoadOacTreeItems();
 
-/**
- * @brief Load sequencer domain plugins.
- */
-void LoadOacTreeDomainPlugins();
-
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_LOAD_RESOURCES_H_
