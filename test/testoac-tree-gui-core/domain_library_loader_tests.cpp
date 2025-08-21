@@ -52,4 +52,24 @@ TEST(DomainLibraryLoaderTests, NonEmptyList_AllMissing)
   EXPECT_TRUE(loader.GetLoadedLibraries().empty());
 }
 
+TEST(DomainLibraryLoaderTests, LoadsExistingDummyLibrary)
+{
+#ifdef DUMMY_LIB_PATH
+  // Arrange: include both a bogus path and the actual dummy lib path
+  const std::vector<std::string> libraries = {
+      "./lib__definitely_missing__abc123.so",
+      std::string(DUMMY_LIB_PATH)};
+
+  // Act
+  DomainLibraryLoader loader(libraries);
+
+  // Assert: only one should load, and it should be the dummy path
+  const auto& loaded = loader.GetLoadedLibraries();
+  ASSERT_EQ(loaded.size(), 1u);
+  EXPECT_EQ(loaded[0], std::string(DUMMY_LIB_PATH));
+#else
+  GTEST_SKIP() << "DUMMY_LIB_PATH is not defined";
+#endif
+}
+
 }  // namespace oac_tree_gui::test
