@@ -21,7 +21,6 @@
 #include "domain_object_group_helper.h"
 
 #include "domain_constants.h"
-#include "domain_helper.h"
 #include "domain_object_type_registry.h"
 
 #include <mvvm/utils/container_utils.h>
@@ -53,19 +52,6 @@ std::vector<oac_tree_gui::ObjectGroupInfo> CreatePluginNameGroups()
         oac_tree_gui::domainconstants::kSupPulseCounterPluginName}},
 
   };
-  return result;
-}
-
-/**
- * @brief Returns vector of instruction names from the list containing a mixture of different names.
- */
-std::vector<std::string> GetInstructionNames(const std::vector<std::string>& names)
-{
-  std::vector<std::string> result;
-  const static auto known_types = oac_tree_gui::GetDomainInstructionNames();
-
-  auto on_element = [](auto element) { return mvvm::utils::Contains(known_types, element); };
-  std::copy_if(std::begin(names), std::end(names), std::back_inserter(result), on_element);
   return result;
 }
 
@@ -101,20 +87,6 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
   }
 
   return result;
-}
-
-std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
-{
-  // Global type registry contains both instruction and variables. We have to remove variable names
-  // fbefore returning info to the user.
-
-  auto group_infos = CreateInstructionTypeGroups(GlobalDomainObjectTypeRegistry());
-
-  for (auto& info : group_infos)
-  {
-    info.object_names = GetInstructionNames(info.object_names);
-  }
-  return group_infos;
 }
 
 }  // namespace oac_tree_gui

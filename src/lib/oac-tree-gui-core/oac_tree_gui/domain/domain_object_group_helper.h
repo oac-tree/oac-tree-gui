@@ -61,17 +61,6 @@ struct ObjectGroupInfo
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
     const DomainObjectTypeRegistry& type_registry);
 
-/**
- * @brief Creates a collection of global registered sequencer instruction types grouped according to
- * a plugin name.
- *
- * This method uses global object type registry. A single group can contain instructions from
- * several plugins.
- *
- * @param type_registry The registry with all loaded types.
- */
-std::vector<ObjectGroupInfo> CreateInstructionTypeGroups();
-
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_GROUP_HELPER_H_

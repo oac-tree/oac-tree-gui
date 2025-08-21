@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   color_palette.h
   command_line_options.cpp
   command_line_options.h
+  context_helper.cpp
+  context_helper.h
   main_window_helper.cpp
   main_window_helper.h
   operation_main_window.cpp
