@@ -20,8 +20,24 @@
 
 #include "domain_object_type_registry.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+
 namespace oac_tree_gui
 {
+
+DomainObjectTypeRegistry::DomainObjectTypeRegistry(get_object_names_t func)
+    : m_get_object_names(std::move(func))
+{
+}
+
+void DomainObjectTypeRegistry::Update(const std::string &plugin_name)
+{
+  if (!m_get_object_names)
+  {
+    throw RuntimeException("Callback is not initialsed");
+  }
+  Update(plugin_name, m_get_object_names());
+}
 
 void DomainObjectTypeRegistry::Update(const std::string &plugin_name,
                                       const std::vector<std::string> &object_names)

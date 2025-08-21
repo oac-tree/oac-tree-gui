@@ -24,6 +24,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include <functional>
 #include <vector>
 
 namespace oac_tree_gui
@@ -40,6 +41,28 @@ namespace oac_tree_gui
 class DomainObjectTypeRegistry
 {
 public:
+  using get_object_names_t = std::function<std::vector<std::string>()>;
+
+  /**
+   * @brief Default c-tor.
+   */
+  DomainObjectTypeRegistry() = default;
+
+  /**
+   * @brief Consrtucts the object and initializes it with the given function.
+   *
+   * This function will be called to retrieve the list of object names when Update method is called.
+   *
+   * @param func A callback used to retrive list of object names.
+   */
+  explicit DomainObjectTypeRegistry(get_object_names_t func);
+
+  /**
+   * @brief Updates plugin name information using a callback provided via c-tor.
+   * @param plugin_name The name of the last loaded sequencer plugin.
+   */
+  void Update(const std::string& plugin_name);
+
   /**
    * @brief Updates plugin name information for given object names.
    *
@@ -68,6 +91,7 @@ public:
 
 private:
   std::map<std::string, std::string> m_object_name_to_plugin_name;
+  get_object_names_t m_get_object_names;
 };
 
 DomainObjectTypeRegistry& GlobalDomainObjectTypeRegistry();
