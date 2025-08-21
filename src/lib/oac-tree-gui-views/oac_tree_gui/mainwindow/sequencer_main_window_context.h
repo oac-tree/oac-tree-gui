@@ -31,6 +31,10 @@ class IAppCommandService;
 namespace oac_tree_gui
 {
 
+class IDomainPluginService;
+class DomainLibraryLoader;
+class DomainObjectTypeRegistry;
+
 /**
  * @brief The SequencerMainWindowContext contains all common resources for SequencerMainWindow.
  */
@@ -47,8 +51,24 @@ public:
 
   sup::gui::IAppCommandService& GetCommandService();
 
+  IDomainPluginService& GetDomainPluginService();
+
 private:
+  std::unique_ptr<DomainObjectTypeRegistry> CreateObjectTypeRegistry() const;
+  std::unique_ptr<IDomainPluginService> CreateDomainPluginService() const;
+
+  //!< knows about global commands and their shortcuts
   std::unique_ptr<sup::gui::IAppCommandService> m_command_service;
+
+  //!< knows how to load libraries and keeps track of what was loaded
+  std::unique_ptr<DomainLibraryLoader> m_domain_library_loader;
+
+  //!< knows about all objects registered in plugins, and their types
+  std::unique_ptr<DomainObjectTypeRegistry> m_object_type_registry;
+
+  //!< knows how to load plugins, and what objects are registered in them
+  //! (use loader and registry from above)
+  std::unique_ptr<IDomainPluginService> m_domain_plugin_service;
 };
 
 }  // namespace oac_tree_gui
