@@ -22,6 +22,7 @@
 
 #include "sequencer_main_window_context.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
@@ -51,10 +52,18 @@ std::vector<std::string> GetInstructionNames(const std::vector<std::string>& nam
 
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
 {
-  // Global type registry contains both instruction and variables. We have to remove variable names
-  // fbefore returning info to the user.
+  auto context = FindSequencerMainWindowContext();
+  if (!context)
+  {
+    throw RuntimeException("SequencerMainWindowContext is not found");
+  }
 
-  auto group_infos = CreateInstructionTypeGroups(GlobalDomainObjectTypeRegistry());
+  auto& type_registry = context->GetObjectTypeRegistry();
+
+  // Global type registry contains both instruction and variables. We have to remove variable names
+  // before returning info to the user.
+
+  auto group_infos = CreateInstructionTypeGroups(type_registry);
 
   for (auto& info : group_infos)
   {

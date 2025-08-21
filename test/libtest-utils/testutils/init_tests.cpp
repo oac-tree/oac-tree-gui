@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/components/load_resources.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/domain_library_loader.h>
 
 namespace oac_tree_gui::test
 {
@@ -33,7 +34,7 @@ void InitTests(int argc, char **argv)
   ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
 
-  LoadOacTreePlugins();
+  DomainLibraryLoader loader(GetDefaultPluginFileNames());
 
   LoadOacTreeItems();
 }

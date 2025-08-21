@@ -31,7 +31,5 @@ int main(int argc, char** argv)
   auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("oac-tree-gui", version);
 
-  oac_tree_gui::LoadOacTreePlugins();
-
   return oac_tree_gui::RunApplication<oac_tree_gui::SequencerMainWindow>(argc, argv);
 }

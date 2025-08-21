@@ -42,33 +42,6 @@
 namespace
 {
 
-bool LoadPlugin(const std::string& name)
-{
-  bool is_success{false};
-  try
-  {
-    ::sup::oac_tree::LoadPlugin(name);
-    is_success = true;
-  }
-  catch (const std::exception&)
-  {
-    is_success = false;
-  }
-  return is_success;
-}
-
-/**
- * @brief Updates global registry with correspondance of plugin name to the type names of
- * instruction and variables.
- */
-void UpdateGlobalDomainObjectTypeRegistry(const std::string& plugin_name)
-{
-  auto& registry = oac_tree_gui::GlobalDomainObjectTypeRegistry();
-  registry.Update(plugin_name,
-                  sup::oac_tree::GlobalInstructionRegistry().RegisteredInstructionNames());
-  registry.Update(plugin_name, sup::oac_tree::GlobalVariableRegistry().RegisteredVariableNames());
-}
-
 std::string_view RemovePrefix(std::string_view name, const std::string& prefix)
 {
   name.remove_prefix(std::min(name.find_first_not_of(prefix), name.size()));
@@ -148,36 +121,14 @@ std::vector<std::string> GetDefaultPluginList()
   return kPluginList;
 }
 
-std::pair<bool, std::string> LoadOacTreePlugins()
+std::vector<std::string> GetDefaultPluginFileNames()
 {
-  std::vector<std::string> failed_plugins;
-
-  UpdateGlobalDomainObjectTypeRegistry(domainconstants::kCorePluginName);
-
+  std::vector<std::string> result;
   for (const auto& name : GetDefaultPluginList())
   {
-    const auto file_name = GetPluginFileName(name);
-    if (LoadPlugin(file_name))
-    {
-      UpdateGlobalDomainObjectTypeRegistry(name);
-    }
-    else
-    {
-      failed_plugins.push_back(file_name);
-    }
+    result.push_back(GetPluginFileName(name));
   }
-
-  if (!failed_plugins.empty())
-  {
-    std::ostringstream ostr;
-    ostr << "Warning! Some of sequencer plugins failed to load: "
-         << mvvm::utils::VectorToString(failed_plugins) << ". ";
-    ostr << "There will be less instructions and variables available.";
-    std::cout << ostr.str() << "\n";
-    return {false, ostr.str()};
-  }
-
-  return {true, ""};
+  return result;
 }
 
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata)

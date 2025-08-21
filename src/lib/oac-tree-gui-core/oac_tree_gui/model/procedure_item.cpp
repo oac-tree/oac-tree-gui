@@ -41,12 +41,15 @@ namespace
 void CollectPluginFileNames(const std::string &domain_type,
                             std::set<std::string> &plugin_file_names)
 {
-  const auto &registry = oac_tree_gui::GlobalDomainObjectTypeRegistry();
-  if (auto plugin_name = registry.GetPluginName(domain_type).value_or(std::string());
-      !plugin_name.empty())
-  {
-    plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
-  }
+  // FIXME restore
+  // This is a temporary solution, because we do not have a plugin name for the domain type.
+
+          // const auto &registry = oac_tree_gui::GlobalDomainObjectTypeRegistry();
+  // if (auto plugin_name = registry.GetPluginName(domain_type).value_or(std::string());
+  //     !plugin_name.empty())
+  // {
+  //   plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
+  // }
 }
 
 /**

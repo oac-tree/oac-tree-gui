@@ -105,6 +105,11 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata);
 std::vector<std::string> GetDefaultPluginList();
 
 /**
+ * @brief Returns default plugin list.
+ */
+std::vector<std::string> GetDefaultPluginFileNames();
+
+/**
  * @brief Loads all sequencer plugins and reports result of the load to the user.
  * @return Success flag and the error message.
  */
