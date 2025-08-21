@@ -67,6 +67,11 @@ bool SequencerMainWindow::ImportProcedure(const QString& file_name)
   return file_name.isEmpty() ? false : m_operation_view->OnImportJobRequest(file_name);
 }
 
+SequencerMainWindowContext &SequencerMainWindow::GetContext() const
+{
+  return m_context;
+}
+
 SequencerMainWindow::~SequencerMainWindow() = default;
 
 void SequencerMainWindow::closeEvent(QCloseEvent* event)

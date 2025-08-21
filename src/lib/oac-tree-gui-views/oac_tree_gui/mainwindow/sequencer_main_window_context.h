@@ -71,6 +71,14 @@ private:
   std::unique_ptr<IDomainPluginService> m_domain_plugin_service;
 };
 
+/**
+ * @brief Returns the pointer to the global SequencerMainWindowContext.
+ *
+ * The application context will be available only when main window is created and properly wired
+ * from the composition root. In all other cases, this function will return nullptr.
+ */
+SequencerMainWindowContext* FindSequencerMainWindowContext();
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_CONTEXT_H_

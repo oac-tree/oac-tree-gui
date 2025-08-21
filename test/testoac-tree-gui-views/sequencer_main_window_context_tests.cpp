@@ -78,4 +78,9 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
       object_names.end());
 }
 
+TEST_F(SequencerMainWindowContextTest, FindSequencerMainWindowContext)
+{
+  EXPECT_EQ(FindSequencerMainWindowContext(), nullptr);
+}
+
 }  // namespace oac_tree_gui::test

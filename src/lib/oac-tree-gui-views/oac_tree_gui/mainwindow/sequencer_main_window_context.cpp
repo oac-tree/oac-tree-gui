@@ -20,14 +20,18 @@
 
 #include "sequencer_main_window_context.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_library_loader.h>
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/domain/domain_plugin_service.h>
+#include <oac_tree_gui/mainwindow/sequencer_main_window.h>
 
 #include <sup/gui/app/default_command_service.h>
 
 #include <sup/oac-tree/instruction_registry.h>
 #include <sup/oac-tree/variable_registry.h>
+
+#include <QApplication>
 
 namespace oac_tree_gui
 {
@@ -75,6 +79,18 @@ std::unique_ptr<IDomainPluginService> SequencerMainWindowContext::CreateDomainPl
 {
   return std::make_unique<DomainPluginService<DomainLibraryLoader, DomainObjectTypeRegistry>>(
       *m_domain_library_loader, *m_object_type_registry);
+}
+
+SequencerMainWindowContext *FindSequencerMainWindowContext()
+{
+  for (auto widget : qApp->topLevelWidgets())
+  {
+    if (auto result = qobject_cast<SequencerMainWindow *>(widget); result)
+    {
+      return &result->GetContext();
+    }
+  }
+  return nullptr;
 }
 
 }  // namespace oac_tree_gui

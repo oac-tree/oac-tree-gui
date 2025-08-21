@@ -52,10 +52,15 @@ class SequencerMainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  SequencerMainWindow(SequencerMainWindowContext& context);
+  explicit SequencerMainWindow(SequencerMainWindowContext& context);
   ~SequencerMainWindow() override;
 
   bool ImportProcedure(const QString& file_name);
+
+  /**
+   * @brief Returns main application context.
+   */
+  SequencerMainWindowContext& GetContext() const;
 
 protected:
   void closeEvent(QCloseEvent* event) override;
