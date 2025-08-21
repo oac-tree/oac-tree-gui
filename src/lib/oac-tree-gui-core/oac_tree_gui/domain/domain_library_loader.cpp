@@ -63,24 +63,41 @@ void CloseLibrary(void* handle)
 DomainLibraryLoader::DomainLibraryLoader(const std::vector<std::string>& library_names)
 {
   m_loaded_libraries.reserve(library_names.size());
-  m_handles.reserve(library_names.size());
+  m_library_handles.reserve(library_names.size());
+  m_library_info.reserve(library_names.size());
   for (const auto& name : library_names)
   {
-    auto [ok, handle] = TryOpenLibrary(name);
-    if (ok)
-    {
-      m_loaded_libraries.push_back(name);
-      m_handles.push_back(handle);
-    }
+    LoadLibrary(name);
   }
 }
 
 DomainLibraryLoader::~DomainLibraryLoader()
 {
-  for (auto* h : m_handles)
+  for (auto* h : m_library_handles)
   {
     CloseLibrary(h);
   }
+}
+
+std::vector<std::string> DomainLibraryLoader::GetLoadedLibraries() const
+{
+  return m_loaded_libraries;
+}
+
+void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
+{
+  auto [ok, handle] = TryOpenLibrary(library_name);
+  if (ok)
+  {
+    m_loaded_libraries.push_back(library_name);
+    m_library_handles.push_back(handle);
+  }
+  m_library_info.push_back({library_name, ok});
+}
+
+std::vector<std::pair<std::string, bool> > DomainLibraryLoader::GetLibraryInfo() const
+{
+  return m_library_info;
 }
 
 }  // namespace oac_tree_gui

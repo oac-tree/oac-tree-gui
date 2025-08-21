@@ -25,40 +25,40 @@
 namespace oac_tree_gui::test
 {
 
-//! Testing DomainObjectTypeRegistry class.
-
+/**
+ * @brief Tests of DomainObjectTypeRegistry class.
+ */
 class DomainObjectTypeRegistryTest : public ::testing::Test
 {
 };
 
 TEST_F(DomainObjectTypeRegistryTest, Update)
 {
-  const std::string undefined("undefined");
+  const std::string kUndefined("undefined");
   DomainObjectTypeRegistry registry;
 
   registry.Update("plugin1", {"a1", "a2"});
-  EXPECT_EQ(registry.GetPluginName("a1").value_or(undefined), "plugin1");
-  EXPECT_EQ(registry.GetPluginName("a2").value_or(undefined), "plugin1");
-  EXPECT_EQ(registry.GetPluginName("not-registered-object").value_or(undefined), undefined);
+  EXPECT_EQ(registry.GetPluginName("a1").value_or(kUndefined), "plugin1");
+  EXPECT_EQ(registry.GetPluginName("a2").value_or(kUndefined), "plugin1");
+  EXPECT_EQ(registry.GetPluginName("not-registered-object").value_or(kUndefined), kUndefined);
 
   // registerging extended list of objects for another plugin name
   registry.Update("plugin2", {"a1", "a2", "a3"});
 
   // two previous objects ket their plugin name
-  EXPECT_EQ(registry.GetPluginName("a1").value_or(undefined), "plugin1");
-  EXPECT_EQ(registry.GetPluginName("a2").value_or(undefined), "plugin1");
+  EXPECT_EQ(registry.GetPluginName("a1").value_or(kUndefined), "plugin1");
+  EXPECT_EQ(registry.GetPluginName("a2").value_or(kUndefined), "plugin1");
 
   // only last object got new plugin name
-  EXPECT_EQ(registry.GetPluginName("a3").value_or(undefined), "plugin2");
+  EXPECT_EQ(registry.GetPluginName("a3").value_or(kUndefined), "plugin2");
 
   // empty plugin names are allowed
   registry.Update("", {"a4"});
-  EXPECT_EQ(registry.GetPluginName("a4").value_or(undefined), "");
+  EXPECT_EQ(registry.GetPluginName("a4").value_or(kUndefined), "");
 }
 
 TEST_F(DomainObjectTypeRegistryTest, GetObjectNames)
 {
-  const std::string undefined("undefined");
   DomainObjectTypeRegistry registry;
 
   registry.Update("", {"a1", "a2"});

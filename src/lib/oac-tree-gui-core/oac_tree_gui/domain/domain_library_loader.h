@@ -39,7 +39,12 @@ class DomainLibraryLoader
 {
 public:
   /**
-   * @brief Main c-tor.
+   * @brief Default c-tor.
+   */
+  DomainLibraryLoader() = default;
+
+  /**
+   * @brief Constructs the object and loads libraries.
    *
    * Loads the list of shared libraries on own construction.
    *
@@ -56,11 +61,22 @@ public:
   /**
    * @brief Returns names of successfully loaded libraries (as provided to the ctor).
    */
-  const std::vector<std::string>& GetLoadedLibraries() const { return m_loaded_libraries; }
+  std::vector<std::string> GetLoadedLibraries() const;
+
+  /**
+   * @brief Loads the library with the given name.
+   */
+  void LoadLibrary(const std::string& library_name);
+
+  /**
+   * @brief Returns the list of all libraries we've tried to load, and their success status.
+   */
+  std::vector<std::pair<std::string, bool>> GetLibraryInfo() const;
 
 private:
   std::vector<std::string> m_loaded_libraries;
-  std::vector<void*> m_handles;  // platform-specific library handles kept until destruction
+  std::vector<std::pair<std::string, bool>> m_library_info;
+  std::vector<void*> m_library_handles;
 };
 
 }  // namespace oac_tree_gui
