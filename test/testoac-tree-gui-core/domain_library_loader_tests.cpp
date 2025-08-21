@@ -21,6 +21,9 @@
 #include <oac_tree_gui/domain/domain_library_loader.h>
 
 #include <gtest/gtest.h>
+#if defined(__linux__)
+#  include <dlfcn.h>
+#endif
 
 namespace oac_tree_gui::test
 {
@@ -71,5 +74,50 @@ TEST(DomainLibraryLoaderTests, LoadsExistingDummyLibrary)
   GTEST_SKIP() << "DUMMY_LIB_PATH is not defined";
 #endif
 }
+
+#if defined(__linux__)
+TEST(DomainLibraryLoaderTests, DummyLibraryUnloadedOnDestruction)
+{
+#ifdef DUMMY_LIB_PATH
+  const std::string path = std::string(DUMMY_LIB_PATH);
+
+  // Baseline: is it already loaded by someone else?
+  void* baseline = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
+  const bool baseline_loaded = (baseline != nullptr);
+  if (baseline)
+  {
+    dlclose(baseline);
+  }
+
+  {
+    // Load via DomainLibraryLoader
+    DomainLibraryLoader loader({path});
+    void* during = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
+    EXPECT_NE(during, nullptr) << "Library should be present while loader is alive";
+    if (during)
+    {
+      dlclose(during);
+    }
+  }
+
+  // After destruction: should return to baseline state
+  void* after = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
+  if (baseline_loaded)
+  {
+    EXPECT_NE(after, nullptr) << "Library must remain loaded if it was already loaded before";
+  }
+  else
+  {
+    EXPECT_EQ(after, nullptr) << "Library should be unloaded after loader destruction";
+  }
+  if (after)
+  {
+    dlclose(after);
+  }
+#else
+  GTEST_SKIP() << "DUMMY_LIB_PATH is not defined";
+#endif
+}
+#endif  // __linux__
 
 }  // namespace oac_tree_gui::test
