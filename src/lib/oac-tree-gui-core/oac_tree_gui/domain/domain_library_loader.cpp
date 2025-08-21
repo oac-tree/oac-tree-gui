@@ -71,13 +71,7 @@ DomainLibraryLoader::DomainLibraryLoader(const std::vector<std::string>& library
   }
 }
 
-DomainLibraryLoader::~DomainLibraryLoader()
-{
-  for (auto* h : m_library_handles)
-  {
-    CloseLibrary(h);
-  }
-}
+DomainLibraryLoader::~DomainLibraryLoader() = default;
 
 std::vector<std::string> DomainLibraryLoader::GetLoadedLibraries() const
 {
@@ -98,6 +92,17 @@ void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
 std::vector<std::pair<std::string, bool> > DomainLibraryLoader::GetLibraryInfo() const
 {
   return m_library_info;
+}
+
+void DomainLibraryLoader::UnloadAll()
+{
+  for (auto* h : m_library_handles)
+  {
+    CloseLibrary(h);
+  }
+  m_library_handles.clear();
+  m_loaded_libraries.clear();
+  m_library_info.clear();
 }
 
 }  // namespace oac_tree_gui

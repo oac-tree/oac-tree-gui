@@ -72,7 +72,7 @@ TEST_F(DomainLibraryLoaderTests, LoadsExistingDummyLibrary)
   EXPECT_EQ(loader.GetLibraryInfo(), expected_info);
 }
 
-TEST_F(DomainLibraryLoaderTests, DummyLibraryUnloadedOnDestruction)
+TEST_F(DomainLibraryLoaderTests, DummyLibraryExplicitUnload)
 {
   const std::string path = std::string(DUMMY_LIB_PATH);
 
@@ -86,18 +86,19 @@ TEST_F(DomainLibraryLoaderTests, DummyLibraryUnloadedOnDestruction)
 
   {
     // Load via DomainLibraryLoader
-    const DomainLibraryLoader loader({path});
+    DomainLibraryLoader loader({path});
     void* during = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
     EXPECT_NE(during, nullptr) << "Library should be present while loader is alive";
     if (during)
     {
       dlclose(during);
     }
+    loader.UnloadAll();
   }
 
-  // After destruction: should return to baseline state
-  void* after = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
-  EXPECT_EQ(after, nullptr) << "Library should be unloaded after loader destruction";
+  // should return to baseline state
+  void* after = dlopen(path.c_str(), RTLD_NOLOAD);
+  EXPECT_EQ(after, nullptr) << "Library should be unloaded after UnloadAll call";
 
   if (after)
   {

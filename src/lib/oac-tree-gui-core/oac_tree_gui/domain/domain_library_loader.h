@@ -70,6 +70,8 @@ public:
    */
   std::vector<std::pair<std::string, bool>> GetLibraryInfo() const;
 
+  void UnloadAll();
+
 private:
   std::vector<std::string> m_loaded_libraries;
   std::vector<std::pair<std::string, bool>> m_library_info;
