@@ -1,5 +1,6 @@
 Changes for 2.0.0:
 
+- Implement DomainLibraryLoader and DomainPluginService
 - Restructure project folder to exclude Sonar based controllers from Sonar analysis
 - Create application resources outside of the main window and propagate where necessary
 - Refactor application settings mechanism
