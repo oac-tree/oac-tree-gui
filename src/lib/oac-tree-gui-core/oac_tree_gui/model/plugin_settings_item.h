@@ -37,7 +37,18 @@ public:
   static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
+
+  /**
+   * @brief Checks if settings requires to load plugins from the list with directories.
+   */
+  bool UsePluginDirList() const;
+
+  /**
+   * @brief Returns the list of directories where plugins can be found.
+   */
+  std::vector<std::string> GetPluginDirList() const;
 };
 
+}  // namespace oac_tree_gui
+
 #endif  // OAC_TREE_GUI_MODEL_PLUGIN_SETTINGS_ITEM_H_
-}

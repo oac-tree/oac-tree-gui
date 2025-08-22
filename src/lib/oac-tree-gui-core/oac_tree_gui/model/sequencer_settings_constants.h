@@ -35,7 +35,10 @@ const bool kUseUndoDefault = true;
 constexpr auto kUndoLimitSetting = "kUndoLimitSetting";
 const std::int32_t kUndoLimitDefault = 100;
 
-constexpr auto kPluginList = "kPluginList";
+constexpr auto kUsePluginDirList = "kUsePluginDirList";
+constexpr auto kPluginDirList = "kPluginDirList";
+
+constexpr auto kShouldLoadPluginsFromFileList = "kShouldLoadPluginsFromFileList";
 
 }  // namespace oac_tree_gui::constants
 

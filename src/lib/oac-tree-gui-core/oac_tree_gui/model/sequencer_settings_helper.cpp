@@ -18,43 +18,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "plugin_settings_item.h"
-
-#include "sequencer_settings_constants.h"
-
-#include <oac_tree_gui/domain/domain_helper.h>
-
-#include <mvvm/utils/string_utils.h>
+#include "sequencer_settings_helper.h"
 
 namespace oac_tree_gui
 {
 
-PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
+std::vector<std::string> GetDefaultPluginDirList()
 {
-  // load or not plugins from the list with directories
-  AddProperty(constants::kUsePluginDirList, true);
 
-  // string representing the list of directories where plugins can be
-}
-
-std::string PluginSettingsItem::GetStaticType()
-{
-  return "PluginSettings";
-}
-
-std::unique_ptr<mvvm::SessionItem> PluginSettingsItem::Clone() const
-{
-  return std::make_unique<PluginSettingsItem>(*this);
-}
-
-bool PluginSettingsItem::UsePluginDirList() const
-{
-  return Property<bool>(constants::kUsePluginDirList);
-}
-
-std::vector<std::string> PluginSettingsItem::GetPluginDirList() const
-{
-  return {};
 }
 
 }  // namespace oac_tree_gui

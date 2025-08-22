@@ -18,32 +18,21 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "plugin_settings_editor.h"
+#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H
+#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H
 
-#include <oac_tree_gui/model/sequencer_settings_constants.h>
-#include <oac_tree_gui/model/sequencer_settings_model.h>
-
-#include <mvvm/utils/string_utils.h>
-#include <mvvm/widgets/widget_utils.h>
-
-#include <QLabel>
-#include <QTextEdit>
-#include <QVBoxLayout>
+#include <string>
+#include <vector>
 
 namespace oac_tree_gui
 {
-PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
-    : sup::gui::SessionItemWidget(parent_widget), m_text_edit(new QTextEdit)
-{
-  auto layout = new QVBoxLayout(this);
-  layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, 0, 0);
-  layout->setSpacing(0);
-  layout->addWidget(m_text_edit);
-}
 
-void PluginSettingsEditor::SetItem(mvvm::SessionItem *item)
-{
-  (void)item;
-}
+/**
+ * @brief Returns the vector of strings representing the list of directories where to look for
+ * plugins.
+ */
+std::vector<std::string> GetDefaultPluginDirList();
 
 }  // namespace oac_tree_gui
+
+#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H
