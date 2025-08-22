@@ -25,6 +25,8 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <testutils/sequencer_test_utils.h>
+
 #include <QMimeData>
 
 namespace oac_tree_gui::test
@@ -59,6 +61,8 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
     m_clipboard_content = std::move(mime_data);
     OnSetMimeData();
   };
+
+  result.object_to_plugin_name = test::CreatePluginNameCallback();
 
   return result;
 }

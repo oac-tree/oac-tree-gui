@@ -201,13 +201,25 @@ std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string &doma
 DomainObjectTypeRegistry &GetGlobalTestObjectRegistry()
 {
   static DomainObjectTypeRegistry registry;
+
+  // Populating registry with several entries mimicking loaded plpugins and object types there.
+  // This registry is used by instruction/workspace action handlers while updating procedure
+  // preamble.
+
   registry.Update(domainconstants::kCorePluginName,
                   {domainconstants::kLocalVariableType, domainconstants::kSequenceInstructionType});
+
+  // CA plugin
   registry.Update(domainconstants::kEpicsCAPluginName,
                   {domainconstants::kChannelAccessVariableType});
+
+  // PVAccess plugin
   registry.Update(domainconstants::kEpicsPVXSPluginName,
                   {domainconstants::kPvAccessWriteInstructionType});
-
+  registry.Update(domainconstants::kEpicsPVXSPluginName,
+                  {domainconstants::kPvAccessServerVariableType});
+  registry.Update(domainconstants::kEpicsPVXSPluginName,
+                  {domainconstants::kPvAccessReadInstructionType});
   return registry;
 }
 

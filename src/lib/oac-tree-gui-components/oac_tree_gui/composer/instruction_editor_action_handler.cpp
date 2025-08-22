@@ -33,7 +33,6 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
@@ -394,10 +393,15 @@ const QMimeData *InstructionEditorActionHandler::GetMimeData() const
 
 void InstructionEditorActionHandler::UpdateProcedurePreamble()
 {
+  if (!m_context.object_to_plugin_name)
+  {
+    return;
+  }
+
   if (auto procedure_item = mvvm::utils::FindItemUp<ProcedureItem>(GetInstructionContainer());
       procedure_item)
   {
-    UpdatePluginNames(*procedure_item, {});
+    UpdatePluginNames(*procedure_item, m_context.object_to_plugin_name);
   }
 }
 

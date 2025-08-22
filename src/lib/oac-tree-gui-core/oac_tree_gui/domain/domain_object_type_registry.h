@@ -94,8 +94,6 @@ private:
   get_object_names_t m_get_object_names;
 };
 
-DomainObjectTypeRegistry& GlobalDomainObjectTypeRegistry();
-
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_

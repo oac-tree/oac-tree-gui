@@ -73,10 +73,4 @@ std::vector<std::string> DomainObjectTypeRegistry::GetObjectNames(
   return result;
 }
 
-DomainObjectTypeRegistry &GlobalDomainObjectTypeRegistry()
-{
-  static DomainObjectTypeRegistry registry;
-  return registry;
-}
-
 }  // namespace oac_tree_gui

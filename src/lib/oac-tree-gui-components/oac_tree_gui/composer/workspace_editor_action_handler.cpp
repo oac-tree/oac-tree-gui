@@ -246,10 +246,15 @@ const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const
 
 void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
 {
+  if (!m_context.object_to_plugin_name)
+  {
+    return;
+  }
+
   if (auto procedure_item = mvvm::utils::FindItemUp<ProcedureItem>(GetWorkspaceItem());
       procedure_item)
   {
-    UpdatePluginNames(*procedure_item, {});
+    UpdatePluginNames(*procedure_item, m_context.object_to_plugin_name);
   }
 }
 

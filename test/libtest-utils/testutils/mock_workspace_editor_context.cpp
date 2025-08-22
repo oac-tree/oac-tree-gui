@@ -21,7 +21,6 @@
 #include "mock_workspace_editor_context.h"
 
 #include <oac_tree_gui/composer/workspace_editor_action_handler.h>
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -57,10 +56,7 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
     OnSetMimeData();
   };
 
-  result.object_to_plugin_name = [](const std::string &object_type)
-  {
-    return test::GetGlobalTestObjectRegistry().GetPluginName(object_type).value_or(std::string());
-  };
+  result.object_to_plugin_name = test::CreatePluginNameCallback();
 
   return result;
 }
