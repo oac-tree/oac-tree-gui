@@ -143,6 +143,13 @@ void ImportProcedures(const QString& file_name,
  */
 QString GetOpenSequencerProcedureName(const QString& key = {});
 
+/**
+ * @brief Returns a callback to convert object name to corresponding plugin name.
+ *
+ * This method requires that the MainWindow exists and is properly wired.
+ */
+std::function<std::string(const std::string&)> CreatePluginNameCallback();
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
