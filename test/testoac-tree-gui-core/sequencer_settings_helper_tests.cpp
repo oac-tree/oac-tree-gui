@@ -18,26 +18,33 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
-#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
+#include "oac_tree_gui/model/sequencer_settings_helper.h"
 
-//! @file
-//! Collection of constants related to the global application settings. These constants are used as
-//! keys to register corresponding properties.
+#include <sup/gui/core/environment.h>
 
-#include <cstdint>
+#include <gtest/gtest.h>
 
-namespace oac_tree_gui::constants
+namespace oac_tree_gui::test
 {
 
-constexpr auto kUseUndoSetting = "kUseUndoSetting";
-const bool kUseUndoDefault = true;
-constexpr auto kUndoLimitSetting = "kUndoLimitSetting";
-const std::int32_t kUndoLimitDefault = 100;
+/**
+ * @brief Tests for helper functions in sequencere_settings_helper.h
+ */
+class SequencerSettingsHelperTest : public ::testing::Test
+{
+};
 
-constexpr auto kUsePluginDirList = "kUsePluginDirList";
-constexpr auto kPluginDirList = "kPluginDirList";
+TEST_F(SequencerSettingsHelperTest, GetDefaultPluginDirList)
+{
+  if (sup::gui::IsOnCodac())
+  {
+    EXPECT_EQ(GetDefaultPluginDirList(),
+              std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"}));
+  }
+  else
+  {
+    EXPECT_TRUE(GetDefaultPluginDirList().empty());
+  }
+}
 
-}  // namespace oac_tree_gui::constants
-
-#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
+}  // namespace oac_tree_gui::test

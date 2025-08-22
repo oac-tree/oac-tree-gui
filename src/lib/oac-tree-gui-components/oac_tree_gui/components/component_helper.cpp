@@ -20,7 +20,7 @@
 
 #include "component_helper.h"
 
-#include <sup/gui/app/app_helper.h>
+#include <sup/gui/core/environment.h>
 
 #include <QSettings>
 

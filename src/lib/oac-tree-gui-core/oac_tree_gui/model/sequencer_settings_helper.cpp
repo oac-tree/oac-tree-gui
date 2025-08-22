@@ -20,12 +20,20 @@
 
 #include "sequencer_settings_helper.h"
 
+#include <sup/gui/core/environment.h>
+
 namespace oac_tree_gui
 {
 
 std::vector<std::string> GetDefaultPluginDirList()
 {
+  if (sup::gui::IsOnCodac())
+  {
+    return std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"});
+  }
 
+  // FIXME for non-CODAC consider using CMAKE_INSTALL_PREFIX
+  return {};
 }
 
 }  // namespace oac_tree_gui

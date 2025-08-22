@@ -49,6 +49,21 @@ public:
   std::vector<std::string> GetPluginDirList() const;
 };
 
+/**
+ * @brief Converts vector of strings to a single string.
+ *
+ * This string serves as a serialization format for the vector, so that it can be used as item
+ * property.
+ */
+std::string GetSettingStringFromVector(const std::vector<std::string>& vec);
+
+/**
+ * @brief Returns vector of strings from the single string.
+ *
+ * This is the inverse function to GetSettingStringFromVector.
+ */
+std::vector<std::string> GetVectorFromSettingString(const std::string& str);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_PLUGIN_SETTINGS_ITEM_H_

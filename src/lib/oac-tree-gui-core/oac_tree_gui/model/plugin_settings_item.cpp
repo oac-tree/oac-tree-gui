@@ -23,18 +23,25 @@
 #include "sequencer_settings_constants.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/sequencer_settings_helper.h>
 
 #include <mvvm/utils/string_utils.h>
 
 namespace oac_tree_gui
 {
 
+namespace
+{
+constexpr auto kSeparator = ";";
+}
+
 PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
 {
   // load or not plugins from the list with directories
   AddProperty(constants::kUsePluginDirList, true);
 
-  // string representing the list of directories where plugins can be
+  auto default_value = GetSettingStringFromVector(GetDefaultPluginDirList());
+  AddProperty(constants::kPluginDirList, default_value);
 }
 
 std::string PluginSettingsItem::GetStaticType()
@@ -54,7 +61,18 @@ bool PluginSettingsItem::UsePluginDirList() const
 
 std::vector<std::string> PluginSettingsItem::GetPluginDirList() const
 {
-  return {};
+  const auto setting_str = Property<std::string>(constants::kPluginDirList);
+  return GetVectorFromSettingString(setting_str);
+}
+
+std::string GetSettingStringFromVector(const std::vector<std::string> &vec)
+{
+  return mvvm::utils::VectorToString(vec, kSeparator);
+}
+
+std::vector<std::string> GetVectorFromSettingString(const std::string &str)
+{
+  return mvvm::utils::StringToVector<std::string>(str, kSeparator);
 }
 
 }  // namespace oac_tree_gui
