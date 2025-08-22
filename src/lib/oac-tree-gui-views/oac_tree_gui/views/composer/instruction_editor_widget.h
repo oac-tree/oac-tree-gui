@@ -86,6 +86,7 @@ private:
 
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
+  std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider();
 
   void OnContextMenuRequest(const QPoint& point);
 

@@ -44,7 +44,7 @@ namespace oac_tree_gui::test
 class DragAndDropHelperTest : public ::testing::Test
 {
 public:
-  DragAndDropHelperTest() : m_view_model(&m_model) {}
+  DragAndDropHelperTest() : m_view_model(&m_model, {}) {}
 
   mvvm::ApplicationModel m_model;
   InstructionEditorViewModel m_view_model;

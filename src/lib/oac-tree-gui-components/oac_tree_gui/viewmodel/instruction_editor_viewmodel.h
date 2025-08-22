@@ -45,7 +45,10 @@ class MVVM_VIEWMODEL_EXPORT InstructionEditorViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit InstructionEditorViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
+  explicit InstructionEditorViewModel(
+      mvvm::ISessionModel* model,
+      std::function<std::string(const std::string&)> object_to_plugin_name,
+      QObject* parent_object = nullptr);
   ~InstructionEditorViewModel() override;
 
   Qt::ItemFlags flags(const QModelIndex& index) const override;
@@ -65,7 +68,8 @@ public:
   QStringList mimeTypes() const override;
 
 private:
-  InstructionEditorContext CreateInstructionEditorContext();
+  InstructionEditorContext CreateInstructionEditorContext(
+      std::function<std::string(const std::string&)> object_to_plugin_name);
   std::unique_ptr<IInstructionEditorActionHandler> m_action_handler;
 };
 

@@ -25,6 +25,7 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
+#include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -32,7 +33,6 @@
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <oac_tree_gui/widgets/custom_tree_view_style.h>
-#include <oac_tree_gui/mainwindow/main_window_helper.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
@@ -78,7 +78,7 @@ InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService &c
     , m_command_service(command_service)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
-    , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
+    , m_component_provider(CreateProvider())
     , m_attribute_editor(new InstructionAttributeEditor(CreateVariableNameFunc()))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_action_handler(
@@ -262,6 +262,13 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.object_to_plugin_name = CreatePluginNameCallback();
 
   return result;
+}
+
+std::unique_ptr<mvvm::ItemViewComponentProvider> InstructionEditorWidget::CreateProvider()
+{
+  auto viewmodel =
+      std::make_unique<InstructionEditorViewModel>(nullptr, CreatePluginNameCallback(), this);
+  return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(viewmodel), m_tree_view);
 }
 
 void InstructionEditorWidget::OnContextMenuRequest(const QPoint &point)

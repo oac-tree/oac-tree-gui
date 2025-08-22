@@ -46,7 +46,7 @@ namespace oac_tree_gui::test
 class InstructionEditorViewModelTest : public ::testing::Test
 {
 public:
-  InstructionEditorViewModelTest() : m_view_model(&m_model) {}
+  InstructionEditorViewModelTest() : m_view_model(&m_model, {}) {}
 
   mvvm::ApplicationModel m_model;
   InstructionEditorViewModel m_view_model;
@@ -332,7 +332,7 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
       model.InsertItem<ProcedureItem>(model.GetProcedureContainer(), mvvm::TagIndex::Append());
   auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
 
-  InstructionEditorViewModel view_model(nullptr);
+  InstructionEditorViewModel view_model(nullptr, {});
   view_model.SetRootSessionItem(procedure->GetInstructionContainer());
 
   EXPECT_EQ(view_model.rowCount(), 1);
