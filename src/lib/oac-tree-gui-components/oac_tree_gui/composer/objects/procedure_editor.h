@@ -58,6 +58,7 @@ class ProcedureEditor : public QObject
 
 public:
   explicit ProcedureEditor(std::function<void(const sup::gui::MessageEvent&)> send_message,
+                           std::function<std::string(const std::string&)> object_to_plugin_name,
                            QObject* parent_object = nullptr);
   ~ProcedureEditor() override;
 
@@ -89,7 +90,8 @@ signals:
 
 private:
   InstructionEditorContext CreateInstructionEditorContext(
-      std::function<void(const sup::gui::MessageEvent&)> send_message);
+      std::function<void(const sup::gui::MessageEvent&)> send_message,
+      std::function<std::string(const std::string&)> object_to_plugin_name);
 
   std::vector<InstructionItem*> GetSelectedInstructions();
 

@@ -25,6 +25,7 @@
 #include "sequencer_composer_actions.h"
 
 #include <oac_tree_gui/composer/objects/procedure_editor.h>
+#include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -59,8 +60,7 @@ SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &comma
                                              QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
-    , m_procedure_editor(std::make_unique<ProcedureEditor>(
-          [](const auto &event) { sup::gui::SendWarningMessage(event); }))
+    , m_procedure_editor(CreateProcedureEditor())
     , m_composer_panel(new ComposerToolsPanel(command_service))
     , m_central_panel(new ComposerWidgetPanel(command_service, kCentralPanel,
                                               ComposerWidgetPanel::kInstructionTree))
@@ -173,6 +173,12 @@ void SequencerComposerView::SetupWidgetActions()
   m_toggle_right_sidebar->setIcon(FindIcon("dock-right"));
   connect(m_toggle_right_sidebar, &QAction::triggered, this,
           [this](auto) { m_right_panel->setVisible(!m_right_panel->isVisible()); });
+}
+
+std::unique_ptr<ProcedureEditor> SequencerComposerView::CreateProcedureEditor()
+{
+  auto message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
+  return std::make_unique<ProcedureEditor>(message_callback, CreatePluginNameCallback());
 }
 
 }  // namespace oac_tree_gui

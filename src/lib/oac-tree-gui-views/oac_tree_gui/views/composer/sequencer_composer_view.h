@@ -72,6 +72,8 @@ private:
   void SetupConnections();
   void SetupWidgetActions();
 
+  std::unique_ptr<ProcedureEditor> CreateProcedureEditor();
+
   sup::gui::IAppCommandService& m_command_service;
 
   QAction* m_toggle_left_sidebar{nullptr};

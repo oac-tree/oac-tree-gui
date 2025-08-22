@@ -30,11 +30,12 @@
 namespace oac_tree_gui
 {
 
-ProcedureEditor::ProcedureEditor(std::function<void(const sup::gui::MessageEvent &)> send_message,
-                                 QObject *parent_object)
+ProcedureEditor::ProcedureEditor(
+    std::function<void(const sup::gui::MessageEvent &)> send_message,
+    std::function<std::string(const std::string &)> object_to_plugin_name, QObject *parent_object)
     : QObject(parent_object)
     , m_action_handler(std::make_unique<InstructionEditorActionHandler>(
-          CreateInstructionEditorContext(send_message)))
+          CreateInstructionEditorContext(send_message, object_to_plugin_name)))
 {
 }
 
@@ -61,7 +62,8 @@ void ProcedureEditor::InsertInstructionFromToolBox(const QString &name)
 }
 
 InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext(
-    std::function<void(const sup::gui::MessageEvent &)> send_message)
+    std::function<void(const sup::gui::MessageEvent &)> send_message,
+    std::function<std::string(const std::string &)> object_to_plugin_name)
 {
   InstructionEditorContext result;
   result.instruction_container = [this]()
@@ -71,6 +73,7 @@ InstructionEditorContext ProcedureEditor::CreateInstructionEditorContext(
   result.notify_request = on_notify_request;
   result.send_message = send_message;
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
+  result.object_to_plugin_name = object_to_plugin_name;
   return result;
 }
 
