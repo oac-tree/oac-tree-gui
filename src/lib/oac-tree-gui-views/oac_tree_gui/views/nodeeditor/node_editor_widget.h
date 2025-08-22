@@ -76,9 +76,10 @@ private:
   void SetupConnections();
   void OnAlignRequest();
   void SetupController();
+  std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
 
   NodeGraphicsViewActions* m_view_actions{nullptr};
-  NodeGraphicsScene* m_graphics_scene{nullptr};
+  std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
   NodeGraphicsView* m_graphics_view{nullptr};
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
   std::unique_ptr<ConnectableViewModelController> m_scene_controller;

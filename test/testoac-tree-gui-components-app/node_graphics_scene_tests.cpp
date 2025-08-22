@@ -50,7 +50,7 @@ namespace oac_tree_gui::test
 class NodeGraphicsSceneTest : public ::testing::Test
 {
 public:
-  NodeGraphicsSceneTest() : m_scene(m_mock_handler.AsStdFunction())
+  NodeGraphicsSceneTest() : m_scene(m_mock_handler.AsStdFunction(), {})
   {
     m_model.InsertItem<ProcedureItem>();
     m_scene.SetInstructionContainer(GetInstructionContainer());
@@ -99,7 +99,7 @@ public:
 
 TEST_F(NodeGraphicsSceneTest, InitialState)
 {
-  NodeGraphicsScene scene([](auto item) { (void)item; });
+  NodeGraphicsScene scene([](auto item) { (void)item; }, {});
   EXPECT_FALSE(scene.HasContext());
 }
 

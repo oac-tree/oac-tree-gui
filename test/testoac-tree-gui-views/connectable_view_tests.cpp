@@ -46,7 +46,7 @@ namespace oac_tree_gui::test
 class ConnectableViewTest : public ::testing::Test
 {
 public:
-  ConnectableViewTest() : m_scene([](auto) {})
+  ConnectableViewTest() : m_scene([](auto) {}, {})
   {
     m_procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }

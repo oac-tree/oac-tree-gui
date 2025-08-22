@@ -24,6 +24,7 @@
 #include "node_graphics_view.h"
 #include "node_graphics_view_actions.h"
 
+#include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -59,10 +60,8 @@ namespace oac_tree_gui
 NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_view_actions(new NodeGraphicsViewActions(this))
-    , m_graphics_scene(new NodeGraphicsScene(
-          [this](const auto &message) { m_graphics_view_message_handler->SendMessage(message); },
-          this))
-    , m_graphics_view(new NodeGraphicsView(m_graphics_scene, this))
+    , m_graphics_scene(CreateGraphicsScene())
+    , m_graphics_view(new NodeGraphicsView(m_graphics_scene.get(), this))
     , m_navigation_toolbar(new NodeEditorNavigationToolBar)
     , m_graphics_view_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
@@ -157,23 +156,31 @@ void NodeEditorWidget::SetupController()
   }
 
   m_scene_controller = std::make_unique<ConnectableViewModelController>(
-      m_procedure_item->GetModel(), m_graphics_scene);
+      m_procedure_item->GetModel(), m_graphics_scene.get());
 
   m_scene_controller->Init(m_procedure_item->GetInstructionContainer());
+}
+
+std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
+{
+  auto message_callback = [this](const auto &message)
+  { m_graphics_view_message_handler->SendMessage(message); };
+
+  return std::make_unique<NodeGraphicsScene>(message_callback, CreatePluginNameCallback());
 }
 
 void NodeEditorWidget::SetupConnections()
 {
   // Propagates delete request from the graphics view to the scene.
-  connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, m_graphics_scene,
+  connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, m_graphics_scene.get(),
           &NodeGraphicsScene::OnDeleteSelectedRequest);
 
   // Forward instruction selection from graphics scene
-  connect(m_graphics_scene, &NodeGraphicsScene::InstructionSelected, this,
+  connect(m_graphics_scene.get(), &NodeGraphicsScene::InstructionSelected, this,
           &NodeEditorWidget::InstructionSelected);
 
   // Propagate selection request from GraphicsScene to GraphicsView
-  connect(m_graphics_scene, &NodeGraphicsScene::OperationModeChangeRequest, m_graphics_view,
+  connect(m_graphics_scene.get(), &NodeGraphicsScene::OperationModeChangeRequest, m_graphics_view,
           &NodeGraphicsView::SetOperationMode);
 
   // Propagate selection mode change from toolbar to GraphicsView

@@ -79,10 +79,11 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 
 NodeGraphicsScene::NodeGraphicsScene(
     std::function<void(const sup::gui::MessageEvent &)> send_message_callback,
-    QObject *parent_object)
+    std::function<std::string(const std::string &)> object_to_plugin_name, QObject *parent_object)
     : QGraphicsScene(parent_object)
     , m_node_controller(new NodeConnectionController(this))
     , m_send_message_callback(send_message_callback)
+    , m_object_to_plugin_name(object_to_plugin_name)
     , m_action_handler(std::make_unique<NodeGraphicsSceneActionHandler>(CreateContext()))
 {
   setSceneRect(GetDefaultSceneRect());
@@ -298,7 +299,7 @@ InstructionEditorContext NodeGraphicsScene::CreateContext()
   result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
 
   result.send_message = m_send_message_callback;
-
+  result.object_to_plugin_name = m_object_to_plugin_name;
   return result;
 }
 

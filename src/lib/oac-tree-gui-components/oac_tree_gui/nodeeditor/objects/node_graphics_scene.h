@@ -21,10 +21,11 @@
 #ifndef OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_
 #define OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_
 
+#include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
+
 #include <sup/gui/core/message_event.h>
 
 #include <mvvm/utils/container_utils.h>
-#include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 
 #include <QGraphicsScene>
 
@@ -54,6 +55,7 @@ class NodeGraphicsScene : public QGraphicsScene
 public:
   explicit NodeGraphicsScene(
       std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
+      std::function<std::string(const std::string&)> object_to_plugin_name,
       QObject* parent_object = nullptr);
   ~NodeGraphicsScene() override;
 
@@ -112,6 +114,7 @@ private:
   InstructionContainerItem* m_instruction_container{nullptr};
   std::unique_ptr<NodeConnectionController> m_node_controller;
   std::function<void(const sup::gui::MessageEvent&)> m_send_message_callback;
+  std::function<std::string(const std::string&)> m_object_to_plugin_name;
   std::unique_ptr<NodeGraphicsSceneActionHandler> m_action_handler;
 };
 
