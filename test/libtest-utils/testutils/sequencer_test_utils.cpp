@@ -211,4 +211,10 @@ DomainObjectTypeRegistry &GetGlobalTestObjectRegistry()
   return registry;
 }
 
+std::function<std::string(const std::string &)> CreatePluginNameCallback()
+{
+  return [](const std::string &object_type)
+  { return GetGlobalTestObjectRegistry().GetPluginName(object_type).value_or(std::string()); };
+}
+
 }  // namespace oac_tree_gui::test

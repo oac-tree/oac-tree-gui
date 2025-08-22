@@ -72,6 +72,9 @@ struct WorkspaceEditorContext
 
   //! callback to set mime data to the clipboard
   std::function<void(std::unique_ptr<QMimeData>)> set_mime_data;
+
+  //! callback to retrive a plugin name corresponding to the given object type
+  std::function<std::string(const std::string&)> object_to_plugin_name;
 };
 
 }  // namespace oac_tree_gui

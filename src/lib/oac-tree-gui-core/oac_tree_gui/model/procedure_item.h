@@ -23,6 +23,8 @@
 
 #include <mvvm/model/compound_item.h>
 
+#include <functional>
+
 namespace oac_tree_gui
 {
 
@@ -63,15 +65,20 @@ public:
  * @brief Collect domain plugin names that are required to run this procedure.
  *
  * @param item The procedure to investigate.
- * @param registry Object type registry that contains plugin information.
+ * @param object_to_plugin_name A callback allowing to retrieve plugin name from object name.
  */
-std::vector<std::string> CollectPluginNames(const ProcedureItem& item,
-                                            const DomainObjectTypeRegistry& registry);
+std::vector<std::string> CollectPluginNames(
+    const ProcedureItem& item,
+    const std::function<std::string(const std::string&)>& object_to_plugin_name);
 
 /**
  * @brief Updates preamble with plugin names using current instruction and variable composition.
+ *
+ * @param item The procedure to update preamble.
+ * @param object_to_plugin_name A callback allowing to retrieve plugin name from object name.
  */
-void UpdatePluginNames(const ProcedureItem& item, const DomainObjectTypeRegistry& registry);
+void UpdatePluginNames(const ProcedureItem& item,
+                       const std::function<std::string(const std::string&)>& object_to_plugin_name);
 
 }  // namespace oac_tree_gui
 

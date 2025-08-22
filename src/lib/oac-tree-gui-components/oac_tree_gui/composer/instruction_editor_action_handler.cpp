@@ -397,7 +397,7 @@ void InstructionEditorActionHandler::UpdateProcedurePreamble()
   if (auto procedure_item = mvvm::utils::FindItemUp<ProcedureItem>(GetInstructionContainer());
       procedure_item)
   {
-    UpdatePluginNames(*procedure_item, GlobalDomainObjectTypeRegistry());
+    UpdatePluginNames(*procedure_item, {});
   }
 }
 

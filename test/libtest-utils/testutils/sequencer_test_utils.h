@@ -31,6 +31,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <functional>
 
 namespace mvvm
 {
@@ -112,6 +113,11 @@ std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& doma
  * @brief Returns the reference to the global test registry mimicking loaded plugins.
  */
 DomainObjectTypeRegistry& GetGlobalTestObjectRegistry();
+
+/**
+ * @brief Returns a callback to convert object name to corresponding plugin name.
+ */
+std::function<std::string(const std::string&)> CreatePluginNameCallback();
 
 }  // namespace test
 
