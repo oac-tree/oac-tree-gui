@@ -21,6 +21,7 @@
 #ifndef OAC_TREE_GUI_I_DOMAIN_PLUGIN_SERVICE_H_
 #define OAC_TREE_GUI_I_DOMAIN_PLUGIN_SERVICE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -57,6 +58,13 @@ public:
    * @brief Returns objects names registered in the given plugin name.
    */
   virtual std::vector<std::string> GetObjectNames(const std::string& plugin_name) const = 0;
+
+  /**
+   * @brief Returns the name of the plugin where the given object name is registered.
+   *
+   * If object name is not known, will return an empty optional.
+   */
+  virtual std::optional<std::string> GetPluginName(const std::string& object_name) const = 0;
 };
 
 }  // namespace oac_tree_gui

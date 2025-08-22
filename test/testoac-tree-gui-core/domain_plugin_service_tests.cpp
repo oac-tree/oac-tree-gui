@@ -43,6 +43,7 @@ public:
   public:
     MOCK_METHOD(void, Update, (const std::string&), ());
     MOCK_METHOD(std::vector<std::string>, GetObjectNames, (const std::string&), ());
+    MOCK_METHOD(std::optional<std::string>, GetPluginName, (const std::string&), ());
   };
 
   /**
@@ -120,6 +121,24 @@ TEST_F(DomainPluginServiceTests, GetObjectNames)
       .WillByDefault(testing::Return(object_names));
 
   EXPECT_EQ(service.GetObjectNames(plugin_name), object_names);
+}
+
+TEST_F(DomainPluginServiceTests, GetPluginName)
+{
+  MockObjectTypeRegistry object_registry;
+  MockLibraryLoader library_loader;
+  EXPECT_CALL(object_registry, Update(testing::_)).Times(0);
+  EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
+
+  const DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
+                                                                               object_registry);
+
+  const std::string plugin_name("plugin_name");
+  const std::string object_name("test_object");
+  const std::vector<std::string> object_names({"obj1", "obj2"});
+  ON_CALL(object_registry, GetPluginName(object_name)).WillByDefault(testing::Return(plugin_name));
+
+  EXPECT_EQ(service.GetPluginName(object_name).value(), plugin_name);
 }
 
 TEST_F(DomainPluginServiceTests, LoadEmptyList)

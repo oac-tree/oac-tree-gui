@@ -63,6 +63,8 @@ public:
 
   std::vector<std::string> GetObjectNames(const std::string& plugin_name) const override;
 
+  std::optional<std::string> GetPluginName(const std::string& object_name) const override;
+
 private:
   /**
    * @brief Asks object type registry to update its content with the given plugin name.
@@ -116,6 +118,14 @@ DomainPluginService<LibraryLoaderT, ObjectRegistryT>::GetObjectNames(
     const std::string& plugin_name) const
 {
   return m_object_type_registry.GetObjectNames(plugin_name);
+}
+
+template <typename LibraryLoaderT, typename ObjectRegistryT>
+inline std::optional<std::string>
+DomainPluginService<LibraryLoaderT, ObjectRegistryT>::GetPluginName(
+    const std::string& object_name) const
+{
+  return m_object_type_registry.GetPluginName(object_name);
 }
 
 template <typename LibraryLoaderT, typename ObjectRegistryT>
