@@ -31,7 +31,6 @@ namespace oac_tree_gui
 class WorkspaceItem;
 class InstructionContainerItem;
 class ProcedurePreambleItem;
-class DomainObjectTypeRegistry;
 
 //! Represents Procedure.
 class ProcedureItem : public mvvm::CompoundItem
