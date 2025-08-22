@@ -18,39 +18,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "plugin_settings_item.h"
+#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
+#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
 
-#include "sequencer_settings_constants.h"
+//! @file
+//! Collection of constants related to the global application settings. These constants are used to
+//! register corresponding properties, and as keys to the QSettings file.
 
-#include <oac_tree_gui/domain/domain_helper.h>
+#include <cstdint>
 
-#include <mvvm/utils/string_utils.h>
-
-namespace oac_tree_gui
+namespace oac_tree_gui::constants
 {
 
-namespace
-{
+constexpr auto kUseUndoSetting = "kUseUndoSetting";
+const bool kUseUndoDefault = true;
+constexpr auto kUndoLimitSetting = "kUndoLimitSetting";
+const std::int32_t kUndoLimitDefault = 100;
 
-std::string GetDefaultPluginString()
-{
-  return mvvm::utils::VectorToString(GetDefaultPluginList());
-}
-}  // namespace
+constexpr auto kPluginList = "kPluginList";
 
-PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
-{
-  AddProperty(constants::kPluginList, GetDefaultPluginString());
-}
+}  // namespace oac_tree_gui::constants
 
-std::string PluginSettingsItem::GetStaticType()
-{
-  return "PluginSettings";
-}
-
-std::unique_ptr<mvvm::SessionItem> PluginSettingsItem::Clone() const
-{
-  return std::make_unique<PluginSettingsItem>(*this);
-}
-
-}  // namespace oac_tree_gui
+#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_

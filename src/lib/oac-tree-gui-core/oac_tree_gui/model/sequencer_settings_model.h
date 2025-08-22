@@ -21,18 +21,12 @@
 #ifndef SUP_GUI_MODEL_SETTINGS_MODEL_H_
 #define SUP_GUI_MODEL_SETTINGS_MODEL_H_
 
-#include <sup/gui/model/settings_constants.h>
 #include <sup/gui/model/settings_item.h>
 
 #include <mvvm/model/application_model.h>
 
 namespace oac_tree_gui
 {
-
-namespace constants
-{
-const std::string kPluginList = "kPluginList";
-}
 
 /**
  * @brief Contains common application settings.

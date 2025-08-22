@@ -36,6 +36,7 @@ target_sources(${library_name} PRIVATE
   sequencer_item_includes.h
   sequencer_model.cpp
   sequencer_model.h
+  sequencer_settings_constants.h
   sequencer_settings_model.cpp
   sequencer_settings_model.h
   standard_instruction_items.cpp

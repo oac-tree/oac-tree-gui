@@ -26,6 +26,7 @@
 
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/sequencer_settings_constants.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
@@ -67,7 +68,7 @@ bool SequencerMainWindow::ImportProcedure(const QString& file_name)
   return file_name.isEmpty() ? false : m_operation_view->OnImportJobRequest(file_name);
 }
 
-SequencerMainWindowContext &SequencerMainWindow::GetContext() const
+SequencerMainWindowContext& SequencerMainWindow::GetContext() const
 {
   return m_context;
 }
@@ -180,8 +181,8 @@ void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 
 void SequencerMainWindow::OnProjectLoad()
 {
-  const auto enable_undo = m_settings->Data<bool>(sup::gui::constants::kUseUndoSetting);
-  const auto undo_limit = m_settings->Data<int>(sup::gui::constants::kUndoLimitSetting);
+  const auto enable_undo = m_settings->Data<bool>(constants::kUseUndoSetting);
+  const auto undo_limit = m_settings->Data<int>(constants::kUndoLimitSetting);
   m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());

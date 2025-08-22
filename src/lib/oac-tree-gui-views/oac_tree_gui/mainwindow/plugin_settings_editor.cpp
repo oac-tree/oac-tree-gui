@@ -20,6 +20,7 @@
 
 #include "plugin_settings_editor.h"
 
+#include <oac_tree_gui/model/sequencer_settings_constants.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 
 #include <mvvm/utils/string_utils.h>
