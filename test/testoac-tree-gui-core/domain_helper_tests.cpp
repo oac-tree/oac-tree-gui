@@ -20,8 +20,6 @@
 
 #include "oac_tree_gui/domain/domain_helper.h"
 
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
-
 #include <sup/oac-tree/constants.h>
 #include <sup/oac-tree/i_job_info_io.h>
 #include <sup/oac-tree/instruction.h>
@@ -141,41 +139,6 @@ TEST_F(DomainHelperTest, DialogMetagadata)
     EXPECT_TRUE(IsMessageBoxDialog(metadata));
   }
 }
-
-// FIXME cleanup
-// TEST_F(DomainHelperTest, GlobalDomainObjectTypeRegistry)
-// {
-//   const std::string undefined("undefined");
-
-//   // instructions and variables from core
-
-//   EXPECT_EQ(GlobalDomainObjectTypeRegistry()
-//                 .GetPluginName(domainconstants::kWaitInstructionType)
-//                 .value_or(undefined),
-//             domainconstants::kCorePluginName);
-
-//   EXPECT_EQ(GlobalDomainObjectTypeRegistry()
-//                 .GetPluginName(domainconstants::kLocalVariableType)
-//                 .value_or(undefined),
-//             domainconstants::kCorePluginName);
-
-//   if (!IsSequencerPluginEpicsAvailable())
-//   {
-//     GTEST_SKIP();
-//   }
-
-//   // instructions and variables from EPICS libs
-
-//   EXPECT_EQ(GlobalDomainObjectTypeRegistry()
-//                 .GetPluginName(domainconstants::kChannelAccessReadInstructionType)
-//                 .value_or(undefined),
-//             domainconstants::kEpicsCAPluginName);
-
-//   EXPECT_EQ(GlobalDomainObjectTypeRegistry()
-//                 .GetPluginName(domainconstants::kPvAccessClientVariableType)
-//                 .value_or(undefined),
-//             domainconstants::kEpicsPVXSPluginName);
-// }
 
 TEST_F(DomainHelperTest, IsValidInstructionIndex)
 {

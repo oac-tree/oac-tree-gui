@@ -110,12 +110,6 @@ std::vector<std::string> GetDefaultPluginList();
 std::vector<std::string> GetDefaultPluginFileNames();
 
 /**
- * @brief Loads all sequencer plugins and reports result of the load to the user.
- * @return Success flag and the error message.
- */
-std::pair<bool, std::string> LoadOacTreePlugins();
-
-/**
  * @brief Converts the name of the plugin to library file name.
  *
  * Takes OS platform in the account.
