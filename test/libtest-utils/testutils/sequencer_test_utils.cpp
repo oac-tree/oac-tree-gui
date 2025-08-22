@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
@@ -195,6 +196,19 @@ std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string &doma
   result->InitFromDomainInfo(info);
 
   return result;
+}
+
+DomainObjectTypeRegistry &GetGlobalTestObjectRegistry()
+{
+  static DomainObjectTypeRegistry registry;
+  registry.Update(domainconstants::kCorePluginName,
+                  {domainconstants::kLocalVariableType, domainconstants::kSequenceInstructionType});
+  registry.Update(domainconstants::kEpicsCAPluginName,
+                  {domainconstants::kChannelAccessVariableType});
+  registry.Update(domainconstants::kEpicsPVXSPluginName,
+                  {domainconstants::kPvAccessWriteInstructionType});
+
+  return registry;
 }
 
 }  // namespace oac_tree_gui::test

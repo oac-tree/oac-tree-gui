@@ -43,6 +43,7 @@ namespace oac_tree_gui
 class VariableItem;
 class VariableInfoItem;
 class InstructionItem;
+class DomainObjectTypeRegistry;
 
 namespace test
 {
@@ -106,6 +107,11 @@ std::vector<InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
 std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& domain_type,
                                                          sup::dto::uint32 index = 0U,
                                                          const attribute_list_t& attributes = {});
+
+/**
+ * @brief Returns the reference to the global test registry mimicking loaded plugins.
+ */
+DomainObjectTypeRegistry& GetGlobalTestObjectRegistry();
 
 }  // namespace test
 

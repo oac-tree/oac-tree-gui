@@ -28,6 +28,7 @@
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -249,7 +250,7 @@ void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
   if (auto procedure_item = mvvm::utils::FindItemUp<ProcedureItem>(GetWorkspaceItem());
       procedure_item)
   {
-    UpdatePluginNames(*procedure_item);
+    UpdatePluginNames(*procedure_item, GlobalDomainObjectTypeRegistry());
   }
 }
 

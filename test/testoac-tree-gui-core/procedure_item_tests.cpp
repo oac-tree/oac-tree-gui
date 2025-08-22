@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
@@ -30,19 +31,21 @@
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
 
-//! Testing ProcedureItem class.
-
+/**
+ * @brief Tests for ProcedureItem class.
+ */
 class ProcedureItemTest : public ::testing::Test
 {
 };
 
 TEST_F(ProcedureItemTest, InitialState)
 {
-  ProcedureItem item;
+  const ProcedureItem item;
 
   EXPECT_TRUE(item.GetInstructionContainer());
   EXPECT_TRUE(item.GetWorkspace());
@@ -74,7 +77,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
     const ProcedureItem item;
 
     // no plugin names are necessary
-    EXPECT_TRUE(CollectPluginNames(item).empty());
+    EXPECT_TRUE(CollectPluginNames(item, GetGlobalTestObjectRegistry()).empty());
   }
 
   {  // procedure with local variable
@@ -82,7 +85,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
     item.GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
     // no plugin names are necessary
-    EXPECT_TRUE(CollectPluginNames(item).empty());
+    EXPECT_TRUE(CollectPluginNames(item, GetGlobalTestObjectRegistry()).empty());
   }
 
   {  // procedure with sequence
@@ -90,7 +93,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
     item.GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
     // no plugin names are necessary
-    EXPECT_TRUE(CollectPluginNames(item).empty());
+    EXPECT_TRUE(CollectPluginNames(item, GetGlobalTestObjectRegistry()).empty());
   }
 }
 
@@ -108,7 +111,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
 
     const std::vector<std::string> expected(
         {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName)});
-    EXPECT_EQ(CollectPluginNames(item), expected);
+    EXPECT_EQ(CollectPluginNames(item, GetGlobalTestObjectRegistry()), expected);
   }
 
   {  // procedure with ChannelAccessVariable and PvAccessWriteInstructionItem
@@ -120,7 +123,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
     const std::vector<std::string> expected(
         {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName),
          oac_tree_gui::GetPluginFileName(domainconstants::kEpicsPVXSPluginName)});
-    EXPECT_EQ(CollectPluginNames(item), expected);
+    EXPECT_EQ(CollectPluginNames(item, GetGlobalTestObjectRegistry()), expected);
   }
 }
 
@@ -137,7 +140,7 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
   item.GetInstructionContainer()->InsertItem<PvAccessWriteInstructionItem>(
       mvvm::TagIndex::Append());
 
-  UpdatePluginNames(item);
+  UpdatePluginNames(item, GetGlobalTestObjectRegistry());
 
   const std::vector<std::string> expected(
       {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName),

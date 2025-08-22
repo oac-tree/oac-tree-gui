@@ -32,6 +32,9 @@
 
 #include <set>
 
+namespace oac_tree_gui
+{
+
 namespace
 {
 
@@ -39,28 +42,26 @@ namespace
  * @brief Adds plugin name coresponding to a given domain type into the container.
  */
 void CollectPluginFileNames(const std::string &domain_type,
+                            const DomainObjectTypeRegistry &registry,
                             std::set<std::string> &plugin_file_names)
 {
-  // FIXME restore
-  // This is a temporary solution, because we do not have a plugin name for the domain type.
-
-          // const auto &registry = oac_tree_gui::GlobalDomainObjectTypeRegistry();
-  // if (auto plugin_name = registry.GetPluginName(domain_type).value_or(std::string());
-  //     !plugin_name.empty())
-  // {
-  //   plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
-  // }
+  if (auto plugin_name = registry.GetPluginName(domain_type).value_or(std::string());
+      !plugin_name.empty())
+  {
+    plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
+  }
 }
 
 /**
  * @brief Collects all plugin names necessary to handle variables in the given workspace.
  */
 void CollectVariablePluginNames(const oac_tree_gui::WorkspaceItem &workspace_item,
+                                const DomainObjectTypeRegistry &registry,
                                 std::set<std::string> &plugin_names)
 {
   for (auto variable : workspace_item.GetVariables())
   {
-    CollectPluginFileNames(variable->GetDomainType(), plugin_names);
+    CollectPluginFileNames(variable->GetDomainType(), registry, plugin_names);
   }
 }
 
@@ -69,18 +70,16 @@ void CollectVariablePluginNames(const oac_tree_gui::WorkspaceItem &workspace_ite
  * container.
  */
 void CollectInstructionPluginNames(const oac_tree_gui::InstructionContainerItem &container,
+                                   const DomainObjectTypeRegistry &registry,
                                    std::set<std::string> &plugin_names)
 {
-  auto on_instruction = [&plugin_names](const oac_tree_gui::InstructionItem *item)
-  { CollectPluginFileNames(item->GetDomainType(), plugin_names); };
+  auto on_instruction = [&plugin_names, &registry](const oac_tree_gui::InstructionItem *item)
+  { CollectPluginFileNames(item->GetDomainType(), registry, plugin_names); };
   oac_tree_gui::IterateInstructionContainer<const oac_tree_gui::InstructionItem *>(
       container.GetInstructions(), on_instruction);
 }
 
 }  // namespace
-
-namespace oac_tree_gui
-{
 
 static inline const std::string kInstructions = "kInstructions";
 static inline const std::string kWorkspace = "kWorkspace";
@@ -116,7 +115,7 @@ std::string ProcedureItem::GetName() const
 
 void ProcedureItem::SetName(const std::string &value)
 {
-  (void) SetProperty(itemconstants::kName, value);
+  (void)SetProperty(itemconstants::kName, value);
 }
 
 std::string ProcedureItem::GetDescription() const
@@ -126,7 +125,7 @@ std::string ProcedureItem::GetDescription() const
 
 void ProcedureItem::SetDescription(const std::string &value)
 {
-  (void) SetProperty(itemconstants::kDescription, value);
+  (void)SetProperty(itemconstants::kDescription, value);
 }
 
 std::string ProcedureItem::GetFileName() const
@@ -136,7 +135,7 @@ std::string ProcedureItem::GetFileName() const
 
 void ProcedureItem::SetFileName(const std::string &value)
 {
-  (void) SetProperty(kFileName, value);
+  (void)SetProperty(kFileName, value);
 }
 
 InstructionContainerItem *ProcedureItem::GetInstructionContainer() const
@@ -154,19 +153,20 @@ ProcedurePreambleItem *ProcedureItem::GetPreambleItem() const
   return GetItem<ProcedurePreambleItem>(kPreamble);
 }
 
-std::vector<std::string> CollectPluginNames(const ProcedureItem &item)
+std::vector<std::string> CollectPluginNames(const ProcedureItem &item,
+                                            const DomainObjectTypeRegistry &registry)
 {
   std::set<std::string> result;
 
-  CollectVariablePluginNames(*item.GetWorkspace(), result);
-  CollectInstructionPluginNames(*item.GetInstructionContainer(), result);
+  CollectVariablePluginNames(*item.GetWorkspace(), registry, result);
+  CollectInstructionPluginNames(*item.GetInstructionContainer(), registry, result);
 
   return {result.begin(), result.end()};
 }
 
-void UpdatePluginNames(const ProcedureItem &item)
+void UpdatePluginNames(const ProcedureItem &item, const DomainObjectTypeRegistry &registry)
 {
-  auto names = CollectPluginNames(item);
+  auto names = CollectPluginNames(item, registry);
   item.GetPreambleItem()->SetPluginPaths(names);
 }
 

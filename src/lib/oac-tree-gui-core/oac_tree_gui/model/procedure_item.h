@@ -25,9 +25,11 @@
 
 namespace oac_tree_gui
 {
+
 class WorkspaceItem;
 class InstructionContainerItem;
 class ProcedurePreambleItem;
+class DomainObjectTypeRegistry;
 
 //! Represents Procedure.
 class ProcedureItem : public mvvm::CompoundItem
@@ -59,13 +61,17 @@ public:
 
 /**
  * @brief Collect domain plugin names that are required to run this procedure.
+ *
+ * @param item The procedure to investigate.
+ * @param registry Object type registry that contains plugin information.
  */
-std::vector<std::string> CollectPluginNames(const ProcedureItem& item);
+std::vector<std::string> CollectPluginNames(const ProcedureItem& item,
+                                            const DomainObjectTypeRegistry& registry);
 
 /**
  * @brief Updates preamble with plugin names using current instruction and variable composition.
  */
-void UpdatePluginNames(const ProcedureItem& item);
+void UpdatePluginNames(const ProcedureItem& item, const DomainObjectTypeRegistry& registry);
 
 }  // namespace oac_tree_gui
 
