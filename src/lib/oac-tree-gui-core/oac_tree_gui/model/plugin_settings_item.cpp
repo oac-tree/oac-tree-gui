@@ -48,7 +48,7 @@ PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
       .SetToolTip("List of folders where to search for plugins");
 
   // properties for plugin names
-  (void)AddProperty(constants::kUsePluginList, false)
+  (void)AddProperty(constants::kUsePluginList, true)
       .SetDisplayName("Use plugin list")
       .SetToolTip("Defines whether to use a list of plugin names");
 

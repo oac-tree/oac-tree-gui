@@ -48,7 +48,7 @@ TEST_F(PluginsSettingsItemTest, PluginSettingsItemInitialState)
   const PluginSettingsItem item;
 
   EXPECT_TRUE(item.UsePluginDirList());
-  EXPECT_FALSE(item.UsePluginList());
+  EXPECT_TRUE(item.UsePluginList());
 
   if (sup::gui::IsOnCodac())
   {
@@ -123,9 +123,9 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForEmptyItem)
 {
   PluginSettingsItem item;
   item.SetUsePluginDirList(false);
-  EXPECT_TRUE(GetPluginFileNames(item).empty());
+  EXPECT_FALSE(GetPluginFileNames(item).empty());
   item.SetUsePluginDirList(true);
-  EXPECT_TRUE(GetPluginFileNames(item).empty());
+  EXPECT_FALSE(GetPluginFileNames(item).empty());
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
@@ -142,6 +142,8 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
 
   PluginSettingsItem item;
   item.SetPluginDirList({test_dir1, test_dir2});
+  item.SetUsePluginDirList(true);
+  item.SetUsePluginList(false);
 
   EXPECT_EQ(GetPluginFileNames(item),
             std::vector<std::string>({file_name_a, file_name_b, file_name_c}));
@@ -153,6 +155,7 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyList)
 {
   PluginSettingsItem item;
+  item.SetUsePluginDirList(false);
   item.SetPluginList({domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
 
   item.SetUsePluginList(true);
