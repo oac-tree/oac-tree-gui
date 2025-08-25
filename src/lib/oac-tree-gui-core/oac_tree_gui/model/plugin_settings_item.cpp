@@ -52,7 +52,7 @@ PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
       .SetDisplayName("Use plugin list")
       .SetToolTip("Defines whether to use a list of plugin names");
 
-  (void)AddProperty(constants::kPluginList, std::string())
+  (void)AddProperty(constants::kPluginList, GetSettingStringFromVector(GetDefaultPluginList()))
       .SetDisplayName("Plugin names")
       .SetToolTip("List of plugin names to load");
 }

@@ -25,6 +25,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 
 #include <mvvm/core/platform.h>
+#include <mvvm/utils/file_utils.h>
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/i_job_info_io.h>
@@ -189,6 +190,20 @@ std::string GetPluginFileName(const std::string& plugin_name)
   }
 
   return plugin_name;
+}
+
+std::string GetPluginNameFromFileName(const std::string& file_name)
+{
+  const std::string base_name = mvvm::utils::GetFileName(file_name);
+  if (base_name.empty() || mvvm::IsWindowsHost())
+  {
+    return base_name;
+  }
+  std::string_view view = base_name;
+  view = RemovePrefix(view, "lib");
+  view = RemoveSuffix(view, ".so");
+  view = RemoveSuffix(view, ".dylib");
+  return std::string(view);
 }
 
 bool IsValidInstructionIndex(sup::dto::uint32 index)

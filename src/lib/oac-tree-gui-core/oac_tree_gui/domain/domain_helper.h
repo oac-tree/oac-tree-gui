@@ -127,6 +127,13 @@ std::vector<std::string> GetDefaultPluginFileNames();
 std::string GetPluginFileName(const std::string& plugin_name);
 
 /**
+ * @brief Returns plugin name extracted from the given file name.
+ *
+ * It will remove path and "lib" prefix and ".so" or ".dylib" suffix on Linux/MacOs.
+ */
+std::string GetPluginNameFromFileName(const std::string& file_name);
+
+/**
  * @brief Checks if given index represents a valid instruction index.
  */
 bool IsValidInstructionIndex(sup::dto::uint32 index);

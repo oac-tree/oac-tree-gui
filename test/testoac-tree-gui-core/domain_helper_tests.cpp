@@ -20,6 +20,8 @@
 
 #include "oac_tree_gui/domain/domain_helper.h"
 
+#include <mvvm/core/platform.h>
+
 #include <sup/oac-tree/constants.h>
 #include <sup/oac-tree/i_job_info_io.h>
 #include <sup/oac-tree/instruction.h>
@@ -145,6 +147,57 @@ TEST_F(DomainHelperTest, IsValidInstructionIndex)
   EXPECT_TRUE(IsValidInstructionIndex(0));
   EXPECT_TRUE(IsValidInstructionIndex(42));
   EXPECT_FALSE(IsValidInstructionIndex(sup::oac_tree::kInvalidInstructionIndex));
+}
+
+TEST_F(DomainHelperTest, GetPluginFileName)
+{
+  EXPECT_EQ(GetPluginFileName(""), "");
+
+  if (mvvm::IsLinuxHost())
+  {
+    // main usage
+    EXPECT_EQ(GetPluginFileName("MyPlugin"), "libMyPlugin.so");
+
+    EXPECT_EQ(GetPluginFileName("libMyPlugin"), "libMyPlugin.so");
+    EXPECT_EQ(GetPluginFileName("MyPlugin.so"), "libMyPlugin.so");
+    EXPECT_EQ(GetPluginFileName("libMyPlugin.so"), "libMyPlugin.so");
+
+    // MacOs should be converted to Linux
+    EXPECT_EQ(GetPluginFileName("libMyPlugin.dylib"), "libMyPlugin.so");
+  }
+
+  if (mvvm::IsMacHost())
+  {
+    // main usage
+    EXPECT_EQ(GetPluginFileName("MyPlugin"), "libMyPlugin.dylib");
+
+    EXPECT_EQ(GetPluginFileName("libMyPlugin"), "libMyPlugin.dylib");
+    EXPECT_EQ(GetPluginFileName("MyPlugin.dylib"), "libMyPlugin.dylib");
+    EXPECT_EQ(GetPluginFileName("libMyPlugin.dylib"), "libMyPlugin.dylib");
+
+    // Linux should be converted to MacOs
+    EXPECT_EQ(GetPluginFileName("libMyPlugin.so"), "libMyPlugin.dylib");
+  }
+}
+
+TEST_F(DomainHelperTest, GetPluginNameFromFileName)
+{
+  if (mvvm::IsLinuxHost())
+  {
+    // main usage
+    EXPECT_EQ(GetPluginNameFromFileName("libMyPlugin.so"), "MyPlugin");
+    EXPECT_EQ(GetPluginNameFromFileName("/some/path/libMyPlugin.so"), "MyPlugin");
+    EXPECT_EQ(GetPluginNameFromFileName("MyPlugin"), "MyPlugin");
+    EXPECT_EQ(GetPluginNameFromFileName("/some/path/MyPlugin"), "MyPlugin");
+  }
+
+  if (mvvm::IsMacHost())
+  {
+    EXPECT_EQ(GetPluginNameFromFileName("libMyPlugin.dylib"), "MyPlugin");
+    EXPECT_EQ(GetPluginNameFromFileName("/some/path/libMyPlugin.dylib"), "MyPlugin");
+    EXPECT_EQ(GetPluginNameFromFileName("MyPlugin"), "MyPlugin");
+    EXPECT_EQ(GetPluginNameFromFileName("/some/path/MyPlugin"), "MyPlugin");
+  }
 }
 
 }  // namespace oac_tree_gui::test
