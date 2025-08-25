@@ -40,25 +40,12 @@ public:
   PluginsSettingsItemTest() : FolderTest("PluginsSettingsItemTest") {}
 };
 
-TEST_F(PluginsSettingsItemTest, GetSettingStringFromVector)
-{
-  EXPECT_EQ(GetSettingStringFromVector({}), std::string());
-  EXPECT_EQ(GetSettingStringFromVector({"abc"}), std::string("abc"));
-  EXPECT_EQ(GetSettingStringFromVector({"abc", "def"}), std::string("abc;def"));
-}
-
-TEST_F(PluginsSettingsItemTest, GetVectorFromSettingString)
-{
-  EXPECT_TRUE(GetVectorFromSettingString("").empty());
-  EXPECT_EQ(GetVectorFromSettingString("abc"), std::vector<std::string>({"abc"}));
-  EXPECT_EQ(GetVectorFromSettingString("abc;def"), std::vector<std::string>({"abc", "def"}));
-}
-
 TEST_F(PluginsSettingsItemTest, PluginSettingsItemInitialState)
 {
   const PluginSettingsItem item;
 
   EXPECT_TRUE(item.UsePluginDirList());
+  EXPECT_FALSE(item.UsePluginList());
 
   if (sup::gui::IsOnCodac())
   {
@@ -91,6 +78,42 @@ TEST_F(PluginsSettingsItemTest, PluginDirListProperty)
 
   item.SetPluginDirList({});
   EXPECT_TRUE(item.GetPluginDirList().empty());
+}
+
+TEST_F(PluginsSettingsItemTest, UsePluginListProperty)
+{
+  PluginSettingsItem item;
+
+  item.SetUsePluginList(false);
+  EXPECT_FALSE(item.UsePluginList());
+
+  item.SetUsePluginList(true);
+  EXPECT_TRUE(item.UsePluginList());
+}
+
+TEST_F(PluginsSettingsItemTest, PluginListProperty)
+{
+  PluginSettingsItem item;
+
+  item.SetPluginList({"abc", "def"});
+  EXPECT_EQ(item.GetPluginList(), std::vector<std::string>({"abc", "def"}));
+
+  item.SetPluginList({});
+  EXPECT_TRUE(item.GetPluginList().empty());
+}
+
+TEST_F(PluginsSettingsItemTest, GetSettingStringFromVector)
+{
+  EXPECT_EQ(GetSettingStringFromVector({}), std::string());
+  EXPECT_EQ(GetSettingStringFromVector({"abc"}), std::string("abc"));
+  EXPECT_EQ(GetSettingStringFromVector({"abc", "def"}), std::string("abc;def"));
+}
+
+TEST_F(PluginsSettingsItemTest, GetVectorFromSettingString)
+{
+  EXPECT_TRUE(GetVectorFromSettingString("").empty());
+  EXPECT_EQ(GetVectorFromSettingString("abc"), std::vector<std::string>({"abc"}));
+  EXPECT_EQ(GetVectorFromSettingString("abc;def"), std::vector<std::string>({"abc", "def"}));
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForEmptyItem)

@@ -38,6 +38,9 @@ const std::int32_t kUndoLimitDefault = 100;
 constexpr auto kUsePluginDirList = "kUsePluginDirList";
 constexpr auto kPluginDirList = "kPluginDirList";
 
+constexpr auto kUsePluginList = "kUsePluginList";
+constexpr auto kPluginList = "kPluginList";
+
 }  // namespace oac_tree_gui::constants
 
 #endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_

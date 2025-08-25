@@ -57,6 +57,26 @@ public:
    * @brief Sets the list of directories where plugins can be found.
    */
   void SetPluginDirList(const std::vector<std::string>& dir_list);
+
+  /**
+   * @brief Checks if settings requires to load plugins using list of plugin names.
+   */
+  bool UsePluginList() const;
+
+  /**
+   * @brief Sets whether to use plugin list store on board while loading plugins.
+   */
+  void SetUsePluginList(bool value);
+
+  /**
+   * @brief Returns the list of plugin names.
+   */
+  std::vector<std::string> GetPluginList() const;
+
+  /**
+   * @brief Sets the list of plugin names.
+   */
+  void SetPluginList(const std::vector<std::string>& dir_list);
 };
 
 /**

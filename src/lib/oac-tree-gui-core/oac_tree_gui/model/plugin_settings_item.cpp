@@ -37,11 +37,24 @@ constexpr auto kSeparator = ";";
 
 PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
 {
-  // load or not plugins from the list with directories
-  AddProperty(constants::kUsePluginDirList, true);
+  // properties for plugin folders
+  (void)AddProperty(constants::kUsePluginDirList, true)
+      .SetDisplayName("Use folder list")
+      .SetToolTip("Defines whether to use a list of folders to search for plugins");
 
   auto default_value = GetSettingStringFromVector(GetDefaultPluginDirList());
-  AddProperty(constants::kPluginDirList, default_value);
+  (void)AddProperty(constants::kPluginDirList, default_value)
+      .SetDisplayName("Plugin folders")
+      .SetToolTip("List of folders where to search for plugins");
+
+  // properties for plugin names
+  (void)AddProperty(constants::kUsePluginList, false)
+      .SetDisplayName("Use plugin list")
+      .SetToolTip("Defines whether to use a list of plugin names");
+
+  (void)AddProperty(constants::kPluginList, std::string())
+      .SetDisplayName("Plugin names")
+      .SetToolTip("List of plugin names to load");
 }
 
 std::string PluginSettingsItem::GetStaticType()
@@ -74,6 +87,28 @@ void PluginSettingsItem::SetPluginDirList(const std::vector<std::string> &dir_li
 {
   const auto setting_str = GetSettingStringFromVector(dir_list);
   SetProperty(constants::kPluginDirList, setting_str);
+}
+
+bool PluginSettingsItem::UsePluginList() const
+{
+  return Property<bool>(constants::kUsePluginList);
+}
+
+void PluginSettingsItem::SetUsePluginList(bool value)
+{
+  SetProperty(constants::kUsePluginList, value);
+}
+
+std::vector<std::string> PluginSettingsItem::GetPluginList() const
+{
+  const auto setting_str = Property<std::string>(constants::kPluginList);
+  return GetVectorFromSettingString(setting_str);
+}
+
+void PluginSettingsItem::SetPluginList(const std::vector<std::string> &dir_list)
+{
+  const auto setting_str = GetSettingStringFromVector(dir_list);
+  SetProperty(constants::kPluginList, setting_str);
 }
 
 std::string GetSettingStringFromVector(const std::vector<std::string> &vec)
