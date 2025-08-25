@@ -133,6 +133,15 @@ std::vector<std::string> GetPluginFileNames(const PluginSettingsItem &item)
     }
   }
 
+  if (item.UsePluginList())
+  {
+    const auto plugin_names = item.GetPluginList();
+    for (const auto &name : plugin_names)
+    {
+      result.push_back(GetPluginFileName(name));
+    }
+  }
+
   return result;
 }
 

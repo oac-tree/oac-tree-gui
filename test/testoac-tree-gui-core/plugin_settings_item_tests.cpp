@@ -18,7 +18,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/model/plugin_settings_item.h>
+#include "oac_tree_gui/model/plugin_settings_item.h"
+
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 
 #include <sup/gui/core/environment.h>
 
@@ -145,6 +148,39 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
 
   item.SetUsePluginDirList(false);
   EXPECT_TRUE(GetPluginFileNames(item).empty());
+}
+
+TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyList)
+{
+  PluginSettingsItem item;
+  item.SetPluginList({domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
+
+  item.SetUsePluginList(true);
+  const std::vector<std::string> expected_file_names = {
+      GetPluginFileName(domainconstants::kEpicsCAPluginName),
+      GetPluginFileName(domainconstants::kEpicsPVXSPluginName)};
+  EXPECT_EQ(GetPluginFileNames(item), expected_file_names);
+
+  item.SetUsePluginList(false);
+  EXPECT_TRUE(GetPluginFileNames(item).empty());
+}
+
+TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForDirListAndFileList)
+{
+  PluginSettingsItem item;
+  item.SetUsePluginList(true);
+  item.SetPluginList({domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
+
+  const auto test_dir = CreateEmptyDir("plugin_dir2");
+  const std::string file_name_a = mvvm::utils::Join(test_dir, "libA.so");
+  mvvm::test::CreateTextFile(file_name_a, "file with content");
+  item.SetUsePluginDirList(true);
+  item.SetPluginDirList({test_dir});
+
+  const std::vector<std::string> expected_file_names = {
+      file_name_a, GetPluginFileName(domainconstants::kEpicsCAPluginName),
+      GetPluginFileName(domainconstants::kEpicsPVXSPluginName)};
+  EXPECT_EQ(GetPluginFileNames(item), expected_file_names);
 }
 
 }  // namespace oac_tree_gui::test

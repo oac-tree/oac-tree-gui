@@ -21,7 +21,6 @@
 #include "domain_helper.h"
 
 #include "domain_constants.h"
-#include "domain_object_type_registry.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 
@@ -36,8 +35,6 @@
 #include <sup/oac-tree/variable_registry.h>
 
 #include <algorithm>
-#include <iostream>
-#include <sstream>
 
 namespace
 {
