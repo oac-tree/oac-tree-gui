@@ -33,6 +33,10 @@ namespace oac_tree_gui
  */
 std::vector<std::string> GetDefaultPluginDirList();
 
+/**
+ * @brief Finds shared libraries in the given folder.
+ */
+std::vector<std::string> FindSharedLibraries(const std::string& dir);
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H

@@ -22,8 +22,17 @@
 
 #include <sup/gui/core/environment.h>
 
+#include <mvvm/core/platform.h>
+#include <mvvm/utils/file_utils.h>
+
 namespace oac_tree_gui
 {
+
+namespace
+{
+constexpr auto kSharedLibLinuxExtension = ".so";
+constexpr auto kSharedLibMacExtension = ".dylib";
+}  // namespace
 
 std::vector<std::string> GetDefaultPluginDirList()
 {
@@ -34,6 +43,20 @@ std::vector<std::string> GetDefaultPluginDirList()
 
   // FIXME for non-CODAC consider using CMAKE_INSTALL_PREFIX
   return {};
+}
+
+std::vector<std::string> FindSharedLibraries(const std::string &dir)
+{
+  std::vector<std::string> result;
+
+  const auto so_names = mvvm::utils::FindFiles(dir, kSharedLibLinuxExtension);
+  const auto dylib_names = mvvm::utils::FindFiles(dir, kSharedLibMacExtension);
+
+  result.reserve(so_names.size() + dylib_names.size());
+  result.insert(result.end(), so_names.begin(), so_names.end());
+  result.insert(result.end(), dylib_names.begin(), dylib_names.end());
+
+  return result;
 }
 
 }  // namespace oac_tree_gui
