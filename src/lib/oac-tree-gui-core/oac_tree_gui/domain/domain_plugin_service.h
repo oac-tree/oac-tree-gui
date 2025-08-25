@@ -25,6 +25,8 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/i_domain_plugin_service.h>
 
+#include <iostream>
+
 namespace oac_tree_gui
 {
 
@@ -56,6 +58,8 @@ public:
   ~DomainPluginService() override = default;
 
   void LoadPlugins(const std::vector<std::string>& plugin_names) override;
+
+  void LoadPluginFiles(const std::vector<std::string>& plugin_file_names) override;
 
   std::vector<std::string> GetLoadedPlugins() const override;
 
@@ -95,6 +99,21 @@ inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::LoadPlugins(
   {
     m_library_loader.LoadLibrary(GetPluginFileName(name));
     UpdateObjectTypeRegistry(name);
+  }
+}
+
+template <typename LibraryLoaderT, typename ObjectRegistryT>
+inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::LoadPluginFiles(
+    const std::vector<std::string>& plugin_file_names)
+{
+  // populates the registry with initial list of instructions and variables available via oac-tree
+  // core library.
+  UpdateObjectTypeRegistry(domainconstants::kCorePluginName);
+  for (const auto& name : plugin_file_names)
+  {
+    std::cout << "XXX " << name << std::endl;
+    m_library_loader.LoadLibrary(name);
+    UpdateObjectTypeRegistry(GetPluginNameFromFileName(name));
   }
 }
 

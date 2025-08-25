@@ -44,6 +44,8 @@ public:
    */
   virtual void LoadPlugins(const std::vector<std::string>& plugin_names) = 0;
 
+  virtual void LoadPluginFiles(const std::vector<std::string>& plugin_file_names) = 0;
+
   /**
    * @brief Returns names of successfully loaded plugins.
    */
