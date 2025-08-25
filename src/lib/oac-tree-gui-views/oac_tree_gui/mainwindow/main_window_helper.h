@@ -25,11 +25,11 @@
 //! Collection of helper methods common for all sequencer main windows.
 
 #include <oac_tree_gui/components/load_resources.h>
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/i_domain_plugin_service.h>
 #include <oac_tree_gui/mainwindow/command_line_options.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/mainwindow/splash_screen.h>
-#include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/domain/i_domain_plugin_service.h>
 
 #include <sup/gui/app/main_window_types.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
@@ -84,9 +84,9 @@ int RunApplication(int argc, char** argv)
     }
 
     SequencerMainWindowContext context;
-    context.GetDomainPluginService().LoadPlugins(GetDefaultPluginList());
-
+    context.LoadPlugins();
     MainWindowT win(context);
+
     if (options.window_size.has_value())
     {
       win.resize(options.window_size.value());

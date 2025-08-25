@@ -26,6 +26,7 @@
 #include <oac_tree_gui/domain/domain_plugin_service.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
+#include <oac_tree_gui/model/plugin_settings_item.h>
 
 #include <sup/gui/app/default_command_service.h>
 #include <sup/gui/mainwindow/settings_helper.h>
@@ -46,6 +47,14 @@ SequencerMainWindowContext::SequencerMainWindowContext()
     , m_domain_plugin_service(CreateDomainPluginService())
 {
   ::sup::gui::ReadApplicationSettings(*m_settings);
+}
+
+void SequencerMainWindowContext::LoadPlugins()
+{
+  auto plugin_settings = m_settings->Get<PluginSettingsItem>();
+
+  const auto plugin_file_names = GetPluginFileNames(*plugin_settings);
+  m_domain_plugin_service->LoadPluginFiles(plugin_file_names);
 }
 
 SequencerSettingsModel &SequencerMainWindowContext::GetSettingsModel()

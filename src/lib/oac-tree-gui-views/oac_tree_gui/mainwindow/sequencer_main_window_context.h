@@ -47,8 +47,13 @@ public:
 
   SequencerMainWindowContext(const SequencerMainWindowContext&) = delete;
   SequencerMainWindowContext& operator=(const SequencerMainWindowContext&) = delete;
-  SequencerMainWindowContext(SequencerMainWindowContext&&) = delete;
+  SequencerMainWindowContext(SequencerMainWindowContext&&) = delete;  
   SequencerMainWindowContext& operator=(SequencerMainWindowContext&&) = delete;
+
+  /**
+   * @brief Loads plugins using the plugin service and settings model.
+   */
+  void LoadPlugins();
 
   SequencerSettingsModel& GetSettingsModel();
 
