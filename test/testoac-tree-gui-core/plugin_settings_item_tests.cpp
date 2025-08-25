@@ -65,4 +65,26 @@ TEST_F(PluginsSettingsItemTest, PluginSettingsItemInitialState)
   }
 }
 
+TEST_F(PluginsSettingsItemTest, UsePluginDirListProperty)
+{
+  PluginSettingsItem item;
+
+  item.SetUsePluginDirList(false);
+  EXPECT_FALSE(item.UsePluginDirList());
+
+  item.SetUsePluginDirList(true);
+  EXPECT_TRUE(item.UsePluginDirList());
+}
+
+TEST_F(PluginsSettingsItemTest, PluginDirListProperty)
+{
+  PluginSettingsItem item;
+
+  item.SetPluginDirList({"abc", "def"});
+  EXPECT_EQ(item.GetPluginDirList(), std::vector<std::string>({"abc", "def"}));
+
+  item.SetPluginDirList({});
+  EXPECT_TRUE(item.GetPluginDirList().empty());
+}
+
 }  // namespace oac_tree_gui::test

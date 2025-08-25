@@ -59,10 +59,21 @@ bool PluginSettingsItem::UsePluginDirList() const
   return Property<bool>(constants::kUsePluginDirList);
 }
 
+void PluginSettingsItem::SetUsePluginDirList(bool value)
+{
+  SetProperty(constants::kUsePluginDirList, value);
+}
+
 std::vector<std::string> PluginSettingsItem::GetPluginDirList() const
 {
   const auto setting_str = Property<std::string>(constants::kPluginDirList);
   return GetVectorFromSettingString(setting_str);
+}
+
+void PluginSettingsItem::SetPluginDirList(const std::vector<std::string> &dir_list)
+{
+  const auto setting_str = GetSettingStringFromVector(dir_list);
+  SetProperty(constants::kPluginDirList, setting_str);
 }
 
 std::string GetSettingStringFromVector(const std::vector<std::string> &vec)

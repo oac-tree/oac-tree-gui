@@ -44,9 +44,19 @@ public:
   bool UsePluginDirList() const;
 
   /**
+   * @brief Sets whether to take into account the list of directories while loading plugins.
+   */
+  void SetUsePluginDirList(bool value);
+
+  /**
    * @brief Returns the list of directories where plugins can be found.
    */
   std::vector<std::string> GetPluginDirList() const;
+
+  /**
+   * @brief Sets the list of directories where plugins can be found.
+   */
+  void SetPluginDirList(const std::vector<std::string>& dir_list);
 };
 
 /**
