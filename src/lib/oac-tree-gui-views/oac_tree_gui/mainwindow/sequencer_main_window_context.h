@@ -34,6 +34,7 @@ namespace oac_tree_gui
 class IDomainPluginService;
 class DomainLibraryLoader;
 class DomainObjectTypeRegistry;
+class SequencerSettingsModel;
 
 /**
  * @brief The SequencerMainWindowContext contains all common resources for SequencerMainWindow.
@@ -49,6 +50,8 @@ public:
   SequencerMainWindowContext(SequencerMainWindowContext&&) = delete;
   SequencerMainWindowContext& operator=(SequencerMainWindowContext&&) = delete;
 
+  SequencerSettingsModel& GetSettingsModel();
+
   sup::gui::IAppCommandService& GetCommandService();
 
   DomainObjectTypeRegistry& GetObjectTypeRegistry();
@@ -58,6 +61,8 @@ public:
 private:
   std::unique_ptr<DomainObjectTypeRegistry> CreateObjectTypeRegistry() const;
   std::unique_ptr<IDomainPluginService> CreateDomainPluginService() const;
+
+  std::unique_ptr<SequencerSettingsModel> m_settings;
 
   //!< knows about global commands and their shortcuts
   std::unique_ptr<sup::gui::IAppCommandService> m_command_service;

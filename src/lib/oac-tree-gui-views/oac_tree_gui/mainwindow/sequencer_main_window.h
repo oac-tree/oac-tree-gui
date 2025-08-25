@@ -100,7 +100,6 @@ private:
   std::unique_ptr<ApplicationModels> CreateProject();
 
   SequencerMainWindowContext& m_context;
-  std::unique_ptr<SequencerSettingsModel> m_settings;
   std::unique_ptr<ApplicationModels> m_models;
 
   SequencerMainWindowActions* m_action_manager{nullptr};

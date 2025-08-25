@@ -25,8 +25,10 @@
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/domain/domain_plugin_service.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window.h>
+#include <oac_tree_gui/model/sequencer_settings_model.h>
 
 #include <sup/gui/app/default_command_service.h>
+#include <sup/gui/mainwindow/settings_helper.h>
 
 #include <sup/oac-tree/instruction_registry.h>
 #include <sup/oac-tree/variable_registry.h>
@@ -37,11 +39,18 @@ namespace oac_tree_gui
 {
 
 SequencerMainWindowContext::SequencerMainWindowContext()
-    : m_command_service(sup::gui::CreateDefaultCommandService())
+    : m_settings(std::make_unique<SequencerSettingsModel>())
+    , m_command_service(sup::gui::CreateDefaultCommandService())
     , m_domain_library_loader(std::make_unique<DomainLibraryLoader>())
     , m_object_type_registry(CreateObjectTypeRegistry())
     , m_domain_plugin_service(CreateDomainPluginService())
 {
+  ::sup::gui::ReadApplicationSettings(*m_settings);
+}
+
+SequencerSettingsModel &SequencerMainWindowContext::GetSettingsModel()
+{
+  return *m_settings;
 }
 
 SequencerMainWindowContext::~SequencerMainWindowContext() = default;

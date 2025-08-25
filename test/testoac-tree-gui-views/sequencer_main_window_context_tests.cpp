@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_library_loader.h>
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/domain/domain_plugin_service.h>
+#include <oac_tree_gui/model/sequencer_settings_model.h>
 
 #include <sup/gui/app/app_command_service.h>
 
@@ -54,6 +55,9 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
   EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
   EXPECT_EQ(plugin_service->GetPluginLoadInfo().size(), 0);
   EXPECT_TRUE(plugin_service->GetObjectNames(domainconstants::kCorePluginName).empty());
+
+  // check settings
+  EXPECT_NE(dynamic_cast<SequencerSettingsModel*>(&context.GetSettingsModel()), nullptr);
 }
 
 TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
@@ -70,7 +74,8 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
   plugin_service->LoadPlugins({"non-existing-plugin"});
 
   EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
-  const std::vector<std::pair<std::string, bool>> expected_info = {{"libnon-existing-plugin.so", false}};
+  const std::vector<std::pair<std::string, bool>> expected_info = {
+      {"libnon-existing-plugin.so", false}};
   EXPECT_EQ(plugin_service->GetPluginLoadInfo(), expected_info);
 
   // check that core instruction and variables are there
