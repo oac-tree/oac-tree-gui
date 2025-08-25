@@ -22,7 +22,11 @@
 
 #include <sup/gui/core/environment.h>
 
+#include <mvvm/test/test_helper.h>
+#include <mvvm/utils/file_utils.h>
+
 #include <gtest/gtest.h>
+#include <testutils/folder_test.h>
 
 namespace oac_tree_gui::test
 {
@@ -30,8 +34,10 @@ namespace oac_tree_gui::test
 /**
  * @brief Tests for PluginsSettingsItem class.
  */
-class PluginsSettingsItemTest : public ::testing::Test
+class PluginsSettingsItemTest : public test::FolderTest
 {
+public:
+  PluginsSettingsItemTest() : FolderTest("PluginsSettingsItemTest") {}
 };
 
 TEST_F(PluginsSettingsItemTest, GetSettingStringFromVector)
@@ -85,6 +91,37 @@ TEST_F(PluginsSettingsItemTest, PluginDirListProperty)
 
   item.SetPluginDirList({});
   EXPECT_TRUE(item.GetPluginDirList().empty());
+}
+
+TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForEmptyItem)
+{
+  PluginSettingsItem item;
+  item.SetUsePluginDirList(false);
+  EXPECT_TRUE(GetPluginFileNames(item).empty());
+  item.SetUsePluginDirList(true);
+  EXPECT_TRUE(GetPluginFileNames(item).empty());
+}
+
+TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
+{
+  const auto test_dir1 = CreateEmptyDir("plugin_dir1");
+  const std::string file_name_a = mvvm::utils::Join(test_dir1, "libA.so");
+  mvvm::test::CreateTextFile(file_name_a, "file with content");
+  const std::string file_name_b = mvvm::utils::Join(test_dir1, "libB.so");
+  mvvm::test::CreateTextFile(file_name_b, "file with content");
+
+  const auto test_dir2 = CreateEmptyDir("plugin_dir2");
+  const std::string file_name_c = mvvm::utils::Join(test_dir2, "libC.so");
+  mvvm::test::CreateTextFile(file_name_c, "file with content");
+
+  PluginSettingsItem item;
+  item.SetPluginDirList({test_dir1, test_dir2});
+
+  EXPECT_EQ(GetPluginFileNames(item),
+            std::vector<std::string>({file_name_a, file_name_b, file_name_c}));
+
+  item.SetUsePluginDirList(false);
+  EXPECT_TRUE(GetPluginFileNames(item).empty());
 }
 
 }  // namespace oac_tree_gui::test

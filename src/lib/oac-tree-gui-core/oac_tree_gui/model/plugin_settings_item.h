@@ -74,6 +74,11 @@ std::string GetSettingStringFromVector(const std::vector<std::string>& vec);
  */
 std::vector<std::string> GetVectorFromSettingString(const std::string& str);
 
+/**
+ * @brief Returns the list of plugin file names found in the directories specified in the item.
+ */
+std::vector<std::string> GetPluginFileNames(const PluginSettingsItem& item);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_PLUGIN_SETTINGS_ITEM_H_

@@ -86,4 +86,19 @@ std::vector<std::string> GetVectorFromSettingString(const std::string &str)
   return mvvm::utils::StringToVector<std::string>(str, kSeparator);
 }
 
+std::vector<std::string> GetPluginFileNames(const PluginSettingsItem &item)
+{
+  std::vector<std::string> result;
+  if (item.UsePluginDirList())
+  {
+    for (const auto &dir : item.GetPluginDirList())
+    {
+      const auto file_names = FindSharedLibraries(dir);
+      result.insert(result.end(), file_names.begin(), file_names.end());
+    }
+  }
+
+  return result;
+}
+
 }  // namespace oac_tree_gui
