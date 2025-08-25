@@ -20,7 +20,10 @@
 
 #include "oac_tree_gui/model/sequencer_settings_model.h"
 
+#include <oac_tree_gui/model/plugin_settings_item.h>
+
 #include <sup/gui/model/settings_constants.h>
+#include <sup/gui/model/settings_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
@@ -92,6 +95,14 @@ TEST_F(SequencerSettingsModelTest, Clone)
             sup::gui::constants::kUseUndoDefault);
   EXPECT_EQ(cloned_model->Data<int>(sup::gui::constants::kUndoLimitSetting),
             sup::gui::constants::kUndoLimitDefault);
+}
+
+TEST_F(SequencerSettingsModelTest, GetItem)
+{
+  const SequencerSettingsModel model;
+
+  EXPECT_NE(model.Get<PluginSettingsItem>(), nullptr);
+  EXPECT_NE(model.Get<sup::gui::CommonSettingsItem>(), nullptr);
 }
 
 }  // namespace oac_tree_gui::test

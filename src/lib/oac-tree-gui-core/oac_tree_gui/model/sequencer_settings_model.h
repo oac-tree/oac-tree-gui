@@ -24,6 +24,7 @@
 #include <sup/gui/model/settings_item.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/item_utils.h>
 
 namespace oac_tree_gui
 {
@@ -54,6 +55,9 @@ public:
   template <typename T = mvvm::variant_t>
   T Data(const std::string& setting_name) const;
 
+  template <typename T>
+  T* Get() const;
+
 private:
   void PopulateModel();
 };
@@ -63,6 +67,13 @@ inline T SequencerSettingsModel::Data(const std::string& setting_name) const
 {
   // for the moment we assume that there is only one settings item, might change in the future
   return GetSettingsItems().at(0)->Property<T>(setting_name);
+}
+
+template <typename T>
+inline T* SequencerSettingsModel::Get() const
+{
+  auto items = mvvm::utils::FindItemDown<T>(GetRootItem());
+  return items.empty() ? nullptr : const_cast<T*>(items.front());
 }
 
 }  // namespace oac_tree_gui
