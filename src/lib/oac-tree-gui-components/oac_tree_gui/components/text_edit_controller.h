@@ -23,8 +23,6 @@
 
 #include <mvvm/signals/item_controller.h>
 
-#include <string>
-
 class QTextEdit;
 class QCheckBox;
 
@@ -37,32 +35,23 @@ namespace oac_tree_gui
  */
 struct TextControllerContext
 {
-  //! property of PluginSettingsItem which holds the value for QCheckBox
-  std::string check_box_property;
-
-  //! Qt check box to control
   QCheckBox* check_box{nullptr};
-
-  //! property of PluginSettingsItem which holds the data for QTextEditor
-  std::string text_edit_property;
-
-  //! Qt QTextEditor to control
   QTextEdit* text_edit{nullptr};
 };
 
-class PluginSettingsItem;
+class TextEditItem;
 
 /**
- * @brief The PluginSettingsTextController class is a controller to synchronize
- * properties of PluginSettingsItem with QCheckBox and QTextEdit.
+ * @brief The TextEditController class is a controller to synchronize
+ * properties of TextEditItem with QCheckBox and QTextEdit.
  *
- * The tast of the controller is to enable/disable QTextEdit depending on the state of QCheckBox
- * and to synchronize values of both widgets with corresponding properties of PluginSettingsItem.
+ * The task of the controller is to enable/disable QTextEdit depending on the state of QCheckBox
+ * and to synchronize values of both widgets with corresponding properties of TextEditItem.
  */
-class PluginSettingsTextController : public mvvm::ItemController<PluginSettingsItem>
+class TextEditController : public mvvm::ItemController<TextEditItem>
 {
 public:
-  explicit PluginSettingsTextController(const TextControllerContext& context);
+  explicit TextEditController(const TextControllerContext& context);
 
 protected:
   void Subscribe() override;

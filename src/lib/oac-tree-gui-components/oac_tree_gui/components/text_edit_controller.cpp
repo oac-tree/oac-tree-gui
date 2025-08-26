@@ -18,11 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "plugin_settings_text_controller.h"
-
-#include <oac_tree_gui/model/plugin_settings_item.h>
+#include "text_edit_controller.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/text_edit_item.h>
+
+#include <mvvm/utils/string_utils.h>
 
 #include <QCheckBox>
 #include <QTextEdit>
@@ -30,8 +31,20 @@
 namespace oac_tree_gui
 {
 
-PluginSettingsTextController::PluginSettingsTextController(const TextControllerContext &context)
-    : m_context(context)
+/**
+ * @brief Returns multiline Qt string made of separate std::strings.
+ */
+QString GetText(const std::vector<std::string>& lines)
+{
+  auto result = QString::fromStdString(mvvm::utils::VectorToString(lines, "\n"));
+  if (!result.isEmpty())
+  {
+    result.append("\n");
+  }
+  return result;
+}
+
+TextEditController::TextEditController(const TextControllerContext& context) : m_context(context)
 {
   if (!context.check_box)
   {
@@ -44,17 +57,16 @@ PluginSettingsTextController::PluginSettingsTextController(const TextControllerC
   }
 }
 
-void PluginSettingsTextController::Subscribe()
+void TextEditController::Subscribe()
 {
   UpdateWidgetStateToItem();
 }
 
-void PluginSettingsTextController::UpdateWidgetStateToItem()
+void TextEditController::UpdateWidgetStateToItem()
 {
-  m_context.check_box->setChecked(GetItem()->Property<bool>(m_context.check_box_property));
+  m_context.check_box->setChecked(GetItem()->IsEditorEnabled());
   m_context.text_edit->setEnabled(m_context.check_box->isChecked());
-  // m_context.text_edit->setPlainText(
-  //     QString::fromStdString(GetItem()->Property<std::string>(m_context.text_edit_property)
+  m_context.text_edit->setPlainText(GetText(GetItem()->GetText()));
 }
 
 }  // namespace oac_tree_gui
