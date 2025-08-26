@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_COMPONENTS_PLUGIN_SETTINGS_TEXT_CONTROLLER_H_
 
 #include <mvvm/signals/item_controller.h>
+#include <QObject>
 
 class QTextEdit;
 class QCheckBox;
@@ -55,10 +56,28 @@ public:
 
 protected:
   void Subscribe() override;
+  void Unsubscribe() override;
+
+  /**
+   * @brief Connects Qt signals.
+   */
+  void SetQtConnected();
+
+  /**
+   * @brief Disconnects Qt signals.
+   */
+  void SetQtDisonnected();
 
 private:
+  /**
+   * @brief Update Qt widgets.
+   */
+  void OnPropertyChangedEvent(const mvvm::PropertyChangedEvent& event);
+
   void UpdateWidgetStateFromItem();
   TextControllerContext m_context;
+  std::unique_ptr<QMetaObject::Connection> m_text_edit_connection;
+  bool m_do_not_update_widgets{false};
 };
 
 }  // namespace oac_tree_gui

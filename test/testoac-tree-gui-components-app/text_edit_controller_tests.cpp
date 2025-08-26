@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/text_edit_item.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/test/mock_item_listener.h>
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
@@ -54,6 +55,7 @@ public:
   QTextEdit m_text_edit;
   mvvm::ApplicationModel m_model;
   TextEditItem* m_text_edit_item{nullptr};
+  using mock_listener_t = ::testing::StrictMock<mvvm::test::MockItemListener>;
 };
 
 TEST_F(TextEditControllerTest, ConstructFailure)
@@ -115,6 +117,27 @@ TEST_F(TextEditControllerTest, UpdateWidgetOnItemChange)
 line2
 )RAW"};
   EXPECT_EQ(m_text_edit.toPlainText(), expected_text);
+}
+
+TEST_F(TextEditControllerTest, UpdateItemOnTextEditChange)
+{
+  auto controller = CreateController();
+  controller->SetItem(m_text_edit_item);
+
+  const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
+  const QSignalSpy spy_text_edit(&m_text_edit, &QTextEdit::textChanged);
+
+  mock_listener_t widget(m_text_edit_item);
+  EXPECT_CALL(widget, OnPropertyChanged(::testing::_)).Times(1);
+
+  const QString expected_text = {R"RAW(line1
+line2
+)RAW"};
+
+  m_text_edit.setText(expected_text);
+  EXPECT_EQ(spy_text_edit.count(), 1);
+  EXPECT_EQ(spy_check_box.count(), 0);
+  EXPECT_EQ(m_text_edit_item->GetText(), std::vector<std::string>({"line1", "line2"}));
 }
 
 }  // namespace oac_tree_gui::test

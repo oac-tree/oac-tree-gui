@@ -44,7 +44,8 @@ QString GetText(const std::vector<std::string>& lines)
   return result;
 }
 
-TextEditController::TextEditController(const TextControllerContext& context) : m_context(context)
+TextEditController::TextEditController(const TextControllerContext& context)
+    : m_context(context), m_text_edit_connection(std::make_unique<QMetaObject::Connection>())
 {
   if (!context.check_box)
   {
@@ -59,14 +60,59 @@ TextEditController::TextEditController(const TextControllerContext& context) : m
 
 void TextEditController::Subscribe()
 {
-  auto on_property_change = [this](auto) { UpdateWidgetStateFromItem(); };
-  Listener()->Connect<mvvm::PropertyChangedEvent>(on_property_change);
+  Listener()->Connect<mvvm::PropertyChangedEvent>(this,
+                                                  &TextEditController::OnPropertyChangedEvent);
 
   UpdateWidgetStateFromItem();
+  SetQtConnected();
+}
+
+void TextEditController::Unsubscribe()
+{
+  SetQtDisonnected();
+}
+
+void TextEditController::SetQtConnected()
+{
+  auto on_text_changed = [this]()
+  {
+    if (!GetItem())
+    {
+      return;
+    }
+
+    const auto text = m_context.text_edit->toPlainText();
+    auto trimmed = mvvm::utils::TrimWhitespace(text.toStdString());
+    auto lines = mvvm::utils::SplitString(trimmed, "\n");
+
+    m_do_not_update_widgets = true;
+    GetItem()->SetText(lines);
+    m_do_not_update_widgets = false;
+  };
+  *m_text_edit_connection =
+      QObject::connect(m_context.text_edit, &QTextEdit::textChanged, on_text_changed);
+}
+
+void TextEditController::SetQtDisonnected()
+{
+  QObject::disconnect(*m_text_edit_connection);
+}
+
+void TextEditController::OnPropertyChangedEvent(const mvvm::PropertyChangedEvent& event)
+{
+  (void) event;
+  SetQtDisonnected();
+  UpdateWidgetStateFromItem();
+  SetQtConnected();
 }
 
 void TextEditController::UpdateWidgetStateFromItem()
 {
+  if (m_do_not_update_widgets)
+  {
+    return;
+  }
+
   m_context.check_box->setChecked(GetItem()->IsEditorEnabled());
   m_context.text_edit->setEnabled(m_context.check_box->isChecked());
   m_context.text_edit->setPlainText(GetText(GetItem()->GetText()));
