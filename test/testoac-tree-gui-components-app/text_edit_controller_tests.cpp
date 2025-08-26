@@ -29,6 +29,7 @@
 #include <gtest/gtest.h>
 
 #include <QCheckBox>
+#include <QSignalSpy>
 #include <QTextEdit>
 
 namespace oac_tree_gui::test
@@ -85,6 +86,31 @@ TEST_F(TextEditControllerTest, InitialStateWhenDisabledEditor)
   EXPECT_FALSE(m_check_box.isChecked());
   EXPECT_FALSE(m_text_edit.isEnabled());
 
+  const QString expected_text = {R"RAW(line1
+line2
+)RAW"};
+  EXPECT_EQ(m_text_edit.toPlainText(), expected_text);
+}
+
+TEST_F(TextEditControllerTest, UpdateWidgetOnItemChange)
+{
+  auto controller = CreateController();
+  controller->SetItem(m_text_edit_item);
+  EXPECT_TRUE(m_check_box.isChecked());
+  EXPECT_TRUE(m_text_edit.isEnabled());
+  EXPECT_EQ(m_text_edit.toPlainText(), QString());
+
+  const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
+  const QSignalSpy spy_text_edit(&m_text_edit, &QTextEdit::textChanged);
+
+  m_text_edit_item->SetEditorEnabled(false);
+
+  EXPECT_EQ(spy_check_box.count(), 1);
+  EXPECT_EQ(spy_text_edit.count(), 1);
+
+  EXPECT_FALSE(m_check_box.isChecked());
+  EXPECT_FALSE(m_text_edit.isEnabled());
+  m_text_edit_item->SetText({"line1", "line2"});
   const QString expected_text = {R"RAW(line1
 line2
 )RAW"};

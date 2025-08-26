@@ -59,10 +59,13 @@ TextEditController::TextEditController(const TextControllerContext& context) : m
 
 void TextEditController::Subscribe()
 {
-  UpdateWidgetStateToItem();
+  auto on_property_change = [this](auto) { UpdateWidgetStateFromItem(); };
+  Listener()->Connect<mvvm::PropertyChangedEvent>(on_property_change);
+
+  UpdateWidgetStateFromItem();
 }
 
-void TextEditController::UpdateWidgetStateToItem()
+void TextEditController::UpdateWidgetStateFromItem()
 {
   m_context.check_box->setChecked(GetItem()->IsEditorEnabled());
   m_context.text_edit->setEnabled(m_context.check_box->isChecked());

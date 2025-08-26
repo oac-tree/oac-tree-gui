@@ -57,7 +57,7 @@ protected:
   void Subscribe() override;
 
 private:
-  void UpdateWidgetStateToItem();
+  void UpdateWidgetStateFromItem();
   TextControllerContext m_context;
 };
 
