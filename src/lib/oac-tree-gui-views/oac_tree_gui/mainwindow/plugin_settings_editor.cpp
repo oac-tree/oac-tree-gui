@@ -20,8 +20,10 @@
 
 #include "plugin_settings_editor.h"
 
+#include <oac_tree_gui/components/text_edit_controller.h>
+#include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/sequencer_settings_constants.h>
-#include <oac_tree_gui/model/sequencer_settings_model.h>
+#include <oac_tree_gui/model/text_edit_item.h>
 
 #include <mvvm/utils/string_utils.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -42,6 +44,10 @@ PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
     , m_dir_list_edit(new QTextEdit)
     , m_plugin_list_checkbox(new QCheckBox)
     , m_plugin_list_edit(new QTextEdit)
+    , m_dir_list_controller(std::make_unique<TextEditController>(
+          TextControllerContext{m_dir_list_checkbox, m_dir_list_edit}))
+    , m_plugin_list_controller(std::make_unique<TextEditController>(
+          TextControllerContext{m_plugin_list_checkbox, m_plugin_list_edit}))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, 0, 0);
@@ -52,9 +58,22 @@ PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
   layout->addStretch(1);
 }
 
+PluginSettingsEditor::~PluginSettingsEditor() = default;
+
 void PluginSettingsEditor::SetItem(mvvm::SessionItem *item)
 {
-  (void)item;
+  SetPluginSettingsItem(dynamic_cast<PluginSettingsItem *>(item));
+}
+
+void PluginSettingsEditor::SetPluginSettingsItem(PluginSettingsItem *item)
+{
+  if (!item)
+  {
+    return;
+  }
+
+  m_dir_list_controller->SetItem(item->GetItem<TextEditItem>(constants::kPluginDirListProperty));
+  m_plugin_list_controller->SetItem(item->GetItem<TextEditItem>(constants::kPluginListProperty));
 }
 
 std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()

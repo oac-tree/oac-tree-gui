@@ -32,6 +32,9 @@ class QLayout;
 namespace oac_tree_gui
 {
 
+class PluginSettingsItem;
+class TextEditController;
+
 /**
  * @brief The PluginSettingsEditor class is a custom editor for PluginSettingsItem
  */
@@ -41,10 +44,13 @@ class PluginSettingsEditor : public sup::gui::SessionItemWidget
 
 public:
   explicit PluginSettingsEditor(QWidget* parent_widget = nullptr);
+  virtual ~PluginSettingsEditor() override;
 
   void SetItem(mvvm::SessionItem* item) override;
 
-private:
+private:  
+  void SetPluginSettingsItem(PluginSettingsItem* item);
+
   /**
    * @brief Returns layout with general information.
    */
@@ -66,6 +72,8 @@ private:
   QCheckBox* m_plugin_list_checkbox{nullptr};
   QTextEdit* m_plugin_list_edit{nullptr};
 
+  std::unique_ptr<TextEditController> m_dir_list_controller{nullptr};
+  std::unique_ptr<TextEditController> m_plugin_list_controller{nullptr};
 };
 
 }  // namespace oac_tree_gui
