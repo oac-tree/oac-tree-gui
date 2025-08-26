@@ -47,6 +47,8 @@ target_sources(${library_name} PRIVATE
   standard_job_items.h
   standard_variable_items.cpp
   standard_variable_items.h
+  text_edit_item.cpp
+  text_edit_item.h
   universal_instruction_item.cpp
   universal_instruction_item.h
   universal_item_helper.cpp

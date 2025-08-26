@@ -38,11 +38,8 @@ const std::int32_t kUndoLimitDefault = 100;
 constexpr auto kUseTextEditor = "kUseTextEditor";
 constexpr auto kTextEditorContent = "kTextEditorContent";
 
-constexpr auto kUsePluginDirList = "kUsePluginDirList";
-constexpr auto kPluginDirList = "kPluginDirList";
-
-constexpr auto kUsePluginList = "kUsePluginList";
-constexpr auto kPluginList = "kPluginList";
+constexpr auto kPluginDirListProperty = "kPluginDirListProperty";
+constexpr auto kPluginListProperty = "kPluginListProperty";
 
 }  // namespace oac_tree_gui::constants
 

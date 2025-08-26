@@ -105,20 +105,6 @@ TEST_F(PluginsSettingsItemTest, PluginListProperty)
   EXPECT_TRUE(item.GetPluginList().empty());
 }
 
-TEST_F(PluginsSettingsItemTest, GetSettingStringFromVector)
-{
-  EXPECT_EQ(GetSettingStringFromVector({}), std::string());
-  EXPECT_EQ(GetSettingStringFromVector({"abc"}), std::string("abc"));
-  EXPECT_EQ(GetSettingStringFromVector({"abc", "def"}), std::string("abc;def"));
-}
-
-TEST_F(PluginsSettingsItemTest, GetVectorFromSettingString)
-{
-  EXPECT_TRUE(GetVectorFromSettingString("").empty());
-  EXPECT_EQ(GetVectorFromSettingString("abc"), std::vector<std::string>({"abc"}));
-  EXPECT_EQ(GetVectorFromSettingString("abc;def"), std::vector<std::string>({"abc", "def"}));
-}
-
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForEmptyItem)
 {
   PluginSettingsItem item;

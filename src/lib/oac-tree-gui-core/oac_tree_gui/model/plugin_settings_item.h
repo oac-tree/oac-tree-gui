@@ -80,21 +80,6 @@ public:
 };
 
 /**
- * @brief Converts vector of strings to a single string.
- *
- * This string serves as a serialization format for the vector, so that it can be used as item
- * property.
- */
-std::string GetSettingStringFromVector(const std::vector<std::string>& vec);
-
-/**
- * @brief Returns vector of strings from the single string.
- *
- * This is the inverse function to GetSettingStringFromVector.
- */
-std::vector<std::string> GetVectorFromSettingString(const std::string& str);
-
-/**
  * @brief Returns the list of plugin file names found in the directories specified in the item.
  */
 std::vector<std::string> GetPluginFileNames(const PluginSettingsItem& item);
