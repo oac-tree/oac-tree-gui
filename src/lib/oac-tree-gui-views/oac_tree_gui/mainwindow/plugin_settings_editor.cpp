@@ -32,6 +32,7 @@
 
 namespace oac_tree_gui
 {
+
 PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
     : sup::gui::SessionItemWidget(parent_widget), m_text_edit(new QTextEdit)
 {

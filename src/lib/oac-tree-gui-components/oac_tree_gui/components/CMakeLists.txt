@@ -18,6 +18,8 @@ target_sources(${library_name} PRIVATE
   drag_and_drop_helper.h
   load_resources.cpp
   load_resources.h
+  plugin_settings_text_controller.cpp
+  plugin_settings_text_controller.h
   xml_panel_controller.cpp
   xml_panel_controller.h
 )
