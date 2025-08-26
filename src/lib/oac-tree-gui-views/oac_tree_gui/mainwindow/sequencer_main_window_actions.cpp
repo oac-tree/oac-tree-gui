@@ -22,10 +22,12 @@
 
 #include "about_application_dialog.h"
 #include "plugin_settings_editor.h"
+#include "sequencer_main_window_context.h"
 
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_command.h>
@@ -58,15 +60,14 @@ const QString kApplicationType = "oac-tree GUI";
 namespace oac_tree_gui
 {
 
-SequencerMainWindowActions::SequencerMainWindowActions(
-    mvvm::ISessionModel* settings, mvvm::IProject* project,
-    sup::gui::IAppCommandService& command_service, QMainWindow* main_window)
+SequencerMainWindowActions::SequencerMainWindowActions(SequencerMainWindowContext& context,
+                                                       mvvm::IProject* project,
+                                                       QMainWindow* main_window)
     : QObject(main_window)
-    , m_settings(settings)
+    , m_context(context)
     , m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
-    , m_command_service(command_service)
 {
-  m_command_service.AppRegisterMenuBar(
+  GetCommandService().AppRegisterMenuBar(
       main_window->menuBar(), {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
                                sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
                                sup::gui::constants::kHelpMenu});
@@ -75,7 +76,7 @@ SequencerMainWindowActions::SequencerMainWindowActions(
   SetupMenus();
 
   (void)QObject::connect(qApp, &QApplication::focusChanged, this, [this](QWidget* old, QWidget* now)
-                         { m_command_service.OnFocusWidgetUpdate(old, now); });
+                         { GetCommandService().OnFocusWidgetUpdate(old, now); });
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
@@ -97,14 +98,16 @@ void SequencerMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
   m_toggle_left_sidebar_button = new QToolButton;
   m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar_button->setIcon(FindIcon("dock-left"));
-  auto action = m_command_service.GetCommand(sup::gui::constants::kToggleLeftPanelCommandId)
+  auto action = GetCommandService()
+                    .GetCommand(sup::gui::constants::kToggleLeftPanelCommandId)
                     ->GetProxyAction();
   sup::gui::SetupStatusBarButton(m_toggle_left_sidebar_button, action);
 
   m_toggle_right_sidebar_button = new QToolButton;
   m_toggle_right_sidebar_button->setToolTip("Show/hide right panel");
   m_toggle_right_sidebar_button->setIcon(FindIcon("dock-right"));
-  action = m_command_service.GetCommand(sup::gui::constants::kToggleRightPanelCommandId)
+  action = GetCommandService()
+               .GetCommand(sup::gui::constants::kToggleRightPanelCommandId)
                ->GetProxyAction();
   sup::gui::SetupStatusBarButton(m_toggle_right_sidebar_button, action);
 
@@ -154,7 +157,7 @@ void SequencerMainWindowActions::SetupMenus()
 
 void SequencerMainWindowActions::SetupFileMenu()
 {
-  auto file_menu = m_command_service.AppGetMenu(sup::gui::constants::kFileMenu);
+  auto file_menu = GetCommandService().AppGetMenu(sup::gui::constants::kFileMenu);
 
   auto about_to_show_menu = [this]()
   { mvvm::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
@@ -183,59 +186,59 @@ void SequencerMainWindowActions::SetupFileMenu()
 
 void SequencerMainWindowActions::SetupEditMenu()
 {
-  auto command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
-                                                    sup::gui::constants::kUndoCommandId);
+  auto command = GetCommandService().AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                      sup::gui::constants::kUndoCommandId);
   command->SetText("Undo").SetShortcut(QKeySequence::Undo);
 
-  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kRedoCommandId);
+  command = GetCommandService().AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                 sup::gui::constants::kRedoCommandId);
   command->SetText("Redo").SetShortcut(QKeySequence::Redo);
 
-  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kCutCommandId);
+  command = GetCommandService().AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                 sup::gui::constants::kCutCommandId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
-  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kCopyCommandId);
+  command = GetCommandService().AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                 sup::gui::constants::kCopyCommandId);
   command->SetText("Copy").SetShortcut(QKeySequence::Copy);
 
-  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kPasteCommandId);
+  command = GetCommandService().AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                 sup::gui::constants::kPasteCommandId);
   command->SetText("Paste").SetShortcut(QKeySequence::Paste);
 
-  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kPasteSpecialCommandId);
+  command = GetCommandService().AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                 sup::gui::constants::kPasteSpecialCommandId);
   command->SetText("Paste Special").SetShortcut(QKeySequence("Ctrl+Shift+V"));
 
-  command = m_command_service.AddCommandToMenu(sup::gui::constants::kEditMenu,
-                                               sup::gui::constants::kRemoveSelectedCommandId);
+  command = GetCommandService().AddCommandToMenu(sup::gui::constants::kEditMenu,
+                                                 sup::gui::constants::kRemoveSelectedCommandId);
   command->SetText("Remove selected");
   command->GetProxyAction()->setShortcuts({Qt::Key_Delete, Qt::Key_Backspace});
 }
 
 void SequencerMainWindowActions::SetupViewMenu()
 {
-  auto command = m_command_service.AddCommandToMenu(sup::gui::constants::kViewMenu,
-                                                    sup::gui::constants::kToggleLeftPanelCommandId);
+  auto command = GetCommandService().AddCommandToMenu(
+      sup::gui::constants::kViewMenu, sup::gui::constants::kToggleLeftPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+0"));
 
-  command = m_command_service.AddCommandToMenu(sup::gui::constants::kViewMenu,
-                                               sup::gui::constants::kToggleRightPanelCommandId);
+  command = GetCommandService().AddCommandToMenu(sup::gui::constants::kViewMenu,
+                                                 sup::gui::constants::kToggleRightPanelCommandId);
   command->SetShortcut(QKeySequence("Alt+Shift+0"));
 }
 
 void SequencerMainWindowActions::SetupToolsMenu()
 {
-  m_command_service.AddCommandToMenu(sup::gui::constants::kToolsMenu,
-                                     constants::kValidateProcedureCommandId);
+  GetCommandService().AddCommandToMenu(sup::gui::constants::kToolsMenu,
+                                       constants::kValidateProcedureCommandId);
 
-  m_command_service.AddCommandToMenu(sup::gui::constants::kToolsMenu,
-                                     constants::kExportXmlCommandId);
+  GetCommandService().AddCommandToMenu(sup::gui::constants::kToolsMenu,
+                                       constants::kExportXmlCommandId);
 }
 
 void SequencerMainWindowActions::SetupHelpMenu()
 {
-  auto help_menu = m_command_service.AppGetMenu(sup::gui::constants::kHelpMenu);
+  auto help_menu = GetCommandService().AppGetMenu(sup::gui::constants::kHelpMenu);
   help_menu->addAction(m_about_action);
 }
 
@@ -255,16 +258,12 @@ void SequencerMainWindowActions::OnChangeSystemFont()
 
 void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
-  if (!m_settings)
-  {
-    return;
-  }
-  sup::gui::SettingsEditorDialog dialog(*m_settings);
+  sup::gui::SettingsEditorDialog dialog(GetSettings());
   dialog.RegisterWidget(PluginSettingsItem::GetStaticType(),
                         []() { return std::make_unique<PluginSettingsEditor>(); });
   if (dialog.exec() == QDialog::Accepted)
   {
-    dialog.PropagateSettingsToModel(*m_settings);
+    dialog.PropagateSettingsToModel(GetSettings());
   }
 }
 
@@ -274,6 +273,16 @@ void SequencerMainWindowActions::OnResetSettings()
   {
     emit RestartApplicationRequest(sup::gui::CleanSettingsAndRestart);
   }
+}
+
+sup::gui::IAppCommandService& SequencerMainWindowActions::GetCommandService()
+{
+  return m_context.GetCommandService();
+}
+
+mvvm::ISessionModel& SequencerMainWindowActions::GetSettings()
+{
+  return m_context.GetSettingsModel();
 }
 
 }  // namespace oac_tree_gui

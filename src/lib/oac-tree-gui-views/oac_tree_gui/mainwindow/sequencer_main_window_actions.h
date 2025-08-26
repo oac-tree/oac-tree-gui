@@ -48,6 +48,8 @@ class IAppCommandService;
 namespace oac_tree_gui
 {
 
+class SequencerMainWindowContext;
+
 /**
  * @brief The SequencerMainWindowActions class handles actions of the main menubar.
  */
@@ -56,8 +58,7 @@ class SequencerMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerMainWindowActions(mvvm::ISessionModel* settings, mvvm::IProject* project,
-                                      sup::gui::IAppCommandService& command_service,
+  explicit SequencerMainWindowActions(SequencerMainWindowContext& context, mvvm::IProject* project,
                                       QMainWindow* main_window);
   ~SequencerMainWindowActions() override;
 
@@ -109,6 +110,9 @@ private:
   void OnApplicationSettingsDialog();
   void OnResetSettings();
 
+  sup::gui::IAppCommandService& GetCommandService();
+  mvvm::ISessionModel& GetSettings();
+
   QAction* m_exit_action{nullptr};
   QAction* m_about_action{nullptr};
 
@@ -121,9 +125,8 @@ private:
   QToolButton* m_toggle_left_sidebar_button{nullptr};
   QToolButton* m_toggle_right_sidebar_button{nullptr};
 
-  mvvm::ISessionModel* m_settings{nullptr};
+  SequencerMainWindowContext& m_context;
   std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
-  sup::gui::IAppCommandService& m_command_service;
 };
 
 }  // namespace oac_tree_gui
