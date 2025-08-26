@@ -46,6 +46,11 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout);
  */
 std::string CreateProcedureString(const std::string& body, bool schema = true);
 
+/**
+ * @brief Sorts two vectors and compares them.
+ */
+bool IsSortedTheSame(const std::vector<std::string>& vec1, const std::vector<std::string>& vec2);
+
 }  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

@@ -20,6 +20,7 @@
 
 #include "test_utils.h"
 
+#include <algorithm>
 #include <string>
 #include <thread>
 
@@ -75,6 +76,22 @@ std::string CreateProcedureString(const std::string &body, bool schema)
 )RAW"};
 
   return (schema ? header_with_schema : header) + body + footer;
+}
+
+bool IsSortedTheSame(const std::vector<std::string> &vec1, const std::vector<std::string> &vec2)
+{
+  if (vec1.size() != vec2.size())
+  {
+    return false;
+  }
+
+  std::vector<std::string> sorted1 = vec1;
+  std::vector<std::string> sorted2 = vec2;
+
+  std::sort(sorted1.begin(), sorted1.end());
+  std::sort(sorted2.begin(), sorted2.end());
+
+  return sorted1 == sorted2;
 }
 
 }  // namespace oac_tree_gui::test
