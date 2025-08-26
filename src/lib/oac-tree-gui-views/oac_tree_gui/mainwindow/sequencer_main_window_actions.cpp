@@ -259,8 +259,9 @@ void SequencerMainWindowActions::OnChangeSystemFont()
 void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
   sup::gui::SettingsEditorDialog dialog(GetSettings());
-  dialog.RegisterWidget(PluginSettingsItem::GetStaticType(),
-                        []() { return std::make_unique<PluginSettingsEditor>(); });
+  dialog.RegisterWidget(
+      PluginSettingsItem::GetStaticType(), [this]()
+      { return std::make_unique<PluginSettingsEditor>(m_context.GetDomainPluginService()); });
   if (dialog.exec() == QDialog::Accepted)
   {
     dialog.PropagateSettingsToModel(GetSettings());

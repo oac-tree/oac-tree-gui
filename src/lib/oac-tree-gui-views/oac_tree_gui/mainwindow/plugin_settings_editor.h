@@ -21,6 +21,7 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_PLUGIN_SETTINGS_EDITOR_H_
 #define OAC_TREE_GUI_MAINWINDOW_PLUGIN_SETTINGS_EDITOR_H_
 
+#include "oac_tree_gui/domain/i_domain_plugin_service.h"
 #include <sup/gui/mainwindow/session_item_widget.h>
 
 #include <memory>
@@ -28,12 +29,14 @@
 class QTextEdit;
 class QCheckBox;
 class QLayout;
+class QLabel;
 
 namespace oac_tree_gui
 {
 
 class PluginSettingsItem;
 class TextEditController;
+class IDomainPluginService;
 
 /**
  * @brief The PluginSettingsEditor class is a custom editor for PluginSettingsItem
@@ -43,8 +46,8 @@ class PluginSettingsEditor : public sup::gui::SessionItemWidget
   Q_OBJECT
 
 public:
-  explicit PluginSettingsEditor(QWidget* parent_widget = nullptr);
-  virtual ~PluginSettingsEditor() override;
+  explicit PluginSettingsEditor(IDomainPluginService& plugin_service, QWidget* parent_widget = nullptr);
+  ~PluginSettingsEditor() override;
 
   void SetItem(mvvm::SessionItem* item) override;
 
@@ -65,6 +68,12 @@ private:
    * @brief Returns layout to edit plugin filenames list.
    */
   std::unique_ptr<QLayout> CreatePluginListLayout();
+
+  void SummonLoadedPluginDialog();
+
+  IDomainPluginService& m_plugin_service;
+
+  QLabel* m_description{nullptr};
 
   QCheckBox* m_dir_list_checkbox{nullptr};
   QTextEdit* m_dir_list_edit{nullptr};

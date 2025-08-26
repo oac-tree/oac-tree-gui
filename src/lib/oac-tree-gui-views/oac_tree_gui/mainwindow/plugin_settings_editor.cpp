@@ -21,6 +21,7 @@
 #include "plugin_settings_editor.h"
 
 #include <oac_tree_gui/components/text_edit_controller.h>
+#include <oac_tree_gui/domain/i_domain_plugin_service.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/sequencer_settings_constants.h>
 #include <oac_tree_gui/model/text_edit_item.h>
@@ -34,12 +35,16 @@
 #include <QLabel>
 #include <QTextEdit>
 #include <QVBoxLayout>
+#include <iostream>
 
 namespace oac_tree_gui
 {
 
-PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
+PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService &plugin_service,
+                                           QWidget *parent_widget)
     : sup::gui::SessionItemWidget(parent_widget)
+    , m_plugin_service(plugin_service)
+    , m_description(new QLabel)
     , m_dir_list_checkbox(new QCheckBox)
     , m_dir_list_edit(new QTextEdit)
     , m_plugin_list_checkbox(new QCheckBox)
@@ -92,10 +97,12 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()
                            "the sequencer. Check currently loaded plugins %1.")
                            .arg(mvvm::utils::ClickableText("here"));
 
-  auto description = new QLabel(label_text);
-  description->setWordWrap(true);
+  m_description->setWordWrap(true);
+  m_description->setText(label_text);
+  connect(m_description, &QLabel::linkActivated, this,
+          [this](auto) { SummonLoadedPluginDialog(); });
 
-  result->addWidget(description);
+  result->addWidget(m_description);
 
   return result;
 }
@@ -149,6 +156,14 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
       "/opt/sofware/lib/oac-tree/plugins/liboac_tree_another_plugin.so");
 
   return result;
+}
+
+void PluginSettingsEditor::SummonLoadedPluginDialog()
+{
+  for (auto info : m_plugin_service.GetPluginLoadInfo())
+  {
+    std::cout << "AAA " << info.first << " " << info.second << "\n";
+  }
 }
 
 }  // namespace oac_tree_gui
