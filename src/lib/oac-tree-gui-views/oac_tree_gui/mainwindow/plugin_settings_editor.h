@@ -23,13 +23,17 @@
 
 #include <sup/gui/mainwindow/session_item_widget.h>
 
+#include <memory>
+
 class QTextEdit;
+class QCheckBox;
+class QLayout;
 
 namespace oac_tree_gui
 {
 
 /**
- * @brief The SessionItemWidget class is a base for all widgets which can show one item at a time.
+ * @brief The PluginSettingsEditor class is a custom editor for PluginSettingsItem
  */
 class PluginSettingsEditor : public sup::gui::SessionItemWidget
 {
@@ -41,7 +45,27 @@ public:
   void SetItem(mvvm::SessionItem* item) override;
 
 private:
-  QTextEdit* m_text_edit{nullptr};
+  /**
+   * @brief Returns layout with general information.
+   */
+  std::unique_ptr<QLayout> CreateDescriptionLayout();
+
+  /**
+   * @brief Returns layout to edit plugin directory list.
+   */
+  std::unique_ptr<QLayout> CreateDirListLayout();
+
+  /**
+   * @brief Returns layout to edit plugin filenames list.
+   */
+  std::unique_ptr<QLayout> CreatePluginListLayout();
+
+  QCheckBox* m_dir_list_checkbox{nullptr};
+  QTextEdit* m_dir_list_edit{nullptr};
+
+  QCheckBox* m_plugin_list_checkbox{nullptr};
+  QTextEdit* m_plugin_list_edit{nullptr};
+
 };
 
 }  // namespace oac_tree_gui
