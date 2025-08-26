@@ -33,6 +33,8 @@ namespace oac_tree_gui
 
 PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
 {
+  SetDisplayName("Plugin Settings");
+
   auto &dir_list_property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
   dir_list_property.SetText(GetDefaultPluginDirList());
 

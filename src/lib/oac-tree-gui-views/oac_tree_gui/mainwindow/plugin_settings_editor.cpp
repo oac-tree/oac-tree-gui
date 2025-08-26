@@ -27,6 +27,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QCheckBox>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QTextEdit>
@@ -48,6 +49,7 @@ PluginSettingsEditor::PluginSettingsEditor(QWidget *parent_widget)
   layout->addLayout(CreateDescriptionLayout().release());
   layout->addLayout(CreateDirListLayout().release());
   layout->addLayout(CreatePluginListLayout().release());
+  layout->addStretch(1);
 }
 
 void PluginSettingsEditor::SetItem(mvvm::SessionItem *item)
@@ -58,13 +60,23 @@ void PluginSettingsEditor::SetItem(mvvm::SessionItem *item)
 std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()
 {
   auto result = std::make_unique<QVBoxLayout>();
-  result->setSpacing(mvvm::utils::UnitSize(0.5));
+  result->setSpacing(mvvm::utils::UnitSize(1.0));
 
-  auto label = new QLabel("Plugin settings");
+  auto label = new QLabel("Plugin Settings");
   QFont font = label->font();
   font.setBold(true);
   label->setFont(font);
   result->addWidget(label);
+
+  QString label_text = QString(
+                           "Define custom plugin directories and/or plugin filenames to be used by "
+                           "the sequencer. Check currently loaded plugins %1.")
+                           .arg(mvvm::utils::ClickableText("here"));
+
+  auto description = new QLabel(label_text);
+  description->setWordWrap(true);
+
+  result->addWidget(description);
 
   return result;
 }
@@ -76,13 +88,19 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDirListLayout()
 
   auto h_layout = std::make_unique<QHBoxLayout>();
   h_layout->addWidget(m_dir_list_checkbox);
-  // h_layout->addSpacing(mvvm::utils::UnitSize(0.25));
   h_layout->addWidget(new QLabel("Use custom plugin directories to search for plugins"));
   h_layout->addStretch(1);
 
   result->addLayout(h_layout.release());
-  // result->addSpacing(mvvm::utils::UnitSize(0.5));
   result->addWidget(m_dir_list_edit);
+
+  m_dir_list_edit->setPlaceholderText(
+      "# Specify plugin directories here, one per line.\n"
+      "# Directories are searched in the order they are listed.\n"
+      "# Lines starting with '#' are treated as comments and ignored.\n"
+      "\n"
+      "/home/user/my_plugins\n"
+      "/usr/lib/oac-tree/plugins");
 
   return result;
 }
@@ -94,13 +112,22 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
 
   auto h_layout = std::make_unique<QHBoxLayout>();
   h_layout->addWidget(m_plugin_list_checkbox);
-  // h_layout->addSpacing(mvvm::utils::UnitSize(0.25));
-  h_layout->addWidget(new QLabel("Use custom plugin directories to search for plugins"));
+
+  QString label_text = "Load custom plugin using filenames";
+  h_layout->addWidget(new QLabel(label_text));
+
   h_layout->addStretch(1);
 
   result->addLayout(h_layout.release());
-  // result->addSpacing(mvvm::utils::UnitSize(0.5));
   result->addWidget(m_plugin_list_edit);
+
+  m_plugin_list_edit->setPlaceholderText(
+      "# Specify plugin filenames here, one per line.\n"
+      "# Lines starting with '#' are treated as comments and ignored.\n"
+      "# If the file name doesn't contain a path, system standard paths can be used\n"
+      "\n"
+      "liboac_tree_example_plugin.so\n"
+      "/opt/sofware/lib/oac-tree/plugins/liboac_tree_another_plugin.so");
 
   return result;
 }
