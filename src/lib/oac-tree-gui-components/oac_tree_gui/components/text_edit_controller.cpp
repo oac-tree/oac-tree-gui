@@ -45,7 +45,9 @@ QString GetText(const std::vector<std::string>& lines)
 }
 
 TextEditController::TextEditController(const TextControllerContext& context)
-    : m_context(context), m_text_edit_connection(std::make_unique<QMetaObject::Connection>())
+    : m_context(context)
+    , m_text_edit_connection(std::make_unique<QMetaObject::Connection>())
+    , m_checkbox_connection(std::make_unique<QMetaObject::Connection>())
 {
   if (!context.check_box)
   {
@@ -89,18 +91,37 @@ void TextEditController::SetQtConnected()
     GetItem()->SetText(lines);
     m_do_not_update_widgets = false;
   };
+
   *m_text_edit_connection =
       QObject::connect(m_context.text_edit, &QTextEdit::textChanged, on_text_changed);
+
+  auto on_checkstate_changed = [this](int state)
+  {
+    if (!GetItem())
+    {
+      return;
+    }
+
+    const bool enabled = (state == Qt::Checked);
+    m_do_not_update_widgets = true;
+    GetItem()->SetEditorEnabled(enabled);
+    m_context.text_edit->setEnabled(enabled);
+    m_do_not_update_widgets = false;
+  };
+
+  *m_checkbox_connection =
+      QObject::connect(m_context.check_box, &QCheckBox::checkStateChanged, on_checkstate_changed);
 }
 
 void TextEditController::SetQtDisonnected()
 {
   QObject::disconnect(*m_text_edit_connection);
+  QObject::disconnect(*m_checkbox_connection);
 }
 
 void TextEditController::OnPropertyChangedEvent(const mvvm::PropertyChangedEvent& event)
 {
-  (void) event;
+  (void)event;
   SetQtDisonnected();
   UpdateWidgetStateFromItem();
   SetQtConnected();

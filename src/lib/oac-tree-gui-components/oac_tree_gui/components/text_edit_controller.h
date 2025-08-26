@@ -77,6 +77,7 @@ private:
   void UpdateWidgetStateFromItem();
   TextControllerContext m_context;
   std::unique_ptr<QMetaObject::Connection> m_text_edit_connection;
+  std::unique_ptr<QMetaObject::Connection> m_checkbox_connection;
   bool m_do_not_update_widgets{false};
 };
 

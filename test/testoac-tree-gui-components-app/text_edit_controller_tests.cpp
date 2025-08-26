@@ -140,4 +140,23 @@ line2
   EXPECT_EQ(m_text_edit_item->GetText(), std::vector<std::string>({"line1", "line2"}));
 }
 
+TEST_F(TextEditControllerTest, UpdateItemOnCheckBoxChange)
+{
+  auto controller = CreateController();
+  controller->SetItem(m_text_edit_item);
+
+  const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
+  const QSignalSpy spy_text_edit(&m_text_edit, &QTextEdit::textChanged);
+
+  mock_listener_t widget(m_text_edit_item);
+  EXPECT_CALL(widget, OnPropertyChanged(::testing::_)).Times(1);
+
+  m_check_box.setCheckState(Qt::Unchecked);
+  EXPECT_EQ(spy_text_edit.count(), 0);
+  EXPECT_EQ(spy_check_box.count(), 1);
+  EXPECT_EQ(m_text_edit_item->GetText(), std::vector<std::string>({}));
+  EXPECT_FALSE(m_text_edit_item->IsEditorEnabled());
+  EXPECT_FALSE(m_text_edit.isEnabled());
+}
+
 }  // namespace oac_tree_gui::test
