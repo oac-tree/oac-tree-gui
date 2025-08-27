@@ -141,22 +141,6 @@ TEST_F(DomainPluginServiceTests, GetPluginName)
   EXPECT_EQ(service.GetPluginName(object_name).value(), plugin_name);
 }
 
-TEST_F(DomainPluginServiceTests, LoadEmptyList)
-{
-  MockObjectTypeRegistry object_registry;
-  MockLibraryLoader library_loader;
-  EXPECT_CALL(object_registry, Update(domainconstants::kCorePluginName)).Times(1);
-  EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
-
-  DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                         object_registry);
-  EXPECT_TRUE(service.GetLoadedPlugins().empty());
-  EXPECT_TRUE(service.GetPluginLoadInfo().empty());
-  EXPECT_TRUE(service.GetObjectNames(domainconstants::kCorePluginName).empty());
-
-  service.LoadPlugins({});
-}
-
 TEST_F(DomainPluginServiceTests, LoadPluginFilesEmptyList)
 {
   MockObjectTypeRegistry object_registry;
@@ -171,30 +155,6 @@ TEST_F(DomainPluginServiceTests, LoadPluginFilesEmptyList)
   EXPECT_TRUE(service.GetObjectNames(domainconstants::kCorePluginName).empty());
 
   service.LoadPluginFiles({});
-}
-
-TEST_F(DomainPluginServiceTests, LoadNonEmptyList)
-{
-  MockObjectTypeRegistry object_registry;
-  MockLibraryLoader library_loader;
-
-  {
-    const ::testing::InSequence seq;
-    EXPECT_CALL(object_registry, Update(domainconstants::kCorePluginName)).Times(1);
-    EXPECT_CALL(library_loader, LoadLibrary("libplugin1.so")).Times(1);
-    EXPECT_CALL(object_registry, Update("plugin1")).Times(1);
-    EXPECT_CALL(library_loader, LoadLibrary("libplugin2.so")).Times(1);
-    EXPECT_CALL(object_registry, Update("plugin2")).Times(1);
-  }
-
-  DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                         object_registry);
-  EXPECT_TRUE(service.GetLoadedPlugins().empty());
-  EXPECT_TRUE(service.GetPluginLoadInfo().empty());
-  EXPECT_TRUE(service.GetObjectNames(domainconstants::kCorePluginName).empty());
-
-  const std::vector<std::string> plugin_names = {"plugin1", "plugin2"};
-  service.LoadPlugins(plugin_names);
 }
 
 TEST_F(DomainPluginServiceTests, LoadNonEmptyPluginFileList)

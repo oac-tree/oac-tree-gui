@@ -71,7 +71,7 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
           &context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
 
-  plugin_service->LoadPlugins({"non-existing-plugin"});
+  plugin_service->LoadPluginFiles({"libnon-existing-plugin.so"});
 
   EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
   const std::vector<std::pair<std::string, bool>> expected_info = {

@@ -40,10 +40,8 @@ public:
   IDomainPluginService& operator=(IDomainPluginService&&) noexcept = default;
 
   /**
-   * @brief Loads plugins by their names.
+   * @brief Loads plugins by their file names.
    */
-  virtual void LoadPlugins(const std::vector<std::string>& plugin_names) = 0;
-
   virtual void LoadPluginFiles(const std::vector<std::string>& plugin_file_names) = 0;
 
   /**
