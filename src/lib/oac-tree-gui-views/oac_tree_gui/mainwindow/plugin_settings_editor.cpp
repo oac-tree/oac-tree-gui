@@ -182,7 +182,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
   auto h_layout = std::make_unique<QHBoxLayout>();
   h_layout->addWidget(m_plugin_list_checkbox);
 
-  const QString label_text = "Load custom plugin using filenames";
+  const QString label_text = "Load custom plugin using plugin names, or filenames";
   h_layout->addWidget(new QLabel(label_text));
 
   h_layout->addStretch(1);
