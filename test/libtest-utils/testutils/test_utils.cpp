@@ -78,7 +78,7 @@ std::string CreateProcedureString(const std::string &body, bool schema)
   return (schema ? header_with_schema : header) + body + footer;
 }
 
-bool IsSortedTheSame(const std::vector<std::string> &vec1, const std::vector<std::string> &vec2)
+bool HaveSameElements(const std::vector<std::string> &vec1, const std::vector<std::string> &vec2)
 {
   if (vec1.size() != vec2.size())
   {

@@ -94,7 +94,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()
 
   QString label_text = QString(
                            "Define custom plugin directories and/or plugin filenames to be used by "
-                           "the sequencer. Check currently loaded plugins %1.")
+                           "the oac-tree application. Check currently loaded plugins %1.")
                            .arg(mvvm::utils::ClickableText("here"));
 
   m_description->setWordWrap(true);
