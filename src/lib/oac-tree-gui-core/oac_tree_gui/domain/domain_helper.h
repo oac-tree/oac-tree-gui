@@ -125,7 +125,8 @@ std::vector<std::string> GetBasicPluginFileNames();
 /**
  * @brief Converts the name of the plugin to library file name.
  *
- * Takes OS platform in the account.
+ * Takes OS platform in the account. If the given name already contains prefix/suffix, it will be
+ * adjusted to the current platform as follows:
  *
  * Linux: sequencer -> libsequencer.so
  *        libsequencer.so -> libsequencer.so
@@ -135,7 +136,8 @@ std::vector<std::string> GetBasicPluginFileNames();
  *        libsequencer.so -> libsequencer.dylib
  *        libsequencer.dylib -> libsequencer.dylib
  *
- * Windows: not implemented, will return the same name
+ * @note Windows: not implemented, will return the same name
+ * If file name contains a path, will return unchanged.
  */
 std::string GetPluginFileName(const std::string& plugin_name);
 

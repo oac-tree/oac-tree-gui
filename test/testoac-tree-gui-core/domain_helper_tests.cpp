@@ -164,6 +164,10 @@ TEST_F(DomainHelperTest, GetPluginFileName)
 
     // MacOs should be converted to Linux
     EXPECT_EQ(GetPluginFileName("libMyPlugin.dylib"), "libMyPlugin.so");
+
+    // For the moment we ignore path
+    EXPECT_EQ(GetPluginFileName("/home/user/libMyPlugin.so"), "/home/user/libMyPlugin.so");
+    EXPECT_EQ(GetPluginFileName("/home/user/MyPlugin"), "/home/user/MyPlugin");
   }
 
   if (mvvm::IsMacHost())
@@ -177,6 +181,10 @@ TEST_F(DomainHelperTest, GetPluginFileName)
 
     // Linux should be converted to MacOs
     EXPECT_EQ(GetPluginFileName("libMyPlugin.so"), "libMyPlugin.dylib");
+
+    // For the moment we ignore path
+    EXPECT_EQ(GetPluginFileName("/home/user/libMyPlugin.dylib"), "/home/user/libMyPlugin.dylib");
+    EXPECT_EQ(GetPluginFileName("/home/user/MyPlugin"), "/home/user/MyPlugin");
   }
 }
 

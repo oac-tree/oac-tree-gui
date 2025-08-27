@@ -36,6 +36,7 @@
 #include <sup/oac-tree/variable_registry.h>
 
 #include <algorithm>
+#include <filesystem>
 
 namespace
 {
@@ -176,6 +177,11 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata)
 std::string GetPluginFileName(const std::string& plugin_name)
 {
   if (plugin_name.empty() || mvvm::IsWindowsHost())
+  {
+    return plugin_name;
+  }
+
+  if (std::filesystem::path(plugin_name).has_parent_path())
   {
     return plugin_name;
   }
