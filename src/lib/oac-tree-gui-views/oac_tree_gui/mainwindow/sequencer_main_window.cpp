@@ -140,6 +140,8 @@ void SequencerMainWindow::WriteSettings()
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
+
+  ::sup::gui::WriteApplicationSettings(GetContext().GetSettingsModel());
 }
 
 bool SequencerMainWindow::CanCloseApplication()
