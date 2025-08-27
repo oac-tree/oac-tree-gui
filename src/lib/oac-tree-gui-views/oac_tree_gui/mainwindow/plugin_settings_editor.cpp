@@ -26,16 +26,16 @@
 #include <oac_tree_gui/model/sequencer_settings_constants.h>
 #include <oac_tree_gui/model/text_edit_item.h>
 
+#include <sup/gui/widgets/detailed_message_box.h>
+
 #include <mvvm/utils/string_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QCheckBox>
-#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QTextEdit>
 #include <QVBoxLayout>
-#include <iostream>
 
 namespace oac_tree_gui
 {
@@ -160,10 +160,23 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
 
 void PluginSettingsEditor::SummonLoadedPluginDialog()
 {
-  for (auto info : m_plugin_service.GetPluginLoadInfo())
+  std::vector<std::string> loaded_plugin_lines;
+  for (const auto &info : m_plugin_service.GetPluginLoadInfo())
   {
-    std::cout << "AAA " << info.first << " " << info.second << "\n";
+    std::string load_result = info.second ? "[Loaded]" : "[Failed]";
+    loaded_plugin_lines.push_back(load_result + "  " + info.first);
   }
+
+  sup::gui::MessageEvent message;
+  message.title = "Loaded Plugins";
+  message.text = "Following plugins have been loaded on the application startup:";
+  message.detailed = mvvm::utils::VectorToString(loaded_plugin_lines, "\n");
+
+  sup::gui::DetailedMessageBox box(message, this);
+  auto font = box.GetTextEdit()->font();
+  font.setFamily("monospace");
+  box.GetTextEdit()->setFont(font);
+  box.exec();
 }
 
 }  // namespace oac_tree_gui
