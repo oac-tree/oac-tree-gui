@@ -124,7 +124,11 @@ TEST_F(TextEditControllerTest, UpdateItemOnTextEditChange)
   auto controller = CreateController();
   controller->SetItem(m_text_edit_item);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
   const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
+#else
+  const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::checkStateChanged);
+#endif
   const QSignalSpy spy_text_edit(&m_text_edit, &QPlainTextEdit::textChanged);
 
   mock_listener_t widget(m_text_edit_item);
@@ -145,7 +149,11 @@ TEST_F(TextEditControllerTest, UpdateItemOnCheckBoxChange)
   auto controller = CreateController();
   controller->SetItem(m_text_edit_item);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
   const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
+#else
+  const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::checkStateChanged);
+#endif
   const QSignalSpy spy_text_edit(&m_text_edit, &QPlainTextEdit::textChanged);
 
   mock_listener_t widget(m_text_edit_item);
