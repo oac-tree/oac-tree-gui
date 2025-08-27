@@ -186,7 +186,7 @@ void PluginSettingsEditor::SummonLoadedPluginDialog()
   message.text = "Following plugins have been loaded on the application startup:";
   message.detailed = GetLoadedPluginTextPresentation(m_plugin_service.GetPluginLoadInfo());
 
-  sup::gui::DetailedMessageBox box(message, this);
+  sup::gui::DetailedMessageBox box("PluginLoadMessageBox", message, this);
   auto font = box.GetTextEdit()->font();
   font.setFamily("monospace");
   box.GetTextEdit()->setFont(font);
