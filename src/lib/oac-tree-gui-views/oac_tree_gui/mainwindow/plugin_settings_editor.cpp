@@ -60,26 +60,28 @@ std::string GetLoadedPluginTextPresentation(
 
 QString GetPluginDirListDescription()
 {
-  return QString(
-      "# Specify plugin directories here, one per line.\n"
-      "# Directories are searched in the order they are listed.\n"
-      "# Lines starting with '#' are treated as comments and ignored.\n"
-      "\n"
-      "/home/user/my_plugins\n"
-      "/usr/lib/oac-tree/plugins");
+  const QString result{R"RAW(# Specify plugin directories here, one per line.
+# Directories are searched in the order they are listed.
+# Lines starting with '#' are treated as comments and ignored.
+
+/home/user/my_plugins
+/usr/lib/oac-tree/plugins
+)RAW"};
+  return result;
 }
 
 QString GetPluginListDescription()
 {
-  return QString(
-      "# Specify plugin filenames here, one per line.\n"
-      "# Lines starting with '#' are treated as comments and ignored.\n"
-      "# Suffixes lib and .so will be added automatically if missing.\n"
-      "# If the file name contains a path, the name will be used as it is.\n"
-      "\n"
-      "liboac_tree_example_plugin.so\n"
-      "oac_tree_another_plugin\n"
-      "/opt/sofware/lib/oac-tree/plugins/liboac_tree_another_plugin.so");
+  const QString result{R"RAW(# Specify plugin filenames here, one per line.
+# Lines starting with '#' are treated as comments and ignored.
+# Suffix/preffix lib and .so will be added automatically if missing.
+# If the file name contains a path, the name will be used as it is.
+
+liboac_tree_example_plugin.so
+oac_tree_another_plugin
+/opt/sofware/lib/oac-tree/plugins/liboac_tree_another_plugin.so
+)RAW"};
+  return result;
 }
 
 }  // namespace
