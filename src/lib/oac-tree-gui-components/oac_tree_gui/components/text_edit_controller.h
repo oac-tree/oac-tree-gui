@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_COMPONENTS_PLUGIN_SETTINGS_TEXT_CONTROLLER_H_
 
 #include <mvvm/signals/item_controller.h>
+
 #include <QObject>
 
 class QTextEdit;
@@ -31,8 +32,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The TextControllerContext is a collection of data to initialize
- * PluginSettingsTextController.
+ * @brief The TextControllerContext is a collection of data to initialize TextEditController.
  */
 struct TextControllerContext
 {
@@ -43,8 +43,8 @@ struct TextControllerContext
 class TextEditItem;
 
 /**
- * @brief The TextEditController class is a controller to synchronize
- * properties of TextEditItem with QCheckBox and QTextEdit.
+ * @brief The TextEditController class is a controller to synchronize properties of TextEditItem
+ * with QCheckBox and QTextEdit.
  *
  * The task of the controller is to enable/disable QTextEdit depending on the state of QCheckBox
  * and to synchronize values of both widgets with corresponding properties of TextEditItem.
