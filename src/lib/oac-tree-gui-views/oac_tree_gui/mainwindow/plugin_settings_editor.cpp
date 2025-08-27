@@ -169,6 +169,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDirListLayout()
 
   m_dir_list_edit->setPlaceholderText(GetPluginDirListDescription());
   m_dir_list_edit->setToolTip(GetPluginDirListDescription());
+  m_dir_list_edit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
 
   return result;
 }
@@ -191,6 +192,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
 
   m_plugin_list_edit->setPlaceholderText(GetPluginListDescription());
   m_plugin_list_edit->setToolTip(GetPluginListDescription());
+  m_plugin_list_edit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
 
   return result;
 }
