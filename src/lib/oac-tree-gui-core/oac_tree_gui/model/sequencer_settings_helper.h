@@ -30,8 +30,25 @@ namespace oac_tree_gui
 /**
  * @brief Returns the vector of strings representing the list of directories where to look for
  * plugins.
+ *
+ * On the CODAC system, this function will report a single "/opt/codac/lib/oac-tree/plugins" record.
+ * The plugin load machinery will then try to load all plugins found in this folder.
+ *
+ * On non-CODAC, the result will be empty. The plugin load machinery will rely on
+ * GetDefaultPluginList().
  */
 std::vector<std::string> GetDefaultPluginDirList();
+
+/**
+ * @brief Returns the default list of plugin names to load.
+ *
+ * On the CODAC system, the result will be empty. The plugin load machinery will rely on
+ * GetDefaultPluginDirList() On non-CODAC systems, the result will contain a list of plugins that
+ * usually come with oac-tree bundle.
+ *
+ * @details The plugin name contains no prefix "lib" and no suffixes ".so" or ".dylib".
+ */
+std::vector<std::string> GetDefaultPluginList();
 
 /**
  * @brief Finds shared libraries in the given folder.

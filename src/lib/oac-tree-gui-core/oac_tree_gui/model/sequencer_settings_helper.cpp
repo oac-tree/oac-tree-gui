@@ -20,6 +20,8 @@
 
 #include "sequencer_settings_helper.h"
 
+#include <oac_tree_gui/domain/domain_helper.h>
+
 #include <sup/gui/core/environment.h>
 
 #include <mvvm/core/platform.h>
@@ -41,8 +43,17 @@ std::vector<std::string> GetDefaultPluginDirList()
     return std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"});
   }
 
-  // FIXME for non-CODAC consider using CMAKE_INSTALL_PREFIX
   return {};
+}
+
+std::vector<std::string> GetDefaultPluginList()
+{
+  if (sup::gui::IsOnCodac())
+  {
+    return {};
+  }
+
+  return GetBasicPluginList();
 }
 
 std::vector<std::string> FindSharedLibraries(const std::string &dir)
