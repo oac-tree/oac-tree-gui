@@ -100,14 +100,18 @@ bool IsSelectTextDialog(const anyvalue_t& metadata);
 bool IsMessageBoxDialog(const anyvalue_t& metadata);
 
 /**
- * @brief Returns default plugin list.
+ * @brief Returns basic plugin list.
+ *
+ * This is the list of plugins that are usually available both on CODAC and non-CODAC systems.
  */
-std::vector<std::string> GetDefaultPluginList();
+std::vector<std::string> GetBasicPluginList();
 
 /**
  * @brief Returns default plugin list.
+ *
+ * This is the list of plugins that are usually available both on CODAC and non-CODAC systems.
  */
-std::vector<std::string> GetDefaultPluginFileNames();
+std::vector<std::string> GetBasicPluginFileNames();
 
 /**
  * @brief Converts the name of the plugin to library file name.

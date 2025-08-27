@@ -34,7 +34,7 @@ void InitTests(int argc, char **argv)
   ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
 
-  DomainLibraryLoader loader(GetDefaultPluginFileNames());
+  DomainLibraryLoader loader(GetBasicPluginFileNames());
 
   LoadOacTreeItems();
 }

@@ -108,7 +108,7 @@ bool IsSequencerControlPluginAvailable()
       domainconstants::kWaitForConditionInstructionType);  // simplified check
 }
 
-std::vector<std::string> GetDefaultPluginList()
+std::vector<std::string> GetBasicPluginList()
 {
   static const std::vector<std::string> kPluginList = {
       domainconstants::kEpicsCAPluginName,         domainconstants::kEpicsPVXSPluginName,
@@ -119,10 +119,10 @@ std::vector<std::string> GetDefaultPluginList()
   return kPluginList;
 }
 
-std::vector<std::string> GetDefaultPluginFileNames()
+std::vector<std::string> GetBasicPluginFileNames()
 {
   std::vector<std::string> result;
-  for (const auto& name : GetDefaultPluginList())
+  for (const auto& name : GetBasicPluginList())
   {
     result.push_back(GetPluginFileName(name));
   }

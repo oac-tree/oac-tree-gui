@@ -111,7 +111,7 @@ inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::LoadPluginFile
   UpdateObjectTypeRegistry(domainconstants::kCorePluginName);
   for (const auto& name : plugin_file_names)
   {
-    std::cout << "XXX " << name << std::endl;
+    std::cout << "LoadPluginFiles XXX " << name << std::endl;
     m_library_loader.LoadLibrary(name);
     UpdateObjectTypeRegistry(GetPluginNameFromFileName(name));
   }

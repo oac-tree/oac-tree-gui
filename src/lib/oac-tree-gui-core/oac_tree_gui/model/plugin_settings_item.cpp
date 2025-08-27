@@ -39,7 +39,7 @@ PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
   dir_list_property.SetText(GetDefaultPluginDirList());
 
   auto &plugin_list_property = AddProperty<TextEditItem>(constants::kPluginListProperty);
-  plugin_list_property.SetText(GetDefaultPluginList());
+  plugin_list_property.SetText(GetBasicPluginList());
 }
 
 std::string PluginSettingsItem::GetStaticType()
