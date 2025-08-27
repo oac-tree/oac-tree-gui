@@ -70,6 +70,11 @@ public:
 
   /**
    * @brief Returns the list of plugin names.
+   *
+   * Plugin names can be given in mixed format:
+   * 1) The plugin name can have no prefix "lib" and no suffixes ".so" or ".dylib". In this case the
+   * necessary previx/suffix will be added.
+   * 2) The plugin name can be the absolute path to the plugin file.
    */
   std::vector<std::string> GetPluginList() const;
 

@@ -28,21 +28,65 @@
 
 #include <mvvm/utils/string_utils.h>
 
+#include <filesystem>
+
 namespace oac_tree_gui
 {
+
+namespace
+{
+
+/**
+ * @brief Returns the list of shared libraries found in the list of given folders.
+ */
+std::vector<std::string> FindSharedLibrariesInDirList(const std::vector<std::string> &dir_list)
+{
+  std::vector<std::string> result;
+  for (const auto &dir : dir_list)
+  {
+    const auto file_names = FindSharedLibraries(dir);
+    result.insert(result.end(), file_names.begin(), file_names.end());
+  }
+  return result;
+}
+
+/**
+ * @brief Creates the shared library file name from the plugin name.
+ *
+ * If plugin name contains a path already, will return as it is.
+ */
+std::vector<std::string> GetSharedLibrariesFromPluginNames(
+    const std::vector<std::string> &plugin_names)
+{
+  std::vector<std::string> result;
+  for (const auto &name : plugin_names)
+  {
+    if (std::filesystem::path(name).has_parent_path())
+    {
+      result.push_back(name);
+    }
+    else
+    {
+      result.push_back(GetPluginFileName(name));
+    }
+  }
+  return result;
+}
+
+}  // namespace
 
 PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
 {
   SetDisplayName("Plugin Settings");
 
-  { // property to hold plugin directory list
+  {  // property to hold plugin directory list
     auto &property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
     const auto dir_list = GetDefaultPluginDirList();
     property.SetText(dir_list);
     property.SetEditorEnabled(!dir_list.empty());
   }
 
-  { // property to hold plugin name list
+  {  // property to hold plugin name list
     auto &property = AddProperty<TextEditItem>(constants::kPluginListProperty);
     const auto dir_list = GetDefaultPluginList();
     property.SetText(dir_list);
@@ -105,20 +149,14 @@ std::vector<std::string> GetPluginFileNames(const PluginSettingsItem &item)
   std::vector<std::string> result;
   if (item.UsePluginDirList())
   {
-    for (const auto &dir : item.GetPluginDirList())
-    {
-      const auto file_names = FindSharedLibraries(dir);
-      result.insert(result.end(), file_names.begin(), file_names.end());
-    }
+    const auto libs = FindSharedLibrariesInDirList(item.GetPluginDirList());
+    result.insert(result.end(), libs.begin(), libs.end());
   }
 
   if (item.UsePluginList())
   {
-    const auto plugin_names = item.GetPluginList();
-    for (const auto &name : plugin_names)
-    {
-      result.push_back(GetPluginFileName(name));
-    }
+    const auto libs = GetSharedLibrariesFromPluginNames(item.GetPluginList());
+    result.insert(result.end(), libs.begin(), libs.end());
   }
 
   return result;

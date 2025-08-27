@@ -147,6 +147,37 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyList)
   EXPECT_TRUE(GetPluginFileNames(item).empty());
 }
 
+TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForListContainingPath)
+{
+  const std::vector<std::string> expected_names({"/home/user/libA.so", "/home/user/libB.so"});
+  PluginSettingsItem item;
+  item.SetUsePluginDirList(false);
+  item.SetPluginList(expected_names);
+
+  item.SetUsePluginList(true);
+  EXPECT_EQ(GetPluginFileNames(item), expected_names);
+
+  item.SetUsePluginList(false);
+  EXPECT_TRUE(GetPluginFileNames(item).empty());
+}
+
+TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForListContainingMixtureOfPluginNamesAndFileNames)
+{
+  PluginSettingsItem item;
+  item.SetUsePluginDirList(false);
+  item.SetPluginList({domainconstants::kEpicsCAPluginName, "/home/user/libA.so",
+                      domainconstants::kEpicsPVXSPluginName});
+
+  item.SetUsePluginList(true);
+  const std::vector<std::string> expected_file_names = {
+      GetPluginFileName(domainconstants::kEpicsCAPluginName), "/home/user/libA.so",
+      GetPluginFileName(domainconstants::kEpicsPVXSPluginName)};
+  EXPECT_EQ(GetPluginFileNames(item), expected_file_names);
+
+  item.SetUsePluginList(false);
+  EXPECT_TRUE(GetPluginFileNames(item).empty());
+}
+
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForDirListAndFileList)
 {
   PluginSettingsItem item;
