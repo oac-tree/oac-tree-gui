@@ -111,11 +111,9 @@ bool IsSequencerControlPluginAvailable()
 std::vector<std::string> GetBasicPluginList()
 {
   static const std::vector<std::string> kPluginList = {
-      domainconstants::kEpicsCAPluginName,         domainconstants::kEpicsPVXSPluginName,
-      domainconstants::kControlPluginName,         domainconstants::kSupConfigPluginName,
-      domainconstants::kSupPulseCounterPluginName, domainconstants::kMathExprPluginName,
-      domainconstants::kSupTimingPluginName,       domainconstants::kSystemPluginName,
-      domainconstants::kStringPluginName};
+      domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName,
+      domainconstants::kControlPluginName, domainconstants::kMathExprPluginName,
+      domainconstants::kSystemPluginName,  domainconstants::kStringPluginName};
   return kPluginList;
 }
 
