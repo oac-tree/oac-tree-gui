@@ -30,6 +30,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
+#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -131,8 +132,8 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
   item.SetUsePluginDirList(true);
   item.SetUsePluginList(false);
 
-  EXPECT_EQ(GetPluginFileNames(item),
-            std::vector<std::string>({file_name_a, file_name_b, file_name_c}));
+  EXPECT_TRUE(HaveSameElements(GetPluginFileNames(item),
+                               std::vector<std::string>({file_name_a, file_name_b, file_name_c})));
 
   item.SetUsePluginDirList(false);
   EXPECT_TRUE(GetPluginFileNames(item).empty());
@@ -169,7 +170,7 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForDirListAndFileList)
   const std::vector<std::string> expected_file_names = {
       file_name_a, GetPluginFileName(domainconstants::kEpicsCAPluginName),
       GetPluginFileName(domainconstants::kEpicsPVXSPluginName)};
-  EXPECT_EQ(GetPluginFileNames(item), expected_file_names);
+  EXPECT_TRUE(HaveSameElements(GetPluginFileNames(item), expected_file_names));
 }
 
 }  // namespace oac_tree_gui::test
