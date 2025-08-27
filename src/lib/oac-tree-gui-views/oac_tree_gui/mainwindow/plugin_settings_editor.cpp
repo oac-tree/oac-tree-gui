@@ -58,6 +58,30 @@ std::string GetLoadedPluginTextPresentation(
   return mvvm::utils::VectorToString(loaded_plugin_lines, "\n");
 }
 
+QString GetPluginDirListDescription()
+{
+  return QString(
+      "# Specify plugin directories here, one per line.\n"
+      "# Directories are searched in the order they are listed.\n"
+      "# Lines starting with '#' are treated as comments and ignored.\n"
+      "\n"
+      "/home/user/my_plugins\n"
+      "/usr/lib/oac-tree/plugins");
+}
+
+QString GetPluginListDescription()
+{
+  return QString(
+      "# Specify plugin filenames here, one per line.\n"
+      "# Lines starting with '#' are treated as comments and ignored.\n"
+      "# Suffixes lib and .so will be added automatically if missing.\n"
+      "# If the file name contains a path, the name will be used as it is.\n"
+      "\n"
+      "liboac_tree_example_plugin.so\n"
+      "oac_tree_another_plugin\n"
+      "/opt/sofware/lib/oac-tree/plugins/liboac_tree_another_plugin.so");
+}
+
 }  // namespace
 
 PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService &plugin_service,
@@ -141,13 +165,8 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDirListLayout()
   result->addLayout(h_layout.release());
   result->addWidget(m_dir_list_edit);
 
-  m_dir_list_edit->setPlaceholderText(
-      "# Specify plugin directories here, one per line.\n"
-      "# Directories are searched in the order they are listed.\n"
-      "# Lines starting with '#' are treated as comments and ignored.\n"
-      "\n"
-      "/home/user/my_plugins\n"
-      "/usr/lib/oac-tree/plugins");
+  m_dir_list_edit->setPlaceholderText(GetPluginDirListDescription());
+  m_dir_list_edit->setToolTip(GetPluginDirListDescription());
 
   return result;
 }
@@ -168,13 +187,8 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
   result->addLayout(h_layout.release());
   result->addWidget(m_plugin_list_edit);
 
-  m_plugin_list_edit->setPlaceholderText(
-      "# Specify plugin filenames here, one per line.\n"
-      "# Lines starting with '#' are treated as comments and ignored.\n"
-      "# If the file name doesn't contain a path, system standard paths can be used\n"
-      "\n"
-      "liboac_tree_example_plugin.so\n"
-      "/opt/sofware/lib/oac-tree/plugins/liboac_tree_another_plugin.so");
+  m_plugin_list_edit->setPlaceholderText(GetPluginListDescription());
+  m_plugin_list_edit->setToolTip(GetPluginListDescription());
 
   return result;
 }
