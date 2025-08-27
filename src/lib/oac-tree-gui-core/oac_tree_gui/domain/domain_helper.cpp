@@ -119,6 +119,14 @@ std::vector<std::string> GetBasicPluginList()
   return kPluginList;
 }
 
+std::vector<std::string> GetSupPluginList()
+{
+  static const std::vector<std::string> kPluginList = {domainconstants::kSupConfigPluginName,
+                                                       domainconstants::kSupPulseCounterPluginName,
+                                                       domainconstants::kSupTimingPluginName};
+  return kPluginList;
+}
+
 std::vector<std::string> GetBasicPluginFileNames()
 {
   std::vector<std::string> result;

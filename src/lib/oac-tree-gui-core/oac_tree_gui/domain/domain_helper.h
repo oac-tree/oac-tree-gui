@@ -107,6 +107,11 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata);
 std::vector<std::string> GetBasicPluginList();
 
 /**
+ * @brief Returns plugin list available only on CODAC systems.
+ */
+std::vector<std::string> GetSupPluginList();
+
+/**
  * @brief Returns default plugin list.
  *
  * This is the list of plugins that are usually available both on CODAC and non-CODAC systems.
