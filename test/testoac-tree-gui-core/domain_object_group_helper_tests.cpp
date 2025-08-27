@@ -18,12 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/domain/domain_object_group_helper.h"
+
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/domain/domain_object_group_helper.h"
 
 namespace oac_tree_gui::test
 {
@@ -52,9 +52,6 @@ TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
   objects.emplace_back("config1");
   registry.Update(domainconstants::kSupConfigPluginName, objects);
 
-  objects.emplace_back("timing1");
-  registry.Update(domainconstants::kSupTimingPluginName, objects);
-
   objects.emplace_back("pulse-counter1");
   registry.Update(domainconstants::kSupPulseCounterPluginName, objects);
 
@@ -65,7 +62,7 @@ TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
   // validating name registration according to groups
   auto group_info = CreateInstructionTypeGroups(registry);
 
-  ASSERT_EQ(group_info.size(), 7);
+  ASSERT_EQ(group_info.size(), 6);
   EXPECT_EQ(group_info.at(0).group_name, kCoreGroup);
   EXPECT_EQ(group_info.at(0).object_names, std::vector<std::string>({"core1", "core2"}));
 
@@ -78,14 +75,11 @@ TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
   EXPECT_EQ(group_info.at(3).group_name, kControlGroup);
   EXPECT_EQ(group_info.at(3).object_names, std::vector<std::string>({"control1"}));
 
-  EXPECT_EQ(group_info.at(4).group_name, kTimingGroup);
-  EXPECT_EQ(group_info.at(4).object_names, std::vector<std::string>({"timing1"}));
+  EXPECT_EQ(group_info.at(4).group_name, kSupGroup);
+  EXPECT_EQ(group_info.at(4).object_names, std::vector<std::string>({"config1"}));
 
-  EXPECT_EQ(group_info.at(5).group_name, kConfigGroup);
-  EXPECT_EQ(group_info.at(5).object_names, std::vector<std::string>({"config1"}));
-
-  EXPECT_EQ(group_info.at(6).group_name, kMiscGroup);
-  EXPECT_EQ(group_info.at(6).object_names, std::vector<std::string>({"pulse-counter1"}));
+  EXPECT_EQ(group_info.at(5).group_name, kMiscGroup);
+  EXPECT_EQ(group_info.at(5).object_names, std::vector<std::string>({"pulse-counter1"}));
 }
 
 }  // namespace oac_tree_gui::test

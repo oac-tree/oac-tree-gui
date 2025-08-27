@@ -37,8 +37,7 @@ const std::string kCoreGroup = "Core";
 const std::string kMathGroup = "Math";
 const std::string kEPICSGroup = "EPICS";
 const std::string kControlGroup = "Control";
-const std::string kTimingGroup = "Timing";
-const std::string kConfigGroup = "SUP Configuration";
+const std::string kSupGroup = "SUP";
 const std::string kMiscGroup = "Miscellaneous";
 
 /**
