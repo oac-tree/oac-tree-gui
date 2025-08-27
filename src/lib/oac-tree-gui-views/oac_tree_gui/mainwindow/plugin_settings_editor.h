@@ -27,7 +27,7 @@
 
 #include <memory>
 
-class QTextEdit;
+class QPlainTextEdit;
 class QCheckBox;
 class QLayout;
 class QLabel;
@@ -83,10 +83,10 @@ private:
   QLabel* m_description{nullptr};
 
   QCheckBox* m_dir_list_checkbox{nullptr};
-  QTextEdit* m_dir_list_edit{nullptr};
+  QPlainTextEdit* m_dir_list_edit{nullptr};
 
   QCheckBox* m_plugin_list_checkbox{nullptr};
-  QTextEdit* m_plugin_list_edit{nullptr};
+  QPlainTextEdit* m_plugin_list_edit{nullptr};
 
   std::unique_ptr<TextEditController> m_dir_list_controller;
   std::unique_ptr<TextEditController> m_plugin_list_controller;

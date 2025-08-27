@@ -25,7 +25,7 @@
 
 #include <QObject>
 
-class QTextEdit;
+class QPlainTextEdit;
 class QCheckBox;
 
 namespace oac_tree_gui
@@ -37,7 +37,7 @@ namespace oac_tree_gui
 struct TextControllerContext
 {
   QCheckBox* check_box{nullptr};
-  QTextEdit* text_edit{nullptr};
+  QPlainTextEdit* text_edit{nullptr};
 };
 
 class TextEditItem;

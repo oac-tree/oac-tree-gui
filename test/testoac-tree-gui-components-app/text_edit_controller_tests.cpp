@@ -31,7 +31,7 @@
 
 #include <QCheckBox>
 #include <QSignalSpy>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 namespace oac_tree_gui::test
 {
@@ -52,7 +52,7 @@ public:
   }
 
   QCheckBox m_check_box;
-  QTextEdit m_text_edit;
+  QPlainTextEdit m_text_edit;
   mvvm::ApplicationModel m_model;
   TextEditItem* m_text_edit_item{nullptr};
   using mock_listener_t = ::testing::StrictMock<mvvm::test::MockItemListener>;
@@ -103,7 +103,7 @@ TEST_F(TextEditControllerTest, UpdateWidgetOnItemChange)
   EXPECT_EQ(m_text_edit.toPlainText(), QString());
 
   const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
-  const QSignalSpy spy_text_edit(&m_text_edit, &QTextEdit::textChanged);
+  const QSignalSpy spy_text_edit(&m_text_edit, &QPlainTextEdit::textChanged);
 
   m_text_edit_item->SetEditorEnabled(false);
 
@@ -125,7 +125,7 @@ TEST_F(TextEditControllerTest, UpdateItemOnTextEditChange)
   controller->SetItem(m_text_edit_item);
 
   const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
-  const QSignalSpy spy_text_edit(&m_text_edit, &QTextEdit::textChanged);
+  const QSignalSpy spy_text_edit(&m_text_edit, &QPlainTextEdit::textChanged);
 
   mock_listener_t widget(m_text_edit_item);
   EXPECT_CALL(widget, OnPropertyChanged(::testing::_)).Times(1);
@@ -134,7 +134,7 @@ TEST_F(TextEditControllerTest, UpdateItemOnTextEditChange)
 line2
 )RAW"};
 
-  m_text_edit.setText(expected_text);
+  m_text_edit.setPlainText(expected_text);
   EXPECT_EQ(spy_text_edit.count(), 1);
   EXPECT_EQ(spy_check_box.count(), 0);
   EXPECT_EQ(m_text_edit_item->GetText(), std::vector<std::string>({"line1", "line2"}));
@@ -146,7 +146,7 @@ TEST_F(TextEditControllerTest, UpdateItemOnCheckBoxChange)
   controller->SetItem(m_text_edit_item);
 
   const QSignalSpy spy_check_box(&m_check_box, &QCheckBox::stateChanged);
-  const QSignalSpy spy_text_edit(&m_text_edit, &QTextEdit::textChanged);
+  const QSignalSpy spy_text_edit(&m_text_edit, &QPlainTextEdit::textChanged);
 
   mock_listener_t widget(m_text_edit_item);
   EXPECT_CALL(widget, OnPropertyChanged(::testing::_)).Times(1);

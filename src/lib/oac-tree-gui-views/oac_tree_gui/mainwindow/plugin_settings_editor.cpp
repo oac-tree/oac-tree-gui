@@ -34,7 +34,7 @@
 #include <QCheckBox>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -66,9 +66,9 @@ PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService &plugin_service,
     , m_plugin_service(plugin_service)
     , m_description(new QLabel)
     , m_dir_list_checkbox(new QCheckBox)
-    , m_dir_list_edit(new QTextEdit)
+    , m_dir_list_edit(new QPlainTextEdit)
     , m_plugin_list_checkbox(new QCheckBox)
-    , m_plugin_list_edit(new QTextEdit)
+    , m_plugin_list_edit(new QPlainTextEdit)
     , m_dir_list_controller(std::make_unique<TextEditController>(
           TextControllerContext{m_dir_list_checkbox, m_dir_list_edit}))
     , m_plugin_list_controller(std::make_unique<TextEditController>(

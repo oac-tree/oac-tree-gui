@@ -26,7 +26,7 @@
 #include <mvvm/utils/string_utils.h>
 
 #include <QCheckBox>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 namespace oac_tree_gui
 {
@@ -100,7 +100,7 @@ void TextEditController::SetQtConnected()
   };
 
   *m_text_edit_connection =
-      QObject::connect(m_context.text_edit, &QTextEdit::textChanged, on_text_changed);
+      QObject::connect(m_context.text_edit, &QPlainTextEdit::textChanged, on_text_changed);
 
   auto on_checkstate_changed = [this](int state)
   {
