@@ -40,6 +40,26 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+/**
+ * @brief Returns multi-line string representing loaded plugins information.
+ */
+std::string GetLoadedPluginTextPresentation(
+    const std::vector<std::pair<std::string, bool>> &plugin_info)
+{
+  std::vector<std::string> loaded_plugin_lines;
+  for (const auto &info : plugin_info)
+  {
+    const std::string load_result = info.second ? "[Loaded]" : "[Failed]";
+    loaded_plugin_lines.push_back(load_result + "  " + info.first);
+  }
+  return mvvm::utils::VectorToString(loaded_plugin_lines, "\n");
+}
+
+}  // namespace
+
 PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService &plugin_service,
                                            QWidget *parent_widget)
     : sup::gui::SessionItemWidget(parent_widget)
@@ -92,10 +112,11 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()
   label->setFont(font);
   result->addWidget(label);
 
-  QString label_text = QString(
-                           "Define custom plugin directories and/or plugin filenames to be used by "
-                           "the oac-tree application. Check currently loaded plugins %1.")
-                           .arg(mvvm::utils::ClickableText("here"));
+  const QString label_text =
+      QString(
+          "Define custom plugin directories and/or plugin filenames to be used by "
+          "the oac-tree application. Check currently loaded plugins %1.")
+          .arg(mvvm::utils::ClickableText("here"));
 
   m_description->setWordWrap(true);
   m_description->setText(label_text);
@@ -139,7 +160,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
   auto h_layout = std::make_unique<QHBoxLayout>();
   h_layout->addWidget(m_plugin_list_checkbox);
 
-  QString label_text = "Load custom plugin using filenames";
+  const QString label_text = "Load custom plugin using filenames";
   h_layout->addWidget(new QLabel(label_text));
 
   h_layout->addStretch(1);
@@ -160,17 +181,10 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
 
 void PluginSettingsEditor::SummonLoadedPluginDialog()
 {
-  std::vector<std::string> loaded_plugin_lines;
-  for (const auto &info : m_plugin_service.GetPluginLoadInfo())
-  {
-    std::string load_result = info.second ? "[Loaded]" : "[Failed]";
-    loaded_plugin_lines.push_back(load_result + "  " + info.first);
-  }
-
   sup::gui::MessageEvent message;
   message.title = "Loaded Plugins";
   message.text = "Following plugins have been loaded on the application startup:";
-  message.detailed = mvvm::utils::VectorToString(loaded_plugin_lines, "\n");
+  message.detailed = GetLoadedPluginTextPresentation(m_plugin_service.GetPluginLoadInfo());
 
   sup::gui::DetailedMessageBox box(message, this);
   auto font = box.GetTextEdit()->font();
