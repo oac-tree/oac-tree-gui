@@ -48,17 +48,18 @@ TEST_F(PluginsSettingsItemTest, PluginSettingsItemInitialState)
 {
   const PluginSettingsItem item;
 
-  EXPECT_TRUE(item.UsePluginDirList());
-  EXPECT_TRUE(item.UsePluginList());
-
   if (sup::gui::IsOnCodac())
   {
     EXPECT_EQ(item.GetPluginDirList(),
               std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"}));
+    EXPECT_TRUE(item.UsePluginDirList());
+    EXPECT_FALSE(item.UsePluginList());
   }
   else
   {
     EXPECT_TRUE(item.GetPluginDirList().empty());
+    EXPECT_FALSE(item.UsePluginDirList());
+    EXPECT_TRUE(item.UsePluginList());
   }
 }
 
@@ -104,15 +105,6 @@ TEST_F(PluginsSettingsItemTest, PluginListProperty)
 
   item.SetPluginList({});
   EXPECT_TRUE(item.GetPluginList().empty());
-}
-
-TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForEmptyItem)
-{
-  PluginSettingsItem item;
-  item.SetUsePluginDirList(false);
-  EXPECT_FALSE(GetPluginFileNames(item).empty());
-  item.SetUsePluginDirList(true);
-  EXPECT_FALSE(GetPluginFileNames(item).empty());
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)

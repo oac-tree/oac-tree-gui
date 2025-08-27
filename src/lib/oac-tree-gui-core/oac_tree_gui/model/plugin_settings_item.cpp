@@ -35,11 +35,19 @@ PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
 {
   SetDisplayName("Plugin Settings");
 
-  auto &dir_list_property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
-  dir_list_property.SetText(GetDefaultPluginDirList());
+  { // property to hold plugin directory list
+    auto &property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
+    const auto dir_list = GetDefaultPluginDirList();
+    property.SetText(dir_list);
+    property.SetEditorEnabled(!dir_list.empty());
+  }
 
-  auto &plugin_list_property = AddProperty<TextEditItem>(constants::kPluginListProperty);
-  plugin_list_property.SetText(GetBasicPluginList());
+  { // property to hold plugin name list
+    auto &property = AddProperty<TextEditItem>(constants::kPluginListProperty);
+    const auto dir_list = GetDefaultPluginList();
+    property.SetText(dir_list);
+    property.SetEditorEnabled(!dir_list.empty());
+  }
 }
 
 std::string PluginSettingsItem::GetStaticType()
