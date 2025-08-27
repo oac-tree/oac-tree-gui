@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_COMPONENTS_PLUGIN_SETTINGS_TEXT_CONTROLLER_H_
-#define OAC_TREE_GUI_COMPONENTS_PLUGIN_SETTINGS_TEXT_CONTROLLER_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_TEXT_EDIT_CONTROLLER_H_
+#define OAC_TREE_GUI_COMPONENTS_TEXT_EDIT_CONTROLLER_H_
 
 #include <mvvm/signals/item_controller.h>
 
@@ -53,6 +53,12 @@ class TextEditController : public mvvm::ItemController<TextEditItem>
 {
 public:
   explicit TextEditController(const TextControllerContext& context);
+  ~TextEditController() override;
+
+  TextEditController(const TextEditController&) = delete;
+  TextEditController& operator=(const TextEditController&) = delete;
+  TextEditController(TextEditController&&) = delete;
+  TextEditController& operator=(TextEditController&&) = delete;
 
 protected:
   void Subscribe() override;
@@ -83,4 +89,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_COMPONENTS_PLUGIN_SETTINGS_TEXT_CONTROLLER_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_TEXT_EDIT_CONTROLLER_H_

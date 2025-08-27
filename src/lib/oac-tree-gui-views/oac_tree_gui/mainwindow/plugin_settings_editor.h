@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_MAINWINDOW_PLUGIN_SETTINGS_EDITOR_H_
 
 #include "oac_tree_gui/domain/i_domain_plugin_service.h"
+
 #include <sup/gui/mainwindow/session_item_widget.h>
 
 #include <memory>
@@ -46,12 +47,18 @@ class PluginSettingsEditor : public sup::gui::SessionItemWidget
   Q_OBJECT
 
 public:
-  explicit PluginSettingsEditor(IDomainPluginService& plugin_service, QWidget* parent_widget = nullptr);
+  explicit PluginSettingsEditor(IDomainPluginService& plugin_service,
+                                QWidget* parent_widget = nullptr);
   ~PluginSettingsEditor() override;
+
+  PluginSettingsEditor(const PluginSettingsEditor&) = delete;
+  PluginSettingsEditor& operator=(const PluginSettingsEditor&) = delete;
+  PluginSettingsEditor(PluginSettingsEditor&&) = delete;
+  PluginSettingsEditor& operator=(PluginSettingsEditor&&) = delete;
 
   void SetItem(mvvm::SessionItem* item) override;
 
-private:  
+private:
   void SetPluginSettingsItem(PluginSettingsItem* item);
 
   /**
@@ -81,8 +88,8 @@ private:
   QCheckBox* m_plugin_list_checkbox{nullptr};
   QTextEdit* m_plugin_list_edit{nullptr};
 
-  std::unique_ptr<TextEditController> m_dir_list_controller{nullptr};
-  std::unique_ptr<TextEditController> m_plugin_list_controller{nullptr};
+  std::unique_ptr<TextEditController> m_dir_list_controller;
+  std::unique_ptr<TextEditController> m_plugin_list_controller;
 };
 
 }  // namespace oac_tree_gui

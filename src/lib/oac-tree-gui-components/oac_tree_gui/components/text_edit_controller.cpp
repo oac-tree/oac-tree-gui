@@ -31,6 +31,9 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
 /**
  * @brief Returns multiline Qt string made of separate std::strings.
  */
@@ -43,6 +46,8 @@ QString GetText(const std::vector<std::string>& lines)
   }
   return result;
 }
+
+}  // namespace
 
 TextEditController::TextEditController(const TextControllerContext& context)
     : m_context(context)
@@ -59,6 +64,8 @@ TextEditController::TextEditController(const TextControllerContext& context)
     throw RuntimeException("QTextEdit is not initialized");
   }
 }
+
+TextEditController::~TextEditController() = default;
 
 void TextEditController::Subscribe()
 {
@@ -109,8 +116,13 @@ void TextEditController::SetQtConnected()
     m_do_not_update_widgets = false;
   };
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
+  *m_checkbox_connection =
+      QObject::connect(m_context.check_box, &QCheckBox::stateChanged, on_checkstate_changed);
+#else
   *m_checkbox_connection =
       QObject::connect(m_context.check_box, &QCheckBox::checkStateChanged, on_checkstate_changed);
+#endif
 }
 
 void TextEditController::SetQtDisonnected()
