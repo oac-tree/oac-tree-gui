@@ -63,7 +63,7 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
 
   auto variable_item = ::oac_tree_gui::CreateVariableInfoItem(info);
 
-  EXPECT_EQ(variable_item->GetType(), VariableInfoItem::GetStaticType());
+  EXPECT_EQ(variable_item->GetType(), mvvm::GetTypeName<VariableInfoItem>());
   EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
 

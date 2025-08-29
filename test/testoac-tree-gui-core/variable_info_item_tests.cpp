@@ -92,7 +92,7 @@ TEST_F(VariableInfoItemTest, InitFromDomainInfoBeforeSetup)
   EXPECT_EQ(item.GetDisplayName(), expected_name);
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(item.GetType(), VariableInfoItem::GetStaticType());
+  EXPECT_EQ(item.GetType(), mvvm::GetTypeName<VariableInfoItem>());
   if (itemconstants::kProvideVariableInfoInitialValue)
   {
     EXPECT_NE(item.GetAnyValueItem(), nullptr);

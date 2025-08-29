@@ -28,26 +28,30 @@
 
 #include <gtest/gtest.h>
 
+namespace
+{
+class TestItem : public oac_tree_gui::JobItem
+{
+public:
+  TestItem() : JobItem("TestItem") {}
+
+  std::unique_ptr<SessionItem> Clone() const override { return std::make_unique<TestItem>(*this); }
+};
+
+}  // namespace
+
+template <>
+struct mvvm::item_traits<TestItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "TestItem"; }
+};
+
 namespace oac_tree_gui::test
 {
 
 //! Tests for JobItem class.
-
 class JobItemTest : public ::testing::Test
 {
-public:
-  class TestItem : public JobItem
-  {
-  public:
-    TestItem() : JobItem("TestItem") {}
-
-    static std::string GetStaticType() { return "TestItem"; }
-
-    std::unique_ptr<SessionItem> Clone() const override
-    {
-      return std::make_unique<TestItem>(*this);
-    }
-  };
 };
 
 TEST_F(JobItemTest, JobItem)

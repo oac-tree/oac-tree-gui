@@ -78,8 +78,6 @@ FileVariableItem::FileVariableItem()
 {
 }
 
-static std::string GetStaticType();
-
 std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone() const
 {
   return std::make_unique<FileVariableItem>(*this);

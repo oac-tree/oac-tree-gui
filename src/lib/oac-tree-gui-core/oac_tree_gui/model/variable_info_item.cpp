@@ -32,12 +32,7 @@
 namespace oac_tree_gui
 {
 
-VariableInfoItem::VariableInfoItem() : VariableItem(GetStaticType()) {}
-
-std::string VariableInfoItem::GetStaticType()
-{
-  return "VariableInfoItem";
-}
+VariableInfoItem::VariableInfoItem() : VariableItem(mvvm::GetTypeName<VariableInfoItem>()) {}
 
 void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& info)
 {
@@ -64,7 +59,7 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
       }
       else
       {
-        (void) SetProperty(attr_name, attr_value);
+        (void)SetProperty(attr_name, attr_value);
       }
     }
   }
