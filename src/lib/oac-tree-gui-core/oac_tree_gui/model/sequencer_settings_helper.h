@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H
-#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H
+#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H_
+#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H_
 
 #include <string>
 #include <vector>
@@ -56,4 +56,4 @@ std::vector<std::string> GetDefaultPluginList();
 std::vector<std::string> FindSharedLibraries(const std::string& dir);
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H
+#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H_

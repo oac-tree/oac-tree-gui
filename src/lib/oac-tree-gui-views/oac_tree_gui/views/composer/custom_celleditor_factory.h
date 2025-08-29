@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_CUSTOM_CELLEDITOR_FACTORY_H
-#define OAC_TREE_GUI_VIEWS_COMPOSER_CUSTOM_CELLEDITOR_FACTORY_H
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_CUSTOM_CELLEDITOR_FACTORY_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_CUSTOM_CELLEDITOR_FACTORY_H_
 
 #include <mvvm/editors/default_editor_factory.h>
 
@@ -71,4 +71,4 @@ bool IsVariableNameRelatedCell(const QModelIndex& index);
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_CUSTOM_CELLEDITOR_FACTORY_H
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_CUSTOM_CELLEDITOR_FACTORY_H_

@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_GUI_MODEL_SETTINGS_MODEL_H_
-#define SUP_GUI_MODEL_SETTINGS_MODEL_H_
+#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_
+#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_
 
 #include <sup/gui/model/settings_item.h>
 
@@ -78,4 +78,4 @@ inline T* SequencerSettingsModel::Get() const
 
 }  // namespace oac_tree_gui
 
-#endif  // SUP_GUI_MODEL_SETTINGS_MODEL_H_
+#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_

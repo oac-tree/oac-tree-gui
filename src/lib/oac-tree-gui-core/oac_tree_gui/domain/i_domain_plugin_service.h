@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_I_DOMAIN_PLUGIN_SERVICE_H_
-#define OAC_TREE_GUI_I_DOMAIN_PLUGIN_SERVICE_H_
+#ifndef OAC_TREE_GUI_DOMAIN_I_DOMAIN_PLUGIN_SERVICE_H_
+#define OAC_TREE_GUI_DOMAIN_I_DOMAIN_PLUGIN_SERVICE_H_
 
 #include <optional>
 #include <string>
@@ -69,4 +69,4 @@ public:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_I_DOMAIN_PLUGIN_SERVICE_H_
+#endif  // OAC_TREE_GUI_DOMAIN_I_DOMAIN_PLUGIN_SERVICE_H_

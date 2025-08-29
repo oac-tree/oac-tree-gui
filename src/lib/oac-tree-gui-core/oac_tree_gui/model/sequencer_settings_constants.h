@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
-#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
+#ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_CONSTANTS_H_
+#define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_CONSTANTS_H_
 
 //! @file
 //! Collection of constants related to the global application settings. These constants are used as
@@ -43,4 +43,4 @@ constexpr auto kPluginListProperty = "kPluginListProperty";
 
 }  // namespace oac_tree_gui::constants
 
-#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTNG_CONSTANTS_H_
+#endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_CONSTANTS_H_

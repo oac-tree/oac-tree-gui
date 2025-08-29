@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_MODEL_TEXT_EDIT_ITEM_H
-#define OAC_TREE_GUI_MODEL_TEXT_EDIT_ITEM_H
+#ifndef OAC_TREE_GUI_MODEL_TEXT_EDIT_ITEM_H_
+#define OAC_TREE_GUI_MODEL_TEXT_EDIT_ITEM_H_
 
 #include <mvvm/model/compound_item.h>
 
@@ -88,4 +88,4 @@ struct item_traits<oac_tree_gui::TextEditItem>
 
 }  // namespace mvvm
 
-#endif  // OAC_TREE_GUI_MODEL_TEXT_EDIT_ITEM_H
+#endif  // OAC_TREE_GUI_MODEL_TEXT_EDIT_ITEM_H_

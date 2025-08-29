@@ -69,4 +69,4 @@ active_filter_t CreateInstructionIdentityFilter();
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENTS_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_DOMAIN_EVENT_HELPER_H_

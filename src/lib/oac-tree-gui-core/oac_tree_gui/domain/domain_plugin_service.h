@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_DOMAIN_PLUGIN_SERVICE_H_
-#define OAC_TREE_GUI_DOMAIN_PLUGIN_SERVICE_H_
+#ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_PLUGIN_SERVICE_H_
+#define OAC_TREE_GUI_DOMAIN_DOMAIN_PLUGIN_SERVICE_H_
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
@@ -137,4 +137,4 @@ inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::UpdateObjectTy
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_DOMAIN_PLUGIN_SERVICE_H_
+#endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_PLUGIN_SERVICE_H_
