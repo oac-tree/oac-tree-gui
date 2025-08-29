@@ -36,8 +36,6 @@ class WorkspaceItem : public mvvm::CompoundItem
 public:
   WorkspaceItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   std::vector<VariableItem*> GetVariables() const;

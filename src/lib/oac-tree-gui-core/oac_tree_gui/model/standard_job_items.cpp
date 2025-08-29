@@ -39,12 +39,7 @@ const std::string kFileName = "kFileName";
 // LocalJobItem
 // ------------------------------------------------------------------------------------------------
 
-LocalJobItem::LocalJobItem() : JobItem(GetStaticType()) {}
-
-std::string LocalJobItem::GetStaticType()
-{
-  return "LocalJob";
-}
+LocalJobItem::LocalJobItem() : JobItem(mvvm::GetTypeName<LocalJobItem>()) {}
 
 std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 {
@@ -55,14 +50,9 @@ std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 // ImportedJobItem
 // ------------------------------------------------------------------------------------------------
 
-ImportedJobItem::ImportedJobItem() : JobItem(GetStaticType())
+ImportedJobItem::ImportedJobItem() : JobItem(mvvm::GetTypeName<ImportedJobItem>())
 {
   RegisterTag(mvvm::TagInfo(kImportedProcedure, 0, 1, {mvvm::GetTypeName<ProcedureItem>()}));
-}
-
-std::string ImportedJobItem::GetStaticType()
-{
-  return "ImportedJob";
 }
 
 std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
@@ -74,18 +64,13 @@ std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 // RemoteJobItem
 // ------------------------------------------------------------------------------------------------
 
-RemoteJobItem::RemoteJobItem() : JobItem(GetStaticType())
+RemoteJobItem::RemoteJobItem() : JobItem(mvvm::GetTypeName<RemoteJobItem>())
 {
   AddProperty(kJobIndex, std::size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
 
   AddProperty(kServerName, std::string())
       .SetDisplayName("Server name")
       .SetToolTip("Remote server name");
-}
-
-std::string RemoteJobItem::GetStaticType()
-{
-  return "RemoteJob";
 }
 
 std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone() const
@@ -100,7 +85,7 @@ std::size_t RemoteJobItem::GetRemoteJobIndex() const
 
 void RemoteJobItem::SetRemoteJobIndex(std::size_t value)
 {
-  (void) SetProperty(kJobIndex, value);
+  (void)SetProperty(kJobIndex, value);
 }
 
 std::string RemoteJobItem::GetServerName() const
@@ -110,27 +95,16 @@ std::string RemoteJobItem::GetServerName() const
 
 void RemoteJobItem::SetServerName(const std::string &name)
 {
-  (void) SetProperty(kServerName, name);
-}
-
-std::vector<std::string> GetJobItemTypes()
-{
-  return {LocalJobItem::GetStaticType(), ImportedJobItem::GetStaticType(),
-          RemoteJobItem::GetStaticType(), FileBasedJobItem::GetStaticType()};
+  (void)SetProperty(kServerName, name);
 }
 
 // ------------------------------------------------------------------------------------------------
 // FileBasedJobItem
 // ------------------------------------------------------------------------------------------------
 
-FileBasedJobItem::FileBasedJobItem() : JobItem(GetStaticType())
+FileBasedJobItem::FileBasedJobItem() : JobItem(mvvm::GetTypeName<FileBasedJobItem>())
 {
   AddProperty(kFileName, std::string()).SetDisplayName("File name");
-}
-
-std::string FileBasedJobItem::GetStaticType()
-{
-  return "FileBasedJob";
 }
 
 std::unique_ptr<mvvm::SessionItem> FileBasedJobItem::Clone() const
@@ -145,7 +119,13 @@ std::string FileBasedJobItem::GetFileName() const
 
 void FileBasedJobItem::SetFileName(const std::string &value)
 {
-  (void) SetProperty(kFileName, value);
+  (void)SetProperty(kFileName, value);
+}
+
+std::vector<std::string> GetJobItemTypes()
+{
+  return {mvvm::GetTypeName<LocalJobItem>(), mvvm::GetTypeName<ImportedJobItem>(),
+          mvvm::GetTypeName<RemoteJobItem>(), mvvm::GetTypeName<FileBasedJobItem>()};
 }
 
 // ------------------------------------------------------------------------------------------------

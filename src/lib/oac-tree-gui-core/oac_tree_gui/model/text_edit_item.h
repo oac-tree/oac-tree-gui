@@ -38,8 +38,6 @@ class TextEditItem : public mvvm::CompoundItem
 public:
   TextEditItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   /**
@@ -79,5 +77,15 @@ std::string GetSettingStringFromVector(const std::vector<std::string>& vec);
 std::vector<std::string> GetVectorFromSettingString(const std::string& str);
 
 }  // namespace oac_tree_gui
+
+namespace mvvm
+{
+template <>
+struct item_traits<oac_tree_gui::TextEditItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "TextEdit"; }
+};
+
+}  // namespace mvvm
 
 #endif  // OAC_TREE_GUI_MODEL_TEXT_EDIT_ITEM_H

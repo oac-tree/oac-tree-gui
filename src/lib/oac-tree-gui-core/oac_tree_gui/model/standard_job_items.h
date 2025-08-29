@@ -40,8 +40,6 @@ class LocalJobItem : public JobItem
 public:
   LocalJobItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -58,8 +56,6 @@ public:
   static inline const std::string kImportedProcedure = "kImportedProcedure";
   ImportedJobItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -71,8 +67,6 @@ class RemoteJobItem : public JobItem
 {
 public:
   RemoteJobItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -107,8 +101,6 @@ class FileBasedJobItem : public JobItem
 {
 public:
   FileBasedJobItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

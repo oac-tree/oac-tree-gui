@@ -34,8 +34,6 @@ class PluginSettingsItem : public mvvm::CompoundItem
 public:
   PluginSettingsItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   /**
@@ -90,5 +88,16 @@ public:
 std::vector<std::string> GetPluginFileNames(const PluginSettingsItem& item);
 
 }  // namespace oac_tree_gui
+
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::PluginSettingsItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "PluginSettings"; }
+};
+
+}  // namespace mvvm
 
 #endif  // OAC_TREE_GUI_MODEL_PLUGIN_SETTINGS_ITEM_H_

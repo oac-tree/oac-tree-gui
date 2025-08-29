@@ -75,7 +75,7 @@ std::vector<std::string> GetSharedLibrariesFromPluginNames(
 
 }  // namespace
 
-PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
+PluginSettingsItem::PluginSettingsItem() : CompoundItem(mvvm::GetTypeName<PluginSettingsItem>())
 {
   SetDisplayName("Plugin Settings");
 
@@ -92,11 +92,6 @@ PluginSettingsItem::PluginSettingsItem() : CompoundItem(GetStaticType())
     property.SetText(dir_list);
     property.SetEditorEnabled(!dir_list.empty());
   }
-}
-
-std::string PluginSettingsItem::GetStaticType()
-{
-  return "PluginSettings";
 }
 
 std::unique_ptr<mvvm::SessionItem> PluginSettingsItem::Clone() const

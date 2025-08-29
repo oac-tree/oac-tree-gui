@@ -260,7 +260,7 @@ void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
   sup::gui::SettingsEditorDialog dialog(GetSettings());
   dialog.RegisterWidget(
-      PluginSettingsItem::GetStaticType(), [this]()
+      mvvm::GetTypeName<PluginSettingsItem>(), [this]()
       { return std::make_unique<PluginSettingsEditor>(m_context.GetDomainPluginService()); });
   if (dialog.exec() == QDialog::Accepted)
   {

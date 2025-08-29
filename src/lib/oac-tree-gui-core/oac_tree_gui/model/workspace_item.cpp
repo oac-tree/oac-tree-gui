@@ -29,14 +29,9 @@ namespace oac_tree_gui
 
 static inline const std::string kVariableItems = "kVariableItems";
 
-WorkspaceItem::WorkspaceItem() : CompoundItem(GetStaticType())
+WorkspaceItem::WorkspaceItem() : CompoundItem(mvvm::GetTypeName<WorkspaceItem>())
 {
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
-}
-
-std::string WorkspaceItem::GetStaticType()
-{
-  return "Workspace";
 }
 
 std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone() const

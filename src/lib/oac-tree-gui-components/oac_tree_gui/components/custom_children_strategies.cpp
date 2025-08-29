@@ -39,7 +39,7 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
     const mvvm::SessionItem *item) const
 {
   // workspace shows all its variables
-  if (item->GetType() == WorkspaceItem::GetStaticType())
+  if (item->GetType() == mvvm::GetTypeName<WorkspaceItem>())
   {
     return item->GetAllItems();
   }

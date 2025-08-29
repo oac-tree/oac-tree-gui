@@ -56,7 +56,7 @@ TEST_F(StandardJobItemsTest, FileBasedJobItem)
   FileBasedJobItem item;
 
   EXPECT_TRUE(item.GetFileName().empty());
-  EXPECT_EQ(item.GetDisplayName(), FileBasedJobItem::GetStaticType());
+  EXPECT_EQ(item.GetDisplayName(), mvvm::GetTypeName<FileBasedJobItem>());
 
   item.SetFileName("abc");
   EXPECT_EQ(item.GetFileName(), std::string("abc"));

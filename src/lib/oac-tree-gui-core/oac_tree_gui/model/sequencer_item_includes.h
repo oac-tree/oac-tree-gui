@@ -35,6 +35,7 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/text_edit_item.h>
 #include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/model/variable_info_item.h>

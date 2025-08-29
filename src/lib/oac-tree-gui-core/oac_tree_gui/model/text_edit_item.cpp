@@ -35,7 +35,7 @@ namespace
 constexpr auto kSeparator = ";";
 }
 
-TextEditItem::TextEditItem() : CompoundItem(GetStaticType())
+TextEditItem::TextEditItem() : CompoundItem(mvvm::GetTypeName<TextEditItem>())
 {
   // properties for plugin folders
   (void)AddProperty(constants::kUseTextEditor, true)
@@ -45,11 +45,6 @@ TextEditItem::TextEditItem() : CompoundItem(GetStaticType())
   (void)AddProperty(constants::kTextEditorContent, std::string())
       .SetDisplayName("Text editor")
       .SetToolTip("String representing the content of the text editor");
-}
-
-std::string TextEditItem::GetStaticType()
-{
-  return "TextEdit";
 }
 
 std::unique_ptr<mvvm::SessionItem> TextEditItem::Clone() const
