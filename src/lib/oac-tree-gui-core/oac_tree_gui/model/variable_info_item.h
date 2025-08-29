@@ -43,13 +43,23 @@ public:
   void InitFromDomainInfo(const sup::oac_tree::VariableInfo& info);
 
 private:
-  void InitFromDomainImpl(const variable_t* variable,
-                                  const anytype_registry_t* registry) override;
+  void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry) override;
   void SetupDomainImpl(variable_t* variable) const override;
 
   void SetupFromDomain(const sup::oac_tree::VariableInfo& info);
 };
 
 }  // namespace oac_tree_gui
+
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::VariableInfoItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "VariableInfoItem"; }
+};
+
+}  // namespace mvvm
 
 #endif  // OAC_TREE_GUI_MODEL_VARIABLE_INFO_ITEM_H_

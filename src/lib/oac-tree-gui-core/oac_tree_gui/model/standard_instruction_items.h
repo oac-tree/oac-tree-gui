@@ -114,4 +114,39 @@ public:
 
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::IncludeItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Include"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::ParallelSequenceItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "ParallelSequence"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::RepeatItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Repeat"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::SequenceItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Sequence"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::WaitItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Wait"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_STANDARD_INSTRUCTION_ITEMS_H_

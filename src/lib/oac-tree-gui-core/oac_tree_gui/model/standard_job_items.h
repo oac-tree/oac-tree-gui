@@ -167,4 +167,33 @@ std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name,
                                                 int tick_timeout_msec = 0);
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::LocalJobItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "LocalJob"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::ImportedJobItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "ImportedJob"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::RemoteJobItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "RemoteJob"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::FileBasedJobItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "FileBasedJob"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_STANDARD_JOB_ITEMS_H_

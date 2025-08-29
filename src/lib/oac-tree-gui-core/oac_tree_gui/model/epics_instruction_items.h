@@ -167,4 +167,45 @@ public:
 
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::ChannelAccessReadInstructionItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "ChannelAccessRead"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::ChannelAccessWriteInstructionItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "ChannelAccessWrite"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::PvAccessReadInstructionItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "PvAccessRead"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::PvAccessWriteInstructionItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "PvAccessWrite"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::LogInstructionItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "LogInstruction"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::RPCClientInstruction>
+{
+  static constexpr std::string_view type_name() noexcept { return "RPCClient"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_EPICS_INSTRUCTION_ITEMS_H_

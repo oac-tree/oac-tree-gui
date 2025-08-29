@@ -511,7 +511,7 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
 
   auto previous_anyvalue = GetAnyValueItem(*item);
   ASSERT_NE(previous_anyvalue, nullptr);
-  EXPECT_EQ(previous_anyvalue->GetType(), sup::gui::AnyValueEmptyItem::GetStaticType());
+  EXPECT_EQ(previous_anyvalue->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
   // item mimicking editing result
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
@@ -546,7 +546,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
 
   auto previous_anyvalue = GetAnyValueItem(*item);
   ASSERT_NE(previous_anyvalue, nullptr);
-  EXPECT_EQ(previous_anyvalue->GetType(), sup::gui::AnyValueEmptyItem::GetStaticType());
+  EXPECT_EQ(previous_anyvalue->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
   // item intentionally uninitialised to mimick item removal in the editor
   std::unique_ptr<sup::gui::AnyValueStructItem> editing_result;

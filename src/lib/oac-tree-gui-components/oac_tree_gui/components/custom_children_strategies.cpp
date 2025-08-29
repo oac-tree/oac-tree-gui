@@ -45,19 +45,20 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
   }
 
   // struct and arrays shows all children's of AnyValueItem base type
-  if (item->GetType() == sup::gui::AnyValueStructItem::GetStaticType())
+  if (item->GetType() == mvvm::GetTypeName<sup::gui::AnyValueStructItem>())
   {
     return mvvm::utils::SinglePropertyItems(*item);
   }
 
-  if (item->GetType() == sup::gui::AnyValueArrayItem::GetStaticType())
+  if (item->GetType() == mvvm::GetTypeName<sup::gui::AnyValueArrayItem>())
   {
     return mvvm::utils::SinglePropertyItems(*item);
   }
 
   // remaining items are variables, let's allow them to show struct and arrays beneath
   static const std::vector<std::string> allowed_variable_children_types = {
-      sup::gui::AnyValueStructItem::GetStaticType(), sup::gui::AnyValueArrayItem::GetStaticType()};
+      mvvm::GetTypeName<sup::gui::AnyValueStructItem>(),
+      mvvm::GetTypeName<sup::gui::AnyValueArrayItem>()};
 
   std::vector<mvvm::SessionItem *> result;
   auto children = item->GetAllItems();

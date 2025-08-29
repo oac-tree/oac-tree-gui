@@ -83,8 +83,7 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
 
     // row of should contain our struct item
     ASSERT_EQ(children.size(), 1);
-    EXPECT_EQ(children.at(0)->GetType(),
-              std::string(sup::gui::AnyValueStructItem::GetStaticType()));
+    EXPECT_EQ(children.at(0)->GetType(), mvvm::GetTypeName<sup::gui::AnyValueStructItem>());
 
     // struct has to contain only one child (no additional items representing a type
     children = strategy.GetChildren(item.GetAnyValueItem());

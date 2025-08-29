@@ -81,4 +81,15 @@ private:
 
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::UniversalVariableItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "UniversalVariable"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_UNIVERSAL_VARIABLE_ITEM_H_

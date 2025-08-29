@@ -78,4 +78,21 @@ public:
 
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::TypeRegistrationItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "TypeRegistrationItem"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::ProcedurePreambleItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "ProcedurePreamble"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_PROCEDURE_PREAMBLE_ITEMS_H_

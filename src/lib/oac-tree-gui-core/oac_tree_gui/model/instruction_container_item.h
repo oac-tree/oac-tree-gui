@@ -44,4 +44,15 @@ public:
 
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::InstructionContainerItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "InstructionContainer"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_INSTRUCTION_CONTAINER_ITEM_H_

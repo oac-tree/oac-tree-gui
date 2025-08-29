@@ -104,4 +104,39 @@ public:
 
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::ChannelAccessVariableItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "ChannelAccessClient"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::FileVariableItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "File"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::LocalVariableItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Local"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::PvAccessClientVariableItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "PvAccessClient"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::PvAccessServerVariableItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "PvAccessServer"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_STANDARD_VARIABLE_ITEMS_H_

@@ -81,4 +81,15 @@ void UpdatePluginNames(const ProcedureItem& item,
 
 }  // namespace oac_tree_gui
 
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::ProcedureItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Procedure"; }
+};
+
+}  // namespace mvvm
+
 #endif  // OAC_TREE_GUI_MODEL_PROCEDURE_ITEM_H_

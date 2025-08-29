@@ -64,7 +64,6 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::WorkspaceItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ProcedurePreambleItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::TypeRegistrationItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ProcedurePreambleItem>();
 
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::LocalJobItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ImportedJobItem>();
