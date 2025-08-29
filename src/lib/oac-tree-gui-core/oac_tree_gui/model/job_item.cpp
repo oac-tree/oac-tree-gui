@@ -39,7 +39,7 @@ JobItem::JobItem(const std::string &type) : CompoundItem(type)
   AddProperty(itemconstants::kTickTimeout, itemconstants::kDefaultTickTimeoutMsec)
       .SetDisplayName("Tick timeout");
 
-  RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::GetStaticType()}),
+  RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {mvvm::GetTypeName<ProcedureItem>()}),
               /*as_default*/ true);
 
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);

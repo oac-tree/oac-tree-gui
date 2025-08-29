@@ -35,8 +35,6 @@ class IncludeItem : public UniversalInstructionItem
 public:
   IncludeItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetFileName() const;
@@ -53,8 +51,6 @@ class ParallelSequenceItem : public UniversalInstructionItem
 {
 public:
   ParallelSequenceItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -73,8 +69,6 @@ class RepeatItem : public UniversalInstructionItem
 public:
   RepeatItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   int GetRepeatCount() const;
@@ -88,8 +82,6 @@ class SequenceItem : public UniversalInstructionItem
 public:
   SequenceItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -98,8 +90,6 @@ class WaitItem : public UniversalInstructionItem
 {
 public:
   WaitItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

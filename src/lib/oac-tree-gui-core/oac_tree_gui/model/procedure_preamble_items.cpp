@@ -33,7 +33,8 @@ namespace oac_tree_gui
 static const std::string kTypeRegistrationMode = "kTypeRegistrationMode";
 static const std::string kTypeRegistrationString = "kTypeRegistrationString";
 
-TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(GetStaticType())
+TypeRegistrationItem::TypeRegistrationItem()
+    : CompoundItem(mvvm::GetTypeName<TypeRegistrationItem>())
 {
   (void)AddProperty(kTypeRegistrationMode, mvvm::ComboProperty({"JSON file", "JSON string"}))
       .SetDisplayName("Mode");
@@ -41,11 +42,6 @@ TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(GetStaticType())
       .SetDisplayName("String")
       .SetToolTip(
           "JSON string or a filename for a file containing the JSON representation of the type");
-}
-
-std::string TypeRegistrationItem::GetStaticType()
-{
-  return "TypeRegistrationItem";
 }
 
 std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone() const
@@ -63,7 +59,7 @@ void TypeRegistrationItem::SetRegistrationMode(int value)
 {
   auto combo = Property<mvvm::ComboProperty>(kTypeRegistrationMode);
   combo.SetCurrentIndex(value);
-  (void) SetProperty(kTypeRegistrationMode, combo);
+  (void)SetProperty(kTypeRegistrationMode, combo);
 }
 
 std::string TypeRegistrationItem::GetRegistrationString() const
@@ -73,7 +69,7 @@ std::string TypeRegistrationItem::GetRegistrationString() const
 
 void TypeRegistrationItem::SetRegistrationString(const std::string &value)
 {
-  (void) SetProperty(kTypeRegistrationString, value);
+  (void)SetProperty(kTypeRegistrationString, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -83,16 +79,12 @@ void TypeRegistrationItem::SetRegistrationString(const std::string &value)
 static const std::string kTypeRegistrationContainerTag = "kTypeRegistrationContainerTag";
 static const std::string kPluginContainerTag = "kPluginContainerTag";
 
-ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(GetStaticType())
+ProcedurePreambleItem::ProcedurePreambleItem()
+    : CompoundItem(mvvm::GetTypeName<ProcedurePreambleItem>())
 {
   (void)AddBranch<mvvm::ContainerItem>(kTypeRegistrationContainerTag)
       .SetDisplayName("Type registration");
   (void)AddBranch<mvvm::ContainerItem>(kPluginContainerTag).SetDisplayName("Plugins");
-}
-
-std::string ProcedurePreambleItem::GetStaticType()
-{
-  return "ProcedurePreamble";
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone() const

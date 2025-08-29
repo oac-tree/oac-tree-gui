@@ -57,7 +57,7 @@ std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 
 ImportedJobItem::ImportedJobItem() : JobItem(GetStaticType())
 {
-  RegisterTag(mvvm::TagInfo(kImportedProcedure, 0, 1, {ProcedureItem::GetStaticType()}));
+  RegisterTag(mvvm::TagInfo(kImportedProcedure, 0, 1, {mvvm::GetTypeName<ProcedureItem>()}));
 }
 
 std::string ImportedJobItem::GetStaticType()

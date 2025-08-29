@@ -93,7 +93,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertSequenceUndoRedo)
   auto handler = CreateActionHandler(nullptr);
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
-  handler->InsertInstructionAfter(SequenceItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<SequenceItem>());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   m_model.GetCommandStack()->Undo();
@@ -175,7 +175,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
   EXPECT_TRUE(GetPluginPaths().empty());
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(2);
-  handler->InsertInstructionAfter(SequenceItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<SequenceItem>());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
   EXPECT_TRUE(GetPluginPaths().empty());
 

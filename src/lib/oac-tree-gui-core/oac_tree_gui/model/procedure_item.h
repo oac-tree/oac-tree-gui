@@ -38,8 +38,6 @@ class ProcedureItem : public mvvm::CompoundItem
 public:
   ProcedureItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   std::string GetName() const;

@@ -38,8 +38,6 @@ class TypeRegistrationItem : public mvvm::CompoundItem
 public:
   TypeRegistrationItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   int GetRegistrationMode() const;
@@ -55,8 +53,6 @@ class ProcedurePreambleItem : public mvvm::CompoundItem
 {
 public:
   ProcedurePreambleItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 

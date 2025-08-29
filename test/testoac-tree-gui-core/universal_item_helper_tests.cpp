@@ -61,7 +61,7 @@ TEST_F(UniversalItemHelperTest, AddKnownInstruction)
   auto item = InsertInstruction(domainconstants::kWaitInstructionType,
                                 procedure->GetInstructionContainer());
 
-  EXPECT_EQ(item->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<WaitItem>());
   EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }

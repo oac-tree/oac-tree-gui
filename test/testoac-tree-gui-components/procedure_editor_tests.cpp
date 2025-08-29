@@ -68,7 +68,7 @@ TEST_F(ProcedureEditorTest, InsertInstructionFromToolBox)
 
   editor.SetProcedure(m_procedure);
 
-  editor.InsertInstructionFromToolBox(QString::fromStdString(SequenceItem::GetStaticType()));
+  editor.InsertInstructionFromToolBox(QString::fromStdString(mvvm::GetTypeName<SequenceItem>()));
   EXPECT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 }
 

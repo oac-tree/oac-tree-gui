@@ -111,7 +111,7 @@ TEST_F(NodeGraphicsSceneTest, DropInstruction)
   // auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
   auto controller = CreateController();
 
-  m_scene.DropInstructionTree(SequenceItem::GetStaticType(), {expected_x, expected_y});
+  m_scene.DropInstructionTree(mvvm::GetTypeName<SequenceItem>(), {expected_x, expected_y});
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
   auto inserted_sequence = GetInstructionContainer()->GetInstructions().at(0);
 

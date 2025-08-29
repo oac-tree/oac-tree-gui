@@ -97,7 +97,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForSequence)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);
-  handler->InsertInstructionAfter(SequenceItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<SequenceItem>());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);

@@ -215,7 +215,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // validating request to select just inserted item
@@ -252,8 +252,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 
   // Wait instruction should be after Sequence instruction
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
-  EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<SequenceItem>());
+  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<WaitItem>());
 
   // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
@@ -296,7 +296,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
 
   // Wait instruction should be after Sequence instruction
   auto inserted_wait = sequence->GetInstructions().at(1);
-  EXPECT_EQ(inserted_wait->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(inserted_wait->GetType(), mvvm::GetTypeName<WaitItem>());
   EXPECT_EQ(inserted_wait->GetDisplayName(), std::string("abc"));
 
   // coordinates of the inserted instruction should be near the original one
@@ -334,7 +334,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   ASSERT_EQ(instructions.size(), 1);
 
   // Wait instruction should be after Sequence instruction
-  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // coordinates of the inserted instruction should be near the original one
@@ -397,8 +397,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
 
   // Wait instruction should be after Sequence instruction
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
-  EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<SequenceItem>());
+  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<SequenceItem>());
 
   // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();

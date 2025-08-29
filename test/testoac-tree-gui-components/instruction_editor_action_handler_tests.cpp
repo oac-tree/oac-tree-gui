@@ -130,7 +130,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // it is not possible to add instruction when no procedure is selected, expecting callback
-  EXPECT_NO_THROW(handler->InsertInstructionAfter(WaitItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>()));
 }
 
 //! Adding wait instruction.
@@ -143,11 +143,11 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(WaitItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
 
   EXPECT_EQ(reported_item, instructions.at(0));
 }
@@ -162,7 +162,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddToWrongPlaceWhenNoMessageCallbackD
   InstructionEditorActionHandler handler{context};
 
   EXPECT_THROW(
-      handler.InsertItem(SequenceItem::GetStaticType(), m_procedure->GetInstructionContainer(),
+      handler.InsertItem(mvvm::GetTypeName<SequenceItem>(), m_procedure->GetInstructionContainer(),
                          mvvm::TagIndex{"no-such-tag", 0}),
       RuntimeException);
 }
@@ -179,13 +179,13 @@ TEST_F(InstructionEditorActionHandlerTest, DropInstruction)
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // appending instruction to the container
-  handler->DropInstruction(WaitItem::GetStaticType(), {expected_x, expected_y});
+  handler->DropInstruction(mvvm::GetTypeName<WaitItem>(), {expected_x, expected_y});
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
   ASSERT_EQ(instructions.size(), 1);
   auto inserted_instruction = instructions.at(0);
-  EXPECT_EQ(inserted_instruction->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(inserted_instruction->GetType(), mvvm::GetTypeName<WaitItem>());
 
   EXPECT_EQ(reported_item, inserted_instruction);
   EXPECT_EQ(inserted_instruction->GetX(), expected_x);
@@ -224,13 +224,13 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(WaitItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   // Wait instruction should be after Sequence instruction
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::GetStaticType());
-  EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<SequenceItem>());
+  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<WaitItem>());
 
   // Check coordinates of Wait instruction. It should be placed nearby to the original
   // instruction.
@@ -248,16 +248,16 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(2);
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(WaitItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(SequenceItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<SequenceItem>());
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
-  EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<SequenceItem>());
 }
 
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
@@ -275,7 +275,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // It is not possible to add second instruction to repeat instruction, expecting warning
-  EXPECT_NO_THROW(handler->InsertInstructionAfter(WaitItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>()));
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
@@ -299,7 +299,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // inserting instruction into selected instruction
-  handler->InsertInstructionInto(WaitItem::GetStaticType());
+  handler->InsertInstructionInto(mvvm::GetTypeName<WaitItem>());
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
@@ -310,7 +310,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
 
   // Wait instruction should be after Sequence instruction
   auto instructions = sequence->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
   EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   auto universal = dynamic_cast<UniversalInstructionItem*>(instructions.at(1));
   ASSERT_NE(universal, nullptr);
@@ -335,7 +335,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // attempt to insert instruction into selected instruction, expecting callback
-  EXPECT_NO_THROW(handler->InsertInstructionInto(WaitItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->InsertInstructionInto(mvvm::GetTypeName<WaitItem>()));
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 }
 
@@ -347,7 +347,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
-  handler->InsertInstructionInto(WaitItem::GetStaticType());
+  handler->InsertInstructionInto(mvvm::GetTypeName<WaitItem>());
 }
 
 //! Remove operation when nothing is selected.
