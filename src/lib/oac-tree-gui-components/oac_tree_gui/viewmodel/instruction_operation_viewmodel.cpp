@@ -23,11 +23,11 @@
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
-#include <mvvm/viewmodel/abstract_row_strategy.h>
-#include <mvvm/viewmodel/standard_children_strategies.h>
-#include <mvvm/viewmodel/viewitem_factory.h>
-#include <mvvm/viewmodel/viewmodel_controller_factory.h>
-#include <mvvm/viewmodel/viewitem.h>
+#include <mvvm/providers/abstract_row_strategy.h>
+#include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/providers/viewitem_factory.h>
+#include <mvvm/providers/viewmodel_controller_factory.h>
+#include <mvvm/providers/viewitem.h>
 
 namespace
 {

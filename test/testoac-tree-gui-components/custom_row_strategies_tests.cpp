@@ -31,7 +31,7 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/viewmodel/viewitem.h>
+#include <mvvm/providers/viewitem.h>
 
 #include <sup/dto/anyvalue.h>
 

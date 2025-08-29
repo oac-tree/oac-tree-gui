@@ -21,8 +21,8 @@
 #include "workspace_editor_viewmodel.h"
 
 #include <oac_tree_gui/components/custom_row_strategies.h>
-#include <mvvm/viewmodel/standard_children_strategies.h>
-#include <mvvm/viewmodel/viewmodel_controller_factory.h>
+#include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/providers/viewmodel_controller_factory.h>
 
 namespace oac_tree_gui
 {

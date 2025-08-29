@@ -31,8 +31,8 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/validate_utils.h>
-#include <mvvm/viewmodel/standard_children_strategies.h>
-#include <mvvm/viewmodel/viewmodel_controller_factory.h>
+#include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/providers/viewmodel_controller_factory.h>
 
 #include <QMimeData>
 

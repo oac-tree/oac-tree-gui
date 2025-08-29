@@ -24,7 +24,7 @@
 //! @file
 //! Various strategies for instruction and workspace viewmodels.
 
-#include <mvvm/viewmodel/i_children_strategy.h>
+#include <mvvm/providers/i_children_strategy.h>
 
 namespace oac_tree_gui
 {

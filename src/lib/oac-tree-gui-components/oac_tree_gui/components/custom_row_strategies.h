@@ -24,7 +24,7 @@
 //! @file
 //! Various strategies to construct row of properties representing instructions and variables.
 
-#include <mvvm/viewmodel/abstract_row_strategy.h>
+#include <mvvm/providers/abstract_row_strategy.h>
 
 namespace oac_tree_gui
 {

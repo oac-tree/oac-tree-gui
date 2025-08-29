@@ -44,7 +44,7 @@
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/item_utils.h>
-#include <mvvm/viewmodel/qtcore_helper.h>
+#include <mvvm/providers/qtcore_helper.h>
 #include <mvvm/views/component_provider_helper.h>
 #include <mvvm/views/property_tree_view.h>
 

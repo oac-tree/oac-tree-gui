@@ -25,8 +25,8 @@
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 
 #include <mvvm/model/session_item.h>
-#include <mvvm/viewmodel/viewitem_factory.h>
-#include <mvvm/viewmodel/viewitem.h>
+#include <mvvm/providers/viewitem_factory.h>
+#include <mvvm/providers/viewitem.h>
 
 #include <QString>
 

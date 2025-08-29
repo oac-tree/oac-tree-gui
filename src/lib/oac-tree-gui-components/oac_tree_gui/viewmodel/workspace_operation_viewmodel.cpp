@@ -26,11 +26,11 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/session_item.h>
-#include <mvvm/viewmodel/standard_children_strategies.h>
-#include <mvvm/viewmodel/standard_row_strategies.h>
-#include <mvvm/viewmodel/viewmodel_controller.h>
-#include <mvvm/viewmodel/viewmodel_controller_factory.h>
-#include <mvvm/viewmodel/viewmodel_controller_impl.h>
+#include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/providers/standard_row_strategies.h>
+#include <mvvm/providers/viewmodel_controller.h>
+#include <mvvm/providers/viewmodel_controller_factory.h>
+#include <mvvm/providers/viewmodel_controller_impl.h>
 
 namespace
 {

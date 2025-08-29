@@ -28,8 +28,8 @@
 #include <sup/gui/components/tree_helper.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
-#include <mvvm/viewmodel/viewmodel_iterate_helper.h>
-#include <mvvm/viewmodel/viewmodel_utils.h>
+#include <mvvm/providers/viewmodel_iterate_helper.h>
+#include <mvvm/providers/viewmodel_utils.h>
 
 #include <QTreeView>
 

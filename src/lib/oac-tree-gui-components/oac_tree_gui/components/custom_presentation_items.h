@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_COMPONENTS_CUSTOM_PRESENTATION_ITEMS_H_
 #define OAC_TREE_GUI_COMPONENTS_CUSTOM_PRESENTATION_ITEMS_H_
 
-#include <mvvm/viewmodel/standard_presentation_items.h>
+#include <mvvm/providers/standard_presentation_items.h>
 
 namespace oac_tree_gui
 {

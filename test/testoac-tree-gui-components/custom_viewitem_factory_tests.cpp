@@ -25,7 +25,7 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 
-#include <mvvm/viewmodel/viewitem.h>
+#include <mvvm/providers/viewitem.h>
 
 #include <gtest/gtest.h>
 

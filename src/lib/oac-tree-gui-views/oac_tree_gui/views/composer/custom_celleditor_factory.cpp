@@ -25,7 +25,7 @@
 #include <mvvm/editors/string_completer_combo_editor.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
-#include <mvvm/viewmodel/viewmodel_utils.h>
+#include <mvvm/providers/viewmodel_utils.h>
 
 #include <QWidget>
 
