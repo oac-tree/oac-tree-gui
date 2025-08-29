@@ -87,7 +87,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
-  handler->AddVariable(LocalVariableItem::GetStaticType());
+  handler->AddVariable(mvvm::GetTypeName<LocalVariableItem>());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   m_model.GetCommandStack()->Undo();
@@ -111,7 +111,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
-  handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
+  handler->AddVariable(mvvm::GetTypeName<PvAccessServerVariableItem>());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // we get plugin file name in preamble
@@ -141,7 +141,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
-  handler->AddVariable(PvAccessServerVariableItem::GetStaticType());
+  handler->AddVariable(mvvm::GetTypeName<PvAccessServerVariableItem>());
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(

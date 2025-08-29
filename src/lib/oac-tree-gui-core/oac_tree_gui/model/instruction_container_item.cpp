@@ -26,15 +26,11 @@
 namespace oac_tree_gui
 {
 
-InstructionContainerItem::InstructionContainerItem() : CompoundItem(GetStaticType())
+InstructionContainerItem::InstructionContainerItem()
+    : CompoundItem(mvvm::GetTypeName<InstructionContainerItem>())
 {
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
-}
-
-std::string InstructionContainerItem::GetStaticType()
-{
-  return "InstructionContainer";
 }
 
 std::unique_ptr<mvvm::SessionItem> InstructionContainerItem::Clone() const

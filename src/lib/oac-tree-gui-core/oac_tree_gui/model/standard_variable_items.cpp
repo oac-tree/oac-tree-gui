@@ -53,18 +53,16 @@ std::string ConnectableVariableItem::GetChannel() const
 
 void ConnectableVariableItem::SetChannel(const std::string &value)
 {
-  (void) SetProperty(domainconstants::kChannelAttribute, value);
+  (void)SetProperty(domainconstants::kChannelAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // ChannelAccessVariableItem
 // ----------------------------------------------------------------------------
 
-ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(GetStaticType()) {}
-
-std::string ChannelAccessVariableItem::GetStaticType()
+ChannelAccessVariableItem::ChannelAccessVariableItem()
+    : ConnectableVariableItem(mvvm::GetTypeName<ChannelAccessVariableItem>())
 {
-  return domainconstants::kChannelAccessVariableType;
 }
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone() const
@@ -75,12 +73,12 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone() const
 // ----------------------------------------------------------------------------
 // FileVariableItem
 // ----------------------------------------------------------------------------
-FileVariableItem::FileVariableItem() : oac_tree_gui::UniversalVariableItem(GetStaticType()) {}
-
-std::string FileVariableItem::GetStaticType()
+FileVariableItem::FileVariableItem()
+    : oac_tree_gui::UniversalVariableItem(mvvm::GetTypeName<FileVariableItem>())
 {
-  return domainconstants::kFileVariableType;
 }
+
+static std::string GetStaticType();
 
 std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone() const
 {
@@ -94,18 +92,16 @@ std::string FileVariableItem::GetFileName() const
 
 void FileVariableItem::SetFileName(const std::string &name)
 {
-  (void) SetProperty(oac_tree_gui::domainconstants::kFileNameAttribute, name);
+  (void)SetProperty(oac_tree_gui::domainconstants::kFileNameAttribute, name);
 }
 
 // ----------------------------------------------------------------------------
 // LocalVariableItem
 // ----------------------------------------------------------------------------
 
-LocalVariableItem::LocalVariableItem() : oac_tree_gui::UniversalVariableItem(GetStaticType()) {}
-
-std::string LocalVariableItem::GetStaticType()
+LocalVariableItem::LocalVariableItem()
+    : oac_tree_gui::UniversalVariableItem(mvvm::GetTypeName<LocalVariableItem>())
 {
-  return domainconstants::kLocalVariableType;
 }
 
 std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone() const
@@ -122,13 +118,9 @@ std::unique_ptr<mvvm::SessionItem> PvAccessClientVariableItem::Clone() const
   return std::make_unique<PvAccessClientVariableItem>(*this);
 }
 
-PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableItem(GetStaticType())
+PvAccessClientVariableItem::PvAccessClientVariableItem()
+    : ConnectableVariableItem(mvvm::GetTypeName<PvAccessClientVariableItem>())
 {
-}
-
-std::string PvAccessClientVariableItem::GetStaticType()
-{
-  return domainconstants::kPvAccessClientVariableType;
 }
 
 // ----------------------------------------------------------------------------
@@ -140,13 +132,9 @@ std::unique_ptr<mvvm::SessionItem> PvAccessServerVariableItem::Clone() const
   return std::make_unique<PvAccessServerVariableItem>(*this);
 }
 
-PvAccessServerVariableItem::PvAccessServerVariableItem() : ConnectableVariableItem(GetStaticType())
+PvAccessServerVariableItem::PvAccessServerVariableItem()
+    : ConnectableVariableItem(mvvm::GetTypeName<PvAccessServerVariableItem>())
 {
-}
-
-std::string PvAccessServerVariableItem::GetStaticType()
-{
-  return domainconstants::kPvAccessServerVariableType;
 }
 
 }  // namespace oac_tree_gui

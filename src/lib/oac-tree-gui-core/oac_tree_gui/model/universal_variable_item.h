@@ -51,8 +51,6 @@ public:
    */
   explicit UniversalVariableItem(const std::string& item_type);
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   void SetDomainType(const std::string& domain_type) override;

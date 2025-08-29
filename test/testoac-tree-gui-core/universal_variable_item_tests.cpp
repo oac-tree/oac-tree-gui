@@ -45,7 +45,7 @@ TEST_F(UniversalVariableItemTest, InitialState)
 {
   const UniversalVariableItem item;
 
-  EXPECT_EQ(item.GetDisplayName(), UniversalVariableItem::GetStaticType());
+  EXPECT_EQ(item.GetDisplayName(), mvvm::GetTypeName<UniversalVariableItem>());
 
   const std::vector<std::string> expected_tags({itemconstants::kIsAvailable});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
@@ -126,7 +126,7 @@ TEST_F(UniversalVariableItemTest, SetDomainName)
   item.SetDomainType(domainconstants::kLocalVariableType);
 
   // different wrt test below
-  EXPECT_EQ(item.GetType(), UniversalVariableItem::GetStaticType());
+  EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalVariableItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
 
   item.SetDisplayName("abc");

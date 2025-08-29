@@ -33,8 +33,6 @@ class InstructionContainerItem : public mvvm::CompoundItem
 public:
   InstructionContainerItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   std::vector<InstructionItem*> GetInstructions() const;

@@ -166,7 +166,7 @@ TEST_F(TransformFromDomainTest, CreateUniversalVariable)
   EXPECT_NE(universal_item, nullptr);
 
   EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainVariable::Type);
-  EXPECT_EQ(universal_item->GetType(), UniversalVariableItem::GetStaticType());
+  EXPECT_EQ(universal_item->GetType(), mvvm::GetTypeName<UniversalVariableItem>());
 }
 
 TEST_F(TransformFromDomainTest, GetRunnerStatusFromDomain)

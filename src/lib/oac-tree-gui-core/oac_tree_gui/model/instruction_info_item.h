@@ -35,8 +35,6 @@ class InstructionInfoItem : public InstructionItem
 public:
   InstructionInfoItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   void InitFromDomainInfo(const sup::oac_tree::InstructionInfo& info);

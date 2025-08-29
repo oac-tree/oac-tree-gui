@@ -35,11 +35,9 @@
 namespace oac_tree_gui
 {
 
-InstructionInfoItem::InstructionInfoItem() : InstructionItem(GetStaticType()) {}
-
-std::string InstructionInfoItem::GetStaticType()
+InstructionInfoItem::InstructionInfoItem()
+    : InstructionItem(mvvm::GetTypeName<InstructionInfoItem>())
 {
-  return "InstructionInfoItem";
 }
 
 std::unique_ptr<mvvm::SessionItem> InstructionInfoItem::Clone() const
@@ -67,7 +65,8 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
     else if (attr_name == domainconstants::kShowCollapsedAttribute)
     {
       // show_collapsed came as string, need to convert it to bool
-      (void) SetProperty(domainconstants::kShowCollapsedAttribute, mvvm::utils::StringToBool(attr_value));
+      (void)SetProperty(domainconstants::kShowCollapsedAttribute,
+                        mvvm::utils::StringToBool(attr_value));
     }
 
     else
@@ -79,7 +78,7 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
       }
       else
       {
-        (void) SetProperty(attr_name, attr_value);
+        (void)SetProperty(attr_name, attr_value);
       }
     }
   }

@@ -49,8 +49,6 @@ class ChannelAccessVariableItem : public ConnectableVariableItem
 public:
   ChannelAccessVariableItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -59,8 +57,6 @@ class FileVariableItem : public oac_tree_gui::UniversalVariableItem
 {
 public:
   FileVariableItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -75,8 +71,6 @@ class LocalVariableItem : public oac_tree_gui::UniversalVariableItem
 public:
   LocalVariableItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -86,8 +80,6 @@ class PvAccessClientVariableItem : public ConnectableVariableItem
 public:
   PvAccessClientVariableItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -96,8 +88,6 @@ class PvAccessServerVariableItem : public ConnectableVariableItem
 {
 public:
   PvAccessServerVariableItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };

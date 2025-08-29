@@ -86,9 +86,9 @@ std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem &item)
 std::string GetTypeString(const std::string &item_type)
 {
   static const std::map<std::string, std::string> kNameMap = {
-      {PvAccessClientVariableItem::GetStaticType(), std::string("PVA-C")},
-      {PvAccessServerVariableItem::GetStaticType(), std::string("PVA-S")},
-      {ChannelAccessVariableItem::GetStaticType(), std::string("CA")},
+      {mvvm::GetTypeName<PvAccessClientVariableItem>(), std::string("PVA-C")},
+      {mvvm::GetTypeName<PvAccessServerVariableItem>(), std::string("PVA-S")},
+      {mvvm::GetTypeName<ChannelAccessVariableItem>(), std::string("CA")},
   };
 
   auto iter = kNameMap.find(item_type);

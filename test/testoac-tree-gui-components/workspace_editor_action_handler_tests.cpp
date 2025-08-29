@@ -103,7 +103,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // adding variable
-  EXPECT_NO_THROW(handler->AddVariable(LocalVariableItem::GetStaticType()));
+  EXPECT_NO_THROW(handler->AddVariable(mvvm::GetTypeName<LocalVariableItem>()));
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, SelectedVariables)
@@ -136,7 +136,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // adding variable
-  handler->AddVariable(LocalVariableItem::GetStaticType());
+  handler->AddVariable(mvvm::GetTypeName<LocalVariableItem>());
 
   // validating default values of just inserted variable
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
@@ -159,7 +159,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // adding another variable
-  handler->AddVariable(LocalVariableItem::GetStaticType());
+  handler->AddVariable(mvvm::GetTypeName<LocalVariableItem>());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 2);
   auto inserted_variable1 =
@@ -184,7 +184,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
   EXPECT_FALSE(handler->CanRemoveVariable());
 
   // adding variable
-  handler->AddVariable(FileVariableItem::GetStaticType());
+  handler->AddVariable(mvvm::GetTypeName<FileVariableItem>());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -204,7 +204,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // adding variable
-  handler->AddVariable(FileVariableItem::GetStaticType());
+  handler->AddVariable(mvvm::GetTypeName<FileVariableItem>());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -440,7 +440,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
   EXPECT_EQ(inserted_variable0->GetDomainType(), domainconstants::kSystemClockVariableType);
-  EXPECT_EQ(inserted_variable0->GetType(), UniversalVariableItem::GetStaticType());
+  EXPECT_EQ(inserted_variable0->GetType(), mvvm::GetTypeName<UniversalVariableItem>());
 }
 
 }  // namespace oac_tree_gui::test
