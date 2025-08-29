@@ -78,7 +78,7 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
     for (const auto& plugin_name : plugin_group_info.object_names)
     {
       auto instructions_in_plugin = type_registry.GetObjectNames(plugin_name);
-      std::copy(instructions_in_plugin.begin(), instructions_in_plugin.end(),
+      (void)std::copy(instructions_in_plugin.begin(), instructions_in_plugin.end(),
                 std::back_inserter(instructions_in_group));
     }
 
