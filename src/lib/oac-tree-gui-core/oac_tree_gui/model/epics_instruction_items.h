@@ -77,8 +77,6 @@ class ChannelAccessReadInstructionItem : public EpicsReadInstructionItem
 public:
   ChannelAccessReadInstructionItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -87,8 +85,6 @@ class ChannelAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
   ChannelAccessWriteInstructionItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 };
@@ -99,8 +95,6 @@ class PvAccessReadInstructionItem : public EpicsReadInstructionItem
 public:
   PvAccessReadInstructionItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -110,8 +104,6 @@ class PvAccessWriteInstructionItem : public EpicsWriteInstructionItem
 public:
   PvAccessWriteInstructionItem();
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 };
 
@@ -120,8 +112,6 @@ class RPCClientInstruction : public UniversalInstructionItem
 {
 public:
   RPCClientInstruction();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -147,8 +137,6 @@ class LogInstructionItem : public UniversalInstructionItem
 {
 public:
   LogInstructionItem();
-
-  static std::string GetStaticType();
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -197,7 +185,7 @@ struct item_traits<oac_tree_gui::PvAccessWriteInstructionItem>
 template <>
 struct item_traits<oac_tree_gui::LogInstructionItem>
 {
-  static constexpr std::string_view type_name() noexcept { return "LogInstruction"; }
+  static constexpr std::string_view type_name() noexcept { return "Log"; }
 };
 
 template <>

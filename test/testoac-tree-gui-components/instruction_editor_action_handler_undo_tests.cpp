@@ -116,7 +116,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfter)
   EXPECT_TRUE(GetPluginPaths().empty());
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
-  handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<PvAccessReadInstructionItem>());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   // we get plugin name in preamble
@@ -145,7 +145,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionAfterAndUnd
   EXPECT_TRUE(GetPluginPaths().empty());
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
-  handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<PvAccessReadInstructionItem>());
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(
@@ -183,7 +183,7 @@ TEST_F(InstructionEditorActionHandlerUndoTest, InsertEpicsInstructionIntoSequenc
   auto inserted_sequence = GetInstructionContainer()->GetInstructions().at(0);
   m_mock_context.m_current_selection = {inserted_sequence};
 
-  handler->InsertInstructionInto(PvAccessReadInstructionItem::GetStaticType());
+  handler->InsertInstructionInto(mvvm::GetTypeName<PvAccessReadInstructionItem>());
   ASSERT_EQ(inserted_sequence->GetInstructions().size(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({oac_tree_gui::GetPluginFileName(

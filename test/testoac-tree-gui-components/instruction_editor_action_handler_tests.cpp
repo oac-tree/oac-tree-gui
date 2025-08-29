@@ -204,7 +204,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddChoice)
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), UniversalInstructionItem::GetStaticType());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
 }
 
 //! Insertion instruction after selected instruction.
@@ -311,7 +311,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   // Wait instruction should be after Sequence instruction
   auto instructions = sequence->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::GetStaticType());
-  EXPECT_EQ(instructions.at(1)->GetType(), UniversalInstructionItem::GetStaticType());
+  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   auto universal = dynamic_cast<UniversalInstructionItem*>(instructions.at(1));
   ASSERT_NE(universal, nullptr);
   EXPECT_EQ(universal->GetDomainType(), domainconstants::kMessageInstructionType);

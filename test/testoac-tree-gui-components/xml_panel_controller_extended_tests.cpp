@@ -145,7 +145,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml2)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml3)).Times(1);
-  handler->InsertInstructionAfter(PvAccessReadInstructionItem::GetStaticType());
+  handler->InsertInstructionAfter(mvvm::GetTypeName<PvAccessReadInstructionItem>());
 
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 

@@ -138,13 +138,8 @@ void EpicsWriteInstructionItem::SetTimeout(double value)
 // ----------------------------------------------------------------------------
 
 ChannelAccessReadInstructionItem::ChannelAccessReadInstructionItem()
-    : EpicsReadInstructionItem(GetStaticType())
+    : EpicsReadInstructionItem(mvvm::GetTypeName<ChannelAccessReadInstructionItem>())
 {
-}
-
-std::string ChannelAccessReadInstructionItem::GetStaticType()
-{
-  return domainconstants::kChannelAccessReadInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone() const
@@ -157,13 +152,8 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone() con
 // ----------------------------------------------------------------------------
 
 ChannelAccessWriteInstructionItem::ChannelAccessWriteInstructionItem()
-    : EpicsWriteInstructionItem(GetStaticType())
+    : EpicsWriteInstructionItem(mvvm::GetTypeName<ChannelAccessWriteInstructionItem>())
 {
-}
-
-std::string ChannelAccessWriteInstructionItem::GetStaticType()
-{
-  return domainconstants::kChannelAccessWriteInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone() const
@@ -176,13 +166,8 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone() co
 // ----------------------------------------------------------------------------
 
 PvAccessReadInstructionItem::PvAccessReadInstructionItem()
-    : EpicsReadInstructionItem(GetStaticType())
+    : EpicsReadInstructionItem(mvvm::GetTypeName<PvAccessReadInstructionItem>())
 {
-}
-
-std::string PvAccessReadInstructionItem::GetStaticType()
-{
-  return domainconstants::kPvAccessReadInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone() const
@@ -195,13 +180,8 @@ std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone() const
 // ----------------------------------------------------------------------------
 
 PvAccessWriteInstructionItem::PvAccessWriteInstructionItem()
-    : EpicsWriteInstructionItem(GetStaticType())
+    : EpicsWriteInstructionItem(mvvm::GetTypeName<PvAccessWriteInstructionItem>())
 {
-}
-
-std::string PvAccessWriteInstructionItem::GetStaticType()
-{
-  return domainconstants::kPvAccessWriteInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone() const
@@ -213,15 +193,11 @@ std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone() const
 // RPCClientInstruction
 // ----------------------------------------------------------------------------
 
-RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(GetStaticType())
+RPCClientInstruction::RPCClientInstruction()
+    : UniversalInstructionItem(mvvm::GetTypeName<RPCClientInstruction>())
 {
   SetTimeout(1.0);
   InitDefaultAnyValue(*this);
-}
-
-std::string RPCClientInstruction::GetStaticType()
-{
-  return domainconstants::kRPCClientInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone() const
@@ -272,11 +248,9 @@ void RPCClientInstruction::SetOutput(const std::string &value)
 // LogInstructionItem
 // ----------------------------------------------------------------------------
 
-LogInstructionItem::LogInstructionItem() : UniversalInstructionItem(GetStaticType()) {}
-
-std::string LogInstructionItem::GetStaticType()
+LogInstructionItem::LogInstructionItem()
+    : UniversalInstructionItem(mvvm::GetTypeName<LogInstructionItem>())
 {
-  return domainconstants::kLogInstructionType;
 }
 
 std::unique_ptr<mvvm::SessionItem> LogInstructionItem::Clone() const

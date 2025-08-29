@@ -59,17 +59,15 @@ const std::vector<std::string> kSkipItemTagList = {oac_tree_gui::itemconstants::
 namespace oac_tree_gui
 {
 
-UniversalInstructionItem::UniversalInstructionItem() : InstructionItem(GetStaticType()) {}
+UniversalInstructionItem::UniversalInstructionItem()
+    : InstructionItem(mvvm::GetTypeName<UniversalInstructionItem>())
+{
+}
 
 UniversalInstructionItem::UniversalInstructionItem(const std::string &item_type)
     : InstructionItem(item_type)
 {
   SetDomainType(item_type);
-}
-
-std::string UniversalInstructionItem::GetStaticType()
-{
-  return "UniversalInstruction";
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const

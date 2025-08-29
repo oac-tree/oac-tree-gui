@@ -320,7 +320,7 @@ TEST_F(InstructionEditorViewModelTest, DropAggregate)
 
   auto children = container->GetInstructions();
   ASSERT_EQ(children.size(), 1);
-  EXPECT_EQ(children.at(0)->GetType(), UniversalInstructionItem::GetStaticType());
+  EXPECT_EQ(children.at(0)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(children.at(0)->GetDomainType(), domainconstants::kFallbackInstructionType);
 }
 

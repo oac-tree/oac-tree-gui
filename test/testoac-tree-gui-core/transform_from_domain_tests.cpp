@@ -152,7 +152,7 @@ TEST_F(TransformFromDomainTest, CreateUniversalInstruction)
   EXPECT_NE(universal_item, nullptr);
 
   EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainInstruction::Type);
-  EXPECT_EQ(universal_item->GetType(), UniversalInstructionItem::GetStaticType());
+  EXPECT_EQ(universal_item->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
 }
 
 TEST_F(TransformFromDomainTest, CreateUniversalVariable)

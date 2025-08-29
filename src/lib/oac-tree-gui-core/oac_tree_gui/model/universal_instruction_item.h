@@ -57,8 +57,6 @@ public:
    */
   explicit UniversalInstructionItem(const std::string& item_type);
 
-  static std::string GetStaticType();
-
   std::unique_ptr<SessionItem> Clone() const override;
 
   /**

@@ -80,7 +80,7 @@ TEST_F(UniversalItemHelperTest, AddUnknownInstruction)
   auto item =
       InsertInstruction(UnknownDomainInstruction::Type, procedure->GetInstructionContainer());
 
-  EXPECT_EQ(item->GetType(), UniversalInstructionItem::GetStaticType());
+  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }

@@ -43,7 +43,7 @@ TEST_F(UniversalInstructionItemTest, InitialState)
 {
   const UniversalInstructionItem item;
 
-  EXPECT_EQ(item.GetDisplayName(), UniversalInstructionItem::GetStaticType());
+  EXPECT_EQ(item.GetDisplayName(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
   EXPECT_TRUE(item.GetDomainType().empty());
 }
@@ -118,7 +118,7 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   item.SetDomainType(domainconstants::kWaitInstructionType);
 
   // different wrt test above
-  EXPECT_EQ(item.GetType(), UniversalInstructionItem::GetStaticType());
+  EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
   (void) item.SetProperty(domainconstants::kNameAttribute, "abc");
