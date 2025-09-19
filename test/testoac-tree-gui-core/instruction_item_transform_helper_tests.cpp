@@ -130,7 +130,7 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemTreeForSequenceI
   auto sequence_item = dynamic_cast<SequenceItem*>(item_tree.root.get());
   ASSERT_NE(sequence_item, nullptr);
   ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
-  auto wait_items = sequence_item->GetItems<WaitItem>(mvvm::TagIndex::kDefaultTag);
+  auto wait_items = sequence_item->GetItems<WaitItem>(mvvm::TagIndex::GetDefaultTag());
   ASSERT_EQ(wait_items.size(), 2);
   EXPECT_EQ(wait_items[0]->GetTimeout(), 42);
   EXPECT_EQ(wait_items[1]->GetTimeout(), 43);
@@ -168,7 +168,7 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionInfoItemTreeForSeque
   auto sequence_item = dynamic_cast<InstructionInfoItem*>(item_tree.root.get());
   ASSERT_NE(sequence_item, nullptr);
   ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
-  auto wait_items = sequence_item->GetItems<InstructionInfoItem>(mvvm::TagIndex::kDefaultTag);
+  auto wait_items = sequence_item->GetItems<InstructionInfoItem>(mvvm::TagIndex::GetDefaultTag());
   ASSERT_EQ(wait_items.size(), 2);
 
   EXPECT_EQ(item_tree.indexes[0], sequence_item);
@@ -196,13 +196,13 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionTreeFromRootInstruct
   auto repeat_item = dynamic_cast<RepeatItem*>(item_tree.root.get());
   ASSERT_NE(repeat_item, nullptr);
   ASSERT_EQ(repeat_item->GetInstructions().size(), 1);
-  auto sequence_item =
-      dynamic_cast<SequenceItem*>(repeat_item->GetItem<SequenceItem>(mvvm::TagIndex::kDefaultTag));
+  auto sequence_item = dynamic_cast<SequenceItem*>(
+      repeat_item->GetItem<SequenceItem>(mvvm::TagIndex::GetDefaultTag()));
   ASSERT_NE(sequence_item, nullptr);
 
   ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
 
-  auto wait_items = sequence_item->GetItems<WaitItem>(mvvm::TagIndex::kDefaultTag);
+  auto wait_items = sequence_item->GetItems<WaitItem>(mvvm::TagIndex::GetDefaultTag());
   ASSERT_EQ(wait_items.size(), 2);
   EXPECT_EQ(wait_items[0]->GetTimeout(), 42);
   EXPECT_EQ(wait_items[1]->GetTimeout(), 43);

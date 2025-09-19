@@ -186,7 +186,7 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
   auto inverter = InsertInstruction(domainconstants::kInverterInstructionType, container);
 
   auto sequence = inverter->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  EXPECT_EQ(inverter->GetItem<SequenceItem>({"", 0}), sequence);
+  EXPECT_EQ(inverter->GetItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
   auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   auto procedure = std::make_unique<procedure_t>();
@@ -220,7 +220,7 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
 
   auto repeater = container->InsertItem<RepeatItem>(mvvm::TagIndex::Append());
   auto sequence = repeater->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  EXPECT_EQ(repeater->GetItem<SequenceItem>({"", 0}), sequence);
+  EXPECT_EQ(repeater->GetItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;

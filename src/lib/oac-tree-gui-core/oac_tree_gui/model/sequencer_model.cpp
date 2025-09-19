@@ -45,7 +45,7 @@ mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
 
 std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
 {
-  return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::TagIndex::kDefaultTag);
+  return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::TagIndex::GetDefaultTag());
 }
 
 void SequencerModel::CreateUntitledProcedure()
