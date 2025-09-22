@@ -154,6 +154,11 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
   auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 0};
+
+  auto predicate2 = [this, &variables, &expected_value]()
+  { return test::IsEqual(*variables.at(0), expected_value); };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 100));
+
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 

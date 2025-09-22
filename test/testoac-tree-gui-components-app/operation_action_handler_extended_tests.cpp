@@ -206,6 +206,9 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   handler->OnStartJobRequest();
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 200));
 
+  EXPECT_TRUE(QTest::qWaitFor(
+      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 200));
+
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);
 
