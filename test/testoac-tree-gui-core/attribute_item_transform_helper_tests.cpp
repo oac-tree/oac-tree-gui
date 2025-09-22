@@ -78,10 +78,10 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   // validating that CompoundItem got new property item
   EXPECT_TRUE(mvvm::utils::HasTag(item, attribute_name));
 
-  std::vector<std::string> expected_tags({attribute_name});
+  const std::vector<std::string> expected_tags({attribute_name});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
-  auto property_item = item.GetItem({attribute_name});
+  auto property_item = item.GetItem(attribute_name);
   ASSERT_EQ(property_item, property);
   EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
   auto attribute_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item);
@@ -91,7 +91,7 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   EXPECT_EQ(property_item->Data<int>(), 0);
 
   // Checking that we can convert AnyValueScalarItem property back to AnyValue
-  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type};
+  const sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type};
 
   auto anyvalue_item = item.GetItem<sup::gui::AnyValueScalarItem>(attr.GetName());
   auto any_value = sup::gui::GetAnyValueFromScalar(anyvalue_item->Data());
@@ -121,7 +121,7 @@ TEST_F(AttributeItemTransformHelperTest, AddMandatoryPropertyFromDefinition)
 
 TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
 {
-  workspace_t ws;
+  const workspace_t ws;
   {  // case when variable was setup
     auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
     domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
@@ -304,7 +304,7 @@ TEST_F(AttributeItemTransformHelperTest, HasAttributeDefinition)
 
 TEST_F(AttributeItemTransformHelperTest, SetLocalVariableJsonAttributesFromItem)
 {
-  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
@@ -325,7 +325,7 @@ TEST_F(AttributeItemTransformHelperTest, SetChannelAccessVariableJsonAttributesF
     GTEST_SKIP();
   }
 
-  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   auto variable = CreateDomainVariable(domainconstants::kChannelAccessVariableType);
@@ -346,7 +346,7 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromItem)
     GTEST_SKIP();
   }
 
-  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   // PvAccessWriteInstruction should get attributes
@@ -372,7 +372,7 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromEmptyIt
     GTEST_SKIP();
   }
 
-  sup::dto::AnyValue anyvalue;
+  const sup::dto::AnyValue anyvalue;
   auto anyvalue_item = sup::gui::CreateAnyValueItem(anyvalue);
 
   // PvAccessWriteInstruction should get attributes
