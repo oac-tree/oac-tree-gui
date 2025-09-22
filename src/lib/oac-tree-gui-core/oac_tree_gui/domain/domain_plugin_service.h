@@ -35,8 +35,6 @@ class DomainObjectTypeRegistry;
  * @brief The DomainPluginService class is a main service to load bunch of plugins, and track their
  * content.
  *
- * Fully constructed
- *
  * @tparam LibraryLoaderT The type of the loader that knows how to load a library.
  * @taparm ObjectRegistryT The type of the object registry.
  */

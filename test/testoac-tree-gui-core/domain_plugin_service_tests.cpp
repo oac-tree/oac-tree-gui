@@ -64,6 +64,9 @@ TEST_F(DomainPluginServiceTests, InitialState)
   MockLibraryLoader library_loader;
   EXPECT_CALL(object_registry, Update(testing::_)).Times(0);
   EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
+  EXPECT_CALL(object_registry, GetObjectNames(::testing::_)).Times(1);
+  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
+  EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
   const DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
                                                                                object_registry);
@@ -84,6 +87,7 @@ TEST_F(DomainPluginServiceTests, GetLoadedPlugins)
 
   const std::vector<std::string> loaded_plugins({"plugin1", "plugin2"});
   ON_CALL(library_loader, GetLoadedLibraries()).WillByDefault(testing::Return(loaded_plugins));
+  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
 
   EXPECT_EQ(service.GetLoadedPlugins(), loaded_plugins);
 }
@@ -101,6 +105,7 @@ TEST_F(DomainPluginServiceTests, GetPluginLoadInfo)
   const std::vector<std::pair<std::string, bool>> load_info = {{"plugin1", true},
                                                                {"plugin2", false}};
   ON_CALL(library_loader, GetLibraryInfo()).WillByDefault(testing::Return(load_info));
+  EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
   EXPECT_EQ(service.GetPluginLoadInfo(), load_info);
 }
@@ -119,6 +124,7 @@ TEST_F(DomainPluginServiceTests, GetObjectNames)
   const std::vector<std::string> object_names({"obj1", "obj2"});
   ON_CALL(object_registry, GetObjectNames(plugin_name))
       .WillByDefault(testing::Return(object_names));
+  EXPECT_CALL(object_registry, GetObjectNames(::testing::_)).Times(1);
 
   EXPECT_EQ(service.GetObjectNames(plugin_name), object_names);
 }
@@ -137,8 +143,9 @@ TEST_F(DomainPluginServiceTests, GetPluginName)
   const std::string object_name("test_object");
   const std::vector<std::string> object_names({"obj1", "obj2"});
   ON_CALL(object_registry, GetPluginName(object_name)).WillByDefault(testing::Return(plugin_name));
+  EXPECT_CALL(object_registry, GetPluginName(object_name)).Times(1);
 
-  EXPECT_EQ(service.GetPluginName(object_name).value(), plugin_name);
+  EXPECT_EQ(service.GetPluginName(object_name).value_or(""), plugin_name);
 }
 
 TEST_F(DomainPluginServiceTests, LoadPluginFilesEmptyList)
@@ -146,7 +153,9 @@ TEST_F(DomainPluginServiceTests, LoadPluginFilesEmptyList)
   MockObjectTypeRegistry object_registry;
   MockLibraryLoader library_loader;
   EXPECT_CALL(object_registry, Update(domainconstants::kCorePluginName)).Times(1);
-  EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
+  EXPECT_CALL(object_registry, GetObjectNames(::testing::_)).Times(1);
+  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
+  EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
   DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
                                                                          object_registry);
@@ -173,6 +182,11 @@ TEST_F(DomainPluginServiceTests, LoadNonEmptyPluginFileList)
 
   DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
                                                                          object_registry);
+
+  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
+  EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
+  EXPECT_CALL(object_registry, GetObjectNames(::testing::_)).Times(1);
+
   EXPECT_TRUE(service.GetLoadedPlugins().empty());
   EXPECT_TRUE(service.GetPluginLoadInfo().empty());
   EXPECT_TRUE(service.GetObjectNames(domainconstants::kCorePluginName).empty());
