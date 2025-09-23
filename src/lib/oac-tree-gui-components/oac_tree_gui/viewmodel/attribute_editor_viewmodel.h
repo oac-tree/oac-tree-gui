@@ -37,7 +37,7 @@ namespace oac_tree_gui
  *
  * @details The attribute is represented by name, value, and typename.
  */
-class MVVM_VIEWMODEL_EXPORT AttributeEditorViewModel : public mvvm::ViewModel
+class AttributeEditorViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 

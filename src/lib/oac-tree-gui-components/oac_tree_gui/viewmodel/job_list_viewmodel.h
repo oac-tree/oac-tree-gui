@@ -35,7 +35,7 @@ namespace oac_tree_gui
  * @brief The JobListViewModel class is a view model to show JobItem with two columns: displayName
  * and status.
  */
-class MVVM_VIEWMODEL_EXPORT JobListViewModel : public mvvm::ViewModel
+class JobListViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 

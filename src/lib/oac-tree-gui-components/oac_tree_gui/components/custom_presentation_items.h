@@ -30,7 +30,7 @@ namespace oac_tree_gui
  * @brief The ChannelPresentationItem class is used to show IsAvailable status of InstructionItem
  * together with channel name.
  */
-class MVVM_VIEWMODEL_EXPORT ChannelPresentationItem : public mvvm::DataPresentationItem
+class ChannelPresentationItem : public mvvm::DataPresentationItem
 {
 public:
   /**

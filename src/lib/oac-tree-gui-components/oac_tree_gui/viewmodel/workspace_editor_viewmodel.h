@@ -38,7 +38,7 @@ namespace oac_tree_gui
  * The variable is represented by type and editable name, with variable attributes in a branch
  * below.
  */
-class MVVM_VIEWMODEL_EXPORT WorkspaceEditorViewModel : public mvvm::ViewModel
+class WorkspaceEditorViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 

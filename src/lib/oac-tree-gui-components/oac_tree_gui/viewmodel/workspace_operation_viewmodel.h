@@ -37,7 +37,7 @@ namespace oac_tree_gui
  *
  * The WorkspaceItem is represented by name, value, type, channel and is_connected flag.
  */
-class MVVM_VIEWMODEL_EXPORT WorkspaceOperationViewModel : public mvvm::ViewModel
+class WorkspaceOperationViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 

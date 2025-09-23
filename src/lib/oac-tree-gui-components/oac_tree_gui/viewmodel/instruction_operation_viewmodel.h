@@ -33,7 +33,7 @@ namespace oac_tree_gui
 
 //! View model to show instruction tree with three columns: display_name, name and status.
 
-class MVVM_VIEWMODEL_EXPORT InstructionOperationViewModel : public mvvm::ViewModel
+class InstructionOperationViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 

@@ -40,7 +40,7 @@ class InstructionEditorContext;
  *
  * It allows to drag-and-drop instructions, and move instructions from one parent to another.
  */
-class MVVM_VIEWMODEL_EXPORT InstructionEditorViewModel : public mvvm::ViewModel
+class InstructionEditorViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 
