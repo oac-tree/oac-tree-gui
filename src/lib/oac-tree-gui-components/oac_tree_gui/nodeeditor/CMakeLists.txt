@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   align_utils.h
   connectable_instruction_adapter.cpp
   connectable_instruction_adapter.h
+  connectable_instruction_adapter_v2.cpp
+  connectable_instruction_adapter_v2.h
   connectable_view.cpp
   connectable_view.h
   connectable_view_factory.cpp
@@ -24,9 +26,9 @@ target_sources(${library_name} PRIVATE
   port_info.h
   position_strategy.cpp
   position_strategy.h
+  scene_constants.h
   scene_utils.cpp
   scene_utils.h
-  scene_constants.h
   sequencer_align_utils.cpp
   sequencer_align_utils.h
 )
