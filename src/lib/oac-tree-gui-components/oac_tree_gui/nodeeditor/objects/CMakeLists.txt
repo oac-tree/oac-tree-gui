@@ -5,4 +5,6 @@ target_sources(${library_name} PRIVATE
   node_connection_controller.h
   node_graphics_scene.cpp
   node_graphics_scene.h
+  node_graphics_scene_v2.cpp
+  node_graphics_scene_v2.h
 )
