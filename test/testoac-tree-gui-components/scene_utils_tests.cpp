@@ -80,24 +80,6 @@ TEST_F(SceneUtilsTest, VectorOfPointsEquality)
                == points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.01)}));
 }
 
-TEST_F(SceneUtilsTest, GetPositions)
-{
-  const double width{10};
-  auto positions = GetPositions(QPointF(1.0, 2.0), 1, width);
-  EXPECT_TRUE(positions == points_t({QPointF(1.0, 2.0)}));
-
-  positions = GetPositions(QPointF(1.0, 2.0), 2, width);
-  ASSERT_EQ(positions.size(), 2);
-  EXPECT_EQ(positions[0], QPointF(-4.0, 2.0));
-  EXPECT_EQ(positions[1], QPointF(6.0, 2.0));
-
-  positions = GetPositions(QPointF(1.0, 2.0), 3, width);
-  ASSERT_EQ(positions.size(), 3);
-  EXPECT_EQ(positions[0], QPointF(-9.0, 2.0));
-  EXPECT_EQ(positions[1], QPointF(1.0, 2.0));
-  EXPECT_EQ(positions[2], QPointF(11.0, 2.0));
-}
-
 TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
 {
   EXPECT_EQ(InsertSpaceAtCamelCase(""), std::string(""));

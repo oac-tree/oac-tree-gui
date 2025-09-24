@@ -25,7 +25,6 @@
 //! Collection of utility functions for graphics scene.
 
 #include <string>
-#include <vector>
 
 class QGradient;
 class QColor;
@@ -70,18 +69,6 @@ QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect);
  * @return
  */
 QRectF ConnectableViewRectangle();
-
-/**
- * @brief Returns vector of points symmetrically distributed in a horizontal direction around
- * reference point.
- *
- * @param reference Coordinate of the reference point.
- * @param n_points Number of points to generate.
- * @param width Width of the horizontal area.
- *
- * @return Coordinates of points.
- */
-std::vector<QPointF> GetPositions(const QPointF& reference, int n_points, double width);
 
 /**
  * @brief Returns vertical size of the alignment grid.

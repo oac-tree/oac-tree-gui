@@ -88,23 +88,6 @@ QRectF ConnectableViewRectangle()
   return result;
 }
 
-std::vector<QPointF> GetPositions(const QPointF& reference, int n_points, double width)
-{
-  std::vector<QPointF> result;
-  if (n_points < 0)
-  {
-    throw std::runtime_error("Error in GetPositions: invalid number of points");
-  }
-
-  double xpos = reference.x() - (n_points - 1) * width / 2;
-  for (int i = 0; i < n_points; ++i)
-  {
-    result.emplace_back(QPointF(xpos, reference.y()));
-    xpos += width;
-  }
-  return result;
-}
-
 QColor GetBaseColor(const InstructionItem* instruction)
 {
   if (IsDecoratorInstruction(instruction))
