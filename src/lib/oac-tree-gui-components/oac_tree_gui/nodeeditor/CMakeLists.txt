@@ -7,6 +7,8 @@ target_sources(${library_name} PRIVATE
   connectable_instruction_adapter.h
   connectable_instruction_adapter_v2.cpp
   connectable_instruction_adapter_v2.h
+  connectable_shape_factory.cpp
+  connectable_shape_factory.h
   connectable_view.cpp
   connectable_view.h
   connectable_view_factory.cpp
