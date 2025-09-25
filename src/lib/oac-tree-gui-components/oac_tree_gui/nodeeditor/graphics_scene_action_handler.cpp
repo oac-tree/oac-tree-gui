@@ -20,24 +20,68 @@
 
 #include "graphics_scene_action_handler.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+
+#include <mvvm/nodeeditor/i_node_connection.h>
+#include <mvvm/nodeeditor/node_editor_helper.h>
+
 namespace oac_tree_gui
 {
 
-GraphicsSceneActionHandler::GraphicsSceneActionHandler(const send_message_t &send_message_callback)
-    : m_send_message(send_message_callback)
+GraphicsSceneActionHandler::GraphicsSceneActionHandler(mvvm::SessionItem *container_item,
+                                                       const send_message_t &send_message_callback)
+    : m_instruction_container(container_item), m_send_message(send_message_callback)
 {
+  if (!m_instruction_container)
+  {
+    throw RuntimeException("Instruction container is not set");
+  }
+
+  if (!m_send_message)
+  {
+    throw RuntimeException("Message callback is not set");
+  }
 }
 
 void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort *start_port,
                                               const mvvm::INodePort *end_port)
 {
-  (void)start_port;
-  (void)end_port;
+  try
+  {
+    auto succeeded = mvvm::ConnectPorts(start_port, end_port);
+    (void)succeeded;
+    // In current implementation ConnectPorts returns false if ports are absent, or incopmpatible.
+    // The throw will happen if ports are compatible, but item doesn't allow connection due to model
+    // constraints (i.e. Repeat can have only one child).
+  }
+  catch (const std::exception &ex)
+  {
+    m_send_message(sup::gui::CreateInvalidOperationMessage("Can't connect ports",
+                                                           "Failed to connect ports", ex.what()));
+  }
 }
 
 void GraphicsSceneActionHandler::DisconnectConnection(mvvm::INodeConnection *connection)
 {
-  (void)connection;
+  if (!connection)
+  {
+    return;
+  }
+
+  try
+  {
+    auto succeeded = mvvm::DisconnectPortsAndMove(
+        connection->GetStartPort(), connection->GetEndPort(), m_instruction_container);
+    (void)succeeded;
+    // In current implementation DisconnectPortsAndMove returns false if ports are absent, or
+    // incompatible. The throw will happen if ports are compatible, but item doesn't allow
+    // disconnection due to model constraints.
+  }
+  catch (const std::exception &ex)
+  {
+    m_send_message(sup::gui::CreateInvalidOperationMessage(
+        "Can't disconnect connection", "Failed to disconnect connection", ex.what()));
+  }
 }
 
 }  // namespace oac_tree_gui

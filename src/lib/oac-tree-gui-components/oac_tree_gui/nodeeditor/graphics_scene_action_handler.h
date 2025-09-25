@@ -31,18 +31,24 @@
 namespace oac_tree_gui
 {
 
+/**
+ * @brief The GraphicsSceneActionHandler class provides actual model change on connect/disconnect
+ * request.
+ */
 class GraphicsSceneActionHandler : public IGraphicsSceneActionHandler
 {
 public:
   using send_message_t = std::function<void(const sup::gui::MessageEvent&)>;
 
-  explicit GraphicsSceneActionHandler(const send_message_t& send_message_callback);
+  explicit GraphicsSceneActionHandler(mvvm::SessionItem* container_item,
+                                      const send_message_t& send_message_callback);
 
   void ConnectPorts(const mvvm::INodePort* start_port, const mvvm::INodePort* end_port) override;
 
   void DisconnectConnection(mvvm::INodeConnection* connection) override;
 
 private:
+  mvvm::SessionItem* m_instruction_container{nullptr};
   send_message_t m_send_message;
 };
 
