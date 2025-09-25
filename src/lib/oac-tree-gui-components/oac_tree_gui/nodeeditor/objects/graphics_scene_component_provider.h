@@ -31,6 +31,7 @@ namespace mvvm
 class NodeConnectionGuide;
 class ConnectableViewModelController;
 class SessionItem;
+class ConnectableShape;
 }  // namespace mvvm
 
 class QGraphicsScene;
@@ -41,6 +42,7 @@ namespace oac_tree_gui
 class IGraphicsSceneActionHandler;
 class IInstructionEditorActionHandler;
 class InstructionEditorContext;
+class InstructionItem;
 
 /**
  * @brief The GraphicsSceneComponentProvider class holds all the logic of the graphics scene.
@@ -57,10 +59,9 @@ class GraphicsSceneComponentProvider : public QObject
 public:
   explicit GraphicsSceneComponentProvider(
       std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
-      QGraphicsScene* scene, mvvm::SessionItem* node_container);
+      std::function<std::string(const std::string&)> object_to_plugin_name, QGraphicsScene* scene,
+      mvvm::SessionItem* instruction_container);
   ~GraphicsSceneComponentProvider() override;
-
-  void SetInstructionContainer();
 
   /**
    * @brief Deletes selected graphics items.
@@ -71,7 +72,24 @@ public:
    */
   void OnDeleteSelected();
 
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
+
+  void SetSelectedInstructions(const std::vector<InstructionItem*>& to_select);
+
+signals:
+  void selectionChanged();
+
 private:
+  /**
+   * @brief Setup all necessary connections.
+   */
+  void SetupConnections();
+
+  /**
+   * @brief Handles scene selection change.
+   */
+  void OnSceneSelectionChanged();
+
   /**
    * @brief Creates view model controller.
    */
@@ -82,6 +100,9 @@ private:
    */
   std::unique_ptr<IGraphicsSceneActionHandler> CreateSceneActionHandler();
 
+  /**
+   * @brief Creates context necessary for instruction editor action handler.
+   */
   InstructionEditorContext CreateContext();
 
   /**
@@ -89,10 +110,10 @@ private:
    */
   std::unique_ptr<IInstructionEditorActionHandler> CreateInstructionEditorActionHandler();
 
-
   std::function<void(const sup::gui::MessageEvent&)> m_send_message_callback;
+  std::function<std::string(const std::string&)> m_object_to_plugin_name;
   QGraphicsScene* m_scene{nullptr};
-  mvvm::SessionItem* m_node_container{nullptr};
+  mvvm::SessionItem* m_instruction_container{nullptr};
 
   //!< paints connection in progress
   std::unique_ptr<mvvm::NodeConnectionGuide> m_connection_guide;

@@ -18,23 +18,206 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
-#include <oac_tree_gui/nodeeditor/connectable_view.h>
-#include <oac_tree_gui/nodeeditor/connectable_view_factory.h>
+#include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 
+#include <mvvm/model/application_model.h>
+#include <mvvm/nodeeditor/connectable_shape.h>
+#include <mvvm/nodeeditor/graphics_scene_helper.h>
+#include <mvvm/nodeeditor/node_connection_shape.h>
+#include <mvvm/test/test_container_helper.h>
+
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+#include <QGraphicsScene>
+#include <QSignalSpy>
 
 namespace oac_tree_gui::test
 {
 
 /**
  * @brief Tests for GraphicsSceneComponentProviderTest class.
+ *
+ * Here we testing basic correspondence of instructions on the model, and connections and shapes on
+ * the scene.
  */
 class GraphicsSceneComponentProviderTest : public ::testing::Test
 {
+public:
+  GraphicsSceneComponentProviderTest()
+      : m_instruction_container(m_model.InsertItem<InstructionContainerItem>())
+  {
+  }
+
+  /**
+   * @brief Creates provider instance for testing.
+   */
+  std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider()
+  {
+    return std::make_unique<GraphicsSceneComponentProvider>(
+        m_mock_message.AsStdFunction(), m_mock_object_name.AsStdFunction(), &m_graphics_scene,
+        m_instruction_container);
+  }
+
+  /**
+   * @brief Finds all underlying instructions by explaring shapes on the scene.
+   */
+  std::vector<InstructionItem*> FindSceneInstructions() const
+  {
+    std::vector<InstructionItem*> result;
+    for (auto shape : mvvm::GetShapes<mvvm::ConnectableShape>(m_graphics_scene))
+    {
+      result.push_back(mvvm::GetUnderlyingItem<InstructionItem>(shape));
+    }
+    return result;
+  }
+
+  /**
+   * @brief Helper to get shapes of specific type from the scene.
+   *
+   * The result will be sorted according the order of the addition.
+   */
+  template <typename ShapeT>
+  std::vector<ShapeT*> FindSceneShapes() const
+  {
+    return ::mvvm::GetShapes<ShapeT>(m_graphics_scene);
+  }
+
+  /**
+   * @brief Validates if connection goes from child to parent.
+   */
+  static bool IsConnected(mvvm::NodeConnectionShape* connection_shape,
+                          mvvm::ConnectableShape* parent, mvvm::ConnectableShape* child)
+  {
+    auto child_output_port = GetOutputPort(*child);
+    auto parent_input_port = GetInputPort(*parent);
+    auto connection = connection_shape->GetNodeConnection();
+    return connection->GetStartPort() == child_output_port
+           && connection->GetEndPort() == parent_input_port;
+  }
+
+  QGraphicsScene m_graphics_scene;
+  mvvm::ApplicationModel m_model;
+  InstructionContainerItem* m_instruction_container{nullptr};
+
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_mock_message;
+  testing::MockFunction<std::string(const std::string&)> m_mock_object_name;
 };
 
-TEST_F(GraphicsSceneComponentProviderTest, InitialState) {}
+TEST_F(GraphicsSceneComponentProviderTest, InitialState)
+{
+  auto provider = CreateProvider();
+  EXPECT_TRUE(provider->GetSelectedInstructions().empty());
+  EXPECT_TRUE(FindSceneInstructions().empty());
+  EXPECT_TRUE(m_graphics_scene.items().empty());
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, SingleInstructionBeforeInit)
+{
+  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto provider = CreateProvider();
+
+  EXPECT_TRUE(provider->GetSelectedInstructions().empty());
+
+  auto instructions = FindSceneInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+  EXPECT_EQ(instructions.front(), wait);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, SequenceWithChildBeforeInit)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  auto provider = CreateProvider();
+
+  EXPECT_TRUE(provider->GetSelectedInstructions().empty());
+
+  auto instructions = FindSceneInstructions();
+  EXPECT_EQ(instructions, std::vector<InstructionItem*>({sequence, wait}));
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 1);
+
+  ASSERT_TRUE(IsConnected(connections.at(0), shapes.at(0), shapes.at(1)));
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, SetSingleSelectedViaProvider)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+
+  const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
+
+  auto provider = CreateProvider();
+  const QSignalSpy spy_provider_selected(provider.get(),
+                                         &GraphicsSceneComponentProvider::selectionChanged);
+
+  EXPECT_TRUE(provider->GetSelectedInstructions().empty());
+
+  provider->SetSelectedInstructions({sequence});
+  const std::vector<InstructionItem*> expected_selection({sequence});
+  EXPECT_TRUE(
+      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+
+  EXPECT_EQ(spy_scene_selected.count(), 1);
+  EXPECT_EQ(spy_provider_selected.count(), 1);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, SetTwoSelectedViaProvider)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+
+  const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
+
+  auto provider = CreateProvider();
+  const QSignalSpy spy_provider_selected(provider.get(),
+                                         &GraphicsSceneComponentProvider::selectionChanged);
+
+  EXPECT_TRUE(provider->GetSelectedInstructions().empty());
+
+  provider->SetSelectedInstructions({sequence, wait1});
+  const std::vector<InstructionItem*> expected_selection({sequence, wait1});
+  EXPECT_TRUE(
+      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+
+  EXPECT_EQ(spy_scene_selected.count(), 2);
+  EXPECT_EQ(spy_provider_selected.count(), 2);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, SetSelectedViaScene)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+
+  const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
+
+  auto provider = CreateProvider();
+  const QSignalSpy spy_provider_selected(provider.get(),
+                                         &GraphicsSceneComponentProvider::selectionChanged);
+
+  EXPECT_TRUE(provider->GetSelectedInstructions().empty());
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 3);
+  shapes.at(0)->setSelected(true);
+  shapes.at(2)->setSelected(true);
+
+  const std::vector<InstructionItem*> expected_selection({sequence, wait1});
+  EXPECT_TRUE(
+      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+
+  EXPECT_EQ(spy_scene_selected.count(), 2);
+  EXPECT_EQ(spy_provider_selected.count(), 2);
+}
 
 }  // namespace oac_tree_gui::test
