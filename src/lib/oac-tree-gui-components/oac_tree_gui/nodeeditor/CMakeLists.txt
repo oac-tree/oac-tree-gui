@@ -15,8 +15,11 @@ target_sources(${library_name} PRIVATE
   connectable_view_map.h
   connectable_view_model_controller.cpp
   connectable_view_model_controller.h
+  graphics_scene_action_handler.cpp
+  graphics_scene_action_handler.h
   graphics_scene_types.h
   i_connectable_view_factory.h
+  i_graphics_scene_action_handler.h
   node_connection.cpp
   node_connection.h
   node_graphics_scene_action_handler.cpp

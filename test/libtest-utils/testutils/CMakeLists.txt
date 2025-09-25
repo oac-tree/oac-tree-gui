@@ -9,6 +9,7 @@ target_sources(${library_name} PRIVATE
   mock_automation_client.h
   mock_domain_event_listener.h
   mock_domain_workspace_listener.h
+  mock_graphics_scene_action_handler.h
   mock_instruction_editor_context.cpp
   mock_instruction_editor_context.h
   mock_job_handler.cpp
