@@ -64,6 +64,7 @@ void NodeGraphicsSceneV2::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 void NodeGraphicsSceneV2::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
+  (void) event;
 
 }
 
