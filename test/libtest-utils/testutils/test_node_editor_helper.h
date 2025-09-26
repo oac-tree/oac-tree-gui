@@ -26,11 +26,18 @@
 
 #include <vector>
 
+#include <QPointF>
+
 class QGraphicsScene;
 
 namespace oac_tree_gui
 {
 class InstructionItem;
+}
+
+namespace mvvm
+{
+class ConnectableShape;
 }
 
 namespace oac_tree_gui::test
@@ -41,6 +48,20 @@ namespace oac_tree_gui::test
  */
 std::vector<InstructionItem*> FindSceneInstructions(const QGraphicsScene& scene);
 
+/**
+ * @brief Returns scene position of input port.
+ *
+ * Will throw if input port is not found.
+ */
+QPointF GetInputPortScenePosition(const mvvm::ConnectableShape& shape);
+
+
+/**
+ * @brief Returns scene position of output port.
+ *
+ * Will throw if output port is not found.
+ */
+QPointF GetOutputPortScenePosition(const mvvm::ConnectableShape& shape);
 
 }  // namespace oac_tree_gui::test
 

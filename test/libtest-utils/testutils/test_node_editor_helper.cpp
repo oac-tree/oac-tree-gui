@@ -20,15 +20,39 @@
 
 #include "test_node_editor_helper.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_item.h>
 
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
+#include <mvvm/nodeeditor/i_node_port.h>
+#include <mvvm/nodeeditor/node_port_shape.h>
 
 namespace oac_tree_gui::test
 {
 
-std::vector<InstructionItem *> FindSceneInstructions(const QGraphicsScene& scene)
+namespace
+{
+
+/**
+ * @brief Returns scene position of the port with given direction.
+ */
+QPointF GetPortScenePosition(const mvvm::ConnectableShape &shape, mvvm::PortDirection direction)
+{
+  auto port_shapes = mvvm::utils::CastItems<mvvm::NodePortShape>(shape.childItems());
+  for (auto port_shape : port_shapes)
+  {
+    if (port_shape->GetNodePort()->GetPortDirection() == direction)
+    {
+      return port_shape->scenePos();
+    }
+  }
+  throw RuntimeException("Input port not found");
+}
+
+}  // namespace
+
+std::vector<InstructionItem *> FindSceneInstructions(const QGraphicsScene &scene)
 {
   std::vector<InstructionItem *> result;
   for (auto shape : mvvm::GetShapes<mvvm::ConnectableShape>(scene))
@@ -36,6 +60,16 @@ std::vector<InstructionItem *> FindSceneInstructions(const QGraphicsScene& scene
     result.push_back(mvvm::GetUnderlyingItem<InstructionItem>(shape));
   }
   return result;
+}
+
+QPointF GetInputPortScenePosition(const mvvm::ConnectableShape &shape)
+{
+  return GetPortScenePosition(shape, mvvm::PortDirection::kInput);
+}
+
+QPointF GetOutputPortScenePosition(const mvvm::ConnectableShape &shape)
+{
+  return GetPortScenePosition(shape, mvvm::PortDirection::kOutput);
 }
 
 }  // namespace oac_tree_gui::test

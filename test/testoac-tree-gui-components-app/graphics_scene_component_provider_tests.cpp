@@ -18,12 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h"
+
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
-#include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
@@ -46,8 +46,8 @@ namespace oac_tree_gui::test
 /**
  * @brief Tests for GraphicsSceneComponentProviderTest class.
  *
- * Here we testing basic correspondence of instructions on the model, and connections and shapes on
- * the scene.
+ * Here we are testing the basic correspondence of instructions on the model, and connections and
+ * shapes on the scene.
  */
 class GraphicsSceneComponentProviderTest : public ::testing::Test
 {
