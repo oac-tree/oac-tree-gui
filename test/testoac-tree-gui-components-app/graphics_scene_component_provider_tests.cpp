@@ -20,14 +20,19 @@
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 
+#include <mvvm/commands/command_stack.h>
+#include <mvvm/commands/i_command_stack.h>
+#include <mvvm/commands/macro_command.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
 #include <mvvm/nodeeditor/node_connection_shape.h>
+#include <mvvm/test/mock_item_listener.h>
 #include <mvvm/test/test_container_helper.h>
 
 #include <gmock/gmock.h>
@@ -64,7 +69,7 @@ public:
   }
 
   /**
-   * @brief Finds all underlying instructions by explaring shapes on the scene.
+   * @brief Finds all underlying instructions by exploring shapes on the scene.
    */
   std::vector<InstructionItem*> FindSceneInstructions() const
   {
@@ -218,6 +223,136 @@ TEST_F(GraphicsSceneComponentProviderTest, SetSelectedViaScene)
 
   EXPECT_EQ(spy_scene_selected.count(), 2);
   EXPECT_EQ(spy_provider_selected.count(), 2);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, InsertSequenceAndWait)
+{
+  auto provider = CreateProvider();
+
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  auto instructions = FindSceneInstructions();
+  EXPECT_EQ(instructions, std::vector<InstructionItem*>({sequence, wait}));
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 1);
+
+  ASSERT_TRUE(IsConnected(connections.at(0), shapes.at(0), shapes.at(1)));
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, RemoveInstruction)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+
+  auto provider = CreateProvider();
+
+  auto instructions = FindSceneInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+  EXPECT_EQ(instructions.front(), sequence);
+
+  m_model.RemoveItem(sequence);
+  instructions = FindSceneInstructions();
+  EXPECT_TRUE(instructions.empty());
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, RemoveInstructionWithChid)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  auto provider = CreateProvider();
+
+  m_model.RemoveItem(sequence);
+
+  auto instructions = FindSceneInstructions();
+  EXPECT_TRUE(instructions.empty());
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 0);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, MoveItem)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  sequence->SetX(42.0);
+  EXPECT_DOUBLE_EQ(sequence->GetX(), 42.0);
+  EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
+
+  auto provider = CreateProvider();
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1);
+  auto shape = shapes.front();
+  EXPECT_DOUBLE_EQ(shape->x(), 42.0);
+  EXPECT_DOUBLE_EQ(shape->y(), 0.0);
+
+  mvvm::test::MockItemListener listener(sequence);
+
+  const mvvm::PropertyChangedEvent expected_event{sequence, itemconstants::kYpos};
+  EXPECT_CALL(listener, OnPropertyChanged(expected_event)).Times(1);
+
+  sequence->SetX(42.0);
+  sequence->SetY(43.0);
+
+  EXPECT_DOUBLE_EQ(shape->x(), 42.0);
+  EXPECT_DOUBLE_EQ(shape->y(), 43.0);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, MoveShape)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+
+  auto provider = CreateProvider();
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1);
+  auto shape = shapes.front();
+  EXPECT_DOUBLE_EQ(shape->x(), 0.0);
+  EXPECT_DOUBLE_EQ(shape->y(), 0.0);
+
+  mvvm::test::MockItemListener listener(sequence);
+  const mvvm::PropertyChangedEvent expected_event{sequence, itemconstants::kXpos};
+  EXPECT_CALL(listener, OnPropertyChanged(expected_event)).Times(1);
+
+  shape->setX(42.0);
+
+  EXPECT_EQ(sequence->GetX(), 42.0);
+  EXPECT_EQ(sequence->GetY(), 0.0);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, MoveShapeAndUndo)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  sequence->SetX(42.0);
+  EXPECT_DOUBLE_EQ(sequence->GetX(), 42.0);
+  EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
+
+  m_model.SetUndoEnabled(true);
+
+  auto provider = CreateProvider();
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1);
+  auto shape = shapes.front();
+  EXPECT_DOUBLE_EQ(shape->x(), 42.0);
+  EXPECT_DOUBLE_EQ(shape->y(), 0.0);
+
+  mvvm::test::MockItemListener listener(sequence);
+  const mvvm::PropertyChangedEvent expected_event{sequence, itemconstants::kXpos};
+  EXPECT_CALL(listener, OnPropertyChanged(expected_event)).Times(1);
+
+  shape->setX(43.0);
+  EXPECT_DOUBLE_EQ(sequence->GetX(), 43.0);
+  EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
+
+  ASSERT_EQ(m_model.GetCommandStack()->GetCommandCount(), 1);
+
+  EXPECT_CALL(listener, OnPropertyChanged(expected_event)).Times(1);
+
+  EXPECT_NO_FATAL_FAILURE(m_model.GetCommandStack()->Undo());
+  EXPECT_DOUBLE_EQ(sequence->GetX(), 42.0);
+  EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
 }
 
 }  // namespace oac_tree_gui::test
