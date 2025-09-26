@@ -27,6 +27,8 @@ target_sources(${library_name} PRIVATE
   standard_procedure_items.h
   standard_procedures.cpp
   standard_procedures.h
+  test_node_editor_helper.cpp
+  test_node_editor_helper.h
   test_utils.cpp
   test_utils.h
   universal_items.h

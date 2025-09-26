@@ -25,9 +25,7 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 
-#include <mvvm/commands/command_stack.h>
 #include <mvvm/commands/i_command_stack.h>
-#include <mvvm/commands/macro_command.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
@@ -37,6 +35,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <testutils/test_node_editor_helper.h>
 
 #include <QGraphicsScene>
 #include <QSignalSpy>
@@ -73,12 +72,7 @@ public:
    */
   std::vector<InstructionItem*> FindSceneInstructions() const
   {
-    std::vector<InstructionItem*> result;
-    for (auto shape : mvvm::GetShapes<mvvm::ConnectableShape>(m_graphics_scene))
-    {
-      result.push_back(mvvm::GetUnderlyingItem<InstructionItem>(shape));
-    }
-    return result;
+    return test::FindSceneInstructions(m_graphics_scene);
   }
 
   /**
@@ -90,19 +84,6 @@ public:
   std::vector<ShapeT*> FindSceneShapes() const
   {
     return ::mvvm::GetShapes<ShapeT>(m_graphics_scene);
-  }
-
-  /**
-   * @brief Validates if connection goes from child to parent.
-   */
-  static bool IsConnected(mvvm::NodeConnectionShape* connection_shape,
-                          mvvm::ConnectableShape* parent, mvvm::ConnectableShape* child)
-  {
-    auto child_output_port = GetOutputPort(*child);
-    auto parent_input_port = GetInputPort(*parent);
-    auto connection = connection_shape->GetNodeConnection();
-    return connection->GetStartPort() == child_output_port
-           && connection->GetEndPort() == parent_input_port;
   }
 
   QGraphicsScene m_graphics_scene;
@@ -149,7 +130,7 @@ TEST_F(GraphicsSceneComponentProviderTest, SequenceWithChildBeforeInit)
   auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
   ASSERT_EQ(connections.size(), 1);
 
-  ASSERT_TRUE(IsConnected(connections.at(0), shapes.at(0), shapes.at(1)));
+  ASSERT_TRUE(mvvm::IsParentChildConnection(shapes.at(0), shapes.at(1), connections.at(0)));
 }
 
 TEST_F(GraphicsSceneComponentProviderTest, SetSingleSelectedViaProvider)
@@ -239,7 +220,7 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertSequenceAndWait)
   auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
   ASSERT_EQ(connections.size(), 1);
 
-  ASSERT_TRUE(IsConnected(connections.at(0), shapes.at(0), shapes.at(1)));
+  ASSERT_TRUE(IsParentChildConnection(shapes.at(0), shapes.at(1), connections.at(0)));
 }
 
 TEST_F(GraphicsSceneComponentProviderTest, RemoveInstruction)
