@@ -61,7 +61,7 @@ void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort *start_port,
   }
 }
 
-void GraphicsSceneActionHandler::DisconnectConnection(mvvm::INodeConnection *connection)
+void GraphicsSceneActionHandler::Disconnect(mvvm::INodeConnection *connection)
 {
   if (!connection)
   {

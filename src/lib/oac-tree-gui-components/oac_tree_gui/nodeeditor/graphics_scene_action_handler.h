@@ -45,7 +45,7 @@ public:
 
   void ConnectPorts(const mvvm::INodePort* start_port, const mvvm::INodePort* end_port) override;
 
-  void DisconnectConnection(mvvm::INodeConnection* connection) override;
+  void Disconnect(mvvm::INodeConnection* connection) override;
 
 private:
   mvvm::SessionItem* m_instruction_container{nullptr};

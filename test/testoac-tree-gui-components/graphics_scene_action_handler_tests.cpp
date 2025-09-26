@@ -165,7 +165,7 @@ TEST_F(GraphicsSceneActionHandlerTest, DisconnectWaitFromSequence)
   auto connection = std::make_unique<mvvm::NodeConnection>(output_port, input_port);
 
   EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(0);
-  action_handler->DisconnectConnection(connection.get());
+  action_handler->Disconnect(connection.get());
   EXPECT_EQ(wait_item->GetParent(), m_model.GetRootItem());
   EXPECT_EQ(sequence_item->GetInstructions().size(), 0U);
 }
@@ -186,7 +186,7 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToDisconnectWaitFromSequence)
   auto connection = std::make_unique<mvvm::NodeConnection>(output_port, input_port);
 
   EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(1);
-  action_handler->DisconnectConnection(connection.get());
+  action_handler->Disconnect(connection.get());
 
   EXPECT_EQ(wait_item->GetParent(), m_model.GetRootItem());
   EXPECT_EQ(sequence_item->GetInstructions().size(), 0U);

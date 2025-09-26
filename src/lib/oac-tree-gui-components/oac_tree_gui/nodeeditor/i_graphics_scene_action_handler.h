@@ -53,7 +53,7 @@ public:
   /**
    * @brief Disconnects two ports by moving the child item to a top level container.
    */
-  virtual void DisconnectConnection(mvvm::INodeConnection* connection) = 0;
+  virtual void Disconnect(mvvm::INodeConnection* connection) = 0;
 };
 
 }  // namespace oac_tree_gui

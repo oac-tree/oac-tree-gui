@@ -37,7 +37,7 @@ class MockGraphicsSceneActionHandler : public IGraphicsSceneActionHandler
 public:
   MOCK_METHOD(void, ConnectPorts,
               (const mvvm::INodePort* start_port, const mvvm::INodePort* end_port), (override));
-  MOCK_METHOD(void, DisconnectConnection, (mvvm::INodeConnection * connection), (override));
+  MOCK_METHOD(void, Disconnect, (mvvm::INodeConnection * connection), (override));
 };
 
 }  // namespace oac_tree_gui::test
