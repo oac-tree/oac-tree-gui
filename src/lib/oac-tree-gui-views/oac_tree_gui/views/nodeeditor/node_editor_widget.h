@@ -70,7 +70,7 @@ public:
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions) const;
 
 signals:
-  void InstructionSelected(oac_tree_gui::InstructionItem* selected);
+  void selectionChanged();
 
 private:
   void SetupConnections();

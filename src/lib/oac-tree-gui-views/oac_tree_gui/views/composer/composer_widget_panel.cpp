@@ -128,19 +128,18 @@ void ComposerWidgetPanel::WriteSettings()
 
 void ComposerWidgetPanel::SetupConnections()
 {
-  auto on_scene_instruction_selected = [this](auto instruction)
+  auto on_scene_instruction_selected = [this]()
   {
     if (!m_block_selection_notification)
     {
       m_block_selection_notification = true;
-      m_instruction_editor_widget->SetSelectedInstructions(
-          m_node_editor->GetSelectedInstructions());
-      emit InstructionSelected(instruction);
+      auto selected = m_node_editor->GetSelectedInstructions();
+      m_instruction_editor_widget->SetSelectedInstructions(selected);
+      emit InstructionSelected(selected.empty() ? nullptr : selected.front());
       m_block_selection_notification = false;
     }
   };
-  connect(m_node_editor, &NodeEditorWidget::InstructionSelected, this,
-          on_scene_instruction_selected);
+  connect(m_node_editor, &NodeEditorWidget::selectionChanged, this, on_scene_instruction_selected);
 
   auto on_tree_instruction_selected = [this](auto instruction)
   {

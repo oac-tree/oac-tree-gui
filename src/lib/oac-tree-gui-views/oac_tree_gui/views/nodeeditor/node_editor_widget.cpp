@@ -177,7 +177,7 @@ void NodeEditorWidget::SetupConnections()
 
   // Forward instruction selection from graphics scene
   connect(m_graphics_scene.get(), &NodeGraphicsScene::InstructionSelected, this,
-          &NodeEditorWidget::InstructionSelected);
+          [this]() { emit selectionChanged(); });
 
   // Propagate selection request from GraphicsScene to GraphicsView
   connect(m_graphics_scene.get(), &NodeGraphicsScene::OperationModeChangeRequest, m_graphics_view,
