@@ -38,9 +38,6 @@ class NodeGraphicsSceneV2 : public QGraphicsScene
 public:
   explicit NodeGraphicsSceneV2(QObject* parent_object = nullptr);
 
-  // std::vector<InstructionItem*> GetSelectedInstructions() const;
-
-  // void SetSelectedInstructions(const std::vector<InstructionItem*>& to_select);
 
 signals:
   void dropInstructionRequested(const QString& name, const QPointF& pos);

@@ -106,10 +106,10 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromSequenceT
 
   auto provider = CreateProvider();
 
-  QSignalSpy spy_connection_started(provider.get(),
-                                    &GraphicsSceneComponentProvider::connectionStarted);
-  QSignalSpy spy_connection_finished(provider.get(),
-                                     &GraphicsSceneComponentProvider::connectionFinished);
+  const QSignalSpy spy_connection_started(provider.get(),
+                                          &GraphicsSceneComponentProvider::connectionStarted);
+  const QSignalSpy spy_connection_finished(provider.get(),
+                                           &GraphicsSceneComponentProvider::connectionFinished);
 
   // two shapes and no connection between them
   auto shapes = FindSceneShapes<mvvm::ConnectableShape>();

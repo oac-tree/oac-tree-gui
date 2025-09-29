@@ -20,8 +20,9 @@
 
 #include "node_graphics_scene_v2.h"
 
-#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/nodeeditor/scene_utils.h>
 
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
@@ -32,22 +33,32 @@
 namespace oac_tree_gui
 {
 
-NodeGraphicsSceneV2::NodeGraphicsSceneV2(QObject *parent_object) : QGraphicsScene(parent_object) {}
+namespace
+{
 
-// std::vector<InstructionItem *> NodeGraphicsSceneV2::GetSelectedInstructions() const
-// {
-//   std::vector<mvvm::SessionItem *> result;
-//   for (auto shape : mvvm::GetSelectedShapes<mvvm::ConnectableShape>(*this))
-//   {
-//     result.push_back(mvvm::GetUnderlyingItem(shape));
-//   }
+QRectF GetDefaultSceneRect()
+{
+  return {oac_tree_gui::GetGraphicsViewportOrigin(), oac_tree_gui::GetGraphicsViewportSize()};
+}
 
-//   return mvvm::utils::CastItems<InstructionItem>(result);
-// }
+//! Returns name encoded in the drop event.
+std::string GetEncodedName(QGraphicsSceneDragDropEvent *event)
+{
+  return oac_tree_gui::GetNewInstructionType(event->mimeData());
+}
 
-// void NodeGraphicsSceneV2::SetSelectedInstructions(const std::vector<InstructionItem *> &to_select)
-// {
-// }
+//! Returns domain type from the drop event. If domain_type can't be deduced from the event data,
+//! will return an empty string.
+std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
+{
+  return GetEncodedName(event);
+}
+}  // namespace
+
+NodeGraphicsSceneV2::NodeGraphicsSceneV2(QObject *parent_object) : QGraphicsScene(parent_object)
+{
+  setSceneRect(GetDefaultSceneRect());
+}
 
 void NodeGraphicsSceneV2::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
@@ -59,13 +70,17 @@ void NodeGraphicsSceneV2::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
   {
     event->ignore();
   }
-
 }
 
 void NodeGraphicsSceneV2::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-  (void) event;
-
+  qDebug() << "1.1";
+  if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
+  {
+    qDebug() << "1.2";
+    dropInstructionRequested(QString::fromStdString(domain_type),
+                             GetNodeDropPosition(event->scenePos()));
+  }
 }
 
 }  // namespace oac_tree_gui
