@@ -74,10 +74,8 @@ void NodeGraphicsSceneV2::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 void NodeGraphicsSceneV2::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-  qDebug() << "1.1";
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-    qDebug() << "1.2";
     dropInstructionRequested(QString::fromStdString(domain_type),
                              GetNodeDropPosition(event->scenePos()));
   }
