@@ -130,11 +130,7 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromSequenceT
   ASSERT_TRUE(mvvm::IsParentChildConnection(shapes.at(0), shapes.at(1), connections.at(0)));
 }
 
-// This test is failing because of double deletion
-// 1. NodeConnectionGuideImpl::ProcessMouseRelease ->  m_current_connection.reset()
-// 2. ConnectableViewModelController::OnModelEvent -> FindHangingConnectionShapes
-// FIXME: change the way connections are cleaned-up after Shape removal
-TEST_F(GraphicsSceneComponentProviderSceneTest, DISABLED_EstablishConnectionFromWaitToSequence)
+TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromWaitToSequence)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
   sequence->SetX(10.0);
