@@ -96,6 +96,8 @@ public:
 
 signals:
   void selectionChanged();
+  void connectionStarted();
+  void connectionFinished();
 
 private:
   mvvm::ISessionModel* GetModel() const;

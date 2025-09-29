@@ -106,6 +106,11 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromSequenceT
 
   auto provider = CreateProvider();
 
+  QSignalSpy spy_connection_started(provider.get(),
+                                    &GraphicsSceneComponentProvider::connectionStarted);
+  QSignalSpy spy_connection_finished(provider.get(),
+                                     &GraphicsSceneComponentProvider::connectionFinished);
+
   // two shapes and no connection between them
   auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
   ASSERT_EQ(shapes.size(), 2);
@@ -121,6 +126,9 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromSequenceT
 
   QTest::mouseRelease(m_graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
                       m_graphics_view.mapFromScene(wait_port_pos));
+
+  EXPECT_EQ(spy_connection_started.count(), 1);
+  EXPECT_EQ(spy_connection_finished.count(), 1);
 
   // now there should be connection between two shapes
   shapes = FindSceneShapes<mvvm::ConnectableShape>();
@@ -225,7 +233,7 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedConnection)
   ASSERT_EQ(connections.size(), 0);
 
   EXPECT_EQ(sequence->GetInstructions().size(), 0);
-  std::vector<InstructionItem*> expected_instructions({sequence, wait});
+  const std::vector<InstructionItem*> expected_instructions({sequence, wait});
   EXPECT_EQ(m_instruction_container->GetInstructions(), expected_instructions);
 
   EXPECT_EQ(wait->GetParent(), m_instruction_container);

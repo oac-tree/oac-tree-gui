@@ -113,6 +113,11 @@ void GraphicsSceneComponentProvider::SetupConnections()
   connect(m_connection_guide.get(), &mvvm::NodeConnectionGuide::connectionRequest, this,
           [this](auto port_start, auto port_end)
           { m_graphics_scene_action_handler->ConnectPorts(port_start, port_end); });
+
+  connect(m_connection_guide.get(), &mvvm::NodeConnectionGuide::connectionStarted, this,
+          &GraphicsSceneComponentProvider::connectionStarted);
+  connect(m_connection_guide.get(), &mvvm::NodeConnectionGuide::connectionFinished, this,
+          &GraphicsSceneComponentProvider::connectionFinished);
 }
 
 void GraphicsSceneComponentProvider::OnSceneSelectionChanged()
