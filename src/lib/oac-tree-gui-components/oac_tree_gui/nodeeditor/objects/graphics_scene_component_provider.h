@@ -32,6 +32,7 @@ class NodeConnectionGuide;
 class ConnectableViewModelController;
 class SessionItem;
 class ConnectableShape;
+class ISessionModel;
 }  // namespace mvvm
 
 class QGraphicsScene;
@@ -97,6 +98,8 @@ signals:
   void selectionChanged();
 
 private:
+  mvvm::ISessionModel* GetModel() const;
+
   /**
    * @brief Setup all necessary connections.
    */

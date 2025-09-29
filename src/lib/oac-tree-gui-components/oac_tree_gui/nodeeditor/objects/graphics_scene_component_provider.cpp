@@ -25,11 +25,13 @@
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_action_handler.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/connectable_view_model_controller.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
 #include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/node_connection_guide.h>
+#include <mvvm/nodeeditor/node_connection_shape.h>
 
 namespace oac_tree_gui
 {
@@ -53,7 +55,21 @@ GraphicsSceneComponentProvider::GraphicsSceneComponentProvider(
 
 GraphicsSceneComponentProvider::~GraphicsSceneComponentProvider() = default;
 
-void GraphicsSceneComponentProvider::OnDeleteSelected() {}
+void GraphicsSceneComponentProvider::OnDeleteSelected()
+{
+  mvvm::utils::BeginMacro(*GetModel(), "GraphicsSceneComponentProvider::OnDeleteSelected");
+
+  m_instruction_editor_action_handler->RemoveInstruction();
+
+  auto selected_connections = mvvm::GetSelectedShapes<mvvm::NodeConnectionShape>(*m_scene);
+  while (!selected_connections.empty())
+  {
+    m_graphics_scene_action_handler->Disconnect(selected_connections.front()->GetNodeConnection());
+    selected_connections = mvvm::GetSelectedShapes<mvvm::NodeConnectionShape>(*m_scene);
+  }
+
+  mvvm::utils::EndMacro(*GetModel());
+}
 
 std::vector<InstructionItem *> GraphicsSceneComponentProvider::GetSelectedInstructions() const
 {
@@ -82,6 +98,11 @@ void GraphicsSceneComponentProvider::DropInstruction(const std::string &item_typ
                                                      const position_t &pos)
 {
   m_instruction_editor_action_handler->DropInstruction(item_type, pos);
+}
+
+mvvm::ISessionModel *GraphicsSceneComponentProvider::GetModel() const
+{
+  return m_instruction_container ? m_instruction_container->GetModel() : nullptr;
 }
 
 void GraphicsSceneComponentProvider::SetupConnections()

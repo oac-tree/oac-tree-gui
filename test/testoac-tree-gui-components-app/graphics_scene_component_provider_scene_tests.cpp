@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
@@ -170,6 +171,7 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DropInstruction)
 {
   const double expected_x{42.0};
   const double expected_y{43.0};
+
   auto provider = CreateProvider();
 
   provider->DropInstruction(mvvm::GetTypeName<SequenceItem>(), {expected_x, expected_y});
@@ -180,6 +182,120 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DropInstruction)
 
   auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
   ASSERT_EQ(shapes.size(), 1);
+}
+
+TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedInstruction)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+
+  auto provider = CreateProvider();
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1);
+  auto sequence_shape = shapes.at(0);
+
+  sequence_shape->setSelected(true);
+  provider->OnDeleteSelected();
+  EXPECT_EQ(m_instruction_container->GetInstructionCount(), 0);
+  shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 0);
+}
+
+TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedConnection)
+{
+  auto provider = CreateProvider();
+
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 2);
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 1);
+
+  auto connection_shape = connections.at(0);
+  connection_shape->setSelected(true);
+
+  provider->OnDeleteSelected();
+
+  EXPECT_EQ(m_instruction_container->GetInstructionCount(), 2);
+  shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 2);
+
+  connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 0);
+
+  EXPECT_EQ(sequence->GetInstructions().size(), 0);
+  std::vector<InstructionItem*> expected_instructions({sequence, wait});
+  EXPECT_EQ(m_instruction_container->GetInstructions(), expected_instructions);
+
+  EXPECT_EQ(wait->GetParent(), m_instruction_container);
+}
+
+TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedChild)
+{
+  auto provider = CreateProvider();
+
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  provider->SetSelectedInstructions({wait});
+
+  provider->OnDeleteSelected();
+  EXPECT_EQ(m_instruction_container->GetInstructionCount(), 1);
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1);
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 0);
+
+  EXPECT_EQ(test::FindSceneInstructions(m_graphics_scene),
+            m_instruction_container->GetInstructions());
+}
+
+TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedParent)
+{
+  auto provider = CreateProvider();
+
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  provider->SetSelectedInstructions({sequence});
+
+  provider->OnDeleteSelected();
+
+  EXPECT_EQ(m_instruction_container->GetInstructionCount(), 0);
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 0);
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 0);
+}
+
+//! Scenario with complex 3-level instruction tree. Everything is selected and deleted all together.
+//! The model should be empty at the end. This validates that no connection is deleted twice.
+
+TEST_F(GraphicsSceneComponentProviderSceneTest, ComplexAggregateRemoval)
+{
+  auto provider = CreateProvider();
+
+  auto item = InsertAggregate("if-then-else", m_instruction_container);
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 6);
+  for (auto shape : shapes)
+  {
+    shape->setSelected(true);
+  }
+
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 5);
+  for (auto connection : connections)
+  {
+    connection->setSelected(true);
+  }
+
+  provider->OnDeleteSelected();
+
+  EXPECT_EQ(m_instruction_container->GetTotalItemCount(), 0);
+  EXPECT_TRUE(m_graphics_scene.items().isEmpty());
 }
 
 }  // namespace oac_tree_gui::test
