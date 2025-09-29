@@ -57,6 +57,8 @@ class GraphicsSceneComponentProvider : public QObject
   Q_OBJECT
 
 public:
+  using position_t = std::pair<double, double>;
+
   explicit GraphicsSceneComponentProvider(
       std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
       std::function<std::string(const std::string&)> object_to_plugin_name, QGraphicsScene* scene,
@@ -72,9 +74,24 @@ public:
    */
   void OnDeleteSelected();
 
+  /**
+   * @brief Returns currently selected instructions.
+   *
+   * Converts all selected shapes to selected instructions.
+   */
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
+  /**
+   * @brief Sets selected instructions.
+   *
+   * Converts instructions to shapes and selects them on the scene.
+   */
   void SetSelectedInstructions(const std::vector<InstructionItem*>& to_select);
+
+  /**
+   * @brief Drops instruction on the canvas.
+   */
+  void DropInstruction(const std::string& item_type, const position_t& pos);
 
 signals:
   void selectionChanged();

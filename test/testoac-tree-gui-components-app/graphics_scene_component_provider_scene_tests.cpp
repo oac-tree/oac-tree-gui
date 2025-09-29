@@ -166,4 +166,20 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromWaitToSeq
   ASSERT_TRUE(mvvm::IsParentChildConnection(shapes.at(0), shapes.at(1), connections.at(0)));
 }
 
+TEST_F(GraphicsSceneComponentProviderSceneTest, DropInstruction)
+{
+  const double expected_x{42.0};
+  const double expected_y{43.0};
+  auto provider = CreateProvider();
+
+  provider->DropInstruction(mvvm::GetTypeName<SequenceItem>(), {expected_x, expected_y});
+  ASSERT_EQ(m_instruction_container->GetInstructionCount(), 1);
+  auto inserted_sequence = m_instruction_container->GetInstructions().at(0);
+  EXPECT_EQ(inserted_sequence->GetX(), expected_x);
+  EXPECT_EQ(inserted_sequence->GetY(), expected_y);
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1);
+}
+
 }  // namespace oac_tree_gui::test
