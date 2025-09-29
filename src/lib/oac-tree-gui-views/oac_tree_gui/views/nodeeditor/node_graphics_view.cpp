@@ -21,11 +21,8 @@
 #include "node_graphics_view.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_constants.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
-
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QKeyEvent>
 #include <QWheelEvent>
@@ -56,7 +53,7 @@ QGraphicsView::DragMode GetQtDragMode(GraphicsViewOperationMode operation_mode)
 
 }  // namespace
 
-NodeGraphicsView::NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget)
+NodeGraphicsView::NodeGraphicsView(QGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
 {
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

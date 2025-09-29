@@ -26,11 +26,10 @@
 #include <QGraphicsView>
 
 class QKeyEvent;
+class QGraphicsScene;
 
 namespace oac_tree_gui
 {
-
-class NodeGraphicsScene;
 
 /**
  * @brief The NodeGraphicsView class shows NodeGraphicsScene and is responsible for
@@ -41,7 +40,7 @@ class NodeGraphicsView : public QGraphicsView
   Q_OBJECT
 
 public:
-  explicit NodeGraphicsView(NodeGraphicsScene* scene, QWidget* parent_widget = nullptr);
+  explicit NodeGraphicsView(QGraphicsScene* scene, QWidget* parent_widget = nullptr);
 
   /**
    * @brief Center view on the center of bounding rectangle surrounding all items.
