@@ -192,6 +192,24 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DropInstruction)
   ASSERT_EQ(shapes.size(), 1);
 }
 
+TEST_F(GraphicsSceneComponentProviderSceneTest, DropComplexAggregate)
+{
+  const double expected_x{42.0};
+  const double expected_y{43.0};
+  auto provider = CreateProvider();
+
+  provider->DropInstruction("if-then-else", {expected_x, expected_y});
+  ASSERT_EQ(m_instruction_container->GetInstructionCount(), 1);
+  auto inserted_aggregate = m_instruction_container->GetInstructions().at(0);
+  EXPECT_EQ(inserted_aggregate->GetX(), expected_x);
+  EXPECT_EQ(inserted_aggregate->GetY(), expected_y);
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 6);
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 5);
+}
+
 TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedInstruction)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);

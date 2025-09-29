@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_action_handler.h>
 
@@ -152,8 +153,7 @@ InstructionEditorContext GraphicsSceneComponentProvider::CreateContext()
     SetSelectedInstructions(to_select);
   };
 
-  // result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name);
-  // };
+  result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
 
   result.send_message = m_send_message_callback;
   result.object_to_plugin_name = m_object_to_plugin_name;
