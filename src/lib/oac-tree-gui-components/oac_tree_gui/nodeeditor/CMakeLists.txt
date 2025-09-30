@@ -3,8 +3,8 @@ target_sources(${library_name} PRIVATE
   align_node.h
   align_utils.cpp
   align_utils.h
-  connectable_instruction_adapter_v2.cpp
-  connectable_instruction_adapter_v2.h
+  connectable_instruction_adapter.cpp
+  connectable_instruction_adapter.h
   connectable_shape_factory.cpp
   connectable_shape_factory.h
   graphics_scene_action_handler.cpp

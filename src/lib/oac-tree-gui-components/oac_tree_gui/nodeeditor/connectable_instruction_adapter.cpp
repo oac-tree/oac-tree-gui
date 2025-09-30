@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "connectable_instruction_adapter_v2.h"
+#include "connectable_instruction_adapter.h"
 
 #include "scene_utils.h"
 
@@ -36,7 +36,7 @@ constexpr std::string_view kDefaultPortType = "kDefaultPortType";
 
 }  // namespace
 
-ConnectableInstructionAdapterV2::ConnectableInstructionAdapterV2(InstructionItem *instruction)
+ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem *instruction)
     : m_instruction(instruction)
 {
   if (!m_instruction)
@@ -45,42 +45,42 @@ ConnectableInstructionAdapterV2::ConnectableInstructionAdapterV2(InstructionItem
   }
 }
 
-mvvm::SessionItem *ConnectableInstructionAdapterV2::GetItem() const
+mvvm::SessionItem *ConnectableInstructionAdapter::GetItem() const
 {
   return m_instruction;
 }
 
-QString ConnectableInstructionAdapterV2::GetDisplayName() const
+QString ConnectableInstructionAdapter::GetDisplayName() const
 {
   return QString::fromStdString(m_instruction->GetDisplayName());
 }
 
-QColor ConnectableInstructionAdapterV2::GetBaseColor() const
+QColor ConnectableInstructionAdapter::GetBaseColor() const
 {
   return ::oac_tree_gui::GetBaseColor(m_instruction);
 }
 
-double ConnectableInstructionAdapterV2::GetX() const
+double ConnectableInstructionAdapter::GetX() const
 {
   return m_instruction->GetX();
 }
 
-void ConnectableInstructionAdapterV2::SetX(double value)
+void ConnectableInstructionAdapter::SetX(double value)
 {
   m_instruction->SetX(value);
 }
 
-double ConnectableInstructionAdapterV2::GetY() const
+double ConnectableInstructionAdapter::GetY() const
 {
   return m_instruction->GetY();
 }
 
-void ConnectableInstructionAdapterV2::SetY(double value)
+void ConnectableInstructionAdapter::SetY(double value)
 {
   m_instruction->SetY(value);
 }
 
-std::vector<mvvm::PortInfo> ConnectableInstructionAdapterV2::GetPortInfos() const
+std::vector<mvvm::PortInfo> ConnectableInstructionAdapter::GetPortInfos() const
 {
   const mvvm::PortInfo kInputPort(mvvm::PortDirection::kInput, std::string(kDefaultPortType), "",
                                   GetInstructionItem());
@@ -93,7 +93,7 @@ std::vector<mvvm::PortInfo> ConnectableInstructionAdapterV2::GetPortInfos() cons
              : std::vector<mvvm::PortInfo>({kOutputPort});
 }
 
-InstructionItem *ConnectableInstructionAdapterV2::GetInstructionItem() const
+InstructionItem *ConnectableInstructionAdapter::GetInstructionItem() const
 {
   return m_instruction;
 }

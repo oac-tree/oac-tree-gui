@@ -20,7 +20,7 @@
 
 #include "connectable_shape_factory.h"
 
-#include "connectable_instruction_adapter_v2.h"
+#include "connectable_instruction_adapter.h"
 
 #include <oac_tree_gui/model/instruction_item.h>
 
@@ -34,7 +34,7 @@ std::unique_ptr<mvvm::ConnectableShape> ConnectableShapeFactory::CreateShape(
     mvvm::SessionItem *item) const
 {
   auto adapter =
-      std::make_unique<ConnectableInstructionAdapterV2>(dynamic_cast<InstructionItem *>(item));
+      std::make_unique<ConnectableInstructionAdapter>(dynamic_cast<InstructionItem *>(item));
   auto position_strategy = std::make_unique<mvvm::TopBottomPortPositionStrategy>();
   return std::make_unique<mvvm::ConnectableShape>(std::move(adapter), std::move(position_strategy));
 }

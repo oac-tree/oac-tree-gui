@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_INSTRUCTION_ADAPTER_V2_H_
-#define OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_INSTRUCTION_ADAPTER_V2_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_INSTRUCTION_ADAPTER_H_
+#define OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_INSTRUCTION_ADAPTER_H_
 
 #include <mvvm/nodeeditor/i_connectable_shape_adapter.h>
 
@@ -29,12 +29,12 @@ namespace oac_tree_gui
 class InstructionItem;
 
 /**
- * @brief The ConnectableInstructionAdapterV2 class adapts InstructionItem to ConnectableShape.
+ * @brief The ConnectableInstructionAdapter class adapts InstructionItem to ConnectableShape.
  */
-class ConnectableInstructionAdapterV2 : public mvvm::IConnectableShapeAdapter
+class ConnectableInstructionAdapter : public mvvm::IConnectableShapeAdapter
 {
 public:
-  explicit ConnectableInstructionAdapterV2(InstructionItem* instruction);
+  explicit ConnectableInstructionAdapter(InstructionItem* instruction);
 
   mvvm::SessionItem* GetItem() const override;
 
@@ -60,4 +60,5 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif
+#endif // OAC_TREE_GUI_NODEEDITOR_CONNECTABLE_INSTRUCTION_ADAPTER_H_
+
