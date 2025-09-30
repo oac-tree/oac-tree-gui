@@ -42,7 +42,7 @@ namespace oac_tree_gui
 {
 
 class NodeGraphicsView;
-class NodeGraphicsSceneV2;
+class NodeGraphicsScene;
 class InstructionItem;
 class NodeGraphicsViewActions;
 class ProcedureItem;
@@ -76,11 +76,11 @@ private:
   void SetupConnections();
   void OnAlignRequest();
   void SetupController();
-  std::unique_ptr<NodeGraphicsSceneV2> CreateGraphicsScene();
+  std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
   std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider();
 
   NodeGraphicsViewActions* m_view_actions{nullptr};
-  std::unique_ptr<NodeGraphicsSceneV2> m_graphics_scene;
+  std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
   std::unique_ptr<GraphicsSceneComponentProvider> m_scene_component_provider;
   NodeGraphicsView* m_graphics_view{nullptr};
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};

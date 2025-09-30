@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/nodeeditor/objects/node_graphics_scene_v2.h"
+#include "oac_tree_gui/nodeeditor/objects/node_graphics_scene.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
@@ -33,11 +33,11 @@
 namespace oac_tree_gui::test
 {
 
-class NodeGraphicsSceneV2Test : public ::testing::Test
+class NodeGraphicsSceneTest : public ::testing::Test
 {
 };
 
-TEST_F(NodeGraphicsSceneV2Test, SendDropEvent)
+TEST_F(NodeGraphicsSceneTest, SendDropEvent)
 {
   auto mime_data = CreateNewInstructionMimeData(
       QString::fromStdString(domainconstants::kIncludeInstructionType));
@@ -46,9 +46,9 @@ TEST_F(NodeGraphicsSceneV2Test, SendDropEvent)
   event.setScenePos(QPointF(10, 100));
   event.setMimeData(mime_data.get());
 
-  NodeGraphicsSceneV2 scene;
+  NodeGraphicsScene scene;
 
-  QSignalSpy spy(&scene, &NodeGraphicsSceneV2::dropInstructionRequested);
+  QSignalSpy spy(&scene, &NodeGraphicsScene::dropInstructionRequested);
 
   QApplication::sendEvent(&scene, &event);
 

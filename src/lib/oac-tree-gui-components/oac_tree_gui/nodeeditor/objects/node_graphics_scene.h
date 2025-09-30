@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_V2_H_
-#define OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_V2_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_
+#define OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_
 
 #include <QGraphicsScene>
 
@@ -31,12 +31,12 @@ class InstructionItem;
 /**
  * @brief The NodeGraphicsScene class is the main graphics scene of the node editor.
  */
-class NodeGraphicsSceneV2 : public QGraphicsScene
+class NodeGraphicsScene : public QGraphicsScene
 {
   Q_OBJECT
 
 public:
-  explicit NodeGraphicsSceneV2(QObject* parent_object = nullptr);
+  explicit NodeGraphicsScene(QObject* parent_object = nullptr);
 
 
 signals:
@@ -50,4 +50,4 @@ protected:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_V2_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_GRAPHICS_SCENE_H_

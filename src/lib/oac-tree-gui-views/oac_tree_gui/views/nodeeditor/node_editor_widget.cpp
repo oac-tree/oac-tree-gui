@@ -30,7 +30,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
-#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene_v2.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 
 #include <sup/gui/widgets/message_handler_factory.h>
@@ -157,9 +157,9 @@ void NodeEditorWidget::SetupController()
   m_scene_component_provider = CreateGraphicsSceneComponentProvider();
 }
 
-std::unique_ptr<NodeGraphicsSceneV2> NodeEditorWidget::CreateGraphicsScene()
+std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
 {
-  return std::make_unique<NodeGraphicsSceneV2>();
+  return std::make_unique<NodeGraphicsScene>();
 }
 
 std::unique_ptr<GraphicsSceneComponentProvider>
@@ -187,7 +187,7 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider()
           &GraphicsSceneComponentProvider::OnDeleteSelected);
 
   // propagate drop request from GraphicsScene to GraphicsSceneComponentProvider
-  connect(m_graphics_scene.get(), &NodeGraphicsSceneV2::dropInstructionRequested, result.get(),
+  connect(m_graphics_scene.get(), &NodeGraphicsScene::dropInstructionRequested, result.get(),
           [this](const QString &name, const QPointF &pos)
           { m_scene_component_provider->DropInstruction(name.toStdString(), {pos.x(), pos.y()}); });
 

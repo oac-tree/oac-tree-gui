@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "node_graphics_scene_v2.h"
+#include "node_graphics_scene.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -55,12 +55,12 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 }
 }  // namespace
 
-NodeGraphicsSceneV2::NodeGraphicsSceneV2(QObject *parent_object) : QGraphicsScene(parent_object)
+NodeGraphicsScene::NodeGraphicsScene(QObject *parent_object) : QGraphicsScene(parent_object)
 {
   setSceneRect(GetDefaultSceneRect());
 }
 
-void NodeGraphicsSceneV2::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
   if (event->mimeData()->hasFormat(kNewInstructionMimeType))
   {
@@ -72,11 +72,11 @@ void NodeGraphicsSceneV2::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
   }
 }
 
-void NodeGraphicsSceneV2::dropEvent(QGraphicsSceneDragDropEvent *event)
+void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-    dropInstructionRequested(QString::fromStdString(domain_type),
+    emit dropInstructionRequested(QString::fromStdString(domain_type),
                              GetNodeDropPosition(event->scenePos()));
   }
 }
