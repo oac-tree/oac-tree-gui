@@ -48,12 +48,13 @@ class InstructionItem;
 class NodeGraphicsViewActions;
 class ProcedureItem;
 class NodeEditorNavigationToolBar;
+class GraphicsSceneComponentProvider;
 
 /**
  * @brief The NodeEditorWidget class is a main widget with node editor for sequence composition.
  *
- * Contains graphics scene with nodes, graphics view, and all action buttons. It is a central part
- * of SequencerComposerView.
+ * Contains graphics scene with nodes, graphics view, and all action buttons. It is a central
+ * part of SequencerComposerView.
  */
 class NodeEditorWidget : public QWidget
 {
@@ -77,9 +78,11 @@ private:
   void OnAlignRequest();
   void SetupController();
   std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
+  std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider();
 
   NodeGraphicsViewActions* m_view_actions{nullptr};
   std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
+  std::unique_ptr<GraphicsSceneComponentProvider> m_scene_component_provider;
   NodeGraphicsView* m_graphics_view{nullptr};
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
   std::unique_ptr<ConnectableViewModelController> m_scene_controller;

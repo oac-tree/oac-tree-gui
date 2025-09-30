@@ -32,6 +32,7 @@
 #include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
 #include <oac_tree_gui/nodeeditor/connectable_view.h>
 #include <oac_tree_gui/nodeeditor/connectable_view_model_controller.h>
+#include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
@@ -167,6 +168,37 @@ std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
   { m_graphics_view_message_handler->SendMessage(message); };
 
   return std::make_unique<NodeGraphicsScene>(message_callback, CreatePluginNameCallback());
+}
+
+std::unique_ptr<GraphicsSceneComponentProvider>
+NodeEditorWidget::CreateGraphicsSceneComponentProvider()
+{
+  auto message_callback = [this](const auto &message)
+  { m_graphics_view_message_handler->SendMessage(message); };
+  auto result = std::make_unique<GraphicsSceneComponentProvider>(
+      message_callback, CreatePluginNameCallback(), m_graphics_scene.get(),
+      m_procedure_item->GetInstructionContainer());
+
+  // forward instruction selection from graphics scene
+  connect(result.get(), &GraphicsSceneComponentProvider::selectionChanged, this,
+          &NodeEditorWidget::selectionChanged);
+
+  // change GraphicsView operation mode on connection start/finish
+  connect(result.get(), &GraphicsSceneComponentProvider::connectionStarted, this, [this]()
+          { m_graphics_view->SetOperationMode(GraphicsViewOperationMode::kSimpleSelection); });
+  connect(result.get(), &GraphicsSceneComponentProvider::connectionFinished, this, [this]()
+          { m_graphics_view->SetOperationMode(GraphicsViewOperationMode::kRubberSelection); });
+
+  // propagates delete request from the graphics view
+  connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, result.get(),
+          &GraphicsSceneComponentProvider::OnDeleteSelected);
+
+  // propagate drop request from GraphicsScene to GraphicsSceneComponentProvider
+  // connect(m_graphics_scene.get(), &NodeGraphicsScene::dropInstructionRequested, result.get(),
+  //         [&result](const QString &name, const QPointF &pos)
+  //         { result->DropInstruction(name.toStdString(), {pos.x(), pos.y()}); });
+
+  return result;
 }
 
 void NodeEditorWidget::SetupConnections()
