@@ -29,18 +29,16 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/nodeeditor/connectable_instruction_adapter.h>
-#include <oac_tree_gui/nodeeditor/connectable_view.h>
-#include <oac_tree_gui/nodeeditor/connectable_view_model_controller.h>
 #include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
-#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
-#include <oac_tree_gui/nodeeditor/scene_utils.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene_v2.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/nodeeditor/connectable_shape.h>
+#include <mvvm/nodeeditor/graphics_scene_helper.h>
 
 #include <QPointF>
 #include <QVBoxLayout>
@@ -78,7 +76,7 @@ NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
 
   auto on_subscribe = [this]() { SetupController(); };
 
-  auto on_unsubscribe = [this]() { m_scene_controller.reset(); };
+  auto on_unsubscribe = [this]() { m_scene_component_provider.reset(); };
 
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
@@ -102,15 +100,12 @@ void NodeEditorWidget::SetProcedure(ProcedureItem *procedure)
     return;
   }
 
-  auto instruction_container = procedure->GetInstructionContainer();
-  m_graphics_scene->SetInstructionContainer(instruction_container);
-
   SetupController();
 }
 
 std::vector<InstructionItem *> NodeEditorWidget::GetSelectedInstructions() const
 {
-  return m_graphics_scene->GetSelectedInstructions();
+  return m_scene_component_provider->GetSelectedInstructions();
 }
 
 void NodeEditorWidget::SetSelectedInstructions(
@@ -121,21 +116,24 @@ void NodeEditorWidget::SetSelectedInstructions(
     return;
   }
 
-  m_graphics_scene->SetSelectedInstructions(instructions);
+  if (m_scene_component_provider)
+  {
+    m_scene_component_provider->SetSelectedInstructions(instructions);
+  }
 }
 
 //! Provides node alignment on graphics view.
 
 void NodeEditorWidget::OnAlignRequest()
 {
-  auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
+  auto selected = mvvm::GetSelectedShapes<mvvm::ConnectableShape>(*m_graphics_scene);
   if (selected.size() != 1)
   {
     return;
   }
 
   auto view = selected.front();
-  auto item = view->GetConnectableItem()->GetInstruction();
+  auto item = mvvm::GetUnderlyingItem<InstructionItem>(view);
   algorithm::AlignInstructionTreeWalker(view->pos(), item);
 }
 
@@ -148,7 +146,7 @@ void NodeEditorWidget::SetupController()
 
   auto container = m_procedure_item->GetInstructionContainer();
 
-  m_scene_controller.reset();
+  m_scene_component_provider.reset();
 
   if (algorithm::RequiresInitialAlignment(container->GetInstructions()))
   {
@@ -156,18 +154,12 @@ void NodeEditorWidget::SetupController()
     algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
   }
 
-  m_scene_controller = std::make_unique<ConnectableViewModelController>(
-      m_procedure_item->GetModel(), m_graphics_scene.get());
-
-  m_scene_controller->Init(m_procedure_item->GetInstructionContainer());
+  m_scene_component_provider = CreateGraphicsSceneComponentProvider();
 }
 
-std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
+std::unique_ptr<NodeGraphicsSceneV2> NodeEditorWidget::CreateGraphicsScene()
 {
-  auto message_callback = [this](const auto &message)
-  { m_graphics_view_message_handler->SendMessage(message); };
-
-  return std::make_unique<NodeGraphicsScene>(message_callback, CreatePluginNameCallback());
+  return std::make_unique<NodeGraphicsSceneV2>();
 }
 
 std::unique_ptr<GraphicsSceneComponentProvider>
@@ -175,6 +167,7 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider()
 {
   auto message_callback = [this](const auto &message)
   { m_graphics_view_message_handler->SendMessage(message); };
+
   auto result = std::make_unique<GraphicsSceneComponentProvider>(
       message_callback, CreatePluginNameCallback(), m_graphics_scene.get(),
       m_procedure_item->GetInstructionContainer());
@@ -194,27 +187,15 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider()
           &GraphicsSceneComponentProvider::OnDeleteSelected);
 
   // propagate drop request from GraphicsScene to GraphicsSceneComponentProvider
-  // connect(m_graphics_scene.get(), &NodeGraphicsScene::dropInstructionRequested, result.get(),
-  //         [&result](const QString &name, const QPointF &pos)
-  //         { result->DropInstruction(name.toStdString(), {pos.x(), pos.y()}); });
+  connect(m_graphics_scene.get(), &NodeGraphicsSceneV2::dropInstructionRequested, result.get(),
+          [this](const QString &name, const QPointF &pos)
+          { m_scene_component_provider->DropInstruction(name.toStdString(), {pos.x(), pos.y()}); });
 
   return result;
 }
 
 void NodeEditorWidget::SetupConnections()
 {
-  // Propagates delete request from the graphics view to the scene.
-  connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, m_graphics_scene.get(),
-          &NodeGraphicsScene::OnDeleteSelectedRequest);
-
-  // Forward instruction selection from graphics scene
-  connect(m_graphics_scene.get(), &NodeGraphicsScene::InstructionSelected, this,
-          [this]() { emit selectionChanged(); });
-
-  // Propagate selection request from GraphicsScene to GraphicsView
-  connect(m_graphics_scene.get(), &NodeGraphicsScene::OperationModeChangeRequest, m_graphics_view,
-          &NodeGraphicsView::SetOperationMode);
-
   // Propagate selection mode change from toolbar to GraphicsView
   connect(m_view_actions, &NodeGraphicsViewActions::OperationModeChangeRequest, m_graphics_view,
           &NodeGraphicsView::SetOperationMode);

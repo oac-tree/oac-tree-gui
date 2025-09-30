@@ -42,8 +42,7 @@ namespace oac_tree_gui
 {
 
 class NodeGraphicsView;
-class NodeGraphicsScene;
-class ConnectableViewModelController;
+class NodeGraphicsSceneV2;
 class InstructionItem;
 class NodeGraphicsViewActions;
 class ProcedureItem;
@@ -77,15 +76,14 @@ private:
   void SetupConnections();
   void OnAlignRequest();
   void SetupController();
-  std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
+  std::unique_ptr<NodeGraphicsSceneV2> CreateGraphicsScene();
   std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider();
 
   NodeGraphicsViewActions* m_view_actions{nullptr};
-  std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
+  std::unique_ptr<NodeGraphicsSceneV2> m_graphics_scene;
   std::unique_ptr<GraphicsSceneComponentProvider> m_scene_component_provider;
   NodeGraphicsView* m_graphics_view{nullptr};
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
-  std::unique_ptr<ConnectableViewModelController> m_scene_controller;
   std::unique_ptr<sup::gui::IMessageHandler> m_graphics_view_message_handler;
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 
