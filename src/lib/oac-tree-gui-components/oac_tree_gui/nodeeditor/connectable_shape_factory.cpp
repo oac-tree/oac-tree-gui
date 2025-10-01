@@ -33,10 +33,15 @@ namespace oac_tree_gui
 std::unique_ptr<mvvm::ConnectableShape> ConnectableShapeFactory::CreateShape(
     mvvm::SessionItem *item) const
 {
-  auto adapter =
-      std::make_unique<ConnectableInstructionAdapter>(dynamic_cast<InstructionItem *>(item));
-  auto position_strategy = std::make_unique<mvvm::TopBottomPortPositionStrategy>();
-  return std::make_unique<mvvm::ConnectableShape>(std::move(adapter), std::move(position_strategy));
+  if (auto instruction_item = dynamic_cast<InstructionItem *>(item); instruction_item)
+  {
+    auto adapter = std::make_unique<ConnectableInstructionAdapter>(instruction_item);
+    auto position_strategy = std::make_unique<mvvm::TopBottomPortPositionStrategy>();
+    return std::make_unique<mvvm::ConnectableShape>(std::move(adapter),
+                                                    std::move(position_strategy));
+  }
+
+  return {};
 }
 
 }  // namespace oac_tree_gui

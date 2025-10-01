@@ -20,10 +20,13 @@
 
 #include "oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h"
 
+#include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
@@ -334,6 +337,92 @@ TEST_F(GraphicsSceneComponentProviderTest, MoveShapeAndUndo)
   EXPECT_NO_FATAL_FAILURE(m_model.GetCommandStack()->Undo());
   EXPECT_DOUBLE_EQ(sequence->GetX(), 42.0);
   EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, SelectionAfterRemoval)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
+
+  auto provider = CreateProvider();
+  provider->SetSelectedInstructions({wait1, wait2});
+
+  const QSignalSpy spy_provider_selected(provider.get(),
+                                         &GraphicsSceneComponentProvider::selectionChanged);
+
+  m_model.RemoveItem(wait1);
+
+  const std::vector<InstructionItem*> expected_selection({wait2});
+  EXPECT_TRUE(
+      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+
+  EXPECT_EQ(spy_provider_selected.count(), 1);
+}
+
+//! Scene is looking into an empty container. Inserting another container, scene should ignore any
+//! activity in it.
+TEST_F(GraphicsSceneComponentProviderTest, InsertAnotherContainer)
+{
+  auto provider = CreateProvider();
+  auto wait0 = m_model.InsertItem<WaitItem>(m_instruction_container);
+
+  auto another_container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence = m_model.InsertItem<SequenceItem>(another_container);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto instructions = FindSceneInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+  EXPECT_EQ(instructions.front(), wait0);
+}
+
+//! Scene is looking in the container with an instruciton. Remove container and make sure, that the
+//! scene was cleaned up.
+TEST_F(GraphicsSceneComponentProviderTest, RemoveContainer)
+{
+  auto provider = CreateProvider();
+  auto wait0 = m_model.InsertItem<WaitItem>(m_instruction_container);
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  EXPECT_EQ(shapes.size(), 1);
+
+  // scene should be cleaned up after the container removal
+  m_model.RemoveItem(m_instruction_container);
+  EXPECT_EQ(m_graphics_scene.items().size(), 0);
+
+  // any activity after is ignored
+  auto new_container = m_model.InsertItem<InstructionContainerItem>();
+  auto wait1 = m_model.InsertItem<WaitItem>(new_container);
+  EXPECT_EQ(m_graphics_scene.items().size(), 0);
+}
+
+//! Testing the case when AnyValue is replaced on board of PvAccessWriteInstructionItem. The
+//! graphics controller should be happy with that and shouldn't try to create/remove instructions
+//! related views.
+TEST_F(GraphicsSceneComponentProviderTest, InsertAnyValueItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  auto provider = CreateProvider();
+
+  auto instruction_item = m_model.InsertItem<PvAccessWriteInstructionItem>(m_instruction_container);
+
+  auto instructions = FindSceneInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+  EXPECT_EQ(instructions.front(), instruction_item);
+
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+
+  EXPECT_NO_THROW(SetAnyValue(expected_anyvalue, *instruction_item));
+  instructions = FindSceneInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+  EXPECT_EQ(instructions.front(), instruction_item);
 }
 
 }  // namespace oac_tree_gui::test

@@ -24,6 +24,7 @@
 
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/i_connectable_shape_adapter.h>
+#include <mvvm/standarditems/vector_item.h>
 
 #include <gtest/gtest.h>
 
@@ -49,5 +50,16 @@ TEST_F(ConnectableShapeFactoryTest, InitialState)
   EXPECT_EQ(shape->x(), 1.0);
   EXPECT_EQ(shape->y(), 2.0);
 }
+
+TEST_F(ConnectableShapeFactoryTest, CreateShapeForUnrelatedItem)
+{
+  const ConnectableShapeFactory factory;
+
+  mvvm::VectorItem item;
+  auto shape = factory.CreateShape(&item);
+
+  EXPECT_EQ(shape.get(), nullptr);
+}
+
 
 }  // namespace oac_tree_gui::test

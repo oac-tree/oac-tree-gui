@@ -60,7 +60,7 @@ public:
   std::unique_ptr<instruction_t> CreateDomainInstruction() const;
 
   /**
-   * @brief Returns all child instrucitons.
+   * @brief Returns all child instructions.
    */
   std::vector<InstructionItem*> GetInstructions() const;
 

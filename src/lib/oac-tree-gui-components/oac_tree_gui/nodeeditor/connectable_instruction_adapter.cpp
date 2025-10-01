@@ -41,7 +41,7 @@ ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem *in
 {
   if (!m_instruction)
   {
-    throw RuntimeException("Instruciton item is not set");
+    throw RuntimeException("Instruction item is not set");
   }
 }
 
