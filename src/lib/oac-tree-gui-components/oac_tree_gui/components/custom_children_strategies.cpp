@@ -20,8 +20,10 @@
 
 #include "custom_children_strategies.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/gui/model/anyvalue_item.h>
@@ -67,6 +69,25 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
   std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
                is_correct_type);
   return result;
+}
+
+std::vector<mvvm::SessionItem *> InstructionNodeChildrenStrategy::GetChildren(
+    const mvvm::SessionItem *item) const
+{
+  if (auto instruction_item = dynamic_cast<const InstructionItem *>(item); instruction_item)
+  {
+    if (!IsCollapsed(*instruction_item))
+    {
+      std::vector<mvvm::SessionItem *> result;
+      auto children = instruction_item->GetInstructions();
+      std::copy(children.begin(), children.end(), std::back_inserter(result));
+      return result;
+    }
+    return {};
+  }
+
+  // instruction container
+  return mvvm::utils::TopLevelItems(*item);
 }
 
 }  // namespace oac_tree_gui

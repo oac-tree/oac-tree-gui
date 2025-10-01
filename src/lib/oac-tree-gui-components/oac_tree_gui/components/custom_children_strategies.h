@@ -43,6 +43,18 @@ public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
 };
 
+
+/**
+ * @brief The InstructionNodeChildrenStrategy class reports children of InstructionItem.
+ *
+ * It takes into accound possible collapse/expand status of instruction item.
+ */
+class InstructionNodeChildrenStrategy : public mvvm::IChildrenStrategy
+{
+public:
+  std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
+};
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_CHILDREN_STRATEGIES_H_
