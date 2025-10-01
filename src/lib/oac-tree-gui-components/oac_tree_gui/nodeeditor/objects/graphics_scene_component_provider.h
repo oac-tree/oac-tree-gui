@@ -23,6 +23,8 @@
 
 #include <sup/gui/core/message_event.h>
 
+#include <mvvm/signals/event_types.h>
+
 #include <QObject>
 #include <memory>
 
@@ -111,6 +113,11 @@ private:
    * @brief Handles scene selection change.
    */
   void OnSceneSelectionChanged();
+
+  /**
+   * @brief Processed data changed event.
+   */
+  void OnDataChanged(const mvvm::DataChangedEvent& event);
 
   /**
    * @brief Creates view model controller.

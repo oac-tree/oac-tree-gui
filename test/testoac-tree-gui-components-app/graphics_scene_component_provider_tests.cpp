@@ -472,4 +472,26 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertSequenceAndWaitWhenSequenceColl
   ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence}));
 }
 
+TEST_F(GraphicsSceneComponentProviderTest, ValidateUpdateOnSequenceCollapsePropertyChange)
+{
+  auto provider = CreateProvider();
+
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence, wait}));
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 1U);
+
+  SetCollapsed(true, *sequence);
+  ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence}));
+  connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 0U);
+
+  SetCollapsed(false, *sequence);
+  ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence, wait}));
+  connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 1U);
+}
+
 }  // namespace oac_tree_gui::test

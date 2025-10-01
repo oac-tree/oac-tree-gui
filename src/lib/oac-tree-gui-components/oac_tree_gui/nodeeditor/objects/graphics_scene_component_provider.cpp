@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/components/custom_children_strategies.h>
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
@@ -35,6 +36,7 @@
 #include <mvvm/nodeeditor/node_connection_guide.h>
 #include <mvvm/nodeeditor/node_connection_shape.h>
 #include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/signals/model_listener.h>
 
 namespace oac_tree_gui
 {
@@ -128,6 +130,15 @@ void GraphicsSceneComponentProvider::OnSceneSelectionChanged()
   emit selectionChanged();
 }
 
+void GraphicsSceneComponentProvider::OnDataChanged(const mvvm::DataChangedEvent &event)
+{
+  // On every change of isCollapsed attribute, we regenerate the whole shape branch of parent above.
+  if (event.item->GetTagIndex().GetTag() == domainconstants::kShowCollapsedAttribute)
+  {
+    m_viewmodel_controller->UpdateBranch(event.item->GetParent());
+  }
+}
+
 std::unique_ptr<mvvm::ConnectableViewModelController>
 GraphicsSceneComponentProvider::CreateViewModelController()
 {
@@ -135,7 +146,12 @@ GraphicsSceneComponentProvider::CreateViewModelController()
   auto children_strategy = std::make_unique<InstructionNodeChildrenStrategy>();
   auto result = std::make_unique<mvvm::ConnectableViewModelController>(
       std::move(factory), std::move(children_strategy), m_scene);
+
   result->InitScene(m_instruction_container);
+
+  result->Listener()->Connect<mvvm::DataChangedEvent>(
+      this, &GraphicsSceneComponentProvider::OnDataChanged);
+
   return result;
 }
 

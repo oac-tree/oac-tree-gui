@@ -115,13 +115,13 @@ public:
   void UpdateBranch(const mvvm::SessionItem *item)
   {
     auto tag_index = item->GetTagIndex();
+    auto parent = item->GetParent();
 
     // we pretend that this item was removed
-    mvvm::ViewModelController::OnModelEvent(
-        mvvm::AboutToRemoveItemEvent{item->GetParent(), tag_index});
+    mvvm::ViewModelController::OnModelEvent(mvvm::AboutToRemoveItemEvent{parent, tag_index});
 
     // we pretend that this item was inserted
-    mvvm::ViewModelController::OnModelEvent(mvvm::ItemInsertedEvent{item->GetParent(), tag_index});
+    mvvm::ViewModelController::OnModelEvent(mvvm::ItemInsertedEvent{parent, tag_index});
   }
 };
 
