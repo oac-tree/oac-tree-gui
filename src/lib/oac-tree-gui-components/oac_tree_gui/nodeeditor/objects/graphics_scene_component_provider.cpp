@@ -20,6 +20,7 @@
 
 #include "graphics_scene_component_provider.h"
 
+#include <oac_tree_gui/components/custom_children_strategies.h>
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
@@ -131,7 +132,7 @@ std::unique_ptr<mvvm::ConnectableViewModelController>
 GraphicsSceneComponentProvider::CreateViewModelController()
 {
   auto factory = std::make_unique<ConnectableShapeFactory>();
-  auto children_strategy = std::make_unique<mvvm::TopItemsStrategy>();
+  auto children_strategy = std::make_unique<InstructionNodeChildrenStrategy>();
   auto result = std::make_unique<mvvm::ConnectableViewModelController>(
       std::move(factory), std::move(children_strategy), m_scene);
   result->InitScene(m_instruction_container);

@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/commands/i_command_stack.h>
@@ -423,6 +424,52 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertAnyValueItem)
   instructions = FindSceneInstructions();
   ASSERT_EQ(instructions.size(), 1);
   EXPECT_EQ(instructions.front(), instruction_item);
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, SequenceAndWaitWhenSequenceCollapsed)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  SetCollapsed(true, *sequence);
+
+  auto provider = CreateProvider();
+
+  auto instructions = FindSceneInstructions();
+  EXPECT_EQ(instructions, std::vector<InstructionItem*>({sequence}));
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1U);
+
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+
+  ASSERT_EQ(connections.size(), 0);
+
+  // controller ignores Wait
+  ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence}));
+}
+
+TEST_F(GraphicsSceneComponentProviderTest, InsertSequenceAndWaitWhenSequenceCollapsed)
+{
+  // controller created before the insert event
+  auto provider = CreateProvider();
+
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  SetCollapsed(true, *sequence);
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  auto instructions = FindSceneInstructions();
+  EXPECT_EQ(instructions, std::vector<InstructionItem*>({sequence}));
+
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 1U);
+
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+
+  ASSERT_EQ(connections.size(), 0);
+
+  // controller ignores Wait
+  ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence}));
 }
 
 }  // namespace oac_tree_gui::test
