@@ -33,6 +33,7 @@
 #include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/node_connection_guide.h>
 #include <mvvm/nodeeditor/node_connection_shape.h>
+#include <mvvm/providers/standard_children_strategies.h>
 
 namespace oac_tree_gui
 {
@@ -130,7 +131,9 @@ std::unique_ptr<mvvm::ConnectableViewModelController>
 GraphicsSceneComponentProvider::CreateViewModelController()
 {
   auto factory = std::make_unique<ConnectableShapeFactory>();
-  auto result = std::make_unique<mvvm::ConnectableViewModelController>(std::move(factory), m_scene);
+  auto children_strategy = std::make_unique<mvvm::TopItemsStrategy>();
+  auto result = std::make_unique<mvvm::ConnectableViewModelController>(
+      std::move(factory), std::move(children_strategy), m_scene);
   result->InitScene(m_instruction_container);
   return result;
 }
