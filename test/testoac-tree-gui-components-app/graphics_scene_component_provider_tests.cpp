@@ -380,7 +380,7 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertAnotherContainer)
   EXPECT_EQ(instructions.front(), wait0);
 }
 
-//! Scene is looking in the container with an instruciton. Remove container and make sure, that the
+//! Scene is looking in the container with an instruction. Remove container and make sure, that the
 //! scene was cleaned up.
 TEST_F(GraphicsSceneComponentProviderTest, RemoveContainer)
 {
