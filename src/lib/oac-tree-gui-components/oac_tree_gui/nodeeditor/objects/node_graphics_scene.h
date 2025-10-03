@@ -38,14 +38,12 @@ class NodeGraphicsScene : public QGraphicsScene
 public:
   explicit NodeGraphicsScene(QObject* parent_object = nullptr);
 
-
 signals:
   void dropInstructionRequested(const QString& name, const QPointF& pos);
 
 protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;
   void dropEvent(QGraphicsSceneDragDropEvent* event) override;
-
 };
 
 }  // namespace oac_tree_gui

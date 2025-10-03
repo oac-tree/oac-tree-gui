@@ -20,7 +20,9 @@
 
 #include "color_palette.h"
 
-#include <sup/gui/style/style_helper.h>
+#include <mvvm/style/mvvm_style_helper.h>
+
+#include <QAnyStringView>
 
 namespace oac_tree_gui
 {
@@ -28,17 +30,15 @@ namespace oac_tree_gui
 namespace
 {
 
-// const char *kCetaceanBlue = "#070e2b";
-// const char *kDarkPurple = "#32002f";
-const char *kMediumElectricBlue = "#005291";
-// const char *kArsenic = "#35374a";
-const char *kChineseBlack = "#171717";
+constexpr QAnyStringView kMediumElectricBlue = "#005291";
+constexpr QAnyStringView kChineseBlack = "#171717";
 
 }  // namespace
 
 QColor GetMainToolBarColor()
 {
-  return sup::gui::utils::IsDarkTheme() ? QColor(kChineseBlack) : QColor(kMediumElectricBlue);
+  return mvvm::style::IsDarkTheme() ? QColor::fromString(kChineseBlack)
+                                    : QColor::fromString(kMediumElectricBlue);
 }
 
 }  // namespace oac_tree_gui

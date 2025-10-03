@@ -30,10 +30,10 @@
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/style/style_helper.h>
 
 #include <mvvm/providers/viewitem.h>
 #include <mvvm/providers/viewitem_factory.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QColor>
 #include <QIcon>
@@ -49,7 +49,7 @@ QVariant GetValueIcon()
 {
   // Our ColorIconEngine doesn't work with icons embedded into tree view
   // Have to set icons manually depending on theme
-  if (sup::gui::utils::IsDarkTheme())
+  if (mvvm::style::IsDarkTheme())
   {
     return QVariant::fromValue(QIcon(":/oac-tree/icons/file-tree-outline-light.svg"));
   }
