@@ -25,6 +25,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 namespace oac_tree_gui
 {
@@ -98,9 +99,15 @@ InstructionItem *ConnectableInstructionAdapter::GetInstructionItem() const
   return m_instruction;
 }
 
-mvvm::NodeOperationState ConnectableInstructionAdapter::GetOperationState() const
+mvvm::NodeOperationStates ConnectableInstructionAdapter::GetOperationStates() const
 {
-  return mvvm::NodeOperationState::kDefault;
+  if (!m_instruction->GetInstructions().empty() && IsCollapsed(*m_instruction))
+  {
+    mvvm::NodeOperationStates result;
+    result.Set(mvvm::NodeOperationState::kCollapsedChildren);
+    return result;
+  }
+  return {};
 }
 
 }  // namespace oac_tree_gui

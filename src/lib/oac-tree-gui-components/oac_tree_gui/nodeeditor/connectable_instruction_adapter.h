@@ -54,7 +54,7 @@ public:
 
   InstructionItem* GetInstructionItem() const;
 
-  mvvm::NodeOperationState GetOperationState() const override;
+  mvvm::NodeOperationStates GetOperationStates() const override;
 
 private:
   InstructionItem* m_instruction{nullptr};

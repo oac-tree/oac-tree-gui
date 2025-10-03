@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
 #include <gtest/gtest.h>
@@ -57,6 +58,7 @@ TEST_F(ConnectableInstructionAdapterTest, AdapterInitialState)
 
   ASSERT_EQ(wait_adapter.GetPortInfos().size(), 1U);
   EXPECT_EQ(wait_adapter.GetPortInfos().at(0).GetPortDirection(), mvvm::PortDirection::kOutput);
+  EXPECT_TRUE(wait_adapter.GetOperationStates().None());
 }
 
 TEST_F(ConnectableInstructionAdapterTest, SetCoordinates)
@@ -76,4 +78,20 @@ TEST_F(ConnectableInstructionAdapterTest, SetCoordinates)
   EXPECT_EQ(item.GetX(), 3.0);
   EXPECT_EQ(item.GetY(), 4.0);
 }
+
+TEST_F(ConnectableInstructionAdapterTest, OperationStatesForSequenceInstruction)
+{
+  SequenceItem item;
+  item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+
+  const ConnectableInstructionAdapter adapter(&item);
+
+  mvvm::NodeOperationStates expected_states;
+  EXPECT_EQ(adapter.GetOperationStates(), expected_states);
+
+  expected_states.Set(mvvm::NodeOperationState::kCollapsedChildren);
+  SetCollapsed(true, item);
+  EXPECT_EQ(adapter.GetOperationStates(), expected_states);
+}
+
 }  // namespace oac_tree_gui::test
