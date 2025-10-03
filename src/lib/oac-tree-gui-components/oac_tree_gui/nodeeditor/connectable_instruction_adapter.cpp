@@ -98,4 +98,9 @@ InstructionItem *ConnectableInstructionAdapter::GetInstructionItem() const
   return m_instruction;
 }
 
+mvvm::NodeOperationState ConnectableInstructionAdapter::GetOperationState() const
+{
+  return mvvm::NodeOperationState::kDefault;
+}
+
 }  // namespace oac_tree_gui
