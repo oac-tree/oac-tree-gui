@@ -35,8 +35,7 @@ constexpr auto kChineseBlack = "#171717";
 
 QColor GetMainToolBarColor()
 {
-  return mvvm::style::IsDarkTheme() ? QColor::fromString(kChineseBlack)
-                                    : QColor::fromString(kMediumElectricBlue);
+  return mvvm::style::IsDarkTheme() ? QColor(kChineseBlack) : QColor(kMediumElectricBlue);
 }
 
 }  // namespace oac_tree_gui
