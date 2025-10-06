@@ -66,27 +66,27 @@ bool IsAggregateName(const std::string &name)
 
 void SetInput(const std::string &value, InstructionItem *item)
 {
-  (void) item->SetProperty(domainconstants::kInputVariableNameAttribute, value);
+  (void)item->SetProperty(domainconstants::kInputVariableNameAttribute, value);
 }
 
 void SetOutput(const std::string &value, InstructionItem *item)
 {
-  (void) item->SetProperty(domainconstants::kOutputVariableNameAttribute, value);
+  (void)item->SetProperty(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 void SetDescription(const std::string &value, InstructionItem *item)
 {
-  (void) item->SetProperty(domainconstants::kDescriptionAttribute, value);
+  (void)item->SetProperty(domainconstants::kDescriptionAttribute, value);
 }
 
 void SetText(const std::string &value, InstructionItem *item)
 {
-  (void) item->SetProperty(domainconstants::kTextAttribute, value);
+  (void)item->SetProperty(domainconstants::kTextAttribute, value);
 }
 
 void SetVariableName(const std::string &value, InstructionItem *item)
 {
-  (void) item->SetProperty(domainconstants::kGenericVariableNameAttribute, value);
+  (void)item->SetProperty(domainconstants::kGenericVariableNameAttribute, value);
 }
 
 bool IsCollapsible(const InstructionItem &item)
@@ -124,7 +124,16 @@ void SetCollapsed(bool value, InstructionItem &item)
 {
   if (IsCollapsible(item))
   {
-    (void) item.SetProperty(domainconstants::kShowCollapsedAttribute, value);
+    (void)item.SetProperty(domainconstants::kShowCollapsedAttribute, value);
+  }
+}
+
+void ToggleCollapsed(InstructionItem &item)
+{
+  if (IsCollapsible(item))
+  {
+    const bool current_value = item.Property<bool>(domainconstants::kShowCollapsedAttribute);
+    (void)item.SetProperty(domainconstants::kShowCollapsedAttribute, !current_value);
   }
 }
 

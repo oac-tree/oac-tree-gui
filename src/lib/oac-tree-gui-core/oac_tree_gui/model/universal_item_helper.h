@@ -142,6 +142,11 @@ bool IsCollapsed(const InstructionItem& item);
 void SetCollapsed(bool value, InstructionItem& item);
 
 /**
+ * @brief Toggles collapsed status of instruction.
+ */
+void ToggleCollapsed(InstructionItem& item);
+
+/**
  * @brief Returns vector of instructions which wants their children's branch shown as collapsed.
  */
 std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainerItem& container);
