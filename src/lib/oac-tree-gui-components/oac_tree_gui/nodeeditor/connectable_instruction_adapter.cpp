@@ -27,6 +27,8 @@
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 
+#include <mvvm/nodeeditor/node_editor_helper.h>
+
 namespace oac_tree_gui
 {
 
@@ -108,6 +110,18 @@ mvvm::NodeOperationStates ConnectableInstructionAdapter::GetOperationStates() co
     return result;
   }
   return {};
+}
+
+void ConnectableInstructionAdapter::ProcessEvent(const mvvm::node_event_t &event) const
+{
+  if (std::holds_alternative<mvvm::DoubleClickEvent>(event))
+  {
+    auto concrete_event = std::get<mvvm::DoubleClickEvent>(event);
+    if (auto instruction = mvvm::GetPortOrigin<InstructionItem>(concrete_event.port); instruction)
+    {
+      ToggleCollapsed(*instruction);
+    }
+  }
 }
 
 }  // namespace oac_tree_gui

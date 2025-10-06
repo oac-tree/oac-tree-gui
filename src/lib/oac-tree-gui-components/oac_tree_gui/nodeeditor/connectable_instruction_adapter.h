@@ -56,6 +56,8 @@ public:
 
   mvvm::NodeOperationStates GetOperationStates() const override;
 
+  void ProcessEvent(const mvvm::node_event_t& event) const override;
+
 private:
   InstructionItem* m_instruction{nullptr};
 };
