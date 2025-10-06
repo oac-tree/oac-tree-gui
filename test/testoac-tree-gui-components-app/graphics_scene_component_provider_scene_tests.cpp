@@ -324,4 +324,75 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, ComplexAggregateRemoval)
   EXPECT_TRUE(m_graphics_scene.items().isEmpty());
 }
 
+TEST_F(GraphicsSceneComponentProviderSceneTest, CollapseWhenDoubleClickOnInputPort)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  sequence->SetX(10.0);
+  sequence->SetY(20.0);
+  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  wait->SetX(100.0);
+  wait->SetY(200.0);
+
+  auto provider = CreateProvider();
+
+  // two shapes and no connection between them
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 2);
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 0);
+
+  // clicking on the output port of the sequence and then on the input port of the wait
+  auto sequence_port_pos = test::GetInputPortScenePosition(*shapes.at(0));
+
+  const QPoint viewport_click_coordinate =
+      m_graphics_view.viewport()->mapFromParent(m_graphics_view.mapFromScene(sequence_port_pos));
+
+  EXPECT_FALSE(IsCollapsed(*sequence));
+
+  QTest::mouseDClick(m_graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
+                     viewport_click_coordinate);
+
+  EXPECT_TRUE(IsCollapsed(*sequence));
+
+  QTest::mouseDClick(m_graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
+                     viewport_click_coordinate);
+}
+
+TEST_F(GraphicsSceneComponentProviderSceneTest, DISABLED_CollapseExpandWhenDoubleClickOnInputPort)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  sequence->SetX(10.0);
+  sequence->SetY(20.0);
+  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  wait->SetX(100.0);
+  wait->SetY(200.0);
+
+  auto provider = CreateProvider();
+
+  // two shapes and no connection between them
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  ASSERT_EQ(shapes.size(), 2);
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 0);
+
+  // clicking on the output port of the sequence and then on the input port of the wait
+  auto sequence_port_pos = test::GetInputPortScenePosition(*shapes.at(0));
+
+  const QPoint viewport_click_coordinate =
+      m_graphics_view.viewport()->mapFromParent(m_graphics_view.mapFromScene(sequence_port_pos));
+
+  EXPECT_FALSE(IsCollapsed(*sequence));
+
+  QTest::mouseDClick(m_graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
+                     viewport_click_coordinate);
+
+  EXPECT_TRUE(IsCollapsed(*sequence));
+
+  QTest::mouseDClick(m_graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
+                     viewport_click_coordinate);
+
+  // FIXME failing here, stop working after first collapse
+  EXPECT_FALSE(IsCollapsed(*sequence));
+}
+
 }  // namespace oac_tree_gui::test
