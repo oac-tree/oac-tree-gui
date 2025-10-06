@@ -185,6 +185,11 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   auto variables = job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 42};
+
+  auto predicate2 = [this, &expected_value, &variables]()
+  { return test::IsEqual(*variables.at(0), expected_value); };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 5000));
+
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
@@ -226,6 +231,11 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   auto variables = job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 45};
+
+  auto predicate2 = [this, &expected_value, &variables]()
+  { return test::IsEqual(*variables.at(0), expected_value); };
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 5000));
+
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 

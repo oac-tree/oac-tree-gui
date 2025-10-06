@@ -22,16 +22,14 @@
 
 #include <mvvm/style/mvvm_style_helper.h>
 
-#include <QAnyStringView>
-
 namespace oac_tree_gui
 {
 
 namespace
 {
 
-constexpr QAnyStringView kMediumElectricBlue = "#005291";
-constexpr QAnyStringView kChineseBlack = "#171717";
+constexpr auto kMediumElectricBlue = "#005291";
+constexpr auto kChineseBlack = "#171717";
 
 }  // namespace
 
