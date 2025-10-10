@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/nodeeditor/scene_constants.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
+#include <oac_tree_gui/style/style_helper.h>
 
 #include <QKeyEvent>
 #include <QWheelEvent>
@@ -55,6 +56,8 @@ QGraphicsView::DragMode GetQtDragMode(GraphicsViewOperationMode operation_mode)
 
 NodeGraphicsView::NodeGraphicsView(QGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
+    , m_view_style(CreateStyleFromResource<style::GraphicsViewStyle>(
+          sup::gui::IconColorFlavor::kForDarkThemes))
 {
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setRenderHint(QPainter::Antialiasing);
