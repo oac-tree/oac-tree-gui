@@ -25,6 +25,7 @@
 
 class QIcon;
 class QString;
+class QJsonObject;
 
 namespace oac_tree_gui
 {
@@ -37,6 +38,14 @@ namespace oac_tree_gui
  */
 QIcon FindIcon(const QString& icon_name,
                sup::gui::IconColorFlavor icon_flavor = sup::gui::IconColorFlavor::kUnspecified);
+
+/**
+ * @brief Loads JSON from resource with the given name.
+ *
+ * It has to be a file on disk, or binary resource defined  compiled into the library.
+ * @see resources/oac_tree_icons.qrc
+ */
+QJsonObject LoadJsonFromResource(const QString& name);
 
 }  // namespace oac_tree_gui
 

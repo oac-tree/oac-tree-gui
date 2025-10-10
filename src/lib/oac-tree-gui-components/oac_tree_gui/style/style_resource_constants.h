@@ -18,36 +18,23 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "style_helper.h"
+#ifndef OAC_TREE_GUI_STYLE_RESOURCE_CONSTANTS_H_
+#define OAC_TREE_GUI_STYLE_RESOURCE_CONSTANTS_H_
 
-#include <oac_tree_gui/core/exceptions.h>
+//! @file
+//! Collection of constants related to the parsing of json style files.
 
-#include <sup/gui/style/style_helper.h>
-
-#include <QFile>
-#include <QIcon>
-#include <QJsonDocument>
-#include <QJsonObject>
-
-namespace oac_tree_gui
+namespace oac_tree_gui::style
 {
 
-QIcon FindIcon(const QString &icon_name, sup::gui::IconColorFlavor icon_flavor)
-{
-  // in accordance with the oac_tree_icons.qrc file
-  return sup::gui::utils::GetIcon(QString(":/oac-tree/icons/%1.svg").arg(icon_name), icon_flavor);
-}
+constexpr auto kDefaultLightStyleResourceName = ":/oac-tree/style/default_light_style.json";
+constexpr auto kDefaultDarkStyleResourceName = ":/oac-tree/style/default_dark_style.json";
 
-QJsonObject LoadJsonFromResource(const QString &name)
-{
-  QFile file(name);
+constexpr auto NodeGraphicsViewStyleKey = "NodeGraphicsViewStyle";
+constexpr auto BackgroundColorKey = "BackgroundColor";
+constexpr auto FineGridColorKey = "FineGridColor";
+constexpr auto CoarseGridColorKey = "CoarseGridColor";
 
-  if (!file.open(QIODevice::ReadOnly))
-  {
-    return {};
-  }
+}  // namespace oac_tree_gui::style
 
-  return QJsonDocument::fromJson(file.readAll()).object();
-}
-
-}  // namespace oac_tree_gui
+#endif  // OAC_TREE_GUI_STYLE_RESOURCE_CONSTANTS_H_
