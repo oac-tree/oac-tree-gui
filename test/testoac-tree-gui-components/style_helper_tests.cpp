@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/style/style_resource_constants.h>
+#include <oac_tree_gui/style/style_types.h>
 
 #include <gtest/gtest.h>
 
@@ -58,6 +59,24 @@ TEST_F(StyleHelperTest, LoadJsonFromResource)
   }
 }
 
+TEST_F(StyleHelperTest, LoadDefaultJsonStyle)
+{
+  {  // default dark style
+    auto json = LoadDefaultJsonStyle(sup::gui::IconColorFlavor::kForDarkThemes);
+    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+  }
+
+  {  // default light style
+    auto json = LoadDefaultJsonStyle(sup::gui::IconColorFlavor::kForLightThemes);
+    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+  }
+
+  {  // unspecified style
+    auto json = LoadDefaultJsonStyle(sup::gui::IconColorFlavor::kUnspecified);
+    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+  }
+}
+
 TEST_F(StyleHelperTest, ValidateStyleKey)
 {
   {  // non existing group
@@ -77,6 +96,13 @@ TEST_F(StyleHelperTest, ValidateStyleKey)
         json, style::NodeGraphicsViewStyleKey,
         {style::BackgroundColorKey, style::FineGridColorKey, style::CoarseGridColorKey}));
   }
+}
+
+TEST_F(StyleHelperTest, CreateStyleFromResource)
+{
+  auto style =
+      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForDarkThemes);
+  (void)style;
 }
 
 }  // namespace oac_tree_gui::test

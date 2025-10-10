@@ -58,4 +58,17 @@ TEST_F(StyleTypesTest, GraphicsViewStyle)
   }
 }
 
+TEST_F(StyleTypesTest, CreateGraphicsViewStyle)
+{
+  auto dark_style =
+      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForDarkThemes);
+
+  auto light_style =
+      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForLightThemes);
+
+  EXPECT_NE(dark_style.background_color, light_style.background_color);
+  EXPECT_NE(dark_style.fine_grid_color, light_style.fine_grid_color);
+  EXPECT_NE(dark_style.corase_grid_color, light_style.corase_grid_color);
+}
+
 }  // namespace oac_tree_gui::test

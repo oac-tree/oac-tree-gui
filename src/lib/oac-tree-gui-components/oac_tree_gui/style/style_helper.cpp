@@ -20,14 +20,17 @@
 
 #include "style_helper.h"
 
+#include "style_resource_constants.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 
 #include <sup/gui/style/style_helper.h>
 
+#include <mvvm/style/mvvm_style_helper.h>
+
 #include <QFile>
 #include <QIcon>
 #include <QJsonDocument>
-#include <QJsonObject>
 
 namespace oac_tree_gui
 {
@@ -48,6 +51,29 @@ QJsonObject LoadJsonFromResource(const QString &name)
   }
 
   return QJsonDocument::fromJson(file.readAll()).object();
+}
+
+QJsonObject LoadDefaultJsonStyle(sup::gui::IconColorFlavor icon_flavor)
+{
+  // if icon flavor is specified, return corresponding theme
+  if (icon_flavor == sup::gui::IconColorFlavor::kForDarkThemes)
+  {
+    return LoadJsonFromResource(style::kDefaultDarkStyleResourceName);
+  }
+
+  if (icon_flavor == sup::gui::IconColorFlavor::kForLightThemes)
+  {
+    return LoadJsonFromResource(style::kDefaultLightStyleResourceName);
+  }
+
+  // if flavor is unspecified, return color depending on desktop darkness theme itself
+  if (icon_flavor == sup::gui::IconColorFlavor::kUnspecified)
+  {
+    return mvvm::style::IsDarkTheme() ? LoadJsonFromResource(style::kDefaultDarkStyleResourceName)
+                                      : LoadJsonFromResource(style::kDefaultLightStyleResourceName);
+  }
+
+  throw RuntimeException("Unknown icon flavor");
 }
 
 void ValidateStyleKey(const QJsonObject &json, const QString &group,

@@ -23,11 +23,11 @@
 
 #include <sup/gui/style/icon_color_flavor.h>
 
+#include <QJsonObject>
 #include <QString>
 #include <QStringList>
 
 class QIcon;
-class QJsonObject;
 
 namespace oac_tree_gui
 {
@@ -50,12 +50,28 @@ QIcon FindIcon(const QString& icon_name,
 QJsonObject LoadJsonFromResource(const QString& name);
 
 /**
+ * @brief Loads JSON object representing default style for the given dark/light color.
+ */
+QJsonObject LoadDefaultJsonStyle(sup::gui::IconColorFlavor icon_flavor);
+
+/**
  * @brief Validates that the given JSON object contains all expected keys in the given group.
  *
  * If some keys are missing, an exception is thrown.
  */
 void ValidateStyleKey(const QJsonObject& json, const QString& group,
                       const QStringList& expected_keys);
+
+/**
+ * @brief Creates style of the give type for given theme flavor (dark/light/unspecified).
+ */
+template <typename StyleT>
+StyleT CreateStyleFromResource(sup::gui::IconColorFlavor icon_flavor)
+{
+  auto json = LoadDefaultJsonStyle(icon_flavor);
+  return StyleT::CreateFromStyle(json);
+}
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_STYLE_STYLE_HELPER_H_
