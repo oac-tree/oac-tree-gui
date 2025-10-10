@@ -23,8 +23,10 @@
 
 #include <sup/gui/style/icon_color_flavor.h>
 
+#include <QString>
+#include <QStringList>
+
 class QIcon;
-class QString;
 class QJsonObject;
 
 namespace oac_tree_gui
@@ -47,6 +49,13 @@ QIcon FindIcon(const QString& icon_name,
  */
 QJsonObject LoadJsonFromResource(const QString& name);
 
+/**
+ * @brief Validates that the given JSON object contains all expected keys in the given group.
+ *
+ * If some keys are missing, an exception is thrown.
+ */
+void ValidateStyleKey(const QJsonObject& json, const QString& group,
+                      const QStringList& expected_keys);
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_STYLE_STYLE_HELPER_H_

@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/style/style_helper.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/style/style_resource_constants.h>
 
 #include <gtest/gtest.h>
@@ -54,6 +55,27 @@ TEST_F(StyleHelperTest, LoadJsonFromResource)
   {  // default light style
     auto json = LoadJsonFromResource(style::kDefaultLightStyleResourceName);
     ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+  }
+}
+
+TEST_F(StyleHelperTest, ValidateStyleKey)
+{
+  {  // non existing group
+    auto json = LoadJsonFromResource("");
+    EXPECT_THROW(ValidateStyleKey(json, "no-such-group", {}), RuntimeException);
+  }
+
+  {  // existing group, but missing keys
+    auto json = LoadJsonFromResource(style::kDefaultDarkStyleResourceName);
+    EXPECT_THROW(ValidateStyleKey(json, style::NodeGraphicsViewStyleKey, {"no-such-key"}),
+                 RuntimeException);
+  }
+
+  {  // existing group and all keys
+    auto json = LoadJsonFromResource(style::kDefaultDarkStyleResourceName);
+    EXPECT_NO_THROW(ValidateStyleKey(
+        json, style::NodeGraphicsViewStyleKey,
+        {style::BackgroundColorKey, style::FineGridColorKey, style::CoarseGridColorKey}));
   }
 }
 

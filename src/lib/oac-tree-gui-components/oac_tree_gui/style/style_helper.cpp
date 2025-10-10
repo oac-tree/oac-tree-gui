@@ -50,4 +50,25 @@ QJsonObject LoadJsonFromResource(const QString &name)
   return QJsonDocument::fromJson(file.readAll()).object();
 }
 
+void ValidateStyleKey(const QJsonObject &json, const QString &group,
+                      const QStringList &expected_keys)
+{
+  if (!json.contains(group))
+  {
+    throw RuntimeException(QString("Style does not contain '%1' group").arg(group).toStdString());
+  }
+
+  QJsonObject obj = json[group].toObject();
+
+  for (const auto &key : expected_keys)
+  {
+    if (!obj.contains(key))
+    {
+      throw RuntimeException(QString("Style '%1' group does not contain expected '%2' key")
+                                 .arg(group, key)
+                                 .toStdString());
+    }
+  }
+}
+
 }  // namespace oac_tree_gui
