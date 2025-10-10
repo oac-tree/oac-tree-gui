@@ -58,7 +58,7 @@ void ValidateStyleKey(const QJsonObject &json, const QString &group,
     throw RuntimeException(QString("Style does not contain '%1' group").arg(group).toStdString());
   }
 
-  QJsonObject obj = json[group].toObject();
+  const QJsonObject obj = json[group].toObject();
 
   for (const auto &key : expected_keys)
   {
