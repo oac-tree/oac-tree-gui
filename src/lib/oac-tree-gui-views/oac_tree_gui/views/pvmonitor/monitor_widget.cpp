@@ -61,7 +61,7 @@ MonitorWidget::MonitorWidget(sup::gui::IAppCommandService &command_service, QWid
     , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_tree(
-          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTechTree))
+          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table(
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTable))
     , m_tool_bar(new QToolBar)
