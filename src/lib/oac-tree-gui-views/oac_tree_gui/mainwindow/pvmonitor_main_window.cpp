@@ -21,12 +21,11 @@
 #include "pvmonitor_main_window.h"
 
 #include "pvmonitor_project.h"
+#include "sequencer_main_window_context.h"
 
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_main_window_actions.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_widget.h>
-
-#include <sup/gui/app/null_command_service.h>
 
 #include <QMenuBar>
 #include <QSettings>
@@ -41,13 +40,19 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 namespace oac_tree_gui
 {
 
-PvMonitorMainWindow::PvMonitorMainWindow()
-    : m_command_service(std::make_unique<sup::gui::NullCommandService>())
-    , m_project(CreateProject())
+PvMonitorMainWindow::PvMonitorMainWindow(SequencerMainWindowContext& context)
+    : m_context(context), m_project(CreateProject())
 {
   InitApplication();
 
   m_project->CreateEmpty();
+}
+
+bool PvMonitorMainWindow::ImportProcedure(const QString& file_name)
+{
+  (void)file_name;
+  // Not implemented yet
+  return false;
 }
 
 PvMonitorMainWindow::~PvMonitorMainWindow() = default;
@@ -63,7 +68,7 @@ void PvMonitorMainWindow::InitApplication()
   ReadSettings();
   m_actions = new MonitorMainWindowActions(m_project.get(), this);
 
-  m_monitor_widget = new MonitorWidget(*m_command_service);
+  m_monitor_widget = new MonitorWidget(m_context.GetCommandService());
   setCentralWidget(m_monitor_widget);
 }
 

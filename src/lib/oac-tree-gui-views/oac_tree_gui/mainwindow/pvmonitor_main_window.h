@@ -26,18 +26,13 @@
 
 class QCloseEvent;
 
-namespace sup::gui
-{
-class IAppCommandService;
-}
-
-
 namespace oac_tree_gui
 {
 
 class MonitorWidget;
 class PvMonitorProject;
 class MonitorMainWindowActions;
+class SequencerMainWindowContext;
 
 /**
  * @brief The SequencerMainWindow class is the main window of sup-pvmonitor application.
@@ -47,8 +42,10 @@ class PvMonitorMainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  PvMonitorMainWindow();
+  explicit PvMonitorMainWindow(SequencerMainWindowContext& context);
   ~PvMonitorMainWindow() override;
+
+  static bool ImportProcedure(const QString& file_name);
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -67,7 +64,7 @@ private:
 
   std::unique_ptr<PvMonitorProject> CreateProject();
 
-  std::unique_ptr<sup::gui::IAppCommandService> m_command_service;
+  SequencerMainWindowContext& m_context;
   std::unique_ptr<PvMonitorProject> m_project;
   MonitorWidget* m_monitor_widget{nullptr};
   MonitorMainWindowActions* m_actions{nullptr};

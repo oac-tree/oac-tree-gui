@@ -18,16 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sup/gui/mainwindow/main_window_helper.h>
-
-#include <QApplication>
-#include <QMessageBox>
-#include <QMetaType>
-
 #include <oac_tree_gui/components/load_resources.h>
 #include <oac_tree_gui/core/version.h>
-#include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/mainwindow/command_line_options.h>
+#include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/mainwindow/pvmonitor_main_window.h>
 
 int main(int argc, char** argv)
@@ -37,18 +30,5 @@ int main(int argc, char** argv)
   auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("sup-pvmonitor", version);
 
-  auto options = oac_tree_gui::ParseOptions(argc, argv);
-  sup::gui::SetupHighDpiScaling(options.scale);
-
-  const QApplication app(argc, argv);
-
-  sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
-
-  // oac_tree_gui::LoadOacTreePlugins();
-  oac_tree_gui::LoadOacTreeItems();
-
-  oac_tree_gui::PvMonitorMainWindow win;
-  win.show();
-
-  return app.exec();
+  return oac_tree_gui::RunApplication<oac_tree_gui::PvMonitorMainWindow>(argc, argv);
 }
