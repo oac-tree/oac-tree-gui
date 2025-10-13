@@ -1,5 +1,6 @@
 Changes for 2.0.0:
 
+- Bugfix COA-1760 regarding broken plugin load in sup-pvmonitor
 - Switch node editor machinery to a new implementation in sup-mvvm
 - Implement custom PluginSettingsEditor for plugin list configuration
 - Implement TextEditItem controller for short text editing
