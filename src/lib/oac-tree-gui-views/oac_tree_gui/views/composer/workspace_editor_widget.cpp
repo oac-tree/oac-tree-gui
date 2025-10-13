@@ -108,6 +108,12 @@ void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
   }
 }
 
+void WorkspaceEditorWidget::resizeEvent(QResizeEvent *event)
+{
+  QWidget::resizeEvent(event);
+  AdjustTreeAppearance();
+}
+
 void WorkspaceEditorWidget::SetupConnections()
 {
   auto on_item_select_request = [this](auto item)

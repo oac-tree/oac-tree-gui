@@ -66,6 +66,9 @@ public:
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
+protected:
+  virtual void resizeEvent(QResizeEvent *event);
+
 private:
   void SetupConnections();
   void SetupTree();
