@@ -58,6 +58,9 @@ OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService &c
   layout->addWidget(m_stack_widget);
 
   ReadSettings();
+
+  m_workspace_tree_widget->SetWorkspaceEditType(WorkspaceEditType::kValuesOnly);
+  m_workspace_table_widget->SetWorkspaceEditType(WorkspaceEditType::kValuesOnly);
 }
 
 OperationWorkspacePanel::~OperationWorkspacePanel()

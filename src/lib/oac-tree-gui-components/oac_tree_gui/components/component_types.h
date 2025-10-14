@@ -44,8 +44,18 @@ enum class BehaviorTreeStyle : std::uint8_t
  */
 enum class WorkspacePresentationType : std::uint8_t
 {
-  kWorkspaceTree,      //!< variables are shown as a tree
-  kWorkspaceTable      //!< variables are shown as table
+  kWorkspaceTree,  //!< variables are shown as a tree
+  kWorkspaceTable  //!< variables are shown as table
+};
+
+/**
+ * @brief The WorkspaceEditType enum defines if workspace is editable.
+ */
+enum class WorkspaceEditType : std::uint8_t
+{
+  kReadOnly,       //!< it is not possible to modify workspace
+  kValuesOnly,     //!< it is possible to modify the values of the variables leafs
+  kEditorEnabled,  //!< workspace editor is enabled (add/remove variables, change AnyValue)
 };
 
 /**

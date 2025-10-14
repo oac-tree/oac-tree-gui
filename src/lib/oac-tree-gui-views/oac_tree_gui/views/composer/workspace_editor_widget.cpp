@@ -62,6 +62,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService &comma
     , m_line_edit(new QLineEdit)
     , m_editor(new WorkspaceEditor(
           command_service, [this]() { return m_component_provider->GetSelectedItems(); }, this))
+    , m_edit_type(WorkspaceEditType::kEditorEnabled)
 {
   setWindowTitle("Workspace");
 
@@ -106,6 +107,15 @@ void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
   {
     SetWorkspaceItemIntern(m_workspace_item);
   }
+}
+
+void WorkspaceEditorWidget::SetWorkspaceEditType(WorkspaceEditType edit_type)
+{
+  m_edit_type = edit_type;
+  m_tree_view->setEditTriggers(edit_type != WorkspaceEditType::kReadOnly
+                                   ? QAbstractItemView::DoubleClicked
+                                         | QAbstractItemView::SelectedClicked
+                                   : QAbstractItemView::NoEditTriggers);
 }
 
 void WorkspaceEditorWidget::resizeEvent(QResizeEvent *event)
@@ -171,7 +181,10 @@ void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
 {
   QMenu menu;
 
-  m_editor->SetupContextMenu(menu);
+  if (m_edit_type == WorkspaceEditType::kEditorEnabled)
+  {
+    m_editor->SetupContextMenu(menu);
+  }
 
   // populate tree menu
   menu.addSeparator();

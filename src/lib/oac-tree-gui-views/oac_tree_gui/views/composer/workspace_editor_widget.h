@@ -66,6 +66,8 @@ public:
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
+  void SetWorkspaceEditType(WorkspaceEditType edit_type);
+
 protected:
   void resizeEvent(QResizeEvent *event) override;
 
@@ -97,6 +99,7 @@ private:
   WorkspaceEditor* m_editor{nullptr};
 
   WorkspaceItem* m_workspace_item{nullptr};
+  WorkspaceEditType m_edit_type;
 };
 
 }  // namespace oac_tree_gui
