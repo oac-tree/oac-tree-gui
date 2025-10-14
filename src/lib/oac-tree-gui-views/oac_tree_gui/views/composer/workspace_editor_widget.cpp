@@ -155,11 +155,6 @@ std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceEditorWidget::CreatePro
     result = std::make_unique<WorkspaceViewComponentProvider>(
         std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view);
   }
-  else if (presentation == WorkspacePresentationType::kWorkspaceTechTree)
-  {
-    result = std::make_unique<WorkspaceViewComponentProvider>(
-        std::make_unique<WorkspaceEditorViewModel>(nullptr, /*show_hidded*/ true), m_tree_view);
-  }
   else if (presentation == WorkspacePresentationType::kWorkspaceTable)
   {
     result = std::make_unique<WorkspaceViewComponentProvider>(

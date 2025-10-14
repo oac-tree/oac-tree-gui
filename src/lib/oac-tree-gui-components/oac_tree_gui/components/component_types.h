@@ -44,9 +44,8 @@ enum class BehaviorTreeStyle : std::uint8_t
  */
 enum class WorkspacePresentationType : std::uint8_t
 {
-  kWorkspaceTree,      //!< full tree with workspace variables, connection status hidded
-  kWorkspaceTechTree,  //!< full tree with workspace variables, connection status shown
-  kWorkspaceTable      //!< experimental table with workspace variables
+  kWorkspaceTree,      //!< variables are shown as a tree
+  kWorkspaceTable      //!< variables are shown as table
 };
 
 /**

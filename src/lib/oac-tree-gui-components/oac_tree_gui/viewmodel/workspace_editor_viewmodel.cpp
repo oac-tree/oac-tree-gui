@@ -21,27 +21,19 @@
 #include "workspace_editor_viewmodel.h"
 
 #include <oac_tree_gui/components/custom_row_strategies.h>
+
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
 namespace oac_tree_gui
 {
 
-WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, bool show_hidden,
-                                                   QObject *parent)
+WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *mode, QObject *parent)
     : ViewModel(parent)
 {
-  if (show_hidden)
-  {
-    SetController(mvvm::factory::CreateController<mvvm::AllChildrenStrategy, VariableRowStrategy>(
-        model, this));
-  }
-  else
-  {
-    SetController(
-        mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(
-            model, this));
-  }
+  SetController(
+      mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(mode,
+                                                                                             this));
 }
 
 int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const
