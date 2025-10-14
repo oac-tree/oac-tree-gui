@@ -59,6 +59,7 @@ PvMonitorMainWindow::~PvMonitorMainWindow() = default;
 
 void PvMonitorMainWindow::closeEvent(QCloseEvent* event)
 {
+  m_monitor_widget->OnStopMonitoringRequest();
   WriteSettings();
   QMainWindow::closeEvent(event);
 }
