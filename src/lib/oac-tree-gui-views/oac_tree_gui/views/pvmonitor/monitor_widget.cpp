@@ -38,21 +38,6 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
-namespace
-{
-
-/**
- * @brief Sets all action in the container to a given is_enabled sttaus
- */
-void SetEnabled(const QList<QAction *> &actions, bool is_enabled)
-{
-  for (auto action : actions)
-  {
-    action->setEnabled(is_enabled);
-  }
-}
-}  // namespace
-
 namespace oac_tree_gui
 {
 
@@ -152,8 +137,9 @@ QList<QAction *> MonitorWidget::GetControlActions()
 void MonitorWidget::SetIsRunning(bool is_running)
 {
   // when running, disable editor actions, and enable control actions
-  SetEnabled(m_workspace_tree->actions(), !is_running);
-  SetEnabled(m_workspace_table->actions(), !is_running);
+  auto edit_type = is_running ? WorkspaceEditType::kValuesOnly : WorkspaceEditType::kEditorEnabled;
+  m_workspace_tree->SetWorkspaceEditType(edit_type);
+  m_workspace_table->SetWorkspaceEditType(edit_type);
   m_monitor_actions->SetIsRunning(is_running);
   UpdateVariableEditableProperty(is_running, *m_workspace_item);
 }

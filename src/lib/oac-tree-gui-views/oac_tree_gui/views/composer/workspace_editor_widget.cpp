@@ -112,10 +112,16 @@ void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
 void WorkspaceEditorWidget::SetWorkspaceEditType(WorkspaceEditType edit_type)
 {
   m_edit_type = edit_type;
+
   m_tree_view->setEditTriggers(edit_type != WorkspaceEditType::kReadOnly
                                    ? QAbstractItemView::DoubleClicked
                                          | QAbstractItemView::SelectedClicked
                                    : QAbstractItemView::NoEditTriggers);
+
+  for (auto action : actions())
+  {
+    action->setEnabled(edit_type == WorkspaceEditType::kEditorEnabled);
+  }
 }
 
 void WorkspaceEditorWidget::resizeEvent(QResizeEvent *event)
