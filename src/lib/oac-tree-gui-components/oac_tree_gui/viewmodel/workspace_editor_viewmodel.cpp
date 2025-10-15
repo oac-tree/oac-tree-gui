@@ -28,11 +28,11 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *mode, QObject *parent)
+WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(mode,
+      mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(model,
                                                                                              this));
 }
 
