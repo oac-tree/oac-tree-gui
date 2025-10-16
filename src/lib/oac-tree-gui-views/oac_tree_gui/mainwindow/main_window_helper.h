@@ -35,6 +35,7 @@
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
+#include <mvvm/widgets/app_utils.h>
 
 #include <QApplication>
 #include <QSettings>
@@ -54,7 +55,7 @@ template <typename MainWindowT>
 int RunApplication(int argc, char** argv)
 {
   auto options = oac_tree_gui::ParseOptions(argc, argv);
-  sup::gui::SetupHighDpiScaling(options.scale);
+  mvvm::utils::SetupHighDpiScaling(options.scale);
 
   oac_tree_gui::LoadOacTreeItems();
 

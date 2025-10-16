@@ -84,6 +84,7 @@ protected:
   void keyPressEvent(QKeyEvent* event) override;
   void keyReleaseEvent(QKeyEvent* event) override;
   void wheelEvent(QWheelEvent* event) override;
+  void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 private:
   /**
@@ -95,6 +96,11 @@ private:
    * @brief If zoom factor can be smaller.
    */
   bool CanZoomOut() const;
+
+  /**
+   * @brief Draws grid with the given step.
+   */
+  void DrawGrid(double grid_step, QPainter* painter);
 
   GraphicsViewOperationMode m_operation_mode{GraphicsViewOperationMode::kSimpleSelection};
   style::GraphicsViewStyle m_view_style;

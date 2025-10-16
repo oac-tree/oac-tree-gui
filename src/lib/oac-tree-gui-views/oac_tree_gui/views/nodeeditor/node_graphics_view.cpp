@@ -57,13 +57,18 @@ QGraphicsView::DragMode GetQtDragMode(GraphicsViewOperationMode operation_mode)
 NodeGraphicsView::NodeGraphicsView(QGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
     , m_view_style(CreateStyleFromResource<style::GraphicsViewStyle>(
-          sup::gui::IconColorFlavor::kForDarkThemes))
+          sup::gui::IconColorFlavor::kUnspecified))
 {
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setRenderHint(QPainter::Antialiasing);
   setAcceptDrops(true);
   setMouseTracking(true);
   setDragMode(QGraphicsView::RubberBandDrag);
+
+  if (m_view_style.render_background)
+  {
+    setBackgroundBrush(m_view_style.background_color);
+  }
 }
 
 void NodeGraphicsView::CenterView()
@@ -188,6 +193,22 @@ void NodeGraphicsView::wheelEvent(QWheelEvent* event)
   }
 }
 
+void NodeGraphicsView::drawBackground(QPainter* painter, const QRectF& rect)
+{
+  QGraphicsView::drawBackground(painter, rect);
+
+  if (!m_view_style.render_background)
+  {
+    return;
+  }
+
+  painter->setPen(QPen(m_view_style.fine_grid_color, 1.0));
+  DrawGrid(m_view_style.fine_grid_size, painter);
+
+  painter->setPen(QPen(m_view_style.corase_grid_color, 1.0));
+  DrawGrid(m_view_style.coarse_grid_size, painter);
+}
+
 bool NodeGraphicsView::CanZoomIn() const
 {
   return GetZoomFactor() < constants::kMaxZoomFactor;
@@ -196,6 +217,32 @@ bool NodeGraphicsView::CanZoomIn() const
 bool NodeGraphicsView::CanZoomOut() const
 {
   return GetZoomFactor() > constants::kMinZoomFactor;
+}
+
+void NodeGraphicsView::DrawGrid(double grid_step, QPainter* painter)
+{
+  const QRect window_rect = this->rect();
+  const QPointF top_left = mapToScene(window_rect.topLeft());
+  const QPointF bottom_right = mapToScene(window_rect.bottomRight());
+
+  const double left = std::floor((top_left.x() / grid_step) - 0.5);
+  const double right = std::floor((bottom_right.x() / grid_step) + 1.0);
+  const double bottom = std::floor((top_left.y() / grid_step) - 0.5);
+  const double top = std::floor((bottom_right.y() / grid_step) + 1.0);
+
+  // vertical lines
+  for (auto xi = static_cast<std::int32_t>(left); xi <= static_cast<std::int32_t>(right); ++xi)
+  {
+    const QLineF line(xi * grid_step, bottom * grid_step, xi * grid_step, top * grid_step);
+    painter->drawLine(line);
+  }
+
+  // horizontal lines
+  for (auto yi = static_cast<std::int32_t>(bottom); yi <= static_cast<std::int32_t>(top); ++yi)
+  {
+    const QLineF line(left * grid_step, yi * grid_step, right * grid_step, yi * grid_step);
+    painter->drawLine(line);
+  }
 }
 
 }  // namespace oac_tree_gui
