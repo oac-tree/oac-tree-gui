@@ -71,7 +71,6 @@ private:
   sup::gui::ItemStackWidget* m_right_panel{nullptr};
   sup::gui::CustomSplitter* m_splitter{nullptr};
 
-  std::unique_ptr<SequencerModel> m_temp_model;  //!< temporary model for disk browsing
   SequencerModel* m_model{nullptr};
 };
 

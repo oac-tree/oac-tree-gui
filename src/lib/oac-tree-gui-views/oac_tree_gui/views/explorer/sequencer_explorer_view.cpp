@@ -94,19 +94,7 @@ void SequencerExplorerView::ImportProcedure(const QString &file_name)
 //! Show content of XML file.
 void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 {
-  // show content in XML editor
   m_xml_view->SetFile(file_name);
-
-  // Generates temporary Procedure from XML and show object tree.
-  ProcedureActionHandler handler;
-  auto procedure_item = handler.LoadProcedureFromFile(file_name);
-
-  if (procedure_item)
-  {
-    m_temp_model = std::make_unique<SequencerModel>();
-    (void)m_temp_model->InsertItem(std::move(procedure_item), m_temp_model->GetRootItem(),
-                                   mvvm::TagIndex::Append());
-  }
 }
 
 void SequencerExplorerView::ReadSettings()
