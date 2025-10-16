@@ -21,6 +21,7 @@
 #include "anyvalue_compact_tree_editor.h"
 
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/item_utils.h>
@@ -37,11 +38,18 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+const QString kGroupName("AnyValueCompactTreeEditor");
+const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+}  // namespace
+
 AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent_widget)
     : AbstractAnyValueEditor(parent_widget)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_label(new QLabel)
     , m_tree_view(new QTreeView)
+    , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(
           mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view, m_model.get()))
 {
@@ -55,6 +63,8 @@ AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent_widget)
   layout->addWidget(m_tree_view);
 
   m_label->setHidden(true);
+
+  m_tree_view->setHeader(m_custom_header);
 }
 
 AnyValueCompactTreeEditor::~AnyValueCompactTreeEditor() = default;

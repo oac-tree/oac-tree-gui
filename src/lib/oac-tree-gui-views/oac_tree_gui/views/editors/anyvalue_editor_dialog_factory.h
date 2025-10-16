@@ -38,7 +38,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief Helper function to create a dialog containing full-fleged AnyValueEditor.
+ * @brief Helper function to create a dialog containing full-fledged AnyValueEditor.
  *
  * @param item Initial value.
  * @param parent Parent widget.

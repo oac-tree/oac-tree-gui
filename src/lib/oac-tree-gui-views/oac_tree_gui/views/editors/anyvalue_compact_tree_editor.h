@@ -27,6 +27,11 @@ class QLabel;
 class QString;
 class QTreeView;
 
+namespace sup::gui
+{
+class CustomHeaderView;
+}
+
 namespace mvvm
 {
 class ItemViewComponentProvider;
@@ -67,6 +72,7 @@ private:
 
   QLabel* m_label{nullptr};
   QTreeView* m_tree_view{nullptr};
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
 
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
