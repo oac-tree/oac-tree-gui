@@ -100,9 +100,12 @@ TEST_F(StyleHelperTest, ValidateStyleKey)
 
 TEST_F(StyleHelperTest, CreateStyleFromResource)
 {
-  auto style =
+  auto dark_style =
       CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForDarkThemes);
-  (void)style;
+  (void)dark_style;
+  auto light_style =
+      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForLightThemes);
+  (void)light_style;
 }
 
 }  // namespace oac_tree_gui::test

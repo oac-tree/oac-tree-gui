@@ -29,15 +29,18 @@ namespace oac_tree_gui::style
 GraphicsViewStyle GraphicsViewStyle::CreateFromStyle(const QJsonObject &json)
 {
   ValidateStyleKey(json, NodeGraphicsViewStyleKey,
-                   {BackgroundColorKey, FineGridColorKey, CoarseGridColorKey});
+                   {RenderBackgroundKey, BackgroundColorKey, FineGridColorKey, CoarseGridColorKey});
 
   GraphicsViewStyle result;
   const QJsonValue node_style_values = json[NodeGraphicsViewStyleKey];
 
   QJsonObject obj = node_style_values.toObject();
 
+  result.render_background = obj[RenderBackgroundKey].toBool();
   result.background_color = QColor(obj[BackgroundColorKey].toString());
+  result.fine_grid_size = obj[FineGridSizeKey].toInt();
   result.fine_grid_color = QColor(obj[FineGridColorKey].toString());
+  result.coarse_grid_size = obj[CoarseGridSizeKey].toInt();
   result.corase_grid_color = QColor(obj[CoarseGridColorKey].toString());
 
   return result;

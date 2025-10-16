@@ -1,7 +1,10 @@
 {
   "NodeGraphicsViewStyle": {
+    "RenderBackground": true,
     "BackgroundColor": "#fffff0",
+    "FineGridSize": 20,
     "FineGridColor": "#f5f5e6",
+    "CoarseGridSize": 200,
     "CoarseGridColor": "#ebebdc"
   }
 }

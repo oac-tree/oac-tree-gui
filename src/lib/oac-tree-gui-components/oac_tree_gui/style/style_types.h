@@ -27,6 +27,7 @@
 
 #include <QColor>
 #include <QJsonObject>
+#include <cstdint>
 
 namespace oac_tree_gui::style
 {
@@ -36,8 +37,13 @@ namespace oac_tree_gui::style
  */
 struct GraphicsViewStyle
 {
+  bool render_background{false};
   QColor background_color;
+
+  std::int32_t fine_grid_size{0};
   QColor fine_grid_color;
+
+  std::int32_t coarse_grid_size{0};
   QColor corase_grid_color;
 
   /**

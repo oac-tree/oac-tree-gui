@@ -31,8 +31,11 @@ constexpr auto kDefaultLightStyleResourceName = ":/oac-tree/style/default_light_
 constexpr auto kDefaultDarkStyleResourceName = ":/oac-tree/style/default_dark_style.json";
 
 constexpr auto NodeGraphicsViewStyleKey = "NodeGraphicsViewStyle";
+constexpr auto RenderBackgroundKey = "RenderBackground";
 constexpr auto BackgroundColorKey = "BackgroundColor";
+constexpr auto FineGridSizeKey = "FineGridSize";
 constexpr auto FineGridColorKey = "FineGridColor";
+constexpr auto CoarseGridSizeKey = "CoarseGridSize";
 constexpr auto CoarseGridColorKey = "CoarseGridColor";
 
 }  // namespace oac_tree_gui::style
