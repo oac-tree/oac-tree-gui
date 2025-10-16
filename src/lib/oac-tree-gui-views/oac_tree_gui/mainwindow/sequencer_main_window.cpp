@@ -92,8 +92,6 @@ void SequencerMainWindow::InitApplication()
 
 void SequencerMainWindow::InitComponents()
 {
-  using sup::gui::IconColorFlavor;
-
   m_action_manager = new SequencerMainWindowActions(m_context, m_models.get(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
@@ -101,17 +99,17 @@ void SequencerMainWindow::InitComponents()
 
   m_explorer_view = new SequencerExplorerView(m_context.GetCommandService());
   m_tab_widget->AddWidget(m_explorer_view, "Explore",
-                          FindIcon("file-search-outline", IconColorFlavor::kForDarkThemes));
+                          FindIcon("file-search-outline", mvvm::ColorFlavor::kForDarkThemes));
 
   m_composer_view = new SequencerComposerView(m_context.GetCommandService());
   m_tab_widget->AddWidget(m_composer_view, "Compose",
-                          FindIcon("graph-outline", IconColorFlavor::kForDarkThemes));
+                          FindIcon("graph-outline", mvvm::ColorFlavor::kForDarkThemes));
 
   m_operation_view =
       new OperationMonitorView(m_context.GetCommandService(), OperationPresentationMode::kIdeMode);
   m_tab_widget->AddWidget(
       m_operation_view, "Run",
-      FindIcon("chevron-right-circle-outline", IconColorFlavor::kForDarkThemes));
+      FindIcon("chevron-right-circle-outline", mvvm::ColorFlavor::kForDarkThemes));
 
   m_tab_widget->AddSpacer();
 

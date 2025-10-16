@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_STYLE_STYLE_HELPER_H_
 #define OAC_TREE_GUI_STYLE_STYLE_HELPER_H_
 
-#include <sup/gui/style/icon_color_flavor.h>
+#include <mvvm/style/color_flavor.h>
 
 #include <QJsonObject>
 #include <QString>
@@ -39,7 +39,7 @@ namespace oac_tree_gui
  * Is assumes an existence of animation.svg file in the resource folder of sequencer package.
  */
 QIcon FindIcon(const QString& icon_name,
-               sup::gui::IconColorFlavor icon_flavor = sup::gui::IconColorFlavor::kUnspecified);
+               mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kUnspecified);
 
 /**
  * @brief Loads JSON from resource with the given name.
@@ -52,7 +52,7 @@ QJsonObject LoadJsonFromResource(const QString& name);
 /**
  * @brief Loads JSON object representing default style for the given dark/light color.
  */
-QJsonObject LoadDefaultJsonStyle(sup::gui::IconColorFlavor icon_flavor);
+QJsonObject LoadDefaultJsonStyle(mvvm::ColorFlavor color_flavor);
 
 /**
  * @brief Validates that the given JSON object contains all expected keys in the given group.
@@ -66,9 +66,9 @@ void ValidateStyleKey(const QJsonObject& json, const QString& group,
  * @brief Creates style of the give type for given theme flavor (dark/light/unspecified).
  */
 template <typename StyleT>
-StyleT CreateStyleFromResource(sup::gui::IconColorFlavor icon_flavor)
+StyleT CreateStyleFromResource(mvvm::ColorFlavor color_flavor)
 {
-  auto json = LoadDefaultJsonStyle(icon_flavor);
+  auto json = LoadDefaultJsonStyle(color_flavor);
   return StyleT::CreateFromStyle(json);
 }
 

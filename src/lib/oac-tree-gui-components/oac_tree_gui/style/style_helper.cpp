@@ -35,10 +35,10 @@
 namespace oac_tree_gui
 {
 
-QIcon FindIcon(const QString &icon_name, sup::gui::IconColorFlavor icon_flavor)
+QIcon FindIcon(const QString &icon_name, mvvm::ColorFlavor color_flavor)
 {
   // in accordance with the oac_tree_icons.qrc file
-  return sup::gui::utils::GetIcon(QString(":/oac-tree/icons/%1.svg").arg(icon_name), icon_flavor);
+  return sup::gui::utils::GetIcon(QString(":/oac-tree/icons/%1.svg").arg(icon_name), color_flavor);
 }
 
 QJsonObject LoadJsonFromResource(const QString &name)
@@ -53,21 +53,21 @@ QJsonObject LoadJsonFromResource(const QString &name)
   return QJsonDocument::fromJson(file.readAll()).object();
 }
 
-QJsonObject LoadDefaultJsonStyle(sup::gui::IconColorFlavor icon_flavor)
+QJsonObject LoadDefaultJsonStyle(mvvm::ColorFlavor color_flavor)
 {
   // if icon flavor is specified, return corresponding theme
-  if (icon_flavor == sup::gui::IconColorFlavor::kForDarkThemes)
+  if (color_flavor == mvvm::ColorFlavor::kForDarkThemes)
   {
     return LoadJsonFromResource(style::kDefaultDarkStyleResourceName);
   }
 
-  if (icon_flavor == sup::gui::IconColorFlavor::kForLightThemes)
+  if (color_flavor == mvvm::ColorFlavor::kForLightThemes)
   {
     return LoadJsonFromResource(style::kDefaultLightStyleResourceName);
   }
 
   // if flavor is unspecified, return color depending on desktop darkness theme itself
-  if (icon_flavor == sup::gui::IconColorFlavor::kUnspecified)
+  if (color_flavor == mvvm::ColorFlavor::kUnspecified)
   {
     return mvvm::style::IsDarkTheme() ? LoadJsonFromResource(style::kDefaultDarkStyleResourceName)
                                       : LoadJsonFromResource(style::kDefaultLightStyleResourceName);

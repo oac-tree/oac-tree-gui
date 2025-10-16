@@ -62,17 +62,17 @@ TEST_F(StyleHelperTest, LoadJsonFromResource)
 TEST_F(StyleHelperTest, LoadDefaultJsonStyle)
 {
   {  // default dark style
-    auto json = LoadDefaultJsonStyle(sup::gui::IconColorFlavor::kForDarkThemes);
+    auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForDarkThemes);
     ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
   }
 
   {  // default light style
-    auto json = LoadDefaultJsonStyle(sup::gui::IconColorFlavor::kForLightThemes);
+    auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForLightThemes);
     ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
   }
 
   {  // unspecified style
-    auto json = LoadDefaultJsonStyle(sup::gui::IconColorFlavor::kUnspecified);
+    auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kUnspecified);
     ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
   }
 }
@@ -101,10 +101,10 @@ TEST_F(StyleHelperTest, ValidateStyleKey)
 TEST_F(StyleHelperTest, CreateStyleFromResource)
 {
   auto dark_style =
-      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForDarkThemes);
+      CreateStyleFromResource<style::GraphicsViewStyle>(mvvm::ColorFlavor::kForDarkThemes);
   (void)dark_style;
   auto light_style =
-      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForLightThemes);
+      CreateStyleFromResource<style::GraphicsViewStyle>(mvvm::ColorFlavor::kForLightThemes);
   (void)light_style;
 }
 

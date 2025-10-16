@@ -61,10 +61,10 @@ TEST_F(StyleTypesTest, GraphicsViewStyle)
 TEST_F(StyleTypesTest, CreateGraphicsViewStyle)
 {
   auto dark_style =
-      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForDarkThemes);
+      CreateStyleFromResource<style::GraphicsViewStyle>(mvvm::ColorFlavor::kForDarkThemes);
 
   auto light_style =
-      CreateStyleFromResource<style::GraphicsViewStyle>(sup::gui::IconColorFlavor::kForLightThemes);
+      CreateStyleFromResource<style::GraphicsViewStyle>(mvvm::ColorFlavor::kForLightThemes);
 
   EXPECT_NE(dark_style.background_color, light_style.background_color);
   EXPECT_NE(dark_style.fine_grid_color, light_style.fine_grid_color);
