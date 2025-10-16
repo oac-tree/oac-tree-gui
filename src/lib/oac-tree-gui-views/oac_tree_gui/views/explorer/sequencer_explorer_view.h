@@ -59,7 +59,7 @@ public:
 
   void ImportProcedure(const QString& file_name);
 
-  void ShowXMLFile(const QString& file_name);
+  void ShowFileContent(const QString& file_name);
 
 private:
   void ReadSettings();

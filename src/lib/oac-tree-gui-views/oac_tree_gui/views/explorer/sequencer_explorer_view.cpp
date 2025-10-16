@@ -31,6 +31,7 @@
 #include <sup/gui/widgets/item_stack_widget.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/utils/bin_utils.h>
 
 #include <QVBoxLayout>
 
@@ -91,10 +92,16 @@ void SequencerExplorerView::ImportProcedure(const QString &file_name)
   }
 }
 
-//! Show content of XML file.
-void SequencerExplorerView::ShowXMLFile(const QString &file_name)
+void SequencerExplorerView::ShowFileContent(const QString &file_name)
 {
-  m_xml_view->SetFile(file_name);
+  if (mvvm::utils::IsBinaryFile(file_name.toStdString()))
+  {
+    m_xml_view->ClearText();
+  }
+  else
+  {
+    m_xml_view->SetFile(file_name);
+  }
 }
 
 void SequencerExplorerView::ReadSettings()
@@ -109,8 +116,8 @@ void SequencerExplorerView::WriteSettings()
 
 void SequencerExplorerView::SetupConnections()
 {
-  connect(m_explorer_panel, &ExplorerPanel::ProcedureFileClicked, this,
-          &SequencerExplorerView::ShowXMLFile);
+  connect(m_explorer_panel, &ExplorerPanel::FileTreeClicked, this,
+          &SequencerExplorerView::ShowFileContent);
 
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
           &SequencerExplorerView::ImportProcedure);

@@ -60,7 +60,7 @@ public:
   void SetCurrentDir(const QString& dirname);
 
 signals:
-  void ProcedureFileClicked(const QString& filename);
+  void FileTreeClicked(const QString& filename);
   void ProcedureFileDoubleClicked(const QString& filename);
 
 private:
@@ -105,7 +105,6 @@ private:
   QFileSystemModel* m_file_system_model{nullptr};
   QTreeView* m_tree_view{nullptr};
   QLabel* m_path_label{nullptr};
-  QString m_current_xml_file;
   QAction* m_import_file_action{nullptr};
   sup::gui::ActionMenu* m_bookmark_action{nullptr};
   std::unique_ptr<mvvm::RecentProjectSettings> m_recent_dirs;

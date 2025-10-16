@@ -59,8 +59,8 @@ ExplorerPanel::ExplorerPanel(sup::gui::IAppCommandService &command_service, QWid
   layout->setSpacing(0);
   layout->addWidget(m_stack_widget);
 
-  connect(m_file_tree_view, &FileTreeView::ProcedureFileClicked, this,
-          &ExplorerPanel::ProcedureFileClicked);
+  connect(m_file_tree_view, &FileTreeView::FileTreeClicked, this,
+          &ExplorerPanel::FileTreeClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::ProcedureFileDoubleClicked);
 

@@ -55,7 +55,7 @@ public:
   void SetModel(SequencerModel* model);
 
 signals:
-  void ProcedureFileClicked(const QString& filename);
+  void FileTreeClicked(const QString& filename);
   void ProcedureFileDoubleClicked(const QString& filename);
 
 private:

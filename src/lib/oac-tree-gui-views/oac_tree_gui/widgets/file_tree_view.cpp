@@ -39,11 +39,15 @@
 
 namespace
 {
-//! Returns true if given file is a procedure file.
+
+/**
+ * @brief Checks if given file is procedure file candidate.
+ */
 bool IsProcedureFile(const QFileInfo &info)
 {
   return info.isFile() && info.completeSuffix().toLower() == QStringLiteral("xml");
 }
+
 }  // namespace
 
 namespace oac_tree_gui
@@ -134,13 +138,9 @@ void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
 {
   const QFileInfo info(m_file_system_model->filePath(index));
 
-  if (info.isFile() && info.completeSuffix().toLower() == QStringLiteral("xml"))
+  if (info.isFile())
   {
-    if (m_current_xml_file != info.filePath())
-    {
-      m_current_xml_file = info.filePath();
-      emit ProcedureFileClicked(m_current_xml_file);
-    }
+    emit FileTreeClicked(info.filePath());
   }
 }
 
