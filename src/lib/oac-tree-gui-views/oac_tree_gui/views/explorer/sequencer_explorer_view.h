@@ -36,7 +36,6 @@ namespace oac_tree_gui
 
 class SequencerModel;
 class ExplorerPanel;
-class ProcedureTreesWidget;
 class ProcedureItem;
 
 /**
@@ -68,7 +67,6 @@ private:
   void SetupConnections();
 
   ExplorerPanel* m_explorer_panel{nullptr};
-  ProcedureTreesWidget* m_trees_widget{nullptr};
   sup::gui::CodeView* m_xml_view{nullptr};
   sup::gui::ItemStackWidget* m_right_panel{nullptr};
   sup::gui::CustomSplitter* m_splitter{nullptr};

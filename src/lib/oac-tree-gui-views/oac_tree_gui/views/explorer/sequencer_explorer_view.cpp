@@ -21,7 +21,6 @@
 #include "sequencer_explorer_view.h"
 
 #include "explorer_panel.h"
-#include "procedure_trees_widget.h"
 
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -50,7 +49,6 @@ SequencerExplorerView::SequencerExplorerView(sup::gui::IAppCommandService &comma
                                              QWidget *parent_widget)
     : QWidget(parent_widget)
     , m_explorer_panel(new ExplorerPanel(command_service))
-    , m_trees_widget(new ProcedureTreesWidget)
     , m_xml_view(new sup::gui::CodeView)
     , m_right_panel(new sup::gui::ItemStackWidget)
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
@@ -61,7 +59,6 @@ SequencerExplorerView::SequencerExplorerView(sup::gui::IAppCommandService &comma
   m_splitter->addWidget(m_explorer_panel);
 
   m_right_panel->AddWidget(m_xml_view);
-  m_right_panel->AddWidget(m_trees_widget);
   m_splitter->addWidget(m_right_panel);
 
   layout->addWidget(m_splitter);
@@ -107,14 +104,8 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
   if (procedure_item)
   {
     m_temp_model = std::make_unique<SequencerModel>();
-    auto procedure_ptr = procedure_item.get();
     (void)m_temp_model->InsertItem(std::move(procedure_item), m_temp_model->GetRootItem(),
                                    mvvm::TagIndex::Append());
-    m_trees_widget->SetProcedure(procedure_ptr);
-  }
-  else
-  {
-    m_trees_widget->SetProcedure(nullptr);
   }
 }
 
