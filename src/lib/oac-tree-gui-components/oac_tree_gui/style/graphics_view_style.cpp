@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "style_types.h"
+#include "graphics_view_style.h"
 
 #include "style_helper.h"
 #include "style_resource_constants.h"

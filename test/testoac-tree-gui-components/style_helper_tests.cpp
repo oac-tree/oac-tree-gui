@@ -21,8 +21,8 @@
 #include "oac_tree_gui/style/style_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/style/graphics_view_style.h>
 #include <oac_tree_gui/style/style_resource_constants.h>
-#include <oac_tree_gui/style/style_types.h>
 
 #include <gtest/gtest.h>
 

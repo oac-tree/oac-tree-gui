@@ -22,7 +22,7 @@
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_H_
 
 #include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
-#include <oac_tree_gui/style/style_types.h>
+#include <oac_tree_gui/style/graphics_view_style.h>
 
 #include <QGraphicsView>
 
