@@ -49,11 +49,13 @@ TEST_F(ConnectableInstructionAdapterTest, AdapterInitialState)
   EXPECT_EQ(sequence_adapter.GetDisplayName().toStdString(), sequence_item.GetDisplayName());
   EXPECT_EQ(sequence_adapter.GetX(), 0.0);
   EXPECT_EQ(sequence_adapter.GetY(), 0.0);
-  EXPECT_EQ(sequence_adapter.GetBaseColor(), GetBaseColor(&sequence_item));
 
   ASSERT_EQ(sequence_adapter.GetPortInfos().size(), 2U);
   EXPECT_EQ(sequence_adapter.GetPortInfos().at(0).GetPortDirection(), mvvm::PortDirection::kInput);
   EXPECT_EQ(sequence_adapter.GetPortInfos().at(1).GetPortDirection(), mvvm::PortDirection::kOutput);
+
+  auto style = sequence_adapter.GetStyle();
+  EXPECT_EQ(style.base_color, GetBaseColor(&sequence_item));
 
   WaitItem wait_item;
   const ConnectableInstructionAdapter wait_adapter(&wait_item);

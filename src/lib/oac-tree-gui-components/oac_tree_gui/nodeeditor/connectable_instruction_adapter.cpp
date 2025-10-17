@@ -58,11 +58,6 @@ QString ConnectableInstructionAdapter::GetDisplayName() const
   return QString::fromStdString(m_instruction->GetDisplayName());
 }
 
-QColor ConnectableInstructionAdapter::GetBaseColor() const
-{
-  return ::oac_tree_gui::GetBaseColor(m_instruction);
-}
-
 double ConnectableInstructionAdapter::GetX() const
 {
   return m_instruction->GetX();
@@ -122,6 +117,13 @@ void ConnectableInstructionAdapter::ProcessEvent(const mvvm::node_event_t &event
       ToggleCollapsed(*instruction);
     }
   }
+}
+
+mvvm::ConnectableShapeStyle ConnectableInstructionAdapter::GetStyle() const
+{
+  auto result = mvvm::CreateDefaultConnectableShapeStyle();
+  result.base_color = ::oac_tree_gui::GetBaseColor(m_instruction);
+  return result;
 }
 
 }  // namespace oac_tree_gui

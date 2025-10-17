@@ -40,8 +40,6 @@ public:
 
   QString GetDisplayName() const override;
 
-  QColor GetBaseColor() const override;
-
   double GetX() const override;
 
   void SetX(double value) override;
@@ -57,6 +55,8 @@ public:
   mvvm::NodeOperationStates GetOperationStates() const override;
 
   void ProcessEvent(const mvvm::node_event_t& event) const override;
+
+  mvvm::ConnectableShapeStyle GetStyle() const override;
 
 private:
   InstructionItem* m_instruction{nullptr};
