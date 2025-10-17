@@ -21,6 +21,8 @@
 #include "oac_tree_gui/style/json_style_factory.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/style/graphics_scene_style.h>
+#include <oac_tree_gui/style/graphics_view_style.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/style/style_resource_constants.h>
 
@@ -50,6 +52,19 @@ TEST_F(JsonStyleFactoryTest, PopulateGraphicsViewStyle)
   EXPECT_NE(dark_style.background_color, light_style.background_color);
   EXPECT_NE(dark_style.fine_grid_color, light_style.fine_grid_color);
   EXPECT_NE(dark_style.coarse_grid_color, light_style.coarse_grid_color);
+}
+
+TEST_F(JsonStyleFactoryTest, PopulateGraphicsSceneStyle)
+{
+  auto dark_json_style = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForDarkThemes);
+  style::GraphicsSceneStyle dark_style;
+  style::PopulateStyleFromJSON(dark_json_style, dark_style);
+
+  auto light_json_style = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForLightThemes);
+  style::GraphicsSceneStyle light_style;
+  style::PopulateStyleFromJSON(light_json_style, light_style);
+
+  EXPECT_EQ(dark_style.base_instruction_color, light_style.base_instruction_color);
 }
 
 }  // namespace oac_tree_gui::test

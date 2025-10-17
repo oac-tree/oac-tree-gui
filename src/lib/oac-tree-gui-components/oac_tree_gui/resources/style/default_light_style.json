@@ -6,5 +6,11 @@
     "FineGridColor": "#f5f5e6",
     "CoarseGridSize": 200,
     "CoarseGridColor": "#ebebdc"
+  },
+  "NodeGraphicsSceneStyle": {
+    "ShadowEnabled": true,
+    "BaseInstructionColor": "lightgray",
+    "DecoratorInstructionColor": "lightseagreen",
+    "CompoundInstructionColor": "royalblue"
   }
 }

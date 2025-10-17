@@ -37,7 +37,6 @@ namespace oac_tree_gui::test
  */
 class StyleHelperTest : public ::testing::Test
 {
-public:
 };
 
 TEST_F(StyleHelperTest, LoadJsonFromResource)
@@ -50,12 +49,14 @@ TEST_F(StyleHelperTest, LoadJsonFromResource)
 
   {  // default dark style
     auto json = LoadJsonFromResource(style::kDefaultDarkStyleResourceName);
-    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+    EXPECT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+    EXPECT_TRUE(json.contains(style::NodeGraphicsSceneStyleKey));
   }
 
   {  // default light style
     auto json = LoadJsonFromResource(style::kDefaultLightStyleResourceName);
-    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+    EXPECT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+    EXPECT_TRUE(json.contains(style::NodeGraphicsSceneStyleKey));
   }
 }
 
@@ -63,17 +64,17 @@ TEST_F(StyleHelperTest, LoadDefaultJsonStyle)
 {
   {  // default dark style
     auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForDarkThemes);
-    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+    EXPECT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
   }
 
   {  // default light style
     auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForLightThemes);
-    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+    EXPECT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
   }
 
   {  // unspecified style
     auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kUnspecified);
-    ASSERT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
+    EXPECT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
   }
 }
 

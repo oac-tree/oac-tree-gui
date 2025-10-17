@@ -18,30 +18,30 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JSON_STYLE_FACTORY_H_
-#define OAC_TREE_GUI_JSON_STYLE_FACTORY_H_
+#include "oac_tree_gui/style/graphics_scene_style.h"
 
-//! @file
-//! Collection of helper methods to create styles from JSON representation.
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/style/style_helper.h>
+#include <oac_tree_gui/style/style_resource_constants.h>
 
-#include <QJsonObject>
+#include <gtest/gtest.h>
 
-namespace oac_tree_gui::style
+namespace oac_tree_gui::test
 {
 
-class GraphicsViewStyle;
-class GraphicsSceneStyle;
-
 /**
- * @brief Populates existing GraphicsViewStyle from JSON object representing application style.
+ * @brief Tests for GraphicsSceneStyle.
  */
-void PopulateStyleFromJSON(const QJsonObject& json, GraphicsViewStyle& style);
+class GraphicsSceneStyleTest : public ::testing::Test
+{
+public:
+};
 
-/**
- * @brief Populates existing GraphicsSceneStyle from JSON object representing application style.
- */
-void PopulateStyleFromJSON(const QJsonObject& json, GraphicsSceneStyle& style);
+TEST_F(GraphicsSceneStyleTest, GraphicsSceneStyle)
+{
+  auto dark_style = style::CreateDefaulGraphicsSceneStyle(mvvm::ColorFlavor::kForDarkThemes);
+  auto light_style = style::CreateDefaulGraphicsSceneStyle(mvvm::ColorFlavor::kForLightThemes);
+  EXPECT_EQ(dark_style.base_instruction_color, light_style.base_instruction_color);
+}
 
-}  // namespace oac_tree_gui::style
-
-#endif  // OAC_TREE_GUI_JSON_STYLE_FACTORY_H_
+}  // namespace oac_tree_gui::test

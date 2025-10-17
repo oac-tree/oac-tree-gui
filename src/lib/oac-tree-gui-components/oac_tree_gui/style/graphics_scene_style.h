@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_GRAPHICS_VIEW_STYLE_H_
-#define OAC_TREE_GUI_GRAPHICS_VIEW_STYLE_H_
+#ifndef OAC_TREE_GUI_GRAPHICS_SCENE_STYLE_H_
+#define OAC_TREE_GUI_GRAPHICS_SCENE_STYLE_H_
 
 //! @file
 //! Collection of style related types. They will be used to initialize corresponding widgets and
@@ -28,37 +28,32 @@
 #include <mvvm/style/color_flavor.h>
 
 #include <QColor>
-#include <cstdint>
 
 namespace oac_tree_gui::style
 {
 
 /**
- * @brief The GraphicsViewStyle struct contains all parameters to configure node graphics view.
+ * @brief The GraphicsSceneStyle struct contains all parameters to configure graphics scene.
  */
-struct GraphicsViewStyle
+struct GraphicsSceneStyle
 {
-  bool render_background{false};
-  QColor background_color;
-
-  std::int32_t fine_grid_size{0};
-  QColor fine_grid_color;
-
-  std::int32_t coarse_grid_size{0};
-  QColor coarse_grid_color;
+  bool shadow_enabled{false};
+  QColor base_instruction_color;
+  QColor decorator_instruction_color;
+  QColor compound_instruction_color;
 };
 
 /**
  * @brief Creates default graphics view style for the given color flavor.
  */
-GraphicsViewStyle CreateDefaulGraphicsViewStyle(
+GraphicsSceneStyle CreateDefaulGraphicsSceneStyle(
     mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kUnspecified);
 
 /**
  * @brief Returns default graphics view style.
  */
-const GraphicsViewStyle& GetDefaultGraphicsViewStyle();
+const GraphicsSceneStyle& GetDefaultGraphicsSceneStyle();
 
 }  // namespace oac_tree_gui::style
 
-#endif  // OAC_TREE_GUI_GRAPHICS_VIEW_STYLE_H_
+#endif  // OAC_TREE_GUI_GRAPHICS_SCENE_STYLE_H_

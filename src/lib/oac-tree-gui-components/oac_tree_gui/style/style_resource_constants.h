@@ -38,6 +38,12 @@ constexpr auto FineGridColorKey = "FineGridColor";
 constexpr auto CoarseGridSizeKey = "CoarseGridSize";
 constexpr auto CoarseGridColorKey = "CoarseGridColor";
 
+constexpr auto NodeGraphicsSceneStyleKey = "NodeGraphicsSceneStyle";
+constexpr auto ShadowEnabledKey = "ShadowEnabled";
+constexpr auto BaseInstructionColorKey = "BaseInstructionColor";
+constexpr auto DecoratorInstructionColorKey = "DecoratorInstructionColor";
+constexpr auto CompoundInstructionColorKey = "CompoundInstructionColor";
+
 }  // namespace oac_tree_gui::style
 
 #endif  // OAC_TREE_GUI_STYLE_RESOURCE_CONSTANTS_H_

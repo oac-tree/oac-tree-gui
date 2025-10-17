@@ -8,4 +8,6 @@ target_sources(${library_name} PRIVATE
   style_helper.cpp
   style_helper.h
   style_resource_constants.h
+  graphics_scene_style.cpp
+  graphics_scene_style.h
 )

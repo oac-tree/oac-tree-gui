@@ -20,6 +20,8 @@
 
 #include "json_style_factory.h"
 
+#include "graphics_scene_style.h"
+#include "graphics_view_style.h"
 #include "style_helper.h"
 #include "style_resource_constants.h"
 
@@ -41,6 +43,22 @@ void PopulateStyleFromJSON(const QJsonObject &json, GraphicsViewStyle &style)
   style.fine_grid_color = QColor(obj[FineGridColorKey].toString());
   style.coarse_grid_size = obj[CoarseGridSizeKey].toInt();
   style.coarse_grid_color = QColor(obj[CoarseGridColorKey].toString());
+}
+
+void PopulateStyleFromJSON(const QJsonObject &json, GraphicsSceneStyle &style)
+{
+  ValidateStyleKey(json, NodeGraphicsSceneStyleKey,
+                   {ShadowEnabledKey, BaseInstructionColorKey, DecoratorInstructionColorKey,
+                    CompoundInstructionColorKey});
+
+  const QJsonValue node_style_values = json[NodeGraphicsSceneStyleKey];
+
+  QJsonObject obj = node_style_values.toObject();
+
+  style.shadow_enabled = obj[RenderBackgroundKey].toBool();
+  style.base_instruction_color = QColor(obj[BaseInstructionColorKey].toString());
+  style.decorator_instruction_color = QColor(obj[DecoratorInstructionColorKey].toString());
+  style.compound_instruction_color = QColor(obj[CompoundInstructionColorKey].toString());
 }
 
 }  // namespace oac_tree_gui::style
