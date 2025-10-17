@@ -55,7 +55,7 @@ void PopulateStyleFromJSON(const QJsonObject &json, GraphicsSceneStyle &style)
 
   QJsonObject obj = node_style_values.toObject();
 
-  style.shadow_enabled = obj[RenderBackgroundKey].toBool();
+  style.shadow_enabled = obj[ShadowEnabledKey].toBool();
   style.base_instruction_color = QColor(obj[BaseInstructionColorKey].toString());
   style.decorator_instruction_color = QColor(obj[DecoratorInstructionColorKey].toString());
   style.compound_instruction_color = QColor(obj[CompoundInstructionColorKey].toString());

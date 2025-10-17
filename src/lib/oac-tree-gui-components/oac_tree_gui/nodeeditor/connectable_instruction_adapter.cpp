@@ -26,6 +26,8 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/style/graphics_scene_style.h>
+#include <oac_tree_gui/style/style_helper.h>
 
 #include <mvvm/nodeeditor/node_editor_helper.h>
 
@@ -121,8 +123,12 @@ void ConnectableInstructionAdapter::ProcessEvent(const mvvm::node_event_t &event
 
 mvvm::ConnectableShapeStyle ConnectableInstructionAdapter::GetStyle() const
 {
+  const static auto kSceneStyle = CreateStyleFromResource<style::GraphicsSceneStyle>();
+
+  // adjustung shape style using scene settings
   auto result = mvvm::CreateDefaultConnectableShapeStyle();
   result.base_color = ::oac_tree_gui::GetBaseColor(m_instruction);
+  result.shadow_enabled = kSceneStyle.shadow_enabled;
   return result;
 }
 
