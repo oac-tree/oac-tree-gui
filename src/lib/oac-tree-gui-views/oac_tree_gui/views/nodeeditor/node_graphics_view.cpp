@@ -206,7 +206,7 @@ void NodeGraphicsView::drawBackground(QPainter* painter, const QRectF& rect)
   painter->setPen(QPen(m_view_style.fine_grid_color, 1.0));
   DrawGrid(m_view_style.fine_grid_size, painter);
 
-  painter->setPen(QPen(m_view_style.corase_grid_color, 1.0));
+  painter->setPen(QPen(m_view_style.coarse_grid_color, 1.0));
   DrawGrid(m_view_style.coarse_grid_size, painter);
 }
 

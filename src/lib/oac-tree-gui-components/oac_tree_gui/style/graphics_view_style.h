@@ -25,8 +25,9 @@
 //! Collection of style related types. They will be used to initialize corresponding widgets and
 //! shapes. Initial values will be obtained from json.
 
+#include <mvvm/style/color_flavor.h>
+
 #include <QColor>
-#include <QJsonObject>
 #include <cstdint>
 
 namespace oac_tree_gui::style
@@ -44,13 +45,19 @@ struct GraphicsViewStyle
   QColor fine_grid_color;
 
   std::int32_t coarse_grid_size{0};
-  QColor corase_grid_color;
-
-  /**
-   * @brief Creates a style from JSON object representing application style.
-   */
-  static GraphicsViewStyle CreateFromStyle(const QJsonObject& json);
+  QColor coarse_grid_color;
 };
+
+/**
+ * @brief Creates default graphics view style for the given color flavor.
+ */
+GraphicsViewStyle CreateDefaulGraphicsViewStyle(
+    mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kUnspecified);
+
+/**
+ * @brief Returns default graphics view style.
+ */
+const GraphicsViewStyle& GetDefaultGraphicsViewStyle();
 
 }  // namespace oac_tree_gui::style
 

@@ -24,19 +24,18 @@
 //! @file
 //! Collection of helper methods to create styles from JSON representation.
 
-#include <oac_tree_gui/style/style_types.h>
+#include <oac_tree_gui/style/graphics_view_style.h>
 
 #include <QJsonObject>
 
-// namespace oac_tree_gui
-// {
+namespace oac_tree_gui::style
+{
 
-// /**
-//  * @brief Creates a style from JSON object representing application style.
-//  */
-// srGraphicsViewStyle CreateFromStyle(const QJsonObject& json);
+/**
+ * @brief Populates existing GraphicsViewStyle from JSON object representing application style.
+ */
+void PopulateStyleFromJSON(const QJsonObject& json, GraphicsViewStyle& style);
 
-
-// }  // namespace oac_tree_gui::style
+}  // namespace oac_tree_gui::style
 
 #endif  // OAC_TREE_GUI_JSON_STYLE_FACTORY_H_

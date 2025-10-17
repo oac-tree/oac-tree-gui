@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_STYLE_STYLE_HELPER_H_
 #define OAC_TREE_GUI_STYLE_STYLE_HELPER_H_
 
+#include <oac_tree_gui/style/json_style_factory.h>
+
 #include <mvvm/style/color_flavor.h>
 
 #include <QJsonObject>
@@ -69,7 +71,9 @@ template <typename StyleT>
 StyleT CreateStyleFromResource(mvvm::ColorFlavor color_flavor)
 {
   auto json = LoadDefaultJsonStyle(color_flavor);
-  return StyleT::CreateFromStyle(json);
+  StyleT result;
+  style::PopulateStyleFromJSON(json, result);
+  return result;
 }
 
 }  // namespace oac_tree_gui

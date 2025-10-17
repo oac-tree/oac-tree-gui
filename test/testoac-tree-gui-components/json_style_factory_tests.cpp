@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/style/graphics_view_style.h"
+#include "oac_tree_gui/style/json_style_factory.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/style/style_helper.h>
@@ -30,17 +30,23 @@ namespace oac_tree_gui::test
 {
 
 /**
- * @brief Tests for GraphicsViewStyle.
+ * @brief Tests for helper methods in json_style_factory.h
  */
-class GraphicsViewStyleTest : public ::testing::Test
+class JsonStyleFactoryTest : public ::testing::Test
 {
 public:
 };
 
-TEST_F(GraphicsViewStyleTest, GraphicsViewStyle)
+TEST_F(JsonStyleFactoryTest, PopulateGraphicsViewStyle)
 {
-  auto dark_style = style::CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor::kForDarkThemes);
-  auto light_style = style::CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor::kForLightThemes);
+  auto dark_json_style = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForDarkThemes);
+  style::GraphicsViewStyle dark_style;
+  style::PopulateStyleFromJSON(dark_json_style, dark_style);
+
+  auto light_json_style = LoadDefaultJsonStyle(mvvm::ColorFlavor::kForLightThemes);
+  style::GraphicsViewStyle light_style;
+  style::PopulateStyleFromJSON(light_json_style, light_style);
+
   EXPECT_NE(dark_style.background_color, light_style.background_color);
   EXPECT_NE(dark_style.fine_grid_color, light_style.fine_grid_color);
   EXPECT_NE(dark_style.coarse_grid_color, light_style.coarse_grid_color);

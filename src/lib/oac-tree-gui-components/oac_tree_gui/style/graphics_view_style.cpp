@@ -20,30 +20,65 @@
 
 #include "graphics_view_style.h"
 
-#include "style_helper.h"
-#include "style_resource_constants.h"
+#include <mvvm/style/mvvm_style_helper.h>
 
 namespace oac_tree_gui::style
 {
 
-GraphicsViewStyle GraphicsViewStyle::CreateFromStyle(const QJsonObject &json)
+namespace
 {
-  ValidateStyleKey(json, NodeGraphicsViewStyleKey,
-                   {RenderBackgroundKey, BackgroundColorKey, FineGridColorKey, CoarseGridColorKey});
 
+/**
+ * @brief Creates default style for ConnectableShape in light desktop environment.
+ */
+GraphicsViewStyle CreateDefaultStyleForLightThemes()
+{
   GraphicsViewStyle result;
-  const QJsonValue node_style_values = json[NodeGraphicsViewStyleKey];
 
-  QJsonObject obj = node_style_values.toObject();
-
-  result.render_background = obj[RenderBackgroundKey].toBool();
-  result.background_color = QColor(obj[BackgroundColorKey].toString());
-  result.fine_grid_size = obj[FineGridSizeKey].toInt();
-  result.fine_grid_color = QColor(obj[FineGridColorKey].toString());
-  result.coarse_grid_size = obj[CoarseGridSizeKey].toInt();
-  result.corase_grid_color = QColor(obj[CoarseGridColorKey].toString());
-
+  result.render_background = true;
+  result.background_color = QColor("whitesmoke");
+  result.fine_grid_size = 20;
+  result.fine_grid_color = QColor("oldlace");
+  result.coarse_grid_size = 200;
+  result.coarse_grid_color = QColor("gainsboro");
   return result;
+}
+
+/**
+ * @brief Creates default style for ConnectableShape in dark desktop environment.
+ */
+GraphicsViewStyle CreateDefaultStyleForDarkThemes()
+{
+  GraphicsViewStyle result = CreateDefaultStyleForLightThemes();
+  result.background_color = QColor("darkslategrey");
+  result.fine_grid_color = QColor("lightslategrey");
+  result.coarse_grid_color = QColor(Qt::black);
+  return result;
+}
+
+}  // namespace
+
+GraphicsViewStyle CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor color_flavor)
+{
+  if (color_flavor == mvvm::ColorFlavor::kForDarkThemes)
+  {
+    return CreateDefaultStyleForDarkThemes();
+  }
+
+  if (color_flavor == mvvm::ColorFlavor::kForLightThemes)
+  {
+    return CreateDefaultStyleForLightThemes();
+  }
+
+  return mvvm::style::IsDarkTheme() ? CreateDefaultStyleForDarkThemes()
+                                    : CreateDefaultStyleForLightThemes();
+}
+
+const GraphicsViewStyle &GetDefaultGraphicsViewStyle()
+{
+  static const GraphicsViewStyle kGraphicsViewStyle =
+      CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor::kUnspecified);
+  return kGraphicsViewStyle;
 }
 
 }  // namespace oac_tree_gui::style
