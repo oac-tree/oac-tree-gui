@@ -24,6 +24,8 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/style/graphics_scene_style.h>
+#include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <mvvm/core/mvvm_exceptions.h>
@@ -90,17 +92,19 @@ QRectF ConnectableViewRectangle()
 
 QColor GetBaseColor(const InstructionItem* instruction)
 {
+  const static auto kStyle = CreateStyleFromResource<style::GraphicsSceneStyle>();
+
   if (IsDecoratorInstruction(instruction))
   {
-    return {"lightseagreen"};
+    return kStyle.decorator_instruction_color;
   }
 
   if (IsCompoundInstruction(instruction))
   {
-    return {"royalblue"};
+    return kStyle.compound_instruction_color;
   }
 
-  return {Qt::lightGray};
+  return kStyle.base_instruction_color;
 }
 
 std::string InsertSpaceAtCamelCase(std::string str)

@@ -68,7 +68,7 @@ void ValidateStyleKey(const QJsonObject& json, const QString& group,
  * @brief Creates style of the give type for given theme flavor (dark/light/unspecified).
  */
 template <typename StyleT>
-StyleT CreateStyleFromResource(mvvm::ColorFlavor color_flavor)
+StyleT CreateStyleFromResource(mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kUnspecified)
 {
   auto json = LoadDefaultJsonStyle(color_flavor);
   StyleT result;

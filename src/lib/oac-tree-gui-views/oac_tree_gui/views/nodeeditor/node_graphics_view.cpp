@@ -24,6 +24,7 @@
 #include <oac_tree_gui/nodeeditor/scene_constants.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
+
 #include <mvvm/style/color_flavor.h>
 
 #include <QKeyEvent>
@@ -57,8 +58,7 @@ QGraphicsView::DragMode GetQtDragMode(GraphicsViewOperationMode operation_mode)
 
 NodeGraphicsView::NodeGraphicsView(QGraphicsScene* scene, QWidget* parent_widget)
     : QGraphicsView(scene, parent_widget)
-    , m_view_style(CreateStyleFromResource<style::GraphicsViewStyle>(
-          mvvm::ColorFlavor::kUnspecified))
+    , m_view_style(CreateStyleFromResource<style::GraphicsViewStyle>())
 {
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setRenderHint(QPainter::Antialiasing);
