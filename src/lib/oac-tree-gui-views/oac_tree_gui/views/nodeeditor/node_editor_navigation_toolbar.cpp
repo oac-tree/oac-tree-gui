@@ -26,7 +26,7 @@
 #include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
-#include <mvvm/widgets/widget_utils.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QAction>
 #include <QMenu>
@@ -102,7 +102,7 @@ void NodeEditorNavigationToolBar::SetupSlider()
                           m_zoom_factor_converter.GetSliderMaxValue());
 
   m_zoom_slider->setOrientation(Qt::Horizontal);
-  m_zoom_slider->setMaximumWidth(mvvm::utils::UnitSize(10));
+  m_zoom_slider->setMaximumWidth(mvvm::style::UnitSize(10));
   m_zoom_slider->setToolTip("Zoom (also Ctrl+scroll)");
 
   auto on_slider_changed = [this](int value)

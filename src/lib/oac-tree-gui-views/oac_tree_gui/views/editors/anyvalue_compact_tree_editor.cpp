@@ -29,7 +29,7 @@
 #include <mvvm/model/session_item.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/views/component_provider_helper.h>
-#include <mvvm/widgets/widget_utils.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -56,10 +56,10 @@ AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent_widget)
   setWindowTitle("AnyValueCompactTreeEditor");
 
   auto layout = new QVBoxLayout(this);
-  layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, mvvm::utils::UnitSize(0.5), 0);
-  layout->addSpacing(mvvm::utils::UnitSize(0.8));
+  layout->setContentsMargins(mvvm::style::UnitSize(0.5), 0, mvvm::style::UnitSize(0.5), 0);
+  layout->addSpacing(mvvm::style::UnitSize(0.8));
   layout->addWidget(m_label);
-  layout->addSpacing(mvvm::utils::UnitSize(0.5));
+  layout->addSpacing(mvvm::style::UnitSize(0.5));
   layout->addWidget(m_tree_view);
 
   m_label->setHidden(true);

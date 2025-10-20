@@ -29,6 +29,7 @@
 #include <sup/gui/widgets/detailed_message_box.h>
 
 #include <mvvm/utils/string_utils.h>
+#include <mvvm/style/mvvm_style_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QCheckBox>
@@ -101,8 +102,8 @@ PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService &plugin_service,
           TextControllerContext{m_plugin_list_checkbox, m_plugin_list_edit}))
 {
   auto layout = new QVBoxLayout(this);
-  layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, 0, 0);
-  layout->setSpacing(mvvm::utils::UnitSize(1.75));
+  layout->setContentsMargins(mvvm::style::UnitSize(0.5), 0, 0, 0);
+  layout->setSpacing(mvvm::style::UnitSize(1.75));
   layout->addLayout(CreateDescriptionLayout().release());
   layout->addLayout(CreateDirListLayout().release());
   layout->addLayout(CreatePluginListLayout().release());
@@ -130,7 +131,7 @@ void PluginSettingsEditor::SetPluginSettingsItem(PluginSettingsItem *item)
 std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()
 {
   auto result = std::make_unique<QVBoxLayout>();
-  result->setSpacing(mvvm::utils::UnitSize(1.0));
+  result->setSpacing(mvvm::style::UnitSize(1.0));
 
   auto label = new QLabel("Plugin Settings");
   QFont font = label->font();
@@ -157,7 +158,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()
 std::unique_ptr<QLayout> PluginSettingsEditor::CreateDirListLayout()
 {
   auto result = std::make_unique<QVBoxLayout>();
-  result->setSpacing(mvvm::utils::UnitSize(0.5));
+  result->setSpacing(mvvm::style::UnitSize(0.5));
 
   auto h_layout = std::make_unique<QHBoxLayout>();
   h_layout->addWidget(m_dir_list_checkbox);
@@ -177,7 +178,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDirListLayout()
 std::unique_ptr<QLayout> PluginSettingsEditor::CreatePluginListLayout()
 {
   auto result = std::make_unique<QVBoxLayout>();
-  result->setSpacing(mvvm::utils::UnitSize(0.5));
+  result->setSpacing(mvvm::style::UnitSize(0.5));
 
   auto h_layout = std::make_unique<QHBoxLayout>();
   h_layout->addWidget(m_plugin_list_checkbox);

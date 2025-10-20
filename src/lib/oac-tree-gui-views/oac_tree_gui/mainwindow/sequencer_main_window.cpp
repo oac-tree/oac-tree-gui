@@ -36,7 +36,6 @@
 #include <sup/gui/mainwindow/settings_helper.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QCloseEvent>
 #include <QSettings>
@@ -126,11 +125,9 @@ void SequencerMainWindow::InitComponents()
 void SequencerMainWindow::ReadSettings()
 {
   const QSettings settings;
-  const auto default_size = QSize(mvvm::utils::UnitSize(80), mvvm::utils::UnitSize(60));
-  resize(settings.value(kWindowSizeSettingName, default_size).toSize());
+  resize(settings.value(kWindowSizeSettingName, QSize(1024, 768)).toSize());
 
-  const auto default_pos = QPoint(mvvm::utils::UnitSize(20), mvvm::utils::UnitSize(40));
-  move(settings.value(kWindowPosSettingName, default_pos).toPoint());
+  move(settings.value(kWindowPosSettingName, QPoint(200, 400)).toPoint());
 }
 
 void SequencerMainWindow::WriteSettings()

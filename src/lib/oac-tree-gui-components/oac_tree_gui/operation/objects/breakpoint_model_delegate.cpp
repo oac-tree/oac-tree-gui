@@ -23,7 +23,7 @@
 #include <oac_tree_gui/operation/breakpoint_types.h>
 #include <oac_tree_gui/viewmodel/instruction_operation_viewmodel.h>
 
-#include <mvvm/widgets/widget_utils.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QPainter>
 
@@ -41,7 +41,7 @@ void PaintBreakpoint(QPainter *painter, const QPointF &center, const QPen &pen, 
   painter->setPen(pen);
   painter->setBrush(brush);
 
-  const auto x_size = mvvm::utils::UnitSize() * scale;
+  const auto x_size = mvvm::style::UnitSize(scale);
 
   QRectF ellipse_rect(0.0, 0.0, x_size, x_size);
   ellipse_rect.moveCenter(center);

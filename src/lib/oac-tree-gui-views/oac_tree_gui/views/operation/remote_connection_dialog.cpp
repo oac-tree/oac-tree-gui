@@ -27,7 +27,7 @@
 
 #include <sup/gui/widgets/dialog_helper.h>
 
-#include <mvvm/widgets/widget_utils.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QApplication>
 #include <QDebug>
@@ -87,7 +87,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService *connect
 
   m_server_name_line_edit->setClearButtonEnabled(true);
   m_server_name_line_edit->setPlaceholderText("Server name");
-  m_connect_button->setFixedWidth(mvvm::utils::UnitSize(12));
+  m_connect_button->setFixedWidth(mvvm::style::UnitSize(12));
 
   m_job_list_view->setAlternatingRowColors(true);
   m_job_list_view->setModel(m_job_info_model);
@@ -159,7 +159,7 @@ std::unique_ptr<QHBoxLayout> RemoteConnectionDialog::CreateConnectLayout()
 void RemoteConnectionDialog::ReadSettings()
 {
   const QSettings settings;
-  const auto default_size = QSize(mvvm::utils::UnitSize(30), mvvm::utils::UnitSize(30));
+  const auto default_size = QSize(mvvm::style::UnitSize(30), mvvm::style::UnitSize(30));
   resize(settings.value(kWindowSizeSettingName, default_size).toSize());
 }
 

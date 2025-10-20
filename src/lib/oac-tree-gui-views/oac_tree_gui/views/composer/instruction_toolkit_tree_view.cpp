@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
+#include <mvvm/style/mvvm_style_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QDrag>
@@ -37,7 +38,7 @@ namespace
  */
 QPixmap CreatePixmap()
 {
-  QRect rect = QRect(0, 0, mvvm::utils::UnitSize(4), mvvm::utils::UnitSize(4));
+  const QRect rect = QRect(0, 0, mvvm::style::UnitSize(4), mvvm::style::UnitSize(4));
   QPixmap pixmap(rect.width() + 1, rect.height() + 1);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);

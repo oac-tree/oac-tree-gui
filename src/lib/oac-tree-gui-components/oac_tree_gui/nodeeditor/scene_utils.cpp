@@ -29,7 +29,7 @@
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <mvvm/core/mvvm_exceptions.h>
-#include <mvvm/widgets/widget_utils.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QLinearGradient>
 #include <QRectF>
@@ -85,8 +85,7 @@ QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
 
 QRectF ConnectableViewRectangle()
 {
-  // make size of rectangle depending on 'M'-letter size to address scaling issues
-  static QRectF result = QRectF(0, 0, mvvm::utils::UnitSize(8.2), mvvm::utils::UnitSize(10.0));
+  static QRectF result = QRectF(0, 0, mvvm::style::UnitSize(8.2), mvvm::style::UnitSize(10.0));
   return result;
 }
 

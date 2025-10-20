@@ -24,7 +24,6 @@
 
 #include <mvvm/editors/custom_event_filters.h>
 #include <mvvm/style/mvvm_style_helper.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QDate>
 #include <QHBoxLayout>
@@ -54,7 +53,7 @@ std::unique_ptr<QLabel> CreateCopyrightLabel()
       QString("Copyright: 2010-%1 ITER Organization ").arg(date.toString("yyyy"));
 
   auto result = std::make_unique<QLabel>();
-  result->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
+  result->setContentsMargins(0, 0, 0, mvvm::style::UnitSize());
   return result;
 }
 
@@ -65,7 +64,7 @@ std::unique_ptr<QLabel> CreateLogoLabel()
   auto result = std::make_unique<QLabel>();
 
   result->setPixmap(
-      logo.scaled(mvvm::utils::UnitSize(50), mvvm::utils::UnitSize(50), Qt::KeepAspectRatio));
+      logo.scaled(mvvm::style::UnitSize(50), mvvm::style::UnitSize(50), Qt::KeepAspectRatio));
   return result;
 }
 
@@ -97,11 +96,11 @@ std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateLogoLayout()
   QPixmap logo(":/sup-gui-core/icons/iter_logo.png");
   auto label = new QLabel;
   label->setPixmap(
-      logo.scaled(mvvm::utils::UnitSize(10), mvvm::utils::UnitSize(10), Qt::KeepAspectRatio));
+      logo.scaled(mvvm::style::UnitSize(10), mvvm::style::UnitSize(10), Qt::KeepAspectRatio));
 
   result->addWidget(label);
   result->addStretch(1);
-  auto gap = mvvm::utils::UnitSize(1.0);
+  auto gap = mvvm::style::UnitSize(1.0);
   result->setContentsMargins(0, gap, gap, gap);
 
   return result;
@@ -115,7 +114,7 @@ std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateTextLayout()
   auto about_title_label =
       new QLabel(QString("oac-tree GUI version ").append(QString::fromStdString(ProjectVersion())));
   mvvm::style::ScaleLabelFont(*about_title_label, 1.2, true);
-  about_title_label->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
+  about_title_label->setContentsMargins(0, 0, 0, mvvm::style::UnitSize());
 
   // description
   QString description =
@@ -132,7 +131,7 @@ std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateTextLayout()
   result->addWidget(CreateLinkLabel().release());
   result->addStretch(1);
 
-  auto gap = mvvm::utils::UnitSize(1.0);
+  const auto gap = mvvm::style::UnitSize(1.0);
   result->setContentsMargins(0, gap, gap, gap);
 
   return result;
