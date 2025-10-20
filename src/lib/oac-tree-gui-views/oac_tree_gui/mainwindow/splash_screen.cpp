@@ -22,7 +22,7 @@
 
 #include <oac_tree_gui/core/version.h>
 
-#include <mvvm/widgets/widget_utils.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QCoreApplication>
 #include <QStyle>
@@ -82,7 +82,7 @@ void SplashScreen::drawContents(QPainter* painter)
   QSplashScreen::drawContents(painter);
 
   auto img_rect = frameGeometry();
-  const auto char_height = mvvm::utils::WidthOfLetterM();
+  const auto char_height = mvvm::style::UnitSize();
   const auto bottom_gap = char_height * 3.5;
   const auto text_rect_height = char_height * 3.0;
 

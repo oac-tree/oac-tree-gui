@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/version.h>
 
 #include <mvvm/editors/custom_event_filters.h>
+#include <mvvm/style/mvvm_style_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QDate>
@@ -113,7 +114,7 @@ std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateTextLayout()
   // title
   auto about_title_label =
       new QLabel(QString("oac-tree GUI version ").append(QString::fromStdString(ProjectVersion())));
-  mvvm::utils::ScaleLabelFont(about_title_label, 1.2, true);
+  mvvm::style::ScaleLabelFont(*about_title_label, 1.2, true);
   about_title_label->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
 
   // description
