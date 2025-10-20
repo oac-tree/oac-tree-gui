@@ -72,8 +72,7 @@ GraphicsSceneStyle CreateDefaulGraphicsSceneStyle(mvvm::ColorFlavor color_flavor
 
 const GraphicsSceneStyle &GetDefaultGraphicsSceneStyle()
 {
-  static const GraphicsSceneStyle kStyle =
-      CreateDefaulGraphicsSceneStyle(mvvm::ColorFlavor::kUnspecified);
+  static const GraphicsSceneStyle kStyle = CreateDefaulGraphicsSceneStyle(mvvm::ColorFlavor::kAuto);
   return kStyle;
 }
 

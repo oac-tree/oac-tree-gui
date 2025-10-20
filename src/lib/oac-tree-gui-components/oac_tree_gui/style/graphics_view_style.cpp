@@ -77,7 +77,7 @@ GraphicsViewStyle CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor color_flavor)
 const GraphicsViewStyle &GetDefaultGraphicsViewStyle()
 {
   static const GraphicsViewStyle kGraphicsViewStyle =
-      CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor::kUnspecified);
+      CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor::kAuto);
   return kGraphicsViewStyle;
 }
 

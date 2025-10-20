@@ -47,7 +47,7 @@ struct GraphicsSceneStyle
  * @brief Creates default graphics view style for the given color flavor.
  */
 GraphicsSceneStyle CreateDefaulGraphicsSceneStyle(
-    mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kUnspecified);
+    mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kAuto);
 
 /**
  * @brief Returns default graphics view style.

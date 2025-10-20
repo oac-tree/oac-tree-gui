@@ -67,7 +67,7 @@ QJsonObject LoadDefaultJsonStyle(mvvm::ColorFlavor color_flavor)
   }
 
   // if flavor is unspecified, return color depending on desktop darkness theme itself
-  if (color_flavor == mvvm::ColorFlavor::kUnspecified)
+  if (color_flavor == mvvm::ColorFlavor::kAuto)
   {
     return mvvm::style::IsDarkTheme() ? LoadJsonFromResource(style::kDefaultDarkStyleResourceName)
                                       : LoadJsonFromResource(style::kDefaultLightStyleResourceName);

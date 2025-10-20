@@ -40,8 +40,7 @@ namespace oac_tree_gui
  * Example: FindIcon("animation", AppIconColorFlavor::kForDarkThemes)
  * Is assumes an existence of animation.svg file in the resource folder of sequencer package.
  */
-QIcon FindIcon(const QString& icon_name,
-               mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kUnspecified);
+QIcon FindIcon(const QString& icon_name, mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kAuto);
 
 /**
  * @brief Loads JSON from resource with the given name.
@@ -68,7 +67,7 @@ void ValidateStyleKey(const QJsonObject& json, const QString& group,
  * @brief Creates style of the give type for given theme flavor (dark/light/unspecified).
  */
 template <typename StyleT>
-StyleT CreateStyleFromResource(mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kUnspecified)
+StyleT CreateStyleFromResource(mvvm::ColorFlavor color_flavor = mvvm::ColorFlavor::kAuto)
 {
   auto json = LoadDefaultJsonStyle(color_flavor);
   StyleT result;

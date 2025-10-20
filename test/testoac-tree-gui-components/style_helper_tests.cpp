@@ -73,7 +73,7 @@ TEST_F(StyleHelperTest, LoadDefaultJsonStyle)
   }
 
   {  // unspecified style
-    auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kUnspecified);
+    auto json = LoadDefaultJsonStyle(mvvm::ColorFlavor::kAuto);
     EXPECT_TRUE(json.contains(style::NodeGraphicsViewStyleKey));
   }
 }
