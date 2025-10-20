@@ -1,5 +1,7 @@
 Changes for 2.0.0:
 
+- Implement grid background for NodeEditor
+- Implement UI style support with JSON files
 - Bugfix COA-1763 prevent editing of active workspace
 - Bugfix COA-1760 broken plugin load in sup-pvmonitor
 - Switch node editor machinery to a new implementation in sup-mvvm
