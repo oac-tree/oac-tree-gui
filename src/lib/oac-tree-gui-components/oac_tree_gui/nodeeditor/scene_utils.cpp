@@ -29,6 +29,7 @@
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <mvvm/core/mvvm_exceptions.h>
+#include <mvvm/nodeeditor/node_editor_constants.h>
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QLinearGradient>
@@ -60,17 +61,19 @@ QPointF GetGraphicsViewportCenter()
   // (-window_size/2, window_size)  (window_size/2, window_size)
   const auto origin = GetGraphicsViewportOrigin();
   const auto size = GetGraphicsViewportSize();
-  return {origin.x() + size.width() / 2, origin.y() + size.height() / 2};
+  return {origin.x() + (size.width() / 2), origin.y() + (size.height() / 2)};
 }
 
 double GetAlignmentGridWidth()
 {
-  return oac_tree_gui::ConnectableViewRectangle().width() * 1.4;
+  const double kGridFactor = 1.5;
+  return ConnectableViewRectangle().width() * kGridFactor;
 }
 
 double GetAlignmentGridHeight()
 {
-  return oac_tree_gui::ConnectableViewRectangle().height() * 1.4;
+  const double kGridFactor = 1.5;
+  return ConnectableViewRectangle().height() * kGridFactor;
 }
 
 QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
@@ -85,8 +88,7 @@ QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
 
 QRectF ConnectableViewRectangle()
 {
-  static QRectF result = QRectF(0, 0, mvvm::style::UnitSize(8.2), mvvm::style::UnitSize(10.0));
-  return result;
+  return mvvm::constants::DefaultConnectableShapeRect();
 }
 
 QColor GetBaseColor(const InstructionItem* instruction)

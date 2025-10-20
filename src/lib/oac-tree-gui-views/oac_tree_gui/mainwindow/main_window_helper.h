@@ -34,7 +34,6 @@
 #include <sup/gui/app/main_window_types.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
-#include <mvvm/widgets/widget_utils.h>
 #include <mvvm/widgets/app_utils.h>
 
 #include <QApplication>
@@ -81,7 +80,7 @@ int RunApplication(int argc, char** argv)
     {
       QSettings settings;
       settings.clear();
-      mvvm::utils::SetApplicationFont(default_font);
+      QApplication::setFont(default_font);
     }
 
     SequencerMainWindowContext context;
