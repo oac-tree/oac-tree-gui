@@ -28,7 +28,6 @@
 #include <mvvm/style/color_flavor.h>
 
 #include <QColor>
-#include <cstdint>
 
 namespace oac_tree_gui::style
 {
@@ -41,10 +40,10 @@ struct GraphicsViewStyle
   bool render_background{false};
   QColor background_color;
 
-  std::int32_t fine_grid_size{0};
+  double fine_grid_size{0.0};
   QColor fine_grid_color;
 
-  std::int32_t coarse_grid_size{0};
+  double coarse_grid_size{0.0};
   QColor coarse_grid_color;
 };
 

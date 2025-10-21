@@ -33,13 +33,15 @@ namespace
  */
 GraphicsViewStyle CreateDefaultStyleForLightThemes()
 {
+  const double kFineGridStepInPixels = 20.0;
+  const std::uint32_t kCoarseGridFactor = 10;
   GraphicsViewStyle result;
 
   result.render_background = true;
   result.background_color = QColor("whitesmoke");
-  result.fine_grid_size = 20;
+  result.fine_grid_size = mvvm::style::ScaleToSystem(kFineGridStepInPixels);
   result.fine_grid_color = QColor("oldlace");
-  result.coarse_grid_size = 200;
+  result.coarse_grid_size = result.fine_grid_size * kCoarseGridFactor;
   result.coarse_grid_color = QColor("gainsboro");
   return result;
 }

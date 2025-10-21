@@ -35,7 +35,7 @@ constexpr auto RenderBackgroundKey = "RenderBackground";
 constexpr auto BackgroundColorKey = "BackgroundColor";
 constexpr auto FineGridSizeKey = "FineGridSize";
 constexpr auto FineGridColorKey = "FineGridColor";
-constexpr auto CoarseGridSizeKey = "CoarseGridSize";
+constexpr auto CoarseGridFactorKey = "CoarseGridFactor";
 constexpr auto CoarseGridColorKey = "CoarseGridColor";
 
 constexpr auto NodeGraphicsSceneStyleKey = "NodeGraphicsSceneStyle";

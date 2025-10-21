@@ -25,6 +25,8 @@
 #include "style_helper.h"
 #include "style_resource_constants.h"
 
+#include <mvvm/style/mvvm_style_helper.h>
+
 namespace oac_tree_gui::style
 {
 
@@ -39,9 +41,9 @@ void PopulateStyleFromJSON(const QJsonObject &json, GraphicsViewStyle &style)
 
   style.render_background = obj[RenderBackgroundKey].toBool();
   style.background_color = QColor(obj[BackgroundColorKey].toString());
-  style.fine_grid_size = obj[FineGridSizeKey].toInt();
+  style.fine_grid_size = mvvm::style::ScaleToSystem(obj[FineGridSizeKey].toDouble());
   style.fine_grid_color = QColor(obj[FineGridColorKey].toString());
-  style.coarse_grid_size = obj[CoarseGridSizeKey].toInt();
+  style.coarse_grid_size = obj[CoarseGridFactorKey].toInt() * style.fine_grid_size;
   style.coarse_grid_color = QColor(obj[CoarseGridColorKey].toString());
 }
 
