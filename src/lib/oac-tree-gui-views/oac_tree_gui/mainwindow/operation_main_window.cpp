@@ -33,6 +33,7 @@
 #include <QCloseEvent>
 #include <QMenuBar>
 #include <QSettings>
+#include <QCoreApplication>
 
 namespace
 {

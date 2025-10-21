@@ -33,6 +33,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <filesystem>
+#include <QDebug>
 
 namespace
 {

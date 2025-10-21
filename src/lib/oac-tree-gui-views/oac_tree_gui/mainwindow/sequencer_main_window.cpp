@@ -39,6 +39,7 @@
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 
 #include <QCloseEvent>
+#include <QCoreApplication>
 #include <QSettings>
 #include <QStatusBar>
 
