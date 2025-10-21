@@ -88,7 +88,7 @@ QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
 
 QRectF ConnectableViewRectangle()
 {
-  return mvvm::constants::DefaultConnectableShapeRect();
+  return mvvm::constants::GetDefaultConnectableShapeRect();
 }
 
 QColor GetBaseColor(const InstructionItem* instruction)
