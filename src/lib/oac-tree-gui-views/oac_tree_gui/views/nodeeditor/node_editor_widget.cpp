@@ -51,6 +51,9 @@ QList<QAction *> GetToolBarActions(oac_tree_gui::NodeGraphicsViewActions *action
   using ActionKey = oac_tree_gui::NodeGraphicsViewActions::ActionKey;
   return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign});
 }
+
+constexpr std::chrono::milliseconds kMessageDurationTime{5000};
+
 }  // namespace
 
 namespace oac_tree_gui
@@ -62,7 +65,8 @@ NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
     , m_graphics_scene(CreateGraphicsScene())
     , m_graphics_view(new NodeGraphicsView(m_graphics_scene.get(), this))
     , m_navigation_toolbar(new NodeEditorNavigationToolBar)
-    , m_graphics_view_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view))
+    , m_graphics_view_message_handler(
+          sup::gui::CreateWidgetOverlayMessageHandler(m_graphics_view, kMessageDurationTime))
 {
   setWindowTitle("NodeEditor");
 

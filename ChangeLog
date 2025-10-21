@@ -1,5 +1,6 @@
 Changes for 2.0.0:
 
+- Bugfix COA-1788 make warning sign eventually dissapearing from the node editor
 - Implement grid background for NodeEditor
 - Implement UI style support with JSON files
 - Bugfix COA-1763 prevent editing of active workspace
