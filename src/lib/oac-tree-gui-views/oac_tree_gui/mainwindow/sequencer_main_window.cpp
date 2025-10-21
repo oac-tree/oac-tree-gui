@@ -24,6 +24,7 @@
 #include "main_window_helper.h"
 #include "sequencer_main_window_actions.h"
 
+#include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/sequencer_settings_constants.h>

@@ -20,12 +20,12 @@
 
 #include <oac_tree_gui/components/custom_meta_types.h>
 #include <oac_tree_gui/core/version.h>
-#include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/mainwindow/operation_main_window.h>
+#include <oac_tree_gui/mainwindow/run_application.h>
 
 int main(int argc, char** argv)
 {
-  oac_tree_gui::RegisterCustomMetaTypes(); // before InitCoreApplication
+  oac_tree_gui::RegisterCustomMetaTypes();  // before InitCoreApplication
 
   auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("oac-tree-operation", version);

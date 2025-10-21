@@ -21,6 +21,7 @@ target_sources(${library_name} PRIVATE
   pvmonitor_main_window.h
   pvmonitor_project.cpp
   pvmonitor_project.h
+  run_application.h
   sequencer_main_window.cpp
   sequencer_main_window.h
   sequencer_main_window_actions.cpp
