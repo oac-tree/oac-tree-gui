@@ -23,6 +23,7 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
@@ -35,7 +36,6 @@
 #include <gtest/gtest.h>
 #include <testutils/test_node_editor_helper.h>
 
-#include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QSignalSpy>
 #include <QTest>
@@ -62,9 +62,15 @@ public:
    */
   std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider()
   {
-    return std::make_unique<GraphicsSceneComponentProvider>(
+    auto result = std::make_unique<GraphicsSceneComponentProvider>(
         m_mock_message.AsStdFunction(), m_mock_object_name.AsStdFunction(), &m_graphics_scene,
         m_instruction_container);
+
+    // connection which is in NodeEditorWidget
+    QObject::connect(&m_graphics_scene, &NodeGraphicsScene::portDoubleClick, result.get(),
+                     &GraphicsSceneComponentProvider::DoubleClickPort);
+
+    return result;
   }
 
   /**
@@ -86,7 +92,7 @@ public:
     return ::mvvm::GetShapes<ShapeT>(m_graphics_scene);
   }
 
-  QGraphicsScene m_graphics_scene;
+  NodeGraphicsScene m_graphics_scene;
   QGraphicsView m_graphics_view;
   mvvm::ApplicationModel m_model;
   InstructionContainerItem* m_instruction_container{nullptr};

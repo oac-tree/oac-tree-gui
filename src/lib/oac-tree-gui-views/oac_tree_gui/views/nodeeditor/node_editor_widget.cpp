@@ -199,6 +199,10 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider()
   connect(m_graphics_scene.get(), &NodeGraphicsScene::instructionDoubleClick, result.get(),
           &GraphicsSceneComponentProvider::SelectInstructionBranch);
 
+  // propagate double click on ports from GraphicsScene to GraphicsSceneComponentProvider
+  connect(m_graphics_scene.get(), &NodeGraphicsScene::portDoubleClick, result.get(),
+          &GraphicsSceneComponentProvider::DoubleClickPort);
+
   return result;
 }
 

@@ -35,6 +35,7 @@ class ConnectableViewModelController;
 class SessionItem;
 class ConnectableShape;
 class ISessionModel;
+class INodePort;
 }  // namespace mvvm
 
 class QGraphicsScene;
@@ -100,6 +101,11 @@ public:
    * @brief Selects instruction and all its children.
    */
   void SelectInstructionBranch(InstructionItem* instruction);
+
+  /**
+   * @brief Process double click on ports
+   */
+  void DoubleClickPort(const mvvm::INodePort* port);
 
 signals:
   void selectionChanged();

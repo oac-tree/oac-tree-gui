@@ -114,6 +114,11 @@ void GraphicsSceneComponentProvider::SelectInstructionBranch(InstructionItem* in
   SetSelectedInstructions(to_select);
 }
 
+void GraphicsSceneComponentProvider::DoubleClickPort(const mvvm::INodePort* port)
+{
+  m_graphics_scene_action_handler->DoubleClickPort(port);
+}
+
 mvvm::ISessionModel* GraphicsSceneComponentProvider::GetModel() const
 {
   return m_instruction_container ? m_instruction_container->GetModel() : nullptr;
