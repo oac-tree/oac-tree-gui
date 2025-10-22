@@ -21,15 +21,18 @@
 #include "graphics_scene_action_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/nodeeditor/i_node_connection.h>
+#include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/node_editor_helper.h>
 
 namespace oac_tree_gui
 {
 
-GraphicsSceneActionHandler::GraphicsSceneActionHandler(mvvm::SessionItem *container_item,
-                                                       const send_message_t &send_message_callback)
+GraphicsSceneActionHandler::GraphicsSceneActionHandler(mvvm::SessionItem* container_item,
+                                                       const send_message_t& send_message_callback)
     : m_instruction_container(container_item), m_send_message(send_message_callback)
 {
   if (!m_instruction_container)
@@ -43,8 +46,8 @@ GraphicsSceneActionHandler::GraphicsSceneActionHandler(mvvm::SessionItem *contai
   }
 }
 
-void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort *start_port,
-                                              const mvvm::INodePort *end_port)
+void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort* start_port,
+                                              const mvvm::INodePort* end_port)
 {
   try
   {
@@ -54,14 +57,14 @@ void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort *start_port,
     // The throw will happen if ports are compatible, but item doesn't allow connection due to model
     // constraints (i.e. Repeat can have only one child).
   }
-  catch (const std::exception &ex)
+  catch (const std::exception& ex)
   {
     m_send_message(sup::gui::CreateInvalidOperationMessage("Can't connect ports",
                                                            "Failed to connect ports", ex.what()));
   }
 }
 
-void GraphicsSceneActionHandler::Disconnect(mvvm::INodeConnection *connection)
+void GraphicsSceneActionHandler::Disconnect(mvvm::INodeConnection* connection)
 {
   if (!connection)
   {
@@ -77,10 +80,21 @@ void GraphicsSceneActionHandler::Disconnect(mvvm::INodeConnection *connection)
     // incompatible. The throw will happen if ports are compatible, but item doesn't allow
     // disconnection due to model constraints.
   }
-  catch (const std::exception &ex)
+  catch (const std::exception& ex)
   {
     m_send_message(sup::gui::CreateInvalidOperationMessage(
         "Can't disconnect connection", "Failed to disconnect connection", ex.what()));
+  }
+}
+
+void GraphicsSceneActionHandler::DoubleClickPort(const mvvm::INodePort* port)
+{
+  if (port->GetPortDirection() == mvvm::PortDirection::kInput)
+  {
+    if (auto instruction = mvvm::GetPortOrigin<InstructionItem>(port); instruction)
+    {
+      ToggleCollapsed(*instruction);
+    }
   }
 }
 

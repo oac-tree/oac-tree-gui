@@ -54,6 +54,14 @@ public:
    * @brief Disconnects two ports by moving the child item to a top level container.
    */
   virtual void Disconnect(mvvm::INodeConnection* connection) = 0;
+
+  /**
+   * @brief Process double clicks on the port.
+   *
+   * For the moment it collapse/expand child instructions for parents, which have ones.
+   * Works only for input ports, no-op for output ports.
+   */
+  virtual void DoubleClickPort(const mvvm::INodePort* port) = 0;
 };
 
 }  // namespace oac_tree_gui

@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 
 #include <mvvm/model/application_model.h>
@@ -190,6 +191,35 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToDisconnectWaitFromSequence)
 
   EXPECT_EQ(wait_item->GetParent(), m_model.GetRootItem());
   EXPECT_EQ(sequence_item->GetInstructions().size(), 0U);
+}
+
+TEST_F(GraphicsSceneActionHandlerTest, DoubleClickPort)
+{
+  auto action_handler = CreateGraphicsSceneActionHandler();
+
+  auto sequence_item = m_model.InsertItem<SequenceItem>();
+  auto wait_item = m_model.InsertItem<WaitItem>();  // wait is not a child of a sequence
+
+  auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
+  auto wait_shape = m_shape_factory.CreateShape(wait_item);
+
+  // manually connecting shapes to pretend items are connected, which is not the case
+  auto input_port = mvvm::GetInputPort(*sequence_shape);
+  auto output_port = mvvm::GetOutputPort(*wait_shape);
+
+  EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(0);
+
+  EXPECT_FALSE(IsCollapsed(*sequence_item));
+
+  action_handler->DoubleClickPort(input_port);
+  EXPECT_TRUE(IsCollapsed(*sequence_item));
+
+  action_handler->DoubleClickPort(input_port);
+  EXPECT_FALSE(IsCollapsed(*sequence_item));
+
+  // clicking on output port is noop
+  action_handler->DoubleClickPort(output_port);
+  EXPECT_FALSE(IsCollapsed(*sequence_item));
 }
 
 }  // namespace oac_tree_gui::test

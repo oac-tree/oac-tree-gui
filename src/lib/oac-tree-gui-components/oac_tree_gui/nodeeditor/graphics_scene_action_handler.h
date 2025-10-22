@@ -47,6 +47,8 @@ public:
 
   void Disconnect(mvvm::INodeConnection* connection) override;
 
+  void DoubleClickPort(const mvvm::INodePort* port) override;
+
 private:
   mvvm::SessionItem* m_instruction_container{nullptr};
   send_message_t m_send_message;
