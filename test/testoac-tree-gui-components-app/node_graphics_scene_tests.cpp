@@ -22,6 +22,11 @@
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
+
+#include <mvvm/nodeeditor/connectable_shape.h>
+#include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
 
@@ -61,6 +66,30 @@ TEST_F(NodeGraphicsSceneTest, SendDropEvent)
 
   // not clear how to test drop coordinates
   // EXPECT_EQ(args.at(1).toPointF(), QPointF(10, 100));
+}
+
+TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstruction)
+{
+  const ConnectableShapeFactory factory;
+
+  NodeGraphicsScene scene;
+
+  SequenceItem item;
+  item.SetX(1.0);
+  item.SetY(2.0);
+
+  auto shape = factory.CreateShape(&item);
+  scene.addItem(shape.release());
+
+  QGraphicsSceneMouseEvent event(QEvent::GraphicsSceneMouseDoubleClick);
+  event.setScenePos(QPointF(10, 10));
+
+  QSignalSpy spy(&scene, &NodeGraphicsScene::instructionDoubleClick);
+  QApplication::sendEvent(&scene, &event);
+
+  QCoreApplication::processEvents();
+  ASSERT_EQ(spy.count(), 1);
+  EXPECT_EQ(mvvm::test::GetSendItem<InstructionItem*>(spy), &item);
 }
 
 }  // namespace oac_tree_gui::test

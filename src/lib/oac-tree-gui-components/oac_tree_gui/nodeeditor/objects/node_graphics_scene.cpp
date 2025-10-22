@@ -26,7 +26,9 @@
 
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
+#include <mvvm/style/mvvm_style_helper.h>
 
+#include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 
@@ -42,25 +44,25 @@ QRectF GetDefaultSceneRect()
 }
 
 //! Returns name encoded in the drop event.
-std::string GetEncodedName(QGraphicsSceneDragDropEvent *event)
+std::string GetEncodedName(QGraphicsSceneDragDropEvent* event)
 {
   return oac_tree_gui::GetNewInstructionType(event->mimeData());
 }
 
 //! Returns domain type from the drop event. If domain_type can't be deduced from the event data,
 //! will return an empty string.
-std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
+std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent* event)
 {
   return GetEncodedName(event);
 }
 }  // namespace
 
-NodeGraphicsScene::NodeGraphicsScene(QObject *parent_object) : QGraphicsScene(parent_object)
+NodeGraphicsScene::NodeGraphicsScene(QObject* parent_object) : QGraphicsScene(parent_object)
 {
   setSceneRect(GetDefaultSceneRect());
 }
 
-void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
   if (event->mimeData()->hasFormat(kNewInstructionMimeType))
   {
@@ -72,13 +74,26 @@ void NodeGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
   }
 }
 
-void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
+void NodeGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
     emit dropInstructionRequested(QString::fromStdString(domain_type),
-                             GetNodeDropPosition(event->scenePos()));
+                                  GetNodeDropPosition(event->scenePos()));
   }
+}
+
+void NodeGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+  const double size = mvvm::style::UnitSize();
+  QRectF area(0, 0, size, size);
+  area.moveCenter(event->scenePos());
+  auto shapes = mvvm::GetShapes<mvvm::ConnectableShape>(*this, area);
+  for (auto shape : shapes)
+  {
+    emit instructionDoubleClick(mvvm::GetUnderlyingItem<InstructionItem>(shape));
+  }
+  QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 }  // namespace oac_tree_gui

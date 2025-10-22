@@ -40,10 +40,12 @@ public:
 
 signals:
   void dropInstructionRequested(const QString& name, const QPointF& pos);
+  void instructionDoubleClick(oac_tree_gui::InstructionItem* instruction);
 
 protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;
   void dropEvent(QGraphicsSceneDragDropEvent* event) override;
+  void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 }  // namespace oac_tree_gui
