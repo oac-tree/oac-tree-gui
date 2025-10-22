@@ -358,7 +358,7 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, CollapseWhenDoubleClickOnInputPo
                      viewport_click_coordinate);
 }
 
-TEST_F(GraphicsSceneComponentProviderSceneTest, DISABLED_CollapseExpandWhenDoubleClickOnInputPort)
+TEST_F(GraphicsSceneComponentProviderSceneTest, CollapseExpandWhenDoubleClickOnInputPort)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
   sequence->SetX(10.0);
@@ -391,7 +391,6 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DISABLED_CollapseExpandWhenDoubl
   QTest::mouseDClick(m_graphics_view.viewport(), Qt::LeftButton, Qt::NoModifier,
                      viewport_click_coordinate);
 
-  // FIXME failing here, stop working after first collapse
   EXPECT_FALSE(IsCollapsed(*sequence));
 }
 
