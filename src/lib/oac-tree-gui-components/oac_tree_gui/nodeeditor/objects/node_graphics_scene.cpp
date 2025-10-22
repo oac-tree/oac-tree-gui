@@ -93,7 +93,6 @@ void NodeGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
   {
     emit instructionDoubleClick(mvvm::GetUnderlyingItem<InstructionItem>(shape));
   }
-  QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 }  // namespace oac_tree_gui

@@ -96,6 +96,11 @@ public:
    */
   void DropInstruction(const std::string& item_type, const position_t& pos);
 
+  /**
+   * @brief Selects instruction and all its children.
+   */
+  void SelectInstructionBranch(InstructionItem* instruction);
+
 signals:
   void selectionChanged();
   void connectionStarted();

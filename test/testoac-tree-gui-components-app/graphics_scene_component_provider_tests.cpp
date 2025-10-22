@@ -494,4 +494,35 @@ TEST_F(GraphicsSceneComponentProviderTest, ValidateUpdateOnSequenceCollapsePrope
   ASSERT_EQ(connections.size(), 1U);
 }
 
+TEST_F(GraphicsSceneComponentProviderTest, SelectInstructionBranch)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
+
+  auto provider = CreateProvider();
+
+  const QSignalSpy spy_provider_selected(provider.get(),
+                                         &GraphicsSceneComponentProvider::selectionChanged);
+
+  provider->SelectInstructionBranch(wait1);
+
+  const std::vector<InstructionItem*> expected_selection({wait1});
+  EXPECT_TRUE(
+      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+
+  EXPECT_EQ(spy_provider_selected.count(), 1);
+
+  provider->SelectInstructionBranch(sequence);
+
+  const std::vector<InstructionItem*> expected_selection2({sequence, wait0, wait1, wait2});
+  EXPECT_TRUE(
+      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection2));
+
+  EXPECT_EQ(spy_provider_selected.count(), 6);
+}
+
 }  // namespace oac_tree_gui::test

@@ -46,7 +46,7 @@
 
 namespace
 {
-QList<QAction *> GetToolBarActions(oac_tree_gui::NodeGraphicsViewActions *actions)
+QList<QAction*> GetToolBarActions(oac_tree_gui::NodeGraphicsViewActions* actions)
 {
   using ActionKey = oac_tree_gui::NodeGraphicsViewActions::ActionKey;
   return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign});
@@ -59,7 +59,7 @@ constexpr std::chrono::milliseconds kMessageDurationTime{5000};
 namespace oac_tree_gui
 {
 
-NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
+NodeEditorWidget::NodeEditorWidget(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_view_actions(new NodeGraphicsViewActions(this))
     , m_graphics_scene(CreateGraphicsScene())
@@ -90,7 +90,7 @@ NodeEditorWidget::NodeEditorWidget(QWidget *parent_widget)
 
 NodeEditorWidget::~NodeEditorWidget() = default;
 
-void NodeEditorWidget::SetProcedure(ProcedureItem *procedure)
+void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
 {
   if (m_procedure_item == procedure)
   {
@@ -107,13 +107,13 @@ void NodeEditorWidget::SetProcedure(ProcedureItem *procedure)
   SetupController();
 }
 
-std::vector<InstructionItem *> NodeEditorWidget::GetSelectedInstructions() const
+std::vector<InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
 {
   return m_scene_component_provider->GetSelectedInstructions();
 }
 
 void NodeEditorWidget::SetSelectedInstructions(
-    const std::vector<InstructionItem *> &instructions) const
+    const std::vector<InstructionItem*>& instructions) const
 {
   if (isHidden())
   {
@@ -169,7 +169,7 @@ std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
 std::unique_ptr<GraphicsSceneComponentProvider>
 NodeEditorWidget::CreateGraphicsSceneComponentProvider()
 {
-  auto message_callback = [this](const auto &message)
+  auto message_callback = [this](const auto& message)
   { m_graphics_view_message_handler->SendMessage(message); };
 
   auto result = std::make_unique<GraphicsSceneComponentProvider>(
@@ -192,8 +192,12 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider()
 
   // propagate drop request from GraphicsScene to GraphicsSceneComponentProvider
   connect(m_graphics_scene.get(), &NodeGraphicsScene::dropInstructionRequested, result.get(),
-          [this](const QString &name, const QPointF &pos)
+          [this](const QString& name, const QPointF& pos)
           { m_scene_component_provider->DropInstruction(name.toStdString(), {pos.x(), pos.y()}); });
+
+  // propagate branch selection request from GraphicsScene to GraphicsSceneComponentProvider
+  connect(m_graphics_scene.get(), &NodeGraphicsScene::instructionDoubleClick, result.get(),
+          &GraphicsSceneComponentProvider::SelectInstructionBranch);
 
   return result;
 }
