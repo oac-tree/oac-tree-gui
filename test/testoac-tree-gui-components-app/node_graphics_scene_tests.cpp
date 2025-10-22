@@ -26,14 +26,19 @@
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 
 #include <mvvm/nodeeditor/connectable_shape.h>
+#include <mvvm/nodeeditor/graphics_scene_helper.h>
+#include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_node_editor_helper.h>
 
 #include <QApplication>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 #include <QSignalSpy>
+
+Q_DECLARE_METATYPE(const mvvm::INodePort*)
 
 namespace oac_tree_gui::test
 {
@@ -84,12 +89,48 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstruction)
   QGraphicsSceneMouseEvent event(QEvent::GraphicsSceneMouseDoubleClick);
   event.setScenePos(QPointF(10, 10));
 
-  QSignalSpy spy(&scene, &NodeGraphicsScene::instructionDoubleClick);
-  QApplication::sendEvent(&scene, &event);
+  QSignalSpy spy_shape_clicks(&scene, &NodeGraphicsScene::instructionDoubleClick);
+  const QSignalSpy spy_port_clicks(&scene, &NodeGraphicsScene::portDoubleClick);
 
+  QApplication::sendEvent(&scene, &event);
   QCoreApplication::processEvents();
-  ASSERT_EQ(spy.count(), 1);
-  EXPECT_EQ(mvvm::test::GetSendItem<InstructionItem*>(spy), &item);
+
+  EXPECT_EQ(spy_shape_clicks.count(), 1);
+  EXPECT_EQ(spy_port_clicks.count(), 0);
+
+  EXPECT_EQ(mvvm::test::GetSendItem<InstructionItem*>(spy_shape_clicks), &item);
+}
+
+TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstructionPort)
+{
+  const ConnectableShapeFactory factory;
+
+  NodeGraphicsScene scene;
+
+  SequenceItem item;
+  item.SetX(1.0);
+  item.SetY(2.0);
+
+  auto shape = factory.CreateShape(&item);
+  auto shape_ptr = shape.get();
+  scene.addItem(shape.release());
+
+  auto port_pos = GetInputPortScenePosition(*shape_ptr);
+
+  QGraphicsSceneMouseEvent event(QEvent::GraphicsSceneMouseDoubleClick);
+  event.setScenePos(port_pos);
+
+  const QSignalSpy spy_shape_clicks(&scene, &NodeGraphicsScene::instructionDoubleClick);
+  QSignalSpy spy_port_clicks(&scene, &NodeGraphicsScene::portDoubleClick);
+
+  QApplication::sendEvent(&scene, &event);
+  QCoreApplication::processEvents();
+
+  EXPECT_EQ(spy_shape_clicks.count(), 0);
+  EXPECT_EQ(spy_port_clicks.count(), 1);
+
+  EXPECT_EQ(mvvm::test::GetSendItem<const mvvm::INodePort*>(spy_port_clicks),
+            mvvm::GetInputPort(*shape_ptr));
 }
 
 }  // namespace oac_tree_gui::test

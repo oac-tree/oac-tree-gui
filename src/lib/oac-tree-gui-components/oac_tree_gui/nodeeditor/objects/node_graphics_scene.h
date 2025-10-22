@@ -23,6 +23,11 @@
 
 #include <QGraphicsScene>
 
+namespace mvvm
+{
+class INodePort;
+}
+
 namespace oac_tree_gui
 {
 
@@ -41,6 +46,7 @@ public:
 signals:
   void dropInstructionRequested(const QString& name, const QPointF& pos);
   void instructionDoubleClick(oac_tree_gui::InstructionItem* instruction);
+  void portDoubleClick(const mvvm::INodePort* port);
 
 protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;

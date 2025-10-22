@@ -26,6 +26,7 @@
 
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
+#include <mvvm/nodeeditor/node_port_shape.h>
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QDebug>
@@ -88,6 +89,19 @@ void NodeGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
   const double size = mvvm::style::UnitSize();
   QRectF area(0, 0, size, size);
   area.moveCenter(event->scenePos());
+
+  // process double-clicks on ports
+  auto port_shapes = mvvm::GetShapes<mvvm::NodePortShape>(*this, area);
+  if (!port_shapes.empty())
+  {
+    for (auto shape : port_shapes)
+    {
+      emit portDoubleClick(shape->GetNodePort());
+    }
+    return;
+  }
+
+  // process double clicks on connectable shapes
   auto shapes = mvvm::GetShapes<mvvm::ConnectableShape>(*this, area);
   for (auto shape : shapes)
   {
