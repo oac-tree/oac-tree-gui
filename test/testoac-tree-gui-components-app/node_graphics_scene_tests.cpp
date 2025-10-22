@@ -39,6 +39,7 @@
 #include <QSignalSpy>
 
 Q_DECLARE_METATYPE(const mvvm::INodePort*)
+Q_DECLARE_METATYPE(oac_tree_gui::InstructionItem*)
 
 namespace oac_tree_gui::test
 {

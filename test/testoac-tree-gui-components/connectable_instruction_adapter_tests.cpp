@@ -98,19 +98,4 @@ TEST_F(ConnectableInstructionAdapterTest, OperationStatesForSequenceInstruction)
   EXPECT_EQ(adapter.GetOperationStates(), expected_states);
 }
 
-TEST_F(ConnectableInstructionAdapterTest, ProcessEvent)
-{
-  SequenceItem item;
-  item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
-
-  const ConnectableInstructionAdapter adapter(&item);
-
-  mvvm::NodePort input_port({mvvm::PortDirection::kInput, "type1", "label", &item});
-
-  EXPECT_FALSE(IsCollapsed(item));
-  mvvm::DoubleClickEvent event{&input_port};
-  adapter.ProcessEvent(event);
-  EXPECT_TRUE(IsCollapsed(item));
-}
-
 }  // namespace oac_tree_gui::test
