@@ -80,7 +80,7 @@ std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone() const
 
 std::size_t RemoteJobItem::GetRemoteJobIndex() const
 {
-  return Property<std::size_t>(kJobIndex);
+  return Property<std::uint64_t>(kJobIndex);
 }
 
 void RemoteJobItem::SetRemoteJobIndex(std::size_t value)
