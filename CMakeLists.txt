@@ -16,7 +16,7 @@
 # of the distribution package.
 
 cmake_minimum_required(VERSION 3.13...3.31)
-project(sequencer-gui VERSION 2.0.0 LANGUAGES CXX)
+project(sequencer-gui VERSION 2.1.0 LANGUAGES CXX)
 
 option(COA_COVERAGE "Generate unit test coverage information" OFF)
 option(COA_PARASOFT_INTEGRATION "Parasoft integration" OFF)
