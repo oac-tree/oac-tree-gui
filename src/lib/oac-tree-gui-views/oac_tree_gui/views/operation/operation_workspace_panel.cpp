@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/views/composer/workspace_editor_widget.h>
+#include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
 #include <sup/gui/widgets/item_stack_widget.h>
 
@@ -37,14 +38,15 @@ const QString kWorkspaceSettingsKey = "OperationWorkspacePanel/stack_widget";
 namespace oac_tree_gui
 {
 
-OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService &command_service,
-                                                 QWidget *parent_widget)
+OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService& command_service,
+                                                 QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_stack_widget(new sup::gui::ItemStackWidget(kWorkspaceSettingsKey))
     , m_workspace_tree_widget(
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table_widget(
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTable))
+    , m_node_editor_widget(new NodeEditorWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -54,6 +56,7 @@ OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService &c
 
   m_stack_widget->AddWidget(m_workspace_tree_widget);
   m_stack_widget->AddWidget(m_workspace_table_widget);
+  m_stack_widget->AddWidget(m_node_editor_widget, m_node_editor_widget->actions());
 
   layout->addWidget(m_stack_widget);
 
@@ -68,11 +71,12 @@ OperationWorkspacePanel::~OperationWorkspacePanel()
   WriteSettings();
 }
 
-void OperationWorkspacePanel::SetProcedure(ProcedureItem *item)
+void OperationWorkspacePanel::SetProcedure(ProcedureItem* item)
 {
   auto workspace_item = item ? item->GetWorkspace() : nullptr;
   m_workspace_tree_widget->SetWorkspaceItem(workspace_item);
   m_workspace_table_widget->SetWorkspaceItem(workspace_item);
+  m_node_editor_widget->SetProcedure(item);
 }
 
 void OperationWorkspacePanel::ReadSettings()
