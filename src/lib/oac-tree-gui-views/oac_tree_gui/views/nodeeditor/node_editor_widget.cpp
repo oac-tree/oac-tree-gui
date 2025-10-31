@@ -79,7 +79,7 @@ NodeEditorWidget::NodeEditorWidget(QWidget* parent_widget)
 
   SetupConnections();
 
-  auto on_subscribe = [this]() { SetupController(); };
+  auto on_subscribe = [this]() { SetupSceneComponentProvider(); };
 
   auto on_unsubscribe = [this]() { m_scene_component_provider.reset(); };
 
@@ -105,7 +105,7 @@ void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
     return;
   }
 
-  SetupController();
+  SetupSceneComponentProvider();
 }
 
 std::vector<InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
@@ -142,7 +142,7 @@ void NodeEditorWidget::OnAlignRequest()
   algorithm::AlignInstructionTreeWalker(view->pos(), item);
 }
 
-void NodeEditorWidget::SetupController()
+void NodeEditorWidget::SetupSceneComponentProvider()
 {
   if (!m_procedure_item || !isVisible())
   {

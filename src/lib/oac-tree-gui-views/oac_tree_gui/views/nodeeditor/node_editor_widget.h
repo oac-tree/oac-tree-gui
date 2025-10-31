@@ -75,7 +75,7 @@ signals:
 private:
   void SetupConnections();
   void OnAlignRequest();
-  void SetupController();
+  void SetupSceneComponentProvider();
   std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
   std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider();
 
