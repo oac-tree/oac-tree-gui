@@ -26,8 +26,10 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/runner_status.h>
+#include <oac_tree_gui/model/instruction_status.h>
 
 #include <sup/oac-tree/job_states.h>
+#include <sup/oac-tree/execution_status.h>
 
 #include <memory>
 #include <string>
@@ -52,6 +54,11 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
  * @brief Returns GUI runner status from domain job state.
  */
 RunnerStatus GetRunnerStatusFromDomain(sup::oac_tree::JobState job_state);
+
+/**
+ * @brief Returns GUI instruction status from domain execution status.
+ */
+InstructionStatus GetInstructionStatusFromDomain(sup::oac_tree::ExecutionStatus exec_status);
 
 }  // namespace oac_tree_gui
 

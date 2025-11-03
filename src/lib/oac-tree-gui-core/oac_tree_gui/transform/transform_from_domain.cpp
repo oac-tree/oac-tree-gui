@@ -80,6 +80,9 @@ std::unique_ptr<mvvm::ItemCatalogue<InstructionItem>> CreateInstructionItemCatal
   return result;
 }
 
+/**
+ * @brief Creates mapping between domain JobState and GUI RunnerStatus.
+ */
 std::map<sup::oac_tree::JobState, RunnerStatus> CreateRunnerStatusMap()
 {
   using sup::oac_tree::JobState;
@@ -91,6 +94,21 @@ std::map<sup::oac_tree::JobState, RunnerStatus> CreateRunnerStatusMap()
       {JobState::kSucceeded, RunnerStatus::kSucceeded},
       {JobState::kFailed, RunnerStatus::kFailed},
       {JobState::kHalted, RunnerStatus::kHalted}};
+  return result;
+}
+
+/**
+ * @brief Creates mapping between domain ExecutionStatus and GUI InstructionStatus.
+ */
+std::map<sup::oac_tree::ExecutionStatus, InstructionStatus> CreateInstructionStatusMap()
+{
+  using sup::oac_tree::ExecutionStatus;
+  const std::map<sup::oac_tree::ExecutionStatus, InstructionStatus> result = {
+      {ExecutionStatus::NOT_STARTED, InstructionStatus::kNotStarted},
+      {ExecutionStatus::NOT_FINISHED, InstructionStatus::kNotFinished},
+      {ExecutionStatus::RUNNING, InstructionStatus::kRunning},
+      {ExecutionStatus::SUCCESS, InstructionStatus::kSuccess},
+      {ExecutionStatus::FAILURE, InstructionStatus::kFailure}};
   return result;
 }
 
@@ -131,6 +149,17 @@ RunnerStatus GetRunnerStatusFromDomain(sup::oac_tree::JobState job_state)
   if (iter == kRunnerStatusMap.end())
   {
     throw RuntimeException("Can't convert sup::oac_tree::JobState");
+  }
+  return iter->second;
+}
+
+InstructionStatus GetInstructionStatusFromDomain(sup::oac_tree::ExecutionStatus exec_status)
+{
+  static const auto kInstructionStatusMap = CreateInstructionStatusMap();
+  auto iter = kInstructionStatusMap.find(exec_status);
+  if (iter == kInstructionStatusMap.end())
+  {
+    throw RuntimeException("Can't convert sup::oac_tree::ExecutionStatus");
   }
   return iter->second;
 }

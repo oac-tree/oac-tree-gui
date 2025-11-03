@@ -15,6 +15,8 @@ target_sources(${library_name} PRIVATE
   instruction_info_item.h
   instruction_item.cpp
   instruction_item.h
+  instruction_status.cpp
+  instruction_status.h
   item_constants.h
   iterate_helper.h
   job_item.cpp

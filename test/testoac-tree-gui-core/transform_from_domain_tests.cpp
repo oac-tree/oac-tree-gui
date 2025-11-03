@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/transform/transform_from_domain.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
@@ -28,8 +30,6 @@
 
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
-
-#include "oac_tree_gui/transform/transform_from_domain.h"
 
 namespace oac_tree_gui::test
 {
@@ -188,7 +188,28 @@ TEST_F(TransformFromDomainTest, GetRunnerStatusFromDomain)
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kRunning), RunnerStatus::kRunning);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kSucceeded), RunnerStatus::kSucceeded);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kFailed), RunnerStatus::kFailed);
-  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kHalted), RunnerStatus::kHalted);  
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kHalted), RunnerStatus::kHalted);
+}
+
+TEST_F(TransformFromDomainTest, GetInstructionStatusFromDomain)
+{
+  using sup::oac_tree::ExecutionStatus;
+
+  EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::NOT_STARTED),
+            InstructionStatus::kNotStarted);
+  EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::NOT_FINISHED),
+            InstructionStatus::kNotFinished);
+  EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::RUNNING), InstructionStatus::kRunning);
+  EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::SUCCESS), InstructionStatus::kSuccess);
+  EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::FAILURE), InstructionStatus::kFailure);
+
+  EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::NOT_STARTED),
+            InstructionStatus::kNotStarted);
+  EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::NOT_FINISHED),
+            InstructionStatus::kNotFinished);
+  EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::RUNNING), InstructionStatus::kRunning);
+  EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::SUCCESS), InstructionStatus::kSuccess);
+  EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::FAILURE), InstructionStatus::kFailure);
 }
 
 }  // namespace oac_tree_gui::test
