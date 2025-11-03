@@ -83,6 +83,19 @@ TEST_F(ConnectableInstructionAdapterTest, SetCoordinates)
   EXPECT_EQ(item.GetY(), 4.0);
 }
 
+TEST_F(ConnectableInstructionAdapterTest, OperationStatesForInstructionStatus)
+{
+  WaitItem item;
+  const ConnectableInstructionAdapter adapter(&item);
+
+  mvvm::NodeOperationStates expected_states;
+  EXPECT_EQ(adapter.GetOperationStates(), expected_states);
+
+  item.SetStatus(InstructionStatus::kRunning);
+  expected_states.Set(mvvm::NodeOperationState::kRunning);
+  EXPECT_EQ(adapter.GetOperationStates(), expected_states);
+}
+
 TEST_F(ConnectableInstructionAdapterTest, OperationStatesForSequenceInstruction)
 {
   SequenceItem item;
@@ -95,6 +108,10 @@ TEST_F(ConnectableInstructionAdapterTest, OperationStatesForSequenceInstruction)
 
   expected_states.Set(mvvm::NodeOperationState::kCollapsedChildren);
   SetCollapsed(true, item);
+  EXPECT_EQ(adapter.GetOperationStates(), expected_states);
+
+  item.SetStatus(InstructionStatus::kRunning);
+  expected_states.Set(mvvm::NodeOperationState::kRunning);
   EXPECT_EQ(adapter.GetOperationStates(), expected_states);
 }
 

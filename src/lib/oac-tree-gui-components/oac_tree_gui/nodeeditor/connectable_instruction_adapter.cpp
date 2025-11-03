@@ -30,6 +30,7 @@
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <mvvm/nodeeditor/node_editor_helper.h>
+#include <mvvm/nodeeditor/node_editor_types.h>
 
 namespace oac_tree_gui
 {
@@ -39,9 +40,29 @@ namespace
 
 constexpr std::string_view kDefaultPortType = "kDefaultPortType";
 
+/**
+ * @brief Updates operation states from instruction status.
+ */
+void UpdateOperationStateFromInstructionStatus(InstructionStatus status,
+                                               mvvm::NodeOperationStates& states)
+{
+  static const std::map<InstructionStatus, mvvm::NodeOperationState> state_map = {
+      {InstructionStatus::kNotStarted, mvvm::NodeOperationState::kNotStarted},
+      {InstructionStatus::kNotFinished, mvvm::NodeOperationState::kNotFinished},
+      {InstructionStatus::kRunning, mvvm::NodeOperationState::kRunning},
+      {InstructionStatus::kSuccess, mvvm::NodeOperationState::kSuccess},
+      {InstructionStatus::kFailure, mvvm::NodeOperationState::kFailure}};
+
+  auto iter = state_map.find(status);
+  if (iter != state_map.end())
+  {
+    states.Set(iter->second);
+  }
+}
+
 }  // namespace
 
-ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem *instruction)
+ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem* instruction)
     : m_instruction(instruction)
 {
   if (!m_instruction)
@@ -50,7 +71,7 @@ ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem *in
   }
 }
 
-mvvm::SessionItem *ConnectableInstructionAdapter::GetItem() const
+mvvm::SessionItem* ConnectableInstructionAdapter::GetItem() const
 {
   return m_instruction;
 }
@@ -93,23 +114,25 @@ std::vector<mvvm::PortInfo> ConnectableInstructionAdapter::GetPortInfos() const
              : std::vector<mvvm::PortInfo>({kOutputPort});
 }
 
-InstructionItem *ConnectableInstructionAdapter::GetInstructionItem() const
+InstructionItem* ConnectableInstructionAdapter::GetInstructionItem() const
 {
   return m_instruction;
 }
 
 mvvm::NodeOperationStates ConnectableInstructionAdapter::GetOperationStates() const
 {
+  mvvm::NodeOperationStates result;
   if (!m_instruction->GetInstructions().empty() && IsCollapsed(*m_instruction))
   {
-    mvvm::NodeOperationStates result;
     result.Set(mvvm::NodeOperationState::kCollapsedChildren);
-    return result;
   }
-  return {};
+
+  UpdateOperationStateFromInstructionStatus(m_instruction->GetStatus(), result);
+
+  return result;
 }
 
-void ConnectableInstructionAdapter::ProcessEvent(const mvvm::node_event_t &event) const
+void ConnectableInstructionAdapter::ProcessEvent(const mvvm::node_event_t& event) const
 {
   (void)event;
 }
