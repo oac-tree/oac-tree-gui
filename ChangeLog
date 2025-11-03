@@ -1,5 +1,8 @@
 Changes for 2.1.0:
 
+- Implement NodeEditor showing instruction flow graph in sequencer-operation window
+- Introduce InstructionStatus enum to represent instruction execution status
+
 Changes for 2.0.0:
 
 - COA Release v3.2.0

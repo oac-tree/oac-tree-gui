@@ -56,7 +56,7 @@ public:
 TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
-  sequence->SetStatus("abc");
+  sequence->SetStatus(InstructionStatus::kRunning);
 
   EXPECT_EQ(m_view_model.rowCount(), 1);
   EXPECT_EQ(m_view_model.columnCount(), 2);

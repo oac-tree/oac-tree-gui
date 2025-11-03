@@ -72,7 +72,7 @@ TEST_F(InstructionOperationViewModelTest, SingleInstruction)
   TestModel model;
 
   auto sequence = model.InsertItem<SequenceItem>();
-  sequence->SetStatus("abc");
+  sequence->SetStatus(InstructionStatus::kRunning);
 
   SetBreakpointStatus(*sequence, BreakpointStatus::kSet);
 
@@ -96,7 +96,7 @@ TEST_F(InstructionOperationViewModelTest, SingleInstruction)
   EXPECT_EQ(viewmodel.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Sequence"));
   EXPECT_EQ(viewmodel.data(sequence_status_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("abc"));
+            std::string("Running"));
   // returns int corresponding to BreakpointStatus::kSet
   EXPECT_EQ(viewmodel.data(sequence_breakpoint_index, Qt::DisplayRole).toInt(), 1);
 }
@@ -138,7 +138,7 @@ TEST_F(InstructionOperationViewModelTest, NotificationOnStatusChange)
 
   QSignalSpy spy_data_changed(&viewmodel, &InstructionOperationViewModel::dataChanged);
 
-  sequence->SetStatus("abc");
+  sequence->SetStatus(InstructionStatus::kRunning);
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
 

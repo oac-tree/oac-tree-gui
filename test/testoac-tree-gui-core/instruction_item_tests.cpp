@@ -71,7 +71,7 @@ TEST_F(InstructionItemTest, TestItem)
   EXPECT_EQ(item.GetX(), 1.1);
   EXPECT_EQ(item.GetY(), 1.2);
 
-  EXPECT_EQ(item.GetStatus(), "");
+  EXPECT_EQ(item.GetStatus(), InstructionStatus::kUndefined);
   EXPECT_TRUE(item.GetInstructions().empty());
 }
 

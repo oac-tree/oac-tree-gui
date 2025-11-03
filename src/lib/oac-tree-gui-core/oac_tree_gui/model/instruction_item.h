@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_H_
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+#include <oac_tree_gui/model/instruction_status.h>
 
 #include <mvvm/model/compound_item.h>
 
@@ -89,12 +90,12 @@ public:
   /**
    * @brief Returns instruction status.
    */
-  std::string GetStatus() const;
+  InstructionStatus GetStatus() const;
 
   /**
    * @brief Sets status to a given value.
    */
-  void SetStatus(const std::string& status);
+  void SetStatus(InstructionStatus status);
 
   /**
    * @brief Retuns x-coordinate of instruction on NodeEditor graphics scene.

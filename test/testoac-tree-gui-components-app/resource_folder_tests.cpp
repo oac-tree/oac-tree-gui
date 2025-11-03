@@ -86,7 +86,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
   // setup JobHandler to run procedure with the help of JobItem
   m_job_item->SetProcedure(procedure_ptr);
   LocalJobHandler job_handler(m_job_item, UserContext{});
-  QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
   // starting procedure and waiting for completion
   job_handler.Start();
@@ -98,7 +98,7 @@ TEST_P(ResourceFolderTest, RunProcedure)
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kSucceeded);
   auto instructions = mvvm::utils::FindItems<InstructionItem>(*m_models.GetJobModel());
-  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+  EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kSuccess);
 }
 
 INSTANTIATE_TEST_SUITE_P(FunctionalTests, ResourceFolderTest,

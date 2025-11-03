@@ -51,7 +51,7 @@ mvvm::ComboProperty CreateBehaviorProperty()
 
 }  // namespace
 
-InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type) {}
+InstructionItem::InstructionItem(const std::string& item_type) : CompoundItem(item_type) {}
 
 std::string InstructionItem::GetDomainType() const
 {
@@ -60,7 +60,7 @@ std::string InstructionItem::GetDomainType() const
              : std::string();
 }
 
-void InstructionItem::SetDomainType(const std::string &domain_type)
+void InstructionItem::SetDomainType(const std::string& domain_type)
 {
   SetData(domain_type, itemconstants::kDomainTypeNameRole);
 }
@@ -70,7 +70,7 @@ std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone() const
   throw NotImplementedException("InstructionItem::clone() should not be used");
 }
 
-void InstructionItem::InitFromDomain(const instruction_t *instruction)
+void InstructionItem::InitFromDomain(const instruction_t* instruction)
 {
   InitFromDomainImpl(instruction);
 }
@@ -82,7 +82,7 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
   return result;
 }
 
-std::vector<InstructionItem *> InstructionItem::GetInstructions() const
+std::vector<InstructionItem*> InstructionItem::GetInstructions() const
 {
   if (mvvm::utils::HasTag(*this, itemconstants::kChildInstructions))
   {
@@ -107,19 +107,20 @@ std::string InstructionItem::GetName() const
   return Property<std::string>(itemconstants::kName);
 }
 
-void InstructionItem::SetName(const std::string &name)
+void InstructionItem::SetName(const std::string& name)
 {
-  (void) SetProperty(itemconstants::kName, name);
+  (void)SetProperty(itemconstants::kName, name);
 }
 
-std::string InstructionItem::GetStatus() const
+InstructionStatus InstructionItem::GetStatus() const
 {
-  return Property<std::string>(itemconstants::kStatus);
+  return GetInstructionStatus(Property<std::string>(itemconstants::kStatus));
 }
 
-void InstructionItem::SetStatus(const std::string &status)
+void InstructionItem::SetStatus(InstructionStatus status)
 {
-  (void) SetProperty(itemconstants::kStatus, status);
+  // internally we store status as a string so all views can show it
+  (void)SetProperty(itemconstants::kStatus, ToString(status));
 }
 
 double InstructionItem::GetX() const
@@ -129,7 +130,7 @@ double InstructionItem::GetX() const
 
 void InstructionItem::SetX(double value)
 {
-  (void) SetProperty(itemconstants::kXpos, value);
+  (void)SetProperty(itemconstants::kXpos, value);
 }
 
 double InstructionItem::GetY() const
@@ -139,14 +140,14 @@ double InstructionItem::GetY() const
 
 void InstructionItem::SetY(double value)
 {
-  (void) SetProperty(itemconstants::kYpos, value);
+  (void)SetProperty(itemconstants::kYpos, value);
 }
 
-void InstructionItem::SetBehavior(const std::string &behavior_name)
+void InstructionItem::SetBehavior(const std::string& behavior_name)
 {
   auto property = Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag);
   property.SetValue(behavior_name);
-  (void) SetProperty(itemconstants::kBehaviorTag, property);
+  (void)SetProperty(itemconstants::kBehaviorTag, property);
 }
 
 std::string InstructionItem::GetBehavior() const

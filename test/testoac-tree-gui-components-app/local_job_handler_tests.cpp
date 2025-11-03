@@ -186,7 +186,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   ASSERT_EQ(instructions.size(), 1);
-  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+  EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kSuccess);
 
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 }
@@ -282,7 +282,7 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
   EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kIncludeInstructionType);
   EXPECT_EQ(instructions.at(2)->GetDomainType(), domainconstants::kSequenceInstructionType);
   EXPECT_EQ(instructions.at(3)->GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(instructions.at(3)->GetStatus(), "Success");
+  EXPECT_EQ(instructions.at(3)->GetStatus(), InstructionStatus::kSuccess);
 }
 
 TEST_F(LocalJobHandlerTest, UserInputScenario)
@@ -459,7 +459,7 @@ TEST_F(LocalJobHandlerTest, LogEvents)
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
-  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+  EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kSuccess);
 
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 

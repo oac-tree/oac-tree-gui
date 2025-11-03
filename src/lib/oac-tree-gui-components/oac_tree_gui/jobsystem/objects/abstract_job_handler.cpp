@@ -33,15 +33,10 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/operation/breakpoint_controller.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
-#include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
-#include <oac_tree_gui/transform/domain_procedure_builder.h>
 #include <oac_tree_gui/transform/procedure_item_job_info_builder.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <mvvm/model/item_utils.h>
-
-#include <sup/oac-tree/procedure.h>
-#include <sup/oac-tree/workspace.h>
 
 #include <QDebug>
 
@@ -177,7 +172,7 @@ void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdated
 {
   if (auto* item = m_procedure_item_builder->GetInstruction(event.index); item)
   {
-    item->SetStatus(::sup::oac_tree::StatusToString(event.state.m_execution_status));
+    item->SetStatus(GetInstructionStatusFromDomain(event.state.m_execution_status));
     emit InstructionStatusChanged(item);
   }
   else
