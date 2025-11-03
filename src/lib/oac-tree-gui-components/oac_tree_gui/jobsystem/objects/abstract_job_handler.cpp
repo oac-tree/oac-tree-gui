@@ -48,7 +48,7 @@
 namespace oac_tree_gui
 {
 
-AbstractJobHandler::AbstractJobHandler(JobItem *job_item)
+AbstractJobHandler::AbstractJobHandler(JobItem* job_item)
     : m_procedure_item_builder(std::make_unique<ProcedureItemJobInfoBuilder>())
     , m_job_log(new JobLog(this))
     , m_job_item(job_item)
@@ -102,12 +102,12 @@ RunnerStatus AbstractJobHandler::GetRunnerStatus() const
   return GetRunnerStatusFromDomain(m_domain_runner->GetJobState());
 }
 
-JobLog *AbstractJobHandler::GetJobLog() const
+JobLog* AbstractJobHandler::GetJobLog() const
 {
   return m_job_log;
 }
 
-void AbstractJobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
+void AbstractJobHandler::OnToggleBreakpointRequest(InstructionItem* instruction)
 {
   if (IsRunning())
   {
@@ -120,17 +120,17 @@ void AbstractJobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
   SetDomainBreakpoint(instruction_index, GetBreakpointStatus(*instruction));
 }
 
-JobItem *AbstractJobHandler::GetJobItem()
+JobItem* AbstractJobHandler::GetJobItem()
 {
   return m_job_item;
 }
 
-ProcedureItem *AbstractJobHandler::GetExpandedProcedure() const
+ProcedureItem* AbstractJobHandler::GetExpandedProcedure() const
 {
   return m_job_item->GetExpandedProcedure();
 }
 
-AbstractDomainRunner *AbstractJobHandler::GetDomainRunner()
+AbstractDomainRunner* AbstractJobHandler::GetDomainRunner()
 {
   return m_domain_runner.get();
 }
@@ -139,21 +139,21 @@ DomainEventDispatcherContext AbstractJobHandler::CreateEventDispatcherContext()
 {
   DomainEventDispatcherContext result;
 
-  result.process_instruction_state_updated = [this](const InstructionStateUpdatedEvent &event)
+  result.process_instruction_state_updated = [this](const InstructionStateUpdatedEvent& event)
   { OnInstructionStateUpdated(event); };
 
-  result.process_variable_updated = [this](const VariableUpdatedEvent &event)
+  result.process_variable_updated = [this](const VariableUpdatedEvent& event)
   { OnVariableUpdatedEvent(event); };
 
-  result.process_job_state_changed = [this](const JobStateChangedEvent &event)
+  result.process_job_state_changed = [this](const JobStateChangedEvent& event)
   { OnJobStateChanged(event); };
 
-  result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
+  result.process_log_event = [this](const LogEvent& event) { onLogEvent(event); };
 
-  result.active_instruction_changed_event = [this](const ActiveInstructionChangedEvent &event)
+  result.active_instruction_changed_event = [this](const ActiveInstructionChangedEvent& event)
   { OnActiveInstructionChangedEvent(event); };
 
-  result.breakpoint_hit_updated = [this](const BreakpointHitEvent &event)
+  result.breakpoint_hit_updated = [this](const BreakpointHitEvent& event)
   { OnBreakpointHitEvent(event); };
 
   return result;
@@ -168,14 +168,14 @@ void AbstractJobHandler::Setup(std::unique_ptr<AbstractDomainRunner> runner)
   SetupExpandedProcedureItem();
 }
 
-ProcedureItemJobInfoBuilder *AbstractJobHandler::GetItemBuilder()
+ProcedureItemJobInfoBuilder* AbstractJobHandler::GetItemBuilder()
 {
   return m_procedure_item_builder.get();
 }
 
-void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent &event)
+void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdatedEvent& event)
 {
-  if (auto *item = m_procedure_item_builder->GetInstruction(event.index); item)
+  if (auto* item = m_procedure_item_builder->GetInstruction(event.index); item)
   {
     item->SetStatus(::sup::oac_tree::StatusToString(event.state.m_execution_status));
     emit InstructionStatusChanged(item);
@@ -186,22 +186,22 @@ void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdated
   }
 }
 
-void AbstractJobHandler::OnJobStateChanged(const JobStateChangedEvent &event)
+void AbstractJobHandler::OnJobStateChanged(const JobStateChangedEvent& event)
 {
-  m_job_item->SetStatus(static_cast<RunnerStatus>(event.state));
+  m_job_item->SetStatus(GetRunnerStatusFromDomain(event.state));
 }
 
-void AbstractJobHandler::onLogEvent(const oac_tree_gui::LogEvent &event)
+void AbstractJobHandler::onLogEvent(const oac_tree_gui::LogEvent& event)
 {
   m_job_log->Append(event);
 }
 
-void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstructionChangedEvent &event)
+void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstructionChangedEvent& event)
 {
-  std::vector<InstructionItem *> items;
+  std::vector<InstructionItem*> items;
   for (auto instruction_index : event.instr_idx)
   {
-    if (auto *item = m_procedure_item_builder->GetInstruction(instruction_index); item)
+    if (auto* item = m_procedure_item_builder->GetInstruction(instruction_index); item)
     {
       items.push_back(item);
     }
@@ -214,13 +214,13 @@ void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstruction
   emit ActiveInstructionChanged(items);
 }
 
-void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
+void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent& event)
 {
   (void)event;
   throw RuntimeException("AbstractJobHandler::OnVariableUpdatedEvent is not implemented");
 }
 
-void AbstractJobHandler::OnBreakpointHitEvent(const BreakpointHitEvent &event)
+void AbstractJobHandler::OnBreakpointHitEvent(const BreakpointHitEvent& event)
 {
   if (!IsValidInstructionIndex(event.index))
   {
@@ -228,7 +228,7 @@ void AbstractJobHandler::OnBreakpointHitEvent(const BreakpointHitEvent &event)
     return;
   }
 
-  if (auto *item = m_procedure_item_builder->GetInstruction(event.index); item)
+  if (auto* item = m_procedure_item_builder->GetInstruction(event.index); item)
   {
     m_breakpoint_controller->SetAsActiveBreakpoint(item);
   }
@@ -283,12 +283,12 @@ void AbstractJobHandler::SetDomainBreakpoint(std::size_t index, BreakpointStatus
 void AbstractJobHandler::PropagateBreakpointsToDomain()
 {
   // visit all insrtuction items and set breakpoint status to the domain
-  auto func = [this](const InstructionItem *item)
+  auto func = [this](const InstructionItem* item)
   {
     auto index = m_procedure_item_builder->GetIndex(item);
     SetDomainBreakpoint(index, GetBreakpointStatus(*item));
   };
-  IterateInstructionContainer<const InstructionItem *>(
+  IterateInstructionContainer<const InstructionItem*>(
       GetExpandedProcedure()->GetInstructionContainer()->GetInstructions(), func);
 }
 

@@ -29,8 +29,9 @@
 namespace oac_tree_gui::test
 {
 
-//! Tests for utility methods in runner_status.h
-
+/**
+ * @brief Tests for RunnerStatus class.
+ */
 class RunnerStatusTest : public ::testing::Test
 {
 };
@@ -59,35 +60,6 @@ TEST_F(RunnerStatusTest, GetRunnerStatus)
   EXPECT_EQ(GetRunnerStatus("Halted"), RunnerStatus::kHalted);
   EXPECT_EQ(GetRunnerStatus("SubmitFailure"), RunnerStatus::kSubmitFailure);
   EXPECT_THROW(GetRunnerStatus("abc"), RuntimeException);
-}
-
-TEST_F(RunnerStatusTest, CompareDomainJobState)
-{
-  using sup::oac_tree::JobState;
-
-  // mapping between domain JobState and GUI RunnerStatus
-  EXPECT_EQ(static_cast<std::underlying_type_t<JobState>>(JobState::kInitial),
-            static_cast<std::underlying_type_t<RunnerStatus>>(RunnerStatus::kInitial));
-  EXPECT_EQ(static_cast<std::underlying_type_t<JobState>>(JobState::kPaused),
-            static_cast<std::underlying_type_t<RunnerStatus>>(RunnerStatus::kPaused));
-  EXPECT_EQ(static_cast<std::underlying_type_t<JobState>>(JobState::kStepping),
-            static_cast<std::underlying_type_t<RunnerStatus>>(RunnerStatus::kStepping));
-  EXPECT_EQ(static_cast<std::underlying_type_t<JobState>>(JobState::kRunning),
-            static_cast<std::underlying_type_t<RunnerStatus>>(RunnerStatus::kRunning));
-  EXPECT_EQ(static_cast<std::underlying_type_t<JobState>>(JobState::kSucceeded),
-            static_cast<std::underlying_type_t<RunnerStatus>>(RunnerStatus::kSucceeded));
-  EXPECT_EQ(static_cast<std::underlying_type_t<JobState>>(JobState::kFailed),
-            static_cast<std::underlying_type_t<RunnerStatus>>(RunnerStatus::kFailed));
-  EXPECT_EQ(static_cast<std::underlying_type_t<JobState>>(JobState::kHalted),
-            static_cast<std::underlying_type_t<RunnerStatus>>(RunnerStatus::kHalted));
-
-  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kInitial), RunnerStatus::kInitial);
-  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kPaused), RunnerStatus::kPaused);
-  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kStepping), RunnerStatus::kStepping);
-  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kRunning), RunnerStatus::kRunning);
-  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kSucceeded), RunnerStatus::kSucceeded);
-  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kFailed), RunnerStatus::kFailed);
-  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kHalted), RunnerStatus::kHalted);
 }
 
 }  // namespace oac_tree_gui::test

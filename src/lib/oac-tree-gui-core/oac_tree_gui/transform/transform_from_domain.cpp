@@ -80,10 +80,10 @@ std::unique_ptr<mvvm::ItemCatalogue<InstructionItem>> CreateInstructionItemCatal
   return result;
 }
 
-std::map<sup::oac_tree::JobState, RunnerStatus> GetRunnerStatusMap()
+std::map<sup::oac_tree::JobState, RunnerStatus> CreateRunnerStatusMap()
 {
   using sup::oac_tree::JobState;
-  std::map<sup::oac_tree::JobState, RunnerStatus> result = {
+  const std::map<sup::oac_tree::JobState, RunnerStatus> result = {
       {JobState::kInitial, RunnerStatus::kInitial},
       {JobState::kPaused, RunnerStatus::kPaused},
       {JobState::kStepping, RunnerStatus::kStepping},
@@ -126,7 +126,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 
 RunnerStatus GetRunnerStatusFromDomain(sup::oac_tree::JobState job_state)
 {
-  static const auto kRunnerStatusMap = GetRunnerStatusMap();
+  static const auto kRunnerStatusMap = CreateRunnerStatusMap();
   auto iter = kRunnerStatusMap.find(job_state);
   if (iter == kRunnerStatusMap.end())
   {

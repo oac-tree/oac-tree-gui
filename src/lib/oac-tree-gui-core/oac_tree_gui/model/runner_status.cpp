@@ -28,16 +28,20 @@
 namespace
 {
 
-const std::map<oac_tree_gui::RunnerStatus, std::string> kRunnerStatusMap = {
-    {oac_tree_gui::RunnerStatus::kInitial, "Initial"},
-    {oac_tree_gui::RunnerStatus::kPaused, "Paused"},
-    {oac_tree_gui::RunnerStatus::kStepping, "Stepping"},
-    {oac_tree_gui::RunnerStatus::kRunning, "Running"},
-    {oac_tree_gui::RunnerStatus::kSucceeded, "Success"},
-    {oac_tree_gui::RunnerStatus::kFailed, "Failure"},
-    {oac_tree_gui::RunnerStatus::kHalted, "Halted"},
-    {oac_tree_gui::RunnerStatus::kUndefined, ""},
-    {oac_tree_gui::RunnerStatus::kSubmitFailure, "SubmitFailure"}};
+std::map<oac_tree_gui::RunnerStatus, std::string> CreateRunnerStatusDescriptionMap()
+{
+  const std::map<oac_tree_gui::RunnerStatus, std::string> result = {
+      {oac_tree_gui::RunnerStatus::kInitial, "Initial"},
+      {oac_tree_gui::RunnerStatus::kPaused, "Paused"},
+      {oac_tree_gui::RunnerStatus::kStepping, "Stepping"},
+      {oac_tree_gui::RunnerStatus::kRunning, "Running"},
+      {oac_tree_gui::RunnerStatus::kSucceeded, "Success"},
+      {oac_tree_gui::RunnerStatus::kFailed, "Failure"},
+      {oac_tree_gui::RunnerStatus::kHalted, "Halted"},
+      {oac_tree_gui::RunnerStatus::kUndefined, ""},
+      {oac_tree_gui::RunnerStatus::kSubmitFailure, "SubmitFailure"}};
+  return result;
+}
 
 }  // namespace
 
@@ -45,6 +49,7 @@ namespace oac_tree_gui
 {
 std::string ToString(RunnerStatus status)
 {
+  static const auto kRunnerStatusMap = CreateRunnerStatusDescriptionMap();
   auto iter = kRunnerStatusMap.find(status);
   if (iter == kRunnerStatusMap.end())
   {
@@ -55,6 +60,7 @@ std::string ToString(RunnerStatus status)
 
 RunnerStatus GetRunnerStatus(const std::string& status_name)
 {
+  static const auto kRunnerStatusMap = CreateRunnerStatusDescriptionMap();
   auto iter =
       std::find_if(kRunnerStatusMap.begin(), kRunnerStatusMap.end(),
                    [status_name](const auto& element) { return element.second == status_name; });

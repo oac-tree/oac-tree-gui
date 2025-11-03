@@ -172,13 +172,23 @@ TEST_F(TransformFromDomainTest, CreateUniversalVariable)
 TEST_F(TransformFromDomainTest, GetRunnerStatusFromDomain)
 {
   using sup::oac_tree::JobState;
+
+  // to trace the mapping between domain JobState and GUI RunnerStatus
+  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kInitial), RunnerStatus::kInitial);
+  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kPaused), RunnerStatus::kPaused);
+  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kStepping), RunnerStatus::kStepping);
+  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kRunning), RunnerStatus::kRunning);
+  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kSucceeded), RunnerStatus::kSucceeded);
+  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kFailed), RunnerStatus::kFailed);
+  EXPECT_EQ(static_cast<RunnerStatus>(JobState::kHalted), RunnerStatus::kHalted);
+
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kInitial), RunnerStatus::kInitial);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kPaused), RunnerStatus::kPaused);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kStepping), RunnerStatus::kStepping);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kRunning), RunnerStatus::kRunning);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kSucceeded), RunnerStatus::kSucceeded);
   EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kFailed), RunnerStatus::kFailed);
-  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kHalted), RunnerStatus::kHalted);
+  EXPECT_EQ(GetRunnerStatusFromDomain(JobState::kHalted), RunnerStatus::kHalted);  
 }
 
 }  // namespace oac_tree_gui::test
