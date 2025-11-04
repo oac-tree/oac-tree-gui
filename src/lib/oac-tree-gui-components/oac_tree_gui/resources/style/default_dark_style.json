@@ -9,7 +9,7 @@
   },
   "NodeGraphicsSceneStyle": {
     "ShadowEnabled": true,
-    "BaseInstructionColor": "lightgray",
+    "BaseInstructionColor": "oldlace",
     "DecoratorInstructionColor": "lightseagreen",
     "CompoundInstructionColor": "royalblue"
   }

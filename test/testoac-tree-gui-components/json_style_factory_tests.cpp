@@ -64,7 +64,7 @@ TEST_F(JsonStyleFactoryTest, PopulateGraphicsSceneStyle)
   style::GraphicsSceneStyle light_style;
   style::PopulateStyleFromJSON(light_json_style, light_style);
 
-  EXPECT_EQ(dark_style.base_instruction_color, light_style.base_instruction_color);
+  EXPECT_NE(dark_style.base_instruction_color, light_style.base_instruction_color);
 }
 
 }  // namespace oac_tree_gui::test
