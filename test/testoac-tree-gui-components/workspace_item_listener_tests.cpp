@@ -196,4 +196,30 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
   EXPECT_EQ(GetAnyValue(var_name1, m_workspace), new_value);
 }
 
+//! Setting up two workspaces and two listeners. First workspace contains a single variable, the
+//! second workspace is empty. Adding AnyValue to the variable. Making sure that events in one
+//! workspace doesn't affect another.
+TEST_F(WorkspaceItemListenerTest, TwoWorkspaceScenario)
+{
+  sup::oac_tree::Workspace domain_workspace0;
+  sup::oac_tree::Workspace domain_workspace1;
+
+  auto workspace_item0 = m_model.InsertItem<WorkspaceItem>();
+  auto workspace_item1 = m_model.InsertItem<WorkspaceItem>();
+
+  auto variable_item0 = workspace_item0->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+
+  PopulateDomainWorkspace(*workspace_item0, domain_workspace0);
+  PopulateDomainWorkspace(*workspace_item1, domain_workspace1);
+
+  const WorkspaceItemListener listener0(workspace_item0, &domain_workspace0);
+  const WorkspaceItemListener listener1(workspace_item1, &domain_workspace1);
+
+  domain_workspace0.Setup();
+  domain_workspace1.Setup();
+
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
+  SetAnyValue(value0, *variable_item0); // FAILING HERE because second listener also reacts
+}
+
 }  // namespace oac_tree_gui::test
