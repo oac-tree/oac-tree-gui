@@ -27,12 +27,6 @@
 namespace oac_tree_gui
 {
 
-BehaviorTreeStyle GetBehaviorTreeStyle()
-{
-  // fixing tree style
-  return BehaviorTreeStyle::kTopToBottom;
-}
-
 QColor GetConnectedVariableColor()
 {
   static const QColor result("#00aa00");  // green

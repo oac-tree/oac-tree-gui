@@ -32,25 +32,25 @@ int AlignNode::GetSize() const
   return static_cast<int>(m_children.size());
 }
 
-AlignNode *AlignNode::GetParent() const
+AlignNode* AlignNode::GetParent() const
 {
   return m_parent;
 }
 
-void AlignNode::SetParent(AlignNode *parent)
+void AlignNode::SetParent(AlignNode* parent)
 {
   m_parent = parent;
 }
 
-std::vector<AlignNode *> AlignNode::GetChildren() const
+std::vector<AlignNode*> AlignNode::GetChildren() const
 {
-  std::vector<AlignNode *> result;
+  std::vector<AlignNode*> result;
   (void)std::transform(m_children.begin(), m_children.end(), std::back_inserter(result),
-                       [](const auto &x) { return x.get(); });
+                       [](const auto& x) { return x.get(); });
   return result;
 }
 
-AlignNode *AlignNode::Add(std::unique_ptr<AlignNode> child)
+AlignNode* AlignNode::Add(std::unique_ptr<AlignNode> child)
 {
   auto result = child.get();
   (void)m_children.emplace_back(std::move(child));
@@ -109,7 +109,7 @@ bool AlignNode::IsRightMost() const
   return GetParent() ? (GetParent()->GetChildren().back() == this) : true;
 }
 
-AlignNode *AlignNode::GetPreviousSibling() const
+AlignNode* AlignNode::GetPreviousSibling() const
 {
   if (!GetParent() || IsLeftMost())
   {
@@ -121,7 +121,7 @@ AlignNode *AlignNode::GetPreviousSibling() const
   return children.at(static_cast<std::size_t>(index - 1));
 }
 
-AlignNode *AlignNode::GetNextSibling() const
+AlignNode* AlignNode::GetNextSibling() const
 {
   if (!GetParent() || IsRightMost())
   {
@@ -133,7 +133,7 @@ AlignNode *AlignNode::GetNextSibling() const
   return children.at(static_cast<std::size_t>(index + 1));
 }
 
-AlignNode *AlignNode::GetLeftMostSibling()
+AlignNode* AlignNode::GetLeftMostSibling()
 {
   if (!GetParent())
   {
@@ -148,14 +148,14 @@ AlignNode *AlignNode::GetLeftMostSibling()
   return GetParent()->GetChildren().at(0);
 }
 
-AlignNode *AlignNode::GetLeftMostChild() const
+AlignNode* AlignNode::GetLeftMostChild() const
 {
-  return GetSize() == 0 ? nullptr : GetChildren().front();
+  return (GetSize() == 0) ? nullptr : GetChildren().front();
 }
 
-AlignNode *AlignNode::GetRightMostChild() const
+AlignNode* AlignNode::GetRightMostChild() const
 {
-  return GetSize() == 0 ? nullptr : GetChildren().back();
+  return (GetSize() == 0) ? nullptr : GetChildren().back();
 }
 
 double AlignNode::GetNodeSize() const
@@ -175,7 +175,7 @@ std::string AlignNode::GetIdentifier() const
   return m_identifier;
 }
 
-void AlignNode::SetIdentifier(const std::string &identifier)
+void AlignNode::SetIdentifier(const std::string& identifier)
 {
   m_identifier = identifier;
 }

@@ -39,11 +39,6 @@ const QString kExportXmlCommandId = "Export XML";
 }  // namespace constants
 
 /**
- * @brief Returns visual style of the behavior tree.
- */
-BehaviorTreeStyle GetBehaviorTreeStyle();
-
-/**
  * @brief Returns color for the decoration used to display connected variables.
  */
 QColor GetConnectedVariableColor();
