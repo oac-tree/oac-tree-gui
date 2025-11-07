@@ -222,4 +222,21 @@ TEST_F(WorkspaceItemListenerTest, TwoWorkspaceScenario)
   EXPECT_NO_THROW(SetAnyValue(value0, *variable_item0));
 }
 
+//! Mimicking abnormal situation, when variable appears in the workspace after listener setup.
+TEST_F(WorkspaceItemListenerTest, WorkspaceItemChangeLayoutAfterSetup)
+{
+  sup::oac_tree::Workspace domain_workspace0;
+  auto workspace_item0 = m_model.InsertItem<WorkspaceItem>();
+
+  PopulateDomainWorkspace(*workspace_item0, domain_workspace0);
+
+  const WorkspaceItemListener listener0(workspace_item0, &domain_workspace0);
+
+  domain_workspace0.Setup();
+
+  auto variable_item0 = workspace_item0->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
+  EXPECT_THROW(SetAnyValue(value0, *variable_item0), mvvm::InvalidOperationException);
+}
+
 }  // namespace oac_tree_gui::test

@@ -124,8 +124,14 @@ void WorkspaceItemListener::ProcessEventToDomain(VariableItem* variable_item)
     return;
   }
 
+  auto iter = m_item_to_index.find(variable_item);
+  if (iter == m_item_to_index.end())
+  {
+    throw RuntimeException("Unknown variable item");
+  }
+
   // do not send an event if it was initially triggered from the domain
-  if (m_block_update_to_domain[m_item_to_index[variable_item]])
+  if (m_block_update_to_domain[iter->second])
   {
     return;
   }
