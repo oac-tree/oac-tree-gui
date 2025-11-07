@@ -188,4 +188,45 @@ TEST_F(DomainEventTest, BreakpointHitEvent)
   }
 }
 
+TEST_F(DomainEventTest, ToString)
+{
+  using ::sup::oac_tree::ExecutionStatus;
+
+  {
+    const domain_event_t event;
+    EXPECT_EQ(ToString(event), "monostate");
+  }
+
+  {
+    const domain_event_t event = InstructionStateUpdatedEvent{42, {true, ExecutionStatus::RUNNING}};
+    EXPECT_TRUE(ToString(event).find("InstructionStateUpdated") != std::string::npos);
+  }
+
+  {
+    const domain_event_t event =
+        VariableUpdatedEvent{7, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 123}, true};
+    EXPECT_TRUE(ToString(event).find("VariableUpdatedEvent") != std::string::npos);
+  }
+
+  {
+    const domain_event_t event = LogEvent{};
+    EXPECT_TRUE(ToString(event).find("LogEvent") != std::string::npos);
+  }
+
+  {
+    const domain_event_t event = JobStateChangedEvent{::sup::oac_tree::JobState::kRunning};
+    EXPECT_TRUE(ToString(event).find("JobStateChanged") != std::string::npos);
+  }
+
+  {
+    const domain_event_t event = ActiveInstructionChangedEvent{{1, 2, 3}};
+    EXPECT_TRUE(ToString(event).find("ActiveInstructionChanged") != std::string::npos);
+  }
+
+  {
+    const domain_event_t event = BreakpointHitEvent{5};
+    EXPECT_TRUE(ToString(event).find("BreakpointHitEvent") != std::string::npos);
+  }
+}
+
 }  // namespace oac_tree_gui::test
