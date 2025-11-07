@@ -25,124 +25,110 @@
 //! duplication) is dictated by the fact that many oac-tree's headers are not exposed, and many
 //! constants are literals in code.
 
-#include <sup/oac-tree/constants.h>
-
-#include <string>
-
 namespace oac_tree_gui::domainconstants
 {
 
 // plugins
 
 //!< fictional name when only sequencer core libs are loaded
-const std::string kCorePluginName = "";
+constexpr auto kCorePluginName = "";
 
 //!< Plugin names must coincide with shared plugin library names, with preffix "lib" and suffixes
 //! ".so" or ".dylib" stripped off. Windows is not yet supported.
-const std::string kEpicsCAPluginName = "oac-tree-ca";
-const std::string kEpicsPVXSPluginName = "oac-tree-pvxs";
-const std::string kControlPluginName = "oac-tree-control";
-const std::string kSupConfigPluginName = "sequencer-sup-config";
-const std::string kSupTimingPluginName = "sequencer-sup-timing";
-const std::string kSupPulseCounterPluginName = "sequencer-sup-pulse-counter";
-const std::string kMathExprPluginName = "oac-tree-mathexpr";
-const std::string kSystemPluginName = "oac-tree-system";
-const std::string kStringPluginName = "oac-tree-strings";
+constexpr auto kEpicsCAPluginName = "oac-tree-ca";
+constexpr auto kEpicsPVXSPluginName = "oac-tree-pvxs";
+constexpr auto kControlPluginName = "oac-tree-control";
+constexpr auto kSupConfigPluginName = "sequencer-sup-config";
+constexpr auto kSupTimingPluginName = "sequencer-sup-timing";
+constexpr auto kSupPulseCounterPluginName = "sequencer-sup-pulse-counter";
+constexpr auto kMathExprPluginName = "oac-tree-mathexpr";
+constexpr auto kSystemPluginName = "oac-tree-system";
+constexpr auto kStringPluginName = "oac-tree-strings";
 
 // instructions
-const std::string kChoiceInstructionType = "Choice";
-const std::string kConditionInstructionType = "Condition";
-const std::string kCopyInstructionType = "Copy";
-const std::string kDecrementInstructionType = "Decrement";
-const std::string kFallbackInstructionType = "Fallback";
-const std::string kForceSuccessInstructionType = "ForceSuccess";
-const std::string kIncludeInstructionType = "Include";
-const std::string kIncludeProcedureInstructionType = "IncludeProcedure";
-const std::string kIncrementInstructionType = "Increment";
-const std::string kInputInstructionType = "Input";
-const std::string kInverterInstructionType = "Inverter";
-const std::string kListenInstructionType = "Listen";
-const std::string kMessageInstructionType = "Message";
-const std::string kOutputInstructionType = "Output";
-const std::string kParallelInstructionType = "ParallelSequence";
-const std::string kRepeatInstructionType = "Repeat";
-const std::string kSequenceInstructionType = "Sequence";
-const std::string kUserChoiceInstructionType = "UserChoice";
-const std::string kVariableResetInstructionType = "ResetVariable";
-const std::string kWaitInstructionType = "Wait";
-const std::string kUserConfirmationInstructionType = "UserConfirmation";
-const std::string kSucceedInstructionType = "Succeed";
-const std::string kFailedInstructionType = "Fail";
-const std::string kLogInstructionType = "Log";
+constexpr auto kChoiceInstructionType = "Choice";
+constexpr auto kConditionInstructionType = "Condition";
+constexpr auto kCopyInstructionType = "Copy";
+constexpr auto kDecrementInstructionType = "Decrement";
+constexpr auto kFallbackInstructionType = "Fallback";
+constexpr auto kForceSuccessInstructionType = "ForceSuccess";
+constexpr auto kIncludeInstructionType = "Include";
+constexpr auto kIncludeProcedureInstructionType = "IncludeProcedure";
+constexpr auto kIncrementInstructionType = "Increment";
+constexpr auto kInputInstructionType = "Input";
+constexpr auto kInverterInstructionType = "Inverter";
+constexpr auto kListenInstructionType = "Listen";
+constexpr auto kMessageInstructionType = "Message";
+constexpr auto kOutputInstructionType = "Output";
+constexpr auto kParallelInstructionType = "ParallelSequence";
+constexpr auto kRepeatInstructionType = "Repeat";
+constexpr auto kSequenceInstructionType = "Sequence";
+constexpr auto kUserChoiceInstructionType = "UserChoice";
+constexpr auto kVariableResetInstructionType = "ResetVariable";
+constexpr auto kWaitInstructionType = "Wait";
+constexpr auto kUserConfirmationInstructionType = "UserConfirmation";
+constexpr auto kSucceedInstructionType = "Succeed";
+constexpr auto kFailedInstructionType = "Fail";
+constexpr auto kLogInstructionType = "Log";
 
 // equality instructions
-const std::string kLessThanInstructionType = "LessThan";
-const std::string kLessThanOrEqualInstructionType = "LessThanOrEqual";
-const std::string kEqualsInstructionType = "Equals";
-const std::string kGreaterThanOrEqualInstructionType = "GreaterThanOrEqual";
-const std::string kGreaterThanInstructionType = "GreaterThan";
+constexpr auto kLessThanInstructionType = "LessThan";
+constexpr auto kLessThanOrEqualInstructionType = "LessThanOrEqual";
+constexpr auto kEqualsInstructionType = "Equals";
+constexpr auto kGreaterThanOrEqualInstructionType = "GreaterThanOrEqual";
+constexpr auto kGreaterThanInstructionType = "GreaterThan";
 
 // sup-sequencer-plugin-epics instructions
-const std::string kChannelAccessReadInstructionType = "ChannelAccessRead";
-const std::string kChannelAccessWriteInstructionType = "ChannelAccessWrite";
-const std::string kPvAccessReadInstructionType = "PvAccessRead";
-const std::string kPvAccessWriteInstructionType = "PvAccessWrite";
-const std::string kRPCClientInstructionType = "RPCClient";
+constexpr auto kChannelAccessReadInstructionType = "ChannelAccessRead";
+constexpr auto kChannelAccessWriteInstructionType = "ChannelAccessWrite";
+constexpr auto kPvAccessReadInstructionType = "PvAccessRead";
+constexpr auto kPvAccessWriteInstructionType = "PvAccessWrite";
+constexpr auto kRPCClientInstructionType = "RPCClient";
 
 // sup-sequencer-plugin-control instructions
-const std::string kWaitForConditionInstructionType = "WaitForCondition";
-const std::string kExecuteWhileInstructionType = "ExecuteWhileInstruction";
-const std::string kAchieveConditionInstructionType = "AchieveConditionInstruction";
+constexpr auto kWaitForConditionInstructionType = "WaitForCondition";
+constexpr auto kExecuteWhileInstructionType = "ExecuteWhileInstruction";
+constexpr auto kAchieveConditionInstructionType = "AchieveConditionInstruction";
 
 // variables
-const std::string kLocalVariableType = "Local";
-const std::string kFileVariableType = "File";
-const std::string kChannelAccessVariableType = "ChannelAccessClient";
-const std::string kPvAccessClientVariableType = "PvAccessClient";
-const std::string kPvAccessServerVariableType = "PvAccessServer";
-const std::string kSystemClockVariableType = "SystemClock";
+constexpr auto kLocalVariableType = "Local";
+constexpr auto kFileVariableType = "File";
+constexpr auto kChannelAccessVariableType = "ChannelAccessClient";
+constexpr auto kPvAccessClientVariableType = "PvAccessClient";
+constexpr auto kPvAccessServerVariableType = "PvAccessServer";
+constexpr auto kSystemClockVariableType = "SystemClock";
 
 // attributes
-const std::string kChannelAttribute = "channel";
-const std::string kDescriptionAttribute = sup::oac_tree::Constants::DESCRIPTION_ATTRIBUTE_NAME;
-const std::string kFailureThresholdAttribute =
-    sup::oac_tree::Constants::FAILURE_THRESHOLD_ATTRIBUTE_NAME;
-const std::string kFileNameAttribute = sup::oac_tree::Constants::FILENAME_ATTRIBUTE_NAME;
-const std::string kInputVariableNameAttribute =
-    sup::oac_tree::Constants::INPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
-const std::string kIsRootAttribute = sup::oac_tree::Constants::IS_ROOT_ATTRIBUTE_NAME;
-const std::string kLeftVariableNameAttribute =
-    sup::oac_tree::Constants::LEFT_VARIABLE_NAME_ATTRIBUTE_NAME;
-const std::string kMaxCountAttribute = sup::oac_tree::Constants::MAX_COUNT_ATTRIBUTE_NAME;
-const std::string kNameAttribute = sup::oac_tree::Constants::NAME_ATTRIBUTE_NAME;
-const std::string kOutputVariableNameAttribute =
-    sup::oac_tree::Constants::OUTPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
-const std::string kPathAttribute = sup::oac_tree::Constants::PATH_ATTRIBUTE_NAME;
-const std::string kRightVariableNameAttribute =
-    sup::oac_tree::Constants::RIGHT_VARIABLE_NAME_ATTRIBUTE_NAME;
-const std::string kSuccessThresholdAttribute =
-    sup::oac_tree::Constants::SUCCESS_THRESHOLD_ATTRIBUTE_NAME;
-const std::string kTextAttribute = sup::oac_tree::Constants::TEXT_ATTRIBUTE_NAME;
-const std::string kTickTimeOutAttribute = "tickTimeout";
-const std::string kTimeoutAttribute = sup::oac_tree::Constants::TIMEOUT_SEC_ATTRIBUTE_NAME;
-const std::string kTypeAttribute = sup::oac_tree::Constants::TYPE_ATTRIBUTE_NAME;
-const std::string kValueAttribute = sup::oac_tree::Constants::VALUE_ATTRIBUTE_NAME;
-const std::string kGenericVariableNameAttribute =
-    sup::oac_tree::Constants::GENERIC_VARIABLE_NAME_ATTRIBUTE_NAME;
-const std::string kServiceAttribute = "service";
-const std::string kRequestAttribute = "requestVar";
-const std::string kCommandAttribute = "command";
-const std::string kSeverityAttribute = sup::oac_tree::Constants::SEVERITY_ATTRIBUTE_NAME;
-const std::string kMessageAttribute = sup::oac_tree::Constants::MESSAGE_ATTRIBUTE_NAME;
-const std::string kPrettyJsonAttribute = sup::oac_tree::Constants::PRETTY_JSON_ATTRIBUTE_NAME;
-const std::string kDynamicTypeAttribute = sup::oac_tree::Constants::IS_DYNAMIC_TYPE_ATTRIBUTE_NAME;
-const std::string kShowCollapsedAttribute = sup::oac_tree::Constants::SHOW_COLLAPSED_ATTRIBUTE_NAME;
-const std::string kFromVariableAttributeName =
-    sup::oac_tree::Constants::FROM_VARIABLE_ATTRIBUTE_NAME;
-const std::string kEqualVariableAttributeName =
-    sup::oac_tree::Constants::EQUALS_VARIABLE_NAME_ATTRIBUTE_NAME;
-const std::string kBlockingAttribute =
-    sup::oac_tree::Constants::BLOCKING_ATTRIBUTE_NAME;
+constexpr auto kChannelAttribute = "channel";
+constexpr auto kDescriptionAttribute = "description";
+constexpr auto kFailureThresholdAttribute = "failureThreshold";
+constexpr auto kFileNameAttribute = "file";
+constexpr auto kInputVariableNameAttribute = "inputVar";
+constexpr auto kIsRootAttribute = "isRoot";
+constexpr auto kLeftVariableNameAttribute = "leftVar";
+constexpr auto kMaxCountAttribute = "maxCount";
+constexpr auto kNameAttribute = "name";
+constexpr auto kOutputVariableNameAttribute = "outputVar";
+constexpr auto kPathAttribute = "path";
+constexpr auto kRightVariableNameAttribute = "rightVar";
+constexpr auto kSuccessThresholdAttribute = "successThreshold";
+constexpr auto kTextAttribute = "text";
+constexpr auto kTickTimeOutAttribute = "tickTimeout";
+constexpr auto kTimeoutAttribute = "timeout";
+constexpr auto kTypeAttribute = "type";
+constexpr auto kValueAttribute = "value";
+constexpr auto kGenericVariableNameAttribute = "varName";
+constexpr auto kServiceAttribute = "service";
+constexpr auto kRequestAttribute = "requestVar";
+constexpr auto kCommandAttribute = "command";
+constexpr auto kSeverityAttribute = "severity";
+constexpr auto kMessageAttribute = "message";
+constexpr auto kPrettyJsonAttribute = "pretty";
+constexpr auto kDynamicTypeAttribute = "dynamicType";
+constexpr auto kShowCollapsedAttribute = "showCollapsed";
+constexpr auto kFromVariableAttributeName = "fromVar";
+constexpr auto kEqualVariableAttributeName = "equalsVar";
+constexpr auto kBlockingAttribute = "blocking";
 
 }  // namespace oac_tree_gui::domainconstants
 

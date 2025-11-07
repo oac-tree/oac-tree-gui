@@ -135,7 +135,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyAnyValueFromModelViaInsert)
 
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
-  WorkspaceItemListener listener(m_workspace_item, &m_workspace);
+  const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
 
   MockDomainWorkspaceListener domain_listener(m_workspace);
 

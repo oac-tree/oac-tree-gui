@@ -28,6 +28,7 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <sup/dto/anyvalue.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>

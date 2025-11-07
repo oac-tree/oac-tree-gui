@@ -34,6 +34,7 @@
 #include <sup/oac-tree/sequence_parser.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_registry.h>
+#include <sup/oac-tree/constants.h>
 
 #include <algorithm>
 #include <filesystem>
