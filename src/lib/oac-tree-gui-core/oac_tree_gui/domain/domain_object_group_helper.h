@@ -33,12 +33,12 @@ namespace oac_tree_gui
 class DomainObjectTypeRegistry;
 
 //! Collection of group names for available instructions.
-const std::string kCoreGroup = "Core";
-const std::string kMathGroup = "Math";
-const std::string kEPICSGroup = "EPICS";
-const std::string kControlGroup = "Control";
-const std::string kSupGroup = "SUP";
-const std::string kMiscGroup = "Miscellaneous";
+constexpr auto kCoreGroup = "Core";
+constexpr auto kMathGroup = "Math";
+constexpr auto kEPICSGroup = "EPICS";
+constexpr auto kControlGroup = "Control";
+constexpr auto kSupGroup = "SUP";
+constexpr auto kMiscGroup = "Miscellaneous";
 
 /**
  * @brief The ObjectGroupInfo class represents a named group of object names.
