@@ -34,8 +34,8 @@ namespace oac_tree_gui
 
 namespace constants
 {
-const QString kValidateProcedureCommandId = "Validate procedure";
-const QString kExportXmlCommandId = "Export XML";
+constexpr auto kValidateProcedureCommandId = "Validate procedure";
+constexpr auto kExportXmlCommandId = "Export XML";
 }  // namespace constants
 
 /**
@@ -47,11 +47,6 @@ QColor GetConnectedVariableColor();
  * @brief Returns color for the decoration used to display connected variables.
  */
 QColor GetDisonnectedVariableColor();
-
-/**
- * @brief Returns a string representing a custom tooltip style.
- */
-QString GetCustomToolTipStyle();
 
 }  // namespace oac_tree_gui
 

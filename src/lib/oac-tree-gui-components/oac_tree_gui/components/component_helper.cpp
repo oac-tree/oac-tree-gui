@@ -20,10 +20,6 @@
 
 #include "component_helper.h"
 
-#include <sup/gui/core/environment.h>
-
-#include <QSettings>
-
 namespace oac_tree_gui
 {
 
@@ -37,20 +33,6 @@ QColor GetDisonnectedVariableColor()
 {
   static const QColor result("#b9b9b9");  // gray
   return result;
-}
-
-QString GetCustomToolTipStyle()
-{
-  static const QString style(
-      "QToolTip {border: 2px solid darkgrey; padding: 5px; border-radius: 3px;}");
-
-  // Adwaita style has own white-on-black semi-transparent tooltip style.
-  // We have to define dark background to match this style.
-  static const QString adwaita_style(
-      "QToolTip {border: 2px solid lightgray; padding: 5px; border-radius: 3px; background-color: "
-      "darkgray}");
-
-  return sup::gui::IsOnCodac() ? adwaita_style : style;
 }
 
 }  // namespace oac_tree_gui

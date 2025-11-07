@@ -44,11 +44,27 @@
 #include <QToolTip>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <sup/gui/core/environment.h>
 
 namespace
 {
 const QString kHeaderStateSettingName("RealTimeInstructionTreeWidget/header_state");
 const std::vector<int> kDefaultColumnStretch({15, 5, 1});
+
+QString GetCustomToolTipStyle()
+{
+  static const QString style(
+      "QToolTip {border: 2px solid darkgrey; padding: 5px; border-radius: 3px;}");
+
+          // Adwaita style has own white-on-black semi-transparent tooltip style.
+          // We have to define dark background to match this style.
+  static const QString adwaita_style(
+      "QToolTip {border: 2px solid lightgray; padding: 5px; border-radius: 3px; background-color: "
+      "darkgray}");
+
+  return sup::gui::IsOnCodac() ? adwaita_style : style;
+}
+
 }  // namespace
 
 namespace oac_tree_gui
