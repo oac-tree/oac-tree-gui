@@ -38,7 +38,7 @@ namespace
 /**
  * @brief Creates implementation for ViewModelController with custom children and row strategies.
  */
-std::unique_ptr<mvvm::IViewModelController> CreateImpl(mvvm::ViewModelBase *viewmodel)
+std::unique_ptr<mvvm::IViewModelController> CreateImpl(mvvm::ViewModelBase* viewmodel)
 {
   auto children_strategy = std::make_unique<oac_tree_gui::VariableTableChildrenStrategy>();
   auto row_strategy = std::make_unique<oac_tree_gui::VariableTableRowStrategy>();
@@ -62,7 +62,7 @@ namespace oac_tree_gui
 class WorkspaceOperationViewModelController : public mvvm::ViewModelController
 {
 public:
-  explicit WorkspaceOperationViewModelController(mvvm::ViewModelBase *viewmodel)
+  explicit WorkspaceOperationViewModelController(mvvm::ViewModelBase* viewmodel)
       : mvvm::ViewModelController(CreateImpl(viewmodel))
   {
   }
@@ -73,16 +73,16 @@ public:
    * @details If AnyValueItem is removed, we have to update the whole branch related to its parent,
    * VariableItem.
    */
-  void OnModelEvent(const mvvm::AboutToRemoveItemEvent &event) override
+  void OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event) override
   {
     auto [parent, tag_index] = event;
-    if (auto child = dynamic_cast<sup::gui::AnyValueItem *>(parent->GetItem(tag_index)); child)
+    if (auto child = dynamic_cast<sup::gui::AnyValueItem*>(parent->GetItem(tag_index)); child)
     {
       UpdateBranch(parent);  // update VariableItem row
     }
     else
     {
-      mvvm::ViewModelController::OnModelEvent(event);
+      mvvm::ViewModelController::OnAboutToRemoveItemEvent(event);
     }
   }
 
@@ -92,16 +92,16 @@ public:
    * @details If AnyValueItem is inserted, we have to update the whole branch related to its parent,
    * VariableItem.
    */
-  void OnModelEvent(const mvvm::ItemInsertedEvent &event) override
+  void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event) override
   {
     auto [parent, tag_index] = event;
-    if (auto child = dynamic_cast<sup::gui::AnyValueItem *>(parent->GetItem(tag_index)); child)
+    if (auto child = dynamic_cast<sup::gui::AnyValueItem*>(parent->GetItem(tag_index)); child)
     {
       UpdateBranch(parent);  // update VariableItem row
     }
     else
     {
-      mvvm::ViewModelController::OnModelEvent(event);
+      mvvm::ViewModelController::OnItemInsertedEvent(event);
     }
   }
 
@@ -112,21 +112,22 @@ public:
    *the table was already constructed. We ask the WorkspaceItem to regenerate the whole branch
    *related to VariableItem.
    */
-  void UpdateBranch(const mvvm::SessionItem *item)
+  void UpdateBranch(const mvvm::SessionItem* item)
   {
     auto tag_index = item->GetTagIndex();
     auto parent = item->GetParent();
 
     // we pretend that this item was removed
-    mvvm::ViewModelController::OnModelEvent(mvvm::AboutToRemoveItemEvent{parent, tag_index});
+    mvvm::ViewModelController::OnAboutToRemoveItemEvent(
+        mvvm::AboutToRemoveItemEvent{parent, tag_index});
 
     // we pretend that this item was inserted
-    mvvm::ViewModelController::OnModelEvent(mvvm::ItemInsertedEvent{parent, tag_index});
+    mvvm::ViewModelController::OnItemInsertedEvent(mvvm::ItemInsertedEvent{parent, tag_index});
   }
 };
 
-WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::ISessionModel *model,
-                                                         QObject *parent_object)
+WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::ISessionModel* model,
+                                                         QObject* parent_object)
     : ViewModel(parent_object)
 {
   auto controller = std::make_unique<WorkspaceOperationViewModelController>(this);
@@ -134,7 +135,7 @@ WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::ISessionModel *mo
   SetController(std::move(controller));
 }
 
-int WorkspaceOperationViewModel::columnCount(const QModelIndex &parent) const
+int WorkspaceOperationViewModel::columnCount(const QModelIndex& parent) const
 {
   (void)parent;
   return 4;  // "Name", "Value", "Type", "Channel"
