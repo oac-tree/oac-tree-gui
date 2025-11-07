@@ -25,64 +25,63 @@
 namespace oac_tree_gui
 {
 
-bool JobStateChangedEvent::operator==(const JobStateChangedEvent &other) const
+bool operator==(const JobStateChangedEvent& lhs, const JobStateChangedEvent& rhs)
 {
-  return state == other.state;
+  return lhs.state == rhs.state;
 }
 
-bool JobStateChangedEvent::operator!=(const JobStateChangedEvent &other) const
+bool operator!=(const JobStateChangedEvent& lhs, const JobStateChangedEvent& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-bool ActiveInstructionChangedEvent::operator==(const ActiveInstructionChangedEvent &other) const
+bool operator==(const ActiveInstructionChangedEvent& lhs, const ActiveInstructionChangedEvent& rhs)
 {
-  return instr_idx == other.instr_idx;
+  return lhs.instr_idx == rhs.instr_idx;
 }
 
-bool ActiveInstructionChangedEvent::operator!=(const ActiveInstructionChangedEvent &other) const
+bool operator!=(const ActiveInstructionChangedEvent& lhs, const ActiveInstructionChangedEvent& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-bool InstructionStateUpdatedEvent::operator==(const InstructionStateUpdatedEvent &other) const
+bool operator==(const InstructionStateUpdatedEvent& lhs, const InstructionStateUpdatedEvent& rhs)
 {
-  return index == other.index && state.m_breakpoint_set == other.state.m_breakpoint_set
-         && state.m_execution_status == other.state.m_execution_status;
+  return lhs.index == rhs.index && lhs.state.m_breakpoint_set == rhs.state.m_breakpoint_set
+         && lhs.state.m_execution_status == rhs.state.m_execution_status;
 }
 
-bool InstructionStateUpdatedEvent::operator!=(const InstructionStateUpdatedEvent &other) const
+bool operator!=(const InstructionStateUpdatedEvent& lhs, const InstructionStateUpdatedEvent& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-bool VariableUpdatedEvent::operator==(const VariableUpdatedEvent &other) const
+bool operator==(const VariableUpdatedEvent& lhs, const VariableUpdatedEvent& rhs)
 {
-  return index == other.index && value == other.value && connected == other.connected;
+  return lhs.index == rhs.index && lhs.value == rhs.value && lhs.connected == rhs.connected;
 }
 
-bool VariableUpdatedEvent::operator!=(const VariableUpdatedEvent &other) const
+bool operator!=(const VariableUpdatedEvent& lhs, const VariableUpdatedEvent& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-
-bool BreakpointHitEvent::operator==(const BreakpointHitEvent &other) const
+bool operator==(const BreakpointHitEvent& lhs, const BreakpointHitEvent& rhs)
 {
-  return index == other.index;
+  return lhs.index == rhs.index;
 }
 
-bool BreakpointHitEvent::operator!=(const BreakpointHitEvent &other) const
+bool operator!=(const BreakpointHitEvent& lhs, const BreakpointHitEvent& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-bool IsValid(const domain_event_t &value)
+bool IsValid(const domain_event_t& value)
 {
   return value.index() != 0;  // index==0 corresponds to `monostate`
 }
 
-std::string ToString(const domain_event_t &value)
+std::string ToString(const domain_event_t& value)
 {
   return std::visit(DomainEventToStringVisitor{}, value);
 }

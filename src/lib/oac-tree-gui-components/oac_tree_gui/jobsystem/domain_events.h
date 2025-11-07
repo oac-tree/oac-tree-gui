@@ -52,9 +52,6 @@ struct InstructionStateUpdatedEvent
 {
   std::size_t index{0};
   sup::oac_tree::InstructionState state{false, sup::oac_tree::ExecutionStatus::NOT_STARTED};
-
-  bool operator==(const InstructionStateUpdatedEvent& other) const;
-  bool operator!=(const InstructionStateUpdatedEvent& other) const;
 };
 
 /**
@@ -66,9 +63,6 @@ struct VariableUpdatedEvent
   std::size_t index{0};
   sup::dto::AnyValue value;
   bool connected{false};
-
-  bool operator==(const VariableUpdatedEvent& other) const;
-  bool operator!=(const VariableUpdatedEvent& other) const;
 };
 
 /**
@@ -78,9 +72,6 @@ struct VariableUpdatedEvent
 struct JobStateChangedEvent
 {
   sup::oac_tree::JobState state;
-
-  bool operator==(const JobStateChangedEvent& other) const;
-  bool operator!=(const JobStateChangedEvent& other) const;
 };
 
 /**
@@ -92,18 +83,27 @@ struct JobStateChangedEvent
 struct ActiveInstructionChangedEvent
 {
   std::vector<sup::dto::uint32> instr_idx;
-
-  bool operator==(const ActiveInstructionChangedEvent& other) const;
-  bool operator!=(const ActiveInstructionChangedEvent& other) const;
 };
 
 struct BreakpointHitEvent
 {
   std::size_t index{0};
-
-  bool operator==(const BreakpointHitEvent& other) const;
-  bool operator!=(const BreakpointHitEvent& other) const;
 };
+
+bool operator==(const InstructionStateUpdatedEvent& lhs, const InstructionStateUpdatedEvent& rhs);
+bool operator!=(const InstructionStateUpdatedEvent& lhs, const InstructionStateUpdatedEvent& rhs);
+
+bool operator==(const VariableUpdatedEvent& lhs, const VariableUpdatedEvent& rhs);
+bool operator!=(const VariableUpdatedEvent& lhs, const VariableUpdatedEvent& rhs);
+
+bool operator==(const JobStateChangedEvent& lhs, const JobStateChangedEvent& rhs);
+bool operator!=(const JobStateChangedEvent& lhs, const JobStateChangedEvent& rhs);
+
+bool operator==(const ActiveInstructionChangedEvent& lhs, const ActiveInstructionChangedEvent& rhs);
+bool operator!=(const ActiveInstructionChangedEvent& lhs, const ActiveInstructionChangedEvent& rhs);
+
+bool operator==(const BreakpointHitEvent& lhs, const BreakpointHitEvent& rhs);
+bool operator!=(const BreakpointHitEvent& lhs, const BreakpointHitEvent& rhs);
 
 using domain_event_t =
     std::variant<std::monostate, InstructionStateUpdatedEvent, VariableUpdatedEvent,
