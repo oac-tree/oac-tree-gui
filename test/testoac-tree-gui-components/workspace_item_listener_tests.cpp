@@ -18,6 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/pvmonitor/workspace_item_listener.h"
+
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -34,25 +37,35 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
 
-#include "oac_tree_gui/pvmonitor/workspace_item_listener.h"
-
 namespace oac_tree_gui::test
 {
 
-//! Tests for WorkspaceItemListener class.
-
+/**
+ * @brief Tests for WorkspaceItemListener class.
+ */
 class WorkspaceItemListenerTest : public ::testing::Test
 {
 public:
   WorkspaceItemListenerTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
   sup::oac_tree::Workspace m_workspace;
-  WorkspaceItem *m_workspace_item{nullptr};
+  WorkspaceItem* m_workspace_item{nullptr};
   mvvm::ApplicationModel m_model;
 };
 
+TEST_F(WorkspaceItemListenerTest, AttemptToInitialize)
+{
+  EXPECT_THROW(WorkspaceItemListener(nullptr, nullptr), RuntimeException);
+  EXPECT_THROW(WorkspaceItemListener(m_workspace_item, nullptr), RuntimeException);
+  EXPECT_NO_THROW(WorkspaceItemListener(m_workspace_item, &m_workspace));
+
+  // number of variables doesn't match
+  auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
+  EXPECT_THROW(WorkspaceItemListener(m_workspace_item, &m_workspace), RuntimeException);
+}
+
 //! Setting up the WorkspaceItem with single scalar variable. Setting the value through the model
-//! and expecting upadte in the domain.
+//! and expecting update in the domain.
 TEST_F(WorkspaceItemListenerTest, SetScalarData)
 {
   const std::string var_name("abc");
@@ -64,11 +77,11 @@ TEST_F(WorkspaceItemListenerTest, SetScalarData)
   SetAnyValue(value, *variable_item);
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
-  WorkspaceItemListener listener(m_workspace_item, &m_workspace);
+  const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
 
   m_workspace.Setup();
 
-  test::MockDomainWorkspaceListener domain_listener(m_workspace);
+  MockDomainWorkspaceListener domain_listener(m_workspace);
 
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), value);
 
@@ -124,7 +137,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyAnyValueFromModelViaInsert)
 
   WorkspaceItemListener listener(m_workspace_item, &m_workspace);
 
-  test::MockDomainWorkspaceListener domain_listener(m_workspace);
+  MockDomainWorkspaceListener domain_listener(m_workspace);
 
   // expectations triggered by the setup
   EXPECT_CALL(domain_listener, OnEvent(var_name, value, true)).Times(1);
@@ -160,7 +173,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
   const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
-  test::MockDomainWorkspaceListener domain_listener(m_workspace);
+  MockDomainWorkspaceListener domain_listener(m_workspace);
 
   {
     const ::testing::InSequence seq;

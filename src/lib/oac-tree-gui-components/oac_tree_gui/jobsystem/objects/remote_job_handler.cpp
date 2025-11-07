@@ -20,14 +20,11 @@
 
 #include "remote_job_handler.h"
 
-#include <oac_tree_gui/jobsystem/abstract_domain_runner.h>
 #include <oac_tree_gui/jobsystem/domain_event_dispatcher_context.h>  // IWYU pragma: keep
 #include <oac_tree_gui/jobsystem/remote_domain_runner.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/procedure_item_job_info_builder.h>
-
-#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/oac-tree/workspace.h>
 
@@ -36,7 +33,7 @@
 namespace oac_tree_gui
 {
 
-RemoteJobHandler::RemoteJobHandler(JobItem *job_item, sup::oac_tree_server::IJobManager &manager,
+RemoteJobHandler::RemoteJobHandler(JobItem* job_item, sup::oac_tree_server::IJobManager& manager,
                                    std::size_t job_index, UserContext user_context)
     : AbstractJobHandler(job_item)
 {
@@ -46,7 +43,7 @@ RemoteJobHandler::RemoteJobHandler(JobItem *job_item, sup::oac_tree_server::IJob
 
 RemoteJobHandler::~RemoteJobHandler() = default;
 
-void RemoteJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
+void RemoteJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent& event)
 {
   if (auto item = GetItemBuilder()->GetVariable(event.index); item)
   {

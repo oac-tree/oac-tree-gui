@@ -32,6 +32,7 @@
 #include <mvvm/signals/model_listener.h>
 
 #include <sup/oac-tree/workspace.h>
+#include <QDebug>
 
 namespace oac_tree_gui
 {
@@ -76,14 +77,14 @@ void WorkspaceItemListener::ProcessEventFromDomain(const VariableUpdatedEvent& e
 
 void WorkspaceItemListener::ValidateWorkspaces()
 {
-  if (!m_domain_workspace)
-  {
-    throw RuntimeException("Not initialised workspace");
-  }
-
   if (!m_workspace_item)
   {
     throw RuntimeException("Not initialised workspace item");
+  }
+
+  if (!m_domain_workspace)
+  {
+    throw RuntimeException("Not initialised workspace");
   }
 
   if (!AreMatchingWorkspaces(*m_workspace_item, *m_domain_workspace))
@@ -116,6 +117,7 @@ void WorkspaceItemListener::OnItemInsertedEvent(const mvvm::ItemInsertedEvent& e
 
 void WorkspaceItemListener::ProcessEventToDomain(VariableItem* variable_item)
 {
+  qDebug() << "XXX" << m_workspace_item << variable_item->GetName() << variable_item->GetParent();
   // do not send an event if it was initially triggered from the domain
   if (m_block_update_to_domain[m_item_to_index[variable_item]])
   {

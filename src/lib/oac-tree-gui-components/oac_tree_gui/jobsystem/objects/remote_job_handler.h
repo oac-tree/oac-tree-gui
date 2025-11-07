@@ -32,8 +32,6 @@ class IJobManager;
 namespace oac_tree_gui
 {
 
-class WorkspaceItemListener;
-
 /**
  * @brief The RemoteJobHandler class is intended to run a remote job represented by the JobItem.
  */
