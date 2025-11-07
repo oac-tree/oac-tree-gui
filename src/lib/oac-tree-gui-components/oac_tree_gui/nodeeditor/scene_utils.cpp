@@ -78,7 +78,7 @@ double GetAlignmentGridHeight()
 
 QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
 {
-  QLinearGradient result(rect.x() + rect.width() / 2, rect.y(), rect.x() + rect.width() / 2,
+  QLinearGradient result(rect.x() + (rect.width() / 2), rect.y(), rect.x() + (rect.width() / 2),
                          rect.y() + rect.height());
   result.setColorAt(0, color);
   result.setColorAt(0.5, color.lighter(150));

@@ -20,7 +20,10 @@
 
 #include "oac_tree_gui/domain/domain_helper.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+
 #include <mvvm/core/platform.h>
+#include <mvvm/utils/container_utils.h>
 
 #include <sup/oac-tree/constants.h>
 #include <sup/oac-tree/i_job_info_io.h>
@@ -112,6 +115,36 @@ TEST_F(DomainHelperTest, SequencerPluginEpicsDomainVariableTypeConstants)
   {
     EXPECT_EQ(CreateDomainVariable(domain_type)->GetType(), domain_type);
   }
+}
+
+TEST_F(DomainHelperTest, GetBasicPluginList)
+{
+  EXPECT_TRUE(mvvm::utils::Contains(GetBasicPluginList(), domainconstants::kEpicsCAPluginName));
+}
+
+TEST_F(DomainHelperTest, GetSupPluginList)
+{
+  EXPECT_TRUE(mvvm::utils::Contains(GetSupPluginList(), domainconstants::kSupConfigPluginName));
+}
+
+TEST_F(DomainHelperTest, GetTitleTextFromMetadata)
+{
+  auto valid_metadata = sup::oac_tree::CreateUserChoiceMetadata();
+  valid_metadata.AddMember(sup::oac_tree::Constants::USER_CHOICES_TEXT_NAME,
+                           sup::dto::AnyValue{"Sample Text"});
+  valid_metadata.AddMember(
+      sup::oac_tree::Constants::USER_CHOICES_DIALOG_TYPE_NAME,
+      sup::dto::AnyValue{sup::dto::AnyType(sup::dto::UnsignedInteger32Type), 1});
+  valid_metadata.AddMember(sup::oac_tree::Constants::USER_CHOICES_MODAL_NAME,
+                           sup::dto::AnyValue{true});
+  valid_metadata.AddMember(sup::oac_tree::Constants::USER_CHOICES_TITLE_NAME,
+                           sup::dto::AnyValue{"Sample Title"});
+  valid_metadata.AddMember(sup::oac_tree::Constants::USER_CHOICES_INFORMATIVE_TEXT_NAME,
+                           sup::dto::AnyValue{"Informative Text"});
+  valid_metadata.AddMember(sup::oac_tree::Constants::USER_CHOICES_DETAILS_NAME,
+                           sup::dto::AnyValue{"Details"});
+
+  EXPECT_EQ(GetMainTextFromMetadata(valid_metadata), "Sample Text");
 }
 
 TEST_F(DomainHelperTest, DialogMetagadata)

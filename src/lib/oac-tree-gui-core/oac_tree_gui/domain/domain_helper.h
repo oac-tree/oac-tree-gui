@@ -85,11 +85,6 @@ bool IsSequencerControlPluginAvailable();
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
 
 /**
- * @brief  Extracts title text from the metadata presented by the given AnyValue.
- */
-std::string GetTitleTextFromMetadata(const anyvalue_t& metadata);
-
-/**
  * @brief Checks if given AnyValue contains metadata suitable for user choice dialogs.
  */
 bool IsSelectTextDialog(const anyvalue_t& metadata);

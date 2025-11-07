@@ -28,13 +28,13 @@
 #include <mvvm/utils/file_utils.h>
 #include <mvvm/utils/string_utils.h>
 
+#include <sup/oac-tree/constants.h>
 #include <sup/oac-tree/i_job_info_io.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_registry.h>
 #include <sup/oac-tree/sequence_parser.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_registry.h>
-#include <sup/oac-tree/constants.h>
 
 #include <algorithm>
 #include <filesystem>
@@ -68,13 +68,7 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain
 
 std::unique_ptr<variable_t> CreateDomainVariable(const std::string& domain_name)
 {
-  auto result = ::sup::oac_tree::GlobalVariableRegistry().Create(domain_name);
-  if (!result)
-  {
-    throw RuntimeException("Error in GlobalVariableRegistry: can create variable '" + domain_name
-                           + "'");
-  }
-  return result;
+  return ::sup::oac_tree::GlobalVariableRegistry().Create(domain_name);
 }
 
 std::vector<std::string> GetDomainInstructionNames()
@@ -138,11 +132,6 @@ std::vector<std::string> GetBasicPluginFileNames()
 }
 
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata)
-{
-  return sup::oac_tree::GetMainTextFromMetadata(metadata);
-}
-
-std::string GetTitleTextFromMetadata(const anyvalue_t& metadata)
 {
   if (metadata.HasField(sup::oac_tree::Constants::USER_CHOICES_TEXT_NAME)
       && (metadata[sup::oac_tree::Constants::USER_CHOICES_TEXT_NAME].GetType()

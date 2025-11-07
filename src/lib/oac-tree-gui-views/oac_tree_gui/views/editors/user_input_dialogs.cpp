@@ -41,10 +41,10 @@
 
 namespace
 {
-QStringList GetSelectionList(const oac_tree_gui::UserChoiceArgs &args)
+QStringList GetSelectionList(const oac_tree_gui::UserChoiceArgs& args)
 {
   QStringList result;
-  for (const auto &option : args.options)
+  for (const auto& option : args.options)
   {
     result.push_back(QString("%1").arg(QString::fromStdString(option)));
   }
@@ -56,7 +56,7 @@ QStringList GetSelectionList(const oac_tree_gui::UserChoiceArgs &args)
 namespace oac_tree_gui
 {
 
-UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget *parent)
+UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs& args, QWidget* parent)
 {
   if (IsSelectTextDialog(args.metadata))
   {
@@ -71,7 +71,7 @@ UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget *
   return {0, false};
 }
 
-UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args, QWidget *parent)
+UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs& args, QWidget* parent)
 {
   auto selection_list = GetSelectionList(args);
 
@@ -89,7 +89,7 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args, QWidge
   return {was_accepted ? index : -1, was_accepted};
 }
 
-UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget *parent)
+UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs& args, QWidget* parent)
 {
   auto selection_list = GetSelectionList(args);
   if (selection_list.size() != 2)
@@ -98,7 +98,7 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget
   }
 
   QMessageBox msg_box(parent);
-  msg_box.setWindowTitle(QString::fromStdString(GetTitleTextFromMetadata(args.metadata)));
+  msg_box.setWindowTitle("Input request");
   msg_box.setText(QString::fromStdString(GetMainTextFromMetadata(args.metadata)));
   msg_box.setIcon(QMessageBox::Information);
 
@@ -113,7 +113,7 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget
   return {index, true};
 }
 
-UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget *parent)
+UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget* parent)
 {
   auto parent_widget = parent ? parent : mvvm::utils::FindMainWindow();
 
@@ -137,13 +137,13 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget
   return UserInputResult{{}, false};
 }
 
-UserContext CreateDefaultUserContext(QWidget *parent)
+UserContext CreateDefaultUserContext(QWidget* parent)
 {
   UserContext result;
-  result.user_choice_callback = [parent](const auto &args)
+  result.user_choice_callback = [parent](const auto& args)
   { return GetUserChoiceDialogResult(args, parent); };
 
-  result.user_input_callback = [parent](const auto &args)
+  result.user_input_callback = [parent](const auto& args)
   { return GetAnyValueEditorDialogResult(args, parent); };
 
   return result;
