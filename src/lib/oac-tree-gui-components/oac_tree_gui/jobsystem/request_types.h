@@ -37,9 +37,6 @@ struct UserChoiceArgs
 {
   std::vector<std::string> options;
   sup::dto::AnyValue metadata;
-
-  bool operator==(const UserChoiceArgs& other) const;
-  bool operator!=(const UserChoiceArgs& other) const;
 };
 
 /**
@@ -49,9 +46,6 @@ struct UserChoiceResult
 {
   int index{0};
   bool processed{false};
-
-  bool operator==(const UserChoiceResult& other) const;
-  bool operator!=(const UserChoiceResult& other) const;
 };
 
 /**
@@ -62,9 +56,6 @@ struct UserInputArgs
 {
   sup::dto::AnyValue value;
   std::string description;
-
-  bool operator==(const UserInputArgs& other) const;
-  bool operator!=(const UserInputArgs& other) const;
 };
 
 /**
@@ -74,10 +65,19 @@ struct UserInputResult
 {
   sup::dto::AnyValue value;
   bool processed{false};
-
-  bool operator==(const UserInputResult& other) const;
-  bool operator!=(const UserInputResult& other) const;
 };
+
+bool operator==(const UserChoiceArgs& lhs, const UserChoiceArgs& rhs);
+bool operator!=(const UserChoiceArgs& lhs, const UserChoiceArgs& rhs);
+
+bool operator==(const UserChoiceResult& lhs, const UserChoiceResult& rhs);
+bool operator!=(const UserChoiceResult& lhs, const UserChoiceResult& rhs);
+
+bool operator==(const UserInputArgs& lhs, const UserInputArgs& rhs);
+bool operator!=(const UserInputArgs& lhs, const UserInputArgs& rhs);
+
+bool operator==(const UserInputResult& lhs, const UserInputResult& rhs);
+bool operator!=(const UserInputResult& lhs, const UserInputResult& rhs);
 
 }  // namespace oac_tree_gui
 

@@ -23,60 +23,44 @@
 namespace oac_tree_gui
 {
 
-// ----------------------------------------------------------------------------
-// UserChoiceArgs
-// ----------------------------------------------------------------------------
-
-bool UserChoiceArgs::operator==(const UserChoiceArgs& other) const
+bool operator==(const UserChoiceArgs& lhs, const UserChoiceArgs& rhs)
 {
-  return (options == other.options) && (metadata == other.metadata);
+  return (lhs.options == rhs.options) && (lhs.metadata == rhs.metadata);
 }
 
-bool UserChoiceArgs::operator!=(const UserChoiceArgs& other) const
+bool operator!=(const UserChoiceArgs& lhs, const UserChoiceArgs& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-// ----------------------------------------------------------------------------
-// UserChoiceResult
-// ----------------------------------------------------------------------------
-
-bool UserChoiceResult::operator==(const UserChoiceResult& other) const
+bool operator==(const UserChoiceResult& lhs, const UserChoiceResult& rhs)
 {
-  return (index == other.index) && (processed == other.processed);
+  return (lhs.index == rhs.index) && (lhs.processed == rhs.processed);
 }
 
-bool UserChoiceResult::operator!=(const UserChoiceResult& other) const
+bool operator!=(const UserChoiceResult& lhs, const UserChoiceResult& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-// ----------------------------------------------------------------------------
-// UserInputArgs
-// ----------------------------------------------------------------------------
-
-bool UserInputArgs::operator==(const UserInputArgs& other) const
+bool operator==(const UserInputArgs& lhs, const UserInputArgs& rhs)
 {
-  return value == other.value && description == other.description;
+  return lhs.value == rhs.value && lhs.description == rhs.description;
 }
 
-bool UserInputArgs::operator!=(const UserInputArgs& other) const
+bool operator!=(const UserInputArgs& lhs, const UserInputArgs& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
-// ----------------------------------------------------------------------------
-// UserInputArgs
-// ----------------------------------------------------------------------------
-
-bool UserInputResult::operator==(const UserInputResult& other) const
+bool operator==(const UserInputResult& lhs, const UserInputResult& rhs)
 {
-  return (value == other.value) && (processed == other.processed);
+  return (lhs.value == rhs.value) && (lhs.processed == rhs.processed);
 }
 
-bool UserInputResult::operator!=(const UserInputResult& other) const
+bool operator!=(const UserInputResult& lhs, const UserInputResult& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
 }  // namespace oac_tree_gui
