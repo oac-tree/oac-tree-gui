@@ -60,6 +60,7 @@ TEST_F(CustomRowStrategiesTest, VariableRowStrategyForLocalVariable)
   EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
   EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString(""));
   EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("Local"));
+  EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 3);
 }
 
 TEST_F(CustomRowStrategiesTest, VariableRowStrategyForUniversalItem)
@@ -82,6 +83,8 @@ TEST_F(CustomRowStrategiesTest, VariableRowStrategyForUniversalItem)
   EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString(""));
   EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(),
             QString::fromStdString(domainconstants::kSystemClockVariableType));
+
+  EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 3);
 }
 
 TEST_F(CustomRowStrategiesTest, VariableRowStrategyForVariableInfo)
@@ -108,6 +111,8 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
     item.SetName("abc");
 
     VariableTableRowStrategy strategy;
+
+    EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 4);
     auto view_items = strategy.ConstructRow(&item);
     ASSERT_EQ(view_items.size(), 4);
     EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
@@ -208,7 +213,8 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
 
     auto view_items = strategy.ConstructRow(&item);
 
-    ASSERT_EQ(view_items.size(), 2);
+    ASSERT_EQ(view_items.size(), 2);    
+    EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 2);
 
     EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("Sequence"));
     EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString("abc"));
