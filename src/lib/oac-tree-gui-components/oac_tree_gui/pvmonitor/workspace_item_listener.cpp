@@ -32,6 +32,7 @@
 #include <mvvm/signals/model_listener.h>
 
 #include <sup/oac-tree/workspace.h>
+
 #include <QDebug>
 
 namespace oac_tree_gui
@@ -117,7 +118,12 @@ void WorkspaceItemListener::OnItemInsertedEvent(const mvvm::ItemInsertedEvent& e
 
 void WorkspaceItemListener::ProcessEventToDomain(VariableItem* variable_item)
 {
-  qDebug() << "XXX" << m_workspace_item << variable_item->GetName() << variable_item->GetParent();
+  if (variable_item->GetParent() != m_workspace_item)
+  {
+    // it's not our variable
+    return;
+  }
+
   // do not send an event if it was initially triggered from the domain
   if (m_block_update_to_domain[m_item_to_index[variable_item]])
   {

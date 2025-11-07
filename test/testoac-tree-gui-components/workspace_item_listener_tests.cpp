@@ -219,7 +219,7 @@ TEST_F(WorkspaceItemListenerTest, TwoWorkspaceScenario)
   domain_workspace1.Setup();
 
   const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
-  SetAnyValue(value0, *variable_item0); // FAILING HERE because second listener also reacts
+  EXPECT_NO_THROW(SetAnyValue(value0, *variable_item0));
 }
 
 }  // namespace oac_tree_gui::test
