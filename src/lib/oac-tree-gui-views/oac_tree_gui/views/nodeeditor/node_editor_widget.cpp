@@ -31,6 +31,7 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
+#include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 
 #include <sup/gui/widgets/message_handler_factory.h>
@@ -155,7 +156,10 @@ void NodeEditorWidget::SetupSceneComponentProvider()
 
   if (algorithm::RequiresInitialAlignment(container->GetInstructions()))
   {
-    const QPointF reference_point = m_graphics_scene->sceneRect().center();
+    const auto scene_center = m_graphics_view->sceneRect().center();
+    // alignment reference point slightly above the center of the scene
+    const QPointF reference_point{scene_center.x(),
+                                  scene_center.y() - 3 * ConnectableViewRectangle().height()};
     algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
   }
 
