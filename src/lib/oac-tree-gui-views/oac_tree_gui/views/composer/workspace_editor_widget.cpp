@@ -40,24 +40,41 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
+namespace oac_tree_gui
+{
+
 namespace
 {
 
 const QString kHeaderStateSettingName("WorkspaceEditorWidget/header_state");
-const std::vector<int> kDefaultColumnStretch({3, 2, 2});
+
+std::vector<std::int32_t> GetDefaultColumnStretch(WorkspacePresentationType presentation)
+{
+  if (presentation == WorkspacePresentationType::kWorkspaceTree)
+  {
+    const std::vector<std::int32_t> kDefaultColumnStretch({3, 2, 2});  // name, value, typeName
+    return kDefaultColumnStretch;
+  }
+
+  if (presentation == WorkspacePresentationType::kWorkspaceTable)
+  {
+    const std::vector<std::int32_t> kDefaultColumnStretch(
+        {3, 2, 2, 2});  // name, value, typeName, Channel
+    return kDefaultColumnStretch;
+  }
+
+  throw RuntimeException("Unknown presentation");
+}
 
 }  // namespace
 
-namespace oac_tree_gui
-{
-
-WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService &command_service,
+WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService& command_service,
                                              WorkspacePresentationType presentation,
-                                             QWidget *parent_widget)
+                                             QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
-    , m_custom_header(
-          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
+    , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName,
+                                                     GetDefaultColumnStretch(presentation), this))
     , m_component_provider(CreateProvider(presentation))
     , m_line_edit(new QLineEdit)
     , m_editor(new WorkspaceEditor(
@@ -94,7 +111,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService &comma
 
 WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
 
-void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
+void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem* workspace)
 {
   if (workspace == m_workspace_item)
   {
@@ -124,7 +141,7 @@ void WorkspaceEditorWidget::SetWorkspaceEditType(WorkspaceEditType edit_type)
   }
 }
 
-void WorkspaceEditorWidget::resizeEvent(QResizeEvent *event)
+void WorkspaceEditorWidget::resizeEvent(QResizeEvent* event)
 {
   QWidget::resizeEvent(event);
   AdjustTreeAppearance();
@@ -153,11 +170,11 @@ void WorkspaceEditorWidget::SetupTree()
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           &WorkspaceEditorWidget::OnTreeContextMenuRequest);
   m_tree_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+  m_tree_view->expandAll();
 }
 
 void WorkspaceEditorWidget::AdjustTreeAppearance()
 {
-  m_tree_view->expandAll();
   m_custom_header->AdjustColumnsWidth();
 }
 
@@ -183,7 +200,7 @@ std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceEditorWidget::CreatePro
   return result;
 }
 
-void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
+void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint& point)
 {
   QMenu menu;
 
@@ -199,7 +216,7 @@ void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
-void WorkspaceEditorWidget::SetWorkspaceItemIntern(WorkspaceItem *workspace_item)
+void WorkspaceEditorWidget::SetWorkspaceItemIntern(WorkspaceItem* workspace_item)
 {
   m_editor->SetWorkspaceItem(workspace_item);
   m_component_provider->SetItem(workspace_item);
