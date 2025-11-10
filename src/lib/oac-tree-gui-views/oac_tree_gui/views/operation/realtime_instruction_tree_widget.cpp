@@ -32,6 +32,7 @@
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/tree_helper.h>
+#include <sup/gui/core/environment.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/views/component_provider_helper.h>
@@ -44,7 +45,6 @@
 #include <QToolTip>
 #include <QTreeView>
 #include <QVBoxLayout>
-#include <sup/gui/core/environment.h>
 
 namespace
 {
@@ -56,8 +56,8 @@ QString GetCustomToolTipStyle()
   static const QString style(
       "QToolTip {border: 2px solid darkgrey; padding: 5px; border-radius: 3px;}");
 
-          // Adwaita style has own white-on-black semi-transparent tooltip style.
-          // We have to define dark background to match this style.
+  // Adwaita style has own white-on-black semi-transparent tooltip style.
+  // We have to define dark background to match this style.
   static const QString adwaita_style(
       "QToolTip {border: 2px solid lightgray; padding: 5px; border-radius: 3px; background-color: "
       "darkgray}");
@@ -70,7 +70,7 @@ QString GetCustomToolTipStyle()
 namespace oac_tree_gui
 {
 
-RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent_widget)
+RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
@@ -109,7 +109,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent_wid
 
 RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget() = default;
 
-void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
+void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem* procedure_item)
 {
   m_procedure = procedure_item;
 
@@ -125,7 +125,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
   }
 }
 
-void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem *> items)
+void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem*> items)
 {
   m_expand_controller->SaveSelectionRequest(items);
   m_component_provider->SetSelectedItems(m_expand_controller->GetInstructionsToSelect());
@@ -138,11 +138,11 @@ void RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag(bool value)
   ScrollViewportToSelection();
 }
 
-bool RealTimeInstructionTreeWidget::event(QEvent *event)
+bool RealTimeInstructionTreeWidget::event(QEvent* event)
 {
   if (event->type() == QEvent::ToolTip)
   {
-    auto global_pos = static_cast<QHelpEvent *>(event)->globalPos();
+    auto global_pos = static_cast<QHelpEvent*>(event)->globalPos();
     auto pos = m_tree_view->viewport()->mapFromGlobal(global_pos);
     auto index = m_tree_view->indexAt(pos);
     auto item = m_component_provider->GetViewModel()->GetSessionItemFromIndex(index);
@@ -160,7 +160,13 @@ bool RealTimeInstructionTreeWidget::event(QEvent *event)
   return QWidget::event(event);
 }
 
-void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
+void RealTimeInstructionTreeWidget::resizeEvent(QResizeEvent* event)
+{
+  QWidget::resizeEvent(event);
+  m_custom_header->AdjustColumnsWidth();
+}
+
+void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex& index)
 {
   if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
   {
@@ -169,7 +175,7 @@ void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
   }
 }
 
-void RealTimeInstructionTreeWidget::OnCustomContextMenuRequested(const QPoint &pos)
+void RealTimeInstructionTreeWidget::OnCustomContextMenuRequested(const QPoint& pos)
 {
   QMenu menu;
 
