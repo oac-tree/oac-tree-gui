@@ -24,6 +24,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace oac_tree_gui::algorithm
 {
@@ -80,7 +81,7 @@ public:
   std::string GetIdentifier() const;
   void SetIdentifier(const std::string& identifier);
 
-  int GetIndex() const;
+  std::int32_t GetIndex() const;
 
 private:
   AlignNode* m_parent{nullptr};

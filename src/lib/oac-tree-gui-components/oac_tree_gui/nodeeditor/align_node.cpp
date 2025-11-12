@@ -181,9 +181,10 @@ void AlignNode::SetIdentifier(const std::string& identifier)
 }
 
 //! Returns index of given item in the array of its parent
-int AlignNode::GetIndex() const
+std::int32_t AlignNode::GetIndex() const
 {
-  return GetParent() ? mvvm::utils::IndexOfItem(GetParent()->GetChildren(), this) : -1;
+  return GetParent() ? static_cast<std::int32_t>(mvvm::utils::IndexOfItem(GetParent()->GetChildren(), this))
+                     : -1;
 }
 
 }  // namespace oac_tree_gui::algorithm

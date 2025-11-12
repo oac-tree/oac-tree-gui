@@ -227,17 +227,17 @@ void CheckForConflicts(AlignNode& node)
 
 void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
 {
-  int leftIndex = leftNode.GetIndex();
-  int rightIndex = rightNode.GetIndex();
+  const std::int32_t left_index = leftNode.GetIndex();
+  const std::int32_t right_index = rightNode.GetIndex();
 
-  int numNodesBetween = (rightIndex - leftIndex) - 1;
+  const std::int32_t numNodesBetween = (right_index - left_index) - 1;
 
   if (numNodesBetween > 0)
   {
     double distanceBetweenNodes = (leftNode.GetX() - rightNode.GetX()) / (numNodesBetween + 1);
 
     int count = 1;
-    for (int i = leftIndex + 1; i < rightIndex; i++)
+    for (int i = left_index + 1; i < right_index; i++)
     {
       auto middleNode = leftNode.GetParent()->GetChildren().at(i);
 
