@@ -35,6 +35,9 @@ TEST_F(MonitorModelTest, InitialState)
 {
   MonitorModel model;
   EXPECT_NE(model.GetWorkspaceItem(), nullptr);
+
+  model.Clear();
+  EXPECT_NE(model.GetWorkspaceItem(), nullptr);
 }
 
 }  // namespace oac_tree_gui::test
