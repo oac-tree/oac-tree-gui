@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 
 #include <sup/gui/core/i_message_handler.h>
+#include <oac_tree_gui/components/component_types.h>
 
 #include <QWidget>
 
@@ -60,7 +61,7 @@ class NodeEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit NodeEditorWidget(QWidget* parent_widget = nullptr);
+  explicit NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_widget = nullptr);
   ~NodeEditorWidget() override;
 
   void SetProcedure(ProcedureItem* procedure);
@@ -79,6 +80,7 @@ private:
   std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
   std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider();
 
+  NodeEditorMode m_editor_mode;
   NodeGraphicsViewActions* m_view_actions{nullptr};
   std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
   std::unique_ptr<GraphicsSceneComponentProvider> m_scene_component_provider;

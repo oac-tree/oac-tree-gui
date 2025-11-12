@@ -68,6 +68,15 @@ enum class OperationPresentationMode : std::uint8_t
   kIdeMode         //!< widget is a part of sequencer-gui
 };
 
+/**
+ * @brief The NodeEditorMode enum descibes the behavior of NodeEditorWidget
+ */
+enum class NodeEditorMode : std::uint8_t
+{
+  kNodeEditor,  //!< standard node editor for sequence composition
+  kNodeViewer   //!< read-only viewer for sequence execution monitoring
+};
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_COMPONENT_TYPES_H_

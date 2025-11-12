@@ -46,7 +46,7 @@ OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService& c
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table_widget(
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTable))
-    , m_node_editor_widget(new NodeEditorWidget)
+    , m_node_editor_widget(new NodeEditorWidget(NodeEditorMode::kNodeViewer))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

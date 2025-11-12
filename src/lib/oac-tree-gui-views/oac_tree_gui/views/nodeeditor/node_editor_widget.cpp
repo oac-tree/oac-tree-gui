@@ -61,8 +61,9 @@ constexpr std::chrono::milliseconds kMessageDurationTime{5000};
 namespace oac_tree_gui
 {
 
-NodeEditorWidget::NodeEditorWidget(QWidget* parent_widget)
+NodeEditorWidget::NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_editor_mode(editor_mode)
     , m_view_actions(new NodeGraphicsViewActions(this))
     , m_graphics_scene(CreateGraphicsScene())
     , m_graphics_view(new NodeGraphicsView(m_graphics_scene.get(), this))
