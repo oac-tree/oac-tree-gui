@@ -44,7 +44,7 @@ struct UserChoiceArgs
  */
 struct UserChoiceResult
 {
-  int index{0};
+  std::int32_t index{0};
   bool processed{false};
 };
 

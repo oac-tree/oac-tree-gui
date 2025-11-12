@@ -35,7 +35,7 @@ namespace oac_tree_gui::algorithm
 class AlignNode
 {
 public:
-  int GetSize() const;
+  std::size_t GetSize() const;
 
   AlignNode* GetParent() const;
   void SetParent(AlignNode* parent);

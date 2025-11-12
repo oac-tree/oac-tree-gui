@@ -24,18 +24,19 @@
 //! Project version information as defined by CMake project
 
 #include <string>
+#include <cstdint>
 
 namespace oac_tree_gui
 {
 
 //! Returns major project version.
-int ProjectVersionMajor();
+std::int32_t ProjectVersionMajor();
 
 //! Returns minor project version.
-int ProjectVersionMinor();
+std::int32_t ProjectVersionMinor();
 
 //! Returns patch project version.
-int ProjectVersionPatch();
+std::int32_t ProjectVersionPatch();
 
 //! Returns project version string.
 std::string ProjectVersion();

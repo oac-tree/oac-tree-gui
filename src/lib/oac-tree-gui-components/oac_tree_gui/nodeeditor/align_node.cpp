@@ -27,9 +27,9 @@
 namespace oac_tree_gui::algorithm
 {
 
-int AlignNode::GetSize() const
+std::size_t AlignNode::GetSize() const
 {
-  return static_cast<int>(m_children.size());
+  return m_children.size();
 }
 
 AlignNode* AlignNode::GetParent() const
@@ -46,7 +46,7 @@ std::vector<AlignNode*> AlignNode::GetChildren() const
 {
   std::vector<AlignNode*> result;
   (void)std::transform(m_children.begin(), m_children.end(), std::back_inserter(result),
-                       [](const auto& x) { return x.get(); });
+                       [](const auto& element) { return element.get(); });
   return result;
 }
 
@@ -183,8 +183,9 @@ void AlignNode::SetIdentifier(const std::string& identifier)
 //! Returns index of given item in the array of its parent
 std::int32_t AlignNode::GetIndex() const
 {
-  return GetParent() ? static_cast<std::int32_t>(mvvm::utils::IndexOfItem(GetParent()->GetChildren(), this))
-                     : -1;
+  return GetParent()
+             ? static_cast<std::int32_t>(mvvm::utils::IndexOfItem(GetParent()->GetChildren(), this))
+             : -1;
 }
 
 }  // namespace oac_tree_gui::algorithm

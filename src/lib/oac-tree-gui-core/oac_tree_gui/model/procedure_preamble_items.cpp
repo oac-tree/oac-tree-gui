@@ -54,13 +54,13 @@ std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone() const
   return std::make_unique<TypeRegistrationItem>(*this);
 }
 
-int TypeRegistrationItem::GetRegistrationMode() const
+std::int32_t TypeRegistrationItem::GetRegistrationMode() const
 {
   auto combo = Property<mvvm::ComboProperty>(kTypeRegistrationMode);
   return combo.GetCurrentIndex();
 }
 
-void TypeRegistrationItem::SetRegistrationMode(int value)
+void TypeRegistrationItem::SetRegistrationMode(std::int32_t value)
 {
   auto combo = Property<mvvm::ComboProperty>(kTypeRegistrationMode);
   combo.SetCurrentIndex(value);
@@ -104,7 +104,7 @@ mvvm::ContainerItem* ProcedurePreambleItem::GetPluginContainer() const
   return GetItem<mvvm::ContainerItem>(kPluginContainerTag);
 }
 
-void ProcedurePreambleItem::AddTypeRegistration(int mode, const std::string& str)
+void ProcedurePreambleItem::AddTypeRegistration(std::int32_t mode, const std::string& str)
 {
   auto type_item = std::make_unique<TypeRegistrationItem>();
   auto type_item_ptr = type_item.get();
@@ -114,9 +114,10 @@ void ProcedurePreambleItem::AddTypeRegistration(int mode, const std::string& str
   type_item_ptr->SetRegistrationString(str);
 }
 
-std::vector<std::pair<int, std::string> > ProcedurePreambleItem::GetTypeRegistrations() const
+std::vector<std::pair<std::int32_t, std::string> > ProcedurePreambleItem::GetTypeRegistrations()
+    const
 {
-  std::vector<std::pair<int, std::string> > result;
+  std::vector<std::pair<std::int32_t, std::string> > result;
   auto type_items = GetTypeRegistrationContainer()->GetItems<TypeRegistrationItem>(
       mvvm::TagIndex::GetDefaultTag());
   for (auto item : type_items)

@@ -25,7 +25,7 @@
 namespace oac_tree_gui
 {
 
-int ProjectVersionMajor()
+std::int32_t ProjectVersionMajor()
 {
   return kProjectVersionMajor;
 }
@@ -35,7 +35,7 @@ int ProjectVersionMinor()
   return kProjectVersionMinor;
 }
 
-int ProjectVersionPatch()
+std::int32_t ProjectVersionPatch()
 {
   return kProjectVersionPatch;
 }

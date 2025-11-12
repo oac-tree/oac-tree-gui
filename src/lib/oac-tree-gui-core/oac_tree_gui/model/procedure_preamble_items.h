@@ -40,8 +40,8 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  int GetRegistrationMode() const;
-  void SetRegistrationMode(int value);
+  std::int32_t GetRegistrationMode() const;
+  void SetRegistrationMode(std::int32_t value);
 
   std::string GetRegistrationString() const;
   void SetRegistrationString(const std::string& value);
@@ -60,8 +60,8 @@ public:
 
   mvvm::ContainerItem* GetPluginContainer() const;
 
-  void AddTypeRegistration(int mode, const std::string& str);
-  std::vector<std::pair<int, std::string>> GetTypeRegistrations() const;
+  void AddTypeRegistration(std::int32_t mode, const std::string& str);
+  std::vector<std::pair<std::int32_t, std::string> > GetTypeRegistrations() const;
 
   std::vector<std::string> GetPluginPaths() const;
   void AddPluginPath(const std::string& value);

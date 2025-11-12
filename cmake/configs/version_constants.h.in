@@ -24,13 +24,14 @@
 //! Automatically generated from version_constants.h.in
 
 #include <string>
+#include <cstdint>
 
 namespace
 {
 
-const int kProjectVersionMajor = @PROJECT_VERSION_MAJOR@;
-const int kProjectVersionMinor = @PROJECT_VERSION_MINOR@;
-const int kProjectVersionPatch = @PROJECT_VERSION_PATCH@;
+const std::int32_t kProjectVersionMajor = @PROJECT_VERSION_MAJOR@;
+const std::int32_t kProjectVersionMinor = @PROJECT_VERSION_MINOR@;
+const std::int32_t kProjectVersionPatch = @PROJECT_VERSION_PATCH@;
 const std::string kProjectVersionString = "@PROJECT_VERSION@";
 
 }  // namespace
