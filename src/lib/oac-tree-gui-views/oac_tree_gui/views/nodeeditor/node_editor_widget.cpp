@@ -160,7 +160,7 @@ void NodeEditorWidget::SetupSceneComponentProvider()
     const auto scene_center = m_graphics_view->sceneRect().center();
     // alignment reference point slightly above the center of the scene
     const QPointF reference_point{scene_center.x(),
-                                  scene_center.y() - 3 * ConnectableViewRectangle().height()};
+                                  scene_center.y() - (3 * ConnectableViewRectangle().height())};
     algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
   }
 

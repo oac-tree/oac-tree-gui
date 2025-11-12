@@ -77,7 +77,7 @@ private:
   void SetupConnections();
   void OnAlignRequest();
   void SetupSceneComponentProvider();
-  std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
+  static std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
   std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider();
 
   NodeEditorMode m_editor_mode;

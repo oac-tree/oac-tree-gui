@@ -120,6 +120,7 @@ std::vector<std::pair<std::int32_t, std::string> > ProcedurePreambleItem::GetTyp
   std::vector<std::pair<std::int32_t, std::string> > result;
   auto type_items = GetTypeRegistrationContainer()->GetItems<TypeRegistrationItem>(
       mvvm::TagIndex::GetDefaultTag());
+  result.reserve(type_items.size());
   for (auto item : type_items)
   {
     result.push_back({item->GetRegistrationMode(), item->GetRegistrationString()});
@@ -132,6 +133,7 @@ std::vector<std::string> ProcedurePreambleItem::GetPluginPaths() const
 {
   std::vector<std::string> result;
   auto plugin_name_property_items = GetPluginContainer()->GetItems(mvvm::TagIndex::GetDefaultTag());
+  result.reserve(plugin_name_property_items.size());
   for (auto item : plugin_name_property_items)
   {
     result.push_back(item->Data<std::string>());
@@ -140,7 +142,7 @@ std::vector<std::string> ProcedurePreambleItem::GetPluginPaths() const
   return result;
 }
 
-void ProcedurePreambleItem::AddPluginPath(const std::string& value)
+void ProcedurePreambleItem::AddPluginPath(const std::string& value) const
 {
   auto property_item = std::make_unique<mvvm::PropertyItem>();
   (void)property_item->SetData(value);

@@ -64,7 +64,7 @@ public:
   std::vector<std::pair<std::int32_t, std::string> > GetTypeRegistrations() const;
 
   std::vector<std::string> GetPluginPaths() const;
-  void AddPluginPath(const std::string& value);
+  void AddPluginPath(const std::string& value) const;
 
   /**
    * @brief Sets plugin names, all previous names will be removed.

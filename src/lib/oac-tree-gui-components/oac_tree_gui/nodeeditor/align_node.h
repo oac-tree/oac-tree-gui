@@ -74,9 +74,9 @@ public:
 
   AlignNode* GetRightMostChild() const;
 
-  double GetNodeSize() const;
+  static double GetNodeSize();
 
-  double GetSiblingDistance() const;
+  static double GetSiblingDistance();
 
   std::string GetIdentifier() const;
   void SetIdentifier(const std::string& identifier);
