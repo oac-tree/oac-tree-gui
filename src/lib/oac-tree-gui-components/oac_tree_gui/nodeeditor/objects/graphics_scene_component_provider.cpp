@@ -61,6 +61,11 @@ GraphicsSceneComponentProvider::GraphicsSceneComponentProvider(
 
 GraphicsSceneComponentProvider::~GraphicsSceneComponentProvider() = default;
 
+void GraphicsSceneComponentProvider::SetReadOnly()
+{
+  m_connection_guide.reset();
+}
+
 void GraphicsSceneComponentProvider::OnDeleteSelected()
 {
   mvvm::utils::BeginMacro(*GetModel(), "GraphicsSceneComponentProvider::OnDeleteSelected");

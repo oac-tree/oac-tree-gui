@@ -21,8 +21,9 @@
 #ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 
-#include <sup/gui/core/i_message_handler.h>
 #include <oac_tree_gui/components/component_types.h>
+
+#include <sup/gui/core/i_message_handler.h>
 
 #include <QWidget>
 
@@ -78,7 +79,8 @@ private:
   void OnAlignRequest();
   void SetupSceneComponentProvider();
   static std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
-  std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider();
+  std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider(
+      NodeEditorMode editor_mode);
 
   NodeEditorMode m_editor_mode;
   NodeGraphicsViewActions* m_view_actions{nullptr};

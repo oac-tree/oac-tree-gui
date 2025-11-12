@@ -70,6 +70,11 @@ public:
   ~GraphicsSceneComponentProvider() override;
 
   /**
+   * @brief Switch off any connection painting and interaction.
+   */
+  void SetReadOnly();
+
+  /**
    * @brief Deletes selected graphics items.
    *
    * The method handles shapes and their connections differently. The request to remove the shape

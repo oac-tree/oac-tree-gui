@@ -164,7 +164,7 @@ void NodeEditorWidget::SetupSceneComponentProvider()
     algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
   }
 
-  m_scene_component_provider = CreateGraphicsSceneComponentProvider();
+  m_scene_component_provider = CreateGraphicsSceneComponentProvider(m_editor_mode);
 }
 
 std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
@@ -173,7 +173,7 @@ std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
 }
 
 std::unique_ptr<GraphicsSceneComponentProvider>
-NodeEditorWidget::CreateGraphicsSceneComponentProvider()
+NodeEditorWidget::CreateGraphicsSceneComponentProvider(NodeEditorMode editor_mode)
 {
   auto message_callback = [this](const auto& message)
   { m_graphics_view_message_handler->SendMessage(message); };
@@ -186,28 +186,36 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider()
   connect(result.get(), &GraphicsSceneComponentProvider::selectionChanged, this,
           &NodeEditorWidget::selectionChanged);
 
-  // change GraphicsView operation mode on connection start/finish
-  connect(result.get(), &GraphicsSceneComponentProvider::connectionStarted, this, [this]()
-          { m_graphics_view->SetOperationMode(GraphicsViewOperationMode::kSimpleSelection); });
-  connect(result.get(), &GraphicsSceneComponentProvider::connectionFinished, this, [this]()
-          { m_graphics_view->SetOperationMode(GraphicsViewOperationMode::kRubberSelection); });
+  if (editor_mode == NodeEditorMode::kNodeEditor)
+  {
+    // change GraphicsView operation mode on connection start/finish
+    connect(result.get(), &GraphicsSceneComponentProvider::connectionStarted, this, [this]()
+            { m_graphics_view->SetOperationMode(GraphicsViewOperationMode::kSimpleSelection); });
+    connect(result.get(), &GraphicsSceneComponentProvider::connectionFinished, this, [this]()
+            { m_graphics_view->SetOperationMode(GraphicsViewOperationMode::kRubberSelection); });
 
-  // propagates delete request from the graphics view
-  connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, result.get(),
-          &GraphicsSceneComponentProvider::OnDeleteSelected);
+    // propagates delete request from the graphics view
+    connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, result.get(),
+            &GraphicsSceneComponentProvider::OnDeleteSelected);
 
-  // propagate drop request from GraphicsScene to GraphicsSceneComponentProvider
-  connect(m_graphics_scene.get(), &NodeGraphicsScene::dropInstructionRequested, result.get(),
-          [this](const QString& name, const QPointF& pos)
-          { m_scene_component_provider->DropInstruction(name.toStdString(), {pos.x(), pos.y()}); });
+    // propagate drop request from GraphicsScene to GraphicsSceneComponentProvider
+    connect(
+        m_graphics_scene.get(), &NodeGraphicsScene::dropInstructionRequested, result.get(),
+        [this](const QString& name, const QPointF& pos)
+        { m_scene_component_provider->DropInstruction(name.toStdString(), {pos.x(), pos.y()}); });
 
-  // propagate branch selection request from GraphicsScene to GraphicsSceneComponentProvider
-  connect(m_graphics_scene.get(), &NodeGraphicsScene::instructionDoubleClick, result.get(),
-          &GraphicsSceneComponentProvider::SelectInstructionBranch);
+    // propagate branch selection request from GraphicsScene to GraphicsSceneComponentProvider
+    connect(m_graphics_scene.get(), &NodeGraphicsScene::instructionDoubleClick, result.get(),
+            &GraphicsSceneComponentProvider::SelectInstructionBranch);
 
-  // propagate double click on ports from GraphicsScene to GraphicsSceneComponentProvider
-  connect(m_graphics_scene.get(), &NodeGraphicsScene::portDoubleClick, result.get(),
-          &GraphicsSceneComponentProvider::DoubleClickPort);
+    // propagate double click on ports from GraphicsScene to GraphicsSceneComponentProvider
+    connect(m_graphics_scene.get(), &NodeGraphicsScene::portDoubleClick, result.get(),
+            &GraphicsSceneComponentProvider::DoubleClickPort);
+  }
+  else
+  {
+    result->SetReadOnly();
+  }
 
   return result;
 }
