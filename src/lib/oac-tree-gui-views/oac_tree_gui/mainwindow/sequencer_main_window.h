@@ -39,6 +39,7 @@ namespace oac_tree_gui
 class ApplicationModels;
 class OperationMonitorView;
 class SequencerComposerView;
+class SequencerComposerViewV2;
 class SequencerExplorerView;
 class SequencerMainWindowActions;
 class SequencerSettingsModel;
@@ -107,6 +108,7 @@ private:
 
   SequencerExplorerView* m_explorer_view{nullptr};
   SequencerComposerView* m_composer_view{nullptr};
+  SequencerComposerViewV2* m_composer_view_v2{nullptr};
   OperationMonitorView* m_operation_view{nullptr};
 };
 

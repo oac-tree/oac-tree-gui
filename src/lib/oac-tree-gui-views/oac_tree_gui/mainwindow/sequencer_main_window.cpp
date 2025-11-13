@@ -31,6 +31,7 @@
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
+#include <oac_tree_gui/views/composer/sequencer_composer_view_v2.h>
 #include <oac_tree_gui/views/explorer/sequencer_explorer_view.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
 
@@ -104,6 +105,10 @@ void SequencerMainWindow::InitComponents()
 
   m_composer_view = new SequencerComposerView(m_context.GetCommandService());
   m_tab_widget->AddWidget(m_composer_view, "Compose",
+                          FindIcon("graph-outline", mvvm::ColorFlavor::kForDarkThemes));
+
+  m_composer_view_v2 = new SequencerComposerViewV2(m_context.GetCommandService());
+  m_tab_widget->AddWidget(m_composer_view_v2, "Compose2",
                           FindIcon("graph-outline", mvvm::ColorFlavor::kForDarkThemes));
 
   m_operation_view =
