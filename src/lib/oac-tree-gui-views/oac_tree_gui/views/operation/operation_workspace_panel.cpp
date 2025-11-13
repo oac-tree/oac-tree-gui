@@ -53,6 +53,7 @@ OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService& c
 
   m_workspace_tree_widget->setWindowTitle("Workspace Tree");
   m_workspace_table_widget->setWindowTitle("Workspace Table");
+  m_node_editor_widget->setWindowTitle("Instruction Node View");
 
   m_stack_widget->AddWidget(m_workspace_tree_widget);
   m_stack_widget->AddWidget(m_workspace_table_widget);
