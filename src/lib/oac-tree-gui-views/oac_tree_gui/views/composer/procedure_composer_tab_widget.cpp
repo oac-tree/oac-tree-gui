@@ -18,39 +18,28 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "composer_combo_panel.h"
-
-#include "composer_combo_panel_toolbar.h"
 #include "procedure_composer_tab_widget.h"
-#include "placeholder_widget.h"
 
-#include <QStackedWidget>
+#include <QTabWidget>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
 {
 
-ComposerComboPanel::ComposerComboPanel(QWidget* parent_widget)
-    : QWidget(parent_widget)
-    , m_tool_bar(new ComposerComboPanelToolBar)
-    , m_stacked_widget(new QStackedWidget)
-    , m_placeholder_widget(new PlaceholderWidget("ABC"))
-    , m_procedure_composer_widget(new ProcedureComposerTabWidget)
+ProcedureComposerTabWidget::ProcedureComposerTabWidget(QWidget* parent_widget)
+    : QWidget(parent_widget), m_tab_widget(new QTabWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
-
   layout->setSpacing(0);
 
-  layout->addWidget(m_tool_bar);
-  layout->addWidget(m_stacked_widget);
+  layout->addWidget(m_tab_widget);
 
-  m_stacked_widget->addWidget(m_placeholder_widget);
-  m_stacked_widget->addWidget(m_procedure_composer_widget);
-
-  m_stacked_widget->setCurrentIndex(1); // show placeholder widget
+  m_tab_widget->addTab(new QWidget, "ABC");
+  m_tab_widget->addTab(new QWidget, "DEF");
+  m_tab_widget->setTabPosition(QTabWidget::South);
 }
 
-ComposerComboPanel::~ComposerComboPanel() = default;
+ProcedureComposerTabWidget::~ProcedureComposerTabWidget() = default;
 
 }  // namespace oac_tree_gui

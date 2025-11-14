@@ -25,6 +25,10 @@ target_sources(${library_name} PRIVATE
   instruction_item_panel.h
   instruction_toolkit_tree_view.cpp
   instruction_toolkit_tree_view.h
+  placeholder_widget.cpp
+  placeholder_widget.h
+  procedure_composer_tab_widget.cpp
+  procedure_composer_tab_widget.h
   procedure_list_actions.cpp
   procedure_list_actions.h
   procedure_list_widget.cpp

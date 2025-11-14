@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_COMBO_PANEL_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_COMBO_PANEL_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_COMBO_PANEL_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_COMBO_PANEL_H_
 
 #include <QWidget>
 
@@ -29,6 +29,8 @@ namespace oac_tree_gui
 {
 
 class ComposerComboPanelToolBar;
+class ProcedureComposerTabWidget;
+class PlaceholderWidget;
 
 /**
  * @brief The ComposerComboPanel class contains a complex procedure editor and allows switching
@@ -49,8 +51,10 @@ public:
 private:
   ComposerComboPanelToolBar* m_tool_bar{nullptr};
   QStackedWidget* m_stacked_widget{nullptr};
+  PlaceholderWidget* m_placeholder_widget{nullptr};
+  ProcedureComposerTabWidget* m_procedure_composer_widget{nullptr};
 };
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_COMBO_PANEL_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_COMBO_PANEL_H_
