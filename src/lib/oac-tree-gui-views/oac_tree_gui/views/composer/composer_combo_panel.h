@@ -52,6 +52,10 @@ signals:
   void splitViewRequest();
   void closeViewRequest();
 
+protected:
+  void mousePressEvent(QMouseEvent *event) override;
+  void focusInEvent(QFocusEvent *event) override;
+
 private:
   void SetupConnections();
 

@@ -24,6 +24,8 @@
 #include "placeholder_widget.h"
 #include "procedure_composer_tab_widget.h"
 
+#include <QDebug>
+#include <QMouseEvent>
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
@@ -54,6 +56,22 @@ ComposerComboPanel::ComposerComboPanel(QWidget* parent_widget)
 }
 
 ComposerComboPanel::~ComposerComboPanel() = default;
+
+void ComposerComboPanel::mousePressEvent(QMouseEvent* event)
+{
+  if (event->button() != Qt::LeftButton)
+  {
+    return;
+  }
+  setFocus(Qt::MouseFocusReason);
+  QWidget::mousePressEvent(event);
+}
+
+void ComposerComboPanel::focusInEvent(QFocusEvent* event)
+{
+  qDebug() << "focusInEvent" << (this);
+  QWidget::focusInEvent(event);
+}
 
 void ComposerComboPanel::SetupConnections()
 {
