@@ -57,6 +57,11 @@ public:
    */
   void AddWidget(QWidget* after_widget = nullptr);
 
+  /**
+   * @brief Closes and deletes the specified widget in the splitter.
+   */
+  static void CloseWidget(QWidget* widget_to_close);
+
 private:
   CreateWidgetCallback m_callback;
   QSplitter* m_splitter{nullptr};

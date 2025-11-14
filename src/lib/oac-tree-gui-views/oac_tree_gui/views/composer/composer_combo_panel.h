@@ -48,7 +48,13 @@ public:
   explicit ComposerComboPanel(QWidget* parent_widget = nullptr);
   ~ComposerComboPanel() override;
 
+signals:
+  void splitViewRequest();
+  void closeViewRequest();
+
 private:
+  void SetupConnections();
+
   ComposerComboPanelToolBar* m_tool_bar{nullptr};
   QStackedWidget* m_stacked_widget{nullptr};
   PlaceholderWidget* m_placeholder_widget{nullptr};

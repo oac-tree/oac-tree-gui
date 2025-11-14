@@ -57,6 +57,13 @@ void SequencerComposerViewV2::SetModel(SequencerModel* model)
 std::unique_ptr<QWidget> SequencerComposerViewV2::CreateProcedureEditor()
 {
   auto result = std::make_unique<ComposerComboPanel>();
+  auto result_ptr = result.get();
+
+  connect(result.get(), &ComposerComboPanel::splitViewRequest, this,
+          [this, result_ptr]() { m_procedure_editor_area_widget->AddWidget(result_ptr); });
+
+  connect(result.get(), &ComposerComboPanel::closeViewRequest, this,
+          [result_ptr]() { SplittableWidget::CloseWidget(result_ptr); });
 
   return result;
 }

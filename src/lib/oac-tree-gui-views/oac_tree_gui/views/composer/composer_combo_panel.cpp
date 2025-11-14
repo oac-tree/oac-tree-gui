@@ -21,8 +21,8 @@
 #include "composer_combo_panel.h"
 
 #include "composer_combo_panel_toolbar.h"
-#include "procedure_composer_tab_widget.h"
 #include "placeholder_widget.h"
+#include "procedure_composer_tab_widget.h"
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -48,9 +48,19 @@ ComposerComboPanel::ComposerComboPanel(QWidget* parent_widget)
   m_stacked_widget->addWidget(m_placeholder_widget);
   m_stacked_widget->addWidget(m_procedure_composer_widget);
 
-  m_stacked_widget->setCurrentIndex(1); // show placeholder widget
+  m_stacked_widget->setCurrentIndex(1);  // show placeholder widget
+
+  SetupConnections();
 }
 
 ComposerComboPanel::~ComposerComboPanel() = default;
+
+void ComposerComboPanel::SetupConnections()
+{
+  connect(m_tool_bar, &ComposerComboPanelToolBar::splitViewRequest, this,
+          &ComposerComboPanel::splitViewRequest);
+  connect(m_tool_bar, &ComposerComboPanelToolBar::closeViewRequest, this,
+          &ComposerComboPanel::closeViewRequest);
+}
 
 }  // namespace oac_tree_gui

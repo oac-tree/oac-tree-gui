@@ -66,4 +66,10 @@ void SplittableWidget::AddWidget(QWidget* after_widget)
   }
 }
 
+void SplittableWidget::CloseWidget(QWidget* widget_to_close)
+{
+  widget_to_close->hide();
+  widget_to_close->deleteLater();
+}
+
 }  // namespace oac_tree_gui
