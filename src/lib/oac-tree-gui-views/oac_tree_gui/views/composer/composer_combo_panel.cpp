@@ -33,7 +33,7 @@ ComposerComboPanel::ComposerComboPanel(QWidget* parent_widget)
     , m_tool_bar(new ComposerComboPanelToolBar)
     , m_stacked_widget(new QStackedWidget)
 {
-  auto layout = new QVBoxLayout;
+  auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 

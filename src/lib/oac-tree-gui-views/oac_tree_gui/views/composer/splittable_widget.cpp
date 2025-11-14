@@ -40,6 +40,9 @@ SplittableWidget::SplittableWidget(CreateWidgetCallback callback, QWidget* paren
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_splitter);
+
+  auto initial_widget = m_callback();
+  m_splitter->addWidget(initial_widget.release());
 }
 
 SplittableWidget::~SplittableWidget() = default;
