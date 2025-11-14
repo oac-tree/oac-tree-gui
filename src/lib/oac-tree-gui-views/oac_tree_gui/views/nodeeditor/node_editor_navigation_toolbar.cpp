@@ -73,7 +73,7 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
 
-  InsertStrech();
+  InsertStretch();
 
   SetupActions();
   SetupSlider();
@@ -89,7 +89,7 @@ void NodeEditorNavigationToolBar::SetZoomFactor(double zoom_factor)
   m_zoom_slider->setValue(m_zoom_factor_converter.GetSliderValue(zoom_factor));
 }
 
-void NodeEditorNavigationToolBar::InsertStrech()
+void NodeEditorNavigationToolBar::InsertStretch()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

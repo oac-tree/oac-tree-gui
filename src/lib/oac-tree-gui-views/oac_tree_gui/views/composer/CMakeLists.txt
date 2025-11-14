@@ -5,6 +5,10 @@ target_sources(${library_name} PRIVATE
   aggregate_panel.h
   attribute_editor_actions.cpp
   attribute_editor_actions.h
+  composer_combo_panel.cpp
+  composer_combo_panel.h
+  composer_combo_panel_toolbar.cpp
+  composer_combo_panel_toolbar.h
   composer_tools_panel.cpp
   composer_tools_panel.h
   composer_widget_panel.cpp

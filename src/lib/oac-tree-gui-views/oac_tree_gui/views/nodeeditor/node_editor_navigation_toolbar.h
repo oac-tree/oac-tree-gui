@@ -60,7 +60,7 @@ signals:
   void FitToViewRequest();
 
 private:
-  void InsertStrech();
+  void InsertStretch();
   void SetupSlider();
   void SetupActions();
   std::unique_ptr<QMenu> CreateZoomMenu();
