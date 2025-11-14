@@ -24,6 +24,7 @@
 #include <QToolBar>
 
 class QComboBox;
+class QAction;
 
 namespace oac_tree_gui
 {
@@ -42,10 +43,16 @@ public:
   explicit ComposerComboPanelToolBar(QWidget* parent_widget = nullptr);
   ~ComposerComboPanelToolBar() override;
 
+signals:
+  void splitViewRequest();
+  void closeViewRequest();
+
 private:
   void InsertStretch();
 
   QComboBox* m_context_selector{nullptr};
+  QAction* m_split_horizontally_action{nullptr};
+  QAction* m_close_current_view_action{nullptr};
 };
 
 }  // namespace oac_tree_gui

@@ -2,6 +2,8 @@
     <qresource prefix="/oac-tree">
         <file>style/default_dark_style.json</file>
         <file>style/default_light_style.json</file>
+        <file>icons/dialog-close-16.svg</file>
+        <file>icons/view-split-left-right-16.svg</file>
         <file>icons/about_logo.awk</file>
         <file>icons/arrow-down-thin-circle-outline.svg</file>
         <file>icons/arrow-right-circle-outline.svg</file>
