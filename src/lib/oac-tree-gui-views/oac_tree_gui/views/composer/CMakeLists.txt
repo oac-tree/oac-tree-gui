@@ -31,6 +31,8 @@ target_sources(${library_name} PRIVATE
   sequencer_composer_view.h
   sequencer_composer_view_v2.cpp
   sequencer_composer_view_v2.h
+  splittable_widget.cpp
+  splittable_widget.h
   workspace_editor.cpp
   workspace_editor.h
   workspace_editor_actions.cpp
