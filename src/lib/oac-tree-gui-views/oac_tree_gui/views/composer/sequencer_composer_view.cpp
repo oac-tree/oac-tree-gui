@@ -61,7 +61,7 @@ SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &comma
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_procedure_editor(CreateProcedureEditor())
-    , m_composer_panel(new ComposerToolsPanel(command_service))
+    , m_composer_tools_panel(new ComposerToolsPanel(command_service))
     , m_central_panel(new ComposerWidgetPanel(command_service, kCentralPanel,
                                               ComposerWidgetPanel::kInstructionTree))
     , m_right_panel(
@@ -72,7 +72,7 @@ SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &comma
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
 
-  m_splitter->addWidget(m_composer_panel);
+  m_splitter->addWidget(m_composer_tools_panel);
   m_splitter->addWidget(m_central_panel);
   m_splitter->addWidget(m_right_panel);
   m_splitter->setSizes({200, 400, 400});
@@ -98,7 +98,7 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_composer_actions->SetModel(model);
-  m_composer_panel->SetModel(model);
+  m_composer_tools_panel->SetModel(model);
 }
 
 void SequencerComposerView::RegisterActions()
@@ -134,7 +134,7 @@ void SequencerComposerView::SetupConnections()
     m_composer_actions->SetProcedure(procedure_item);
     m_procedure_editor->SetProcedure(procedure_item);
   };
-  connect(m_composer_panel, &ComposerToolsPanel::ProcedureSelected, this, on_procedure_selected);
+  connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected, this, on_procedure_selected);
 
   // propagate selection from central panel to the right panel
   auto on_central_selection = [this](auto)
@@ -150,13 +150,13 @@ void SequencerComposerView::SetupConnections()
   auto on_export = [this]()
   {
     ProcedureActionHandler handler;
-    handler.OnExportToXmlRequest(m_composer_panel->GetSelectedProcedure());
+    handler.OnExportToXmlRequest(m_composer_tools_panel->GetSelectedProcedure());
   };
   connect(m_central_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
   connect(m_right_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
 
   // instruction toolbox requests form left panel
-  connect(m_composer_panel, &ComposerToolsPanel::ToolBoxInstructionRequest,
+  connect(m_composer_tools_panel, &ComposerToolsPanel::ToolBoxInstructionRequest,
           m_procedure_editor.get(), &ProcedureEditor::InsertInstructionFromToolBox);
 }
 
@@ -166,7 +166,7 @@ void SequencerComposerView::SetupWidgetActions()
   m_toggle_left_sidebar->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar->setIcon(FindIcon("dock-left"));
   connect(m_toggle_left_sidebar, &QAction::triggered, this,
-          [this](auto) { m_composer_panel->setVisible(!m_composer_panel->isVisible()); });
+          [this](auto) { m_composer_tools_panel->setVisible(!m_composer_tools_panel->isVisible()); });
 
   m_toggle_right_sidebar = new QAction("Show/hide right sidebar", this);
   m_toggle_right_sidebar->setToolTip("Show/hide right panel");

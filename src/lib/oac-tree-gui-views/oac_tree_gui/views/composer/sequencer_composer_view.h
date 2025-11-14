@@ -80,7 +80,7 @@ private:
   QAction* m_toggle_right_sidebar{nullptr};
 
   std::unique_ptr<ProcedureEditor> m_procedure_editor;
-  ComposerToolsPanel* m_composer_panel{nullptr};
+  ComposerToolsPanel* m_composer_tools_panel{nullptr};
   ComposerWidgetPanel* m_central_panel{nullptr};
   ComposerWidgetPanel* m_right_panel{nullptr};
 

@@ -21,11 +21,11 @@
 #include "sequencer_composer_view_v2.h"
 
 #include "composer_combo_panel.h"
+#include "composer_tools_panel.h"
 #include "splittable_widget.h"
 
 #include <QSplitter>
 #include <QVBoxLayout>
-#include <QLabel>
 
 namespace oac_tree_gui
 {
@@ -34,21 +34,25 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
                                                  QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_splitter(new QSplitter)
+    , m_composer_tools_panel(new ComposerToolsPanel(command_service))
     , m_procedure_editor_area_widget(new SplittableWidget(CreateProcedureEditorCallback()))
 {
-  (void)command_service;
-
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_splitter);
 
-  auto sidebar = new QLabel("ABC");
-  m_splitter->addWidget(sidebar);
+  m_splitter->addWidget(m_composer_tools_panel);
   m_splitter->addWidget(m_procedure_editor_area_widget);
+  m_splitter->setSizes({200, 400});
 }
 
 SequencerComposerViewV2::~SequencerComposerViewV2() = default;
+
+void SequencerComposerViewV2::SetModel(SequencerModel* model)
+{
+  m_composer_tools_panel->SetModel(model);
+}
 
 std::unique_ptr<QWidget> SequencerComposerViewV2::CreateProcedureEditor()
 {
