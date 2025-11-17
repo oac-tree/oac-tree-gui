@@ -36,6 +36,7 @@ namespace oac_tree_gui
 class SplittableWidget;
 class SequencerModel;
 class ComposerToolsPanel;
+class SequencerModel;
 
 /**
  * @brief The SequencerComposerViewV2 class is a main widget for procedure editing.
@@ -70,6 +71,7 @@ private:
   QSplitter* m_splitter{nullptr};
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
   SplittableWidget* m_procedure_editor_area_widget{nullptr};
+  SequencerModel* m_model{nullptr};
 };
 
 }  // namespace oac_tree_gui

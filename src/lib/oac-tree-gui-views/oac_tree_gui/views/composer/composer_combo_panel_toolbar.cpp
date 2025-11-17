@@ -25,20 +25,20 @@
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/style/style_helper.h>
-#include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QAction>
 #include <QComboBox>
 #include <QMenu>
+#include <QToolButton>
 
 namespace oac_tree_gui
 {
 
 namespace
 {
-constexpr auto kNoProcedureSelected = "<no procedure>";
+constexpr auto kNoProcedureSelected = " < no procedure >";
 }
 
 ComposerComboPanelToolBar::ComposerComboPanelToolBar(const ProceduresCallback& procedure_callback,
@@ -46,40 +46,39 @@ ComposerComboPanelToolBar::ComposerComboPanelToolBar(const ProceduresCallback& p
     : QToolBar(parent_widget)
     , m_available_procedures(procedure_callback)
     , m_select_procedure_menu(CreateSelectProcedureMenu())
-    , m_select_procedure_action(new sup::gui::ActionMenu(this))
-    , m_context_selector(new QComboBox)
-    , m_split_horizontally_action(new QAction)
-    , m_close_current_view_action(new QAction)
+    , m_select_procedure_button(new QToolButton(this))
+    , m_split_horizontally_button(new QToolButton(this))
+    , m_close_current_view_button(new QToolButton(this))
 {
   setIconSize(sup::gui::utils::NarrowToolBarIconSize());
-  setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-  addWidget(m_context_selector);
-
-  m_context_selector->setFixedWidth(mvvm::style::UnitSize(16));
-
-  m_select_procedure_action->setText(kNoProcedureSelected);
+  m_select_procedure_button->setText(kNoProcedureSelected);
   // m_select_procedure_action->setIcon(FindIcon("file-plus-outline"));
-  m_select_procedure_action->setMenu(m_select_procedure_menu.get());
-  m_select_procedure_action->setToolTip(
+  m_select_procedure_button->setMenu(m_select_procedure_menu.get());
+  m_select_procedure_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_select_procedure_button->setPopupMode(QToolButton::MenuButtonPopup);
+  m_select_procedure_button->setToolTip(
       "Select on of the existing procedures for editing in this widget");
-  addAction(m_select_procedure_action);
+  m_select_procedure_button->setAutoRaise(true);
+  m_select_procedure_button->setFocusPolicy(Qt::NoFocus);
+  m_select_procedure_button->setMaximumWidth(mvvm::style::UnitSize(25));
+  addWidget(m_select_procedure_button);
 
   InsertStretch();
 
-  m_split_horizontally_action = new QAction(this);
-  m_split_horizontally_action->setToolTip("Split current view to the right");
-  m_split_horizontally_action->setIcon(FindIcon("view-split-left-right-16"));
-  connect(m_split_horizontally_action, &QAction::triggered, this,
+  m_split_horizontally_button->setToolTip("Split current view to the right");
+  m_split_horizontally_button->setIcon(FindIcon("view-split-left-right-16"));
+  m_split_horizontally_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  connect(m_split_horizontally_button, &QToolButton::clicked, this,
           &ComposerComboPanelToolBar::splitViewRequest);
-  addAction(m_split_horizontally_action);
+  addWidget(m_split_horizontally_button);
 
-  m_close_current_view_action = new QAction(this);
-  m_close_current_view_action->setToolTip("Close this view");
-  m_close_current_view_action->setIcon(FindIcon("dialog-close-16"));
-  connect(m_close_current_view_action, &QAction::triggered, this,
+  m_close_current_view_button->setToolTip("Close this view");
+  m_close_current_view_button->setIcon(FindIcon("dialog-close-16"));
+  m_close_current_view_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  connect(m_close_current_view_button, &QToolButton::clicked, this,
           &ComposerComboPanelToolBar::closeViewRequest);
-  addAction(m_close_current_view_action);
+  addWidget(m_close_current_view_button);
 
   // make buttons closer to each other
   // setStyleSheet("QToolButton { padding: 0px; margin:0px; }");
@@ -116,7 +115,7 @@ void ComposerComboPanelToolBar::OnAboutToShowMenu()
   auto action = menu->addAction(kNoProcedureSelected);
   auto on_action = [this]()
   {
-    m_select_procedure_action->setText(kNoProcedureSelected);
+    m_select_procedure_button->setText(kNoProcedureSelected);
     emit SelectProcedureRequest(nullptr);
   };
   connect(action, &QAction::triggered, this, on_action);
@@ -127,7 +126,7 @@ void ComposerComboPanelToolBar::OnAboutToShowMenu()
     auto action = menu->addAction(QString::fromStdString(procedure->GetDisplayName()));
     auto on_action = [this, procedure]()
     {
-      m_select_procedure_action->setText(QString::fromStdString(procedure->GetDisplayName()));
+      m_select_procedure_button->setText(QString::fromStdString(procedure->GetDisplayName()));
       emit SelectProcedureRequest(procedure);
     };
     connect(action, &QAction::triggered, this, on_action);

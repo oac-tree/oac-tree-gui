@@ -24,14 +24,8 @@
 #include <QToolBar>
 #include <functional>
 
-class QComboBox;
-class QAction;
 class QMenu;
-
-namespace sup::gui
-{
-class ActionMenu;
-}  // namespace sup::gui
+class QToolButton;
 
 namespace oac_tree_gui
 {
@@ -67,10 +61,9 @@ private:
 
   ProceduresCallback m_available_procedures;
   std::unique_ptr<QMenu> m_select_procedure_menu;
-  sup::gui::ActionMenu* m_select_procedure_action{nullptr};
-  QComboBox* m_context_selector{nullptr};
-  QAction* m_split_horizontally_action{nullptr};
-  QAction* m_close_current_view_action{nullptr};
+  QToolButton* m_select_procedure_button{nullptr};
+  QToolButton* m_split_horizontally_button{nullptr};
+  QToolButton* m_close_current_view_button{nullptr};
 };
 
 }  // namespace oac_tree_gui

@@ -24,6 +24,9 @@
 #include "composer_tools_panel.h"
 #include "splittable_widget.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -52,11 +55,18 @@ SequencerComposerViewV2::~SequencerComposerViewV2() = default;
 void SequencerComposerViewV2::SetModel(SequencerModel* model)
 {
   m_composer_tools_panel->SetModel(model);
+  m_model = model;
 }
 
 std::unique_ptr<QWidget> SequencerComposerViewV2::CreateProcedureEditor()
 {
-  auto result = std::make_unique<ComposerComboPanel>();
+  if (!m_model)
+  {
+    throw RuntimeException("SequencerComposerViewV2 model is not set");
+  }
+
+  auto get_procedures_callback = [this]() { return m_model->GetProcedures(); };
+  auto result = std::make_unique<ComposerComboPanel>(get_procedures_callback);
   auto result_ptr = result.get();
 
   connect(result.get(), &ComposerComboPanel::splitViewRequest, this,

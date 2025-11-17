@@ -185,6 +185,7 @@ void SequencerMainWindow::OnProjectLoad()
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModel(m_models->GetSequencerModel());
+  m_composer_view_v2->SetModel(m_models->GetSequencerModel());
   m_operation_view->SetModels(m_models.get());
 
   UpdateProjectNames();

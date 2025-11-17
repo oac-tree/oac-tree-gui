@@ -32,9 +32,10 @@
 namespace oac_tree_gui
 {
 
-ComposerComboPanel::ComposerComboPanel(QWidget* parent_widget)
+ComposerComboPanel::ComposerComboPanel(const ProceduresCallback& procedure_callback,
+                                       QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_tool_bar(new ComposerComboPanelToolBar({}))
+    , m_tool_bar(new ComposerComboPanelToolBar(procedure_callback))
     , m_stacked_widget(new QStackedWidget)
     , m_placeholder_widget(new PlaceholderWidget("ABC"))
     , m_procedure_composer_widget(new ProcedureComposerTabWidget)

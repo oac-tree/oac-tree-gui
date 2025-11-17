@@ -37,7 +37,7 @@ namespace oac_tree_gui
 {
 
 ProcedureListActionHandler::ProcedureListActionHandler(ProcedureListContext context,
-                                                       QObject *parent_object)
+                                                       QObject* parent_object)
     : QObject(parent_object), m_context(std::move(context))
 {
   if (!m_context.procedure_container || !m_context.selected_procedure)
@@ -66,7 +66,7 @@ void ProcedureListActionHandler::OnRemoveProcedureRequest()
     auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_procedure);
     GetModel()->RemoveItem(selected_procedure);
     // suggest to select something else instead of just deleted procedure
-    emit SelectProcedureRequest(dynamic_cast<ProcedureItem *>(next_to_select));
+    emit SelectProcedureRequest(dynamic_cast<ProcedureItem*>(next_to_select));
   }
 }
 
@@ -123,27 +123,31 @@ void ProcedureListActionHandler::Paste()
   InsertProcedure(sup::gui::CreateSessionItem(mime_data, kCopyProcedureMimeType));
 }
 
-mvvm::ContainerItem *ProcedureListActionHandler::GetProcedureContainer() const
+mvvm::ContainerItem* ProcedureListActionHandler::GetProcedureContainer() const
 {
   return m_context.procedure_container();
 }
 
-ProcedureItem *ProcedureListActionHandler::GetSelectedProcedure() const
+ProcedureItem* ProcedureListActionHandler::GetSelectedProcedure() const
 {
   return m_context.selected_procedure();
 }
 
-mvvm::ISessionModel *ProcedureListActionHandler::GetModel()
+mvvm::ISessionModel* ProcedureListActionHandler::GetModel()
 {
+  if (!GetProcedureContainer())
+  {
+    throw RuntimeException("Procedure container is not set in ProcedureList context");
+  }
   return GetProcedureContainer()->GetModel();
 }
 
-const QMimeData *ProcedureListActionHandler::GetMimeData() const
+const QMimeData* ProcedureListActionHandler::GetMimeData() const
 {
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
-mvvm::SessionItem *ProcedureListActionHandler::InsertProcedure(
+mvvm::SessionItem* ProcedureListActionHandler::InsertProcedure(
     std::unique_ptr<mvvm::SessionItem> item)
 {
   auto procedure_item_ptr = item.get();
@@ -152,7 +156,7 @@ mvvm::SessionItem *ProcedureListActionHandler::InsertProcedure(
   auto tag_index = selected ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
   GetModel()->InsertItem(std::move(item), GetProcedureContainer(), tag_index);
   // select just inserted procedure
-  emit SelectProcedureRequest(dynamic_cast<ProcedureItem *>(procedure_item_ptr));
+  emit SelectProcedureRequest(dynamic_cast<ProcedureItem*>(procedure_item_ptr));
 
   return procedure_item_ptr;
 }
