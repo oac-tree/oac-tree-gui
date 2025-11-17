@@ -94,9 +94,12 @@ void ComposerComboPanelToolBar::ShowAsLastEditor(bool value)
 {
   // we don't want to allow closing the last editor in the splitter
   m_close_current_view_button->setDisabled(value);
+
+  // no need to visually mark the last editor as active
+  ShowAsActive(false);
 }
 
-void ComposerComboPanelToolBar::UpdateProcedureSelectionMenu(ProcedureItem *selected_procedure)
+void ComposerComboPanelToolBar::UpdateProcedureSelectionMenu(ProcedureItem* selected_procedure)
 {
   // for the moment nothing to do rather then set proper text to button
   if (selected_procedure)
@@ -116,7 +119,7 @@ void ComposerComboPanelToolBar::paintEvent(QPaintEvent* event)
   {
     // thin horizontal green line at the bottom
     QPainter painter(this);
-    QPen pen(QColor(39, 189, 114)); // #27bd72
+    QPen pen(QColor(39, 189, 114));  // #27bd72
     pen.setWidth(2);
     painter.setPen(pen);
     painter.drawLine(0, height() - 1, width(), height() - 1);

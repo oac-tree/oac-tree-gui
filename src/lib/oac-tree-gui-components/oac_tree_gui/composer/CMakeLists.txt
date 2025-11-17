@@ -14,6 +14,7 @@ target_sources(${library_name} PRIVATE
   workspace_editor_action_handler.cpp
   workspace_editor_action_handler.h
   workspace_editor_context.h
+  widget_focus_handler.h
 )
 
 add_subdirectory(objects)

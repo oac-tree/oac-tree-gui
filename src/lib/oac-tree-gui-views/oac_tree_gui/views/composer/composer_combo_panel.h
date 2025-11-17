@@ -61,8 +61,6 @@ public:
 
   /**
    * @brief Sets the procedure to be edited.
-   *
-   * This call will succeed only if current widget is in active mouse focus.
    */
   void SetProcedure(ProcedureItem* procedure_item);
 
