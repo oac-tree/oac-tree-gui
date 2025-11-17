@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 
+#include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -70,6 +71,12 @@ void SplittableWidget::CloseWidget(QWidget* widget_to_close)
 {
   widget_to_close->hide();
   widget_to_close->deleteLater();
+}
+
+void SplittableWidget::mousePressEvent(QMouseEvent* event)
+{
+  qDebug() << "SplittableWidget::mousePressEvent" << (this);
+  QWidget::mousePressEvent(event);
 }
 
 }  // namespace oac_tree_gui

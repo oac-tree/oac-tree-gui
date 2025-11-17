@@ -31,6 +31,7 @@
 #include <QAction>
 #include <QComboBox>
 #include <QMenu>
+#include <QPainter>
 #include <QToolButton>
 
 namespace oac_tree_gui
@@ -79,12 +80,36 @@ ComposerComboPanelToolBar::ComposerComboPanelToolBar(const ProceduresCallback& p
   connect(m_close_current_view_button, &QToolButton::clicked, this,
           &ComposerComboPanelToolBar::closeViewRequest);
   addWidget(m_close_current_view_button);
-
-  // make buttons closer to each other
-  // setStyleSheet("QToolButton { padding: 0px; margin:0px; }");
 }
 
 ComposerComboPanelToolBar::~ComposerComboPanelToolBar() = default;
+
+void ComposerComboPanelToolBar::ShowAsActive(bool value)
+{
+  m_show_as_active = value;
+  update();
+}
+
+void ComposerComboPanelToolBar::ShowAsLastEditor(bool value)
+{
+  // we don't want to allow closing the last editor in the splitter
+  m_close_current_view_button->setDisabled(value);
+}
+
+void ComposerComboPanelToolBar::paintEvent(QPaintEvent* event)
+{
+  if (m_show_as_active)
+  {
+    // thin horizontal green line at the bottom
+    QPainter painter(this);
+    QPen pen(QColor(39, 189, 114)); // #27bd72
+    pen.setWidth(2);
+    painter.setPen(pen);
+    painter.drawLine(0, height() - 1, width(), height() - 1);
+  }
+
+  QToolBar::paintEvent(event);
+}
 
 void ComposerComboPanelToolBar::InsertStretch()
 {

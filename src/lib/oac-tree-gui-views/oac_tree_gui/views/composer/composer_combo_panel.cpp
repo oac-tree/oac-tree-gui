@@ -74,8 +74,22 @@ void ComposerComboPanel::mousePressEvent(QMouseEvent* event)
 
 void ComposerComboPanel::focusInEvent(QFocusEvent* event)
 {
-  qDebug() << "focusInEvent" << (this);
+  qDebug() << "focusInEvent" << (this) << event->reason();
+  if (event->reason() == Qt::MouseFocusReason)
+  {
+    m_tool_bar->ShowAsActive(true);
+  }
   QWidget::focusInEvent(event);
+}
+
+void ComposerComboPanel::focusOutEvent(QFocusEvent* event)
+{
+  qDebug() << "focusOutEvent" << (this) << event->reason();
+  if (event->reason() == Qt::MouseFocusReason)
+  {
+    m_tool_bar->ShowAsActive(false);
+  }
+  QWidget::focusOutEvent(event);
 }
 
 void ComposerComboPanel::SetupConnections()

@@ -62,6 +62,9 @@ public:
    */
   static void CloseWidget(QWidget* widget_to_close);
 
+protected:
+  void mousePressEvent(QMouseEvent* event) override;
+
 private:
   CreateWidgetCallback m_callback;
   QSplitter* m_splitter{nullptr};

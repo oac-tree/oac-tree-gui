@@ -49,10 +49,26 @@ public:
                                      QWidget* parent_widget = nullptr);
   ~ComposerComboPanelToolBar() override;
 
+  /**
+   * @brief Shows the toolbar as active/inactive.
+   *
+   * Active toolbar corresponds to the widget where the user clicked last, and it has a thin green
+   * line at the bottom.
+   */
+  void ShowAsActive(bool value);
+
+  /**
+   * @brief Marks this toolbar as the last editor in the splitter.
+   */
+  void ShowAsLastEditor(bool value);
+
 signals:
   void splitViewRequest();
   void closeViewRequest();
   void SelectProcedureRequest(oac_tree_gui::ProcedureItem* item);
+
+protected:
+  void paintEvent(QPaintEvent* event) override;
 
 private:
   void InsertStretch();
@@ -64,6 +80,7 @@ private:
   QToolButton* m_select_procedure_button{nullptr};
   QToolButton* m_split_horizontally_button{nullptr};
   QToolButton* m_close_current_view_button{nullptr};
+  bool m_show_as_active{false};
 };
 
 }  // namespace oac_tree_gui
