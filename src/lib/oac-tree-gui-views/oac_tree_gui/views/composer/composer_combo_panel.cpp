@@ -24,10 +24,14 @@
 #include "placeholder_widget.h"
 #include "procedure_composer_tab_widget.h"
 
+#include <oac_tree_gui/model/procedure_item.h>
+
 #include <QDebug>
 #include <QMouseEvent>
 #include <QStackedWidget>
 #include <QVBoxLayout>
+
+Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui
 {
