@@ -55,12 +55,27 @@ ComposerComboPanel::ComposerComboPanel(const ProceduresCallback& procedure_callb
   m_stacked_widget->addWidget(m_placeholder_widget);
   m_stacked_widget->addWidget(m_procedure_composer_widget);
 
-  m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(WidgetType::kPlaceholderWidget));
-
+  ShowWidget(WidgetType::kPlaceholderWidget);
   SetupConnections();
 }
 
 ComposerComboPanel::~ComposerComboPanel() = default;
+
+void ComposerComboPanel::SetProcedure(ProcedureItem* procedure_item)
+{
+  m_tool_bar->UpdateProcedureSelectionMenu(procedure_item);
+  OnSelectProcedureRequest(procedure_item);
+}
+
+void ComposerComboPanel::ShowAsActive(bool value)
+{
+  m_tool_bar->ShowAsActive(value);
+}
+
+void ComposerComboPanel::ShowAsLastEditor(bool value)
+{
+  m_tool_bar->ShowAsLastEditor(value);
+}
 
 void ComposerComboPanel::mousePressEvent(QMouseEvent* event)
 {
@@ -68,6 +83,10 @@ void ComposerComboPanel::mousePressEvent(QMouseEvent* event)
   {
     return;
   }
+
+  // Seems this is a robust way to set focus on mouse click without messing with focus stealing by
+  // the child widget.
+
   setFocus(Qt::MouseFocusReason);
   QWidget::mousePressEvent(event);
 }
@@ -105,10 +124,13 @@ void ComposerComboPanel::SetupConnections()
 void ComposerComboPanel::OnSelectProcedureRequest(ProcedureItem* item)
 {
   m_procedure_composer_widget->SetProcedure(item);
+  ShowWidget(item == nullptr ? WidgetType::kPlaceholderWidget
+                             : WidgetType::kProcedureComposerWidget);
+}
 
-  const auto index = static_cast<std::int32_t>(
-      item == nullptr ? WidgetType::kPlaceholderWidget : WidgetType::kProcedureComposerWidget);
-  m_stacked_widget->setCurrentIndex(index);
+void ComposerComboPanel::ShowWidget(WidgetType widget_type)
+{
+  m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(widget_type));
 }
 
 }  // namespace oac_tree_gui

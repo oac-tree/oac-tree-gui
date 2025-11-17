@@ -59,6 +59,23 @@ public:
                               QWidget* parent_widget = nullptr);
   ~ComposerComboPanel() override;
 
+  /**
+   * @brief Sets the procedure to be edited.
+   *
+   * This call will succeed only if current widget is in active mouse focus.
+   */
+  void SetProcedure(ProcedureItem* procedure_item);
+
+  /**
+   * @brief Marks this editor as active.
+   */
+  void ShowAsActive(bool value);
+
+  /**
+   * @brief Marks this editor as the last editor in the splitter.
+   */
+  void ShowAsLastEditor(bool value);
+
 signals:
   void splitViewRequest();
   void closeViewRequest();
@@ -71,6 +88,7 @@ protected:
 private:
   void SetupConnections();
   void OnSelectProcedureRequest(oac_tree_gui::ProcedureItem* item);
+  void ShowWidget(WidgetType widget_type);
 
   ComposerComboPanelToolBar* m_tool_bar{nullptr};
   QStackedWidget* m_stacked_widget{nullptr};

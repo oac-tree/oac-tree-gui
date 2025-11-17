@@ -62,6 +62,11 @@ public:
    */
   void ShowAsLastEditor(bool value);
 
+  /**
+   * @brief Updates the procedure selection menu to highlight the selected procedure.
+   */
+  void UpdateProcedureSelectionMenu(ProcedureItem* selected_procedure);
+
 signals:
   void splitViewRequest();
   void closeViewRequest();

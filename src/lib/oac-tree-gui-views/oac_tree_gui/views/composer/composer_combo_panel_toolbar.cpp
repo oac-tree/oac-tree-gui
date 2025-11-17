@@ -96,6 +96,20 @@ void ComposerComboPanelToolBar::ShowAsLastEditor(bool value)
   m_close_current_view_button->setDisabled(value);
 }
 
+void ComposerComboPanelToolBar::UpdateProcedureSelectionMenu(ProcedureItem *selected_procedure)
+{
+  // for the moment nothing to do rather then set proper text to button
+  if (selected_procedure)
+  {
+    m_select_procedure_button->setText(
+        QString::fromStdString(selected_procedure->GetDisplayName()));
+  }
+  else
+  {
+    m_select_procedure_button->setText(kNoProcedureSelected);
+  }
+}
+
 void ComposerComboPanelToolBar::paintEvent(QPaintEvent* event)
 {
   if (m_show_as_active)
