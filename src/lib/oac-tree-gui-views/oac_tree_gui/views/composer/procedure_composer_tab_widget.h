@@ -28,6 +28,8 @@ class QTabWidget;
 namespace oac_tree_gui
 {
 
+class ProcedureItem;
+
 class ProcedureComposerTabWidget : public QWidget
 {
   Q_OBJECT
@@ -35,6 +37,8 @@ class ProcedureComposerTabWidget : public QWidget
 public:
   explicit ProcedureComposerTabWidget(QWidget* parent_widget = nullptr);
   ~ProcedureComposerTabWidget() override;
+
+  void SetProcedure(ProcedureItem* procedure_item);
 
 private:
   QTabWidget* m_tab_widget{nullptr};

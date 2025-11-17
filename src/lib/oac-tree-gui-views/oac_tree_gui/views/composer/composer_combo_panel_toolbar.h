@@ -22,12 +22,21 @@
 #define OAC_TREE_GUI_VIEWS_COMPOSER_COMBO_PANEL_TOOLBAR_H_
 
 #include <QToolBar>
+#include <functional>
 
 class QComboBox;
 class QAction;
+class QMenu;
+
+namespace sup::gui
+{
+class ActionMenu;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
+
+class ProcedureItem;
 
 /**
  * @brief The ComposerComboPanelToolBar class contains a combo selector to switch between different
@@ -40,16 +49,25 @@ class ComposerComboPanelToolBar : public QToolBar
   Q_OBJECT
 
 public:
-  explicit ComposerComboPanelToolBar(QWidget* parent_widget = nullptr);
+  using ProceduresCallback = std::function<std::vector<ProcedureItem*>()>;
+
+  explicit ComposerComboPanelToolBar(const ProceduresCallback& procedure_callback,
+                                     QWidget* parent_widget = nullptr);
   ~ComposerComboPanelToolBar() override;
 
 signals:
   void splitViewRequest();
   void closeViewRequest();
+  void SelectProcedureRequest(oac_tree_gui::ProcedureItem* item);
 
 private:
   void InsertStretch();
+  std::unique_ptr<QMenu> CreateSelectProcedureMenu();
+  void OnAboutToShowMenu();
 
+  ProceduresCallback m_available_procedures;
+  std::unique_ptr<QMenu> m_select_procedure_menu;
+  sup::gui::ActionMenu* m_select_procedure_action{nullptr};
   QComboBox* m_context_selector{nullptr};
   QAction* m_split_horizontally_action{nullptr};
   QAction* m_close_current_view_action{nullptr};

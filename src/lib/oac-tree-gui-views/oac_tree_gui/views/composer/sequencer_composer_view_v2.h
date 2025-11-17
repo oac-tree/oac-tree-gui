@@ -45,7 +45,6 @@ class ComposerToolsPanel;
  * - a splittable area in the center with procedure editors
  * - optional extra sidebar on the right
  */
-
 class SequencerComposerViewV2 : public QWidget
 {
   Q_OBJECT

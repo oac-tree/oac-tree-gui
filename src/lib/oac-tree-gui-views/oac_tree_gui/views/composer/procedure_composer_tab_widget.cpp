@@ -42,4 +42,9 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(QWidget* parent_widget)
 
 ProcedureComposerTabWidget::~ProcedureComposerTabWidget() = default;
 
+void ProcedureComposerTabWidget::SetProcedure(ProcedureItem* procedure_item)
+{
+  (void)procedure_item;
+}
+
 }  // namespace oac_tree_gui
