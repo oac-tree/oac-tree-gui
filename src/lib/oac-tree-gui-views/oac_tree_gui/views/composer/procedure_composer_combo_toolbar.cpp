@@ -42,8 +42,8 @@ namespace
 constexpr auto kNoProcedureSelected = " < no procedure >";
 }
 
-ProcedureComposerComboToolBar::ProcedureComposerComboToolBar(const ProceduresCallback& procedure_callback,
-                                                     QWidget* parent_widget)
+ProcedureComposerComboToolBar::ProcedureComposerComboToolBar(
+    const ProceduresCallback& procedure_callback, QWidget* parent_widget)
     : QToolBar(parent_widget)
     , m_available_procedures(procedure_callback)
     , m_select_procedure_menu(CreateSelectProcedureMenu())
@@ -113,13 +113,19 @@ void ProcedureComposerComboToolBar::UpdateProcedureSelectionMenu(ProcedureItem* 
   }
 }
 
+QString ProcedureComposerComboToolBar::GetSelectedProcedureName() const
+{
+  return m_select_procedure_button->text();
+}
+
 void ProcedureComposerComboToolBar::paintEvent(QPaintEvent* event)
 {
+  static const QColor kMefiumGreen(39, 189, 114);  // #27bd72
   if (m_show_as_active)
   {
     // thin horizontal green line at the bottom
     QPainter painter(this);
-    QPen pen(QColor(39, 189, 114));  // #27bd72
+    QPen pen(kMefiumGreen);
     pen.setWidth(2);
     painter.setPen(pen);
     painter.drawLine(0, height() - 1, width(), height() - 1);
@@ -139,7 +145,8 @@ std::unique_ptr<QMenu> ProcedureComposerComboToolBar::CreateSelectProcedureMenu(
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
-  connect(result.get(), &QMenu::aboutToShow, this, &ProcedureComposerComboToolBar::OnAboutToShowMenu);
+  connect(result.get(), &QMenu::aboutToShow, this,
+          &ProcedureComposerComboToolBar::OnAboutToShowMenu);
   return result;
 }
 

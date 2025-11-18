@@ -22,12 +22,22 @@
 
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/views/composer/procedure_composer_combo_toolbar.h>
+
+#include <mvvm/standarditems/container_item.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <QStackedWidget>
+
 namespace oac_tree_gui::test
 {
+
+namespace
+{
+constexpr auto kNoProcedureSelected = " < no procedure >";
+}
 
 /**
  * @brief Tests for ProcedureComposerComboPanel class.
@@ -35,8 +45,88 @@ namespace oac_tree_gui::test
 class ProcedureComposerComboPanelTest : public ::testing::Test
 {
 public:
+  SequencerModel m_model;
 };
 
-TEST_F(ProcedureComposerComboPanelTest, InitialState) {}
+TEST_F(ProcedureComposerComboPanelTest, InitialState)
+{
+  const ProcedureComposerComboPanel widget(&m_model);
+  EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
+
+  auto stacked_widget = widget.findChild<QStackedWidget*>();
+  ASSERT_NE(stacked_widget, nullptr);
+  EXPECT_EQ(stacked_widget->currentIndex(),
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+
+  auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
+  ASSERT_NE(toolbar, nullptr);
+  EXPECT_EQ(toolbar->GetSelectedProcedureName(), QString(kNoProcedureSelected));
+}
+
+TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
+{
+  ProcedureComposerComboPanel widget(&m_model);
+
+  auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  procedure->SetDisplayName("Test procedure");
+
+  widget.SetProcedure(procedure);
+  EXPECT_EQ(widget.GetCurrentProcedure(), procedure);
+
+  auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
+  ASSERT_NE(toolbar, nullptr);
+  EXPECT_EQ(toolbar->GetSelectedProcedureName(), QString("Test procedure"));
+
+  auto stacked_widget = widget.findChild<QStackedWidget*>();
+  ASSERT_NE(stacked_widget, nullptr);
+  EXPECT_EQ(stacked_widget->currentIndex(),
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kComposerWidget));
+
+  widget.SetProcedure(nullptr);
+  EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
+
+  EXPECT_EQ(stacked_widget->currentIndex(),
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+  EXPECT_EQ(toolbar->GetSelectedProcedureName(), QString(kNoProcedureSelected));
+}
+
+TEST_F(ProcedureComposerComboPanelTest, ChangeToPlaceholderWidgetOnProcedureDeletion)
+{
+  ProcedureComposerComboPanel widget(&m_model);
+
+  auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  procedure->SetDisplayName("Test procedure");
+
+  widget.SetProcedure(procedure);
+  EXPECT_EQ(widget.GetCurrentProcedure(), procedure);
+
+  auto stacked_widget = widget.findChild<QStackedWidget*>();
+  ASSERT_NE(stacked_widget, nullptr);
+  EXPECT_EQ(stacked_widget->currentIndex(),
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kComposerWidget));
+
+  m_model.RemoveItem(procedure);
+  EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
+  EXPECT_EQ(stacked_widget->currentIndex(),
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+}
+
+TEST_F(ProcedureComposerComboPanelTest, ChangeOfToolbarOnProcedureRename)
+{
+  ProcedureComposerComboPanel widget(&m_model);
+
+  auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  procedure->SetDisplayName("Test procedure");
+
+  widget.SetProcedure(procedure);
+  EXPECT_EQ(widget.GetCurrentProcedure(), procedure);
+
+  auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
+  ASSERT_NE(toolbar, nullptr);
+  EXPECT_EQ(toolbar->GetSelectedProcedureName(), QString("Test procedure"));
+
+  procedure->SetDisplayName("Renamed procedure");
+  EXPECT_EQ(toolbar->GetSelectedProcedureName(), QString("Renamed procedure"));
+}
 
 }  // namespace oac_tree_gui::test

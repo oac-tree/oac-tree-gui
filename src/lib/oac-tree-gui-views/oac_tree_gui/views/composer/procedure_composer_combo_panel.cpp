@@ -25,6 +25,7 @@
 #include "procedure_composer_tab_widget.h"
 
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/signals/model_listener.h>
@@ -38,13 +39,14 @@ Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 namespace oac_tree_gui
 {
 
-ProcedureComposerComboPanel::ProcedureComposerComboPanel(
-    const ProceduresCallback& procedure_callback, QWidget* parent_widget)
+ProcedureComposerComboPanel::ProcedureComposerComboPanel(SequencerModel* model,
+                                                         QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_tool_bar(new ProcedureComposerComboToolBar(procedure_callback))
+    , m_tool_bar(new ProcedureComposerComboToolBar([this]() { return m_model->GetProcedures(); }))
     , m_stacked_widget(new QStackedWidget)
     , m_placeholder_widget(new PlaceholderWidget("ABC"))
     , m_procedure_composer_widget(new ProcedureComposerTabWidget)
+    , m_model(model)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -57,8 +59,9 @@ ProcedureComposerComboPanel::ProcedureComposerComboPanel(
   m_stacked_widget->addWidget(m_placeholder_widget);
   m_stacked_widget->addWidget(m_procedure_composer_widget);
 
-  ShowWidget(WidgetType::kPlaceholderWidget);
+  ShowWidgetType(WidgetType::kPlaceholderWidget);
   SetupConnections();
+  SetupModelListener();
 }
 
 ProcedureComposerComboPanel::~ProcedureComposerComboPanel() = default;
@@ -66,7 +69,12 @@ ProcedureComposerComboPanel::~ProcedureComposerComboPanel() = default;
 void ProcedureComposerComboPanel::SetProcedure(ProcedureItem* procedure_item)
 {
   m_tool_bar->UpdateProcedureSelectionMenu(procedure_item);
-  OnSelectProcedureRequest(procedure_item);
+  SetProcedureIntern(procedure_item);
+}
+
+ProcedureItem* ProcedureComposerComboPanel::GetCurrentProcedure() const
+{
+  return m_current_procedure_item;
 }
 
 void ProcedureComposerComboPanel::ShowAsActive(bool value)
@@ -83,8 +91,9 @@ void ProcedureComposerComboPanel::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::LeftButton)
   {
-    // I didn't find a reliable way to track focus events. We pretend every click in a widget
-    // denotes the user interest in that widget, notify the manager, and let him handle the rest.
+    // Here we use a simple yet reliable way to track focus while user is switching between panels.
+    // We report every click as a kind of focus request to WidgetFocusHandler. He will perform
+    // necessary checks and updates.
     emit panelFocusRequest();
   }
 
@@ -98,37 +107,12 @@ void ProcedureComposerComboPanel::SetupConnections()
   connect(m_tool_bar, &ProcedureComposerComboToolBar::closeViewRequest, this,
           &ProcedureComposerComboPanel::closeViewRequest);
   connect(m_tool_bar, &ProcedureComposerComboToolBar::SelectProcedureRequest, this,
-          &ProcedureComposerComboPanel::OnSelectProcedureRequest);
+          &ProcedureComposerComboPanel::SetProcedureIntern);
 }
 
-void ProcedureComposerComboPanel::OnSelectProcedureRequest(ProcedureItem* item)
+void ProcedureComposerComboPanel::SetupModelListener()
 {
-  if (m_current_procedure_item == item)
-  {
-    return;
-  }
-
-  m_current_procedure_item = item;
-
-  m_procedure_composer_widget->SetProcedure(m_current_procedure_item);
-  ShowWidget(item == nullptr ? WidgetType::kPlaceholderWidget : WidgetType::kComposerWidget);
-  InitModelListener();
-}
-
-void ProcedureComposerComboPanel::ShowWidget(WidgetType widget_type)
-{
-  m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(widget_type));
-}
-
-void ProcedureComposerComboPanel::InitModelListener()
-{
-  if (!m_current_procedure_item)
-  {
-    m_listener.reset();
-    return;
-  }
-
-  m_listener = std::make_unique<mvvm::ModelListener>(m_current_procedure_item->GetModel());
+  m_listener = std::make_unique<mvvm::ModelListener>(m_model);
 
   auto on_data_changed = [this](const mvvm::DataChangedEvent& event)
   {
@@ -150,6 +134,24 @@ void ProcedureComposerComboPanel::InitModelListener()
     }
   };
   m_listener->Connect<mvvm::AboutToRemoveItemEvent>(on_about_to_remove_item);
+}
+
+void ProcedureComposerComboPanel::SetProcedureIntern(ProcedureItem* item)
+{
+  if (m_current_procedure_item == item)
+  {
+    return;
+  }
+
+  m_current_procedure_item = item;
+
+  m_procedure_composer_widget->SetProcedure(m_current_procedure_item);
+  ShowWidgetType(item == nullptr ? WidgetType::kPlaceholderWidget : WidgetType::kComposerWidget);
+}
+
+void ProcedureComposerComboPanel::ShowWidgetType(WidgetType widget_type)
+{
+  m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(widget_type));
 }
 
 }  // namespace oac_tree_gui

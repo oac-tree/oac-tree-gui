@@ -67,6 +67,11 @@ public:
    */
   void UpdateProcedureSelectionMenu(ProcedureItem* selected_procedure);
 
+  /**
+   * @brief Returns a procedure name selected in a toolbar combo.
+   */
+  QString GetSelectedProcedureName() const;
+
 signals:
   void splitViewRequest();
   void closeViewRequest();

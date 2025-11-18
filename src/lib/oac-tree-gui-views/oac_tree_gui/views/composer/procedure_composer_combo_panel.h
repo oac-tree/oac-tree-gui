@@ -38,6 +38,7 @@ class ProcedureComposerComboToolBar;
 class ProcedureComposerTabWidget;
 class PlaceholderWidget;
 class ProcedureItem;
+class SequencerModel;
 
 /**
  * @brief The ProcedureComposerComboPanel class contains a complex procedure editor and allows
@@ -62,8 +63,7 @@ public:
     kComposerWidget
   };
 
-  explicit ProcedureComposerComboPanel(const ProceduresCallback& procedure_callback,
-                                       QWidget* parent_widget = nullptr);
+  explicit ProcedureComposerComboPanel(SequencerModel* model, QWidget* parent_widget = nullptr);
 
   ~ProcedureComposerComboPanel() override;
 
@@ -72,13 +72,17 @@ public:
    */
   void SetProcedure(ProcedureItem* procedure_item);
 
+  /** @brief Returns currently edited procedure.
+   */
+  ProcedureItem* GetCurrentProcedure() const;
+
   /**
-   * @brief Marks this editor as active.
+   * @brief Shows (paints) this editor as active.
    */
   void ShowAsActive(bool value);
 
   /**
-   * @brief Marks this editor as the last editor in the splitter.
+   * @brief Shows (paints) this editor as the last editor in the splitter.
    */
   void ShowAsLastEditor(bool value);
 
@@ -92,9 +96,18 @@ protected:
 
 private:
   void SetupConnections();
-  void OnSelectProcedureRequest(oac_tree_gui::ProcedureItem* item);
-  void ShowWidget(WidgetType widget_type);
-  void InitModelListener();
+
+  /**
+   * @brief Setup model listener to track when procedure us renamed, or deleted.
+   */
+  void SetupModelListener();
+
+  /**
+   * @brief Shows given widget type in the stacked widget.
+   */
+  void ShowWidgetType(WidgetType widget_type);
+
+  void SetProcedureIntern(oac_tree_gui::ProcedureItem* item);
 
   ProcedureComposerComboToolBar* m_tool_bar{nullptr};
   QStackedWidget* m_stacked_widget{nullptr};
@@ -102,6 +115,8 @@ private:
   ProcedureComposerTabWidget* m_procedure_composer_widget{nullptr};
   std::unique_ptr<mvvm::ModelListener> m_listener;
   ProcedureItem* m_current_procedure_item{nullptr};
+
+  SequencerModel* m_model{nullptr};
 };
 
 }  // namespace oac_tree_gui

@@ -50,8 +50,6 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
   m_splitter->addWidget(m_composer_tools_panel);
   m_splitter->addWidget(m_procedure_editor_area_widget);
   m_splitter->setSizes({200, 400});
-
-  m_procedure_editor_area_widget->InitWidget();
 }
 
 SequencerComposerViewV2::~SequencerComposerViewV2() = default;
@@ -60,13 +58,12 @@ void SequencerComposerViewV2::SetModel(SequencerModel* model)
 {
   m_composer_tools_panel->SetModel(model);
   m_model = model;
+  m_procedure_editor_area_widget->InitWidget();
 }
 
 std::unique_ptr<QWidget> SequencerComposerViewV2::CreateProcedureEditor()
 {
-  auto get_procedures_callback = [this]() { return m_model->GetProcedures(); };
-  auto result = std::make_unique<ProcedureComposerComboPanel>(get_procedures_callback);
-  auto result_ptr = result.get();
+  auto result = std::make_unique<ProcedureComposerComboPanel>(m_model);
 
   auto on_add_panel = [this]()
   {
@@ -85,14 +82,12 @@ std::unique_ptr<QWidget> SequencerComposerViewV2::CreateProcedureEditor()
 
   auto on_focus_request = [this]()
   {
-    qDebug() << "SequencerComposerViewV2::on_focus_request" << (this);
-
     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
     m_focus_handler->SetInFocus(sending_panel);
   };
   connect(result.get(), &ProcedureComposerComboPanel::panelFocusRequest, this, on_focus_request);
 
-  m_focus_handler->AddWidget(result_ptr);
+  m_focus_handler->AddWidget(result.get());
   return result;
 }
 
