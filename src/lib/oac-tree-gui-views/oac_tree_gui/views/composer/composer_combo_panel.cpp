@@ -26,7 +26,6 @@
 
 #include <oac_tree_gui/model/procedure_item.h>
 
-#include <QDebug>
 #include <QMouseEvent>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -79,37 +78,14 @@ void ComposerComboPanel::ShowAsLastEditor(bool value)
 
 void ComposerComboPanel::mousePressEvent(QMouseEvent* event)
 {
-  if (event->button() != Qt::LeftButton)
+  if (event->button() == Qt::LeftButton)
   {
-    return;
-  }
-
-  // Seems this is a robust way to set focus on mouse click without messing with focus stealing by
-  // the child widget.
-
-  setFocus(Qt::MouseFocusReason);
-  QWidget::mousePressEvent(event);
-}
-
-void ComposerComboPanel::focusInEvent(QFocusEvent* event)
-{
-  qDebug() << "focusInEvent" << (this) << event->reason();
-  if (event->reason() == Qt::MouseFocusReason)
-  {
+    // I didn't find a reliable way to track focus events. We pretend every click in a widget
+    // denotes the user interest in that widget, notify the manager, and let him handle the rest.
     emit panelFocusRequest();
-    // m_tool_bar->ShowAsActive(true);
   }
-  QWidget::focusInEvent(event);
-}
 
-void ComposerComboPanel::focusOutEvent(QFocusEvent* event)
-{
-  qDebug() << "focusOutEvent" << (this) << event->reason();
-  if (event->reason() == Qt::MouseFocusReason)
-  {
-    // m_tool_bar->ShowAsActive(false);
-  }
-  QWidget::focusOutEvent(event);
+  QWidget::mousePressEvent(event);
 }
 
 void ComposerComboPanel::SetupConnections()
