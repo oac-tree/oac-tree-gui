@@ -21,6 +21,7 @@
 #ifndef OAC_TREE_GUI_COMPOSER_WIDGET_FOCUS_HANDLER_H_
 #define OAC_TREE_GUI_COMPOSER_WIDGET_FOCUS_HANDLER_H_
 
+#include <QDebug>
 #include <algorithm>
 #include <vector>
 
@@ -122,20 +123,21 @@ inline void WidgetFocusHandler<WidgetT>::RemoveWidget(WidgetT* widget)
   }
   m_editors.erase(iter);
 
-  if (m_editors.size() == 1)
-  {
-    m_editors.at(0)->ShowAsLastEditor(true);
-  }
-
   if (!m_editors.empty())
   {
     SetInFocus(m_editors.back());
+  }
+
+  if (m_editors.size() == 1)
+  {
+    m_editors.at(0)->ShowAsLastEditor(true);
   }
 }
 
 template <typename WidgetT>
 inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
 {
+  qDebug() << "WidgetFocusHandler<WidgetT>::SetInFocus 1.1" << focus;
   if (m_in_focus == focus)
   {
     return;
@@ -144,6 +146,7 @@ inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
   // notify previous focus object
   if (m_in_focus)
   {
+    qDebug() << "WidgetFocusHandler<WidgetT>::SetInFocus 1.2";
     m_in_focus->ShowAsActive(false);
   }
 
@@ -152,6 +155,7 @@ inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
   // notify new focus object
   if (m_in_focus)
   {
+    qDebug() << "WidgetFocusHandler<WidgetT>::SetInFocus 1.3";
     m_in_focus->ShowAsActive(true);
   }
 }

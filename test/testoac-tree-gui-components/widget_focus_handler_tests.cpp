@@ -66,8 +66,11 @@ TEST_F(WidgetFocusHandlerTest, AddWidgetAndRemove)
   WidgetFocusHandler<MockEditor> focus_manager;
   mock_editor_t editor1;
 
-  EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+  }
 
   focus_manager.AddWidget(&editor1);
   EXPECT_EQ(focus_manager.GetCount(), 1U);
@@ -85,8 +88,11 @@ TEST_F(WidgetFocusHandlerTest, AddTwoWidgetsAndRemove)
   mock_editor_t editor2;
 
   // adding first editor
-  EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+  }
 
   focus_manager.AddWidget(&editor1);
   EXPECT_EQ(focus_manager.GetCount(), 1U);
@@ -98,19 +104,25 @@ TEST_F(WidgetFocusHandlerTest, AddTwoWidgetsAndRemove)
   EXPECT_EQ(focus_manager.GetInFocus(), &editor1);
 
   // adding the second editor
-  EXPECT_CALL(editor1, ShowAsActive(false)).Times(1);
-  EXPECT_CALL(editor1, ShowAsLastEditor(false)).Times(1);
-  EXPECT_CALL(editor2, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(false)).Times(1);
+    EXPECT_CALL(editor2, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(false)).Times(1);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+  }
 
   focus_manager.AddWidget(&editor2);
   EXPECT_EQ(focus_manager.GetCount(), 2U);
   EXPECT_EQ(focus_manager.GetInFocus(), &editor2);
 
-  EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
-  EXPECT_CALL(editor2, ShowAsActive(::testing::_)).Times(0);
-  EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+    EXPECT_CALL(editor2, ShowAsActive(::testing::_)).Times(0);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+  }
 
   focus_manager.RemoveWidget(&editor2);
   EXPECT_EQ(focus_manager.GetInFocus(), &editor1);
@@ -128,54 +140,69 @@ TEST_F(WidgetFocusHandlerTest, AddThreeWidgetsAndChangeFocus)
   mock_editor_t editor3;
 
   // adding first editor
-  EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+  }
 
   focus_manager.AddWidget(&editor1);
   EXPECT_EQ(focus_manager.GetCount(), 1U);
   EXPECT_EQ(focus_manager.GetInFocus(), &editor1);
 
   // adding the second editor
-  EXPECT_CALL(editor1, ShowAsActive(false)).Times(1);
-  EXPECT_CALL(editor1, ShowAsLastEditor(false)).Times(1);
-  EXPECT_CALL(editor2, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(false)).Times(1);
+    EXPECT_CALL(editor2, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(false)).Times(1);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+  }
 
   focus_manager.AddWidget(&editor2);
   EXPECT_EQ(focus_manager.GetCount(), 2U);
   EXPECT_EQ(focus_manager.GetInFocus(), &editor2);
 
   // adding third editor
-  EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
-  EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
-  EXPECT_CALL(editor2, ShowAsActive(false)).Times(1);
-  EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
-  EXPECT_CALL(editor3, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
+    EXPECT_CALL(editor2, ShowAsActive(false)).Times(1);
+    EXPECT_CALL(editor3, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
+  }
 
   focus_manager.AddWidget(&editor3);
   EXPECT_EQ(focus_manager.GetCount(), 3U);
   EXPECT_EQ(focus_manager.GetInFocus(), &editor3);
 
   // set middle widget in focus
-  EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
-  EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
-  EXPECT_CALL(editor2, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
-  EXPECT_CALL(editor3, ShowAsActive(false)).Times(1);
-  EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
+    EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor3, ShowAsActive(false)).Times(1);
+    EXPECT_CALL(editor2, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
+  }
   focus_manager.SetInFocus(&editor2);
 
   // setting same focus is no-op (no extra callbacks)
   focus_manager.SetInFocus(&editor2);
 
   // removing second widget
-  EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
-  EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
-  EXPECT_CALL(editor2, ShowAsActive(::testing::_)).Times(0);
-  EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
-  EXPECT_CALL(editor3, ShowAsActive(true)).Times(1);
-  EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
+    EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor2, ShowAsActive(::testing::_)).Times(0);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor3, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
+  }
   focus_manager.RemoveWidget(&editor2);
 }
 
