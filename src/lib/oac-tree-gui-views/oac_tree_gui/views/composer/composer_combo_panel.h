@@ -77,6 +77,7 @@ public:
 signals:
   void splitViewRequest();
   void closeViewRequest();
+  void panelFocusRequest();
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;
