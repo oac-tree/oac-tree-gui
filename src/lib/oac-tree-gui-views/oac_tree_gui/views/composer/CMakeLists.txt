@@ -29,6 +29,8 @@ target_sources(${library_name} PRIVATE
   procedure_composer_combo_toolbar.h
   procedure_composer_tab_widget.cpp
   procedure_composer_tab_widget.h
+  procedure_splittable_editor_widget.cpp
+  procedure_splittable_editor_widget.h
   procedure_list_actions.cpp
   procedure_list_actions.h
   procedure_list_widget.cpp
