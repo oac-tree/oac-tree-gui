@@ -41,9 +41,6 @@ SplittableWidget::SplittableWidget(CreateWidgetCallback callback, QWidget* paren
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_splitter);
-
-  auto initial_widget = m_callback();
-  m_splitter->addWidget(initial_widget.release());
 }
 
 SplittableWidget::~SplittableWidget() = default;
@@ -73,10 +70,10 @@ void SplittableWidget::CloseWidget(QWidget* widget_to_close)
   widget_to_close->deleteLater();
 }
 
-void SplittableWidget::mousePressEvent(QMouseEvent* event)
+void SplittableWidget::InitWidget()
 {
-  qDebug() << "SplittableWidget::mousePressEvent" << (this);
-  QWidget::mousePressEvent(event);
+  auto initial_widget = m_callback();
+  m_splitter->addWidget(initial_widget.release());
 }
 
 }  // namespace oac_tree_gui

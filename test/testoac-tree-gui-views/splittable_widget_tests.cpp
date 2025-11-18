@@ -46,6 +46,7 @@ TEST_F(SplittableWidgetTest, AddWidget)
       .WillOnce(::testing::Return(::testing::ByMove(std::move(test_widget0))));
 
   SplittableWidget widget(m_mock_widget.AsStdFunction());
+  widget.InitWidget();
   EXPECT_NE(widget.GetSplitter(), nullptr);
 
   EXPECT_EQ(widget.GetSplitter()->count(), 1);

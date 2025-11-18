@@ -62,8 +62,7 @@ public:
    */
   static void CloseWidget(QWidget* widget_to_close);
 
-protected:
-  void mousePressEvent(QMouseEvent* event) override;
+  void InitWidget();
 
 private:
   CreateWidgetCallback m_callback;
