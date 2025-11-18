@@ -37,7 +37,7 @@ class SplittableWidget;
 class SequencerModel;
 class ComposerToolsPanel;
 class SequencerModel;
-class ComposerComboPanel;
+class ProcedureComposerComboPanel;
 
 template <typename WidgetT>
 class WidgetFocusHandler;
@@ -76,7 +76,7 @@ private:
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
   SplittableWidget* m_procedure_editor_area_widget{nullptr};
   SequencerModel* m_model{nullptr};
-  std::unique_ptr<WidgetFocusHandler<ComposerComboPanel>> m_focus_handler;
+  std::unique_ptr<WidgetFocusHandler<ProcedureComposerComboPanel>> m_focus_handler;
 };
 
 }  // namespace oac_tree_gui

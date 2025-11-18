@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_COMBO_PANEL_TOOLBAR_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_COMBO_PANEL_TOOLBAR_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_TOOLBAR_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_TOOLBAR_H_
 
 #include <QToolBar>
 #include <functional>
@@ -36,18 +36,18 @@ class ProcedureItem;
  * @brief The ComposerComboPanelToolBar class contains a combo selector to switch between different
  * documents, and control elements to split/close views.
  *
- * It is a part of  ComposerComboPanel.
+ * It is a part of  ProcedureComposerComboPanel.
  */
-class ComposerComboPanelToolBar : public QToolBar
+class ProcedureComposerComboToolBar : public QToolBar
 {
   Q_OBJECT
 
 public:
   using ProceduresCallback = std::function<std::vector<ProcedureItem*>()>;
 
-  explicit ComposerComboPanelToolBar(const ProceduresCallback& procedure_callback,
-                                     QWidget* parent_widget = nullptr);
-  ~ComposerComboPanelToolBar() override;
+  explicit ProcedureComposerComboToolBar(const ProceduresCallback& procedure_callback,
+                                              QWidget* parent_widget = nullptr);
+  ~ProcedureComposerComboToolBar() override;
 
   /**
    * @brief Shows the toolbar as active/inactive.
@@ -90,4 +90,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_COMBO_PANEL_TOOLBAR_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_TOOLBAR_H_

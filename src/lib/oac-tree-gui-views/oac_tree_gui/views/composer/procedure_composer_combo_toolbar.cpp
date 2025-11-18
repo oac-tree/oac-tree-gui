@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "composer_combo_panel_toolbar.h"
+#include "procedure_composer_combo_toolbar.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -42,7 +42,7 @@ namespace
 constexpr auto kNoProcedureSelected = " < no procedure >";
 }
 
-ComposerComboPanelToolBar::ComposerComboPanelToolBar(const ProceduresCallback& procedure_callback,
+ProcedureComposerComboToolBar::ProcedureComposerComboToolBar(const ProceduresCallback& procedure_callback,
                                                      QWidget* parent_widget)
     : QToolBar(parent_widget)
     , m_available_procedures(procedure_callback)
@@ -71,26 +71,26 @@ ComposerComboPanelToolBar::ComposerComboPanelToolBar(const ProceduresCallback& p
   m_split_horizontally_button->setIcon(FindIcon("view-split-left-right-16"));
   m_split_horizontally_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   connect(m_split_horizontally_button, &QToolButton::clicked, this,
-          &ComposerComboPanelToolBar::splitViewRequest);
+          &ProcedureComposerComboToolBar::splitViewRequest);
   addWidget(m_split_horizontally_button);
 
   m_close_current_view_button->setToolTip("Close this view");
   m_close_current_view_button->setIcon(FindIcon("dialog-close-16"));
   m_close_current_view_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   connect(m_close_current_view_button, &QToolButton::clicked, this,
-          &ComposerComboPanelToolBar::closeViewRequest);
+          &ProcedureComposerComboToolBar::closeViewRequest);
   addWidget(m_close_current_view_button);
 }
 
-ComposerComboPanelToolBar::~ComposerComboPanelToolBar() = default;
+ProcedureComposerComboToolBar::~ProcedureComposerComboToolBar() = default;
 
-void ComposerComboPanelToolBar::ShowAsActive(bool value)
+void ProcedureComposerComboToolBar::ShowAsActive(bool value)
 {
   m_show_as_active = value;
   update();
 }
 
-void ComposerComboPanelToolBar::ShowAsLastEditor(bool value)
+void ProcedureComposerComboToolBar::ShowAsLastEditor(bool value)
 {
   // we don't want to allow closing the last editor in the splitter
   m_close_current_view_button->setDisabled(value);
@@ -99,7 +99,7 @@ void ComposerComboPanelToolBar::ShowAsLastEditor(bool value)
   ShowAsActive(false);
 }
 
-void ComposerComboPanelToolBar::UpdateProcedureSelectionMenu(ProcedureItem* selected_procedure)
+void ProcedureComposerComboToolBar::UpdateProcedureSelectionMenu(ProcedureItem* selected_procedure)
 {
   // for the moment nothing to do rather then set proper text to button
   if (selected_procedure)
@@ -113,7 +113,7 @@ void ComposerComboPanelToolBar::UpdateProcedureSelectionMenu(ProcedureItem* sele
   }
 }
 
-void ComposerComboPanelToolBar::paintEvent(QPaintEvent* event)
+void ProcedureComposerComboToolBar::paintEvent(QPaintEvent* event)
 {
   if (m_show_as_active)
   {
@@ -128,22 +128,22 @@ void ComposerComboPanelToolBar::paintEvent(QPaintEvent* event)
   QToolBar::paintEvent(event);
 }
 
-void ComposerComboPanelToolBar::InsertStretch()
+void ProcedureComposerComboToolBar::InsertStretch()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   addWidget(empty);
 }
 
-std::unique_ptr<QMenu> ComposerComboPanelToolBar::CreateSelectProcedureMenu()
+std::unique_ptr<QMenu> ProcedureComposerComboToolBar::CreateSelectProcedureMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
-  connect(result.get(), &QMenu::aboutToShow, this, &ComposerComboPanelToolBar::OnAboutToShowMenu);
+  connect(result.get(), &QMenu::aboutToShow, this, &ProcedureComposerComboToolBar::OnAboutToShowMenu);
   return result;
 }
 
-void ComposerComboPanelToolBar::OnAboutToShowMenu()
+void ProcedureComposerComboToolBar::OnAboutToShowMenu()
 {
   if (!m_available_procedures)
   {

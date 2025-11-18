@@ -18,10 +18,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "composer_combo_panel.h"
+#include "procedure_composer_combo_panel.h"
 
-#include "composer_combo_panel_toolbar.h"
 #include "placeholder_widget.h"
+#include "procedure_composer_combo_toolbar.h"
 #include "procedure_composer_tab_widget.h"
 
 #include <oac_tree_gui/model/procedure_item.h>
@@ -38,10 +38,10 @@ Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 namespace oac_tree_gui
 {
 
-ComposerComboPanel::ComposerComboPanel(const ProceduresCallback& procedure_callback,
-                                       QWidget* parent_widget)
+ProcedureComposerComboPanel::ProcedureComposerComboPanel(
+    const ProceduresCallback& procedure_callback, QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_tool_bar(new ComposerComboPanelToolBar(procedure_callback))
+    , m_tool_bar(new ProcedureComposerComboToolBar(procedure_callback))
     , m_stacked_widget(new QStackedWidget)
     , m_placeholder_widget(new PlaceholderWidget("ABC"))
     , m_procedure_composer_widget(new ProcedureComposerTabWidget)
@@ -61,25 +61,25 @@ ComposerComboPanel::ComposerComboPanel(const ProceduresCallback& procedure_callb
   SetupConnections();
 }
 
-ComposerComboPanel::~ComposerComboPanel() = default;
+ProcedureComposerComboPanel::~ProcedureComposerComboPanel() = default;
 
-void ComposerComboPanel::SetProcedure(ProcedureItem* procedure_item)
+void ProcedureComposerComboPanel::SetProcedure(ProcedureItem* procedure_item)
 {
   m_tool_bar->UpdateProcedureSelectionMenu(procedure_item);
   OnSelectProcedureRequest(procedure_item);
 }
 
-void ComposerComboPanel::ShowAsActive(bool value)
+void ProcedureComposerComboPanel::ShowAsActive(bool value)
 {
   m_tool_bar->ShowAsActive(value);
 }
 
-void ComposerComboPanel::ShowAsLastEditor(bool value)
+void ProcedureComposerComboPanel::ShowAsLastEditor(bool value)
 {
   m_tool_bar->ShowAsLastEditor(value);
 }
 
-void ComposerComboPanel::mousePressEvent(QMouseEvent* event)
+void ProcedureComposerComboPanel::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::LeftButton)
   {
@@ -91,17 +91,17 @@ void ComposerComboPanel::mousePressEvent(QMouseEvent* event)
   QWidget::mousePressEvent(event);
 }
 
-void ComposerComboPanel::SetupConnections()
+void ProcedureComposerComboPanel::SetupConnections()
 {
-  connect(m_tool_bar, &ComposerComboPanelToolBar::splitViewRequest, this,
-          &ComposerComboPanel::splitViewRequest);
-  connect(m_tool_bar, &ComposerComboPanelToolBar::closeViewRequest, this,
-          &ComposerComboPanel::closeViewRequest);
-  connect(m_tool_bar, &ComposerComboPanelToolBar::SelectProcedureRequest, this,
-          &ComposerComboPanel::OnSelectProcedureRequest);
+  connect(m_tool_bar, &ProcedureComposerComboToolBar::splitViewRequest, this,
+          &ProcedureComposerComboPanel::splitViewRequest);
+  connect(m_tool_bar, &ProcedureComposerComboToolBar::closeViewRequest, this,
+          &ProcedureComposerComboPanel::closeViewRequest);
+  connect(m_tool_bar, &ProcedureComposerComboToolBar::SelectProcedureRequest, this,
+          &ProcedureComposerComboPanel::OnSelectProcedureRequest);
 }
 
-void ComposerComboPanel::OnSelectProcedureRequest(ProcedureItem* item)
+void ProcedureComposerComboPanel::OnSelectProcedureRequest(ProcedureItem* item)
 {
   if (m_current_procedure_item == item)
   {
@@ -111,17 +111,16 @@ void ComposerComboPanel::OnSelectProcedureRequest(ProcedureItem* item)
   m_current_procedure_item = item;
 
   m_procedure_composer_widget->SetProcedure(m_current_procedure_item);
-  ShowWidget(item == nullptr ? WidgetType::kPlaceholderWidget
-                             : WidgetType::kProcedureComposerWidget);
+  ShowWidget(item == nullptr ? WidgetType::kPlaceholderWidget : WidgetType::kComposerWidget);
   InitModelListener();
 }
 
-void ComposerComboPanel::ShowWidget(WidgetType widget_type)
+void ProcedureComposerComboPanel::ShowWidget(WidgetType widget_type)
 {
   m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(widget_type));
 }
 
-void ComposerComboPanel::InitModelListener()
+void ProcedureComposerComboPanel::InitModelListener()
 {
   if (!m_current_procedure_item)
   {

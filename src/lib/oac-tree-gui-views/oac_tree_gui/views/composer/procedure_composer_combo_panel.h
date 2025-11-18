@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_COMBO_PANEL_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_COMBO_PANEL_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_PANEL_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_PANEL_H_
 
 #include <QWidget>
 #include <functional>
@@ -34,14 +34,14 @@ class ModelListener;
 namespace oac_tree_gui
 {
 
-class ComposerComboPanelToolBar;
+class ProcedureComposerComboToolBar;
 class ProcedureComposerTabWidget;
 class PlaceholderWidget;
 class ProcedureItem;
 
 /**
- * @brief The ComposerComboPanel class contains a complex procedure editor and allows switching
- * between editing different opened procedures.
+ * @brief The ProcedureComposerComboPanel class contains a complex procedure editor and allows
+ * switching between editing different opened procedures.
  *
  * The widget contains
  * - toolbar with a combo selector to select between various procedures
@@ -49,7 +49,7 @@ class ProcedureItem;
  * - an instance of complex procedure editor (ProcedureComposerTabWidget)
  * - a placeholder to show when no procedure is opened.
  */
-class ComposerComboPanel : public QWidget
+class ProcedureComposerComboPanel : public QWidget
 {
   Q_OBJECT
 
@@ -59,12 +59,13 @@ public:
   enum class WidgetType : std::uint8_t
   {
     kPlaceholderWidget,
-    kProcedureComposerWidget
+    kComposerWidget
   };
 
-  explicit ComposerComboPanel(const ProceduresCallback& procedure_callback,
-                              QWidget* parent_widget = nullptr);
-  ~ComposerComboPanel() override;
+  explicit ProcedureComposerComboPanel(const ProceduresCallback& procedure_callback,
+                                       QWidget* parent_widget = nullptr);
+
+  ~ProcedureComposerComboPanel() override;
 
   /**
    * @brief Sets the procedure to be edited.
@@ -95,7 +96,7 @@ private:
   void ShowWidget(WidgetType widget_type);
   void InitModelListener();
 
-  ComposerComboPanelToolBar* m_tool_bar{nullptr};
+  ProcedureComposerComboToolBar* m_tool_bar{nullptr};
   QStackedWidget* m_stacked_widget{nullptr};
   PlaceholderWidget* m_placeholder_widget{nullptr};
   ProcedureComposerTabWidget* m_procedure_composer_widget{nullptr};
@@ -105,4 +106,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_COMBO_PANEL_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_PANEL_H_
