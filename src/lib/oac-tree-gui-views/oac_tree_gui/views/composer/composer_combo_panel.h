@@ -26,6 +26,11 @@
 
 class QStackedWidget;
 
+namespace mvvm
+{
+class ModelListener;
+}
+
 namespace oac_tree_gui
 {
 
@@ -38,9 +43,11 @@ class ProcedureItem;
  * @brief The ComposerComboPanel class contains a complex procedure editor and allows switching
  * between editing different opened procedures.
  *
- * The widget contains a toolbar with a combo selector and buttons to split/close views, an instance
- * of ProcedureComposerTabWidget (complex procedure editor). It also contains a placeholder to show
- * when no procedure is opened.
+ * The widget contains
+ * - toolbar with a combo selector to select between various procedures
+ * - tool buttons to request the split of the view, or current view close
+ * - an instance of complex procedure editor (ProcedureComposerTabWidget)
+ * - a placeholder to show when no procedure is opened.
  */
 class ComposerComboPanel : public QWidget
 {
@@ -86,11 +93,14 @@ private:
   void SetupConnections();
   void OnSelectProcedureRequest(oac_tree_gui::ProcedureItem* item);
   void ShowWidget(WidgetType widget_type);
+  void InitModelListener();
 
   ComposerComboPanelToolBar* m_tool_bar{nullptr};
   QStackedWidget* m_stacked_widget{nullptr};
   PlaceholderWidget* m_placeholder_widget{nullptr};
   ProcedureComposerTabWidget* m_procedure_composer_widget{nullptr};
+  std::unique_ptr<mvvm::ModelListener> m_listener;
+  ProcedureItem* m_current_procedure_item{nullptr};
 };
 
 }  // namespace oac_tree_gui

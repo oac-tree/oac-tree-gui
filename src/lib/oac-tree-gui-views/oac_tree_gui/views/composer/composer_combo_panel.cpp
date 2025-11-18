@@ -26,6 +26,9 @@
 
 #include <oac_tree_gui/model/procedure_item.h>
 
+#include <mvvm/model/item_utils.h>
+#include <mvvm/signals/model_listener.h>
+
 #include <QMouseEvent>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -100,14 +103,54 @@ void ComposerComboPanel::SetupConnections()
 
 void ComposerComboPanel::OnSelectProcedureRequest(ProcedureItem* item)
 {
-  m_procedure_composer_widget->SetProcedure(item);
+  if (m_current_procedure_item == item)
+  {
+    return;
+  }
+
+  m_current_procedure_item = item;
+
+  m_procedure_composer_widget->SetProcedure(m_current_procedure_item);
   ShowWidget(item == nullptr ? WidgetType::kPlaceholderWidget
                              : WidgetType::kProcedureComposerWidget);
+  InitModelListener();
 }
 
 void ComposerComboPanel::ShowWidget(WidgetType widget_type)
 {
   m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(widget_type));
+}
+
+void ComposerComboPanel::InitModelListener()
+{
+  if (!m_current_procedure_item)
+  {
+    m_listener.reset();
+    return;
+  }
+
+  m_listener = std::make_unique<mvvm::ModelListener>(m_current_procedure_item->GetModel());
+
+  auto on_data_changed = [this](const mvvm::DataChangedEvent& event)
+  {
+    if (event.item == m_current_procedure_item)
+    {
+      m_tool_bar->UpdateProcedureSelectionMenu(m_current_procedure_item);
+    }
+  };
+  m_listener->Connect<mvvm::DataChangedEvent>(on_data_changed);
+
+  auto on_about_to_remove_item = [this](const mvvm::AboutToRemoveItemEvent& event)
+  {
+    auto item_to_remove = event.item->GetItem(event.tag_index);
+
+    if ((item_to_remove == m_current_procedure_item)
+        || mvvm::utils::IsItemAncestor(m_current_procedure_item, item_to_remove))
+    {
+      SetProcedure(nullptr);
+    }
+  };
+  m_listener->Connect<mvvm::AboutToRemoveItemEvent>(on_about_to_remove_item);
 }
 
 }  // namespace oac_tree_gui
