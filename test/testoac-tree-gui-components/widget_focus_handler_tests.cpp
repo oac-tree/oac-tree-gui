@@ -81,6 +81,53 @@ TEST_F(WidgetFocusHandlerTest, AddWidgetAndRemove)
   EXPECT_EQ(focus_manager.GetInFocus(), nullptr);
 }
 
+TEST_F(WidgetFocusHandlerTest, AddWidgetInBetween)
+{
+  WidgetFocusHandler<MockEditor> focus_manager;
+  mock_editor_t editor1;
+  mock_editor_t editor2;
+  mock_editor_t editor3;
+
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(true)).Times(1);
+  }
+
+  focus_manager.AddWidget(&editor1);
+  EXPECT_EQ(focus_manager.GetCount(), 1U);
+  EXPECT_EQ(focus_manager.GetInFocus(), &editor1);
+
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(false)).Times(1);
+    EXPECT_CALL(editor2, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(false)).Times(1);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+  }
+
+  focus_manager.AddWidget(&editor2, &editor1);
+  EXPECT_EQ(focus_manager.GetCount(), 2U);
+  EXPECT_EQ(focus_manager.GetInFocus(), &editor2);
+
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
+    EXPECT_CALL(editor2, ShowAsActive(false)).Times(1);
+    EXPECT_CALL(editor3, ShowAsActive(true)).Times(1);
+    EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor2, ShowAsLastEditor(::testing::_)).Times(0);
+    EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
+  }
+  focus_manager.AddWidget(&editor3, &editor1);
+  EXPECT_EQ(focus_manager.GetCount(), 3U);
+  EXPECT_EQ(focus_manager.GetInFocus(), &editor3);
+
+  EXPECT_EQ(focus_manager.GetWidgets()[0], &editor1);
+  EXPECT_EQ(focus_manager.GetWidgets()[1], &editor3);
+  EXPECT_EQ(focus_manager.GetWidgets()[2], &editor2);
+}
+
 TEST_F(WidgetFocusHandlerTest, AddTwoWidgetsAndRemove)
 {
   WidgetFocusHandler<MockEditor> focus_manager;
@@ -204,6 +251,7 @@ TEST_F(WidgetFocusHandlerTest, AddThreeWidgetsAndChangeFocus)
     EXPECT_CALL(editor3, ShowAsLastEditor(::testing::_)).Times(0);
   }
   focus_manager.RemoveWidget(&editor2);
+  EXPECT_EQ(focus_manager.GetInFocus(), &editor3);
 }
 
 }  // namespace oac_tree_gui

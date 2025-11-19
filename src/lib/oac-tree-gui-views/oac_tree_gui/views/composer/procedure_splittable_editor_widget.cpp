@@ -66,7 +66,7 @@ void ProcedureSplittableEditorWidget::CreatePanel(ProcedureComposerComboPanel* a
   {
     const std::int32_t index = m_splitter->indexOf(after_widget);
     m_splitter->insertWidget(index + 1, new_widget.release());
-    m_focus_handler->AddWidget(new_widget_ptr);  // FIXME: should be added after the after_widget
+    m_focus_handler->AddWidget(new_widget_ptr, after_widget);
   }
 }
 

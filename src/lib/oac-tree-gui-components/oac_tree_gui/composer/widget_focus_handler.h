@@ -53,7 +53,7 @@ public:
    *
    * It will become the one in focus.
    */
-  void AddWidget(WidgetT* widget);
+  void AddWidget(WidgetT* widget, WidgetT* prev_widget = nullptr);
 
   /**
    * @brief Removes widget from the list of managed objects.
@@ -74,6 +74,11 @@ public:
    */
   WidgetT* GetInFocus() const;
 
+  /**
+   * @brief Returns the list of managed widgets.
+   */
+  std::vector<WidgetT*> GetWidgets() const;
+
 private:
   std::vector<WidgetT*> m_editors;
   WidgetT* m_in_focus{nullptr};
@@ -86,7 +91,7 @@ inline std::size_t WidgetFocusHandler<WidgetT>::GetCount() const
 }
 
 template <typename WidgetT>
-inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget)
+inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget, WidgetT* prev_widget)
 {
   auto iter = std::find(m_editors.begin(), m_editors.end(), widget);
   if (iter != m_editors.end())
@@ -101,7 +106,16 @@ inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget)
     m_editors.at(0)->ShowAsLastEditor(false);
   }
 
-  m_editors.push_back(widget);
+  auto prev_iter = std::find(m_editors.begin(), m_editors.end(), prev_widget);
+  if (prev_iter != m_editors.end())
+  {
+    m_editors.insert(std::next(prev_iter), widget);
+  }
+  else
+  {
+    m_editors.push_back(widget);
+  }
+
   if (m_editors.size() == 1)
   {
     m_editors.at(0)->ShowAsLastEditor(true);
@@ -123,7 +137,7 @@ inline void WidgetFocusHandler<WidgetT>::RemoveWidget(WidgetT* widget)
   }
   m_editors.erase(iter);
 
-  if (!m_editors.empty())
+  if ((m_in_focus == nullptr) && !m_editors.empty())
   {
     SetInFocus(m_editors.back());
   }
@@ -137,7 +151,6 @@ inline void WidgetFocusHandler<WidgetT>::RemoveWidget(WidgetT* widget)
 template <typename WidgetT>
 inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
 {
-  qDebug() << "WidgetFocusHandler<WidgetT>::SetInFocus 1.1" << focus;
   if (m_in_focus == focus)
   {
     return;
@@ -146,7 +159,6 @@ inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
   // notify previous focus object
   if (m_in_focus)
   {
-    qDebug() << "WidgetFocusHandler<WidgetT>::SetInFocus 1.2";
     m_in_focus->ShowAsActive(false);
   }
 
@@ -155,7 +167,6 @@ inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
   // notify new focus object
   if (m_in_focus)
   {
-    qDebug() << "WidgetFocusHandler<WidgetT>::SetInFocus 1.3";
     m_in_focus->ShowAsActive(true);
   }
 }
@@ -164,6 +175,12 @@ template <typename WidgetT>
 inline WidgetT* WidgetFocusHandler<WidgetT>::GetInFocus() const
 {
   return m_in_focus;
+}
+
+template <typename WidgetT>
+inline std::vector<WidgetT*> WidgetFocusHandler<WidgetT>::GetWidgets() const
+{
+  return m_editors;
 }
 
 }  // namespace oac_tree_gui

@@ -34,6 +34,7 @@
 #include <QApplication>
 #include <QSplitter>
 #include <QStackedWidget>
+#include <QDebug>
 
 namespace oac_tree_gui::test
 {
@@ -131,6 +132,9 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBetweenTwoPanels)
 
   EXPECT_TRUE(first_widget->isHidden());
   EXPECT_EQ(prev_focus_widget, editor.GetFocusWidget());
+  qDebug() << splitter->widget(0);
+  qDebug() << splitter->widget(1);
+  qDebug() << splitter->widget(2);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelViaWidgetSignal)
