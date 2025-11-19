@@ -66,11 +66,31 @@ public:
    */
   void ClosePanel(ProcedureComposerComboPanel* widget_to_close);
 
+  /**
+   * @brief Returns the widget currently in focus.
+   */
+  ProcedureComposerComboPanel* GetFocusWidget();
+
+  /**
+   * @brief Sets the widget in focus.
+   */
+  void SetInFocusWidget(ProcedureComposerComboPanel* widget);
+
 private:
   /**
    * @brief Creates a new procedure editor widget.
    */
-  std::unique_ptr<QWidget> CreateProcedureEditor();
+  std::unique_ptr<ProcedureComposerComboPanel> CreateProcedureEditor();
+
+  /**
+   * @brief Validates that the model is set.
+   */
+  void ValidateModel() const;
+
+  /**
+   * @brief Creates the initial widget in the splitter.
+   */
+  void CreateInitialSplitterSetup();
 
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};

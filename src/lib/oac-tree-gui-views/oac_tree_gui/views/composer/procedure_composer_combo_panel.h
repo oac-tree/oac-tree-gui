@@ -22,7 +22,6 @@
 #define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_PANEL_H_
 
 #include <QWidget>
-#include <functional>
 
 class QStackedWidget;
 
@@ -55,8 +54,6 @@ class ProcedureComposerComboPanel : public QWidget
   Q_OBJECT
 
 public:
-  using ProceduresCallback = std::function<std::vector<ProcedureItem*>()>;
-
   enum class WidgetType : std::uint8_t
   {
     kPlaceholderWidget,

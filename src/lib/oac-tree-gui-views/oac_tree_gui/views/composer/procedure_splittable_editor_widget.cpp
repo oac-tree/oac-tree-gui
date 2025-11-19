@@ -23,6 +23,7 @@
 #include "procedure_composer_combo_panel.h"
 
 #include <oac_tree_gui/composer/widget_focus_handler.h>
+#include <oac_tree_gui/core/exceptions.h>
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -32,6 +33,7 @@ namespace oac_tree_gui
 
 ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_splitter(new QSplitter)
     , m_focus_handler(std::make_unique<WidgetFocusHandler<ProcedureComposerComboPanel>>())
 {
   auto layout = new QVBoxLayout(this);
@@ -45,31 +47,52 @@ ProcedureSplittableEditorWidget::~ProcedureSplittableEditorWidget() = default;
 void ProcedureSplittableEditorWidget::SetModel(SequencerModel* model)
 {
   m_model = model;
+  CreateInitialSplitterSetup();
 }
 
 void ProcedureSplittableEditorWidget::CreatePanel(ProcedureComposerComboPanel* after_widget)
 {
+  ValidateModel();
+
   auto new_widget = CreateProcedureEditor();
+  auto new_widget_ptr = new_widget.get();
 
   if (after_widget == nullptr)
   {
     m_splitter->addWidget(new_widget.release());
+    m_focus_handler->AddWidget(new_widget_ptr);
   }
   else
   {
     const std::int32_t index = m_splitter->indexOf(after_widget);
     m_splitter->insertWidget(index + 1, new_widget.release());
+    m_focus_handler->AddWidget(new_widget_ptr);  // FIXME: should be added after the after_widget
   }
 }
 
 void ProcedureSplittableEditorWidget::ClosePanel(ProcedureComposerComboPanel* widget_to_close)
 {
+  if (widget_to_close == nullptr)
+  {
+    return;
+  }
   m_focus_handler->RemoveWidget(widget_to_close);
   widget_to_close->hide();
   widget_to_close->deleteLater();
 }
 
-std::unique_ptr<QWidget> ProcedureSplittableEditorWidget::CreateProcedureEditor()
+ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetFocusWidget()
+{
+  return m_focus_handler->GetInFocus();
+}
+
+void ProcedureSplittableEditorWidget::SetInFocusWidget(ProcedureComposerComboPanel* widget)
+{
+  m_focus_handler->SetInFocus(widget);
+}
+
+std::unique_ptr<ProcedureComposerComboPanel>
+ProcedureSplittableEditorWidget::CreateProcedureEditor()
 {
   auto result = std::make_unique<ProcedureComposerComboPanel>(m_model);
 
@@ -94,8 +117,20 @@ std::unique_ptr<QWidget> ProcedureSplittableEditorWidget::CreateProcedureEditor(
   };
   connect(result.get(), &ProcedureComposerComboPanel::panelFocusRequest, this, on_focus_request);
 
-  m_focus_handler->AddWidget(result.get()); // FIXME move in AddWidget (?)
   return result;
+}
+
+void ProcedureSplittableEditorWidget::ValidateModel() const
+{
+  if (!m_model)
+  {
+    throw RuntimeException("Sequencer model is not set for ProcedureSplittableEditorWidget");
+  }
+}
+
+void ProcedureSplittableEditorWidget::CreateInitialSplitterSetup()
+{
+  CreatePanel();
 }
 
 }  // namespace oac_tree_gui

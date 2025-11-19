@@ -31,7 +31,7 @@ namespace oac_tree_gui
 class ProcedureItem;
 
 /**
- * @brief The ComponentFocusHandler handles the logic of which widget in the list is currently in
+ * @brief The WidgetFocusHandler handles the logic of which widget in the list is currently in
  * the user's focus.
  *
  * It is used in the context of multiple split views, when we need to decide which panel is
