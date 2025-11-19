@@ -21,10 +21,8 @@
 #include "sequencer_composer_view_v2.h"
 
 #include "composer_tools_panel.h"
-#include "procedure_composer_combo_panel.h"
-#include "splittable_widget.h"
+#include "procedure_splittable_editor_widget.h"
 
-#include <oac_tree_gui/composer/widget_focus_handler.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
@@ -39,8 +37,7 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
     : QWidget(parent_widget)
     , m_splitter(new QSplitter)
     , m_composer_tools_panel(new ComposerToolsPanel(command_service))
-    , m_procedure_editor_area_widget(new SplittableWidget(CreateProcedureEditorCallback()))
-    , m_focus_handler(std::make_unique<WidgetFocusHandler<ProcedureComposerComboPanel>>())
+    , m_splittable_editor_widget(new ProcedureSplittableEditorWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -48,7 +45,7 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
   layout->addWidget(m_splitter);
 
   m_splitter->addWidget(m_composer_tools_panel);
-  m_splitter->addWidget(m_procedure_editor_area_widget);
+  m_splitter->addWidget(m_splittable_editor_widget);
   m_splitter->setSizes({200, 400});
 }
 
@@ -57,43 +54,7 @@ SequencerComposerViewV2::~SequencerComposerViewV2() = default;
 void SequencerComposerViewV2::SetModel(SequencerModel* model)
 {
   m_composer_tools_panel->SetModel(model);
-  m_model = model;
-  m_procedure_editor_area_widget->InitWidget();
-}
-
-std::unique_ptr<QWidget> SequencerComposerViewV2::CreateProcedureEditor()
-{
-  auto result = std::make_unique<ProcedureComposerComboPanel>(m_model);
-
-  auto on_add_panel = [this]()
-  {
-    auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-    m_procedure_editor_area_widget->AddWidget(sending_panel);
-  };
-  connect(result.get(), &ProcedureComposerComboPanel::splitViewRequest, this, on_add_panel);
-
-  auto on_remove_panel = [this]()
-  {
-    auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-    m_focus_handler->RemoveWidget(sending_panel);
-    SplittableWidget::CloseWidget(sending_panel);
-  };
-  connect(result.get(), &ProcedureComposerComboPanel::closeViewRequest, this, on_remove_panel);
-
-  auto on_focus_request = [this]()
-  {
-    auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-    m_focus_handler->SetInFocus(sending_panel);
-  };
-  connect(result.get(), &ProcedureComposerComboPanel::panelFocusRequest, this, on_focus_request);
-
-  m_focus_handler->AddWidget(result.get());
-  return result;
-}
-
-std::function<std::unique_ptr<QWidget>()> SequencerComposerViewV2::CreateProcedureEditorCallback()
-{
-  return [this]() { return this->CreateProcedureEditor(); };
+  m_splittable_editor_widget->SetModel(model);
 }
 
 }  // namespace oac_tree_gui

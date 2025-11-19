@@ -33,14 +33,10 @@ class IAppCommandService;
 namespace oac_tree_gui
 {
 
-class SplittableWidget;
 class SequencerModel;
 class ComposerToolsPanel;
 class SequencerModel;
-class ProcedureComposerComboPanel;
-
-template <typename WidgetT>
-class WidgetFocusHandler;
+class ProcedureSplittableEditorWidget;
 
 /**
  * @brief The SequencerComposerViewV2 class is a main widget for procedure editing.
@@ -62,21 +58,9 @@ public:
   void SetModel(SequencerModel* model);
 
 private:
-  /**
-   * @brief Creates a new procedure editor widget.
-   */
-  std::unique_ptr<QWidget> CreateProcedureEditor();
-
-  /**
-   * @brief Returns a callback to create procedure editor widgets.
-   */
-  std::function<std::unique_ptr<QWidget>()> CreateProcedureEditorCallback();
-
   QSplitter* m_splitter{nullptr};
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
-  SplittableWidget* m_procedure_editor_area_widget{nullptr};
-  SequencerModel* m_model{nullptr};
-  std::unique_ptr<WidgetFocusHandler<ProcedureComposerComboPanel>> m_focus_handler;
+  ProcedureSplittableEditorWidget* m_splittable_editor_widget{nullptr};
 };
 
 }  // namespace oac_tree_gui

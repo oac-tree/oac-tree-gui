@@ -36,8 +36,6 @@ class ProcedureItem;
  *
  * It is used in the context of multiple split views, when we need to decide which panel is
  * currently active to show new content in the appropriate place.
- *
- * It reports change in current widget in focus via callbacks.
  */
 template <typename WidgetT>
 class WidgetFocusHandler
@@ -53,7 +51,7 @@ public:
    *
    * It will become the one in focus.
    */
-  void AddWidget(WidgetT* widget, WidgetT* prev_widget = nullptr);
+  void AddWidget(WidgetT* widget, WidgetT* insert_after_widget = nullptr);
 
   /**
    * @brief Removes widget from the list of managed objects.
@@ -91,7 +89,7 @@ inline std::size_t WidgetFocusHandler<WidgetT>::GetCount() const
 }
 
 template <typename WidgetT>
-inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget, WidgetT* prev_widget)
+inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget, WidgetT* insert_after_widget)
 {
   auto iter = std::find(m_editors.begin(), m_editors.end(), widget);
   if (iter != m_editors.end())
@@ -106,7 +104,7 @@ inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget, WidgetT* pre
     m_editors.at(0)->ShowAsLastEditor(false);
   }
 
-  auto prev_iter = std::find(m_editors.begin(), m_editors.end(), prev_widget);
+  auto prev_iter = std::find(m_editors.begin(), m_editors.end(), insert_after_widget);
   if (prev_iter != m_editors.end())
   {
     m_editors.insert(std::next(prev_iter), widget);
