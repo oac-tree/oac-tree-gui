@@ -32,9 +32,9 @@
 #include <gtest/gtest.h>
 
 #include <QApplication>
+#include <QDebug>
 #include <QSplitter>
 #include <QStackedWidget>
-#include <QDebug>
 
 namespace oac_tree_gui::test
 {
@@ -111,7 +111,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBetweenTwoPanels)
   ASSERT_EQ(splitter->count(), 2);
   auto first_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(0));
   auto second_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
-  editor.SetInFocusWidget(first_widget);
+  editor.SetFocusWidget(first_widget);
   EXPECT_EQ(first_widget, editor.GetFocusWidget());
 
   // create third panel
@@ -182,11 +182,43 @@ TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestViaSignals)
   auto first_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(0));
   auto second_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
 
-  editor.SetInFocusWidget(first_widget);
+  editor.SetFocusWidget(first_widget);
   EXPECT_EQ(first_widget, editor.GetFocusWidget());
 
   emit second_widget->panelFocusRequest();
   EXPECT_EQ(second_widget, editor.GetFocusWidget());
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
+{
+  ProcedureSplittableEditorWidget editor;
+  editor.SetModel(&m_model);
+
+  auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  procedure->SetDisplayName("Test procedure");
+
+  editor.CreatePanel();
+  editor.CreatePanel();
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 3);
+  auto first_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(0));
+  auto second_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
+  auto third_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(2));
+
+  editor.SetFocusWidget(second_widget);
+  EXPECT_EQ(second_widget, editor.GetFocusWidget());
+  editor.SetProcedure(procedure);
+
+  EXPECT_EQ(second_widget->GetCurrentProcedure(), procedure);
+  editor.SetFocusWidget(third_widget);
+  EXPECT_EQ(third_widget->GetCurrentProcedure(), nullptr);
+  editor.SetProcedure(procedure);
+
+  EXPECT_EQ(first_widget->GetCurrentProcedure(), nullptr);
+  EXPECT_EQ(second_widget->GetCurrentProcedure(), procedure);
+  EXPECT_EQ(third_widget->GetCurrentProcedure(), procedure);
 }
 
 }  // namespace oac_tree_gui::test

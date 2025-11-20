@@ -31,6 +31,7 @@ namespace oac_tree_gui
 
 class SequencerModel;
 class ProcedureComposerComboPanel;
+class ProcedureItem;
 
 template <typename WidgetT>
 class WidgetFocusHandler;
@@ -47,6 +48,11 @@ public:
   ~ProcedureSplittableEditorWidget() override;
 
   void SetModel(SequencerModel* model);
+
+  /**
+   * @brief Sets the procedure to be edited.
+   */
+  void SetProcedure(ProcedureItem* procedure_item);
 
   /**
    * @brief Gets the internal splitter.
@@ -74,7 +80,7 @@ public:
   /**
    * @brief Sets the widget in focus.
    */
-  void SetInFocusWidget(ProcedureComposerComboPanel* widget);
+  void SetFocusWidget(ProcedureComposerComboPanel* widget);
 
 private:
   /**

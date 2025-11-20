@@ -50,6 +50,14 @@ void ProcedureSplittableEditorWidget::SetModel(SequencerModel* model)
   CreateInitialSplitterSetup();
 }
 
+void ProcedureSplittableEditorWidget::SetProcedure(ProcedureItem* procedure_item)
+{
+  if (auto focus_widget = m_focus_handler->GetFocusWidget(); focus_widget)
+  {
+    focus_widget->SetProcedure(procedure_item);
+  }
+}
+
 void ProcedureSplittableEditorWidget::CreatePanel(ProcedureComposerComboPanel* after_widget)
 {
   ValidateModel();
@@ -83,12 +91,12 @@ void ProcedureSplittableEditorWidget::ClosePanel(ProcedureComposerComboPanel* wi
 
 ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetFocusWidget()
 {
-  return m_focus_handler->GetInFocus();
+  return m_focus_handler->GetFocusWidget();
 }
 
-void ProcedureSplittableEditorWidget::SetInFocusWidget(ProcedureComposerComboPanel* widget)
+void ProcedureSplittableEditorWidget::SetFocusWidget(ProcedureComposerComboPanel* widget)
 {
-  m_focus_handler->SetInFocus(widget);
+  m_focus_handler->SetFocusWidget(widget);
 }
 
 std::unique_ptr<ProcedureComposerComboPanel>
@@ -113,7 +121,7 @@ ProcedureSplittableEditorWidget::CreateProcedureEditor()
   auto on_focus_request = [this]()
   {
     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-    m_focus_handler->SetInFocus(sending_panel);
+    m_focus_handler->SetFocusWidget(sending_panel);
   };
   connect(result.get(), &ProcedureComposerComboPanel::panelFocusRequest, this, on_focus_request);
 
