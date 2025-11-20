@@ -58,6 +58,8 @@ public:
   void SetModel(SequencerModel* model);
 
 private:
+  void SetupConnections();
+
   QSplitter* m_splitter{nullptr};
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
   ProcedureSplittableEditorWidget* m_splittable_editor_widget{nullptr};
