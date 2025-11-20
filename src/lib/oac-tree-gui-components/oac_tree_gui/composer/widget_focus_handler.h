@@ -65,12 +65,12 @@ public:
    *
    * Previous widget in focus and new widget in focus will benotified about the change.
    */
-  void SetInFocus(WidgetT* focus);
+  void SetFocusWidget(WidgetT* focus);
 
   /**
    * @brief Returns the widget in focus.
    */
-  WidgetT* GetInFocus() const;
+  WidgetT* GetFocusWidget() const;
 
   /**
    * @brief Returns the list of managed widgets.
@@ -97,7 +97,7 @@ inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget, WidgetT* ins
     return;
   }
 
-  SetInFocus(widget);
+  SetFocusWidget(widget);
 
   if (m_editors.size() == 1)
   {
@@ -137,7 +137,7 @@ inline void WidgetFocusHandler<WidgetT>::RemoveWidget(WidgetT* widget)
 
   if ((m_in_focus == nullptr) && !m_editors.empty())
   {
-    SetInFocus(m_editors.back());
+    SetFocusWidget(m_editors.back());
   }
 
   if (m_editors.size() == 1)
@@ -147,7 +147,7 @@ inline void WidgetFocusHandler<WidgetT>::RemoveWidget(WidgetT* widget)
 }
 
 template <typename WidgetT>
-inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
+inline void WidgetFocusHandler<WidgetT>::SetFocusWidget(WidgetT* focus)
 {
   if (m_in_focus == focus)
   {
@@ -170,7 +170,7 @@ inline void WidgetFocusHandler<WidgetT>::SetInFocus(WidgetT* focus)
 }
 
 template <typename WidgetT>
-inline WidgetT* WidgetFocusHandler<WidgetT>::GetInFocus() const
+inline WidgetT* WidgetFocusHandler<WidgetT>::GetFocusWidget() const
 {
   return m_in_focus;
 }
