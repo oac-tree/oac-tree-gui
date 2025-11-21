@@ -56,13 +56,17 @@ SequencerComposerViewV2::~SequencerComposerViewV2() = default;
 void SequencerComposerViewV2::SetModel(SequencerModel* model)
 {
   m_splittable_editor_widget->SetModel(model);
-  m_composer_tools_panel->SetModel(model); // will select first procedure
+  m_composer_tools_panel->SetModel(model);  // will select first procedure
 }
 
 void SequencerComposerViewV2::SetupConnections()
 {
   connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected,
           m_splittable_editor_widget, &ProcedureSplittableEditorWidget::SetProcedure);
+
+  connect(m_splittable_editor_widget,
+          &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged,
+          m_composer_tools_panel, &ComposerToolsPanel::SetSelectedProcedure);
 }
 
 }  // namespace oac_tree_gui
