@@ -24,9 +24,12 @@
 
 #include <oac_tree_gui/composer/widget_focus_handler.h>
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/procedure_item.h>
 
 #include <QSplitter>
 #include <QVBoxLayout>
+
+Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui
 {
