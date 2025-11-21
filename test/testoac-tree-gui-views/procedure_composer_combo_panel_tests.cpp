@@ -29,6 +29,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
 #include <QStackedWidget>
 
 namespace oac_tree_gui::test
@@ -70,8 +71,13 @@ TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   procedure->SetDisplayName("Test procedure");
 
+  QSignalSpy signal_spy(&widget, &ProcedureComposerComboPanel::selectedProcedureChanged);
+
   widget.SetProcedure(procedure);
   EXPECT_EQ(widget.GetCurrentProcedure(), procedure);
+
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), procedure);
 
   auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
   ASSERT_NE(toolbar, nullptr);
@@ -84,6 +90,9 @@ TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
 
   widget.SetProcedure(nullptr);
   EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
+
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), nullptr);
 
   EXPECT_EQ(stacked_widget->currentIndex(),
             static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));

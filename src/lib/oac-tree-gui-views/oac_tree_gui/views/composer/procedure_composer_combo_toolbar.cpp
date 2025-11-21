@@ -165,7 +165,7 @@ void ProcedureComposerComboToolBar::OnAboutToShowMenu()
   auto on_action = [this]()
   {
     m_select_procedure_button->setText(kNoProcedureSelected);
-    emit SelectProcedureRequest(nullptr);
+    emit selectProcedureRequest(nullptr);
   };
   connect(action, &QAction::triggered, this, on_action);
 
@@ -176,7 +176,7 @@ void ProcedureComposerComboToolBar::OnAboutToShowMenu()
     auto on_action = [this, procedure]()
     {
       m_select_procedure_button->setText(QString::fromStdString(procedure->GetDisplayName()));
-      emit SelectProcedureRequest(procedure);
+      emit selectProcedureRequest(procedure);
     };
     connect(action, &QAction::triggered, this, on_action);
   }

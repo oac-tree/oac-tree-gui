@@ -106,7 +106,7 @@ void ProcedureComposerComboPanel::SetupConnections()
           &ProcedureComposerComboPanel::splitViewRequest);
   connect(m_tool_bar, &ProcedureComposerComboToolBar::closeViewRequest, this,
           &ProcedureComposerComboPanel::closeViewRequest);
-  connect(m_tool_bar, &ProcedureComposerComboToolBar::SelectProcedureRequest, this,
+  connect(m_tool_bar, &ProcedureComposerComboToolBar::selectProcedureRequest, this,
           &ProcedureComposerComboPanel::SetProcedureIntern);
 }
 
@@ -147,6 +147,7 @@ void ProcedureComposerComboPanel::SetProcedureIntern(ProcedureItem* item)
 
   m_procedure_composer_widget->SetProcedure(m_current_procedure_item);
   ShowWidgetType(item == nullptr ? WidgetType::kPlaceholderWidget : WidgetType::kComposerWidget);
+  emit selectedProcedureChanged(m_current_procedure_item);
 }
 
 void ProcedureComposerComboPanel::ShowWidgetType(WidgetType widget_type)
