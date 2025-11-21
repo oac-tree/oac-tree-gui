@@ -20,9 +20,9 @@
 
 #include "procedure_composer_combo_panel.h"
 
-#include "placeholder_widget.h"
 #include "procedure_composer_combo_toolbar.h"
 #include "procedure_composer_tab_widget.h"
+#include "procedure_editor_placeholder.h"
 
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -39,12 +39,17 @@ Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+}
+
 ProcedureComposerComboPanel::ProcedureComposerComboPanel(SequencerModel* model,
                                                          QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tool_bar(new ProcedureComposerComboToolBar([this]() { return m_model->GetProcedures(); }))
     , m_stacked_widget(new QStackedWidget)
-    , m_placeholder_widget(new PlaceholderWidget("ABC"))
+    , m_placeholder_widget(new ProcedureEditorPlaceholder)
     , m_procedure_composer_widget(new ProcedureComposerTabWidget)
     , m_model(model)
 {

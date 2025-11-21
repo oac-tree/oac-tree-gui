@@ -35,7 +35,7 @@ namespace oac_tree_gui
 
 class ProcedureComposerComboToolBar;
 class ProcedureComposerTabWidget;
-class PlaceholderWidget;
+class ProcedureEditorPlaceholder;
 class ProcedureItem;
 class SequencerModel;
 
@@ -109,7 +109,7 @@ private:
 
   ProcedureComposerComboToolBar* m_tool_bar{nullptr};
   QStackedWidget* m_stacked_widget{nullptr};
-  PlaceholderWidget* m_placeholder_widget{nullptr};
+  ProcedureEditorPlaceholder* m_placeholder_widget{nullptr};
   ProcedureComposerTabWidget* m_procedure_composer_widget{nullptr};
   std::unique_ptr<mvvm::ModelListener> m_listener;
   ProcedureItem* m_current_procedure_item{nullptr};

@@ -18,19 +18,32 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "placeholder_widget.h"
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_EDITOR_PLACEHOLDER_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_EDITOR_PLACEHOLDER_H_
 
-#include <QGridLayout>
-#include <QLabel>
+#include <QWidget>
+
+class QLabel;
 
 namespace oac_tree_gui
 {
 
-PlaceholderWidget::PlaceholderWidget(const QString& placeholder_text, QWidget* parent_widget)
-    : QWidget(parent_widget), m_label(new QLabel(placeholder_text))
+/**
+ * @brief The ProcedureEditorPlaceholder class shows a text in the middle of the screen.
+ *
+ * It is intended to substitute some other widget, when it is not ready yet.
+ */
+class ProcedureEditorPlaceholder : public QWidget
 {
-  auto layout = new QGridLayout(this);
-  layout->addWidget(m_label);
-}
+  Q_OBJECT
+
+public:
+  explicit ProcedureEditorPlaceholder(QWidget* parent_widget = nullptr);
+
+private:
+  QLabel* m_label{nullptr};
+};
 
 }  // namespace oac_tree_gui
+
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_EDITOR_PLACEHOLDER_H_
