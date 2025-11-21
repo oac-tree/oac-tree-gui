@@ -46,12 +46,6 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout);
  */
 std::string CreateProcedureString(const std::string& body, bool schema = true);
 
-/**
- * @brief Checks if vectors are of the same size and contain the same elements (order is not
- * important).
- */
-bool HaveSameElements(const std::vector<std::string>& vec1, const std::vector<std::string>& vec2);
-
 }  // namespace oac_tree_gui::test
 
 #endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

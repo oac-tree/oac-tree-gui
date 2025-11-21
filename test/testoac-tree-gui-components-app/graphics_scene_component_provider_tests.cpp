@@ -155,7 +155,7 @@ TEST_F(GraphicsSceneComponentProviderTest, SetSingleSelectedViaProvider)
   provider->SetSelectedInstructions({sequence});
   const std::vector<InstructionItem*> expected_selection({sequence});
   EXPECT_TRUE(
-      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+      mvvm::utils::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
 
   EXPECT_EQ(spy_scene_selected.count(), 1);
   EXPECT_EQ(spy_provider_selected.count(), 1);
@@ -178,7 +178,7 @@ TEST_F(GraphicsSceneComponentProviderTest, SetTwoSelectedViaProvider)
   provider->SetSelectedInstructions({sequence, wait1});
   const std::vector<InstructionItem*> expected_selection({sequence, wait1});
   EXPECT_TRUE(
-      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+      mvvm::utils::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
 
   EXPECT_EQ(spy_scene_selected.count(), 2);
   EXPECT_EQ(spy_provider_selected.count(), 2);
@@ -205,7 +205,7 @@ TEST_F(GraphicsSceneComponentProviderTest, SetSelectedViaScene)
 
   const std::vector<InstructionItem*> expected_selection({sequence, wait1});
   EXPECT_TRUE(
-      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+      mvvm::utils::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
 
   EXPECT_EQ(spy_scene_selected.count(), 2);
   EXPECT_EQ(spy_provider_selected.count(), 2);
@@ -360,7 +360,7 @@ TEST_F(GraphicsSceneComponentProviderTest, SelectionAfterRemoval)
 
   const std::vector<InstructionItem*> expected_selection({wait2});
   EXPECT_TRUE(
-      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+      mvvm::utils::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
 
   EXPECT_EQ(spy_provider_selected.count(), 1);
 }
@@ -513,7 +513,7 @@ TEST_F(GraphicsSceneComponentProviderTest, SelectInstructionBranch)
 
   const std::vector<InstructionItem*> expected_selection({wait1});
   EXPECT_TRUE(
-      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
+      mvvm::utils::HaveSameElements(provider->GetSelectedInstructions(), expected_selection));
 
   EXPECT_EQ(spy_provider_selected.count(), 1);
 
@@ -521,7 +521,7 @@ TEST_F(GraphicsSceneComponentProviderTest, SelectInstructionBranch)
 
   const std::vector<InstructionItem*> expected_selection2({sequence, wait0, wait1, wait2});
   EXPECT_TRUE(
-      mvvm::test::HaveSameElements(provider->GetSelectedInstructions(), expected_selection2));
+      mvvm::utils::HaveSameElements(provider->GetSelectedInstructions(), expected_selection2));
 
   EXPECT_EQ(spy_provider_selected.count(), 6);
 }
