@@ -221,4 +221,27 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
   EXPECT_EQ(third_widget->GetCurrentProcedure(), procedure);
 }
 
+TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidget)
+{
+  ProcedureSplittableEditorWidget editor;
+  editor.SetModel(&m_model);
+
+  auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  procedure->SetDisplayName("Test procedure");
+  editor.CreatePanel();
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 2);
+  auto first_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(0));
+  auto second_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
+  editor.SetFocusWidget(first_widget);
+  EXPECT_EQ(first_widget, editor.GetFocusWidget());
+  editor.SetProcedure(procedure);
+  EXPECT_EQ(first_widget->GetCurrentProcedure(), procedure);
+  editor.CreatePanel(/*after_widget=*/first_widget);
+  EXPECT_EQ(splitter->count(), 3);
+  auto third_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
+  EXPECT_EQ(third_widget->GetCurrentProcedure(), procedure);
+}
+
 }  // namespace oac_tree_gui::test
