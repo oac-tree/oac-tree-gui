@@ -88,6 +88,7 @@ signals:
   void closeViewRequest();
   void panelFocusRequest();
   void selectedProcedureChanged(oac_tree_gui::ProcedureItem* item);
+  void newProcedureRequest();
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;

@@ -20,6 +20,8 @@
 
 #include "procedure_editor_placeholder.h"
 
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QGridLayout>
 #include <QLabel>
 
@@ -28,33 +30,49 @@ namespace oac_tree_gui
 
 namespace
 {
-const QString placeholderText = QString(
-    "<html><body style=\"color:#909090; font-size:14px\">"
-    "<div align='center'>"
-    "<div style=\"font-size:20px\">Open a procedure</div>"
-    "<table><tr><td>"
-    "<hr/>"
-    "<div style=\"margin-top: 5px\">&bull; File > Open File or Project (%1)</div>"
-    "<div style=\"margin-top: 5px\">&bull; File > Recent Files</div>"
-    "<div style=\"margin-top: 5px\">&bull; Tools > Locate (%2) and</div>"
-    "<div style=\"margin-left: 1em\">- type to open file from any open project</div>"
-    "%4"
-    "%5"
-    "<div style=\"margin-left: 1em\">- type <code>%3&lt;space&gt;&lt;filename&gt;</code> to open "
-    "file from file system</div>"
-    "<div style=\"margin-left: 1em\">- select one of the other filters for jumping to a "
-    "location</div>"
-    "<div style=\"margin-top: 5px\">&bull; Drag and drop files here</div>"
-    "</td></tr></table>"
-    "</div>"
-    "</body></html>");
+
+constexpr auto kHeader = R"(
+<html><body style="color:#909090; font-size:14px">
+<div align='center'>
+<div style="font-size:18px">Create new or open existing procedure</div>
+<table><tr><td>
+)";
+
+constexpr auto kFooter = R"(
+</td></tr></table>
+</div>
+</body></html>
+)";
+
+constexpr auto kDiv1 = R"(
+<div style="margin-top: 12px">%1</div>
+)";
+
+QString CreatePlaceholderText()
+{
+  const QString header(kHeader);
+  auto clickable_text = mvvm::utils::ClickableText("+ create new ", "new");
+  const QString create_new_text = QString(kDiv1).arg(clickable_text);
+  const QString footer(kFooter);
+  // return header + create_new_text + footer;
+  return header + footer;
 }
 
+}  // namespace
+
 ProcedureEditorPlaceholder::ProcedureEditorPlaceholder(QWidget* parent_widget)
-    : QWidget(parent_widget), m_label(new QLabel(placeholderText))
+    : QWidget(parent_widget), m_label(new QLabel(CreatePlaceholderText()))
 {
   auto layout = new QGridLayout(this);
   layout->addWidget(m_label);
+
+  connect(m_label, &QLabel::linkActivated, this, [this](const auto& link) { OnLabelClick(link); });
+}
+
+void ProcedureEditorPlaceholder::OnLabelClick(const QString& link)
+{
+  Q_UNUSED(link)
+  emit createNewProcedureRequest();
 }
 
 }  // namespace oac_tree_gui

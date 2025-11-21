@@ -40,6 +40,11 @@ class ProcedureEditorPlaceholder : public QWidget
 public:
   explicit ProcedureEditorPlaceholder(QWidget* parent_widget = nullptr);
 
+  void OnLabelClick(const QString& link);
+
+signals:
+  void createNewProcedureRequest();
+
 private:
   QLabel* m_label{nullptr};
 };
