@@ -44,13 +44,13 @@ namespace
 
 }
 
-ProcedureComposerComboPanel::ProcedureComposerComboPanel(SequencerModel* model,
-                                                         QWidget* parent_widget)
+ProcedureComposerComboPanel::ProcedureComposerComboPanel(
+    sup::gui::IAppCommandService& command_service, SequencerModel* model, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tool_bar(new ProcedureComposerComboToolBar([this]() { return m_model->GetProcedures(); }))
     , m_stacked_widget(new QStackedWidget)
     , m_placeholder_widget(new ProcedureEditorPlaceholder)
-    , m_procedure_composer_widget(new ProcedureComposerTabWidget)
+    , m_procedure_composer_widget(new ProcedureComposerTabWidget(command_service))
     , m_model(model)
 {
   auto layout = new QVBoxLayout(this);

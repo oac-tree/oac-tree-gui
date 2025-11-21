@@ -25,22 +25,36 @@
 
 class QTabWidget;
 
+namespace sup::gui
+{
+class IAppCommandService;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
 class ProcedureItem;
+class InstructionEditorWidget;
+class WorkspaceEditorWidget;
+class XmlPanel;
+class NodeEditorWidget;
 
 class ProcedureComposerTabWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit ProcedureComposerTabWidget(QWidget* parent_widget = nullptr);
+  explicit ProcedureComposerTabWidget(sup::gui::IAppCommandService& command_service,
+                                      QWidget* parent_widget = nullptr);
   ~ProcedureComposerTabWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
 private:
+  InstructionEditorWidget* m_instruction_editor_widget{nullptr};
+  WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
+  NodeEditorWidget* m_node_editor{nullptr};
+  XmlPanel* m_xml_panel{nullptr};
   QTabWidget* m_tab_widget{nullptr};
 };
 

@@ -25,6 +25,7 @@
 #include <oac_tree_gui/views/composer/procedure_composer_combo_toolbar.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <sup/gui/app/null_command_service.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -49,11 +50,12 @@ class ProcedureComposerComboPanelTest : public ::testing::Test
 {
 public:
   SequencerModel m_model;
+  sup::gui::NullCommandService m_command_service;
 };
 
 TEST_F(ProcedureComposerComboPanelTest, InitialState)
 {
-  const ProcedureComposerComboPanel widget(&m_model);
+  const ProcedureComposerComboPanel widget(m_command_service, &m_model);
   EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
 
   auto stacked_widget = widget.findChild<QStackedWidget*>();
@@ -68,7 +70,7 @@ TEST_F(ProcedureComposerComboPanelTest, InitialState)
 
 TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
 {
-  ProcedureComposerComboPanel widget(&m_model);
+  ProcedureComposerComboPanel widget(m_command_service, &m_model);
 
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   procedure->SetDisplayName("Test procedure");
@@ -103,7 +105,7 @@ TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
 
 TEST_F(ProcedureComposerComboPanelTest, ChangeToPlaceholderWidgetOnProcedureDeletion)
 {
-  ProcedureComposerComboPanel widget(&m_model);
+  ProcedureComposerComboPanel widget(m_command_service, &m_model);
 
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   procedure->SetDisplayName("Test procedure");
@@ -124,7 +126,7 @@ TEST_F(ProcedureComposerComboPanelTest, ChangeToPlaceholderWidgetOnProcedureDele
 
 TEST_F(ProcedureComposerComboPanelTest, ChangeOfToolbarOnProcedureRename)
 {
-  ProcedureComposerComboPanel widget(&m_model);
+  ProcedureComposerComboPanel widget(m_command_service, &m_model);
 
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   procedure->SetDisplayName("Test procedure");

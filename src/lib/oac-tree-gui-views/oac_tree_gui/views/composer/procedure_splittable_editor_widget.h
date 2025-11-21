@@ -26,6 +26,11 @@
 
 class QSplitter;
 
+namespace sup::gui
+{
+class IAppCommandService;
+}
+
 namespace oac_tree_gui
 {
 
@@ -44,7 +49,8 @@ class ProcedureSplittableEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit ProcedureSplittableEditorWidget(QWidget* parent_widget = nullptr);
+  explicit ProcedureSplittableEditorWidget(sup::gui::IAppCommandService& command_service,
+                                           QWidget* parent_widget = nullptr);
   ~ProcedureSplittableEditorWidget() override;
 
   void SetModel(SequencerModel* model);
@@ -109,6 +115,7 @@ private:
    */
   void NotifyFocusWidgetProcedureSelectionChanged(ProcedureItem* item);
 
+  sup::gui::IAppCommandService& m_command_service;
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<WidgetFocusHandler<ProcedureComposerComboPanel>> m_focus_handler;

@@ -30,6 +30,11 @@ namespace mvvm
 class ModelListener;
 }
 
+namespace sup::gui
+{
+class IAppCommandService;
+}
+
 namespace oac_tree_gui
 {
 
@@ -60,7 +65,8 @@ public:
     kComposerWidget
   };
 
-  explicit ProcedureComposerComboPanel(SequencerModel* model, QWidget* parent_widget = nullptr);
+  explicit ProcedureComposerComboPanel(sup::gui::IAppCommandService& command_service,
+                                       SequencerModel* model, QWidget* parent_widget = nullptr);
 
   ~ProcedureComposerComboPanel() override;
 

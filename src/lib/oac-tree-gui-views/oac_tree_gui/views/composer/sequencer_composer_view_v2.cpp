@@ -37,7 +37,7 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
     : QWidget(parent_widget)
     , m_splitter(new QSplitter)
     , m_composer_tools_panel(new ComposerToolsPanel(command_service))
-    , m_splittable_editor_widget(new ProcedureSplittableEditorWidget)
+    , m_splittable_editor_widget(new ProcedureSplittableEditorWidget(command_service))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

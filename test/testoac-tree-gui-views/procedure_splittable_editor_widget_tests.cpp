@@ -26,6 +26,8 @@
 #include <oac_tree_gui/views/composer/procedure_composer_combo_panel.h>
 #include <oac_tree_gui/views/composer/procedure_composer_combo_toolbar.h>
 
+#include <sup/gui/app/null_command_service.h>
+
 #include <mvvm/standarditems/container_item.h>
 
 #include <gmock/gmock.h>
@@ -53,11 +55,12 @@ class ProcedureSplittableEditorWidgetTest : public ::testing::Test
 {
 public:
   SequencerModel m_model;
+  sup::gui::NullCommandService m_command_service;
 };
 
 TEST_F(ProcedureSplittableEditorWidgetTest, InitialState)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
 
   // model is not set, so creating panel should throw
   EXPECT_THROW(editor.CreatePanel(), RuntimeException);
@@ -65,7 +68,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, InitialState)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetModel)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
 
   const QSignalSpy signal_spy(
       &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
@@ -84,7 +87,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModel)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelAndClosePanel)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   const QSignalSpy signal_spy(
@@ -112,7 +115,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelAndClosePanel)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBetweenTwoPanels)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   const QSignalSpy signal_spy(
@@ -153,7 +156,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBetweenTwoPanels)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelViaWidgetSignal)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   const QSignalSpy signal_spy(
@@ -173,7 +176,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelViaWidgetSignal)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, ClosePanelViaWidgetSignal)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   const QSignalSpy signal_spy(
@@ -195,7 +198,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ClosePanelViaWidgetSignal)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestViaSignals)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   const QSignalSpy signal_spy(
@@ -220,7 +223,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestViaSignals)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   QSignalSpy signal_spy(&editor,
@@ -266,7 +269,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidget)
 {
-  ProcedureSplittableEditorWidget editor;
+  ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   QSignalSpy signal_spy(&editor,

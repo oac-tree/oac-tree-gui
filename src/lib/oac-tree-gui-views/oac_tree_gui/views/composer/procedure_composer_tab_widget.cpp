@@ -20,14 +20,27 @@
 
 #include "procedure_composer_tab_widget.h"
 
+#include "instruction_editor_widget.h"
+#include "workspace_editor_widget.h"
+#include "xml_panel.h"
+
+#include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
+
 #include <QTabWidget>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
 {
 
-ProcedureComposerTabWidget::ProcedureComposerTabWidget(QWidget* parent_widget)
-    : QWidget(parent_widget), m_tab_widget(new QTabWidget)
+ProcedureComposerTabWidget::ProcedureComposerTabWidget(
+    sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
+    : QWidget(parent_widget)
+    , m_instruction_editor_widget(new InstructionEditorWidget(command_service))
+    , m_workspace_editor_widget(
+          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
+    , m_node_editor(new NodeEditorWidget(NodeEditorMode::kNodeEditor))
+    , m_xml_panel(new XmlPanel)
+    , m_tab_widget(new QTabWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -35,8 +48,10 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(QWidget* parent_widget)
 
   layout->addWidget(m_tab_widget);
 
-  m_tab_widget->addTab(new QWidget, "ABC");
-  m_tab_widget->addTab(new QWidget, "DEF");
+  m_tab_widget->addTab(m_instruction_editor_widget, "Instruction Tree");
+  m_tab_widget->addTab(m_workspace_editor_widget, "Workspace");
+  m_tab_widget->addTab(m_node_editor, "Node editor");
+  m_tab_widget->addTab(m_xml_panel, "XML");
   m_tab_widget->setTabPosition(QTabWidget::South);
 }
 

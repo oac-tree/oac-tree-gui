@@ -31,8 +31,10 @@
 namespace oac_tree_gui
 {
 
-ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(QWidget* parent_widget)
+ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
+    sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_command_service(command_service)
     , m_splitter(new QSplitter)
     , m_focus_handler(std::make_unique<WidgetFocusHandler<ProcedureComposerComboPanel>>())
 {
@@ -107,7 +109,7 @@ void ProcedureSplittableEditorWidget::SetFocusWidget(ProcedureComposerComboPanel
 std::unique_ptr<ProcedureComposerComboPanel>
 ProcedureSplittableEditorWidget::CreateProcedureEditor()
 {
-  auto result = std::make_unique<ProcedureComposerComboPanel>(m_model);
+  auto result = std::make_unique<ProcedureComposerComboPanel>(m_command_service, m_model);
 
   auto on_add_panel = [this]()
   {
