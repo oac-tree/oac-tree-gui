@@ -87,12 +87,12 @@ void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
 
 void ComposerWidgetPanel::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
 {
-  m_block_selection_notification = true;
+  m_block_selection_change_notification = true;
 
   m_instruction_editor_widget->SetSelectedInstructions(instructions);
   m_node_editor->SetSelectedInstructions(instructions);
 
-  m_block_selection_notification = false;
+  m_block_selection_change_notification = false;
 }
 
 std::vector<InstructionItem*> ComposerWidgetPanel::GetSelectedInstructions() const
@@ -130,26 +130,26 @@ void ComposerWidgetPanel::SetupConnections()
 {
   auto on_scene_instruction_selected = [this]()
   {
-    if (!m_block_selection_notification)
+    if (!m_block_selection_change_notification)
     {
-      m_block_selection_notification = true;
+      m_block_selection_change_notification = true;
       auto selected = m_node_editor->GetSelectedInstructions();
       m_instruction_editor_widget->SetSelectedInstructions(selected);
       emit InstructionSelected(selected.empty() ? nullptr : selected.front());
-      m_block_selection_notification = false;
+      m_block_selection_change_notification = false;
     }
   };
   connect(m_node_editor, &NodeEditorWidget::selectionChanged, this, on_scene_instruction_selected);
 
   auto on_tree_instruction_selected = [this](auto instruction)
   {
-    if (!m_block_selection_notification)
+    if (!m_block_selection_change_notification)
     {
-      m_block_selection_notification = true;
+      m_block_selection_change_notification = true;
       m_node_editor->SetSelectedInstructions(
           m_instruction_editor_widget->GetSelectedInstructions());
       emit InstructionSelected(instruction);
-      m_block_selection_notification = false;
+      m_block_selection_change_notification = false;
     }
   };
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,

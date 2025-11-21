@@ -32,6 +32,8 @@
 #include <QSignalSpy>
 #include <QStackedWidget>
 
+Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
+
 namespace oac_tree_gui::test
 {
 

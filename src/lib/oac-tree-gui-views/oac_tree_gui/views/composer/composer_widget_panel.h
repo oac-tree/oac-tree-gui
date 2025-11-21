@@ -106,7 +106,7 @@ private:
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 
   ProcedureItem* m_procedure{nullptr};
-  bool m_block_selection_notification{false};  //!< do not notify outside if selection changed
+  bool m_block_selection_change_notification{false};  //!< do not notify outside if selection changed
 };
 
 }  // namespace oac_tree_gui

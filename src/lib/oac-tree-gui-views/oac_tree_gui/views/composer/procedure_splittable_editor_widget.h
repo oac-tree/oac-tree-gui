@@ -82,6 +82,9 @@ public:
    */
   void SetFocusWidget(ProcedureComposerComboPanel* widget);
 
+signals:
+  void focusWidgetProcedureSelectionChanged(oac_tree_gui::ProcedureItem* item);
+
 private:
   /**
    * @brief Creates a new procedure editor widget.
@@ -98,9 +101,21 @@ private:
    */
   void CreateInitialSplitterSetup();
 
+  /**
+   * @brief Notifies that the procedure selection in the focus widget has changed.
+   *
+   * Also notifies if focus widget changed, and the procedure is not the same as in previous focus
+   * widget. This is used to propate focus procedure change to procedure list.
+   */
+  void NotifyFocusWidgetProcedureSelectionChanged(ProcedureItem* item);
+
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<WidgetFocusHandler<ProcedureComposerComboPanel>> m_focus_handler;
+  bool m_block_selection_change_notification{false};
+
+  //! cached value of current procedure item in focus widget
+  ProcedureItem* m_procedure_item_in_focus_cache{nullptr};
 };
 
 }  // namespace oac_tree_gui

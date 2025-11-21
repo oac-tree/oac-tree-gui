@@ -32,9 +32,11 @@
 #include <gtest/gtest.h>
 
 #include <QApplication>
-#include <QDebug>
+#include <QSignalSpy>
 #include <QSplitter>
 #include <QStackedWidget>
+
+Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui::test
 {
@@ -65,6 +67,9 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModel)
 {
   ProcedureSplittableEditorWidget editor;
 
+  const QSignalSpy signal_spy(
+      &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
+
   editor.SetModel(&m_model);
 
   auto splitter = editor.findChild<QSplitter*>();
@@ -73,12 +78,17 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModel)
 
   ASSERT_NE(splitter->widget(0), nullptr);
   EXPECT_EQ(splitter->widget(0), editor.GetFocusWidget());
+
+  EXPECT_EQ(signal_spy.count(), 0);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelAndClosePanel)
 {
   ProcedureSplittableEditorWidget editor;
   editor.SetModel(&m_model);
+
+  const QSignalSpy signal_spy(
+      &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   editor.CreatePanel();
   auto splitter = editor.findChild<QSplitter*>();
@@ -96,12 +106,17 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelAndClosePanel)
   EXPECT_EQ(splitter->count(), 2);  // because deletion is deferred
   EXPECT_TRUE(old_focus_widget->isHidden());
   EXPECT_EQ(splitter->widget(0), editor.GetFocusWidget());
+
+  EXPECT_EQ(signal_spy.count(), 0);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBetweenTwoPanels)
 {
   ProcedureSplittableEditorWidget editor;
   editor.SetModel(&m_model);
+
+  const QSignalSpy signal_spy(
+      &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   // create second panel in addition to initial one
   editor.CreatePanel();
@@ -132,15 +147,17 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBetweenTwoPanels)
 
   EXPECT_TRUE(first_widget->isHidden());
   EXPECT_EQ(prev_focus_widget, editor.GetFocusWidget());
-  qDebug() << splitter->widget(0);
-  qDebug() << splitter->widget(1);
-  qDebug() << splitter->widget(2);
+
+  ASSERT_EQ(signal_spy.count(), 0);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelViaWidgetSignal)
 {
   ProcedureSplittableEditorWidget editor;
   editor.SetModel(&m_model);
+
+  const QSignalSpy signal_spy(
+      &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
@@ -150,12 +167,17 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelViaWidgetSignal)
   emit focus_widget->splitViewRequest();
   EXPECT_EQ(splitter->count(), 2);
   EXPECT_EQ(splitter->widget(1), editor.GetFocusWidget());
+
+  EXPECT_EQ(signal_spy.count(), 0);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, ClosePanelViaWidgetSignal)
 {
   ProcedureSplittableEditorWidget editor;
   editor.SetModel(&m_model);
+
+  const QSignalSpy signal_spy(
+      &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   editor.CreatePanel();
   auto splitter = editor.findChild<QSplitter*>();
@@ -167,12 +189,17 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ClosePanelViaWidgetSignal)
   EXPECT_EQ(splitter->count(), 2);  // because deletion is deferred
   EXPECT_TRUE(focus_widget->isHidden());
   EXPECT_EQ(splitter->widget(0), editor.GetFocusWidget());
+
+  EXPECT_EQ(signal_spy.count(), 0);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestViaSignals)
 {
   ProcedureSplittableEditorWidget editor;
   editor.SetModel(&m_model);
+
+  const QSignalSpy signal_spy(
+      &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   editor.CreatePanel();
   auto splitter = editor.findChild<QSplitter*>();
@@ -187,12 +214,17 @@ TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestViaSignals)
 
   emit second_widget->panelFocusRequest();
   EXPECT_EQ(second_widget, editor.GetFocusWidget());
+
+  EXPECT_EQ(signal_spy.count(), 0);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 {
   ProcedureSplittableEditorWidget editor;
   editor.SetModel(&m_model);
+
+  QSignalSpy signal_spy(&editor,
+                        &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   procedure->SetDisplayName("Test procedure");
@@ -208,23 +240,37 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
   auto third_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(2));
 
   editor.SetFocusWidget(second_widget);
+
   EXPECT_EQ(second_widget, editor.GetFocusWidget());
   editor.SetProcedure(procedure);
 
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), procedure);
+
   EXPECT_EQ(second_widget->GetCurrentProcedure(), procedure);
   editor.SetFocusWidget(third_widget);
+
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), nullptr);
+
   EXPECT_EQ(third_widget->GetCurrentProcedure(), nullptr);
   editor.SetProcedure(procedure);
 
   EXPECT_EQ(first_widget->GetCurrentProcedure(), nullptr);
   EXPECT_EQ(second_widget->GetCurrentProcedure(), procedure);
   EXPECT_EQ(third_widget->GetCurrentProcedure(), procedure);
+
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), procedure);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidget)
 {
   ProcedureSplittableEditorWidget editor;
   editor.SetModel(&m_model);
+
+  QSignalSpy signal_spy(&editor,
+                        &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   procedure->SetDisplayName("Test procedure");
@@ -242,6 +288,9 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidg
   EXPECT_EQ(splitter->count(), 3);
   auto third_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
   EXPECT_EQ(third_widget->GetCurrentProcedure(), procedure);
+
+  EXPECT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), procedure);
 }
 
 }  // namespace oac_tree_gui::test

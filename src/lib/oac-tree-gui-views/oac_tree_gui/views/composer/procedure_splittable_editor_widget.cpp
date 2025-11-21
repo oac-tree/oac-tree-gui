@@ -98,6 +98,10 @@ ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetFocusWidget()
 void ProcedureSplittableEditorWidget::SetFocusWidget(ProcedureComposerComboPanel* widget)
 {
   m_focus_handler->SetFocusWidget(widget);
+  if (widget)
+  {
+    NotifyFocusWidgetProcedureSelectionChanged(widget->GetCurrentProcedure());
+  }
 }
 
 std::unique_ptr<ProcedureComposerComboPanel>
@@ -123,8 +127,21 @@ ProcedureSplittableEditorWidget::CreateProcedureEditor()
   {
     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
     m_focus_handler->SetFocusWidget(sending_panel);
+    NotifyFocusWidgetProcedureSelectionChanged(sending_panel->GetCurrentProcedure());
   };
   connect(result.get(), &ProcedureComposerComboPanel::panelFocusRequest, this, on_focus_request);
+
+  auto on_selected_procedure_changed = [this](oac_tree_gui::ProcedureItem* item)
+  {
+    auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
+
+    if (sending_panel == GetFocusWidget())
+    {
+      NotifyFocusWidgetProcedureSelectionChanged(item);
+    }
+  };
+  connect(result.get(), &ProcedureComposerComboPanel::selectedProcedureChanged, this,
+          on_selected_procedure_changed);
 
   return result;
 }
@@ -140,6 +157,25 @@ void ProcedureSplittableEditorWidget::ValidateModel() const
 void ProcedureSplittableEditorWidget::CreateInitialSplitterSetup()
 {
   CreatePanel();
+}
+
+void ProcedureSplittableEditorWidget::NotifyFocusWidgetProcedureSelectionChanged(
+    ProcedureItem* item)
+{
+  if (m_block_selection_change_notification)
+  {
+    return;
+  }
+
+  m_block_selection_change_notification = true;
+
+  if (item != m_procedure_item_in_focus_cache)
+  {
+    m_procedure_item_in_focus_cache = item;
+    emit focusWidgetProcedureSelectionChanged(item);
+  }
+
+  m_block_selection_change_notification = false;
 }
 
 }  // namespace oac_tree_gui
