@@ -30,7 +30,7 @@ std::int32_t ProjectVersionMajor()
   return kProjectVersionMajor;
 }
 
-int ProjectVersionMinor()
+std::int32_t ProjectVersionMinor()
 {
   return kProjectVersionMinor;
 }
