@@ -21,10 +21,10 @@
 #ifndef OAC_TREE_GUI_NODEEDITOR_ALIGN_NODE_H_
 #define OAC_TREE_GUI_NODEEDITOR_ALIGN_NODE_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 namespace oac_tree_gui::algorithm
 {
@@ -68,7 +68,7 @@ public:
 
   AlignNode* GetNextSibling() const;
 
-  AlignNode* GetLeftMostSibling();
+  AlignNode* GetLeftMostSibling() &;
 
   AlignNode* GetLeftMostChild() const;
 

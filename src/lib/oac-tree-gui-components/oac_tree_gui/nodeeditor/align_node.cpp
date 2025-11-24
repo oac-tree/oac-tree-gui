@@ -133,7 +133,7 @@ AlignNode* AlignNode::GetNextSibling() const
   return children.at(static_cast<std::size_t>(index + 1));
 }
 
-AlignNode* AlignNode::GetLeftMostSibling()
+AlignNode* AlignNode::GetLeftMostSibling() &
 {
   if (!GetParent())
   {
