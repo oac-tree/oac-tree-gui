@@ -100,7 +100,9 @@ std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::strin
   std::string result;
   if (!attributes.empty())
   {
-    result = mvvm::utils::StringFormat("<table width=\"%1\">").arg(std::to_string(total_width));
+    result = mvvm::utils::StringFormat("<table width=\"%1\">")
+                 .arg(std::to_string(total_width))
+                 .operator std::string();
     for (auto& [name, value] : attributes)
     {
       const int cell_width1 = static_cast<int>(total_width * 0.3);
@@ -109,7 +111,8 @@ std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::strin
                                   .arg(std::to_string(cell_width1))
                                   .arg(name)
                                   .arg(std::to_string(cell_width2))
-                                  .arg(value);
+                                  .arg(value)
+                                  .operator std::string();
       result += str;
     }
 
