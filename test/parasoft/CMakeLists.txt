@@ -20,12 +20,22 @@ cpptest_add_executable(oac-tree-gui-cpptest
   TARGETS oac-tree-gui-core oac-tree-gui-components oac-tree-gui-views testoac-tree-gui-core testoac-tree-gui-components testoac-tree-gui-components-app testoac-tree-gui-views testoac-tree-gui-integration
 )
 
-get_target_property(SEQUENCER_GUI_INCLUDE_DIRECTORIES oac-tree-gui-views INCLUDE_DIRECTORIES)
-target_include_directories(oac-tree-gui-cpptest PUBLIC ${SEQUENCER_GUI_INCLUDE_DIRECTORIES})
+get_target_property(SEQUENCER_GUI_CORE_INCLUDE_DIRECTORIES oac-tree-gui-core INCLUDE_DIRECTORIES)
+get_target_property(SEQUENCER_GUI_COMPONENTS_INCLUDE_DIRECTORIES oac-tree-gui-components INCLUDE_DIRECTORIES)
+get_target_property(SEQUENCER_GUI_VIEWS_INCLUDE_DIRECTORIES oac-tree-gui-views INCLUDE_DIRECTORIES)
+target_include_directories(oac-tree-gui-cpptest PUBLIC ${SEQUENCER_GUI_CORE_INCLUDE_DIRECTORIES} ${SEQUENCER_GUI_COMPONENTS_INCLUDE_DIRECTORIES} ${SEQUENCER_GUI_VIEWS_INCLUDE_DIRECTORIES})
 
 target_link_libraries(oac-tree-gui-cpptest
   PUBLIC
+  sup-gui-core::core
   sup-gui-core::views
+  sup-gui-core::components
+  sup-mvvm::model
+  sup-mvvm::view
+  sup-mvvm::viewmodel
+  oac-tree-gui-core
+  oac-tree-gui-views
+  oac-tree-gui-components
   oac-tree::oac-tree
   sup-epics::sup-epics
   oac-tree-server::oac-tree-server
