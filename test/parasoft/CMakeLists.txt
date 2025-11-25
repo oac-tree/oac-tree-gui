@@ -12,12 +12,7 @@ cpptest_add_executable(oac-tree-gui-cpptest
   src-oac-tree-gui-core=${CMAKE_SOURCE_DIR}/src/lib/oac-tree-gui-core
   src-oac-tree-gui-components=${CMAKE_SOURCE_DIR}/src/lib/oac-tree-gui-components
   src-oac-tree-gui-views=${CMAKE_SOURCE_DIR}/src/lib/oac-tree-gui-views
-  src-testoac-tree-gui-core=${CMAKE_SOURCE_DIR}/test/testoac-tree-gui-core
-  src-testoac-tree-gui-components=${CMAKE_SOURCE_DIR}/test/testoac-tree-gui-components
-  src-testoac-tree-gui-components-app=${CMAKE_SOURCE_DIR}/test/testoac-tree-gui-components-app
-  src-testoac-tree-gui-views=${CMAKE_SOURCE_DIR}/test/testoac-tree-gui-views
-  src-testoac-tree-gui-integration=${CMAKE_SOURCE_DIR}/test/testoac-tree-gui-integration
-  TARGETS oac-tree-gui-core oac-tree-gui-components oac-tree-gui-views testoac-tree-gui-core testoac-tree-gui-components testoac-tree-gui-components-app testoac-tree-gui-views testoac-tree-gui-integration
+  TARGETS oac-tree-gui-core oac-tree-gui-components oac-tree-gui-views
 )
 
 get_target_property(SEQUENCER_GUI_CORE_INCLUDE_DIRECTORIES oac-tree-gui-core INCLUDE_DIRECTORIES)
@@ -27,15 +22,7 @@ target_include_directories(oac-tree-gui-cpptest PUBLIC ${SEQUENCER_GUI_CORE_INCL
 
 target_link_libraries(oac-tree-gui-cpptest
   PUBLIC
-  sup-gui-core::core
   sup-gui-core::views
-  sup-gui-core::components
-  sup-mvvm::model
-  sup-mvvm::view
-  sup-mvvm::viewmodel
-  oac-tree-gui-core
-  oac-tree-gui-views
-  oac-tree-gui-components
   oac-tree::oac-tree
   sup-epics::sup-epics
   oac-tree-server::oac-tree-server
