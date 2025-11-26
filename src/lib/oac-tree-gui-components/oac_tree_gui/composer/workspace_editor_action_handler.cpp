@@ -47,7 +47,7 @@ namespace
 std::vector<const mvvm::SessionItem *> GetItemVector(const std::vector<VariableItem *> &vec)
 {
   std::vector<const mvvm::SessionItem *> result;
-  std::transform(vec.begin(), vec.end(), std::back_inserter(result),
+  (void)std::transform(vec.begin(), vec.end(), std::back_inserter(result),
                  [](auto element) { return element; });
   return result;
 }
@@ -157,7 +157,7 @@ void WorkspaceEditorActionHandler::EditAnyValue()
       GetModel()->RemoveItem(selected_anyvalue);
     }
 
-    GetModel()->InsertItem(std::move(edited_anyvalue.result), selected_variable, {});
+    (void)GetModel()->InsertItem(std::move(edited_anyvalue.result), selected_variable, {});
   }
 }
 

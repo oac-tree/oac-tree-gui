@@ -64,8 +64,8 @@ std::vector<std::string> FindSharedLibraries(const std::string &dir)
   const auto dylib_names = mvvm::utils::FindFiles(dir, kSharedLibMacExtension);
 
   result.reserve(so_names.size() + dylib_names.size());
-  result.insert(result.end(), so_names.begin(), so_names.end());
-  result.insert(result.end(), dylib_names.begin(), dylib_names.end());
+  (void)result.insert(result.end(), so_names.begin(), so_names.end());
+  (void)result.insert(result.end(), dylib_names.begin(), dylib_names.end());
 
   return result;
 }

@@ -55,10 +55,10 @@ std::map<int, double> GetCountour(oac_tree_gui::algorithm::AlignNode& node, doub
     auto [node, mod_sum] = node_stack.top();
     node_stack.pop();
 
-    int level = static_cast<int>(node->GetY());
+    const int level = static_cast<int>(node->GetY());
     if (auto it = result.find(level); it == result.end())
     {
-      result.insert({level, node->GetX() + mod_sum});
+      (void)result.insert({level, node->GetX() + mod_sum});
     }
     else
     {

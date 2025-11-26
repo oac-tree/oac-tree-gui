@@ -66,7 +66,7 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
   auto children = item->GetAllItems();
   auto is_correct_type = [](auto child)
   { return mvvm::utils::Contains(allowed_variable_children_types, child->GetType()); };
-  std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
+  (void)std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
                is_correct_type);
   return result;
 }
@@ -80,7 +80,7 @@ std::vector<mvvm::SessionItem *> InstructionNodeChildrenStrategy::GetChildren(
     {
       std::vector<mvvm::SessionItem *> result;
       auto children = instruction_item->GetInstructions();
-      std::copy(children.begin(), children.end(), std::back_inserter(result));
+      (void)std::copy(children.begin(), children.end(), std::back_inserter(result));
       return result;
     }
     return {};

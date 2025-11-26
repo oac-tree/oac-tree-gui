@@ -36,7 +36,7 @@ public:
   std::vector<Key> GetKeys() const
   {
     std::vector<Key> result;
-    std::transform(m_object_map.begin(), m_object_map.end(), std::back_inserter(result),
+    (void)std::transform(m_object_map.begin(), m_object_map.end(), std::back_inserter(result),
                    [](auto it) { return it.first; });
     return result;
   }
@@ -54,7 +54,7 @@ public:
     {
       throw std::runtime_error("Duplicated key");
     }
-    m_object_map.insert(it, {key, value});
+    (void)m_object_map.insert(it, {key, value});
   }
 
   Value GetValue(const Key& key)

@@ -42,7 +42,7 @@ BreakpointStatus GetBreakpointStatus(const InstructionItem &item)
 void SetBreakpointStatus(const InstructionItem &item, BreakpointStatus status)
 {
   auto breakpoint_property = GetBreakpointItem(item);
-  breakpoint_property->SetData(static_cast<int>(status));
+  (void)breakpoint_property->SetData(static_cast<int>(status));
 }
 
 void ToggleBreakpointStatus(const InstructionItem &item)
@@ -84,7 +84,7 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
   for (auto instruction : container.GetInstructions())
   {
     auto info = CollectBreakpointInfo(*instruction);
-    std::copy(info.begin(), info.end(), std::back_inserter(result));
+    (void)std::copy(info.begin(), info.end(), std::back_inserter(result));
   }
 
   return result;

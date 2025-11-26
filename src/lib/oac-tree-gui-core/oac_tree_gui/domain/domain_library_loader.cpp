@@ -55,7 +55,7 @@ void CloseLibrary(void* handle)
 #if defined(_WIN32)
   ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
 #else
-  ::dlclose(handle);
+  (void)::dlclose(handle);
 #endif
 }
 }  // namespace

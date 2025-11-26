@@ -51,7 +51,7 @@ std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
 void SequencerModel::CreateUntitledProcedure()
 {
   auto procedure = InsertItem<ProcedureItem>(GetProcedureContainer());
-  procedure->SetDisplayName("Untitled");
+  (void)procedure->SetDisplayName("Untitled");
 }
 
 void SequencerModel::Clear()
@@ -62,7 +62,7 @@ void SequencerModel::Clear()
 
 void SequencerModel::PopulateModel()
 {
-  InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
+  (void)InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
   if (auto command_stack = GetCommandStack(); command_stack)
   {
     command_stack->Clear();  // to disallow "undo" of our main container

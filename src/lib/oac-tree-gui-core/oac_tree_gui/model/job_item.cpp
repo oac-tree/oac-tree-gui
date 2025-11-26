@@ -34,15 +34,15 @@ static inline const std::string kExpandedProcedure = "kExpandedProcedure";
 
 JobItem::JobItem(const std::string &type) : CompoundItem(type)
 {
-  AddProperty(itemconstants::kStatus, std::string()).SetDisplayName("Status").SetEditable(false);
-  AddProperty<mvvm::LinkedItem>(kLink).SetDisplayName("Link");
-  AddProperty(itemconstants::kTickTimeout, itemconstants::kDefaultTickTimeoutMsec)
+  (void)AddProperty(itemconstants::kStatus, std::string()).SetDisplayName("Status").SetEditable(false);
+  (void)AddProperty<mvvm::LinkedItem>(kLink).SetDisplayName("Link");
+  (void)AddProperty(itemconstants::kTickTimeout, itemconstants::kDefaultTickTimeoutMsec)
       .SetDisplayName("Tick timeout");
 
   RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {mvvm::GetTypeName<ProcedureItem>()}),
               /*as_default*/ true);
 
-  SetFlag(mvvm::Appearance::kEditableDisplayName, true);
+  (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
 
 std::unique_ptr<mvvm::SessionItem> JobItem::Clone() const

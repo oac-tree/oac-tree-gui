@@ -66,9 +66,9 @@ std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 
 RemoteJobItem::RemoteJobItem() : JobItem(mvvm::GetTypeName<RemoteJobItem>())
 {
-  AddProperty(kJobIndex, std::size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
+  (void)AddProperty(kJobIndex, std::size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
 
-  AddProperty(kServerName, std::string())
+  (void)AddProperty(kServerName, std::string())
       .SetDisplayName("Server name")
       .SetToolTip("Remote server name");
 }
@@ -104,7 +104,7 @@ void RemoteJobItem::SetServerName(const std::string &name)
 
 FileBasedJobItem::FileBasedJobItem() : JobItem(mvvm::GetTypeName<FileBasedJobItem>())
 {
-  AddProperty(kFileName, std::string()).SetDisplayName("File name");
+  (void)AddProperty(kFileName, std::string()).SetDisplayName("File name");
 }
 
 std::unique_ptr<mvvm::SessionItem> FileBasedJobItem::Clone() const
@@ -140,7 +140,7 @@ std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure, int tick_t
   }
   auto result = std::make_unique<LocalJobItem>();
   result->SetProcedure(procedure);
-  result->SetDisplayName(procedure->GetDisplayName());
+  (void)result->SetDisplayName(procedure->GetDisplayName());
   result->SetTickTimeout(tick_timeout_msec);
   return result;
 }
@@ -155,7 +155,7 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
 
   auto result = std::make_unique<ImportedJobItem>();
   result->SetProcedure(procedure.get());
-  result->SetDisplayName(procedure->GetDisplayName());
+  (void)result->SetDisplayName(procedure->GetDisplayName());
   result->SetTickTimeout(tick_timeout_msec);
 
   // inserting imported procedure into own container and thus taking an ownership
@@ -170,7 +170,7 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_nam
   auto result = std::make_unique<RemoteJobItem>();
   result->SetServerName(server_name);
   result->SetRemoteJobIndex(job_index);
-  result->SetDisplayName(server_name + "_" + std::to_string(job_index));
+  (void)result->SetDisplayName(server_name + "_" + std::to_string(job_index));
   return result;
 }
 
@@ -180,7 +180,7 @@ std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string &file_name, in
   result->SetFileName(file_name);
   result->SetTickTimeout(tick_timeout_msec);
   auto procedure_name = mvvm::utils::GetPathStem(file_name);
-  result->SetDisplayName(procedure_name);
+  (void)result->SetDisplayName(procedure_name);
 
   return result;
 }

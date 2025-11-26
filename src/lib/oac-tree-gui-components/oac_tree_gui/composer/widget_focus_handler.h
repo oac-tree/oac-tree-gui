@@ -107,7 +107,7 @@ inline void WidgetFocusHandler<WidgetT>::AddWidget(WidgetT* widget, WidgetT* ins
   auto prev_iter = std::find(m_editors.begin(), m_editors.end(), insert_after_widget);
   if (prev_iter != m_editors.end())
   {
-    m_editors.insert(std::next(prev_iter), widget);
+    (void)m_editors.insert(std::next(prev_iter), widget);
   }
   else
   {
@@ -133,7 +133,7 @@ inline void WidgetFocusHandler<WidgetT>::RemoveWidget(WidgetT* widget)
   {
     m_in_focus = nullptr;
   }
-  m_editors.erase(iter);
+  (void)m_editors.erase(iter);
 
   if ((m_in_focus == nullptr) && !m_editors.empty())
   {

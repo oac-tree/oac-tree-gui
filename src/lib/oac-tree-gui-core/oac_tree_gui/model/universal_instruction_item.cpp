@@ -103,8 +103,8 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
     {
       auto &property = AddProperty<sup::gui::AnyValueScalarItem>(name);
       property.SetAnyTypeName(sup::dto::kStringTypeName);
-      property.SetDisplayName(name);
-      property.SetData(value);
+      (void)property.SetDisplayName(name);
+      (void)property.SetData(value);
     }
   }
 
@@ -161,15 +161,15 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
     throw LogicErrorException("It is not possible to setup instruction twice");
   }
 
-  SetData(instruction->GetType(), itemconstants::kDomainTypeNameRole);
+  (void)SetData(instruction->GetType(), itemconstants::kDomainTypeNameRole);
 
-  SetDisplayName(instruction->GetType());
+  (void)SetDisplayName(instruction->GetType());
 
   for (const auto &definition : instruction->GetAttributeDefinitions())
   {
     if (IsDomainAttributeToExpose(definition.GetName()))
     {
-      AddPropertyFromDefinition(definition, *this);
+      (void)AddPropertyFromDefinition(definition, *this);
     }
   }
 

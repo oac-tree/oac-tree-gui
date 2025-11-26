@@ -56,7 +56,7 @@ void UpdateOperationStateFromInstructionStatus(InstructionStatus status,
   auto iter = state_map.find(status);
   if (iter != state_map.end())
   {
-    states.Set(iter->second);
+    (void)states.Set(iter->second);
   }
 }
 
@@ -124,7 +124,7 @@ mvvm::NodeOperationStates ConnectableInstructionAdapter::GetOperationStates() co
   mvvm::NodeOperationStates result;
   if (!m_instruction->GetInstructions().empty() && IsCollapsed(*m_instruction))
   {
-    result.Set(mvvm::NodeOperationState::kCollapsedChildren);
+    (void)result.Set(mvvm::NodeOperationState::kCollapsedChildren);
   }
 
   UpdateOperationStateFromInstructionStatus(m_instruction->GetStatus(), result);

@@ -53,7 +53,7 @@ std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem *> instru
 
   for (auto child : instructions)
   {
-    result->Add(CreateAlignTree(child));
+    (void)result->Add(CreateAlignTree(child));
   }
 
   return result;

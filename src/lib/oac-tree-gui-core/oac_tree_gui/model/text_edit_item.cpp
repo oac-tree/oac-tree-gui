@@ -59,7 +59,7 @@ bool TextEditItem::IsEditorEnabled() const
 
 void TextEditItem::SetEditorEnabled(bool value)
 {
-  SetProperty(constants::kUseTextEditor, value);
+  (void)SetProperty(constants::kUseTextEditor, value);
 }
 
 std::vector<std::string> TextEditItem::GetText() const
@@ -71,7 +71,7 @@ std::vector<std::string> TextEditItem::GetText() const
 void TextEditItem::SetText(const std::vector<std::string> &lines)
 {
   const auto setting_str = GetSettingStringFromVector(lines);
-  SetProperty(constants::kTextEditorContent, setting_str);
+  (void)SetProperty(constants::kTextEditorContent, setting_str);
 }
 
 std::string GetSettingStringFromVector(const std::vector<std::string> &vec)

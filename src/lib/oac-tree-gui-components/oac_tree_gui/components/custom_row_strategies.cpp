@@ -117,16 +117,16 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(VariableItem
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
   // column #0: it's a name
-  result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetName()));
+  (void)result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetName()));
 
   // column #1: scalar value, or placeholder
-  result.emplace_back(CreateAnyValueViewItem(item));
+  (void)result.emplace_back(CreateAnyValueViewItem(item));
 
   // column #2: type of the variable (CA, Local, PVA-C, PVA-S
-  result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item.GetDomainType())));
+  (void)result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item.GetDomainType())));
 
   // column #3: Channel and is_available properties
-  result.emplace_back(CreateChannelPresentationViewItem(item));
+  (void)result.emplace_back(CreateChannelPresentationViewItem(item));
 
   return result;
 }
@@ -137,9 +137,9 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(VariableItem
 std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(VariableItem &item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-  result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
-  result.emplace_back(mvvm::CreateLabelViewItem(&item));
-  result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetDomainType()));
+  (void)result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
+  (void)result.emplace_back(mvvm::CreateLabelViewItem(&item));
+  (void)result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetDomainType()));
 
   return result;
 }
@@ -155,16 +155,16 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
   if (item.GetTagIndex().GetTag() == itemconstants::kAnyValueTag)
   {
     auto view_item = mvvm::CreateFixedDataViewItem(&item);
-    view_item->SetData(GetValueIcon(), Qt::DecorationRole);
-    view_item->SetData(QString::fromStdString(item.GetDisplayName()), Qt::DisplayRole);
-    result.emplace_back(std::move(view_item));
+    (void)view_item->SetData(GetValueIcon(), Qt::DecorationRole);
+    (void)view_item->SetData(QString::fromStdString(item.GetDisplayName()), Qt::DisplayRole);
+    (void)result.emplace_back(std::move(view_item));
   }
   else
   {
-    result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
+    (void)result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
   }
-  result.emplace_back(mvvm::CreateDataViewItem(&item));
-  result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeStringForVariableTree(item)));
+  (void)result.emplace_back(mvvm::CreateDataViewItem(&item));
+  (void)result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeStringForVariableTree(item)));
 
   return result;
 }
@@ -236,11 +236,11 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
   }
 
   // It's AnyValueStructItem or AnyValueArrayItem and their branches
-  result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
-  result.emplace_back(mvvm::CreateDataViewItem(item));
+  (void)result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+  (void)result.emplace_back(mvvm::CreateDataViewItem(item));
   // and empty placeholders for the rest
-  result.emplace_back(mvvm::CreateLabelViewItem(item));
-  result.emplace_back(mvvm::CreateLabelViewItem(item));
+  (void)result.emplace_back(mvvm::CreateLabelViewItem(item));
+  (void)result.emplace_back(mvvm::CreateLabelViewItem(item));
 
   return result;
 }
@@ -264,15 +264,15 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> InstructionEditorRowStrategy::Const
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
-  result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+  (void)result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
   if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
   {
-    result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
+    (void)result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
   }
   else
   {
-    result.emplace_back(mvvm::CreateLabelViewItem(item));
+    (void)result.emplace_back(mvvm::CreateLabelViewItem(item));
   }
   return result;
 }

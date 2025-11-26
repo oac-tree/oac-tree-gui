@@ -33,7 +33,7 @@ void InitDefaultAnyValue(mvvm::CompoundItem &item)
 {
   item.RegisterTag(sup::gui::CreateAnyValueTag(oac_tree_gui::itemconstants::kAnyValueTag), true);
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
-  anyvalue_item->SetDisplayName(oac_tree_gui::itemconstants::kAnyValueDefaultDisplayName);
+  (void)anyvalue_item->SetDisplayName(oac_tree_gui::itemconstants::kAnyValueDefaultDisplayName);
   oac_tree_gui::SetAttributeExposedFlag(false, *anyvalue_item);
 }
 

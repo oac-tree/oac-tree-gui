@@ -39,63 +39,63 @@
 namespace oac_tree_gui
 {
 
-InstructionItem *InsertInstruction(const std::string &domain_type, mvvm::SessionItem *parent,
-                                   const mvvm::TagIndex &tag_index)
+InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::SessionItem* parent,
+                                   const mvvm::TagIndex& tag_index)
 {
   return InsertInstruction(CreateInstructionItem(domain_type), parent, tag_index);
 }
 
-InstructionItem *InsertAggregate(const std::string &domain_type, mvvm::SessionItem *parent,
-                                 const mvvm::TagIndex &tag_index)
+InstructionItem* InsertAggregate(const std::string& domain_type, mvvm::SessionItem* parent,
+                                 const mvvm::TagIndex& tag_index)
 {
   static AggregateFactory factory;
   return InsertInstruction(factory.Create(domain_type), parent, tag_index);
 }
 
-InstructionItem *InsertInstruction(std::unique_ptr<InstructionItem> item, mvvm::SessionItem *parent,
-                                   const mvvm::TagIndex &tag_index)
+InstructionItem* InsertInstruction(std::unique_ptr<InstructionItem> item, mvvm::SessionItem* parent,
+                                   const mvvm::TagIndex& tag_index)
 {
-  return static_cast<InstructionItem *>(parent->InsertItem(std::move(item), tag_index));
+  return static_cast<InstructionItem*>(parent->InsertItem(std::move(item), tag_index));
 }
 
-bool IsAggregateName(const std::string &name)
+bool IsAggregateName(const std::string& name)
 {
   static AggregateFactory factory;
   return factory.Contains(name);
 }
 
-void SetInput(const std::string &value, InstructionItem *item)
+void SetInput(const std::string& value, InstructionItem* item)
 {
   (void)item->SetProperty(domainconstants::kInputVariableNameAttribute, value);
 }
 
-void SetOutput(const std::string &value, InstructionItem *item)
+void SetOutput(const std::string& value, InstructionItem* item)
 {
   (void)item->SetProperty(domainconstants::kOutputVariableNameAttribute, value);
 }
 
-void SetDescription(const std::string &value, InstructionItem *item)
+void SetDescription(const std::string& value, InstructionItem* item)
 {
   (void)item->SetProperty(domainconstants::kDescriptionAttribute, value);
 }
 
-void SetText(const std::string &value, InstructionItem *item)
+void SetText(const std::string& value, InstructionItem* item)
 {
   (void)item->SetProperty(domainconstants::kTextAttribute, value);
 }
 
-void SetVariableName(const std::string &value, InstructionItem *item)
+void SetVariableName(const std::string& value, InstructionItem* item)
 {
   (void)item->SetProperty(domainconstants::kGenericVariableNameAttribute, value);
 }
 
-bool IsCollapsible(const InstructionItem &item)
+bool IsCollapsible(const InstructionItem& item)
 {
   return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute);
 }
 
 // FIXME merge with RegisterShowCollapsedProperty
-void AddShowCollapsedProperty(InstructionItem &item)
+void AddShowCollapsedProperty(InstructionItem& item)
 {
   static const std::vector<std::string> collapsed_by_default{
       domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
@@ -103,24 +103,24 @@ void AddShowCollapsedProperty(InstructionItem &item)
   if (mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute))
   {
     auto property = item.GetItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
-    property->SetDisplayName("Show collapsed");
-    property->SetToolTip("Show child branch collapsed duing procedure execution");
+    (void)property->SetDisplayName("Show collapsed");
+    (void)property->SetToolTip("Show child branch collapsed duing procedure execution");
     if (mvvm::utils::Contains(collapsed_by_default, item.GetDomainType()))
     {
-      property->SetData(true);
+      (void)property->SetData(true);
       SetAttributeExposedFlag(true, *property);
     }
   }
 }
 
-bool IsCollapsed(const InstructionItem &item)
+bool IsCollapsed(const InstructionItem& item)
 {
   return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute)
              ? item.Property<bool>(domainconstants::kShowCollapsedAttribute)
              : false;
 }
 
-void SetCollapsed(bool value, InstructionItem &item)
+void SetCollapsed(bool value, InstructionItem& item)
 {
   if (IsCollapsible(item))
   {
@@ -128,7 +128,7 @@ void SetCollapsed(bool value, InstructionItem &item)
   }
 }
 
-void ToggleCollapsed(InstructionItem &item)
+void ToggleCollapsed(InstructionItem& item)
 {
   if (IsCollapsible(item))
   {
@@ -137,11 +137,11 @@ void ToggleCollapsed(InstructionItem &item)
   }
 }
 
-std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContainerItem &container)
+std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainerItem& container)
 {
-  std::vector<const InstructionItem *> result;
+  std::vector<const InstructionItem*> result;
 
-  auto func = [&result](const InstructionItem *item)
+  auto func = [&result](const InstructionItem* item)
   {
     if (IsCollapsed(*item))
     {
@@ -149,19 +149,19 @@ std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContaine
     }
   };
 
-  IterateInstructionContainer<const InstructionItem *>(container.GetInstructions(), func);
+  IterateInstructionContainer<const InstructionItem*>(container.GetInstructions(), func);
 
   return result;
 }
 
-sup::gui::AnyValueItem *GetAnyValueItem(const InstructionItem &item)
+sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
 {
   return mvvm::utils::HasTag(item, itemconstants::kAnyValueTag)
              ? item.GetItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
              : nullptr;
 }
 
-std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string &name)
+std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& name)
 {
   static ::oac_tree_gui::AggregateFactory factory;
   if (factory.Contains(name))

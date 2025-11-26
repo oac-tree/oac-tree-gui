@@ -45,7 +45,7 @@ std::vector<std::string> FindSharedLibrariesInDirList(const std::vector<std::str
   for (const auto &dir : dir_list)
   {
     const auto file_names = FindSharedLibraries(dir);
-    result.insert(result.end(), file_names.begin(), file_names.end());
+    (void)result.insert(result.end(), file_names.begin(), file_names.end());
   }
   return result;
 }
@@ -77,7 +77,7 @@ std::vector<std::string> GetSharedLibrariesFromPluginNames(
 
 PluginSettingsItem::PluginSettingsItem() : CompoundItem(mvvm::GetTypeName<PluginSettingsItem>())
 {
-  SetDisplayName("Plugin Settings");
+  (void)SetDisplayName("Plugin Settings");
 
   {  // property to hold plugin directory list
     auto &property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
@@ -145,13 +145,13 @@ std::vector<std::string> GetPluginFileNames(const PluginSettingsItem &item)
   if (item.UsePluginDirList())
   {
     const auto libs = FindSharedLibrariesInDirList(item.GetPluginDirList());
-    result.insert(result.end(), libs.begin(), libs.end());
+    (void)result.insert(result.end(), libs.begin(), libs.end());
   }
 
   if (item.UsePluginList())
   {
     const auto libs = GetSharedLibrariesFromPluginNames(item.GetPluginList());
-    result.insert(result.end(), libs.begin(), libs.end());
+    (void)result.insert(result.end(), libs.begin(), libs.end());
   }
 
   return result;

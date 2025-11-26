@@ -38,7 +38,7 @@ DomainJobService::DomainJobService(DomainEventDispatcherContext dispatcher_conte
           std::make_unique<DomainJobObserver>(CreatePostEventCallback(), std::move(user_context)))
 {
   // connecting event queue with event dispatcher using queued connection
-  QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
+  (void)QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
                    &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
 }
 

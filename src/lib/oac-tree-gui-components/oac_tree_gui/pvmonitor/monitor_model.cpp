@@ -45,7 +45,7 @@ void MonitorModel::Clear()
 
 void MonitorModel::PopulateModel()
 {
-  InsertItem<WorkspaceItem>();
+  (void)InsertItem<WorkspaceItem>();
 }
 
 }  // namespace oac_tree_gui

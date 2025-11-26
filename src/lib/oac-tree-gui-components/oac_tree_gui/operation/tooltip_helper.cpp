@@ -81,7 +81,7 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
   {
     if (IsPropertyToShow(property->GetTagIndex().GetTag()))
     {
-      result.emplace_back(property->GetDisplayName(), mvvm::utils::ValueToString(property->Data()));
+      (void)result.emplace_back(property->GetDisplayName(), mvvm::utils::ValueToString(property->Data()));
     }
   }
   return result;

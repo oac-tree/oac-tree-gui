@@ -254,7 +254,7 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
       GetModel()->RemoveItem(selected_anyvalue);
     }
 
-    GetModel()->InsertItem(std::move(dialog_result.result), instruction_item, {});
+    (void)GetModel()->InsertItem(std::move(dialog_result.result), instruction_item, {});
   }
 }
 

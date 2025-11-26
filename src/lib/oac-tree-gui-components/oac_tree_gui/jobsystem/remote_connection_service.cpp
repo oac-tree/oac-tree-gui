@@ -65,7 +65,7 @@ void RemoteConnectionService::Disconnect(const std::string& server_name)
 {
   auto on_element = [&server_name](auto& element)
   { return element->GetServerName() == server_name; };
-  m_clients.erase(std::remove_if(m_clients.begin(), m_clients.end(), on_element), m_clients.end());
+  (void)m_clients.erase(std::remove_if(m_clients.begin(), m_clients.end(), on_element), m_clients.end());
 }
 
 bool RemoteConnectionService::IsConnected(const std::string& server_name) const
@@ -86,7 +86,7 @@ std::vector<std::string> RemoteConnectionService::GetServerNames() const
 {
   std::vector<std::string> result;
   auto on_element = [](const auto& element) { return element->GetServerName(); };
-  std::transform(m_clients.begin(), m_clients.end(), std::back_inserter(result), on_element);
+  (void)std::transform(m_clients.begin(), m_clients.end(), std::back_inserter(result), on_element);
   return result;
 }
 

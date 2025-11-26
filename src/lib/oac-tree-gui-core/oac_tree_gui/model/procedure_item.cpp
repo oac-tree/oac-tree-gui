@@ -47,7 +47,7 @@ void CollectPluginFileNames(
 {
   if (auto plugin_name = object_to_plugin_name(domain_type); !plugin_name.empty())
   {
-    plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
+    (void)plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
   }
 }
 
@@ -90,14 +90,14 @@ static inline const std::string kFileName = "kFileName";
 
 ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>())
 {
-  AddProperty(itemconstants::kName, std::string()).SetDisplayName("Name");
-  AddProperty(itemconstants::kDescription, std::string()).SetDisplayName("Description");
-  AddProperty(kFileName, std::string()).SetDisplayName("File name");
-  AddBranch<InstructionContainerItem>(kInstructions).SetDisplayName("Instructions");
-  AddBranch<WorkspaceItem>(kWorkspace).SetDisplayName("Workspace");
-  AddBranch<ProcedurePreambleItem>(kPreamble).SetDisplayName("Preamble");
+  (void)AddProperty(itemconstants::kName, std::string()).SetDisplayName("Name");
+  (void)AddProperty(itemconstants::kDescription, std::string()).SetDisplayName("Description");
+  (void)AddProperty(kFileName, std::string()).SetDisplayName("File name");
+  (void)AddBranch<InstructionContainerItem>(kInstructions).SetDisplayName("Instructions");
+  (void)AddBranch<WorkspaceItem>(kWorkspace).SetDisplayName("Workspace");
+  (void)AddBranch<ProcedurePreambleItem>(kPreamble).SetDisplayName("Preamble");
 
-  SetFlag(mvvm::Appearance::kEditableDisplayName, true);
+  (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone() const

@@ -66,7 +66,7 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item)
     {
       if (mvvm::utils::HasTag(*variable, attr))
       {
-        variable->GetItem(attr)->SetEditable(!is_running);
+        (void)variable->GetItem(attr)->SetEditable(!is_running);
       }
     }
   }
@@ -97,9 +97,9 @@ void SetupNewVariable(VariableItem *item, int total_variable_count)
   }
   if (auto available_item = GetIsAvailableItem(*item); available_item)
   {
-    available_item->SetVisible(false);
+    (void)available_item->SetVisible(false);
   }
-  item->GetAnyValueItem()->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
+  (void)item->GetAnyValueItem()->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
 }
 
 bool AreMatchingWorkspaces(const WorkspaceItem &workspace_item,

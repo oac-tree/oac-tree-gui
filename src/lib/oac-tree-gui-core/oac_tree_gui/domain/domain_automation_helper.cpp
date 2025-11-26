@@ -67,7 +67,7 @@ std::unique_ptr<sup::oac_tree::Instruction> CreateDomainInstruction(
     const sup::oac_tree::InstructionInfo &info)
 {
   auto result = CreateDomainInstruction(info.GetType());
-  result->AddAttributes(info.GetAttributes());
+  (void)result->AddAttributes(info.GetAttributes());
   return result;
 }
 
@@ -75,7 +75,7 @@ std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
     const sup::oac_tree::VariableInfo &info)
 {
   auto result = CreateDomainVariable(info.GetType());
-  result->AddAttributes(info.GetAttributes());
+  (void)result->AddAttributes(info.GetAttributes());
   return result;
 }
 

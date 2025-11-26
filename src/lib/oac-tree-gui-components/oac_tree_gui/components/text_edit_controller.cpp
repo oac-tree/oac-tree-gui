@@ -42,7 +42,7 @@ QString GetText(const std::vector<std::string>& lines)
   auto result = QString::fromStdString(mvvm::utils::VectorToString(lines, "\n"));
   if (!result.isEmpty())
   {
-    result.append("\n");
+    (void)result.append("\n");
   }
   return result;
 }
@@ -127,8 +127,8 @@ void TextEditController::SetQtConnected()
 
 void TextEditController::SetQtDisonnected()
 {
-  QObject::disconnect(*m_text_edit_connection);
-  QObject::disconnect(*m_checkbox_connection);
+  (void)QObject::disconnect(*m_text_edit_connection);
+  (void)QObject::disconnect(*m_checkbox_connection);
 }
 
 void TextEditController::OnPropertyChangedEvent(const mvvm::PropertyChangedEvent& event)

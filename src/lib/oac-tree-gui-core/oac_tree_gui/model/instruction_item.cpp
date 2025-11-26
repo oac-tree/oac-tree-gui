@@ -62,7 +62,7 @@ std::string InstructionItem::GetDomainType() const
 
 void InstructionItem::SetDomainType(const std::string& domain_type)
 {
-  SetData(domain_type, itemconstants::kDomainTypeNameRole);
+  (void)SetData(domain_type, itemconstants::kDomainTypeNameRole);
 }
 
 std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone() const
@@ -162,15 +162,15 @@ std::string InstructionItem::GetBehavior() const
 
 void InstructionItem::RegisterCommonProperties()
 {
-  AddProperty(itemconstants::kBehaviorTag, CreateBehaviorProperty())
+  (void)AddProperty(itemconstants::kBehaviorTag, CreateBehaviorProperty())
       .SetToolTip("Modifier that allows to change the behavior");
-  AddProperty(itemconstants::kStatus, std::string())
+  (void)AddProperty(itemconstants::kStatus, std::string())
       .SetDisplayName("Status")
       .SetVisible(false)
       .SetEditable(false);
-  AddProperty(itemconstants::kXpos, 0.0).SetDisplayName("X").SetVisible(false);
-  AddProperty(itemconstants::kYpos, 0.0).SetDisplayName("Y").SetVisible(false);
-  AddProperty(itemconstants::kBreakpoint, 0)
+  (void)AddProperty(itemconstants::kXpos, 0.0).SetDisplayName("X").SetVisible(false);
+  (void)AddProperty(itemconstants::kYpos, 0.0).SetDisplayName("Y").SetVisible(false);
+  (void)AddProperty(itemconstants::kBreakpoint, 0)
       .SetDisplayName("breakpoint")
       .SetEditable(false)
       .SetVisible(false);

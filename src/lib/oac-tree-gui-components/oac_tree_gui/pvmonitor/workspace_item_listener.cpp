@@ -141,7 +141,7 @@ void WorkspaceItemListener::ProcessEventToDomain(VariableItem* variable_item)
     throw RuntimeException("Attempt to propagate changes to the domain workspace without setup");
   }
 
-  m_domain_workspace->SetValue(variable_item->GetName(), GetAnyValue(*variable_item));
+  (void)m_domain_workspace->SetValue(variable_item->GetName(), GetAnyValue(*variable_item));
 }
 
 }  // namespace oac_tree_gui
