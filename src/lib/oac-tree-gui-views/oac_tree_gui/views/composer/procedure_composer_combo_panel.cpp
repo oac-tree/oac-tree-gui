@@ -58,7 +58,7 @@ ProcedureComposerComboPanel::ProcedureComposerComboPanel(
   m_stacked_widget->addWidget(m_placeholder_widget);
   m_stacked_widget->addWidget(m_procedure_composer_widget);
 
-  ShowWidgetType(WidgetType::kPlaceholderWidget);
+  SetPlaceholderMode(PlaceholderMode::kOn);
   SetupConnections();
 }
 
@@ -71,7 +71,7 @@ ProcedureComposerComboPanel::ProcedureComposerComboPanel(
 
 ProcedureComposerComboPanel::~ProcedureComposerComboPanel() = default;
 
-SequencerModel *ProcedureComposerComboPanel::GetModel() const
+SequencerModel* ProcedureComposerComboPanel::GetModel() const
 {
   return m_model;
 }
@@ -108,6 +108,11 @@ void ProcedureComposerComboPanel::ShowAsActive(bool value)
 void ProcedureComposerComboPanel::ShowAsLastEditor(bool value)
 {
   m_tool_bar->ShowAsLastEditor(value);
+}
+
+void ProcedureComposerComboPanel::SetProcedureEditorType(ProcedureEditorType editor_type)
+{
+  m_procedure_composer_widget->SetEditorType(editor_type);
 }
 
 void ProcedureComposerComboPanel::mousePressEvent(QMouseEvent* event)
@@ -169,13 +174,13 @@ void ProcedureComposerComboPanel::SetProcedureIntern(ProcedureItem* item)
   m_current_procedure_item = item;
 
   m_procedure_composer_widget->SetProcedure(m_current_procedure_item);
-  ShowWidgetType(item == nullptr ? WidgetType::kPlaceholderWidget : WidgetType::kComposerWidget);
+  SetPlaceholderMode(item == nullptr ? PlaceholderMode::kOn : PlaceholderMode::kOff);
   emit selectedProcedureChanged(m_current_procedure_item);
 }
 
-void ProcedureComposerComboPanel::ShowWidgetType(WidgetType widget_type)
+void ProcedureComposerComboPanel::SetPlaceholderMode(PlaceholderMode mode)
 {
-  m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(widget_type));
+  m_stacked_widget->setCurrentIndex(static_cast<std::int32_t>(mode));
 }
 
 }  // namespace oac_tree_gui

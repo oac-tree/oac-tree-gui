@@ -68,4 +68,14 @@ void ProcedureComposerTabWidget::SetProcedure(ProcedureItem* procedure_item)
   m_xml_panel->SetProcedure(procedure_item);
 }
 
+ProcedureEditorType ProcedureComposerTabWidget::GetEditorType() const
+{
+  return static_cast<ProcedureEditorType>(m_tab_widget->currentIndex());
+}
+
+void ProcedureComposerTabWidget::SetEditorType(ProcedureEditorType edit_type)
+{
+  m_tab_widget->setCurrentIndex(static_cast<std::int32_t>(edit_type));
+}
+
 }  // namespace oac_tree_gui

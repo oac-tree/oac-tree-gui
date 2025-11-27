@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_TAB_WIDGET_H_
 
 #include <QWidget>
+#include <oac_tree_gui/components/component_types.h>
 
 class QTabWidget;
 
@@ -49,6 +50,10 @@ public:
   ~ProcedureComposerTabWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
+
+  ProcedureEditorType GetEditorType() const;
+
+  void SetEditorType(ProcedureEditorType edit_type);
 
 private:
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};

@@ -63,7 +63,7 @@ TEST_F(ProcedureComposerComboPanelTest, InitialState)
   auto stacked_widget = widget.findChild<QStackedWidget*>();
   ASSERT_NE(stacked_widget, nullptr);
   EXPECT_EQ(stacked_widget->currentIndex(),
-            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::PlaceholderMode::kOn));
 
   auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
   ASSERT_NE(toolbar, nullptr);
@@ -82,7 +82,7 @@ TEST_F(ProcedureComposerComboPanelTest, SetModelAfterConstruction)
   auto stacked_widget = widget.findChild<QStackedWidget*>();
   ASSERT_NE(stacked_widget, nullptr);
   EXPECT_EQ(stacked_widget->currentIndex(),
-            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::PlaceholderMode::kOn));
 
   auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
   ASSERT_NE(toolbar, nullptr);
@@ -111,7 +111,7 @@ TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
   auto stacked_widget = widget.findChild<QStackedWidget*>();
   ASSERT_NE(stacked_widget, nullptr);
   EXPECT_EQ(stacked_widget->currentIndex(),
-            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kComposerWidget));
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::PlaceholderMode::kOff));
 
   widget.SetProcedure(nullptr);
   EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
@@ -120,7 +120,7 @@ TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
   EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), nullptr);
 
   EXPECT_EQ(stacked_widget->currentIndex(),
-            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::PlaceholderMode::kOn));
   EXPECT_EQ(toolbar->GetSelectedProcedureName(), QString(kNoProcedureSelected));
 }
 
@@ -137,12 +137,12 @@ TEST_F(ProcedureComposerComboPanelTest, ChangeToPlaceholderWidgetOnProcedureDele
   auto stacked_widget = widget.findChild<QStackedWidget*>();
   ASSERT_NE(stacked_widget, nullptr);
   EXPECT_EQ(stacked_widget->currentIndex(),
-            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kComposerWidget));
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::PlaceholderMode::kOff));
 
   m_model.RemoveItem(procedure);
   EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
   EXPECT_EQ(stacked_widget->currentIndex(),
-            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::PlaceholderMode::kOn));
 }
 
 TEST_F(ProcedureComposerComboPanelTest, ChangeOfToolbarOnProcedureRename)

@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_PANEL_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_COMBO_PANEL_H_
 
+#include <oac_tree_gui/components/component_types.h>
+
 #include <QWidget>
 
 class QStackedWidget;
@@ -59,17 +61,22 @@ class ProcedureComposerComboPanel : public QWidget
   Q_OBJECT
 
 public:
-  enum class WidgetType : std::uint8_t
+  /**
+   * @brief The PlaceholderMode enum defines modes of the placeholder widget.
+   *
+   * Placeholder hides the main editor when it is not ready.
+   */
+  enum class PlaceholderMode : std::uint8_t
   {
-    kPlaceholderWidget,
-    kComposerWidget
+    kOn,  //! show placeholder
+    kOff  //! show procedure editor
   };
 
   explicit ProcedureComposerComboPanel(sup::gui::IAppCommandService& command_service,
-                              QWidget* parent_widget = nullptr);
+                                       QWidget* parent_widget = nullptr);
 
-  ProcedureComposerComboPanel(sup::gui::IAppCommandService& command_service,
-                                       SequencerModel* model, QWidget* parent_widget = nullptr);
+  ProcedureComposerComboPanel(sup::gui::IAppCommandService& command_service, SequencerModel* model,
+                              QWidget* parent_widget = nullptr);
 
   ~ProcedureComposerComboPanel() override;
 
@@ -102,6 +109,11 @@ public:
    */
   void ShowAsLastEditor(bool value);
 
+  /**
+   * @brief Sets the type of the procedure editor to show.
+   */
+  void SetProcedureEditorType(ProcedureEditorType editor_type);
+
 signals:
   void splitViewRequest();
   void closeViewRequest();
@@ -121,9 +133,11 @@ private:
   void SetupModelListener();
 
   /**
-   * @brief Shows given widget type in the stacked widget.
+   * @brief Sets the placeholder mode.
+   *
+   * Placeholders hides the main editor when it is not ready.
    */
-  void ShowWidgetType(WidgetType widget_type);
+  void SetPlaceholderMode(PlaceholderMode mode);
 
   void SetProcedureIntern(oac_tree_gui::ProcedureItem* item);
 
