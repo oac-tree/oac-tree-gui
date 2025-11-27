@@ -110,6 +110,11 @@ public:
   void ShowAsLastEditor(bool value);
 
   /**
+   *  @brief Returns the type of the currently shown procedure editor.
+   */
+  ProcedureEditorType GetProcedureEditorType() const;
+
+  /**
    * @brief Sets the type of the procedure editor to show.
    */
   void SetProcedureEditorType(ProcedureEditorType editor_type);

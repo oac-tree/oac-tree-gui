@@ -55,6 +55,14 @@ QString GetSplitterStateKey()
   return QString(kGroupName) + "/splitter";
 }
 
+/**
+ * @brief Returns QSettings key holding the state of the splitter.
+ */
+QString GetProcedureEditorTabStateKey()
+{
+  return QString(kGroupName) + "/procedure_tabs";
+}
+
 }  // namespace
 
 ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
@@ -124,6 +132,11 @@ ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetFocusWidget()
   return m_focus_handler->GetFocusWidget();
 }
 
+ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetWidgetAt(std::size_t index)
+{
+  return m_focus_handler->GetWidgetAt(index);
+}
+
 void ProcedureSplittableEditorWidget::SetFocusWidget(ProcedureComposerComboPanel* widget)
 {
   m_focus_handler->SetFocusWidget(widget);
@@ -141,6 +154,7 @@ void ProcedureSplittableEditorWidget::ReadSettings(const sup::gui::read_variant_
     return;
   }
 
+  // number of panels
   const auto panel_count_variant = read_func(GetPanelCountKey());
   const auto panel_count = panel_count_variant.isValid() ? panel_count_variant.toInt() : 1;
   for (std::int32_t i = 0; i < panel_count; ++i)
@@ -148,10 +162,29 @@ void ProcedureSplittableEditorWidget::ReadSettings(const sup::gui::read_variant_
     CreatePanel();
   }
 
+  // splitter state
   auto splitter_state = read_func(GetSplitterStateKey());
   if (splitter_state.isValid())
   {
     m_splitter->restoreState(splitter_state.toByteArray());
+  }
+
+  // active tabs in panels
+  const auto tab_states_variant = read_func(GetProcedureEditorTabStateKey());
+  if (tab_states_variant.isValid())
+  {
+    const auto widget_tabs = tab_states_variant.value<QList<std::int32_t>>();
+    std::int32_t widget_index{0};
+    for (auto& widget : m_focus_handler->GetWidgets())
+    {
+      if (widget_index >= widget_tabs.size())
+      {
+        break;
+      }
+      const auto tab_index = widget_tabs.at(widget_index);
+      widget->SetProcedureEditorType(static_cast<ProcedureEditorType>(tab_index));
+      ++widget_index;
+    }
   }
 }
 
@@ -161,6 +194,13 @@ void ProcedureSplittableEditorWidget::WriteSettings(
   const auto panel_count = static_cast<std::int32_t>(m_focus_handler->GetCount());
   write_func(GetPanelCountKey(), QVariant::fromValue(panel_count));
   write_func(GetSplitterStateKey(), m_splitter->saveState());
+
+  QList<std::int32_t> tab_indexes;
+  for (auto& widget : m_focus_handler->GetWidgets())
+  {
+    tab_indexes.append(static_cast<std::int32_t>(widget->GetProcedureEditorType()));
+  }
+  write_func(GetProcedureEditorTabStateKey(), QVariant::fromValue(tab_indexes));
 }
 
 std::unique_ptr<ProcedureComposerComboPanel>

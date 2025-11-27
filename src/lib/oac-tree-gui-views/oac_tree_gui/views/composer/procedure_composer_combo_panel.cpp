@@ -110,6 +110,11 @@ void ProcedureComposerComboPanel::ShowAsLastEditor(bool value)
   m_tool_bar->ShowAsLastEditor(value);
 }
 
+ProcedureEditorType ProcedureComposerComboPanel::GetProcedureEditorType() const
+{
+  return m_procedure_composer_widget->GetEditorType();
+}
+
 void ProcedureComposerComboPanel::SetProcedureEditorType(ProcedureEditorType editor_type)
 {
   m_procedure_composer_widget->SetEditorType(editor_type);

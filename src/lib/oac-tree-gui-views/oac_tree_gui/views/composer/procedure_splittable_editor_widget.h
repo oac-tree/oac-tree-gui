@@ -86,6 +86,11 @@ public:
   ProcedureComposerComboPanel* GetFocusWidget();
 
   /**
+   * @brief Returns the widget at specified index.
+   */
+  ProcedureComposerComboPanel* GetWidgetAt(std::size_t index);
+
+  /**
    * @brief Sets the widget in focus.
    */
   void SetFocusWidget(ProcedureComposerComboPanel* widget);

@@ -68,6 +68,16 @@ public:
    */
   static QString GetSplitterStateKey() { return "ProcedureSplittableEditorWidget/splitter"; }
 
+  /**
+   * @brief Returns QSettings key holding the state of the procedure editor tabs.
+   *
+   * Defined in procedure_splittable_editor_widget.cpp
+   */
+  static QString GetProcedureEditorTabStateKey()
+  {
+    return "ProcedureSplittableEditorWidget/procedure_tabs";
+  }
+
   SequencerModel m_model;
   sup::gui::NullCommandService m_command_service;
   ::testing::MockFunction<sup::gui::read_variant_func_t> m_mock_read_func;
@@ -373,9 +383,11 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ReadInvalidSettingsWhenSplitterEmpty
   ASSERT_NE(splitter, nullptr);
   ASSERT_EQ(splitter->count(), 0);
 
-  // Expecting called twice (one for number of panels, another for splitter state).
+  // Expecting called 3 times (number of panels, tab state, splitter state).
   // Returning invalid variants.
-  EXPECT_CALL(m_mock_read_func, Call(::testing::_)).Times(2);
+  EXPECT_CALL(m_mock_read_func, Call(GetPanelCountKey())).Times(1);
+  EXPECT_CALL(m_mock_read_func, Call(GetSplitterStateKey())).Times(1);
+  EXPECT_CALL(m_mock_read_func, Call(GetProcedureEditorTabStateKey())).Times(1);
   editor.ReadSettings(m_mock_read_func.AsStdFunction());
 
   // this should create one panel by default
@@ -394,10 +406,59 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsAndCreatePanels)
   ON_CALL(m_mock_read_func, Call(GetPanelCountKey()))
       .WillByDefault(::testing::Return(QVariant::fromValue(expected_panel_count)));
 
+  QList<std::int32_t> active_tabs;
+  active_tabs.append(static_cast<std::int32_t>(ProcedureEditorType::kInstructionTree));
+  active_tabs.append(static_cast<std::int32_t>(ProcedureEditorType::kWorkspace));
+  active_tabs.append(static_cast<std::int32_t>(ProcedureEditorType::kNodeEditor));
+  ON_CALL(m_mock_read_func, Call(GetProcedureEditorTabStateKey()))
+      .WillByDefault(::testing::Return(QVariant::fromValue(active_tabs)));
+
   EXPECT_CALL(m_mock_read_func, Call(GetPanelCountKey())).Times(1);
   EXPECT_CALL(m_mock_read_func, Call(GetSplitterStateKey())).Times(1);
+  EXPECT_CALL(m_mock_read_func, Call(GetProcedureEditorTabStateKey())).Times(1);
 
   editor.ReadSettings(m_mock_read_func.AsStdFunction());
+
+  EXPECT_EQ(editor.GetWidgetAt(0)->GetProcedureEditorType(), ProcedureEditorType::kInstructionTree);
+  EXPECT_EQ(editor.GetWidgetAt(1)->GetProcedureEditorType(), ProcedureEditorType::kWorkspace);
+  EXPECT_EQ(editor.GetWidgetAt(2)->GetProcedureEditorType(), ProcedureEditorType::kNodeEditor);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, WriteSettingsForThreePanels)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+  editor.CreatePanel();
+  editor.CreatePanel();
+  editor.CreatePanel();
+
+  editor.GetWidgetAt(0)->SetProcedureEditorType(ProcedureEditorType::kInstructionTree);
+  editor.GetWidgetAt(1)->SetProcedureEditorType(ProcedureEditorType::kWorkspace);
+  editor.GetWidgetAt(2)->SetProcedureEditorType(ProcedureEditorType::kNodeEditor);
+
+  EXPECT_CALL(m_mock_write_func, Call(GetPanelCountKey(), ::testing::_))
+      .Times(1)
+      .WillOnce(::testing::Invoke(
+          [](const QString& key, const QVariant& value)
+          {
+            EXPECT_EQ(key, GetPanelCountKey());
+            EXPECT_EQ(value.toInt(), 3);
+          }));
+  EXPECT_CALL(m_mock_write_func, Call(GetSplitterStateKey(), ::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_write_func, Call(GetProcedureEditorTabStateKey(), ::testing::_))
+      .Times(1)
+      .WillOnce(::testing::Invoke(
+          [](const QString& key, const QVariant& value)
+          {
+            EXPECT_EQ(key, GetProcedureEditorTabStateKey());
+            const auto tab_indexes = value.value<QList<std::int32_t>>();
+            EXPECT_EQ(tab_indexes.size(), 3);
+            EXPECT_EQ(tab_indexes[0],
+                      static_cast<std::int32_t>(ProcedureEditorType::kInstructionTree));
+            EXPECT_EQ(tab_indexes[1], static_cast<std::int32_t>(ProcedureEditorType::kWorkspace));
+            EXPECT_EQ(tab_indexes[2], static_cast<std::int32_t>(ProcedureEditorType::kNodeEditor));
+          }));
+  editor.WriteSettings(m_mock_write_func.AsStdFunction());
 }
 
 }  // namespace oac_tree_gui::test
