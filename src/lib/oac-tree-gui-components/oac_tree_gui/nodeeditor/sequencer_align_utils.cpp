@@ -101,11 +101,11 @@ void TranslatePositions(const QPointF &reference, AlignNode &root_node)
 
   double scale_x = GetAlignmentGridWidth() / root_node.GetNodeSize();
   auto translate_x = [x0 = root_node.GetX(), new_x0 = reference.x(), scale_x](auto x)
-  { return (x - x0) * scale_x + new_x0; };
+  { return ((x - x0) * scale_x) + new_x0; };
 
   double scale_y = GetAlignmentGridHeight() / root_node.GetNodeSize();
   auto translate_y = [y0 = root_node.GetY(), new_y0 = reference.y(), scale_y](auto y)
-  { return (y - y0) * scale_y + new_y0; };
+  { return ((y - y0) * scale_y) + new_y0; };
 
   while (!node_stack.empty())
   {
@@ -190,7 +190,7 @@ void AlignInstructionTreeWalker(const QPointF &reference,
 bool RequiresInitialAlignment(const InstructionItem &instruction)
 {
   // very simple check but seems to be enough
-  return instruction.GetX() == 0.0 && instruction.GetY() == 0.0;
+  return (instruction.GetX() == 0.0) && (instruction.GetY() == 0.0);
 }
 
 bool RequiresInitialAlignment(const std::vector<InstructionItem *> &instructions)

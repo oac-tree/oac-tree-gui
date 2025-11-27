@@ -58,7 +58,7 @@ void AttributeEditorActionHandler::OnToggleExposedFlag()
 
 bool AttributeEditorActionHandler::CanSetDefaultType() const
 {
-  return GetSelectedAttributeItem() != nullptr && !IsAnyValue();
+  return (GetSelectedAttributeItem() != nullptr) && !IsAnyValue();
 }
 
 void AttributeEditorActionHandler::OnSetAsDefaultType()
@@ -72,7 +72,7 @@ void AttributeEditorActionHandler::OnSetAsDefaultType()
 
 bool AttributeEditorActionHandler::CanSetPlaceholderType() const
 {
-  return GetSelectedAttributeItem() != nullptr && !IsAnyValue();
+  return (GetSelectedAttributeItem() != nullptr) && !IsAnyValue();
 }
 
 void AttributeEditorActionHandler::OnSetPlaceholderType()

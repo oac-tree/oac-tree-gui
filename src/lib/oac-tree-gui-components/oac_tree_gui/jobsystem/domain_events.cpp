@@ -47,8 +47,8 @@ bool operator!=(const ActiveInstructionChangedEvent& lhs, const ActiveInstructio
 
 bool operator==(const InstructionStateUpdatedEvent& lhs, const InstructionStateUpdatedEvent& rhs)
 {
-  return lhs.index == rhs.index && lhs.state.m_breakpoint_set == rhs.state.m_breakpoint_set
-         && lhs.state.m_execution_status == rhs.state.m_execution_status;
+  return (lhs.index == rhs.index) && (lhs.state.m_breakpoint_set == rhs.state.m_breakpoint_set)
+         && (lhs.state.m_execution_status == rhs.state.m_execution_status);
 }
 
 bool operator!=(const InstructionStateUpdatedEvent& lhs, const InstructionStateUpdatedEvent& rhs)
@@ -58,7 +58,7 @@ bool operator!=(const InstructionStateUpdatedEvent& lhs, const InstructionStateU
 
 bool operator==(const VariableUpdatedEvent& lhs, const VariableUpdatedEvent& rhs)
 {
-  return lhs.index == rhs.index && lhs.value == rhs.value && lhs.connected == rhs.connected;
+  return (lhs.index == rhs.index) && (lhs.value == rhs.value) && (lhs.connected == rhs.connected);
 }
 
 bool operator!=(const VariableUpdatedEvent& lhs, const VariableUpdatedEvent& rhs)

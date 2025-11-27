@@ -47,7 +47,7 @@ const bool kUseLightInfoObjects = true;
 ProcedureItemJobInfoBuilder::ProcedureItemJobInfoBuilder() = default;
 
 std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
-    const sup::oac_tree::JobInfo &job_info)
+    const sup::oac_tree::JobInfo& job_info)
 {
   auto result = std::make_unique<ProcedureItem>();
 
@@ -65,14 +65,14 @@ std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
   return result;
 }
 
-InstructionItem *ProcedureItemJobInfoBuilder::GetInstruction(std::size_t index) const
+InstructionItem* ProcedureItemJobInfoBuilder::GetInstruction(std::size_t index) const
 {
-  return index < m_index_to_instruction.size()
-             ? const_cast<InstructionItem *>(m_index_to_instruction[index])
+  return (index < m_index_to_instruction.size())
+             ? const_cast<InstructionItem*>(m_index_to_instruction[index])
              : nullptr;
 }
 
-std::size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem *item) const
+std::size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem* item) const
 {
   auto pos = std::find(m_index_to_instruction.begin(), m_index_to_instruction.end(), item);
   if (pos == m_index_to_instruction.end())
@@ -83,10 +83,11 @@ std::size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem *item) c
   return std::distance(m_index_to_instruction.begin(), pos);
 }
 
-VariableItem *ProcedureItemJobInfoBuilder::GetVariable(std::size_t index) const
+VariableItem* ProcedureItemJobInfoBuilder::GetVariable(std::size_t index) const
 {
-  return index < m_index_to_variable.size() ? const_cast<VariableItem *>(m_index_to_variable[index])
-                                            : nullptr;
+  return (index < m_index_to_variable.size())
+             ? const_cast<VariableItem*>(m_index_to_variable[index])
+             : nullptr;
 }
 
 }  // namespace oac_tree_gui

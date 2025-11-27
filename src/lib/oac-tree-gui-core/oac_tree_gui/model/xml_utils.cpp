@@ -41,7 +41,7 @@ std::pair<std::size_t, std::size_t> FindQuotes(const std::string &str, std::size
 {
   const char quote = '"';
   auto pos1 = str.find(quote, pos);
-  std::size_t pos2 = pos1 == std::string::npos ? std::string::npos : str.find(quote, pos1 + 1);
+  std::size_t pos2 = (pos1 == std::string::npos) ? std::string::npos : str.find(quote, pos1 + 1);
   return {pos1, pos2};
 }
 
@@ -104,7 +104,7 @@ std::string ReplaceQuotationMarks(const std::string &str)
 
   auto pos = FindQuotes(result);
 
-  while (pos.first != std::string::npos && pos.second != std::string::npos)
+  while ((pos.first != std::string::npos) && (pos.second != std::string::npos))
   {
     auto new_pos2 = ReplaceHtmlQuotes(result, pos.first + 1, pos.second);
 

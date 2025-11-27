@@ -56,13 +56,13 @@ namespace
  * @brief Returns coordinate located not far from the given reference.
  */
 IInstructionEditorActionHandler::position_t GetCoordinateNearby(
-    oac_tree_gui::InstructionItem *reference)
+    oac_tree_gui::InstructionItem* reference)
 {
   const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
-  const double x =
-      reference ? reference->GetX() + oac_tree_gui::GetInstructionDropOffset() : default_center.x();
-  const double y =
-      reference ? reference->GetY() + oac_tree_gui::GetInstructionDropOffset() : default_center.y();
+  const double x = reference ? (reference->GetX() + oac_tree_gui::GetInstructionDropOffset())
+                             : default_center.x();
+  const double y = reference ? (reference->GetY() + oac_tree_gui::GetInstructionDropOffset())
+                             : default_center.y();
 
   return {x, y};
 }
@@ -73,10 +73,10 @@ IInstructionEditorActionHandler::position_t GetCoordinateNearby(
  *
  * @param ref_point Coordinates of parent instructions.
  */
-void AlignInstructionTree(const IInstructionEditorActionHandler::position_t &ref_point,
-                          mvvm::SessionItem *instruction)
+void AlignInstructionTree(const IInstructionEditorActionHandler::position_t& ref_point,
+                          mvvm::SessionItem* instruction)
 {
-  if (auto inserted_instruction = dynamic_cast<oac_tree_gui::InstructionItem *>(instruction);
+  if (auto inserted_instruction = dynamic_cast<oac_tree_gui::InstructionItem*>(instruction);
       inserted_instruction)
   {
     algorithm::AlignInstructionTreeWalker({ref_point.first, ref_point.second},
@@ -108,15 +108,15 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
 
   if (!m_context.create_instruction)
   {
-    m_context.create_instruction = [](const auto &item_type)
+    m_context.create_instruction = [](const auto& item_type)
     { return CreateInstructionItem(item_type); };
   }
 }
 
 InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
-void InstructionEditorActionHandler::DropInstruction(const std::string &item_type,
-                                                     const position_t &pos)
+void InstructionEditorActionHandler::DropInstruction(const std::string& item_type,
+                                                     const position_t& pos)
 {
   std::vector<std::unique_ptr<mvvm::SessionItem>> items;
   items.push_back(CreateInstructionTree(item_type));
@@ -124,12 +124,12 @@ void InstructionEditorActionHandler::DropInstruction(const std::string &item_typ
   InsertItem(std::move(items), GetInstructionContainer(), mvvm::TagIndex::Append(), pos);
 }
 
-bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string &item_type) const
+bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string& item_type) const
 {
   return CanInsertTypeAfterCurrentSelection(item_type).IsSuccess();
 }
 
-void InstructionEditorActionHandler::InsertInstructionAfter(const std::string &item_type)
+void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& item_type)
 {
   auto querry = CanInsertTypeAfterCurrentSelection(item_type);
   if (!querry.IsSuccess())
@@ -144,12 +144,12 @@ void InstructionEditorActionHandler::InsertInstructionAfter(const std::string &i
   InsertAfterCurrentSelection(std::move(items));
 }
 
-bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string &item_type) const
+bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string& item_type) const
 {
   return CanInsertTypeIntoCurrentSelection(item_type).IsSuccess();
 }
 
-void InstructionEditorActionHandler::InsertInstructionInto(const std::string &item_type)
+void InstructionEditorActionHandler::InsertInstructionInto(const std::string& item_type)
 {
   auto querry = CanInsertTypeIntoCurrentSelection(item_type);
   if (!querry.IsSuccess())
@@ -180,7 +180,7 @@ void InstructionEditorActionHandler::RemoveInstruction()
 
   mvvm::utils::BeginMacro(*GetModel(), "Remove instruction");
 
-  mvvm::SessionItem *next_to_select{nullptr};
+  mvvm::SessionItem* next_to_select{nullptr};
 
   // remove children from the selection list to avoid double delete
   auto selected = mvvm::utils::CastItems<mvvm::SessionItem>(GetSelectedInstructions());
@@ -326,55 +326,55 @@ void InstructionEditorActionHandler::PasteInto()
   InsertIntoCurrentSelection(CreateInstructions(GetMimeData()));
 }
 
-void InstructionEditorActionHandler::InsertItem(const std::string &item_type,
-                                                mvvm::SessionItem *parent,
-                                                const mvvm::TagIndex &index)
+void InstructionEditorActionHandler::InsertItem(const std::string& item_type,
+                                                mvvm::SessionItem* parent,
+                                                const mvvm::TagIndex& index)
 {
   std::vector<std::unique_ptr<mvvm::SessionItem>> items;
   items.push_back(CreateInstructionTree(item_type));
   InsertItem(std::move(items), parent, index, GetCoordinateNearby(nullptr));
 }
 
-InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
+InstructionItem* InstructionEditorActionHandler::GetSelectedInstruction() const
 {
   auto instructions = GetSelectedInstructions();
   return instructions.empty() ? nullptr : instructions.front();
 }
 
-std::vector<InstructionItem *> InstructionEditorActionHandler::GetSelectedInstructions() const
+std::vector<InstructionItem*> InstructionEditorActionHandler::GetSelectedInstructions() const
 {
   return m_context.selected_instructions();
 }
 
-mvvm::ISessionModel *InstructionEditorActionHandler::GetModel() const
+mvvm::ISessionModel* InstructionEditorActionHandler::GetModel() const
 {
   return GetInstructionContainer() ? GetInstructionContainer()->GetModel() : nullptr;
 }
 
-mvvm::SessionItem *InstructionEditorActionHandler::GetInstructionContainer() const
+mvvm::SessionItem* InstructionEditorActionHandler::GetInstructionContainer() const
 {
   return m_context.instruction_container();
 }
 
-void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
+void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem* item) const
 {
   m_context.notify_request(item);
 }
 
 std::unique_ptr<InstructionItem> InstructionEditorActionHandler::CreateInstructionTree(
-    const std::string &item_type)
+    const std::string& item_type)
 {
   return m_context.create_instruction(item_type);
 }
 
-void InstructionEditorActionHandler::SendMessage(const std::string &text,
-                                                 const std::string &informative,
-                                                 const std::string &details) const
+void InstructionEditorActionHandler::SendMessage(const std::string& text,
+                                                 const std::string& informative,
+                                                 const std::string& details) const
 {
   SendMessage(sup::gui::CreateInvalidOperationMessage(text, informative, details));
 }
 
-void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent &message_event) const
+void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent& message_event) const
 {
   if (m_context.send_message)
   {
@@ -386,7 +386,7 @@ void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent &m
   }
 }
 
-const QMimeData *InstructionEditorActionHandler::GetMimeData() const
+const QMimeData* InstructionEditorActionHandler::GetMimeData() const
 {
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
@@ -406,7 +406,7 @@ void InstructionEditorActionHandler::UpdateProcedurePreamble()
 }
 
 sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
-    const std::string &item_type) const
+    const std::string& item_type) const
 {
   static const std::string kFailedActionText("Can't insert type after current selection");
 
@@ -440,7 +440,7 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
 }
 
 sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
-    const std::string &item_type) const
+    const std::string& item_type) const
 {
   static const std::string kFailedActionText("Can't insert type into current selection");
 
@@ -491,8 +491,8 @@ void InstructionEditorActionHandler::InsertIntoCurrentSelection(
 }
 
 void InstructionEditorActionHandler::InsertItem(
-    std::vector<std::unique_ptr<mvvm::SessionItem>> items, mvvm::SessionItem *parent,
-    const mvvm::TagIndex &index, const position_t &position)
+    std::vector<std::unique_ptr<mvvm::SessionItem>> items, mvvm::SessionItem* parent,
+    const mvvm::TagIndex& index, const position_t& position)
 {
   if (!GetModel())
   {
@@ -507,10 +507,10 @@ void InstructionEditorActionHandler::InsertItem(
   mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
 
   auto last_tag_index = index;
-  std::vector<mvvm::SessionItem *> to_notify;
-  for (auto &item : items)
+  std::vector<mvvm::SessionItem*> to_notify;
+  for (auto& item : items)
   {
-    mvvm::SessionItem *result{nullptr};
+    mvvm::SessionItem* result{nullptr};
     const auto item_type = item->GetType();
     try
     {
@@ -520,7 +520,7 @@ void InstructionEditorActionHandler::InsertItem(
       UpdateProcedurePreamble();
       AlignInstructionTree(position, result);
     }
-    catch (const std::exception &ex)
+    catch (const std::exception& ex)
     {
       std::ostringstream ostr;
       ostr << "Exception was caught while trying to insert instruction [" << item_type

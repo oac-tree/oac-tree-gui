@@ -52,14 +52,14 @@ ApplicationModels::~ApplicationModels() = default;
 
 SequencerModel *ApplicationModels::GetSequencerModel()
 {
-  return GetModelCount() > m_sequencer_model_index
+  return (GetModelCount() > m_sequencer_model_index)
              ? GetModel<SequencerModel>(m_sequencer_model_index)
              : nullptr;
 }
 
 JobModel *ApplicationModels::GetJobModel()
 {
-  return GetModelCount() > m_job_model_index ? GetModel<JobModel>(m_job_model_index) : nullptr;
+  return (GetModelCount() > m_job_model_index) ? GetModel<JobModel>(m_job_model_index) : nullptr;
 }
 
 std::shared_ptr<mvvm::ItemPool> ApplicationModels::GetItemPool()

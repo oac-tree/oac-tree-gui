@@ -179,7 +179,7 @@ void CalculateInitialX(AlignNode& node)
     }
   }
 
-  if (node.GetSize() > 0 && !node.IsLeftMost())
+  if ((node.GetSize() > 0) && !node.IsLeftMost())
   {
     // Since subtrees can overlap, check for conflicts and shift tree right if needed
     CheckForConflicts(node);
@@ -195,7 +195,7 @@ void CheckForConflicts(AlignNode& node)
   auto nodeContour = GetLeftCountour(node, 0.0);
   auto sibling = node.GetLeftMostSibling();
 
-  while (sibling != nullptr && sibling != &node)
+  while ((sibling != nullptr) && (sibling != &node))
   {
     auto siblingContour = GetRightCountour(*sibling, 0.0);
 
@@ -203,7 +203,7 @@ void CheckForConflicts(AlignNode& node)
          level <= std::min(GetMaxKey(siblingContour), GetMaxKey(nodeContour)); level++)
     {
       double distance = nodeContour[level] - siblingContour[level];
-      if (distance + shiftValue < minDistance)
+      if ((distance + shiftValue) < minDistance)
       {
         shiftValue = std::max(minDistance - distance, shiftValue);
       }
