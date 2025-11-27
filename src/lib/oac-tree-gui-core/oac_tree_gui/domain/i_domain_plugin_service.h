@@ -36,8 +36,8 @@ public:
 
   IDomainPluginService(const IDomainPluginService&) = delete;
   IDomainPluginService& operator=(const IDomainPluginService&) = delete;
-  IDomainPluginService(IDomainPluginService&&) noexcept = default;
-  IDomainPluginService& operator=(IDomainPluginService&&) noexcept = default;
+  IDomainPluginService(IDomainPluginService&&) = delete;
+  IDomainPluginService& operator=(IDomainPluginService&&) = delete;
 
   /**
    * @brief Loads plugins by their file names.

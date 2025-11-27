@@ -37,7 +37,13 @@ class JobItem;
 class IJobHandler
 {
 public:
+  IJobHandler() = default;
   virtual ~IJobHandler() = default;
+
+  IJobHandler(const IJobHandler&) = delete;
+  IJobHandler& operator=(const IJobHandler&) = delete;
+  IJobHandler(IJobHandler&&) = delete;
+  IJobHandler& operator=(IJobHandler&&) = delete;
 
   /**
    * @brief Run sequencer procedure in continuous manner, if allowed.

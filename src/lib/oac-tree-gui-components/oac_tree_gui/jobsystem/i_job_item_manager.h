@@ -30,7 +30,7 @@ class JobItem;
 class IJobHandler;
 
 /**
- * @brief The AbstractJobItemManager class is a base to manage the execution of sequencer jobs.
+ * @brief The IJobItemManager class is a base to manage the execution of sequencer jobs.
  *
  * The job is represented by the JobItem, that carries all information about sequencer procedure.
  * The API contains interface to submit, start, pause and stop jobs.
@@ -41,7 +41,13 @@ class IJobHandler;
 class IJobItemManager
 {
 public:
+  IJobItemManager() = default;
   virtual ~IJobItemManager() = default;
+
+  IJobItemManager(const IJobItemManager&) = delete;
+  IJobItemManager& operator=(const IJobItemManager&) = delete;
+  IJobItemManager(IJobItemManager&&) = delete;
+  IJobItemManager& operator=(IJobItemManager&&) = delete;
 
   /**
    * @brief Returns number of submitted jobs.

@@ -42,7 +42,13 @@ class UserContext;
 class IRemoteConnectionService
 {
 public:
+  IRemoteConnectionService() = default;
   virtual ~IRemoteConnectionService() = default;
+
+  IRemoteConnectionService(const IRemoteConnectionService&) = delete;
+  IRemoteConnectionService& operator=(const IRemoteConnectionService&) = delete;
+  IRemoteConnectionService(IRemoteConnectionService&&) = delete;
+  IRemoteConnectionService& operator=(IRemoteConnectionService&&) = delete;
 
   /**
    * @brief Connect with the server using the given server name.

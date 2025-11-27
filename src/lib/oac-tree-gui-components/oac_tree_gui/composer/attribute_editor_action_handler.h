@@ -44,6 +44,11 @@ public:
   explicit AttributeEditorActionHandler(AttributeEditorContext context);
   ~AttributeEditorActionHandler();
 
+  AttributeEditorActionHandler(const AttributeEditorActionHandler&) = delete;
+  AttributeEditorActionHandler& operator=(const AttributeEditorActionHandler&) = delete;
+  AttributeEditorActionHandler(AttributeEditorActionHandler&&) = delete;
+  AttributeEditorActionHandler& operator=(AttributeEditorActionHandler&&) = delete;
+
   /**
    * @brief Checks if one can manipulate exposed flag for the currently selected attribute.
    *

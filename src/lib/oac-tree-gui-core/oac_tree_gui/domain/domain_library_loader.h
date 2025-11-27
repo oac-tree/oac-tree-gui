@@ -52,8 +52,8 @@ public:
 
   DomainLibraryLoader(const DomainLibraryLoader&) = delete;
   DomainLibraryLoader& operator=(const DomainLibraryLoader&) = delete;
-  DomainLibraryLoader(DomainLibraryLoader&&) noexcept = default;
-  DomainLibraryLoader& operator=(DomainLibraryLoader&&) noexcept = default;
+  DomainLibraryLoader(DomainLibraryLoader&&) = delete;
+  DomainLibraryLoader& operator=(DomainLibraryLoader&&) = delete;
 
   /**
    * @brief Returns names of successfully loaded libraries.

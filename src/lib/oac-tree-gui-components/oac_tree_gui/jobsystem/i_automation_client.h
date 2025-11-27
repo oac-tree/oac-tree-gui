@@ -39,7 +39,13 @@ class RemoteJobItem;
 class IAutomationClient
 {
 public:
+  IAutomationClient() = default;
   virtual ~IAutomationClient() = default;
+
+  IAutomationClient(const IAutomationClient&) = delete;
+  IAutomationClient& operator=(const IAutomationClient&) = delete;
+  IAutomationClient(IAutomationClient&&) = delete;
+  IAutomationClient& operator=(IAutomationClient&&) = delete;
 
   /**
    * @brief Returns the name of the connected server.
