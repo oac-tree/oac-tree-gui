@@ -66,9 +66,22 @@ public:
   };
 
   explicit ProcedureComposerComboPanel(sup::gui::IAppCommandService& command_service,
+                              QWidget* parent_widget = nullptr);
+
+  ProcedureComposerComboPanel(sup::gui::IAppCommandService& command_service,
                                        SequencerModel* model, QWidget* parent_widget = nullptr);
 
   ~ProcedureComposerComboPanel() override;
+
+  /**
+   * @brief Returns the current model.
+   */
+  SequencerModel* GetModel() const;
+
+  /**
+   * @brief Sets the model.
+   */
+  void SetModel(SequencerModel* model);
 
   /**
    * @brief Sets the procedure to be edited.

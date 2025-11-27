@@ -24,8 +24,9 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/composer/procedure_composer_combo_toolbar.h>
 
-#include <mvvm/standarditems/container_item.h>
 #include <sup/gui/app/null_command_service.h>
+
+#include <mvvm/standarditems/container_item.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -57,6 +58,26 @@ TEST_F(ProcedureComposerComboPanelTest, InitialState)
 {
   const ProcedureComposerComboPanel widget(m_command_service, &m_model);
   EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
+  EXPECT_EQ(widget.GetModel(), &m_model);
+
+  auto stacked_widget = widget.findChild<QStackedWidget*>();
+  ASSERT_NE(stacked_widget, nullptr);
+  EXPECT_EQ(stacked_widget->currentIndex(),
+            static_cast<std::int32_t>(ProcedureComposerComboPanel::WidgetType::kPlaceholderWidget));
+
+  auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
+  ASSERT_NE(toolbar, nullptr);
+  EXPECT_EQ(toolbar->GetSelectedProcedureName(), QString(kNoProcedureSelected));
+}
+
+TEST_F(ProcedureComposerComboPanelTest, SetModelAfterConstruction)
+{
+  ProcedureComposerComboPanel widget(m_command_service);
+  EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
+  EXPECT_EQ(widget.GetModel(), nullptr);
+
+  widget.SetModel(&m_model);
+  EXPECT_EQ(widget.GetModel(), &m_model);
 
   auto stacked_widget = widget.findChild<QStackedWidget*>();
   ASSERT_NE(stacked_widget, nullptr);

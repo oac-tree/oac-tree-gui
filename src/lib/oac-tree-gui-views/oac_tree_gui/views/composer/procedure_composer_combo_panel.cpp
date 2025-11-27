@@ -39,19 +39,13 @@ Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 namespace oac_tree_gui
 {
 
-namespace
-{
-
-}
-
 ProcedureComposerComboPanel::ProcedureComposerComboPanel(
-    sup::gui::IAppCommandService& command_service, SequencerModel* model, QWidget* parent_widget)
+    sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tool_bar(new ProcedureComposerComboToolBar([this]() { return m_model->GetProcedures(); }))
     , m_stacked_widget(new QStackedWidget)
     , m_placeholder_widget(new ProcedureEditorPlaceholder)
     , m_procedure_composer_widget(new ProcedureComposerTabWidget(command_service))
-    , m_model(model)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -66,10 +60,34 @@ ProcedureComposerComboPanel::ProcedureComposerComboPanel(
 
   ShowWidgetType(WidgetType::kPlaceholderWidget);
   SetupConnections();
-  SetupModelListener();
+}
+
+ProcedureComposerComboPanel::ProcedureComposerComboPanel(
+    sup::gui::IAppCommandService& command_service, SequencerModel* model, QWidget* parent_widget)
+    : ProcedureComposerComboPanel(command_service, parent_widget)
+{
+  SetModel(model);
 }
 
 ProcedureComposerComboPanel::~ProcedureComposerComboPanel() = default;
+
+SequencerModel *ProcedureComposerComboPanel::GetModel() const
+{
+  return m_model;
+}
+
+void ProcedureComposerComboPanel::SetModel(SequencerModel* model)
+{
+  m_model = model;
+  if (m_model)
+  {
+    SetupModelListener();
+  }
+  else
+  {
+    m_listener.reset();
+  }
+}
 
 void ProcedureComposerComboPanel::SetProcedure(ProcedureItem* procedure_item)
 {
