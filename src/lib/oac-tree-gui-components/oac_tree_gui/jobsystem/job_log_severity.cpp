@@ -26,15 +26,15 @@
 
 namespace
 {
-const char* kEmergencyString = "EMERGENCY";
-const char* kAlertString = "ALERT";
-const char* kCriticalString = "CRITICAL";
-const char* kErrorString = "ERROR";
-const char* kWarningString = "WARNING";
-const char* kNoticeString = "NOTICE";
-const char* kInfoString = "INFO";
-const char* kDebugString = "DEBUG";
-const char* kTraceString = "TRACE";
+constexpr auto kEmergencyString = "EMERGENCY";
+constexpr auto kAlertString = "ALERT";
+constexpr auto kCriticalString = "CRITICAL";
+constexpr auto kErrorString = "ERROR";
+constexpr auto kWarningString = "WARNING";
+constexpr auto kNoticeString = "NOTICE";
+constexpr auto kInfoString = "INFO";
+constexpr auto kDebugString = "DEBUG";
+constexpr auto kTraceString = "TRACE";
 
 std::map<oac_tree_gui::Severity, std::string> CreateSeverityMap()
 {

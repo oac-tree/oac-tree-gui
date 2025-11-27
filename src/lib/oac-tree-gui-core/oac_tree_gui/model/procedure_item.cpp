@@ -37,13 +37,18 @@ namespace oac_tree_gui
 namespace
 {
 
+constexpr auto kInstructions = "kInstructions";
+constexpr auto kWorkspace = "kWorkspace";
+constexpr auto kPreamble = "kPreamble";
+constexpr auto kFileName = "kFileName";
+
 /**
  * @brief Adds plugin name coresponding to a given domain type into the container.
  */
 void CollectPluginFileNames(
-    const std::string &domain_type,
-    const std::function<std::string(const std::string &)> &object_to_plugin_name,
-    std::set<std::string> &plugin_file_names)
+    const std::string& domain_type,
+    const std::function<std::string(const std::string&)>& object_to_plugin_name,
+    std::set<std::string>& plugin_file_names)
 {
   if (auto plugin_name = object_to_plugin_name(domain_type); !plugin_name.empty())
   {
@@ -55,9 +60,9 @@ void CollectPluginFileNames(
  * @brief Collects all plugin names necessary to handle variables in the given workspace.
  */
 void CollectVariablePluginNames(
-    const oac_tree_gui::WorkspaceItem &workspace_item,
-    const std::function<std::string(const std::string &)> &object_to_plugin_name,
-    std::set<std::string> &plugin_names)
+    const oac_tree_gui::WorkspaceItem& workspace_item,
+    const std::function<std::string(const std::string&)>& object_to_plugin_name,
+    std::set<std::string>& plugin_names)
 {
   for (auto variable : workspace_item.GetVariables())
   {
@@ -70,23 +75,18 @@ void CollectVariablePluginNames(
  * container.
  */
 void CollectInstructionPluginNames(
-    const oac_tree_gui::InstructionContainerItem &container,
-    const std::function<std::string(const std::string &)> &object_to_plugin_name,
-    std::set<std::string> &plugin_names)
+    const oac_tree_gui::InstructionContainerItem& container,
+    const std::function<std::string(const std::string&)>& object_to_plugin_name,
+    std::set<std::string>& plugin_names)
 {
   auto on_instruction =
-      [&plugin_names, &object_to_plugin_name](const oac_tree_gui::InstructionItem *item)
+      [&plugin_names, &object_to_plugin_name](const oac_tree_gui::InstructionItem* item)
   { CollectPluginFileNames(item->GetDomainType(), object_to_plugin_name, plugin_names); };
-  oac_tree_gui::IterateInstructionContainer<const oac_tree_gui::InstructionItem *>(
+  oac_tree_gui::IterateInstructionContainer<const oac_tree_gui::InstructionItem*>(
       container.GetInstructions(), on_instruction);
 }
 
 }  // namespace
-
-static inline const std::string kInstructions = "kInstructions";
-static inline const std::string kWorkspace = "kWorkspace";
-static inline const std::string kPreamble = "kPreamble";
-static inline const std::string kFileName = "kFileName";
 
 ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>())
 {
@@ -110,7 +110,7 @@ std::string ProcedureItem::GetName() const
   return Property<std::string>(itemconstants::kName);
 }
 
-void ProcedureItem::SetName(const std::string &value)
+void ProcedureItem::SetName(const std::string& value)
 {
   (void)SetProperty(itemconstants::kName, value);
 }
@@ -120,7 +120,7 @@ std::string ProcedureItem::GetDescription() const
   return Property<std::string>(itemconstants::kDescription);
 }
 
-void ProcedureItem::SetDescription(const std::string &value)
+void ProcedureItem::SetDescription(const std::string& value)
 {
   (void)SetProperty(itemconstants::kDescription, value);
 }
@@ -130,29 +130,29 @@ std::string ProcedureItem::GetFileName() const
   return Property<std::string>(kFileName);
 }
 
-void ProcedureItem::SetFileName(const std::string &value)
+void ProcedureItem::SetFileName(const std::string& value)
 {
   (void)SetProperty(kFileName, value);
 }
 
-InstructionContainerItem *ProcedureItem::GetInstructionContainer() const
+InstructionContainerItem* ProcedureItem::GetInstructionContainer() const
 {
   return GetItem<InstructionContainerItem>(kInstructions);
 }
 
-WorkspaceItem *ProcedureItem::GetWorkspace() const
+WorkspaceItem* ProcedureItem::GetWorkspace() const
 {
   return GetItem<WorkspaceItem>(kWorkspace);
 }
 
-ProcedurePreambleItem *ProcedureItem::GetPreambleItem() const
+ProcedurePreambleItem* ProcedureItem::GetPreambleItem() const
 {
   return GetItem<ProcedurePreambleItem>(kPreamble);
 }
 
 std::vector<std::string> CollectPluginNames(
-    const ProcedureItem &item,
-    const std::function<std::string(const std::string &)> &object_to_plugin_name)
+    const ProcedureItem& item,
+    const std::function<std::string(const std::string&)>& object_to_plugin_name)
 {
   std::set<std::string> result;
 
@@ -162,8 +162,8 @@ std::vector<std::string> CollectPluginNames(
   return {result.begin(), result.end()};
 }
 
-void UpdatePluginNames(const ProcedureItem &item,
-                       const std::function<std::string(const std::string &)> &object_to_plugin_name)
+void UpdatePluginNames(const ProcedureItem& item,
+                       const std::function<std::string(const std::string&)>& object_to_plugin_name)
 {
   auto names = CollectPluginNames(item, object_to_plugin_name);
   item.GetPreambleItem()->SetPluginPaths(names);

@@ -36,13 +36,17 @@
 namespace
 {
 
-const std::vector<std::string> kSkipAttributeList = {
-    oac_tree_gui::itemconstants::kName, oac_tree_gui::domainconstants::kIsRootAttribute,
-    oac_tree_gui::itemconstants::kBehaviorTag};
+const std::vector<std::string>& GetSkipAttributeList()
+{
+  static const std::vector<std::string> kSkipAttributeList = {
+      oac_tree_gui::itemconstants::kName, oac_tree_gui::domainconstants::kIsRootAttribute,
+      oac_tree_gui::itemconstants::kBehaviorTag};
+  return kSkipAttributeList;
+}
 
 bool IsPropertyToShow(const std::string& tag_name)
 {
-  return !mvvm::utils::Contains(kSkipAttributeList, tag_name);
+  return !mvvm::utils::Contains(GetSkipAttributeList(), tag_name);
 }
 
 void AppendTitle(const std::string& text, QTextEdit& text_edit)
@@ -81,7 +85,8 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
   {
     if (IsPropertyToShow(property->GetTagIndex().GetTag()))
     {
-      (void)result.emplace_back(property->GetDisplayName(), mvvm::utils::ValueToString(property->Data()));
+      (void)result.emplace_back(property->GetDisplayName(),
+                                mvvm::utils::ValueToString(property->Data()));
     }
   }
   return result;

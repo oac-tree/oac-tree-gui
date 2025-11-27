@@ -27,7 +27,10 @@
 namespace oac_tree_gui
 {
 
-static inline const std::string kVariableItems = "kVariableItems";
+namespace
+{
+constexpr auto kVariableItems = "kVariableItems";
+}
 
 WorkspaceItem::WorkspaceItem() : CompoundItem(mvvm::GetTypeName<WorkspaceItem>())
 {
@@ -39,7 +42,7 @@ std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone() const
   return std::make_unique<WorkspaceItem>(*this);
 }
 
-std::vector<VariableItem *> WorkspaceItem::GetVariables() const
+std::vector<VariableItem*> WorkspaceItem::GetVariables() const
 {
   return GetItems<VariableItem>(kVariableItems);
 }

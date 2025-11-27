@@ -29,12 +29,17 @@
 namespace oac_tree_gui
 {
 
-static inline const std::string kLink = "kLink";
-static inline const std::string kExpandedProcedure = "kExpandedProcedure";
-
-JobItem::JobItem(const std::string &type) : CompoundItem(type)
+namespace
 {
-  (void)AddProperty(itemconstants::kStatus, std::string()).SetDisplayName("Status").SetEditable(false);
+constexpr auto kLink = "kLink";
+constexpr auto kExpandedProcedure = "kExpandedProcedure";
+}  // namespace
+
+JobItem::JobItem(const std::string& type) : CompoundItem(type)
+{
+  (void)AddProperty(itemconstants::kStatus, std::string())
+      .SetDisplayName("Status")
+      .SetEditable(false);
   (void)AddProperty<mvvm::LinkedItem>(kLink).SetDisplayName("Link");
   (void)AddProperty(itemconstants::kTickTimeout, itemconstants::kDefaultTickTimeoutMsec)
       .SetDisplayName("Tick timeout");
@@ -59,7 +64,7 @@ RunnerStatus JobItem::GetStatus() const
 void JobItem::SetStatus(RunnerStatus status)
 {
   // internally we store status as a string so all views can show it
-  (void) SetProperty(itemconstants::kStatus, ToString(status));
+  (void)SetProperty(itemconstants::kStatus, ToString(status));
 }
 
 int JobItem::GetTickTimeout() const
@@ -69,20 +74,20 @@ int JobItem::GetTickTimeout() const
 
 void JobItem::SetTickTimeout(int msec)
 {
-  (void) SetProperty(itemconstants::kTickTimeout, msec);
+  (void)SetProperty(itemconstants::kTickTimeout, msec);
 }
 
-void JobItem::SetProcedure(const ProcedureItem *item)
+void JobItem::SetProcedure(const ProcedureItem* item)
 {
   GetItem<mvvm::LinkedItem>(kLink)->SetLink(item);
 }
 
-ProcedureItem *JobItem::GetProcedure() const
+ProcedureItem* JobItem::GetProcedure() const
 {
   return GetItem<mvvm::LinkedItem>(kLink)->Get<ProcedureItem>();
 }
 
-ProcedureItem *JobItem::GetExpandedProcedure()
+ProcedureItem* JobItem::GetExpandedProcedure()
 {
   return GetItem<ProcedureItem>(kExpandedProcedure);
 }

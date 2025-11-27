@@ -21,6 +21,7 @@
 #include "node_editor_navigation_toolbar.h"
 
 #include <oac_tree_gui/nodeeditor/scene_constants.h>
+#include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/style/style_helper.h>
@@ -38,7 +39,7 @@ namespace oac_tree_gui
 namespace
 {
 
-void AppendRange(std::vector<double> &values, double zmin, double zmax, int npoints)
+void AppendRange(std::vector<double>& values, double zmin, double zmax, int npoints)
 {
   const std::vector<double> range = CreateZoomPoints(zmin, zmax, npoints);
   values.insert(values.end(), range.begin(), range.end());
@@ -49,20 +50,20 @@ void AppendRange(std::vector<double> &values, double zmin, double zmax, int npoi
  */
 std::vector<double> CreateSliderPoints()
 {
+  static const std::vector<double> kZoomStops = oac_tree_gui::GetDefaultZoomStops();
   std::vector<double> result;
-  for (size_t i_point = 0; i_point < constants::kZoomStops.size() - 1; ++i_point)
+  for (size_t i_point = 0; i_point < kZoomStops.size() - 1; ++i_point)
   {
     // make slider for zoom<1.0 longer than for zoom >1.0
-    const int npoints = constants::kZoomStops[i_point] < 1.0 ? 100 : 50;
-    AppendRange(result, constants::kZoomStops[i_point], constants::kZoomStops[i_point + 1],
-                npoints);
+    const int npoints = kZoomStops[i_point] < 1.0 ? 100 : 50;
+    AppendRange(result, kZoomStops[i_point], kZoomStops[i_point + 1], npoints);
   }
   return result;
 }
 
 }  // namespace
 
-NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget *parent_widget)
+NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget* parent_widget)
     : QToolBar(parent_widget)
     , m_zoom_slider(new QSlider)
     , m_zoom_factor_converter(CreateSliderPoints())
@@ -143,8 +144,8 @@ std::unique_ptr<QMenu> NodeEditorNavigationToolBar::CreateZoomMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  std::map<double, QAction *> zoom_factor_to_action;
-  for (auto zoom_factor : constants::kZoomStops)
+  std::map<double, QAction*> zoom_factor_to_action;
+  for (auto zoom_factor : oac_tree_gui::GetDefaultZoomStops())
   {
     auto text = ZoomFactorConverter::GetZoomText(zoom_factor);
     auto action = result->addAction(text);

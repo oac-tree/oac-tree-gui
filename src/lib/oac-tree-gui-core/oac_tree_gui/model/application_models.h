@@ -24,6 +24,7 @@
 #include <mvvm/project/app_project.h>
 
 #include <memory>
+#include <string_view>
 
 namespace mvvm
 {
@@ -46,7 +47,7 @@ class JobModel;
 class ApplicationModels : public mvvm::AppProject
 {
 public:
-  static inline const std::string kApplicationType = "oac-tree GUI";
+  static constexpr std::string_view kApplicationType = "oac-tree GUI";
 
   ApplicationModels();
   explicit ApplicationModels(const mvvm::ProjectContext& context);

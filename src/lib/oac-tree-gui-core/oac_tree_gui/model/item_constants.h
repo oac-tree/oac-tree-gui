@@ -23,38 +23,38 @@
 
 //! Collection of constants for sequencer items.
 
-#include <string>
+#include <cstdint>
 
 namespace oac_tree_gui::itemconstants
 {
 
 //! Constants to register property items.
-const std::string kName = "name";
-const std::string kStatus = "kStatus";
-const std::string kDescription = "description";
-const std::string kXpos = "kXpos";
-const std::string kYpos = "kYpos";
-const std::string kChildInstructions = "kChildInstructions";
-const std::string kAnyValueTag = "kAnyValueTag";
-const std::string kIsAvailable = "connected";
-const std::string kBreakpoint = "breakpoint";
-const std::string kJobType = "kJobType";
+constexpr auto kName = "name";
+constexpr auto kStatus = "kStatus";
+constexpr auto kDescription = "description";
+constexpr auto kXpos = "kXpos";
+constexpr auto kYpos = "kYpos";
+constexpr auto kChildInstructions = "kChildInstructions";
+constexpr auto kAnyValueTag = "kAnyValueTag";
+constexpr auto kIsAvailable = "connected";
+constexpr auto kBreakpoint = "breakpoint";
+constexpr auto kJobType = "kJobType";
 
-const int kDomainTypeNameRole = 10;  // role to store domain type name
+constexpr std::int32_t kDomainTypeNameRole = 10;  // role to store domain type name
 
-const std::string kAnyValueDefaultDisplayName = "value";
+constexpr auto kAnyValueDefaultDisplayName = "value";
 
-const std::string kDefaultPlaceholderAttributeValue = "$par";
+constexpr auto kDefaultPlaceholderAttributeValue = "$par";
 
-const std::string kTickTimeout = "kTickTimeout";
+constexpr auto kTickTimeout = "kTickTimeout";
 
-const int kDefaultTickTimeoutMsec = 20;
+constexpr std::int32_t kDefaultTickTimeoutMsec = 20;
 
-const std::string kBehaviorTag = "Behavior";
-const std::string kNativeBehavior = "Native";
-const std::string kHiddenBehavior = "Hidden";
-const std::string kSucceedBehavior = "Succeed";
-const std::string kFailBehavior = "Fail";
+constexpr auto kBehaviorTag = "Behavior";
+constexpr auto kNativeBehavior = "Native";
+constexpr auto kHiddenBehavior = "Hidden";
+constexpr auto kSucceedBehavior = "Succeed";
+constexpr auto kFailBehavior = "Fail";
 
 //! Debug constant. When false, we do not try to provide initial value of AnyValueItem on board of
 //! VariableInfo. The variable will get its value after first update from the workspace.

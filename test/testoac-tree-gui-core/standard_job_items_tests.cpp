@@ -104,7 +104,8 @@ TEST_F(StandardJobItemsTest, CreateImportedJobItem)
   EXPECT_EQ(job_item_ptr->GetProcedure(), procedure_ptr);
 
   // imported procedure is stored on-board
-  EXPECT_EQ(job_item_ptr->GetItem(mvvm::TagIndex::First(ImportedJobItem::kImportedProcedure)),
+  EXPECT_EQ(job_item_ptr->GetItem(
+                mvvm::TagIndex::First(std::string(ImportedJobItem::kImportedProcedure))),
             procedure_ptr);
 }
 

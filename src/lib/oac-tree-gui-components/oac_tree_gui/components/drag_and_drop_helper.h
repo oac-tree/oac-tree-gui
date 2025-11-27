@@ -43,19 +43,19 @@ class InstructionItem;
 class ProcedureItem;
 
 //! Mime type for drag-and-drop event leading to the instruction move.
-const QString kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";
+constexpr auto kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";
 
 //! Mime type for drag-and-drop event leading to the creation of new instruction.
-const QString kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
+constexpr auto kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
 
 //! Mime type for procedure copy.
-const QString kCopyProcedureMimeType = "application/coa.sequencer.procedure.copy";
+constexpr auto kCopyProcedureMimeType = "application/coa.sequencer.procedure.copy";
 
 //! Mime type for instruction copy.
-const QString kCopyInstructionMimeType = "application/coa.sequencer.instruction.copy";
+constexpr auto kCopyInstructionMimeType = "application/coa.sequencer.instruction.copy";
 
 //! Mime type for variable copy.
-const QString kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
+constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
 
 /**
  * @brief Creates mime data carrying information for instruction move.

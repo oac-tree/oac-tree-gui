@@ -53,7 +53,7 @@ public:
 class ImportedJobItem : public JobItem
 {
 public:
-  static inline const std::string kImportedProcedure = "kImportedProcedure";
+  static constexpr std::string_view kImportedProcedure = "kImportedProcedure";
   ImportedJobItem();
 
   std::unique_ptr<SessionItem> Clone() const override;

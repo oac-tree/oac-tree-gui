@@ -35,15 +35,29 @@
 namespace
 {
 
-// These attributes shouldn't be used from the domain to build properties.
-const std::vector<std::string> kSkipDomainAttributeList = {
-    oac_tree_gui::domainconstants::kNameAttribute,  // handled via display name
-    oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
-    oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
-};
+/**
+ * @brief Returns domain attributes that shouldn't be used to build properties.
+ * @return
+ */
+const std::vector<std::string>& GetSkipDomainAttributeList()
+{
+  static const std::vector<std::string> kSkipDomainAttributeList = {
+      oac_tree_gui::domainconstants::kNameAttribute,  // handled via display name
+      oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
+      oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
+  };
+  return kSkipDomainAttributeList;
+}
 
-// these are properties that shouldn't go to domain
-const std::vector<std::string> kSkipItemTagList = {oac_tree_gui::itemconstants::kAnyValueTag};
+/**
+ * @brief Returns list of properties that shouldn't go to domain.
+ */
+const std::vector<std::string>& GetSkipItemTagList()
+{
+  static const std::vector<std::string> kSkipItemTagList = {
+      oac_tree_gui::itemconstants::kAnyValueTag};
+  return kSkipItemTagList;
+}
 
 }  // namespace
 
@@ -55,7 +69,7 @@ UniversalVariableItem::UniversalVariableItem()
 {
 }
 
-UniversalVariableItem::UniversalVariableItem(const std::string &item_type)
+UniversalVariableItem::UniversalVariableItem(const std::string& item_type)
     : VariableItem(item_type.empty() ? mvvm::GetTypeName<UniversalVariableItem>() : item_type)
 {
   SetDomainType(item_type);
@@ -66,7 +80,7 @@ std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone() const
   return std::make_unique<UniversalVariableItem>(*this);
 }
 
-void UniversalVariableItem::SetDomainType(const std::string &domain_type)
+void UniversalVariableItem::SetDomainType(const std::string& domain_type)
 {
   // temporary domain variable is used to create default properties
   auto domain_variable = ::oac_tree_gui::CreateDomainVariable(domain_type);
@@ -84,7 +98,7 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
   {
     auto tag = property->GetTagIndex().GetTag();
 
-    if (!mvvm::utils::Contains(kSkipItemTagList, tag))
+    if (!mvvm::utils::Contains(GetSkipItemTagList(), tag))
     {
       // tag of property item should coincide to domain's attribute name
       result.push_back({tag, property});
@@ -94,15 +108,15 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
   return result;
 }
 
-void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable,
-                                               const anytype_registry_t *registry)
+void UniversalVariableItem::InitFromDomainImpl(const variable_t* variable,
+                                               const anytype_registry_t* registry)
 {
   if (GetDomainType().empty())
   {
     SetupFromDomain(variable);
   }
 
-  for (const auto &[attribute_name, item] : GetAttributeItems())
+  for (const auto& [attribute_name, item] : GetAttributeItems())
   {
     SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
   }
@@ -112,9 +126,9 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable,
   SetAnyValueFromDomainVariable(*variable, *this, registry);
 }
 
-void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
+void UniversalVariableItem::SetupDomainImpl(variable_t* variable) const
 {
-  for (const auto &[attribute_name, item] : GetAttributeItems())
+  for (const auto& [attribute_name, item] : GetAttributeItems())
   {
     SetDomainAttribute(*item, attribute_name, *variable);
   }
@@ -127,7 +141,7 @@ void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
   }
 }
 
-void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
+void UniversalVariableItem::SetupFromDomain(const variable_t* variable)
 {
   if (!GetDomainType().empty())
   {
@@ -136,9 +150,9 @@ void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
 
   SetData(variable->GetType(), itemconstants::kDomainTypeNameRole);
 
-  for (const auto &definition : variable->GetAttributeDefinitions())
+  for (const auto& definition : variable->GetAttributeDefinitions())
   {
-    if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
+    if (!mvvm::utils::Contains(GetSkipDomainAttributeList(), definition.GetName()))
     {
       AddPropertyFromDefinition(definition, *this);
     }

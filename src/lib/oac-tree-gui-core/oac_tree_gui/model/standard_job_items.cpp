@@ -30,9 +30,9 @@ namespace oac_tree_gui
 
 namespace
 {
-const std::string kServerName = "kServerName";
-const std::string kJobIndex = "kJobIndex";
-const std::string kFileName = "kFileName";
+constexpr auto kServerName = "kServerName";
+constexpr auto kJobIndex = "kJobIndex";
+constexpr auto kFileName = "kFileName";
 }  // namespace
 
 // ------------------------------------------------------------------------------------------------
@@ -52,7 +52,8 @@ std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 
 ImportedJobItem::ImportedJobItem() : JobItem(mvvm::GetTypeName<ImportedJobItem>())
 {
-  RegisterTag(mvvm::TagInfo(kImportedProcedure, 0, 1, {mvvm::GetTypeName<ProcedureItem>()}));
+  RegisterTag(
+      mvvm::TagInfo(std::string(kImportedProcedure), 0, 1, {mvvm::GetTypeName<ProcedureItem>()}));
 }
 
 std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
@@ -66,7 +67,9 @@ std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 
 RemoteJobItem::RemoteJobItem() : JobItem(mvvm::GetTypeName<RemoteJobItem>())
 {
-  (void)AddProperty(kJobIndex, std::size_t(0)).SetDisplayName("Job index").SetToolTip("Remote job index");
+  (void)AddProperty(kJobIndex, std::size_t(0))
+      .SetDisplayName("Job index")
+      .SetToolTip("Remote job index");
 
   (void)AddProperty(kServerName, std::string())
       .SetDisplayName("Server name")
@@ -93,7 +96,7 @@ std::string RemoteJobItem::GetServerName() const
   return Property<std::string>(kServerName);
 }
 
-void RemoteJobItem::SetServerName(const std::string &name)
+void RemoteJobItem::SetServerName(const std::string& name)
 {
   (void)SetProperty(kServerName, name);
 }
@@ -117,7 +120,7 @@ std::string FileBasedJobItem::GetFileName() const
   return Property<std::string>(kFileName);
 }
 
-void FileBasedJobItem::SetFileName(const std::string &value)
+void FileBasedJobItem::SetFileName(const std::string& value)
 {
   (void)SetProperty(kFileName, value);
 }
@@ -132,7 +135,7 @@ std::vector<std::string> GetJobItemTypes()
 // Factory methods
 // ------------------------------------------------------------------------------------------------
 
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem *procedure, int tick_timeout_msec)
+std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_timeout_msec)
 {
   if (!procedure)
   {
@@ -159,12 +162,13 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
   result->SetTickTimeout(tick_timeout_msec);
 
   // inserting imported procedure into own container and thus taking an ownership
-  (void)result->InsertItem(std::move(procedure),
-                           mvvm::TagIndex::Append(ImportedJobItem::kImportedProcedure));
+  (void)result->InsertItem(
+      std::move(procedure),
+      mvvm::TagIndex::Append(std::string(ImportedJobItem::kImportedProcedure)));
   return result;
 }
 
-std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_name,
+std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
                                                    std::size_t job_index)
 {
   auto result = std::make_unique<RemoteJobItem>();
@@ -174,7 +178,7 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string &server_nam
   return result;
 }
 
-std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string &file_name, int tick_timeout_msec)
+std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name, int tick_timeout_msec)
 {
   auto result = std::make_unique<FileBasedJobItem>();
   result->SetFileName(file_name);

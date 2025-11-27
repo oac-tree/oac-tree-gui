@@ -46,7 +46,7 @@ public:
   std::unique_ptr<ApplicationModels> CreateProject()
   {
     return std::make_unique<ApplicationModels>(
-        m_mock_project_context.CreateContext(ApplicationModels::kApplicationType));
+        m_mock_project_context.CreateContext(std::string(ApplicationModels::kApplicationType)));
   }
 
   mvvm::test::MockProjectContext m_mock_project_context;

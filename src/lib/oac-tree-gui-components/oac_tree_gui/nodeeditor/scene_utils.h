@@ -25,6 +25,7 @@
 //! Collection of utility functions for graphics scene.
 
 #include <string>
+#include <vector>
 
 class QGradient;
 class QColor;
@@ -111,6 +112,11 @@ double GetInstructionDropOffset();
  * @return Coordinates of instruction to set.
  */
 QPointF GetNodeDropPosition(const QPointF& scene_pos);
+
+/**
+ * @brief Returns default zoom stops for node editor scene.
+ */
+std::vector<double> GetDefaultZoomStops();
 
 }  // namespace oac_tree_gui
 

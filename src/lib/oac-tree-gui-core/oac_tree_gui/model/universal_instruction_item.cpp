@@ -41,7 +41,7 @@ namespace
 //! Some domain attributes shall not be used to build GUI item properties.
 //!
 //! @param domain_attribute_name The name of the attribute in domain attribute definition.
-bool IsDomainAttributeToExpose(const std::string &domain_attribute_name)
+bool IsDomainAttributeToExpose(const std::string& domain_attribute_name)
 {
   static const std::vector<std::string> kSkipDomainAttributeList = {
       oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
@@ -51,8 +51,15 @@ bool IsDomainAttributeToExpose(const std::string &domain_attribute_name)
   return !mvvm::utils::Contains(kSkipDomainAttributeList, domain_attribute_name);
 }
 
-// these are properties that shouldn't go to domain
-const std::vector<std::string> kSkipItemTagList = {oac_tree_gui::itemconstants::kAnyValueTag};
+/**
+ * @brief Returns list of properties that shouldn't go to domain.
+ */
+const std::vector<std::string>& GetSkipItemTagList()
+{
+  static const std::vector<std::string> kSkipItemTagList = {
+      oac_tree_gui::itemconstants::kAnyValueTag};
+  return kSkipItemTagList;
+}
 
 }  // namespace
 
@@ -64,7 +71,7 @@ UniversalInstructionItem::UniversalInstructionItem()
 {
 }
 
-UniversalInstructionItem::UniversalInstructionItem(const std::string &item_type)
+UniversalInstructionItem::UniversalInstructionItem(const std::string& item_type)
     : InstructionItem(item_type)
 {
   SetDomainType(item_type);
@@ -75,14 +82,14 @@ std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
   return std::make_unique<UniversalInstructionItem>(*this);
 }
 
-void UniversalInstructionItem::SetDomainType(const std::string &domain_type)
+void UniversalInstructionItem::SetDomainType(const std::string& domain_type)
 {
   // temporary domain instruction is used to create default properties
   auto domain_instruction = ::oac_tree_gui::CreateDomainInstruction(domain_type);
   SetupFromDomain(domain_instruction.get());
 }
 
-void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
+void UniversalInstructionItem::InitFromDomainImpl(const instruction_t* instruction)
 {
   if (GetDomainType().empty())
   {
@@ -90,18 +97,18 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   }
 
   std::vector<std::string> processed_attribute_names;
-  for (const auto &[attribute_name, item] : GetAttributeItems())
+  for (const auto& [attribute_name, item] : GetAttributeItems())
   {
     SetPropertyFromDomainAttribute(*instruction, attribute_name, *item);
     processed_attribute_names.push_back(attribute_name);
   }
 
   // creating property items representing custom attributes not present in attribute definitions
-  for (const auto &[name, value] : instruction->GetStringAttributes())
+  for (const auto& [name, value] : instruction->GetStringAttributes())
   {
     if (!mvvm::utils::Contains(processed_attribute_names, name) && IsDomainAttributeToExpose(name))
     {
-      auto &property = AddProperty<sup::gui::AnyValueScalarItem>(name);
+      auto& property = AddProperty<sup::gui::AnyValueScalarItem>(name);
       property.SetAnyTypeName(sup::dto::kStringTypeName);
       (void)property.SetDisplayName(name);
       (void)property.SetData(value);
@@ -115,9 +122,9 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   }
 }
 
-void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const
+void UniversalInstructionItem::SetupDomainImpl(instruction_t* instruction) const
 {
-  for (const auto &[attribute_name, item] : GetAttributeItems())
+  for (const auto& [attribute_name, item] : GetAttributeItems())
   {
     SetDomainAttribute(*item, attribute_name, *instruction);
   }
@@ -144,7 +151,7 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
   {
     auto tag = property->GetTagIndex().GetTag();
 
-    if (!mvvm::utils::Contains(kSkipItemTagList, tag))
+    if (!mvvm::utils::Contains(GetSkipItemTagList(), tag))
     {
       // tag of property item should coincide with the domain attribute name
       result.push_back({tag, property});
@@ -154,7 +161,7 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
   return result;
 }
 
-void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
+void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
 {
   if (!GetDomainType().empty())
   {
@@ -165,7 +172,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
 
   (void)SetDisplayName(instruction->GetType());
 
-  for (const auto &definition : instruction->GetAttributeDefinitions())
+  for (const auto& definition : instruction->GetAttributeDefinitions())
   {
     if (IsDomainAttributeToExpose(definition.GetName()))
     {

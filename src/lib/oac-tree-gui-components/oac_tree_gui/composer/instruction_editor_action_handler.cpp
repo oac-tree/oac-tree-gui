@@ -84,7 +84,7 @@ void AlignInstructionTree(const IInstructionEditorActionHandler::position_t &ref
   }
 }
 
-const std::string kFailedActionTitle = "Invalid Operation";
+constexpr auto kFailedActionTitle = "Invalid Operation";
 
 }  // namespace
 

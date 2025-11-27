@@ -20,6 +20,8 @@
 
 #include "scene_utils.h"
 
+#include "scene_constants.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
@@ -140,6 +142,13 @@ QPointF GetNodeDropPosition(const QPointF& scene_pos)
   static const QRectF view_bbox = ConnectableViewRectangle();
   // we want the center of instruction node to be right under the coursor tip
   return {scene_pos.x() - (view_bbox.width() / 2), scene_pos.y() - (view_bbox.height() / 2)};
+}
+
+std::vector<double> GetDefaultZoomStops()
+{
+  static const std::vector<double> kZoomStops = {
+      constants::kMinZoomFactor, 0.25, 0.5, 0.75, 1.0, 1.5, constants::kMaxZoomFactor};
+  return kZoomStops;
 }
 
 }  // namespace oac_tree_gui
