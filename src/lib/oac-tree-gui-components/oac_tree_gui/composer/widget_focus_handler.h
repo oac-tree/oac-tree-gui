@@ -73,6 +73,11 @@ public:
   WidgetT* GetFocusWidget() const;
 
   /**
+   * @brief Returns the widget at specified index.
+   */
+  WidgetT* GetWidgetAt(std::size_t index) const;
+
+  /**
    * @brief Returns the list of managed widgets.
    */
   std::vector<WidgetT*> GetWidgets() const;
@@ -173,6 +178,12 @@ template <typename WidgetT>
 inline WidgetT* WidgetFocusHandler<WidgetT>::GetFocusWidget() const
 {
   return m_in_focus;
+}
+
+template <typename WidgetT>
+inline WidgetT* WidgetFocusHandler<WidgetT>::GetWidgetAt(std::size_t index) const
+{
+  return m_editors.at(static_cast<std::size_t>(index));
 }
 
 template <typename WidgetT>

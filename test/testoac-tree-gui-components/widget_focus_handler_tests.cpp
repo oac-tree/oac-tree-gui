@@ -75,6 +75,13 @@ TEST_F(WidgetFocusHandlerTest, AddWidgetAndRemove)
   focus_manager.AddWidget(&editor1);
   EXPECT_EQ(focus_manager.GetCount(), 1U);
   EXPECT_EQ(focus_manager.GetFocusWidget(), &editor1);
+  EXPECT_EQ(focus_manager.GetWidgetAt(0), &editor1);
+
+  {
+    const ::testing::InSequence seq;
+    EXPECT_CALL(editor1, ShowAsActive(::testing::_)).Times(0);
+    EXPECT_CALL(editor1, ShowAsLastEditor(::testing::_)).Times(0);
+  }
 
   focus_manager.RemoveWidget(&editor1);
   EXPECT_EQ(focus_manager.GetCount(), 0U);
