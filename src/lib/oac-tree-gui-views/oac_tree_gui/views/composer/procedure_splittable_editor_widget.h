@@ -21,9 +21,10 @@
 #ifndef OAC_TREE_GUI_VIEWS_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
 
+#include <sup/gui/widgets/settings_callbacks.h>
+
 #include <QWidget>
 #include <memory>
-#include <sup/gui/widgets/settings_callbacks.h>
 
 class QSplitter;
 
@@ -99,11 +100,6 @@ public:
    */
   void WriteSettings(const sup::gui::write_variant_func_t& write_func);
 
-  /**
-   * @brief Creates the initial widget in the splitter.
-   */
-  void CreateInitialSplitterSetup();
-
 signals:
   void focusWidgetProcedureSelectionChanged(oac_tree_gui::ProcedureItem* item);
 
@@ -112,11 +108,6 @@ private:
    * @brief Creates a new procedure editor widget.
    */
   std::unique_ptr<ProcedureComposerComboPanel> CreateProcedureEditor();
-
-  /**
-   * @brief Validates that the model is set.
-   */
-  void ValidateModel() const;
 
   /**
    * @brief Notifies that the procedure selection in the focus widget has changed.

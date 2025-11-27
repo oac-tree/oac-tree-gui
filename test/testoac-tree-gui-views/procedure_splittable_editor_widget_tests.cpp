@@ -82,11 +82,29 @@ TEST_F(ProcedureSplittableEditorWidgetTest, InitialState)
   ASSERT_NE(splitter, nullptr);
   EXPECT_EQ(splitter->count(), 0);
 
-  // model is not set, so creating panel should throw
-  EXPECT_THROW(editor.CreatePanel(), RuntimeException);
+  // model is not set, the creation of the panel is possible
+  EXPECT_NO_THROW(editor.CreatePanel());
+  EXPECT_EQ(splitter->count(), 1);
 }
 
-TEST_F(ProcedureSplittableEditorWidgetTest, SetModel)
+TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBeforeModelSet)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 0);
+
+  // model is not set, the creation of the panel is possible
+  EXPECT_NO_THROW(editor.CreatePanel());
+  EXPECT_EQ(splitter->count(), 1);
+  EXPECT_EQ(editor.GetFocusWidget()->GetModel(), nullptr);
+
+  editor.SetModel(&m_model);
+  EXPECT_EQ(editor.GetFocusWidget()->GetModel(), &m_model);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelAfterModelSet)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
 
@@ -97,7 +115,11 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModel)
 
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 0);
+
+  editor.CreatePanel();
   EXPECT_EQ(splitter->count(), 1);
+  EXPECT_EQ(editor.GetFocusWidget()->GetModel(), &m_model);
 
   ASSERT_NE(splitter->widget(0), nullptr);
   EXPECT_EQ(splitter->widget(0), editor.GetFocusWidget());
@@ -109,6 +131,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelAndClosePanel)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
+  editor.CreatePanel();
 
   const QSignalSpy signal_spy(
       &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
@@ -136,6 +159,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelAndClosePanel)
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelBetweenTwoPanels)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.CreatePanel();
   editor.SetModel(&m_model);
 
   const QSignalSpy signal_spy(
@@ -178,15 +202,17 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanelViaWidgetSignal)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
+  editor.CreatePanel();
 
   const QSignalSpy signal_spy(
       &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
-  EXPECT_EQ(splitter->count(), 1);
+  ASSERT_EQ(splitter->count(), 1);
 
   auto focus_widget = editor.GetFocusWidget();
+  ASSERT_NE(focus_widget, nullptr);
   emit focus_widget->splitViewRequest();
   EXPECT_EQ(splitter->count(), 2);
   EXPECT_EQ(splitter->widget(1), editor.GetFocusWidget());
@@ -198,6 +224,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ClosePanelViaWidgetSignal)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
+  editor.CreatePanel();
 
   const QSignalSpy signal_spy(
       &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
@@ -205,7 +232,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ClosePanelViaWidgetSignal)
   editor.CreatePanel();
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
-  EXPECT_EQ(splitter->count(), 2);
+  ASSERT_EQ(splitter->count(), 2);
 
   auto focus_widget = editor.GetFocusWidget();
   emit focus_widget->closeViewRequest();
@@ -220,6 +247,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestViaSignals)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
+  editor.CreatePanel();
 
   const QSignalSpy signal_spy(
       &editor, &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
@@ -227,7 +255,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestViaSignals)
   editor.CreatePanel();
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
-  EXPECT_EQ(splitter->count(), 2);
+  ASSERT_EQ(splitter->count(), 2);
 
   auto first_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(0));
   auto second_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
@@ -245,6 +273,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
+  editor.CreatePanel();
 
   QSignalSpy signal_spy(&editor,
                         &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
@@ -257,7 +286,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
-  EXPECT_EQ(splitter->count(), 3);
+  ASSERT_EQ(splitter->count(), 3);
   auto first_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(0));
   auto second_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
   auto third_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(2));
@@ -291,6 +320,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidg
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
+  editor.CreatePanel();
 
   QSignalSpy signal_spy(&editor,
                         &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
@@ -300,7 +330,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidg
   editor.CreatePanel();
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
-  EXPECT_EQ(splitter->count(), 2);
+  ASSERT_EQ(splitter->count(), 2);
   auto first_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(0));
   auto second_widget = dynamic_cast<ProcedureComposerComboPanel*>(splitter->widget(1));
   editor.SetFocusWidget(first_widget);
@@ -316,35 +346,58 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidg
   EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), procedure);
 }
 
-TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsWhenSplitterIsNonEmpty)
+TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsWhenSplitterNonEmpty)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+  editor.CreatePanel();
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  ASSERT_EQ(splitter->count(), 1);
+
+  // Expecting no calls as splitter is non-empty
+  EXPECT_CALL(m_mock_read_func, Call(::testing::_)).Times(0);
+  editor.ReadSettings(m_mock_read_func.AsStdFunction());
+
+  // this should create one panel by default
+  ASSERT_EQ(splitter->count(), 1);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, ReadInvalidSettingsWhenSplitterEmpty)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
   editor.SetModel(&m_model);
 
   auto splitter = editor.findChild<QSplitter*>();
   ASSERT_NE(splitter, nullptr);
-  EXPECT_EQ(splitter->count(), 1);
+  ASSERT_EQ(splitter->count(), 0);
 
-  EXPECT_CALL(m_mock_read_func, Call(::testing::_)).Times(0);
+  // Expecting called twice (one for number of panels, another for splitter state).
+  // Returning invalid variants.
+  EXPECT_CALL(m_mock_read_func, Call(::testing::_)).Times(2);
   editor.ReadSettings(m_mock_read_func.AsStdFunction());
+
+  // this should create one panel by default
+  ASSERT_EQ(splitter->count(), 1);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsAndCreatePanels)
 {
-  // ProcedureSplittableEditorWidget editor(m_command_service);
+  ProcedureSplittableEditorWidget editor(m_command_service);
 
-  // auto splitter = editor.findChild<QSplitter*>();
-  // ASSERT_NE(splitter, nullptr);
-  // EXPECT_EQ(splitter->count(), 0);
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 0);
 
-  // const std::int32_t expected_panel_count = 3;
-  // ON_CALL(m_mock_read_func, Call(GetPanelCountKey()))
-  //     .WillByDefault(::testing::Return(QVariant::fromValue(expected_panel_count)));
+  const std::int32_t expected_panel_count = 3;
+  ON_CALL(m_mock_read_func, Call(GetPanelCountKey()))
+      .WillByDefault(::testing::Return(QVariant::fromValue(expected_panel_count)));
 
-  // EXPECT_CALL(m_mock_read_func, Call(GetPanelCountKey())).Times(1);
-  // // EXPECT_CALL(m_mock_read_func, Call(GetSplitterStateKey())).Times(1);
+  EXPECT_CALL(m_mock_read_func, Call(GetPanelCountKey())).Times(1);
+  EXPECT_CALL(m_mock_read_func, Call(GetSplitterStateKey())).Times(1);
 
-  // editor.ReadSettings(m_mock_read_func.AsStdFunction());
+  editor.ReadSettings(m_mock_read_func.AsStdFunction());
 }
 
 }  // namespace oac_tree_gui::test

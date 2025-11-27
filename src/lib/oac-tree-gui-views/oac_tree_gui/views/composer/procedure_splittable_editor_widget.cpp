@@ -75,7 +75,10 @@ ProcedureSplittableEditorWidget::~ProcedureSplittableEditorWidget() = default;
 void ProcedureSplittableEditorWidget::SetModel(SequencerModel* model)
 {
   m_model = model;
-  CreateInitialSplitterSetup();
+  for (auto& widget : m_focus_handler->GetWidgets())
+  {
+    widget->SetModel(m_model);
+  }
 }
 
 void ProcedureSplittableEditorWidget::SetProcedure(ProcedureItem* procedure_item)
@@ -88,8 +91,6 @@ void ProcedureSplittableEditorWidget::SetProcedure(ProcedureItem* procedure_item
 
 void ProcedureSplittableEditorWidget::CreatePanel(ProcedureComposerComboPanel* after_widget)
 {
-  ValidateModel();
-
   auto new_widget = CreateProcedureEditor();
   auto new_widget_ptr = new_widget.get();
 
@@ -136,21 +137,22 @@ void ProcedureSplittableEditorWidget::ReadSettings(const sup::gui::read_variant_
 {
   if (m_splitter->count() > 0)
   {
-    // settings are applicable only if splitter is empty
+    // already initialized
     return;
   }
 
-  const auto panel_count = read_func(GetPanelCountKey()).toInt();
-  for (std::int32_t i = 1; i < panel_count; ++i)
+  const auto panel_count_variant = read_func(GetPanelCountKey());
+  const auto panel_count = panel_count_variant.isValid() ? panel_count_variant.toInt() : 1;
+  for (std::int32_t i = 0; i < panel_count; ++i)
   {
     CreatePanel();
   }
 
-  // auto splitter_state = read_func(GetSplitterStateKey());
-  // if (splitter_state.isValid())
-  // {
-  //   m_splitter->restoreState(splitter_state.toByteArray());
-  // }
+  auto splitter_state = read_func(GetSplitterStateKey());
+  if (splitter_state.isValid())
+  {
+    m_splitter->restoreState(splitter_state.toByteArray());
+  }
 }
 
 void ProcedureSplittableEditorWidget::WriteSettings(
@@ -159,15 +161,6 @@ void ProcedureSplittableEditorWidget::WriteSettings(
   const auto panel_count = static_cast<std::int32_t>(m_focus_handler->GetCount());
   write_func(GetPanelCountKey(), QVariant::fromValue(panel_count));
   write_func(GetSplitterStateKey(), m_splitter->saveState());
-}
-
-void ProcedureSplittableEditorWidget::CreateInitialSplitterSetup()
-{
-  if (m_splitter->count() > 0)
-  {
-    return;
-  }
-  CreatePanel();
 }
 
 std::unique_ptr<ProcedureComposerComboPanel>
@@ -210,14 +203,6 @@ ProcedureSplittableEditorWidget::CreateProcedureEditor()
           on_selected_procedure_changed);
 
   return result;
-}
-
-void ProcedureSplittableEditorWidget::ValidateModel() const
-{
-  if (!m_model)
-  {
-    throw RuntimeException("Sequencer model is not set for ProcedureSplittableEditorWidget");
-  }
 }
 
 void ProcedureSplittableEditorWidget::NotifyFocusWidgetProcedureSelectionChanged(

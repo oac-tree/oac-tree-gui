@@ -24,8 +24,8 @@
 #include "procedure_splittable_editor_widget.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -68,12 +68,12 @@ void SequencerComposerViewV2::SetModel(SequencerModel* model)
 
 void SequencerComposerViewV2::ReadSettings()
 {
-
+  m_splittable_editor_widget->ReadSettings(sup::gui::GetSettingsReadFunc());
 }
 
 void SequencerComposerViewV2::WriteSettings()
 {
-
+  m_splittable_editor_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
 }
 
 void SequencerComposerViewV2::SetupConnections()
