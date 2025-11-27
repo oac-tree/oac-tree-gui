@@ -54,13 +54,33 @@ constexpr auto kNoProcedureSelected = " < no procedure >";
 class ProcedureSplittableEditorWidgetTest : public ::testing::Test
 {
 public:
+  /**
+   * @brief Returns QSettings key holding the number of created panels.
+   *
+   * Defined in procedure_splittable_editor_widget.cpp
+   */
+  static QString GetPanelCountKey() { return "ProcedureSplittableEditorWidget/panel_count"; }
+
+  /**
+   * @brief Returns QSettings key holding the state of the splitter.
+   *
+   * Defined in procedure_splittable_editor_widget.cpp
+   */
+  static QString GetSplitterStateKey() { return "ProcedureSplittableEditorWidget/splitter"; }
+
   SequencerModel m_model;
   sup::gui::NullCommandService m_command_service;
+  ::testing::MockFunction<sup::gui::read_variant_func_t> m_mock_read_func;
+  ::testing::MockFunction<sup::gui::write_variant_func_t> m_mock_write_func;
 };
 
 TEST_F(ProcedureSplittableEditorWidgetTest, InitialState)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 0);
 
   // model is not set, so creating panel should throw
   EXPECT_THROW(editor.CreatePanel(), RuntimeException);
@@ -294,6 +314,37 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidg
 
   EXPECT_EQ(signal_spy.count(), 1);
   EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), procedure);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsWhenSplitterIsNonEmpty)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 1);
+
+  EXPECT_CALL(m_mock_read_func, Call(::testing::_)).Times(0);
+  editor.ReadSettings(m_mock_read_func.AsStdFunction());
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsAndCreatePanels)
+{
+  // ProcedureSplittableEditorWidget editor(m_command_service);
+
+  // auto splitter = editor.findChild<QSplitter*>();
+  // ASSERT_NE(splitter, nullptr);
+  // EXPECT_EQ(splitter->count(), 0);
+
+  // const std::int32_t expected_panel_count = 3;
+  // ON_CALL(m_mock_read_func, Call(GetPanelCountKey()))
+  //     .WillByDefault(::testing::Return(QVariant::fromValue(expected_panel_count)));
+
+  // EXPECT_CALL(m_mock_read_func, Call(GetPanelCountKey())).Times(1);
+  // // EXPECT_CALL(m_mock_read_func, Call(GetSplitterStateKey())).Times(1);
+
+  // editor.ReadSettings(m_mock_read_func.AsStdFunction());
 }
 
 }  // namespace oac_tree_gui::test

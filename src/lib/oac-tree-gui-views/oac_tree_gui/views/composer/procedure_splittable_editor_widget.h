@@ -23,6 +23,7 @@
 
 #include <QWidget>
 #include <memory>
+#include <sup/gui/widgets/settings_callbacks.h>
 
 class QSplitter;
 
@@ -88,6 +89,21 @@ public:
    */
   void SetFocusWidget(ProcedureComposerComboPanel* widget);
 
+  /**
+   * @brief Read settings from storage using function provided.
+   */
+  void ReadSettings(const sup::gui::read_variant_func_t& read_func);
+
+  /**
+   * @brief Write settings to persistent storage using function provided.
+   */
+  void WriteSettings(const sup::gui::write_variant_func_t& write_func);
+
+  /**
+   * @brief Creates the initial widget in the splitter.
+   */
+  void CreateInitialSplitterSetup();
+
 signals:
   void focusWidgetProcedureSelectionChanged(oac_tree_gui::ProcedureItem* item);
 
@@ -101,11 +117,6 @@ private:
    * @brief Validates that the model is set.
    */
   void ValidateModel() const;
-
-  /**
-   * @brief Creates the initial widget in the splitter.
-   */
-  void CreateInitialSplitterSetup();
 
   /**
    * @brief Notifies that the procedure selection in the focus widget has changed.

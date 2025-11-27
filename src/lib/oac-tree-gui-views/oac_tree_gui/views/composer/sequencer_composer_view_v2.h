@@ -58,6 +58,8 @@ public:
   void SetModel(SequencerModel* model);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void SetupConnections();
 
   QSplitter* m_splitter{nullptr};

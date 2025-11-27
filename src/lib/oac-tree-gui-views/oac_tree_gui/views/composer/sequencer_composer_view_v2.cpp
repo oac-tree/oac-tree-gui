@@ -52,14 +52,28 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
   m_splitter->setSizes({200, 400});
 
   SetupConnections();
+  ReadSettings();
 }
 
-SequencerComposerViewV2::~SequencerComposerViewV2() = default;
+SequencerComposerViewV2::~SequencerComposerViewV2()
+{
+  WriteSettings();
+}
 
 void SequencerComposerViewV2::SetModel(SequencerModel* model)
 {
   m_splittable_editor_widget->SetModel(model);
   m_composer_tools_panel->SetModel(model);  // will select first procedure
+}
+
+void SequencerComposerViewV2::ReadSettings()
+{
+
+}
+
+void SequencerComposerViewV2::WriteSettings()
+{
+
 }
 
 void SequencerComposerViewV2::SetupConnections()

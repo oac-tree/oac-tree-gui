@@ -34,6 +34,29 @@ Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+constexpr auto kGroupName = "ProcedureSplittableEditorWidget";
+
+/**
+ * @brief Returns QSettings key holding the number of created panels
+ */
+QString GetPanelCountKey()
+{
+  return QString(kGroupName) + "/panel_count";
+}
+
+/**
+ * @brief Returns QSettings key holding the state of the splitter.
+ */
+QString GetSplitterStateKey()
+{
+  return QString(kGroupName) + "/splitter";
+}
+
+}  // namespace
+
 ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
     sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
     : QWidget(parent_widget)
@@ -109,6 +132,44 @@ void ProcedureSplittableEditorWidget::SetFocusWidget(ProcedureComposerComboPanel
   }
 }
 
+void ProcedureSplittableEditorWidget::ReadSettings(const sup::gui::read_variant_func_t& read_func)
+{
+  if (m_splitter->count() > 0)
+  {
+    // settings are applicable only if splitter is empty
+    return;
+  }
+
+  const auto panel_count = read_func(GetPanelCountKey()).toInt();
+  for (std::int32_t i = 1; i < panel_count; ++i)
+  {
+    CreatePanel();
+  }
+
+  // auto splitter_state = read_func(GetSplitterStateKey());
+  // if (splitter_state.isValid())
+  // {
+  //   m_splitter->restoreState(splitter_state.toByteArray());
+  // }
+}
+
+void ProcedureSplittableEditorWidget::WriteSettings(
+    const sup::gui::write_variant_func_t& write_func)
+{
+  const auto panel_count = static_cast<std::int32_t>(m_focus_handler->GetCount());
+  write_func(GetPanelCountKey(), QVariant::fromValue(panel_count));
+  write_func(GetSplitterStateKey(), m_splitter->saveState());
+}
+
+void ProcedureSplittableEditorWidget::CreateInitialSplitterSetup()
+{
+  if (m_splitter->count() > 0)
+  {
+    return;
+  }
+  CreatePanel();
+}
+
 std::unique_ptr<ProcedureComposerComboPanel>
 ProcedureSplittableEditorWidget::CreateProcedureEditor()
 {
@@ -157,11 +218,6 @@ void ProcedureSplittableEditorWidget::ValidateModel() const
   {
     throw RuntimeException("Sequencer model is not set for ProcedureSplittableEditorWidget");
   }
-}
-
-void ProcedureSplittableEditorWidget::CreateInitialSplitterSetup()
-{
-  CreatePanel();
 }
 
 void ProcedureSplittableEditorWidget::NotifyFocusWidgetProcedureSelectionChanged(
