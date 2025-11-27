@@ -36,11 +36,16 @@
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/variable.h>
 
+namespace oac_tree_gui
+{
+
+namespace
+{
 /**
  * @brief Returns true if given attribute name and value should appear as domain attributes.
  */
-bool IsSuitableForDomainAttribute(const std::string &attribute_string,
-                                  const std::string &attribute_value)
+bool IsSuitableForDomainAttribute(const std::string& attribute_string,
+                                  const std::string& attribute_value)
 {
   const bool not_empty = !attribute_value.empty();
   const bool not_isroot_false =
@@ -52,56 +57,54 @@ bool IsSuitableForDomainAttribute(const std::string &attribute_string,
 /**
  * @brief Returns is exposed flag for given attribute definition
  */
-bool GetIsExposedFlag(const attribute_definition_t &attr)
+bool GetIsExposedFlag(const attribute_definition_t& attr)
 {
   // list of domain attributes that should be always marked as present
   static const std::vector<std::string> kAlwaysExposedAttributeList = {
       oac_tree_gui::domainconstants::kNameAttribute};
   return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysExposedAttributeList, attr.GetName());
 }
+}  // namespace
 
-namespace oac_tree_gui
-{
-
-bool IsPlaceholderAttribute(const std::string &attribute_value)
+bool IsPlaceholderAttribute(const std::string& attribute_value)
 {
   return attribute_value.find_first_of('$') == 0;
 }
 
-bool IsReferenceAttribute(const std::string &attribute_value)
+bool IsReferenceAttribute(const std::string& attribute_value)
 {
   return attribute_value.find_first_of('@') == 0;
 }
 
-bool GetAttributeExposedFlag(const sup::gui::AnyValueItem &attribute_item)
+bool GetAttributeExposedFlag(const sup::gui::AnyValueItem& attribute_item)
 {
   return attribute_item.IsEditable() && attribute_item.IsEnabled();
 }
 
-void SetAttributeExposedFlag(bool value, sup::gui::AnyValueItem &attribute_item)
+void SetAttributeExposedFlag(bool value, sup::gui::AnyValueItem& attribute_item)
 {
   attribute_item.SetEditable(value);
   attribute_item.SetEnabled(value);
 }
 
-void SetAttributeAsString(const std::string &value, sup::gui::AnyValueItem &attribute_item)
+void SetAttributeAsString(const std::string& value, sup::gui::AnyValueItem& attribute_item)
 {
   // current convention is to keep original AnyTypeName after setting attribute as a string
   mvvm::utils::ReplaceData(attribute_item, mvvm::variant_t(value), mvvm::DataRole::kData);
 }
 
-void SetAttributeFromTypeName(sup::gui::AnyValueItem &attribute_item)
+void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item)
 {
   mvvm::utils::ReplaceData(attribute_item,
                            sup::gui::GetVariantFromScalarTypeName(attribute_item.GetAnyTypeName()),
                            mvvm::DataRole::kData);
 }
 
-sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
-                                                  mvvm::CompoundItem &item)
+sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
+                                                  mvvm::CompoundItem& item)
 {
   // Use attribute name for display name and tag name of the new property item.
-  auto &property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
+  auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property.SetDisplayName(attr.GetName());
   SetAttributeExposedFlag(GetIsExposedFlag(attr), property);
@@ -109,8 +112,8 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
 }
 
 template <typename T>
-void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
-                                    sup::gui::AnyValueItem &item)
+void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
+                                    sup::gui::AnyValueItem& item)
 {
   if (!domain.HasAttribute(attribute_name))
   {
@@ -134,16 +137,16 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
   }
 }
 
-template void SetPropertyFromDomainAttribute<variable_t>(const variable_t &domain,
-                                                         const std::string &attribute_name,
-                                                         sup::gui::AnyValueItem &item);
-template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t &domain,
-                                                            const std::string &attribute_name,
-                                                            sup::gui::AnyValueItem &item);
+template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
+                                                         const std::string& attribute_name,
+                                                         sup::gui::AnyValueItem& item);
+template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t& domain,
+                                                            const std::string& attribute_name,
+                                                            sup::gui::AnyValueItem& item);
 
 template <typename T>
-void SetDomainAttribute(const sup::gui::AnyValueItem &item, const std::string &attribute_name,
-                        T &domain)
+void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& attribute_name,
+                        T& domain)
 {
   if (!GetAttributeExposedFlag(item))
   {
@@ -162,28 +165,28 @@ void SetDomainAttribute(const sup::gui::AnyValueItem &item, const std::string &a
   }
 }
 
-template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem &item,
-                                             const std::string &attribute_name, variable_t &domain);
-template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem &item,
-                                                const std::string &attribute_name,
-                                                instruction_t &domain);
+template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem& item,
+                                             const std::string& attribute_name, variable_t& domain);
+template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem& item,
+                                                const std::string& attribute_name,
+                                                instruction_t& domain);
 
 template <typename DomainT>
-bool HasAttributeDefinition(const DomainT &domain, const std::string &definition_name)
+bool HasAttributeDefinition(const DomainT& domain, const std::string& definition_name)
 {
   auto definitions = domain.GetAttributeDefinitions();
-  auto on_element = [&definition_name](const auto &elem)
+  auto on_element = [&definition_name](const auto& elem)
   { return elem.GetName() == definition_name; };
   return std::any_of(std::begin(definitions), std::end(definitions), on_element);
 }
 
-template bool HasAttributeDefinition<variable_t>(const variable_t &domain,
-                                                 const std::string &definition_name);
-template bool HasAttributeDefinition<instruction_t>(const instruction_t &domain,
-                                                    const std::string &definition_name);
+template bool HasAttributeDefinition<variable_t>(const variable_t& domain,
+                                                 const std::string& definition_name);
+template bool HasAttributeDefinition<instruction_t>(const instruction_t& domain,
+                                                    const std::string& definition_name);
 
 template <typename DomainT>
-void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &domain)
+void SetJsonAttributesFromItem(const sup::gui::AnyValueItem& item, DomainT& domain)
 {
   auto anyvalue = sup::gui::CreateAnyValue(item);
   if (sup::dto::IsEmptyValue(anyvalue))
@@ -201,9 +204,9 @@ void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &doma
   }
 }
 
-template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem &item,
-                                                    variable_t &domain);
-template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem &item,
-                                                       instruction_t &domain);
+template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem& item,
+                                                    variable_t& domain);
+template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem& item,
+                                                       instruction_t& domain);
 
 }  // namespace oac_tree_gui

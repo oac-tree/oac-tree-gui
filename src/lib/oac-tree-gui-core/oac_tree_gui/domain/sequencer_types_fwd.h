@@ -43,6 +43,8 @@ class IJob;
 class InstructionInfo;
 }  // namespace sup::oac_tree
 
+namespace oac_tree_gui
+{
 using attribute_definition_t = sup::oac_tree::AttributeDefinition;
 using instruction_t = sup::oac_tree::Instruction;
 using preamble_t = sup::oac_tree::ProcedurePreamble;
@@ -50,5 +52,6 @@ using procedure_t = sup::oac_tree::Procedure;
 using runner_t = sup::oac_tree::Runner;
 using variable_t = sup::oac_tree::Variable;
 using workspace_t = sup::oac_tree::Workspace;
+}  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_DOMAIN_SEQUENCER_TYPES_FWD_H_
