@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_WIDGET_PANEL_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_COMPOSER_WIDGET_PANEL_H_
 
+#include <oac_tree_gui/components/component_types.h>
+
 #include <QWidget>
 
 namespace sup::gui
@@ -55,14 +57,6 @@ class ComposerWidgetPanel : public QWidget
   Q_OBJECT
 
 public:
-  enum WidgetType
-  {
-    kInstructionTree,
-    kWorkspace,
-    kNodeEditor,
-    kXmlPanel
-  };
-
   /**
    * @brief Main c-tor.
    *
@@ -71,7 +65,7 @@ public:
    * @param parent_widget The parent widget.
    */
   explicit ComposerWidgetPanel(sup::gui::IAppCommandService& command_service,
-                               const QString& settings_group_name, WidgetType widget_type,
+                               const QString& settings_group_name, ProcedureEditorType widget_type,
                                QWidget* parent_widget = nullptr);
   ~ComposerWidgetPanel() override;
 
@@ -106,7 +100,8 @@ private:
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 
   ProcedureItem* m_procedure{nullptr};
-  bool m_block_selection_change_notification{false};  //!< do not notify outside if selection changed
+  bool m_block_selection_change_notification{
+      false};  //!< do not notify outside if selection changed
 };
 
 }  // namespace oac_tree_gui

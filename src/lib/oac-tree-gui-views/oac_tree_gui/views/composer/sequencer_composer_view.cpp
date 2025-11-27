@@ -63,9 +63,9 @@ SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &comma
     , m_procedure_editor(CreateProcedureEditor())
     , m_composer_tools_panel(new ComposerToolsPanel(command_service))
     , m_central_panel(new ComposerWidgetPanel(command_service, kCentralPanel,
-                                              ComposerWidgetPanel::kInstructionTree))
+                                              ProcedureEditorType::kInstructionTree))
     , m_right_panel(
-          new ComposerWidgetPanel(command_service, kRightPanel, ComposerWidgetPanel::kWorkspace))
+          new ComposerWidgetPanel(command_service, kRightPanel, ProcedureEditorType::kWorkspace))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_composer_actions(new SequencerComposerActions(this))
 {

@@ -77,6 +77,17 @@ enum class NodeEditorMode : std::uint8_t
   kNodeViewer   //!< read-only viewer for sequence execution monitoring
 };
 
+/**
+ * @brief The ProcedureEditorType enum describes types of procedure editor widgets.
+ */
+enum class ProcedureEditorType : std::uint8_t
+{
+  kInstructionTree,  //! instruction tree editor
+  kWorkspace,        //! workspace variable editor
+  kNodeEditor,       //! node-based instruction editor
+  kXmlPanel          //! xml viewer
+};
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_COMPONENT_TYPES_H_
