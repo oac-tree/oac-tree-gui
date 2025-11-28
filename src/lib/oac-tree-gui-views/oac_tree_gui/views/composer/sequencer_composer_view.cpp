@@ -56,8 +56,8 @@ const QString kRightPanel = kGroupName + "/" + "right";
 namespace oac_tree_gui
 {
 
-SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService &command_service,
-                                             QWidget *parent_widget)
+SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService& command_service,
+                                             QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_procedure_editor(CreateProcedureEditor())
@@ -94,7 +94,7 @@ SequencerComposerView::~SequencerComposerView()
   m_command_service.UnregisterWidgetUniqueId(this);
 }
 
-void SequencerComposerView::SetModel(SequencerModel *model)
+void SequencerComposerView::SetModel(SequencerModel* model)
 {
   m_model = model;
   m_composer_actions->SetModel(model);
@@ -134,7 +134,8 @@ void SequencerComposerView::SetupConnections()
     m_composer_actions->SetProcedure(procedure_item);
     m_procedure_editor->SetProcedure(procedure_item);
   };
-  connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected, this, on_procedure_selected);
+  connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected, this,
+          on_procedure_selected);
 
   // propagate selection from central panel to the right panel
   auto on_central_selection = [this](auto)
@@ -165,8 +166,8 @@ void SequencerComposerView::SetupWidgetActions()
   m_toggle_left_sidebar = new QAction("Show/hide left sidebar", this);
   m_toggle_left_sidebar->setToolTip("Show/hide left panel");
   m_toggle_left_sidebar->setIcon(FindIcon("dock-left"));
-  connect(m_toggle_left_sidebar, &QAction::triggered, this,
-          [this](auto) { m_composer_tools_panel->setVisible(!m_composer_tools_panel->isVisible()); });
+  connect(m_toggle_left_sidebar, &QAction::triggered, this, [this](auto)
+          { m_composer_tools_panel->setVisible(!m_composer_tools_panel->isVisible()); });
 
   m_toggle_right_sidebar = new QAction("Show/hide right sidebar", this);
   m_toggle_right_sidebar->setToolTip("Show/hide right panel");
@@ -177,7 +178,7 @@ void SequencerComposerView::SetupWidgetActions()
 
 std::unique_ptr<ProcedureEditor> SequencerComposerView::CreateProcedureEditor()
 {
-  auto message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
+  auto message_callback = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   return std::make_unique<ProcedureEditor>(message_callback, CreatePluginNameCallback());
 }
 

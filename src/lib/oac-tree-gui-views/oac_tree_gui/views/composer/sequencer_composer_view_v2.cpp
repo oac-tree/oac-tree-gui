@@ -22,13 +22,19 @@
 
 #include "composer_tools_panel.h"
 #include "procedure_splittable_editor_widget.h"
+#include "sequencer_composer_actions.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/style/style_helper.h>
 
+#include <sup/gui/app/app_command_context.h>
+#include <sup/gui/app/app_constants.h>
+#include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/widgets/custom_splitter.h>
 
+#include <QAction>
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -52,6 +58,8 @@ QString GetSplitterSettingKey()
 SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& command_service,
                                                  QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_command_service(command_service)
+    , m_composer_actions(new SequencerComposerActions(this))
     , m_splitter(new sup::gui::CustomSplitter(GetSplitterSettingKey()))
     , m_composer_tools_panel(new ComposerToolsPanel(command_service))
     , m_splittable_editor_widget(new ProcedureSplittableEditorWidget(command_service))
@@ -66,6 +74,7 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
   m_splitter->setSizes({200, 400});
 
   SetupConnections();
+  SetupWidgetActions();
   ReadSettings();
 }
 
@@ -76,6 +85,7 @@ SequencerComposerViewV2::~SequencerComposerViewV2()
 
 void SequencerComposerViewV2::SetModel(SequencerModel* model)
 {
+  m_composer_actions->SetModel(model);
   m_splittable_editor_widget->SetModel(model);
   m_composer_tools_panel->SetModel(model);  // will select first procedure
 }
@@ -94,12 +104,32 @@ void SequencerComposerViewV2::WriteSettings()
 
 void SequencerComposerViewV2::SetupConnections()
 {
-  connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected,
-          m_splittable_editor_widget, &ProcedureSplittableEditorWidget::SetProcedure);
+  auto on_procedure_selected = [this](ProcedureItem* procedure_item)
+  {
+    m_splittable_editor_widget->SetProcedure(procedure_item);
+    m_composer_actions->SetProcedure(procedure_item);
+  };
+
+  connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected, this,
+          on_procedure_selected);
 
   connect(m_splittable_editor_widget,
           &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged,
           m_composer_tools_panel, &ComposerToolsPanel::SetSelectedProcedure);
+}
+
+void SequencerComposerViewV2::SetupWidgetActions()
+{
+  m_toggle_left_sidebar = new QAction("Show/hide left sidebar", this);
+  m_toggle_left_sidebar->setToolTip("Show/hide left panel");
+  m_toggle_left_sidebar->setIcon(FindIcon("dock-left"));
+  connect(m_toggle_left_sidebar, &QAction::triggered, this, [this](auto)
+          { m_composer_tools_panel->setVisible(!m_composer_tools_panel->isVisible()); });
+
+  auto context = m_command_service.RegisterWidgetUniqueId(this);
+  m_command_service.AddActionToCommand(m_toggle_left_sidebar,
+                                       sup::gui::constants::kToggleLeftPanelCommandId, context);
+  m_composer_actions->RegisterActionsForContext(context, m_command_service);
 }
 
 }  // namespace oac_tree_gui
