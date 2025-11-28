@@ -82,7 +82,8 @@ void PopulateProcedureItem(const procedure_t& procedure, ProcedureItem& procedur
 
   auto registry = CreateRegistry(procedure);
 
-  (void)PopulateWorkspaceItem(procedure.GetWorkspace(), registry.get(), procedure_item.GetWorkspace());
+  (void)PopulateWorkspaceItem(procedure.GetWorkspace(), registry.get(),
+                              procedure_item.GetWorkspace());
 }
 
 }  // namespace

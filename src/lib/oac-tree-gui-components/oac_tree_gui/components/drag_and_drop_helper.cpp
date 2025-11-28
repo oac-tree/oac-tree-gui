@@ -100,7 +100,8 @@ std::string GetNewInstructionType(const QMimeData* mime_data)
 }
 
 mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
-                                       const mvvm::SessionItem& parent, std::int32_t drop_indicator_row)
+                                       const mvvm::SessionItem& parent,
+                                       std::int32_t drop_indicator_row)
 {
   if (drop_indicator_row < 0)
   {

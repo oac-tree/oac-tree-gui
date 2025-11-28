@@ -56,7 +56,6 @@ public:
   InstructionEditorViewModel(InstructionEditorViewModel&&) = delete;
   InstructionEditorViewModel& operator=(InstructionEditorViewModel&&) = delete;
 
-
   Qt::ItemFlags flags(const QModelIndex& index) const override;
 
   QMimeData* mimeData(const QModelIndexList& index_list) const override;

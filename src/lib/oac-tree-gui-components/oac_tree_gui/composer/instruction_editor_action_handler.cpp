@@ -59,10 +59,12 @@ IInstructionEditorActionHandler::position_t GetCoordinateNearby(
     oac_tree_gui::InstructionItem* reference)
 {
   const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
-  const double x = (reference != nullptr) ? (reference->GetX() + oac_tree_gui::GetInstructionDropOffset())
-                             : default_center.x();
-  const double y = (reference != nullptr) ? (reference->GetY() + oac_tree_gui::GetInstructionDropOffset())
-                             : default_center.y();
+  const double x = (reference != nullptr)
+                       ? (reference->GetX() + oac_tree_gui::GetInstructionDropOffset())
+                       : default_center.x();
+  const double y = (reference != nullptr)
+                       ? (reference->GetY() + oac_tree_gui::GetInstructionDropOffset())
+                       : default_center.y();
 
   return {x, y};
 }
@@ -227,7 +229,8 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 {
   auto instruction_item = GetSelectedInstruction();
 
-  if ((instruction_item == nullptr) || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
+  if ((instruction_item == nullptr)
+      || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
   {
     SendMessage("Please select an instruction which is intended for AnyValue storing");
     return;
@@ -478,7 +481,8 @@ void InstructionEditorActionHandler::InsertAfterCurrentSelection(
 {
   auto selected_item = GetSelectedInstruction();
   auto parent = (selected_item != nullptr) ? selected_item->GetParent() : GetInstructionContainer();
-  auto tagindex = (selected_item != nullptr) ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+  auto tagindex =
+      (selected_item != nullptr) ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
   InsertItem(std::move(items), parent, tagindex, GetCoordinateNearby(selected_item));
 }
 

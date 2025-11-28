@@ -28,8 +28,8 @@
 //! closely follows C# Rachel Lim's implementation given at
 //! https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees algorithm
 
-#include <map>
 #include <cstdint>
+#include <map>
 
 namespace oac_tree_gui::algorithm
 {

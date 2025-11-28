@@ -113,7 +113,8 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem* procedure_item)
 {
   m_procedure = procedure_item;
 
-  auto container = (procedure_item != nullptr) ? procedure_item->GetInstructionContainer() : nullptr;
+  auto container =
+      (procedure_item != nullptr) ? procedure_item->GetInstructionContainer() : nullptr;
 
   m_component_provider->SetItem(container);
   m_expand_controller->SetInstructionContainer(container);

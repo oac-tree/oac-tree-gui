@@ -251,7 +251,8 @@ JobItem* OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<
   auto result = job_item.get();
 
   auto selected_job = GetSelectedJob();
-  auto tagindex = (selected_job != nullptr) ? selected_job->GetTagIndex().Next() : mvvm::TagIndex::Append();
+  auto tagindex =
+      (selected_job != nullptr) ? selected_job->GetTagIndex().Next() : mvvm::TagIndex::Append();
   GetModel()->InsertItem(std::move(job_item), GetJobContainer(), tagindex);
   return result;
 }

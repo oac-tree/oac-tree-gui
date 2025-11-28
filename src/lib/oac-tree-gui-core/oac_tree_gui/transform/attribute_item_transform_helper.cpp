@@ -196,11 +196,13 @@ void SetJsonAttributesFromItem(const sup::gui::AnyValueItem& item, DomainT& doma
 
   if (HasAttributeDefinition(domain, domainconstants::kTypeAttribute))
   {
-    (void)domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
+    (void)domain.AddAttribute(domainconstants::kTypeAttribute,
+                              sup::gui::AnyTypeToJSONString(anyvalue));
   }
   if (HasAttributeDefinition(domain, domainconstants::kValueAttribute))
   {
-    (void)domain.AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
+    (void)domain.AddAttribute(domainconstants::kValueAttribute,
+                              sup::gui::ValuesToJSONString(anyvalue));
   }
 }
 

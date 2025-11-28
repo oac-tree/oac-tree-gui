@@ -273,7 +273,8 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
 
   try
   {
-    auto tagindex = (selected_item != nullptr) ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+    auto tagindex =
+        (selected_item != nullptr) ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
     mvvm::SessionItem* inserted{nullptr};
     for (auto& item : variable_items)

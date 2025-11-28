@@ -24,10 +24,10 @@
 //! Helper functions for drag-and-drop operations.
 
 #include <QModelIndexList>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 namespace mvvm
 {
@@ -93,7 +93,8 @@ std::string GetNewInstructionType(const QMimeData* mime_data);
  * @return TagIndex to use for move operation
  */
 mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
-                                       const mvvm::SessionItem& parent, std::int32_t drop_indicator_row);
+                                       const mvvm::SessionItem& parent,
+                                       std::int32_t drop_indicator_row);
 
 /**
  * @brief Calculate TagIndex corresponding to the drop indicator position.

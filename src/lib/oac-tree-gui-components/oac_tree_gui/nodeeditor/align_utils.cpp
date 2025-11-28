@@ -36,7 +36,7 @@ namespace
 //! `edge` is most left, or most right node coordinate at given level, depending on comparator
 template <typename T>
 std::map<std::int32_t, double> GetCountour(oac_tree_gui::algorithm::AlignNode& node, double mod_sum,
-                                  T comparator)
+                                           T comparator)
 {
   std::map<std::int32_t, double> result;
 

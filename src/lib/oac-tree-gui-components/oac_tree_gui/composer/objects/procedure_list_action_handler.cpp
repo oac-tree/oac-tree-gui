@@ -153,7 +153,8 @@ mvvm::SessionItem* ProcedureListActionHandler::InsertProcedure(
   auto procedure_item_ptr = item.get();
 
   auto selected = GetSelectedProcedure();
-  auto tag_index = (selected != nullptr) ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
+  auto tag_index =
+      (selected != nullptr) ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
   GetModel()->InsertItem(std::move(item), GetProcedureContainer(), tag_index);
   // select just inserted procedure
   emit SelectProcedureRequest(dynamic_cast<ProcedureItem*>(procedure_item_ptr));

@@ -129,7 +129,7 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
       {
         auto domain_instruction_ptr = domain_instruction.get();
         (void)node.domain_instruction.InsertInstruction(std::move(domain_instruction),
-                                                  node.domain_instruction.ChildrenCount());
+                                                        node.domain_instruction.ChildrenCount());
         (void)m_instruction_to_id.insert({domain_instruction_ptr, child_item->GetIdentifier()});
 
         stack.push({*child_item, *domain_instruction_ptr});

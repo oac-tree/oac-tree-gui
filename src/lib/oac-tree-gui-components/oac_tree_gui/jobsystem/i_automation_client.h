@@ -21,9 +21,9 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_
 #define OAC_TREE_GUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
-#include <cstdint>
 
 namespace oac_tree_gui
 {
