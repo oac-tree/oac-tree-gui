@@ -35,12 +35,12 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief Size of main tolbar icons.
+ * @brief Size of main toolbar icons.
  */
 QSize ToolBarIconSize();
 
 /**
- * @brief Size of narrow tolbar icons.
+ * @brief Size of narrow toolbar icons.
  */
 QSize NarrowToolBarIconSize();
 
