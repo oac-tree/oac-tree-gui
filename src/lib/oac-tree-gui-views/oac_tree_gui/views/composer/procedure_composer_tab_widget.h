@@ -25,6 +25,7 @@
 #include <oac_tree_gui/components/component_types.h>
 
 class QTabWidget;
+class QToolBar;
 
 namespace sup::gui
 {
@@ -56,6 +57,9 @@ public:
   void SetEditorType(ProcedureEditorType edit_type);
 
 private:
+  void UpdateToolbarButtons();
+
+  QToolBar* m_tool_bar{nullptr};
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
   NodeEditorWidget* m_node_editor{nullptr};

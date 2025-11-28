@@ -26,7 +26,10 @@
 
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
+#include <sup/gui/style/style_helper.h>
+
 #include <QTabWidget>
+#include <QToolBar>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -35,6 +38,7 @@ namespace oac_tree_gui
 ProcedureComposerTabWidget::ProcedureComposerTabWidget(
     sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_tool_bar(new QToolBar)
     , m_instruction_editor_widget(new InstructionEditorWidget(command_service))
     , m_workspace_editor_widget(
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
@@ -46,6 +50,10 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
+  m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
+  m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+  layout->addWidget(m_tool_bar);
   layout->addWidget(m_tab_widget);
 
   m_tab_widget->addTab(m_instruction_editor_widget, "Instruction Tree");
@@ -53,6 +61,9 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
   m_tab_widget->addTab(m_node_editor, "Node editor");
   m_tab_widget->addTab(m_xml_panel, "XML");
   m_tab_widget->setTabPosition(QTabWidget::South);
+
+  connect(m_tab_widget, &QTabWidget::currentChanged, this, [this](int) { UpdateToolbarButtons(); });
+  UpdateToolbarButtons();
 }
 
 ProcedureComposerTabWidget::~ProcedureComposerTabWidget() = default;
@@ -76,6 +87,12 @@ ProcedureEditorType ProcedureComposerTabWidget::GetEditorType() const
 void ProcedureComposerTabWidget::SetEditorType(ProcedureEditorType edit_type)
 {
   m_tab_widget->setCurrentIndex(static_cast<std::int32_t>(edit_type));
+}
+
+void ProcedureComposerTabWidget::UpdateToolbarButtons()
+{
+  m_tool_bar->clear();
+  m_tool_bar->addActions(m_tab_widget->currentWidget()->actions());
 }
 
 }  // namespace oac_tree_gui
