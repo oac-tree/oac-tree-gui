@@ -1,5 +1,6 @@
 Changes for 2.1.0:
 
+- Redesign procedure composer and provide possibility to split panels and compare procedures
 - Fix bug COA-1813 application crash when opening second job with different variable count
 - Implement NodeEditor showing instruction flow graph in sequencer-operation window
 - Introduce InstructionStatus enum to represent instruction execution status

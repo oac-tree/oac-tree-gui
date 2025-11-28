@@ -55,10 +55,12 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tab_widget);
 
-  m_tab_widget->addTab(m_instruction_editor_widget, "Instruction Tree");
-  m_tab_widget->addTab(m_workspace_editor_widget, "Workspace");
-  m_tab_widget->addTab(m_node_editor, "Node editor");
-  m_tab_widget->addTab(m_xml_panel, "XML");
+  AddTab(m_instruction_editor_widget, "Instruction Tree",
+         "Instruction editor with tree view of instructions");
+  AddTab(m_workspace_editor_widget, "Workspace", "Workspace editor");
+  AddTab(m_node_editor, "Node editor", "Instruction editor with node graph view of instructions");
+  AddTab(m_xml_panel, "XML", "XML representation of the procedure");
+
   m_tab_widget->setTabPosition(QTabWidget::South);
 
   connect(m_tab_widget, &QTabWidget::currentChanged, this, [this](int) { UpdateToolbarButtons(); });
@@ -97,6 +99,13 @@ void ProcedureComposerTabWidget::UpdateToolbarButtons()
 {
   m_tool_bar->clear();
   m_tool_bar->addActions(m_tab_widget->currentWidget()->actions());
+}
+
+void ProcedureComposerTabWidget::AddTab(QWidget* widget, const QString& label,
+                                        const QString& tooltip)
+{
+  m_tab_widget->addTab(widget, label);
+  m_tab_widget->setTabToolTip(m_tab_widget->indexOf(widget), tooltip);
 }
 
 }  // namespace oac_tree_gui

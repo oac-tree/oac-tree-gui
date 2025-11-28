@@ -64,6 +64,7 @@ public:
 
 private:
   void UpdateToolbarButtons();
+  void AddTab(QWidget* widget, const QString& label, const QString &tooltip);
 
   QToolBar* m_tool_bar{nullptr};
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};
