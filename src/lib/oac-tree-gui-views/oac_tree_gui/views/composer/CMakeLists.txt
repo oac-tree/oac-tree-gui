@@ -7,8 +7,6 @@ target_sources(${library_name} PRIVATE
   attribute_editor_actions.h
   composer_tools_panel.cpp
   composer_tools_panel.h
-  composer_widget_panel.cpp
-  composer_widget_panel.h
   custom_celleditor_factory.cpp
   custom_celleditor_factory.h
   instruction_attribute_editor.cpp
