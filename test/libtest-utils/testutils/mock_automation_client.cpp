@@ -40,7 +40,7 @@ std::size_t AutomationClientDecorator::GetJobCount() const
   return m_decoratee.GetJobCount();
 }
 
-std::string AutomationClientDecorator::GetProcedureName(std::size_t job_index) const
+std::string AutomationClientDecorator::GetProcedureName(std::uint32_t job_index) const
 {
   return m_decoratee.GetProcedureName(job_index);
 }

@@ -44,7 +44,7 @@ public:
 
     std::size_t GetJobCount() const override { return 42; }
 
-    std::string GetProcedureName(std::size_t job_index) const override
+    std::string GetProcedureName(std::uint32_t job_index) const override
     {
       (void)job_index;
       return {};

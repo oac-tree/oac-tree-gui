@@ -60,7 +60,7 @@ std::size_t AutomationClient::GetJobCount() const
   return m_automation_job_manager->GetNumberOfJobs();
 }
 
-std::string AutomationClient::GetProcedureName(std::size_t job_index) const
+std::string AutomationClient::GetProcedureName(std::uint32_t job_index) const
 {
   return m_automation_job_manager->GetJobInfo(job_index).GetProcedureName();
 }

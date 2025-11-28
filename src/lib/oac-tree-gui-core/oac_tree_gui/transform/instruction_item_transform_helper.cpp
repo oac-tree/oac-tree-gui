@@ -70,7 +70,7 @@ InstructionTree CreateInstructionItemTreeIntern(const sup::oac_tree::Instruction
 
   std::unique_ptr<InstructionItem> result =
       light_tree ? CreateInstructionInfoItem(info) : CreateInstructionItem(info);
-  std::map<const InstructionItem*, std::size_t> item_to_index;
+  std::map<const InstructionItem*, std::uint32_t> item_to_index;
 
   stack.push({info, *result});
   item_to_index[result.get()] = info.GetIndex();

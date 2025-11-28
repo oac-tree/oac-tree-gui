@@ -23,6 +23,7 @@
 
 #include <memory>
 #include <string>
+#include <cstdint>
 
 namespace oac_tree_gui
 {
@@ -60,7 +61,7 @@ public:
   /**
    * @brief Returns the name of the procedure for given job index.
    */
-  virtual std::string GetProcedureName(std::size_t job_index) const = 0;
+  virtual std::string GetProcedureName(std::uint32_t job_index) const = 0;
 
   /**
    * @brief Creates job handler.

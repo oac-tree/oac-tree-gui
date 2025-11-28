@@ -38,7 +38,7 @@ class MockAutomationClient : public oac_tree_gui::IAutomationClient
 public:
   MOCK_METHOD(std::string, GetServerName, (), (const, override));
   MOCK_METHOD(std::size_t, GetJobCount, (), (const, override));
-  MOCK_METHOD(std::string, GetProcedureName, (std::size_t), (const, override));
+  MOCK_METHOD(std::string, GetProcedureName, (std::uint32_t), (const, override));
   MOCK_METHOD(std::unique_ptr<oac_tree_gui::AbstractJobHandler>, CreateJobHandler,
               (oac_tree_gui::RemoteJobItem*, const oac_tree_gui::UserContext&), (override));
 };
@@ -59,7 +59,7 @@ public:
 
   std::size_t GetJobCount() const override;
 
-  std::string GetProcedureName(std::size_t job_index) const override;
+  std::string GetProcedureName(std::uint32_t job_index) const override;
 
   std::unique_ptr<oac_tree_gui::AbstractJobHandler> CreateJobHandler(
       oac_tree_gui::RemoteJobItem* job_item,

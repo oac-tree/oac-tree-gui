@@ -85,13 +85,13 @@ void AbstractDomainRunner::Reset()
   m_domain_job->Reset();
 }
 
-void AbstractDomainRunner::SetBreakpoint(std::size_t instr_idx)
+void AbstractDomainRunner::SetBreakpoint(std::uint32_t instr_idx)
 {
   ValidateJob();
   m_domain_job->SetBreakpoint(instr_idx);
 }
 
-void AbstractDomainRunner::RemoveBreakpoint(std::size_t instr_idx)
+void AbstractDomainRunner::RemoveBreakpoint(std::uint32_t instr_idx)
 {
   ValidateJob();
   m_domain_job->RemoveBreakpoint(instr_idx);

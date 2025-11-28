@@ -80,12 +80,12 @@ public:
   /**
    * @brief Sets the breakpoint on the instruction with given index.
    */
-  void SetBreakpoint(std::size_t instr_idx);
+  void SetBreakpoint(std::uint32_t instr_idx);
 
   /**
    * @brief Removes the breakpoint from the instruction with given index.
    */
-  void RemoveBreakpoint(std::size_t instr_idx);
+  void RemoveBreakpoint(std::uint32_t instr_idx);
 
   /**
    * @brief Returns sequencer JobInfo interface.

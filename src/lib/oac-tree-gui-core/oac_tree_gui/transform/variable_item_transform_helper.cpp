@@ -61,7 +61,7 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
   {
     auto variable_item = CreateVariableInfoItem(variable_info);
     auto variable_item_ptr = variable_item.get();
-    index_to_variable_item[variable_info.GetIndex()] = variable_item_ptr;
+    index_to_variable_item[static_cast<std::size_t>(variable_info.GetIndex())] = variable_item_ptr;
     (void)workspace_item->InsertItem(std::move(variable_item), mvvm::TagIndex::Append());
   }
 
