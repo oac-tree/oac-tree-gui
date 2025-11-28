@@ -28,6 +28,7 @@ class QSplitter;
 namespace sup::gui
 {
 class IAppCommandService;
+class CustomSplitter;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -62,7 +63,7 @@ private:
   void WriteSettings();
   void SetupConnections();
 
-  QSplitter* m_splitter{nullptr};
+  sup::gui::CustomSplitter* m_splitter{nullptr};
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
   ProcedureSplittableEditorWidget* m_splittable_editor_widget{nullptr};
 };
