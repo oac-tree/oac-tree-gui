@@ -120,6 +120,11 @@ void ProcedureComposerComboPanel::SetProcedureEditorType(ProcedureEditorType edi
   m_procedure_composer_widget->SetEditorType(editor_type);
 }
 
+void ProcedureComposerComboPanel::InsertInstructionFromToolBox(const QString& name)
+{
+  m_procedure_composer_widget->InsertInstructionFromToolBox(name);
+}
+
 void ProcedureComposerComboPanel::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::LeftButton)

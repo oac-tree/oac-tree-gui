@@ -203,6 +203,14 @@ void ProcedureSplittableEditorWidget::WriteSettings(
   write_func(GetProcedureEditorTabStateKey(), QVariant::fromValue(tab_indexes));
 }
 
+void ProcedureSplittableEditorWidget::InsertInstructionFromToolBox(const QString& name)
+{
+  if (auto focus_widget = m_focus_handler->GetFocusWidget(); focus_widget)
+  {
+    focus_widget->InsertInstructionFromToolBox(name);
+  }
+}
+
 std::unique_ptr<ProcedureComposerComboPanel>
 ProcedureSplittableEditorWidget::CreateProcedureEditor()
 {

@@ -21,8 +21,9 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_TAB_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_COMPOSER_TAB_WIDGET_H_
 
-#include <QWidget>
 #include <oac_tree_gui/components/component_types.h>
+
+#include <QWidget>
 
 class QTabWidget;
 class QToolBar;
@@ -55,6 +56,11 @@ public:
   ProcedureEditorType GetEditorType() const;
 
   void SetEditorType(ProcedureEditorType edit_type);
+
+  /**
+   * @brief Insert instruction from toolbox to the instruction container.
+   */
+  void InsertInstructionFromToolBox(const QString& name);
 
 private:
   void UpdateToolbarButtons();

@@ -72,8 +72,8 @@ std::vector<oac_tree_gui::InstructionEditorActions::ActionKey> GetToolBarActionK
 namespace oac_tree_gui
 {
 
-InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService &command_service,
-                                                 QWidget *parent_widget)
+InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService& command_service,
+                                                 QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_tree_view(new QTreeView)
@@ -126,7 +126,7 @@ InstructionEditorWidget::~InstructionEditorWidget()
 }
 
 void InstructionEditorWidget::SetInstructionContainer(
-    InstructionContainerItem *instruction_container)
+    InstructionContainerItem* instruction_container)
 {
   if (instruction_container == m_instruction_container)
   {
@@ -142,7 +142,7 @@ void InstructionEditorWidget::SetInstructionContainer(
 }
 
 void InstructionEditorWidget::SetSelectedInstructions(
-    const std::vector<InstructionItem *> &instructions)
+    const std::vector<InstructionItem*>& instructions)
 {
   if (isHidden())
   {
@@ -151,15 +151,20 @@ void InstructionEditorWidget::SetSelectedInstructions(
   m_component_provider->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
 }
 
-std::vector<InstructionItem *> InstructionEditorWidget::GetSelectedInstructions() const
+std::vector<InstructionItem*> InstructionEditorWidget::GetSelectedInstructions() const
 {
   return ::mvvm::utils::CastItems<InstructionItem>(m_component_provider->GetSelectedItems());
 }
 
-InstructionItem *InstructionEditorWidget::GetSelectedInstruction() const
+InstructionItem* InstructionEditorWidget::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
+}
+
+void InstructionEditorWidget::InsertInstructionFromToolBox(const QString& name)
+{
+  m_action_handler->InsertInstructionAfter(name.toStdString());
 }
 
 void InstructionEditorWidget::ReadSettings()
@@ -196,7 +201,7 @@ void InstructionEditorWidget::AdjustTreeAppearance()
 }
 
 void InstructionEditorWidget::SetInstructionContainerIntern(
-    InstructionContainerItem *instruction_container)
+    InstructionContainerItem* instruction_container)
 {
   m_component_provider->SetItem(instruction_container);
   if (instruction_container)
@@ -254,7 +259,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   };
   result.notify_request = on_notify_request;
 
-  result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
+  result.send_message = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   result.edit_anyvalue = CreateAnyValueDialogCallback(this);
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
@@ -271,7 +276,7 @@ std::unique_ptr<mvvm::ItemViewComponentProvider> InstructionEditorWidget::Create
   return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(viewmodel), m_tree_view);
 }
 
-void InstructionEditorWidget::OnContextMenuRequest(const QPoint &point)
+void InstructionEditorWidget::OnContextMenuRequest(const QPoint& point)
 {
   QMenu menu;
 

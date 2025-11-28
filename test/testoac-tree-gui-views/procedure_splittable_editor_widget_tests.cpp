@@ -21,6 +21,8 @@
 #include "oac_tree_gui/views/composer/procedure_splittable_editor_widget.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/composer/procedure_composer_combo_panel.h>
@@ -459,6 +461,19 @@ TEST_F(ProcedureSplittableEditorWidgetTest, WriteSettingsForThreePanels)
             EXPECT_EQ(tab_indexes[2], static_cast<std::int32_t>(ProcedureEditorType::kNodeEditor));
           }));
   editor.WriteSettings(m_mock_write_func.AsStdFunction());
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, InsertInstructionFromToolbox)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+  editor.CreatePanel();
+
+  auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  editor.SetProcedure(procedure);
+
+  editor.InsertInstructionFromToolBox(domainconstants::kWaitInstructionType);
+  EXPECT_EQ(procedure->GetInstructionContainer()->GetInstructionCount(), 1);
 }
 
 }  // namespace oac_tree_gui::test

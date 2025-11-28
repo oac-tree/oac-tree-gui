@@ -104,18 +104,24 @@ void SequencerComposerViewV2::WriteSettings()
 
 void SequencerComposerViewV2::SetupConnections()
 {
+  // procedure selection request from toolbox to procedure editor
   auto on_procedure_selected = [this](ProcedureItem* procedure_item)
   {
     m_splittable_editor_widget->SetProcedure(procedure_item);
     m_composer_actions->SetProcedure(procedure_item);
   };
-
   connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected, this,
           on_procedure_selected);
 
+  // propagate selection from focused procedure editor to toolbox
   connect(m_splittable_editor_widget,
           &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged,
           m_composer_tools_panel, &ComposerToolsPanel::SetSelectedProcedure);
+
+  // instruction toolbox requests form left panel
+  connect(m_composer_tools_panel, &ComposerToolsPanel::ToolBoxInstructionRequest,
+          m_splittable_editor_widget,
+          &ProcedureSplittableEditorWidget::InsertInstructionFromToolBox);
 }
 
 void SequencerComposerViewV2::SetupWidgetActions()

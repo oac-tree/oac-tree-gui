@@ -88,6 +88,11 @@ void ProcedureComposerTabWidget::SetEditorType(ProcedureEditorType edit_type)
   m_tab_widget->setCurrentIndex(static_cast<std::int32_t>(edit_type));
 }
 
+void ProcedureComposerTabWidget::InsertInstructionFromToolBox(const QString& name)
+{
+  m_instruction_editor_widget->InsertInstructionFromToolBox(name);
+}
+
 void ProcedureComposerTabWidget::UpdateToolbarButtons()
 {
   m_tool_bar->clear();

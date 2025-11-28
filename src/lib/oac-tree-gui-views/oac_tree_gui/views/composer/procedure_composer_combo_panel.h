@@ -119,6 +119,11 @@ public:
    */
   void SetProcedureEditorType(ProcedureEditorType editor_type);
 
+  /**
+   * @brief Insert instruction from toolbox to the instruction container.
+   */
+  void InsertInstructionFromToolBox(const QString& name);
+
 signals:
   void splitViewRequest();
   void closeViewRequest();

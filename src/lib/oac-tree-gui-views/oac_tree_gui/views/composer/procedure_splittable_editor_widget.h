@@ -105,6 +105,13 @@ public:
    */
   void WriteSettings(const sup::gui::write_variant_func_t& write_func);
 
+  /**
+   * @brief Insert instruction from toolbox to the instruction container.
+   *
+   * Will forward the call to underlying active editor.
+   */
+  void InsertInstructionFromToolBox(const QString& name);
+
 signals:
   void focusWidgetProcedureSelectionChanged(oac_tree_gui::ProcedureItem* item);
 

@@ -73,6 +73,13 @@ public:
 
   InstructionItem* GetSelectedInstruction() const;
 
+  /**
+   * @brief Insert instruction from toolbox to the instruction container.
+   *
+   * Where to insert will depend on the last selection.
+   */
+  void InsertInstructionFromToolBox(const QString& name);
+
 signals:
   void InstructionSelected(oac_tree_gui::InstructionItem* instruction);
 
