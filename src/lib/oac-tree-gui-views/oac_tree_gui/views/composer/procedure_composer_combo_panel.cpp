@@ -79,7 +79,7 @@ SequencerModel* ProcedureComposerComboPanel::GetModel() const
 void ProcedureComposerComboPanel::SetModel(SequencerModel* model)
 {
   m_model = model;
-  if (m_model)
+  if (m_model != nullptr)
   {
     SetupModelListener();
   }

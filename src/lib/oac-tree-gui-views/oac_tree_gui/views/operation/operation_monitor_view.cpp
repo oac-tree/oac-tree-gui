@@ -166,7 +166,7 @@ void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandC
 void OperationMonitorView::showEvent(QShowEvent* event)
 {
   Q_UNUSED(event);
-  if (!m_job_panel->GetSelectedJob())
+  if (m_job_panel->GetSelectedJob() == nullptr)
   {
     if (auto job = ::mvvm::utils::GetTopItem<JobItem>(*m_models->GetJobModel()); job)
     {
@@ -281,7 +281,7 @@ void OperationMonitorView::OnJobSelected(JobItem* item)
     m_realtime_panel->SetJobLog(handler->GetJobLog());
   }
 
-  m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_panel->SetProcedure((item != nullptr) ? item->GetExpandedProcedure() : nullptr);
 }
 
 OperationActionContext OperationMonitorView::CreateOperationContext()

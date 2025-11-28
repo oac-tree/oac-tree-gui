@@ -69,7 +69,7 @@ void XmlPanel::SetProcedure(ProcedureItem* procedure)
 
   m_procedure = procedure;
 
-  if (m_procedure && isVisible())
+  if ((m_procedure != nullptr) && isVisible())
   {
     SetProcedureIntern(m_procedure);
   }
@@ -87,7 +87,7 @@ void XmlPanel::SetupActions()
 
 void XmlPanel::SetProcedureIntern(ProcedureItem* procedure)
 {
-  if (procedure)
+  if (procedure != nullptr)
   {
     auto on_xml_update = [this](const auto& xml)
     {

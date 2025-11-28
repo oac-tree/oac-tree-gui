@@ -128,7 +128,7 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t* instruction) const
   }
 
   auto anyvalue_item = GetAnyValueItem(*this);
-  if (anyvalue_item && GetAttributeExposedFlag(*anyvalue_item))
+  if ((anyvalue_item != nullptr) && GetAttributeExposedFlag(*anyvalue_item))
   {
     SetJsonAttributesFromItem(*anyvalue_item, *instruction);
   }

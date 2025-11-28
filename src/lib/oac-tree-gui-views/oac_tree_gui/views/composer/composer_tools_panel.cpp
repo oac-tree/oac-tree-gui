@@ -87,8 +87,8 @@ void ComposerToolsPanel::SetModel(SequencerModel* model)
 {
   m_procedure_list_view->SetModel(model);
 
-  auto procedure_container = model ? model->GetProcedureContainer() : nullptr;
-  if (procedure_container)
+  auto procedure_container = (model != nullptr) ? model->GetProcedureContainer() : nullptr;
+  if (procedure_container != nullptr)
   {
     SetSelectedProcedure(procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::First()));
   }

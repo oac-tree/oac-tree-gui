@@ -50,7 +50,7 @@ void BreakpointController::SetAsActiveBreakpoint(InstructionItem* instruction)
 
 void BreakpointController::ResetCurrentActiveBreakpoint()
 {
-  if (m_active_breakpoint_instruction)
+  if (m_active_breakpoint_instruction != nullptr)
   {
     // Current simplified logic is that if the breakpoint was Hit, it means it was Set before.
     // Let's return it to Set

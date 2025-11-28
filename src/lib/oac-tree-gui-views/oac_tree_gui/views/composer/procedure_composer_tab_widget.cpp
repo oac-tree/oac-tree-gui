@@ -73,8 +73,8 @@ void ProcedureComposerTabWidget::SetProcedure(ProcedureItem* procedure_item)
 {
   (void)procedure_item;
   m_instruction_editor_widget->SetInstructionContainer(
-      procedure_item ? procedure_item->GetInstructionContainer() : nullptr);
-  m_workspace_editor_widget->SetWorkspaceItem(procedure_item ? procedure_item->GetWorkspace()
+      (procedure_item != nullptr) ? procedure_item->GetInstructionContainer() : nullptr);
+  m_workspace_editor_widget->SetWorkspaceItem((procedure_item != nullptr) ? procedure_item->GetWorkspace()
                                                              : nullptr);
   m_node_editor->SetProcedure(procedure_item);
   m_xml_panel->SetProcedure(procedure_item);

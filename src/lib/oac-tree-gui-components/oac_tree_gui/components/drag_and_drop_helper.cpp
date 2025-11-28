@@ -58,7 +58,7 @@ std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& 
   auto about_to_move_item = mvvm::utils::ItemsFromIndex(indexes).at(0);
 
   // saving identifier in mime data
-  QStringList identifiers({QString::fromStdString(about_to_move_item->GetIdentifier())});
+  const QStringList identifiers({QString::fromStdString(about_to_move_item->GetIdentifier())});
   result->setData(kInstructionMoveMimeType, mvvm::utils::GetByteArray(identifiers));
 
   return result;
@@ -66,7 +66,7 @@ std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& 
 
 std::vector<std::string> GetIdentifiersToMove(const QMimeData* mime_data)
 {
-  if (!mime_data || !mime_data->hasFormat(kInstructionMoveMimeType))
+  if ((mime_data == nullptr) || !mime_data->hasFormat(kInstructionMoveMimeType))
   {
     return {};
   }
@@ -89,7 +89,7 @@ std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name)
 
 std::string GetNewInstructionType(const QMimeData* mime_data)
 {
-  if (!mime_data || !mime_data->hasFormat(kNewInstructionMimeType))
+  if ((mime_data == nullptr) || !mime_data->hasFormat(kNewInstructionMimeType))
   {
     return {};
   }

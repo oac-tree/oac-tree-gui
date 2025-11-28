@@ -54,12 +54,12 @@ TextEditController::TextEditController(const TextControllerContext& context)
     , m_text_edit_connection(std::make_unique<QMetaObject::Connection>())
     , m_checkbox_connection(std::make_unique<QMetaObject::Connection>())
 {
-  if (!context.check_box)
+  if (context.check_box == nullptr)
   {
     throw RuntimeException("QCheckBox is not initialized");
   }
 
-  if (!context.text_edit)
+  if (context.text_edit == nullptr)
   {
     throw RuntimeException("QTextEdit is not initialized");
   }

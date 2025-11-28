@@ -126,7 +126,7 @@ void GraphicsSceneComponentProvider::DoubleClickPort(const mvvm::INodePort* port
 
 mvvm::ISessionModel* GraphicsSceneComponentProvider::GetModel() const
 {
-  return m_instruction_container ? m_instruction_container->GetModel() : nullptr;
+  return (m_instruction_container != nullptr) ? m_instruction_container->GetModel() : nullptr;
 }
 
 void GraphicsSceneComponentProvider::SetupConnections()

@@ -140,7 +140,7 @@ void UpdatePositions(const AlignNode* node, InstructionItem* item)
 
   auto model = item->GetModel();
 
-  if (!model)
+  if (model == nullptr)
   {
     throw std::runtime_error("Item must be the part of some model");
   }

@@ -65,7 +65,7 @@ std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem& item)
   auto anyvalue_item = item.GetAnyValueItem();
 
   // if AnyValueItem is absent create empty placeholder
-  if (!anyvalue_item)
+  if (anyvalue_item == nullptr)
   {
     return mvvm::CreateLabelViewItem(&item);
   }

@@ -120,7 +120,7 @@ void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem* workspace)
 
   m_workspace_item = workspace;
 
-  if (m_workspace_item && isVisible())
+  if ((m_workspace_item != nullptr) && isVisible())
   {
     SetWorkspaceItemIntern(m_workspace_item);
   }
@@ -221,7 +221,7 @@ void WorkspaceEditorWidget::SetWorkspaceItemIntern(WorkspaceItem* workspace_item
   m_editor->SetWorkspaceItem(workspace_item);
   m_component_provider->SetItem(workspace_item);
 
-  if (workspace_item)
+  if (workspace_item != nullptr)
   {
     AdjustTreeAppearance();
   }

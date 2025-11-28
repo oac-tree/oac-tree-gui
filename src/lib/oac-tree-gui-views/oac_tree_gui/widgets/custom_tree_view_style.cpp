@@ -33,7 +33,7 @@ void CustomTreeViewStyle::drawPrimitive(PrimitiveElement element, const QStyleOp
   if (element == QStyle::PE_IndicatorItemViewItemDrop && !option->rect.isNull())
   {
     QStyleOption opt(*option);
-    if (widget)
+    if (widget != nullptr)
     {
       opt.rect.setRight(widget->width());
     }

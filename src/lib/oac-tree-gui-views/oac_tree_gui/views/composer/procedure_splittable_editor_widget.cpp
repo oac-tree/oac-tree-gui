@@ -140,7 +140,7 @@ ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetWidgetAt(std::s
 void ProcedureSplittableEditorWidget::SetFocusWidget(ProcedureComposerComboPanel* widget)
 {
   m_focus_handler->SetFocusWidget(widget);
-  if (widget)
+  if (widget != nullptr)
   {
     NotifyFocusWidgetProcedureSelectionChanged(widget->GetCurrentProcedure());
   }

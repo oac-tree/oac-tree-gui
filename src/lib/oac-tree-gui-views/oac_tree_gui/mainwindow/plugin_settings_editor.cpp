@@ -119,7 +119,7 @@ void PluginSettingsEditor::SetItem(mvvm::SessionItem* item)
 
 void PluginSettingsEditor::SetPluginSettingsItem(PluginSettingsItem* item)
 {
-  if (!item)
+  if (item == nullptr)
   {
     return;
   }

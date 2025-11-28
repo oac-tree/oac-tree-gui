@@ -40,7 +40,7 @@ std::unique_ptr<procedure_t> CreateDomainProcedure(const JobItem& item)
   if (item.GetType() == mvvm::GetTypeName<LocalJobItem>()
       || item.GetType() == mvvm::GetTypeName<ImportedJobItem>())
   {
-    if (!item.GetProcedure())
+    if (item.GetProcedure() == nullptr)
     {
       throw RuntimeException("Procedure doesn't exist");
     }

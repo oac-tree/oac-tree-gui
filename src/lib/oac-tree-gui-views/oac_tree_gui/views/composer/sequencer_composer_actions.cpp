@@ -44,7 +44,7 @@ namespace
  */
 bool HasUndo(const mvvm::ISessionModel* model)
 {
-  return model && model->GetCommandStack() != nullptr;
+  return (model != nullptr) && model->GetCommandStack() != nullptr;
 }
 
 }  // namespace

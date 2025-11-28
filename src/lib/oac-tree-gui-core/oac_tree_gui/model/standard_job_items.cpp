@@ -137,7 +137,7 @@ std::vector<std::string> GetJobItemTypes()
 
 std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_timeout_msec)
 {
-  if (!procedure)
+  if (procedure == nullptr)
   {
     throw RuntimeException("Procedure is not initialized");
   }

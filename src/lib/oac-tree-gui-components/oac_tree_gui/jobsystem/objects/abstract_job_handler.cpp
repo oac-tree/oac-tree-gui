@@ -48,7 +48,7 @@ AbstractJobHandler::AbstractJobHandler(JobItem* job_item)
     , m_job_log(new JobLog(this))
     , m_job_item(job_item)
 {
-  if (!job_item)
+  if (job_item == nullptr)
   {
     throw RuntimeException("JobItem is not initialised");
   }

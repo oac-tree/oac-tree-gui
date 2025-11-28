@@ -53,7 +53,7 @@ std::vector<std::string> GetInstructionNames(const std::vector<std::string>& nam
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
 {
   auto context = FindSequencerMainWindowContext();
-  if (!context)
+  if (context == nullptr)
   {
     throw RuntimeException("SequencerMainWindowContext is not found");
   }

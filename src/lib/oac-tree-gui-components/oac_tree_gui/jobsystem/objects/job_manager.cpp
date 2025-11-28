@@ -71,7 +71,7 @@ JobManager::~JobManager() = default;
 
 void JobManager::SubmitJob(JobItem* job)
 {
-  if (!job)
+  if (job == nullptr)
   {
     throw RuntimeException("Attempt to submit undefined job");
   }

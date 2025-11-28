@@ -91,7 +91,7 @@ ProcedureListWidget::~ProcedureListWidget()
 void ProcedureListWidget::SetModel(SequencerModel* model)
 {
   m_model = model;
-  if (model)
+  if (model != nullptr)
   {
     m_component_provider->SetItem(model->GetProcedureContainer());
   }

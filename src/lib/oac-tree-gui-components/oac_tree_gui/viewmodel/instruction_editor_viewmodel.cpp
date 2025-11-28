@@ -120,13 +120,13 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
   (void)action;
   (void)column;
 
-  if (!data)
+  if (data == nullptr)
   {
     return false;
   }
 
   auto parent_item = GetSessionItemFromIndex(parent);
-  if (!parent_item)
+  if (parent_item == nullptr)
   {
     return false;
   }

@@ -183,7 +183,7 @@ inline WidgetT* WidgetFocusHandler<WidgetT>::GetFocusWidget() const
 template <typename WidgetT>
 inline WidgetT* WidgetFocusHandler<WidgetT>::GetWidgetAt(std::size_t index) const
 {
-  return m_editors.at(static_cast<std::size_t>(index));
+  return m_editors.at(index);
 }
 
 template <typename WidgetT>

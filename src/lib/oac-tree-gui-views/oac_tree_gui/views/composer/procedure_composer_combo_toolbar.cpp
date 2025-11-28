@@ -100,7 +100,7 @@ void ProcedureComposerComboToolBar::ShowAsLastEditor(bool value)
 void ProcedureComposerComboToolBar::UpdateProcedureSelectionMenu(ProcedureItem* selected_procedure)
 {
   // for the moment nothing to do rather then set proper text to button
-  if (selected_procedure)
+  if (selected_procedure != nullptr)
   {
     m_select_procedure_button->setText(
         QString::fromStdString(selected_procedure->GetDisplayName()));

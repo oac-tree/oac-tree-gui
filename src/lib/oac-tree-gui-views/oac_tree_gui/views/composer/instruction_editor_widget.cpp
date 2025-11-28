@@ -135,7 +135,7 @@ void InstructionEditorWidget::SetInstructionContainer(
 
   m_instruction_container = instruction_container;
 
-  if (m_instruction_container && isVisible())
+  if ((m_instruction_container != nullptr) && isVisible())
   {
     SetInstructionContainerIntern(m_instruction_container);
   }
@@ -204,7 +204,7 @@ void InstructionEditorWidget::SetInstructionContainerIntern(
     InstructionContainerItem* instruction_container)
 {
   m_component_provider->SetItem(instruction_container);
-  if (instruction_container)
+  if (instruction_container != nullptr)
   {
     AdjustTreeAppearance();
   }

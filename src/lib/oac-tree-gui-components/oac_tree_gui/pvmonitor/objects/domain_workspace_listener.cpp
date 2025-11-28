@@ -70,7 +70,7 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
    */
   void ValidateParameters() const
   {
-    if (!m_domain_workspace)
+    if (m_domain_workspace == nullptr)
     {
       throw RuntimeException("Not initialised workspace");
     }

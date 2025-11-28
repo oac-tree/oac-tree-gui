@@ -101,17 +101,17 @@ bool AlignNode::IsLeaf() const
 
 bool AlignNode::IsLeftMost() const
 {
-  return GetParent() ? (GetParent()->GetChildren().front() == this) : true;
+  return (GetParent() != nullptr) ? (GetParent()->GetChildren().front() == this) : true;
 }
 
 bool AlignNode::IsRightMost() const
 {
-  return GetParent() ? (GetParent()->GetChildren().back() == this) : true;
+  return (GetParent() != nullptr) ? (GetParent()->GetChildren().back() == this) : true;
 }
 
 AlignNode* AlignNode::GetPreviousSibling() const
 {
-  if (!GetParent() || IsLeftMost())
+  if ((GetParent() == nullptr) || IsLeftMost())
   {
     return nullptr;
   }
@@ -123,7 +123,7 @@ AlignNode* AlignNode::GetPreviousSibling() const
 
 AlignNode* AlignNode::GetNextSibling() const
 {
-  if (!GetParent() || IsRightMost())
+  if ((GetParent() == nullptr) || IsRightMost())
   {
     return nullptr;
   }
@@ -135,7 +135,7 @@ AlignNode* AlignNode::GetNextSibling() const
 
 AlignNode* AlignNode::GetLeftMostSibling() &
 {
-  if (!GetParent())
+  if (GetParent() == nullptr)
   {
     return nullptr;
   }
@@ -183,7 +183,7 @@ void AlignNode::SetIdentifier(const std::string& identifier)
 //! Returns index of given item in the array of its parent
 std::int32_t AlignNode::GetIndex() const
 {
-  return GetParent()
+  return (GetParent() != nullptr)
              ? static_cast<std::int32_t>(mvvm::utils::IndexOfItem(GetParent()->GetChildren(), this))
              : -1;
 }

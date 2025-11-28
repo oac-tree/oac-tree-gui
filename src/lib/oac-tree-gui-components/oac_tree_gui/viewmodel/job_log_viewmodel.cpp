@@ -45,7 +45,7 @@ namespace oac_tree_gui
 JobLogViewModel::JobLogViewModel(JobLog* job_log, QObject* parent)
     : QAbstractTableModel(parent), m_job_log(job_log)
 {
-  if (m_job_log)
+  if (m_job_log != nullptr)
   {
     m_row_count = m_job_log->GetSize();
     SetConnected();
@@ -59,17 +59,17 @@ void JobLogViewModel::SetLog(JobLog* job_log)
     return;
   }
 
-  if (m_job_log)
+  if (m_job_log != nullptr)
   {
     SetDisconnected();
   }
 
   beginResetModel();
-  m_row_count = job_log ? job_log->GetSize() : 0;
+  m_row_count = (job_log != nullptr) ? job_log->GetSize() : 0;
   m_job_log = job_log;
   endResetModel();
 
-  if (m_job_log)
+  if (m_job_log != nullptr)
   {
     SetConnected();
   }

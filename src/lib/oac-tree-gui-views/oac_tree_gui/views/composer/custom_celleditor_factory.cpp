@@ -72,7 +72,7 @@ bool IsVariableNameRelatedCell(const QModelIndex& index)
   // NOTE: in the case of PropertyViewModel, current implementation will report both cells
   // (with col=0 and col=1) as related to variable property
   auto item = mvvm::utils::ItemFromProxyIndex(index);
-  return item ? IsVariableNameRelatedProperty(*item) : false;
+  return (item != nullptr) ? IsVariableNameRelatedProperty(*item) : false;
 }
 
 }  // namespace oac_tree_gui

@@ -40,7 +40,7 @@ XmlPanelController::~XmlPanelController() = default;
 
 std::string XmlPanelController::GenerateText()
 {
-  if (m_procedure)
+  if (m_procedure != nullptr)
   {
     auto result = ExportToXMLString(*m_procedure);
     return result;

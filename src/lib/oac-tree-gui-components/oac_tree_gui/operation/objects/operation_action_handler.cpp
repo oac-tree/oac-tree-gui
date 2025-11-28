@@ -78,7 +78,7 @@ OperationActionHandler::OperationActionHandler(IJobItemManager* job_manager,
     throw RuntimeException("Send message callback is not defined");
   }
 
-  if (!m_job_manager)
+  if (m_job_manager == nullptr)
   {
     throw RuntimeException("JobManager is not defined");
   }
@@ -93,7 +93,7 @@ void OperationActionHandler::SetJobContainer(mvvm::SessionItem* job_container)
 
 bool OperationActionHandler::SubmitLocalJob(ProcedureItem* procedure_item)
 {
-  if (!procedure_item)
+  if (procedure_item == nullptr)
   {
     return false;
   }
@@ -157,7 +157,7 @@ bool OperationActionHandler::OnRemoveJobRequest()
 {
   auto job = GetSelectedJob();
 
-  if (!job)
+  if (job == nullptr)
   {
     return false;
   }
@@ -169,7 +169,7 @@ bool OperationActionHandler::OnRemoveJobRequest()
   {
     auto next_to_select = mvvm::utils::FindNextSiblingToSelect(job);
     GetModel()->RemoveItem(job);
-    if (next_to_select)
+    if (next_to_select != nullptr)
     {
       // suggest to select something else instead of just deleted item
       emit MakeJobSelectedRequest(dynamic_cast<JobItem*>(next_to_select));
@@ -183,7 +183,7 @@ bool OperationActionHandler::OnRegenerateJobRequest()
 {
   auto job = GetSelectedJob();
 
-  if (!job)
+  if (job == nullptr)
   {
     return false;
   }
@@ -243,7 +243,7 @@ bool OperationActionHandler::SubmitJob(std::unique_ptr<JobItem> job_item)
 
 JobItem* OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item)
 {
-  if (!GetModel())
+  if (GetModel() == nullptr)
   {
     throw RuntimeException("JobModel is not defined");
   }
@@ -251,7 +251,7 @@ JobItem* OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<
   auto result = job_item.get();
 
   auto selected_job = GetSelectedJob();
-  auto tagindex = selected_job ? selected_job->GetTagIndex().Next() : mvvm::TagIndex::Append();
+  auto tagindex = (selected_job != nullptr) ? selected_job->GetTagIndex().Next() : mvvm::TagIndex::Append();
   GetModel()->InsertItem(std::move(job_item), GetJobContainer(), tagindex);
   return result;
 }
@@ -269,7 +269,7 @@ void OperationActionHandler::SendMessage(const sup::gui::MessageEvent& message_e
 
 mvvm::ISessionModel* OperationActionHandler::GetModel() const
 {
-  return GetJobContainer() ? GetJobContainer()->GetModel() : nullptr;
+  return (GetJobContainer() != nullptr) ? GetJobContainer()->GetModel() : nullptr;
 }
 
 mvvm::SessionItem* OperationActionHandler::GetJobContainer() const

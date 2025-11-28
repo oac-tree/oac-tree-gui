@@ -59,9 +59,9 @@ IInstructionEditorActionHandler::position_t GetCoordinateNearby(
     oac_tree_gui::InstructionItem* reference)
 {
   const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
-  const double x = reference ? (reference->GetX() + oac_tree_gui::GetInstructionDropOffset())
+  const double x = (reference != nullptr) ? (reference->GetX() + oac_tree_gui::GetInstructionDropOffset())
                              : default_center.x();
-  const double y = reference ? (reference->GetY() + oac_tree_gui::GetInstructionDropOffset())
+  const double y = (reference != nullptr) ? (reference->GetY() + oac_tree_gui::GetInstructionDropOffset())
                              : default_center.y();
 
   return {x, y};
@@ -194,7 +194,7 @@ void InstructionEditorActionHandler::RemoveInstruction()
 
   mvvm::utils::EndMacro(*GetModel());
 
-  if (next_to_select)
+  if (next_to_select != nullptr)
   {
     // suggest to select something else instead of just deleted instruction
     SelectNotify(next_to_select);
@@ -227,7 +227,7 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 {
   auto instruction_item = GetSelectedInstruction();
 
-  if (!instruction_item || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
+  if ((instruction_item == nullptr) || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
   {
     SendMessage("Please select an instruction which is intended for AnyValue storing");
     return;
@@ -249,7 +249,7 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
     }
 
     // remove previous AnyValueItem
-    if (selected_anyvalue)
+    if (selected_anyvalue != nullptr)
     {
       GetModel()->RemoveItem(selected_anyvalue);
     }
@@ -348,7 +348,7 @@ std::vector<InstructionItem*> InstructionEditorActionHandler::GetSelectedInstruc
 
 mvvm::ISessionModel* InstructionEditorActionHandler::GetModel() const
 {
-  return GetInstructionContainer() ? GetInstructionContainer()->GetModel() : nullptr;
+  return (GetInstructionContainer() != nullptr) ? GetInstructionContainer()->GetModel() : nullptr;
 }
 
 mvvm::SessionItem* InstructionEditorActionHandler::GetInstructionContainer() const
@@ -417,7 +417,7 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
   }
 
   auto instruction_container = GetInstructionContainer();
-  if (!instruction_container)
+  if (instruction_container == nullptr)
   {
     return sup::gui::QueryResult::Failure(
         {kFailedActionTitle, kFailedActionText, "No procedure selected", ""});
@@ -451,7 +451,7 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
   }
 
   auto selected_instruction = GetSelectedInstruction();
-  if (!selected_instruction)
+  if (selected_instruction == nullptr)
   {
     return sup::gui::QueryResult::Failure(
         {kFailedActionTitle, kFailedActionText, "No instruction selected", ""});
@@ -477,8 +477,8 @@ void InstructionEditorActionHandler::InsertAfterCurrentSelection(
     std::vector<std::unique_ptr<mvvm::SessionItem>> items)
 {
   auto selected_item = GetSelectedInstruction();
-  auto parent = selected_item ? selected_item->GetParent() : GetInstructionContainer();
-  auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+  auto parent = (selected_item != nullptr) ? selected_item->GetParent() : GetInstructionContainer();
+  auto tagindex = (selected_item != nullptr) ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
   InsertItem(std::move(items), parent, tagindex, GetCoordinateNearby(selected_item));
 }
 
@@ -494,7 +494,7 @@ void InstructionEditorActionHandler::InsertItem(
     std::vector<std::unique_ptr<mvvm::SessionItem>> items, mvvm::SessionItem* parent,
     const mvvm::TagIndex& index, const position_t& position)
 {
-  if (!GetModel())
+  if (GetModel() == nullptr)
   {
     throw RuntimeException("Uninitialised model");
   }

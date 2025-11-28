@@ -109,7 +109,7 @@ IAutomationClient& RemoteConnectionService::GetAutomationClient(const std::strin
 std::unique_ptr<AbstractJobHandler> RemoteConnectionService::CreateJobHandler(
     RemoteJobItem* job_item, const UserContext& user_context)
 {
-  if (!job_item)
+  if (job_item == nullptr)
   {
     throw RuntimeException("JobItem is not initialized");
   }

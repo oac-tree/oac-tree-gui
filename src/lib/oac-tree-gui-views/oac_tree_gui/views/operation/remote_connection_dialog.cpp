@@ -72,7 +72,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connect
     , m_job_info_model(new QStandardItemModel(this))
     , m_connection_service(connection_service)
 {
-  if (!m_connection_service)
+  if (m_connection_service == nullptr)
   {
     throw RuntimeException("Uninitialized server");
   }

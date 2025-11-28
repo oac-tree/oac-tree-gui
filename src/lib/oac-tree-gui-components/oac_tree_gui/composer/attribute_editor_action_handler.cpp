@@ -42,7 +42,7 @@ bool AttributeEditorActionHandler::CanToggleExposedFlag() const
 
 bool AttributeEditorActionHandler::GetExposedFlag() const
 {
-  return GetSelectedAttributeItem() && GetAttributeExposedFlag(*GetSelectedAttributeItem());
+  return (GetSelectedAttributeItem() != nullptr) && GetAttributeExposedFlag(*GetSelectedAttributeItem());
 }
 
 void AttributeEditorActionHandler::OnToggleExposedFlag()
@@ -105,7 +105,7 @@ sup::gui::AnyValueItem* AttributeEditorActionHandler::GetSelectedAttributeItem()
 
 bool AttributeEditorActionHandler::IsAnyValue() const
 {
-  return GetSelectedAttributeItem()
+  return (GetSelectedAttributeItem() != nullptr)
          && GetSelectedAttributeItem()->GetTagIndex().GetTag() == itemconstants::kAnyValueTag;
 }
 

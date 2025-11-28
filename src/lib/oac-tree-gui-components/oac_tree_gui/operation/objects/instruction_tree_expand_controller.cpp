@@ -87,7 +87,7 @@ mvvm::SessionItem* InstructionTreeExpandController::FindVisibleInstruction(
 
 void InstructionTreeExpandController::SetTreeViewToInstructionExpandState()
 {
-  if (!m_instruction_container)
+  if (m_instruction_container == nullptr)
   {
     throw RuntimeException("Instruction container is not initialised");
   }
@@ -111,7 +111,7 @@ mvvm::ViewModel* InstructionTreeExpandController::GetViewModel() const
 {
   auto result = dynamic_cast<mvvm::ViewModel*>(m_tree_view->model());
 
-  if (!result)
+  if (result == nullptr)
   {
     throw RuntimeException("The viewmodel is not initialized");
   }

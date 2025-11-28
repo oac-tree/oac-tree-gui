@@ -65,7 +65,7 @@ void UpdateOperationStateFromInstructionStatus(InstructionStatus status,
 ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem* instruction)
     : m_instruction(instruction)
 {
-  if (!m_instruction)
+  if (m_instruction == nullptr)
   {
     throw RuntimeException("Instruction item is not set");
   }

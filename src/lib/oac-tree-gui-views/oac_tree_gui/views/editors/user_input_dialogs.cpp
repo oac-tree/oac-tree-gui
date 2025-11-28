@@ -115,7 +115,7 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs& args, QWidget
 
 UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget* parent)
 {
-  auto parent_widget = parent ? parent : mvvm::utils::FindMainWindow();
+  auto parent_widget = (parent != nullptr) ? parent : mvvm::utils::FindMainWindow();
 
   auto anyvalue_item = sup::gui::CreateAnyValueItem(args.value);
   std::unique_ptr<sup::gui::AnyValueEditorDialog> dialog;

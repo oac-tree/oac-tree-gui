@@ -38,7 +38,7 @@ std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionI
   auto is_available_property = oac_tree_gui::GetIsAvailableItem(item);
   auto channel_property = oac_tree_gui::GetChannelItem(item);
 
-  if (is_available_property && channel_property)
+  if ((is_available_property != nullptr) && (channel_property != nullptr))
   {
     auto channel_name = QString::fromStdString(channel_property->Data<std::string>());
     auto presentation = std::make_unique<oac_tree_gui::ChannelPresentationItem>(

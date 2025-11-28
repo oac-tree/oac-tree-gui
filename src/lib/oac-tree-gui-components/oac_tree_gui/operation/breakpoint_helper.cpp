@@ -58,7 +58,7 @@ void ToggleBreakpointStatus(const InstructionItem& item)
 std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem& item)
 {
   const auto* model = item.GetModel();
-  if (!model)
+  if (model == nullptr)
   {
     throw LogicErrorException("Item should belong to a model");
   }
@@ -93,7 +93,7 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
 void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item)
 {
   const auto* model = item.GetModel();
-  if (!model)
+  if (model == nullptr)
   {
     throw LogicErrorException("Item should belong to a model");
   }

@@ -74,7 +74,7 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item)
 
 void SetupNewVariable(VariableItem* item, int total_variable_count)
 {
-  if (!item)
+  if (item == nullptr)
   {
     return;
   }

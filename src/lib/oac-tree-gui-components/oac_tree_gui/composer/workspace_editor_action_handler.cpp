@@ -80,7 +80,7 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
 
 void WorkspaceEditorActionHandler::AddVariable(const std::string& variable_type_name)
 {
-  if (!GetWorkspaceItem())
+  if (GetWorkspaceItem() == nullptr)
   {
     SendMessage("No variable Workspace is selected", "Please create procedure first");
     return;
@@ -113,7 +113,7 @@ void WorkspaceEditorActionHandler::RemoveVariable()
   UpdateProcedurePreamble();
   mvvm::utils::EndMacro(*GetModel());
 
-  if (next_to_select)
+  if (next_to_select != nullptr)
   {
     // suggest to select something else instead of just deleted variable
     SelectNotify(next_to_select);
@@ -134,7 +134,7 @@ void WorkspaceEditorActionHandler::EditAnyValue()
   auto selected_item = selected_items.front();
 
   auto selected_variable =
-      GetSelectedVariable()
+      (GetSelectedVariable() != nullptr)
           ? GetSelectedVariable()
           : const_cast<VariableItem*>(mvvm::utils::FindItemUp<VariableItem>(selected_item));
 
@@ -152,7 +152,7 @@ void WorkspaceEditorActionHandler::EditAnyValue()
     }
 
     // remove previous AnyValueItem
-    if (selected_anyvalue)
+    if (selected_anyvalue != nullptr)
     {
       GetModel()->RemoveItem(selected_anyvalue);
     }
@@ -200,7 +200,7 @@ bool WorkspaceEditorActionHandler::CanPaste() const
 {
   const bool has_model = GetModel() != nullptr;
   auto mime_data = GetMimeData();
-  return has_model && mime_data && mime_data->hasFormat(kCopyVariableMimeType);
+  return has_model && (mime_data != nullptr) && mime_data->hasFormat(kCopyVariableMimeType);
 }
 
 void WorkspaceEditorActionHandler::Paste()
@@ -227,7 +227,7 @@ std::vector<VariableItem*> WorkspaceEditorActionHandler::GetSelectedVariables() 
 
 mvvm::ISessionModel* WorkspaceEditorActionHandler::GetModel() const
 {
-  return GetWorkspaceItem() ? GetWorkspaceItem()->GetModel() : nullptr;
+  return (GetWorkspaceItem() != nullptr) ? GetWorkspaceItem()->GetModel() : nullptr;
 }
 
 WorkspaceItem* WorkspaceEditorActionHandler::GetWorkspaceItem() const
@@ -262,7 +262,7 @@ void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
 void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
     std::vector<std::unique_ptr<mvvm::SessionItem>> variable_items)
 {
-  if (!GetModel())
+  if (GetModel() == nullptr)
   {
     throw RuntimeException("Model is not initialised");
   }
@@ -273,7 +273,7 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
 
   try
   {
-    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+    auto tagindex = (selected_item != nullptr) ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
     mvvm::SessionItem* inserted{nullptr};
     for (auto& item : variable_items)

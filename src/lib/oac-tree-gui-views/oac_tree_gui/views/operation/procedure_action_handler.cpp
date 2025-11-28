@@ -60,7 +60,7 @@ ProcedureActionHandler::~ProcedureActionHandler()
 
 void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem* procedure_item)
 {
-  if (!procedure_item)
+  if (procedure_item == nullptr)
   {
     sup::gui::SendWarningMessage({"Validate Procedure", "No procedure selected", "", ""});
     return;
@@ -96,7 +96,7 @@ void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem* procedure_item)
 
 void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem* procedure_item)
 {
-  if (!procedure_item)
+  if (procedure_item == nullptr)
   {
     sup::gui::SendWarningMessage({"Validate Procedure", "No procedure selected", "", ""});
     return;

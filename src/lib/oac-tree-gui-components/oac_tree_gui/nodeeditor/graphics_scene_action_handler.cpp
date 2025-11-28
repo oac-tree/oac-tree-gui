@@ -35,7 +35,7 @@ GraphicsSceneActionHandler::GraphicsSceneActionHandler(mvvm::SessionItem* contai
                                                        const send_message_t& send_message_callback)
     : m_instruction_container(container_item), m_send_message(send_message_callback)
 {
-  if (!m_instruction_container)
+  if (m_instruction_container == nullptr)
   {
     throw RuntimeException("Instruction container is not set");
   }
@@ -66,7 +66,7 @@ void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort* start_port,
 
 void GraphicsSceneActionHandler::Disconnect(mvvm::INodeConnection* connection)
 {
-  if (!connection)
+  if (connection == nullptr)
   {
     return;
   }

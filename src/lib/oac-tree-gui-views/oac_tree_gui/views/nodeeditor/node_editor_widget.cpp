@@ -102,7 +102,7 @@ void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
 
   m_procedure_item = procedure;
 
-  if (!m_procedure_item)
+  if (m_procedure_item == nullptr)
   {
     return;
   }
@@ -146,7 +146,7 @@ void NodeEditorWidget::OnAlignRequest()
 
 void NodeEditorWidget::SetupSceneComponentProvider()
 {
-  if (!m_procedure_item || !isVisible())
+  if ((m_procedure_item == nullptr) || !isVisible())
   {
     return;
   }

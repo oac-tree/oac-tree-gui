@@ -78,12 +78,12 @@ void WorkspaceItemListener::ProcessEventFromDomain(const VariableUpdatedEvent& e
 
 void WorkspaceItemListener::ValidateWorkspaces()
 {
-  if (!m_workspace_item)
+  if (m_workspace_item == nullptr)
   {
     throw RuntimeException("Not initialised workspace item");
   }
 
-  if (!m_domain_workspace)
+  if (m_domain_workspace == nullptr)
   {
     throw RuntimeException("Not initialised workspace");
   }

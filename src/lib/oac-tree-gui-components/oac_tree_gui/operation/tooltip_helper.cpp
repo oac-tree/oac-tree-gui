@@ -130,7 +130,7 @@ std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::strin
 QString GetInstructionToolTipText(const mvvm::SessionItem* item)
 {
   const auto instruction = mvvm::utils::FindItemUp<InstructionItem>(item);
-  if (!instruction)
+  if (instruction == nullptr)
   {
     return {};
   }
