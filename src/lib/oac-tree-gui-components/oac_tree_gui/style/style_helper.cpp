@@ -35,13 +35,23 @@
 namespace oac_tree_gui
 {
 
-QIcon FindIcon(const QString &icon_name, mvvm::ColorFlavor color_flavor)
+QSize ToolBarIconSize()
+{
+  return sup::gui::utils::ToolBarIconSize();
+}
+
+QSize NarrowToolBarIconSize()
+{
+  return sup::gui::utils::NarrowToolBarIconSize();
+}
+
+QIcon FindIcon(const QString& icon_name, mvvm::ColorFlavor color_flavor)
 {
   // in accordance with the oac_tree_icons.qrc file
   return sup::gui::utils::GetIcon(QString(":/oac-tree/icons/%1.svg").arg(icon_name), color_flavor);
 }
 
-QJsonObject LoadJsonFromResource(const QString &name)
+QJsonObject LoadJsonFromResource(const QString& name)
 {
   QFile file(name);
 
@@ -76,8 +86,8 @@ QJsonObject LoadDefaultJsonStyle(mvvm::ColorFlavor color_flavor)
   throw RuntimeException("Unknown icon flavor");
 }
 
-void ValidateStyleKey(const QJsonObject &json, const QString &group,
-                      const QStringList &expected_keys)
+void ValidateStyleKey(const QJsonObject& json, const QString& group,
+                      const QStringList& expected_keys)
 {
   if (!json.contains(group))
   {
@@ -86,7 +96,7 @@ void ValidateStyleKey(const QJsonObject &json, const QString &group,
 
   const QJsonObject obj = json[group].toObject();
 
-  for (const auto &key : expected_keys)
+  for (const auto& key : expected_keys)
   {
     if (!obj.contains(key))
     {

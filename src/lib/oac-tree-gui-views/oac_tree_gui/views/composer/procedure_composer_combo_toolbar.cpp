@@ -24,8 +24,6 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/style/style_helper.h>
-
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QAction>
@@ -51,7 +49,7 @@ ProcedureComposerComboToolBar::ProcedureComposerComboToolBar(
     , m_split_horizontally_button(new QToolButton(this))
     , m_close_current_view_button(new QToolButton(this))
 {
-  setIconSize(sup::gui::utils::NarrowToolBarIconSize());
+  setIconSize(NarrowToolBarIconSize());
 
   m_select_procedure_button->setText(kNoProcedureSelected);
   // m_select_procedure_action->setIcon(FindIcon("file-plus-outline"));

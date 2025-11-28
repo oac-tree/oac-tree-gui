@@ -35,6 +35,16 @@ namespace oac_tree_gui
 {
 
 /**
+ * @brief Size of main tolbar icons.
+ */
+QSize ToolBarIconSize();
+
+/**
+ * @brief Size of narrow tolbar icons.
+ */
+QSize NarrowToolBarIconSize();
+
+/**
  * @brief Finds an icon with the given name and dark/light color flavor.
  *
  * Example: FindIcon("animation", AppIconColorFlavor::kForDarkThemes)

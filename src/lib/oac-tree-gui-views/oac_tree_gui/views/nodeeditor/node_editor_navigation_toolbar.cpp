@@ -24,7 +24,6 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
@@ -72,7 +71,7 @@ NodeEditorNavigationToolBar::NodeEditorNavigationToolBar(QWidget* parent_widget)
     , m_zoom_action(new sup::gui::ActionMenu(this))
     , m_zoom_menu(CreateZoomMenu())
 {
-  setIconSize(sup::gui::utils::NarrowToolBarIconSize());
+  setIconSize(NarrowToolBarIconSize());
 
   InsertStretch();
 

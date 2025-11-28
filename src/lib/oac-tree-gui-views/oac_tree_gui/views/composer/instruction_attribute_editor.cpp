@@ -26,9 +26,9 @@
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
 #include <oac_tree_gui/composer/attribute_editor_context.h>
 #include <oac_tree_gui/viewmodel/attribute_editor_viewmodel.h>
+#include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/model/session_item.h>
@@ -63,7 +63,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(variable_names_func_t var
     , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler.get(), this))
 {
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
+  m_tool_bar->setIconSize(NarrowToolBarIconSize());
 
   auto attribute_toolbar_actions =
       m_attribute_actions->GetActions({AttributeEditorActions::ActionKey::kModifyAttribute});

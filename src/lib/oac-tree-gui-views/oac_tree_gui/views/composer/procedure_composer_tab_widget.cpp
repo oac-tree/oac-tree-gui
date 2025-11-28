@@ -24,9 +24,8 @@
 #include "workspace_editor_widget.h"
 #include "xml_panel.h"
 
+#include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
-
-#include <sup/gui/style/style_helper.h>
 
 #include <QTabWidget>
 #include <QToolBar>
@@ -50,7 +49,7 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
+  m_tool_bar->setIconSize(NarrowToolBarIconSize());
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
   layout->addWidget(m_tool_bar);

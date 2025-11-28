@@ -28,7 +28,6 @@
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
-#include <sup/gui/style/style_helper.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -42,8 +41,8 @@
 namespace oac_tree_gui
 {
 
-ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService &command_service,
-                                         QWidget *parent_widget)
+ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_service,
+                                         QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_list_view(new QListView)
@@ -89,7 +88,7 @@ ProcedureListWidget::~ProcedureListWidget()
   m_command_service.UnregisterWidgetUniqueId(this);
 }
 
-void ProcedureListWidget::SetModel(SequencerModel *model)
+void ProcedureListWidget::SetModel(SequencerModel* model)
 {
   m_model = model;
   if (model)
@@ -98,34 +97,34 @@ void ProcedureListWidget::SetModel(SequencerModel *model)
   }
 }
 
-ProcedureItem *ProcedureListWidget::GetSelectedProcedure()
+ProcedureItem* ProcedureListWidget::GetSelectedProcedure()
 {
   auto selected = GetSelectedProcedures();
   return selected.empty() ? nullptr : selected.front();
 }
 
-std::vector<ProcedureItem *> ProcedureListWidget::GetSelectedProcedures() const
+std::vector<ProcedureItem*> ProcedureListWidget::GetSelectedProcedures() const
 {
   return m_component_provider->GetSelectedItems<ProcedureItem>();
 }
 
-void ProcedureListWidget::SetSelectedProcedure(ProcedureItem *procedure)
+void ProcedureListWidget::SetSelectedProcedure(ProcedureItem* procedure)
 {
   m_component_provider->SetSelectedItem(procedure);
 }
 
-QListView *ProcedureListWidget::GetListView()
+QListView* ProcedureListWidget::GetListView()
 {
   return m_list_view;
 }
 
-mvvm::ViewModel *ProcedureListWidget::GetViewModel()
+mvvm::ViewModel* ProcedureListWidget::GetViewModel()
 {
   return m_component_provider->GetViewModel();
 }
 
-QList<QAction *> ProcedureListWidget::GetActions(
-    const std::vector<ProcedureListActions::ActionKey> &action_keys)
+QList<QAction*> ProcedureListWidget::GetActions(
+    const std::vector<ProcedureListActions::ActionKey>& action_keys)
 {
   return m_actions->GetActions(action_keys);
 }
@@ -141,7 +140,7 @@ ProcedureListContext ProcedureListWidget::CreateContext()
   return result;
 }
 
-void ProcedureListWidget::OnContextMenuRequest(const QPoint &point)
+void ProcedureListWidget::OnContextMenuRequest(const QPoint& point)
 {
   QMenu menu;
   m_actions->SetupMenu(menu, m_action_handler);

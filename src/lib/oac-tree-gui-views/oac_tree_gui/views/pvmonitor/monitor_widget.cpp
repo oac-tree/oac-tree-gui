@@ -26,9 +26,9 @@
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/pvmonitor/workspace_synchronizer.h>
+#include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/workspace_editor_widget.h>
 
-#include <sup/gui/style/style_helper.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
 
@@ -41,7 +41,7 @@
 namespace oac_tree_gui
 {
 
-MonitorWidget::MonitorWidget(sup::gui::IAppCommandService &command_service, QWidget *parent_widget)
+MonitorWidget::MonitorWidget(sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
@@ -59,7 +59,7 @@ MonitorWidget::MonitorWidget(sup::gui::IAppCommandService &command_service, QWid
 
   m_tool_bar->addActions(GetControlActions());
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_tool_bar->setIconSize(sup::gui::utils::ToolBarIconSize());
+  m_tool_bar->setIconSize(ToolBarIconSize());
 
   m_workspace_tree->setWindowTitle("Workspace Tree");
   m_workspace_table->setWindowTitle("Workspace Table");
@@ -70,14 +70,14 @@ MonitorWidget::MonitorWidget(sup::gui::IAppCommandService &command_service, QWid
   SetupConnections();  // should be after tree view got its model
 }
 
-void MonitorWidget::SetModel(MonitorModel *model)
+void MonitorWidget::SetModel(MonitorModel* model)
 {
   SetWorkspaceItem(model->GetWorkspaceItem());
 }
 
 MonitorWidget::~MonitorWidget() = default;
 
-void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
+void MonitorWidget::SetWorkspaceItem(WorkspaceItem* item)
 {
   m_workspace_item = item;
   m_workspace_tree->SetWorkspaceItem(item);
@@ -108,7 +108,7 @@ void MonitorWidget::OnStartMonitoringRequest()
 
     SetIsRunning(true);
   }
-  catch (std::exception &ex)
+  catch (std::exception& ex)
   {
     sup::gui::SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what(), ""});
     OnStopMonitoringRequest();
@@ -123,12 +123,12 @@ void MonitorWidget::OnStopMonitoringRequest()
   m_workspace.reset();
 }
 
-QList<QAction *> MonitorWidget::GetEditorActions()
+QList<QAction*> MonitorWidget::GetEditorActions()
 {
   return m_workspace_tree->actions();
 }
 
-QList<QAction *> MonitorWidget::GetControlActions()
+QList<QAction*> MonitorWidget::GetControlActions()
 {
   return m_monitor_actions->GetActions({MonitorWidgetActions::ActionKey::kStartWorkspace,
                                         MonitorWidgetActions::ActionKey::kStopWorkspace});
