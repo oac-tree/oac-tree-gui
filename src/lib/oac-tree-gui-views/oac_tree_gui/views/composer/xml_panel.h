@@ -54,12 +54,10 @@ public:
 
   void SetProcedure(ProcedureItem* procedure);
 
-signals:
-  void ExportToFileRequest();
-
 private:
   void SetupActions();
   void SetProcedureIntern(ProcedureItem* procedure);
+  void OnExportToFileRequest();
 
   QAction* m_export_action{nullptr};
   sup::gui::CodeView* m_xml_view{nullptr};

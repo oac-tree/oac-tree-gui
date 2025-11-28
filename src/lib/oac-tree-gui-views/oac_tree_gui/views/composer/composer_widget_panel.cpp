@@ -154,9 +154,6 @@ void ComposerWidgetPanel::SetupConnections()
   };
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,
           on_tree_instruction_selected);
-
-  connect(m_xml_panel, &XmlPanel::ExportToFileRequest, this,
-          &ComposerWidgetPanel::ExportToFileRequest);
 }
 
 }  // namespace oac_tree_gui
