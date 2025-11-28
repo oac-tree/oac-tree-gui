@@ -74,7 +74,7 @@ UniversalInstructionItem::UniversalInstructionItem()
 UniversalInstructionItem::UniversalInstructionItem(const std::string& item_type)
     : InstructionItem(item_type)
 {
-  SetDomainType(item_type);
+  SetDomainTypeImpl(item_type);
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
@@ -84,9 +84,7 @@ std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
 
 void UniversalInstructionItem::SetDomainType(const std::string& domain_type)
 {
-  // temporary domain instruction is used to create default properties
-  auto domain_instruction = ::oac_tree_gui::CreateDomainInstruction(domain_type);
-  SetupFromDomain(domain_instruction.get());
+  SetDomainTypeImpl(domain_type);
 }
 
 void UniversalInstructionItem::InitFromDomainImpl(const instruction_t* instruction)
@@ -134,6 +132,13 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t* instruction) const
   {
     SetJsonAttributesFromItem(*anyvalue_item, *instruction);
   }
+}
+
+void UniversalInstructionItem::SetDomainTypeImpl(const std::string& domain_type)
+{
+  // temporary domain instruction is used to create default properties
+  auto domain_instruction = ::oac_tree_gui::CreateDomainInstruction(domain_type);
+  SetupFromDomain(domain_instruction.get());
 }
 
 std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAttributeItems() const

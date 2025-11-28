@@ -69,6 +69,7 @@ public:
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
+  void SetDomainTypeImpl(const std::string& domain_type);
 
   struct Attribute
   {
