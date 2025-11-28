@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencer_composer_view_v2.h"
+#include "sequencer_composer_view.h"
 
 #include "composer_tools_panel.h"
 #include "procedure_splittable_editor_widget.h"
@@ -46,7 +46,7 @@ namespace oac_tree_gui
 namespace
 {
 
-constexpr auto kGroupName("SequencerComposerViewV2");
+constexpr auto kGroupName("SequencerComposerView");
 
 QString GetSplitterSettingKey()
 {
@@ -55,8 +55,8 @@ QString GetSplitterSettingKey()
 
 }  // namespace
 
-SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& command_service,
-                                                 QWidget* parent_widget)
+SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService& command_service,
+                                             QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_composer_actions(new SequencerComposerActions(this))
@@ -78,31 +78,31 @@ SequencerComposerViewV2::SequencerComposerViewV2(sup::gui::IAppCommandService& c
   ReadSettings();
 }
 
-SequencerComposerViewV2::~SequencerComposerViewV2()
+SequencerComposerView::~SequencerComposerView()
 {
   WriteSettings();
 }
 
-void SequencerComposerViewV2::SetModel(SequencerModel* model)
+void SequencerComposerView::SetModel(SequencerModel* model)
 {
   m_composer_actions->SetModel(model);
   m_splittable_editor_widget->SetModel(model);
   m_composer_tools_panel->SetModel(model);  // will select first procedure
 }
 
-void SequencerComposerViewV2::ReadSettings()
+void SequencerComposerView::ReadSettings()
 {
   m_splittable_editor_widget->ReadSettings(sup::gui::GetSettingsReadFunc());
   m_splitter->ReadSettings();
 }
 
-void SequencerComposerViewV2::WriteSettings()
+void SequencerComposerView::WriteSettings()
 {
   m_splittable_editor_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
   m_splitter->WriteSettings();
 }
 
-void SequencerComposerViewV2::SetupConnections()
+void SequencerComposerView::SetupConnections()
 {
   // procedure selection request from toolbox to procedure editor
   auto on_procedure_selected = [this](ProcedureItem* procedure_item)
@@ -124,7 +124,7 @@ void SequencerComposerViewV2::SetupConnections()
           &ProcedureSplittableEditorWidget::InsertInstructionFromToolBox);
 }
 
-void SequencerComposerViewV2::SetupWidgetActions()
+void SequencerComposerView::SetupWidgetActions()
 {
   m_toggle_left_sidebar = new QAction("Show/hide left sidebar", this);
   m_toggle_left_sidebar->setToolTip("Show/hide left panel");

@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_V2_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_V2_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
 
 #include <QWidget>
 
@@ -42,21 +42,21 @@ class ProcedureSplittableEditorWidget;
 class SequencerComposerActions;
 
 /**
- * @brief The SequencerComposerViewV2 class is a main widget for procedure editing.
+ * @brief The SequencerComposerView class is a main widget for procedure editing.
  *
  * It is a second main view of sequencer main window. Contains 3 vertical panels:
  * - a narrow panel on the left with procedure selector and instruction toolbox
  * - a splittable area in the center with procedure editors
  * - optional extra sidebar on the right
  */
-class SequencerComposerViewV2 : public QWidget
+class SequencerComposerView : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit SequencerComposerViewV2(sup::gui::IAppCommandService& command_service,
+  explicit SequencerComposerView(sup::gui::IAppCommandService& command_service,
                                    QWidget* parent_widget = nullptr);
-  ~SequencerComposerViewV2() override;
+  ~SequencerComposerView() override;
 
   void SetModel(SequencerModel* model);
 
@@ -77,4 +77,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_V2_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_

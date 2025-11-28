@@ -39,11 +39,10 @@ namespace oac_tree_gui
 class ApplicationModels;
 class OperationMonitorView;
 class SequencerComposerView;
-class SequencerComposerViewV2;
 class SequencerExplorerView;
 class SequencerMainWindowActions;
-class SequencerSettingsModel;
 class SequencerMainWindowContext;
+class SequencerSettingsModel;
 
 /**
  * @brief The SequencerMainWindow class is the main window of sequencer-gui application.
@@ -107,7 +106,7 @@ private:
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
 
   SequencerExplorerView* m_explorer_view{nullptr};
-  SequencerComposerViewV2* m_composer_view_v2{nullptr};
+  SequencerComposerView* m_composer_view{nullptr};
   OperationMonitorView* m_operation_view{nullptr};
 };
 
