@@ -72,7 +72,7 @@ UniversalVariableItem::UniversalVariableItem()
 UniversalVariableItem::UniversalVariableItem(const std::string& item_type)
     : VariableItem(item_type.empty() ? mvvm::GetTypeName<UniversalVariableItem>() : item_type)
 {
-  SetDomainType(item_type);
+  SetDomainTypeImpl(item_type);
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone() const
@@ -82,9 +82,7 @@ std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone() const
 
 void UniversalVariableItem::SetDomainType(const std::string& domain_type)
 {
-  // temporary domain variable is used to create default properties
-  auto domain_variable = ::oac_tree_gui::CreateDomainVariable(domain_type);
-  SetupFromDomain(domain_variable.get());
+  SetDomainTypeImpl(domain_type);
 }
 
 std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttributeItems() const
@@ -139,6 +137,13 @@ void UniversalVariableItem::SetupDomainImpl(variable_t* variable) const
   {
     SetJsonAttributesFromItem(*anyvalue_item, *variable);
   }
+}
+
+void UniversalVariableItem::SetDomainTypeImpl(const std::string& domain_type)
+{
+  // temporary domain variable is used to create default properties
+  auto domain_variable = ::oac_tree_gui::CreateDomainVariable(domain_type);
+  SetupFromDomain(domain_variable.get());
 }
 
 void UniversalVariableItem::SetupFromDomain(const variable_t* variable)

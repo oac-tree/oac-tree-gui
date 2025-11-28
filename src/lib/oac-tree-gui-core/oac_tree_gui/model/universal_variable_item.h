@@ -69,6 +69,7 @@ private:
 
   void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry) override;
   void SetupDomainImpl(variable_t* variable) const override;
+  void SetDomainTypeImpl(const std::string& domain_type);
 
   /**
    * @brief Provides initial setup of all attributes from the domain variable.
