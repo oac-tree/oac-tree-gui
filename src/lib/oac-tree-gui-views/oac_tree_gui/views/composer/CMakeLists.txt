@@ -37,8 +37,6 @@ target_sources(${library_name} PRIVATE
   procedure_list_widget.h
   sequencer_composer_actions.cpp
   sequencer_composer_actions.h
-  sequencer_composer_view.cpp
-  sequencer_composer_view.h
   sequencer_composer_view_v2.cpp
   sequencer_composer_view_v2.h
   workspace_editor.cpp

@@ -107,7 +107,6 @@ private:
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
 
   SequencerExplorerView* m_explorer_view{nullptr};
-  SequencerComposerView* m_composer_view{nullptr};
   SequencerComposerViewV2* m_composer_view_v2{nullptr};
   OperationMonitorView* m_operation_view{nullptr};
 };
