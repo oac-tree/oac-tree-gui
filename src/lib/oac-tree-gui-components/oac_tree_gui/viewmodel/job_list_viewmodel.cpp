@@ -28,9 +28,9 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/providers/abstract_row_strategy.h>
 #include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/providers/viewitem.h>
 #include <mvvm/providers/viewitem_factory.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
-#include <mvvm/providers/viewitem.h>
 
 namespace oac_tree_gui
 {
@@ -47,7 +47,7 @@ public:
   }
 
 private:
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem* item) override
   {
     std::vector<std::unique_ptr<mvvm::ViewItem>> result;
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
@@ -62,7 +62,7 @@ public:
   TopJobStrategy() : mvvm::FixedItemTypeStrategy(GetJobItemTypes()) {}
 };
 
-JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent_object)
+JobListViewModel::JobListViewModel(mvvm::ISessionModel* model, QObject* parent_object)
     : ViewModel(parent_object)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));

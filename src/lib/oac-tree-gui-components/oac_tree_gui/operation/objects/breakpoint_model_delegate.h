@@ -35,10 +35,10 @@ class BreakpointModelDelegate : public QStyledItemDelegate
   Q_OBJECT
 
 public:
-  explicit BreakpointModelDelegate(QObject *parent = nullptr);
+  explicit BreakpointModelDelegate(QObject* parent = nullptr);
 
-  void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &index) const override;
+  void paint(QPainter* painter, const QStyleOptionViewItem& option,
+             const QModelIndex& index) const override;
 };
 
 }  // namespace oac_tree_gui

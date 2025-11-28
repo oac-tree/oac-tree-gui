@@ -68,9 +68,9 @@ const QString kWorkdirSettingName = kGroupName + "/" + "workdir";
 /**
  * @brief Creates factory function to create clients to talk with remote server.
  */
-std::function<std::unique_ptr<IAutomationClient>(const std::string &)> GetClientFactoryFunc()
+std::function<std::unique_ptr<IAutomationClient>(const std::string&)> GetClientFactoryFunc()
 {
-  return [](const std::string &server_name)
+  return [](const std::string& server_name)
   { return std::make_unique<AutomationClient>(server_name); };
 }
 
@@ -84,8 +84,8 @@ std::unique_ptr<RemoteConnectionService> CreateRemoteConnectionService()
 
 }  // namespace
 
-OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService &command_service,
-                                           OperationPresentationMode mode, QWidget *parent_widget)
+OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService& command_service,
+                                           OperationPresentationMode mode, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_presentation_mode(mode)
@@ -126,14 +126,14 @@ OperationMonitorView::~OperationMonitorView()
   m_command_service.UnregisterWidgetUniqueId(this);
 }
 
-void OperationMonitorView::SetModels(ApplicationModels *models)
+void OperationMonitorView::SetModels(ApplicationModels* models)
 {
   m_models = models;
   m_job_panel->SetModels(models);
   m_action_handler->SetJobContainer(models->GetJobModel()->GetRootItem());
 }
 
-bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
+bool OperationMonitorView::OnImportJobRequest(const QString& file_name)
 {
   auto path = file_name.isEmpty() ? GetOpenSequencerProcedureName(kWorkdirSettingName) : file_name;
 
@@ -155,7 +155,7 @@ void OperationMonitorView::StopAllJobs()
   m_job_manager->StopAllJobs();
 }
 
-void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandContext &context)
+void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandContext& context)
 {
   m_command_service.AddActionToCommand(m_toggle_left_sidebar,
                                        sup::gui::constants::kToggleLeftPanelCommandId, context);
@@ -163,7 +163,7 @@ void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandC
                                        sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
-void OperationMonitorView::showEvent(QShowEvent *event)
+void OperationMonitorView::showEvent(QShowEvent* event)
 {
   Q_UNUSED(event);
   if (!m_job_panel->GetSelectedJob())
@@ -175,7 +175,7 @@ void OperationMonitorView::showEvent(QShowEvent *event)
   }
 }
 
-void OperationMonitorView::closeEvent(QCloseEvent *event)
+void OperationMonitorView::closeEvent(QCloseEvent* event)
 {
   Q_UNUSED(event);
   WriteSettings();
@@ -271,7 +271,7 @@ void OperationMonitorView::SetupWidgetActions()
 }
 
 //! Setup widgets to show currently selected job.
-void OperationMonitorView::OnJobSelected(JobItem *item)
+void OperationMonitorView::OnJobSelected(JobItem* item)
 {
   m_job_manager->SetActiveJob(item);
   m_realtime_panel->SetCurrentJob(item);
@@ -288,13 +288,13 @@ OperationActionContext OperationMonitorView::CreateOperationContext()
 {
   OperationActionContext result;
   result.selected_job = [this] { return m_job_panel->GetSelectedJob(); };
-  result.send_message = [](const auto &event) { sup::gui::SendWarningMessage(event); };
+  result.send_message = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   result.get_remote_connection_info = [this]()
   { return GetDialogRemoteConnectionInfo(*m_connection_service, this); };
   return result;
 }
 
-QWidget *OperationMonitorView::CreateLeftPanel()
+QWidget* OperationMonitorView::CreateLeftPanel()
 {
   auto result = new sup::gui::ItemStackWidget;
   auto actions = m_presentation_mode == OperationPresentationMode::kIdeMode
@@ -306,7 +306,7 @@ QWidget *OperationMonitorView::CreateLeftPanel()
 
 //! Create central panel with single OperationRealTimePanel.
 
-QWidget *OperationMonitorView::CreateCentralPanel()
+QWidget* OperationMonitorView::CreateCentralPanel()
 {
   auto result = new sup::gui::ItemStackWidget;
   result->AddWidget(m_realtime_panel, m_realtime_panel->actions());

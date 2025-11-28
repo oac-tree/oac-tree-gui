@@ -27,7 +27,7 @@
 namespace oac_tree_gui
 {
 
-XmlPanelController::XmlPanelController(ProcedureItem *procedure, send_text_func_t send_xml_func,
+XmlPanelController::XmlPanelController(ProcedureItem* procedure, send_text_func_t send_xml_func,
                                        send_message_func_t send_message_func)
     : sup::gui::AbstractTextContentController(procedure, std::move(send_xml_func),
                                               std::move(send_message_func))
@@ -49,7 +49,7 @@ std::string XmlPanelController::GenerateText()
   return {};
 }
 
-void XmlPanelController::OnDataChangedEvent(const mvvm::DataChangedEvent &event)
+void XmlPanelController::OnDataChangedEvent(const mvvm::DataChangedEvent& event)
 {
   auto [item, role] = event;
   auto tag = item->GetTagIndex().GetTag();

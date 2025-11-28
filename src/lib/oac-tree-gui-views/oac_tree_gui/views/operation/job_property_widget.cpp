@@ -30,7 +30,7 @@
 namespace oac_tree_gui
 {
 
-JobPropertyWidget::JobPropertyWidget(QWidget *parent_widget)
+JobPropertyWidget::JobPropertyWidget(QWidget* parent_widget)
     : QWidget(parent_widget), m_property_tree_view(new mvvm::PropertyTreeView)
 {
   setWindowTitle("JOB PROPERTIES");
@@ -42,7 +42,7 @@ JobPropertyWidget::JobPropertyWidget(QWidget *parent_widget)
   layout->addWidget(m_property_tree_view);
 }
 
-void JobPropertyWidget::SetJob(JobItem *item)
+void JobPropertyWidget::SetJob(JobItem* item)
 {
   m_property_tree_view->SetItem(item);
 }

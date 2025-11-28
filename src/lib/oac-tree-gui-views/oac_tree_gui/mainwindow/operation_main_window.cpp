@@ -31,9 +31,9 @@
 #include <sup/gui/app/app_constants.h>
 
 #include <QCloseEvent>
+#include <QCoreApplication>
 #include <QMenuBar>
 #include <QSettings>
-#include <QCoreApplication>
 
 namespace
 {

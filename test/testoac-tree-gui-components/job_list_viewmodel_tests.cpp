@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/job_list_viewmodel.h"
+
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -28,8 +30,6 @@
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
-
-#include "oac_tree_gui/viewmodel/job_list_viewmodel.h"
 
 namespace oac_tree_gui::test
 {

@@ -39,10 +39,10 @@ namespace
 /**
  * @brief Returns the list of shared libraries found in the list of given folders.
  */
-std::vector<std::string> FindSharedLibrariesInDirList(const std::vector<std::string> &dir_list)
+std::vector<std::string> FindSharedLibrariesInDirList(const std::vector<std::string>& dir_list)
 {
   std::vector<std::string> result;
-  for (const auto &dir : dir_list)
+  for (const auto& dir : dir_list)
   {
     const auto file_names = FindSharedLibraries(dir);
     (void)result.insert(result.end(), file_names.begin(), file_names.end());
@@ -56,10 +56,10 @@ std::vector<std::string> FindSharedLibrariesInDirList(const std::vector<std::str
  * If plugin name contains a path already, will return as it is.
  */
 std::vector<std::string> GetSharedLibrariesFromPluginNames(
-    const std::vector<std::string> &plugin_names)
+    const std::vector<std::string>& plugin_names)
 {
   std::vector<std::string> result;
-  for (const auto &name : plugin_names)
+  for (const auto& name : plugin_names)
   {
     if (std::filesystem::path(name).has_parent_path())
     {
@@ -80,14 +80,14 @@ PluginSettingsItem::PluginSettingsItem() : CompoundItem(mvvm::GetTypeName<Plugin
   (void)SetDisplayName("Plugin Settings");
 
   {  // property to hold plugin directory list
-    auto &property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
+    auto& property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
     const auto dir_list = GetDefaultPluginDirList();
     property.SetText(dir_list);
     property.SetEditorEnabled(!dir_list.empty());
   }
 
   {  // property to hold plugin name list
-    auto &property = AddProperty<TextEditItem>(constants::kPluginListProperty);
+    auto& property = AddProperty<TextEditItem>(constants::kPluginListProperty);
     const auto dir_list = GetDefaultPluginList();
     property.SetText(dir_list);
     property.SetEditorEnabled(!dir_list.empty());
@@ -114,7 +114,7 @@ std::vector<std::string> PluginSettingsItem::GetPluginDirList() const
   return GetItem<TextEditItem>(constants::kPluginDirListProperty)->GetText();
 }
 
-void PluginSettingsItem::SetPluginDirList(const std::vector<std::string> &dir_list)
+void PluginSettingsItem::SetPluginDirList(const std::vector<std::string>& dir_list)
 {
   GetItem<TextEditItem>(constants::kPluginDirListProperty)->SetText(dir_list);
 }
@@ -134,12 +134,12 @@ std::vector<std::string> PluginSettingsItem::GetPluginList() const
   return GetItem<TextEditItem>(constants::kPluginListProperty)->GetText();
 }
 
-void PluginSettingsItem::SetPluginList(const std::vector<std::string> &dir_list)
+void PluginSettingsItem::SetPluginList(const std::vector<std::string>& dir_list)
 {
   GetItem<TextEditItem>(constants::kPluginListProperty)->SetText(dir_list);
 }
 
-std::vector<std::string> GetPluginFileNames(const PluginSettingsItem &item)
+std::vector<std::string> GetPluginFileNames(const PluginSettingsItem& item)
 {
   std::vector<std::string> result;
   if (item.UsePluginDirList())

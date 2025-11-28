@@ -39,11 +39,11 @@ namespace oac_tree_gui
 
 namespace
 {
-const QString &kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
+const QString& kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
 }
 
-ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService &command_service,
-                                       QWidget *parent_widget)
+ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService& command_service,
+                                       QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_procedure_list_view(new ProcedureListWidget(command_service))
@@ -83,7 +83,7 @@ ComposerToolsPanel::~ComposerToolsPanel()
   WriteSettings();
 }
 
-void ComposerToolsPanel::SetModel(SequencerModel *model)
+void ComposerToolsPanel::SetModel(SequencerModel* model)
 {
   m_procedure_list_view->SetModel(model);
 
@@ -94,12 +94,12 @@ void ComposerToolsPanel::SetModel(SequencerModel *model)
   }
 }
 
-ProcedureItem *ComposerToolsPanel::GetSelectedProcedure()
+ProcedureItem* ComposerToolsPanel::GetSelectedProcedure()
 {
   return m_procedure_list_view->GetSelectedProcedure();
 }
 
-void ComposerToolsPanel::SetSelectedProcedure(ProcedureItem *procedure)
+void ComposerToolsPanel::SetSelectedProcedure(ProcedureItem* procedure)
 {
   m_procedure_list_view->SetSelectedProcedure(procedure);
 }

@@ -25,14 +25,14 @@
 namespace oac_tree_gui
 {
 
-PvMonitorProject::PvMonitorProject(const mvvm::ProjectContext &context) : AppProject(context)
+PvMonitorProject::PvMonitorProject(const mvvm::ProjectContext& context) : AppProject(context)
 {
   RegisterModel<MonitorModel>();
 }
 
 PvMonitorProject::~PvMonitorProject() = default;
 
-MonitorModel *PvMonitorProject::GetMonitorModel()
+MonitorModel* PvMonitorProject::GetMonitorModel()
 {
   return GetModelCount() > 0 ? GetModel<MonitorModel>() : nullptr;
 }

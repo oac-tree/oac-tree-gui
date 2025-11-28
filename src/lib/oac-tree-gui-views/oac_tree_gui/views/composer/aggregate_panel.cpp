@@ -30,7 +30,7 @@
 namespace oac_tree_gui
 {
 
-AggregatePanel::AggregatePanel(QWidget *parent_widget)
+AggregatePanel::AggregatePanel(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_toolkit_viewmodel(new ToolKitViewModel(this))
     , m_tree_view(new InsructionToolKitTreeView)

@@ -39,12 +39,12 @@ DomainJobService::DomainJobService(DomainEventDispatcherContext dispatcher_conte
 {
   // connecting event queue with event dispatcher using queued connection
   (void)QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
-                   &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
+                         &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
 }
 
 DomainJobService::~DomainJobService() = default;
 
-sup::oac_tree::IJobInfoIO *DomainJobService::GetJobInfoIO()
+sup::oac_tree::IJobInfoIO* DomainJobService::GetJobInfoIO()
 {
   return m_job_observer.get();
 }
@@ -74,14 +74,14 @@ std::size_t DomainJobService::GetEventCount() const
   return m_event_queue->GetEventCount();
 }
 
-void DomainJobService::SetInstructionActiveFilter(const active_filter_t &filter)
+void DomainJobService::SetInstructionActiveFilter(const active_filter_t& filter)
 {
   m_job_observer->SetInstructionActiveFilter(filter);
 }
 
-std::function<void(const domain_event_t &)> DomainJobService::CreatePostEventCallback() const
+std::function<void(const domain_event_t&)> DomainJobService::CreatePostEventCallback() const
 {
-  return [this](const domain_event_t &event) { m_event_queue->PushEvent(event); };
+  return [this](const domain_event_t& event) { m_event_queue->PushEvent(event); };
 }
 
 std::function<domain_event_t()> DomainJobService::CreateGetEventCallback() const

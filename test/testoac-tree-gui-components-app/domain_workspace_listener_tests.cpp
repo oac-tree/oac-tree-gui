@@ -42,7 +42,7 @@ namespace oac_tree_gui::test
 class DomainWorkspaceListenerTest : public ::testing::Test
 {
 public:
-  using mock_client_t = testing::MockFunction<void(const VariableUpdatedEvent &)>;
+  using mock_client_t = testing::MockFunction<void(const VariableUpdatedEvent&)>;
 
   sup::oac_tree::Workspace m_workspace;
 };

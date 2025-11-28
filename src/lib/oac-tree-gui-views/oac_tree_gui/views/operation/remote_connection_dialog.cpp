@@ -53,7 +53,7 @@ const QString kWindowSizeSettingName = kGroupName + "/" + "size";
 /**
  * @brief Creates item for job list model.
  */
-std::unique_ptr<QStandardItem> CreateItem(const std::string &name)
+std::unique_ptr<QStandardItem> CreateItem(const std::string& name)
 {
   auto result = std::make_unique<QStandardItem>(QString::fromStdString(name));
   result->setEditable(false);
@@ -63,8 +63,8 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string &name)
 
 }  // namespace
 
-RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService *connection_service,
-                                               QWidget *parent_widget)
+RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connection_service,
+                                               QWidget* parent_widget)
     : QDialog(parent_widget)
     , m_server_name_line_edit(new QLineEdit)
     , m_connect_button(new QPushButton("Connect"))
@@ -118,7 +118,7 @@ RemoteConnectionInfo RemoteConnectionDialog::GetResult() const
   return {m_current_server_name, indexes};
 }
 
-void RemoteConnectionDialog::keyPressEvent(QKeyEvent *event)
+void RemoteConnectionDialog::keyPressEvent(QKeyEvent* event)
 {
   // Prevent dialog from closing on press-enter-key event. This seems to be the only reliable way
   // to avoid forwarding such events from QLineEdit to "OK" QPushButton.
@@ -169,12 +169,12 @@ void RemoteConnectionDialog::WriteSettings()
   settings.setValue(kWindowSizeSettingName, size());
 }
 
-void RemoteConnectionDialog::PopulateJobInfoModel(const std::string &server_name)
+void RemoteConnectionDialog::PopulateJobInfoModel(const std::string& server_name)
 {
   m_job_info_model->clear();
 
   auto parent_item = m_job_info_model->invisibleRootItem();
-  auto &client = m_connection_service->GetAutomationClient(server_name);
+  auto& client = m_connection_service->GetAutomationClient(server_name);
   for (std::size_t job_index = 0; job_index < client.GetJobCount(); ++job_index)
   {
     auto procedure_name = client.GetProcedureName(job_index);
@@ -183,7 +183,7 @@ void RemoteConnectionDialog::PopulateJobInfoModel(const std::string &server_name
 }
 
 std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
-    IRemoteConnectionService &connection_service, QWidget *parent)
+    IRemoteConnectionService& connection_service, QWidget* parent)
 {
   RemoteConnectionDialog dialog(&connection_service, parent);
 

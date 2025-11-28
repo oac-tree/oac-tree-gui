@@ -40,8 +40,8 @@ namespace oac_tree_gui
 {
 
 InstructionEditorViewModel::InstructionEditorViewModel(
-    mvvm::ISessionModel *model,
-    std::function<std::string(const std::string &)> object_to_plugin_name, QObject *parent_object)
+    mvvm::ISessionModel* model,
+    std::function<std::string(const std::string&)> object_to_plugin_name, QObject* parent_object)
     : ViewModel(parent_object)
     , m_action_handler(std::make_unique<InstructionEditorActionHandler>(
           CreateInstructionEditorContext(object_to_plugin_name)))
@@ -53,7 +53,7 @@ InstructionEditorViewModel::InstructionEditorViewModel(
 
 InstructionEditorViewModel::~InstructionEditorViewModel() = default;
 
-Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex &index) const
+Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex& index) const
 {
   auto default_flags = ViewModel::flags(index);
   if (index.isValid())
@@ -64,7 +64,7 @@ Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex &index) const
   return Qt::ItemIsDropEnabled | default_flags;
 }
 
-QMimeData *InstructionEditorViewModel::mimeData(const QModelIndexList &index_list) const
+QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_list) const
 {
   // ownership will be taken by QDrag operation
   return CreateInstructionMoveMimeData(index_list).release();
@@ -113,9 +113,9 @@ I think this is OK and can be considered as a feature. If it will become an issu
 implement custom QTreeView, which would hide the #4 drop indicator based on mouse move coordinates.
 */
 
-bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::DropAction action,
+bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action,
                                                  int row, int column,
-                                                 const QModelIndex &parent) const
+                                                 const QModelIndex& parent) const
 {
   (void)action;
   (void)column;
@@ -133,7 +133,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
 
   if (data->hasFormat(kInstructionMoveMimeType))
   {
-    for (const auto &id : GetIdentifiersToMove(data))
+    for (const auto& id : GetIdentifiersToMove(data))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
@@ -157,8 +157,8 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
   return false;
 }
 
-bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row,
-                                              int column, const QModelIndex &parent)
+bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row,
+                                              int column, const QModelIndex& parent)
 {
   if (!canDropMimeData(data, action, row, column, parent))
   {
@@ -169,7 +169,7 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
 
   if (data->hasFormat(kInstructionMoveMimeType))
   {
-    for (const auto &id : GetIdentifiersToMove(data))
+    for (const auto& id : GetIdentifiersToMove(data))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
@@ -197,15 +197,15 @@ QStringList InstructionEditorViewModel::mimeTypes() const
 }
 
 InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorContext(
-    std::function<std::string(const std::string &)> object_to_plugin_name)
+    std::function<std::string(const std::string&)> object_to_plugin_name)
 {
   // no need to fully configure the context, here we are using only its limited part
   InstructionEditorContext result;
   result.instruction_container = [this]() { return GetRootSessionItem(); };
-  result.selected_instructions = []() { return std::vector<InstructionItem *>(); };
-  auto on_select_request = [](mvvm::SessionItem *item) { (void)item; };
+  result.selected_instructions = []() { return std::vector<InstructionItem*>(); };
+  auto on_select_request = [](mvvm::SessionItem* item) { (void)item; };
   result.notify_request = on_select_request;
-  result.create_instruction = [](const std::string &name) { return CreateInstructionTree(name); };
+  result.create_instruction = [](const std::string& name) { return CreateInstructionTree(name); };
   result.object_to_plugin_name = object_to_plugin_name;
   return result;
 }

@@ -33,7 +33,7 @@ const QColor kBreakpointPenColor("#df5050");
 const QColor kBreakpointSetColor("#df5050");
 const QColor kBreakpointDisabledColor("#ecd0d1");
 
-void PaintBreakpoint(QPainter *painter, const QPointF &center, const QPen &pen, const QBrush &brush,
+void PaintBreakpoint(QPainter* painter, const QPointF& center, const QPen& pen, const QBrush& brush,
                      double scale = 0.8)
 {
   painter->save();
@@ -49,17 +49,17 @@ void PaintBreakpoint(QPainter *painter, const QPointF &center, const QPen &pen, 
   painter->restore();
 }
 
-void PaintSetBreakpoint(QPainter *painter, const QPointF &center)
+void PaintSetBreakpoint(QPainter* painter, const QPointF& center)
 {
   PaintBreakpoint(painter, center, kBreakpointSetColor, kBreakpointSetColor);
 }
 
-void PaintDisabledBreakpoint(QPainter *painter, const QPointF &center)
+void PaintDisabledBreakpoint(QPainter* painter, const QPointF& center)
 {
   PaintBreakpoint(painter, center, kBreakpointSetColor, kBreakpointDisabledColor);
 }
 
-void PaintHitBreakpoint(QPainter *painter, const QPointF &center)
+void PaintHitBreakpoint(QPainter* painter, const QPointF& center)
 {
   PaintBreakpoint(painter, center, kBreakpointSetColor, Qt::NoBrush, 1.2);
   PaintSetBreakpoint(painter, center);
@@ -70,10 +70,10 @@ void PaintHitBreakpoint(QPainter *painter, const QPointF &center)
 namespace oac_tree_gui
 {
 
-BreakpointModelDelegate::BreakpointModelDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
+BreakpointModelDelegate::BreakpointModelDelegate(QObject* parent) : QStyledItemDelegate(parent) {}
 
-void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
-                                    const QModelIndex &index) const
+void BreakpointModelDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
+                                    const QModelIndex& index) const
 {
   if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
   {

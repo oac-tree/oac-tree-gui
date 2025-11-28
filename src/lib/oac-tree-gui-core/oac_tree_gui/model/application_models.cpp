@@ -31,7 +31,7 @@ namespace oac_tree_gui
 
 ApplicationModels::ApplicationModels() : ApplicationModels(mvvm::ProjectContext{}) {}
 
-ApplicationModels::ApplicationModels(const mvvm::ProjectContext &context) : AppProject(context)
+ApplicationModels::ApplicationModels(const mvvm::ProjectContext& context) : AppProject(context)
 {
   auto sequenser_model_factory_func = [this]()
   {
@@ -50,14 +50,14 @@ ApplicationModels::ApplicationModels(const mvvm::ProjectContext &context) : AppP
 
 ApplicationModels::~ApplicationModels() = default;
 
-SequencerModel *ApplicationModels::GetSequencerModel()
+SequencerModel* ApplicationModels::GetSequencerModel()
 {
   return (GetModelCount() > m_sequencer_model_index)
              ? GetModel<SequencerModel>(m_sequencer_model_index)
              : nullptr;
 }
 
-JobModel *ApplicationModels::GetJobModel()
+JobModel* ApplicationModels::GetJobModel()
 {
   return (GetModelCount() > m_job_model_index) ? GetModel<JobModel>(m_job_model_index) : nullptr;
 }

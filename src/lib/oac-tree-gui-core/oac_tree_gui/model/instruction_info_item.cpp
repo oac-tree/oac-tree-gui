@@ -45,7 +45,7 @@ std::unique_ptr<mvvm::SessionItem> InstructionInfoItem::Clone() const
   return std::make_unique<InstructionInfoItem>(*this);
 }
 
-void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInfo &info)
+void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInfo& info)
 {
   if (GetDomainType().empty())
   {
@@ -55,7 +55,7 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
   SetDomainType(info.GetType());
   (void)SetDisplayName(info.GetType());
 
-  for (auto &[attr_name, attr_value] : info.GetAttributes())
+  for (auto& [attr_name, attr_value] : info.GetAttributes())
   {
     if (attr_name == domainconstants::kNameAttribute)
     {
@@ -84,21 +84,21 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
   }
 }
 
-void InstructionInfoItem::InitFromDomainImpl(const instruction_t *instruction)
+void InstructionInfoItem::InitFromDomainImpl(const instruction_t* instruction)
 {
   (void)instruction;
 
   throw RuntimeException("This instruction is not intended to represent domain instructions");
 }
 
-void InstructionInfoItem::SetupDomainImpl(instruction_t *instruction) const
+void InstructionInfoItem::SetupDomainImpl(instruction_t* instruction) const
 {
   (void)instruction;
 
   throw RuntimeException("This instruction is not intended to create domain instructions");
 }
 
-void InstructionInfoItem::SetupFromDomain(const sup::oac_tree::InstructionInfo &info)
+void InstructionInfoItem::SetupFromDomain(const sup::oac_tree::InstructionInfo& info)
 {
   (void)AddProperty(itemconstants::kName, std::string());
   RegisterChildrenTag(info.GetCategory(), *this);

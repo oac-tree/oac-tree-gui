@@ -27,8 +27,8 @@
 namespace oac_tree_gui
 {
 
-ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem *item,
-                                                 const QString &channel_name)
+ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem* item,
+                                                 const QString& channel_name)
     : mvvm::DataPresentationItem(item, mvvm::DataRole::kDisplay), m_channel_name(channel_name)
 {
 }
@@ -51,7 +51,7 @@ QVariant ChannelPresentationItem::Data(int qt_role) const
   return {};
 }
 
-bool ChannelPresentationItem::SetData(const QVariant &data, int qt_role)
+bool ChannelPresentationItem::SetData(const QVariant& data, int qt_role)
 {
   (void)data;
   (void)qt_role;

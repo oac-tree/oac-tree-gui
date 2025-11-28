@@ -33,7 +33,7 @@
 namespace oac_tree_gui
 {
 
-ProcedureListActions::ProcedureListActions(QObject *parent_object) : QObject(parent_object)
+ProcedureListActions::ProcedureListActions(QObject* parent_object) : QObject(parent_object)
 {
   m_new_procedure_action = new QAction("New Procedure", this);
   m_new_procedure_action->setToolTip("Creates new empty procedure");
@@ -68,12 +68,12 @@ ProcedureListActions::ProcedureListActions(QObject *parent_object) : QObject(par
   m_action_map.Add(ActionKey::kPaste, m_paste_action);
 }
 
-QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &action_keys) const
+QList<QAction*> ProcedureListActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
 
-void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandler *handler)
+void ProcedureListActions::SetupMenu(QMenu& menu, const ProcedureListActionHandler* handler)
 {
   menu.setToolTipsVisible(true);
   menu.addAction(m_new_procedure_action);
@@ -90,8 +90,8 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
   m_paste_action->setEnabled(handler->CanPaste());
 }
 
-void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppCommandContext &context,
-                                                     sup::gui::IAppCommandService &command_service)
+void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppCommandContext& context,
+                                                     sup::gui::IAppCommandService& command_service)
 {
   command_service.AddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   command_service.AddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);

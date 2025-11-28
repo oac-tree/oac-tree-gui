@@ -59,7 +59,7 @@ public:
    * interface, e.g. service->GetJobInfoIO()->Log().
    * And then it waits until the queue was emptied by mock event listeners.
    */
-  static bool WaitForEmptyQueue(const DomainJobService &service, msec timeout)
+  static bool WaitForEmptyQueue(const DomainJobService& service, msec timeout)
   {
     // gives time for the queue to be emptied by mock event listeners
     auto predicate = [&service]() { return service.GetEventCount() == 0; };

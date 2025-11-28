@@ -27,7 +27,7 @@
 namespace oac_tree_gui
 {
 
-MonitorWidgetActions::MonitorWidgetActions(QObject *parent_object)
+MonitorWidgetActions::MonitorWidgetActions(QObject* parent_object)
     : QObject(parent_object), m_start_action(new QAction(this)), m_stop_action(new QAction(this))
 {
   m_start_action->setText("Start");
@@ -44,7 +44,7 @@ MonitorWidgetActions::MonitorWidgetActions(QObject *parent_object)
   connect(m_stop_action, &QAction::triggered, this, &MonitorWidgetActions::StopMonitoringRequest);
 }
 
-QList<QAction *> MonitorWidgetActions::GetActions(const std::vector<ActionKey> &action_keys) const
+QList<QAction*> MonitorWidgetActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }

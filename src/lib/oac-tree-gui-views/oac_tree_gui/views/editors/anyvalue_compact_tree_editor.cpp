@@ -27,9 +27,9 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/session_item.h>
+#include <mvvm/style/mvvm_style_helper.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/views/component_provider_helper.h>
-#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -44,7 +44,7 @@ const QString kGroupName("AnyValueCompactTreeEditor");
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 }  // namespace
 
-AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent_widget)
+AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget* parent_widget)
     : AbstractAnyValueEditor(parent_widget)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_label(new QLabel)
@@ -69,13 +69,13 @@ AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent_widget)
 
 AnyValueCompactTreeEditor::~AnyValueCompactTreeEditor() = default;
 
-void AnyValueCompactTreeEditor::SetDescription(const QString &text)
+void AnyValueCompactTreeEditor::SetDescription(const QString& text)
 {
   m_label->setHidden(false);
   m_label->setText(text);
 }
 
-void AnyValueCompactTreeEditor::SetInitialValue(const sup::gui::AnyValueItem *item)
+void AnyValueCompactTreeEditor::SetInitialValue(const sup::gui::AnyValueItem* item)
 {
   m_model->InsertItem(mvvm::utils::CloneItem(*item), m_model->GetRootItem(),
                       mvvm::TagIndex::Append());

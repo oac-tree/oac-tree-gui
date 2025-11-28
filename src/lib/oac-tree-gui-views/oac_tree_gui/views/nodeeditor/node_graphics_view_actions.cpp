@@ -35,7 +35,7 @@
 
 namespace oac_tree_gui
 {
-NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget *parent_widget)
+NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget* parent_widget)
     : QObject(parent_widget)
     , m_pointer_mode_group(new QButtonGroup(this))
     , m_pointer_button(new QToolButton)
@@ -94,8 +94,7 @@ void NodeGraphicsViewActions::UpdateButtonsToOperationMode(GraphicsViewOperation
   }
 }
 
-QList<QAction *> NodeGraphicsViewActions::GetActions(
-    const std::vector<ActionKey> &action_keys) const
+QList<QAction*> NodeGraphicsViewActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }

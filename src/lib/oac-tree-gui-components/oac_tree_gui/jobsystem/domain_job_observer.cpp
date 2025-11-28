@@ -41,7 +41,7 @@ namespace oac_tree_gui
 {
 
 DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
-                                     const UserContext &user_context)
+                                     const UserContext& user_context)
     : m_post_event_callback(std::move(post_event_callback))
     , m_active_instruction_monitor(CreateActiveInstructionMonitor({}))
 {
@@ -84,7 +84,7 @@ void DomainJobObserver::BreakpointInstructionUpdated(sup::dto::uint32 instr_idx)
   m_post_event_callback(BreakpointHitEvent{instr_idx});
 }
 
-void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue &value,
+void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue& value,
                                         bool connected)
 {
   m_post_event_callback(VariableUpdatedEvent{var_idx, value, connected});
@@ -100,7 +100,7 @@ void DomainJobObserver::JobStateUpdated(sup::oac_tree::JobState state)
   m_cv.notify_one();
 }
 
-void DomainJobObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
+void DomainJobObserver::PutValue(const sup::dto::AnyValue& value, const std::string& description)
 {
   auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
@@ -108,8 +108,8 @@ void DomainJobObserver::PutValue(const sup::dto::AnyValue &value, const std::str
   m_post_event_callback(CreateLogEvent(Severity::kInfo, ostr.str()));
 }
 
-bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue &value,
-                                     const std::string &description)
+bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue& value,
+                                     const std::string& description)
 {
   (void)id;  // TODO send this id to the GUI
 
@@ -124,8 +124,8 @@ bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue &va
   return false;
 }
 
-int DomainJobObserver::GetUserChoice(sup::dto::uint64 id, const std::vector<std::string> &options,
-                                     const sup::dto::AnyValue &metadata)
+int DomainJobObserver::GetUserChoice(sup::dto::uint64 id, const std::vector<std::string>& options,
+                                     const sup::dto::AnyValue& metadata)
 {
   (void)id;  // TODO send this id to the GUI
 
@@ -145,18 +145,18 @@ void DomainJobObserver::Interrupt(sup::dto::uint64 id)
   (void)id;
 }
 
-void DomainJobObserver::Message(const std::string &message)
+void DomainJobObserver::Message(const std::string& message)
 {
   m_post_event_callback(CreateLogEvent(Severity::kInfo, message));
 }
 
-void DomainJobObserver::Log(int severity, const std::string &message)
+void DomainJobObserver::Log(int severity, const std::string& message)
 {
   // assuming sequencer severity is the same as GUI severity
   m_post_event_callback(CreateLogEvent(static_cast<Severity>(severity), message));
 }
 
-void DomainJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint32> &instr_indices)
+void DomainJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint32>& instr_indices)
 {
   m_post_event_callback(ActiveInstructionChangedEvent{instr_indices});
 }
@@ -199,16 +199,16 @@ void DomainJobObserver::SetTickTimeout(int msec)
   m_tick_timeout_msec = msec;
 }
 
-void DomainJobObserver::SetInstructionActiveFilter(const active_filter_t &filter)
+void DomainJobObserver::SetInstructionActiveFilter(const active_filter_t& filter)
 {
   const std::unique_lock<std::mutex> lock{m_mutex};
   m_active_instruction_monitor = CreateActiveInstructionMonitor(filter);
 }
 
 std::unique_ptr<DomainJobObserver::active_monitor_t>
-DomainJobObserver::CreateActiveInstructionMonitor(const active_filter_t &filter)
+DomainJobObserver::CreateActiveInstructionMonitor(const active_filter_t& filter)
 {
-  auto callback = [this](const auto &instr_idx)
+  auto callback = [this](const auto& instr_idx)
   {
     const std::vector<sup::dto::uint32> leaves(instr_idx.begin(), instr_idx.end());
     NextInstructionsUpdated(leaves);

@@ -18,9 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gtest/gtest.h>
-
 #include "oac_tree_gui/nodeeditor/align_node.h"
+
+#include <gtest/gtest.h>
 
 namespace
 {

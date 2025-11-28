@@ -46,7 +46,7 @@ const QString kCurrentWorkdirSettingName = kGroupName + "/" + "workdir";
 namespace oac_tree_gui
 {
 
-ProcedureActionHandler::ProcedureActionHandler(QWidget *parent_widget) : QObject(parent_widget)
+ProcedureActionHandler::ProcedureActionHandler(QWidget* parent_widget) : QObject(parent_widget)
 {
   ReadSettings();
 }
@@ -58,7 +58,7 @@ ProcedureActionHandler::~ProcedureActionHandler()
 
 //! Generates XML content from currently selected procedure and save it to file.
 
-void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem *procedure_item)
+void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem* procedure_item)
 {
   if (!procedure_item)
   {
@@ -71,7 +71,7 @@ void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem *procedure_item)
   {
     xml_content = ExportToXMLString(*procedure_item);
   }
-  catch (const std::exception &ex)
+  catch (const std::exception& ex)
   {
     sup::gui::SendWarningMessage(
         {"Export to XML", "Procedure is in unconsistent state, can't generate XML", ex.what(), ""});
@@ -94,7 +94,7 @@ void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem *procedure_item)
   }
 }
 
-void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure_item)
+void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem* procedure_item)
 {
   if (!procedure_item)
   {
@@ -108,7 +108,7 @@ void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure
     domain_procedure = CreateDomainProcedure(*procedure_item);
     domain_procedure->Setup();
   }
-  catch (std::exception &ex)
+  catch (std::exception& ex)
   {
     sup::gui::SendWarningMessage(
         {"Validate Procedure", "Validation of procedure failed", ex.what(), ""});
@@ -145,7 +145,7 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(QSt
 }
 
 std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileIntern(
-    const QString &file_name)
+    const QString& file_name)
 {
   std::unique_ptr<ProcedureItem> result;
 
@@ -155,7 +155,7 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileInte
     result = oac_tree_gui::ImportFromFile(file_name.toStdString());
     result->SetDisplayName(procedure_name);
   }
-  catch (const std::exception &ex)
+  catch (const std::exception& ex)
   {
     sup::gui::SendWarningMessage(
         {"Import from file", "Procedure import has failed", ex.what(), ""});
@@ -176,7 +176,7 @@ void ProcedureActionHandler::WriteSettings()
   settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
 }
 
-void ProcedureActionHandler::UpdateCurrentWorkdir(const QString &file_name)
+void ProcedureActionHandler::UpdateCurrentWorkdir(const QString& file_name)
 {
   auto parent_path = mvvm::utils::GetParentPath(file_name.toStdString());
   m_current_workdir = QString::fromStdString(parent_path);

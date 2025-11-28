@@ -41,8 +41,8 @@ namespace oac_tree_gui
 {
 
 WorkspaceEditor::WorkspaceEditor(
-    sup::gui::IAppCommandService &command_service,
-    const std::function<std::vector<mvvm::SessionItem *>()> &selected_items, QWidget *parent_widget)
+    sup::gui::IAppCommandService& command_service,
+    const std::function<std::vector<mvvm::SessionItem*>()>& selected_items, QWidget* parent_widget)
     : QObject(parent_widget)
     , m_get_selected_items(selected_items)
     , m_action_handler(
@@ -60,12 +60,12 @@ WorkspaceEditor::WorkspaceEditor(
 
 WorkspaceEditor::~WorkspaceEditor() = default;
 
-void WorkspaceEditor::SetWorkspaceItem(WorkspaceItem *workspace)
+void WorkspaceEditor::SetWorkspaceItem(WorkspaceItem* workspace)
 {
   m_workspace_item = workspace;
 }
 
-QList<QAction *> WorkspaceEditor::GetToolBarActions() const
+QList<QAction*> WorkspaceEditor::GetToolBarActions() const
 {
   auto editor_toolbar_actions = m_editor_actions->GetActions(
       {WorkspaceEditorActions::ActionKey::kAdd, WorkspaceEditorActions::ActionKey::kRemove});
@@ -75,7 +75,7 @@ QList<QAction *> WorkspaceEditor::GetToolBarActions() const
   return editor_toolbar_actions + attribute_toolbar_actions;
 }
 
-void WorkspaceEditor::SetupContextMenu(QMenu &menu)
+void WorkspaceEditor::SetupContextMenu(QMenu& menu)
 {
   // populate cut/copy/paste menu
   m_editor_actions->SetupMenu(menu);
@@ -101,7 +101,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   result.selected_items_callback = m_get_selected_items;
   result.notify_request = [this](auto item) { emit ItemSelectRequest(item); };
 
-  auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
+  auto send_message_callback = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   result.send_message = send_message_callback;
 
   result.edit_anyvalue = CreateAnyValueDialogCallback(nullptr);

@@ -36,26 +36,26 @@ namespace oac_tree_gui
  */
 struct DomainEventToStringVisitor
 {
-  std::string operator()(const std::monostate &event) const;
+  std::string operator()(const std::monostate& event) const;
 
-  std::string operator()(const ::oac_tree_gui::InstructionStateUpdatedEvent &event) const;
+  std::string operator()(const ::oac_tree_gui::InstructionStateUpdatedEvent& event) const;
 
-  std::string operator()(const ::oac_tree_gui::VariableUpdatedEvent &event) const;
+  std::string operator()(const ::oac_tree_gui::VariableUpdatedEvent& event) const;
 
-  std::string operator()(const ::oac_tree_gui::JobStateChangedEvent &event) const;
+  std::string operator()(const ::oac_tree_gui::JobStateChangedEvent& event) const;
 
-  std::string operator()(const ::oac_tree_gui::LogEvent &event) const;
+  std::string operator()(const ::oac_tree_gui::LogEvent& event) const;
 
-  std::string operator()(const ::oac_tree_gui::ActiveInstructionChangedEvent &event) const;
+  std::string operator()(const ::oac_tree_gui::ActiveInstructionChangedEvent& event) const;
 
-  std::string operator()(const ::oac_tree_gui::BreakpointHitEvent &event) const;
+  std::string operator()(const ::oac_tree_gui::BreakpointHitEvent& event) const;
 };
 
 /**
  * @brief Creates a filter to removes active instructions if not all of their ancestors are
  * active too.
  */
-active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::InstructionInfo &info);
+active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::InstructionInfo& info);
 
 /**
  * @brief Creates a filter that mutes all active instruction notifications.

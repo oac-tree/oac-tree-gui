@@ -23,8 +23,8 @@
 
 //! Project version information as defined by CMake project
 
-#include <string>
 #include <cstdint>
+#include <string>
 
 namespace oac_tree_gui
 {

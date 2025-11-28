@@ -40,9 +40,9 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
   using workspace_t = sup::oac_tree::Workspace;
   using callback_guard_t = sup::oac_tree::ScopeGuard;
 
-  DomainWorkspaceListener *m_impl_owner{nullptr};
-  workspace_t *m_domain_workspace{nullptr};
-  const std::function<void(const VariableUpdatedEvent &event)> m_update_item_callback;
+  DomainWorkspaceListener* m_impl_owner{nullptr};
+  workspace_t* m_domain_workspace{nullptr};
+  const std::function<void(const VariableUpdatedEvent& event)> m_update_item_callback;
 
   std::map<std::string, size_t> m_name_to_index;
 
@@ -50,8 +50,8 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
   mvvm::threadsafe_queue<VariableUpdatedEvent> m_workspace_events;
 
   DomainWorkspaceListenerImpl(
-      DomainWorkspaceListener *impl_owner, sup::oac_tree::Workspace *domain_workspace,
-      const std::function<void(const VariableUpdatedEvent &event)> &callback)
+      DomainWorkspaceListener* impl_owner, sup::oac_tree::Workspace* domain_workspace,
+      const std::function<void(const VariableUpdatedEvent& event)>& callback)
       : m_impl_owner(impl_owner)
       , m_domain_workspace(domain_workspace)
       , m_update_item_callback(callback)
@@ -92,7 +92,7 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
     m_guard = m_domain_workspace->GetCallbackGuard(this);
 
     auto on_variable_updated =
-        [this](const std::string &name, const sup::dto::AnyValue &value, bool connected)
+        [this](const std::string& name, const sup::dto::AnyValue& value, bool connected)
     {
       m_workspace_events.push({m_name_to_index[name], value, connected});
       emit m_impl_owner->VariabledUpdated();
@@ -108,8 +108,8 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
 };
 
 DomainWorkspaceListener::DomainWorkspaceListener(
-    sup::oac_tree::Workspace *domain_workspace,
-    const std::function<void(const VariableUpdatedEvent &event)> &callback, QObject *parent_object)
+    sup::oac_tree::Workspace* domain_workspace,
+    const std::function<void(const VariableUpdatedEvent& event)>& callback, QObject* parent_object)
     : QObject(parent_object)
     , p_impl(std::make_unique<DomainWorkspaceListenerImpl>(this, domain_workspace, callback))
 {

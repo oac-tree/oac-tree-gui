@@ -29,7 +29,6 @@
 
 #include <QKeyEvent>
 #include <QWheelEvent>
-
 #include <cmath>
 
 namespace oac_tree_gui

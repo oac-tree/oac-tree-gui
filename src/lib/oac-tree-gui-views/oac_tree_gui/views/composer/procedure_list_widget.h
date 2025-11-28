@@ -58,7 +58,8 @@ class ProcedureListWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit ProcedureListWidget(sup::gui::IAppCommandService& command_service, QWidget* parent_widget = nullptr);
+  explicit ProcedureListWidget(sup::gui::IAppCommandService& command_service,
+                               QWidget* parent_widget = nullptr);
   ~ProcedureListWidget() override;
 
   void SetModel(SequencerModel* model);

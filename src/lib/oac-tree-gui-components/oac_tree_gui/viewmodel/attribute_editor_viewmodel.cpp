@@ -28,8 +28,8 @@
 namespace oac_tree_gui
 {
 
-AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model,
-                                                   QObject *parent_object)
+AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel* model,
+                                                   QObject* parent_object)
     : ViewModel(parent_object)
 {
   // we reuse VariableRowStrategy which covers AnyValueItems too
@@ -37,7 +37,7 @@ AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model,
       model, this));
 }
 
-int AttributeEditorViewModel::columnCount(const QModelIndex &parent) const
+int AttributeEditorViewModel::columnCount(const QModelIndex& parent) const
 {
   (void)parent;
   return 3;  // Name, Value, TypeName

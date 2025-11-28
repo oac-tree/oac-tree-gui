@@ -37,7 +37,7 @@
 namespace oac_tree_gui
 {
 
-AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent_widget)
+AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget* parent_widget)
     : AbstractAnyValueEditor(parent_widget)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_delegate(std::make_unique<mvvm::ViewModelDelegate>())
@@ -55,12 +55,12 @@ AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent_widget)
 
 AnyValueCompactScalarEditor::~AnyValueCompactScalarEditor() = default;
 
-void AnyValueCompactScalarEditor::SetDescription(const QString &text)
+void AnyValueCompactScalarEditor::SetDescription(const QString& text)
 {
   m_label->setText(text);
 }
 
-void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem *item)
+void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem* item)
 {
   m_model->InsertItem(mvvm::utils::CloneItem(*item), m_model->GetRootItem(),
                       mvvm::TagIndex::Append());

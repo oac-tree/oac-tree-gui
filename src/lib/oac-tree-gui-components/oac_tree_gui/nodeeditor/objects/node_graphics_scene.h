@@ -51,7 +51,7 @@ signals:
 protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;
   void dropEvent(QGraphicsSceneDragDropEvent* event) override;
-  void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+  void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 };
 
 }  // namespace oac_tree_gui

@@ -25,15 +25,15 @@
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 
 #include <mvvm/model/session_item.h>
-#include <mvvm/providers/viewitem_factory.h>
 #include <mvvm/providers/viewitem.h>
+#include <mvvm/providers/viewitem_factory.h>
 
 #include <QString>
 
 namespace oac_tree_gui
 {
 
-std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionItem &item)
+std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionItem& item)
 {
   auto is_available_property = oac_tree_gui::GetIsAvailableItem(item);
   auto channel_property = oac_tree_gui::GetChannelItem(item);

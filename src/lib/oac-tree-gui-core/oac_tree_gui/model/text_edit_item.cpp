@@ -68,18 +68,18 @@ std::vector<std::string> TextEditItem::GetText() const
   return GetVectorFromSettingString(setting_str);
 }
 
-void TextEditItem::SetText(const std::vector<std::string> &lines)
+void TextEditItem::SetText(const std::vector<std::string>& lines)
 {
   const auto setting_str = GetSettingStringFromVector(lines);
   (void)SetProperty(constants::kTextEditorContent, setting_str);
 }
 
-std::string GetSettingStringFromVector(const std::vector<std::string> &vec)
+std::string GetSettingStringFromVector(const std::vector<std::string>& vec)
 {
   return mvvm::utils::VectorToString(vec, kSeparator);
 }
 
-std::vector<std::string> GetVectorFromSettingString(const std::string &str)
+std::vector<std::string> GetVectorFromSettingString(const std::string& str)
 {
   return mvvm::utils::StringToVector<std::string>(str, kSeparator);
 }

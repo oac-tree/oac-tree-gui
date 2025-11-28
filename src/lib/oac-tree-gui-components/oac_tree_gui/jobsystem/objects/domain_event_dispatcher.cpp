@@ -27,7 +27,7 @@ namespace oac_tree_gui
 
 DomainEventDispatcher::DomainEventDispatcher(get_event_callback_t get_event_callback,
                                              DomainEventDispatcherContext context,
-                                             QObject *parent_object)
+                                             QObject* parent_object)
     : QObject(parent_object)
     , m_get_event(std::move(get_event_callback))
     , m_context(std::move(context))
@@ -44,12 +44,12 @@ void DomainEventDispatcher::OnNewEvent()
   std::visit(*this, event);
 }
 
-void DomainEventDispatcher::operator()(const std::monostate &event) const
+void DomainEventDispatcher::operator()(const std::monostate& event) const
 {
   (void)event;
 }
 
-void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent &event) const
+void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent& event) const
 {
   if (m_context.process_instruction_state_updated)
   {
@@ -57,7 +57,7 @@ void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent &event
   }
 }
 
-void DomainEventDispatcher::operator()(const VariableUpdatedEvent &event) const
+void DomainEventDispatcher::operator()(const VariableUpdatedEvent& event) const
 {
   if (m_context.process_variable_updated)
   {
@@ -65,7 +65,7 @@ void DomainEventDispatcher::operator()(const VariableUpdatedEvent &event) const
   }
 }
 
-void DomainEventDispatcher::operator()(const JobStateChangedEvent &event) const
+void DomainEventDispatcher::operator()(const JobStateChangedEvent& event) const
 {
   if (m_context.process_job_state_changed)
   {
@@ -73,7 +73,7 @@ void DomainEventDispatcher::operator()(const JobStateChangedEvent &event) const
   }
 }
 
-void DomainEventDispatcher::operator()(const LogEvent &event) const
+void DomainEventDispatcher::operator()(const LogEvent& event) const
 {
   if (m_context.process_log_event)
   {
@@ -81,7 +81,7 @@ void DomainEventDispatcher::operator()(const LogEvent &event) const
   }
 }
 
-void DomainEventDispatcher::operator()(const ActiveInstructionChangedEvent &event) const
+void DomainEventDispatcher::operator()(const ActiveInstructionChangedEvent& event) const
 {
   if (m_context.active_instruction_changed_event)
   {
@@ -89,7 +89,7 @@ void DomainEventDispatcher::operator()(const ActiveInstructionChangedEvent &even
   }
 }
 
-void DomainEventDispatcher::operator()(const BreakpointHitEvent &event) const
+void DomainEventDispatcher::operator()(const BreakpointHitEvent& event) const
 {
   if (m_context.breakpoint_hit_updated)
   {

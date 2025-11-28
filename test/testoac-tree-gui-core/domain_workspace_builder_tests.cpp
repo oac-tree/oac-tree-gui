@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/transform/domain_workspace_builder.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
@@ -27,8 +29,6 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/transform/domain_workspace_builder.h"
 
 namespace oac_tree_gui::test
 {
@@ -44,7 +44,7 @@ class DomainWorkspaceBuilderTest : public ::testing::Test
 TEST_F(DomainWorkspaceBuilderTest, EmptyWorkspace)
 {
   sup::oac_tree::Workspace workspace;
- const  WorkspaceItem workspace_item;
+  const WorkspaceItem workspace_item;
 
   DomainWorkspaceBuilder builder;
   builder.PopulateDomainWorkspace(&workspace_item, &workspace);

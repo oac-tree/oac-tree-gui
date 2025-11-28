@@ -48,7 +48,7 @@ QString GetDelayText(int delay)
 namespace oac_tree_gui
 {
 
-MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent_object)
+MonitorRealTimeActions::MonitorRealTimeActions(QObject* parent_object)
     : QObject(parent_object)
     , m_run_action(new QAction("Run", this))
     , m_pause_action(new QAction("Pause", this))
@@ -114,7 +114,7 @@ MonitorRealTimeActions::~MonitorRealTimeActions()
   WriteSettings();
 }
 
-QList<QAction *> MonitorRealTimeActions::GetActions(const std::vector<ActionKey> &action_keys) const
+QList<QAction*> MonitorRealTimeActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
@@ -152,7 +152,7 @@ std::unique_ptr<QMenu> MonitorRealTimeActions::CreateDelayMenu()
 
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
-  for (const auto &delay : delay_values)
+  for (const auto& delay : delay_values)
   {
     auto name = GetDelayText(delay);
     auto action = result->addAction(name);

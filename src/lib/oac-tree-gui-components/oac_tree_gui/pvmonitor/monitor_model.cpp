@@ -32,7 +32,7 @@ MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
   PopulateModel();
 }
 
-WorkspaceItem *MonitorModel::GetWorkspaceItem() const
+WorkspaceItem* MonitorModel::GetWorkspaceItem() const
 {
   return mvvm::utils::GetTopItem<WorkspaceItem>(*this);
 }

@@ -25,8 +25,8 @@
 
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
 #include <oac_tree_gui/composer/attribute_editor_context.h>
-#include <oac_tree_gui/viewmodel/attribute_editor_viewmodel.h>
 #include <oac_tree_gui/style/style_helper.h>
+#include <oac_tree_gui/viewmodel/attribute_editor_viewmodel.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -50,7 +50,7 @@ namespace oac_tree_gui
 {
 
 InstructionAttributeEditor::InstructionAttributeEditor(variable_names_func_t variable_names_func,
-                                                       QWidget *parent_widget)
+                                                       QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_variable_names_func(std::move(variable_names_func))
     , m_tool_bar(new QToolBar)
@@ -87,13 +87,13 @@ InstructionAttributeEditor::InstructionAttributeEditor(variable_names_func_t var
 
 InstructionAttributeEditor::~InstructionAttributeEditor() = default;
 
-void InstructionAttributeEditor::SetInstruction(mvvm::SessionItem *instruction_item)
+void InstructionAttributeEditor::SetInstruction(mvvm::SessionItem* instruction_item)
 {
   m_component_provider->SetItem(instruction_item);
   m_custom_header->AdjustColumnsWidth();
 }
 
-void InstructionAttributeEditor::SummonContextMenu(const QPoint &point)
+void InstructionAttributeEditor::SummonContextMenu(const QPoint& point)
 {
   QMenu menu;
   m_attribute_actions->SetupMenu(menu);

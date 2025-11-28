@@ -59,7 +59,7 @@ QVariant GetValueIcon()
 /**
  * @brief Creates view item representing AnyValue in a column.
  */
-std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem &item)
+std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem& item)
 {
   const std::string kSeeBelowPlaceholder("---");
   auto anyvalue_item = item.GetAnyValueItem();
@@ -83,7 +83,7 @@ std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem &item)
 /**
  * @brief Returns string representing type in 3rd column of variable table.
  */
-std::string GetTypeString(const std::string &item_type)
+std::string GetTypeString(const std::string& item_type)
 {
   static const std::map<std::string, std::string> kNameMap = {
       {mvvm::GetTypeName<PvAccessClientVariableItem>(), std::string("PVA-C")},
@@ -98,9 +98,9 @@ std::string GetTypeString(const std::string &item_type)
 /**
  * @brief Returns string representing type in 3rd column of variable tree.
  */
-std::string GetTypeStringForVariableTree(const mvvm::SessionItem &item)
+std::string GetTypeStringForVariableTree(const mvvm::SessionItem& item)
 {
-  if (auto anyvalue_item = dynamic_cast<const sup::gui::AnyValueItem *>(&item); anyvalue_item)
+  if (auto anyvalue_item = dynamic_cast<const sup::gui::AnyValueItem*>(&item); anyvalue_item)
   {
     return anyvalue_item->GetAnyTypeName();
   }
@@ -112,7 +112,7 @@ std::string GetTypeStringForVariableTree(const mvvm::SessionItem &item)
  * @brief Returns row of the table representing variable.
  */
 
-std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(VariableItem &item)
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(VariableItem& item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
@@ -134,7 +134,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(VariableItem
 /**
  * @brief Returns row of the table representing variable.
  */
-std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(VariableItem &item)
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(VariableItem& item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
   (void)result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
@@ -147,7 +147,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(VariableItem 
 /**
  * @brief Returns row for the tree representing variable attribute.
  */
-std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm::SessionItem &item)
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm::SessionItem& item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
@@ -187,9 +187,9 @@ QStringList VariableRowStrategy::GetHorizontalHeaderLabels() const
 }
 
 std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRowImpl(
-    mvvm::SessionItem *item)
+    mvvm::SessionItem* item)
 {
-  if (auto variable = dynamic_cast<VariableItem *>(item); variable)
+  if (auto variable = dynamic_cast<VariableItem*>(item); variable)
   {
     // If it's Variable itself, generate [editable name, empty label, modelType]
     return CreateVariableTreeRow(*variable);
@@ -226,11 +226,11 @@ QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
 }
 
 std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::ConstructRowImpl(
-    mvvm::SessionItem *item)
+    mvvm::SessionItem* item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
-  if (auto variable = dynamic_cast<VariableItem *>(item); variable)
+  if (auto variable = dynamic_cast<VariableItem*>(item); variable)
   {
     return CreateVariableTableRow(*variable);
   }
@@ -260,13 +260,13 @@ QStringList InstructionEditorRowStrategy::GetHorizontalHeaderLabels() const
 }
 
 std::vector<std::unique_ptr<mvvm::ViewItem>> InstructionEditorRowStrategy::ConstructRowImpl(
-    mvvm::SessionItem *item)
+    mvvm::SessionItem* item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
   (void)result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
-  if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
+  if (auto instruction = dynamic_cast<InstructionItem*>(item); instruction)
   {
     (void)result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
   }

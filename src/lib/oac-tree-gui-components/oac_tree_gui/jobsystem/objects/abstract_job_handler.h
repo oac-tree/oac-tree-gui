@@ -24,8 +24,8 @@
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
-#include <oac_tree_gui/operation/breakpoint_types.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/operation/breakpoint_types.h>
 
 #include <QObject>
 #include <memory>

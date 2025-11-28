@@ -38,7 +38,8 @@ std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
   auto force_success_item =
       sequence0->InsertItem<UniversalInstructionItem>(::mvvm::TagIndex::Append());
   force_success_item->SetDomainType(domainconstants::kForceSuccessInstructionType);
-  (void)force_success_item->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("B");
+  (void)force_success_item->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())
+      ->SetDisplayName("B");
 
   (void)result->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("C");
 

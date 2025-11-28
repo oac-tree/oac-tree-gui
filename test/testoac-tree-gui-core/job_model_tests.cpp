@@ -18,11 +18,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/job_model.h"
+
 #include <oac_tree_gui/model/procedure_item.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/job_model.h"
 
 namespace oac_tree_gui::test
 {

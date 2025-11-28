@@ -22,8 +22,8 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/mainwindow/context_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
+#include <oac_tree_gui/mainwindow/context_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_constants.h>
@@ -38,8 +38,8 @@
 namespace oac_tree_gui
 {
 
-InstructionEditorActions::InstructionEditorActions(InstructionEditorActionHandler *handler,
-                                                   QObject *parent_object)
+InstructionEditorActions::InstructionEditorActions(InstructionEditorActionHandler* handler,
+                                                   QObject* parent_object)
     : QObject(parent_object)
     , m_action_handler(handler)
     , m_insert_after_menu(CreateInsertMenu())
@@ -51,13 +51,13 @@ InstructionEditorActions::InstructionEditorActions(InstructionEditorActionHandle
 
 InstructionEditorActions::~InstructionEditorActions() = default;
 
-QList<QAction *> InstructionEditorActions::GetActions(
-    const std::vector<ActionKey> &action_keys) const
+QList<QAction*> InstructionEditorActions::GetActions(
+    const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
 
-void InstructionEditorActions::SetupMenu(QMenu &menu)
+void InstructionEditorActions::SetupMenu(QMenu& menu)
 {
   menu.addAction(m_insert_after_action);
   menu.addAction(m_insert_into_action);
@@ -74,7 +74,7 @@ void InstructionEditorActions::SetupMenu(QMenu &menu)
 }
 
 void InstructionEditorActions::RegisterActionsForContext(
-    const sup::gui::AppCommandContext &context, sup::gui::IAppCommandService &command_service)
+    const sup::gui::AppCommandContext& context, sup::gui::IAppCommandService& command_service)
 {
   command_service.AddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   command_service.AddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
@@ -195,18 +195,18 @@ std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertMenu()
 
 void InstructionEditorActions::AboutToShowInsertMenu()
 {
-  auto menu = qobject_cast<QMenu *>(sender());
+  auto menu = qobject_cast<QMenu*>(sender());
   const bool insert_into = (menu == m_insert_into_menu.get());
 
   menu->clear();
   menu->setToolTipsVisible(true);
 
   auto group_info = CreateInstructionTypeGroups();
-  for (const auto &group_info : group_info)
+  for (const auto& group_info : group_info)
   {
     auto group_menu = menu->addMenu(QString::fromStdString(group_info.group_name));
     int enabled_actions_count{0};
-    for (const auto &name : group_info.object_names)
+    for (const auto& name : group_info.object_names)
     {
       auto action = group_menu->addAction(QString::fromStdString(name));
       if (insert_into ? m_action_handler->CanInsertInstructionInto(name)

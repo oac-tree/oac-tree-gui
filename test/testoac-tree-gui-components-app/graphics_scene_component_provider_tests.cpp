@@ -28,7 +28,6 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <sup/dto/anyvalue.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
@@ -37,6 +36,8 @@
 #include <mvvm/nodeeditor/node_connection_shape.h>
 #include <mvvm/test/mock_item_listener.h>
 #include <mvvm/test/test_container_helper.h>
+
+#include <sup/dto/anyvalue.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

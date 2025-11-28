@@ -38,12 +38,12 @@ SequencerModel::SequencerModel(std::shared_ptr<mvvm::ItemPool> pool)
   PopulateModel();
 }
 
-mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
+mvvm::ContainerItem* SequencerModel::GetProcedureContainer() const
 {
   return mvvm::utils::GetTopItem<mvvm::ContainerItem>(*this);
 }
 
-std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
+std::vector<ProcedureItem*> SequencerModel::GetProcedures() const
 {
   return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::TagIndex::GetDefaultTag());
 }

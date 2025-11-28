@@ -34,7 +34,7 @@
 namespace oac_tree_gui
 {
 
-VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
+VariableItem::VariableItem(const std::string& item_type) : CompoundItem(item_type)
 {
   SetFlag(mvvm::Appearance::kEditableDisplayName, true);
   AddProperty(itemconstants::kIsAvailable, false)
@@ -50,7 +50,7 @@ std::string VariableItem::GetDomainType() const
              : std::string();
 }
 
-void VariableItem::SetDomainType(const std::string &domain_type)
+void VariableItem::SetDomainType(const std::string& domain_type)
 {
   SetData(domain_type, itemconstants::kDomainTypeNameRole);
 }
@@ -62,7 +62,7 @@ std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
   return result;
 }
 
-void VariableItem::InitFromDomain(const variable_t *variable, const anytype_registry_t *registry)
+void VariableItem::InitFromDomain(const variable_t* variable, const anytype_registry_t* registry)
 {
   InitFromDomainImpl(variable, registry);
 }
@@ -72,12 +72,12 @@ std::string VariableItem::GetName() const
   return GetDisplayName();
 }
 
-void VariableItem::SetName(const std::string &value)
+void VariableItem::SetName(const std::string& value)
 {
   SetDisplayName(value);
 }
 
-sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const
+sup::gui::AnyValueItem* VariableItem::GetAnyValueItem() const
 {
   return mvvm::utils::HasTag(*this, itemconstants::kAnyValueTag)
              ? GetItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
@@ -91,7 +91,7 @@ bool VariableItem::IsAvailable() const
 
 void VariableItem::SetIsAvailable(bool value)
 {
-  (void) SetProperty(itemconstants::kIsAvailable, value);
+  (void)SetProperty(itemconstants::kIsAvailable, value);
 }
 
 void VariableItem::RegisterAnyValueItemTag()

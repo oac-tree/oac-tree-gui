@@ -25,10 +25,10 @@
 namespace oac_tree_gui
 {
 
-CustomTreeViewStyle::CustomTreeViewStyle(QStyle *style) : QProxyStyle(style) {}
+CustomTreeViewStyle::CustomTreeViewStyle(QStyle* style) : QProxyStyle(style) {}
 
-void CustomTreeViewStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option,
-                                        QPainter *painter, const QWidget *widget) const
+void CustomTreeViewStyle::drawPrimitive(PrimitiveElement element, const QStyleOption* option,
+                                        QPainter* painter, const QWidget* widget) const
 {
   if (element == QStyle::PE_IndicatorItemViewItemDrop && !option->rect.isNull())
   {

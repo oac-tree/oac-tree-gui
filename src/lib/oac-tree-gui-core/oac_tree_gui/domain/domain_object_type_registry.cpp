@@ -30,7 +30,7 @@ DomainObjectTypeRegistry::DomainObjectTypeRegistry(get_object_names_t func)
 {
 }
 
-void DomainObjectTypeRegistry::Update(const std::string &plugin_name)
+void DomainObjectTypeRegistry::Update(const std::string& plugin_name)
 {
   if (!m_get_object_names)
   {
@@ -39,10 +39,10 @@ void DomainObjectTypeRegistry::Update(const std::string &plugin_name)
   Update(plugin_name, m_get_object_names());
 }
 
-void DomainObjectTypeRegistry::Update(const std::string &plugin_name,
-                                      const std::vector<std::string> &object_names)
+void DomainObjectTypeRegistry::Update(const std::string& plugin_name,
+                                      const std::vector<std::string>& object_names)
 {
-  for (const auto &name : object_names)
+  for (const auto& name : object_names)
   {
     auto iter = m_object_name_to_plugin_name.find(name);
     if (iter == m_object_name_to_plugin_name.end())
@@ -53,17 +53,17 @@ void DomainObjectTypeRegistry::Update(const std::string &plugin_name,
 }
 
 std::optional<std::string> DomainObjectTypeRegistry::GetPluginName(
-    const std::string &object_name) const
+    const std::string& object_name) const
 {
   auto iter = m_object_name_to_plugin_name.find(object_name);
   return iter == m_object_name_to_plugin_name.end() ? std::optional<std::string>() : iter->second;
 }
 
 std::vector<std::string> DomainObjectTypeRegistry::GetObjectNames(
-    const std::string &plugin_name) const
+    const std::string& plugin_name) const
 {
   std::vector<std::string> result;
-  for (const auto &element : m_object_name_to_plugin_name)
+  for (const auto& element : m_object_name_to_plugin_name)
   {
     if (element.second == plugin_name)
     {

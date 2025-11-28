@@ -37,7 +37,7 @@ public:
   {
     std::vector<Key> result;
     (void)std::transform(m_object_map.begin(), m_object_map.end(), std::back_inserter(result),
-                   [](auto it) { return it.first; });
+                         [](auto it) { return it.first; });
     return result;
   }
 

@@ -55,7 +55,7 @@ class SequencerComposerView : public QWidget
 
 public:
   explicit SequencerComposerView(sup::gui::IAppCommandService& command_service,
-                                   QWidget* parent_widget = nullptr);
+                                 QWidget* parent_widget = nullptr);
   ~SequencerComposerView() override;
 
   void SetModel(SequencerModel* model);

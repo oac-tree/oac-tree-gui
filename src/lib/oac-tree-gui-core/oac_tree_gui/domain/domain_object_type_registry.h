@@ -21,10 +21,10 @@
 #ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_
 #define OAC_TREE_GUI_DOMAIN_DOMAIN_OBJECT_TYPE_REGISTRY_H_
 
+#include <functional>
 #include <map>
 #include <optional>
 #include <string>
-#include <functional>
 #include <vector>
 
 namespace oac_tree_gui

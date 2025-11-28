@@ -47,7 +47,7 @@ public:
 
   SequencerMainWindowContext(const SequencerMainWindowContext&) = delete;
   SequencerMainWindowContext& operator=(const SequencerMainWindowContext&) = delete;
-  SequencerMainWindowContext(SequencerMainWindowContext&&) = delete;  
+  SequencerMainWindowContext(SequencerMainWindowContext&&) = delete;
   SequencerMainWindowContext& operator=(SequencerMainWindowContext&&) = delete;
 
   /**

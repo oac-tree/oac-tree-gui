@@ -25,8 +25,8 @@
 //! Collection of helper methods common for all sequencer main windows.
 
 #include <QString>
-#include <vector>
 #include <functional>
+#include <vector>
 
 namespace oac_tree_gui
 {

@@ -28,8 +28,8 @@
 
 #include <sup/gui/widgets/detailed_message_box.h>
 
-#include <mvvm/utils/string_utils.h>
 #include <mvvm/style/mvvm_style_helper.h>
+#include <mvvm/utils/string_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QCheckBox>
@@ -48,10 +48,10 @@ namespace
  * @brief Returns multi-line string representing loaded plugins information.
  */
 std::string GetLoadedPluginTextPresentation(
-    const std::vector<std::pair<std::string, bool>> &plugin_info)
+    const std::vector<std::pair<std::string, bool>>& plugin_info)
 {
   std::vector<std::string> loaded_plugin_lines;
-  for (const auto &info : plugin_info)
+  for (const auto& info : plugin_info)
   {
     const std::string load_result = info.second ? "[Loaded]" : "[Failed]";
     loaded_plugin_lines.push_back(load_result + "  " + info.first);
@@ -87,8 +87,8 @@ oac_tree_another_plugin
 
 }  // namespace
 
-PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService &plugin_service,
-                                           QWidget *parent_widget)
+PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService& plugin_service,
+                                           QWidget* parent_widget)
     : sup::gui::SessionItemWidget(parent_widget)
     , m_plugin_service(plugin_service)
     , m_description(new QLabel)
@@ -112,12 +112,12 @@ PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService &plugin_service,
 
 PluginSettingsEditor::~PluginSettingsEditor() = default;
 
-void PluginSettingsEditor::SetItem(mvvm::SessionItem *item)
+void PluginSettingsEditor::SetItem(mvvm::SessionItem* item)
 {
-  SetPluginSettingsItem(dynamic_cast<PluginSettingsItem *>(item));
+  SetPluginSettingsItem(dynamic_cast<PluginSettingsItem*>(item));
 }
 
-void PluginSettingsEditor::SetPluginSettingsItem(PluginSettingsItem *item)
+void PluginSettingsEditor::SetPluginSettingsItem(PluginSettingsItem* item)
 {
   if (!item)
   {

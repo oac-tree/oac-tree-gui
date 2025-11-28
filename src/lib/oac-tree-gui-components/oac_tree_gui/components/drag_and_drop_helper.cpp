@@ -31,8 +31,8 @@
 #include <mvvm/model/session_item_container.h>
 #include <mvvm/model/session_model.h>
 #include <mvvm/model/tagged_items.h>
-#include <mvvm/providers/viewmodel_utils.h>
 #include <mvvm/providers/qtcore_helper.h>
+#include <mvvm/providers/viewmodel_utils.h>
 
 #include <QMimeData>
 

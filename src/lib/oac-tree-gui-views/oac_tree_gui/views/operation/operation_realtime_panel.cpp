@@ -37,7 +37,7 @@ namespace
 
 const QString kCollapsibleListSettingName = "OperationRealTimePanel/collapsible_list";
 
-QList<QAction *> GetToolBarActions(oac_tree_gui::MonitorRealTimeActions *actions)
+QList<QAction*> GetToolBarActions(oac_tree_gui::MonitorRealTimeActions* actions)
 {
   using ActionKey = oac_tree_gui::MonitorRealTimeActions::ActionKey;
   return actions->GetActions({ActionKey::kRun, ActionKey::kPause, ActionKey::kStep,
@@ -50,7 +50,7 @@ QList<QAction *> GetToolBarActions(oac_tree_gui::MonitorRealTimeActions *actions
 namespace oac_tree_gui
 {
 
-OperationRealTimePanel::OperationRealTimePanel(QWidget *parent_widget)
+OperationRealTimePanel::OperationRealTimePanel(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_actions(new MonitorRealTimeActions(this))
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
@@ -80,7 +80,7 @@ OperationRealTimePanel::~OperationRealTimePanel()
   WriteSettings();
 }
 
-void OperationRealTimePanel::SetCurrentJob(JobItem *job_item)
+void OperationRealTimePanel::SetCurrentJob(JobItem* job_item)
 {
   if (job_item)
   {
@@ -93,12 +93,12 @@ void OperationRealTimePanel::SetCurrentJob(JobItem *job_item)
   }
 }
 
-void OperationRealTimePanel::SetSelectedInstructions(std::vector<InstructionItem *> items)
+void OperationRealTimePanel::SetSelectedInstructions(std::vector<InstructionItem*> items)
 {
   m_realtime_instruction_tree->SetSelectedInstructions(items);
 }
 
-void OperationRealTimePanel::SetJobLog(JobLog *job_log)
+void OperationRealTimePanel::SetJobLog(JobLog* job_log)
 {
   m_message_panel->SetLog(job_log);
 }

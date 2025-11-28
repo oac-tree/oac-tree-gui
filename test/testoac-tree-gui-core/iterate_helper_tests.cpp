@@ -18,11 +18,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/iterate_helper.h"
+
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/model/iterate_helper.h"
 
 namespace oac_tree_gui::test
 {
@@ -36,25 +36,25 @@ class IterateHelperTest : public ::testing::Test
 TEST_F(IterateHelperTest, IterateInstruction)
 {
   {
-    std::vector<const InstructionItem *> items;
-    auto func = [&items](const InstructionItem *item) { items.push_back(item); };
+    std::vector<const InstructionItem*> items;
+    auto func = [&items](const InstructionItem* item) { items.push_back(item); };
 
     WaitItem wait_item;
-    IterateInstruction<const InstructionItem *>(&wait_item, func);
-    EXPECT_EQ(items, std::vector<const InstructionItem *>({&wait_item}));
+    IterateInstruction<const InstructionItem*>(&wait_item, func);
+    EXPECT_EQ(items, std::vector<const InstructionItem*>({&wait_item}));
   }
 
   {
-    std::vector<mvvm::SessionItem *> items;
-    auto func = [&items](InstructionItem *item) { items.push_back(item); };
+    std::vector<mvvm::SessionItem*> items;
+    auto func = [&items](InstructionItem* item) { items.push_back(item); };
 
     SequenceItem sequence;
     auto wait_item = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
     EXPECT_EQ(sequence.GetInstructions().size(), 1);
 
-    IterateInstruction<InstructionItem *>(&sequence, func);
+    IterateInstruction<InstructionItem*>(&sequence, func);
 
-    EXPECT_EQ(items, std::vector<mvvm::SessionItem *>({&sequence, wait_item}));
+    EXPECT_EQ(items, std::vector<mvvm::SessionItem*>({&sequence, wait_item}));
   }
 }
 

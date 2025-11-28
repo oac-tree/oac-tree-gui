@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/pvmonitor/workspace_monitor_helper.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
@@ -36,8 +38,6 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/pvmonitor/workspace_monitor_helper.h"
 
 namespace oac_tree_gui::test
 {

@@ -46,7 +46,7 @@
 namespace oac_tree_gui
 {
 
-void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
+void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item)
 {
   // in current implementation we remove old AnyValueItem, if it exists
   if (auto prev_item = variable_item.GetAnyValueItem(); prev_item)
@@ -57,7 +57,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   (void)variable_item.InsertItem(sup::gui::CreateAnyValueItem(anyvalue), mvvm::TagIndex::First());
 }
 
-void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
+void SetAnyValue(const anyvalue_t& anyvalue, InstructionItem& item)
 {
   if (!mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag))
   {
@@ -72,8 +72,8 @@ void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
   (void)item.InsertItem(sup::gui::CreateAnyValueItem(anyvalue), mvvm::TagIndex::First());
 }
 
-void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,
-                                   const anytype_registry_t *registry)
+void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& variable_item,
+                                   const anytype_registry_t* registry)
 {
   if (variable.HasAttribute(domainconstants::kTypeAttribute))
   {
@@ -95,9 +95,9 @@ void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &var
   }
 }
 
-void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo &variable_info,
-                                       VariableItem &variable_item,
-                                       const anytype_registry_t *registry)
+void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo& variable_info,
+                                       VariableItem& variable_item,
+                                       const anytype_registry_t* registry)
 {
   if (auto attr = GetAttribute(variable_info, domainconstants::kTypeAttribute); attr.has_value())
   {
@@ -118,7 +118,7 @@ void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo &variab
   }
 }
 
-void SetAnyValueFromDomainInstruction(const instruction_t &instruction, InstructionItem &item)
+void SetAnyValueFromDomainInstruction(const instruction_t& instruction, InstructionItem& item)
 {
   if (instruction.HasAttribute(domainconstants::kTypeAttribute)
       && instruction.HasAttribute(domainconstants::kValueAttribute))
@@ -133,7 +133,7 @@ void SetAnyValueFromDomainInstruction(const instruction_t &instruction, Instruct
   }
 }
 
-void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
+void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item)
 {
   if (auto existing_anyvalue_item = variable_item.GetAnyValueItem(); existing_anyvalue_item)
   {
@@ -146,7 +146,7 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
       sup::gui::UpdateAnyValueItemData(*temp_anyvalue_item, *existing_anyvalue_item);
       return;
     }
-    catch (const std::exception &ex)
+    catch (const std::exception& ex)
     {
       // Update fails if the old AnyValueItem has a different layout than the new AnyValueItem. This
       // can happen in two cases: 1) ResetVariableInstruction is in charge and it just reset
@@ -162,7 +162,7 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   SetAnyValue(anyvalue, variable_item);
 }
 
-void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &preamble)
+void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& preamble)
 {
   using sup::oac_tree::TypeRegistrationInfo;
 
@@ -171,19 +171,19 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &pr
     throw LogicErrorException("ProcedurePreamble must be empty");
   }
 
-  for (const auto &str : item.GetPluginPaths())
+  for (const auto& str : item.GetPluginPaths())
   {
     preamble.AddPluginPath(str);
   }
 
-  for (const auto &[mode, str] : item.GetTypeRegistrations())
+  for (const auto& [mode, str] : item.GetTypeRegistrations())
   {
     preamble.AddTypeRegistration(
         TypeRegistrationInfo(static_cast<TypeRegistrationInfo::RegistrationMode>(mode), str));
   }
 }
 
-sup::dto::AnyValue GetAnyValue(const VariableItem &item)
+sup::dto::AnyValue GetAnyValue(const VariableItem& item)
 {
   if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
   {
@@ -193,8 +193,8 @@ sup::dto::AnyValue GetAnyValue(const VariableItem &item)
   throw RuntimeException("Given VariableItem doesn't contain AnyValueItem on board");
 }
 
-sup::dto::AnyValue GetAnyValue(const std::string &var_name,
-                               const sup::oac_tree::Workspace &workspace)
+sup::dto::AnyValue GetAnyValue(const std::string& var_name,
+                               const sup::oac_tree::Workspace& workspace)
 {
   sup::dto::AnyValue result;
   if (!workspace.GetValue(var_name, result))

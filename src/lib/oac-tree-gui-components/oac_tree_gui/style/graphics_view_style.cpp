@@ -76,7 +76,7 @@ GraphicsViewStyle CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor color_flavor)
                                     : CreateDefaultStyleForLightThemes();
 }
 
-const GraphicsViewStyle &GetDefaultGraphicsViewStyle()
+const GraphicsViewStyle& GetDefaultGraphicsViewStyle()
 {
   static const GraphicsViewStyle kGraphicsViewStyle =
       CreateDefaulGraphicsViewStyle(mvvm::ColorFlavor::kAuto);

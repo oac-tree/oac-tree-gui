@@ -51,7 +51,7 @@ namespace oac_tree_gui::test
 class DomainWorkspaceListenerPVAccessTest : public ::testing::Test
 {
 public:
-  using mock_client_t = testing::MockFunction<void(const VariableUpdatedEvent &)>;
+  using mock_client_t = testing::MockFunction<void(const VariableUpdatedEvent&)>;
 
   //! Disables all tests in the fixture if PVAccess is not available
   void SetUp() override

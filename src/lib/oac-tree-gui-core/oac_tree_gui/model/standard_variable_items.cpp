@@ -35,7 +35,7 @@ namespace oac_tree_gui
 // ConnectableVariableItem
 // ----------------------------------------------------------------------------
 
-ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_type)
+ConnectableVariableItem::ConnectableVariableItem(const std::string& variable_type)
     : UniversalVariableItem(variable_type)
 {
 }
@@ -51,7 +51,7 @@ std::string ConnectableVariableItem::GetChannel() const
   return Property<std::string>(domainconstants::kChannelAttribute);
 }
 
-void ConnectableVariableItem::SetChannel(const std::string &value)
+void ConnectableVariableItem::SetChannel(const std::string& value)
 {
   (void)SetProperty(domainconstants::kChannelAttribute, value);
 }
@@ -88,7 +88,7 @@ std::string FileVariableItem::GetFileName() const
   return Property<std::string>(oac_tree_gui::domainconstants::kFileNameAttribute);
 }
 
-void FileVariableItem::SetFileName(const std::string &name)
+void FileVariableItem::SetFileName(const std::string& name)
 {
   (void)SetProperty(oac_tree_gui::domainconstants::kFileNameAttribute, name);
 }

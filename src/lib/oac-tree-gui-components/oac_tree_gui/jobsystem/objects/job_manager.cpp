@@ -44,7 +44,7 @@ bool IsResetRequired(RunnerStatus runner_status)
   return mvvm::utils::Contains(kStatesRequiringReset, runner_status);
 }
 
-JobManager::JobManager(create_handler_func_t create_handler_func, QObject *parent_object)
+JobManager::JobManager(create_handler_func_t create_handler_func, QObject* parent_object)
     : QObject(parent_object), m_create_handler_func(std::move(create_handler_func))
 {
   if (!m_create_handler_func)
@@ -58,10 +58,10 @@ std::size_t JobManager::GetJobCount() const
   return m_job_handlers.size();
 }
 
-std::vector<JobItem *> JobManager::GetJobItems() const
+std::vector<JobItem*> JobManager::GetJobItems() const
 {
-  std::vector<JobItem *> result;
-  auto on_element = [](const auto &handler) { return handler->GetJobItem(); };
+  std::vector<JobItem*> result;
+  auto on_element = [](const auto& handler) { return handler->GetJobItem(); };
   std::transform(m_job_handlers.begin(), m_job_handlers.end(), std::back_inserter(result),
                  on_element);
   return result;
@@ -69,7 +69,7 @@ std::vector<JobItem *> JobManager::GetJobItems() const
 
 JobManager::~JobManager() = default;
 
-void JobManager::SubmitJob(JobItem *job)
+void JobManager::SubmitJob(JobItem* job)
 {
   if (!job)
   {
@@ -79,14 +79,14 @@ void JobManager::SubmitJob(JobItem *job)
   InsertJobHandler(m_create_handler_func(*job));
 }
 
-IJobHandler *JobManager::GetJobHandler(JobItem *job)
+IJobHandler* JobManager::GetJobHandler(JobItem* job)
 {
-  auto on_element = [job](const auto &handler) { return handler->GetJobItem() == job; };
+  auto on_element = [job](const auto& handler) { return handler->GetJobItem() == job; };
   auto pos = std::find_if(m_job_handlers.begin(), m_job_handlers.end(), on_element);
   return pos == m_job_handlers.end() ? nullptr : pos->get();
 }
 
-void JobManager::Start(JobItem *item)
+void JobManager::Start(JobItem* item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -98,7 +98,7 @@ void JobManager::Start(JobItem *item)
   }
 }
 
-void JobManager::Pause(JobItem *item)
+void JobManager::Pause(JobItem* item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -106,7 +106,7 @@ void JobManager::Pause(JobItem *item)
   }
 }
 
-void JobManager::Stop(JobItem *item)
+void JobManager::Stop(JobItem* item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -114,7 +114,7 @@ void JobManager::Stop(JobItem *item)
   }
 }
 
-void JobManager::Step(JobItem *item)
+void JobManager::Step(JobItem* item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -126,7 +126,7 @@ void JobManager::Step(JobItem *item)
   }
 }
 
-void JobManager::RemoveJobHandler(JobItem *job)
+void JobManager::RemoveJobHandler(JobItem* job)
 {
   if (auto job_handler = GetJobHandler(job); job_handler)
   {
@@ -135,7 +135,7 @@ void JobManager::RemoveJobHandler(JobItem *job)
       throw RuntimeException("Attempt to modify running job");
     }
 
-    auto on_element = [job](auto &handler) { return handler->GetJobItem() == job; };
+    auto on_element = [job](auto& handler) { return handler->GetJobItem() == job; };
     m_job_handlers.erase(std::remove_if(m_job_handlers.begin(), m_job_handlers.end(), on_element),
                          m_job_handlers.end());
   }
@@ -144,23 +144,24 @@ void JobManager::RemoveJobHandler(JobItem *job)
 bool JobManager::HasRunningJobs() const
 {
   return std::any_of(m_job_handlers.begin(), m_job_handlers.end(),
-                     [](const auto &handler) { return handler->IsRunning(); });
+                     [](const auto& handler) { return handler->IsRunning(); });
 }
 
 void JobManager::StopAllJobs()
 {
   std::for_each(m_job_handlers.begin(), m_job_handlers.end(),
-                [](const auto &handler) { handler->Stop(); });
+                [](const auto& handler) { handler->Stop(); });
 }
 
-void JobManager::SetActiveJob(JobItem *item)
+void JobManager::SetActiveJob(JobItem* item)
 {
   m_active_job = item;
 }
 
-void JobManager::OnActiveInstructionChanged(const std::vector<InstructionItem *> &active_instructions)
+void JobManager::OnActiveInstructionChanged(
+    const std::vector<InstructionItem*>& active_instructions)
 {
-  auto sending_job_handler = qobject_cast<AbstractJobHandler *>(sender());
+  auto sending_job_handler = qobject_cast<AbstractJobHandler*>(sender());
 
   // we want to send notifications only from the job the user is currently looking at
   if (sending_job_handler->GetJobItem() == m_active_job)
@@ -169,7 +170,7 @@ void JobManager::OnActiveInstructionChanged(const std::vector<InstructionItem *>
   }
 }
 
-void JobManager::Reset(JobItem *item)
+void JobManager::Reset(JobItem* item)
 {
   if (auto job_handler = GetJobHandler(item); job_handler)
   {
@@ -186,7 +187,7 @@ void JobManager::InsertJobHandler(std::unique_ptr<IJobHandler> job_handler)
     throw RuntimeException("Attempt to submit already existing job");
   }
 
-  if (auto abstract_handler = dynamic_cast<AbstractJobHandler *>(job_handler.get()))
+  if (auto abstract_handler = dynamic_cast<AbstractJobHandler*>(job_handler.get()))
   {
     connect(abstract_handler, &AbstractJobHandler::ActiveInstructionChanged, this,
             &JobManager::OnActiveInstructionChanged);

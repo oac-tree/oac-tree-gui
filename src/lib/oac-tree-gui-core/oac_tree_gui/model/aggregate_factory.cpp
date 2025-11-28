@@ -31,7 +31,7 @@ AggregateFactory::AggregateFactory()
   Register("if-then-else", Examples::CreateIfThenElseAggregate);
 }
 
-std::unique_ptr<InstructionItem> AggregateFactory::Create(const std::string &type_name)
+std::unique_ptr<InstructionItem> AggregateFactory::Create(const std::string& type_name)
 {
   return GetValue(type_name)();  // call factory function
 }

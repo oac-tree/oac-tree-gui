@@ -26,8 +26,9 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/runner_status.h>
 
-#include <sup/oac-tree/instruction.h>
 #include <mvvm/nodeeditor/i_node_port.h>
+
+#include <sup/oac-tree/instruction.h>
 
 #include <QDataStream>
 #include <mutex>
@@ -54,7 +55,8 @@ void RegisterCustomMetaTypes()
     (void)qRegisterMetaType<LogEvent>("oac_tree_gui::LogEvent");
     (void)qRegisterMetaType<oac_tree_gui::RunnerStatus>("oac_tree_gui::RunnerStatus");
     (void)qRegisterMetaType<QList<int>>("QList<int>");
-    (void)qRegisterMetaType<oac_tree_gui::GraphicsViewOperationMode>("oac_tree_gui::GraphicsViewOperationMode");
+    (void)qRegisterMetaType<oac_tree_gui::GraphicsViewOperationMode>(
+        "oac_tree_gui::GraphicsViewOperationMode");
     (void)qRegisterMetaType<const mvvm::INodePort*>("const mvvm::INodePort*");
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)

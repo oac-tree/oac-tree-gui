@@ -33,13 +33,13 @@
 namespace oac_tree_gui
 {
 
-std::string DomainEventToStringVisitor::operator()(const std::monostate &event) const
+std::string DomainEventToStringVisitor::operator()(const std::monostate& event) const
 {
   (void)event;
   return {"monostate"};
 }
 
-std::string DomainEventToStringVisitor::operator()(const InstructionStateUpdatedEvent &event) const
+std::string DomainEventToStringVisitor::operator()(const InstructionStateUpdatedEvent& event) const
 {
   std::ostringstream ostr;
   ostr << "InstructionStateUpdated"
@@ -48,7 +48,7 @@ std::string DomainEventToStringVisitor::operator()(const InstructionStateUpdated
   return ostr.str();
 }
 
-std::string DomainEventToStringVisitor::operator()(const VariableUpdatedEvent &event) const
+std::string DomainEventToStringVisitor::operator()(const VariableUpdatedEvent& event) const
 {
   std::ostringstream ostr;
   ostr << std::string("VariableUpdatedEvent") << " " << ::sup::dto::PrintAnyValue(event.value);
@@ -56,7 +56,7 @@ std::string DomainEventToStringVisitor::operator()(const VariableUpdatedEvent &e
   return ostr.str();
 }
 
-std::string DomainEventToStringVisitor::operator()(const LogEvent &event) const
+std::string DomainEventToStringVisitor::operator()(const LogEvent& event) const
 {
   std::ostringstream ostr;
   ostr << std::string("LogEvent") << " " << ::oac_tree_gui::ToString(event.severity);
@@ -64,12 +64,12 @@ std::string DomainEventToStringVisitor::operator()(const LogEvent &event) const
   return ostr.str();
 }
 
-std::string DomainEventToStringVisitor::operator()(const JobStateChangedEvent &event) const
+std::string DomainEventToStringVisitor::operator()(const JobStateChangedEvent& event) const
 {
   return std::string("JobStateChanged") + " " + ::sup::oac_tree::ToString(event.state);
 }
 
-std::string DomainEventToStringVisitor::operator()(const ActiveInstructionChangedEvent &event) const
+std::string DomainEventToStringVisitor::operator()(const ActiveInstructionChangedEvent& event) const
 {
   std::ostringstream ostr;
   ostr << std::string("ActiveInstructionChanged") << " size: " << event.instr_idx.size()
@@ -81,14 +81,14 @@ std::string DomainEventToStringVisitor::operator()(const ActiveInstructionChange
   return ostr.str();
 }
 
-std::string DomainEventToStringVisitor::operator()(const BreakpointHitEvent &event) const
+std::string DomainEventToStringVisitor::operator()(const BreakpointHitEvent& event) const
 {
   std::ostringstream ostr;
   ostr << std::string("BreakpointHitEvent") << " index: " << event.index;
   return ostr.str();
 }
 
-active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::InstructionInfo &info)
+active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::InstructionInfo& info)
 {
   auto parent_indices = sup::oac_tree::utils::GetParentIndices(info);
   return sup::oac_tree::AncestorsActiveFilter{parent_indices};
@@ -96,12 +96,12 @@ active_filter_t CreateInstructionAncestorFilter(const sup::oac_tree::Instruction
 
 active_filter_t CreateInstructionMuteAllFilter()
 {
-  return [](const auto &) { return std::set<sup::dto::uint32>(); };
+  return [](const auto&) { return std::set<sup::dto::uint32>(); };
 }
 
 active_filter_t CreateInstructionIdentityFilter()
 {
-  return [](const auto &indices) { return indices; };
+  return [](const auto& indices) { return indices; };
 }
 
 }  // namespace oac_tree_gui

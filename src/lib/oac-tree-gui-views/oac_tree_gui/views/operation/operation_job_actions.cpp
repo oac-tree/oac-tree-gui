@@ -31,7 +31,7 @@
 namespace oac_tree_gui
 {
 
-OperationJobActions::OperationJobActions(QObject *parent_object)
+OperationJobActions::OperationJobActions(QObject* parent_object)
     : QObject(parent_object)
     , m_submit_procedure_menu(CreateSubmitProcedureMenu())
     , m_import_action(new QAction(this))
@@ -73,7 +73,7 @@ OperationJobActions::OperationJobActions(QObject *parent_object)
   m_action_map.Add(ActionKey::kConnect, m_connect_to_remote_action);
 }
 
-QList<QAction *> OperationJobActions::GetActions(const std::vector<ActionKey> &action_keys) const
+QList<QAction*> OperationJobActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }

@@ -42,7 +42,7 @@ QStringList GetColumnNames()
 namespace oac_tree_gui
 {
 
-JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent)
+JobLogViewModel::JobLogViewModel(JobLog* job_log, QObject* parent)
     : QAbstractTableModel(parent), m_job_log(job_log)
 {
   if (m_job_log)
@@ -52,7 +52,7 @@ JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent)
   }
 }
 
-void JobLogViewModel::SetLog(JobLog *job_log)
+void JobLogViewModel::SetLog(JobLog* job_log)
 {
   if (m_job_log == job_log)
   {
@@ -75,17 +75,17 @@ void JobLogViewModel::SetLog(JobLog *job_log)
   }
 }
 
-int JobLogViewModel::rowCount(const QModelIndex &parent) const
+int JobLogViewModel::rowCount(const QModelIndex& parent) const
 {
   return parent.isValid() ? 0 : m_row_count;
 }
 
-int JobLogViewModel::columnCount(const QModelIndex &parent) const
+int JobLogViewModel::columnCount(const QModelIndex& parent) const
 {
   return parent.isValid() ? 0 : kColumnCount;
 }
 
-QVariant JobLogViewModel::data(const QModelIndex &index, int role) const
+QVariant JobLogViewModel::data(const QModelIndex& index, int role) const
 {
   if (!index.isValid())
   {
@@ -99,7 +99,7 @@ QVariant JobLogViewModel::data(const QModelIndex &index, int role) const
 
   if (role == Qt::DisplayRole)
   {
-    const auto &record = m_job_log->At(index.row());
+    const auto& record = m_job_log->At(index.row());
 
     switch (index.column())
     {
@@ -137,7 +137,7 @@ QVariant JobLogViewModel::headerData(int section, Qt::Orientation orientation, i
   return {};
 }
 
-Qt::ItemFlags JobLogViewModel::flags(const QModelIndex &index) const
+Qt::ItemFlags JobLogViewModel::flags(const QModelIndex& index) const
 {
   if (!index.isValid())
   {

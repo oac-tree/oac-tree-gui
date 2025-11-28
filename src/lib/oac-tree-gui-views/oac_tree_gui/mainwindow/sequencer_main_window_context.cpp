@@ -25,8 +25,8 @@
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/domain/domain_plugin_service.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window.h>
-#include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
+#include <oac_tree_gui/model/sequencer_settings_model.h>
 
 #include <sup/gui/app/default_command_service.h>
 #include <sup/gui/mainwindow/settings_helper.h>
@@ -57,24 +57,24 @@ void SequencerMainWindowContext::LoadPlugins()
   m_domain_plugin_service->LoadPluginFiles(plugin_file_names);
 }
 
-SequencerSettingsModel &SequencerMainWindowContext::GetSettingsModel()
+SequencerSettingsModel& SequencerMainWindowContext::GetSettingsModel()
 {
   return *m_settings;
 }
 
 SequencerMainWindowContext::~SequencerMainWindowContext() = default;
 
-sup::gui::IAppCommandService &SequencerMainWindowContext::GetCommandService()
+sup::gui::IAppCommandService& SequencerMainWindowContext::GetCommandService()
 {
   return *m_command_service;
 }
 
-DomainObjectTypeRegistry &SequencerMainWindowContext::GetObjectTypeRegistry()
+DomainObjectTypeRegistry& SequencerMainWindowContext::GetObjectTypeRegistry()
 {
   return *m_object_type_registry;
 }
 
-IDomainPluginService &SequencerMainWindowContext::GetDomainPluginService()
+IDomainPluginService& SequencerMainWindowContext::GetDomainPluginService()
 {
   return *m_domain_plugin_service;
 }
@@ -104,11 +104,11 @@ std::unique_ptr<IDomainPluginService> SequencerMainWindowContext::CreateDomainPl
       *m_domain_library_loader, *m_object_type_registry);
 }
 
-SequencerMainWindowContext *FindSequencerMainWindowContext()
+SequencerMainWindowContext* FindSequencerMainWindowContext()
 {
   for (auto widget : qApp->topLevelWidgets())
   {
-    if (auto result = qobject_cast<SequencerMainWindow *>(widget); result)
+    if (auto result = qobject_cast<SequencerMainWindow*>(widget); result)
     {
       return &result->GetContext();
     }

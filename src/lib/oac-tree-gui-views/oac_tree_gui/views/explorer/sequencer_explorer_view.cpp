@@ -46,8 +46,8 @@ const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 namespace oac_tree_gui
 {
 
-SequencerExplorerView::SequencerExplorerView(sup::gui::IAppCommandService &command_service,
-                                             QWidget *parent_widget)
+SequencerExplorerView::SequencerExplorerView(sup::gui::IAppCommandService& command_service,
+                                             QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_explorer_panel(new ExplorerPanel(command_service))
     , m_xml_view(new sup::gui::CodeView)
@@ -75,13 +75,13 @@ SequencerExplorerView::~SequencerExplorerView()
 }
 
 //! Sets the model.
-void SequencerExplorerView::SetModel(SequencerModel *model)
+void SequencerExplorerView::SetModel(SequencerModel* model)
 {
   m_model = model;
   m_explorer_panel->SetModel(model);
 }
 
-void SequencerExplorerView::ImportProcedure(const QString &file_name)
+void SequencerExplorerView::ImportProcedure(const QString& file_name)
 {
   ProcedureActionHandler handler;
 
@@ -92,7 +92,7 @@ void SequencerExplorerView::ImportProcedure(const QString &file_name)
   }
 }
 
-void SequencerExplorerView::ShowFileContent(const QString &file_name)
+void SequencerExplorerView::ShowFileContent(const QString& file_name)
 {
   if (mvvm::utils::IsBinaryFile(file_name.toStdString()))
   {

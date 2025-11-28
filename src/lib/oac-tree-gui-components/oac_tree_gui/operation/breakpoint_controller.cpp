@@ -30,17 +30,17 @@ namespace oac_tree_gui
 
 BreakpointController::BreakpointController() = default;
 
-void BreakpointController::SaveBreakpoints(const ProcedureItem &procedure_item)
+void BreakpointController::SaveBreakpoints(const ProcedureItem& procedure_item)
 {
   m_breakpoints = CollectBreakpointInfo(*procedure_item.GetInstructionContainer());
 }
 
-void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
+void BreakpointController::RestoreBreakpoints(ProcedureItem& procedure_item)
 {
   SetBreakpointsFromInfo(m_breakpoints, *procedure_item.GetInstructionContainer());
 }
 
-void BreakpointController::SetAsActiveBreakpoint(InstructionItem *instruction)
+void BreakpointController::SetAsActiveBreakpoint(InstructionItem* instruction)
 {
   ResetCurrentActiveBreakpoint();
 

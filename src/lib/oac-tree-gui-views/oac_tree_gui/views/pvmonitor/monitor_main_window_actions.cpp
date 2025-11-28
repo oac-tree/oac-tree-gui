@@ -36,8 +36,8 @@
 namespace oac_tree_gui
 {
 
-MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject *project,
-                                                   QMainWindow *main_window)
+MonitorMainWindowActions::MonitorMainWindowActions(mvvm::IProject* project,
+                                                   QMainWindow* main_window)
     : QObject(main_window), m_project_handler(std::make_unique<mvvm::ProjectHandler>(project))
 {
   CreateActions(main_window);
@@ -56,7 +56,7 @@ void MonitorMainWindowActions::UpdateProjectNames()
   m_project_handler->UpdateNames();
 }
 
-void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
+void MonitorMainWindowActions::CreateActions(QMainWindow* mainwindow)
 {
   m_exit_action = new QAction("E&xit Application", this);
   m_exit_action->setShortcuts(QKeySequence::Quit);
@@ -64,7 +64,7 @@ void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
   connect(m_exit_action, &QAction::triggered, mainwindow, &QMainWindow::close);
 }
 
-void MonitorMainWindowActions::SetupMenus(QMenuBar *menu_bar)
+void MonitorMainWindowActions::SetupMenus(QMenuBar* menu_bar)
 {
   auto file_menu = menu_bar->addMenu(sup::gui::constants::kFileMenu);
 

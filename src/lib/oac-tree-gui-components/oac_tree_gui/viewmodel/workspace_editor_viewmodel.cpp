@@ -28,7 +28,7 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
+WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel* model, QObject* parent)
     : ViewModel(parent)
 {
   SetController(
@@ -36,7 +36,7 @@ WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, Q
                                                                                              this));
 }
 
-int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const
+int WorkspaceEditorViewModel::columnCount(const QModelIndex& parent) const
 {
   (void)parent;
   return 3;  // Name, Value, TypeName

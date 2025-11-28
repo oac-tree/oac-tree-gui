@@ -38,8 +38,8 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(IWorkspaceEditorActionHandler *handler,
-                                               QObject *parent_object)
+WorkspaceEditorActions::WorkspaceEditorActions(IWorkspaceEditorActionHandler* handler,
+                                               QObject* parent_object)
     : QObject(parent_object)
     , m_action_handler(handler)
     , m_add_variable_menu(CreateInsertAfterMenu())
@@ -49,12 +49,12 @@ WorkspaceEditorActions::WorkspaceEditorActions(IWorkspaceEditorActionHandler *ha
 
 WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 
-QList<QAction *> WorkspaceEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
+QList<QAction*> WorkspaceEditorActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
 
-void WorkspaceEditorActions::SetupMenu(QMenu &menu)
+void WorkspaceEditorActions::SetupMenu(QMenu& menu)
 {
   menu.addAction(m_add_variable_action);
   menu.addAction(m_remove_variable_action);
@@ -71,7 +71,7 @@ void WorkspaceEditorActions::SetupMenu(QMenu &menu)
 }
 
 void WorkspaceEditorActions::RegisterActionsForContext(
-    const sup::gui::AppCommandContext &context, sup::gui::IAppCommandService &command_service)
+    const sup::gui::AppCommandContext& context, sup::gui::IAppCommandService& command_service)
 {
   command_service.AddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   command_service.AddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
@@ -131,7 +131,7 @@ std::unique_ptr<QMenu> WorkspaceEditorActions::CreateInsertAfterMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  for (const auto &name : oac_tree_gui::GetDomainVariableNames())
+  for (const auto& name : oac_tree_gui::GetDomainVariableNames())
   {
     auto action = result->addAction(QString::fromStdString(name));
     auto on_action = [this, name]() { m_action_handler->AddVariable(name); };

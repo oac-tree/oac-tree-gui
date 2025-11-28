@@ -37,7 +37,7 @@ const QString kCollapsibleListSettingName = "ExplorerPanel/collapsible_list";
 
 namespace oac_tree_gui
 {
-ExplorerPanel::ExplorerPanel(sup::gui::IAppCommandService &command_service, QWidget *parent_widget)
+ExplorerPanel::ExplorerPanel(sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_file_tree_view(new FileTreeView)
@@ -59,8 +59,7 @@ ExplorerPanel::ExplorerPanel(sup::gui::IAppCommandService &command_service, QWid
   layout->setSpacing(0);
   layout->addWidget(m_stack_widget);
 
-  connect(m_file_tree_view, &FileTreeView::FileTreeClicked, this,
-          &ExplorerPanel::FileTreeClicked);
+  connect(m_file_tree_view, &FileTreeView::FileTreeClicked, this, &ExplorerPanel::FileTreeClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::ProcedureFileDoubleClicked);
 
@@ -72,7 +71,7 @@ ExplorerPanel::~ExplorerPanel()
   WriteSettings();
 }
 
-void ExplorerPanel::SetModel(SequencerModel *model)
+void ExplorerPanel::SetModel(SequencerModel* model)
 {
   m_procedure_list_view->SetModel(model);
 }

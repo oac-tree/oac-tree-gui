@@ -18,13 +18,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/log_event.h"
+
 #include <gtest/gtest.h>
 
 #include <QDate>
 #include <QDateTime>
 #include <QTime>
-
-#include "oac_tree_gui/jobsystem/log_event.h"
 
 namespace oac_tree_gui::test
 {

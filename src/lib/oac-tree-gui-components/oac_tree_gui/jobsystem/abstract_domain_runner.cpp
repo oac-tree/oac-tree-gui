@@ -97,7 +97,7 @@ void AbstractDomainRunner::RemoveBreakpoint(std::size_t instr_idx)
   m_domain_job->RemoveBreakpoint(instr_idx);
 }
 
-sup::oac_tree::IJobInfoIO *AbstractDomainRunner::GetJobInfoIO()
+sup::oac_tree::IJobInfoIO* AbstractDomainRunner::GetJobInfoIO()
 {
   return m_domain_job_service->GetJobInfoIO();
 }
@@ -140,7 +140,7 @@ std::size_t AbstractDomainRunner::GetEventCount() const
   return m_domain_job_service->GetEventCount();
 }
 
-const sup::oac_tree::JobInfo &AbstractDomainRunner::GetJobInfo() const
+const sup::oac_tree::JobInfo& AbstractDomainRunner::GetJobInfo() const
 {
   ValidateJob();
 

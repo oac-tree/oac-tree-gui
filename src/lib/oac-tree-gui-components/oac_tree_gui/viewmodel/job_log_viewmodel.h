@@ -37,19 +37,19 @@ class JobLogViewModel : public QAbstractTableModel
   Q_OBJECT
 
 public:
-  explicit JobLogViewModel(JobLog *job_log, QObject *parent = nullptr);
+  explicit JobLogViewModel(JobLog* job_log, QObject* parent = nullptr);
 
-  void SetLog(JobLog *job_log);
+  void SetLog(JobLog* job_log);
 
-  int rowCount(const QModelIndex &parent) const override;
+  int rowCount(const QModelIndex& parent) const override;
 
-  int columnCount(const QModelIndex &parent) const override;
+  int columnCount(const QModelIndex& parent) const override;
 
-  QVariant data(const QModelIndex &index, int role) const override;
+  QVariant data(const QModelIndex& index, int role) const override;
 
   QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
-  Qt::ItemFlags flags(const QModelIndex &index) const override;
+  Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:
   /**
@@ -80,7 +80,7 @@ private:
   void SetDisconnected();
 
   //!< current container with LogEvents
-  JobLog *m_job_log{nullptr};
+  JobLog* m_job_log{nullptr};
 
   //!< Number of rows shown by the table. May differ from the actual number of LogEvents in
   //!< the container.

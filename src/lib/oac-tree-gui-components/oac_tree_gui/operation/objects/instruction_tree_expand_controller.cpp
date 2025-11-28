@@ -27,17 +27,17 @@
 
 #include <sup/gui/components/tree_helper.h>
 
-#include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/providers/viewmodel_iterate_helper.h>
 #include <mvvm/providers/viewmodel_utils.h>
+#include <mvvm/viewmodel/viewmodel.h>
 
 #include <QTreeView>
 
 namespace oac_tree_gui
 {
 
-InstructionTreeExpandController::InstructionTreeExpandController(QTreeView *tree_view,
-                                                                 QObject *parent_object)
+InstructionTreeExpandController::InstructionTreeExpandController(QTreeView* tree_view,
+                                                                 QObject* parent_object)
     : QObject(parent_object), m_tree_view(tree_view)
 {
   connect(tree_view, &QTreeView::collapsed, this,
@@ -49,20 +49,20 @@ InstructionTreeExpandController::InstructionTreeExpandController(QTreeView *tree
 InstructionTreeExpandController::~InstructionTreeExpandController() = default;
 
 void InstructionTreeExpandController::SetInstructionContainer(
-    InstructionContainerItem *instruction_container)
+    InstructionContainerItem* instruction_container)
 {
   m_instruction_container = instruction_container;
 }
 
 void InstructionTreeExpandController::SaveSelectionRequest(
-    const std::vector<InstructionItem *> &instructions)
+    const std::vector<InstructionItem*>& instructions)
 {
   m_selection_preferences = instructions;
 }
 
-std::vector<mvvm::SessionItem *> InstructionTreeExpandController::GetInstructionsToSelect() const
+std::vector<mvvm::SessionItem*> InstructionTreeExpandController::GetInstructionsToSelect() const
 {
-  std::vector<mvvm::SessionItem *> result;
+  std::vector<mvvm::SessionItem*> result;
   result.reserve(m_selection_preferences.size());
   for (auto item : m_selection_preferences)
   {
@@ -72,8 +72,8 @@ std::vector<mvvm::SessionItem *> InstructionTreeExpandController::GetInstruction
   return result;
 }
 
-mvvm::SessionItem *InstructionTreeExpandController::FindVisibleInstruction(
-    const mvvm::SessionItem *item) const
+mvvm::SessionItem* InstructionTreeExpandController::FindVisibleInstruction(
+    const mvvm::SessionItem* item) const
 {
   auto indexes = GetViewModel()->GetIndexOfSessionItem(item);
   if (!indexes.empty())
@@ -92,7 +92,7 @@ void InstructionTreeExpandController::SetTreeViewToInstructionExpandState()
     throw RuntimeException("Instruction container is not initialised");
   }
 
-  auto on_index = [this](const auto &index)
+  auto on_index = [this](const auto& index)
   {
     if (!index.isValid())
     {
@@ -107,9 +107,9 @@ void InstructionTreeExpandController::SetTreeViewToInstructionExpandState()
   IterateFirstColumn(*GetViewModel(), QModelIndex(), on_index);
 }
 
-mvvm::ViewModel *InstructionTreeExpandController::GetViewModel() const
+mvvm::ViewModel* InstructionTreeExpandController::GetViewModel() const
 {
-  auto result = dynamic_cast<mvvm::ViewModel *>(m_tree_view->model());
+  auto result = dynamic_cast<mvvm::ViewModel*>(m_tree_view->model());
 
   if (!result)
   {
@@ -119,7 +119,7 @@ mvvm::ViewModel *InstructionTreeExpandController::GetViewModel() const
   return result;
 }
 
-void InstructionTreeExpandController::OnTreeCollapsedChange(const QModelIndex &index)
+void InstructionTreeExpandController::OnTreeCollapsedChange(const QModelIndex& index)
 {
   if (auto instruction = GetInstruction(index); instruction)
   {
@@ -129,7 +129,7 @@ void InstructionTreeExpandController::OnTreeCollapsedChange(const QModelIndex &i
   emit VisibilityHasChanged();
 }
 
-InstructionItem *InstructionTreeExpandController::GetInstruction(const QModelIndex &index)
+InstructionItem* InstructionTreeExpandController::GetInstruction(const QModelIndex& index)
 {
   return mvvm::utils::GetItemFromView<InstructionItem>(GetViewModel()->itemFromIndex(index));
 }

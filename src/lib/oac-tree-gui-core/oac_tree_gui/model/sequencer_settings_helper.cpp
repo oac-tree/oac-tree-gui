@@ -56,7 +56,7 @@ std::vector<std::string> GetDefaultPluginList()
   return GetBasicPluginList();
 }
 
-std::vector<std::string> FindSharedLibraries(const std::string &dir)
+std::vector<std::string> FindSharedLibraries(const std::string& dir)
 {
   std::vector<std::string> result;
 

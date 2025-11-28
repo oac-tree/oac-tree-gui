@@ -37,8 +37,8 @@
 namespace oac_tree_gui
 {
 
-std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
-    const mvvm::SessionItem *item) const
+std::vector<mvvm::SessionItem*> VariableTableChildrenStrategy::GetChildren(
+    const mvvm::SessionItem* item) const
 {
   // workspace shows all its variables
   if (item->GetType() == mvvm::GetTypeName<WorkspaceItem>())
@@ -62,23 +62,23 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
       mvvm::GetTypeName<sup::gui::AnyValueStructItem>(),
       mvvm::GetTypeName<sup::gui::AnyValueArrayItem>()};
 
-  std::vector<mvvm::SessionItem *> result;
+  std::vector<mvvm::SessionItem*> result;
   auto children = item->GetAllItems();
   auto is_correct_type = [](auto child)
   { return mvvm::utils::Contains(allowed_variable_children_types, child->GetType()); };
   (void)std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
-               is_correct_type);
+                     is_correct_type);
   return result;
 }
 
-std::vector<mvvm::SessionItem *> InstructionNodeChildrenStrategy::GetChildren(
-    const mvvm::SessionItem *item) const
+std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
+    const mvvm::SessionItem* item) const
 {
-  if (auto instruction_item = dynamic_cast<const InstructionItem *>(item); instruction_item)
+  if (auto instruction_item = dynamic_cast<const InstructionItem*>(item); instruction_item)
   {
     if (!IsCollapsed(*instruction_item))
     {
-      std::vector<mvvm::SessionItem *> result;
+      std::vector<mvvm::SessionItem*> result;
       auto children = instruction_item->GetInstructions();
       (void)std::copy(children.begin(), children.end(), std::back_inserter(result));
       return result;

@@ -24,8 +24,8 @@
 
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
-#include <oac_tree_gui/viewmodel/toolkit_viewmodel.h>
 #include <oac_tree_gui/mainwindow/context_helper.h>
+#include <oac_tree_gui/viewmodel/toolkit_viewmodel.h>
 
 #include <mvvm/viewmodel/filter_name_viewmodel.h>
 

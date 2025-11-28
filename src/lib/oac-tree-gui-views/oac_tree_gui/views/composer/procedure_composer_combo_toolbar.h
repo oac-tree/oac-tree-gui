@@ -46,7 +46,7 @@ public:
   using ProceduresCallback = std::function<std::vector<ProcedureItem*>()>;
 
   explicit ProcedureComposerComboToolBar(const ProceduresCallback& procedure_callback,
-                                              QWidget* parent_widget = nullptr);
+                                         QWidget* parent_widget = nullptr);
   ~ProcedureComposerComboToolBar() override;
 
   /**

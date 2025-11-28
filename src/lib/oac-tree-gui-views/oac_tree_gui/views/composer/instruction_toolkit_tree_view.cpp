@@ -54,7 +54,7 @@ QPixmap CreatePixmap()
 namespace oac_tree_gui
 {
 
-InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent_widget)
+InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget* parent_widget)
     : QTreeView(parent_widget)
 {
   auto on_double_click = [this](auto index)

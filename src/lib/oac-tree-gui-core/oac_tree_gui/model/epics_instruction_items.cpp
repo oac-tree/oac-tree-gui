@@ -29,7 +29,7 @@
 
 namespace
 {
-void InitDefaultAnyValue(mvvm::CompoundItem &item)
+void InitDefaultAnyValue(mvvm::CompoundItem& item)
 {
   item.RegisterTag(sup::gui::CreateAnyValueTag(oac_tree_gui::itemconstants::kAnyValueTag), true);
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
@@ -46,7 +46,7 @@ namespace oac_tree_gui
 // EpicsReadInstructionItem
 // ----------------------------------------------------------------------------
 
-EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string &instruction_type)
+EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string& instruction_type)
     : UniversalInstructionItem(instruction_type)
 {
   SetTimeout(1.0);
@@ -62,7 +62,7 @@ std::string EpicsReadInstructionItem::GetChannel() const
   return Property<std::string>(domainconstants::kChannelAttribute);
 }
 
-void EpicsReadInstructionItem::SetChannel(const std::string &value)
+void EpicsReadInstructionItem::SetChannel(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kChannelAttribute, value);
 }
@@ -72,7 +72,7 @@ std::string EpicsReadInstructionItem::GetOutput() const
   return Property<std::string>(domainconstants::kOutputVariableNameAttribute);
 }
 
-void EpicsReadInstructionItem::SetOutput(const std::string &value)
+void EpicsReadInstructionItem::SetOutput(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kOutputVariableNameAttribute, value);
 }
@@ -91,7 +91,7 @@ void EpicsReadInstructionItem::SetTimeout(double value)
 // EpicsWriteInstructionItem
 // ----------------------------------------------------------------------------
 
-EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruction_type)
+EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string& instruction_type)
     : UniversalInstructionItem(instruction_type)
 {
   SetTimeout(1.0);
@@ -108,7 +108,7 @@ std::string EpicsWriteInstructionItem::GetVariableName() const
   return Property<std::string>(domainconstants::kGenericVariableNameAttribute);
 }
 
-void EpicsWriteInstructionItem::SetVariableName(const std::string &value)
+void EpicsWriteInstructionItem::SetVariableName(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kGenericVariableNameAttribute, value);
 }
@@ -118,7 +118,7 @@ std::string EpicsWriteInstructionItem::GetChannel() const
   return Property<std::string>(domainconstants::kChannelAttribute);
 }
 
-void EpicsWriteInstructionItem::SetChannel(const std::string &value)
+void EpicsWriteInstructionItem::SetChannel(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kChannelAttribute, value);
 }
@@ -209,7 +209,7 @@ std::string RPCClientInstruction::GetService() const
   return Property<std::string>(domainconstants::kServiceAttribute);
 }
 
-void RPCClientInstruction::SetService(const std::string &value)
+void RPCClientInstruction::SetService(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kServiceAttribute, value);
 }
@@ -219,7 +219,7 @@ std::string RPCClientInstruction::GetRequestVar() const
   return Property<std::string>(domainconstants::kRequestAttribute);
 }
 
-void RPCClientInstruction::SetRequestVar(const std::string &value)
+void RPCClientInstruction::SetRequestVar(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kRequestAttribute, value);
 }
@@ -239,7 +239,7 @@ std::string RPCClientInstruction::GetOutput() const
   return Property<std::string>(domainconstants::kOutputVariableNameAttribute);
 }
 
-void RPCClientInstruction::SetOutput(const std::string &value)
+void RPCClientInstruction::SetOutput(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kOutputVariableNameAttribute, value);
 }
@@ -263,7 +263,7 @@ std::string LogInstructionItem::GetMessage() const
   return Property<std::string>(domainconstants::kMessageAttribute);
 }
 
-void LogInstructionItem::SetMessage(const std::string &value)
+void LogInstructionItem::SetMessage(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kMessageAttribute, value);
 }
@@ -273,7 +273,7 @@ std::string LogInstructionItem::GetInput() const
   return Property<std::string>(domainconstants::kInputVariableNameAttribute);
 }
 
-void LogInstructionItem::SetInput(const std::string &value)
+void LogInstructionItem::SetInput(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kInputVariableNameAttribute, value);
 }
@@ -283,7 +283,7 @@ std::string LogInstructionItem::GetSeverity() const
   return Property<std::string>(domainconstants::kSeverityAttribute);
 }
 
-void LogInstructionItem::SetSeverity(const std::string &value)
+void LogInstructionItem::SetSeverity(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kSeverityAttribute, value);
 }

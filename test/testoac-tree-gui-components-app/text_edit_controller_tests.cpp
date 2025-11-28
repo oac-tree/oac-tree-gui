@@ -30,8 +30,8 @@
 #include <gtest/gtest.h>
 
 #include <QCheckBox>
-#include <QSignalSpy>
 #include <QPlainTextEdit>
+#include <QSignalSpy>
 
 namespace oac_tree_gui::test
 {

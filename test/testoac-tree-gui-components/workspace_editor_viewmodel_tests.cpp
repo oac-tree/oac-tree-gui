@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/workspace_editor_viewmodel.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
@@ -35,8 +37,6 @@
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
-
-#include "oac_tree_gui/viewmodel/workspace_editor_viewmodel.h"
 
 //! Tests for WorkspaceEditorViewModel class.
 

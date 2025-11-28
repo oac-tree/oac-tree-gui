@@ -19,13 +19,12 @@
  *****************************************************************************/
 
 #include "mvvm/utils/file_utils.h"
+#include "oac_tree_gui/mainwindow/main_window_helper.h"
 
 #include <mvvm/test/test_helper.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <testutils/folder_test.h>
-
-#include "oac_tree_gui/mainwindow/main_window_helper.h"
 
 //! Testing methods from main_window_helper.h
 

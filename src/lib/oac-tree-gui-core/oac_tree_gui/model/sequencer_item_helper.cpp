@@ -45,7 +45,7 @@ std::vector<std::string> GetDomainDecoratorNames()
   return result;
 }
 
-mvvm::SessionItem *GetPropertyItem(const mvvm::SessionItem &parent, const std::string &tag)
+mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag)
 {
   return mvvm::utils::HasTag(parent, tag) ? parent.GetItem(tag) : nullptr;
 }
@@ -55,38 +55,38 @@ mvvm::SessionItem *GetPropertyItem(const mvvm::SessionItem &parent, const std::s
 namespace oac_tree_gui
 {
 
-bool IsCompoundInstruction(const InstructionItem *instruction)
+bool IsCompoundInstruction(const InstructionItem* instruction)
 {
   return instruction->GetTaggedItems()->HasTag(itemconstants::kChildInstructions);
 }
 
-bool IsDecoratorInstruction(const InstructionItem *instruction)
+bool IsDecoratorInstruction(const InstructionItem* instruction)
 {
   static const std::vector<std::string> domain_names = GetDomainDecoratorNames();
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
 }
 
-mvvm::SessionItem *GetNameItem(const mvvm::SessionItem &parent)
+mvvm::SessionItem* GetNameItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, itemconstants::kName);
 }
 
-mvvm::SessionItem *GetStatusItem(const mvvm::SessionItem &parent)
+mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, itemconstants::kStatus);
 }
 
-mvvm::SessionItem *GetBreakpointItem(const mvvm::SessionItem &parent)
+mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, itemconstants::kBreakpoint);
 }
 
-mvvm::SessionItem *GetIsAvailableItem(const mvvm::SessionItem &parent)
+mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, itemconstants::kIsAvailable);
 }
 
-mvvm::SessionItem *GetChannelItem(const mvvm::SessionItem &parent)
+mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, domainconstants::kChannelAttribute);
 }

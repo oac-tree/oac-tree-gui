@@ -70,7 +70,7 @@ GraphicsSceneStyle CreateDefaulGraphicsSceneStyle(mvvm::ColorFlavor color_flavor
                                     : CreateDefaultStyleForLightThemes();
 }
 
-const GraphicsSceneStyle &GetDefaultGraphicsSceneStyle()
+const GraphicsSceneStyle& GetDefaultGraphicsSceneStyle()
 {
   static const GraphicsSceneStyle kStyle = CreateDefaulGraphicsSceneStyle(mvvm::ColorFlavor::kAuto);
   return kStyle;

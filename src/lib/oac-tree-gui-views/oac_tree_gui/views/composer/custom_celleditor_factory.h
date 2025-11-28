@@ -23,10 +23,9 @@
 
 #include <mvvm/editors/default_editor_factory.h>
 
+#include <QStringList>
 #include <functional>
 #include <string>
-
-#include <QStringList>
 
 namespace mvvm
 {
@@ -67,7 +66,6 @@ bool IsVariableNameRelatedProperty(const mvvm::SessionItem& item);
  * @brief Checks if the given index is related to the variable name property.
  */
 bool IsVariableNameRelatedCell(const QModelIndex& index);
-
 
 }  // namespace oac_tree_gui
 

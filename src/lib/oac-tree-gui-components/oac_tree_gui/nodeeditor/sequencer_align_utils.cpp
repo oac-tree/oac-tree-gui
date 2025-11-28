@@ -34,8 +34,8 @@
 
 namespace
 {
-oac_tree_gui::algorithm::AlignNode *PopulateNode(const oac_tree_gui::InstructionItem &item,
-                                                 oac_tree_gui::algorithm::AlignNode &node)
+oac_tree_gui::algorithm::AlignNode* PopulateNode(const oac_tree_gui::InstructionItem& item,
+                                                 oac_tree_gui::algorithm::AlignNode& node)
 {
   auto child = node.Add<oac_tree_gui::algorithm::AlignNode>();
   child->SetIdentifier(item.GetIdentifier());
@@ -47,7 +47,7 @@ oac_tree_gui::algorithm::AlignNode *PopulateNode(const oac_tree_gui::Instruction
 namespace oac_tree_gui::algorithm
 {
 
-std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem *> instructions)
+std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem*> instructions)
 {
   auto result = std::make_unique<AlignNode>();
 
@@ -59,15 +59,15 @@ std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem *> instru
   return result;
 }
 
-std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *instruction)
+std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* instruction)
 {
   auto result = std::make_unique<AlignNode>();
   result->SetIdentifier(instruction->GetIdentifier());
 
   struct Data
   {
-    const InstructionItem *instruction{nullptr};
-    AlignNode *parent_node{nullptr};
+    const InstructionItem* instruction{nullptr};
+    AlignNode* parent_node{nullptr};
   };
 
   std::stack<Data> node_stack;
@@ -94,9 +94,9 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *instruction)
   return result;
 }
 
-void TranslatePositions(const QPointF &reference, AlignNode &root_node)
+void TranslatePositions(const QPointF& reference, AlignNode& root_node)
 {
-  std::stack<AlignNode *> node_stack;
+  std::stack<AlignNode*> node_stack;
   node_stack.push(&root_node);
 
   double scale_x = GetAlignmentGridWidth() / root_node.GetNodeSize();
@@ -123,7 +123,7 @@ void TranslatePositions(const QPointF &reference, AlignNode &root_node)
   }
 }
 
-void UpdatePositions(const AlignNode *node, std::vector<InstructionItem *> instructions)
+void UpdatePositions(const AlignNode* node, std::vector<InstructionItem*> instructions)
 {
   for (auto child : instructions)
   {
@@ -131,7 +131,7 @@ void UpdatePositions(const AlignNode *node, std::vector<InstructionItem *> instr
   }
 }
 
-void UpdatePositions(const AlignNode *node, InstructionItem *item)
+void UpdatePositions(const AlignNode* node, InstructionItem* item)
 {
   // Current implementation relies on the instruction identifier, that has been stored
   // in AlignNode on previous steps (while building AlignNodes from items). Identifier
@@ -145,7 +145,7 @@ void UpdatePositions(const AlignNode *node, InstructionItem *item)
     throw std::runtime_error("Item must be the part of some model");
   }
 
-  std::stack<const AlignNode *> node_stack;
+  std::stack<const AlignNode*> node_stack;
   node_stack.push(node);
 
   while (!node_stack.empty())
@@ -154,7 +154,7 @@ void UpdatePositions(const AlignNode *node, InstructionItem *item)
     node_stack.pop();
 
     // instructions are found using identifier stored on board of node
-    if (auto instruction = dynamic_cast<InstructionItem *>(model->FindItem(node->GetIdentifier()));
+    if (auto instruction = dynamic_cast<InstructionItem*>(model->FindItem(node->GetIdentifier()));
         instruction)
     {
       instruction->SetX(node->GetX());
@@ -170,7 +170,7 @@ void UpdatePositions(const AlignNode *node, InstructionItem *item)
   }
 }
 
-void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instruction)
+void AlignInstructionTreeWalker(const QPointF& reference, InstructionItem* instruction)
 {
   auto align_tree = CreateAlignTree(instruction);
   AlignNodes(*align_tree);
@@ -178,8 +178,8 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instr
   UpdatePositions(align_tree.get(), instruction);
 }
 
-void AlignInstructionTreeWalker(const QPointF &reference,
-                                std::vector<InstructionItem *> instructions)
+void AlignInstructionTreeWalker(const QPointF& reference,
+                                std::vector<InstructionItem*> instructions)
 {
   auto align_tree = CreateAlignTree(instructions);
   AlignNodes(*align_tree);
@@ -187,13 +187,13 @@ void AlignInstructionTreeWalker(const QPointF &reference,
   UpdatePositions(align_tree.get(), instructions);
 }
 
-bool RequiresInitialAlignment(const InstructionItem &instruction)
+bool RequiresInitialAlignment(const InstructionItem& instruction)
 {
   // very simple check but seems to be enough
   return (instruction.GetX() == 0.0) && (instruction.GetY() == 0.0);
 }
 
-bool RequiresInitialAlignment(const std::vector<InstructionItem *> &instructions)
+bool RequiresInitialAlignment(const std::vector<InstructionItem*>& instructions)
 {
   return std::all_of(instructions.begin(), instructions.end(),
                      [](auto it) { return RequiresInitialAlignment(*it); });

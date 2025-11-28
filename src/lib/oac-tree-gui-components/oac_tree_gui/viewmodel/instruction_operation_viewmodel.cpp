@@ -25,9 +25,9 @@
 
 #include <mvvm/providers/abstract_row_strategy.h>
 #include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/providers/viewitem.h>
 #include <mvvm/providers/viewitem_factory.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
-#include <mvvm/providers/viewitem.h>
 
 namespace
 {
@@ -35,7 +35,7 @@ namespace
 /**
  * @brief Returns text representing instruction.
  */
-std::string GetText(const oac_tree_gui::InstructionItem &item)
+std::string GetText(const oac_tree_gui::InstructionItem& item)
 {
   return item.GetName().empty() ? item.GetDisplayName() : item.GetName();
 }
@@ -57,11 +57,11 @@ public:
   }
 
 private:
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem* item) override
   {
     std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
-    if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
+    if (auto instruction = dynamic_cast<InstructionItem*>(item); instruction)
     {
       result.emplace_back(mvvm::CreateLabelViewItem(instruction, GetText(*instruction)));
       result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
@@ -77,8 +77,8 @@ private:
   }
 };
 
-InstructionOperationViewModel::InstructionOperationViewModel(mvvm::ISessionModel *model,
-                                                             QObject *parent_object)
+InstructionOperationViewModel::InstructionOperationViewModel(mvvm::ISessionModel* model,
+                                                             QObject* parent_object)
     : ViewModel(parent_object)
 {
   SetController(

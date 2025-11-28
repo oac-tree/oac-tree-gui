@@ -36,7 +36,7 @@
 namespace oac_tree_gui
 {
 
-OperationJobPanel::OperationJobPanel(QWidget *parent_widget)
+OperationJobPanel::OperationJobPanel(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_job_list_widget(new JobListWidget)
@@ -61,30 +61,30 @@ OperationJobPanel::OperationJobPanel(QWidget *parent_widget)
 
 OperationJobPanel::~OperationJobPanel() = default;
 
-void OperationJobPanel::SetModels(ApplicationModels *models)
+void OperationJobPanel::SetModels(ApplicationModels* models)
 {
   m_models = models;
   m_job_list_widget->SetJobModel(models->GetJobModel());
 }
 
-JobItem *OperationJobPanel::GetSelectedJob() const
+JobItem* OperationJobPanel::GetSelectedJob() const
 {
   return m_job_list_widget->GetSelectedJob();
 }
 
-void OperationJobPanel::SetSelectedJob(JobItem *job_item)
+void OperationJobPanel::SetSelectedJob(JobItem* job_item)
 {
   m_job_list_widget->SetSelectedJob(job_item);
 }
 
-QList<QAction *> OperationJobPanel::GetSequencerMonitorViewActions()
+QList<QAction*> OperationJobPanel::GetSequencerMonitorViewActions()
 {
   using ActionKey = OperationJobActions::ActionKey;
   return m_job_actions->GetActions(
       {ActionKey::kSubmitJob, ActionKey::kRegenerateJob, ActionKey::kRemoveJob});
 }
 
-QList<QAction *> OperationJobPanel::GetOperationMonitorViewActions()
+QList<QAction*> OperationJobPanel::GetOperationMonitorViewActions()
 {
   using ActionKey = OperationJobActions::ActionKey;
   return m_job_actions->GetActions({ActionKey::kImportProcedure, ActionKey::kConnect,
@@ -108,7 +108,7 @@ void OperationJobPanel::SetupConnections()
           &OperationJobPanel::ConnectRequest);
 }
 
-void OperationJobPanel::OnJobSelectedIntern(JobItem *item)
+void OperationJobPanel::OnJobSelectedIntern(JobItem* item)
 {
   m_job_property_widget->SetJob(item);
   emit JobSelected(item);

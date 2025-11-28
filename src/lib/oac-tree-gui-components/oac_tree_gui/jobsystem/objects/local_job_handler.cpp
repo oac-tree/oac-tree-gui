@@ -38,7 +38,7 @@
 namespace oac_tree_gui
 {
 
-LocalJobHandler::LocalJobHandler(JobItem *job_item, UserContext user_context)
+LocalJobHandler::LocalJobHandler(JobItem* job_item, UserContext user_context)
     : AbstractJobHandler(job_item)
 {
   SetupPropertyListener();
@@ -55,7 +55,7 @@ LocalJobHandler::LocalJobHandler(JobItem *job_item, UserContext user_context)
 
 LocalJobHandler::~LocalJobHandler() = default;
 
-void LocalJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent &event)
+void LocalJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent& event)
 {
   m_workspace_item_listener->ProcessEventFromDomain(event);
 }
@@ -73,7 +73,7 @@ std::unique_ptr<AbstractDomainRunner> LocalJobHandler::CreateDomainRunner(
 void LocalJobHandler::SetupPropertyListener()
 {
   m_property_listener = std::make_unique<mvvm::ItemListener>(GetJobItem());
-  auto on_event = [this](const mvvm::PropertyChangedEvent &event)
+  auto on_event = [this](const mvvm::PropertyChangedEvent& event)
   {
     if (event.name == itemconstants::kTickTimeout)
     {

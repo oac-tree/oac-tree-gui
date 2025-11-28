@@ -21,8 +21,9 @@
 #ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_ACTIONS_H_
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_GRAPHICS_VIEW_ACTIONS_H_
 
-#include <sup/gui/components/action_map.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
+
+#include <sup/gui/components/action_map.h>
 
 #include <QObject>
 #include <memory>

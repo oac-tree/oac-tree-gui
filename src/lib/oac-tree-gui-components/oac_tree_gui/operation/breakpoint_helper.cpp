@@ -34,18 +34,18 @@
 namespace oac_tree_gui
 {
 
-BreakpointStatus GetBreakpointStatus(const InstructionItem &item)
+BreakpointStatus GetBreakpointStatus(const InstructionItem& item)
 {
   return static_cast<BreakpointStatus>(GetBreakpointItem(item)->Data<int>());
 }
 
-void SetBreakpointStatus(const InstructionItem &item, BreakpointStatus status)
+void SetBreakpointStatus(const InstructionItem& item, BreakpointStatus status)
 {
   auto breakpoint_property = GetBreakpointItem(item);
   (void)breakpoint_property->SetData(static_cast<int>(status));
 }
 
-void ToggleBreakpointStatus(const InstructionItem &item)
+void ToggleBreakpointStatus(const InstructionItem& item)
 {
   static const std::map<BreakpointStatus, BreakpointStatus> transitions = {
       {BreakpointStatus::kNotSet, BreakpointStatus::kSet},
@@ -55,9 +55,9 @@ void ToggleBreakpointStatus(const InstructionItem &item)
   SetBreakpointStatus(item, new_status);
 }
 
-std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem &item)
+std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem& item)
 {
-  const auto *model = item.GetModel();
+  const auto* model = item.GetModel();
   if (!model)
   {
     throw LogicErrorException("Item should belong to a model");
@@ -65,19 +65,19 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem &item)
 
   std::vector<BreakpointInfo> result;
 
-  auto save_breakpoint = [&result](const InstructionItem *item)
+  auto save_breakpoint = [&result](const InstructionItem* item)
   {
     if (auto status = GetBreakpointStatus(*item); status != BreakpointStatus::kNotSet)
     {
       result.push_back({status, mvvm::utils::PathFromItem(item)});
     }
   };
-  IterateInstruction<const InstructionItem *>(&item, save_breakpoint);
+  IterateInstruction<const InstructionItem*>(&item, save_breakpoint);
 
   return result;
 }
 
-std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem &container)
+std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem& container)
 {
   std::vector<BreakpointInfo> result;
 
@@ -90,18 +90,18 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
   return result;
 }
 
-void SetBreakpointsFromInfo(const std::vector<BreakpointInfo> &info, InstructionItem &item)
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item)
 {
-  const auto *model = item.GetModel();
+  const auto* model = item.GetModel();
   if (!model)
   {
     throw LogicErrorException("Item should belong to a model");
   }
 
-  for (const auto &[status, path] : info)
+  for (const auto& [status, path] : info)
   {
     if (auto instruction =
-            dynamic_cast<const InstructionItem *>(mvvm::utils::ItemFromPath(*model, path));
+            dynamic_cast<const InstructionItem*>(mvvm::utils::ItemFromPath(*model, path));
         instruction)
     {
       SetBreakpointStatus(*instruction, status);
@@ -113,8 +113,8 @@ void SetBreakpointsFromInfo(const std::vector<BreakpointInfo> &info, Instruction
   }
 }
 
-void SetBreakpointsFromInfo(const std::vector<BreakpointInfo> &info,
-                            InstructionContainerItem &container)
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info,
+                            InstructionContainerItem& container)
 {
   for (auto instruction : container.GetInstructions())
   {

@@ -35,8 +35,8 @@
 namespace oac_tree_gui::test
 {
 
-void TestAutomationServer::Start(const std::string &server_name,
-                                 const std::string &procedure_string)
+void TestAutomationServer::Start(const std::string& server_name,
+                                 const std::string& procedure_string)
 {
   auto worker = [this, &server_name, &procedure_string]()
   {

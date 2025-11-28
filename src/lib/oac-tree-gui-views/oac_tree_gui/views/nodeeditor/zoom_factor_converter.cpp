@@ -33,7 +33,7 @@ namespace
 const QString kPercentSign("%");
 }
 
-ZoomFactorConverter::ZoomFactorConverter(const std::vector<double> &zoom_values)
+ZoomFactorConverter::ZoomFactorConverter(const std::vector<double>& zoom_values)
     : m_zoom_values(zoom_values)
 {
   if (m_zoom_values.empty())

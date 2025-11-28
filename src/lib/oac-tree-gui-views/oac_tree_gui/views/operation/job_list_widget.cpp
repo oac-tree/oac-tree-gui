@@ -40,7 +40,7 @@ const QString kHeaderStateSettingName = "JobListWidget/header_state";
 namespace oac_tree_gui
 {
 
-JobListWidget::JobListWidget(QWidget *parent_widget)
+JobListWidget::JobListWidget(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<JobListViewModel>(m_tree_view))
@@ -64,29 +64,29 @@ JobListWidget::JobListWidget(QWidget *parent_widget)
 
 JobListWidget::~JobListWidget() = default;
 
-void JobListWidget::SetJobModel(JobModel *model)
+void JobListWidget::SetJobModel(JobModel* model)
 {
   m_model = model;
   m_component_provider->SetApplicationModel(model);
 }
 
-JobItem *JobListWidget::GetSelectedJob()
+JobItem* JobListWidget::GetSelectedJob()
 {
   return m_component_provider->GetSelected<JobItem>();
 }
 
-void JobListWidget::SetSelectedJob(JobItem *job)
+void JobListWidget::SetSelectedJob(JobItem* job)
 {
   m_component_provider->SetSelectedItem(job);
   m_custom_header->AdjustColumnsWidth();
 }
 
-QTreeView *JobListWidget::GetTreeView()
+QTreeView* JobListWidget::GetTreeView()
 {
   return m_tree_view;
 }
 
-mvvm::ViewModel *JobListWidget::GetViewModel()
+mvvm::ViewModel* JobListWidget::GetViewModel()
 {
   return m_component_provider->GetViewModel();
 }

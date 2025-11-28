@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/model/xml_utils.h"
+
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -31,8 +33,6 @@
 
 #include <testutils/folder_test.h>
 #include <testutils/test_utils.h>
-
-#include "oac_tree_gui/model/xml_utils.h"
 
 namespace oac_tree_gui
 {

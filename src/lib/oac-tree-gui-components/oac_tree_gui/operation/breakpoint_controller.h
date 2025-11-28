@@ -70,7 +70,7 @@ public:
    */
   void ResetCurrentActiveBreakpoint();
 
-private:  
+private:
   std::vector<BreakpointInfo> m_breakpoints;
   InstructionItem* m_active_breakpoint_instruction{nullptr};
 };

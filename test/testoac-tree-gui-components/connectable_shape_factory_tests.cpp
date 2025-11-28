@@ -61,5 +61,4 @@ TEST_F(ConnectableShapeFactoryTest, CreateShapeForUnrelatedItem)
   EXPECT_EQ(shape.get(), nullptr);
 }
 
-
 }  // namespace oac_tree_gui::test

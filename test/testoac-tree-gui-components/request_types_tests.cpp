@@ -18,11 +18,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/request_types.h"
+
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/jobsystem/request_types.h"
 
 namespace oac_tree_gui::test
 {

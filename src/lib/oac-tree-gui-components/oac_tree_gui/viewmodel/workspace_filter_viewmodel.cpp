@@ -36,7 +36,7 @@ namespace
 /**
  * @brief Returns channel name, if VariableItem has it.
  */
-std::optional<std::string> GetChannelName(const VariableItem &item)
+std::optional<std::string> GetChannelName(const VariableItem& item)
 {
   if (auto channel_item = GetChannelItem(item); channel_item)
   {
@@ -47,20 +47,20 @@ std::optional<std::string> GetChannelName(const VariableItem &item)
 
 }  // namespace
 
-WorkspaceFilterViewModel::WorkspaceFilterViewModel(QObject *parent_object)
+WorkspaceFilterViewModel::WorkspaceFilterViewModel(QObject* parent_object)
     : QSortFilterProxyModel(parent_object)
 {
   setRecursiveFilteringEnabled(true);
 }
 
-void WorkspaceFilterViewModel::SetPattern(const QString &pattern)
+void WorkspaceFilterViewModel::SetPattern(const QString& pattern)
 {
   m_pattern = pattern.toLower();
   invalidateFilter();
 }
 
 bool WorkspaceFilterViewModel::filterAcceptsRow(int source_row,
-                                                const QModelIndex &source_parent) const
+                                                const QModelIndex& source_parent) const
 {
   if (m_pattern.isEmpty())
   {
@@ -77,7 +77,7 @@ bool WorkspaceFilterViewModel::filterAcceptsRow(int source_row,
   return false;
 }
 
-bool WorkspaceFilterViewModel::IsItemAccepted(const mvvm::SessionItem *item) const
+bool WorkspaceFilterViewModel::IsItemAccepted(const mvvm::SessionItem* item) const
 {
   if (auto variable_item = mvvm::utils::FindItemUp<VariableItem>(item); variable_item)
   {
@@ -92,15 +92,15 @@ bool WorkspaceFilterViewModel::IsItemAccepted(const mvvm::SessionItem *item) con
   return false;
 }
 
-bool WorkspaceFilterViewModel::IsValidName(const std::string &name) const
+bool WorkspaceFilterViewModel::IsValidName(const std::string& name) const
 {
   const QString str = QString::fromStdString(name).toLower();
   return str.contains(m_pattern);
 }
 
-mvvm::ViewModel *WorkspaceFilterViewModel::GetViewModel() const
+mvvm::ViewModel* WorkspaceFilterViewModel::GetViewModel() const
 {
-  return dynamic_cast<mvvm::ViewModel *>(sourceModel());
+  return dynamic_cast<mvvm::ViewModel*>(sourceModel());
 }
 
 }  // namespace oac_tree_gui

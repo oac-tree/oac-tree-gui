@@ -18,9 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gtest/gtest.h>
-
 #include "oac_tree_gui/core/factory.h"
+
+#include <gtest/gtest.h>
 
 namespace oac_tree_gui::test
 {

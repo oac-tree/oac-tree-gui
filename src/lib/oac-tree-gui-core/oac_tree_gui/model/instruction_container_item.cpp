@@ -38,7 +38,7 @@ std::unique_ptr<mvvm::SessionItem> InstructionContainerItem::Clone() const
   return std::make_unique<InstructionContainerItem>(*this);
 }
 
-std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
+std::vector<InstructionItem*> InstructionContainerItem::GetInstructions() const
 {
   return GetItems<InstructionItem>(itemconstants::kChildInstructions);
 }

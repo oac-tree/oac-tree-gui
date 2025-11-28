@@ -45,7 +45,7 @@ namespace oac_tree_gui
 {
 
 OperationMainWindowActions::OperationMainWindowActions(
-    sup::gui::IAppCommandService &command_service, QMainWindow *main_window)
+    sup::gui::IAppCommandService& command_service, QMainWindow* main_window)
     : QObject(main_window), m_command_service(command_service)
 {
   m_command_service.AppRegisterMenuBar(
@@ -57,11 +57,11 @@ OperationMainWindowActions::OperationMainWindowActions(
 
   SetupStatusBar(main_window->statusBar());
 
-  (void)QObject::connect(qApp, &QApplication::focusChanged, this, [this](QWidget *old, QWidget *now)
+  (void)QObject::connect(qApp, &QApplication::focusChanged, this, [this](QWidget* old, QWidget* now)
                          { m_command_service.OnFocusWidgetUpdate(old, now); });
 }
 
-void OperationMainWindowActions::SetupStatusBar(QStatusBar *status_bar)
+void OperationMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
 {
   m_toggle_left_sidebar_button = new QToolButton;
   m_toggle_left_sidebar_button->setToolTip("Show/hide left panel");
@@ -86,7 +86,7 @@ OperationMainWindowActions::~OperationMainWindowActions() = default;
 
 //! Create main actions.
 
-void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
+void OperationMainWindowActions::CreateActions(QMainWindow* mainwindow)
 {
   m_open_action = new QAction("Open XML procedure", this);
   m_open_action->setShortcuts(QKeySequence::Open);

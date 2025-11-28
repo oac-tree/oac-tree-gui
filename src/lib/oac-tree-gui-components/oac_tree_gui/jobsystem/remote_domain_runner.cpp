@@ -31,7 +31,7 @@ namespace oac_tree_gui
 
 RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
                                        UserContext user_context,
-                                       sup::oac_tree_server::IJobManager &manager,
+                                       sup::oac_tree_server::IJobManager& manager,
                                        std::size_t job_index)
     : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {

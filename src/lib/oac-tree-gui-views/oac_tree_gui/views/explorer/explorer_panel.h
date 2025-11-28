@@ -49,7 +49,8 @@ class ExplorerPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit ExplorerPanel(sup::gui::IAppCommandService& command_service, QWidget* parent_widget = nullptr);
+  explicit ExplorerPanel(sup::gui::IAppCommandService& command_service,
+                         QWidget* parent_widget = nullptr);
   ~ExplorerPanel() override;
 
   void SetModel(SequencerModel* model);

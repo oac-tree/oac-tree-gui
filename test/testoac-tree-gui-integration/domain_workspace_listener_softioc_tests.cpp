@@ -48,7 +48,7 @@ const std::string kChannelName("SEQUENCERGUI-CA-TESTS:INT");
 class DomainWorkspaceListenerSoftIocTest : public ::testing::Test
 {
 public:
-  using mock_client_t = testing::MockFunction<void(const VariableUpdatedEvent &)>;
+  using mock_client_t = testing::MockFunction<void(const VariableUpdatedEvent&)>;
 
   sup::oac_tree::Workspace m_workspace;
 };

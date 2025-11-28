@@ -39,15 +39,15 @@ namespace
 {
 
 template <typename T>
-bool InvokeAndCatch(T method, const std::string &text,
-                    const std::function<void(const sup::gui::MessageEvent &)> &send_message)
+bool InvokeAndCatch(T method, const std::string& text,
+                    const std::function<void(const sup::gui::MessageEvent&)>& send_message)
 {
   try
   {
     std::invoke(method);
     return true;
   }
-  catch (const std::exception &ex)
+  catch (const std::exception& ex)
   {
     const sup::gui::MessageEvent message =
         sup::gui::CreateInvalidOperationMessage(text + " failed", ex.what());
@@ -60,9 +60,9 @@ bool InvokeAndCatch(T method, const std::string &text,
 
 }  // namespace
 
-OperationActionHandler::OperationActionHandler(IJobItemManager *job_manager,
+OperationActionHandler::OperationActionHandler(IJobItemManager* job_manager,
                                                OperationActionContext operation_context,
-                                               QObject *parent_object)
+                                               QObject* parent_object)
     : QObject(parent_object)
     , m_job_manager(job_manager)
     , m_operation_context(std::move(operation_context))
@@ -86,12 +86,12 @@ OperationActionHandler::OperationActionHandler(IJobItemManager *job_manager,
 
 OperationActionHandler::~OperationActionHandler() = default;
 
-void OperationActionHandler::SetJobContainer(mvvm::SessionItem *job_container)
+void OperationActionHandler::SetJobContainer(mvvm::SessionItem* job_container)
 {
   m_job_container = job_container;
 }
 
-bool OperationActionHandler::SubmitLocalJob(ProcedureItem *procedure_item)
+bool OperationActionHandler::SubmitLocalJob(ProcedureItem* procedure_item)
 {
   if (!procedure_item)
   {
@@ -101,7 +101,7 @@ bool OperationActionHandler::SubmitLocalJob(ProcedureItem *procedure_item)
   return SubmitJob(CreateLocalJobItem(procedure_item, m_tick_timeout));
 }
 
-bool OperationActionHandler::SubmitFileBasedJob(const std::string &file_name)
+bool OperationActionHandler::SubmitFileBasedJob(const std::string& file_name)
 {
   return SubmitJob(CreateFileBasedJobItem(file_name, m_tick_timeout));
 }
@@ -172,7 +172,7 @@ bool OperationActionHandler::OnRemoveJobRequest()
     if (next_to_select)
     {
       // suggest to select something else instead of just deleted item
-      emit MakeJobSelectedRequest(dynamic_cast<JobItem *>(next_to_select));
+      emit MakeJobSelectedRequest(dynamic_cast<JobItem*>(next_to_select));
     }
   }
 
@@ -215,7 +215,7 @@ void OperationActionHandler::OnSetTickTimeoutRequest(int msec)
   }
 }
 
-void OperationActionHandler::OnToggleBreakpoint(InstructionItem *instruction)
+void OperationActionHandler::OnToggleBreakpoint(InstructionItem* instruction)
 {
   if (auto job_handler = m_job_manager->GetJobHandler(GetSelectedJob()); job_handler)
   {
@@ -241,7 +241,7 @@ bool OperationActionHandler::SubmitJob(std::unique_ptr<JobItem> job_item)
   return result;
 }
 
-JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item)
+JobItem* OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<JobItem> job_item)
 {
   if (!GetModel())
   {
@@ -256,28 +256,28 @@ JobItem *OperationActionHandler::InsertJobAfterCurrentSelection(std::unique_ptr<
   return result;
 }
 
-void OperationActionHandler::SendMessage(const std::string &text, const std::string &informative,
-                                         const std::string &details) const
+void OperationActionHandler::SendMessage(const std::string& text, const std::string& informative,
+                                         const std::string& details) const
 {
   SendMessage(sup::gui::CreateInvalidOperationMessage(text, informative, details));
 }
 
-void OperationActionHandler::SendMessage(const sup::gui::MessageEvent &message_event) const
+void OperationActionHandler::SendMessage(const sup::gui::MessageEvent& message_event) const
 {
   m_operation_context.send_message(message_event);
 }
 
-mvvm::ISessionModel *OperationActionHandler::GetModel() const
+mvvm::ISessionModel* OperationActionHandler::GetModel() const
 {
   return GetJobContainer() ? GetJobContainer()->GetModel() : nullptr;
 }
 
-mvvm::SessionItem *OperationActionHandler::GetJobContainer() const
+mvvm::SessionItem* OperationActionHandler::GetJobContainer() const
 {
   return m_job_container;
 }
 
-JobItem *OperationActionHandler::GetSelectedJob()
+JobItem* OperationActionHandler::GetSelectedJob()
 {
   return m_operation_context.selected_job();
 }

@@ -50,19 +50,19 @@ std::vector<std::string> GetVariableReadonlyAttributesWhenRunning()
 namespace oac_tree_gui
 {
 
-void PopulateDomainWorkspace(const WorkspaceItem &item, workspace_t &workspace)
+void PopulateDomainWorkspace(const WorkspaceItem& item, workspace_t& workspace)
 {
   DomainWorkspaceBuilder builder;
   builder.PopulateDomainWorkspace(&item, &workspace);
 }
 
-void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item)
+void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item)
 {
   static const auto attributes = GetVariableReadonlyAttributesWhenRunning();
 
   for (auto variable : item.GetVariables())
   {
-    for (const auto &attr : attributes)
+    for (const auto& attr : attributes)
     {
       if (mvvm::utils::HasTag(*variable, attr))
       {
@@ -72,7 +72,7 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item)
   }
 }
 
-void SetupNewVariable(VariableItem *item, int total_variable_count)
+void SetupNewVariable(VariableItem* item, int total_variable_count)
 {
   if (!item)
   {
@@ -102,8 +102,8 @@ void SetupNewVariable(VariableItem *item, int total_variable_count)
   (void)item->GetAnyValueItem()->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
 }
 
-bool AreMatchingWorkspaces(const WorkspaceItem &workspace_item,
-                           const sup::oac_tree::Workspace &workspace)
+bool AreMatchingWorkspaces(const WorkspaceItem& workspace_item,
+                           const sup::oac_tree::Workspace& workspace)
 {
   std::vector<std::string> variable_item_names;
   for (const auto variable_item : workspace_item.GetVariables())
@@ -114,12 +114,12 @@ bool AreMatchingWorkspaces(const WorkspaceItem &workspace_item,
   return variable_item_names == workspace.VariableNames();
 }
 
-void UpdateVariableFromEvent(const VariableUpdatedEvent &event, VariableItem &item)
+void UpdateVariableFromEvent(const VariableUpdatedEvent& event, VariableItem& item)
 {
   UpdateVariableFromEvent(event.value, event.connected, item);
 }
 
-void UpdateVariableFromEvent(const sup::dto::AnyValue &value, bool connected, VariableItem &item)
+void UpdateVariableFromEvent(const sup::dto::AnyValue& value, bool connected, VariableItem& item)
 {
   if (connected && sup::dto::IsEmptyValue(value) && !item.IsAvailable())
   {

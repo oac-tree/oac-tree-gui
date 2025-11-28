@@ -18,13 +18,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/viewmodel/toolkit_viewmodel.h"
+
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 
 #include <gtest/gtest.h>
 
 #include <QMimeData>
-
-#include "oac_tree_gui/viewmodel/toolkit_viewmodel.h"
 
 namespace oac_tree_gui::test
 {

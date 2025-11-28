@@ -30,7 +30,7 @@ namespace oac_tree_gui
 {
 
 WorkspaceViewComponentProvider::WorkspaceViewComponentProvider(
-    std::unique_ptr<mvvm::ViewModel> view_model, QTreeView *view)
+    std::unique_ptr<mvvm::ViewModel> view_model, QTreeView* view)
     : mvvm::ItemViewComponentProvider(std::move(view_model), view)
 {
   auto proxy_model = std::make_unique<WorkspaceFilterViewModel>();
@@ -38,7 +38,7 @@ WorkspaceViewComponentProvider::WorkspaceViewComponentProvider(
   AddProxyModel(std::move(proxy_model));
 }
 
-void WorkspaceViewComponentProvider::SetFilterPattern(const QString &pattern)
+void WorkspaceViewComponentProvider::SetFilterPattern(const QString& pattern)
 {
   m_filter_proxy_model->SetPattern(pattern);
 }

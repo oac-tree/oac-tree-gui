@@ -21,10 +21,11 @@
 #ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_NAVIGATION_TOOLBAR_H_
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_NAVIGATION_TOOLBAR_H_
 
-#include <QToolBar>
-
 #include <oac_tree_gui/views/nodeeditor/zoom_factor_converter.h>
+
 #include <sup/gui/components/action_map.h>
+
+#include <QToolBar>
 
 class QSlider;
 class QAction;

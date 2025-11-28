@@ -41,8 +41,8 @@ const QString kEditAnyValueToolTip =
 namespace oac_tree_gui
 {
 
-AttributeEditorActions::AttributeEditorActions(AttributeEditorActionHandler *handler,
-                                               QObject *parent_object)
+AttributeEditorActions::AttributeEditorActions(AttributeEditorActionHandler* handler,
+                                               QObject* parent_object)
     : QObject(parent_object)
     , m_handler(handler)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
@@ -69,12 +69,12 @@ AttributeEditorActions::AttributeEditorActions(AttributeEditorActionHandler *han
 
 AttributeEditorActions::~AttributeEditorActions() = default;
 
-QList<QAction *> AttributeEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
+QList<QAction*> AttributeEditorActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
 
-void AttributeEditorActions::SetupMenu(QMenu &menu)
+void AttributeEditorActions::SetupMenu(QMenu& menu)
 {
   menu.setToolTipsVisible(true);
 
@@ -94,7 +94,7 @@ void AttributeEditorActions::OnAboutToShowMenu()
   SetupMenu(*m_modify_attribute_menu);
 }
 
-void AttributeEditorActions::AddToggleExposedFlagAction(QMenu &menu)
+void AttributeEditorActions::AddToggleExposedFlagAction(QMenu& menu)
 {
   auto result = menu.addAction("Attribute exposed flag");
   result->setToolTip(
@@ -106,7 +106,7 @@ void AttributeEditorActions::AddToggleExposedFlagAction(QMenu &menu)
   result->setEnabled(m_handler->CanToggleExposedFlag());
 }
 
-void AttributeEditorActions::AddSetDefaultValueAction(QMenu &menu)
+void AttributeEditorActions::AddSetDefaultValueAction(QMenu& menu)
 {
   auto action = menu.addAction("Set default value");
   action->setToolTip("The attribute will be set to its default value");
@@ -114,7 +114,7 @@ void AttributeEditorActions::AddSetDefaultValueAction(QMenu &menu)
   action->setEnabled(m_handler->CanSetDefaultType());
 }
 
-void AttributeEditorActions::AddSetPlaceholderValueAction(QMenu &menu)
+void AttributeEditorActions::AddSetPlaceholderValueAction(QMenu& menu)
 {
   auto action = menu.addAction("Set placeholder attribute");
   action->setToolTip(
@@ -124,7 +124,7 @@ void AttributeEditorActions::AddSetPlaceholderValueAction(QMenu &menu)
   action->setEnabled(m_handler->CanSetPlaceholderType());
 }
 
-void AttributeEditorActions::AddEditAnyValueAction(QMenu &menu)
+void AttributeEditorActions::AddEditAnyValueAction(QMenu& menu)
 {
   auto action = menu.addAction("Set placeholder attribute");
   action->setText("Edit AnyValue");

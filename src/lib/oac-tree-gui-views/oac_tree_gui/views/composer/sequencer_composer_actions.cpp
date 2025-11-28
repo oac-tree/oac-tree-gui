@@ -42,19 +42,19 @@ namespace
 /**
  * @brief Checks if undo/redo is enabled.
  */
-bool HasUndo(const mvvm::ISessionModel *model)
+bool HasUndo(const mvvm::ISessionModel* model)
 {
   return model && model->GetCommandStack() != nullptr;
 }
 
 }  // namespace
 
-SequencerComposerActions::SequencerComposerActions(QWidget *parent_widget) : QObject(parent_widget)
+SequencerComposerActions::SequencerComposerActions(QWidget* parent_widget) : QObject(parent_widget)
 {
   SetupActions();
 }
 
-void SequencerComposerActions::SetModel(SequencerModel *model)
+void SequencerComposerActions::SetModel(SequencerModel* model)
 {
   m_model = model;
   m_undo_action->setEnabled(HasUndo(m_model));
@@ -63,13 +63,13 @@ void SequencerComposerActions::SetModel(SequencerModel *model)
 
 SequencerComposerActions::~SequencerComposerActions() = default;
 
-void SequencerComposerActions::SetProcedure(ProcedureItem *procedure_item)
+void SequencerComposerActions::SetProcedure(ProcedureItem* procedure_item)
 {
   m_procedure_item = procedure_item;
 }
 
 void SequencerComposerActions::RegisterActionsForContext(
-    const sup::gui::AppCommandContext &context, sup::gui::IAppCommandService &command_service)
+    const sup::gui::AppCommandContext& context, sup::gui::IAppCommandService& command_service)
 {
   command_service.AddActionToCommand(m_validate_procedure_action,
                                      constants::kValidateProcedureCommandId, context);

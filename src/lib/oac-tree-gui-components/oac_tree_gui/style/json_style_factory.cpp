@@ -30,7 +30,7 @@
 namespace oac_tree_gui::style
 {
 
-void PopulateStyleFromJSON(const QJsonObject &json, GraphicsViewStyle &style)
+void PopulateStyleFromJSON(const QJsonObject& json, GraphicsViewStyle& style)
 {
   ValidateStyleKey(json, NodeGraphicsViewStyleKey,
                    {RenderBackgroundKey, BackgroundColorKey, FineGridColorKey, CoarseGridColorKey});
@@ -47,7 +47,7 @@ void PopulateStyleFromJSON(const QJsonObject &json, GraphicsViewStyle &style)
   style.coarse_grid_color = QColor(obj[CoarseGridColorKey].toString());
 }
 
-void PopulateStyleFromJSON(const QJsonObject &json, GraphicsSceneStyle &style)
+void PopulateStyleFromJSON(const QJsonObject& json, GraphicsSceneStyle& style)
 {
   ValidateStyleKey(json, NodeGraphicsSceneStyleKey,
                    {ShadowEnabledKey, BaseInstructionColorKey, DecoratorInstructionColorKey,

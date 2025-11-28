@@ -36,7 +36,7 @@ class RemoteDomainRunner : public AbstractDomainRunner
 {
 public:
   RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context,
-                     sup::oac_tree_server::IJobManager &manager, std::size_t job_index);
+                     sup::oac_tree_server::IJobManager& manager, std::size_t job_index);
 };
 
 }  // namespace oac_tree_gui

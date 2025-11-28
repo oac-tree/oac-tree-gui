@@ -21,13 +21,13 @@
 #include "workspace_editor_action_handler.h"
 
 #include <oac_tree_gui/components/anyvalue_dialog_result.h>
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -44,11 +44,11 @@ namespace oac_tree_gui
 namespace
 {
 
-std::vector<const mvvm::SessionItem *> GetItemVector(const std::vector<VariableItem *> &vec)
+std::vector<const mvvm::SessionItem*> GetItemVector(const std::vector<VariableItem*>& vec)
 {
-  std::vector<const mvvm::SessionItem *> result;
+  std::vector<const mvvm::SessionItem*> result;
   (void)std::transform(vec.begin(), vec.end(), std::back_inserter(result),
-                 [](auto element) { return element; });
+                       [](auto element) { return element; });
   return result;
 }
 
@@ -78,7 +78,7 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
   }
 }
 
-void WorkspaceEditorActionHandler::AddVariable(const std::string &variable_type_name)
+void WorkspaceEditorActionHandler::AddVariable(const std::string& variable_type_name)
 {
   if (!GetWorkspaceItem())
   {
@@ -102,7 +102,7 @@ bool WorkspaceEditorActionHandler::CanRemoveVariable() const
 
 void WorkspaceEditorActionHandler::RemoveVariable()
 {
-  mvvm::SessionItem *next_to_select{nullptr};
+  mvvm::SessionItem* next_to_select{nullptr};
 
   mvvm::utils::BeginMacro(*GetModel(), "Remove variable");
   for (auto selected : GetSelectedVariables())
@@ -136,7 +136,7 @@ void WorkspaceEditorActionHandler::EditAnyValue()
   auto selected_variable =
       GetSelectedVariable()
           ? GetSelectedVariable()
-          : const_cast<VariableItem *>(mvvm::utils::FindItemUp<VariableItem>(selected_item));
+          : const_cast<VariableItem*>(mvvm::utils::FindItemUp<VariableItem>(selected_item));
 
   auto selected_anyvalue = selected_variable->GetAnyValueItem();
 
@@ -210,36 +210,37 @@ void WorkspaceEditorActionHandler::Paste()
     return;
   }
 
-  InsertVariableAfterCurrentSelection(sup::gui::CreateSessionItems(GetMimeData(), kCopyVariableMimeType));
+  InsertVariableAfterCurrentSelection(
+      sup::gui::CreateSessionItems(GetMimeData(), kCopyVariableMimeType));
 }
 
-VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
+VariableItem* WorkspaceEditorActionHandler::GetSelectedVariable() const
 {
   auto selected_variables = GetSelectedVariables();
   return selected_variables.empty() ? nullptr : selected_variables.front();
 }
 
-std::vector<VariableItem *> WorkspaceEditorActionHandler::GetSelectedVariables() const
+std::vector<VariableItem*> WorkspaceEditorActionHandler::GetSelectedVariables() const
 {
   return mvvm::utils::CastItems<VariableItem>(m_context.selected_items_callback());
 }
 
-mvvm::ISessionModel *WorkspaceEditorActionHandler::GetModel() const
+mvvm::ISessionModel* WorkspaceEditorActionHandler::GetModel() const
 {
   return GetWorkspaceItem() ? GetWorkspaceItem()->GetModel() : nullptr;
 }
 
-WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
+WorkspaceItem* WorkspaceEditorActionHandler::GetWorkspaceItem() const
 {
   return m_context.selected_workspace();
 }
 
-void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem *item) const
+void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem* item) const
 {
   m_context.notify_request(item);
 }
 
-const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const
+const QMimeData* WorkspaceEditorActionHandler::GetMimeData() const
 {
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
@@ -259,7 +260,7 @@ void WorkspaceEditorActionHandler::UpdateProcedurePreamble()
 }
 
 void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
-    std::vector<std::unique_ptr<mvvm::SessionItem> > variable_items)
+    std::vector<std::unique_ptr<mvvm::SessionItem>> variable_items)
 {
   if (!GetModel())
   {
@@ -274,8 +275,8 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
   {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
-    mvvm::SessionItem *inserted{nullptr};
-    for (auto &item : variable_items)
+    mvvm::SessionItem* inserted{nullptr};
+    for (auto& item : variable_items)
     {
       inserted = GetModel()->InsertItem(std::move(item), GetWorkspaceItem(), tagindex);
       tagindex = inserted->GetTagIndex().Next();
@@ -284,7 +285,7 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
 
     SelectNotify(inserted);
   }
-  catch (const std::exception &ex)
+  catch (const std::exception& ex)
   {
     SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
   }
@@ -292,9 +293,9 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
   mvvm::utils::EndMacro(*GetModel());
 }
 
-void WorkspaceEditorActionHandler::SendMessage(const std::string &text,
-                                               const std::string &informative,
-                                               const std::string &details)
+void WorkspaceEditorActionHandler::SendMessage(const std::string& text,
+                                               const std::string& informative,
+                                               const std::string& details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message(message);

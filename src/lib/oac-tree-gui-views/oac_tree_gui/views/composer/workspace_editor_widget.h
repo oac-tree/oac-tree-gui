@@ -69,7 +69,7 @@ public:
   void SetWorkspaceEditType(WorkspaceEditType edit_type);
 
 protected:
-  void resizeEvent(QResizeEvent *event) override;
+  void resizeEvent(QResizeEvent* event) override;
 
 private:
   void SetupConnections();

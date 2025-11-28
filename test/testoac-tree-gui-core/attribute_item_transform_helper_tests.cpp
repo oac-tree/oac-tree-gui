@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/transform/attribute_item_transform_helper.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
@@ -36,8 +38,6 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
-
-#include "oac_tree_gui/transform/attribute_item_transform_helper.h"
 
 namespace oac_tree_gui::test
 {

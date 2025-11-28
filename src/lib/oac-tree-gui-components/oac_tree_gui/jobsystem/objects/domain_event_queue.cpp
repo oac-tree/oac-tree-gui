@@ -25,7 +25,7 @@
 namespace oac_tree_gui
 {
 
-DomainEventQueue::DomainEventQueue(QObject *parent_object) : QObject(parent_object) {}
+DomainEventQueue::DomainEventQueue(QObject* parent_object) : QObject(parent_object) {}
 
 domain_event_t DomainEventQueue::PopEvent()
 {
@@ -39,7 +39,7 @@ domain_event_t DomainEventQueue::PopEvent()
   return result;
 }
 
-void DomainEventQueue::PushEvent(const domain_event_t &event)
+void DomainEventQueue::PushEvent(const domain_event_t& event)
 {
   m_domain_events.push(event);
   emit NewEvent();

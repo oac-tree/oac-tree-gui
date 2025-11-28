@@ -43,7 +43,7 @@ namespace
 /**
  * @brief Checks if given file is procedure file candidate.
  */
-bool IsProcedureFile(const QFileInfo &info)
+bool IsProcedureFile(const QFileInfo& info)
 {
   return info.isFile() && info.completeSuffix().toLower() == QStringLiteral("xml");
 }
@@ -53,7 +53,7 @@ bool IsProcedureFile(const QFileInfo &info)
 namespace oac_tree_gui
 {
 
-FileTreeView::FileTreeView(QWidget *parent_widget)
+FileTreeView::FileTreeView(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_file_system_model(new QFileSystemModel(this))
     , m_tree_view(new QTreeView)
@@ -89,7 +89,7 @@ FileTreeView::FileTreeView(QWidget *parent_widget)
 
 FileTreeView::~FileTreeView() = default;
 
-void FileTreeView::SetCurrentDir(const QString &dirname)
+void FileTreeView::SetCurrentDir(const QString& dirname)
 {
   m_path_label->setText(mvvm::utils::CreatePathPresentation(dirname));
   m_file_system_model->setRootPath(dirname);
@@ -98,12 +98,12 @@ void FileTreeView::SetCurrentDir(const QString &dirname)
   m_recent_dirs->SetCurrentWorkdir(dirname);
 }
 
-void FileTreeView::OnLabelClick(const QString &link)
+void FileTreeView::OnLabelClick(const QString& link)
 {
   SetCurrentDir(link);
 }
 
-void FileTreeView::OnTreeDoubleClick(const QModelIndex &index)
+void FileTreeView::OnTreeDoubleClick(const QModelIndex& index)
 {
   const QFileInfo info(m_file_system_model->filePath(index));
 
@@ -134,7 +134,7 @@ void FileTreeView::OnImportFromFileRequest()
   }
 }
 
-void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
+void FileTreeView::OnTreeSingleClick(const QModelIndex& index)
 {
   const QFileInfo info(m_file_system_model->filePath(index));
 
@@ -193,7 +193,7 @@ void FileTreeView::OnAboutToShowBookmarkMenu()
 
   // Actions to go to bookmarks.
   m_bookmark_menu->addSeparator();
-  for (const auto &project_dir : recent_projects)
+  for (const auto& project_dir : recent_projects)
   {
     auto trimmed_project_dir = mvvm::utils::WithTildeHomePath(project_dir);
     auto action = m_bookmark_menu->addAction(trimmed_project_dir);

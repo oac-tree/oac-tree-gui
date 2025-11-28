@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/pvmonitor/workspace_synchronizer.h"
+
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
@@ -38,8 +40,6 @@
 #include <testutils/test_utils.h>
 
 #include <QTest>
-
-#include "oac_tree_gui/pvmonitor/workspace_synchronizer.h"
 
 namespace oac_tree_gui::test
 {

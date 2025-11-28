@@ -18,9 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gtest/gtest.h>
-
 #include "oac_tree_gui/jobsystem/request_handler_queue.h"
+
+#include <gtest/gtest.h>
 
 namespace oac_tree_gui::test
 {

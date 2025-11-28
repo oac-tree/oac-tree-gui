@@ -113,9 +113,9 @@ TEST_F(SequencerSettingsHelperTest, FindSharedLibraries)
   const std::string non_lib_file = mvvm::utils::Join(test_dir, "not_a_lib.txt");
   mvvm::test::CreateTextFile(non_lib_file, "file with content");
 
-  EXPECT_TRUE(
-      mvvm::utils::HaveSameElements(FindSharedLibraries(test_dir),
-                       std::vector<std::string>({link_name_a2, link_name_b2, link_name_c2})));
+  EXPECT_TRUE(mvvm::utils::HaveSameElements(
+      FindSharedLibraries(test_dir),
+      std::vector<std::string>({link_name_a2, link_name_b2, link_name_c2})));
 }
 
 }  // namespace oac_tree_gui::test

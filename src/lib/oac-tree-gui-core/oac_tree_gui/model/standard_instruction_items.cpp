@@ -43,7 +43,7 @@ std::string IncludeItem::GetFileName() const
   return Property<std::string>(domainconstants::kFileNameAttribute);
 }
 
-void IncludeItem::SetFileName(const std::string &value)
+void IncludeItem::SetFileName(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kFileNameAttribute, value);
 }
@@ -53,7 +53,7 @@ std::string IncludeItem::GetPath() const
   return Property<std::string>(domainconstants::kPathAttribute);
 }
 
-void IncludeItem::SetPath(const std::string &value)
+void IncludeItem::SetPath(const std::string& value)
 {
   SetAttribute(*this, domainconstants::kPathAttribute, value);
 }
@@ -62,7 +62,10 @@ void IncludeItem::SetPath(const std::string &value)
 // ParallelSequenceItem
 // ----------------------------------------------------------------------------
 
-ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(mvvm::GetTypeName<ParallelSequenceItem>()) {}
+ParallelSequenceItem::ParallelSequenceItem()
+    : UniversalInstructionItem(mvvm::GetTypeName<ParallelSequenceItem>())
+{
+}
 
 std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone() const
 {
