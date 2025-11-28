@@ -87,15 +87,15 @@ InstructionTree CreateInstructionItemTreeIntern(const sup::oac_tree::Instruction
       auto child_item_ptr = child_item.get();
       item_to_index[child_item_ptr] = child_info->GetIndex();
 
-      node.item.InsertItem(std::move(child_item), mvvm::TagIndex::Append());
+      (void)node.item.InsertItem(std::move(child_item), mvvm::TagIndex::Append());
 
       stack.push({*child_info, *child_item_ptr});
     }
   }
 
   std::vector<const InstructionItem*> index_list(item_to_index.size());
-  std::for_each(item_to_index.begin(), item_to_index.end(),
-                [&index_list](auto it) { index_list[it.second] = it.first; });
+  (void)std::for_each(item_to_index.begin(), item_to_index.end(),
+                      [&index_list](auto it) { index_list[it.second] = it.first; });
 
   return {std::move(result), std::move(index_list)};
 }
@@ -170,9 +170,9 @@ void RegisterShowCollapsedProperty(instruction_t::Category category, const std::
     auto& property =
         item.AddProperty<sup::gui::AnyValueScalarItem>(domainconstants::kShowCollapsedAttribute);
     property.SetAnyTypeName(sup::dto::kBooleanTypeName);
-    property.SetDisplayName("Show collapsed");
-    property.SetToolTip("Show child branch collapsed duing procedure execution");
-    property.SetData(mvvm::utils::Contains(kCollapsedByDefault, domain_type));
+    (void)property.SetDisplayName("Show collapsed");
+    (void)property.SetToolTip("Show child branch collapsed duing procedure execution");
+    (void)property.SetData(mvvm::utils::Contains(kCollapsedByDefault, domain_type));
   }
 }
 

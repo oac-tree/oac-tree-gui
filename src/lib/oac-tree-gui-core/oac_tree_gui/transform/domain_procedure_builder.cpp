@@ -111,7 +111,7 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
     {
       auto domain_instruction_ptr = domain_instruction.get();
       procedure->PushInstruction(std::move(domain_instruction));
-      m_instruction_to_id.insert({domain_instruction_ptr, item->GetIdentifier()});
+      (void)m_instruction_to_id.insert({domain_instruction_ptr, item->GetIdentifier()});
 
       stack.push({*item, *domain_instruction_ptr});
     }
@@ -128,9 +128,9 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
           domain_instruction)
       {
         auto domain_instruction_ptr = domain_instruction.get();
-        node.domain_instruction.InsertInstruction(std::move(domain_instruction),
+        (void)node.domain_instruction.InsertInstruction(std::move(domain_instruction),
                                                   node.domain_instruction.ChildrenCount());
-        m_instruction_to_id.insert({domain_instruction_ptr, child_item->GetIdentifier()});
+        (void)m_instruction_to_id.insert({domain_instruction_ptr, child_item->GetIdentifier()});
 
         stack.push({*child_item, *domain_instruction_ptr});
       }

@@ -149,7 +149,7 @@ void SetAttribute(const mvvm::CompoundItem& item, const std::string& name, const
 {
   auto attribute = item.GetItem<sup::gui::AnyValueItem>(name);
   SetAttributeExposedFlag(true, *attribute);
-  attribute->SetData(value);
+  (void)attribute->SetData(value);
 }
 
 /**

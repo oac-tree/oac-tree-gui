@@ -51,14 +51,14 @@ std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
 {
   auto result = std::make_unique<ProcedureItem>();
 
-  result->SetDisplayName(job_info.GetProcedureName());
+  (void)result->SetDisplayName(job_info.GetProcedureName());
 
   auto instruction_tree = kUseLightInfoObjects
                               ? CreateInstructionInfoItemTree(*job_info.GetRootInstructionInfo())
                               : CreateInstructionItemTree(*job_info.GetRootInstructionInfo());
   m_index_to_instruction = std::move(instruction_tree.indexes);
-  result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
-                                                mvvm::TagIndex::Append());
+  (void)result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
+                                                      mvvm::TagIndex::Append());
 
   m_index_to_variable = PopulateWorkspaceItem(job_info.GetWorkspaceInfo(), result->GetWorkspace());
 

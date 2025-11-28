@@ -55,7 +55,7 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
       // creating string properties from attributes solely for tooltips
       if (!mvvm::utils::HasTag(*this, attr_name))
       {
-        AddProperty(attr_name, attr_value).SetEditable(false);
+        (void)AddProperty(attr_name, attr_value).SetEditable(false);
       }
       else
       {

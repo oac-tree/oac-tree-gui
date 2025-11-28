@@ -66,7 +66,7 @@ void PopulateInstructionContainerItem(const procedure_t& procedure,
   for (auto instruction : procedure.GetTopInstructions())
   {
     auto instruction_tree = CreateInstructionItemTree(*instruction);
-    container.InsertItem(std::move(instruction_tree.root), mvvm::TagIndex::Append());
+    (void)container.InsertItem(std::move(instruction_tree.root), mvvm::TagIndex::Append());
   }
 }
 
@@ -82,7 +82,7 @@ void PopulateProcedureItem(const procedure_t& procedure, ProcedureItem& procedur
 
   auto registry = CreateRegistry(procedure);
 
-  PopulateWorkspaceItem(procedure.GetWorkspace(), registry.get(), procedure_item.GetWorkspace());
+  (void)PopulateWorkspaceItem(procedure.GetWorkspace(), registry.get(), procedure_item.GetWorkspace());
 }
 
 }  // namespace

@@ -64,7 +64,7 @@ std::size_t ReplaceHtmlQuotes(std::string& str, std::size_t pos1, std::size_t po
 
   while (pos_html < pos2)
   {
-    str.replace(pos_html, html_quote.length(), double_quote);
+    (void)str.replace(pos_html, html_quote.length(), double_quote);
     pos_html = str.find(html_quote, pos_html + double_quote.length());
     pos2 = pos2 - html_quote.length() + double_quote.length();  // new end adjust
   }

@@ -53,10 +53,10 @@ void DomainWorkspaceBuilder::PopulateDomainWorkspace(const WorkspaceItem* item,
       throw RuntimeException("Variable name '" + variable_item->GetName() + "' already exist");
     }
 
-    m_domain_variable_to_item.insert({domain_variable.get(), variable_item});
-    m_domain_name_to_item.insert({variable_item->GetName(), variable_item});
+    (void)m_domain_variable_to_item.insert({domain_variable.get(), variable_item});
+    (void)m_domain_name_to_item.insert({variable_item->GetName(), variable_item});
 
-    workspace->AddVariable(variable_item->GetName(), std::move(domain_variable));
+    (void)workspace->AddVariable(variable_item->GetName(), std::move(domain_variable));
   }
 }
 

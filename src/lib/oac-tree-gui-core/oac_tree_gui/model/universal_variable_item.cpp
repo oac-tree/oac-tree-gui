@@ -121,7 +121,7 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t* variable,
     SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
   }
 
-  SetDisplayName(variable->GetName().empty() ? variable->GetType() : variable->GetName());
+  (void)SetDisplayName(variable->GetName().empty() ? variable->GetType() : variable->GetName());
 
   SetAnyValueFromDomainVariable(*variable, *this, registry);
 }
@@ -148,13 +148,13 @@ void UniversalVariableItem::SetupFromDomain(const variable_t* variable)
     throw LogicErrorException("It is not possible to setup variable twice");
   }
 
-  SetData(variable->GetType(), itemconstants::kDomainTypeNameRole);
+  (void)SetData(variable->GetType(), itemconstants::kDomainTypeNameRole);
 
   for (const auto& definition : variable->GetAttributeDefinitions())
   {
     if (!mvvm::utils::Contains(GetSkipDomainAttributeList(), definition.GetName()))
     {
-      AddPropertyFromDefinition(definition, *this);
+      (void)AddPropertyFromDefinition(definition, *this);
     }
   }
 

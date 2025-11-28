@@ -52,7 +52,7 @@ std::vector<std::string> WorkspaceItem::GetVariableNames() const
   std::vector<std::string> result;
   auto variables = GetVariables();
   result.reserve(variables.size());
-  std::transform(variables.begin(), variables.end(), std::back_inserter(result),
+  (void)std::transform(variables.begin(), variables.end(), std::back_inserter(result),
                  [](auto element) { return element->GetName(); });
   return result;
 }

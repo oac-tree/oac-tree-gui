@@ -62,7 +62,7 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
     auto variable_item = CreateVariableInfoItem(variable_info);
     auto variable_item_ptr = variable_item.get();
     index_to_variable_item[variable_info.GetIndex()] = variable_item_ptr;
-    workspace_item->InsertItem(std::move(variable_item), mvvm::TagIndex::Append());
+    (void)workspace_item->InsertItem(std::move(variable_item), mvvm::TagIndex::Append());
   }
 
   return index_to_variable_item;
@@ -84,7 +84,7 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
     auto item = oac_tree_gui::CreateVariableItem(variable->GetType());
     item->InitFromDomain(variable, registry);
     result.push_back(item.get());
-    workspace_item->InsertItem(std::move(item), mvvm::TagIndex::Append());
+    (void)workspace_item->InsertItem(std::move(item), mvvm::TagIndex::Append());
   }
 
   return result;

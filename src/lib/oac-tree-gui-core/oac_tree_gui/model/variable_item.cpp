@@ -36,8 +36,8 @@ namespace oac_tree_gui
 
 VariableItem::VariableItem(const std::string& item_type) : CompoundItem(item_type)
 {
-  SetFlag(mvvm::Appearance::kEditableDisplayName, true);
-  AddProperty(itemconstants::kIsAvailable, false)
+  (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
+  (void)AddProperty(itemconstants::kIsAvailable, false)
       .SetDisplayName("connected")
       .SetEditable(false)
       .SetVisible(false);
@@ -52,7 +52,7 @@ std::string VariableItem::GetDomainType() const
 
 void VariableItem::SetDomainType(const std::string& domain_type)
 {
-  SetData(domain_type, itemconstants::kDomainTypeNameRole);
+  (void)SetData(domain_type, itemconstants::kDomainTypeNameRole);
 }
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
@@ -74,7 +74,7 @@ std::string VariableItem::GetName() const
 
 void VariableItem::SetName(const std::string& value)
 {
-  SetDisplayName(value);
+  (void)SetDisplayName(value);
 }
 
 sup::gui::AnyValueItem* VariableItem::GetAnyValueItem() const

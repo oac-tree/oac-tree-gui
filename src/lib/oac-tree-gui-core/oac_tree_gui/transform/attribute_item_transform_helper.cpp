@@ -83,21 +83,21 @@ bool GetAttributeExposedFlag(const sup::gui::AnyValueItem& attribute_item)
 
 void SetAttributeExposedFlag(bool value, sup::gui::AnyValueItem& attribute_item)
 {
-  attribute_item.SetEditable(value);
-  attribute_item.SetEnabled(value);
+  (void)attribute_item.SetEditable(value);
+  (void)attribute_item.SetEnabled(value);
 }
 
 void SetAttributeAsString(const std::string& value, sup::gui::AnyValueItem& attribute_item)
 {
   // current convention is to keep original AnyTypeName after setting attribute as a string
-  mvvm::utils::ReplaceData(attribute_item, mvvm::variant_t(value), mvvm::DataRole::kData);
+  (void)mvvm::utils::ReplaceData(attribute_item, mvvm::variant_t(value), mvvm::DataRole::kData);
 }
 
 void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item)
 {
-  mvvm::utils::ReplaceData(attribute_item,
-                           sup::gui::GetVariantFromScalarTypeName(attribute_item.GetAnyTypeName()),
-                           mvvm::DataRole::kData);
+  (void)mvvm::utils::ReplaceData(
+      attribute_item, sup::gui::GetVariantFromScalarTypeName(attribute_item.GetAnyTypeName()),
+      mvvm::DataRole::kData);
 }
 
 sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
@@ -106,7 +106,7 @@ sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& 
   // Use attribute name for display name and tag name of the new property item.
   auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
-  property.SetDisplayName(attr.GetName());
+  (void)property.SetDisplayName(attr.GetName());
   SetAttributeExposedFlag(GetIsExposedFlag(attr), property);
   return &property;
 }
@@ -133,7 +133,7 @@ void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribut
   auto result = sup::oac_tree::utils::ParseAttributeString(any_type, attribute_string);
   if (result.first)
   {
-    item.SetData(sup::gui::GetVariantFromScalar(result.second));
+    (void)item.SetData(sup::gui::GetVariantFromScalar(result.second));
   }
 }
 
@@ -161,7 +161,7 @@ void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& a
   }
   if (IsSuitableForDomainAttribute(attribute_name, attribute_string))
   {
-    domain.AddAttribute(attribute_name, attribute_string);
+    (void)domain.AddAttribute(attribute_name, attribute_string);
   }
 }
 
@@ -196,11 +196,11 @@ void SetJsonAttributesFromItem(const sup::gui::AnyValueItem& item, DomainT& doma
 
   if (HasAttributeDefinition(domain, domainconstants::kTypeAttribute))
   {
-    domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
+    (void)domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
   }
   if (HasAttributeDefinition(domain, domainconstants::kValueAttribute))
   {
-    domain.AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
+    (void)domain.AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
   }
 }
 
