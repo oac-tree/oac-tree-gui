@@ -40,11 +40,11 @@ public:
    */
   explicit ChannelPresentationItem(mvvm::SessionItem* item, const QString& channel_name);
 
-  QVariant Data(int qt_role) const override;
+  QVariant Data(mvvm::role_t qt_role) const override;
 
-  bool SetData(const QVariant& data, int qt_role) override;
+  bool SetData(const QVariant& data, mvvm::role_t qt_role) override;
 
-  QVector<int> GetQtRoles(int data_role) const override;
+  QVector<int> GetQtRoles(mvvm::role_t data_role) const override;
 
 private:
   QString m_channel_name;

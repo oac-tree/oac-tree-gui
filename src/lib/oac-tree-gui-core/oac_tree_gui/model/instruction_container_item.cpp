@@ -43,9 +43,9 @@ std::vector<InstructionItem*> InstructionContainerItem::GetInstructions() const
   return GetItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
-int InstructionContainerItem::GetInstructionCount() const
+std::size_t InstructionContainerItem::GetInstructionCount() const
 {
-  return static_cast<int>(GetInstructions().size());
+  return GetInstructions().size();
 }
 
 }  // namespace oac_tree_gui

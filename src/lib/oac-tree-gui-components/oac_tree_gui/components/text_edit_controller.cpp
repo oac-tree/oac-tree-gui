@@ -102,7 +102,7 @@ void TextEditController::SetQtConnected()
   *m_text_edit_connection =
       QObject::connect(m_context.text_edit, &QPlainTextEdit::textChanged, on_text_changed);
 
-  auto on_checkstate_changed = [this](int state)
+  auto on_checkstate_changed = [this](std::int32_t state)
   {
     if (!GetItem())
     {

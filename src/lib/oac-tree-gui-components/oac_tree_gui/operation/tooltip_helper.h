@@ -48,7 +48,7 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
  * @param Total width of a tooltip in pixels.
  */
 std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::string>>& attributes,
-                             int total_width);
+                             std::int32_t total_width);
 
 /**
  * @brief Returns multi-line string representing the tooltip of instruction for real-time

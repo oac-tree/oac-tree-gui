@@ -27,6 +27,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace mvvm
 {
@@ -92,7 +93,7 @@ std::string GetNewInstructionType(const QMimeData* mime_data);
  * @return TagIndex to use for move operation
  */
 mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
-                                       const mvvm::SessionItem& parent, int drop_indicator_row);
+                                       const mvvm::SessionItem& parent, std::int32_t drop_indicator_row);
 
 /**
  * @brief Calculate TagIndex corresponding to the drop indicator position.
@@ -102,7 +103,7 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
  *
  * @return TagIndex to use for move operation
  */
-mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
+mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row);
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_

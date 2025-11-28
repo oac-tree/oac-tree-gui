@@ -37,7 +37,7 @@ public:
 
   std::vector<InstructionItem*> GetInstructions() const;
 
-  int GetInstructionCount() const;
+  std::size_t GetInstructionCount() const;
 };
 
 }  // namespace oac_tree_gui

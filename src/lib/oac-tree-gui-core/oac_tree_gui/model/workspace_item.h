@@ -42,7 +42,7 @@ public:
 
   std::vector<std::string> GetVariableNames() const;
 
-  int GetVariableCount() const;
+  std::size_t GetVariableCount() const;
 };
 
 }  // namespace oac_tree_gui

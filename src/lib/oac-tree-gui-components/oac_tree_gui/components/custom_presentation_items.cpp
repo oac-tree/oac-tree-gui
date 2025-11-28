@@ -33,7 +33,7 @@ ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem* item,
 {
 }
 
-QVariant ChannelPresentationItem::Data(int qt_role) const
+QVariant ChannelPresentationItem::Data(mvvm::role_t qt_role) const
 {
   static const QColor kConnectedColor = GetConnectedVariableColor();
   static const QColor kDisonnectedColor = GetDisonnectedVariableColor();
@@ -51,14 +51,14 @@ QVariant ChannelPresentationItem::Data(int qt_role) const
   return {};
 }
 
-bool ChannelPresentationItem::SetData(const QVariant& data, int qt_role)
+bool ChannelPresentationItem::SetData(const QVariant& data, mvvm::role_t qt_role)
 {
   (void)data;
   (void)qt_role;
   return false;
 }
 
-QVector<int> ChannelPresentationItem::GetQtRoles(int data_role) const
+QVector<int> ChannelPresentationItem::GetQtRoles(mvvm::role_t data_role) const
 {
   auto result = mvvm::DataPresentationItem::GetQtRoles(data_role);
   // When IsAvailable status changes, the decoration role (green/gray box rectangle) should be

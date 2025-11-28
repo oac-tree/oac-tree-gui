@@ -98,7 +98,7 @@ void ParallelSequenceItem::SetFailureThreshold(mvvm::uint32 value)
 
 RepeatItem::RepeatItem() : UniversalInstructionItem(mvvm::GetTypeName<RepeatItem>())
 {
-  SetRepeatCount(-1);
+  SetRepeatCount(mvvm::int32{-1});
 }
 
 std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone() const
@@ -106,12 +106,12 @@ std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone() const
   return std::make_unique<RepeatItem>(*this);
 }
 
-int RepeatItem::GetRepeatCount() const
+mvvm::int32 RepeatItem::GetRepeatCount() const
 {
-  return Property<int>(domainconstants::kMaxCountAttribute);
+  return Property<mvvm::int32>(domainconstants::kMaxCountAttribute);
 }
 
-void RepeatItem::SetRepeatCount(int value)
+void RepeatItem::SetRepeatCount(mvvm::int32 value)
 {
   SetAttribute(*this, domainconstants::kMaxCountAttribute, value);
 }

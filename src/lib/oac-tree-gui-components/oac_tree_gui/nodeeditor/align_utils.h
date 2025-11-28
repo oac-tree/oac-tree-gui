@@ -29,6 +29,7 @@
 //! https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees algorithm
 
 #include <map>
+#include <cstdint>
 
 namespace oac_tree_gui::algorithm
 {
@@ -39,10 +40,10 @@ class AlignNode;
 void InitializeNodes(AlignNode& node);
 
 //! Returns left contour of the tree.
-std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum = 0.0);
+std::map<std::int32_t, double> GetLeftCountour(AlignNode& node, double mod_sum = 0.0);
 
 //! Returns right contour of the tree.
-std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum = 0.0);
+std::map<std::int32_t, double> GetRightCountour(AlignNode& node, double mod_sum = 0.0);
 
 void CalculateInitialX(AlignNode& node);
 

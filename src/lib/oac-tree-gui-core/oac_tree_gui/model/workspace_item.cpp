@@ -53,13 +53,13 @@ std::vector<std::string> WorkspaceItem::GetVariableNames() const
   auto variables = GetVariables();
   result.reserve(variables.size());
   (void)std::transform(variables.begin(), variables.end(), std::back_inserter(result),
-                 [](auto element) { return element->GetName(); });
+                       [](auto element) { return element->GetName(); });
   return result;
 }
 
-int WorkspaceItem::GetVariableCount() const
+std::size_t WorkspaceItem::GetVariableCount() const
 {
-  return static_cast<int>(GetVariables().size());
+  return GetVariables().size();
 }
 
 }  // namespace oac_tree_gui

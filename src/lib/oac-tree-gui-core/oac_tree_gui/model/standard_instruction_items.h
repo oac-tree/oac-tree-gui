@@ -71,9 +71,9 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  int GetRepeatCount() const;
+  mvvm::int32 GetRepeatCount() const;
 
-  void SetRepeatCount(int value);
+  void SetRepeatCount(mvvm::int32 value);
 };
 
 //! Represent oac-tree instruction.

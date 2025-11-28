@@ -35,10 +35,10 @@ namespace
 //! `depth` is a position in the hierarchy (o - root node, 1 - direct children, etc)
 //! `edge` is most left, or most right node coordinate at given level, depending on comparator
 template <typename T>
-std::map<int, double> GetCountour(oac_tree_gui::algorithm::AlignNode& node, double mod_sum,
+std::map<std::int32_t, double> GetCountour(oac_tree_gui::algorithm::AlignNode& node, double mod_sum,
                                   T comparator)
 {
-  std::map<int, double> result;
+  std::map<std::int32_t, double> result;
 
   struct Data
   {
@@ -55,7 +55,7 @@ std::map<int, double> GetCountour(oac_tree_gui::algorithm::AlignNode& node, doub
     auto [node, mod_sum] = node_stack.top();
     node_stack.pop();
 
-    const int level = static_cast<int>(node->GetY());
+    const auto level = static_cast<std::int32_t>(node->GetY());
     if (auto it = result.find(level); it == result.end())
     {
       (void)result.insert({level, node->GetX() + mod_sum});
@@ -76,7 +76,7 @@ std::map<int, double> GetCountour(oac_tree_gui::algorithm::AlignNode& node, doub
   return result;
 }
 
-int GetMaxKey(const std::map<int, double>& map)
+std::int32_t GetMaxKey(const std::map<std::int32_t, double>& map)
 {
   return map.rbegin()->first;
 }
@@ -117,12 +117,12 @@ void InitializeNodes(AlignNode& node)
   }
 }
 
-std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum)
+std::map<std::int32_t, double> GetLeftCountour(AlignNode& node, double mod_sum)
 {
   return GetCountour(node, mod_sum, [](auto x1, auto x2) { return std::min(x1, x2); });
 }
 
-std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum)
+std::map<std::int32_t, double> GetRightCountour(AlignNode& node, double mod_sum)
 {
   return GetCountour(node, mod_sum, [](auto x1, auto x2) { return std::max(x1, x2); });
 }
@@ -199,7 +199,7 @@ void CheckForConflicts(AlignNode& node)
   {
     auto siblingContour = GetRightCountour(*sibling, 0.0);
 
-    for (int level = static_cast<int>(node.GetY()) + 1;
+    for (std::int32_t level = static_cast<std::int32_t>(node.GetY()) + 1;
          level <= std::min(GetMaxKey(siblingContour), GetMaxKey(nodeContour)); level++)
     {
       double distance = nodeContour[level] - siblingContour[level];
@@ -236,8 +236,8 @@ void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
   {
     double distanceBetweenNodes = (leftNode.GetX() - rightNode.GetX()) / (numNodesBetween + 1);
 
-    int count = 1;
-    for (int i = left_index + 1; i < right_index; i++)
+    std::int32_t count = 1;
+    for (std::int32_t i = left_index + 1; i < right_index; i++)
     {
       auto middleNode = leftNode.GetParent()->GetChildren().at(i);
 
