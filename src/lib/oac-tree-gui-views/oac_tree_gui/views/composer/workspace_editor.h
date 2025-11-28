@@ -61,6 +61,11 @@ public:
                            QWidget* parent_widget = nullptr);
   ~WorkspaceEditor() override;
 
+  WorkspaceEditor(const WorkspaceEditor&) = delete;
+  WorkspaceEditor& operator=(const WorkspaceEditor&) = delete;
+  WorkspaceEditor(WorkspaceEditor&&) = delete;
+  WorkspaceEditor& operator=(WorkspaceEditor&&) = delete;
+
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
   QList<QAction*> GetToolBarActions() const;

@@ -61,6 +61,11 @@ public:
   explicit NodeGraphicsViewActions(QWidget* parent_widget = nullptr);
   ~NodeGraphicsViewActions() override;
 
+  NodeGraphicsViewActions(const NodeGraphicsViewActions&) = delete;
+  NodeGraphicsViewActions& operator=(const NodeGraphicsViewActions&) = delete;
+  NodeGraphicsViewActions(NodeGraphicsViewActions&&) = delete;
+  NodeGraphicsViewActions& operator=(NodeGraphicsViewActions&&) = delete;
+
   void UpdateButtonsToOperationMode(GraphicsViewOperationMode mode);
 
   /**

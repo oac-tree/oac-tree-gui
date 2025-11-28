@@ -60,6 +60,11 @@ public:
   explicit MessagePanel(QWidget* parent_widget = nullptr);
   ~MessagePanel() override;
 
+  MessagePanel(const MessagePanel&) = delete;
+  MessagePanel& operator=(const MessagePanel&) = delete;
+  MessagePanel(MessagePanel&&) = delete;
+  MessagePanel& operator=(MessagePanel&&) = delete;
+
   void SetLog(JobLog* job_log);
 
 private:

@@ -51,6 +51,11 @@ public:
                                       QWidget* parent_widget = nullptr);
   ~ProcedureComposerTabWidget() override;
 
+  ProcedureComposerTabWidget(const ProcedureComposerTabWidget&) = delete;
+  ProcedureComposerTabWidget& operator=(const ProcedureComposerTabWidget&) = delete;
+  ProcedureComposerTabWidget(ProcedureComposerTabWidget&&) = delete;
+  ProcedureComposerTabWidget& operator=(ProcedureComposerTabWidget&&) = delete;
+
   void SetProcedure(ProcedureItem* procedure_item);
 
   ProcedureEditorType GetEditorType() const;

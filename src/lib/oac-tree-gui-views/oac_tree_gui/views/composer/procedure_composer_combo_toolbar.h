@@ -49,6 +49,11 @@ public:
                                          QWidget* parent_widget = nullptr);
   ~ProcedureComposerComboToolBar() override;
 
+  ProcedureComposerComboToolBar(const ProcedureComposerComboToolBar&) = delete;
+  ProcedureComposerComboToolBar& operator=(const ProcedureComposerComboToolBar&) = delete;
+  ProcedureComposerComboToolBar(ProcedureComposerComboToolBar&&) = delete;
+  ProcedureComposerComboToolBar& operator=(ProcedureComposerComboToolBar&&) = delete;
+
   /**
    * @brief Shows the toolbar as active/inactive.
    *

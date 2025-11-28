@@ -56,6 +56,11 @@ public:
                                    QWidget* parent_widget = nullptr);
   ~OperationWorkspacePanel() override;
 
+  OperationWorkspacePanel(const OperationWorkspacePanel&) = delete;
+  OperationWorkspacePanel& operator=(const OperationWorkspacePanel&) = delete;
+  OperationWorkspacePanel(OperationWorkspacePanel&&) = delete;
+  OperationWorkspacePanel& operator=(OperationWorkspacePanel&&) = delete;
+
   void SetProcedure(ProcedureItem* item);
 
 private:

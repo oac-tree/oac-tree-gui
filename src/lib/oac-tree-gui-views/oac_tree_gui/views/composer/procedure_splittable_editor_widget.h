@@ -55,6 +55,11 @@ public:
                                            QWidget* parent_widget = nullptr);
   ~ProcedureSplittableEditorWidget() override;
 
+  ProcedureSplittableEditorWidget(const ProcedureSplittableEditorWidget&) = delete;
+  ProcedureSplittableEditorWidget& operator=(const ProcedureSplittableEditorWidget&) = delete;
+  ProcedureSplittableEditorWidget(ProcedureSplittableEditorWidget&&) = delete;
+  ProcedureSplittableEditorWidget& operator=(ProcedureSplittableEditorWidget&&) = delete;
+
   void SetModel(SequencerModel* model);
 
   /**

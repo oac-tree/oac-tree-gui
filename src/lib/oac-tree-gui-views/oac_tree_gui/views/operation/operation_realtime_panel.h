@@ -55,6 +55,11 @@ public:
   explicit OperationRealTimePanel(QWidget* parent_widget = nullptr);
   ~OperationRealTimePanel() override;
 
+  OperationRealTimePanel(const OperationRealTimePanel&) = delete;
+  OperationRealTimePanel& operator=(const OperationRealTimePanel&) = delete;
+  OperationRealTimePanel(OperationRealTimePanel&&) = delete;
+  OperationRealTimePanel& operator=(OperationRealTimePanel&&) = delete;
+
   void SetCurrentJob(JobItem* job_item);
 
   void SetSelectedInstructions(std::vector<InstructionItem*> items);

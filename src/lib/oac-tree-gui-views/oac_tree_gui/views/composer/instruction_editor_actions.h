@@ -82,6 +82,11 @@ public:
                                     QObject* parent_object = nullptr);
   ~InstructionEditorActions() override;
 
+  InstructionEditorActions(const InstructionEditorActions&) = delete;
+  InstructionEditorActions& operator=(const InstructionEditorActions&) = delete;
+  InstructionEditorActions(InstructionEditorActions&&) = delete;
+  InstructionEditorActions& operator=(InstructionEditorActions&&) = delete;
+
   /**
    * @brief Returns list of actions according to provided flags.
    */

@@ -63,6 +63,11 @@ public:
   explicit AnyValueCompactScalarEditor(QWidget* parent_widget = nullptr);
   ~AnyValueCompactScalarEditor() override;
 
+  AnyValueCompactScalarEditor(const AnyValueCompactScalarEditor&) = delete;
+  AnyValueCompactScalarEditor& operator=(const AnyValueCompactScalarEditor&) = delete;
+  AnyValueCompactScalarEditor(AnyValueCompactScalarEditor&&) = delete;
+  AnyValueCompactScalarEditor& operator=(AnyValueCompactScalarEditor&&) = delete;
+
   void SetDescription(const QString& text) override;
 
   void SetInitialValue(const sup::gui::AnyValueItem* item) override;

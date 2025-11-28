@@ -66,6 +66,11 @@ public:
   explicit OperationJobActions(QObject* parent_object = nullptr);
   ~OperationJobActions() override;
 
+  OperationJobActions(const OperationJobActions&) = delete;
+  OperationJobActions& operator=(const OperationJobActions&) = delete;
+  OperationJobActions(OperationJobActions&&) = delete;
+  OperationJobActions& operator=(OperationJobActions&&) = delete;
+
   /**
    * @brief Returns list of actions according to provided flags.
    */

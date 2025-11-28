@@ -63,6 +63,11 @@ public:
                                 OperationPresentationMode mode, QWidget* parent_widget = nullptr);
   ~OperationMonitorView() override;
 
+  OperationMonitorView(const OperationMonitorView&) = delete;
+  OperationMonitorView& operator=(const OperationMonitorView&) = delete;
+  OperationMonitorView(OperationMonitorView&&) = delete;
+  OperationMonitorView& operator=(OperationMonitorView&&) = delete;
+
   void SetModels(ApplicationModels* models);
 
   bool OnImportJobRequest(const QString& file_name = {});

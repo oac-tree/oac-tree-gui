@@ -51,6 +51,11 @@ public:
   explicit MonitorMainWindowActions(mvvm::IProject* project, QMainWindow* mainwindow);
   ~MonitorMainWindowActions() override;
 
+  MonitorMainWindowActions(const MonitorMainWindowActions&) = delete;
+  MonitorMainWindowActions& operator=(const MonitorMainWindowActions&) = delete;
+  MonitorMainWindowActions(MonitorMainWindowActions&&) = delete;
+  MonitorMainWindowActions& operator=(MonitorMainWindowActions&&) = delete;
+
   /**
    * @brief Closes current project.
    *

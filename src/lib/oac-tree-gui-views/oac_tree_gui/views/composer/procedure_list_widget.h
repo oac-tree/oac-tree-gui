@@ -62,6 +62,11 @@ public:
                                QWidget* parent_widget = nullptr);
   ~ProcedureListWidget() override;
 
+  ProcedureListWidget(const ProcedureListWidget&) = delete;
+  ProcedureListWidget& operator=(const ProcedureListWidget&) = delete;
+  ProcedureListWidget(ProcedureListWidget&&) = delete;
+  ProcedureListWidget& operator=(ProcedureListWidget&&) = delete;
+
   void SetModel(SequencerModel* model);
 
   ProcedureItem* GetSelectedProcedure();

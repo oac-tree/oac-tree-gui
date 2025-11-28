@@ -62,6 +62,11 @@ public:
                                       QWidget* parent_widget = nullptr);
   ~InstructionAttributeEditor() override;
 
+  InstructionAttributeEditor(const InstructionAttributeEditor&) = delete;
+  InstructionAttributeEditor& operator=(const InstructionAttributeEditor&) = delete;
+  InstructionAttributeEditor(InstructionAttributeEditor&&) = delete;
+  InstructionAttributeEditor& operator=(InstructionAttributeEditor&&) = delete;
+
   void SetInstruction(mvvm::SessionItem* instruction_item);
 
 signals:

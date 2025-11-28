@@ -53,6 +53,11 @@ public:
                          QWidget* parent_widget = nullptr);
   ~ExplorerPanel() override;
 
+  ExplorerPanel(const ExplorerPanel&) = delete;
+  ExplorerPanel& operator=(const ExplorerPanel&) = delete;
+  ExplorerPanel(ExplorerPanel&&) = delete;
+  ExplorerPanel& operator=(ExplorerPanel&&) = delete;
+
   void SetModel(SequencerModel* model);
 
 signals:

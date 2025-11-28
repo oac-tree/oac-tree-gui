@@ -55,6 +55,11 @@ public:
                                  QWidget* parent_widget = nullptr);
   ~SequencerExplorerView() override;
 
+  SequencerExplorerView(const SequencerExplorerView&) = delete;
+  SequencerExplorerView& operator=(const SequencerExplorerView&) = delete;
+  SequencerExplorerView(SequencerExplorerView&&) = delete;
+  SequencerExplorerView& operator=(SequencerExplorerView&&) = delete;
+
   void SetModel(SequencerModel* model);
 
   void ImportProcedure(const QString& file_name);

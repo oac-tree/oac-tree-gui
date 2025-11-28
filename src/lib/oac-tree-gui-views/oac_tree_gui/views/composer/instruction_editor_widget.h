@@ -65,6 +65,11 @@ public:
                                    QWidget* parent_widget = nullptr);
   ~InstructionEditorWidget() override;
 
+  InstructionEditorWidget(const InstructionEditorWidget&) = delete;
+  InstructionEditorWidget& operator=(const InstructionEditorWidget&) = delete;
+  InstructionEditorWidget(InstructionEditorWidget&&) = delete;
+  InstructionEditorWidget& operator=(InstructionEditorWidget&&) = delete;
+
   void SetInstructionContainer(InstructionContainerItem* instruction_container);
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);

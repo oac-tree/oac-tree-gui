@@ -66,6 +66,11 @@ public:
                                   QObject* parent_object = nullptr);
   ~WorkspaceEditorActions() override;
 
+  WorkspaceEditorActions(const WorkspaceEditorActions&) = delete;
+  WorkspaceEditorActions& operator=(const WorkspaceEditorActions&) = delete;
+  WorkspaceEditorActions(WorkspaceEditorActions&&) = delete;
+  WorkspaceEditorActions& operator=(WorkspaceEditorActions&&) = delete;
+
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
   /**

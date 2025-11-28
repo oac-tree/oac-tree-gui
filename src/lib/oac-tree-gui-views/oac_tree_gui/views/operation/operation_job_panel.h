@@ -50,6 +50,11 @@ public:
   explicit OperationJobPanel(QWidget* parent_widget = nullptr);
   ~OperationJobPanel() override;
 
+  OperationJobPanel(const OperationJobPanel&) = delete;
+  OperationJobPanel& operator=(const OperationJobPanel&) = delete;
+  OperationJobPanel(OperationJobPanel&&) = delete;
+  OperationJobPanel& operator=(OperationJobPanel&&) = delete;
+
   void SetModels(ApplicationModels* models);
 
   JobItem* GetSelectedJob() const;

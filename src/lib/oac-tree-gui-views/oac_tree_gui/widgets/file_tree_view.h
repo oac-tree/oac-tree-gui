@@ -54,6 +54,11 @@ public:
   explicit FileTreeView(QWidget* parent_widget = nullptr);
   ~FileTreeView() override;
 
+  FileTreeView(const FileTreeView&) = delete;
+  FileTreeView& operator=(const FileTreeView&) = delete;
+  FileTreeView(FileTreeView&&) = delete;
+  FileTreeView& operator=(FileTreeView&&) = delete;
+
   /**
    * @brief Sets the directory to be shown in a breadcrumb, and in a file tree view.
    */

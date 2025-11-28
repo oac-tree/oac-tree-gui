@@ -49,6 +49,11 @@ public:
   explicit SequencerComposerActions(QWidget* parent_widget = nullptr);
   ~SequencerComposerActions() override;
 
+  SequencerComposerActions(const SequencerComposerActions&) = delete;
+  SequencerComposerActions& operator=(const SequencerComposerActions&) = delete;
+  SequencerComposerActions(SequencerComposerActions&&) = delete;
+  SequencerComposerActions& operator=(SequencerComposerActions&&) = delete;
+
   void SetModel(SequencerModel* model);
 
   void SetProcedure(ProcedureItem* procedure_item);

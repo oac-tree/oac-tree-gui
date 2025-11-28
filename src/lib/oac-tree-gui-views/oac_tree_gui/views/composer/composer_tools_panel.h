@@ -56,6 +56,11 @@ public:
                               QWidget* parent_widget = nullptr);
   ~ComposerToolsPanel() override;
 
+  ComposerToolsPanel(const ComposerToolsPanel&) = delete;
+  ComposerToolsPanel& operator=(const ComposerToolsPanel&) = delete;
+  ComposerToolsPanel(ComposerToolsPanel&&) = delete;
+  ComposerToolsPanel& operator=(ComposerToolsPanel&&) = delete;
+
   void SetModel(SequencerModel* model);
 
   ProcedureItem* GetSelectedProcedure();

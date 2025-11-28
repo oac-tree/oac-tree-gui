@@ -53,6 +53,11 @@ public:
                          QWidget* parent_widget = nullptr);
   ~MonitorWidget() override;
 
+  MonitorWidget(const MonitorWidget&) = delete;
+  MonitorWidget& operator=(const MonitorWidget&) = delete;
+  MonitorWidget(MonitorWidget&&) = delete;
+  MonitorWidget& operator=(MonitorWidget&&) = delete;
+
   void SetModel(MonitorModel* model);
 
   void SetWorkspaceItem(WorkspaceItem* item);

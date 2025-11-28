@@ -65,6 +65,11 @@ public:
   explicit NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_widget = nullptr);
   ~NodeEditorWidget() override;
 
+  NodeEditorWidget(const NodeEditorWidget&) = delete;
+  NodeEditorWidget& operator=(const NodeEditorWidget&) = delete;
+  NodeEditorWidget(NodeEditorWidget&&) = delete;
+  NodeEditorWidget& operator=(NodeEditorWidget&&) = delete;
+
   void SetProcedure(ProcedureItem* procedure);
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;

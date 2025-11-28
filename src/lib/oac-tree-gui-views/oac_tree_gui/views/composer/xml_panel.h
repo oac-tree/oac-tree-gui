@@ -52,6 +52,11 @@ public:
   explicit XmlPanel(QWidget* parent_widget = nullptr);
   ~XmlPanel() override;
 
+  XmlPanel(const XmlPanel&) = delete;
+  XmlPanel& operator=(const XmlPanel&) = delete;
+  XmlPanel(XmlPanel&&) = delete;
+  XmlPanel& operator=(XmlPanel&&) = delete;
+
   void SetProcedure(ProcedureItem* procedure);
 
 private:

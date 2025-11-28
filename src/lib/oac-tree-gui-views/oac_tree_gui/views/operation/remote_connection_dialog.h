@@ -50,6 +50,11 @@ public:
                                   QWidget* parent_widget = nullptr);
   ~RemoteConnectionDialog() override;
 
+  RemoteConnectionDialog(const RemoteConnectionDialog&) = delete;
+  RemoteConnectionDialog& operator=(const RemoteConnectionDialog&) = delete;
+  RemoteConnectionDialog(RemoteConnectionDialog&&) = delete;
+  RemoteConnectionDialog& operator=(RemoteConnectionDialog&&) = delete;
+
   /**
    * @brief Returns users choice with the server name to connect, and the list of remote jobs.
    */

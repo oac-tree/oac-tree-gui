@@ -58,6 +58,11 @@ public:
                                  QWidget* parent_widget = nullptr);
   ~SequencerComposerView() override;
 
+  SequencerComposerView(const SequencerComposerView&) = delete;
+  SequencerComposerView& operator=(const SequencerComposerView&) = delete;
+  SequencerComposerView(SequencerComposerView&&) = delete;
+  SequencerComposerView& operator=(SequencerComposerView&&) = delete;
+
   void SetModel(SequencerModel* model);
 
 private:

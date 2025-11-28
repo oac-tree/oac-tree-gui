@@ -56,6 +56,11 @@ public:
   explicit RealTimeInstructionTreeWidget(QWidget* parent_widget = nullptr);
   ~RealTimeInstructionTreeWidget() override;
 
+  RealTimeInstructionTreeWidget(const RealTimeInstructionTreeWidget&) = delete;
+  RealTimeInstructionTreeWidget& operator=(const RealTimeInstructionTreeWidget&) = delete;
+  RealTimeInstructionTreeWidget(RealTimeInstructionTreeWidget&&) = delete;
+  RealTimeInstructionTreeWidget& operator=(RealTimeInstructionTreeWidget&&) = delete;
+
   void SetProcedure(ProcedureItem* procedure_item);
 
   void SetSelectedInstructions(std::vector<InstructionItem*> items);

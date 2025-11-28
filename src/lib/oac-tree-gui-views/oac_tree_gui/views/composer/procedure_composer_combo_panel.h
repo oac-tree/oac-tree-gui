@@ -80,6 +80,11 @@ public:
 
   ~ProcedureComposerComboPanel() override;
 
+  ProcedureComposerComboPanel(const ProcedureComposerComboPanel&) = delete;
+  ProcedureComposerComboPanel& operator=(const ProcedureComposerComboPanel&) = delete;
+  ProcedureComposerComboPanel(ProcedureComposerComboPanel&&) = delete;
+  ProcedureComposerComboPanel& operator=(ProcedureComposerComboPanel&&) = delete;
+
   /**
    * @brief Returns the current model.
    */

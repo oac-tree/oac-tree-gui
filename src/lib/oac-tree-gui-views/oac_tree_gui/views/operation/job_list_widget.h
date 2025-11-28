@@ -55,6 +55,11 @@ public:
   explicit JobListWidget(QWidget* parent_widget = nullptr);
   ~JobListWidget() override;
 
+  JobListWidget(const JobListWidget&) = delete;
+  JobListWidget& operator=(const JobListWidget&) = delete;
+  JobListWidget(JobListWidget&&) = delete;
+  JobListWidget& operator=(JobListWidget&&) = delete;
+
   void SetJobModel(JobModel* model);
 
   JobItem* GetSelectedJob();

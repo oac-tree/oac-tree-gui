@@ -62,6 +62,11 @@ public:
   explicit MonitorRealTimeActions(QObject* parent_object = nullptr);
   ~MonitorRealTimeActions() override;
 
+  MonitorRealTimeActions(const MonitorRealTimeActions&) = delete;
+  MonitorRealTimeActions& operator=(const MonitorRealTimeActions&) = delete;
+  MonitorRealTimeActions(MonitorRealTimeActions&&) = delete;
+  MonitorRealTimeActions& operator=(MonitorRealTimeActions&&) = delete;
+
   int GetCurrentTickTimeout();
 
   void SetCurrentTickTimeout(int msec);

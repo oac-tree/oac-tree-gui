@@ -64,6 +64,11 @@ public:
                                  QWidget* parent_widget = nullptr);
   ~WorkspaceEditorWidget() override;
 
+  WorkspaceEditorWidget(const WorkspaceEditorWidget&) = delete;
+  WorkspaceEditorWidget& operator=(const WorkspaceEditorWidget&) = delete;
+  WorkspaceEditorWidget(WorkspaceEditorWidget&&) = delete;
+  WorkspaceEditorWidget& operator=(WorkspaceEditorWidget&&) = delete;
+
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
   void SetWorkspaceEditType(WorkspaceEditType edit_type);

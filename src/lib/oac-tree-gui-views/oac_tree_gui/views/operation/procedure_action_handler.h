@@ -46,6 +46,11 @@ public:
   explicit ProcedureActionHandler(QWidget* parent_widget = nullptr);
   ~ProcedureActionHandler() override;
 
+  ProcedureActionHandler(const ProcedureActionHandler&) = delete;
+  ProcedureActionHandler& operator=(const ProcedureActionHandler&) = delete;
+  ProcedureActionHandler(ProcedureActionHandler&&) = delete;
+  ProcedureActionHandler& operator=(ProcedureActionHandler&&) = delete;
+
   void OnExportToXmlRequest(ProcedureItem* procedure_item);
 
   static void OnValidateProcedureRequest(ProcedureItem* procedure_item);
