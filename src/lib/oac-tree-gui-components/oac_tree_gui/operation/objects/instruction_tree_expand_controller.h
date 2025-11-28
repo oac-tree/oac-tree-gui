@@ -56,6 +56,11 @@ public:
   explicit InstructionTreeExpandController(QTreeView* tree_view, QObject* parent_object = nullptr);
   ~InstructionTreeExpandController() override;
 
+  InstructionTreeExpandController(const InstructionTreeExpandController&) = delete;
+  InstructionTreeExpandController& operator=(const InstructionTreeExpandController&) = delete;
+  InstructionTreeExpandController(InstructionTreeExpandController&&) = delete;
+  InstructionTreeExpandController& operator=(InstructionTreeExpandController&&) = delete;
+
   void SetInstructionContainer(InstructionContainerItem* instruction_container);
 
   /**

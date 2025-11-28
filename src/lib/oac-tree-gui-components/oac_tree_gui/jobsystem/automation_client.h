@@ -48,6 +48,11 @@ public:
   explicit AutomationClient(const std::string& server_name);
   ~AutomationClient() override;
 
+  AutomationClient(const AutomationClient&) = delete;
+  AutomationClient& operator=(const AutomationClient&) = delete;
+  AutomationClient(AutomationClient&&) = delete;
+  AutomationClient& operator=(AutomationClient&&) = delete;
+
   std::string GetServerName() const override;
 
   std::size_t GetJobCount() const override;

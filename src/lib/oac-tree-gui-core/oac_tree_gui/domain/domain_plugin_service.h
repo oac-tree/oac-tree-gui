@@ -53,6 +53,11 @@ public:
   DomainPluginService(LibraryLoaderT& library_loader, ObjectRegistryT& object_registry);
   ~DomainPluginService() override = default;
 
+  DomainPluginService(const DomainPluginService&) = delete;
+  DomainPluginService& operator=(const DomainPluginService&) = delete;
+  DomainPluginService(DomainPluginService&&) = delete;
+  DomainPluginService& operator=(DomainPluginService&&) = delete;
+
   void LoadPluginFiles(const std::vector<std::string>& plugin_file_names) override;
 
   std::vector<std::string> GetLoadedPlugins() const override;

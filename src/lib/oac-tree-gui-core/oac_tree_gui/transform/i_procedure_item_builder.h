@@ -37,7 +37,13 @@ class VariableItem;
 class IProcedureItemBuilder
 {
 public:
+  IProcedureItemBuilder() = default;
   virtual ~IProcedureItemBuilder() = default;
+
+  IProcedureItemBuilder(const IProcedureItemBuilder&) = delete;
+  IProcedureItemBuilder& operator=(const IProcedureItemBuilder&) = delete;
+  IProcedureItemBuilder(IProcedureItemBuilder&&) = delete;
+  IProcedureItemBuilder& operator=(IProcedureItemBuilder&&) = delete;
 
   /**
    * @brief Returns instruction item for given automation index.

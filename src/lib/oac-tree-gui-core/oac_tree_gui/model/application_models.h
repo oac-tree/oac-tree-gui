@@ -53,6 +53,11 @@ public:
   explicit ApplicationModels(const mvvm::ProjectContext& context);
   ~ApplicationModels() override;
 
+  ApplicationModels(const ApplicationModels&) = delete;
+  ApplicationModels& operator=(const ApplicationModels&) = delete;
+  ApplicationModels(ApplicationModels&&) = delete;
+  ApplicationModels& operator=(ApplicationModels&&) = delete;
+
   SequencerModel* GetSequencerModel();
 
   JobModel* GetJobModel();

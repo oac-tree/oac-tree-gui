@@ -51,6 +51,11 @@ public:
                                       QMainWindow* main_window);
   ~OperationMainWindowActions() override;
 
+  OperationMainWindowActions(const OperationMainWindowActions&) = delete;
+  OperationMainWindowActions& operator=(const OperationMainWindowActions&) = delete;
+  OperationMainWindowActions(OperationMainWindowActions&&) = delete;
+  OperationMainWindowActions& operator=(OperationMainWindowActions&&) = delete;
+
   /**
    * @brief Populates external status bar with actions.
    */

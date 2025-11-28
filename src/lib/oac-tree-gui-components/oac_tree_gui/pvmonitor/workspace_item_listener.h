@@ -60,6 +60,11 @@ public:
 
   ~WorkspaceItemListener();
 
+  WorkspaceItemListener(const WorkspaceItemListener&) = delete;
+  WorkspaceItemListener& operator=(const WorkspaceItemListener&) = delete;
+  WorkspaceItemListener(WorkspaceItemListener&&) = delete;
+  WorkspaceItemListener& operator=(WorkspaceItemListener&&) = delete;
+
   /**
    * @brief Processes events from the domain.
    *

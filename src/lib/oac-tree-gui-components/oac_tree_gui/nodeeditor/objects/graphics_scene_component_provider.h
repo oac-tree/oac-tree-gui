@@ -69,6 +69,11 @@ public:
       mvvm::SessionItem* instruction_container);
   ~GraphicsSceneComponentProvider() override;
 
+  GraphicsSceneComponentProvider(const GraphicsSceneComponentProvider&) = delete;
+  GraphicsSceneComponentProvider& operator=(const GraphicsSceneComponentProvider&) = delete;
+  GraphicsSceneComponentProvider(GraphicsSceneComponentProvider&&) = delete;
+  GraphicsSceneComponentProvider& operator=(GraphicsSceneComponentProvider&&) = delete;
+
   /**
    * @brief Switch off any connection painting and interaction.
    */

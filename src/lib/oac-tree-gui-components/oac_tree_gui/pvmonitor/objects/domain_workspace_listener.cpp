@@ -65,6 +65,11 @@ struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
     }
   };
 
+  DomainWorkspaceListenerImpl(const DomainWorkspaceListenerImpl&) = delete;
+  DomainWorkspaceListenerImpl& operator=(const DomainWorkspaceListenerImpl&) = delete;
+  DomainWorkspaceListenerImpl(DomainWorkspaceListenerImpl&&) = delete;
+  DomainWorkspaceListenerImpl& operator=(DomainWorkspaceListenerImpl&&) = delete;
+
   /**
    * @brief Validates input parameters.
    */

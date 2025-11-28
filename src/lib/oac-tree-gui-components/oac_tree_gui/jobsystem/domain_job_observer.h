@@ -61,6 +61,11 @@ public:
                              const UserContext& user_context);
   ~DomainJobObserver() override;
 
+  DomainJobObserver(const DomainJobObserver&) = delete;
+  DomainJobObserver& operator=(const DomainJobObserver&) = delete;
+  DomainJobObserver(DomainJobObserver&&) = delete;
+  DomainJobObserver& operator=(DomainJobObserver&&) = delete;
+
   void InitNumberOfInstructions(sup::dto::uint32 n_instr) override;
 
   void InstructionStateUpdated(sup::dto::uint32 instr_idx,

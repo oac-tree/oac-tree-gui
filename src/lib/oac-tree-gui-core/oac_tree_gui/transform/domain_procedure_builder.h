@@ -45,7 +45,14 @@ class DomainProcedureBuilder
 public:
   std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem& procedure_item);
 
+  DomainProcedureBuilder() = default;
+
   ~DomainProcedureBuilder();
+
+  DomainProcedureBuilder(const DomainProcedureBuilder&) = delete;
+  DomainProcedureBuilder& operator=(const DomainProcedureBuilder&) = delete;
+  DomainProcedureBuilder(DomainProcedureBuilder&&) = delete;
+  DomainProcedureBuilder& operator=(DomainProcedureBuilder&&) = delete;
 
   void PopulateProcedure(const ProcedureItem& procedure_item, procedure_t& procedure);
 

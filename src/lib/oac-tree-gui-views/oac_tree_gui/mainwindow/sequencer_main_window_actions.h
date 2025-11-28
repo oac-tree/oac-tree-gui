@@ -62,6 +62,11 @@ public:
                                       QMainWindow* main_window);
   ~SequencerMainWindowActions() override;
 
+  SequencerMainWindowActions(const SequencerMainWindowActions&) = delete;
+  SequencerMainWindowActions& operator=(const SequencerMainWindowActions&) = delete;
+  SequencerMainWindowActions(SequencerMainWindowActions&&) = delete;
+  SequencerMainWindowActions& operator=(SequencerMainWindowActions&&) = delete;
+
   /**
    * @brief Closes current project.
    *

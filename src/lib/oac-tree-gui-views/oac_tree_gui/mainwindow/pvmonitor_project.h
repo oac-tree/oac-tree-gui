@@ -40,6 +40,11 @@ public:
 
   ~PvMonitorProject() override;
 
+  PvMonitorProject(const PvMonitorProject&) = delete;
+  PvMonitorProject& operator=(const PvMonitorProject&) = delete;
+  PvMonitorProject(PvMonitorProject&&) = delete;
+  PvMonitorProject& operator=(PvMonitorProject&&) = delete;
+
   MonitorModel* GetMonitorModel();
 };
 

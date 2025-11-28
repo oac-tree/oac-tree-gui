@@ -45,6 +45,11 @@ public:
   explicit PvMonitorMainWindow(SequencerMainWindowContext& context);
   ~PvMonitorMainWindow() override;
 
+  PvMonitorMainWindow(const PvMonitorMainWindow&) = delete;
+  PvMonitorMainWindow& operator=(const PvMonitorMainWindow&) = delete;
+  PvMonitorMainWindow(PvMonitorMainWindow&&) = delete;
+  PvMonitorMainWindow& operator=(PvMonitorMainWindow&&) = delete;
+
   static bool ImportProcedure(const QString& file_name);
 
 protected:

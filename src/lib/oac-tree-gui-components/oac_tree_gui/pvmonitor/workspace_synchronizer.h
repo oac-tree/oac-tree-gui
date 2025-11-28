@@ -57,6 +57,11 @@ public:
 
   ~WorkspaceSynchronizer();
 
+  WorkspaceSynchronizer(const WorkspaceSynchronizer&) = delete;
+  WorkspaceSynchronizer& operator=(const WorkspaceSynchronizer&) = delete;
+  WorkspaceSynchronizer(WorkspaceSynchronizer&&) = delete;
+  WorkspaceSynchronizer& operator=(WorkspaceSynchronizer&&) = delete;
+
   /**
    * @brief Checks if domain queue is empty.
    *

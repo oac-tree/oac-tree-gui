@@ -58,6 +58,11 @@ public:
   explicit AbstractJobHandler(JobItem* job_item);
   ~AbstractJobHandler() override;
 
+  AbstractJobHandler(const AbstractJobHandler&) = delete;
+  AbstractJobHandler& operator=(const AbstractJobHandler&) = delete;
+  AbstractJobHandler(AbstractJobHandler&&) = delete;
+  AbstractJobHandler& operator=(AbstractJobHandler&&) = delete;
+
   void Start() override;
 
   void Pause() override;

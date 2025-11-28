@@ -47,6 +47,11 @@ public:
 
   virtual ~AbstractDomainRunner();
 
+  AbstractDomainRunner(const AbstractDomainRunner&) = delete;
+  AbstractDomainRunner& operator=(const AbstractDomainRunner&) = delete;
+  AbstractDomainRunner(AbstractDomainRunner&&) = delete;
+  AbstractDomainRunner& operator=(AbstractDomainRunner&&) = delete;
+
   /**
    * @brief Starts procedure execution.
    */

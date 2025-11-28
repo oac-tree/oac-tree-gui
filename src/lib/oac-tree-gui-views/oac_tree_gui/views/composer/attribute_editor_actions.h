@@ -66,6 +66,11 @@ public:
                                   QObject* parent_object = nullptr);
   ~AttributeEditorActions() override;
 
+  AttributeEditorActions(const AttributeEditorActions&) = delete;
+  AttributeEditorActions& operator=(const AttributeEditorActions&) = delete;
+  AttributeEditorActions(AttributeEditorActions&&) = delete;
+  AttributeEditorActions& operator=(AttributeEditorActions&&) = delete;
+
   /**
    * @brief Returns list of actions according to provided flags.
    */

@@ -66,6 +66,11 @@ public:
 
   ~OperationActionHandler() override;
 
+  OperationActionHandler(const OperationActionHandler&) = delete;
+  OperationActionHandler& operator=(const OperationActionHandler&) = delete;
+  OperationActionHandler(OperationActionHandler&&) = delete;
+  OperationActionHandler& operator=(OperationActionHandler&&) = delete;
+
   void SetJobContainer(mvvm::SessionItem* job_container);
 
   /**

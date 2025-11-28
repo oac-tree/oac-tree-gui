@@ -44,6 +44,11 @@ public:
   DomainJobService(DomainEventDispatcherContext dispatcher_context, UserContext user_context);
   virtual ~DomainJobService();
 
+  DomainJobService(const DomainJobService&) = delete;
+  DomainJobService& operator=(const DomainJobService&) = delete;
+  DomainJobService(DomainJobService&&) = delete;
+  DomainJobService& operator=(DomainJobService&&) = delete;
+
   sup::oac_tree::IJobInfoIO* GetJobInfoIO();
 
   /**

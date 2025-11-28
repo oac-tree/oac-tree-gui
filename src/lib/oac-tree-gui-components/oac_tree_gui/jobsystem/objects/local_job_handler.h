@@ -45,6 +45,11 @@ public:
   explicit LocalJobHandler(JobItem* job_item, UserContext user_context);
   ~LocalJobHandler() override;
 
+  LocalJobHandler(const LocalJobHandler&) = delete;
+  LocalJobHandler& operator=(const LocalJobHandler&) = delete;
+  LocalJobHandler(LocalJobHandler&&) = delete;
+  LocalJobHandler& operator=(LocalJobHandler&&) = delete;
+
 private:
   void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;
 

@@ -44,6 +44,11 @@ public:
                    std::size_t job_index, UserContext user_context);
   ~RemoteJobHandler() override;
 
+  RemoteJobHandler(const RemoteJobHandler&) = delete;
+  RemoteJobHandler& operator=(const RemoteJobHandler&) = delete;
+  RemoteJobHandler(RemoteJobHandler&&) = delete;
+  RemoteJobHandler& operator=(RemoteJobHandler&&) = delete;
+
 private:
   void OnVariableUpdatedEvent(const VariableUpdatedEvent& event) override;
 };

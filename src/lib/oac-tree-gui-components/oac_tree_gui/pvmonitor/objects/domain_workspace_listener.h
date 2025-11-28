@@ -69,6 +69,11 @@ public:
                           QObject* parent_object = nullptr);
   ~DomainWorkspaceListener() override;
 
+  DomainWorkspaceListener(const DomainWorkspaceListener&) = delete;
+  DomainWorkspaceListener& operator=(const DomainWorkspaceListener&) = delete;
+  DomainWorkspaceListener(DomainWorkspaceListener&&) = delete;
+  DomainWorkspaceListener& operator=(DomainWorkspaceListener&&) = delete;
+
   /**
    * @brief Returns number of events in a queue.
    */

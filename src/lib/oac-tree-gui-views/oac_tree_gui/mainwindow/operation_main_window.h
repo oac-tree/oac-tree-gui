@@ -46,6 +46,11 @@ public:
   OperationMainWindow(SequencerMainWindowContext& context);
   ~OperationMainWindow() override;
 
+  OperationMainWindow(const OperationMainWindow&) = delete;
+  OperationMainWindow& operator=(const OperationMainWindow&) = delete;
+  OperationMainWindow(OperationMainWindow&&) = delete;
+  OperationMainWindow& operator=(OperationMainWindow&&) = delete;
+
   bool ImportProcedure(const QString& file_name);
 
 protected:

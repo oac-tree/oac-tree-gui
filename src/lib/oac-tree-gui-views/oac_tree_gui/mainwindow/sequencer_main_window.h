@@ -55,6 +55,11 @@ public:
   explicit SequencerMainWindow(SequencerMainWindowContext& context);
   ~SequencerMainWindow() override;
 
+  SequencerMainWindow(const SequencerMainWindow&) = delete;
+  SequencerMainWindow& operator=(const SequencerMainWindow&) = delete;
+  SequencerMainWindow(SequencerMainWindow&&) = delete;
+  SequencerMainWindow& operator=(SequencerMainWindow&&) = delete;
+
   bool ImportProcedure(const QString& file_name);
 
   /**

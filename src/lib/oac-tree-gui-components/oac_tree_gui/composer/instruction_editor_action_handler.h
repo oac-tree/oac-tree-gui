@@ -55,6 +55,11 @@ public:
   explicit InstructionEditorActionHandler(InstructionEditorContext context);
   ~InstructionEditorActionHandler() override;
 
+  InstructionEditorActionHandler(const InstructionEditorActionHandler&) = delete;
+  InstructionEditorActionHandler& operator=(const InstructionEditorActionHandler&) = delete;
+  InstructionEditorActionHandler(InstructionEditorActionHandler&&) = delete;
+  InstructionEditorActionHandler& operator=(InstructionEditorActionHandler&&) = delete;
+
   void DropInstruction(const std::string& item_type, const position_t& pos) override;
 
   bool CanInsertInstructionAfter(const std::string& item_type) const override;
