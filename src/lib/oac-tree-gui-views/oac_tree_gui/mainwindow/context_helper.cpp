@@ -44,7 +44,7 @@ std::vector<std::string> GetInstructionNames(const std::vector<std::string>& nam
   std::vector<std::string> result;
   const static auto known_types = oac_tree_gui::GetDomainInstructionNames();
 
-  auto on_element = [](auto element) { return mvvm::utils::Contains(known_types, element); };
+  auto on_element = [](const auto& element) { return mvvm::utils::Contains(known_types, element); };
   std::copy_if(std::begin(names), std::end(names), std::back_inserter(result), on_element);
   return result;
 }

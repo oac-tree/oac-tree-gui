@@ -33,6 +33,9 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
 /**
  * @brief Checks if domain reset is required.
  */
@@ -43,6 +46,8 @@ bool IsResetRequired(RunnerStatus runner_status)
 
   return mvvm::utils::Contains(kStatesRequiringReset, runner_status);
 }
+
+}  // namespace
 
 JobManager::JobManager(create_handler_func_t create_handler_func, QObject* parent_object)
     : QObject(parent_object), m_create_handler_func(std::move(create_handler_func))

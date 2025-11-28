@@ -48,7 +48,7 @@ class MonitorMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit MonitorMainWindowActions(mvvm::IProject* project, QMainWindow* mainwindow);
+  explicit MonitorMainWindowActions(mvvm::IProject* project, QMainWindow* main_window);
   ~MonitorMainWindowActions() override;
 
   MonitorMainWindowActions(const MonitorMainWindowActions&) = delete;

@@ -68,7 +68,7 @@ public:
    *
    * A value over 1.0 zooms into the view and a value between 0.0 and 1.0 zooms out of it.
    */
-  void SetZoomFactor(double value);
+  void SetZoomFactor(double factor);
 
   /**
    * @brief Returns current zoom factor.

@@ -51,6 +51,12 @@ public:
       QObject* parent_object = nullptr);
   ~InstructionEditorViewModel() override;
 
+  InstructionEditorViewModel(const InstructionEditorViewModel&) = delete;
+  InstructionEditorViewModel& operator=(const InstructionEditorViewModel&) = delete;
+  InstructionEditorViewModel(InstructionEditorViewModel&&) = delete;
+  InstructionEditorViewModel& operator=(InstructionEditorViewModel&&) = delete;
+
+
   Qt::ItemFlags flags(const QModelIndex& index) const override;
 
   QMimeData* mimeData(const QModelIndexList& index_list) const override;

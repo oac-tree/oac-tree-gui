@@ -26,13 +26,17 @@ CheckOptions:
   - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value:           '1'
   - key: readability-magic-numbers.IgnoredIntegerValues
-    value: '0;1;2;3;4;5;6;7;8;9;10;42;100;200;300;400;500;600;700;724;800;900;1000;1024'   
+    value: '0;1;2;3;4;5;6;7;8;9;10;12;25;42;50;75;100;150;200;300;400;500;600;700;768;800;900;1000;1024'   
   - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
-    value: '0;1;2;3;4;5;6;7;8;9;10;42;100;200;300;400;500;600;700;724;800;900;1000;1024'   
+    value: '0;1;2;3;4;5;6;7;8;9;10;12;25;42;50;75;100;150;200;300;400;500;600;700;768;800;900;1000;1024'   
   - key: readability-magic-numbers.IgnoredFloatingPointValues
-    value: '0.0;0.1;0.2;0.3;0.4;0.5;0.55;0.6;0.7;0.75;0.8;0.9;1.0;1.1;1.2;1.25;1.3;1.4;1.5'   
+    value: '0.0;0.1;0.2;0.3;0.4;0.5;0.55;0.6;0.7;0.75;0.8;0.9;1.0;1.1;1.2;1.25;1.3;1.4;1.5;1.75;2.0'   
   - key: cppcoreguidelines-avoid-magic-numbers.IgnoredFloatingPointValues
-    value: '0.0;0.1;0.2;0.3;0.4;0.5;0.55;0.6;0.7;0.75;0.8;0.9;1.0;1.1;1.2;1.25;1.3;1.4;1.5'   
+    value: '0.0;0.1;0.2;0.3;0.4;0.5;0.55;0.6;0.7;0.75;0.8;0.9;1.0;1.1;1.2;1.25;1.3;1.4;1.5;1.75;2.0'   
+  - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
+    value: '1'
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnorePowersOf2IntegerValues
+    value: '1'
 ---
 
 
