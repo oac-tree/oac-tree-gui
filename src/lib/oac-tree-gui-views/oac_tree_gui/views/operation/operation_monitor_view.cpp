@@ -216,9 +216,11 @@ void OperationMonitorView::SetupConnections()
           &OperationActionHandler::OnResetJobRequest);
 
   // change delay request
+  auto on_change_delay = [this](int msec)
+  { m_action_handler->OnSetTickTimeoutRequest(std::chrono::milliseconds{msec}); };
   connect(m_realtime_panel, &OperationRealTimePanel::ChangeDelayRequest, m_action_handler,
-          &OperationActionHandler::OnSetTickTimeoutRequest);
-  m_action_handler->OnSetTickTimeoutRequest(m_realtime_panel->GetCurrentTickTimeout());
+          on_change_delay);
+  on_change_delay(m_realtime_panel->GetCurrentTickTimeout());
 
   // instruction next leave request from JobManager to OperationRealTimePanel
   connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_realtime_panel,

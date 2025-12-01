@@ -206,12 +206,12 @@ bool OperationActionHandler::OnRegenerateJobRequest()
   return is_success;
 }
 
-void OperationActionHandler::OnSetTickTimeoutRequest(int msec)
+void OperationActionHandler::OnSetTickTimeoutRequest(std::chrono::milliseconds timeout)
 {
-  m_tick_timeout = msec;
+  m_tick_timeout = timeout;
   if (auto job_item = GetSelectedJob(); job_item)
   {
-    job_item->SetTickTimeout(std::chrono::milliseconds{msec});
+    job_item->SetTickTimeout(timeout);
   }
 }
 

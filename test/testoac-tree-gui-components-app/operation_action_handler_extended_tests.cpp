@@ -114,7 +114,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
   QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnSetTickTimeoutRequest(42);
+  handler->OnSetTickTimeoutRequest(std::chrono::milliseconds{42});
 
   EXPECT_FALSE(handler->SubmitLocalJob(nullptr));
 

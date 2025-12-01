@@ -133,7 +133,7 @@ public:
   /**
    * @brief Sets tick timeout of currently selected job to given value.
    */
-  void OnSetTickTimeoutRequest(int msec);
+  void OnSetTickTimeoutRequest(std::chrono::milliseconds timeout);
 
   /**
    * @brief Set/unset a breakpoint for given instruction for currently active job.
@@ -175,7 +175,7 @@ private:
   mvvm::SessionItem* m_job_container{nullptr};
   IJobItemManager* m_job_manager{nullptr};
   OperationActionContext m_operation_context;
-  int m_tick_timeout{0};
+  std::chrono::milliseconds m_tick_timeout{0};
 };
 
 }  // namespace oac_tree_gui
