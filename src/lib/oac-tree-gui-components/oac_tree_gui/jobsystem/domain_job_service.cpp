@@ -59,9 +59,10 @@ sup::oac_tree::JobState DomainJobService::WaitForFinished() const
   return m_job_observer->WaitForFinished();
 }
 
-bool DomainJobService::WaitForState(sup::oac_tree::JobState state, double msec) const
+bool DomainJobService::WaitForState(sup::oac_tree::JobState state,
+                                    std::chrono::milliseconds duration) const
 {
-  return m_job_observer->WaitForState(state, msec);
+  return m_job_observer->WaitForState(state, duration);
 }
 
 void DomainJobService::SetTickTimeout(int msec)

@@ -24,6 +24,7 @@
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <sup/oac-tree/job_states.h>
+#include <chrono>
 
 #include <memory>
 
@@ -105,7 +106,7 @@ public:
   /**
    * @brief Waits for given state.
    */
-  bool WaitForState(sup::oac_tree::JobState state, double msec) const;
+  bool WaitForState(sup::oac_tree::JobState state, std::chrono::milliseconds duration) const;
 
   /**
    * @brief Checks if the job is in one of succeeded/failed/halted states.

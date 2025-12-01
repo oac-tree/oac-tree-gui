@@ -24,6 +24,7 @@
 #include <oac_tree_gui/jobsystem/domain_events.h>
 
 #include <memory>
+#include <chrono>
 
 namespace oac_tree_gui
 {
@@ -64,7 +65,7 @@ public:
   /**
    * @brief Waits for given state.
    */
-  bool WaitForState(sup::oac_tree::JobState state, double msec) const;
+  bool WaitForState(sup::oac_tree::JobState state, std::chrono::milliseconds duration) const;
 
   /**
    * @brief Sets sleep time on every tick.

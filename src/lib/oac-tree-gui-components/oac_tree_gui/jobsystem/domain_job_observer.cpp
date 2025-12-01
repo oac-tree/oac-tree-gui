@@ -177,10 +177,9 @@ sup::oac_tree::JobState DomainJobObserver::GetCurrentState() const
   return m_state;
 }
 
-bool DomainJobObserver::WaitForState(sup::oac_tree::JobState state, double msec) const
+bool DomainJobObserver::WaitForState(sup::oac_tree::JobState state,
+                                     std::chrono::milliseconds duration) const
 {
-  const double nanosec_per_msec{1e6};
-  auto duration = std::chrono::nanoseconds(std::lround(msec * nanosec_per_msec));
   std::unique_lock<std::mutex> lock{m_mutex};
   return m_cv.wait_for(lock, duration, [this, state]() { return m_state == state; });
 }

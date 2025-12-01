@@ -112,9 +112,10 @@ sup::oac_tree::JobState AbstractDomainRunner::WaitForFinished() const
   return m_domain_job_service->WaitForFinished();
 }
 
-bool AbstractDomainRunner::WaitForState(sup::oac_tree::JobState state, double msec) const
+bool AbstractDomainRunner::WaitForState(sup::oac_tree::JobState state,
+                                        std::chrono::milliseconds duration) const
 {
-  return m_domain_job_service->WaitForState(state, msec);
+  return m_domain_job_service->WaitForState(state, duration);
 }
 
 bool AbstractDomainRunner::IsFinished() const

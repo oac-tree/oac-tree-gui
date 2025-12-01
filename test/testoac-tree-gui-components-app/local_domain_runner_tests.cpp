@@ -504,7 +504,8 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
 
   // pause
   EXPECT_TRUE(runner->Pause());
-  EXPECT_TRUE(runner->WaitForState(sup::oac_tree::JobState::kPaused, 200));
+  EXPECT_TRUE(
+      runner->WaitForState(sup::oac_tree::JobState::kPaused, std::chrono::milliseconds(200)));
 
   // It is paused now, increment counter should increase.
   counter_var->GetValue(counter_value);
@@ -514,7 +515,8 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
   // continuing till the end
   EXPECT_TRUE(runner->Start());
 
-  EXPECT_TRUE(runner->WaitForState(sup::oac_tree::JobState::kRunning, 200));
+  EXPECT_TRUE(
+      runner->WaitForState(sup::oac_tree::JobState::kRunning, std::chrono::milliseconds(200)));
 
   // to stop incrementing use interruption variable
   const sup::dto::AnyValue interrupt_value(0U);

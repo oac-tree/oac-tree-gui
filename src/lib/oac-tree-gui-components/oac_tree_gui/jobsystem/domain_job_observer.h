@@ -28,6 +28,7 @@
 #include <condition_variable>
 #include <functional>
 #include <mutex>
+#include <chrono>
 
 namespace sup::oac_tree
 {
@@ -104,7 +105,7 @@ public:
   /**
    * @brief Waits for given state.
    */
-  bool WaitForState(sup::oac_tree::JobState state, double msec) const;
+  bool WaitForState(sup::oac_tree::JobState state, std::chrono::milliseconds duration) const;
 
   /**
    * @brief Waits for job finished state, which is one of succeeded/failed/halted.
