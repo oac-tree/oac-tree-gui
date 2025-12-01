@@ -98,12 +98,12 @@ bool OperationActionHandler::SubmitLocalJob(ProcedureItem* procedure_item)
     return false;
   }
 
-  return SubmitJob(CreateLocalJobItem(procedure_item, m_tick_timeout));
+  return SubmitJob(CreateLocalJobItem(procedure_item, std::chrono::milliseconds{m_tick_timeout}));
 }
 
 bool OperationActionHandler::SubmitFileBasedJob(const std::string& file_name)
 {
-  return SubmitJob(CreateFileBasedJobItem(file_name, m_tick_timeout));
+  return SubmitJob(CreateFileBasedJobItem(file_name, std::chrono::milliseconds{m_tick_timeout}));
 }
 
 bool OperationActionHandler::OnImportRemoteJobRequest()
@@ -211,7 +211,7 @@ void OperationActionHandler::OnSetTickTimeoutRequest(int msec)
   m_tick_timeout = msec;
   if (auto job_item = GetSelectedJob(); job_item)
   {
-    job_item->SetTickTimeout(msec);
+    job_item->SetTickTimeout(std::chrono::milliseconds{msec});
   }
 }
 

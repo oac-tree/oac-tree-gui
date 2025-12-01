@@ -135,7 +135,8 @@ std::vector<std::string> GetJobItemTypes()
 // Factory methods
 // ------------------------------------------------------------------------------------------------
 
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_timeout_msec)
+std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure,
+                                            std::chrono::milliseconds tick_timeout)
 {
   if (procedure == nullptr)
   {
@@ -144,12 +145,12 @@ std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_t
   auto result = std::make_unique<LocalJobItem>();
   result->SetProcedure(procedure);
   (void)result->SetDisplayName(procedure->GetDisplayName());
-  result->SetTickTimeout(tick_timeout_msec);
+  result->SetTickTimeout(tick_timeout);
   return result;
 }
 
 std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure,
-                                               int tick_timeout_msec)
+                                               std::chrono::milliseconds tick_timeout)
 {
   if (!procedure)
   {
@@ -159,7 +160,7 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
   auto result = std::make_unique<ImportedJobItem>();
   result->SetProcedure(procedure.get());
   (void)result->SetDisplayName(procedure->GetDisplayName());
-  result->SetTickTimeout(tick_timeout_msec);
+  result->SetTickTimeout(tick_timeout);
 
   // inserting imported procedure into own container and thus taking an ownership
   (void)result->InsertItem(
@@ -178,11 +179,12 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_nam
   return result;
 }
 
-std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name, int tick_timeout_msec)
+std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name,
+                                                std::chrono::milliseconds tick_timeout)
 {
   auto result = std::make_unique<FileBasedJobItem>();
   result->SetFileName(file_name);
-  result->SetTickTimeout(tick_timeout_msec);
+  result->SetTickTimeout(tick_timeout);
   auto procedure_name = mvvm::utils::GetPathStem(file_name);
   (void)result->SetDisplayName(procedure_name);
 

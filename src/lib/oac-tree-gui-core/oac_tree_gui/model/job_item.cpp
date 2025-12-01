@@ -31,6 +31,7 @@ namespace oac_tree_gui
 
 namespace
 {
+using timeout_store_t = mvvm::int32;
 constexpr auto kLink = "kLink";
 constexpr auto kExpandedProcedure = "kExpandedProcedure";
 }  // namespace
@@ -67,14 +68,14 @@ void JobItem::SetStatus(RunnerStatus status)
   (void)SetProperty(itemconstants::kStatus, ToString(status));
 }
 
-int JobItem::GetTickTimeout() const
+std::chrono::milliseconds JobItem::GetTickTimeout() const
 {
-  return Property<int>(itemconstants::kTickTimeout);
+  return std::chrono::milliseconds(Property<timeout_store_t>(itemconstants::kTickTimeout));
 }
 
-void JobItem::SetTickTimeout(int msec)
+void JobItem::SetTickTimeout(std::chrono::milliseconds timeout)
 {
-  (void)SetProperty(itemconstants::kTickTimeout, msec);
+  (void)SetProperty(itemconstants::kTickTimeout, static_cast<timeout_store_t>(timeout.count()));
 }
 
 void JobItem::SetProcedure(const ProcedureItem* item)

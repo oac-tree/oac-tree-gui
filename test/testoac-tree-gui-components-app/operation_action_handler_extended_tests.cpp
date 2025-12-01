@@ -130,7 +130,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
   auto job_item = GetJobItems().at(0);
 
   EXPECT_EQ(job_item->GetDisplayName(), "procedure_display_name");
-  EXPECT_EQ(job_item->GetTickTimeout(), 42);
+  EXPECT_EQ(job_item->GetTickTimeout(), std::chrono::milliseconds{42});
 
   EXPECT_EQ(m_job_manager.GetJobHandler(job_item)->GetExpandedProcedure(),
             job_item->GetExpandedProcedure());

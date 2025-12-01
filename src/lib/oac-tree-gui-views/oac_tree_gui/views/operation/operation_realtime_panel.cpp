@@ -85,7 +85,7 @@ void OperationRealTimePanel::SetCurrentJob(JobItem* job_item)
   if (job_item != nullptr)
   {
     m_realtime_instruction_tree->SetProcedure(job_item->GetExpandedProcedure());
-    m_actions->SetCurrentTickTimeout(job_item->GetTickTimeout());
+    m_actions->SetCurrentTickTimeout(job_item->GetTickTimeout().count());
   }
   else
   {

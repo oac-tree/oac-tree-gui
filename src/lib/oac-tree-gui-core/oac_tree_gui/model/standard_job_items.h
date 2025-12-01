@@ -121,10 +121,12 @@ std::vector<std::string> GetJobItemTypes();
  * item mechanism.
  *
  * @param procedure The procedure to run.
- * @param tick_timeout_msec Initial value of tick timeout during procedure execution.
+ * @param tick_timeout Initial value of tick timeout during procedure execution.
  * @return New job item.
  */
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_timeout_msec = 0);
+std::unique_ptr<JobItem> CreateLocalJobItem(
+    ProcedureItem* procedure,
+    std::chrono::milliseconds tick_timeout = std::chrono::milliseconds{0});
 
 /**
  * @brief Creates job item intended to run ProcedureItem imported from somewhere.
@@ -132,11 +134,12 @@ std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure, int tick_t
  * The procedure will be inserted in dedicated tag on board of this item. Ownership will be taken.
  *
  * @param procedure The procedure to run.
- * @param tick_timeout_msec Initial value of tick timeout during procedure execution.
+ * @param tick_timeout Initial value of tick timeout during procedure execution.
  * @return New job item.
  */
-std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> procedure,
-                                               int tick_timeout_msec = 0);
+std::unique_ptr<JobItem> CreateImportedJobItem(
+    std::unique_ptr<ProcedureItem> procedure,
+    std::chrono::milliseconds tick_timeout = std::chrono::milliseconds{0});
 
 /**
  * @brief Creates job item intended to control remote procedures.
@@ -152,11 +155,12 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_nam
  * @brief Creates job item intended to import and run particular Sequencer XML file on disk.
  *
  * @param file_name The full path to Sequencer XML file.
- * @param tick_timeout_msec Initial value of tick timeout during procedure execution.
+ * @param tick_timeout Initial value of tick timeout during procedure execution.
  * @return New job item.
  */
-std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name,
-                                                int tick_timeout_msec = 0);
+std::unique_ptr<JobItem> CreateFileBasedJobItem(
+    const std::string& file_name,
+    std::chrono::milliseconds tick_timeout = std::chrono::milliseconds{0});
 }  // namespace oac_tree_gui
 
 namespace mvvm

@@ -59,9 +59,10 @@ TEST_F(JobItemTest, JobItem)
   TestItem item;
   EXPECT_EQ(item.GetStatus(), RunnerStatus::kUndefined);
 
-  EXPECT_EQ(item.GetTickTimeout(), itemconstants::kDefaultTickTimeoutMsec);
-  item.SetTickTimeout(42);
-  EXPECT_EQ(item.GetTickTimeout(), 42);
+  EXPECT_EQ(item.GetTickTimeout(),
+            std::chrono::milliseconds{itemconstants::kDefaultTickTimeoutMsec});
+  item.SetTickTimeout(std::chrono::milliseconds{42});
+  EXPECT_EQ(item.GetTickTimeout(), std::chrono::milliseconds{42});
 
   item.SetStatus(RunnerStatus::kInitial);
   EXPECT_EQ(item.GetStatus(), RunnerStatus::kInitial);

@@ -70,10 +70,10 @@ TEST_F(StandardJobItemsTest, CreateLocalJobItem)
   auto procedure = model.InsertItem<ProcedureItem>();
   procedure->SetDisplayName("abc");
 
-  auto job_item = CreateLocalJobItem(procedure, 42);
+  auto job_item = CreateLocalJobItem(procedure, std::chrono::milliseconds{42});
   auto job_item_ptr = job_item.get();
 
-  EXPECT_EQ(job_item->GetTickTimeout(), 42);
+  EXPECT_EQ(job_item->GetTickTimeout(), std::chrono::milliseconds{42});
   EXPECT_EQ(job_item->GetDisplayName(), std::string("abc"));
 
   // linked mechanism will be working only after JobItem become part of the model
@@ -92,10 +92,10 @@ TEST_F(StandardJobItemsTest, CreateImportedJobItem)
   auto procedure_ptr = procedure.get();
   procedure->SetDisplayName("abc");
 
-  auto job_item = CreateImportedJobItem(std::move(procedure), 42);
+  auto job_item = CreateImportedJobItem(std::move(procedure), std::chrono::milliseconds{42});
   auto job_item_ptr = job_item.get();
 
-  EXPECT_EQ(job_item->GetTickTimeout(), 42);
+  EXPECT_EQ(job_item->GetTickTimeout(), std::chrono::milliseconds{42});
   EXPECT_EQ(job_item->GetDisplayName(), std::string("abc"));
 
   // linked mechanism will be working only after JobItem become part of the model
@@ -125,9 +125,9 @@ TEST_F(StandardJobItemsTest, CreateFileBasedJobItem)
 {
   const std::string file_name("/home/user/abc.xml");
 
-  auto item = CreateFileBasedJobItem(file_name, 42);
+  auto item = CreateFileBasedJobItem(file_name, std::chrono::milliseconds{42});
 
-  EXPECT_EQ(item->GetTickTimeout(), 42);
+  EXPECT_EQ(item->GetTickTimeout(), std::chrono::milliseconds{42});
   EXPECT_EQ(item->GetProcedure(), nullptr);
 
   auto file_based_item = dynamic_cast<FileBasedJobItem*>(item.get());

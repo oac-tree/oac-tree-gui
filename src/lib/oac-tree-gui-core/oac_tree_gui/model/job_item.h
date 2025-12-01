@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/runner_status.h>
 
 #include <mvvm/model/compound_item.h>
+#include <chrono>
 
 namespace oac_tree_gui
 {
@@ -56,12 +57,12 @@ public:
   /**
    * @brief Returns the current value of sequencer ticks timeout in msec defined for this job.
    */
-  int GetTickTimeout() const;
+  std::chrono::milliseconds GetTickTimeout() const;
 
   /**
    * @brief Sets the value of sequencer ticks timeout that shall be used for this job execution.
    */
-  void SetTickTimeout(int msec);
+  void SetTickTimeout(std::chrono::milliseconds timeout);
 
   /**
    * @brief Sets procedure to handle.
