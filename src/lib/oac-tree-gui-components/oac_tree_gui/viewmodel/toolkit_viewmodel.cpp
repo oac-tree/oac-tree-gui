@@ -21,9 +21,13 @@
 #include "toolkit_viewmodel.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 
 #include <QMimeData>
 #include <memory>
+
+namespace oac_tree_gui
+{
 
 namespace
 {
@@ -33,13 +37,11 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string& name, bool drag_ena
   auto result = std::make_unique<QStandardItem>(QString::fromStdString(name));
   result->setEditable(false);
   result->setDragEnabled(drag_enabled);
+  result->setToolTip(QString::fromStdString(GetDescriptionForInstructionType(name)));
   return result;
 }
 
 }  // namespace
-
-namespace oac_tree_gui
-{
 
 ToolKitViewModel::ToolKitViewModel(QObject* parent_object) : QStandardItemModel(parent_object) {}
 

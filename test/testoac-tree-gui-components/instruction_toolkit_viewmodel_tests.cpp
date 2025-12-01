@@ -29,8 +29,9 @@
 namespace oac_tree_gui::test
 {
 
-//! Tests for InstructionOperationViewModel class.
-
+/**
+ * @brief Tests for InstructionOperationViewModel class.
+ */
 class InstructionOperationViewModelTest : public ::testing::Test
 {
 };
@@ -42,8 +43,6 @@ TEST_F(InstructionOperationViewModelTest, InitialState)
   EXPECT_EQ(model.rowCount(), 0);
   EXPECT_EQ(model.columnCount(), 0);
 }
-
-//! Validating model composition when it is initialized with the list.
 
 TEST_F(InstructionOperationViewModelTest, PopulateFromList)
 {
@@ -61,8 +60,6 @@ TEST_F(InstructionOperationViewModelTest, PopulateFromList)
   EXPECT_EQ(model.data(index1).toString(), QString("a2"));
 }
 
-//! Validating mime data obtained from the model.
-
 TEST_F(InstructionOperationViewModelTest, MimeFromList)
 {
   ToolKitViewModel model;
@@ -76,8 +73,6 @@ TEST_F(InstructionOperationViewModelTest, MimeFromList)
   EXPECT_TRUE(mime_data->hasFormat(kNewInstructionMimeType));
   EXPECT_EQ(GetNewInstructionType(mime_data.get()), std::string("a1"));
 }
-
-//! Validating model composition when it is initialized from the group.
 
 TEST_F(InstructionOperationViewModelTest, PopulateFromTree)
 {
@@ -112,13 +107,11 @@ TEST_F(InstructionOperationViewModelTest, PopulateFromTree)
   EXPECT_EQ(model.data(index_a2).toString(), QString("a2"));
 }
 
-//! Validating mime data obtained from the model, when the model represents groups.
-
 TEST_F(InstructionOperationViewModelTest, MimeFromTree)
 {
   ToolKitViewModel model;
 
-  std::vector<ObjectGroupInfo> group_info{
+  const std::vector<ObjectGroupInfo> group_info{
       {"group1", {"a1", "a2"}},
       {"group2", {"b1"}},
   };

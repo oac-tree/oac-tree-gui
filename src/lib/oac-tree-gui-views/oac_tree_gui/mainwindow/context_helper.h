@@ -22,7 +22,7 @@
 #define OAC_TREE_GUI_MAINWINDOW_CONTEXT_HELPER_H_
 
 //! @file
-//! Collection of helper functions to querry main window conetxt.
+//! Collection of helper functions to querry main window context.
 
 #include <vector>
 

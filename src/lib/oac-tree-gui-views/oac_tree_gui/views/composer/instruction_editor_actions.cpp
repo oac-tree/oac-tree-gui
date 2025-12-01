@@ -185,7 +185,7 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
           [this]() { m_action_handler->PasteInto(); });
 }
 
-std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertMenu()
+std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertMenu() const
 {
   auto result = std::make_unique<QMenu>();
   connect(result.get(), &QMenu::aboutToShow, this,

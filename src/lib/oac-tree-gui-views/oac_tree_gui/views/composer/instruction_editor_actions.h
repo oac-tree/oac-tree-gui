@@ -128,7 +128,7 @@ private:
   /**
    * @brief Creates an instruction to insert instructions.
    */
-  std::unique_ptr<QMenu> CreateInsertMenu();
+  std::unique_ptr<QMenu> CreateInsertMenu() const;
 
   /**
    * @brief Setup menu to insert instructions.
