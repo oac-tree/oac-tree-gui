@@ -244,13 +244,13 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
 //! execution.
 TEST_F(LocalDomainRunnerTest, SequenceWithTwoMessages)
 {
-  const int tick_timeout_msec(20);
+  const std::chrono::milliseconds tick_timeout(20);
 
   auto procedure = test::CreateSequenceWithTwoMessagesProcedure();
   auto procedure_ptr = procedure.get();
   auto runner = CreateRunner(std::move(procedure), /*listen_callbacks*/ false);
 
-  runner->SetTickTimeout(tick_timeout_msec);
+  runner->SetTickTimeout(tick_timeout);
 
   const time_t start_time = clock_used::now();
 
@@ -267,7 +267,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoMessages)
 
   // Here we test that tick timeout of the runner was invoked at least once.
   EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
-              >= msec(tick_timeout_msec));
+              >= msec(tick_timeout));
 }
 
 //! Sequence with two waits in step mode. Making steps until complete.

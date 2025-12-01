@@ -115,7 +115,7 @@ public:
   /**
    * @brief Sets sleep time on every tick.
    */
-  void SetTickTimeout(int msec);
+  void SetTickTimeout(std::chrono::milliseconds timeout);
 
   /**
    * @brief Sets filter to suppress active instruction notifications.
@@ -133,7 +133,7 @@ private:
   sup::oac_tree::JobState m_state{sup::oac_tree::JobState::kInitial};
   mutable std::mutex m_mutex;
   mutable std::condition_variable m_cv;
-  int m_tick_timeout_msec{0};
+  std::chrono::milliseconds m_tick_timeout{0};
 };
 
 }  // namespace oac_tree_gui

@@ -164,10 +164,10 @@ void DomainJobObserver::NextInstructionsUpdated(const std::vector<sup::dto::uint
 void DomainJobObserver::ProcedureTicked()
 {
   std::unique_lock<std::mutex> lock{m_mutex};
-  if (m_tick_timeout_msec > 0)
+  if (m_tick_timeout.count() > 0)
   {
     lock.unlock();
-    std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_msec));
+    std::this_thread::sleep_for(m_tick_timeout);
   }
 }
 
@@ -192,10 +192,10 @@ sup::oac_tree::JobState DomainJobObserver::WaitForFinished() const
   return m_state;
 }
 
-void DomainJobObserver::SetTickTimeout(int msec)
+void DomainJobObserver::SetTickTimeout(std::chrono::milliseconds timeout)
 {
   const std::unique_lock<std::mutex> lock{m_mutex};
-  m_tick_timeout_msec = msec;
+  m_tick_timeout = timeout;
 }
 
 void DomainJobObserver::SetInstructionActiveFilter(const active_filter_t& filter)

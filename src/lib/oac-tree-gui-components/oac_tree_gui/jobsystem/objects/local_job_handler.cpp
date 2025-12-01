@@ -66,7 +66,7 @@ std::unique_ptr<AbstractDomainRunner> LocalJobHandler::CreateDomainRunner(
   // LocalDomainRunner's internals call Setup on the domain procedure
   auto runner = std::make_unique<LocalDomainRunner>(CreateEventDispatcherContext(),
                                                     std::move(user_context), std::move(procedure));
-  runner->SetTickTimeout(GetJobItem()->GetTickTimeout());
+  runner->SetTickTimeout(std::chrono::milliseconds(GetJobItem()->GetTickTimeout()));
   return runner;
 }
 
@@ -77,7 +77,7 @@ void LocalJobHandler::SetupPropertyListener()
   {
     if (event.name == itemconstants::kTickTimeout)
     {
-      GetDomainRunner()->SetTickTimeout(GetJobItem()->GetTickTimeout());
+      GetDomainRunner()->SetTickTimeout(std::chrono::milliseconds(GetJobItem()->GetTickTimeout()));
     }
   };
   m_property_listener->Connect<mvvm::PropertyChangedEvent>(on_event);

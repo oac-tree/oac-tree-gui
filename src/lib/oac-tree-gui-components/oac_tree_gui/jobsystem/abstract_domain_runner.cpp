@@ -131,9 +131,9 @@ bool AbstractDomainRunner::IsBusy() const
   return busy_states.find(GetJobState()) != busy_states.end();
 }
 
-void AbstractDomainRunner::SetTickTimeout(int msec)
+void AbstractDomainRunner::SetTickTimeout(std::chrono::milliseconds timeout)
 {
-  m_domain_job_service->SetTickTimeout(msec);
+  m_domain_job_service->SetTickTimeout(timeout);
 }
 
 std::size_t AbstractDomainRunner::GetEventCount() const

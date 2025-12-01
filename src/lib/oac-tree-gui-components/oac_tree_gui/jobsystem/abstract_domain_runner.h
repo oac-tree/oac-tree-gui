@@ -121,7 +121,7 @@ public:
   /**
    * @brief Sets sleep time on every tick.
    */
-  void SetTickTimeout(int msec);
+  void SetTickTimeout(std::chrono::milliseconds timeout);
 
   /**
    * @brief Returns number of events in a queue.

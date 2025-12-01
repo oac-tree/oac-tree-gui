@@ -65,9 +65,9 @@ bool DomainJobService::WaitForState(sup::oac_tree::JobState state,
   return m_job_observer->WaitForState(state, duration);
 }
 
-void DomainJobService::SetTickTimeout(int msec)
+void DomainJobService::SetTickTimeout(std::chrono::milliseconds timeout)
 {
-  m_job_observer->SetTickTimeout(msec);
+  m_job_observer->SetTickTimeout(timeout);
 }
 
 std::size_t DomainJobService::GetEventCount() const
