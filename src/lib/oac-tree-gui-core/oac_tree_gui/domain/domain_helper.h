@@ -148,6 +148,13 @@ std::string GetPluginNameFromFileName(const std::string& file_name);
  */
 bool IsValidInstructionIndex(sup::dto::uint32 index);
 
+/**
+ * @brief Returns description text for the given instruction type.
+ *
+ * As stored in the domain documentation system.
+ */
+std::string GetDescriptionForInstructionType(const std::string& instruction_type);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_HELPER_H_

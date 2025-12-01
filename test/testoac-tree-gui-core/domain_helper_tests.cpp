@@ -241,4 +241,12 @@ TEST_F(DomainHelperTest, GetPluginNameFromFileName)
   }
 }
 
+TEST_F(DomainHelperTest, GetDescriptionForInstructionType)
+{
+  EXPECT_TRUE(GetDescriptionForInstructionType("non-existing-type").empty());
+  EXPECT_FALSE(
+      GetDescriptionForInstructionType(oac_tree_gui::domainconstants::kSequenceInstructionType)
+          .empty());
+}
+
 }  // namespace oac_tree_gui::test

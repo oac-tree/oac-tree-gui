@@ -199,7 +199,7 @@ std::string GetPluginNameFromFileName(const std::string& file_name)
   const std::string base_name = mvvm::utils::GetFileName(file_name);
   if (base_name.empty() || mvvm::IsWindowsHost())
   {
-    return base_name;
+    return {};
   }
   std::string_view view = base_name;
   view = RemovePrefix(view, "lib");
@@ -211,6 +211,18 @@ std::string GetPluginNameFromFileName(const std::string& file_name)
 bool IsValidInstructionIndex(sup::dto::uint32 index)
 {
   return index != sup::oac_tree::kInvalidInstructionIndex;
+}
+
+std::string GetDescriptionForInstructionType(const std::string& instruction_type)
+{
+  if (!::sup::oac_tree::GlobalInstructionRegistry().IsRegisteredInstructionName(instruction_type))
+  {
+    return {};
+  }
+
+  return ::sup::oac_tree::GlobalInstructionRegistry()
+      .GetDocumentation(instruction_type)
+      .GetField(sup::oac_tree::Constants::INSTR_DOC_DESCRIPTION);
 }
 
 }  // namespace oac_tree_gui
