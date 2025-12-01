@@ -75,7 +75,7 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item);
  *
  * @details Provide reasonable default name, and initial AnyValueItem if necessary.
  */
-void SetupNewVariable(VariableItem* item, std::int32_t total_variable_count = 0);
+void SetupNewVariable(VariableItem* item, std::size_t total_variable_count = 0);
 
 /**
  * @brief Checks if  GUI and domain workspaces match.

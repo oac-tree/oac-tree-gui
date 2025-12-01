@@ -151,7 +151,7 @@ std::unique_ptr<QBoxLayout> AboutApplicationDialog::CreateButtonLayout()
   QByteArray b = QByteArray::fromRawData(mydata, sizeof(mydata));
   auto f = new mvvm::ShortcodeFilter(b, this);
   connect(f, &mvvm::ShortcodeFilter::found, this,
-          [=]() { layout()->addWidget(CreateLogoLabel().release()); });
+          [this]() { layout()->addWidget(CreateLogoLabel().release()); });
   installEventFilter(f);
 
   return result;

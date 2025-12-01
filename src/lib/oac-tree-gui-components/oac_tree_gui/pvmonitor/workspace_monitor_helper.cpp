@@ -72,7 +72,7 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item)
   }
 }
 
-void SetupNewVariable(VariableItem* item, std::int32_t total_variable_count)
+void SetupNewVariable(VariableItem* item, std::size_t total_variable_count)
 {
   if (item == nullptr)
   {

@@ -119,7 +119,7 @@ QList<QAction*> MonitorRealTimeActions::GetActions(const std::vector<ActionKey>&
   return m_action_map.GetActions(action_keys);
 }
 
-int MonitorRealTimeActions::GetCurrentTickTimeout()
+int MonitorRealTimeActions::GetCurrentTickTimeout() const
 {
   return m_current_tick_timeout;
 }

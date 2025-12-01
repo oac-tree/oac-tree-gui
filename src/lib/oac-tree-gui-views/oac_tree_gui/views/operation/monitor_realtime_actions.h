@@ -67,7 +67,7 @@ public:
   MonitorRealTimeActions(MonitorRealTimeActions&&) = delete;
   MonitorRealTimeActions& operator=(MonitorRealTimeActions&&) = delete;
 
-  int GetCurrentTickTimeout();
+  int GetCurrentTickTimeout() const;
 
   void SetCurrentTickTimeout(int msec);
 

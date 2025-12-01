@@ -47,7 +47,7 @@ oac_tree_gui::algorithm::AlignNode* PopulateNode(const oac_tree_gui::Instruction
 namespace oac_tree_gui::algorithm
 {
 
-std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem*> instructions)
+std::unique_ptr<AlignNode> CreateAlignTree(const std::vector<InstructionItem*>& instructions)
 {
   auto result = std::make_unique<AlignNode>();
 

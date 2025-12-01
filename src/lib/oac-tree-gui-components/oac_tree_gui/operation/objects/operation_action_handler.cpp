@@ -278,7 +278,7 @@ mvvm::SessionItem* OperationActionHandler::GetJobContainer() const
   return m_job_container;
 }
 
-JobItem* OperationActionHandler::GetSelectedJob()
+JobItem* OperationActionHandler::GetSelectedJob() const
 {
   return m_operation_context.selected_job();
 }

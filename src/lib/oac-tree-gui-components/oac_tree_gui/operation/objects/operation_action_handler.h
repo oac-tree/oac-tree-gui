@@ -170,7 +170,7 @@ private:
    */
   mvvm::SessionItem* GetJobContainer() const;
 
-  JobItem* GetSelectedJob();
+  JobItem* GetSelectedJob() const;
 
   mvvm::SessionItem* m_job_container{nullptr};
   IJobItemManager* m_job_manager{nullptr};

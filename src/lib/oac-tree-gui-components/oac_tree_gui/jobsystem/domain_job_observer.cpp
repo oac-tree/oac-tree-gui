@@ -74,7 +74,7 @@ void DomainJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 
   {
-    const std::lock_guard<std::mutex> lock{m_mutex};
+    const std::scoped_lock lock{m_mutex};
     m_active_instruction_monitor->InstructionStatusUpdated(instr_idx, state.m_execution_status);
   }
 }
@@ -93,7 +93,7 @@ void DomainJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto
 void DomainJobObserver::JobStateUpdated(sup::oac_tree::JobState state)
 {
   {
-    const std::lock_guard<std::mutex> lock{m_mutex};
+    const std::scoped_lock lock{m_mutex};
     m_state = state;
     m_post_event_callback(JobStateChangedEvent{state});
   }
@@ -173,7 +173,7 @@ void DomainJobObserver::ProcedureTicked()
 
 sup::oac_tree::JobState DomainJobObserver::GetCurrentState() const
 {
-  const std::lock_guard<std::mutex> lock{m_mutex};
+  const std::scoped_lock lock{m_mutex};
   return m_state;
 }
 
