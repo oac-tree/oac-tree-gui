@@ -25,10 +25,7 @@
 //! Collection of utility functions to access/create various oac-tree-related objects. With this
 //! file, we want to decrease the visibility of sequencer headers in the code as much as possible.
 
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
-
-#include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
 #include <string>

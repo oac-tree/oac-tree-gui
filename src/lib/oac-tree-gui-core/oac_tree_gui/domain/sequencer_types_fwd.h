@@ -24,6 +24,8 @@
 //! @file
 //! Forward declarations and type aliases to some of sequencer domain types.
 
+#include <sup/dto/basic_scalar_types.h>
+
 namespace sup::oac_tree
 {
 class AttributeDefinition;
@@ -43,6 +45,13 @@ class IJob;
 class InstructionInfo;
 }  // namespace sup::oac_tree
 
+namespace sup::dto
+{
+class AnyValue;
+class AnyType;
+class AnyTypeRegistry;
+}  // namespace sup::dto
+
 namespace oac_tree_gui
 {
 using attribute_definition_t = sup::oac_tree::AttributeDefinition;
@@ -52,6 +61,10 @@ using procedure_t = sup::oac_tree::Procedure;
 using runner_t = sup::oac_tree::Runner;
 using variable_t = sup::oac_tree::Variable;
 using workspace_t = sup::oac_tree::Workspace;
+
+using anyvalue_t = sup::dto::AnyValue;
+using anytype_t = sup::dto::AnyType;
+using anytype_registry_t = sup::dto::AnyTypeRegistry;
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

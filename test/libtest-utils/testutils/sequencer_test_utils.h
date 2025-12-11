@@ -26,12 +26,10 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
-#include <sup/gui/core/dto_types_fwd.h>
-
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
-#include <functional>
 
 namespace mvvm
 {

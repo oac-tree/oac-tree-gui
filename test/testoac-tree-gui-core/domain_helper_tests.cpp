@@ -21,6 +21,7 @@
 #include "oac_tree_gui/domain/domain_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <mvvm/core/platform.h>
 #include <mvvm/utils/container_utils.h>

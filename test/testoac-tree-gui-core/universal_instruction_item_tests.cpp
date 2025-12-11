@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/model/universal_instruction_item.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>

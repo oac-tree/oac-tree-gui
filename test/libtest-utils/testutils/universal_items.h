@@ -25,7 +25,6 @@
 //! Collection of utils to test sequencer.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
-#include <sup/gui/core/dto_types_fwd.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_registry.h>
@@ -44,7 +43,7 @@ public:
   UnknownDomainInstruction() : Instruction(Type) {}
 
   ::sup::oac_tree::ExecutionStatus ExecuteSingleImpl(::sup::oac_tree::UserInterface&,
-                                                      ::sup::oac_tree::Workspace&) override
+                                                     ::sup::oac_tree::Workspace&) override
   {
     return {};
   }
