@@ -8,7 +8,7 @@ It is developed in the context of the ITER Supervision and Automation System (SU
 The Graphical User Interface is intended to simplify various aspects of work with `oac-tree`, including browsing,
 editing, execution, and debugging of automation procedures.
 
-## Links for external users
+## Links for GitHub users
 
 - [oac-tree framework on GitHub](https://github.com/oac-tree)
 - [oac-tree GUI documentation on GitHub](https://oac-tree.github.io/oac-tree-docs/oa/oac-tree-gui/index.html)
