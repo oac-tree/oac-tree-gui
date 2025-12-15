@@ -1,9 +1,12 @@
 Welcome to the documentation of oac-tree GUI
 ============================================
 
-This is a user manual of the Graphical User Interface for the oac-tree framework.
+This is a user manual of the Graphical User Interface 
+of ITER Sequencer, also known as `oac-tree`. The `oac-tree` is a C++ framework for creating 
+and executing automation procedures based on the behavioral trees.
+It is developed in the context of the ITER Supervision and Automation System (SUP).
 
-The application  is intended to simplify various aspects of work with oac-tree, including browsing,
+The Graphical User Interface is intended to simplify various aspects of work with `oac-tree`, including browsing,
 editing, execution, and debugging of automation procedures.
 
 *Disclaimer*
