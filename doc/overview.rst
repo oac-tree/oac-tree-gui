@@ -5,7 +5,7 @@ Main GUI views
 ---------------
 
 The main oac-tree GUI can be started by running executable ``bin/oac-tree``.
-The empty windows as in *Figure 1* will appear on startup.
+An empty window as shown in *Figure 1* will appear on startup.
 
 .. image:: screenshots/overview-explorer.png
   :width: 960
@@ -13,46 +13,46 @@ The empty windows as in *Figure 1* will appear on startup.
 The vertical blue tab bar on the left allows switching between three main views:
 
 1. The *Explore* view is intended to browse existing sequencer procedures on disk.
-2. The *Compose* view allows modifying existing procedures or assembling new ones by defining an instruction tree and variables.
+2. The *Compose* view allows you to modify existing procedures or assemble new ones by defining an instruction tree and variables.
 3. The *Run* view is intended for running the sequencer procedure.
 
 Explorer view
 -------------
 
-An explorer view allows browsing procedures on disk and checking their composition.
-It consists of 3 main widgets, as marked in *Figure 2* with green bullets:
+The Explorer view allows browsing procedures on disk and checking their composition.
+It consists of 3 main widgets, marked in *Figure 2* with green bullets:
 
 .. image:: screenshots/overview-explorer-details.png
   :width: 960
 
 1. The file browser on the left for navigating the filesystem on your computer.
-2. The XML viewer on the right with the XML representation of selected sequencer procedure.
+2. The XML viewer on the right with the XML representation of the selected sequencer procedure.
 3. The procedure list at the bottom with currently opened procedures.
 
-The possible workflow in the explorer view could be as follows:
-The user browses directories and finds the procedure he wants to edit or execute.
+The possible workflow in the Explorer view could be as follows:
+The user browses directories and finds the procedure they want to edit or execute.
 By using the *Import Selected* button located on the toolbar of the file browser,
 or by simply double-clicking on a file name, the procedure can be imported into the
 program's memory and will appear in the procedure list. 
 
-At the program start-up, this list contains already one single empty *Untitled* procedure.
+At program start-up, this list already contains a single empty *Untitled* procedure.
 There can be multiple procedures simultaneously opened/edited in the program.
-The user will be able to edit these procedures in the `Composer` view.
+The user can edit these procedures in the `Composer` view.
 
-Please note, that the GUI never modifies files with sequencer procedures used for import, unless
+Please note that the GUI never modifies files with sequencer procedures used for import, unless
 it is explicitly asked to export the result of the work.
 
 Composer view
 -------------
 
-A composer view allows editing previously imported procedures or creating new
+The Composer view allows editing previously imported procedures or creating new
 ones from scratch. *Figure 3* presents the default layout with a tool panel on
 the left, and a procedure editor on the right. The tool panel contains a list of
 opened procedures and a list of instructions available for sequence
 composition. The procedure editor represents a multi-tab area, where the user
-can edit instruction tree (in the form of a tree and in the form off a node
+can edit the instruction tree (in the form of a tree and in the form of a node
 editor), workspace variables, and check the XML representation of the procedure.
-The area can be additionaly split to edit multiple procedures simultaneously.
+The area can be additionally split to edit multiple procedures simultaneously.
 
 The important widgets are marked with green labels and explanations
 are given below:
@@ -64,14 +64,14 @@ are given below:
    imported from the disk will appear in this list. The user can also create new
    empty procedures using corresponding icons on the widget's toolbar.
 2. A toolbox with sequencer instructions grouped according to their plugin
-   names. The instructions can be drag-and-drop to the node editor, or to instruction tree.
-3. A combo box which allows quickly switching between loaded procedures.
-4. A split button that allows to create multiple panels to edit several procedures simultaneously.
+   names. The instructions can be dragged and dropped to the node editor, or to the instruction tree.
+3. A combo box that allows you to quickly switch between loaded procedures.
+4. A split button that allows you to create multiple panels to edit several procedures simultaneously.
 5. Instruction tree. In the given example the tree contains only one single Message instruction.
 6. Instruction property editor. It shows the concrete properties of the
    instruction currently selected in the instruction tree (here properties of the `Message` instruction).
 7. Editor tab selector. It allows switching between instruction tree editor, workspace
-   editor, node editor (which is alternative form of instruction editor) and XML viewer.
+   editor, node editor (which is an alternative form of instruction editor) and XML viewer.
 
 *Figure 4* below shows an example of a layout, where the same procedure with the
 name "fallback" is opened in both central and right panels. The central panel is
@@ -84,7 +84,7 @@ right panel presents the same tree in the form of graphical `Node Editor`.
 Run view
 --------
 
-A job view is intended for procedure execution. It consists of 4 main widgets as given on *Figure 5*:
+The Run view is intended for procedure execution. It consists of 4 main widgets as shown in *Figure 5*:
 
 .. image:: screenshots/overview-run.png
   :width: 960
@@ -100,12 +100,12 @@ A job view is intended for procedure execution. It consists of 4 main widgets as
    the currently selected job.
 
 The possible workflow can be the following. The user prepares a procedure to run
-using the main *Compose* view. Then he switches to the *Run* view and submits
-the procedure for execution using a *Submit* button on a toolbar. Then user
+using the main *Compose* view. Then they switch to the *Run* view and submit
+the procedure for execution using a *Submit* button on a toolbar. Then the user
 starts the job in stepwise mode and controls its further execution.
 
-It is important to note, that the job is linked to the original procedure as it
+It is important to note that the job is linked to the original procedure as it
 was at the moment of job creation. Every consecutive run of a job will execute
 that procedure. To pick up all possible changes made to the original procedure
-in the *Compose* view the job has to be reloaded using the *Reload* button on a
+in the *Compose* view, the job has to be reloaded using the *Reload* button on a
 toolbar.
