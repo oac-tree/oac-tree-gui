@@ -137,7 +137,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
-      if (!mvvm::utils::CanMoveItem(item, parent_item, pos).first)
+      if (mvvm::utils::GetMoveItemErrorCode(item, parent_item, pos))
       {
         return false;
       }
@@ -148,7 +148,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
   if (data->hasFormat(kNewInstructionMimeType))
   {
     auto drop_type = GetNewInstructionType(data);
-    if (mvvm::utils::CanInsertType(drop_type, parent_item, GetDropTagIndex(row)).first)
+    if (!mvvm::utils::GetInsertTypeErrorCode(drop_type, parent_item, GetDropTagIndex(row)))
     {
       return true;
     }

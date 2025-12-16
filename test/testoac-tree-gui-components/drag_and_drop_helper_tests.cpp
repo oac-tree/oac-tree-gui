@@ -146,12 +146,10 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
   auto sequence = m_model.InsertItem<SequenceItem>();
   auto wait = m_model.InsertItem<WaitItem>(sequence);
 
-  EXPECT_TRUE(mvvm::utils::CanInsertType(domainconstants::kWaitInstructionType, sequence,
-                                         mvvm::TagIndex::Default(0))
-                  .first);
-  EXPECT_FALSE(mvvm::utils::CanInsertType(domainconstants::kWaitInstructionType, wait,
-                                          mvvm::TagIndex::Default(0))
-                   .first);
+  EXPECT_FALSE(mvvm::utils::GetInsertTypeErrorCode(domainconstants::kWaitInstructionType, sequence,
+                                                   mvvm::TagIndex::Default(0)));
+  EXPECT_TRUE(mvvm::utils::GetInsertTypeErrorCode(domainconstants::kWaitInstructionType, wait,
+                                                  mvvm::TagIndex::Default(0)));
 }
 
 TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)

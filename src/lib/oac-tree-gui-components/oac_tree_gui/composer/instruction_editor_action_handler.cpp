@@ -430,12 +430,12 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
   // parent should have the room for more items.
   if (auto selected_item = GetSelectedInstruction(); selected_item)
   {
-    auto [success_flag, informative] = mvvm::utils::CanInsertType(
+    const auto error_code = mvvm::utils::GetInsertTypeErrorCode(
         item_type, selected_item->GetParent(), selected_item->GetTagIndex().Next());
-    if (!success_flag)
+    if (error_code)
     {
       return sup::gui::QueryResult::Failure(
-          {kFailedActionTitle, kFailedActionText, informative, ""});
+          {kFailedActionTitle, kFailedActionText, error_code.message(), ""});
     }
   }
 
@@ -464,12 +464,12 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
   // parent should have the room for more items.
   if (auto selected_item = GetSelectedInstruction(); selected_item)
   {
-    auto [success_flag, informative] =
-        mvvm::utils::CanInsertType(item_type, selected_item, mvvm::TagIndex::Append());
-    if (!success_flag)
+    const auto error_code =
+        mvvm::utils::GetInsertTypeErrorCode(item_type, selected_item, mvvm::TagIndex::Append());
+    if (error_code)
     {
       return sup::gui::QueryResult::Failure(
-          {kFailedActionTitle, kFailedActionText, informative, ""});
+          {kFailedActionTitle, kFailedActionText, error_code.message(), ""});
     }
   }
 
