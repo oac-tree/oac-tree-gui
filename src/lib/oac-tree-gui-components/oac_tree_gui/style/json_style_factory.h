@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JSON_STYLE_FACTORY_H_
-#define OAC_TREE_GUI_JSON_STYLE_FACTORY_H_
+#ifndef OAC_TREE_GUI_STYLE_JSON_STYLE_FACTORY_H_
+#define OAC_TREE_GUI_STYLE_JSON_STYLE_FACTORY_H_
 
 //! @file
 //! Collection of helper methods to create styles from JSON representation.
@@ -44,4 +44,4 @@ void PopulateStyleFromJSON(const QJsonObject& json, GraphicsSceneStyle& style);
 
 }  // namespace oac_tree_gui::style
 
-#endif  // OAC_TREE_GUI_JSON_STYLE_FACTORY_H_
+#endif  // OAC_TREE_GUI_STYLE_JSON_STYLE_FACTORY_H_

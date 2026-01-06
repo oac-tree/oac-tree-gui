@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_COMPONENT_PROVIDER_H_
-#define OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_COMPONENT_PROVIDER_H_
+#ifndef OAC_TREE_GUI_NODEEDITOR_OBJECTS_GRAPHICS_SCENE_COMPONENT_PROVIDER_H_
+#define OAC_TREE_GUI_NODEEDITOR_OBJECTS_GRAPHICS_SCENE_COMPONENT_PROVIDER_H_
 
 #include <sup/gui/core/message_event.h>
 
@@ -180,4 +180,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_COMPONENT_PROVIDER_H_
+#endif  // OAC_TREE_GUI_NODEEDITOR_OBJECTS_GRAPHICS_SCENE_COMPONENT_PROVIDER_H_

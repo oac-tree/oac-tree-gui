@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_STYLE_RESOURCE_CONSTANTS_H_
-#define OAC_TREE_GUI_STYLE_RESOURCE_CONSTANTS_H_
+#ifndef OAC_TREE_GUI_STYLE_STYLE_RESOURCE_CONSTANTS_H_
+#define OAC_TREE_GUI_STYLE_STYLE_RESOURCE_CONSTANTS_H_
 
 //! @file
 //! Collection of constants related to the parsing of json style files.
@@ -46,4 +46,4 @@ constexpr auto CompoundInstructionColorKey = "CompoundInstructionColor";
 
 }  // namespace oac_tree_gui::style
 
-#endif  // OAC_TREE_GUI_STYLE_RESOURCE_CONSTANTS_H_
+#endif  // OAC_TREE_GUI_STYLE_STYLE_RESOURCE_CONSTANTS_H_

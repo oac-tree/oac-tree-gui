@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
-#define OAC_TREE_GUI_VIEWS_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
 
 #include <sup/gui/widgets/settings_callbacks.h>
 
@@ -146,4 +146,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_

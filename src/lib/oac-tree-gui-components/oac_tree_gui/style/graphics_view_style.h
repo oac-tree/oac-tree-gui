@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_GRAPHICS_VIEW_STYLE_H_
-#define OAC_TREE_GUI_GRAPHICS_VIEW_STYLE_H_
+#ifndef OAC_TREE_GUI_STYLE_GRAPHICS_VIEW_STYLE_H_
+#define OAC_TREE_GUI_STYLE_GRAPHICS_VIEW_STYLE_H_
 
 //! @file
 //! Collection of style related types. They will be used to initialize corresponding widgets and
@@ -60,4 +60,4 @@ const GraphicsViewStyle& GetDefaultGraphicsViewStyle();
 
 }  // namespace oac_tree_gui::style
 
-#endif  // OAC_TREE_GUI_GRAPHICS_VIEW_STYLE_H_
+#endif  // OAC_TREE_GUI_STYLE_GRAPHICS_VIEW_STYLE_H_
