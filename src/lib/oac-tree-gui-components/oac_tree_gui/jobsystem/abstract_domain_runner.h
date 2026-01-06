@@ -24,8 +24,8 @@
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <sup/oac-tree/job_states.h>
-#include <chrono>
 
+#include <chrono>
 #include <memory>
 
 namespace oac_tree_gui

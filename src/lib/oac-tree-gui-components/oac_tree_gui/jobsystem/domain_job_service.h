@@ -23,8 +23,8 @@
 
 #include <oac_tree_gui/jobsystem/domain_events.h>
 
-#include <memory>
 #include <chrono>
+#include <memory>
 
 namespace oac_tree_gui
 {

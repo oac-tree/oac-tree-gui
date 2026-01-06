@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/runner_status.h>
 
 #include <mvvm/model/compound_item.h>
+
 #include <chrono>
 
 namespace oac_tree_gui
