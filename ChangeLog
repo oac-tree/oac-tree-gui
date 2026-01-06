@@ -1,5 +1,6 @@
 Changes for 2.1.0:
 
+- COA Release v3.3.0, January 2026
 - Add tooltips to instructions in a toolbox with a brief description
 - Redesign procedure composer and provide possibility to split panels and compare procedures
 - Fix bug COA-1813 application crash when opening second job with different variable count
