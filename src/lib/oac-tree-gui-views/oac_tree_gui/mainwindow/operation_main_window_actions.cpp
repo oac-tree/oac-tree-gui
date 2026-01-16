@@ -84,8 +84,6 @@ void OperationMainWindowActions::SetupStatusBar(QStatusBar* status_bar)
 
 OperationMainWindowActions::~OperationMainWindowActions() = default;
 
-//! Create main actions.
-
 void OperationMainWindowActions::CreateActions(QMainWindow* mainwindow)
 {
   m_open_action = new QAction("Open XML procedure", this);
@@ -168,7 +166,7 @@ void OperationMainWindowActions::OnChangeSystemFont()
 {
   if (sup::gui::SummonChangeSystemFontDialog())
   {
-    emit RestartApplicationRequest(sup::gui::Restart);
+    emit ExitRequest(mvvm::AppExitRequest::Restart);
   }
 }
 
@@ -176,7 +174,7 @@ void OperationMainWindowActions::OnResetSettings()
 {
   if (sup::gui::ShouldResetSettingsAndRestart())
   {
-    emit RestartApplicationRequest(sup::gui::CleanSettingsAndRestart);
+    emit ExitRequest(mvvm::AppExitRequest::CleanSettingsAndRestart);
   }
 }
 

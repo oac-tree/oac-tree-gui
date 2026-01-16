@@ -27,7 +27,6 @@
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/mainwindow/splash_screen.h>
 
-#include <sup/gui/app/main_window_types.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/app_restarter.h>

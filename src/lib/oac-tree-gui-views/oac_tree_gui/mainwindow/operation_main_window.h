@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_
 #define OAC_TREE_GUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_
 
-#include <sup/gui/app/main_window_types.h>
+#include <mvvm/widgets/main_window_types.h>
 
 #include <QMainWindow>
 #include <memory>
@@ -43,7 +43,7 @@ class OperationMainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  OperationMainWindow(SequencerMainWindowContext& context);
+  explicit OperationMainWindow(SequencerMainWindowContext& context);
   ~OperationMainWindow() override;
 
   OperationMainWindow(const OperationMainWindow&) = delete;
@@ -61,7 +61,11 @@ private:
   void ReadSettings();
   void WriteSettings();
   bool CanCloseApplication();
-  void OnRestartRequest(sup::gui::AppExitCode exit_code);
+
+  /**
+   * @brief Handle application exit request.
+   */
+  void OnExitRequest(mvvm::AppExitRequest exit_request);
 
   SequencerMainWindowContext& m_context;
   std::unique_ptr<ApplicationModels> m_models;

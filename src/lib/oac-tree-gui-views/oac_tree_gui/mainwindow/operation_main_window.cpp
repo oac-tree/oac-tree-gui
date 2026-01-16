@@ -30,8 +30,9 @@
 
 #include <sup/gui/app/app_constants.h>
 
+#include <mvvm/widgets/app_restarter.h>
+
 #include <QCloseEvent>
-#include <QCoreApplication>
 #include <QMenuBar>
 #include <QSettings>
 
@@ -80,8 +81,8 @@ void OperationMainWindow::InitApplication()
   ReadSettings();
 
   m_action_manager = new OperationMainWindowActions(m_context.GetCommandService(), this);
-  connect(m_action_manager, &OperationMainWindowActions::RestartApplicationRequest, this,
-          &OperationMainWindow::OnRestartRequest);
+  connect(m_action_manager, &OperationMainWindowActions::ExitRequest, this,
+          &OperationMainWindow::OnExitRequest);
 
   m_operation_view = new OperationMonitorView(m_context.GetCommandService(),
                                               OperationPresentationMode::kOperationMode, this);
@@ -122,11 +123,12 @@ bool OperationMainWindow::CanCloseApplication()
   return true;
 }
 
-void OperationMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
+void OperationMainWindow::OnExitRequest(mvvm::AppExitRequest exit_request)
 {
   if (CanCloseApplication())
   {
-    QCoreApplication::exit(exit_code);
+    mvvm::AppRestarter::StoreExitRequest(exit_request);
+    close();
   }
 }
 

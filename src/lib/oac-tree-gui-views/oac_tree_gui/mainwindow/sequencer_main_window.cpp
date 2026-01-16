@@ -119,7 +119,7 @@ void SequencerMainWindow::InitComponents()
   setCentralWidget(m_tab_widget);
 
   connect(m_action_manager, &SequencerMainWindowActions::ExitRequest, this,
-          &SequencerMainWindow::ExitRequest);
+          &SequencerMainWindow::OnExitRequest);
 
   m_action_manager->SetupStatusBar(m_tab_widget->GetStatusBar());
 }
@@ -164,7 +164,7 @@ bool SequencerMainWindow::CanCloseApplication()
   return false;
 }
 
-void SequencerMainWindow::ExitRequest(mvvm::AppExitRequest exit_request)
+void SequencerMainWindow::OnExitRequest(mvvm::AppExitRequest exit_request)
 {
   if (CanCloseApplication())
   {

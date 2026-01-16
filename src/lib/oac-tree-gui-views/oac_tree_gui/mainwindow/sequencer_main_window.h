@@ -88,7 +88,7 @@ private:
   /**
    * @brief Handle application exit request.
    */
-  void ExitRequest(mvvm::AppExitRequest exit_request);
+  void OnExitRequest(mvvm::AppExitRequest exit_request);
 
   /**
    * @brief Perform widgets setup on new project creation or project load from disk.

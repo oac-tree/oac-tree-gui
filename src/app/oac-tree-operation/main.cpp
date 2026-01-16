@@ -25,7 +25,7 @@
 
 int main(int argc, char** argv)
 {
-  oac_tree_gui::RegisterCustomMetaTypes();  // before InitCoreApplication
+  oac_tree_gui::RegisterCustomMetaTypes();  // before InitCoreApplication for QSettings
 
   auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("oac-tree-operation", version);

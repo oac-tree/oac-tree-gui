@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_
 #define OAC_TREE_GUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_
 
-#include <sup/gui/app/main_window_types.h>
+#include <mvvm/widgets/main_window_types.h>
 
 #include <QObject>
 
@@ -63,7 +63,7 @@ public:
 
 signals:
   void ImportJobRequest();
-  void RestartApplicationRequest(sup::gui::AppExitCode);
+  void ExitRequest(mvvm::AppExitRequest exit_request);
 
 private:
   void CreateActions(QMainWindow* mainwindow);
