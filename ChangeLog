@@ -1,3 +1,7 @@
+Changes for 2.2.0:
+
+- Switch to a new "application restarter" machinery in all main windows.
+
 Changes for 2.1.0:
 
 - COA Release v3.3.0, January 2026
