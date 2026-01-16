@@ -252,7 +252,7 @@ void SequencerMainWindowActions::OnChangeSystemFont()
 {
   if (sup::gui::SummonChangeSystemFontDialog())
   {
-    emit RestartApplicationRequest(sup::gui::Restart);
+    emit ExitRequest(mvvm::AppExitRequest::Restart);
   }
 }
 
@@ -272,7 +272,7 @@ void SequencerMainWindowActions::OnResetSettings()
 {
   if (sup::gui::ShouldResetSettingsAndRestart())
   {
-    emit RestartApplicationRequest(sup::gui::CleanSettingsAndRestart);
+    emit ExitRequest(mvvm::AppExitRequest::CleanSettingsAndRestart);
   }
 }
 

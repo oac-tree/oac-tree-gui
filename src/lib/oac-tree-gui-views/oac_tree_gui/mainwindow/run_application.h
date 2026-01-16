@@ -30,6 +30,7 @@
 #include <sup/gui/app/main_window_types.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
+#include <mvvm/widgets/app_restarter.h>
 #include <mvvm/widgets/app_utils.h>
 
 #include <QApplication>
@@ -45,14 +46,14 @@ namespace oac_tree_gui
 template <typename MainWindowT>
 int RunApplication(int argc, char** argv)
 {
-  auto options = oac_tree_gui::ParseOptions(argc, argv);
-  mvvm::utils::SetupHighDpiScaling(options.scale);
+  mvvm::AppRestarter restarter(argc, argv);
 
   oac_tree_gui::LoadOacTreeItems();
 
-  QApplication app(argc, argv);
+  auto options = oac_tree_gui::ParseOptions(argc, argv);
+  mvvm::utils::SetupHighDpiScaling(options.scale);
 
-  const auto default_font = app.font();
+  QApplication app(argc, argv);
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
@@ -65,38 +66,25 @@ int RunApplication(int argc, char** argv)
     splash->Start(/*show_during*/ 1000);
   }
 
-  int exit_code{0};
-  do
+  SequencerMainWindowContext context;
+  context.LoadPlugins();
+  MainWindowT win(context);
+
+  if (options.window_size.has_value())
   {
-    if (exit_code == sup::gui::CleanSettingsAndRestart)
-    {
-      QSettings settings;
-      settings.clear();
-      QApplication::setFont(default_font);
-    }
+    win.resize(options.window_size.value());
+  }
+  win.show();
+  auto on_import = [&win](auto file_name) { return win.ImportProcedure(file_name); };
+  ImportProcedures(options.file_name, on_import);
 
-    SequencerMainWindowContext context;
-    context.LoadPlugins();
-    MainWindowT win(context);
+  if (splash)
+  {
+    splash->finish(&win);
+    splash.reset();
+  }
 
-    if (options.window_size.has_value())
-    {
-      win.resize(options.window_size.value());
-    }
-    win.show();
-    auto on_import = [&win](auto file_name) { return win.ImportProcedure(file_name); };
-    ImportProcedures(options.file_name, on_import);
-
-    if (splash)
-    {
-      splash->finish(&win);
-      splash.reset();
-    }
-
-    exit_code = app.exec();
-  } while (exit_code != sup::gui::NormalExit);
-
-  return exit_code;
+  return restarter.HandleExit(app.exec());
 }
 
 }  // namespace oac_tree_gui

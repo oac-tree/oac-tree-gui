@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 #define OAC_TREE_GUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 
-#include <sup/gui/app/main_window_types.h>
+#include <mvvm/widgets/main_window_types.h>
 
 #include <QMainWindow>
 #include <memory>
@@ -86,11 +86,9 @@ private:
   bool CanCloseApplication();
 
   /**
-   * @brief Check if the application can be restarted and exit the application with the given code.
-   *
-   * The code will be used to start the application again from the main.
+   * @brief Handle application exit request.
    */
-  void OnRestartRequest(sup::gui::AppExitCode exit_code);
+  void ExitRequest(mvvm::AppExitRequest exit_request);
 
   /**
    * @brief Perform widgets setup on new project creation or project load from disk.

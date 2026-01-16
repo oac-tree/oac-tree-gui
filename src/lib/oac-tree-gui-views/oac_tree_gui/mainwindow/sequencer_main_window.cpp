@@ -36,10 +36,10 @@
 
 #include <sup/gui/mainwindow/settings_helper.h>
 
+#include <mvvm/widgets/app_restarter.h>
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 
 #include <QCloseEvent>
-#include <QCoreApplication>
 #include <QSettings>
 #include <QStatusBar>
 
@@ -118,8 +118,8 @@ void SequencerMainWindow::InitComponents()
 
   setCentralWidget(m_tab_widget);
 
-  connect(m_action_manager, &SequencerMainWindowActions::RestartApplicationRequest, this,
-          &SequencerMainWindow::OnRestartRequest);
+  connect(m_action_manager, &SequencerMainWindowActions::ExitRequest, this,
+          &SequencerMainWindow::ExitRequest);
 
   m_action_manager->SetupStatusBar(m_tab_widget->GetStatusBar());
 }
@@ -164,11 +164,12 @@ bool SequencerMainWindow::CanCloseApplication()
   return false;
 }
 
-void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
+void SequencerMainWindow::ExitRequest(mvvm::AppExitRequest exit_request)
 {
   if (CanCloseApplication())
   {
-    QCoreApplication::exit(exit_code);
+    mvvm::AppRestarter::StoreExitRequest(exit_request);
+    close();
   }
 }
 
