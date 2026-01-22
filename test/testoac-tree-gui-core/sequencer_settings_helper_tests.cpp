@@ -118,4 +118,19 @@ TEST_F(SequencerSettingsHelperTest, FindSharedLibraries)
       std::vector<std::string>({link_name_a2, link_name_b2, link_name_c2})));
 }
 
+TEST_F(SequencerSettingsHelperTest, CleanupLegacyPluginNames)
+{
+  const std::vector<std::string> files_in_dir = {
+      "/opt/codac/lib/oac-tree/plugins/libsequencer-control.so",
+      "/opt/codac/lib/oac-tree/plugins/liboac-tree-pvxs.so",
+      "/opt/codac/lib/oac-tree/plugins/liboac-tree-control.so",
+  };
+
+  const auto filtered_list = CleanupLegacyPluginNames(files_in_dir);
+  const std::vector<std::string> expected_filtered_list(
+      {"/opt/codac/lib/oac-tree/plugins/liboac-tree-pvxs.so",
+       "/opt/codac/lib/oac-tree/plugins/liboac-tree-control.so"});
+  EXPECT_TRUE(mvvm::utils::HaveSameElements(filtered_list, expected_filtered_list));
+}
+
 }  // namespace oac_tree_gui::test

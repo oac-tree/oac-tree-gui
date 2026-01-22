@@ -49,7 +49,6 @@ struct ObjectGroupInfo
   std::vector<std::string> object_names;
 };
 
-
 /**
  * @brief Returns correspondence of group name to the plugin name.
  *

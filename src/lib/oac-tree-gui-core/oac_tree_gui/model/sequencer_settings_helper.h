@@ -54,6 +54,13 @@ std::vector<std::string> GetDefaultPluginList();
  * @brief Finds shared libraries in the given folder.
  */
 std::vector<std::string> FindSharedLibraries(const std::string& dir);
+
+
+/**
+ * @brief Cleanup legacy plugin names in the given list.
+ */
+std::vector<std::string> CleanupLegacyPluginNames(const std::vector<std::string>& plugin_names);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_HELPER_H_

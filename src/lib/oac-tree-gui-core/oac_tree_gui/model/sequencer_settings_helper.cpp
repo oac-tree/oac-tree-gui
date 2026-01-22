@@ -25,7 +25,10 @@
 #include <sup/gui/core/environment.h>
 
 #include <mvvm/core/platform.h>
+#include <mvvm/utils/container_utils.h>
 #include <mvvm/utils/file_utils.h>
+
+#include <algorithm>
 
 namespace oac_tree_gui
 {
@@ -67,7 +70,31 @@ std::vector<std::string> FindSharedLibraries(const std::string& dir)
   (void)result.insert(result.end(), so_names.begin(), so_names.end());
   (void)result.insert(result.end(), dylib_names.begin(), dylib_names.end());
 
+  if (sup::gui::IsOnCodac())
+  {
+    result = CleanupLegacyPluginNames(result);
+  }
+
   return result;
+}
+
+std::vector<std::string> CleanupLegacyPluginNames(const std::vector<std::string>& plugin_names)
+{
+  std::vector<std::string> result;
+  const auto legacy_names = GetLegacyPluginNameList();
+  for (const auto& name : plugin_names)
+  {
+    // full name of file shouldn't contain any legacy plugin name
+    if (std::none_of(legacy_names.begin(), legacy_names.end(),
+                     [&name](const std::string& legacy_name)
+                     { return name.find(legacy_name) != std::string::npos; }))
+    {
+      result.push_back(name);
+    }
+  }
+
+  return result;
+  ;
 }
 
 }  // namespace oac_tree_gui
