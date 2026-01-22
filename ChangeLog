@@ -1,5 +1,6 @@
 Changes for 2.2.0:
 
+- Fix missed mathexpr/control plugin load on CODAC machines
 - Switch to a new "application restarter" machinery in all main windows.
 
 Changes for 2.1.0:
