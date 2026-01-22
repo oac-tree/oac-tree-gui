@@ -24,6 +24,7 @@
 #include "domain_object_type_registry.h"
 
 #include <mvvm/utils/container_utils.h>
+#include <mvvm/utils/string_utils.h>
 
 #include <algorithm>
 
@@ -34,25 +35,50 @@ namespace
 {
 
 /**
- * @brief Returns correspondence of group name to the plugin name.
+ * @brief Registers a plugin name for ObjectGroupInfo using given group name.
  *
- * A single group can contain more than one plugin.
+ * @param group_name The name of the group
+ * @param plugin_name The name of the plugin in this group
+ * @param group_info The group info object to modify
+ * @param legacy_exists Add also legacy name, if true.
  */
-std::vector<ObjectGroupInfo> CreatePluginNameGroups()
+void AddPluginNameToGroupInfo(const std::string& group_name, const std::string& plugin_name,
+                              std::vector<ObjectGroupInfo>& group_info, bool legacy_exists)
 {
-  const std::vector<ObjectGroupInfo> result = {
-      {kCoreGroup, {domainconstants::kCorePluginName}},
-      {kMathGroup, {domainconstants::kMathExprPluginName}},
-      {kEPICSGroup, {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName}},
-      {kControlGroup, {domainconstants::kControlPluginName}},
-      {kSupGroup, {domainconstants::kSupConfigPluginName, domainconstants::kSupTimingPluginName}},
-      {kMiscGroup,
-       {domainconstants::kSystemPluginName, domainconstants::kStringPluginName,
-        domainconstants::kSupPulseCounterPluginName}}};
-  return result;
+  auto iter =
+      std::find_if(group_info.begin(), group_info.end(), [&group_name](const ObjectGroupInfo& info)
+                   { return info.group_name == group_name; });
+  if (iter == group_info.end())
+  {
+    group_info.push_back({group_name, {}});
+    iter = std::prev(group_info.end());
+  }
+
+  iter->object_names.push_back(plugin_name);
+  if (legacy_exists)
+  {
+    const auto legacy_name = mvvm::utils::ReplaceSubString(plugin_name, "oac-tree", "sequencer");
+    iter->object_names.push_back(legacy_name);
+  }
 }
 
 }  // namespace
+
+std::vector<ObjectGroupInfo> CreatePluginNameGroups()
+{
+  std::vector<ObjectGroupInfo> result;
+  AddPluginNameToGroupInfo(kCoreGroup, domainconstants::kCorePluginName, result, false);
+  AddPluginNameToGroupInfo(kMathGroup, domainconstants::kMathExprPluginName, result, true);
+  AddPluginNameToGroupInfo(kEPICSGroup, domainconstants::kEpicsCAPluginName, result, true);
+  AddPluginNameToGroupInfo(kEPICSGroup, domainconstants::kEpicsPVXSPluginName, result, true);
+  AddPluginNameToGroupInfo(kControlGroup, domainconstants::kControlPluginName, result, true);
+  AddPluginNameToGroupInfo(kSupGroup, domainconstants::kSupConfigPluginName, result, true);
+  AddPluginNameToGroupInfo(kSupGroup, domainconstants::kSupTimingPluginName, result, true);
+  AddPluginNameToGroupInfo(kMiscGroup, domainconstants::kSystemPluginName, result, true);
+  AddPluginNameToGroupInfo(kMiscGroup, domainconstants::kStringPluginName, result, true);
+  AddPluginNameToGroupInfo(kMiscGroup, domainconstants::kSupPulseCounterPluginName, result, true);
+  return result;
+}
 
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
     const DomainObjectTypeRegistry& type_registry)

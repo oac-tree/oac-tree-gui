@@ -49,6 +49,14 @@ struct ObjectGroupInfo
   std::vector<std::string> object_names;
 };
 
+
+/**
+ * @brief Returns correspondence of group name to the plugin name.
+ *
+ * A single group can contain more than one plugin.
+ */
+std::vector<ObjectGroupInfo> CreatePluginNameGroups();
+
 /**
  * @brief Creates a collection of sequencer instruction types grouped according to a plugin name
  * using given registry.
