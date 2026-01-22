@@ -123,6 +123,13 @@ TEST_F(DomainHelperTest, GetBasicPluginList)
   EXPECT_TRUE(mvvm::utils::Contains(GetBasicPluginList(), domainconstants::kEpicsCAPluginName));
 }
 
+TEST_F(DomainHelperTest, GetLegacyPluginNameList)
+{
+  EXPECT_TRUE(mvvm::utils::Contains(GetLegacyPluginNameList(), "sequencer-ca"));
+  EXPECT_EQ(GetBasicPluginList().size() + GetSupPluginList().size(),
+            GetLegacyPluginNameList().size());
+}
+
 TEST_F(DomainHelperTest, GetSupPluginList)
 {
   EXPECT_TRUE(mvvm::utils::Contains(GetSupPluginList(), domainconstants::kSupConfigPluginName));

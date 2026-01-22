@@ -113,6 +113,22 @@ std::vector<std::string> GetBasicPluginList()
   return kPluginList;
 }
 
+std::vector<std::string> GetLegacyPluginNameList()
+{
+  const auto basic_plugin_list = GetBasicPluginList();
+  const auto sup_plugin_list = GetSupPluginList();
+  std::vector<std::string> plugin_list;
+  plugin_list.reserve(basic_plugin_list.size() + sup_plugin_list.size());
+  (void)plugin_list.insert(plugin_list.end(), basic_plugin_list.begin(), basic_plugin_list.end());
+  (void)plugin_list.insert(plugin_list.end(), sup_plugin_list.begin(), sup_plugin_list.end());
+
+  for (auto& name : plugin_list)
+  {
+    name = mvvm::utils::ReplaceSubString(name, "oac-tree", "sequencer");
+  }
+  return plugin_list;
+}
+
 std::vector<std::string> GetSupPluginList()
 {
   static const std::vector<std::string> kPluginList = {domainconstants::kSupConfigPluginName,

@@ -101,6 +101,15 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata);
 std::vector<std::string> GetBasicPluginList();
 
 /**
+ * @brief Returns legacy plugin name list.
+ *
+ * Same as GetBasicPluginList, where "oac-tree" is replaced with "sequencer".
+ *
+ * @details The plugin name contains no prefix "lib" and no suffixes ".so" or ".dylib".
+ */
+std::vector<std::string> GetLegacyPluginNameList();
+
+/**
  * @brief Returns plugin list available only on CODAC systems.
  *
  * @details The plugin name contains no prefix "lib" and no suffixes ".so" or ".dylib".
