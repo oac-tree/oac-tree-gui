@@ -107,7 +107,6 @@ PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService& plugin_service,
   layout->addLayout(CreateDescriptionLayout().release());
   layout->addLayout(CreateDirListLayout().release());
   layout->addLayout(CreatePluginListLayout().release());
-  layout->addStretch(1);
 }
 
 PluginSettingsEditor::~PluginSettingsEditor() = default;
