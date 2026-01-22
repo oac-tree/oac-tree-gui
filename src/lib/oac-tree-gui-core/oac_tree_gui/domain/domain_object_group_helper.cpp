@@ -27,6 +27,9 @@
 
 #include <algorithm>
 
+namespace oac_tree_gui
+{
+
 namespace
 {
 
@@ -35,31 +38,21 @@ namespace
  *
  * A single group can contain more than one plugin.
  */
-std::vector<oac_tree_gui::ObjectGroupInfo> CreatePluginNameGroups()
+std::vector<ObjectGroupInfo> CreatePluginNameGroups()
 {
-  const std::vector<oac_tree_gui::ObjectGroupInfo> result = {
-      {oac_tree_gui::kCoreGroup, {oac_tree_gui::domainconstants::kCorePluginName}},
-      {oac_tree_gui::kMathGroup, {oac_tree_gui::domainconstants::kMathExprPluginName}},
-      {oac_tree_gui::kEPICSGroup,
-       {oac_tree_gui::domainconstants::kEpicsCAPluginName,
-        oac_tree_gui::domainconstants::kEpicsPVXSPluginName}},
-      {oac_tree_gui::kControlGroup, {oac_tree_gui::domainconstants::kControlPluginName}},
-      {oac_tree_gui::kSupGroup,
-       {oac_tree_gui::domainconstants::kSupConfigPluginName,
-        oac_tree_gui::domainconstants::kSupTimingPluginName}},
-      {oac_tree_gui::kMiscGroup,
-       {oac_tree_gui::domainconstants::kSystemPluginName,
-        oac_tree_gui::domainconstants::kStringPluginName,
-        oac_tree_gui::domainconstants::kSupPulseCounterPluginName}},
-
-  };
+  const std::vector<ObjectGroupInfo> result = {
+      {kCoreGroup, {domainconstants::kCorePluginName}},
+      {kMathGroup, {domainconstants::kMathExprPluginName}},
+      {kEPICSGroup, {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName}},
+      {kControlGroup, {domainconstants::kControlPluginName}},
+      {kSupGroup, {domainconstants::kSupConfigPluginName, domainconstants::kSupTimingPluginName}},
+      {kMiscGroup,
+       {domainconstants::kSystemPluginName, domainconstants::kStringPluginName,
+        domainconstants::kSupPulseCounterPluginName}}};
   return result;
 }
 
 }  // namespace
-
-namespace oac_tree_gui
-{
 
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
     const DomainObjectTypeRegistry& type_registry)
