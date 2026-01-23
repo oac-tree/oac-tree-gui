@@ -25,6 +25,7 @@
 #include "sequencer_composer_actions.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/style/style_helper.h>
@@ -83,11 +84,11 @@ SequencerComposerView::~SequencerComposerView()
   WriteSettings();
 }
 
-void SequencerComposerView::SetModel(SequencerModel* model)
+void SequencerComposerView::SetModels(ApplicationModels* models)
 {
-  m_composer_actions->SetModel(model);
-  m_splittable_editor_widget->SetModel(model);
-  m_composer_tools_panel->SetModel(model);  // will select first procedure
+  m_composer_actions->SetModel(models->GetSequencerModel());
+  m_splittable_editor_widget->SetModel(models->GetSequencerModel());
+  m_composer_tools_panel->SetModel(models->GetSequencerModel());  // will select first procedure
 }
 
 void SequencerComposerView::ReadSettings()

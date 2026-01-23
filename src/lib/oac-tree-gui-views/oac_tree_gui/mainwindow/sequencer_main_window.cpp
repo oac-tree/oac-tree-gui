@@ -180,7 +180,7 @@ void SequencerMainWindow::OnProjectLoad()
   m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());
-  m_composer_view->SetModel(m_models->GetSequencerModel());
+  m_composer_view->SetModels(m_models.get());
   m_operation_view->SetModels(m_models.get());
 
   UpdateProjectNames();

@@ -35,7 +35,7 @@ class CustomSplitter;
 namespace oac_tree_gui
 {
 
-class SequencerModel;
+class ApplicationModels;
 class ComposerToolsPanel;
 class SequencerModel;
 class ProcedureSplittableEditorWidget;
@@ -63,7 +63,7 @@ public:
   SequencerComposerView(SequencerComposerView&&) = delete;
   SequencerComposerView& operator=(SequencerComposerView&&) = delete;
 
-  void SetModel(SequencerModel* model);
+  void SetModels(ApplicationModels* models);
 
 private:
   void ReadSettings();
