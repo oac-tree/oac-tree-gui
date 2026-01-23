@@ -64,27 +64,28 @@ TEST_F(ComponentTypesTest, ProcedureEditorInfoEqualityOperators)
   }
 }
 
-TEST_F(ComponentTypesTest, StringFromProcedureInfoList)
+TEST_F(ComponentTypesTest, ProcedureEditorInfoStringConversion)
 {
-  {  // default
-    const std::vector<ProcedureEditorInfo> info;
-    const auto str = oac_tree_gui::GetStringFromProcedureInfoList(info);
-    EXPECT_EQ(str, "identifiers[] tabs[]");
-
-    // back
-    const auto parsed_info = oac_tree_gui::GetProcedureInfoListFromString(str);
-    EXPECT_TRUE(parsed_info.empty());
+  {  // default constructed
+    const ProcedureEditorInfo input_info{};
+    const auto str = GetStringFromProcedureInfo(input_info);
+    EXPECT_EQ(str, "\"\" 0");
+    const auto output_info = GetProcedureInfoFromString(str);
+    EXPECT_TRUE(input_info == output_info);
   }
 
-  {  // non-empty
-    const std::vector<ProcedureEditorInfo> info{{"proc1", ProcedureEditorType::kInstructionTree},
-                                                {"proc2", ProcedureEditorType::kXmlPanel}};
-    const auto str = oac_tree_gui::GetStringFromProcedureInfoList(info);
-    EXPECT_EQ(str, "identifiers[proc1;proc2] tabs[0;3]");
+  {  // non-default
+    const ProcedureEditorInfo input_info{"my_procedure", ProcedureEditorType::kWorkspace};
+    const auto str = GetStringFromProcedureInfo(input_info);
+    EXPECT_EQ(str, "\"my_procedure\" 1");
+    const auto output_info = GetProcedureInfoFromString(str);
+    EXPECT_TRUE(input_info == output_info);
+  }
 
-    // back
-    const auto parsed_info = oac_tree_gui::GetProcedureInfoListFromString(str);
-    EXPECT_EQ(parsed_info, info);
+  {  // from empty string
+    const auto output_info = GetProcedureInfoFromString("");
+    const ProcedureEditorInfo expected_info{};
+    EXPECT_TRUE(expected_info == output_info);
   }
 }
 

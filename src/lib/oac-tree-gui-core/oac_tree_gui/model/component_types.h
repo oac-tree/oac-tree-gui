@@ -102,19 +102,9 @@ struct ProcedureEditorInfo
 bool operator==(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs);
 bool operator!=(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs);
 
-/**
- * Get list of ProcedureEditorInfo objects from the string.
- *
- * "identifiers[id1;id2;id3] tabs[0,1,2]" -> std::vector<ProcedureEditorInfo>
- */
-std::vector<ProcedureEditorInfo> GetProcedureInfoListFromString(const std::string& str);
+std::string GetStringFromProcedureInfo(const ProcedureEditorInfo& info);
 
-/**
- * Get string representing list of ProcedureEditorInfo objects.
- *
- * std::vector<ProcedureEditorInfo> -> "identifiers[id1;id2;id3] tabs[0,1,2]"
- */
-std::string GetStringFromProcedureInfoList(const std::vector<ProcedureEditorInfo>& info_list);
+ProcedureEditorInfo GetProcedureInfoFromString(const std::string& str);
 
 }  // namespace oac_tree_gui
 

@@ -25,6 +25,46 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+constexpr auto kSeparator = ";";
+
+/**
+ * @brief Returns list of ProcedureEditorInfo objects from its string representation.
+ */
+std::vector<ProcedureEditorInfo> GetProcedureInfoListFromString(const std::string& str)
+{
+  if (str.empty())
+  {
+    return {};
+  }
+
+  auto parts = mvvm::utils::SplitString(str, kSeparator);
+  std::vector<ProcedureEditorInfo> editor_info;
+  editor_info.reserve(parts.size());
+  for (const auto& item_str : parts)
+  {
+    editor_info.push_back(GetProcedureInfoFromString(item_str));
+  }
+  return editor_info;
+}
+
+/**
+ * @brief Returns string representation of ProcedureEditorInfo list.
+ */
+std::string GetStringFromProcedureInfoList(const std::vector<ProcedureEditorInfo>& editor_info)
+{
+  std::vector<std::string> str;
+  str.reserve(editor_info.size());
+  for (const auto& info : editor_info)
+  {
+    str.push_back(GetStringFromProcedureInfo(info));
+  }
+  return mvvm::utils::VectorToString(str, kSeparator);
+}
+
+}  // namespace
+
 ComposerSettingsItem::ComposerSettingsItem()
     : CompoundItem(mvvm::GetTypeName<ComposerSettingsItem>())
 {
@@ -48,8 +88,8 @@ std::vector<ProcedureEditorInfo> ComposerSettingsItem::GetProcedureEditorInfoLis
 void ComposerSettingsItem::SetProcedureEditorInfoList(
     const std::vector<ProcedureEditorInfo>& editor_info)
 {
-  const auto str = GetStringFromProcedureInfoList(editor_info);
-  SetProperty<std::string>(kEditorInfoList, str);
+  const auto joined_str = GetStringFromProcedureInfoList(editor_info);
+  SetProperty<std::string>(kEditorInfoList, joined_str);
 }
 
 }  // namespace oac_tree_gui
