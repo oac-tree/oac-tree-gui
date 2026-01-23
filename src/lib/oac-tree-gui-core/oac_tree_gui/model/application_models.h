@@ -38,6 +38,7 @@ namespace oac_tree_gui
 
 class SequencerModel;
 class JobModel;
+class ProjectModel;
 
 /**
  * @brief The ApplicationModels class stores all application models.
@@ -62,11 +63,14 @@ public:
 
   JobModel* GetJobModel();
 
+  ProjectModel* GetProjectModel();
+
   std::shared_ptr<mvvm::ItemPool> GetItemPool();
 
 private:
   std::size_t m_sequencer_model_index{0};
   std::size_t m_job_model_index{0};
+  std::size_t m_project_model_index{0};
   std::shared_ptr<mvvm::ItemPool> m_item_pool;
 };
 

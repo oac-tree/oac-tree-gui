@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
 #include <mvvm/model/item_pool.h>
@@ -66,9 +67,10 @@ TEST_F(ApplicationModelsTest, InitialState)
 
   EXPECT_NE(models.GetSequencerModel(), nullptr);
   EXPECT_NE(models.GetJobModel(), nullptr);
+  EXPECT_NE(models.GetProjectModel(), nullptr);
 
   const std::vector<mvvm::ISessionModel*> expected(
-      {models.GetSequencerModel(), models.GetJobModel()});
+      {models.GetSequencerModel(), models.GetJobModel(), models.GetProjectModel()});
   EXPECT_EQ(models.GetModels(), expected);
 }
 
@@ -104,6 +106,7 @@ TEST_F(ApplicationModelsTest, RecreateModels)
   EXPECT_EQ(models.GetItemPool()->GetSize(), 0);
   EXPECT_EQ(models.GetSequencerModel(), nullptr);
   EXPECT_EQ(models.GetJobModel(), nullptr);
+  EXPECT_EQ(models.GetProjectModel(), nullptr);
 
   // on new project creation item pool should receive new items
   models.CreateEmpty();
@@ -126,6 +129,7 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
   EXPECT_FALSE(project->HasPath());
   EXPECT_NE(project->GetSequencerModel(), nullptr);
   EXPECT_NE(project->GetJobModel(), nullptr);
+  EXPECT_NE(project->GetProjectModel(), nullptr);
   EXPECT_FALSE(project->IsModified());
 
   // setting up expectation before project modification
@@ -145,6 +149,7 @@ TEST_F(ApplicationModelsTest, CreateNewProjectThenModifyThenSaveThenClose)
   EXPECT_TRUE(project->Close());
   EXPECT_EQ(project->GetSequencerModel(), nullptr);
   EXPECT_EQ(project->GetJobModel(), nullptr);
+  EXPECT_EQ(project->GetProjectModel(), nullptr);
   EXPECT_FALSE(project->IsModified());
 
   EXPECT_TRUE(mvvm::utils::IsExists(expected_path));

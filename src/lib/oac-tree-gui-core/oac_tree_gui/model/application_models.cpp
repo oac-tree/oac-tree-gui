@@ -21,6 +21,7 @@
 #include "application_models.h"
 
 #include <oac_tree_gui/model/job_model.h>
+#include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
@@ -46,6 +47,10 @@ ApplicationModels::ApplicationModels(const mvvm::ProjectContext& context) : AppP
 
   auto job_model_factory_func = [this]() { return std::make_unique<JobModel>(m_item_pool); };
   m_job_model_index = RegisterModel(job_model_factory_func);
+
+  auto project_model_factory_func = [this]()
+  { return std::make_unique<ProjectModel>(m_item_pool); };
+  m_project_model_index = RegisterModel(project_model_factory_func);
 }
 
 ApplicationModels::~ApplicationModels() = default;
@@ -60,6 +65,12 @@ SequencerModel* ApplicationModels::GetSequencerModel()
 JobModel* ApplicationModels::GetJobModel()
 {
   return (GetModelCount() > m_job_model_index) ? GetModel<JobModel>(m_job_model_index) : nullptr;
+}
+
+ProjectModel* ApplicationModels::GetProjectModel()
+{
+  return (GetModelCount() > m_project_model_index) ? GetModel<ProjectModel>(m_project_model_index)
+                                                   : nullptr;
 }
 
 std::shared_ptr<mvvm::ItemPool> ApplicationModels::GetItemPool()
