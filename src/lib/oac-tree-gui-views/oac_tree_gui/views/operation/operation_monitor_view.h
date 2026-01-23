@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_
 
-#include <oac_tree_gui/components/component_types.h>
+#include <oac_tree_gui/model/component_types.h>
 
 #include <QWidget>
 

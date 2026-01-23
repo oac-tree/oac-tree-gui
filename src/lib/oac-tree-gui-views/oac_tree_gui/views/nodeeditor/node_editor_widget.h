@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_NODEEDITOR_NODE_EDITOR_WIDGET_H_
 
-#include <oac_tree_gui/components/component_types.h>
+#include <oac_tree_gui/model/component_types.h>
 
 #include <sup/gui/core/i_message_handler.h>
 

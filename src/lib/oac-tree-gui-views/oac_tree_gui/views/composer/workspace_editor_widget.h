@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
-#include "oac_tree_gui/components/component_types.h"
+#include "oac_tree_gui/model/component_types.h"
 #include "oac_tree_gui/model/procedure_item.h"
 
 #include <QWidget>

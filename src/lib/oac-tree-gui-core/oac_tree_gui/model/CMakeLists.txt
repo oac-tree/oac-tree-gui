@@ -7,6 +7,9 @@ target_sources(${library_name} PRIVATE
   aggregate_factory.h
   application_models.cpp
   application_models.h
+  component_types.h
+  composer_settings_item.cpp
+  composer_settings_item.h
   epics_instruction_items.cpp
   epics_instruction_items.h
   instruction_container_item.cpp
@@ -63,8 +66,6 @@ target_sources(${library_name} PRIVATE
   variable_info_item.h
   variable_item.cpp
   variable_item.h
-  composer_settings_item.cpp
-  composer_settings_item.h
   workspace_item.cpp
   workspace_item.h
   xml_utils.cpp

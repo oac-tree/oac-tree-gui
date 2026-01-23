@@ -25,6 +25,7 @@
 //! Common types for application widgets.
 
 #include <cstdint>
+#include <string>
 
 namespace oac_tree_gui
 {
@@ -86,6 +87,15 @@ enum class ProcedureEditorType : std::uint8_t
   kWorkspace,        //! workspace variable editor
   kNodeEditor,       //! node-based instruction editor
   kXmlPanel          //! xml viewer
+};
+
+/**
+ * @brief The ProcedureEditorInfo struct defines the state of the procedure editor panel.
+ */
+struct ProcedureEditorInfo
+{
+  std::string procedure_id; //! currently edited procedure
+  ProcedureEditorType editor_type; //! type of active editor
 };
 
 }  // namespace oac_tree_gui

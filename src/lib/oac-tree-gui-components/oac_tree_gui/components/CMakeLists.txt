@@ -3,7 +3,6 @@ target_sources(${library_name} PRIVATE
   anyvalue_dialog_result.h
   component_helper.cpp
   component_helper.h
-  component_types.h
   custom_children_strategies.cpp
   custom_children_strategies.h
   custom_meta_types.cpp
