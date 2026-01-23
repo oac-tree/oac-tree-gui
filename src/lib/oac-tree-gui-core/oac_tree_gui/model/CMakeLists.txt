@@ -29,6 +29,8 @@ target_sources(${library_name} PRIVATE
   procedure_item.h
   procedure_preamble_items.cpp
   procedure_preamble_items.h
+  project_model.cpp
+  project_model.h
   register_items.cpp
   register_items.h
   runner_status.cpp
