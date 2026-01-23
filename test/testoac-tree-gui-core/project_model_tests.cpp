@@ -20,6 +20,10 @@
 
 #include "oac_tree_gui/model/project_model.h"
 
+#include <oac_tree_gui/model/composer_settings_item.h>
+
+#include <mvvm/model/model_utils.h>
+
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test
@@ -31,8 +35,13 @@ class ProjectModelTest : public ::testing::Test
 
 TEST_F(ProjectModelTest, InitialState)
 {
-  const ProjectModel model;
+  ProjectModel model;
   EXPECT_EQ(model.GetType(), "ProjectModel");
+  EXPECT_NE(mvvm::utils::GetTopItem<ComposerSettingsItem>(model), nullptr);
+
+  // item recreated after cleanup
+  model.Clear();
+  EXPECT_NE(mvvm::utils::GetTopItem<ComposerSettingsItem>(model), nullptr);
 }
 
 }  // namespace oac_tree_gui::test

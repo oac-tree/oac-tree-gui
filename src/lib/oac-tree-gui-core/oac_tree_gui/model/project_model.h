@@ -40,6 +40,11 @@ class ProjectModel : public mvvm::ApplicationModel
 {
 public:
   explicit ProjectModel(std::shared_ptr<mvvm::ItemPool> pool = {});
+
+  void Clear() override;
+
+private:
+  void PopulateModel();
 };
 
 }  // namespace oac_tree_gui

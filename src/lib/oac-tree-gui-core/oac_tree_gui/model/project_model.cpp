@@ -20,6 +20,8 @@
 
 #include "project_model.h"
 
+#include "composer_settings_item.h"
+
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 
 namespace oac_tree_gui
@@ -28,6 +30,18 @@ namespace oac_tree_gui
 ProjectModel::ProjectModel(std::shared_ptr<mvvm::ItemPool> pool)
     : mvvm::ApplicationModel("ProjectModel", std::move(pool))
 {
+  PopulateModel();
+}
+
+void ProjectModel::Clear()
+{
+  mvvm::ApplicationModel::Clear();  // this replaces root item, and clears command stack
+  PopulateModel();
+}
+
+void ProjectModel::PopulateModel()
+{
+  (void)InsertItem<ComposerSettingsItem>();
 }
 
 }  // namespace oac_tree_gui
