@@ -8,6 +8,7 @@ target_sources(${library_name} PRIVATE
   application_models.cpp
   application_models.h
   component_types.h
+  component_types.cpp
   composer_settings_item.cpp
   composer_settings_item.h
   epics_instruction_items.cpp

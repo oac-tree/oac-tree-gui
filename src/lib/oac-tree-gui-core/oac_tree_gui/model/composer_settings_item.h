@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_MODEL_COMPOSER_SETTINGS_ITEM_H_
 
 #include <mvvm/model/compound_item.h>
+#include <oac_tree_gui/model/component_types.h>
 
 namespace oac_tree_gui
 {
@@ -35,9 +36,20 @@ namespace oac_tree_gui
 class ComposerSettingsItem : public mvvm::CompoundItem
 {
 public:
+  static constexpr auto kEditorInfoList = "kEditorInfoList";
   ComposerSettingsItem();
 
   std::unique_ptr<SessionItem> Clone() const override;
+
+  /**
+   * @brief Returns info for opened panels of splittable procedure editor.
+   */
+  std::vector<ProcedureEditorInfo> GetProcedureEditorInfoList() const;
+
+  /**
+   * @brief Sets procedure info list.
+   */
+  void SetProcedureEditorInfoList(const std::vector<ProcedureEditorInfo>& editor_info);
 };
 
 }  // namespace oac_tree_gui

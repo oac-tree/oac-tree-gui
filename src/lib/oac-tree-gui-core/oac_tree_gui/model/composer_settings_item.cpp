@@ -20,6 +20,8 @@
 
 #include "composer_settings_item.h"
 
+#include <mvvm/utils/string_utils.h>
+
 namespace oac_tree_gui
 {
 
@@ -27,11 +29,27 @@ ComposerSettingsItem::ComposerSettingsItem()
     : CompoundItem(mvvm::GetTypeName<ComposerSettingsItem>())
 {
   (void)SetDisplayName("Composer Settings");
+
+  // property carrying a string to represent std::vector<ProcedureEditorInfo>
+  (void)AddProperty(kEditorInfoList, std::string());
 }
 
 std::unique_ptr<mvvm::SessionItem> ComposerSettingsItem::Clone() const
 {
   return std::make_unique<ComposerSettingsItem>(*this);
+}
+
+std::vector<ProcedureEditorInfo> ComposerSettingsItem::GetProcedureEditorInfoList() const
+{
+  const auto str = Property<std::string>(kEditorInfoList);
+  return GetProcedureInfoListFromString(str);
+}
+
+void ComposerSettingsItem::SetProcedureEditorInfoList(
+    const std::vector<ProcedureEditorInfo>& editor_info)
+{
+  const auto str = GetStringFromProcedureInfoList(editor_info);
+  SetProperty<std::string>(kEditorInfoList, str);
 }
 
 }  // namespace oac_tree_gui

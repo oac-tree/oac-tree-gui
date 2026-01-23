@@ -32,6 +32,26 @@ class ComposerSettingsItemTest : public ::testing::Test
 {
 };
 
-TEST_F(ComposerSettingsItemTest, InitialState) {}
+TEST_F(ComposerSettingsItemTest, ProcedureEditorInfoListWhenEmpty)
+{
+  ComposerSettingsItem item;
+
+  EXPECT_TRUE(item.GetProcedureEditorInfoList().empty());
+
+  item.SetProcedureEditorInfoList({});
+  EXPECT_TRUE(item.GetProcedureEditorInfoList().empty());
+}
+
+TEST_F(ComposerSettingsItemTest, ProcedureEditorInfoListNonEmpty)
+{
+  ComposerSettingsItem item;
+
+  const std::vector<ProcedureEditorInfo> input_info{
+      {"proc1", ProcedureEditorType::kInstructionTree}, {"proc2", ProcedureEditorType::kXmlPanel}};
+  item.SetProcedureEditorInfoList(input_info);
+  const auto output_info = item.GetProcedureEditorInfoList();
+
+  EXPECT_TRUE(input_info == output_info);
+}
 
 }  // namespace oac_tree_gui::test
