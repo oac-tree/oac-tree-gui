@@ -23,7 +23,7 @@
 #include <oac_tree_gui/model/plugin_settings_item.h>
 
 #include <sup/gui/model/settings_constants.h>
-#include <sup/gui/model/settings_item.h>
+#include <sup/gui/model/common_settings_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>

@@ -22,7 +22,7 @@
 
 #include "plugin_settings_item.h"
 
-#include <sup/gui/model/settings_item.h>
+#include <sup/gui/model/common_settings_item.h>
 
 #include <mvvm/model/model_utils.h>
 

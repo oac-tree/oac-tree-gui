@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_
 #define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_
 
-#include <sup/gui/model/settings_item.h>
+#include <sup/gui/model/common_settings_item.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/item_utils.h>
@@ -30,7 +30,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief Contains common application settings.
+ * @brief Contains application settings common across different GUI sessions.
  *
  * It provides a collection of editable setting items, which is written in persistent storage thanks
  * to QSettings machinery.
