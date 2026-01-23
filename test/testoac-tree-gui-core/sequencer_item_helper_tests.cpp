@@ -106,6 +106,7 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<FileBasedJobItem>());
 
   EXPECT_TRUE(IsCloneImplemented<PluginSettingsItem>());
+  EXPECT_TRUE(IsCloneImplemented<ComposerSettingsItem>());
 }
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)

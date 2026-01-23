@@ -39,6 +39,7 @@
 #include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/model/variable_info_item.h>
+#include <oac_tree_gui/model/composer_settings_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #endif  // OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_

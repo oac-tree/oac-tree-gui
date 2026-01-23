@@ -72,6 +72,7 @@ void RegisterSessionItems()
 
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::PluginSettingsItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::TextEditItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ComposerSettingsItem>();
 }
 
 }  // namespace oac_tree_gui

@@ -63,6 +63,8 @@ target_sources(${library_name} PRIVATE
   variable_info_item.h
   variable_item.cpp
   variable_item.h
+  composer_settings_item.cpp
+  composer_settings_item.h
   workspace_item.cpp
   workspace_item.h
   xml_utils.cpp
