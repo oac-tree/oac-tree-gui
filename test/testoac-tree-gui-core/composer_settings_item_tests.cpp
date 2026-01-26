@@ -42,7 +42,7 @@ TEST_F(ComposerSettingsItemTest, ProcedureEditorInfoListWhenEmpty)
   EXPECT_TRUE(item.GetProcedureEditorInfoList().empty());
 }
 
-TEST_F(ComposerSettingsItemTest, ProcedureEditorInfoListNonEmpty)
+TEST_F(ComposerSettingsItemTest, ProcedureEditorInfoGetAndSet)
 {
   ComposerSettingsItem item;
 
@@ -50,6 +50,29 @@ TEST_F(ComposerSettingsItemTest, ProcedureEditorInfoListNonEmpty)
       {"proc1", ProcedureEditorType::kInstructionTree}, {"proc2", ProcedureEditorType::kXmlPanel}};
   item.SetProcedureEditorInfoList(input_info);
   const auto output_info = item.GetProcedureEditorInfoList();
+
+  EXPECT_TRUE(input_info == output_info);
+}
+
+TEST_F(ComposerSettingsItemTest, ComposerViewInfoWhenEmpty)
+{
+  const ComposerSettingsItem item;
+
+  const ComposerViewInfo expected_info{"", {}};
+  const auto output_info = item.GetComposerViewInfo();
+
+  EXPECT_TRUE(expected_info == output_info);
+}
+
+TEST_F(ComposerSettingsItemTest, ComposerViewInfoGetAndSet)
+{
+  ComposerSettingsItem item;
+
+  const ComposerViewInfo input_info{
+      "splitter_state",
+      {{"proc1", ProcedureEditorType::kNodeEditor}, {"proc2", ProcedureEditorType::kWorkspace}}};
+  item.SetComposerViewInfo(input_info);
+  const auto output_info = item.GetComposerViewInfo();
 
   EXPECT_TRUE(input_info == output_info);
 }

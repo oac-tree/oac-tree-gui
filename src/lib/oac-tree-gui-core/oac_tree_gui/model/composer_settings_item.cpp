@@ -72,6 +72,8 @@ ComposerSettingsItem::ComposerSettingsItem()
 
   // property carrying a string to represent std::vector<ProcedureEditorInfo>
   (void)AddProperty(kEditorInfoList, std::string());
+  // property carrying splitter state
+  (void)AddProperty(kSplitterState, std::string());
 }
 
 std::unique_ptr<mvvm::SessionItem> ComposerSettingsItem::Clone() const
@@ -89,7 +91,21 @@ void ComposerSettingsItem::SetProcedureEditorInfoList(
     const std::vector<ProcedureEditorInfo>& editor_info)
 {
   const auto joined_str = GetStringFromProcedureInfoList(editor_info);
-  SetProperty<std::string>(kEditorInfoList, joined_str);
+  (void)SetProperty<std::string>(kEditorInfoList, joined_str);
+}
+
+ComposerViewInfo ComposerSettingsItem::GetComposerViewInfo() const
+{
+  ComposerViewInfo info;
+  info.splitter_state = Property<std::string>(kSplitterState);
+  info.editor_info_list = GetProcedureEditorInfoList();
+  return info;
+}
+
+void ComposerSettingsItem::SetComposerViewInfo(const ComposerViewInfo& view_info)
+{
+  SetProcedureEditorInfoList(view_info.editor_info_list);
+  (void)SetProperty<std::string>(kSplitterState, view_info.splitter_state);
 }
 
 }  // namespace oac_tree_gui
