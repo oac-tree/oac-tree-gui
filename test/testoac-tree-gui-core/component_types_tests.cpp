@@ -89,4 +89,39 @@ TEST_F(ComponentTypesTest, ProcedureEditorInfoStringConversion)
   }
 }
 
+TEST_F(ComponentTypesTest, ComposerViewInfoOperators)
+{
+  {  // default constructed
+    const ComposerViewInfo info1{};
+    const ComposerViewInfo info2{};
+
+    EXPECT_TRUE(info1 == info2);
+    EXPECT_FALSE(info1 != info2);
+  }
+
+  {  // different splitter state
+    const ComposerViewInfo info1{"state1", {}};
+    const ComposerViewInfo info2{"state2", {}};
+
+    EXPECT_FALSE(info1 == info2);
+    EXPECT_TRUE(info1 != info2);
+  }
+
+  {  // different editor info list
+    const ComposerViewInfo info1{"state", {{"proc1", ProcedureEditorType::kXmlPanel}}};
+    const ComposerViewInfo info2{"state", {{"proc2", ProcedureEditorType::kXmlPanel}}};
+
+    EXPECT_FALSE(info1 == info2);
+    EXPECT_TRUE(info1 != info2);
+  }
+
+  {  // all the same
+    const ComposerViewInfo info1{"state", {{"proc1", ProcedureEditorType::kXmlPanel}}};
+    const ComposerViewInfo info2{"state", {{"proc1", ProcedureEditorType::kXmlPanel}}};
+
+    EXPECT_TRUE(info1 == info2);
+    EXPECT_FALSE(info1 != info2);
+  }
+}
+
 }  // namespace oac_tree_gui::test

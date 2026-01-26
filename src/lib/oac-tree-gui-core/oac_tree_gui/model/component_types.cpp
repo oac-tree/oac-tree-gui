@@ -26,13 +26,6 @@
 
 namespace oac_tree_gui
 {
-namespace
-{
-
-constexpr auto kSeparator = ";";
-constexpr auto kIdentifierKey = "identifiers";
-constexpr auto kTabKey = "tabs";
-}  // namespace
 
 bool operator==(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs)
 {
@@ -58,6 +51,17 @@ ProcedureEditorInfo GetProcedureInfoFromString(const std::string& str)
   std::uint32_t tab_as_int = 0;
   stream >> std::quoted(procedure_id) >> tab_as_int;
   return ProcedureEditorInfo{procedure_id, static_cast<ProcedureEditorType>(tab_as_int)};
+}
+
+bool operator==(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs)
+{
+  return (lhs.splitter_state == rhs.splitter_state)
+         && (lhs.editor_info_list == rhs.editor_info_list);
+}
+
+bool operator!=(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs)
+{
+  return !(lhs == rhs);
 }
 
 }  // namespace oac_tree_gui

@@ -102,9 +102,24 @@ struct ProcedureEditorInfo
 bool operator==(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs);
 bool operator!=(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs);
 
+/**
+ * @brief Converts ProcedureEditorInfo to string representation.
+ */
 std::string GetStringFromProcedureInfo(const ProcedureEditorInfo& info);
 
+/**
+ * @brief Converts string representation to ProcedureEditorInfo.
+ */
 ProcedureEditorInfo GetProcedureInfoFromString(const std::string& str);
+
+struct ComposerViewInfo
+{
+  std::string splitter_state;                         //! state of the main splitter
+  std::vector<ProcedureEditorInfo> editor_info_list;  //! info for each procedure editor panel
+};
+
+bool operator==(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs);
+bool operator!=(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs);
 
 }  // namespace oac_tree_gui
 
