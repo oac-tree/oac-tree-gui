@@ -26,7 +26,9 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/model/composer_settings_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 
@@ -86,8 +88,14 @@ SequencerComposerView::~SequencerComposerView()
 
 void SequencerComposerView::SetModels(ApplicationModels* models)
 {
+  m_project_model = models->GetProjectModel();
+
   m_composer_actions->SetModel(models->GetSequencerModel());
   m_splittable_editor_widget->SetModel(models->GetSequencerModel());
+
+  auto composer_info = m_project_model->Get<ComposerSettingsItem>()->GetComposerViewInfo();
+  m_splittable_editor_widget->SetComposerViewInfo(composer_info);
+
   m_composer_tools_panel->SetModel(models->GetSequencerModel());  // will select first procedure
 }
 
@@ -101,6 +109,10 @@ void SequencerComposerView::WriteSettings()
 {
   m_splittable_editor_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
   m_splitter->WriteSettings();
+
+  // FIXME will crash if uncomment, since project model is destroyed even before our destructor
+  // auto composer_info = m_splittable_editor_widget->GetComposerViewInfo();
+  // m_project_model->Get<ComposerSettingsItem>()->SetComposerViewInfo(composer_info);
 }
 
 void SequencerComposerView::SetupConnections()

@@ -40,6 +40,7 @@ class ComposerToolsPanel;
 class SequencerModel;
 class ProcedureSplittableEditorWidget;
 class SequencerComposerActions;
+class ProjectModel;
 
 /**
  * @brief The SequencerComposerView class is a main widget for procedure editing.
@@ -78,6 +79,8 @@ private:
   sup::gui::CustomSplitter* m_splitter{nullptr};
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
   ProcedureSplittableEditorWidget* m_splittable_editor_widget{nullptr};
+
+  ProjectModel* m_project_model{nullptr};
 };
 
 }  // namespace oac_tree_gui

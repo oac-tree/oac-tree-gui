@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_MODEL_PROJECT_MODEL_H_
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/model_utils.h>
 
 namespace oac_tree_gui
 {
@@ -43,9 +44,18 @@ public:
 
   void Clear() override;
 
+  template <typename ItemT>
+  ItemT* Get();
+
 private:
   void PopulateModel();
 };
+
+template <typename ItemT>
+inline ItemT* ProjectModel::Get()
+{
+  return mvvm::utils::GetTopItem<ItemT>(*this);
+}
 
 }  // namespace oac_tree_gui
 

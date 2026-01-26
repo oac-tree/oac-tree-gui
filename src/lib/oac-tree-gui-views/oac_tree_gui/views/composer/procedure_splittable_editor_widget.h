@@ -122,12 +122,16 @@ public:
   /**
    * @brief Returns composer view info.
    *
+   * FIXME duplication of WriteSettings/ReadSettings
+   *
    * This is the collection of UI settings for all procedure editor panels.
    */
   ComposerViewInfo GetComposerViewInfo() const;
 
   /**
    * @brief Sets composer view info.
+   *
+   * FIXME duplication of WriteSettings/ReadSettings
    *
    * This will restore the UI settings for all procedure editor panels.
    */
