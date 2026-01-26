@@ -376,6 +376,50 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsWhenSplitterNonEmpty)
   ASSERT_EQ(splitter->count(), 1);
 }
 
+TEST_F(ProcedureSplittableEditorWidgetTest, GetComposerViewInfoForSinglePannelWithNoProcedure)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+  editor.CreatePanel();
+
+  const auto view_info = editor.GetComposerViewInfo();
+  EXPECT_TRUE(view_info.splitter_state.empty());
+  ASSERT_EQ(view_info.editor_info_list.size(), 1);
+  EXPECT_TRUE(view_info.editor_info_list[0].procedure_id.empty());
+  EXPECT_EQ(view_info.editor_info_list[0].editor_type, ProcedureEditorType::kInstructionTree);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, GetComposerViewInfoForThreeProcedures)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+  editor.CreatePanel();
+  editor.CreatePanel();
+  editor.CreatePanel();
+
+  auto procedure0 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  auto procedure1 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  auto procedure2 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+
+  editor.GetWidgetAt(0)->SetProcedure(procedure0);
+  editor.GetWidgetAt(1)->SetProcedure(procedure1);
+  editor.GetWidgetAt(2)->SetProcedure(procedure2);
+
+  editor.GetWidgetAt(0)->SetProcedureEditorType(ProcedureEditorType::kInstructionTree);
+  editor.GetWidgetAt(1)->SetProcedureEditorType(ProcedureEditorType::kWorkspace);
+  editor.GetWidgetAt(2)->SetProcedureEditorType(ProcedureEditorType::kNodeEditor);
+
+  const auto view_info = editor.GetComposerViewInfo();
+  EXPECT_FALSE(view_info.splitter_state.empty());
+  ASSERT_EQ(view_info.editor_info_list.size(), 3);
+  EXPECT_EQ(view_info.editor_info_list[0].procedure_id, procedure0->GetIdentifier());
+  EXPECT_EQ(view_info.editor_info_list[0].editor_type, ProcedureEditorType::kInstructionTree);
+  EXPECT_EQ(view_info.editor_info_list[1].procedure_id, procedure1->GetIdentifier());
+  EXPECT_EQ(view_info.editor_info_list[1].editor_type, ProcedureEditorType::kWorkspace);
+  EXPECT_EQ(view_info.editor_info_list[2].procedure_id, procedure2->GetIdentifier());
+  EXPECT_EQ(view_info.editor_info_list[2].editor_type, ProcedureEditorType::kNodeEditor);
+}
+
 TEST_F(ProcedureSplittableEditorWidgetTest, ReadInvalidSettingsWhenSplitterEmpty)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
@@ -424,6 +468,30 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ReadSettingsAndCreatePanels)
   EXPECT_EQ(editor.GetWidgetAt(0)->GetProcedureEditorType(), ProcedureEditorType::kInstructionTree);
   EXPECT_EQ(editor.GetWidgetAt(1)->GetProcedureEditorType(), ProcedureEditorType::kWorkspace);
   EXPECT_EQ(editor.GetWidgetAt(2)->GetProcedureEditorType(), ProcedureEditorType::kNodeEditor);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoForTwoPanels)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+
+  auto procedure0 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  auto procedure1 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 0);
+  ComposerViewInfo view_info;
+  view_info.splitter_state = "";  // left empty
+  view_info.editor_info_list = {{procedure0->GetIdentifier(), ProcedureEditorType::kNodeEditor},
+                                {procedure1->GetIdentifier(), ProcedureEditorType::kWorkspace}};
+
+  editor.SetComposerViewInfo(view_info);
+  EXPECT_EQ(splitter->count(), 2);
+  EXPECT_EQ(editor.GetWidgetAt(0)->GetCurrentProcedure(), procedure0);
+  EXPECT_EQ(editor.GetWidgetAt(0)->GetProcedureEditorType(), ProcedureEditorType::kNodeEditor);
+  EXPECT_EQ(editor.GetWidgetAt(1)->GetCurrentProcedure(), procedure1);
+  EXPECT_EQ(editor.GetWidgetAt(1)->GetProcedureEditorType(), ProcedureEditorType::kWorkspace);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, WriteSettingsForThreePanels)

@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
 
+#include <oac_tree_gui/model/component_types.h>
+
 #include <sup/gui/widgets/settings_callbacks.h>
 
 #include <QWidget>
@@ -78,7 +80,7 @@ public:
    * @param after_widget If nullptr, the new widget is added at the end. Otherwise, it is added
    * after the specified widget.
    */
-  void CreatePanel(ProcedureComposerComboPanel* after_widget = nullptr);
+  ProcedureComposerComboPanel* CreatePanel(ProcedureComposerComboPanel* after_widget = nullptr);
 
   /**
    * @brief Closes and deletes the specified widget in the splitter.
@@ -116,6 +118,20 @@ public:
    * Will forward the call to underlying active editor.
    */
   void InsertInstructionFromToolBox(const QString& name);
+
+  /**
+   * @brief Returns composer view info.
+   *
+   * This is the collection of UI settings for all procedure editor panels.
+   */
+  ComposerViewInfo GetComposerViewInfo() const;
+
+  /**
+   * @brief Sets composer view info.
+   *
+   * This will restore the UI settings for all procedure editor panels.
+   */
+  void SetComposerViewInfo(const ComposerViewInfo& view_info);
 
 signals:
   void focusWidgetProcedureSelectionChanged(oac_tree_gui::ProcedureItem* item);

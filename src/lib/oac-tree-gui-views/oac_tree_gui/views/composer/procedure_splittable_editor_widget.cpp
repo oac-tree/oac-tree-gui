@@ -25,6 +25,7 @@
 #include <oac_tree_gui/composer/widget_focus_handler.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -97,7 +98,8 @@ void ProcedureSplittableEditorWidget::SetProcedure(ProcedureItem* procedure_item
   }
 }
 
-void ProcedureSplittableEditorWidget::CreatePanel(ProcedureComposerComboPanel* after_widget)
+ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::CreatePanel(
+    ProcedureComposerComboPanel* after_widget)
 {
   auto new_widget = CreateProcedureEditor();
   auto new_widget_ptr = new_widget.get();
@@ -114,6 +116,7 @@ void ProcedureSplittableEditorWidget::CreatePanel(ProcedureComposerComboPanel* a
     m_focus_handler->AddWidget(new_widget_ptr, after_widget);
     new_widget_ptr->SetProcedure(after_widget->GetCurrentProcedure());
   }
+  return new_widget_ptr;
 }
 
 void ProcedureSplittableEditorWidget::ClosePanel(ProcedureComposerComboPanel* widget_to_close)
@@ -208,6 +211,53 @@ void ProcedureSplittableEditorWidget::InsertInstructionFromToolBox(const QString
   if (auto focus_widget = m_focus_handler->GetFocusWidget(); focus_widget)
   {
     focus_widget->InsertInstructionFromToolBox(name);
+  }
+}
+
+ComposerViewInfo ProcedureSplittableEditorWidget::GetComposerViewInfo() const
+{
+  ComposerViewInfo info;
+  if (m_splitter->count() > 1)
+  {
+    info.splitter_state = m_splitter->saveState().toBase64().toStdString();
+  }
+
+  for (auto& widget : m_focus_handler->GetWidgets())
+  {
+    ProcedureEditorInfo editor_info;
+    if (auto procedure = widget->GetCurrentProcedure(); procedure != nullptr)
+    {
+      editor_info.procedure_id = procedure->GetIdentifier();
+    }
+    editor_info.editor_type = widget->GetProcedureEditorType();
+    info.editor_info_list.push_back(editor_info);
+  }
+
+  return info;
+}
+
+void ProcedureSplittableEditorWidget::SetComposerViewInfo(const ComposerViewInfo& view_info)
+{
+  // number of panels
+  for (const auto& procedure_info : view_info.editor_info_list)
+  {
+    auto panel = CreatePanel();
+    panel->SetProcedureEditorType(procedure_info.editor_type);
+
+    if (m_model)
+    {
+      if (auto procedure = m_model->FindItem(procedure_info.procedure_id); procedure != nullptr)
+      {
+        panel->SetProcedure(dynamic_cast<ProcedureItem*>(procedure));
+      }
+    }
+  }
+
+  // splitter state
+  if (!view_info.splitter_state.empty())
+  {
+    m_splitter->restoreState(
+        QByteArray::fromBase64(QByteArray::fromStdString(view_info.splitter_state)));
   }
 }
 
