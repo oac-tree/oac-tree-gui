@@ -64,6 +64,28 @@ QString GetProcedureEditorTabStateKey()
   return QString(kGroupName) + "/procedure_tabs";
 }
 
+/**
+ * @brief Returns appropriate procedure from the model by its identifier.
+ *
+ * If no procedure with such identifier exist, returns first procedure in the model.
+ */
+ProcedureItem* FindAppropriateProcedure(const SequencerModel* model, const std::string& identifier)
+{
+  if (model == nullptr)
+  {
+    return nullptr;
+  }
+
+  if (auto procedure_item = dynamic_cast<ProcedureItem*>(model->FindItem(identifier));
+      procedure_item)
+  {
+    return procedure_item;
+  }
+
+  auto procedures = model->GetProcedures();
+  return procedures.empty() ? nullptr : procedures.front();
+}
+
 }  // namespace
 
 ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
@@ -243,14 +265,7 @@ void ProcedureSplittableEditorWidget::SetComposerViewInfo(const ComposerViewInfo
   {
     auto panel = CreatePanel();
     panel->SetProcedureEditorType(procedure_info.editor_type);
-
-    if (m_model)
-    {
-      if (auto procedure = m_model->FindItem(procedure_info.procedure_id); procedure != nullptr)
-      {
-        panel->SetProcedure(dynamic_cast<ProcedureItem*>(procedure));
-      }
-    }
+    panel->SetProcedure(FindAppropriateProcedure(m_model, procedure_info.procedure_id));
   }
 
   // splitter state

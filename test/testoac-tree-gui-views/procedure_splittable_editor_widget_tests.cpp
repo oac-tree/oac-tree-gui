@@ -494,6 +494,30 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoForTwoPanels)
   EXPECT_EQ(editor.GetWidgetAt(1)->GetProcedureEditorType(), ProcedureEditorType::kWorkspace);
 }
 
+TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoWhenProcedureIdAbsent)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service);
+  editor.SetModel(&m_model);
+
+  auto procedure0 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  EXPECT_EQ(splitter->count(), 0);
+  ComposerViewInfo view_info;
+  view_info.splitter_state = "";  // left empty
+  view_info.editor_info_list = {{"non-existing-id1", ProcedureEditorType::kNodeEditor},
+                                {"non-existing-id2", ProcedureEditorType::kWorkspace}};
+
+  // opens our only procedure in both panels
+  editor.SetComposerViewInfo(view_info);
+  EXPECT_EQ(splitter->count(), 2);
+  EXPECT_EQ(editor.GetWidgetAt(0)->GetCurrentProcedure(), procedure0);
+  EXPECT_EQ(editor.GetWidgetAt(0)->GetProcedureEditorType(), ProcedureEditorType::kNodeEditor);
+  EXPECT_EQ(editor.GetWidgetAt(1)->GetCurrentProcedure(), procedure0);
+  EXPECT_EQ(editor.GetWidgetAt(1)->GetProcedureEditorType(), ProcedureEditorType::kWorkspace);
+}
+
 TEST_F(ProcedureSplittableEditorWidgetTest, WriteSettingsForThreePanels)
 {
   ProcedureSplittableEditorWidget editor(m_command_service);
