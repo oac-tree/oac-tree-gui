@@ -23,7 +23,6 @@
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
-#include <oac_tree_gui/mainwindow/context_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_constants.h>
@@ -201,7 +200,7 @@ void InstructionEditorActions::AboutToShowInsertMenu()
   menu->clear();
   menu->setToolTipsVisible(true);
 
-  auto group_info = CreateInstructionTypeGroups();
+  auto group_info = CreateInstructionTypeGroupsV2();
   for (const auto& group_info : group_info)
   {
     auto group_menu = menu->addMenu(QString::fromStdString(group_info.group_name));
