@@ -24,7 +24,6 @@
 
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
-#include <oac_tree_gui/mainwindow/context_helper.h>
 #include <oac_tree_gui/viewmodel/toolkit_viewmodel.h>
 
 #include <mvvm/viewmodel/filter_name_viewmodel.h>
@@ -58,7 +57,7 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
   connect(m_tree_view, &InsructionToolKitTreeView::InstructionDoubleClicked, this,
           &InstructionItemPanel::InstructionDoubleClicked);
 
-  m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroups());
+  m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroupsV2());
 
   m_tree_view->setModel(m_proxy_model);
   m_tree_view->expandAll();
