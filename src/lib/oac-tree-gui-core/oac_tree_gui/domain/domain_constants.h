@@ -31,8 +31,7 @@ namespace oac_tree_gui::domainconstants
 // plugins
 
 //!< fictional name when only sequencer core libs are loaded
-constexpr auto kCorePluginName = "";
-constexpr auto kCorePluginName2 = "CORE"; // as in sequencer
+constexpr auto kCorePluginName = "CORE"; // as in sequencer
 
 //!< Plugin names must coincide with shared plugin library names, with preffix "lib" and suffixes
 //! ".so" or ".dylib" stripped off. Windows is not yet supported.

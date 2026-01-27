@@ -79,7 +79,7 @@ TEST_F(DomainConstantsTest, CheckDomainConstants)
             sup::oac_tree::Constants::EQUALS_VARIABLE_NAME_ATTRIBUTE_NAME);
   EXPECT_EQ(domainconstants::kBlockingAttribute, sup::oac_tree::Constants::BLOCKING_ATTRIBUTE_NAME);
 
-  EXPECT_EQ(domainconstants::kCorePluginName2, sup::oac_tree::Constants::DOC_CORE_LIBRARY_NAME);
+  EXPECT_EQ(domainconstants::kCorePluginName, sup::oac_tree::Constants::DOC_CORE_LIBRARY_NAME);
 }
 
 }  // namespace oac_tree_gui::test

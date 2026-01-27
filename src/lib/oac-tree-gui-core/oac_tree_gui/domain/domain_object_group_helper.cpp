@@ -44,7 +44,6 @@ std::map<std::string, std::string> CreatePluginNameToGroupNameMap()
 {
   std::map<std::string, std::string> result = {
       {domainconstants::kCorePluginName, kCoreGroup},
-      {domainconstants::kCorePluginName2, kCoreGroup},
       {domainconstants::kMathExprPluginName, kMathGroup},
       {domainconstants::kEpicsCAPluginName, kEPICSGroup},
       {domainconstants::kEpicsPVXSPluginName, kEPICSGroup},
@@ -100,7 +99,7 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
   auto loaded_plugin_names = GetAllPluginNames(sup::oac_tree::GlobalInstructionRegistry());
 
   // add core "library" to loaded plugins
-  loaded_plugin_names.insert(sup::oac_tree::Constants::DOC_CORE_LIBRARY_NAME);
+  loaded_plugin_names.insert(domainconstants::kCorePluginName);
 
   std::map<std::string, std::vector<std::string>> group_to_instructions;
   for (const auto& plugin_name : loaded_plugin_names)

@@ -20,6 +20,7 @@
 
 #include "procedure_item.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -50,7 +51,8 @@ void CollectPluginFileNames(
     const std::function<std::string(const std::string&)>& object_to_plugin_name,
     std::set<std::string>& plugin_file_names)
 {
-  if (auto plugin_name = object_to_plugin_name(domain_type); !plugin_name.empty())
+  if (auto plugin_name = object_to_plugin_name(domain_type);
+      plugin_name != domainconstants::kCorePluginName)
   {
     (void)plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
   }

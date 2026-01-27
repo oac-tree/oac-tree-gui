@@ -46,7 +46,6 @@ TEST_F(DomainObjectGroupHelperTests, GetDefaultPluginNameGroups)
 TEST_F(DomainObjectGroupHelperTests, GetGroupNameFromPluginName)
 {
   EXPECT_EQ(GetGroupNameFromPluginName(domainconstants::kCorePluginName), kCoreGroup);
-  EXPECT_EQ(GetGroupNameFromPluginName(domainconstants::kCorePluginName2), kCoreGroup);
 
   EXPECT_EQ(GetGroupNameFromPluginName(domainconstants::kMathExprPluginName), kMathGroup);
   EXPECT_EQ(GetGroupNameFromPluginName("sequencer-mathexpr"), kMathGroup);
