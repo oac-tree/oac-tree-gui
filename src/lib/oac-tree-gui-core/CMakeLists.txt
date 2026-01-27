@@ -8,7 +8,7 @@ set_target_properties(${library_name} PROPERTIES
 )
 
 target_link_libraries(${library_name}
-  PUBLIC pthread oac-tree::oac-tree sup-epics::sup-epics oac-tree-server::oac-tree-server sup-gui-core::core)
+  PUBLIC pthread oac-tree::oac-tree sup-epics::sup-epics oac-tree-server::oac-tree-server sup-gui-core::core sup-utils::sup-platform)
 
 # Link libdl on Unix-like systems for dlopen/dlclose used by DomainLibraryLoader
 if(UNIX AND NOT APPLE)

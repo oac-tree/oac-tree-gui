@@ -50,11 +50,21 @@ struct ObjectGroupInfo
 };
 
 /**
+ * @brief Returns default plugin name groups.
+ */
+std::vector<std::string> GetDefaultPluginNameGroups();
+
+/**
  * @brief Returns correspondence of group name to the plugin name.
  *
  * A single group can contain more than one plugin.
  */
 std::vector<ObjectGroupInfo> CreatePluginNameGroups();
+
+/**
+ * @brief Returns plugin group name for a given plugin name.
+ */
+std::string GetGroupNameFromPluginName(const std::string& plugin_name);
 
 /**
  * @brief Creates a collection of sequencer instruction types grouped according to a plugin name
@@ -66,6 +76,15 @@ std::vector<ObjectGroupInfo> CreatePluginNameGroups();
  */
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
     const DomainObjectTypeRegistry& type_registry);
+
+/**
+ * @brief Creates a collection of sequencer instruction types grouped according to a plugin name.
+ *
+ * A single group can contain instructions from several plugins.
+ *
+ * @param type_registry The registry with all loaded types.
+ */
+std::vector<ObjectGroupInfo> CreateInstructionTypeGroupsV2();
 
 }  // namespace oac_tree_gui
 
