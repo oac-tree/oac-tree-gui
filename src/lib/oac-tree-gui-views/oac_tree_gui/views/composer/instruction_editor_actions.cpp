@@ -200,7 +200,7 @@ void InstructionEditorActions::AboutToShowInsertMenu()
   menu->clear();
   menu->setToolTipsVisible(true);
 
-  auto group_info = CreateInstructionTypeGroupsV2();
+  auto group_info = CreateInstructionTypeGroups();
   for (const auto& group_info : group_info)
   {
     auto group_menu = menu->addMenu(QString::fromStdString(group_info.group_name));

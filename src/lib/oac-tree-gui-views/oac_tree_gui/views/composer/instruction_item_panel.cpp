@@ -57,7 +57,7 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
   connect(m_tree_view, &InsructionToolKitTreeView::InstructionDoubleClicked, this,
           &InstructionItemPanel::InstructionDoubleClicked);
 
-  m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroupsV2());
+  m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroups());
 
   m_tree_view->setModel(m_proxy_model);
   m_tree_view->expandAll();

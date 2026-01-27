@@ -147,9 +147,11 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
   return result;
 }
 
-std::vector<ObjectGroupInfo> CreateInstructionTypeGroupsV2()
+std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
 {
   auto loaded_plugin_names = GetAllPluginNames(sup::oac_tree::GlobalInstructionRegistry());
+
+  // add core "library" to loaded plugins
   loaded_plugin_names.insert(sup::oac_tree::Constants::DOC_CORE_LIBRARY_NAME);
 
   std::map<std::string, std::vector<std::string>> group_to_instructions;
@@ -163,6 +165,7 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroupsV2()
                     std::back_inserter(instructions));
   }
 
+  // packing result according to default group order
   std::vector<ObjectGroupInfo> result;
   for (const auto& group_name : GetDefaultPluginNameGroups())
   {

@@ -67,24 +67,11 @@ std::vector<ObjectGroupInfo> CreatePluginNameGroups();
 std::string GetGroupNameFromPluginName(const std::string& plugin_name);
 
 /**
- * @brief Creates a collection of sequencer instruction types grouped according to a plugin name
- * using given registry.
- *
- * A single group can contain instructions from several plugins.
- *
- * @param type_registry The registry with all loaded types.
- */
-std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
-    const DomainObjectTypeRegistry& type_registry);
-
-/**
  * @brief Creates a collection of sequencer instruction types grouped according to a plugin name.
  *
  * A single group can contain instructions from several plugins.
- *
- * @param type_registry The registry with all loaded types.
  */
-std::vector<ObjectGroupInfo> CreateInstructionTypeGroupsV2();
+std::vector<ObjectGroupInfo> CreateInstructionTypeGroups();
 
 }  // namespace oac_tree_gui
 
