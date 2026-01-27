@@ -20,44 +20,49 @@
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
 
-#include <string>
-#include <utility>
-
-#if defined(_WIN32)
-#include <windows.h>
-#else
-#include <dlfcn.h>
-#endif
+#include <sup/oac-tree/exceptions.h>
+#include <sup/oac-tree/generic_utils.h>
+#include <sup/oac-tree/sequence_parser.h>
 
 namespace oac_tree_gui
 {
 
 namespace
 {
+
 // Return pair<success, handle>
 std::pair<bool, DomainLibraryLoader::LibraryHandle> TryOpenLibrary(const std::string& path)
 {
-#if defined(_WIN32)
-  HMODULE handle = ::LoadLibraryA(path.c_str());
-  return {handle != nullptr, reinterpret_cast<void*>(handle)};
-#else
-  auto handle = ::dlopen(path.c_str(), RTLD_NOW);
-  return {handle != nullptr, handle};
-#endif
+  std::pair<bool, DomainLibraryLoader::LibraryHandle> result{true, nullptr};
+
+  try
+  {
+    // will automatically track loaded instructions and variables
+    result.second = sup::oac_tree::LoadPlugin(path);
+    result.first = true;
+  }
+  catch (const sup::oac_tree::InvalidOperationException&)
+  {
+    // parsing problems
+    result.first = false;
+  }
+  catch (const sup::oac_tree::RuntimeException&)
+  {
+    // dlopen returned nullptr
+    result.first = false;
+  }
+
+  return result;
 }
 
 void CloseLibrary(DomainLibraryLoader::LibraryHandle handle)
 {
-  if (handle == nullptr)
+  if (handle != nullptr)
   {
-    return;
+    sup::oac_tree::utils::UnloadLibrary(handle);
   }
-#ifdef _WIN32
-  ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
-#else
-  (void)::dlclose(handle);
-#endif
 }
+
 }  // namespace
 
 DomainLibraryLoader::DomainLibraryLoader(const std::vector<std::string>& library_names)
@@ -81,6 +86,7 @@ std::vector<std::string> DomainLibraryLoader::GetLoadedLibraries() const
 void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
 {
   auto [ok, handle] = TryOpenLibrary(library_name);
+
   if (ok)
   {
     m_loaded_libraries.push_back(library_name);
