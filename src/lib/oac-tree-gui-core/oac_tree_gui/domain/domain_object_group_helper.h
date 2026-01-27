@@ -30,8 +30,6 @@
 namespace oac_tree_gui
 {
 
-class DomainObjectTypeRegistry;
-
 //! Collection of group names for available instructions.
 constexpr auto kCoreGroup = "Core";
 constexpr auto kMathGroup = "Math";
@@ -55,13 +53,6 @@ struct ObjectGroupInfo
 std::vector<std::string> GetDefaultPluginNameGroups();
 
 /**
- * @brief Returns correspondence of group name to the plugin name.
- *
- * A single group can contain more than one plugin.
- */
-std::vector<ObjectGroupInfo> CreatePluginNameGroups();
-
-/**
  * @brief Returns plugin group name for a given plugin name.
  */
 std::string GetGroupNameFromPluginName(const std::string& plugin_name);
@@ -70,6 +61,8 @@ std::string GetGroupNameFromPluginName(const std::string& plugin_name);
  * @brief Creates a collection of sequencer instruction types grouped according to a plugin name.
  *
  * A single group can contain instructions from several plugins.
+ *
+ * @return Collection of instruction type names grouped by their plugin groups.
  */
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups();
 

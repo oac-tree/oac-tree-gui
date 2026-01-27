@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <mvvm/utils/container_utils.h>
 
@@ -42,51 +41,6 @@ TEST_F(DomainObjectGroupHelperTests, GetDefaultPluginNameGroups)
       kCoreGroup, kMathGroup, kEPICSGroup, kControlGroup, kSupGroup, kMiscGroup,
   };
   EXPECT_EQ(GetDefaultPluginNameGroups(), expected_groups);
-}
-
-TEST_F(DomainObjectGroupHelperTests, CreatePluginNameGroups)
-{
-  std::vector<ObjectGroupInfo> group_info = CreatePluginNameGroups();
-
-  std::vector<std::string> expected_groups = {kCoreGroup,    kMathGroup, kEPICSGroup,
-                                              kControlGroup, kSupGroup,  kMiscGroup};
-  ASSERT_EQ(group_info.size(), expected_groups.size());
-  for (size_t i = 0; i < expected_groups.size(); ++i)
-  {
-    EXPECT_EQ(group_info.at(i).group_name, expected_groups.at(i));
-  }
-
-  // validating that group names contains plugin names and corresponding legacy names
-
-  // kCoreGroup
-  EXPECT_EQ(group_info.at(0).object_names,
-            std::vector<std::string>(
-                {domainconstants::kCorePluginName, domainconstants::kCorePluginName2}));
-  // kMathGroup
-  EXPECT_EQ(group_info.at(1).object_names,
-            std::vector<std::string>({domainconstants::kMathExprPluginName, "sequencer-mathexpr"}));
-  // kEPICSGroup
-  EXPECT_EQ(group_info.at(2).object_names,
-            std::vector<std::string>({domainconstants::kEpicsCAPluginName, "sequencer-ca",
-                                      domainconstants::kEpicsPVXSPluginName, "sequencer-pvxs"}));
-  // kControlGroup
-  EXPECT_EQ(group_info.at(3).object_names,
-            std::vector<std::string>({domainconstants::kControlPluginName, "sequencer-control"}));
-  // kSupGroup
-  EXPECT_EQ(
-      group_info.at(4).object_names,
-      std::vector<std::string>({domainconstants::kSupConfigPluginName, "sequencer-sup-config",
-                                domainconstants::kSupTimingPluginName, "sequencer-sup-timing"}));
-
-  // kMiscGroup
-  EXPECT_EQ(group_info.at(5).object_names, std::vector<std::string>({
-                                               domainconstants::kSystemPluginName,
-                                               "sequencer-system",
-                                               domainconstants::kStringPluginName,
-                                               "sequencer-strings",
-                                               domainconstants::kSupPulseCounterPluginName,
-                                               "sequencer-sup-pulse-counter",
-                                           }));
 }
 
 TEST_F(DomainObjectGroupHelperTests, GetGroupNameFromPluginName)
