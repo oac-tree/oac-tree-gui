@@ -77,32 +77,31 @@ TEST_F(DomainLibraryLoaderTests, DummyLibraryExplicitUnload)
   const std::string path = std::string(DUMMY_LIB_PATH);
 
   // Baseline: is it already loaded by someone else?
-  void* baseline = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
-  const bool baseline_loaded = (baseline != nullptr);
-  if (baseline_loaded)
+  auto baseline_handle = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
+  if (baseline_handle != nullptr)
   {
-    dlclose(baseline);
+    dlclose(baseline_handle);
   }
 
   {
     // Load via DomainLibraryLoader
     DomainLibraryLoader loader({path});
-    void* during = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
-    EXPECT_NE(during, nullptr) << "Library should be present while loader is alive";
-    if (during)
+    auto during_handle = dlopen(path.c_str(), RTLD_LAZY | RTLD_NOLOAD);
+    EXPECT_NE(during_handle, nullptr) << "Library should be present while loader is alive";
+    if (during_handle != nullptr)
     {
-      dlclose(during);
+      dlclose(during_handle);
     }
     loader.UnloadAll();
   }
 
   // should return to baseline state
-  void* after = dlopen(path.c_str(), RTLD_NOLOAD);
-  EXPECT_EQ(after, nullptr) << "Library should be unloaded after UnloadAll call";
+  auto after_handle = dlopen(path.c_str(), RTLD_NOLOAD);
+  EXPECT_EQ(after_handle, nullptr) << "Library should be unloaded after UnloadAll call";
 
-  if (after)
+  if (after_handle != nullptr)
   {
-    dlclose(after);
+    dlclose(after_handle);
   }
 }
 

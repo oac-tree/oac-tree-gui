@@ -35,24 +35,24 @@ namespace oac_tree_gui
 namespace
 {
 // Return pair<success, handle>
-std::pair<bool, void*> TryOpenLibrary(const std::string& path)
+std::pair<bool, DomainLibraryLoader::LibraryHandle> TryOpenLibrary(const std::string& path)
 {
 #if defined(_WIN32)
   HMODULE handle = ::LoadLibraryA(path.c_str());
   return {handle != nullptr, reinterpret_cast<void*>(handle)};
 #else
-  void* handle = ::dlopen(path.c_str(), RTLD_NOW);
+  auto handle = ::dlopen(path.c_str(), RTLD_NOW);
   return {handle != nullptr, handle};
 #endif
 }
 
-void CloseLibrary(void* handle)
+void CloseLibrary(DomainLibraryLoader::LibraryHandle handle)
 {
-  if (!handle)
+  if (handle == nullptr)
   {
     return;
   }
-#if defined(_WIN32)
+#ifdef _WIN32
   ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
 #else
   (void)::dlclose(handle);
@@ -86,7 +86,7 @@ void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
     m_loaded_libraries.push_back(library_name);
     m_library_handles.push_back(handle);
   }
-  m_library_info.push_back({library_name, ok});
+  m_library_info.emplace_back(library_name, ok);
 }
 
 std::vector<std::pair<std::string, bool> > DomainLibraryLoader::GetLibraryInfo() const
@@ -96,7 +96,7 @@ std::vector<std::pair<std::string, bool> > DomainLibraryLoader::GetLibraryInfo()
 
 void DomainLibraryLoader::UnloadAll()
 {
-  for (auto* h : m_library_handles)
+  for (auto h : m_library_handles)
   {
     CloseLibrary(h);
   }

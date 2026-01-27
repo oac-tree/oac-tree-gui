@@ -35,6 +35,8 @@ namespace oac_tree_gui
 class DomainLibraryLoader
 {
 public:
+  using LibraryHandle = void*;
+
   /**
    * @brief Default c-tor.
    */
@@ -75,7 +77,7 @@ public:
 private:
   std::vector<std::string> m_loaded_libraries;
   std::vector<std::pair<std::string, bool>> m_library_info;
-  std::vector<void*> m_library_handles;
+  std::vector<LibraryHandle> m_library_handles;
 };
 
 }  // namespace oac_tree_gui
