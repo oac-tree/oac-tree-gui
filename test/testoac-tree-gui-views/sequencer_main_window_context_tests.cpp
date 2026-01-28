@@ -21,7 +21,6 @@
 #include "oac_tree_gui/mainwindow/sequencer_main_window_context.h"
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/domain/domain_plugin_service.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 

@@ -21,7 +21,6 @@
 #include "oac_tree_gui/domain/domain_plugin_service.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

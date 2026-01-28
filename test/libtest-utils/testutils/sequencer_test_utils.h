@@ -26,7 +26,6 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
-#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -42,7 +41,6 @@ namespace oac_tree_gui
 class VariableItem;
 class VariableInfoItem;
 class InstructionItem;
-class DomainObjectTypeRegistry;
 
 namespace test
 {
