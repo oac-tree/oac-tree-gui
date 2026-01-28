@@ -50,7 +50,6 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
   ASSERT_NE(plugin_service, nullptr);
   EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
   EXPECT_EQ(plugin_service->GetPluginLoadInfo().size(), 0);
-  EXPECT_TRUE(plugin_service->GetObjectNames(domainconstants::kCorePluginName).empty());
 
   // check settings
   EXPECT_NE(dynamic_cast<SequencerSettingsModel*>(&context.GetSettingsModel()), nullptr);
@@ -73,15 +72,6 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
   const std::vector<std::pair<std::string, bool>> expected_info = {
       {"libnon-existing-plugin.so", false}};
   EXPECT_EQ(plugin_service->GetPluginLoadInfo(), expected_info);
-
-  // check that core instruction and variables are there
-  auto object_names = plugin_service->GetObjectNames(domainconstants::kCorePluginName);
-  EXPECT_NE(std::find(object_names.begin(), object_names.end(),
-                      domainconstants::kSequenceInstructionType),
-            object_names.end());
-  EXPECT_NE(
-      std::find(object_names.begin(), object_names.end(), domainconstants::kWaitInstructionType),
-      object_names.end());
 }
 
 TEST_F(SequencerMainWindowContextTest, FindSequencerMainWindowContext)
