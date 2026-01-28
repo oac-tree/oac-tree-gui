@@ -111,7 +111,7 @@ private:
   /**
    * @brief Creates a single instruction or complex instruction aggregate.
    */
-  std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& item_type);
+  std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& item_type) const;
 
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {}) const;

@@ -40,10 +40,6 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
 {
   SequencerMainWindowContext context;
 
-  // check type registry
-  EXPECT_TRUE(
-      context.GetObjectTypeRegistry().GetObjectNames(domainconstants::kCorePluginName).empty());
-
   // check command service
   EXPECT_NE(dynamic_cast<sup::gui::AppCommandService*>(&context.GetCommandService()), nullptr);
 

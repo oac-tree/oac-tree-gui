@@ -365,7 +365,7 @@ void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem* item) const
 }
 
 std::unique_ptr<InstructionItem> InstructionEditorActionHandler::CreateInstructionTree(
-    const std::string& item_type)
+    const std::string& item_type) const
 {
   return m_context.create_instruction(item_type);
 }
