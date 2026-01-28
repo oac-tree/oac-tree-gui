@@ -79,7 +79,8 @@ TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
 
   EXPECT_EQ(group_info.size(), GetDefaultPluginNameGroups().size());
   EXPECT_EQ(group_info.at(0).group_name, kCoreGroup);
-  EXPECT_TRUE(mvvm::utils::Contains(group_info.at(0).object_names, "Choice"));
+  EXPECT_TRUE(mvvm::utils::Contains(group_info.at(0).object_names,
+                                    domainconstants::kChoiceInstructionType));
 
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -89,6 +90,24 @@ TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
   EXPECT_EQ(group_info.at(2).group_name, kEPICSGroup);
   EXPECT_TRUE(mvvm::utils::Contains(group_info.at(2).object_names,
                                     domainconstants::kPvAccessReadInstructionType));
+}
+
+TEST_F(DomainObjectGroupHelperTests, GetPluginNameFromObjectName)
+{
+  EXPECT_EQ(GetPluginNameFromDomainTypeName(domainconstants::kChoiceInstructionType),
+            domainconstants::kCorePluginName);
+  EXPECT_EQ(GetPluginNameFromDomainTypeName(domainconstants::kLocalVariableType),
+            domainconstants::kCorePluginName);
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  EXPECT_EQ(GetPluginNameFromDomainTypeName(domainconstants::kPvAccessReadInstructionType),
+            domainconstants::kEpicsPVXSPluginName);
+  EXPECT_EQ(GetPluginNameFromDomainTypeName(domainconstants::kChannelAccessVariableType),
+            domainconstants::kEpicsCAPluginName);
 }
 
 }  // namespace oac_tree_gui::test

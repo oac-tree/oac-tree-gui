@@ -26,6 +26,7 @@
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction_registry.h>
+#include <sup/oac-tree/variable_registry.h>
 #include <sup/platform/library_names.h>
 
 #include <algorithm>
@@ -123,6 +124,31 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
   }
 
   return result;
+}
+
+std::string GetPluginNameFromDomainTypeName(const std::string& type_name)
+{
+  std::string domain_plugin_name;
+  auto& instruction_registry = sup::oac_tree::GlobalInstructionRegistry();
+  auto& variable_registry = sup::oac_tree::GlobalVariableRegistry();
+
+  if (instruction_registry.IsRegisteredInstructionName(type_name))
+  {
+    domain_plugin_name = sup::oac_tree::GetPluginForInstruction(instruction_registry, type_name);
+  }
+
+  else if (variable_registry.IsRegisteredVariableName(type_name))
+  {
+    domain_plugin_name = sup::oac_tree::GetPluginForVariable(variable_registry, type_name);
+  }
+
+  else
+  {
+    return {};
+  }
+
+  const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(domain_plugin_name);
+  return stripped_basename;
 }
 
 }  // namespace oac_tree_gui
