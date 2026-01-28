@@ -67,11 +67,28 @@ std::string GetGroupNameFromPluginName(const std::string& plugin_name);
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups();
 
 /**
+ * @brief Returns plugin name for a given domain variable type.
+ *
+ * The plugin name will be stripped from dynamic library filename. Returns empty string if not
+ * found.
+ */
+std::string GetPluginNameForVariable(const std::string& domain_type);
+
+/**
+ * @brief Returns plugin name for a given domain instruction type.
+ *
+ * The plugin name will be stripped from dynamic library filename. Returns empty string if not
+ * found.
+ */
+std::string GetPluginNameForInstruction(const std::string& domain_type);
+
+/**
  * @brief Returns plugin name for a given domain's instruction or variable type name.
  *
  * The plugin name will be stripped from dynamic library filename.
  */
 std::string GetPluginNameFromDomainTypeName(const std::string& object_name);
+
 
 }  // namespace oac_tree_gui
 

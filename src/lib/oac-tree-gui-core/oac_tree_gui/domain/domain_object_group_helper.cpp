@@ -126,29 +126,34 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
   return result;
 }
 
-std::string GetPluginNameFromDomainTypeName(const std::string& type_name)
+std::string GetPluginNameForVariable(const std::string& domain_type)
 {
-  std::string domain_plugin_name;
-  auto& instruction_registry = sup::oac_tree::GlobalInstructionRegistry();
   auto& variable_registry = sup::oac_tree::GlobalVariableRegistry();
-
-  if (instruction_registry.IsRegisteredInstructionName(type_name))
-  {
-    domain_plugin_name = sup::oac_tree::GetPluginForInstruction(instruction_registry, type_name);
-  }
-
-  else if (variable_registry.IsRegisteredVariableName(type_name))
-  {
-    domain_plugin_name = sup::oac_tree::GetPluginForVariable(variable_registry, type_name);
-  }
-
-  else
-  {
-    return {};
-  }
+  const auto domain_plugin_name =
+      sup::oac_tree::GetPluginForVariable(variable_registry, domain_type);
 
   const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(domain_plugin_name);
   return stripped_basename;
+}
+
+std::string GetPluginNameForInstruction(const std::string& domain_type)
+{
+  auto& instruction_registry = sup::oac_tree::GlobalInstructionRegistry();
+  const auto domain_plugin_name =
+      sup::oac_tree::GetPluginForInstruction(instruction_registry, domain_type);
+
+  const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(domain_plugin_name);
+  return stripped_basename;
+}
+
+std::string GetPluginNameFromDomainTypeName(const std::string& object_name)
+{
+  std::string domain_plugin_name = GetPluginNameForVariable(object_name);
+  if (domain_plugin_name.empty())
+  {
+    domain_plugin_name = GetPluginNameForInstruction(object_name);
+  }
+  return domain_plugin_name;
 }
 
 }  // namespace oac_tree_gui

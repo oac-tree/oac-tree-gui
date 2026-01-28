@@ -92,6 +92,38 @@ TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
                                     domainconstants::kPvAccessReadInstructionType));
 }
 
+TEST_F(DomainObjectGroupHelperTests, GetPluginNameForVariable)
+{
+  EXPECT_EQ(GetPluginNameForVariable(domainconstants::kLocalVariableType),
+            domainconstants::kCorePluginName);
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  EXPECT_EQ(GetPluginNameForVariable(domainconstants::kChannelAccessVariableType),
+            domainconstants::kEpicsCAPluginName);
+
+  EXPECT_TRUE(GetPluginNameForVariable("non-existing_variable").empty());
+}
+
+TEST_F(DomainObjectGroupHelperTests, GetPluginNameForInstruction)
+{
+  EXPECT_EQ(GetPluginNameForInstruction(domainconstants::kChoiceInstructionType),
+            domainconstants::kCorePluginName);
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  EXPECT_EQ(GetPluginNameForInstruction(domainconstants::kPvAccessReadInstructionType),
+            domainconstants::kEpicsPVXSPluginName);
+
+  EXPECT_TRUE(GetPluginNameForInstruction("non-existing_instruction").empty());
+}
+
 TEST_F(DomainObjectGroupHelperTests, GetPluginNameFromObjectName)
 {
   EXPECT_EQ(GetPluginNameFromDomainTypeName(domainconstants::kChoiceInstructionType),
@@ -108,6 +140,7 @@ TEST_F(DomainObjectGroupHelperTests, GetPluginNameFromObjectName)
             domainconstants::kEpicsPVXSPluginName);
   EXPECT_EQ(GetPluginNameFromDomainTypeName(domainconstants::kChannelAccessVariableType),
             domainconstants::kEpicsCAPluginName);
+  EXPECT_TRUE(GetPluginNameFromDomainTypeName("non-existing_object").empty());
 }
 
 }  // namespace oac_tree_gui::test
