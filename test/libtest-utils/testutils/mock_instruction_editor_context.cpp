@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -62,7 +63,7 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
     OnSetMimeData();
   };
 
-  result.object_to_plugin_name = test::CreatePluginNameCallback();
+  result.object_to_plugin_name = CreatePluginNameCallback();
 
   return result;
 }

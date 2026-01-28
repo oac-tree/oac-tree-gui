@@ -21,17 +21,16 @@
 #include "main_window_helper.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/domain/domain_object_group_helper.h>
 
 #include <sup/gui/widgets/settings_callbacks.h>
 
 #include <mvvm/utils/file_utils.h>
 
+#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
 #include <filesystem>
-#include <QDebug>
 
 namespace
 {
@@ -108,12 +107,6 @@ QString GetOpenSequencerProcedureName(const QString& key)
   }
 
   return result;
-}
-
-std::function<std::string(const std::string&)> CreatePluginNameCallback()
-{
-  return [](const std::string& object_type)
-  { return GetPluginNameFromDomainTypeName(object_type); };
 }
 
 }  // namespace oac_tree_gui

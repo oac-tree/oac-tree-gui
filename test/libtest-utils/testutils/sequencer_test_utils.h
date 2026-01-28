@@ -107,16 +107,6 @@ std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& doma
                                                          sup::dto::uint32 index = 0U,
                                                          const attribute_list_t& attributes = {});
 
-/**
- * @brief Returns the reference to the global test registry mimicking loaded plugins.
- */
-DomainObjectTypeRegistry& GetGlobalTestObjectRegistry();
-
-/**
- * @brief Returns a callback to convert object name to corresponding plugin name.
- */
-std::function<std::string(const std::string&)> CreatePluginNameCallback();
-
 }  // namespace test
 
 }  // namespace oac_tree_gui

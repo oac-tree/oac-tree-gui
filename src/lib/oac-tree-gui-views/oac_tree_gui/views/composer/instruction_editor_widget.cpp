@@ -25,7 +25,7 @@
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
-#include <oac_tree_gui/mainwindow/main_window_helper.h>
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>

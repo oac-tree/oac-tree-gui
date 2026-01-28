@@ -26,6 +26,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 namespace oac_tree_gui
 {
@@ -89,6 +90,10 @@ std::string GetPluginNameForInstruction(const std::string& domain_type);
  */
 std::string GetPluginNameFromDomainTypeName(const std::string& object_name);
 
+/**
+ * @brief Returns a callback to convert object name to corresponding plugin name.
+ */
+std::function<std::string(const std::string&)> CreatePluginNameCallback();
 
 }  // namespace oac_tree_gui
 

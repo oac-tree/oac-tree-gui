@@ -24,7 +24,6 @@
 #include "node_graphics_view.h"
 #include "node_graphics_view_actions.h"
 
-#include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -33,6 +32,7 @@
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>

@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -31,7 +32,6 @@
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <gtest/gtest.h>
-#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {

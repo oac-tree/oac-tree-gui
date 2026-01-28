@@ -21,10 +21,9 @@
 #include "mock_workspace_editor_context.h"
 
 #include <oac_tree_gui/composer/workspace_editor_action_handler.h>
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
-
-#include <testutils/sequencer_test_utils.h>
 
 #include <QMimeData>
 
@@ -32,7 +31,7 @@ namespace oac_tree_gui::test
 {
 
 WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
-    WorkspaceItem *workspace, const std::vector<mvvm::SessionItem *> &selection)
+    WorkspaceItem* workspace, const std::vector<mvvm::SessionItem*>& selection)
 {
   WorkspaceEditorContext result;
 
@@ -41,8 +40,8 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
   result.selected_workspace = [this, workspace]() { return workspace; };
   result.selected_items_callback = [this]() { return m_current_selection; };
   result.notify_request = [this](auto item) { NotifyRequest(item); };
-  result.send_message = [this](const auto &message) { OnMessage(message); };
-  result.edit_anyvalue = [this](const sup::gui::AnyValueItem *item)
+  result.send_message = [this](const auto& message) { OnMessage(message); };
+  result.edit_anyvalue = [this](const sup::gui::AnyValueItem* item)
   { return OnEditAnyvalue(item); };
   result.get_mime_data = [this]()
   {
@@ -56,18 +55,18 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
     OnSetMimeData();
   };
 
-  result.object_to_plugin_name = test::CreatePluginNameCallback();
+  result.object_to_plugin_name = CreatePluginNameCallback();
 
   return result;
 }
 
 std::unique_ptr<WorkspaceEditorActionHandler> MockWorkspaceEditorContext::CreateActionHandler(
-    WorkspaceItem *workspace, const std::vector<mvvm::SessionItem *> &selection)
+    WorkspaceItem* workspace, const std::vector<mvvm::SessionItem*>& selection)
 {
   return std::make_unique<WorkspaceEditorActionHandler>(CreateContext(workspace, selection));
 }
 
-QMimeData *MockWorkspaceEditorContext::GetClipboardContent() const
+QMimeData* MockWorkspaceEditorContext::GetClipboardContent() const
 {
   return m_clipboard_content.get();
 }
