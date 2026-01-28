@@ -123,7 +123,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
 
   const std::string expected_xml3(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure>
-  <Plugin>liboac-tree-pvxs.so</Plugin>
+  <Plugin>oac-tree-pvxs</Plugin>
   <PvAccessRead timeout="1.0"/>
   <Workspace/>
 </Procedure>

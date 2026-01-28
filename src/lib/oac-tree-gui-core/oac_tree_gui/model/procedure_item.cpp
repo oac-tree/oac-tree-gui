@@ -21,7 +21,6 @@
 #include "procedure_item.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -46,15 +45,15 @@ constexpr auto kFileName = "kFileName";
 /**
  * @brief Adds plugin name coresponding to a given domain type into the container.
  */
-void CollectPluginFileNames(
+void CollectPluginPreambleNames(
     const std::string& domain_type,
     const std::function<std::string(const std::string&)>& object_to_plugin_name,
-    std::set<std::string>& plugin_file_names)
+    std::set<std::string>& plugin_preamble_names)
 {
   if (auto plugin_name = object_to_plugin_name(domain_type);
       plugin_name != domainconstants::kCorePluginName)
   {
-    (void)plugin_file_names.insert(oac_tree_gui::GetPluginFileName(plugin_name));
+    (void)plugin_preamble_names.insert(plugin_name);
   }
 }
 
@@ -68,7 +67,7 @@ void CollectVariablePluginNames(
 {
   for (auto variable : workspace_item.GetVariables())
   {
-    CollectPluginFileNames(variable->GetDomainType(), object_to_plugin_name, plugin_names);
+    CollectPluginPreambleNames(variable->GetDomainType(), object_to_plugin_name, plugin_names);
   }
 }
 
@@ -83,7 +82,7 @@ void CollectInstructionPluginNames(
 {
   auto on_instruction =
       [&plugin_names, &object_to_plugin_name](const oac_tree_gui::InstructionItem* item)
-  { CollectPluginFileNames(item->GetDomainType(), object_to_plugin_name, plugin_names); };
+  { CollectPluginPreambleNames(item->GetDomainType(), object_to_plugin_name, plugin_names); };
   oac_tree_gui::IterateInstructionContainer<const oac_tree_gui::InstructionItem*>(
       container.GetInstructions(), on_instruction);
 }

@@ -109,8 +109,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
     const ProcedureItem item;
     item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
 
-    const std::vector<std::string> expected(
-        {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName)});
+    const std::vector<std::string> expected({domainconstants::kEpicsCAPluginName});
     EXPECT_EQ(CollectPluginNames(item, CreatePluginNameCallback()), expected);
   }
 
@@ -121,8 +120,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
         mvvm::TagIndex::Append());
 
     const std::vector<std::string> expected(
-        {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName),
-         oac_tree_gui::GetPluginFileName(domainconstants::kEpicsPVXSPluginName)});
+        {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
     EXPECT_EQ(CollectPluginNames(item, CreatePluginNameCallback()), expected);
   }
 }
@@ -143,8 +141,7 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
   UpdatePluginNames(item, CreatePluginNameCallback());
 
   const std::vector<std::string> expected(
-      {oac_tree_gui::GetPluginFileName(domainconstants::kEpicsCAPluginName),
-       oac_tree_gui::GetPluginFileName(domainconstants::kEpicsPVXSPluginName)});
+      {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
 
   EXPECT_EQ(item.GetPreambleItem()->GetPluginPaths(), expected);
 }
