@@ -58,11 +58,6 @@ public:
   DomainLibraryLoader& operator=(DomainLibraryLoader&&) = delete;
 
   /**
-   * @brief Returns names of successfully loaded libraries.
-   */
-  std::vector<std::string> GetLoadedLibraries() const;
-
-  /**
    * @brief Loads the library with the given name.
    */
   void LoadLibrary(const std::string& library_name);
@@ -75,7 +70,6 @@ public:
   void UnloadAll();
 
 private:
-  std::vector<std::string> m_loaded_libraries;
   std::vector<std::pair<std::string, bool>> m_library_info;
   std::vector<LibraryHandle> m_library_handles;
 };

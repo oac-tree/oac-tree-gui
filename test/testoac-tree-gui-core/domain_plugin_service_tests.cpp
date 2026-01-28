@@ -40,7 +40,6 @@ public:
   class MockLibraryLoader
   {
   public:
-    MOCK_METHOD(std::vector<std::string>, GetLoadedLibraries, (), (const));
     MOCK_METHOD(void, LoadLibrary, (const std::string&), ());
     MOCK_METHOD((std::vector<std::pair<std::string, bool>>), GetLibraryInfo, (), (const));
   };
@@ -50,26 +49,10 @@ TEST_F(DomainPluginServiceTests, InitialState)
 {
   MockLibraryLoader library_loader;
   EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
-  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
   EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
   const DomainPluginService<MockLibraryLoader> service(library_loader);
-  EXPECT_TRUE(service.GetLoadedPlugins().empty());
   EXPECT_TRUE(service.GetPluginLoadInfo().empty());
-}
-
-TEST_F(DomainPluginServiceTests, GetLoadedPlugins)
-{
-  MockLibraryLoader library_loader;
-  EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
-
-  const DomainPluginService<MockLibraryLoader> service(library_loader);
-
-  const std::vector<std::string> loaded_plugins({"plugin1", "plugin2"});
-  ON_CALL(library_loader, GetLoadedLibraries()).WillByDefault(testing::Return(loaded_plugins));
-  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
-
-  EXPECT_EQ(service.GetLoadedPlugins(), loaded_plugins);
 }
 
 TEST_F(DomainPluginServiceTests, GetPluginLoadInfo)
@@ -90,11 +73,9 @@ TEST_F(DomainPluginServiceTests, GetPluginLoadInfo)
 TEST_F(DomainPluginServiceTests, LoadPluginFilesEmptyList)
 {
   MockLibraryLoader library_loader;
-  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
   EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
   DomainPluginService<MockLibraryLoader> service(library_loader);
-  EXPECT_TRUE(service.GetLoadedPlugins().empty());
   EXPECT_TRUE(service.GetPluginLoadInfo().empty());
 
   service.LoadPluginFiles({});
@@ -112,10 +93,8 @@ TEST_F(DomainPluginServiceTests, LoadNonEmptyPluginFileList)
 
   DomainPluginService<MockLibraryLoader> service(library_loader);
 
-  EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
   EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
-  EXPECT_TRUE(service.GetLoadedPlugins().empty());
   EXPECT_TRUE(service.GetPluginLoadInfo().empty());
 
   const std::vector<std::string> plugin_file_names = {"libplugin1.so", "libplugin2.so"};

@@ -46,7 +46,6 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
   auto plugin_service =
       dynamic_cast<DomainPluginService<DomainLibraryLoader>*>(&context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
-  EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
   EXPECT_EQ(plugin_service->GetPluginLoadInfo().size(), 0);
 
   // check settings
@@ -65,7 +64,6 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
 
   plugin_service->LoadPluginFiles({"libnon-existing-plugin.so"});
 
-  EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
   const std::vector<std::pair<std::string, bool>> expected_info = {
       {"libnon-existing-plugin.so", false}};
   EXPECT_EQ(plugin_service->GetPluginLoadInfo(), expected_info);

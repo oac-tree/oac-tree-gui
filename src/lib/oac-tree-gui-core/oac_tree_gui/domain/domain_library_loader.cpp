@@ -67,7 +67,6 @@ void CloseLibrary(DomainLibraryLoader::LibraryHandle handle)
 
 DomainLibraryLoader::DomainLibraryLoader(const std::vector<std::string>& library_names)
 {
-  m_loaded_libraries.reserve(library_names.size());
   m_library_handles.reserve(library_names.size());
   m_library_info.reserve(library_names.size());
   for (const auto& name : library_names)
@@ -78,18 +77,12 @@ DomainLibraryLoader::DomainLibraryLoader(const std::vector<std::string>& library
 
 DomainLibraryLoader::~DomainLibraryLoader() = default;
 
-std::vector<std::string> DomainLibraryLoader::GetLoadedLibraries() const
-{
-  return m_loaded_libraries;
-}
-
 void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
 {
   auto [ok, handle] = TryOpenLibrary(library_name);
 
   if (ok)
   {
-    m_loaded_libraries.push_back(library_name);
     m_library_handles.push_back(handle);
   }
   m_library_info.emplace_back(library_name, ok);
@@ -107,7 +100,6 @@ void DomainLibraryLoader::UnloadAll()
     CloseLibrary(h);
   }
   m_library_handles.clear();
-  m_loaded_libraries.clear();
   m_library_info.clear();
 }
 

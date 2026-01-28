@@ -27,6 +27,10 @@
 namespace oac_tree_gui
 {
 
+/**
+ * @brief The IDomainPluginService class is an interface to load domain plugins and keep track of
+ * what was loaded.
+ */
 class IDomainPluginService
 {
 public:
@@ -40,13 +44,12 @@ public:
 
   /**
    * @brief Loads plugins by their file names.
+   *
+   * Plugin file names can be absolute or relative paths.
+   *
+   * @param plugin_file_names List of plugin file names to load.
    */
   virtual void LoadPluginFiles(const std::vector<std::string>& plugin_file_names) = 0;
-
-  /**
-   * @brief Returns names of successfully loaded plugins.
-   */
-  virtual std::vector<std::string> GetLoadedPlugins() const = 0;
 
   /**
    * @brief Returns the list of all plugins we've tried to load, and their load success status.
