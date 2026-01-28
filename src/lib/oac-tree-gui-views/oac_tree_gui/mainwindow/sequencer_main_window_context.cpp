@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_library_loader.h>
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
 #include <oac_tree_gui/domain/domain_plugin_service.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
@@ -43,7 +42,6 @@ SequencerMainWindowContext::SequencerMainWindowContext()
     : m_settings(std::make_unique<SequencerSettingsModel>())
     , m_command_service(sup::gui::CreateDefaultCommandService())
     , m_domain_library_loader(std::make_unique<DomainLibraryLoader>())
-    , m_object_type_registry(CreateObjectTypeRegistry())
     , m_domain_plugin_service(CreateDomainPluginService())
 {
   ::sup::gui::ReadApplicationSettings(*m_settings);
@@ -72,25 +70,6 @@ sup::gui::IAppCommandService& SequencerMainWindowContext::GetCommandService()
 IDomainPluginService& SequencerMainWindowContext::GetDomainPluginService()
 {
   return *m_domain_plugin_service;
-}
-
-std::unique_ptr<DomainObjectTypeRegistry> SequencerMainWindowContext::CreateObjectTypeRegistry()
-    const
-{
-  // Calls the global registries to get the current list of instructions and variables. This list
-  // will grow after each plugin load.
-  auto get_object_names = []()
-  {
-    auto instruction_names =
-        ::sup::oac_tree::GlobalInstructionRegistry().RegisteredInstructionNames();
-    auto variable_names = ::sup::oac_tree::GlobalVariableRegistry().RegisteredVariableNames();
-    std::vector<std::string> names;
-    names.reserve(instruction_names.size() + variable_names.size());
-    names.insert(names.end(), instruction_names.begin(), instruction_names.end());
-    names.insert(names.end(), variable_names.begin(), variable_names.end());
-    return names;
-  };
-  return std::make_unique<DomainObjectTypeRegistry>(get_object_names);
 }
 
 std::unique_ptr<IDomainPluginService> SequencerMainWindowContext::CreateDomainPluginService() const
