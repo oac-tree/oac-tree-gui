@@ -29,7 +29,6 @@ namespace oac_tree_gui
 {
 
 class DomainLibraryLoader;
-class DomainObjectTypeRegistry;
 
 /**
  * @brief The DomainPluginService class is a main service to load bunch of plugins, and track their
@@ -38,7 +37,7 @@ class DomainObjectTypeRegistry;
  * @tparam LibraryLoaderT The type of the loader that knows how to load a library.
  * @taparm ObjectRegistryT The type of the object registry.
  */
-template <typename LibraryLoaderT, typename ObjectRegistryT>
+template <typename LibraryLoaderT>
 class DomainPluginService : public IDomainPluginService
 {
 public:
@@ -50,7 +49,7 @@ public:
    * @param library_loader The library loader to use for loading plugins.
    * @param object_regisrty The object registry to use for tracking plugin content.
    */
-  DomainPluginService(LibraryLoaderT& library_loader, ObjectRegistryT& object_registry);
+  DomainPluginService(LibraryLoaderT& library_loader);
   ~DomainPluginService() override = default;
 
   DomainPluginService(const DomainPluginService&) = delete;
@@ -73,18 +72,16 @@ private:
   void UpdateObjectTypeRegistry(const std::string& plugin_name);
 
   LibraryLoaderT& m_library_loader;
-  ObjectRegistryT& m_object_type_registry;
 };
 
-template <typename LibraryLoaderT, typename ObjectRegistryT>
-inline DomainPluginService<LibraryLoaderT, ObjectRegistryT>::DomainPluginService(
-    LibraryLoaderT& library_loader, ObjectRegistryT& object_registry)
-    : m_library_loader(library_loader), m_object_type_registry(object_registry)
+template <typename LibraryLoaderT>
+inline DomainPluginService<LibraryLoaderT>::DomainPluginService(LibraryLoaderT& library_loader)
+    : m_library_loader(library_loader)
 {
 }
 
-template <typename LibraryLoaderT, typename ObjectRegistryT>
-inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::LoadPluginFiles(
+template <typename LibraryLoaderT>
+inline void DomainPluginService<LibraryLoaderT>::LoadPluginFiles(
     const std::vector<std::string>& plugin_file_names)
 {
   // populates the registry with initial list of instructions and variables available via oac-tree
@@ -97,25 +94,24 @@ inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::LoadPluginFile
   }
 }
 
-template <typename LibraryLoaderT, typename ObjectRegistryT>
-inline std::vector<std::string>
-DomainPluginService<LibraryLoaderT, ObjectRegistryT>::GetLoadedPlugins() const
+template <typename LibraryLoaderT>
+inline std::vector<std::string> DomainPluginService<LibraryLoaderT>::GetLoadedPlugins() const
 {
   return m_library_loader.GetLoadedLibraries();
 }
 
-template <typename LibraryLoaderT, typename ObjectRegistryT>
+template <typename LibraryLoaderT>
 inline std::vector<std::pair<std::string, bool>>
-DomainPluginService<LibraryLoaderT, ObjectRegistryT>::GetPluginLoadInfo() const
+DomainPluginService<LibraryLoaderT>::GetPluginLoadInfo() const
 {
   return m_library_loader.GetLibraryInfo();
 }
 
-template <typename LibraryLoaderT, typename ObjectRegistryT>
-inline void DomainPluginService<LibraryLoaderT, ObjectRegistryT>::UpdateObjectTypeRegistry(
+template <typename LibraryLoaderT>
+inline void DomainPluginService<LibraryLoaderT>::UpdateObjectTypeRegistry(
     const std::string& plugin_name)
 {
-  m_object_type_registry.Update(plugin_name);
+  (void)plugin_name;
 }
 
 }  // namespace oac_tree_gui

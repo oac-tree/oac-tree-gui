@@ -36,17 +36,6 @@ class DomainPluginServiceTests : public ::testing::Test
 {
 public:
   /**
-   * @brief The MockObjectTypeRegistry is a mock to test calls to DomainObjectTypeRegistry.
-   */
-  class MockObjectTypeRegistry
-  {
-  public:
-    MOCK_METHOD(void, Update, (const std::string&), ());
-    MOCK_METHOD(std::vector<std::string>, GetObjectNames, (const std::string&), ());
-    MOCK_METHOD(std::optional<std::string>, GetPluginName, (const std::string&), ());
-  };
-
-  /**
    * @brief The MockLibraryLoader is a mock to test calls to DomainLibraryLoader.
    */
   class MockLibraryLoader
@@ -60,28 +49,22 @@ public:
 
 TEST_F(DomainPluginServiceTests, InitialState)
 {
-  MockObjectTypeRegistry object_registry;
   MockLibraryLoader library_loader;
-  EXPECT_CALL(object_registry, Update(testing::_)).Times(0);
   EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
   EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
   EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
-  const DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                               object_registry);
+  const DomainPluginService<MockLibraryLoader> service(library_loader);
   EXPECT_TRUE(service.GetLoadedPlugins().empty());
   EXPECT_TRUE(service.GetPluginLoadInfo().empty());
 }
 
 TEST_F(DomainPluginServiceTests, GetLoadedPlugins)
 {
-  MockObjectTypeRegistry object_registry;
   MockLibraryLoader library_loader;
-  EXPECT_CALL(object_registry, Update(testing::_)).Times(0);
   EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
 
-  const DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                               object_registry);
+  const DomainPluginService<MockLibraryLoader> service(library_loader);
 
   const std::vector<std::string> loaded_plugins({"plugin1", "plugin2"});
   ON_CALL(library_loader, GetLoadedLibraries()).WillByDefault(testing::Return(loaded_plugins));
@@ -92,13 +75,10 @@ TEST_F(DomainPluginServiceTests, GetLoadedPlugins)
 
 TEST_F(DomainPluginServiceTests, GetPluginLoadInfo)
 {
-  MockObjectTypeRegistry object_registry;
   MockLibraryLoader library_loader;
-  EXPECT_CALL(object_registry, Update(testing::_)).Times(0);
   EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
 
-  const DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                               object_registry);
+  const DomainPluginService<MockLibraryLoader> service(library_loader);
 
   const std::vector<std::pair<std::string, bool>> load_info = {{"plugin1", true},
                                                                {"plugin2", false}};
@@ -108,32 +88,13 @@ TEST_F(DomainPluginServiceTests, GetPluginLoadInfo)
   EXPECT_EQ(service.GetPluginLoadInfo(), load_info);
 }
 
-TEST_F(DomainPluginServiceTests, GetObjectNames)
-{
-  MockObjectTypeRegistry object_registry;
-  MockLibraryLoader library_loader;
-  EXPECT_CALL(object_registry, Update(testing::_)).Times(0);
-  EXPECT_CALL(library_loader, LoadLibrary(testing::_)).Times(0);
-
-  const DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                               object_registry);
-
-  const std::string plugin_name("test_plugin");
-  const std::vector<std::string> object_names({"obj1", "obj2"});
-  ON_CALL(object_registry, GetObjectNames(plugin_name))
-      .WillByDefault(testing::Return(object_names));
-}
-
 TEST_F(DomainPluginServiceTests, LoadPluginFilesEmptyList)
 {
-  MockObjectTypeRegistry object_registry;
   MockLibraryLoader library_loader;
-  EXPECT_CALL(object_registry, Update(domainconstants::kCorePluginName)).Times(1);
   EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
   EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);
 
-  DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                         object_registry);
+  DomainPluginService<MockLibraryLoader> service(library_loader);
   EXPECT_TRUE(service.GetLoadedPlugins().empty());
   EXPECT_TRUE(service.GetPluginLoadInfo().empty());
 
@@ -142,20 +103,15 @@ TEST_F(DomainPluginServiceTests, LoadPluginFilesEmptyList)
 
 TEST_F(DomainPluginServiceTests, LoadNonEmptyPluginFileList)
 {
-  MockObjectTypeRegistry object_registry;
   MockLibraryLoader library_loader;
 
   {
     const ::testing::InSequence seq;
-    EXPECT_CALL(object_registry, Update(domainconstants::kCorePluginName)).Times(1);
     EXPECT_CALL(library_loader, LoadLibrary("libplugin1.so")).Times(1);
-    EXPECT_CALL(object_registry, Update("plugin1")).Times(1);
     EXPECT_CALL(library_loader, LoadLibrary("libplugin2.so")).Times(1);
-    EXPECT_CALL(object_registry, Update("plugin2")).Times(1);
   }
 
-  DomainPluginService<MockLibraryLoader, MockObjectTypeRegistry> service(library_loader,
-                                                                         object_registry);
+  DomainPluginService<MockLibraryLoader> service(library_loader);
 
   EXPECT_CALL(library_loader, GetLoadedLibraries()).Times(1);
   EXPECT_CALL(library_loader, GetLibraryInfo()).Times(1);

@@ -95,8 +95,7 @@ std::unique_ptr<DomainObjectTypeRegistry> SequencerMainWindowContext::CreateObje
 
 std::unique_ptr<IDomainPluginService> SequencerMainWindowContext::CreateDomainPluginService() const
 {
-  return std::make_unique<DomainPluginService<DomainLibraryLoader, DomainObjectTypeRegistry>>(
-      *m_domain_library_loader, *m_object_type_registry);
+  return std::make_unique<DomainPluginService<DomainLibraryLoader>>(*m_domain_library_loader);
 }
 
 SequencerMainWindowContext* FindSequencerMainWindowContext()

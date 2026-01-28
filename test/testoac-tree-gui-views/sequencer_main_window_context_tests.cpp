@@ -45,8 +45,7 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
 
   // check plugin service
   auto plugin_service =
-      dynamic_cast<DomainPluginService<DomainLibraryLoader, DomainObjectTypeRegistry>*>(
-          &context.GetDomainPluginService());
+      dynamic_cast<DomainPluginService<DomainLibraryLoader>*>(&context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
   EXPECT_EQ(plugin_service->GetLoadedPlugins().size(), 0);
   EXPECT_EQ(plugin_service->GetPluginLoadInfo().size(), 0);
@@ -62,8 +61,7 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
   EXPECT_NE(dynamic_cast<sup::gui::AppCommandService*>(&context.GetCommandService()), nullptr);
 
   auto plugin_service =
-      dynamic_cast<DomainPluginService<DomainLibraryLoader, DomainObjectTypeRegistry>*>(
-          &context.GetDomainPluginService());
+      dynamic_cast<DomainPluginService<DomainLibraryLoader>*>(&context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
 
   plugin_service->LoadPluginFiles({"libnon-existing-plugin.so"});
