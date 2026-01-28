@@ -20,16 +20,13 @@
 
 #include "main_window_helper.h"
 
-#include "sequencer_main_window_context.h"
-
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/domain/domain_object_type_registry.h>
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 
 #include <sup/gui/widgets/settings_callbacks.h>
 
 #include <mvvm/utils/file_utils.h>
 
-#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
@@ -114,15 +111,8 @@ QString GetOpenSequencerProcedureName(const QString& key)
 
 std::function<std::string(const std::string&)> CreatePluginNameCallback()
 {
-  if (auto context = FindSequencerMainWindowContext(); context)
-  {
-    auto result = [context](const std::string& object_type)
-    { return context->GetObjectTypeRegistry().GetPluginName(object_type).value_or(std::string()); };
-
-    return result;
-  }
-
-  return {};
+  return [](const std::string& object_type)
+  { return GetPluginNameFromDomainTypeName(object_type); };
 }
 
 }  // namespace oac_tree_gui
