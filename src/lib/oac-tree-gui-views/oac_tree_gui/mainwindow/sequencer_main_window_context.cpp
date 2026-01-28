@@ -20,19 +20,12 @@
 
 #include "sequencer_main_window_context.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_library_loader.h>
-#include <oac_tree_gui/mainwindow/sequencer_main_window.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 
 #include <sup/gui/app/default_command_service.h>
 #include <sup/gui/mainwindow/settings_helper.h>
-
-#include <sup/oac-tree/instruction_registry.h>
-#include <sup/oac-tree/variable_registry.h>
-
-#include <QApplication>
 
 namespace oac_tree_gui
 {
@@ -68,18 +61,6 @@ sup::gui::IAppCommandService& SequencerMainWindowContext::GetCommandService()
 IDomainPluginService& SequencerMainWindowContext::GetDomainPluginService()
 {
   return *m_domain_plugin_service;
-}
-
-SequencerMainWindowContext* FindSequencerMainWindowContext()
-{
-  for (auto widget : qApp->topLevelWidgets())
-  {
-    if (auto result = qobject_cast<SequencerMainWindow*>(widget); result)
-    {
-      return &result->GetContext();
-    }
-  }
-  return nullptr;
 }
 
 }  // namespace oac_tree_gui

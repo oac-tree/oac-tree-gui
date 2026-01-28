@@ -65,10 +65,4 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
       {"libnon-existing-plugin.so", false}};
   EXPECT_EQ(plugin_service->GetPluginLoadInfo(), expected_info);
 }
-
-TEST_F(SequencerMainWindowContextTest, FindSequencerMainWindowContext)
-{
-  EXPECT_EQ(FindSequencerMainWindowContext(), nullptr);
-}
-
 }  // namespace oac_tree_gui::test
