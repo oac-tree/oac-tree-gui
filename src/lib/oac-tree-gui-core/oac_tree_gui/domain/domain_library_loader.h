@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_LIBRARY_LOADER_H_
 #define OAC_TREE_GUI_DOMAIN_DOMAIN_LIBRARY_LOADER_H_
 
+#include <oac_tree_gui/domain/i_domain_plugin_service.h>
+
 #include <string>
 #include <vector>
 
@@ -32,7 +34,7 @@ namespace oac_tree_gui
  *
  * It tracks successfully loaded libraries, it unloads libraries on own destruction.
  */
-class DomainLibraryLoader
+class DomainLibraryLoader : public IDomainPluginService
 {
 public:
   using LibraryHandle = void*;
@@ -50,12 +52,14 @@ public:
    * @param library_names List of all libraries to load.
    */
   explicit DomainLibraryLoader(const std::vector<std::string>& library_names);
-  ~DomainLibraryLoader();
+  ~DomainLibraryLoader() override;
 
   DomainLibraryLoader(const DomainLibraryLoader&) = delete;
   DomainLibraryLoader& operator=(const DomainLibraryLoader&) = delete;
   DomainLibraryLoader(DomainLibraryLoader&&) = delete;
   DomainLibraryLoader& operator=(DomainLibraryLoader&&) = delete;
+
+  void LoadPluginFiles(const std::vector<std::string>& plugin_file_names) override;
 
   /**
    * @brief Loads the library with the given name.
@@ -65,7 +69,7 @@ public:
   /**
    * @brief Returns the list of all libraries we've tried to load, and their success status.
    */
-  std::vector<std::pair<std::string, bool>> GetLibraryInfo() const;
+  std::vector<std::pair<std::string, bool>> GetPluginLoadInfo() const override;
 
   void UnloadAll();
 

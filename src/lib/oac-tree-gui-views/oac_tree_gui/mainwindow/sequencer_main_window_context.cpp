@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_library_loader.h>
-#include <oac_tree_gui/domain/domain_plugin_service.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
@@ -41,8 +40,7 @@ namespace oac_tree_gui
 SequencerMainWindowContext::SequencerMainWindowContext()
     : m_settings(std::make_unique<SequencerSettingsModel>())
     , m_command_service(sup::gui::CreateDefaultCommandService())
-    , m_domain_library_loader(std::make_unique<DomainLibraryLoader>())
-    , m_domain_plugin_service(CreateDomainPluginService())
+    , m_domain_plugin_service(std::make_unique<DomainLibraryLoader>())
 {
   ::sup::gui::ReadApplicationSettings(*m_settings);
 }
@@ -70,11 +68,6 @@ sup::gui::IAppCommandService& SequencerMainWindowContext::GetCommandService()
 IDomainPluginService& SequencerMainWindowContext::GetDomainPluginService()
 {
   return *m_domain_plugin_service;
-}
-
-std::unique_ptr<IDomainPluginService> SequencerMainWindowContext::CreateDomainPluginService() const
-{
-  return std::make_unique<DomainPluginService<DomainLibraryLoader>>(*m_domain_library_loader);
 }
 
 SequencerMainWindowContext* FindSequencerMainWindowContext()

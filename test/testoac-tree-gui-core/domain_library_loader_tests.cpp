@@ -36,14 +36,14 @@ class DomainLibraryLoaderTests : public ::testing::Test
 TEST_F(DomainLibraryLoaderTests, DefaultCtor)
 {
   const DomainLibraryLoader loader;
-  EXPECT_TRUE(loader.GetLibraryInfo().empty());
+  EXPECT_TRUE(loader.GetPluginLoadInfo().empty());
 }
 
 TEST_F(DomainLibraryLoaderTests, EmptyLibraryList)
 {
   const std::vector<std::string> libraries;
   const DomainLibraryLoader loader(libraries);
-  EXPECT_TRUE(loader.GetLibraryInfo().empty());
+  EXPECT_TRUE(loader.GetPluginLoadInfo().empty());
 }
 
 TEST_F(DomainLibraryLoaderTests, NonEmptyListAllMissing)
@@ -52,7 +52,7 @@ TEST_F(DomainLibraryLoaderTests, NonEmptyListAllMissing)
   const DomainLibraryLoader loader(libraries);
   const std::vector<std::pair<std::string, bool>> expected_info(
       {{"lib_nonexistent1.so", false}, {"lib_nonexistent2.so", false}});
-  EXPECT_EQ(loader.GetLibraryInfo(), expected_info);
+  EXPECT_EQ(loader.GetPluginLoadInfo(), expected_info);
 }
 
 TEST_F(DomainLibraryLoaderTests, LoadsExistingDummyLibrary)
@@ -64,7 +64,7 @@ TEST_F(DomainLibraryLoaderTests, LoadsExistingDummyLibrary)
   // only one should load, and it should be the dummy path
   const std::vector<std::pair<std::string, bool>> expected_info(
       {{"./lib_nonexistent1.so", false}, {dummy_lib, true}});
-  EXPECT_EQ(loader.GetLibraryInfo(), expected_info);
+  EXPECT_EQ(loader.GetPluginLoadInfo(), expected_info);
 }
 
 TEST_F(DomainLibraryLoaderTests, DummyLibraryExplicitUnload)

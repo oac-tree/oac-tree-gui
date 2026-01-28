@@ -32,7 +32,6 @@ namespace oac_tree_gui
 {
 
 class IDomainPluginService;
-class DomainLibraryLoader;
 class SequencerSettingsModel;
 
 /**
@@ -61,18 +60,12 @@ public:
   IDomainPluginService& GetDomainPluginService();
 
 private:
-  std::unique_ptr<IDomainPluginService> CreateDomainPluginService() const;
-
   std::unique_ptr<SequencerSettingsModel> m_settings;
 
   //!< knows about global commands and their shortcuts
   std::unique_ptr<sup::gui::IAppCommandService> m_command_service;
 
-  //!< knows how to load libraries and keeps track of what was loaded
-  std::unique_ptr<DomainLibraryLoader> m_domain_library_loader;
-
-  //!< knows how to load plugins, and what objects are registered in them
-  //! (use loader and registry from above)
+  //!< knows how to load plugins so all instructions and variables get registered
   std::unique_ptr<IDomainPluginService> m_domain_plugin_service;
 };
 

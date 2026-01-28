@@ -77,6 +77,14 @@ DomainLibraryLoader::DomainLibraryLoader(const std::vector<std::string>& library
 
 DomainLibraryLoader::~DomainLibraryLoader() = default;
 
+void DomainLibraryLoader::LoadPluginFiles(const std::vector<std::string>& plugin_file_names)
+{
+  for (const auto& name : plugin_file_names)
+  {
+    LoadLibrary(name);
+  }
+}
+
 void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
 {
   auto [ok, handle] = TryOpenLibrary(library_name);
@@ -88,7 +96,7 @@ void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
   m_library_info.emplace_back(library_name, ok);
 }
 
-std::vector<std::pair<std::string, bool> > DomainLibraryLoader::GetLibraryInfo() const
+std::vector<std::pair<std::string, bool> > DomainLibraryLoader::GetPluginLoadInfo() const
 {
   return m_library_info;
 }

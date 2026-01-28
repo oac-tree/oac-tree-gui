@@ -21,7 +21,6 @@
 #include "oac_tree_gui/mainwindow/sequencer_main_window_context.h"
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
-#include <oac_tree_gui/domain/domain_plugin_service.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 
 #include <sup/gui/app/app_command_service.h>
@@ -43,8 +42,7 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
   EXPECT_NE(dynamic_cast<sup::gui::AppCommandService*>(&context.GetCommandService()), nullptr);
 
   // check plugin service
-  auto plugin_service =
-      dynamic_cast<DomainPluginService<DomainLibraryLoader>*>(&context.GetDomainPluginService());
+  auto plugin_service = dynamic_cast<DomainLibraryLoader*>(&context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
   EXPECT_EQ(plugin_service->GetPluginLoadInfo().size(), 0);
 
@@ -58,8 +56,7 @@ TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)
 
   EXPECT_NE(dynamic_cast<sup::gui::AppCommandService*>(&context.GetCommandService()), nullptr);
 
-  auto plugin_service =
-      dynamic_cast<DomainPluginService<DomainLibraryLoader>*>(&context.GetDomainPluginService());
+  auto plugin_service = dynamic_cast<DomainLibraryLoader*>(&context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
 
   plugin_service->LoadPluginFiles({"libnon-existing-plugin.so"});
