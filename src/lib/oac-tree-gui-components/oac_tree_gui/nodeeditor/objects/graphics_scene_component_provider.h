@@ -65,8 +65,7 @@ public:
 
   explicit GraphicsSceneComponentProvider(
       std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
-      std::function<std::string(const std::string&)> object_to_plugin_name, QGraphicsScene* scene,
-      mvvm::SessionItem* instruction_container);
+      QGraphicsScene* scene, mvvm::SessionItem* instruction_container);
   ~GraphicsSceneComponentProvider() override;
 
   GraphicsSceneComponentProvider(const GraphicsSceneComponentProvider&) = delete;
@@ -161,7 +160,6 @@ private:
   std::unique_ptr<IInstructionEditorActionHandler> CreateInstructionEditorActionHandler();
 
   std::function<void(const sup::gui::MessageEvent&)> m_send_message_callback;
-  std::function<std::string(const std::string&)> m_object_to_plugin_name;
   QGraphicsScene* m_scene{nullptr};
   mvvm::SessionItem* m_instruction_container{nullptr};
 

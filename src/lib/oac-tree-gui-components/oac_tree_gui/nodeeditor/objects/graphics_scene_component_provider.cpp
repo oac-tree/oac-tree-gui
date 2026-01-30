@@ -43,12 +43,10 @@ namespace oac_tree_gui
 {
 
 GraphicsSceneComponentProvider::GraphicsSceneComponentProvider(
-    std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
-    std::function<std::string(const std::string&)> object_to_plugin_name, QGraphicsScene* scene,
+    std::function<void(const sup::gui::MessageEvent&)> send_message_callback, QGraphicsScene* scene,
     mvvm::SessionItem* instruction_container)
     : QObject(nullptr)
     , m_send_message_callback(send_message_callback)
-    , m_object_to_plugin_name(object_to_plugin_name)
     , m_scene(scene)
     , m_instruction_container(instruction_container)
     , m_connection_guide(std::make_unique<mvvm::NodeConnectionGuide>(m_scene))
@@ -195,7 +193,6 @@ InstructionEditorContext GraphicsSceneComponentProvider::CreateContext()
   result.create_instruction = [](const std::string& name) { return CreateInstructionTree(name); };
 
   result.send_message = m_send_message_callback;
-  result.object_to_plugin_name = m_object_to_plugin_name;
   return result;
 }
 

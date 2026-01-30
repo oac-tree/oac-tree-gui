@@ -157,9 +157,3 @@ std::string GetPluginNameFromDomainTypeName(const std::string& object_name)
 }
 
 }  // namespace oac_tree_gui
-
-std::function<std::string(const std::string&)> oac_tree_gui::CreatePluginNameCallback()
-{
-  return [](const std::string& object_type)
-  { return GetPluginNameFromDomainTypeName(object_type); };
-}

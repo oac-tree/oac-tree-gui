@@ -179,7 +179,7 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider(NodeEditorMode editor_mod
   { m_graphics_view_message_handler->SendMessage(message); };
 
   auto result = std::make_unique<GraphicsSceneComponentProvider>(
-      message_callback, CreatePluginNameCallback(), m_graphics_scene.get(),
+      message_callback, m_graphics_scene.get(),
       m_procedure_item->GetInstructionContainer());
 
   // forward instruction selection from graphics scene

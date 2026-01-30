@@ -63,8 +63,7 @@ public:
   std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider()
   {
     auto result = std::make_unique<GraphicsSceneComponentProvider>(
-        m_mock_message.AsStdFunction(), m_mock_object_name.AsStdFunction(), &m_graphics_scene,
-        m_instruction_container);
+        m_mock_message.AsStdFunction(), &m_graphics_scene, m_instruction_container);
 
     // connection which is in NodeEditorWidget
     QObject::connect(&m_graphics_scene, &NodeGraphicsScene::portDoubleClick, result.get(),
@@ -98,7 +97,6 @@ public:
   InstructionContainerItem* m_instruction_container{nullptr};
 
   testing::MockFunction<void(const sup::gui::MessageEvent&)> m_mock_message;
-  testing::MockFunction<std::string(const std::string&)> m_mock_object_name;
 };
 
 TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromSequenceToWait)

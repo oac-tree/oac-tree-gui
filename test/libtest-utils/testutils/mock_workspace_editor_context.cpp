@@ -55,8 +55,6 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
     OnSetMimeData();
   };
 
-  result.object_to_plugin_name = CreatePluginNameCallback();
-
   return result;
 }
 

@@ -108,8 +108,6 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
 
-  result.object_to_plugin_name = CreatePluginNameCallback();
-
   return result;
 }
 

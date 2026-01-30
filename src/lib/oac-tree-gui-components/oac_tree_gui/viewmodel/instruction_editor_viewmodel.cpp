@@ -39,12 +39,11 @@
 namespace oac_tree_gui
 {
 
-InstructionEditorViewModel::InstructionEditorViewModel(
-    mvvm::ISessionModel* model,
-    std::function<std::string(const std::string&)> object_to_plugin_name, QObject* parent_object)
+InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel* model,
+                                                       QObject* parent_object)
     : ViewModel(parent_object)
-    , m_action_handler(std::make_unique<InstructionEditorActionHandler>(
-          CreateInstructionEditorContext(object_to_plugin_name)))
+    , m_action_handler(
+          std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
 {
   SetController(
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionEditorRowStrategy>(model,
@@ -196,8 +195,7 @@ QStringList InstructionEditorViewModel::mimeTypes() const
   return {kInstructionMoveMimeType, kNewInstructionMimeType};
 }
 
-InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorContext(
-    std::function<std::string(const std::string&)> object_to_plugin_name)
+InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorContext()
 {
   // no need to fully configure the context, here we are using only its limited part
   InstructionEditorContext result;
@@ -206,7 +204,6 @@ InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorCont
   auto on_select_request = [](mvvm::SessionItem* item) { (void)item; };
   result.notify_request = on_select_request;
   result.create_instruction = [](const std::string& name) { return CreateInstructionTree(name); };
-  result.object_to_plugin_name = object_to_plugin_name;
   return result;
 }
 

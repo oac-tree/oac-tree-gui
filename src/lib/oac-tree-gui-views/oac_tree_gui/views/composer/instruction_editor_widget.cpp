@@ -264,15 +264,12 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
 
-  result.object_to_plugin_name = CreatePluginNameCallback();
-
   return result;
 }
 
 std::unique_ptr<mvvm::ItemViewComponentProvider> InstructionEditorWidget::CreateProvider()
 {
-  auto viewmodel =
-      std::make_unique<InstructionEditorViewModel>(nullptr, CreatePluginNameCallback(), this);
+  auto viewmodel = std::make_unique<InstructionEditorViewModel>(nullptr, this);
   return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(viewmodel), m_tree_view);
 }
 

@@ -35,7 +35,6 @@
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
 #include <mvvm/nodeeditor/node_connection_shape.h>
 #include <mvvm/test/mock_item_listener.h>
-#include <mvvm/test/test_container_helper.h>
 
 #include <sup/dto/anyvalue.h>
 
@@ -69,8 +68,7 @@ public:
   std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider()
   {
     return std::make_unique<GraphicsSceneComponentProvider>(
-        m_mock_message.AsStdFunction(), m_mock_object_name.AsStdFunction(), &m_graphics_scene,
-        m_instruction_container);
+        m_mock_message.AsStdFunction(), &m_graphics_scene, m_instruction_container);
   }
 
   /**
@@ -97,7 +95,6 @@ public:
   InstructionContainerItem* m_instruction_container{nullptr};
 
   testing::MockFunction<void(const sup::gui::MessageEvent&)> m_mock_message;
-  testing::MockFunction<std::string(const std::string&)> m_mock_object_name;
 };
 
 TEST_F(GraphicsSceneComponentProviderTest, InitialState)
