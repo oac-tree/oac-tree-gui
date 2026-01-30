@@ -229,6 +229,46 @@ TEST_F(DomainHelperTest, GetPluginFileName)
   }
 }
 
+TEST_F(DomainHelperTest, GetPluginFileNameV2)
+{
+  if (mvvm::IsLinuxHost())
+  {
+    EXPECT_THROW(GetPluginFileNameV2(""), InvalidOperationException);
+
+    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs.so"), "liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs"), "liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.so"), "liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs"), "liboac-tree-pvxs.so");
+
+    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs"), "/home/user/liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileNameV2("/home/user/liboac-tree-pvxs.so"),
+              "/home/user/liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs.so"), "/home/user/liboac-tree-pvxs.so");
+
+    // questionable behavior (MacOS extensions on Linux), let's fix it for a future
+    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib.so");
+  }
+
+  if (mvvm::IsMacHost())
+  {
+    EXPECT_THROW(GetPluginFileNameV2(""), InvalidOperationException);
+
+    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs"), "liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs"), "liboac-tree-pvxs.dylib");
+
+    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs"), "/home/user/liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileNameV2("/home/user/liboac-tree-pvxs.dylib"),
+              "/home/user/liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs.dylib"),
+              "/home/user/liboac-tree-pvxs.dylib");
+
+    // questionable behavior (Linux extensions on Mac), let's fix it for a future
+    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.so"), "liboac-tree-pvxs.so.dylib");
+  }
+}
+
 TEST_F(DomainHelperTest, GetPluginNameFromFileName)
 {
   if (mvvm::IsLinuxHost())

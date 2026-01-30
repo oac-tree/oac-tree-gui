@@ -35,6 +35,7 @@
 #include <sup/oac-tree/sequence_parser.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_registry.h>
+#include <sup/platform/library_names.h>
 
 #include <algorithm>
 #include <filesystem>
@@ -208,6 +209,17 @@ std::string GetPluginFileName(const std::string& plugin_name)
   }
 
   return plugin_name;
+}
+
+std::string GetPluginFileNameV2(const std::string& plugin_name)
+{
+  const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(plugin_name);
+  if (stripped_basename.empty())
+  {
+    std::string error_message = "GetPluginFileNameV2(): trying to load plugin with empty name";
+    throw InvalidOperationException(error_message);
+  }
+  return sup::platform::CreateFullDynamicLibPath(path, stripped_basename);
 }
 
 std::string GetPluginNameFromFileName(const std::string& file_name)

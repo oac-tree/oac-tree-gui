@@ -143,6 +143,16 @@ std::vector<std::string> GetBasicPluginFileNames();
 std::string GetPluginFileName(const std::string& plugin_name);
 
 /**
+ * @brief Converts the name of the plugin to library file name.
+ *
+ * Linux: sequencer -> libsequencer.so
+ *        /usr/lib/sequencer -> /usr/lib/libsequencer.so
+ *
+ * This functions reproduces what happens inside sup::oac_tree::LoadPlugin from sequencer_parser.h
+ */
+std::string GetPluginFileNameV2(const std::string& plugin_name);
+
+/**
  * @brief Returns plugin name extracted from the given file name.
  *
  * It will remove path and "lib" prefix and ".so" or ".dylib" suffix on Linux/MacOs.
