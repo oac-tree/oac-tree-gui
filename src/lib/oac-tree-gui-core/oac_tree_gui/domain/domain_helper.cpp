@@ -24,11 +24,8 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 
-#include <mvvm/core/platform.h>
-#include <mvvm/utils/file_utils.h>
 #include <mvvm/utils/string_utils.h>
 
-#include <sup/oac-tree/constants.h>
 #include <sup/oac-tree/i_job_info_io.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_registry.h>
@@ -38,27 +35,6 @@
 #include <sup/platform/library_names.h>
 
 #include <algorithm>
-#include <filesystem>
-
-namespace
-{
-
-std::string_view RemovePrefix(std::string_view name, const std::string& prefix)
-{
-  name.remove_prefix(std::min(name.find_first_not_of(prefix), name.size()));
-  return name;
-}
-
-std::string_view RemoveSuffix(std::string_view name, const std::string& suffix)
-{
-  if (name.rfind(suffix) == (name.size() - suffix.size()))
-  {
-    name.remove_suffix(suffix.size());
-  }
-  return name;
-}
-
-}  // namespace
 
 namespace oac_tree_gui
 {
@@ -173,57 +149,13 @@ bool IsMessageBoxDialog(const anyvalue_t& metadata)
 
 std::string GetPluginFileName(const std::string& plugin_name)
 {
-  if (plugin_name.empty() || mvvm::IsWindowsHost())
-  {
-    return plugin_name;
-  }
-
-  if (std::filesystem::path(plugin_name).has_parent_path())
-  {
-    return plugin_name;
-  }
-
-  std::string_view view = plugin_name;
-  view = RemovePrefix(view, "lib");
-  view = RemoveSuffix(view, ".so");
-  view = RemoveSuffix(view, ".dylib");
-
-  if (mvvm::IsLinuxHost())
-  {
-    return "lib" + std::string(view) + ".so";
-  }
-
-  if (mvvm::IsMacHost())
-  {
-    return "lib" + std::string(view) + ".dylib";
-  }
-
-  return plugin_name;
-}
-
-std::string GetPluginFileNameV2(const std::string& plugin_name)
-{
   const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(plugin_name);
   if (stripped_basename.empty())
   {
-    std::string error_message = "GetPluginFileNameV2(): trying to load plugin with empty name";
+   const  std::string error_message = "GetPluginFileName(): trying to load plugin with empty name";
     throw InvalidOperationException(error_message);
   }
   return sup::platform::CreateFullDynamicLibPath(path, stripped_basename);
-}
-
-std::string GetPluginNameFromFileName(const std::string& file_name)
-{
-  const std::string base_name = mvvm::utils::GetFileName(file_name);
-  if (base_name.empty() || mvvm::IsWindowsHost())
-  {
-    return {};
-  }
-  std::string_view view = base_name;
-  view = RemovePrefix(view, "lib");
-  view = RemoveSuffix(view, ".so");
-  view = RemoveSuffix(view, ".dylib");
-  return std::string(view);
 }
 
 bool IsValidInstructionIndex(sup::dto::uint32 index)

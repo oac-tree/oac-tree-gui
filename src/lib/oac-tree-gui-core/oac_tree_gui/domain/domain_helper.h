@@ -119,38 +119,12 @@ std::vector<std::string> GetSupPluginList();
 /**
  * @brief Converts the name of the plugin to library file name.
  *
- * Takes OS platform in the account. If the given name already contains prefix/suffix, it will be
- * adjusted to the current platform as follows:
- *
- * Linux: sequencer -> libsequencer.so
- *        libsequencer.so -> libsequencer.so
- *        libsequencer.dylib -> libsequencer.so
- *
- * MacOs: sequencer -> libsequencer.dylib
- *        libsequencer.so -> libsequencer.dylib
- *        libsequencer.dylib -> libsequencer.dylib
- *
- * @note Windows: not implemented, will return the same name
- * If file name contains a path, will return unchanged.
- */
-std::string GetPluginFileName(const std::string& plugin_name);
-
-/**
- * @brief Converts the name of the plugin to library file name.
- *
  * Linux: sequencer -> libsequencer.so
  *        /usr/lib/sequencer -> /usr/lib/libsequencer.so
  *
  * This functions reproduces what happens inside sup::oac_tree::LoadPlugin from sequencer_parser.h
  */
-std::string GetPluginFileNameV2(const std::string& plugin_name);
-
-/**
- * @brief Returns plugin name extracted from the given file name.
- *
- * It will remove path and "lib" prefix and ".so" or ".dylib" suffix on Linux/MacOs.
- */
-std::string GetPluginNameFromFileName(const std::string& file_name);
+std::string GetPluginFileName(const std::string& plugin_name);
 
 /**
  * @brief Checks if given index represents a valid instruction index.

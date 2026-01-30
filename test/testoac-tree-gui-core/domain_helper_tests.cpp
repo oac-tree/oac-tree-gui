@@ -192,100 +192,41 @@ TEST_F(DomainHelperTest, IsValidInstructionIndex)
 
 TEST_F(DomainHelperTest, GetPluginFileName)
 {
-  EXPECT_EQ(GetPluginFileName(""), "");
-
   if (mvvm::IsLinuxHost())
   {
-    // main usage
-    EXPECT_EQ(GetPluginFileName("MyPlugin"), "libMyPlugin.so");
+    EXPECT_THROW(GetPluginFileName(""), InvalidOperationException);
 
-    EXPECT_EQ(GetPluginFileName("libMyPlugin"), "libMyPlugin.so");
-    EXPECT_EQ(GetPluginFileName("MyPlugin.so"), "libMyPlugin.so");
-    EXPECT_EQ(GetPluginFileName("libMyPlugin.so"), "libMyPlugin.so");
+    EXPECT_EQ(GetPluginFileName("liboac-tree-pvxs.so"), "liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileName("oac-tree-pvxs"), "liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileName("oac-tree-pvxs.so"), "liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileName("liboac-tree-pvxs"), "liboac-tree-pvxs.so");
 
-    // MacOs should be converted to Linux
-    EXPECT_EQ(GetPluginFileName("libMyPlugin.dylib"), "libMyPlugin.so");
-
-    // For the moment we ignore path
-    EXPECT_EQ(GetPluginFileName("/home/user/libMyPlugin.so"), "/home/user/libMyPlugin.so");
-    EXPECT_EQ(GetPluginFileName("/home/user/MyPlugin"), "/home/user/MyPlugin");
-  }
-
-  if (mvvm::IsMacHost())
-  {
-    // main usage
-    EXPECT_EQ(GetPluginFileName("MyPlugin"), "libMyPlugin.dylib");
-
-    EXPECT_EQ(GetPluginFileName("libMyPlugin"), "libMyPlugin.dylib");
-    EXPECT_EQ(GetPluginFileName("MyPlugin.dylib"), "libMyPlugin.dylib");
-    EXPECT_EQ(GetPluginFileName("libMyPlugin.dylib"), "libMyPlugin.dylib");
-
-    // Linux should be converted to MacOs
-    EXPECT_EQ(GetPluginFileName("libMyPlugin.so"), "libMyPlugin.dylib");
-
-    // For the moment we ignore path
-    EXPECT_EQ(GetPluginFileName("/home/user/libMyPlugin.dylib"), "/home/user/libMyPlugin.dylib");
-    EXPECT_EQ(GetPluginFileName("/home/user/MyPlugin"), "/home/user/MyPlugin");
-  }
-}
-
-TEST_F(DomainHelperTest, GetPluginFileNameV2)
-{
-  if (mvvm::IsLinuxHost())
-  {
-    EXPECT_THROW(GetPluginFileNameV2(""), InvalidOperationException);
-
-    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs.so"), "liboac-tree-pvxs.so");
-    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs"), "liboac-tree-pvxs.so");
-    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.so"), "liboac-tree-pvxs.so");
-    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs"), "liboac-tree-pvxs.so");
-
-    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs"), "/home/user/liboac-tree-pvxs.so");
-    EXPECT_EQ(GetPluginFileNameV2("/home/user/liboac-tree-pvxs.so"),
+    EXPECT_EQ(GetPluginFileName("/home/user/oac-tree-pvxs"), "/home/user/liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileName("/home/user/liboac-tree-pvxs.so"),
               "/home/user/liboac-tree-pvxs.so");
-    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs.so"), "/home/user/liboac-tree-pvxs.so");
+    EXPECT_EQ(GetPluginFileName("/home/user/oac-tree-pvxs.so"), "/home/user/liboac-tree-pvxs.so");
 
     // questionable behavior (MacOS extensions on Linux), let's fix it for a future
-    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib.so");
+    EXPECT_EQ(GetPluginFileName("oac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib.so");
   }
 
   if (mvvm::IsMacHost())
   {
-    EXPECT_THROW(GetPluginFileNameV2(""), InvalidOperationException);
+    EXPECT_THROW(GetPluginFileName(""), InvalidOperationException);
 
-    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib");
-    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs"), "liboac-tree-pvxs.dylib");
-    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib");
-    EXPECT_EQ(GetPluginFileNameV2("liboac-tree-pvxs"), "liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileName("liboac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileName("oac-tree-pvxs"), "liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileName("oac-tree-pvxs.dylib"), "liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileName("liboac-tree-pvxs"), "liboac-tree-pvxs.dylib");
 
-    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs"), "/home/user/liboac-tree-pvxs.dylib");
-    EXPECT_EQ(GetPluginFileNameV2("/home/user/liboac-tree-pvxs.dylib"),
+    EXPECT_EQ(GetPluginFileName("/home/user/oac-tree-pvxs"), "/home/user/liboac-tree-pvxs.dylib");
+    EXPECT_EQ(GetPluginFileName("/home/user/liboac-tree-pvxs.dylib"),
               "/home/user/liboac-tree-pvxs.dylib");
-    EXPECT_EQ(GetPluginFileNameV2("/home/user/oac-tree-pvxs.dylib"),
+    EXPECT_EQ(GetPluginFileName("/home/user/oac-tree-pvxs.dylib"),
               "/home/user/liboac-tree-pvxs.dylib");
 
     // questionable behavior (Linux extensions on Mac), let's fix it for a future
-    EXPECT_EQ(GetPluginFileNameV2("oac-tree-pvxs.so"), "liboac-tree-pvxs.so.dylib");
-  }
-}
-
-TEST_F(DomainHelperTest, GetPluginNameFromFileName)
-{
-  if (mvvm::IsLinuxHost())
-  {
-    // main usage
-    EXPECT_EQ(GetPluginNameFromFileName("libMyPlugin.so"), "MyPlugin");
-    EXPECT_EQ(GetPluginNameFromFileName("/some/path/libMyPlugin.so"), "MyPlugin");
-    EXPECT_EQ(GetPluginNameFromFileName("MyPlugin"), "MyPlugin");
-    EXPECT_EQ(GetPluginNameFromFileName("/some/path/MyPlugin"), "MyPlugin");
-  }
-
-  if (mvvm::IsMacHost())
-  {
-    EXPECT_EQ(GetPluginNameFromFileName("libMyPlugin.dylib"), "MyPlugin");
-    EXPECT_EQ(GetPluginNameFromFileName("/some/path/libMyPlugin.dylib"), "MyPlugin");
-    EXPECT_EQ(GetPluginNameFromFileName("MyPlugin"), "MyPlugin");
-    EXPECT_EQ(GetPluginNameFromFileName("/some/path/MyPlugin"), "MyPlugin");
+    EXPECT_EQ(GetPluginFileName("oac-tree-pvxs.so"), "liboac-tree-pvxs.so.dylib");
   }
 }
 

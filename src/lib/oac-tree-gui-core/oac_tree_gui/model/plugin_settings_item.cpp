@@ -26,10 +26,6 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_settings_helper.h>
 
-#include <mvvm/utils/string_utils.h>
-
-#include <filesystem>
-
 namespace oac_tree_gui
 {
 
@@ -62,7 +58,7 @@ std::vector<std::string> GetSharedLibrariesFromPluginNames(
   result.reserve(plugin_names.size());
   for (const auto& name : plugin_names)
   {
-    result.push_back(GetPluginFileNameV2(name));
+    result.push_back(GetPluginFileName(name));
   }
   return result;
 }
