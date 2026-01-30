@@ -117,13 +117,6 @@ std::vector<std::string> GetLegacyPluginNameList();
 std::vector<std::string> GetSupPluginList();
 
 /**
- * @brief Returns default plugin list.
- *
- * This is the list of plugins that are usually available both on CODAC and non-CODAC systems.
- */
-std::vector<std::string> GetBasicPluginFileNames();
-
-/**
  * @brief Converts the name of the plugin to library file name.
  *
  * Takes OS platform in the account. If the given name already contains prefix/suffix, it will be

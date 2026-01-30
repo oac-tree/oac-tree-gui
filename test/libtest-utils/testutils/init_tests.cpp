@@ -27,14 +27,14 @@
 namespace oac_tree_gui::test
 {
 
-void InitTests(int argc, char **argv)
+void InitTests(int argc, char** argv)
 {
   RegisterCustomMetaTypes();
 
   ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
 
-  DomainLibraryLoader loader(GetBasicPluginFileNames());
+  DomainLibraryLoader loader(GetBasicPluginList());
 
   LoadOacTreeItems();
 }

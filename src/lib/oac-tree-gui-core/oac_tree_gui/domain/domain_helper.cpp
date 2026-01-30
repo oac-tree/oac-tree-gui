@@ -138,16 +138,6 @@ std::vector<std::string> GetSupPluginList()
   return kPluginList;
 }
 
-std::vector<std::string> GetBasicPluginFileNames()
-{
-  std::vector<std::string> result;
-  for (const auto& name : GetBasicPluginList())
-  {
-    result.push_back(GetPluginFileName(name));
-  }
-  return result;
-}
-
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata)
 {
   if (metadata.HasField(sup::oac_tree::Constants::USER_CHOICES_TEXT_NAME)

@@ -59,16 +59,10 @@ std::vector<std::string> GetSharedLibrariesFromPluginNames(
     const std::vector<std::string>& plugin_names)
 {
   std::vector<std::string> result;
+  result.reserve(plugin_names.size());
   for (const auto& name : plugin_names)
   {
-    if (std::filesystem::path(name).has_parent_path())
-    {
-      result.push_back(name);
-    }
-    else
-    {
-      result.push_back(GetPluginFileName(name));
-    }
+    result.push_back(GetPluginFileNameV2(name));
   }
   return result;
 }
