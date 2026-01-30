@@ -21,6 +21,7 @@
 #include "procedure_item.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -67,7 +68,11 @@ void CollectVariablePluginNames(
 {
   for (auto variable : workspace_item.GetVariables())
   {
-    CollectPluginPreambleNames(variable->GetDomainType(), object_to_plugin_name, plugin_names);
+    if (auto plugin_name = GetPluginNameForVariable(variable->GetDomainType());
+        plugin_name != domainconstants::kCorePluginName)
+    {
+      (void)plugin_names.insert(plugin_name);
+    }
   }
 }
 
@@ -80,9 +85,14 @@ void CollectInstructionPluginNames(
     const std::function<std::string(const std::string&)>& object_to_plugin_name,
     std::set<std::string>& plugin_names)
 {
-  auto on_instruction =
-      [&plugin_names, &object_to_plugin_name](const oac_tree_gui::InstructionItem* item)
-  { CollectPluginPreambleNames(item->GetDomainType(), object_to_plugin_name, plugin_names); };
+  auto on_instruction = [&plugin_names](const oac_tree_gui::InstructionItem* item)
+  {
+    if (auto plugin_name = GetPluginNameForInstruction(item->GetDomainType());
+        plugin_name != domainconstants::kCorePluginName)
+    {
+      (void)plugin_names.insert(plugin_name);
+    }
+  };
   oac_tree_gui::IterateInstructionContainer<const oac_tree_gui::InstructionItem*>(
       container.GetInstructions(), on_instruction);
 }
