@@ -76,7 +76,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
     const ProcedureItem item;
 
     // no plugin names are necessary
-    EXPECT_TRUE(CollectPluginNames(item, CreatePluginNameCallback()).empty());
+    EXPECT_TRUE(CollectPluginNames(item).empty());
   }
 
   {  // procedure with local variable
@@ -84,7 +84,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
     item.GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
     // no plugin names are necessary
-    EXPECT_TRUE(CollectPluginNames(item, CreatePluginNameCallback()).empty());
+    EXPECT_TRUE(CollectPluginNames(item).empty());
   }
 
   {  // procedure with sequence
@@ -92,7 +92,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
     item.GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
     // no plugin names are necessary
-    EXPECT_TRUE(CollectPluginNames(item, CreatePluginNameCallback()).empty());
+    EXPECT_TRUE(CollectPluginNames(item).empty());
   }
 }
 
@@ -109,7 +109,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
     item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
 
     const std::vector<std::string> expected({domainconstants::kEpicsCAPluginName});
-    EXPECT_EQ(CollectPluginNames(item, CreatePluginNameCallback()), expected);
+    EXPECT_EQ(CollectPluginNames(item), expected);
   }
 
   {  // procedure with ChannelAccessVariable and PvAccessWriteInstructionItem
@@ -120,7 +120,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
 
     const std::vector<std::string> expected(
         {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
-    EXPECT_EQ(CollectPluginNames(item, CreatePluginNameCallback()), expected);
+    EXPECT_EQ(CollectPluginNames(item), expected);
   }
 }
 
@@ -137,7 +137,7 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
   item.GetInstructionContainer()->InsertItem<PvAccessWriteInstructionItem>(
       mvvm::TagIndex::Append());
 
-  UpdatePluginNames(item, CreatePluginNameCallback());
+  UpdatePluginNames(item);
 
   const std::vector<std::string> expected(
       {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});

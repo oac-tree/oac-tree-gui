@@ -396,15 +396,10 @@ const QMimeData* InstructionEditorActionHandler::GetMimeData() const
 
 void InstructionEditorActionHandler::UpdateProcedurePreamble()
 {
-  if (!m_context.object_to_plugin_name)
-  {
-    return;
-  }
-
   if (auto procedure_item = mvvm::utils::FindItemUp<ProcedureItem>(GetInstructionContainer());
       procedure_item)
   {
-    UpdatePluginNames(*procedure_item, m_context.object_to_plugin_name);
+    UpdatePluginNames(*procedure_item);
   }
 }
 
