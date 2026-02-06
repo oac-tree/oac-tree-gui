@@ -26,18 +26,47 @@
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
-// #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/session_item_container.h>
 #include <mvvm/model/session_model.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/providers/qtcore_helper.h>
 #include <mvvm/providers/viewmodel_utils.h>
+#include <mvvm/utils/container_utils.h>
 
 #include <QMimeData>
 
 namespace oac_tree_gui
 {
+
+std::vector<std::string> GetStringListFromMime(const QMimeData* mime_data, const QString& mime_type)
+{
+  if ((mime_data == nullptr) || !mime_data->hasFormat(mime_type))
+  {
+    return {};
+  }
+  const auto string_list = mvvm::utils::GetStringList(mime_data->data(mime_type));
+  return mvvm::utils::GetStdStringVector(string_list);
+}
+
+std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& indexes,
+                                                        const QString& mime_type)
+{
+  auto items = mvvm::utils::ItemsFromIndex(indexes);
+  auto unique_items = mvvm::utils::UniqueWithOrder(items);
+
+  QStringList identifiers;
+  identifiers.reserve(static_cast<qsizetype>(unique_items.size()));
+  for (const auto& item : unique_items)
+  {
+    identifiers.push_back(QString::fromStdString(item->GetIdentifier()));
+  }
+
+  auto result = std::make_unique<QMimeData>();
+  // saving identifiers in mime data
+  result->setData(mime_type, mvvm::utils::GetByteArray(identifiers));
+  return result;
+}
 
 std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& indexes)
 {
@@ -62,17 +91,6 @@ std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& 
   result->setData(kInstructionMoveMimeType, mvvm::utils::GetByteArray(identifiers));
 
   return result;
-}
-
-std::vector<std::string> GetIdentifiersToMove(const QMimeData* mime_data)
-{
-  if ((mime_data == nullptr) || !mime_data->hasFormat(kInstructionMoveMimeType))
-  {
-    return {};
-  }
-  auto identifiers = mvvm::utils::GetStringList(mime_data->data(kInstructionMoveMimeType));
-
-  return mvvm::utils::GetStdStringVector(identifiers);
 }
 
 std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name)

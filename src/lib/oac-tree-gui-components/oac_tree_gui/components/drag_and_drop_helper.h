@@ -43,10 +43,15 @@ namespace oac_tree_gui
 class InstructionItem;
 class ProcedureItem;
 
-//! Mime type for drag-and-drop event leading to the instruction move.
+//! Mime type for drag-and-drop events containing item's identifier information.
+//! Depending on view model implementation, view context and the Qt::DropAction can lead to item
+//! internal move, copy or creation of new item based on the dragged one.
+constexpr auto kItemIdentifierMimeType = "application/coa.sequencer.item.itendifier";
+
+//! Mime type for drag-and-drop events leading to the instruction move.
 constexpr auto kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";
 
-//! Mime type for drag-and-drop event leading to the creation of new instruction.
+//! Mime type for drag-and-drop events leading to the creation of new instruction.
 constexpr auto kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
 
 //! Mime type for procedure copy.
@@ -59,17 +64,30 @@ constexpr auto kCopyInstructionMimeType = "application/coa.sequencer.instruction
 constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
 
 /**
+ * @brief Returns vector of identifiers representing instructions involved into the drag-and-move
+ * operation.
+ *
+ * @param mime_data Mime data carrying the list of strings.
+ * @param mime_type Expected mime type of the data.
+ */
+std::vector<std::string> GetStringListFromMime(const QMimeData* mime_data,
+                                               const QString& mime_type);
+
+/**
+ * @brief Creates mime data carrying identifiers of items corersponding to given indexes.
+ *
+ * @param indexes List of indexes participating in drag-and-drop operation.
+ * @param mime_type Mime type of the data to encode inside mime object.
+ */
+std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& indexes,
+                                                        const QString& mime_type);
+
+/**
  * @brief Creates mime data carrying information for instruction move.
  *
  * @param indexes List of indexes participating in move operation.
  */
 std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& indexes);
-
-/**
- * @brief Returns vector of identifiers representing instructions involved into the drag-and-move
- * operation.
- */
-std::vector<std::string> GetIdentifiersToMove(const QMimeData* mime_data);
 
 /**
  * @brief Creates mime data carrying information for new instruction creation.

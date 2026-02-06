@@ -132,7 +132,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
 
   if (data->hasFormat(kInstructionMoveMimeType))
   {
-    for (const auto& id : GetIdentifiersToMove(data))
+    for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
@@ -168,7 +168,7 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAct
 
   if (data->hasFormat(kInstructionMoveMimeType))
   {
-    for (const auto& id : GetIdentifiersToMove(data))
+    for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
