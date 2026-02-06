@@ -20,14 +20,18 @@
 
 #include "oac_tree_gui/viewmodel/flatlist_viewmodel.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/viewmodel/top_items_viewmodel.h>
 
 #include <gtest/gtest.h>
+
+#include <QMimeData>
 
 namespace oac_tree_gui::test
 {
@@ -71,6 +75,7 @@ TEST_F(FlatListViewModelTest, InstructionWithChildren)
   auto wait = m_model.InsertItem<WaitItem>(sequence0);
   auto message0 = m_model.InsertItem<RepeatItem>();
 
+  // two children, sequence0 and message0, at top level
   EXPECT_EQ(view_model.rowCount(), 2);
   EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
 
@@ -78,7 +83,7 @@ TEST_F(FlatListViewModelTest, InstructionWithChildren)
   EXPECT_EQ(view_model.data(sequence_index, Qt::DisplayRole).toString().toStdString(),
             mvvm::GetTypeName<SequenceItem>());
 
-  // children are not seen
+  // children of sequence are hidden
   EXPECT_EQ(view_model.rowCount(sequence_index), 0);
   EXPECT_EQ(view_model.columnCount(sequence_index), kExpectedColumnCount);
 }
@@ -92,7 +97,7 @@ TEST_F(FlatListViewModelTest, MixtureOfItemsOfVeryDifferentType)
   auto procedure = m_model.InsertItem<ProcedureItem>();
   auto job = m_model.InsertItem<LocalJobItem>();
 
-  EXPECT_EQ(view_model.rowCount(), 3); // sequence, procedure, job
+  EXPECT_EQ(view_model.rowCount(), 3);  // sequence, procedure, job
   EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
 }
 
@@ -111,6 +116,61 @@ TEST_F(FlatListViewModelTest, ContainerChange)
   EXPECT_EQ(view_model.rowCount(), 2);
   view_model.SetRootSessionItem(container1);
   EXPECT_EQ(view_model.rowCount(), 3);
+}
+
+TEST_F(FlatListViewModelTest, FlagsForDragAndDrop)
+{
+  auto wait0 = m_model.InsertItem<WaitItem>();
+  const FlatListViewModel model(&m_model);
+
+  // Valid index should have drag and drop enabled
+  Qt::ItemFlags valid_flags = model.flags(model.index(0, 0));
+  EXPECT_TRUE(valid_flags & Qt::ItemIsEnabled);
+  EXPECT_TRUE(valid_flags & Qt::ItemIsSelectable);
+  EXPECT_TRUE(valid_flags & Qt::ItemIsDragEnabled);
+  EXPECT_TRUE(valid_flags & Qt::ItemIsDropEnabled);
+
+  // Invalid index (root) should only have drop enabled
+  const Qt::ItemFlags invalid_flags = model.flags(QModelIndex());
+  EXPECT_TRUE(invalid_flags & Qt::ItemIsDropEnabled);
+  EXPECT_FALSE(invalid_flags & Qt::ItemIsDragEnabled);
+}
+
+TEST_F(FlatListViewModelTest, SupportedActions)
+{
+  const FlatListViewModel model(&m_model);
+
+  EXPECT_TRUE(model.supportedDragActions() & Qt::MoveAction);
+  EXPECT_TRUE(model.supportedDragActions() & Qt::CopyAction);
+  EXPECT_TRUE(model.supportedDropActions() & Qt::MoveAction);
+  EXPECT_TRUE(model.supportedDropActions() & Qt::CopyAction);
+}
+
+TEST_F(FlatListViewModelTest, MimeTypes)
+{
+  const FlatListViewModel model(&m_model);
+
+  QStringList mime_types = model.mimeTypes();
+  EXPECT_EQ(mime_types.size(), 1);
+  EXPECT_EQ(mime_types[0], kItemIdentifierMimeType);
+}
+
+TEST_F(FlatListViewModelTest, MimeDataEncoding)
+{
+  const FlatListViewModel model(&m_model);
+
+  auto procedure_item = m_model.InsertItem<ProcedureItem>();
+  auto display_index = model.index(0, 0);
+  auto data_index = model.index(0, 1);
+
+  std::unique_ptr<QMimeData> mime_data(model.mimeData({display_index, data_index}));
+  EXPECT_NE(mime_data, nullptr);
+
+  EXPECT_TRUE(mime_data->hasFormat(kItemIdentifierMimeType));
+
+  auto identifiers = GetStringListFromMime(mime_data.get(), kItemIdentifierMimeType);
+  EXPECT_EQ(identifiers.size(), 1);
+  EXPECT_EQ(identifiers.at(0), procedure_item->GetIdentifier());
 }
 
 }  // namespace oac_tree_gui::test

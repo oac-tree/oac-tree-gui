@@ -45,6 +45,24 @@ public:
   explicit FlatListViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
 
   int rowCount(const QModelIndex& index = {}) const override;
+
+  // drag-and-drop support
+
+  QStringList mimeTypes() const override;
+
+  QMimeData *mimeData(const QModelIndexList &indexes) const override;
+
+  bool canDropMimeData(const QMimeData *data, Qt::DropAction action,
+                               int row, int column, const QModelIndex &parent) const override;
+
+  bool dropMimeData(const QMimeData *data, Qt::DropAction action,
+                            int row, int column, const QModelIndex &parent) override;
+
+  Qt::DropActions supportedDropActions() const override;
+
+  Qt::DropActions supportedDragActions() const override;
+
+  Qt::ItemFlags flags(const QModelIndex& index) const override;
 };
 
 }  // namespace oac_tree_gui

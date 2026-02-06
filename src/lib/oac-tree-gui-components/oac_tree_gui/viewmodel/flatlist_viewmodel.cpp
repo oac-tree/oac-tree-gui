@@ -20,9 +20,13 @@
 
 #include "flatlist_viewmodel.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
+
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/standard_row_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
+
+#include <QMimeData>
 
 namespace oac_tree_gui
 {
@@ -38,6 +42,66 @@ int FlatListViewModel::rowCount(const QModelIndex& index) const
 {
   // we do not want to show any children beneath top level items in the container
   return index.isValid() ? 0 : ViewModel::rowCount(index);
+}
+
+QStringList FlatListViewModel::mimeTypes() const
+{
+  return {kItemIdentifierMimeType};
+}
+
+QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
+{
+  // ownership will be taken by QDrag operation
+  return CreateItemIdentifierMimeData(indexes, kItemIdentifierMimeType).release();
+}
+
+bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row,
+                                        int column, const QModelIndex& parent) const
+{
+  (void)action;
+  (void)row;
+  (void)column;
+  (void)parent;
+
+  if (data == nullptr)
+  {
+    return false;
+  }
+
+  if (!data->hasFormat(kItemIdentifierMimeType))
+  {
+    return false;
+  }
+
+  return false;
+}
+
+bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row,
+                                     int column, const QModelIndex& parent)
+{
+  return false;
+}
+
+Qt::DropActions FlatListViewModel::supportedDropActions() const
+{
+  return Qt::MoveAction | Qt::CopyAction;
+}
+
+Qt::DropActions FlatListViewModel::supportedDragActions() const
+{
+  return Qt::MoveAction | Qt::CopyAction;
+}
+
+Qt::ItemFlags FlatListViewModel::flags(const QModelIndex& index) const
+{
+  auto default_flags = ViewModel::flags(index);
+  if (index.isValid())
+  {
+    return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | default_flags;
+  }
+
+  // invalid item (root) can receive drops for appending at the end
+  return Qt::ItemIsDropEnabled | default_flags;
 }
 
 }  // namespace oac_tree_gui
