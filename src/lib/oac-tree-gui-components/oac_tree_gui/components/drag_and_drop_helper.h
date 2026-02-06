@@ -26,6 +26,7 @@
 #include <QModelIndexList>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -113,7 +114,6 @@ std::string GetNewInstructionType(const QMimeData* mime_data);
 mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
                                        const mvvm::SessionItem& parent,
                                        std::int32_t drop_indicator_row);
-
 /**
  * @brief Calculate TagIndex corresponding to the drop indicator position.
  *
@@ -123,6 +123,40 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
  * @return TagIndex to use for move operation
  */
 mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row);
+
+/**
+ * @brief Calculate row number corresponding to the drop indicator position.
+ *
+ * This functions is intended to be used for internal move operations in the views showing flat list
+ * of items (e.g. FlatListViewModel) where the drop indicator position and parent's index are
+ * reported by QAbstractItemModel::dropMimeData.
+ *
+ * @param drop_indicator_row Position of drop indicator as reported by QListView.
+ * @param source_row Row number of the item being moved.
+ * @param parent The parent index as reported by QListView.
+ *
+ * @return Row number corresponding to the drop indicator position.
+ */
+std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, std::int32_t source_row,
+                                    const QModelIndex& parent);
+
+/**
+ * @brief Calculate TagIndex corresponding to the drop indicator position for internal move in the
+ * list view.
+ *
+ * This functions is intended to be used for internal move operations in the views showing flat list
+ * of items (e.g. FlatListViewModel) where the drop indicator position and parent's index are
+ * reported by QAbstractItemModel::dropMimeData.
+ *
+ * @param drop_indicator_row Position of drop indicator as reported by QListView.
+ * @param source_tag_index TagIndex of the item being moved.
+ * @param parent The parent index as reported by QListView.
+ *
+ * @return TagIndex corresponding to the drop indicator position.
+ */
+mvvm::TagIndex GetListInternalMoveTagIndex(std::int32_t drop_indicator_row,
+                                           const mvvm::TagIndex& source_tag_index,
+                                           const QModelIndex& parent);
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_

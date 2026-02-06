@@ -21,7 +21,10 @@
 #include "flatlist_viewmodel.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/core/exceptions.h>
 
+#include <mvvm/model/i_session_model.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/standard_row_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
@@ -63,22 +66,48 @@ bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction ac
   (void)column;
   (void)parent;
 
-  if (data == nullptr)
+  if (data == nullptr || !data->hasFormat(kItemIdentifierMimeType))
   {
     return false;
   }
 
-  if (!data->hasFormat(kItemIdentifierMimeType))
+  qDebug() << "FlatListViewModel::canDropMimeData() -> action:" << action << "row:" << row
+           << "column:" << column << "parent:" << parent;
+
+  if (action != Qt::MoveAction)
   {
+    // not yet implemented, we support only internal move for the moment
     return false;
   }
 
-  return false;
+  return true;
 }
 
 bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row,
                                      int column, const QModelIndex& parent)
 {
+  if (!canDropMimeData(data, action, row, column, parent))
+  {
+    return false;
+  }
+
+  auto parent_item = GetSessionItemFromIndex(parent);
+  if (data->hasFormat(kItemIdentifierMimeType))
+  {
+    for (const auto& id : GetStringListFromMime(data, kItemIdentifierMimeType))
+    {
+      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+      if (!item)
+      {
+        throw RuntimeException("Item with id " + id + " not found in the model");
+      }
+
+      const auto destination = GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
+      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination);
+    }
+    return true;
+  }
+
   return false;
 }
 

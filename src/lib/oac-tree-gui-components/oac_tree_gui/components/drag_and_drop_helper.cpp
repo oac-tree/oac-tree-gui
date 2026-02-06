@@ -124,7 +124,7 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
   if (drop_indicator_row < 0)
   {
     // mouse is hovered on top of another item
-    return {"", 0};
+    return mvvm::TagIndex::First();
   }
 
   // mouse is hovered between two other items
@@ -143,12 +143,12 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
       // if item is moved toward larger indices
       if (drop_indicator_row > 0)
       {
-        return {"", static_cast<std::size_t>(drop_indicator_row - 1)};
+        return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row - 1));
       }
     }
   }
 
-  return {"", static_cast<std::size_t>(drop_indicator_row)};
+  return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row));
 }
 
 mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row)
@@ -156,10 +156,64 @@ mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row)
   if (drop_indicator_row < 0)
   {
     // mouse is hovered on top of another item
-    return {"", 0};
+    return mvvm::TagIndex::First();
   }
 
-  return {"", static_cast<std::size_t>(drop_indicator_row)};
+  return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row));
+}
+
+std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, int32_t source_row,
+                                    const QModelIndex& parent)
+{
+  // This is what canDropMimeData reports when we drag an item
+  //
+  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
+  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
+  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
+  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
+  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
+
+  std::int32_t destination_row{-1};
+  if (drop_indicator_row != -1)
+  {
+    // dropped between items at specific position
+    destination_row = drop_indicator_row;
+  }
+  else if (parent.isValid())
+  {
+    // Dropped on an item - insert after that item
+    destination_row = parent.row() + 1;
+  }
+  else
+  {
+    // dropped on viewport - insert at the end of the list
+    throw std::runtime_error("Shouldn't be here");
+    return destination_row;  // -1 will be handled by the view model and lead to item insertion at
+                             // the end of the list.
+  }
+
+  // Adjust destination if moving from earlier position
+  if (source_row < destination_row)
+  {
+    destination_row--;
+  }
+
+  // if it happens tgat source_row == destination_row, it i will be handled by
+  // the view model and not lead to any item movement.
+
+  return (source_row < destination_row) ? destination_row + 1 : destination_row;
+}
+
+mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,
+                                           const mvvm::TagIndex& source_tag_index,
+                                           const QModelIndex& parent)
+{
+  const auto source_tag = source_tag_index.GetTag();
+  const auto destination_index =
+      GetListInternalMoveRow(drop_indicator_row, source_tag_index.GetIndex(), parent);
+  return destination_index >= 0
+             ? mvvm::TagIndex{source_tag, static_cast<std::size_t>(destination_index)}
+             : mvvm::TagIndex::Invalid();
 }
 
 }  // namespace oac_tree_gui

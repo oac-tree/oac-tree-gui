@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/viewmodel/flatlist_viewmodel.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
@@ -46,7 +47,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_list_view(new QListView)
-    , m_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
+    , m_component_provider(mvvm::CreateProvider<FlatListViewModel>(m_list_view))
     , m_actions(new ProcedureListActions(this))
     , m_action_handler(new ProcedureListActionHandler(CreateContext(), this))
 {
@@ -81,6 +82,12 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
 
   auto context = m_command_service.RegisterWidgetUniqueId(this);
   m_actions->RegisterActionsForContext(context, m_command_service);
+
+  // configure list to allow internal move of procedures (handled by FlatListViewModel)
+  m_list_view->setDragEnabled(true);
+  m_list_view->setDropIndicatorShown(true);
+  m_list_view->setDefaultDropAction(Qt::MoveAction);
+  m_list_view->setDragDropMode(QAbstractItemView::DragDrop);
 }
 
 ProcedureListWidget::~ProcedureListWidget()

@@ -34,6 +34,7 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/standarditems/vector_item.h>
 #include <mvvm/viewmodel/all_items_viewmodel.h>
+#include <mvvm/viewmodel/top_items_viewmodel.h>
 
 #include <gtest/gtest.h>
 
@@ -222,6 +223,207 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
   auto reconstructed_item = sup::gui::CreateSessionItem(data.get(), mime_type);
   EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
   EXPECT_NE(dynamic_cast<WaitItem*>(reconstructed_item.get()), nullptr);
+}
+
+TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForFirstItem)
+{
+  // pretending to move first item
+  const std::int32_t source_row = 0;
+
+  auto procedure0 = m_model.InsertItem<ProcedureItem>();
+  auto procedure1 = m_model.InsertItem<ProcedureItem>();
+  auto procedure2 = m_model.InsertItem<ProcedureItem>();
+
+  mvvm::TopItemsViewModel view_model(&m_model);
+  auto procedure0_index = view_model.index(0, 0);
+  auto procedure1_index = view_model.index(1, 0);
+  auto procedure2_index = view_model.index(2, 0);
+
+  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
+  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
+  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
+  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
+  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
+  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
+  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
+
+  {  // hovering case #0
+    const std::int32_t drop_indicator = 0;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
+  }
+
+  {  // hovering cvase [1]
+    const std::int32_t drop_indicator = 1;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
+  }
+
+  {  // hovering case [1]
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure0_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
+  }
+
+  {  // hovering case [2]
+    const std::int32_t drop_indicator = 1;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
+  }
+
+  {  // hovering case [3]
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure1_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+  }
+
+  {  // hovering case [4]
+    const std::int32_t drop_indicator = 2;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+  }
+
+  {  // hovering case [5]
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure2_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
+  }
+
+  {  // hovering case [6]
+    const std::int32_t drop_indicator = 3;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
+  }
+}
+
+TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForMiddleItem)
+{
+  // pretending to move middle item
+  const std::int32_t source_row = 1;
+
+  auto procedure0 = m_model.InsertItem<ProcedureItem>();
+  auto procedure1 = m_model.InsertItem<ProcedureItem>();
+  auto procedure2 = m_model.InsertItem<ProcedureItem>();
+
+  const mvvm::TopItemsViewModel view_model(&m_model);
+  auto procedure0_index = view_model.index(0, 0);
+  auto procedure1_index = view_model.index(1, 0);
+  auto procedure2_index = view_model.index(2, 0);
+
+  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
+  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
+  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
+  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
+  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
+  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
+  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
+
+  {  // hovering case #0
+    const std::int32_t drop_indicator = 0;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
+  }
+
+  {  // hovering case #1
+    const std::int32_t drop_indicator = 1;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+  }
+
+  {  // hovering case #2
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure0_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+  }
+
+  {  // hovering case #3
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure1_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+  }
+
+  {  // hovering case #4
+    const std::int32_t drop_indicator = 2;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+  }
+
+  {  // hovering case #5
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure2_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
+  }
+
+  {  // hovering case #6
+    const std::int32_t drop_indicator = 3;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
+  }
+}
+
+TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForLastItem)
+{
+  // pretending to move last item
+  const std::int32_t source_row = 2;
+
+  auto procedure0 = m_model.InsertItem<ProcedureItem>();
+  auto procedure1 = m_model.InsertItem<ProcedureItem>();
+  auto procedure2 = m_model.InsertItem<ProcedureItem>();
+
+  const mvvm::TopItemsViewModel view_model(&m_model);
+  auto procedure0_index = view_model.index(0, 0);
+  auto procedure1_index = view_model.index(1, 0);
+  auto procedure2_index = view_model.index(2, 0);
+
+  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
+  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
+  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
+  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
+  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
+  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
+  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
+
+  {  // hovering case #0
+    const std::int32_t drop_indicator = 0;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
+  }
+
+  {  // hovering case #1
+    const std::int32_t drop_indicator = 1;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+  }
+
+  {  // hovering case #2
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure0_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+  }
+
+  {  // hovering case #3
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure1_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+  }
+
+  {  // hovering case #4
+    const std::int32_t drop_indicator = 2;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+  }
+
+  {  // hovering case #5
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure2_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+  }
+
+  {  // hovering case #6
+    const std::int32_t drop_indicator = 3;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+  }
 }
 
 }  // namespace oac_tree_gui::test

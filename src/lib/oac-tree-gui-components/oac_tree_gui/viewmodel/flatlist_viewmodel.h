@@ -36,6 +36,11 @@ namespace oac_tree_gui
  * - do not go down to item hierarchy (like instruction tree) and shows only the top level items
  * - can be used together with QTreeView and there it will look like list too
  * - allows internal item move inside the container
+ *
+ * For item reordering it is necessary, that the view is configured with
+ * view->setDefaultDropAction(Qt::MoveAction) <-- preferably
+ * or
+ * view->setDragDropMode(QAbstractItemView::InternalMove);
  */
 class FlatListViewModel : public mvvm::ViewModel
 {
@@ -50,13 +55,13 @@ public:
 
   QStringList mimeTypes() const override;
 
-  QMimeData *mimeData(const QModelIndexList &indexes) const override;
+  QMimeData* mimeData(const QModelIndexList& indexes) const override;
 
-  bool canDropMimeData(const QMimeData *data, Qt::DropAction action,
-                               int row, int column, const QModelIndex &parent) const override;
+  bool canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
+                       const QModelIndex& parent) const override;
 
-  bool dropMimeData(const QMimeData *data, Qt::DropAction action,
-                            int row, int column, const QModelIndex &parent) override;
+  bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
+                    const QModelIndex& parent) override;
 
   Qt::DropActions supportedDropActions() const override;
 

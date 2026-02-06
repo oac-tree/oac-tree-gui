@@ -50,8 +50,11 @@ std::vector<ProcedureItem*> SequencerModel::GetProcedures() const
 
 void SequencerModel::CreateUntitledProcedure()
 {
-  auto procedure = InsertItem<ProcedureItem>(GetProcedureContainer());
-  (void)procedure->SetDisplayName("Untitled");
+  // auto procedure = InsertItem<ProcedureItem>(GetProcedureContainer());
+  // (void)procedure->SetDisplayName("Untitled");
+  InsertItem<ProcedureItem>(GetProcedureContainer())->SetDisplayName("Untitled0");
+  InsertItem<ProcedureItem>(GetProcedureContainer())->SetDisplayName("Untitled1");
+  InsertItem<ProcedureItem>(GetProcedureContainer())->SetDisplayName("Untitled2");
 }
 
 void SequencerModel::Clear()

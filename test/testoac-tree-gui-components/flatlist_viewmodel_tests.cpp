@@ -173,4 +173,62 @@ TEST_F(FlatListViewModelTest, MimeDataEncoding)
   EXPECT_EQ(identifiers.at(0), procedure_item->GetIdentifier());
 }
 
+/*
+ This is what canDropMimeData reports when we drag an item
+
+[0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
+[1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
+[2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
+[3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
+[4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
+*/
+TEST_F(FlatListViewModelTest, CanDropMimeData)
+{
+  auto procedure0 = m_model.InsertItem<ProcedureItem>();
+  auto procedure1 = m_model.InsertItem<ProcedureItem>();
+
+  const FlatListViewModel view_model(&m_model);
+
+  {  // nullptr data
+    EXPECT_FALSE(view_model.canDropMimeData(nullptr, Qt::MoveAction, -1, -1, QModelIndex()));
+    EXPECT_FALSE(view_model.canDropMimeData(nullptr, Qt::CopyAction, -1, -1, QModelIndex()));
+  }
+
+  {  // mime data of wrong type
+    auto mime_data = std::make_unique<QMimeData>();
+    mime_data->setData("wrong/type", QByteArray());
+    EXPECT_FALSE(
+        view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+    EXPECT_FALSE(
+        view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1, QModelIndex()));
+  }
+
+  {  // all combinations of QModelIndex and row from the table above should be accepted
+    auto mime_data = std::make_unique<QMimeData>();
+    mime_data->setData(kItemIdentifierMimeType, QByteArray());
+
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, QModelIndex()));
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
+                                           view_model.index(0, 0)));
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, QModelIndex()));
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
+                                           view_model.index(1, 0)));
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 2, 0, QModelIndex()));
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
+                                           view_model.index(2, 0)));
+
+    // copy is not yet implemented, so it should be rejected
+    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
+    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
+                                            view_model.index(0, 0)));
+    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 1, 0, QModelIndex()));
+    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
+                                            view_model.index(1, 0)));
+    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 2, 0, QModelIndex()));
+    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
+                                            view_model.index(2, 0)));
+  }
+}
+
+
 }  // namespace oac_tree_gui::test
