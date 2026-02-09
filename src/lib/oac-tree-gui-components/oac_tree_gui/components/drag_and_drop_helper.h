@@ -26,7 +26,6 @@
 #include <QModelIndexList>
 #include <cstdint>
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -47,7 +46,7 @@ class ProcedureItem;
 //! Mime type for drag-and-drop events containing item's identifier information.
 //! Depending on view model implementation, view context and the Qt::DropAction can lead to item
 //! internal move, copy or creation of new item based on the dragged one.
-constexpr auto kItemIdentifierMimeType = "application/coa.sequencer.item.itendifier";
+constexpr auto kItemIdentifierMimeType = "application/coa.sequencer.item.identifier";
 
 //! Mime type for drag-and-drop events leading to the instruction move.
 constexpr auto kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";
