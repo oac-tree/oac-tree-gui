@@ -178,11 +178,15 @@ std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, int32_t sou
   {
     // dropped between items at specific position
     destination_row = drop_indicator_row;
+    if (source_row < destination_row)
+    {
+      destination_row--;
+    }
   }
   else if (parent.isValid())
   {
     // Dropped on an item - insert after that item
-    destination_row = parent.row() + 1;
+    destination_row = parent.row();
   }
   else
   {
@@ -192,16 +196,18 @@ std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, int32_t sou
                              // the end of the list.
   }
 
-  // Adjust destination if moving from earlier position
-  if (source_row < destination_row)
-  {
-    destination_row--;
-  }
+  // // Adjust destination if moving from earlier position
+  // if (source_row < destination_row)
+  // {
+  //   destination_row--;
+  // }
 
-  // if it happens tgat source_row == destination_row, it i will be handled by
-  // the view model and not lead to any item movement.
+  // // if it happens tgat source_row == destination_row, it i will be handled by
+  // // the view model and not lead to any item movement.
 
-  return (source_row < destination_row) ? destination_row + 1 : destination_row;
+  // return (source_row < destination_row) ? destination_row + 1 : destination_row;
+
+  return destination_row;
 }
 
 mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,

@@ -253,46 +253,40 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForFirstItem)
     EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
   }
 
-  {  // hovering cvase [1]
-    const std::int32_t drop_indicator = 1;
-    const QModelIndex parent_index;  // invalid
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
-  }
-
-  {  // hovering case [1]
+  {  // hovering case #1
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure0_index;
     EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
   }
 
-  {  // hovering case [2]
+  {  // hovering case #2
     const std::int32_t drop_indicator = 1;
     const QModelIndex parent_index;  // invalid
     EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
   }
 
-  {  // hovering case [3]
+  {  // hovering case #3
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure1_index;
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
   }
 
-  {  // hovering case [4]
+  {  // hovering case #4
     const std::int32_t drop_indicator = 2;
     const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+  }
+
+  {  // hovering case #5
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure2_index;
     EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
   }
 
-  {  // hovering case [5]
-    const std::int32_t drop_indicator = -1;
-    const QModelIndex parent_index = procedure2_index;
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
-  }
-
-  {  // hovering case [6]
+  {  // hovering case #6
     const std::int32_t drop_indicator = 3;
     const QModelIndex parent_index;  // invalid
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
   }
 }
 
@@ -325,14 +319,14 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForMiddleItem)
   }
 
   {  // hovering case #1
-    const std::int32_t drop_indicator = 1;
-    const QModelIndex parent_index;  // invalid
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure0_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
   }
 
   {  // hovering case #2
-    const std::int32_t drop_indicator = -1;
-    const QModelIndex parent_index = procedure0_index;
+    const std::int32_t drop_indicator = 1;
+    const QModelIndex parent_index; // invalid
     EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
   }
 
@@ -351,13 +345,13 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForMiddleItem)
   {  // hovering case #5
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure2_index;
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
   }
 
   {  // hovering case #6
     const std::int32_t drop_indicator = 3;
     const QModelIndex parent_index;  // invalid
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 3);
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
   }
 }
 
@@ -390,21 +384,21 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForLastItem)
   }
 
   {  // hovering case #1
-    const std::int32_t drop_indicator = 1;
-    const QModelIndex parent_index;  // invalid
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index = procedure0_index;
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 0);
   }
 
   {  // hovering case #2
-    const std::int32_t drop_indicator = -1;
-    const QModelIndex parent_index = procedure0_index;
+    const std::int32_t drop_indicator = 1;
+    const QModelIndex parent_index; // invalid
     EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
   }
 
   {  // hovering case #3
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure1_index;
-    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 2);
+    EXPECT_EQ(GetListInternalMoveRow(drop_indicator, source_row, parent_index), 1);
   }
 
   {  // hovering case #4
