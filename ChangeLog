@@ -1,5 +1,6 @@
 Changes for 2.2.0:
 
+- Implement FlatListViewModel and allow reordering of opened procedures in a list
 - Refactor domain plugin loader so it relies on sequencer plugin load machinery
 - Introduce ProjectModel to save session specific settings (breakes project file compatibility)
 - Fix missed mathexpr/control plugin load on CODAC machines

@@ -138,8 +138,8 @@ mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row);
  * @return Index for TagIndex construction corresponding to the drop indicator position.
  *
  */
-std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, std::int32_t source_index,
-                                    const QModelIndex& parent);
+std::int32_t GetListInternalMoveIndex(std::int32_t drop_indicator_row, std::int32_t source_index,
+                                      const QModelIndex& parent);
 
 /**
  * @brief Calculate TagIndex corresponding to the drop indicator position for internal move in the
