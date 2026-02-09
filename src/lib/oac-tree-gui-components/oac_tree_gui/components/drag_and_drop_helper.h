@@ -125,19 +125,20 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
 mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row);
 
 /**
- * @brief Calculate row number corresponding to the drop indicator position.
+ * @brief Calculate item index corresponding to the drop indicator position.
  *
  * This functions is intended to be used for internal move operations in the views showing flat list
- * of items (e.g. FlatListViewModel) where the drop indicator position and parent's index are
- * reported by QAbstractItemModel::dropMimeData.
+ * of items (e.g. FlatListViewModel) where the drop indicator position and parent's viewmodelindex
+ * are reported by QAbstractItemModel::dropMimeData.
  *
  * @param drop_indicator_row Position of drop indicator as reported by QListView.
- * @param source_row Row number of the item being moved.
+ * @param source_row Index of item being moved.
  * @param parent The parent index as reported by QListView.
  *
- * @return Row number corresponding to the drop indicator position.
+ * @return Index for TagIndex construction corresponding to the drop indicator position.
+ *
  */
-std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, std::int32_t source_row,
+std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, std::int32_t source_index,
                                     const QModelIndex& parent);
 
 /**
@@ -145,8 +146,8 @@ std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, std::int32_
  * list view.
  *
  * This functions is intended to be used for internal move operations in the views showing flat list
- * of items (e.g. FlatListViewModel) where the drop indicator position and parent's index are
- * reported by QAbstractItemModel::dropMimeData.
+ * of items (e.g. FlatListViewModel) where the drop indicator position and parent's viewmodelindex
+ * are reported by QAbstractItemModel::dropMimeData.
  *
  * @param drop_indicator_row Position of drop indicator as reported by QListView.
  * @param source_tag_index TagIndex of the item being moved.

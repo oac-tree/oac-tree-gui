@@ -230,5 +230,44 @@ TEST_F(FlatListViewModelTest, CanDropMimeData)
   }
 }
 
+TEST_F(FlatListViewModelTest, DragProcedureFromFirstPositionToLast)
+{
+  auto procedure0 = m_model.InsertItem<ProcedureItem>();
+  auto procedure1 = m_model.InsertItem<ProcedureItem>();
+  auto procedure2 = m_model.InsertItem<ProcedureItem>();
+
+  FlatListViewModel view_model(&m_model);
+
+  auto procedure0_index = view_model.index(0, 0);
+
+  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({procedure0_index}));
+
+  const std::int32_t drop_row = 3;  // dropping after the last item
+
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_row, 0, QModelIndex()));
+  EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({procedure1, procedure2, procedure0}));
+}
+
+TEST_F(FlatListViewModelTest, DragLastProcedureOnTopOfFirst)
+{
+  auto procedure0 = m_model.InsertItem<ProcedureItem>();
+  auto procedure1 = m_model.InsertItem<ProcedureItem>();
+  auto procedure2 = m_model.InsertItem<ProcedureItem>();
+
+  FlatListViewModel view_model(&m_model);
+
+  auto procedure0_index = view_model.index(0, 0);
+  auto procedure2_index = view_model.index(2, 0);
+
+  // dropping on top of the first item should move dragged item to the first position
+  const std::int32_t drop_row = -1;
+
+  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({procedure2_index}));
+  EXPECT_TRUE(
+      view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_row, 0, procedure0_index));
+  EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({procedure2, procedure0, procedure1}));
+}
 
 }  // namespace oac_tree_gui::test

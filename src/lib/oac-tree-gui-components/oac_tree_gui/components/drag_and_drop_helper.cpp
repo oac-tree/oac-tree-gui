@@ -162,7 +162,7 @@ mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row)
   return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row));
 }
 
-std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, int32_t source_row,
+std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, int32_t source_index,
                                     const QModelIndex& parent)
 {
   // This is what canDropMimeData reports when we drag an item
@@ -172,42 +172,31 @@ std::int32_t GetListInternalMoveRow(std::int32_t drop_indicator_row, int32_t sou
   // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
   // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
   // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
+  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
+  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
 
-  std::int32_t destination_row{-1};
+  std::int32_t destination_index{-1};
   if (drop_indicator_row != -1)
   {
     // dropped between items at specific position
-    destination_row = drop_indicator_row;
-    if (source_row < destination_row)
+    destination_index = drop_indicator_row;
+    if (source_index < destination_index)
     {
-      destination_row--;
+      destination_index--;
     }
   }
   else if (parent.isValid())
   {
-    // Dropped on an item - insert after that item
-    destination_row = parent.row();
+    // dropped on an item
+    destination_index = parent.row();
   }
   else
   {
-    // dropped on viewport - insert at the end of the list
+    // dropped on viewport
     throw std::runtime_error("Shouldn't be here");
-    return destination_row;  // -1 will be handled by the view model and lead to item insertion at
-                             // the end of the list.
   }
 
-  // // Adjust destination if moving from earlier position
-  // if (source_row < destination_row)
-  // {
-  //   destination_row--;
-  // }
-
-  // // if it happens tgat source_row == destination_row, it i will be handled by
-  // // the view model and not lead to any item movement.
-
-  // return (source_row < destination_row) ? destination_row + 1 : destination_row;
-
-  return destination_row;
+  return destination_index;
 }
 
 mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,

@@ -71,8 +71,8 @@ bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction ac
     return false;
   }
 
-  qDebug() << "FlatListViewModel::canDropMimeData() -> action:" << action << "row:" << row
-           << "column:" << column << "parent:" << parent;
+  // qDebug() << "FlatListViewModel::canDropMimeData() -> action:" << action << "row:" << row
+  //          << "column:" << column << "parent:" << parent;
 
   if (action != Qt::MoveAction)
   {
@@ -91,13 +91,15 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
     return false;
   }
 
-  auto parent_item = GetSessionItemFromIndex(parent);
+  // row == -1 when we are dropping on top of an item, otherwise row is the position to insert at.
+  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
+
   if (data->hasFormat(kItemIdentifierMimeType))
   {
     for (const auto& id : GetStringListFromMime(data, kItemIdentifierMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      if (!item)
+      if (item == nullptr)
       {
         throw RuntimeException("Item with id " + id + " not found in the model");
       }
