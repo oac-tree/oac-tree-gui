@@ -63,8 +63,8 @@ bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction ac
     return false;
   }
 
-  // qDebug() << "FlatListViewModel::canDropMimeData() -> action:" << action << "row:" << row
-  //          << "column:" << column << "parent:" << parent;
+  qDebug() << "FlatListViewModel::canDropMimeData() -> action:" << action << "row:" << row
+           << "column:" << column << "parent:" << parent;
 
   if (action != Qt::MoveAction)
   {

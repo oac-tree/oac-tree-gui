@@ -123,7 +123,7 @@ TEST_F(JobListViewModelTest, DragJobFromFirstPositionToLast)
             std::vector<mvvm::SessionItem*>({job1, job2, job0}));
 }
 
-TEST_F(JobListViewModelTest, DragLasyJobOnTopOfFirst)
+TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirst)
 {
   TestModel model;
 
@@ -132,13 +132,19 @@ TEST_F(JobListViewModelTest, DragLasyJobOnTopOfFirst)
   auto job2 = model.InsertItem<LocalJobItem>();
 
   JobListViewModel view_model(&model);
-  auto job0_index = view_model.index(0, 0);
-  auto job2_index = view_model.index(2, 0);
+  auto job0_name_index = view_model.index(0, 0);
+  auto job0_status_index = view_model.index(0, 1);
+  auto job2_name_index = view_model.index(2, 0);
+  auto job2_status_index = view_model.index(2, 1);
+
   // pretending to drop on top of the first item
   const std::int32_t drop_indicator_row = -1;
-  const QModelIndex parent_index = job0_index;
+  const QModelIndex parent_index = job0_name_index; // droping on cell containing the name
 
-  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({job2_index}));
+  // pretending the whole row with job2 is dragged
+  const std::unique_ptr<QMimeData> mime_data(
+      view_model.mimeData({job2_name_index, job2_status_index}));
+
   EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
                                       parent_index));
   EXPECT_EQ(model.GetRootItem()->GetAllItems(),
