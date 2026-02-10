@@ -18,18 +18,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/viewmodel/flatlist_viewmodel.h"
+#include "oac_tree_gui/viewmodel/procedure_list_viewmodel.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
-#include <oac_tree_gui/model/standard_job_items.h>
 
 #include <mvvm/model/application_model.h>
-#include <mvvm/providers/standard_children_strategies.h>
-#include <mvvm/providers/standard_row_strategies.h>
-#include <mvvm/providers/viewmodel_controller_factory.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/viewmodel/top_items_viewmodel.h>
 
 #include <gtest/gtest.h>
 
@@ -44,97 +40,55 @@ const std::int32_t kExpectedColumnCount = 2;  // as defined in LabelDataRowStrat
 }
 
 /**
- * @brief Tests for FlatListViewModelTest class.
+ * @brief Tests for ProcedureListViewModel class.
  */
-class FlatListViewModelTest : public ::testing::Test
+class ProcedureListViewModelTest : public ::testing::Test
 {
 public:
-  FlatListViewModelTest() = default;
-
-  class TestViewModel : public FlatListViewModel
-  {
-  public:
-    explicit TestViewModel(mvvm::SessionModel* model)
-    {
-      SetController(
-          mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
-              model, this));
-    }
-  };
+  ProcedureListViewModelTest() = default;
 
   mvvm::ApplicationModel m_model;
 };
 
-TEST_F(FlatListViewModelTest, InitialState)
+TEST_F(ProcedureListViewModelTest, InitialState)
 {
   {  // no model defined
-    const TestViewModel view_model(nullptr);
+    const ProcedureListViewModel view_model(nullptr);
     EXPECT_EQ(view_model.rowCount(), 0);
     EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
   }
 
   {
-    const TestViewModel view_model(&m_model);
+    const ProcedureListViewModel view_model(&m_model);
     EXPECT_EQ(view_model.rowCount(), 0);
     EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
   }
 }
 
-TEST_F(FlatListViewModelTest, InstructionWithChildren)
-{
-  const TestViewModel view_model(&m_model);
-
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait = m_model.InsertItem<WaitItem>(sequence0);
-  auto message0 = m_model.InsertItem<RepeatItem>();
-
-  // two children, sequence0 and message0, at top level
-  EXPECT_EQ(view_model.rowCount(), 2);
-  EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
-
-  auto sequence_index = view_model.index(0, 0);
-  EXPECT_EQ(view_model.data(sequence_index, Qt::DisplayRole).toString().toStdString(),
-            mvvm::GetTypeName<SequenceItem>());
-
-  // children of sequence are hidden
-  EXPECT_EQ(view_model.rowCount(sequence_index), 0);
-  EXPECT_EQ(view_model.columnCount(sequence_index), kExpectedColumnCount);
-}
-
-TEST_F(FlatListViewModelTest, MixtureOfItemsOfVeryDifferentType)
-{
-  const TestViewModel view_model(&m_model);
-
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait = m_model.InsertItem<WaitItem>(sequence0);
-  auto procedure = m_model.InsertItem<ProcedureItem>();
-  auto job = m_model.InsertItem<LocalJobItem>();
-
-  EXPECT_EQ(view_model.rowCount(), 3);  // sequence, procedure, job
-  EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
-}
-
-TEST_F(FlatListViewModelTest, ContainerChange)
+TEST_F(ProcedureListViewModelTest, ContainerChange)
 {
   auto container0 = m_model.InsertItem<mvvm::ContainerItem>();
-  auto job0 = m_model.InsertItem<LocalJobItem>(container0);
-  auto job1 = m_model.InsertItem<LocalJobItem>(container0);
-  auto container1 = m_model.InsertItem<mvvm::ContainerItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(container1);
-  auto wait1 = m_model.InsertItem<WaitItem>(container1);
-  auto wait2 = m_model.InsertItem<WaitItem>(container1);
 
-  TestViewModel view_model(nullptr);
+  auto procedure0 = m_model.InsertItem<ProcedureItem>(container0);
+  auto procedure1 = m_model.InsertItem<ProcedureItem>(container0);
+
+  auto container1 = m_model.InsertItem<mvvm::ContainerItem>();
+
+  auto procedure2 = m_model.InsertItem<ProcedureItem>(container1);
+  auto procedure3 = m_model.InsertItem<ProcedureItem>(container1);
+  auto procedure4 = m_model.InsertItem<ProcedureItem>(container1);
+
+  ProcedureListViewModel view_model(nullptr);
   view_model.SetRootSessionItem(container0);
   EXPECT_EQ(view_model.rowCount(), 2);
   view_model.SetRootSessionItem(container1);
   EXPECT_EQ(view_model.rowCount(), 3);
 }
 
-TEST_F(FlatListViewModelTest, FlagsForDragAndDrop)
+TEST_F(ProcedureListViewModelTest, FlagsForDragAndDrop)
 {
-  auto wait0 = m_model.InsertItem<WaitItem>();
-  const TestViewModel model(&m_model);
+  auto wait0 = m_model.InsertItem<ProcedureItem>();
+  const ProcedureListViewModel model(&m_model);
 
   // Valid index should have drag and drop enabled
   const Qt::ItemFlags valid_flags = model.flags(model.index(0, 0));
@@ -149,9 +103,9 @@ TEST_F(FlatListViewModelTest, FlagsForDragAndDrop)
   EXPECT_FALSE(invalid_flags & Qt::ItemIsDragEnabled);
 }
 
-TEST_F(FlatListViewModelTest, SupportedActions)
+TEST_F(ProcedureListViewModelTest, SupportedActions)
 {
-  const TestViewModel model(&m_model);
+  const ProcedureListViewModel model(&m_model);
 
   EXPECT_TRUE(model.supportedDragActions() & Qt::MoveAction);
   EXPECT_TRUE(model.supportedDragActions() & Qt::CopyAction);
@@ -159,18 +113,18 @@ TEST_F(FlatListViewModelTest, SupportedActions)
   EXPECT_TRUE(model.supportedDropActions() & Qt::CopyAction);
 }
 
-TEST_F(FlatListViewModelTest, MimeTypes)
+TEST_F(ProcedureListViewModelTest, MimeTypes)
 {
-  const TestViewModel model(&m_model);
+  const ProcedureListViewModel model(&m_model);
 
   QStringList mime_types = model.mimeTypes();
   EXPECT_EQ(mime_types.size(), 1);
   EXPECT_EQ(mime_types[0], kItemIdentifierMimeType);
 }
 
-TEST_F(FlatListViewModelTest, MimeDataEncoding)
+TEST_F(ProcedureListViewModelTest, MimeDataEncoding)
 {
-  const TestViewModel model(&m_model);
+  const ProcedureListViewModel model(&m_model);
 
   auto procedure_item = m_model.InsertItem<ProcedureItem>();
   auto display_index = model.index(0, 0);
@@ -195,12 +149,12 @@ TEST_F(FlatListViewModelTest, MimeDataEncoding)
 [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
 [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
 */
-TEST_F(FlatListViewModelTest, CanDropMimeData)
+TEST_F(ProcedureListViewModelTest, CanDropMimeData)
 {
   auto procedure0 = m_model.InsertItem<ProcedureItem>();
   auto procedure1 = m_model.InsertItem<ProcedureItem>();
 
-  const TestViewModel view_model(&m_model);
+  const ProcedureListViewModel view_model(&m_model);
 
   {  // nullptr data
     EXPECT_FALSE(view_model.canDropMimeData(nullptr, Qt::MoveAction, -1, -1, QModelIndex()));
@@ -243,13 +197,13 @@ TEST_F(FlatListViewModelTest, CanDropMimeData)
   }
 }
 
-TEST_F(FlatListViewModelTest, DragProcedureFromFirstPositionToLast)
+TEST_F(ProcedureListViewModelTest, DragProcedureFromFirstPositionToLast)
 {
   auto procedure0 = m_model.InsertItem<ProcedureItem>();
   auto procedure1 = m_model.InsertItem<ProcedureItem>();
   auto procedure2 = m_model.InsertItem<ProcedureItem>();
 
-  TestViewModel view_model(&m_model);
+  ProcedureListViewModel view_model(&m_model);
 
   auto procedure0_index = view_model.index(0, 0);
 
@@ -262,13 +216,13 @@ TEST_F(FlatListViewModelTest, DragProcedureFromFirstPositionToLast)
             std::vector<mvvm::SessionItem*>({procedure1, procedure2, procedure0}));
 }
 
-TEST_F(FlatListViewModelTest, DragLastProcedureOnTopOfFirst)
+TEST_F(ProcedureListViewModelTest, DragLastProcedureOnTopOfFirst)
 {
   auto procedure0 = m_model.InsertItem<ProcedureItem>();
   auto procedure1 = m_model.InsertItem<ProcedureItem>();
   auto procedure2 = m_model.InsertItem<ProcedureItem>();
 
-  TestViewModel view_model(&m_model);
+  ProcedureListViewModel view_model(&m_model);
 
   auto procedure0_index = view_model.index(0, 0);
   auto procedure2_index = view_model.index(2, 0);

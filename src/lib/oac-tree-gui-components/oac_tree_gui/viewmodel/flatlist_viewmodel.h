@@ -47,7 +47,7 @@ class FlatListViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit FlatListViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
+  explicit FlatListViewModel(QObject* parent_object = nullptr);
 
   int rowCount(const QModelIndex& index = {}) const override;
 

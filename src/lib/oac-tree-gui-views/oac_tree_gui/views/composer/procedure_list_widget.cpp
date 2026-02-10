@@ -24,15 +24,13 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/viewmodel/flatlist_viewmodel.h>
+#include <oac_tree_gui/viewmodel/procedure_list_viewmodel.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
 
-#include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/viewmodel/top_items_viewmodel.h>
 #include <mvvm/views/component_provider_helper.h>
 
 #include <QListView>
@@ -47,7 +45,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_list_view(new QListView)
-    , m_component_provider(mvvm::CreateProvider<FlatListViewModel>(m_list_view))
+    , m_component_provider(mvvm::CreateProvider<ProcedureListViewModel>(m_list_view))
     , m_actions(new ProcedureListActions(this))
     , m_action_handler(new ProcedureListActionHandler(CreateContext(), this))
 {

@@ -25,21 +25,13 @@
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/session_item.h>
-#include <mvvm/providers/standard_children_strategies.h>
-#include <mvvm/providers/standard_row_strategies.h>
-#include <mvvm/providers/viewmodel_controller_factory.h>
 
 #include <QMimeData>
 
 namespace oac_tree_gui
 {
 
-FlatListViewModel::FlatListViewModel(mvvm::ISessionModel* model, QObject* parent_object)
-    : ViewModel(parent_object)
-{
-  SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
-      model, this));
-}
+FlatListViewModel::FlatListViewModel(QObject* parent_object) : ViewModel(parent_object) {}
 
 int FlatListViewModel::rowCount(const QModelIndex& index) const
 {
