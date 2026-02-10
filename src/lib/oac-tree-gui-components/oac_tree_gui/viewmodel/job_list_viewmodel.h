@@ -21,12 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWMODEL_JOB_LIST_VIEWMODEL_H_
 #define OAC_TREE_GUI_VIEWMODEL_JOB_LIST_VIEWMODEL_H_
 
-#include <mvvm/viewmodel/viewmodel.h>
-
-namespace mvvm
-{
-class ISessionModel;
-}
+#include <oac_tree_gui/viewmodel/flatlist_viewmodel.h>
 
 namespace oac_tree_gui
 {
@@ -35,7 +30,7 @@ namespace oac_tree_gui
  * @brief The JobListViewModel class is a view model to show JobItem with two columns: displayName
  * and status.
  */
-class JobListViewModel : public mvvm::ViewModel
+class JobListViewModel : public FlatListViewModel
 {
   Q_OBJECT
 

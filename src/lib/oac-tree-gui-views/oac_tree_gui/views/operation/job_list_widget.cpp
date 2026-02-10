@@ -58,6 +58,12 @@ JobListWidget::JobListWidget(QWidget* parent_widget)
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
 
+  // configure tree to allow internal move of procedures (handled by FlatListViewModel)
+  m_tree_view->setDragEnabled(true);
+  m_tree_view->setDropIndicatorShown(true);
+  m_tree_view->setDefaultDropAction(Qt::MoveAction);
+  m_tree_view->setDragDropMode(QAbstractItemView::DragDrop);
+
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { emit JobSelected(GetSelectedJob()); });
 }

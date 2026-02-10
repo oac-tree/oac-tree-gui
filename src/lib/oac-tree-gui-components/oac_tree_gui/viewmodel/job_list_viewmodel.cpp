@@ -63,7 +63,7 @@ public:
 };
 
 JobListViewModel::JobListViewModel(mvvm::ISessionModel* model, QObject* parent_object)
-    : ViewModel(parent_object)
+    : FlatListViewModel(parent_object)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
 }
