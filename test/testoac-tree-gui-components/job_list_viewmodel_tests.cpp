@@ -29,6 +29,7 @@
 
 #include <gtest/gtest.h>
 
+#include <QMimeData>
 #include <QSignalSpy>
 
 namespace oac_tree_gui::test
@@ -54,47 +55,94 @@ TEST_F(JobListViewModelTest, SingleProcedure)
   auto item = model.InsertItem<LocalJobItem>();
   item->SetStatus(expected_status);
 
-  JobListViewModel viewmodel(&model);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
+  JobListViewModel view_model(&model);
+  EXPECT_EQ(view_model.rowCount(), 1);
+  EXPECT_EQ(view_model.columnCount(), 2);
 
-  auto displayname_index = viewmodel.index(0, 0);
-  auto status_index = viewmodel.index(0, 1);
+  auto displayname_index = view_model.index(0, 0);
+  auto status_index = view_model.index(0, 1);
 
-  auto views = viewmodel.FindViews(item->GetItem(itemconstants::kStatus));
+  auto views = view_model.FindViews(item->GetItem(itemconstants::kStatus));
   ASSERT_EQ(views.size(), 1);
-  EXPECT_EQ(viewmodel.indexFromItem(views[0]), status_index);
+  EXPECT_EQ(view_model.indexFromItem(views[0]), status_index);
 
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(displayname_index), item);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(status_index), item->GetItem(itemconstants::kStatus));
+  EXPECT_EQ(view_model.GetSessionItemFromIndex(displayname_index), item);
+  EXPECT_EQ(view_model.GetSessionItemFromIndex(status_index),
+            item->GetItem(itemconstants::kStatus));
 
-  EXPECT_EQ(viewmodel.data(displayname_index, Qt::DisplayRole).toString().toStdString(),
+  EXPECT_EQ(view_model.data(displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("LocalJob"));
-  EXPECT_EQ(viewmodel.data(status_index, Qt::DisplayRole).toString().toStdString(),
+  EXPECT_EQ(view_model.data(status_index, Qt::DisplayRole).toString().toStdString(),
             std::string(ToString(expected_status)));
 
   // there shouldn't be children below
-  EXPECT_EQ(viewmodel.rowCount(displayname_index), 0);
-  EXPECT_EQ(viewmodel.rowCount(status_index), 0);
+  EXPECT_EQ(view_model.rowCount(displayname_index), 0);
+  EXPECT_EQ(view_model.rowCount(status_index), 0);
 }
 
 TEST_F(JobListViewModelTest, NotificationOnStatusChange)
 {
   TestModel model;
 
-  auto procedure0 = model.InsertItem<LocalJobItem>();
-  auto procedure1 = model.InsertItem<LocalJobItem>();
+  auto job0 = model.InsertItem<LocalJobItem>();
+  auto job1 = model.InsertItem<LocalJobItem>();
 
-  JobListViewModel viewmodel(&model);
-  EXPECT_EQ(viewmodel.rowCount(), 2);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
+  JobListViewModel view_model(&model);
+  EXPECT_EQ(view_model.rowCount(), 2);
+  EXPECT_EQ(view_model.columnCount(), 2);
 
-  auto status_index = viewmodel.index(0, 1);
+  auto status_index = view_model.index(0, 1);
 
-  const QSignalSpy spy_data_changed(&viewmodel, &JobListViewModel::dataChanged);
+  const QSignalSpy spy_data_changed(&view_model, &JobListViewModel::dataChanged);
 
-  procedure0->SetStatus(RunnerStatus::kInitial);
+  job0->SetStatus(RunnerStatus::kInitial);
   EXPECT_EQ(spy_data_changed.count(), 1);
+}
+
+TEST_F(JobListViewModelTest, DragJobFromFirstPositionToLast)
+{
+  TestModel model;
+
+  auto job0 = model.InsertItem<LocalJobItem>();
+  auto job1 = model.InsertItem<LocalJobItem>();
+  auto job2 = model.InsertItem<LocalJobItem>();
+
+  JobListViewModel view_model(&model);
+  auto job0_index = view_model.index(0, 0);
+  auto job2_index = view_model.index(2, 0);
+
+  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({job0_index}));
+
+  // pretending to drop after the last item
+  const std::int32_t drop_indicator_row = 3;
+  const QModelIndex parent_index = QModelIndex();  // invalid
+
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+                                      parent_index));
+  EXPECT_EQ(model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({job1, job2, job0}));
+}
+
+TEST_F(JobListViewModelTest, DragLasyJobOnTopOfFirst)
+{
+  TestModel model;
+
+  auto job0 = model.InsertItem<LocalJobItem>();
+  auto job1 = model.InsertItem<LocalJobItem>();
+  auto job2 = model.InsertItem<LocalJobItem>();
+
+  JobListViewModel view_model(&model);
+  auto job0_index = view_model.index(0, 0);
+  auto job2_index = view_model.index(2, 0);
+  // pretending to drop on top of the first item
+  const std::int32_t drop_indicator_row = -1;
+  const QModelIndex parent_index = job0_index;
+
+  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({job2_index}));
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+                                      parent_index));
+  EXPECT_EQ(model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({job2, job0, job1}));
 }
 
 }  // namespace oac_tree_gui::test

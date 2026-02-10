@@ -209,9 +209,12 @@ TEST_F(ProcedureListViewModelTest, DragProcedureFromFirstPositionToLast)
 
   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({procedure0_index}));
 
-  const std::int32_t drop_row = 3;  // dropping after the last item
+  // pretending to drop after the last item
+  const std::int32_t drop_indicator_row = 3;
+  const QModelIndex parent_index = QModelIndex();  // invalid
 
-  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_row, 0, QModelIndex()));
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+                                      parent_index));
   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
             std::vector<mvvm::SessionItem*>({procedure1, procedure2, procedure0}));
 }
@@ -227,12 +230,15 @@ TEST_F(ProcedureListViewModelTest, DragLastProcedureOnTopOfFirst)
   auto procedure0_index = view_model.index(0, 0);
   auto procedure2_index = view_model.index(2, 0);
 
-  // dropping on top of the first item should move dragged item to the first position
-  const std::int32_t drop_row = -1;
+  // pretending to drop on top of the first item
+  const std::int32_t drop_indicator_row = -1;
+  const QModelIndex parent_index = procedure0_index;
 
   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({procedure2_index}));
-  EXPECT_TRUE(
-      view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_row, 0, procedure0_index));
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+                                      parent_index));
+
+  // procedure2 should appear on the first place
   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
             std::vector<mvvm::SessionItem*>({procedure2, procedure0, procedure1}));
 }
