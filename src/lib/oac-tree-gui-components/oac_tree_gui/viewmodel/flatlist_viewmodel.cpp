@@ -25,6 +25,7 @@
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/session_item.h>
+#include <mvvm/model/validate_utils.h>
 
 #include <QMimeData>
 
@@ -74,9 +75,6 @@ bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction ac
     return false;
   }
 
-  qDebug() << "FlatListViewModel::canDropMimeData() -> action:" << action << "row:" << row
-           << "column:" << column << "parent:" << parent;
-
   if (action != Qt::MoveAction)
   {
     // not yet implemented, we support only internal move for the moment
@@ -95,7 +93,11 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
   }
 
   // row == -1 when we are dropping on top of an item, otherwise row is the position to insert at.
-  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
+  auto parent_item =
+      row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent.siblingAtRow(0));
+
+  qDebug() << "parent:" << parent << " sibling at 0" << parent.siblingAtRow(0)
+           << " parent item:" << parent_item->GetDisplayName() << "\n";
 
   if (data->hasFormat(kItemIdentifierMimeType))
   {
@@ -107,8 +109,12 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
         throw RuntimeException("Item with id " + id + " not found in the model");
       }
 
-      const auto destination = GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
-      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination);
+      const auto destination =
+          GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent.siblingAtRow(0));
+      if (!mvvm::utils::GetMoveItemErrorCode(item, parent_item, destination))
+      {
+        GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination);
+      }
     }
     return true;
   }
