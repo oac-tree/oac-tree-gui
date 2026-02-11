@@ -63,6 +63,9 @@ constexpr auto kCopyInstructionMimeType = "application/coa.sequencer.instruction
 //! Mime type for variable copy.
 constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
 
+//! index corresponding to the situation when user drop on viewport area outside of any item's list
+const std::int32_t kViewportDropIndex = -1;
+
 /**
  * @brief Returns vector of identifiers representing instructions involved into the drag-and-move
  * operation.

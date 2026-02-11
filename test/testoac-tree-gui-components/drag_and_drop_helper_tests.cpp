@@ -247,6 +247,13 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForFirstItem)
   // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
   // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
 
+  {  // drop on viewport
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index;  // invalid
+    EXPECT_EQ(GetListInternalMoveIndex(drop_indicator, source_row, parent_index),
+              kViewportDropIndex);
+  }
+
   {  // hovering case #0
     const std::int32_t drop_indicator = 0;
     const QModelIndex parent_index;  // invalid
@@ -441,6 +448,15 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForFirstItem)
   // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
   // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
   // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
+
+  {  // invalid drop (e.g. on viewport) should throw for now
+    const std::int32_t drop_indicator = -1;
+    const QModelIndex parent_index;  // invalid
+    // expecting index denoting append
+    const auto expected_tag_index = mvvm::TagIndex::Append(procedure0->GetTagIndex().GetTag());
+    EXPECT_EQ(GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index),
+              expected_tag_index);
+  }
 
   {  // hovering case #0
     const std::int32_t drop_indicator = 0;

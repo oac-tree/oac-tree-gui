@@ -146,7 +146,34 @@ TEST_F(JobListViewModelTest, DragJobFromFirstPositionToLast)
             std::vector<mvvm::SessionItem*>({job1, job2, job0}));
 }
 
-TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirst)
+// enable test after refactoring TagIndex for item move
+TEST_F(JobListViewModelTest, DISABLED_DragJobFromFirstToEmptyAreaOfViewport)
+{
+  TestModel model;
+
+  auto job0 = model.InsertItem<LocalJobItem>();
+  auto job1 = model.InsertItem<LocalJobItem>();
+  auto job2 = model.InsertItem<LocalJobItem>();
+
+  JobListViewModel view_model(&model);
+  auto job0_index = view_model.index(0, 0);
+  auto job2_index = view_model.index(2, 0);
+
+  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({job0_index}));
+
+  // pretending to drop on empty viewport area
+  const std::int32_t drop_indicator_row = -1;
+  const QModelIndex parent_index = QModelIndex();  // invalid
+
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+                                      parent_index));
+
+  // the result should be "append"
+  EXPECT_EQ(model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({job1, job2, job0}));
+}
+
+TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirstJob)
 {
   TestModel model;
 
@@ -163,6 +190,37 @@ TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirst)
   // pretending to drop on top of the first item
   const std::int32_t drop_indicator_row = -1;
   const QModelIndex parent_index = job0_name_index;  // droping on cell containing the name
+
+  // pretending the whole row with job2 is dragged
+  const std::unique_ptr<QMimeData> mime_data(
+      view_model.mimeData({job2_name_index, job2_status_index}));
+
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+                                      parent_index));
+  EXPECT_EQ(model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({job2, job0, job1}));
+}
+
+TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirstJobSecondCell)
+{
+  // Same test as above, with the difference that we are dropping on the second cell (status) of the
+  // first job, but it should have the same effect as dropping on the first cell (name)
+
+  TestModel model;
+
+  auto job0 = model.InsertItem<LocalJobItem>();
+  auto job1 = model.InsertItem<LocalJobItem>();
+  auto job2 = model.InsertItem<LocalJobItem>();
+
+  JobListViewModel view_model(&model);
+  auto job0_name_index = view_model.index(0, 0);
+  auto job0_status_index = view_model.index(0, 1);
+  auto job2_name_index = view_model.index(2, 0);
+  auto job2_status_index = view_model.index(2, 1);
+
+  // pretending to drop on top of the first item
+  const std::int32_t drop_indicator_row = -1;
+  const QModelIndex parent_index = job0_status_index;  // droping on cell containing the status
 
   // pretending the whole row with job2 is dragged
   const std::unique_ptr<QMimeData> mime_data(

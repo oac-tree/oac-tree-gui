@@ -163,7 +163,7 @@ mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row)
 }
 
 std::int32_t GetListInternalMoveIndex(std::int32_t drop_indicator_row, int32_t source_index,
-                                    const QModelIndex& parent)
+                                      const QModelIndex& parent)
 {
   // This is what canDropMimeData reports when we drag an item
   //
@@ -193,7 +193,7 @@ std::int32_t GetListInternalMoveIndex(std::int32_t drop_indicator_row, int32_t s
   else
   {
     // dropped on viewport
-    throw std::runtime_error("Shouldn't be here");
+    return kViewportDropIndex;
   }
 
   return destination_index;
@@ -206,9 +206,9 @@ mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,
   const auto source_tag = source_tag_index.GetTag();
   const auto destination_index =
       GetListInternalMoveIndex(drop_indicator_row, source_tag_index.GetIndex(), parent);
-  return destination_index >= 0
-             ? mvvm::TagIndex{source_tag, static_cast<std::size_t>(destination_index)}
-             : mvvm::TagIndex::Invalid();
+  return destination_index == kViewportDropIndex
+             ? mvvm::TagIndex::Append(source_tag)
+             : mvvm::TagIndex{source_tag, static_cast<std::size_t>(destination_index)};
 }
 
 }  // namespace oac_tree_gui
