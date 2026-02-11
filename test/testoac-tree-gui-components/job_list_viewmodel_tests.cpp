@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/viewmodel/job_list_viewmodel.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -99,6 +100,28 @@ TEST_F(JobListViewModelTest, NotificationOnStatusChange)
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
 
+TEST_F(JobListViewModelTest, MimeDataEncoding)
+{
+  TestModel model;
+
+  auto job0 = model.InsertItem<LocalJobItem>();
+  const JobListViewModel view_model(&model);
+  auto display_name_index = view_model.index(0, 0);
+  auto status_index = view_model.index(0, 1);
+
+  // building mime object as if the whole row with job0 is dragged (display name and status)
+  std::unique_ptr<QMimeData> mime_data(view_model.mimeData({display_name_index, status_index}));
+  EXPECT_NE(mime_data, nullptr);
+
+  EXPECT_TRUE(mime_data->hasFormat(kItemIdentifierMimeType));
+
+  // restored identifiers contains only single identifier, which leads us to actual job being
+  // dragged
+  auto identifiers = GetStringListFromMime(mime_data.get(), kItemIdentifierMimeType);
+  EXPECT_EQ(identifiers.size(), 1);
+  EXPECT_EQ(identifiers.at(0), job0->GetIdentifier());
+}
+
 TEST_F(JobListViewModelTest, DragJobFromFirstPositionToLast)
 {
   TestModel model;
@@ -139,7 +162,7 @@ TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirst)
 
   // pretending to drop on top of the first item
   const std::int32_t drop_indicator_row = -1;
-  const QModelIndex parent_index = job0_name_index; // droping on cell containing the name
+  const QModelIndex parent_index = job0_name_index;  // droping on cell containing the name
 
   // pretending the whole row with job2 is dragged
   const std::unique_ptr<QMimeData> mime_data(

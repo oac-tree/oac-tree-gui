@@ -46,8 +46,19 @@ QStringList FlatListViewModel::mimeTypes() const
 
 QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
 {
+  // we assume that first column contains a display name, and this will lead us to actual
+  // SessionItem being copied
+  QModelIndexList first_column_indexes;
+  for (const auto& index : indexes)
+  {
+    if (index.column() == 0)
+    {
+      first_column_indexes.append(index);
+    }
+  }
+
   // ownership will be taken by QDrag operation
-  return CreateItemIdentifierMimeData(indexes, kItemIdentifierMimeType).release();
+  return CreateItemIdentifierMimeData(first_column_indexes, kItemIdentifierMimeType).release();
 }
 
 bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row,
