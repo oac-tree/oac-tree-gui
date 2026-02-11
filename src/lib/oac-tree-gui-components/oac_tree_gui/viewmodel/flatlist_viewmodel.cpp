@@ -98,7 +98,7 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
       row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent.siblingAtRow(0));
 
   qDebug() << "parent:" << parent << " sibling at 0" << parent.siblingAtRow(0)
-           << " parent item:" << parent_item->GetDisplayName() << "\n";
+           << " parent item:" << QString::fromStdString(parent_item->GetDisplayName()) << "\n";
 
   if (data->hasFormat(kItemIdentifierMimeType))
   {
