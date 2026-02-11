@@ -203,9 +203,9 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
   auto sequence = m_model.InsertItem<SequenceItem>();
   auto wait = m_model.InsertItem<WaitItem>(sequence);
 
-  EXPECT_FALSE(mvvm::utils::GetInsertTypeErrorCode(domainconstants::kWaitInstructionType, sequence,
+  EXPECT_FALSE(mvvm::utils::GetInsertTypeErrorCode(domainconstants::kWaitInstructionType, *sequence,
                                                    mvvm::TagIndex::Default(0)));
-  EXPECT_TRUE(mvvm::utils::GetInsertTypeErrorCode(domainconstants::kWaitInstructionType, wait,
+  EXPECT_TRUE(mvvm::utils::GetInsertTypeErrorCode(domainconstants::kWaitInstructionType, *wait,
                                                   mvvm::TagIndex::Default(0)));
 }
 

@@ -426,7 +426,7 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
   if (auto selected_item = GetSelectedInstruction(); selected_item)
   {
     const auto error_code = mvvm::utils::GetInsertTypeErrorCode(
-        item_type, selected_item->GetParent(), selected_item->GetTagIndex().Next());
+        item_type, *selected_item->GetParent(), selected_item->GetTagIndex().Next());
     if (error_code)
     {
       return sup::gui::QueryResult::Failure(
@@ -460,7 +460,7 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
   if (auto selected_item = GetSelectedInstruction(); selected_item)
   {
     const auto error_code =
-        mvvm::utils::GetInsertTypeErrorCode(item_type, selected_item, mvvm::TagIndex::Append());
+        mvvm::utils::GetInsertTypeErrorCode(item_type, *selected_item, mvvm::TagIndex::Append());
     if (error_code)
     {
       return sup::gui::QueryResult::Failure(

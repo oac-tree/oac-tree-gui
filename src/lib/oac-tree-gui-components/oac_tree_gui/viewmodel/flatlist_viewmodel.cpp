@@ -112,7 +112,7 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
 
       const auto destination =
           GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent.siblingAtRow(0));
-      if (!mvvm::utils::GetMoveItemErrorCode(item, parent_item, destination))
+      if (!mvvm::utils::GetMoveItemErrorCode(*item, *parent_item, destination))
       {
         GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination);
       }
