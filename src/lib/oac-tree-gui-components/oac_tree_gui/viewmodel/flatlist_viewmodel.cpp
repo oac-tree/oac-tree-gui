@@ -28,6 +28,7 @@
 #include <mvvm/model/validate_utils.h>
 
 #include <QMimeData>
+#include <QDebug>
 
 namespace oac_tree_gui
 {
