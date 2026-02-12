@@ -146,8 +146,7 @@ TEST_F(JobListViewModelTest, DragJobFromFirstPositionToLast)
             std::vector<mvvm::SessionItem*>({job1, job2, job0}));
 }
 
-// enable test after refactoring TagIndex for item move
-TEST_F(JobListViewModelTest, DISABLED_DragJobFromFirstToEmptyAreaOfViewport)
+TEST_F(JobListViewModelTest, DragJobFromFirstToEmptyAreaOfViewport)
 {
   TestModel model;
 

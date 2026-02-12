@@ -234,7 +234,7 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForFirstItem)
   auto procedure1 = m_model.InsertItem<ProcedureItem>();
   auto procedure2 = m_model.InsertItem<ProcedureItem>();
 
-  mvvm::TopItemsViewModel view_model(&m_model);
+  const mvvm::TopItemsViewModel view_model(&m_model);
   auto procedure0_index = view_model.index(0, 0);
   auto procedure1_index = view_model.index(1, 0);
   auto procedure2_index = view_model.index(2, 0);
@@ -449,7 +449,7 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForFirstItem)
   // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
   // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
 
-  {  // invalid drop (e.g. on viewport) should throw for now
+  {  // drop on viewport itself, outside any item -> should lead to append
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index;  // invalid
     // expecting index denoting append
@@ -465,7 +465,7 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForFirstItem)
         GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 0);
   }
 
-  {  // hovering vase #1
+  {  // hovering case #1
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure0_index;
     EXPECT_EQ(
@@ -483,28 +483,28 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForFirstItem)
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure1_index;
     EXPECT_EQ(
-        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 1);
+        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 2);
   }
 
   {  // hovering case #4
     const std::int32_t drop_indicator = 2;
     const QModelIndex parent_index;  // invalid
     EXPECT_EQ(
-        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 1);
+        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 2);
   }
 
   {  // hovering case #5
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure2_index;
     EXPECT_EQ(
-        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 2);
+        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 3);
   }
 
   {  // hovering case #6
     const std::int32_t drop_indicator = 3;
     const QModelIndex parent_index;  // invalid
     EXPECT_EQ(
-        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 2);
+        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 3);
   }
 }
 
@@ -537,7 +537,7 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForMiddleItem)
         GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 0);
   }
 
-  {  // hovering vase #1
+  {  // hovering case #1
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure0_index;
     EXPECT_EQ(
@@ -569,14 +569,14 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForMiddleItem)
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure2_index;
     EXPECT_EQ(
-        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 2);
+        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 3);
   }
 
   {  // hovering case #6
     const std::int32_t drop_indicator = 3;
     const QModelIndex parent_index;  // invalid
     EXPECT_EQ(
-        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 2);
+        GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 3);
   }
 }
 
@@ -609,7 +609,7 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForLastItem)
         GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 0);
   }
 
-  {  // hovering vase #1
+  {  // hovering case #1
     const std::int32_t drop_indicator = -1;
     const QModelIndex parent_index = procedure0_index;
     EXPECT_EQ(

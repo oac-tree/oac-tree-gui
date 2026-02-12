@@ -204,11 +204,21 @@ mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,
                                            const QModelIndex& parent)
 {
   const auto source_tag = source_tag_index.GetTag();
-  const auto destination_index =
+  auto destination_index =
       GetListInternalMoveIndex(drop_indicator_row, source_tag_index.GetIndex(), parent);
-  return destination_index == kViewportDropIndex
-             ? mvvm::TagIndex::Append(source_tag)
-             : mvvm::TagIndex{source_tag, static_cast<std::size_t>(destination_index)};
+
+  if (destination_index == kViewportDropIndex)
+  {
+    return mvvm::TagIndex::Append(source_tag);
+  }
+
+  const mvvm::TagIndex target_index =
+      mvvm::TagIndex{source_tag, static_cast<std::size_t>(destination_index)};
+
+  // if item is moved inside the same parent we have to shift by one, to insert in proper place
+  // FIXME consider moving this logic to GetListInternalMoveIndex
+  return (source_tag_index.GetIndex() < target_index.GetIndex()) ? target_index.Next()
+                                                                 : target_index;
 }
 
 }  // namespace oac_tree_gui

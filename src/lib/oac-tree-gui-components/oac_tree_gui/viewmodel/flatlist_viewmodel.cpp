@@ -27,8 +27,8 @@
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/validate_utils.h>
 
-#include <QMimeData>
 #include <QDebug>
+#include <QMimeData>
 
 namespace oac_tree_gui
 {
@@ -94,8 +94,7 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
   }
 
   // row == -1 when we are dropping on top of an item, otherwise row is the position to insert at.
-  auto parent_item =
-      row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent.siblingAtRow(0));
+  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
 
   qDebug() << "parent:" << parent << " sibling at 0" << parent.siblingAtRow(0)
            << " parent item:" << QString::fromStdString(parent_item->GetDisplayName()) << "\n";
@@ -110,12 +109,8 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
         throw RuntimeException("Item with id " + id + " not found in the model");
       }
 
-      const auto destination =
-          GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent.siblingAtRow(0));
-      if (!mvvm::utils::GetMoveItemErrorCode(*item, *parent_item, destination))
-      {
-        GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination);
-      }
+      const auto destination = GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
+      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination);
     }
     return true;
   }
