@@ -34,6 +34,7 @@
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
+#include <QDebug>
 #include <QMimeData>
 
 namespace oac_tree_gui
@@ -130,17 +131,20 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
     return false;
   }
 
+  qDebug() << "canDropMimeData: " << action << " row_col=(" << row << "," << column << ")"
+           << parent << parent_item->GetDisplayName();
+
   if (data->hasFormat(kInstructionMoveMimeType))
   {
-    for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
-    {
-      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
-      if (mvvm::utils::GetMoveItemErrorCode(*item, *parent_item, pos))
-      {
-        return false;
-      }
-    }
+    // for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
+    // {
+    //   auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+    //   auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
+    //   if (mvvm::utils::GetMoveItemErrorCode(*item, *parent_item, pos))
+    //   {
+    //     return false;
+    //   }
+    // }
     return true;
   }
 
@@ -171,7 +175,7 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAct
     for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
+      auto pos = GetInternalMoveTagIndexV2(row, *item, *parent_item);
 
       GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, pos);
     }

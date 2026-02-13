@@ -157,9 +157,7 @@ TEST_F(DragAndDropHelperTest, CreateNewInstructionMimeData)
   EXPECT_EQ(GetNewInstructionType(mime_data.get()), std::string(""));
 }
 
-//! Validating helper method GetInternalMoveTagIndex.
-
-TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndex)
+TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexLastWaitToVariousPlaces)
 {
   auto sequence0 = m_model.InsertItem<SequenceItem>();
   auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
@@ -168,28 +166,161 @@ TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndex)
   auto sequence1 = m_model.InsertItem<SequenceItem>();
   auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
 
-  // item is hovered on top of another item
-  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence0, -1) == mvvm::TagIndex("", 0));
+  // Positions of drop indicator and reported parameters of canDropMimeData:
+  //
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+  // [6 ]      Wait1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [7 ]      -----------  row_col=( 2,  0)    QModelIndex(0, 0)     Sequence
+  // [8 ]      Wait2        row_col=(-1, -1)    QModelIndex(2, 0)
+  // [9 ]      -----------  row_col=( 3,  0)    QModelIndex(0, 0)     Sequence
+  // [10]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [11]  sequence1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [12]  --------------   row_col=( 2,  0)    QModelIndex(-1, -1)   Container
+  // [13]     -----------   row_col=( 0,  0)    QModelIndex(1, 0)     Sequence
+  // [14]     Wait3         row_col=(-1, -1)    QModelIndex(0, 0)
+  // [15]     -----------   row_col=( 1,  0)    QModelIndex(1, 0)     Sequence
+  //
+  // [viewport]             row_col=(-1, -1)    QModelIndex(-1, -1)
 
-  // moving wait0, hover indicator shows space between wait0 and wait1
-  // TagIndex should be shifted
-  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence0, 1) == mvvm::TagIndex("", 0));
+  const mvvm::SessionItem* item_to_move = wait2;
 
-  // moving wait0, hover indicator shows space between wait1 and wait2
-  // TagIndex should be shifted
-  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence0, 2) == mvvm::TagIndex("", 1));
+  {  // moving wait2 to [viewport]
+    const std::int32_t drop_indicator = -1;
+    const mvvm::SessionItem* parent = m_model.GetRootItem();
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
 
-  // moving wait2, hover indicator shows space between wait0 and wait1
-  // TagIndex the same as hover indicator
-  EXPECT_TRUE(GetInternalMoveTagIndex(*wait1, *sequence0, 1) == mvvm::TagIndex("", 1));
+  {  // moving wait2 to [3]
+    const std::int32_t drop_indicator = 0;
+    const mvvm::SessionItem* parent = sequence0;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(0);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
 
-  // moving wait0 to another parent
-  // TagIndex the same as hover indicator
-  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence1, 0) == mvvm::TagIndex("", 0));
-  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence1, 1) == mvvm::TagIndex("", 1));
+  {  // moving wait2 to [4]
+    // it is not valid to try to drop child onto child, but we still expect correct indexes reported
+    const std::int32_t drop_indicator = -1;
+    const mvvm::SessionItem* parent = wait0;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait2 to [5]
+    const std::int32_t drop_indicator = 1;
+    const mvvm::SessionItem* parent = sequence0;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait2 to [6]
+    const std::int32_t drop_indicator = -1;
+    const mvvm::SessionItem* parent = wait1;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait2 to [10]
+    const std::int32_t drop_indicator = 1;
+    const mvvm::SessionItem* parent = m_model.GetRootItem();
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait2 to [11]
+    const std::int32_t drop_indicator = -1;
+    const mvvm::SessionItem* parent = sequence1;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait2 to [12]
+    const std::int32_t drop_indicator = 2;
+    const mvvm::SessionItem* parent = m_model.GetRootItem();
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(2);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait2 to [13]
+    const std::int32_t drop_indicator = 0;
+    const mvvm::SessionItem* parent = sequence1;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(0);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait2 to [15]
+    const std::int32_t drop_indicator = 1;
+    const mvvm::SessionItem* parent = sequence1;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
 }
 
-//! Validating helper method GetDropTagIndex.
+TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexFirstWaitToVariousPlaces)
+{
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence1 = m_model.InsertItem<SequenceItem>();
+  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+
+  // Positions of drop indicator and reported parameters of canDropMimeData:
+  //
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+  // [6 ]      Wait1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [7 ]      -----------  row_col=( 2,  0)    QModelIndex(0, 0)     Sequence
+  // [8 ]      Wait2        row_col=(-1, -1)    QModelIndex(2, 0)
+  // [9 ]      -----------  row_col=( 3,  0)    QModelIndex(0, 0)     Sequence
+  // [10]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [11]  sequence1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [12]  --------------   row_col=( 2,  0)    QModelIndex(-1, -1)   Container
+  // [13]     -----------   row_col=( 0,  0)    QModelIndex(1, 0)     Sequence
+  // [14]     Wait3         row_col=(-1, -1)    QModelIndex(0, 0)
+  // [15]     -----------   row_col=( 1,  0)    QModelIndex(1, 0)     Sequence
+  //
+  // [viewport]             row_col=(-1, -1)    QModelIndex(-1, -1)
+
+  const mvvm::SessionItem* item_to_move = wait0;
+
+  {  // moving wait0 to [7]
+    const std::int32_t drop_indicator = -1;
+    const mvvm::SessionItem* parent = wait1;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait0 to [9]
+    const std::int32_t drop_indicator = 3;
+    const mvvm::SessionItem* parent = sequence0;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(3);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait0 to [10]
+    const std::int32_t drop_indicator = 1;
+    const mvvm::SessionItem* parent = m_model.GetRootItem();
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+
+  {  // moving wait0 to [11]
+    const std::int32_t drop_indicator = -1;
+    const mvvm::SessionItem* parent = sequence1;
+    const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
+    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+  }
+}
 
 TEST_F(DragAndDropHelperTest, GetDropTagIndex)
 {
@@ -239,13 +370,13 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForFirstItem)
   auto procedure1_index = view_model.index(1, 0);
   auto procedure2_index = view_model.index(2, 0);
 
-  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
-  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
-  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
-  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
-  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
-  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
-  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
+  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)     -> 0
+  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)       -> 0
+  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)     -> 0
+  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)       -> 1
+  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)     -> 1
+  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)       -> 2
+  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)     -> 2
 
   {  // drop on viewport
     const std::int32_t drop_indicator = -1;
@@ -311,13 +442,13 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveRowForMiddleItem)
   auto procedure1_index = view_model.index(1, 0);
   auto procedure2_index = view_model.index(2, 0);
 
-  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
-  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
-  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
-  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
-  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
-  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
-  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
+  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)  -> 0
+  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)    -> 0
+  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)  -> 1
+  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)    -> 1
+  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)  -> 1
+  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)    -> 2
+  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)  -> 2
 
   {  // hovering case #0
     const std::int32_t drop_indicator = 0;

@@ -117,9 +117,9 @@ std::string GetNewInstructionType(const QMimeData* mime_data)
   return list.empty() ? std::string() : list.front().toStdString();
 }
 
-mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
-                                       const mvvm::SessionItem& parent,
-                                       std::int32_t drop_indicator_row)
+mvvm::TagIndex GetInternalMoveTagIndex(int32_t drop_indicator_row,
+                                       const mvvm::TagIndex& source_tag_index,
+                                       const QModelIndex& parent)
 {
   if (drop_indicator_row < 0)
   {
@@ -134,21 +134,44 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
   // ----- drop_indicator_row = 1
   // item1
 
-  if (item.GetParent() == &parent)
+  return GetListInternalMoveTagIndex(drop_indicator_row, source_tag_index, parent);
+}
+
+// Positions of drop indicator and reported parameters of canDropMimeData:
+//
+// [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+// [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+// [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+// [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+// [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+// [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+// [6 ]      Wait1        row_col=(-1, -1)    QModelIndex(1, 0)
+// [7 ]      -----------  row_col=( 2,  0)    QModelIndex(0, 0)     Sequence
+// [8 ]      Wait2        row_col=(-1, -1)    QModelIndex(2, 0)
+// [9 ]      -----------  row_col=( 3,  0)    QModelIndex(0, 0)     Sequence
+// [10]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+// [11]  sequence1        row_col=(-1, -1)    QModelIndex(1, 0)
+// [12]  --------------   row_col=( 2,  0)    QModelIndex(-1, -1)   Container
+// [13]     -----------   row_col=( 0,  0)    QModelIndex(1, 0)     Sequence
+// [14]     Wait3         row_col=(-1, -1)    QModelIndex(0, 0)
+// [15]     -----------   row_col=( 1,  0)    QModelIndex(1, 0)     Sequence
+//
+// [viewport]             row_col=(-1, -1)    QModelIndex(-1, -1)
+
+mvvm::TagIndex GetInternalMoveTagIndexV2(int32_t drop_indicator_row, const mvvm::SessionItem& child,
+                                         const mvvm::SessionItem& parent)
+{
+  (void) child;
+  (void) parent;
+
+  if (drop_indicator_row < 0)
   {
-    // if item is moved inside the same parent we have to shift by one, to insert in proper place
-    auto current_tag_index = item.GetTagIndex();
-    if (current_tag_index.GetIndex() < static_cast<std::size_t>(drop_indicator_row))
-    {
-      // if item is moved toward larger indices
-      if (drop_indicator_row > 0)
-      {
-        return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row - 1));
-      }
-    }
+    // Mouse is hovered on top of another item, it will use it as a parent and append
+    // This also covers the case of hovering on empty viewport area
+    return mvvm::TagIndex::Append();
   }
 
-  return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row));
+  return mvvm::TagIndex::Default(drop_indicator_row);
 }
 
 mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row)

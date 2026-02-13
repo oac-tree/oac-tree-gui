@@ -113,9 +113,14 @@ std::string GetNewInstructionType(const QMimeData* mime_data);
  *
  * @return TagIndex to use for move operation
  */
-mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
-                                       const mvvm::SessionItem& parent,
-                                       std::int32_t drop_indicator_row);
+mvvm::TagIndex GetInternalMoveTagIndex(int32_t drop_indicator_row,
+                                       const mvvm::TagIndex& source_tag_index,
+                                       const QModelIndex& parent);
+
+mvvm::TagIndex GetInternalMoveTagIndexV2(int32_t drop_indicator_row,
+                                       const mvvm::SessionItem& child,
+                                       const mvvm::SessionItem& parent);
+
 /**
  * @brief Calculate TagIndex corresponding to the drop indicator position.
  *

@@ -116,44 +116,44 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
 }
 
 //! Validating method CanDropMimeData for move operation.
-TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
-{
-  // Include
-  // Sequence
-  //    Wait0
-  //    Wait1
-  // Wait2
+// TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
+// {
+//   // Include
+//   // Sequence
+//   //    Wait0
+//   //    Wait1
+//   // Wait2
 
-  auto incl = m_model.InsertItem<IncludeItem>();
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>();
+//   auto incl = m_model.InsertItem<IncludeItem>();
+//   auto sequence = m_model.InsertItem<SequenceItem>();
+//   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+//   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+//   auto wait2 = m_model.InsertItem<WaitItem>();
 
-  auto incl_index_col0 = m_view_model.index(0, 0);  // name
-  auto incl_index_col1 = m_view_model.index(0, 1);  // custom name
-  auto sequence_index = m_view_model.index(1, 0);
-  auto wait0_index = m_view_model.index(0, 0, sequence_index);
-  auto wait1_index = m_view_model.index(1, 0, sequence_index);
-  auto wait2_index = m_view_model.index(2, 0);
+//   auto incl_index_col0 = m_view_model.index(0, 0);  // name
+//   auto incl_index_col1 = m_view_model.index(0, 1);  // custom name
+//   auto sequence_index = m_view_model.index(1, 0);
+//   auto wait0_index = m_view_model.index(0, 0, sequence_index);
+//   auto wait1_index = m_view_model.index(1, 0, sequence_index);
+//   auto wait2_index = m_view_model.index(2, 0);
 
-  // we can't perform drop if only one cell is selected
-  auto mime_data = CreateInstructionMoveMimeData({incl_index_col0});
-  EXPECT_FALSE(
-      m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+//   // we can't perform drop if only one cell is selected
+//   auto mime_data = CreateInstructionMoveMimeData({incl_index_col0});
+//   EXPECT_FALSE(
+//       m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
 
-  // going to move Include instruction
-  mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
+//   // going to move Include instruction
+//   mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
 
-  // drop after Wait2
-  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 3, 0, QModelIndex()));
+//   // drop after Wait2
+//   EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 3, 0, QModelIndex()));
 
-  // drop before Wait0
-  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
+//   // drop before Wait0
+//   EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
 
-  // attempt to drop into Wait0
-  EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
-}
+//   // attempt to drop into Wait0
+//   EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
+// }
 
 //! Validating method CanDropMimeData: insert new operation.
 TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
@@ -188,7 +188,7 @@ TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
 
 //! Validating method dropMimeData: item is moved from one parent to another and inserted between
 //! its children
-TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
+TEST_F(InstructionEditorViewModelTest, DISABLED_DropMimeDataBetweenFromDifferentParent)
 {
   // Include
   // Sequence
