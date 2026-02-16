@@ -92,7 +92,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
 
 // FIXME find a way to enable test, or remove test
 // Tests generates same pointers to the ProcedureListWidget objects, that leads to duplication of
-// action context registreation
+// action context registration
 
 TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
 {
