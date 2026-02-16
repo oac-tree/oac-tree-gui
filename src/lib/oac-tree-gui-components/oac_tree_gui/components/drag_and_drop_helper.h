@@ -86,13 +86,6 @@ std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& i
                                                         const QString& mime_type);
 
 /**
- * @brief Creates mime data carrying information for instruction move.
- *
- * @param indexes List of indexes participating in move operation.
- */
-std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& indexes);
-
-/**
  * @brief Creates mime data carrying information for new instruction creation.
  *
  * @param name The model type name of the instruction.

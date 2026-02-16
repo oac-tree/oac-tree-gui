@@ -52,7 +52,6 @@ public:
   InstructionEditorViewModel m_view_model;
 };
 
-//! Single instruction in a model. ViewModel should see single row and 2 columns.
 TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
@@ -78,7 +77,6 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
             std::string(""));
 }
 
-//! Sequence with a child in a model.
 TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
@@ -109,10 +107,27 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
   EXPECT_EQ(m_view_model.rowCount(), 1);
   EXPECT_EQ(m_view_model.columnCount(), 2);
 
-  QSignalSpy spy_data_changed(&m_view_model, &InstructionEditorViewModel::dataChanged);
+  const QSignalSpy spy_data_changed(&m_view_model, &InstructionEditorViewModel::dataChanged);
 
   sequence->SetName("abc");
   EXPECT_EQ(spy_data_changed.count(), 1);
+}
+
+TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>();
+
+  auto display_index = m_view_model.index(0, 0);
+  auto data_index = m_view_model.index(0, 1);
+
+  std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({display_index, data_index}));
+  EXPECT_NE(mime_data, nullptr);
+
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionMoveMimeType));
+
+  auto identifiers = GetStringListFromMime(mime_data.get(), kInstructionMoveMimeType);
+  EXPECT_EQ(identifiers.size(), 1);
+  EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 }
 
 TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
@@ -136,25 +151,28 @@ TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
   auto wait2_index = m_view_model.index(2, 0);
 
-  // we can't perform drop if only one cell is selected
-  auto mime_data = CreateInstructionMoveMimeData({incl_index_col0});
-  EXPECT_FALSE(
-      m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+  {  // only one index is selected is allowed
+    const std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({incl_index_col0}));
+    EXPECT_TRUE(
+        m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+  }
 
-  // going to move Include instruction
-  mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
+  {  // going to move Include instruction
+    const std::unique_ptr<QMimeData> mime_data(
+        m_view_model.mimeData({incl_index_col0, incl_index_col1}));
 
-  // drop after Wait2
-  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 3, 0, QModelIndex()));
+    // drop after Wait2
+    EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 3, 0, QModelIndex()));
 
-  // drop before Wait0
-  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
+    // drop before Wait0
+    EXPECT_TRUE(
+        m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
 
-  // attempt to drop into Wait0
-  EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
+    // attempt to drop into Wait0
+    EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
+  }
 }
 
-//! Validating method CanDropMimeData: insert new operation.
 TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
 {
   // Sequence
@@ -185,8 +203,6 @@ TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
   EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, wait1_index));
 }
 
-//! Validating method dropMimeData: item is moved from one parent to another and inserted between
-//! its children
 TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
 {
   // Include
@@ -208,7 +224,7 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
 
   // going to drag Include instruction
-  auto mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
+  std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({incl_index_col0, incl_index_col1}));
 
   // drop between Wait0 and Wait1
   EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, sequence_index));
@@ -219,8 +235,6 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait0, incl, wait1}));
 }
 
-//! Validating method dropMimeData: item is moved within the same parent from first position to the
-//! last.
 TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
 {
   // Sequence
@@ -238,7 +252,8 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
   auto wait0_index_custom_name = m_view_model.index(0, 0, sequence_index);
 
   // going to drag Include instruction
-  auto mime_data = CreateInstructionMoveMimeData({wait0_index_name, wait0_index_custom_name});
+  const std::unique_ptr<QMimeData> mime_data(
+      m_view_model.mimeData({wait0_index_name, wait0_index_custom_name}));
 
   // drop after Wait2
   EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 3, 0, sequence_index));
@@ -247,8 +262,6 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait1, wait2, wait0}));
 }
 
-//! Validating method dropMimeData: item is moved within the same parent from first position to the
-//! last.
 TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
 {
   // Sequence
@@ -266,7 +279,8 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
   auto wait2_index_custom_name = m_view_model.index(2, 0, sequence_index);
 
   // going to drag Include instruction
-  auto mime_data = CreateInstructionMoveMimeData({wait2_index_name, wait2_index_custom_name});
+  const std::unique_ptr<QMimeData> mime_data(
+      m_view_model.mimeData({wait2_index_name, wait2_index_custom_name}));
 
   // drop before Wait0
   EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
@@ -275,7 +289,6 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait2, wait0, wait1}));
 }
 
-//! New item is created by dropping between two children.
 TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
 {
   // Sequence
@@ -305,8 +318,7 @@ TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
             domainconstants::kIncludeInstructionType);
 }
 
-//! Drop aggregate into the container
-TEST_F(InstructionEditorViewModelTest, DropAggregate)
+TEST_F(InstructionEditorViewModelTest, DropAggregateIntoContainer)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto container_index = m_view_model.index(0, 0);
@@ -323,7 +335,6 @@ TEST_F(InstructionEditorViewModelTest, DropAggregate)
   EXPECT_EQ(children.at(0)->GetDomainType(), domainconstants::kFallbackInstructionType);
 }
 
-//! Single instruction in a model. ViewModel should see single row and 2 columns.
 TEST_F(InstructionEditorViewModelTest, ModelReset)
 {
   SequencerModel model;

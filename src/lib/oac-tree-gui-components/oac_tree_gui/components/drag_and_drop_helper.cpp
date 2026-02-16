@@ -68,31 +68,6 @@ std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& i
   return result;
 }
 
-std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& indexes)
-{
-  // For the moment we do not support drag and move operation when more than one row is selected.
-  // Also we expect that QTreeView is in QAbstractItemView::ExtendedSelection mode.
-
-  // Drag operation in a tree view looking at InstructionEditorViewModel will generate indexes
-  // corresponding to two items (display name and custom name). We expect that the first one (the
-  // display name of the instruction) will point us to the instruction pointer itself.
-
-  if (indexes.size() != 2)
-  {
-    return {};
-  }
-
-  auto result = std::make_unique<QMimeData>();
-
-  auto about_to_move_item = mvvm::utils::ItemsFromIndex(indexes).at(0);
-
-  // saving identifier in mime data
-  const QStringList identifiers({QString::fromStdString(about_to_move_item->GetIdentifier())});
-  result->setData(kInstructionMoveMimeType, mvvm::utils::GetByteArray(identifiers));
-
-  return result;
-}
-
 std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name)
 {
   if (name.isEmpty())

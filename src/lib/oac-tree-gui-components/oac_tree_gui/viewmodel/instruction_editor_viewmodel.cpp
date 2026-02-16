@@ -66,8 +66,19 @@ Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex& index) const
 
 QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_list) const
 {
+  // we assume that first column contains a display name, and this will lead us to actual
+  // SessionItem being copied
+  QModelIndexList first_column_indexes;
+  for (const auto& index : index_list)
+  {
+    if (index.column() == 0)
+    {
+      first_column_indexes.append(index);
+    }
+  }
+
   // ownership will be taken by QDrag operation
-  return CreateInstructionMoveMimeData(index_list).release();
+  return CreateItemIdentifierMimeData(first_column_indexes, kInstructionMoveMimeType).release();
 }
 
 Qt::DropActions InstructionEditorViewModel::supportedDragActions() const
@@ -96,7 +107,7 @@ indicators on attempt to drop between cells.
 [1]  Message           row_col=(-1, -1)     QModelIndex(0, 0)
 [2]  --------------    row_col=( 1,  0)     QModelIndex(-1, -1)
 [3]  Sequence          row_col=(-1, -1)     QModelIndex(1, 0)
-[4]  --------------    row_col=( 2,  0)     QModelIndex(-1, -1)    <-- problematic
+[4]  --------------    row_col=( 2,  0)     QModelIndex(-1, -1)
 [5]     -----------    row_col=( 0,  0)     QModelIndex(1, 0)
 [6]     Wait           row_col=(-1, -1)     QModelIndex(0, 0)
 [7]     -----------    row_col=( 1,  0)     QModelIndex(1, 0)
