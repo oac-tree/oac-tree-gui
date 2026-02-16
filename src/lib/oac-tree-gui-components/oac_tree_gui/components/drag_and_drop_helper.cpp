@@ -20,19 +20,10 @@
 
 #include "drag_and_drop_helper.h"
 
-#include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
-#include <oac_tree_gui/transform/transform_from_domain.h>
-
 #include <mvvm/model/session_item.h>
-#include <mvvm/model/session_item_container.h>
 #include <mvvm/model/session_model.h>
-#include <mvvm/model/tagged_items.h>
 #include <mvvm/providers/qtcore_helper.h>
 #include <mvvm/providers/viewmodel_utils.h>
-#include <mvvm/utils/container_utils.h>
 
 #include <QMimeData>
 
@@ -122,8 +113,8 @@ mvvm::TagIndex GetTreeInternalMoveTagIndex(int32_t drop_indicator_row,
 
   if (drop_indicator_row < 0)
   {
-    // Mouse is hovered on top of another item, it will use it as a parent and append
-    // This also covers the case of hovering on empty viewport area
+    // Mouse is hovered on top of another item, we will use it as a parent and append (handled on
+    // ViewModel side). This also covers the case of hovering on empty viewport area
     return mvvm::TagIndex::Append();
   }
 
@@ -158,8 +149,8 @@ mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,
     destination_index = parent.row();
     if (static_cast<std::int32_t>(source_tag_index.GetIndex()) < destination_index)
     {
-      // adjusting destination index, because item will be removed from source position before
-      // inserting into
+      // need to increment destination index to match SessionModel::MoveItem conventions
+      // we want to move after the item, not into it
       destination_index++;
     }
   }

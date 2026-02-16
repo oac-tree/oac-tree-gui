@@ -24,7 +24,6 @@
 //! Helper functions for drag-and-drop operations.
 
 #include <QModelIndexList>
-#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -39,9 +38,6 @@ class QMimeData;
 
 namespace oac_tree_gui
 {
-
-class InstructionItem;
-class ProcedureItem;
 
 //! Mime type for drag-and-drop events containing item's identifier information.
 //! Depending on view model implementation, view context and the Qt::DropAction can lead to item

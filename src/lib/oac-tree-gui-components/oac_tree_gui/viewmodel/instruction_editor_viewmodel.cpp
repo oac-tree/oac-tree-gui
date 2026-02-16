@@ -34,7 +34,6 @@
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
-#include <QDebug>
 #include <QMimeData>
 
 namespace oac_tree_gui
@@ -141,9 +140,6 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
   {
     return false;
   }
-
-  qDebug() << "canDropMimeData: " << action << " row_col=(" << row << "," << column << ")" << parent
-           << parent_item->GetDisplayName();
 
   if (data->hasFormat(kInstructionMoveMimeType))
   {
