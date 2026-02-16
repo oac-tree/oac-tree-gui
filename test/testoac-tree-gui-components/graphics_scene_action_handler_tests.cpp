@@ -171,10 +171,7 @@ TEST_F(GraphicsSceneActionHandlerTest, DisconnectWaitFromSequence)
   EXPECT_EQ(sequence_item->GetInstructions().size(), 0U);
 }
 
-// FIXME - this test is disabled, since current implementation of DisconnectPortsAndMove
-// doesn't check if ports are actually connected, and just moves child item to new parent.
-// Fix after refactoring of GetMoveOperationInfo
-TEST_F(GraphicsSceneActionHandlerTest, DISABLED_AttemptToDisconnectWaitFromSequence)
+TEST_F(GraphicsSceneActionHandlerTest, AttemptToDisconnectWaitFromSequence)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
@@ -189,7 +186,8 @@ TEST_F(GraphicsSceneActionHandlerTest, DISABLED_AttemptToDisconnectWaitFromSeque
   auto output_port = mvvm::GetOutputPort(*wait_shape);
   auto connection = std::make_unique<mvvm::NodeConnection>(output_port, input_port);
 
-  EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(1);
+  // Disconnect will not trigger any notifications, since from the model point of view it is noop
+  EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(0);
   action_handler->Disconnect(connection.get());
 
   EXPECT_EQ(wait_item->GetParent(), m_model.GetRootItem());
