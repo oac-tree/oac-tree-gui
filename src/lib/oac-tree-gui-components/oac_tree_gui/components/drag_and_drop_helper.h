@@ -63,9 +63,6 @@ constexpr auto kCopyInstructionMimeType = "application/coa.sequencer.instruction
 //! Mime type for variable copy.
 constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
 
-//! index corresponding to the situation when user drop on viewport area outside of any item's list
-const std::int32_t kViewportDropIndex = -1;
-
 /**
  * @brief Returns vector of identifiers representing instructions involved into the drag-and-move
  * operation.
@@ -121,29 +118,15 @@ mvvm::TagIndex GetTreeInternalMoveTagIndex(int32_t drop_indicator_row,
 mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row);
 
 /**
- * @brief Calculate item index corresponding to the drop indicator position.
- *
- * This functions is intended to be used for internal move operations in the views showing flat list
- * of items (e.g. FlatListViewModel) where the drop indicator position and parent's viewmodelindex
- * are reported by QAbstractItemModel::dropMimeData.
- *
- * @param drop_indicator_row Position of drop indicator as reported by QListView.
- * @param source_row Index of item being moved.
- * @param parent The parent index as reported by QListView.
- *
- * @return Index for TagIndex construction corresponding to the drop indicator position.
- *
- */
-std::int32_t GetListInternalMoveIndex(std::int32_t drop_indicator_row, std::int32_t source_index,
-                                      const QModelIndex& parent);
-
-/**
  * @brief Calculate TagIndex corresponding to the drop indicator position for internal move in the
  * list view.
  *
  * This functions is intended to be used for internal move operations in the views showing flat list
- * of items (e.g. FlatListViewModel) where the drop indicator position and parent's viewmodelindex
+ * of items (e.g. FlatListViewModel) where the drop indicator position and parent's QModelIndex
  * are reported by QAbstractItemModel::dropMimeData.
+ *
+ * The only difference with GetTreeInternalMoveTagIndex is that dropping on top of a child will lead
+ * to appending after that child (it never tries to insert into).
  *
  * @param drop_indicator_row Position of drop indicator as reported by QListView.
  * @param source_tag_index TagIndex of the item being moved.

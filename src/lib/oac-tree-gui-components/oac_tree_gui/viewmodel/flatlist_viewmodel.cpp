@@ -93,11 +93,10 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
     return false;
   }
 
-  // row == -1 when we are dropping on top of an item, otherwise row is the position to insert at.
+  // row == -1 when we are dropping on top of an item
+  // In this list we want to treat dropping on top of item as appending after it, need to change
+  // parent.
   auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
-
-  qDebug() << "parent:" << parent << " sibling at 0" << parent.siblingAtRow(0)
-           << " parent item:" << QString::fromStdString(parent_item->GetDisplayName()) << "\n";
 
   if (data->hasFormat(kItemIdentifierMimeType))
   {
@@ -109,8 +108,9 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
         throw RuntimeException("Item with id " + id + " not found in the model");
       }
 
-      const auto destination = GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
-      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination);
+      const auto destination_tagindex =
+          GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
+      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination_tagindex);
     }
     return true;
   }
