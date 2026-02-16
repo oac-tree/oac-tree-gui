@@ -92,26 +92,6 @@ std::string GetNewInstructionType(const QMimeData* mime_data)
   return list.empty() ? std::string() : list.front().toStdString();
 }
 
-mvvm::TagIndex GetInternalMoveTagIndex(int32_t drop_indicator_row,
-                                       const mvvm::TagIndex& source_tag_index,
-                                       const QModelIndex& parent)
-{
-  if (drop_indicator_row < 0)
-  {
-    // mouse is hovered on top of another item
-    return mvvm::TagIndex::First();
-  }
-
-  // mouse is hovered between two other items
-
-  // ----  drop_indicator_row = 0
-  // item0
-  // ----- drop_indicator_row = 1
-  // item1
-
-  return GetListInternalMoveTagIndex(drop_indicator_row, source_tag_index, parent);
-}
-
 // Positions of drop indicator and reported parameters of canDropMimeData:
 //
 // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
@@ -133,11 +113,11 @@ mvvm::TagIndex GetInternalMoveTagIndex(int32_t drop_indicator_row,
 //
 // [viewport]             row_col=(-1, -1)    QModelIndex(-1, -1)
 
-mvvm::TagIndex GetInternalMoveTagIndexV2(int32_t drop_indicator_row, const mvvm::SessionItem& child,
-                                         const mvvm::SessionItem& parent)
+mvvm::TagIndex GetTreeInternalMoveTagIndex(int32_t drop_indicator_row, const mvvm::SessionItem& child,
+                                       const mvvm::SessionItem& parent)
 {
-  (void) child;
-  (void) parent;
+  (void)child;
+  (void)parent;
 
   if (drop_indicator_row < 0)
   {
@@ -146,6 +126,7 @@ mvvm::TagIndex GetInternalMoveTagIndexV2(int32_t drop_indicator_row, const mvvm:
     return mvvm::TagIndex::Append();
   }
 
+  // our TagIndex convention for move operations coincides  with Qt's drop indicator convention
   return mvvm::TagIndex::Default(drop_indicator_row);
 }
 

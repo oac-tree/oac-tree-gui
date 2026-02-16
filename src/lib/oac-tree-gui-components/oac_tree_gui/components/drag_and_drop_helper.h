@@ -98,7 +98,7 @@ std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name);
 std::string GetNewInstructionType(const QMimeData* mime_data);
 
 /**
- * @brief Calculate TagIndex to move item to a parent.
+ * @brief Calculate TagIndex to move item to a parent within a tree.
  *
  * @param item Item which will be moved.
  * @param parent Its new parent.
@@ -106,13 +106,9 @@ std::string GetNewInstructionType(const QMimeData* mime_data);
  *
  * @return TagIndex to use for move operation
  */
-mvvm::TagIndex GetInternalMoveTagIndex(int32_t drop_indicator_row,
-                                       const mvvm::TagIndex& source_tag_index,
-                                       const QModelIndex& parent);
-
-mvvm::TagIndex GetInternalMoveTagIndexV2(int32_t drop_indicator_row,
-                                       const mvvm::SessionItem& child,
-                                       const mvvm::SessionItem& parent);
+mvvm::TagIndex GetTreeInternalMoveTagIndex(int32_t drop_indicator_row,
+                                           const mvvm::SessionItem& child,
+                                           const mvvm::SessionItem& parent);
 
 /**
  * @brief Calculate TagIndex corresponding to the drop indicator position.

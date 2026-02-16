@@ -150,7 +150,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
     for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      auto destination_tagindex = GetInternalMoveTagIndexV2(row, *item, *parent_item);
+      auto destination_tagindex = GetTreeInternalMoveTagIndex(row, *item, *parent_item);
       const auto move_info =
           mvvm::utils::GetMoveOperationInfo(*item, *parent_item, destination_tagindex);
       if (move_info.error_code)
@@ -188,7 +188,7 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAct
     for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      auto destination_tagindex = GetInternalMoveTagIndexV2(row, *item, *parent_item);
+      auto destination_tagindex = GetTreeInternalMoveTagIndex(row, *item, *parent_item);
 
       GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination_tagindex);
     }

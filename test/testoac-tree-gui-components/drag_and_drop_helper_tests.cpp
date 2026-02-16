@@ -167,14 +167,14 @@ TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexLastWaitToVariousPlaces)
     const std::int32_t drop_indicator = -1;
     const mvvm::SessionItem* parent = m_model.GetRootItem();
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [3]
     const std::int32_t drop_indicator = 0;
     const mvvm::SessionItem* parent = sequence0;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(0);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [4]
@@ -182,56 +182,56 @@ TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexLastWaitToVariousPlaces)
     const std::int32_t drop_indicator = -1;
     const mvvm::SessionItem* parent = wait0;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [5]
     const std::int32_t drop_indicator = 1;
     const mvvm::SessionItem* parent = sequence0;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [6]
     const std::int32_t drop_indicator = -1;
     const mvvm::SessionItem* parent = wait1;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [10]
     const std::int32_t drop_indicator = 1;
     const mvvm::SessionItem* parent = m_model.GetRootItem();
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [11]
     const std::int32_t drop_indicator = -1;
     const mvvm::SessionItem* parent = sequence1;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [12]
     const std::int32_t drop_indicator = 2;
     const mvvm::SessionItem* parent = m_model.GetRootItem();
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(2);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [13]
     const std::int32_t drop_indicator = 0;
     const mvvm::SessionItem* parent = sequence1;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(0);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait2 to [15]
     const std::int32_t drop_indicator = 1;
     const mvvm::SessionItem* parent = sequence1;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 }
 
@@ -271,28 +271,28 @@ TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexFirstWaitToVariousPlaces)
     const std::int32_t drop_indicator = -1;
     const mvvm::SessionItem* parent = wait1;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait0 to [9]
     const std::int32_t drop_indicator = 3;
     const mvvm::SessionItem* parent = sequence0;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(3);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait0 to [10]
     const std::int32_t drop_indicator = 1;
     const mvvm::SessionItem* parent = m_model.GetRootItem();
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Default(1);
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 
   {  // moving wait0 to [11]
     const std::int32_t drop_indicator = -1;
     const mvvm::SessionItem* parent = sequence1;
     const mvvm::TagIndex expected_tag = mvvm::TagIndex::Append();
-    EXPECT_EQ(GetInternalMoveTagIndexV2(drop_indicator, *item_to_move, *parent), expected_tag);
+    EXPECT_EQ(GetTreeInternalMoveTagIndex(drop_indicator, *item_to_move, *parent), expected_tag);
   }
 }
 
