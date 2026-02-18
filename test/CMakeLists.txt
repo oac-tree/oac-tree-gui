@@ -53,7 +53,6 @@ endif()
 # -----------------------------------------------------------------------------
 file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
 "#!/bin/bash
-export QT_QPA_PLATFORM=offscreen
 fail=0
 " ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-core " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-components " || fail=1

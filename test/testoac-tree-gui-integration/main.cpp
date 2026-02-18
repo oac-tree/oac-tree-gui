@@ -18,6 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <mvvm/core/platform.h>
+
 #include <testutils/init_tests.h>
 
 #include <QApplication>
@@ -26,6 +28,7 @@ int main(int argc, char** argv)
 {
   oac_tree_gui::test::InitTests(argc, argv);
 
+  mvvm::SetHeadless();
   const QApplication app(argc, argv);
   Q_UNUSED(app)
 
