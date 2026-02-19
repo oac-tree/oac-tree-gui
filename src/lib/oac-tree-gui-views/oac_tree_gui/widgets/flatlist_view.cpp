@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "flatlist_view.h"
+#include <mvvm/style/mvvm_style_helper.h>
 
 #include <QHeaderView>
 #include <QMouseEvent>
@@ -47,7 +48,7 @@ void FlatListView::setModel(QAbstractItemModel* model)
   header()->setSectionResizeMode(0, QHeaderView::Stretch);
   header()->setSectionResizeMode(1, QHeaderView::Fixed);
   header()->setMinimumSectionSize(0);
-  header()->resizeSection(1, 16);
+  header()->resizeSection(1, mvvm::style::UnitSize(1.5));
 }
 
 void FlatListView::mousePressEvent(QMouseEvent* event)
