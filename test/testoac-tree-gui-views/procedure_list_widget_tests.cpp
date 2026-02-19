@@ -33,7 +33,7 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 
-#include <QListView>
+#include <QTreeView>
 #include <QSignalSpy>
 
 Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
@@ -138,7 +138,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
   auto indexes = view.GetViewModel()->GetIndexOfSessionItem(procedure);
   ASSERT_EQ(indexes.size(),
             1);  // ProcedureViewModel for the moment generate the row with single entry only
-  view.GetListView()->setCurrentIndex(indexes.at(0));
+  view.GetTreeView()->setCurrentIndex(indexes.at(0));
 
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));

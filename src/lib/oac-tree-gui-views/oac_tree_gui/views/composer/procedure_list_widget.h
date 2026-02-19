@@ -38,6 +38,7 @@ class IAppCommandService;
 }  // namespace sup::gui
 
 class QListView;
+class QTreeView;
 
 namespace oac_tree_gui
 {
@@ -46,6 +47,7 @@ class SequencerModel;
 class ProcedureItem;
 class ProcedureListActionHandler;
 class ProcedureListContext;
+class FlatListDelegate;
 
 /**
  * @brief The ProcedureListWidget class represent a simple list with procedures with editable names.
@@ -74,7 +76,7 @@ public:
 
   void SetSelectedProcedure(ProcedureItem* procedure);
 
-  QListView* GetListView();
+  QTreeView *GetTreeView();
 
   mvvm::ViewModel* GetViewModel();
 
@@ -89,7 +91,8 @@ private:
 
   sup::gui::IAppCommandService& m_command_service;
 
-  QListView* m_list_view{nullptr};
+  QTreeView* m_tree_view{nullptr};
+  FlatListDelegate* m_delegate{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureListActions* m_actions{nullptr};
   ProcedureListActionHandler* m_action_handler{nullptr};
