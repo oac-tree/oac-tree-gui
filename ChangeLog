@@ -1,5 +1,6 @@
 Changes for 2.2.0:
 
+- Implement dynamic "close" indicator in the list of opened procedures
 - Provide possibility to reorder jobs and opened procedures
 - Implement FlatListViewModel to support reordering of jobs and procedures
 - Refactor domain plugin loader so it relies on sequencer plugin load machinery

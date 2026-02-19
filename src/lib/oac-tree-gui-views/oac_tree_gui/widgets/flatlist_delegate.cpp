@@ -65,4 +65,13 @@ void FlatListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
   }
 }
 
+QSize FlatListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+  constexpr double scale_default_height_factor{1.2};
+  // increase height of the cell by 20%
+  QSize result = QStyledItemDelegate::sizeHint(option, index);
+  result.setHeight(static_cast<int>(result.height() * scale_default_height_factor));
+  return result;
+}
+
 }  // namespace oac_tree_gui
