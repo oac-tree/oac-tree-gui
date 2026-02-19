@@ -8,4 +8,6 @@ target_sources(${library_name} PRIVATE
   file_tree_view.h
   flatlist_delegate.cpp
   flatlist_delegate.h
+  flatlist_view.cpp
+  flatlist_view.h
 )
