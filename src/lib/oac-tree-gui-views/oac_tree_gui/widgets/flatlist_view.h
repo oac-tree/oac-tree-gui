@@ -44,8 +44,8 @@ public:
 
   void setModel(QAbstractItemModel* model) override;
 
-  void mousePressEvent(QMouseEvent* e) override;
-  void mouseReleaseEvent(QMouseEvent* e) override;
+  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
 
 signals:
   void closeActivated(const QModelIndex& index);

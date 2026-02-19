@@ -50,27 +50,35 @@ void FlatListView::setModel(QAbstractItemModel* model)
   header()->resizeSection(1, 16);
 }
 
-void FlatListView::mousePressEvent(QMouseEvent* e)
+void FlatListView::mousePressEvent(QMouseEvent* event)
 {
   // ignore press in "close button" column to avoid selection
-  if (indexAt(e->position().toPoint()).column() != 1)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  if (indexAt(event->pos()).column() != 1)
+#else
+  if (indexAt(event->position().toPoint()).column() != 1)
+#endif
   {
-    QTreeView::mousePressEvent(e);
+    QTreeView::mousePressEvent(event);
   }
 }
 
-void FlatListView::mouseReleaseEvent(QMouseEvent* e)
+void FlatListView::mouseReleaseEvent(QMouseEvent* event)
 {
   // manually handle click in "close button" column
   // to avoid selection
-  const QModelIndex mouseIndex = indexAt(e->position().toPoint());
-  if (mouseIndex.column() == 1)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  const QModelIndex mouse_index = indexAt(event -> pos());
+#else
+  const QModelIndex mouse_index = indexAt(event->position().toPoint());
+#endif
+  if (mouse_index.column() == 1)
   {
-    emit activated(mouseIndex);
+    emit activated(mouse_index);
   }
   else
   {
-    QTreeView::mouseReleaseEvent(e);
+    QTreeView::mouseReleaseEvent(event);
   }
 }
 
