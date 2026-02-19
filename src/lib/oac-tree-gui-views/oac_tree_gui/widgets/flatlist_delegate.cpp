@@ -22,6 +22,8 @@
 
 #include <oac_tree_gui/style/style_helper.h>
 
+#include <mvvm/style/mvvm_style_helper.h>
+
 #include <QApplication>
 #include <QPainter>
 
@@ -38,6 +40,8 @@ void FlatListDelegate::setCloseButtonVisible(bool visible)
 void FlatListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
                              const QModelIndex& index) const
 {
+  painter->setRenderHint(QPainter::Antialiasing);
+
   if (option.state & QStyle::State_MouseOver)
   {
     QBrush brush = option.palette.alternateBase();
@@ -51,10 +55,13 @@ void FlatListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
   {
     const QIcon icon = FindIcon("dialog-close-16");
 
-    const QRect iconRect(option.rect.right() - option.rect.height(), option.rect.top(),
+    const QRect option_rect(option.rect.right() - option.rect.height(), option.rect.top(),
                          option.rect.height(), option.rect.height());
 
-    icon.paint(painter, iconRect, Qt::AlignRight | Qt::AlignVCenter);
+    QRect small_rect(0, 0, mvvm::style::UnitSize(1), mvvm::style::UnitSize(1));
+    small_rect.moveCenter(option_rect.center());
+
+    icon.paint(painter, small_rect, Qt::AlignRight | Qt::AlignVCenter);
   }
 }
 
