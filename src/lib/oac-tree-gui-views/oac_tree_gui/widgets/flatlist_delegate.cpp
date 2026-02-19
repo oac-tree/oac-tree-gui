@@ -32,36 +32,44 @@ FlatListDelegate::FlatListDelegate(QObject* parent) : QStyledItemDelegate(parent
 
 void FlatListDelegate::setCloseButtonVisible(bool visible)
 {
-  closeButtonVisible = visible;
+  m_close_button_visible = visible;
 }
 
 void FlatListDelegate::handlePressed(const QModelIndex& index)
 {
   if (index.column() == 1)
-    pressedIndex = index;
+  {
+    m_pressed_index = index;
+  }
 }
 
 void FlatListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
-                                  const QModelIndex& index) const
+                             const QModelIndex& index) const
 {
   if (option.state & QStyle::State_MouseOver)
   {
-    if ((QApplication::mouseButtons() & Qt::LeftButton) == 0)
-      pressedIndex = QModelIndex();
+    if (!QApplication::mouseButtons().testFlag(Qt::LeftButton))
+    {
+      m_pressed_index = QModelIndex();
+    }
     QBrush brush = option.palette.alternateBase();
-    if (index == pressedIndex)
+    if (index == m_pressed_index)
+    {
       brush = option.palette.dark();
+    }
+
     painter->fillRect(option.rect, brush);
   }
 
   QStyledItemDelegate::paint(painter, option, index);
 
-  if (closeButtonVisible && index.column() == 1 && option.state & QStyle::State_MouseOver)
+  if (m_close_button_visible && index.column() == 1
+      && option.state.testFlag(QStyle::State_MouseOver))
   {
     const QIcon icon = FindIcon("dialog-close-16");
 
-    QRect iconRect(option.rect.right() - option.rect.height(), option.rect.top(),
-                   option.rect.height(), option.rect.height());
+    const QRect iconRect(option.rect.right() - option.rect.height(), option.rect.top(),
+                         option.rect.height(), option.rect.height());
 
     icon.paint(painter, iconRect, Qt::AlignRight | Qt::AlignVCenter);
   }
