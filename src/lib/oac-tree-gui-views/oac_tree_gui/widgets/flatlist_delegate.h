@@ -28,8 +28,6 @@ namespace oac_tree_gui
 
 /**
  * @brief The FlatListDelegate class provides closing icon in a second column of a tree.
- *
- * Copied from QtCreator's opendocumentstreeview.cpp, OpenDocumentsDelegate class.
  */
 class FlatListDelegate : public QStyledItemDelegate
 {
@@ -41,7 +39,7 @@ public:
   void paint(QPainter* painter, const QStyleOptionViewItem& option,
              const QModelIndex& index) const override;
 
-  mutable QModelIndex m_pressed_index;
+private:
   bool m_close_button_visible = true;
 };
 

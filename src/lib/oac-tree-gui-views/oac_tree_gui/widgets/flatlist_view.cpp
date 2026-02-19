@@ -20,8 +20,6 @@
 
 #include "flatlist_view.h"
 
-#include "flatlist_delegate.h"
-
 #include <QHeaderView>
 #include <QMouseEvent>
 
@@ -39,11 +37,6 @@ FlatListView::FlatListView(QWidget* parent) : QTreeView(parent)
 
   setSelectionMode(QAbstractItemView::SingleSelection);
   setSelectionBehavior(QAbstractItemView::SelectRows);
-
-  installEventFilter(this);
-  viewport()->installEventFilter(this);
-
-  // connect(this, &FlatListView::pressed, m_delegate, &FlatListDelegate::handlePressed);
 }
 
 void FlatListView::setModel(QAbstractItemModel* model)
@@ -57,17 +50,13 @@ void FlatListView::setModel(QAbstractItemModel* model)
   header()->resizeSection(1, 16);
 }
 
-// void FlatListView::setCloseButtonVisible(bool visible)
-// {
-//   m_delegate->setCloseButtonVisible(visible);
-// }
-
 void FlatListView::mousePressEvent(QMouseEvent* e)
 {
-  // ignore press in "close button" column
-  // to avoid selection
+  // ignore press in "close button" column to avoid selection
   if (indexAt(e->position().toPoint()).column() != 1)
+  {
     QTreeView::mousePressEvent(e);
+  }
 }
 
 void FlatListView::mouseReleaseEvent(QMouseEvent* e)
@@ -76,35 +65,13 @@ void FlatListView::mouseReleaseEvent(QMouseEvent* e)
   // to avoid selection
   const QModelIndex mouseIndex = indexAt(e->position().toPoint());
   if (mouseIndex.column() == 1)
+  {
     emit activated(mouseIndex);
+  }
   else
+  {
     QTreeView::mouseReleaseEvent(e);
-}
-
-bool FlatListView::eventFilter(QObject* obj, QEvent* event)
-{
-  if (obj == this && event->type() == QEvent::KeyPress && currentIndex().isValid())
-  {
-    auto ke = static_cast<QKeyEvent*>(event);
-    if ((ke->key() == Qt::Key_Delete || ke->key() == Qt::Key_Backspace) && ke->modifiers() == 0)
-    {
-      emit closeActivated(currentIndex());
-    }
   }
-  else if (obj == viewport() && event->type() == QEvent::MouseButtonRelease)
-  {
-    auto me = static_cast<QMouseEvent*>(event);
-    if (me->button() == Qt::MiddleButton && me->modifiers() == Qt::NoModifier)
-    {
-      QModelIndex index = indexAt(me->pos());
-      if (index.isValid())
-      {
-        emit closeActivated(index);
-        return true;
-      }
-    }
-  }
-  return false;
 }
 
 }  // namespace oac_tree_gui

@@ -33,7 +33,7 @@ namespace oac_tree_gui
  * It is a two-column tree tuned to look like a list, with close indicator in a second column.
  * Intended to work together with FlatListDelegate.
  *
- * Copied from QtCreator's opendocumentstreeview.cpp, OpenDocumentsTreeView class.
+ * Inspired by QtCreator's by OpenDocumentsTreeView class (opendocumentstreeview.cpp).
  */
 class FlatListView : public QTreeView
 {
@@ -49,9 +49,6 @@ public:
 
 signals:
   void closeActivated(const QModelIndex& index);
-
-protected:
-  bool eventFilter(QObject* obj, QEvent* event) override;
 };
 
 }  // namespace oac_tree_gui

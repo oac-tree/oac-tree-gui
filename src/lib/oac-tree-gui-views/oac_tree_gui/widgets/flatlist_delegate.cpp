@@ -35,29 +35,12 @@ void FlatListDelegate::setCloseButtonVisible(bool visible)
   m_close_button_visible = visible;
 }
 
-void FlatListDelegate::handlePressed(const QModelIndex& index)
-{
-  if (index.column() == 1)
-  {
-    m_pressed_index = index;
-  }
-}
-
 void FlatListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
                              const QModelIndex& index) const
 {
   if (option.state & QStyle::State_MouseOver)
   {
-    if (!QApplication::mouseButtons().testFlag(Qt::LeftButton))
-    {
-      m_pressed_index = QModelIndex();
-    }
     QBrush brush = option.palette.alternateBase();
-    if (index == m_pressed_index)
-    {
-      brush = option.palette.dark();
-    }
-
     painter->fillRect(option.rect, brush);
   }
 
