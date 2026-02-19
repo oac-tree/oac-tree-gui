@@ -32,6 +32,7 @@
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
 
+#include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/views/component_provider_helper.h>
 
@@ -88,6 +89,8 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   m_tree_view->setDropIndicatorShown(true);
   m_tree_view->setDefaultDropAction(Qt::MoveAction);
   m_tree_view->setDragDropMode(QAbstractItemView::DragDrop);
+
+  SetupConnections();
 }
 
 ProcedureListWidget::~ProcedureListWidget()
@@ -161,6 +164,23 @@ std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProv
 
   return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(delegate),
                                                            std::move(viewmodel), m_tree_view);
+}
+
+void ProcedureListWidget::SetupConnections()
+{
+  auto on_activated = [this](const QModelIndex& index)
+  {
+    auto procedure =
+        const_cast<mvvm::SessionItem*>(m_component_provider->GetItemFromViewIndex(index));
+    if (procedure != nullptr)
+    {
+      mvvm::utils::RemoveItem(*procedure);
+    }
+  };
+
+  connect(m_tree_view, &FlatListView::activated, this, on_activated);
+  connect(m_tree_view, &FlatListView::pressed, this, []() { qDebug() << "pressed"; });
+  connect(m_tree_view, &FlatListView::closeActivated, this, []() { qDebug() << "closeActivated"; });
 }
 
 }  // namespace oac_tree_gui

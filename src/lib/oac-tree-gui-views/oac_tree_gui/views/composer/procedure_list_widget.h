@@ -89,9 +89,9 @@ private:
   ProcedureListContext CreateContext();
   void OnContextMenuRequest(const QPoint& point);
   std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider();
+  void SetupConnections();
 
   sup::gui::IAppCommandService& m_command_service;
-
   FlatListView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureListActions* m_actions{nullptr};
