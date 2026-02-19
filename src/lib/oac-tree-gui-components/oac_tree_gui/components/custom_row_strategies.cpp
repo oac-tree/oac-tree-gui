@@ -45,17 +45,6 @@ namespace oac_tree_gui
 namespace
 {
 
-QVariant GetValueIcon()
-{
-  // Our ColorIconEngine doesn't work with icons embedded into tree view
-  // Have to set icons manually depending on theme
-  if (mvvm::style::IsDarkTheme())
-  {
-    return QVariant::fromValue(QIcon(":/oac-tree/icons/file-tree-outline-light.svg"));
-  }
-  return QVariant::fromValue(QIcon(":/oac-tree/icons/file-tree-outline-dark.svg"));
-}
-
 /**
  * @brief Creates view item representing AnyValue in a column.
  */
@@ -155,7 +144,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
   if (item.GetTagIndex().GetTag() == itemconstants::kAnyValueTag)
   {
     auto view_item = mvvm::CreateFixedDataViewItem(&item);
-    (void)view_item->SetData(GetValueIcon(), Qt::DecorationRole);
+    (void)view_item->SetData(FindIcon("file-tree-outline"), Qt::DecorationRole);
     (void)view_item->SetData(QString::fromStdString(item.GetDisplayName()), Qt::DisplayRole);
     (void)result.emplace_back(std::move(view_item));
   }

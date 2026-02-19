@@ -42,9 +42,9 @@ void FlatListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 {
   painter->setRenderHint(QPainter::Antialiasing);
 
-  if (option.state & QStyle::State_MouseOver)
+  if (option.state.testFlag(QStyle::State_MouseOver))
   {
-    QBrush brush = option.palette.alternateBase();
+    const QBrush brush = option.palette.alternateBase();
     painter->fillRect(option.rect, brush);
   }
 
@@ -56,9 +56,9 @@ void FlatListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
     const QIcon icon = FindIcon("dialog-close-16");
 
     const QRect option_rect(option.rect.right() - option.rect.height(), option.rect.top(),
-                         option.rect.height(), option.rect.height());
+                            option.rect.height(), option.rect.height());
 
-    QRect small_rect(0, 0, mvvm::style::UnitSize(1), mvvm::style::UnitSize(1));
+    QRect small_rect(0, 0, mvvm::style::UnitSize(1.2), mvvm::style::UnitSize(1.2));
     small_rect.moveCenter(option_rect.center());
 
     icon.paint(painter, small_rect, Qt::AlignRight | Qt::AlignVCenter);
