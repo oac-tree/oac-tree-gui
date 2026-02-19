@@ -6,4 +6,6 @@ target_sources(${library_name} PRIVATE
   custom_tree_view_style.h
   file_tree_view.cpp
   file_tree_view.h
+  flatlist_delegate.cpp
+  flatlist_delegate.h
 )
