@@ -30,8 +30,6 @@ namespace oac_tree_gui
 
 FlatListView::FlatListView(QWidget* parent) : QTreeView(parent)
 {
-  m_delegate = new FlatListDelegate(this);
-  setItemDelegate(m_delegate);
   setRootIsDecorated(false);
   setTextElideMode(Qt::ElideMiddle);
   setFrameStyle(QFrame::NoFrame);
@@ -45,7 +43,7 @@ FlatListView::FlatListView(QWidget* parent) : QTreeView(parent)
   installEventFilter(this);
   viewport()->installEventFilter(this);
 
-  connect(this, &FlatListView::pressed, m_delegate, &FlatListDelegate::handlePressed);
+  // connect(this, &FlatListView::pressed, m_delegate, &FlatListDelegate::handlePressed);
 }
 
 void FlatListView::setModel(QAbstractItemModel* model)
@@ -59,10 +57,10 @@ void FlatListView::setModel(QAbstractItemModel* model)
   header()->resizeSection(1, 16);
 }
 
-void FlatListView::setCloseButtonVisible(bool visible)
-{
-  m_delegate->setCloseButtonVisible(visible);
-}
+// void FlatListView::setCloseButtonVisible(bool visible)
+// {
+//   m_delegate->setCloseButtonVisible(visible);
+// }
 
 void FlatListView::mousePressEvent(QMouseEvent* e)
 {

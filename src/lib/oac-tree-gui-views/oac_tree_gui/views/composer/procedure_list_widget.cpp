@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/viewmodel/procedure_list_viewmodel.h>
 #include <oac_tree_gui/widgets/flatlist_delegate.h>
+#include <oac_tree_gui/widgets/flatlist_view.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
@@ -34,8 +35,8 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/views/component_provider_helper.h>
 
-#include <QTreeView>
 #include <QMenu>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -45,9 +46,8 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
                                          QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
-    , m_tree_view(new QTreeView)
-    , m_delegate(new FlatListDelegate(this))
-    , m_component_provider(mvvm::CreateProvider<ProcedureListViewModel>(m_tree_view))
+    , m_tree_view(new FlatListView)
+    , m_component_provider(CreateProvider())
     , m_actions(new ProcedureListActions(this))
     , m_action_handler(new ProcedureListActionHandler(CreateContext(), this))
 {
@@ -88,8 +88,6 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   m_tree_view->setDropIndicatorShown(true);
   m_tree_view->setDefaultDropAction(Qt::MoveAction);
   m_tree_view->setDragDropMode(QAbstractItemView::DragDrop);
-
-  m_tree_view->setItemDelegate(m_delegate);
 }
 
 ProcedureListWidget::~ProcedureListWidget()
@@ -154,6 +152,15 @@ void ProcedureListWidget::OnContextMenuRequest(const QPoint& point)
   QMenu menu;
   m_actions->SetupMenu(menu, m_action_handler);
   menu.exec(m_tree_view->mapToGlobal(point));
+}
+
+std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProvider()
+{
+  auto delegate = std::make_unique<FlatListDelegate>();
+  auto viewmodel = std::make_unique<ProcedureListViewModel>(nullptr);
+
+  return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(delegate),
+                                                           std::move(viewmodel), m_tree_view);
 }
 
 }  // namespace oac_tree_gui

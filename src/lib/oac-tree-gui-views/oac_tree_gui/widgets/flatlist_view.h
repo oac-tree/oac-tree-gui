@@ -26,8 +26,6 @@
 namespace oac_tree_gui
 {
 
-class FlatListDelegate;
-
 /**
  * @brief The FlatListView class shows flat list of items and provides machinery to remove items
  * from the list.
@@ -45,7 +43,6 @@ public:
   explicit FlatListView(QWidget* parent = nullptr);
 
   void setModel(QAbstractItemModel* model) override;
-  void setCloseButtonVisible(bool visible);
 
   void mousePressEvent(QMouseEvent* e) override;
   void mouseReleaseEvent(QMouseEvent* e) override;
@@ -55,9 +52,6 @@ signals:
 
 protected:
   bool eventFilter(QObject* obj, QEvent* event) override;
-
-private:
-  FlatListDelegate* m_delegate{nullptr};
 };
 
 }  // namespace oac_tree_gui

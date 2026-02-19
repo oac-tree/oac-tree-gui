@@ -25,6 +25,8 @@
 
 #include <QWidget>
 
+class QTreeView;
+
 namespace mvvm
 {
 class ViewModel;
@@ -37,9 +39,6 @@ namespace sup::gui
 class IAppCommandService;
 }  // namespace sup::gui
 
-class QListView;
-class QTreeView;
-
 namespace oac_tree_gui
 {
 
@@ -48,6 +47,7 @@ class ProcedureItem;
 class ProcedureListActionHandler;
 class ProcedureListContext;
 class FlatListDelegate;
+class FlatListView;
 
 /**
  * @brief The ProcedureListWidget class represent a simple list with procedures with editable names.
@@ -88,11 +88,11 @@ signals:
 private:
   ProcedureListContext CreateContext();
   void OnContextMenuRequest(const QPoint& point);
+  std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider();
 
   sup::gui::IAppCommandService& m_command_service;
 
-  QTreeView* m_tree_view{nullptr};
-  FlatListDelegate* m_delegate{nullptr};
+  FlatListView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureListActions* m_actions{nullptr};
   ProcedureListActionHandler* m_action_handler{nullptr};
