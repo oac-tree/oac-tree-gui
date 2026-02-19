@@ -47,7 +47,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
                                          QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
-    , m_tree_view(new FlatListView)
+    , m_list_view(new FlatListView)
     , m_component_provider(CreateProvider())
     , m_actions(new ProcedureListActions(this))
     , m_action_handler(new ProcedureListActionHandler(CreateContext(), this))
@@ -58,7 +58,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->addWidget(m_tree_view);
+  layout->addWidget(m_list_view);
 
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
@@ -77,18 +77,18 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   connect(m_actions, &ProcedureListActions::PasteRequest, m_action_handler,
           &ProcedureListActionHandler::Paste);
 
-  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
-  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+  m_list_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(m_list_view, &QTreeView::customContextMenuRequested, this,
           &ProcedureListWidget::OnContextMenuRequest);
 
   auto context = m_command_service.RegisterWidgetUniqueId(this);
   m_actions->RegisterActionsForContext(context, m_command_service);
 
   // configure list to allow internal move of procedures (handled by FlatListViewModel)
-  m_tree_view->setDragEnabled(true);
-  m_tree_view->setDropIndicatorShown(true);
-  m_tree_view->setDefaultDropAction(Qt::MoveAction);
-  m_tree_view->setDragDropMode(QAbstractItemView::DragDrop);
+  m_list_view->setDragEnabled(true);
+  m_list_view->setDropIndicatorShown(true);
+  m_list_view->setDefaultDropAction(Qt::MoveAction);
+  m_list_view->setDragDropMode(QAbstractItemView::DragDrop);
 
   SetupConnections();
 }
@@ -125,7 +125,7 @@ void ProcedureListWidget::SetSelectedProcedure(ProcedureItem* procedure)
 
 QTreeView* ProcedureListWidget::GetTreeView()
 {
-  return m_tree_view;
+  return m_list_view;
 }
 
 mvvm::ViewModel* ProcedureListWidget::GetViewModel()
@@ -154,7 +154,7 @@ void ProcedureListWidget::OnContextMenuRequest(const QPoint& point)
 {
   QMenu menu;
   m_actions->SetupMenu(menu, m_action_handler);
-  menu.exec(m_tree_view->mapToGlobal(point));
+  menu.exec(m_list_view->mapToGlobal(point));
 }
 
 std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProvider()
@@ -163,7 +163,7 @@ std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProv
   auto viewmodel = std::make_unique<ProcedureListViewModel>(nullptr);
 
   return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(delegate),
-                                                           std::move(viewmodel), m_tree_view);
+                                                           std::move(viewmodel), m_list_view);
 }
 
 void ProcedureListWidget::SetupConnections()
@@ -179,7 +179,7 @@ void ProcedureListWidget::SetupConnections()
     }
   };
 
-  connect(m_tree_view, &FlatListView::activated, this, on_activated);
+  connect(m_list_view, &FlatListView::activated, this, on_activated);
 }
 
 }  // namespace oac_tree_gui
