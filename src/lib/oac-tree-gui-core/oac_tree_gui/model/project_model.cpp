@@ -22,6 +22,7 @@
 
 #include "composer_settings_item.h"
 
+#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 
 namespace oac_tree_gui
@@ -39,9 +40,15 @@ void ProjectModel::Clear()
   PopulateModel();
 }
 
+InstructionContainerItem* ProjectModel::GetToolBoxInstructionContainer() const
+{
+  return mvvm::utils::GetTopItem<InstructionContainerItem>(*this);
+}
+
 void ProjectModel::PopulateModel()
 {
   (void)InsertItem<ComposerSettingsItem>();
+  (void)InsertItem<InstructionContainerItem>();
 }
 
 }  // namespace oac_tree_gui

@@ -27,6 +27,8 @@
 namespace oac_tree_gui
 {
 
+class InstructionContainerItem;
+
 /**
  * @brief The ProjectModel class contains widget settings specific to the given project.
  *
@@ -46,6 +48,12 @@ public:
 
   template <typename ItemT>
   ItemT* Get();
+
+  /**
+   * @brief Returns an instruction container holding user's favorite instructions from the
+   * toolbox.
+   */
+  InstructionContainerItem* GetToolBoxInstructionContainer() const;
 
 private:
   void PopulateModel();
