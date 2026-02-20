@@ -24,7 +24,9 @@
 #include "favorite_instructions_widget.h"
 #include "procedure_list_widget.h"
 
+#include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
 #include <sup/gui/widgets/collapsible_list_view.h>
@@ -81,15 +83,20 @@ ComposerToolsPanel::~ComposerToolsPanel()
   WriteSettings();
 }
 
-void ComposerToolsPanel::SetModel(SequencerModel* model)
+void ComposerToolsPanel::SetModels(ApplicationModels* models)
 {
-  m_procedure_list_view->SetModel(model);
+  auto sequencer_model = models->GetSequencerModel();
+  m_procedure_list_view->SetModel(sequencer_model);
 
-  auto procedure_container = (model != nullptr) ? model->GetProcedureContainer() : nullptr;
+  auto procedure_container =
+      (sequencer_model != nullptr) ? sequencer_model->GetProcedureContainer() : nullptr;
   if (procedure_container != nullptr)
   {
     SetSelectedProcedure(procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::First()));
   }
+
+  m_favorite_widget->SetInstructionContainer(
+      models->GetProjectModel()->GetFavoriteInstructionContainer());
 }
 
 ProcedureItem* ComposerToolsPanel::GetSelectedProcedure()

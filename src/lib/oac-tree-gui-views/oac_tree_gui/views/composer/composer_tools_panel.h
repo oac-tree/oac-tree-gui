@@ -37,7 +37,7 @@ namespace oac_tree_gui
 
 class AvailableInstructionsWidget;
 class ProcedureListWidget;
-class SequencerModel;
+class ApplicationModels;
 class ProcedureItem;
 class FavoriteInstructionsWidget;
 
@@ -61,7 +61,7 @@ public:
   ComposerToolsPanel(ComposerToolsPanel&&) = delete;
   ComposerToolsPanel& operator=(ComposerToolsPanel&&) = delete;
 
-  void SetModel(SequencerModel* model);
+  void SetModels(ApplicationModels* models);
 
   ProcedureItem* GetSelectedProcedure();
 

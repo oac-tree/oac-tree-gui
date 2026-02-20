@@ -53,7 +53,12 @@ class FavoriteInstructionsWidget : public QWidget
 
 public:
   explicit FavoriteInstructionsWidget(QWidget* parent_widget = nullptr);
-  virtual ~FavoriteInstructionsWidget() override;
+  ~FavoriteInstructionsWidget() override;
+
+  FavoriteInstructionsWidget(const FavoriteInstructionsWidget&) = delete;
+  FavoriteInstructionsWidget& operator=(const FavoriteInstructionsWidget&) = delete;
+  FavoriteInstructionsWidget(FavoriteInstructionsWidget&&) = delete;
+  FavoriteInstructionsWidget& operator=(FavoriteInstructionsWidget&&) = delete;
 
   void SetInstructionContainer(InstructionContainerItem* instruction_container);
 

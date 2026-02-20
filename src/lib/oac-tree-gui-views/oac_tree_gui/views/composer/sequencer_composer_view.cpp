@@ -96,7 +96,7 @@ void SequencerComposerView::SetModels(ApplicationModels* models)
   auto composer_info = m_project_model->Get<ComposerSettingsItem>()->GetComposerViewInfo();
   m_splittable_editor_widget->SetComposerViewInfo(composer_info);
 
-  m_composer_tools_panel->SetModel(models->GetSequencerModel());  // will select first procedure
+  m_composer_tools_panel->SetModels(models);  // will select first procedure
 }
 
 void SequencerComposerView::ReadSettings()
