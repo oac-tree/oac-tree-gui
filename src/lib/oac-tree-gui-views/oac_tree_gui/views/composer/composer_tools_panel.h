@@ -35,11 +35,11 @@ class IAppCommandService;
 namespace oac_tree_gui
 {
 
-class InstructionItemPanel;
+class AvailableInstructionsWidget;
 class ProcedureListWidget;
 class SequencerModel;
 class ProcedureItem;
-class AggregatePanel;
+class FavoriteInstructionsWidget;
 
 /**
  * @brief The ComposerToolsPanel class represent a left panel of SequencerComposerView (second main
@@ -82,8 +82,8 @@ private:
 
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
-  InstructionItemPanel* m_instruction_panel{nullptr};
-  AggregatePanel* m_aggregate_panel{nullptr};
+  AvailableInstructionsWidget* m_available_widget{nullptr};
+  FavoriteInstructionsWidget* m_favorite_widget{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 

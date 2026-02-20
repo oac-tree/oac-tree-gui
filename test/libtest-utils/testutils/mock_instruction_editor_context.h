@@ -66,7 +66,7 @@ public:
 
   void SetClipboardContent(std::unique_ptr<QMimeData> clipboard);
 
-  std::vector<mvvm::SessionItem*> GetNotifyRequests();
+  std::vector<mvvm::SessionItem*> GetNotifyRequests() const;
 
   void SetAsCurrentSelection(const std::vector<InstructionItem*>& selection);
 

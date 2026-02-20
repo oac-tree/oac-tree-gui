@@ -88,7 +88,7 @@ void MockInstructionEditorContext::SetClipboardContent(std::unique_ptr<QMimeData
   m_clipboard_content = std::move(clipboard);
 }
 
-std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetNotifyRequests()
+std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetNotifyRequests() const
 {
   return m_notify_requests;
 }

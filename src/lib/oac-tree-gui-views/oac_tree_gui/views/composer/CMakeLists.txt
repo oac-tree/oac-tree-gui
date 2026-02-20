@@ -1,38 +1,38 @@
 # Contains source for SequencerComposerView (main widget for procedure editing).
 
 target_sources(${library_name} PRIVATE
-  aggregate_panel.cpp
-  aggregate_panel.h
   attribute_editor_actions.cpp
   attribute_editor_actions.h
+  available_instructions_widget.cpp
+  available_instructions_widget.h
+  available_instructions_tree_view.cpp
+  available_instructions_tree_view.h
   composer_tools_panel.cpp
   composer_tools_panel.h
   custom_celleditor_factory.cpp
   custom_celleditor_factory.h
+  favorite_instructions_widget.cpp
+  favorite_instructions_widget.h
   instruction_attribute_editor.cpp
   instruction_attribute_editor.h
   instruction_editor_actions.cpp
   instruction_editor_actions.h
   instruction_editor_widget.cpp
   instruction_editor_widget.h
-  instruction_item_panel.cpp
-  instruction_item_panel.h
-  instruction_toolkit_tree_view.cpp
-  instruction_toolkit_tree_view.h
-  procedure_editor_placeholder.cpp
-  procedure_editor_placeholder.h
   procedure_composer_combo_panel.cpp
   procedure_composer_combo_panel.h
   procedure_composer_combo_toolbar.cpp
   procedure_composer_combo_toolbar.h
   procedure_composer_tab_widget.cpp
   procedure_composer_tab_widget.h
-  procedure_splittable_editor_widget.cpp
-  procedure_splittable_editor_widget.h
+  procedure_editor_placeholder.cpp
+  procedure_editor_placeholder.h
   procedure_list_actions.cpp
   procedure_list_actions.h
   procedure_list_widget.cpp
   procedure_list_widget.h
+  procedure_splittable_editor_widget.cpp
+  procedure_splittable_editor_widget.h
   sequencer_composer_actions.cpp
   sequencer_composer_actions.h
   sequencer_composer_view.cpp

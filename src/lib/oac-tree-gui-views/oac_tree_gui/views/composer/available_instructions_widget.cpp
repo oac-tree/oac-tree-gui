@@ -18,9 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_item_panel.h"
+#include "available_instructions_widget.h"
 
-#include "instruction_toolkit_tree_view.h"
+#include "available_instructions_tree_view.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
@@ -36,11 +36,11 @@
 namespace oac_tree_gui
 {
 
-InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
+AvailableInstructionsWidget::AvailableInstructionsWidget(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_instruction_toolkit_viewmodel(new ToolKitViewModel(this))
     , m_proxy_model(new mvvm::FilterNameViewModel(this))
-    , m_tree_view(new InsructionToolKitTreeView)
+    , m_tree_view(new AvailableInstructionsTreeView)
     , m_line_edit(new QLineEdit)
 {
   setWindowTitle("INSTRUCTIONS");
@@ -54,8 +54,8 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
   layout->addWidget(m_tree_view);
   layout->addWidget(m_line_edit);
 
-  connect(m_tree_view, &InsructionToolKitTreeView::InstructionDoubleClicked, this,
-          &InstructionItemPanel::InstructionDoubleClicked);
+  connect(m_tree_view, &AvailableInstructionsTreeView::InstructionDoubleClicked, this,
+          &AvailableInstructionsWidget::InstructionDoubleClicked);
 
   m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroups());
 
@@ -64,7 +64,7 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          &InstructionItemPanel::OnContextMenuRequest);
+          &AvailableInstructionsWidget::OnContextMenuRequest);
 
   m_line_edit->setClearButtonEnabled(true);
   m_line_edit->setPlaceholderText("Find instruction");
@@ -73,7 +73,7 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent_widget)
   connect(m_line_edit, &QLineEdit::textChanged, this, on_text);
 }
 
-void InstructionItemPanel::OnContextMenuRequest(const QPoint& point)
+void AvailableInstructionsWidget::OnContextMenuRequest(const QPoint& point)
 {
   QMenu menu;
 

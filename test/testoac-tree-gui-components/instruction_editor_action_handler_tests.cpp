@@ -71,7 +71,6 @@ public:
   test::MockInstructionEditorContext m_mock_context;
 };
 
-//! Checking exceptions depending on how many callbacks left undefined.
 TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialised)
 {
   {
@@ -109,8 +108,8 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
     context.notify_request = [](auto item) {};
-    context.create_instruction =
-        [](const std::string& item_type) -> std::unique_ptr<InstructionItem> { return nullptr; };
+    context.create_instruction = [](const std::string&) -> std::unique_ptr<InstructionItem>
+    { return nullptr; };
     EXPECT_NO_THROW(InstructionEditorActionHandler{context});
   }
 }
@@ -135,7 +134,6 @@ TEST_F(InstructionEditorActionHandlerTest, GetSelectedInstructions)
   }
 }
 
-//! Attempt to insert an instruction when no procedure created upfront.
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
   // creating the context pretending that no procedures/instructions are selected
@@ -147,12 +145,11 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
   EXPECT_NO_THROW(handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>()));
 }
 
-//! Adding wait instruction.
 TEST_F(InstructionEditorActionHandlerTest, AddWait)
 {
   auto handler = CreateActionHandler({});
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -172,8 +169,8 @@ TEST_F(InstructionEditorActionHandlerTest, AddToWrongPlaceWhenNoMessageCallbackD
   context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
   context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
   context.notify_request = [](auto item) {};
-  context.create_instruction =
-      [](const std::string& item_type) -> std::unique_ptr<InstructionItem> { return nullptr; };
+  context.create_instruction = [](const std::string&) -> std::unique_ptr<InstructionItem>
+  { return nullptr; };
 
   InstructionEditorActionHandler handler{context};
 
@@ -190,7 +187,7 @@ TEST_F(InstructionEditorActionHandlerTest, DropInstruction)
 
   auto handler = CreateActionHandler({});
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -208,14 +205,13 @@ TEST_F(InstructionEditorActionHandlerTest, DropInstruction)
   EXPECT_EQ(inserted_instruction->GetY(), expected_y);
 }
 
-//! Adding choice instruction. Checking that universal instruction is correctly handled.
-TEST_F(InstructionEditorActionHandlerTest, AddChoice)
+TEST_F(InstructionEditorActionHandlerTest, AddUniversalInstruction)
 {
   auto handler = CreateActionHandler({});
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
-  // appending instruction to the container
+  // Appending instruction to the container.
   handler->InsertInstructionAfter(domainconstants::kChoiceInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
@@ -223,9 +219,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddChoice)
   EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
 }
 
-//! Insertion instruction after selected instruction.
-
-TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
+TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterSelection)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -296,8 +290,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
 
-//! Insertion instruction in the selected instruction.
-TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
+TEST_F(InstructionEditorActionHandlerTest, InsertInstructionIntoSelection)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -339,8 +332,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
 }
 
-//! Attempt to insert instruction into the one, that can't have children.
-TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
+TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionIntoWait)
 {
   // inserting instruction in the container
   auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
@@ -355,7 +347,6 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 }
 
-//! Attempt to insert instruction into something, when nothing is selected.
 TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 {
   // creating action handler mimicking no instruction selected
@@ -366,7 +357,6 @@ TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
   handler->InsertInstructionInto(mvvm::GetTypeName<WaitItem>());
 }
 
-//! Remove operation when nothing is selected.
 TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelected)
 {
   // inserting instruction in the container
@@ -394,7 +384,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
   auto handler = CreateActionHandler({sequence0});
   EXPECT_TRUE(handler->CanRemoveInstruction());
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -445,8 +435,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveParentAndChild)
   EXPECT_TRUE(m_mock_context.GetNotifyRequests().empty());
 }
 
-//! Move selected instruction up.
-TEST_F(InstructionEditorActionHandlerTest, MoveUp)
+TEST_F(InstructionEditorActionHandlerTest, MoveSelectedUp)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -457,7 +446,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   // creating action handler mimicking wait2 is selected
   auto handler = CreateActionHandler({wait2});
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -472,8 +461,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   EXPECT_EQ(reported_item, wait2);
 }
 
-//! Move selected instruction up.
-TEST_F(InstructionEditorActionHandlerTest, MoveDown)
+TEST_F(InstructionEditorActionHandlerTest, MoveSelectedDown)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -484,7 +472,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   // creating action handler mimicking wait0 is selected
   auto handler = CreateActionHandler({wait0});
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -499,7 +487,6 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   EXPECT_EQ(reported_item, wait0);
 }
 
-//! Attempt to edit AnyValueItem when nothing appropriate is selected.
 TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -513,7 +500,6 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
   handler->OnEditAnyvalueRequest();
 }
 
-//! Editing AnyValueItem when EPICS instruction is selected.
 TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelected)
 {
   if (!IsSequencerPluginEpicsAvailable())
@@ -547,9 +533,7 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
   EXPECT_EQ(GetAnyValueItem(*item), editing_result_ptr);
 }
 
-//! Simulating the case when user removes AnyValueItem in the editor.
-//! It shouldn't be allowed.
-TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
+TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveAnyValueItemAndAcceptDialog)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {

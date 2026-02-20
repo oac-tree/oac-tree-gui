@@ -50,10 +50,10 @@ public:
   ItemT* Get();
 
   /**
-   * @brief Returns an instruction container holding user's favorite instructions from the
-   * toolbox.
+   * @brief Returns an instruction container holding user's favorite instructions for
+   * ComposerToolsPanel.
    */
-  InstructionContainerItem* GetToolBoxInstructionContainer() const;
+  InstructionContainerItem* GetFavoriteInstructionContainer() const;
 
 private:
   void PopulateModel();

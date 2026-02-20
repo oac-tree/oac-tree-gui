@@ -38,12 +38,12 @@ TEST_F(ProjectModelTest, InitialState)
   ProjectModel model;
   EXPECT_EQ(model.GetType(), "ProjectModel");
   EXPECT_NE(mvvm::utils::GetTopItem<ComposerSettingsItem>(model), nullptr);
-  EXPECT_NE(model.GetToolBoxInstructionContainer(), nullptr);
+  EXPECT_NE(model.GetFavoriteInstructionContainer(), nullptr);
 
   // item recreated after cleanup
   model.Clear();
   EXPECT_NE(mvvm::utils::GetTopItem<ComposerSettingsItem>(model), nullptr);
-  EXPECT_NE(model.GetToolBoxInstructionContainer(), nullptr);
+  EXPECT_NE(model.GetFavoriteInstructionContainer(), nullptr);
 }
 
 }  // namespace oac_tree_gui::test

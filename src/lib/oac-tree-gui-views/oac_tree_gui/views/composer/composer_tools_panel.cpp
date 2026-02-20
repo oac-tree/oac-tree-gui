@@ -20,8 +20,8 @@
 
 #include "composer_tools_panel.h"
 
-#include "aggregate_panel.h"
-#include "instruction_item_panel.h"
+#include "available_instructions_widget.h"
+#include "favorite_instructions_widget.h"
 #include "procedure_list_widget.h"
 
 #include <oac_tree_gui/model/procedure_item.h>
@@ -47,8 +47,8 @@ ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService& command_ser
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_procedure_list_view(new ProcedureListWidget(command_service))
-    , m_instruction_panel(new InstructionItemPanel)
-    , m_aggregate_panel(new AggregatePanel)
+    , m_available_widget(new AvailableInstructionsWidget)
+    , m_favorite_widget(new FavoriteInstructionsWidget)
     , m_stack_widget(new sup::gui::ItemStackWidget)
 {
   m_collapsible_list->setWindowTitle("Procedures & Tools");
@@ -59,8 +59,8 @@ ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService& command_ser
   layout->addWidget(m_stack_widget);
 
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, {});
-  m_collapsible_list->AddCollapsibleWidget(m_instruction_panel, {});
-  m_collapsible_list->AddCollapsibleWidget(m_aggregate_panel, {}, false);
+  m_collapsible_list->AddCollapsibleWidget(m_available_widget, {});
+  m_collapsible_list->AddCollapsibleWidget(m_favorite_widget, {}, false);
 
   auto toolbar_actions =
       m_procedure_list_view->GetActions({ProcedureListActions::ActionKey::kCreateNew,
@@ -70,9 +70,9 @@ ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService& command_ser
   connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ComposerToolsPanel::ProcedureSelected);
 
-  connect(m_instruction_panel, &InstructionItemPanel::InstructionDoubleClicked, this,
+  connect(m_available_widget, &AvailableInstructionsWidget::InstructionDoubleClicked, this,
           &ComposerToolsPanel::ToolBoxInstructionRequest);
-  connect(m_aggregate_panel, &AggregatePanel::InstructionDoubleClicked, this,
+  connect(m_favorite_widget, &FavoriteInstructionsWidget::InstructionDoubleClicked, this,
           &ComposerToolsPanel::ToolBoxInstructionRequest);
 
   ReadSettings();

@@ -18,34 +18,49 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_AGGREGATE_PANEL_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_AGGREGATE_PANEL_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_AVAILABLE_INSTRUCTIONS_WIDGET_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_AVAILABLE_INSTRUCTIONS_WIDGET_H_
 
 #include <QWidget>
+
+class QLineEdit;
+
+namespace mvvm
+{
+class FilterNameViewModel;
+}
 
 namespace oac_tree_gui
 {
 
 class ToolKitViewModel;
-class InsructionToolKitTreeView;
+class AvailableInstructionsTreeView;
 
-//! Panel with tree view for instruction aggregates.
-
-class AggregatePanel : public QWidget
+/**
+ * @brief The AvailableInstructionsWidget class is a tree with available instruction type names
+ * grouped according to their plugin origin.
+ *
+ * It is located on the left-hand-side of SequencerComposerView.
+ */
+class AvailableInstructionsWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit AggregatePanel(QWidget* parent_widget = nullptr);
+  explicit AvailableInstructionsWidget(QWidget* parent_widget = nullptr);
 
 signals:
   void InstructionDoubleClicked(const QString& name);
 
 private:
-  ToolKitViewModel* m_toolkit_viewmodel{nullptr};
-  InsructionToolKitTreeView* m_tree_view{nullptr};
+  void OnContextMenuRequest(const QPoint& point);
+
+  ToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
+  mvvm::FilterNameViewModel* m_proxy_model{nullptr};
+  AvailableInstructionsTreeView* m_tree_view{nullptr};
+  QLineEdit* m_line_edit{nullptr};
 };
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_AGGREGATE_PANEL_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_AVAILABLE_INSTRUCTIONS_WIDGET_H_

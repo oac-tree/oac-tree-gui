@@ -40,7 +40,7 @@ void ProjectModel::Clear()
   PopulateModel();
 }
 
-InstructionContainerItem* ProjectModel::GetToolBoxInstructionContainer() const
+InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer() const
 {
   return mvvm::utils::GetTopItem<InstructionContainerItem>(*this);
 }

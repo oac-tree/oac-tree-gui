@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
-#define OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_AVAILABLE_INSTRUCTIONS_TREE_VIEW_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_AVAILABLE_INSTRUCTIONS_TREE_VIEW_H_
 
 #include <QTreeView>
 
@@ -27,16 +27,16 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The InsructionToolKitTreeView class is a tree view with instruction groups to
- * drag-and-drop on the graphics scene.
+ * @brief The AvailableInstructionsTreeView class is a tree view with available instruction types.
  *
- * Its only purpose is to tweak the drag-and-drop indicator.
+ * Instructions are groupped according to plugin group names. You can drag instruction name on
+ * graphics scene or instruction tree, but you can't drag the group name.
  */
-class InsructionToolKitTreeView : public QTreeView
+class AvailableInstructionsTreeView : public QTreeView
 {
   Q_OBJECT
 public:
-  explicit InsructionToolKitTreeView(QWidget* parent_widget = nullptr);
+  explicit AvailableInstructionsTreeView(QWidget* parent_widget = nullptr);
 
 signals:
   void InstructionDoubleClicked(const QString& name);
@@ -47,4 +47,4 @@ protected:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_AVAILABLE_INSTRUCTIONS_TREE_VIEW_H_

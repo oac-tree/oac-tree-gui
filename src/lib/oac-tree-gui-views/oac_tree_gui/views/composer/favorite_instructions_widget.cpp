@@ -18,9 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "aggregate_panel.h"
+#include "favorite_instructions_widget.h"
 
-#include "instruction_toolkit_tree_view.h"
+#include "available_instructions_tree_view.h"
 
 #include <oac_tree_gui/model/aggregate_factory.h>
 #include <oac_tree_gui/viewmodel/toolkit_viewmodel.h>
@@ -30,10 +30,10 @@
 namespace oac_tree_gui
 {
 
-AggregatePanel::AggregatePanel(QWidget* parent_widget)
+FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_toolkit_viewmodel(new ToolKitViewModel(this))
-    , m_tree_view(new InsructionToolKitTreeView)
+    , m_tree_view(new AvailableInstructionsTreeView)
 {
   setWindowTitle("AGGREGATES");
 
@@ -47,8 +47,8 @@ AggregatePanel::AggregatePanel(QWidget* parent_widget)
   const AggregateFactory factory;
   m_toolkit_viewmodel->PopulateModel(factory.GetKeys());
 
-  connect(m_tree_view, &InsructionToolKitTreeView::InstructionDoubleClicked, this,
-          &AggregatePanel::InstructionDoubleClicked);
+  connect(m_tree_view, &AvailableInstructionsTreeView::InstructionDoubleClicked, this,
+          &FavoriteInstructionsWidget::InstructionDoubleClicked);
 }
 
 }  // namespace oac_tree_gui

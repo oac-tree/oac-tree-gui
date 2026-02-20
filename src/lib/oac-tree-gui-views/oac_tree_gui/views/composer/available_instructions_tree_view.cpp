@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_toolkit_tree_view.h"
+#include "available_instructions_tree_view.h"
 
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
@@ -54,7 +54,7 @@ QPixmap CreatePixmap()
 namespace oac_tree_gui
 {
 
-InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget* parent_widget)
+AvailableInstructionsTreeView::AvailableInstructionsTreeView(QWidget* parent_widget)
     : QTreeView(parent_widget)
 {
   auto on_double_click = [this](auto index)
@@ -66,15 +66,18 @@ InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget* parent_widget)
       emit InstructionDoubleClicked(index.data(Qt::DisplayRole).toString());
     }
   };
-  connect(this, &InsructionToolKitTreeView::doubleClicked, this, on_double_click);
+  connect(this, &AvailableInstructionsTreeView::doubleClicked, this, on_double_click);
 
   setHeaderHidden(true);
   setDragEnabled(true);
 }
 
-void InsructionToolKitTreeView::startDrag(Qt::DropActions supported_actions)
+void AvailableInstructionsTreeView::startDrag(Qt::DropActions supported_actions)
 {
   (void)supported_actions;
+
+  // The method is implemented solely for custom drag indicator.
+  // The mime data is taken from the model.
 
   if (auto mime_data = model()->mimeData(selectedIndexes()); mime_data)
   {
