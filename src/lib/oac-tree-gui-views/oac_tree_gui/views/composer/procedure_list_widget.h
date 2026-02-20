@@ -46,7 +46,6 @@ class SequencerModel;
 class ProcedureItem;
 class ProcedureListActionHandler;
 class ProcedureListContext;
-class FlatListDelegate;
 class FlatListView;
 
 /**
@@ -88,7 +87,7 @@ signals:
 private:
   ProcedureListContext CreateContext();
   void OnContextMenuRequest(const QPoint& point);
-  std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider();
+  std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider() const;
   void SetupConnections();
 
   sup::gui::IAppCommandService& m_command_service;

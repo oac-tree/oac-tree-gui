@@ -20,10 +20,12 @@
 
 #include "favorite_instructions_widget.h"
 
-#include "available_instructions_tree_view.h"
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/viewmodel/favorite_instructions_viewmodel.h>
+#include <oac_tree_gui/widgets/flatlist_delegate.h>
+#include <oac_tree_gui/widgets/flatlist_view.h>
 
-#include <oac_tree_gui/model/aggregate_factory.h>
-#include <oac_tree_gui/viewmodel/toolkit_viewmodel.h>
+#include <mvvm/views/component_provider_helper.h>
 
 #include <QVBoxLayout>
 
@@ -31,24 +33,31 @@ namespace oac_tree_gui
 {
 
 FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
-    : QWidget(parent_widget)
-    , m_toolkit_viewmodel(new ToolKitViewModel(this))
-    , m_tree_view(new AvailableInstructionsTreeView)
+    : QWidget(parent_widget), m_list_view(new FlatListView), m_component_provider(CreateProvider())
 {
   setWindowTitle("FAVORITE");
-
-  m_tree_view->setModel(m_toolkit_viewmodel);
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->addWidget(m_tree_view);
+  layout->addWidget(m_list_view);
+}
 
-  const AggregateFactory factory;
-  m_toolkit_viewmodel->PopulateModel(factory.GetKeys());
+FavoriteInstructionsWidget::~FavoriteInstructionsWidget() = default;
 
-  connect(m_tree_view, &AvailableInstructionsTreeView::InstructionDoubleClicked, this,
-          &FavoriteInstructionsWidget::InstructionDoubleClicked);
+void FavoriteInstructionsWidget::SetInstructionContainer(
+    InstructionContainerItem* instruction_container)
+{
+  m_component_provider->SetItem(instruction_container);
+}
+
+std::unique_ptr<mvvm::ItemViewComponentProvider> FavoriteInstructionsWidget::CreateProvider() const
+{
+  auto delegate = std::make_unique<FlatListDelegate>();
+  auto viewmodel = std::make_unique<FavoriteInstructionsViewModel>(nullptr);
+
+  return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(delegate),
+                                                           std::move(viewmodel), m_list_view);
 }
 
 }  // namespace oac_tree_gui

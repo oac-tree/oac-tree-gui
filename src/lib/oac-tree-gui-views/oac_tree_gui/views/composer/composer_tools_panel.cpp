@@ -72,8 +72,6 @@ ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService& command_ser
 
   connect(m_available_widget, &AvailableInstructionsWidget::InstructionDoubleClicked, this,
           &ComposerToolsPanel::ToolBoxInstructionRequest);
-  connect(m_favorite_widget, &FavoriteInstructionsWidget::InstructionDoubleClicked, this,
-          &ComposerToolsPanel::ToolBoxInstructionRequest);
 
   ReadSettings();
 }

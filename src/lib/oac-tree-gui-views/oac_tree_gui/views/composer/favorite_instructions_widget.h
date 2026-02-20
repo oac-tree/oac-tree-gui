@@ -23,11 +23,17 @@
 
 #include <QWidget>
 
+namespace mvvm
+{
+class ViewModel;
+class ItemViewComponentProvider;
+}  // namespace mvvm
+
 namespace oac_tree_gui
 {
 
-class ToolKitViewModel;
-class AvailableInstructionsTreeView;
+class InstructionContainerItem;
+class FlatListView;
 
 /**
  * @brief The FavoriteInstructionsWidget holds the list of user's favorite instructions.
@@ -35,10 +41,8 @@ class AvailableInstructionsTreeView;
  * Located at the left bottom corner of SequencerComposerView.
  *
  * The user can drag-and-drop instructions from other places to here (this will create copies).
- * Then, the user can dran-and-drop from here to other places (this will create copies there, but
+ * The user can dran-and-drop from here to other places (this will create copies there, but
  * won't remove instructions from here).
- *
- * The user can also double-click instruction name to add it to the currently opened procedure.
  *
  * Favorite instructions are saved in the project file, so they are restored when the user opens the
  * project again.
@@ -49,13 +53,15 @@ class FavoriteInstructionsWidget : public QWidget
 
 public:
   explicit FavoriteInstructionsWidget(QWidget* parent_widget = nullptr);
+  virtual ~FavoriteInstructionsWidget() override;
 
-signals:
-  void InstructionDoubleClicked(const QString& name);
+  void SetInstructionContainer(InstructionContainerItem* instruction_container);
 
 private:
-  ToolKitViewModel* m_toolkit_viewmodel{nullptr};
-  AvailableInstructionsTreeView* m_tree_view{nullptr};
+  std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider() const;
+
+  FlatListView* m_list_view{nullptr};
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 
 }  // namespace oac_tree_gui

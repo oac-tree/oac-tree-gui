@@ -157,7 +157,7 @@ void ProcedureListWidget::OnContextMenuRequest(const QPoint& point)
   menu.exec(m_list_view->mapToGlobal(point));
 }
 
-std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProvider()
+std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProvider() const
 {
   auto delegate = std::make_unique<FlatListDelegate>();
   auto viewmodel = std::make_unique<ProcedureListViewModel>(nullptr);
