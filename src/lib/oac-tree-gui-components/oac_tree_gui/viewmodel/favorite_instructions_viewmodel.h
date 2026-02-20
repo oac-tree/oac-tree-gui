@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWMODEL_PROCEDURE_LIST_VIEWMODEL_H_
-#define OAC_TREE_GUI_VIEWMODEL_PROCEDURE_LIST_VIEWMODEL_H_
+#ifndef OAC_TREE_GUI_VIEWMODEL_FAVORITE_INSTRUCTIONS_VIEWMODEL_H_
+#define OAC_TREE_GUI_VIEWMODEL_FAVORITE_INSTRUCTIONS_VIEWMODEL_H_
 
 #include <oac_tree_gui/viewmodel/flatlist_viewmodel.h>
 
@@ -27,19 +27,24 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The ProcedureListViewModel class is a view model to show the list of procedures.
+ * @brief The FavoriteInstructionsViewModel class is a view model to show the list of favorite
+ * instructions.
  *
  * It has following features:
- * - allow internal move (reodering list of procedures)
+ * - allow internal move (reordering instructions in a list)
+ * - allow drag-copy from here
+ * - allow drop of new instructions (copy from the toolbox's tree of available instructions)
+ * - allow drop from the tree of main instruction editor (copies are created)
  */
-class ProcedureListViewModel : public FlatListViewModel
+class FavoriteInstructionsViewModel : public FlatListViewModel
 {
   Q_OBJECT
 
 public:
-  explicit ProcedureListViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
+  explicit FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
+                                         QObject* parent_object = nullptr);
 };
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_VIEWMODEL_PROCEDURE_LIST_VIEWMODEL_H_
+#endif  // OAC_TREE_GUI_VIEWMODEL_FAVORITE_INSTRUCTIONS_VIEWMODEL_H_

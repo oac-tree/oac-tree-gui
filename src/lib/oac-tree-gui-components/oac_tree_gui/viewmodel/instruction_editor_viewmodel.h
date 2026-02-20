@@ -38,7 +38,11 @@ class InstructionEditorContext;
  * @brief The InstructionEditorViewModel class is a model with two columns: display name and
  * editable description.
  *
- * It allows to drag-and-drop instructions, and move instructions from one parent to another.
+ * It has following features:
+ * - allow internal move (reodering, move instructions from one parent to another)
+ * - allow external move (move from another instance of the same viewmodel)
+ * - allow drop of new instructions (copy from the toolbox's tree of available instructions)
+ * - TODO allow drop of favorite instructions (copy from the toolbox's tree of favorite instructions)
  */
 class InstructionEditorViewModel : public mvvm::ViewModel
 {

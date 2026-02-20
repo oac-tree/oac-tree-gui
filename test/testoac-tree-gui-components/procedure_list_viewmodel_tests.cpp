@@ -25,7 +25,6 @@
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/viewmodel/top_items_viewmodel.h>
 
 #include <gtest/gtest.h>
 

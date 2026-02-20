@@ -3,6 +3,8 @@
 target_sources(${library_name} PRIVATE
   attribute_editor_viewmodel.cpp
   attribute_editor_viewmodel.h
+  favorite_instructions_viewmodel.cpp
+  favorite_instructions_viewmodel.h
   flatlist_viewmodel.cpp
   flatlist_viewmodel.h
   instruction_editor_viewmodel.cpp

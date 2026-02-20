@@ -18,28 +18,21 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_VIEWMODEL_PROCEDURE_LIST_VIEWMODEL_H_
-#define OAC_TREE_GUI_VIEWMODEL_PROCEDURE_LIST_VIEWMODEL_H_
+#include "favorite_instructions_viewmodel.h"
 
-#include <oac_tree_gui/viewmodel/flatlist_viewmodel.h>
+#include <mvvm/providers/standard_children_strategies.h>
+#include <mvvm/providers/standard_row_strategies.h>
+#include <mvvm/providers/viewmodel_controller_factory.h>
 
 namespace oac_tree_gui
 {
 
-/**
- * @brief The ProcedureListViewModel class is a view model to show the list of procedures.
- *
- * It has following features:
- * - allow internal move (reodering list of procedures)
- */
-class ProcedureListViewModel : public FlatListViewModel
+FavoriteInstructionsViewModel::FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
+                                                             QObject* parent_object)
+    : FlatListViewModel(parent_object)
 {
-  Q_OBJECT
-
-public:
-  explicit ProcedureListViewModel(mvvm::ISessionModel* model, QObject* parent_object = nullptr);
-};
+  SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
+      model, this));
+}
 
 }  // namespace oac_tree_gui
-
-#endif  // OAC_TREE_GUI_VIEWMODEL_PROCEDURE_LIST_VIEWMODEL_H_

@@ -35,7 +35,7 @@ FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
     , m_toolkit_viewmodel(new ToolKitViewModel(this))
     , m_tree_view(new AvailableInstructionsTreeView)
 {
-  setWindowTitle("AGGREGATES");
+  setWindowTitle("FAVORITE");
 
   m_tree_view->setModel(m_toolkit_viewmodel);
 
