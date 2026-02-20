@@ -21,8 +21,10 @@
 #include "mock_instruction_editor_context.h"
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
-#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -63,6 +65,8 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
     OnSetMimeData();
   };
 
+  result.create_instruction = [this](const std::string& item_type)
+  { return CreateInstructionTree(item_type); };
   return result;
 }
 

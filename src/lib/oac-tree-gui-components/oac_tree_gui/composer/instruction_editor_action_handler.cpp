@@ -110,8 +110,7 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
 
   if (!m_context.create_instruction)
   {
-    m_context.create_instruction = [](const auto& item_type)
-    { return CreateInstructionItem(item_type); };
+    throw RuntimeException("Callback to create instruction is not defined");
   }
 }
 

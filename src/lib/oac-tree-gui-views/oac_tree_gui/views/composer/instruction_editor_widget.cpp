@@ -33,6 +33,7 @@
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <oac_tree_gui/widgets/custom_tree_view_style.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
@@ -263,6 +264,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.edit_anyvalue = CreateAnyValueDialogCallback(this);
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
+  result.create_instruction = [](const std::string& name) { return CreateInstructionTree(name); };
 
   return result;
 }

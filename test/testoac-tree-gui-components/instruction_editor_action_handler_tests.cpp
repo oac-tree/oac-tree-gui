@@ -75,20 +75,32 @@ public:
 TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialised)
 {
   {
+    // no instruction container callback
     const InstructionEditorContext context{};
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
   {
+    // no selected instruction callback defined
     InstructionEditorContext context;
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
   {
+    // no notify callback defined
     InstructionEditorContext context;
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
+    EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
+  }
+
+  {
+    // no create instruction callback defined
+    InstructionEditorContext context;
+    context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
+    context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
+    context.notify_request = [](auto item) {};
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
@@ -97,6 +109,8 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
     context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
     context.notify_request = [](auto item) {};
+    context.create_instruction =
+        [](const std::string& item_type) -> std::unique_ptr<InstructionItem> { return nullptr; };
     EXPECT_NO_THROW(InstructionEditorActionHandler{context});
   }
 }
@@ -158,6 +172,8 @@ TEST_F(InstructionEditorActionHandlerTest, AddToWrongPlaceWhenNoMessageCallbackD
   context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
   context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
   context.notify_request = [](auto item) {};
+  context.create_instruction =
+      [](const std::string& item_type) -> std::unique_ptr<InstructionItem> { return nullptr; };
 
   InstructionEditorActionHandler handler{context};
 
