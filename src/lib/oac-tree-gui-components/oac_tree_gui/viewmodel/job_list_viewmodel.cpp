@@ -20,6 +20,7 @@
 
 #include "job_list_viewmodel.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
@@ -63,7 +64,7 @@ public:
 };
 
 JobListViewModel::JobListViewModel(mvvm::ISessionModel* model, QObject* parent_object)
-    : FlatListViewModel(parent_object)
+    : FlatListViewModel(kJobIdentifierMimeType, parent_object)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
 }

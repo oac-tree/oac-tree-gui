@@ -20,6 +20,8 @@
 
 #include "favorite_instructions_viewmodel.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
+
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/standard_row_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
@@ -29,7 +31,7 @@ namespace oac_tree_gui
 
 FavoriteInstructionsViewModel::FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
                                                              QObject* parent_object)
-    : FlatListViewModel(parent_object)
+    : FlatListViewModel(kInstructionIdentifierMimeType, parent_object)
 {
   SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
       model, this));

@@ -118,7 +118,7 @@ TEST_F(ProcedureListViewModelTest, MimeTypes)
 
   QStringList mime_types = model.mimeTypes();
   EXPECT_EQ(mime_types.size(), 1);
-  EXPECT_EQ(mime_types[0], kItemIdentifierMimeType);
+  EXPECT_EQ(mime_types[0], kProcedureIdentifierMimeType);
 }
 
 TEST_F(ProcedureListViewModelTest, MimeDataEncoding)
@@ -132,9 +132,9 @@ TEST_F(ProcedureListViewModelTest, MimeDataEncoding)
   std::unique_ptr<QMimeData> mime_data(model.mimeData({display_index, data_index}));
   EXPECT_NE(mime_data, nullptr);
 
-  EXPECT_TRUE(mime_data->hasFormat(kItemIdentifierMimeType));
+  EXPECT_TRUE(mime_data->hasFormat(kProcedureIdentifierMimeType));
 
-  auto identifiers = GetStringListFromMime(mime_data.get(), kItemIdentifierMimeType);
+  auto identifiers = GetStringListFromMime(mime_data.get(), kProcedureIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), procedure_item->GetIdentifier());
 }
@@ -171,7 +171,7 @@ TEST_F(ProcedureListViewModelTest, CanDropMimeData)
 
   {  // all combinations of QModelIndex and row from the table above should be accepted
     auto mime_data = std::make_unique<QMimeData>();
-    mime_data->setData(kItemIdentifierMimeType, QByteArray());
+    mime_data->setData(kProcedureIdentifierMimeType, QByteArray());
 
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, QModelIndex()));
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,

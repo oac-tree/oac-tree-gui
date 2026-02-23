@@ -40,9 +40,10 @@ namespace oac_tree_gui
 {
 
 //! Mime type for drag-and-drop events containing item's identifier information.
-//! Depending on view model implementation, view context and the Qt::DropAction can lead to item
-//! internal move, copy or creation of new item based on the dragged one.
 constexpr auto kItemIdentifierMimeType = "application/coa.sequencer.item.identifier";
+constexpr auto kInstructionIdentifierMimeType = "application/coa.sequencer.instruction.identifier";
+constexpr auto kJobIdentifierMimeType = "application/coa.sequencer.job.identifier";
+constexpr auto kProcedureIdentifierMimeType = "application/coa.sequencer.procedure.identifier";
 
 //! Mime type for drag-and-drop events leading to the instruction move.
 constexpr auto kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";

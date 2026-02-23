@@ -113,11 +113,11 @@ TEST_F(JobListViewModelTest, MimeDataEncoding)
   std::unique_ptr<QMimeData> mime_data(view_model.mimeData({display_name_index, status_index}));
   EXPECT_NE(mime_data, nullptr);
 
-  EXPECT_TRUE(mime_data->hasFormat(kItemIdentifierMimeType));
+  EXPECT_TRUE(mime_data->hasFormat(kJobIdentifierMimeType));
 
   // restored identifiers contains only single identifier, which leads us to actual job being
   // dragged
-  auto identifiers = GetStringListFromMime(mime_data.get(), kItemIdentifierMimeType);
+  auto identifiers = GetStringListFromMime(mime_data.get(), kJobIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), job0->GetIdentifier());
 }

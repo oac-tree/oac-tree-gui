@@ -33,7 +33,10 @@
 namespace oac_tree_gui
 {
 
-FlatListViewModel::FlatListViewModel(QObject* parent_object) : ViewModel(parent_object) {}
+FlatListViewModel::FlatListViewModel(const QString& expected_mime_type, QObject* parent_object)
+    : ViewModel(parent_object), m_expected_mime_type(expected_mime_type)
+{
+}
 
 int FlatListViewModel::rowCount(const QModelIndex& index) const
 {
@@ -43,7 +46,7 @@ int FlatListViewModel::rowCount(const QModelIndex& index) const
 
 QStringList FlatListViewModel::mimeTypes() const
 {
-  return {kItemIdentifierMimeType};
+  return {m_expected_mime_type};
 }
 
 QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
@@ -60,7 +63,7 @@ QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
   }
 
   // ownership will be taken by QDrag operation
-  return CreateItemIdentifierMimeData(first_column_indexes, kItemIdentifierMimeType).release();
+  return CreateItemIdentifierMimeData(first_column_indexes, m_expected_mime_type).release();
 }
 
 bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row,
@@ -71,7 +74,11 @@ bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction ac
   (void)column;
   (void)parent;
 
-  if (data == nullptr || !data->hasFormat(kItemIdentifierMimeType))
+  QStringList formats = data ? data->formats() : QStringList();
+  qDebug() << "FlatListViewModel::canDropMimeData:" << data << formats << ", action:" << action
+           << ", row:" << row << ", column:" << column << ", parent:" << parent;
+
+  if (data == nullptr || !data->hasFormat(m_expected_mime_type))
   {
     return false;
   }
@@ -98,9 +105,9 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
   // parent.
   auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
 
-  if (data->hasFormat(kItemIdentifierMimeType))
+  if (data->hasFormat(m_expected_mime_type))
   {
-    for (const auto& id : GetStringListFromMime(data, kItemIdentifierMimeType))
+    for (const auto& id : GetStringListFromMime(data, m_expected_mime_type))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       if (item == nullptr)
