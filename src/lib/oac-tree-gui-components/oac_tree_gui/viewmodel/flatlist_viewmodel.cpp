@@ -34,8 +34,8 @@
 namespace oac_tree_gui
 {
 
-FlatListViewModel::FlatListViewModel(const QString& expected_mime_type, QObject* parent_object)
-    : ViewModel(parent_object), m_expected_mime_type(expected_mime_type)
+FlatListViewModel::FlatListViewModel(const QStringList& expected_mime_types, QObject* parent_object)
+    : ViewModel(parent_object), m_expected_mime_types(expected_mime_types)
 {
 }
 
@@ -47,7 +47,7 @@ int FlatListViewModel::rowCount(const QModelIndex& index) const
 
 QStringList FlatListViewModel::mimeTypes() const
 {
-  return {m_expected_mime_type};
+  return m_expected_mime_types;
 }
 
 QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
@@ -64,7 +64,7 @@ QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
   }
 
   // ownership will be taken by QDrag operation
-  return CreateItemIdentifierMimeData(first_column_indexes, m_expected_mime_type).release();
+  return CreateItemIdentifierMimeData(first_column_indexes, GetPrimaryMimeType()).release();
 }
 
 bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row,
@@ -107,9 +107,9 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
   // parent.
   auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
 
-  if (data->hasFormat(m_expected_mime_type))
+  for (const auto& format : data->formats())
   {
-    for (const auto& id : GetStringListFromMime(data, m_expected_mime_type))
+    for (const auto& id : GetStringListFromMime(data, format))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       if (item == nullptr)
@@ -121,10 +121,9 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
           GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
       GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination_tagindex);
     }
-    return true;
   }
 
-  return false;
+  return true;
 }
 
 Qt::DropActions FlatListViewModel::supportedDropActions() const
@@ -147,6 +146,12 @@ Qt::ItemFlags FlatListViewModel::flags(const QModelIndex& index) const
 
   // invalid item (root) can receive drops for appending at the end
   return Qt::ItemIsDropEnabled | default_flags;
+}
+
+QString FlatListViewModel::GetPrimaryMimeType() const
+{
+  // by default drag operation will create mime object corresponding to the first type in the list
+  return m_expected_mime_types.empty() ? QString() : m_expected_mime_types.front();
 }
 
 }  // namespace oac_tree_gui

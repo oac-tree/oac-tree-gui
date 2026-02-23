@@ -30,7 +30,7 @@ namespace oac_tree_gui
 {
 
 ProcedureListViewModel::ProcedureListViewModel(mvvm::ISessionModel* model, QObject* parent_object)
-    : FlatListViewModel(kProcedureIdentifierMimeType, parent_object)
+    : FlatListViewModel({kProcedureIdentifierMimeType}, parent_object)
 {
   SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
       model, this));

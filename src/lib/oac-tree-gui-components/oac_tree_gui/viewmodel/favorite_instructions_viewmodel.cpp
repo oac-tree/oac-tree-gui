@@ -31,7 +31,7 @@ namespace oac_tree_gui
 
 FavoriteInstructionsViewModel::FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
                                                              QObject* parent_object)
-    : FlatListViewModel(kInstructionIdentifierMimeType, parent_object)
+    : FlatListViewModel({kInstructionIdentifierMimeType}, parent_object)
 {
   SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
       model, this));
