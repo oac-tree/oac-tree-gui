@@ -29,6 +29,7 @@
 
 #include <QDebug>
 #include <QMimeData>
+#include <algorithm>
 
 namespace oac_tree_gui
 {
@@ -69,27 +70,28 @@ QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
 bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row,
                                         int column, const QModelIndex& parent) const
 {
-  (void)action;
   (void)row;
   (void)column;
   (void)parent;
 
-  QStringList formats = data ? data->formats() : QStringList();
-  qDebug() << "FlatListViewModel::canDropMimeData:" << data << formats << ", action:" << action
-           << ", row:" << row << ", column:" << column << ", parent:" << parent;
-
-  if (data == nullptr || !data->hasFormat(m_expected_mime_type))
+  if (data == nullptr)
   {
     return false;
   }
 
-  if (action != Qt::MoveAction)
+  qDebug() << "FlatListViewModel::canDropMimeData:" << data << data->formats()
+           << ", action:" << action << ", row:" << row << ", column:" << column
+           << ", parent:" << parent;
+
+  if (!(action & supportedDropActions()))
   {
-    // not yet implemented, we support only internal move for the moment
     return false;
   }
 
-  return true;
+  const QStringList model_types = mimeTypes();
+
+  return std::any_of(model_types.cbegin(), model_types.cend(),
+                     [data](const QString& mime_type) { return data->hasFormat(mime_type); });
 }
 
 bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row,
@@ -127,7 +129,7 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
 
 Qt::DropActions FlatListViewModel::supportedDropActions() const
 {
-  return Qt::MoveAction | Qt::CopyAction;
+  return Qt::MoveAction;
 }
 
 Qt::DropActions FlatListViewModel::supportedDragActions() const

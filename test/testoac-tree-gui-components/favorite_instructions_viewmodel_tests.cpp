@@ -98,7 +98,7 @@ TEST_F(FavoriteInstructionsViewModelTest, SupportedActions)
   EXPECT_TRUE(model.supportedDragActions() & Qt::MoveAction);
   EXPECT_TRUE(model.supportedDragActions() & Qt::CopyAction);
   EXPECT_TRUE(model.supportedDropActions() & Qt::MoveAction);
-  EXPECT_TRUE(model.supportedDropActions() & Qt::CopyAction);
+  EXPECT_FALSE(model.supportedDropActions() & Qt::CopyAction);
 }
 
 TEST_F(FavoriteInstructionsViewModelTest, MimeTypes)
