@@ -41,6 +41,12 @@ FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_list_view);
+
+  // configure list to allow internal move of procedures (handled by FlatListViewModel)
+  m_list_view->setDragEnabled(true);
+  m_list_view->setDropIndicatorShown(true);
+  m_list_view->setDefaultDropAction(Qt::MoveAction);
+  m_list_view->setDragDropMode(QAbstractItemView::DragDrop);
 }
 
 FavoriteInstructionsWidget::~FavoriteInstructionsWidget() = default;

@@ -24,6 +24,7 @@
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
 
 namespace oac_tree_gui
 {
@@ -48,7 +49,14 @@ InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer() const
 void ProjectModel::PopulateModel()
 {
   (void)InsertItem<ComposerSettingsItem>();
-  (void)InsertItem<InstructionContainerItem>();
+  auto container = InsertItem<InstructionContainerItem>();
+  auto sequence0 = InsertItem<SequenceItem>(container);
+  sequence0->SetDisplayName("sequence0");
+  auto wait = InsertItem<SequenceItem>(sequence0);
+  (void)wait;
+  auto sequence1 = InsertItem<SequenceItem>(container);
+  sequence1->SetDisplayName("sequence1");
+
 }
 
 }  // namespace oac_tree_gui
