@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -98,16 +99,15 @@ TEST_F(FavoriteInstructionsViewModelTest, SupportedActions)
   EXPECT_TRUE(model.supportedDragActions() & Qt::MoveAction);
   EXPECT_TRUE(model.supportedDragActions() & Qt::CopyAction);
   EXPECT_TRUE(model.supportedDropActions() & Qt::MoveAction);
-  EXPECT_FALSE(model.supportedDropActions() & Qt::CopyAction);
+  EXPECT_TRUE(model.supportedDropActions() & Qt::CopyAction);
 }
 
 TEST_F(FavoriteInstructionsViewModelTest, MimeTypes)
 {
   const FavoriteInstructionsViewModel model(&m_model);
 
-  QStringList mime_types = model.mimeTypes();
-  EXPECT_EQ(mime_types.size(), 1);
-  EXPECT_EQ(mime_types[0], kInstructionIdentifierMimeType);
+  QStringList expected_mime_types = {kInstructionIdentifierMimeType, kInstructionMoveMimeType};
+  EXPECT_EQ(expected_mime_types, model.mimeTypes());
 }
 
 TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
@@ -172,7 +172,7 @@ TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
                                            view_model.index(2, 0)));
 
-    // copy is not yet implemented, so it should be rejected
+    // copy while own reordering
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
                                             view_model.index(0, 0)));
@@ -182,6 +182,21 @@ TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 2, 0, QModelIndex()));
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
                                             view_model.index(2, 0)));
+
+    auto external_mime_data = std::make_unique<QMimeData>();
+    external_mime_data->setData(kInstructionMoveMimeType, QByteArray());
+    EXPECT_TRUE(
+        view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
+    EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
+                                           view_model.index(0, 0)));
+    EXPECT_TRUE(
+        view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 1, 0, QModelIndex()));
+    EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
+                                           view_model.index(1, 0)));
+    EXPECT_TRUE(
+        view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 2, 0, QModelIndex()));
+    EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
+                                           view_model.index(2, 0)));
   }
 }
 
@@ -232,5 +247,6 @@ TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionOnTopOfLa
   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
             std::vector<mvvm::SessionItem*>({sequence1, sequence2, sequence0}));
 }
+
 
 }  // namespace oac_tree_gui::test

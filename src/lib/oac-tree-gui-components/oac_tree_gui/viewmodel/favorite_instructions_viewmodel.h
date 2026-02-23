@@ -43,6 +43,15 @@ class FavoriteInstructionsViewModel : public FlatListViewModel
 public:
   explicit FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
                                          QObject* parent_object = nullptr);
+
+  bool canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
+                       const QModelIndex& parent) const override;
+
+  bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
+                    const QModelIndex& parent) override;
+
+  Qt::DropActions supportedDropActions() const override;
+
 };
 
 }  // namespace oac_tree_gui

@@ -49,14 +49,7 @@ InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer() const
 void ProjectModel::PopulateModel()
 {
   (void)InsertItem<ComposerSettingsItem>();
-  auto container = InsertItem<InstructionContainerItem>();
-  auto sequence0 = InsertItem<SequenceItem>(container);
-  sequence0->SetDisplayName("sequence0");
-  auto wait = InsertItem<SequenceItem>(sequence0);
-  (void)wait;
-  auto sequence1 = InsertItem<SequenceItem>(container);
-  sequence1->SetDisplayName("sequence1");
-
+  InsertItem<InstructionContainerItem>();
 }
 
 }  // namespace oac_tree_gui

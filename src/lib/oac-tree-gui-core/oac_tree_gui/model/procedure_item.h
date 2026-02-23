@@ -23,8 +23,6 @@
 
 #include <mvvm/model/compound_item.h>
 
-#include <functional>
-
 namespace oac_tree_gui
 {
 
