@@ -42,7 +42,8 @@ class InstructionEditorContext;
  * - allow internal move (reodering, move instructions from one parent to another)
  * - allow external move (move from another instance of the same viewmodel)
  * - allow drop of new instructions (copy from the toolbox's tree of available instructions)
- * - TODO allow drop of favorite instructions (copy from the toolbox's tree of favorite instructions)
+ * - TODO allow drop of favorite instructions (copy from the toolbox's tree of favorite
+ * instructions)
  */
 class InstructionEditorViewModel : public mvvm::ViewModel
 {
@@ -59,6 +60,8 @@ public:
 
   Qt::ItemFlags flags(const QModelIndex& index) const override;
 
+  QStringList mimeTypes() const override;
+
   QMimeData* mimeData(const QModelIndexList& index_list) const override;
 
   Qt::DropActions supportedDragActions() const override;
@@ -70,8 +73,6 @@ public:
 
   bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
                     const QModelIndex& parent) override;
-
-  QStringList mimeTypes() const override;
 
 private:
   InstructionEditorContext CreateInstructionEditorContext();

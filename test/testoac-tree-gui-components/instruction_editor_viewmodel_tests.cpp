@@ -113,6 +113,37 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
 
+TEST_F(InstructionEditorViewModelTest, FlagsForDragAndDrop)
+{
+  auto wait0 = m_model.InsertItem<SequenceItem>();
+
+  // Valid index should have drag and drop enabled
+  const Qt::ItemFlags valid_flags = m_view_model.flags(m_view_model.index(0, 0));
+  EXPECT_TRUE(valid_flags & Qt::ItemIsEnabled);
+  EXPECT_TRUE(valid_flags & Qt::ItemIsSelectable);
+  EXPECT_TRUE(valid_flags & Qt::ItemIsDragEnabled);
+  EXPECT_TRUE(valid_flags & Qt::ItemIsDropEnabled);
+
+  // Invalid index (root) should only have drop enabled
+  const Qt::ItemFlags invalid_flags = m_view_model.flags(QModelIndex());
+  EXPECT_TRUE(invalid_flags & Qt::ItemIsDropEnabled);
+  EXPECT_FALSE(invalid_flags & Qt::ItemIsDragEnabled);
+}
+
+TEST_F(InstructionEditorViewModelTest, SupportedActions)
+{
+  EXPECT_TRUE(m_view_model.supportedDragActions() & Qt::MoveAction);
+  EXPECT_TRUE(m_view_model.supportedDragActions() & Qt::CopyAction);
+  EXPECT_TRUE(m_view_model.supportedDropActions() & Qt::MoveAction);
+  EXPECT_TRUE(m_view_model.supportedDropActions() & Qt::CopyAction);
+}
+
+TEST_F(InstructionEditorViewModelTest, MimeTypes)
+{
+  QStringList expected_mime_types = {kInstructionEditorMimeType, kNewInstructionMimeType};
+  EXPECT_EQ(expected_mime_types, m_view_model.mimeTypes());
+}
+
 TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();

@@ -63,6 +63,11 @@ Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex& index) const
   return Qt::ItemIsDropEnabled | default_flags;
 }
 
+QStringList InstructionEditorViewModel::mimeTypes() const
+{
+  return {kInstructionEditorMimeType, kNewInstructionMimeType};
+}
+
 QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_list) const
 {
   // we assume that first column contains a display name, and this will lead us to actual
@@ -136,8 +141,9 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
   }
 
   QStringList formats = data ? data->formats() : QStringList();
-  qDebug() << "InstructionEditorViewModel::canDropMimeData:" << data << formats << ", action:" << action
-           << ", row:" << row << ", column:" << column << ", parent:" << parent;
+  qDebug() << "InstructionEditorViewModel::canDropMimeData:" << data << formats
+           << ", action:" << action << ", row:" << row << ", column:" << column
+           << ", parent:" << parent;
 
   auto parent_item = GetSessionItemFromIndex(parent);
   if (parent_item == nullptr)
@@ -205,11 +211,6 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAct
   }
 
   return false;
-}
-
-QStringList InstructionEditorViewModel::mimeTypes() const
-{
-  return {kInstructionEditorMimeType, kNewInstructionMimeType};
 }
 
 InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorContext()
