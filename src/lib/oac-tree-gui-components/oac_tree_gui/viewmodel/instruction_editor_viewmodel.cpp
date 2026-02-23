@@ -77,7 +77,7 @@ QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_lis
   }
 
   // ownership will be taken by QDrag operation
-  return CreateItemIdentifierMimeData(first_column_indexes, kInstructionMoveMimeType).release();
+  return CreateItemIdentifierMimeData(first_column_indexes, kInstructionEditorMimeType).release();
 }
 
 Qt::DropActions InstructionEditorViewModel::supportedDragActions() const
@@ -145,9 +145,9 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
     return false;
   }
 
-  if (data->hasFormat(kInstructionMoveMimeType))
+  if (data->hasFormat(kInstructionEditorMimeType))
   {
-    for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
+    for (const auto& id : GetStringListFromMime(data, kInstructionEditorMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto destination_tagindex = GetTreeInternalMoveTagIndex(row, *item, *parent_item);
@@ -183,9 +183,9 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAct
 
   auto parent_item = GetSessionItemFromIndex(parent);
 
-  if (data->hasFormat(kInstructionMoveMimeType))
+  if (data->hasFormat(kInstructionEditorMimeType))
   {
-    for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
+    for (const auto& id : GetStringListFromMime(data, kInstructionEditorMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto destination_tagindex = GetTreeInternalMoveTagIndex(row, *item, *parent_item);
@@ -209,7 +209,7 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAct
 
 QStringList InstructionEditorViewModel::mimeTypes() const
 {
-  return {kInstructionMoveMimeType, kNewInstructionMimeType};
+  return {kInstructionEditorMimeType, kNewInstructionMimeType};
 }
 
 InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorContext()

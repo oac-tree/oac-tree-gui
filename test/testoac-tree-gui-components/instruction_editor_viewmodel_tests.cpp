@@ -123,9 +123,9 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
   std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({display_index, data_index}));
   EXPECT_NE(mime_data, nullptr);
 
-  EXPECT_TRUE(mime_data->hasFormat(kInstructionMoveMimeType));
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionEditorMimeType));
 
-  auto identifiers = GetStringListFromMime(mime_data.get(), kInstructionMoveMimeType);
+  auto identifiers = GetStringListFromMime(mime_data.get(), kInstructionEditorMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 }

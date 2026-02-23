@@ -37,7 +37,7 @@ namespace oac_tree_gui
 
 FavoriteInstructionsViewModel::FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
                                                              QObject* parent_object)
-    : FlatListViewModel({kInstructionIdentifierMimeType, kInstructionMoveMimeType}, parent_object)
+    : FlatListViewModel({kInstructionIdentifierMimeType, kInstructionEditorMimeType}, parent_object)
 {
   SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
       model, this));
@@ -67,7 +67,7 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
   }
 
   // copy from outside (InstructionEditorViewmodel)
-  if (data->hasFormat(kInstructionMoveMimeType) && action == Qt::CopyAction)
+  if (data->hasFormat(kInstructionEditorMimeType) && action == Qt::CopyAction)
   {
     return true;
   }
@@ -107,9 +107,9 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
   }
 
   // copy from outside (InstructionEditorViewmodel)
-  if (data->hasFormat(kInstructionMoveMimeType) && action == Qt::CopyAction)
+  if (data->hasFormat(kInstructionEditorMimeType) && action == Qt::CopyAction)
   {
-    for (const auto& id : GetStringListFromMime(data, kInstructionMoveMimeType))
+    for (const auto& id : GetStringListFromMime(data, kInstructionEditorMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       if (item == nullptr)

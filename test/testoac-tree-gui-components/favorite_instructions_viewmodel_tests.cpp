@@ -106,7 +106,7 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeTypes)
 {
   const FavoriteInstructionsViewModel model(&m_model);
 
-  QStringList expected_mime_types = {kInstructionIdentifierMimeType, kInstructionMoveMimeType};
+  QStringList expected_mime_types = {kInstructionIdentifierMimeType, kInstructionEditorMimeType};
   EXPECT_EQ(expected_mime_types, model.mimeTypes());
 }
 
@@ -184,7 +184,7 @@ TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
                                             view_model.index(2, 0)));
 
     auto external_mime_data = std::make_unique<QMimeData>();
-    external_mime_data->setData(kInstructionMoveMimeType, QByteArray());
+    external_mime_data->setData(kInstructionEditorMimeType, QByteArray());
     EXPECT_TRUE(
         view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
     EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
