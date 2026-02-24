@@ -35,6 +35,7 @@
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
 #include <QMimeData>
+#include <QDebug>
 
 namespace oac_tree_gui
 {
