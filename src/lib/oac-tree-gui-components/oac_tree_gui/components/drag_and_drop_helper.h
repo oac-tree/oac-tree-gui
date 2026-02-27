@@ -136,6 +136,35 @@ mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row);
 mvvm::TagIndex GetListInternalMoveTagIndex(std::int32_t drop_indicator_row,
                                            const mvvm::TagIndex& source_tag_index,
                                            const QModelIndex& parent);
+
+/**
+ * @brief Checks if given mime data contains information about items that can be inserted into
+ * the parent item at the position corresponding to drop indicator.
+ *
+ * @param data Mime data to check.
+ * @param action Drop action.
+ * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
+ * @param parent Parent item to check insert into.
+ *
+ * @return True if items described by mime data can be inserted, false otherwise.
+ */
+bool CanInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                      const mvvm::SessionItem& parent);
+
+/**
+ * @brief Inserts new item described by mime data into the parent item at the position corresponding
+ * to drop indicator.
+ *
+ * @param data Mime data describing item to insert.
+ * @param action Drop action.
+ * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
+ * @param parent Parent item to insert into.
+ *
+ * @return True if item was successfully inserted, false otherwise.
+ */
+bool HandleInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                         mvvm::SessionItem& parent);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_

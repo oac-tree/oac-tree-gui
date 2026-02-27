@@ -20,10 +20,13 @@
 
 #include "oac_tree_gui/composer/instruction_editor_drop_handler.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/session_item.h>
 
 #include <gtest/gtest.h>
 
@@ -40,10 +43,76 @@ class InstructionEditorDropHandlerTest : public ::testing::Test
 public:
   InstructionEditorDropHandlerTest() : m_view_model(&m_model) {}
 
+  /** @brief Helper method to create mime data for new instruction of given type. */
+  std::unique_ptr<InstructionEditorDropHandler> CreateDefaultDropHandler()
+  {
+    auto container_callback = [this]() -> mvvm::SessionItem* { return m_model.GetRootItem(); };
+    return std::make_unique<InstructionEditorDropHandler>(container_callback);
+  }
+
   mvvm::ApplicationModel m_model;
   InstructionEditorViewModel m_view_model;
 };
 
-TEST_F(InstructionEditorDropHandlerTest, AttemptToCreateWithInitializedContext) {}
+TEST_F(InstructionEditorDropHandlerTest, AttemptToCreateWithInitializedContext)
+{
+  EXPECT_THROW(InstructionEditorDropHandler({}), RuntimeException);
+
+  auto container_callback = []() -> mvvm::SessionItem* { return nullptr; };
+  EXPECT_NO_THROW((InstructionEditorDropHandler(container_callback)));
+}
+
+TEST_F(InstructionEditorDropHandlerTest, InsertNewType)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)     Sequence
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)     Wait
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+
+  auto container_index = QModelIndex();
+  auto sequence_index = m_view_model.index(0, 0);
+  auto wait_index = m_view_model.index(0, 0, sequence_index);
+
+  auto mime_data = CreateNewInstructionMimeData(domainconstants::kWaitInstructionType);
+  auto handler = CreateDefaultDropHandler();
+
+  {  // area [0]
+    const std::int32_t drop_indicator = 0;
+    EXPECT_TRUE(
+        handler->CanDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, container_index));
+    EXPECT_TRUE(
+        handler->DropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, container_index));
+    ASSERT_EQ(container->GetAllItems().size(), 2);
+    EXPECT_EQ(container->GetAllItems().at(0)->GetDisplayName(),
+              domainconstants::kWaitInstructionType);
+  }
+
+  {  // area [1]
+    const std::int32_t drop_indicator = -1;
+    EXPECT_TRUE(
+        handler->CanDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, sequence_index));
+    EXPECT_TRUE(
+        handler->DropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, sequence_index));
+    ASSERT_EQ(sequence0->GetInstructions().size(), 2);
+    EXPECT_EQ(sequence0->GetInstructions().at(0)->GetDisplayName(),
+              domainconstants::kWaitInstructionType);
+    EXPECT_EQ(sequence0->GetInstructions().at(1),
+              wait0);  // wait0 should be after the newly inserted item
+  }
+
+  {  // area [4]
+    const std::int32_t drop_indicator = -1;
+    EXPECT_FALSE(
+        handler->CanDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, wait_index));
+    EXPECT_FALSE(
+        handler->DropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, wait_index));
+  }
+}
 
 }  // namespace oac_tree_gui::test

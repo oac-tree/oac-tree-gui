@@ -20,8 +20,12 @@
 
 #include "drag_and_drop_helper.h"
 
+#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
+
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/session_model.h>
+#include <mvvm/model/validate_utils.h>
 #include <mvvm/providers/qtcore_helper.h>
 #include <mvvm/providers/viewmodel_utils.h>
 
@@ -161,6 +165,50 @@ mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,
   }
 
   return mvvm::TagIndex::Default(destination_index);
+}
+
+bool CanInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                      const mvvm::SessionItem& parent)
+{
+  // we don't care about action for new type insertion, it will be always new object creation
+  (void)action;
+
+  if (data.hasFormat(kNewInstructionMimeType))
+  {
+    auto drop_type = GetNewInstructionType(&data);
+    if (!mvvm::utils::GetInsertTypeErrorCode(drop_type, parent,
+                                             GetDropTagIndex(drop_row_indicator)))
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool HandleInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                         mvvm::SessionItem& parent)
+{
+  // we don't care about action for new type insertion, it will be always new object creation
+  (void)action;
+
+  if (data.hasFormat(kNewInstructionMimeType))
+  {
+    if (auto drop_type = GetNewInstructionType(&data); !drop_type.empty())
+    {
+      auto new_item = CreateInstructionTree(drop_type);
+      const auto drop_tag_index = GetDropTagIndex(drop_row_indicator);
+      if (mvvm::utils::GetInsertTypeErrorCode(drop_type, parent, drop_tag_index))
+      {
+        return false;
+      }
+
+      parent.InsertItem(std::move(new_item), drop_tag_index);
+    }
+    return true;
+  }
+
+  return false;
 }
 
 }  // namespace oac_tree_gui

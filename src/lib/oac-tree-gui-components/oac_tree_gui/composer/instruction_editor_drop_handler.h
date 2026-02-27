@@ -62,6 +62,8 @@ public:
 
 private:
   container_callback_t m_container_callback;
+
+  mvvm::SessionItem* GetParentItem(const QModelIndex& index);
 };
 
 }  // namespace oac_tree_gui

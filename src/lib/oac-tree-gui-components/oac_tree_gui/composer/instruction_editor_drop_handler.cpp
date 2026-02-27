@@ -20,9 +20,12 @@
 
 #include "instruction_editor_drop_handler.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 
-#include <QDebug>
+#include <mvvm/model/validate_utils.h>
+#include <mvvm/providers/viewmodel_utils.h>
+
 #include <QMimeData>
 #include <QModelIndex>
 
@@ -45,9 +48,18 @@ bool InstructionEditorDropHandler::CanDropMimeData(const QMimeData* data, Qt::Dr
                                                    int32_t drop_row_indicator,
                                                    const QModelIndex& parent)
 {
-  const QStringList formats = data ? data->formats() : QStringList();
-  qDebug() << "InstructionEditorViewModel::canDropMimeData:" << data << formats
-           << ", action:" << action << ", row:" << drop_row_indicator << ", parent:" << parent;
+  if (data == nullptr)
+  {
+    return false;
+  }
+
+  auto parent_item = GetParentItem(parent);
+
+  if (CanInsertNewType(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
+
   return false;
 }
 
@@ -55,11 +67,29 @@ bool InstructionEditorDropHandler::DropMimeData(const QMimeData* data, Qt::DropA
                                                 int32_t drop_row_indicator,
                                                 const QModelIndex& parent)
 {
-  (void)data;
-  (void)action;
-  (void)drop_row_indicator;
-  (void)parent;
+  if (data == nullptr)
+  {
+    return false;
+  }
+
+  auto parent_item = GetParentItem(parent);
+
+  if (HandleInsertNewType(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
+
   return false;
+}
+
+mvvm::SessionItem* InstructionEditorDropHandler::GetParentItem(const QModelIndex& index)
+{
+  auto parent_item = mvvm::utils::ItemFromIndex(index);
+  if (parent_item == nullptr)
+  {
+    parent_item = m_container_callback();
+  }
+  return parent_item;
 }
 
 }  // namespace oac_tree_gui

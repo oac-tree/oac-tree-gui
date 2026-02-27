@@ -18,8 +18,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/viewmodel/instruction_editor_viewmodel.h"
-
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -552,6 +550,79 @@ TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForLastItem)
     const QModelIndex parent_index;  // invalid
     EXPECT_EQ(
         GetListInternalMoveTagIndex(drop_indicator, source_tag_index, parent_index).GetIndex(), 3);
+  }
+}
+
+TEST_F(DragAndDropHelperTest, CanInsertNewType)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)     Sequence
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)     Wait
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+
+  auto mime_data = CreateNewInstructionMimeData(domainconstants::kWaitInstructionType);
+
+  {  // area [0]
+    const std::int32_t drop_indicator = 0;
+    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *container));
+    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::MoveAction, drop_indicator, *container));
+  }
+
+  {  // area [1]
+    const std::int32_t drop_indicator = -1;
+    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
+  }
+
+  {  // area [4]
+    const std::int32_t drop_indicator = -1;
+    EXPECT_FALSE(CanInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
+    EXPECT_FALSE(CanInsertNewType(*mime_data, Qt::MoveAction, drop_indicator, *wait0));
+  }
+}
+
+TEST_F(DragAndDropHelperTest, HandleInsertNewType)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)     Sequence
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)     Wait
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+
+  auto mime_data = CreateNewInstructionMimeData(domainconstants::kWaitInstructionType);
+
+  {  // area [0]
+    const std::int32_t drop_indicator = 0;
+    EXPECT_TRUE(HandleInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *container));
+    ASSERT_EQ(container->GetAllItems().size(), 2);
+    EXPECT_EQ(container->GetAllItems().at(0)->GetDisplayName(),
+              domainconstants::kWaitInstructionType);
+  }
+
+  {  // area [1]
+    const std::int32_t drop_indicator = -1;
+    EXPECT_TRUE(HandleInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    ASSERT_EQ(sequence0->GetInstructions().size(), 2);
+    EXPECT_EQ(sequence0->GetInstructions().at(0)->GetDisplayName(),
+              domainconstants::kWaitInstructionType);
+    EXPECT_EQ(sequence0->GetInstructions().at(1),
+              wait0);  // wait0 should be after the newly inserted item
+  }
+
+  {  // area [4]
+    const std::int32_t drop_indicator = -1;
+    EXPECT_FALSE(HandleInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
   }
 }
 
