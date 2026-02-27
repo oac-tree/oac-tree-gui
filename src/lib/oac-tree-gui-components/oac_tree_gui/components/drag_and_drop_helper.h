@@ -82,6 +82,15 @@ std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& i
                                                         const QString& mime_type);
 
 /**
+ * @brief Creates mime data carrying identifiers of items corersponding to given items.
+ *
+ * @param items List of items participating in drag-and-drop operation.
+ * @param mime_type Mime type of the data to encode inside mime object.
+ */
+std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(
+    const std::vector<mvvm::SessionItem*>& items, const QString& mime_type);
+
+/**
  * @brief Creates mime data carrying information for new instruction creation.
  *
  * @param name The model type name of the instruction.
@@ -164,6 +173,34 @@ bool CanDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_r
  */
 bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
                        mvvm::SessionItem& parent);
+
+/**
+ * @brief Checks if given mime data contains information about items that can be moved into
+ * the parent item at the position corresponding to drop indicator.
+ *
+ * @param data Mime data to check.
+ * @param action Drop action.
+ * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
+ * @param parent Parent item to check move into.
+ *
+ * @return True if items described by mime data can be moved, false otherwise.
+ */
+bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction action,
+                                      int32_t drop_row_indicator, const mvvm::SessionItem& parent);
+
+/**
+ * @brief Moves items described by mime data into the parent item at the position corresponding to
+ * drop indicator.
+ *
+ * @param data Mime data describing items to move.
+ * @param action Drop action.
+ * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
+ * @param parent Parent item to move into.
+ *
+ * @return True if items were successfully moved, false otherwise.
+ */
+bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction action,
+                                         int32_t drop_row_indicator, mvvm::SessionItem& parent);
 
 }  // namespace oac_tree_gui
 

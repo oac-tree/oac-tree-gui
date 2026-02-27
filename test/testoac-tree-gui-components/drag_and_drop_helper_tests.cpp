@@ -75,7 +75,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
 {
   const QString mime_type("mime_type");
   {  // empty list
-    auto mime_data = CreateItemIdentifierMimeData({}, mime_type);
+    auto mime_data = CreateItemIdentifierMimeData(QModelIndexList(), mime_type);
     auto identifiers = GetStringListFromMime({}, mime_type);
     EXPECT_TRUE(identifiers.empty());
   }
@@ -329,7 +329,13 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
 }
 
 TEST_F(DragAndDropHelperTest, GetListInternalMoveTagIndexForFirstItem)
-{
+{  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)     Sequence
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)     Wait
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+
   auto procedure0 = m_model.InsertItem<ProcedureItem>();
   auto procedure1 = m_model.InsertItem<ProcedureItem>();
   auto procedure2 = m_model.InsertItem<ProcedureItem>();
@@ -623,6 +629,48 @@ TEST_F(DragAndDropHelperTest, HandleInsertNewType)
   {  // area [4]
     const std::int32_t drop_indicator = -1;
     EXPECT_FALSE(HandleDropNewType(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
+  }
+}
+
+TEST_F(DragAndDropHelperTest, DropInstructionEditorMimeDataBetweenItems)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+  // [6 ]      Wait1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [7 ]      -----------  row_col=( 2,  0)    QModelIndex(0, 0)     Sequence
+  // [8 ]      Wait2        row_col=(-1, -1)    QModelIndex(2, 0)
+  // [9 ]      -----------  row_col=( 3,  0)    QModelIndex(0, 0)     Sequence
+  // [10]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [11]  sequence1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [12]  --------------   row_col=( 2,  0)    QModelIndex(-1, -1)   Container
+  // [13]     -----------   row_col=( 0,  0)    QModelIndex(1, 0)     Sequence
+  // [14]     Wait3         row_col=(-1, -1)    QModelIndex(0, 0)
+  // [15]     -----------   row_col=( 1,  0)    QModelIndex(1, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence1 = m_model.InsertItem<SequenceItem>();
+  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+
+  {  // move wait 3 to position [7]
+    auto mime_data = CreateItemIdentifierMimeData({wait3}, kInstructionEditorMimeType);
+    const std::int32_t drop_indicator = 2;
+    EXPECT_TRUE(
+        CanDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(HandleDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator,
+                                                    *sequence0));
+    ASSERT_EQ(sequence0->GetInstructions().size(), 4);
+    EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);
+    EXPECT_EQ(sequence0->GetInstructions().at(1), wait1);
+    EXPECT_EQ(sequence0->GetInstructions().at(2), wait3);
+    EXPECT_EQ(sequence0->GetInstructions().at(3), wait2);
   }
 }
 

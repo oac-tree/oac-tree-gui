@@ -49,10 +49,15 @@ std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& i
 {
   auto items = mvvm::utils::ItemsFromIndex(indexes);
   auto unique_items = mvvm::utils::UniqueWithOrder(items);
+  return CreateItemIdentifierMimeData(unique_items, mime_type);
+}
 
+std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(
+    const std::vector<mvvm::SessionItem*>& items, const QString& mime_type)
+{
   QStringList identifiers;
-  identifiers.reserve(static_cast<qsizetype>(unique_items.size()));
-  for (const auto& item : unique_items)
+  identifiers.reserve(static_cast<qsizetype>(items.size()));
+  for (const auto& item : items)
   {
     identifiers.push_back(QString::fromStdString(item->GetIdentifier()));
   }
@@ -204,6 +209,63 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
       }
 
       parent.InsertItem(std::move(new_item), drop_tag_index);
+    }
+    return true;
+  }
+
+  return false;
+}
+
+bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction action,
+                                      int32_t drop_row_indicator, const mvvm::SessionItem& parent)
+{
+  // we don't care about action for move operations, it will be always move
+  (void)action;
+
+  if (data.hasFormat(kInstructionEditorMimeType))
+  {
+    for (const auto& id : GetStringListFromMime(&data, kInstructionEditorMimeType))
+    {
+      auto item = parent.GetModel()->FindItem(id);
+      if (item == nullptr)
+      {
+        return false;
+      }
+      auto destination_tagindex = GetTreeInternalMoveTagIndex(drop_row_indicator, *item, parent);
+      const auto move_info = mvvm::utils::GetMoveOperationInfo(*item, parent, destination_tagindex);
+      if (move_info.error_code)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  return false;
+}
+
+bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction action,
+                                         int32_t drop_row_indicator, mvvm::SessionItem& parent)
+{
+  // we don't care about action for drop operations, it will be always move
+  (void)action;
+
+  if (data.hasFormat(kInstructionEditorMimeType))
+  {
+    for (const auto& id : GetStringListFromMime(&data, kInstructionEditorMimeType))
+    {
+      auto item = parent.GetModel()->FindItem(id);
+      if (item == nullptr)
+      {
+        return false;
+      }
+      auto destination_tagindex = GetTreeInternalMoveTagIndex(drop_row_indicator, *item, parent);
+      const auto move_info = mvvm::utils::GetMoveOperationInfo(*item, parent, destination_tagindex);
+      if (move_info.error_code)
+      {
+        return false;
+      }
+      parent.GetModel()->MoveItem(item, &parent, destination_tagindex);
     }
     return true;
   }
