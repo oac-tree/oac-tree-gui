@@ -309,7 +309,7 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
   auto wait2_index_name = m_view_model.index(2, 0, sequence_index);
   auto wait2_index_custom_name = m_view_model.index(2, 0, sequence_index);
 
-  // going to drag Include instruction
+  // going to drag Wait2 instruction
   const std::unique_ptr<QMimeData> mime_data(
       m_view_model.mimeData({wait2_index_name, wait2_index_custom_name}));
 

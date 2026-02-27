@@ -115,4 +115,49 @@ TEST_F(InstructionEditorDropHandlerTest, InsertNewType)
   }
 }
 
+TEST_F(InstructionEditorDropHandlerTest, DropInstructionEditorMimeDataBetweenItems)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+  // [6 ]      Wait1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [7 ]      -----------  row_col=( 2,  0)    QModelIndex(0, 0)     Sequence
+  // [8 ]      Wait2        row_col=(-1, -1)    QModelIndex(2, 0)
+  // [9 ]      -----------  row_col=( 3,  0)    QModelIndex(0, 0)     Sequence
+  // [10]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [11]  sequence1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [12]  --------------   row_col=( 2,  0)    QModelIndex(-1, -1)   Container
+  // [13]     -----------   row_col=( 0,  0)    QModelIndex(1, 0)     Sequence
+  // [14]     Wait3         row_col=(-1, -1)    QModelIndex(0, 0)
+  // [15]     -----------   row_col=( 1,  0)    QModelIndex(1, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence1 = m_model.InsertItem<SequenceItem>();
+  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+
+  auto sequence0_index = m_view_model.index(0, 0);
+  auto wait2_index = m_view_model.index(2, 0, sequence0_index);
+
+  // move Wait2 to position [3]
+  const std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({wait2_index}));
+
+  auto handler = CreateDefaultDropHandler();
+  const std::int32_t drop_indicator = 0;
+  EXPECT_TRUE(
+      handler->CanDropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator, sequence0_index));
+  EXPECT_TRUE(
+      handler->DropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator, sequence0_index));
+  ASSERT_EQ(sequence0->GetInstructions().size(), 3);
+  EXPECT_EQ(sequence0->GetInstructions().at(0), wait2);
+  EXPECT_EQ(sequence0->GetInstructions().at(1), wait0);
+  EXPECT_EQ(sequence0->GetInstructions().at(2), wait1);
+}
+
 }  // namespace oac_tree_gui::test

@@ -60,6 +60,11 @@ bool InstructionEditorDropHandler::CanDropMimeData(const QMimeData* data, Qt::Dr
     return true;
   }
 
+  if (CanDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
+
   return false;
 }
 
@@ -75,6 +80,11 @@ bool InstructionEditorDropHandler::DropMimeData(const QMimeData* data, Qt::DropA
   auto parent_item = GetParentItem(parent);
 
   if (HandleDropNewType(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
+
+  if (HandleDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
