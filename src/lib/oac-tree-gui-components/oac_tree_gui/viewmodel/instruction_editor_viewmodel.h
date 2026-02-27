@@ -31,8 +31,7 @@ class ISessionModel;
 namespace oac_tree_gui
 {
 
-class IInstructionEditorActionHandler;
-class InstructionEditorContext;
+class IItemDropHandler;
 
 /**
  * @brief The InstructionEditorViewModel class is a model with two columns: display name and
@@ -75,8 +74,7 @@ public:
                     const QModelIndex& parent) override;
 
 private:
-  InstructionEditorContext CreateInstructionEditorContext();
-  std::unique_ptr<IInstructionEditorActionHandler> m_action_handler;
+  std::unique_ptr<IItemDropHandler> m_drop_handler;
 };
 
 }  // namespace oac_tree_gui

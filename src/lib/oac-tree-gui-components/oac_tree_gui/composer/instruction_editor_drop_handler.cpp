@@ -79,11 +79,13 @@ bool InstructionEditorDropHandler::DropMimeData(const QMimeData* data, Qt::DropA
 
   auto parent_item = GetParentItem(parent);
 
+  // processing new instruction, if we can, and be done with it
   if (HandleDropNewType(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
 
+  // processing move of existing instruction, if we can
   if (HandleDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;

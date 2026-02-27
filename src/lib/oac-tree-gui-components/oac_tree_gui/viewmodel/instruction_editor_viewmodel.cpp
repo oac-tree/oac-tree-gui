@@ -22,20 +22,14 @@
 
 #include <oac_tree_gui/components/custom_row_strategies.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
-#include <oac_tree_gui/composer/instruction_editor_action_handler.h>
-#include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/composer/instruction_editor_drop_handler.h>
 
 #include <mvvm/model/i_session_model.h>
-#include <mvvm/model/item_utils.h>
-#include <mvvm/model/session_item.h>
-#include <mvvm/model/validate_utils.h>
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
-#include <QMimeData>
 #include <QDebug>
+#include <QMimeData>
 
 namespace oac_tree_gui
 {
@@ -43,8 +37,8 @@ namespace oac_tree_gui
 InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel* model,
                                                        QObject* parent_object)
     : ViewModel(parent_object)
-    , m_action_handler(
-          std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
+    , m_drop_handler(
+          std::make_unique<InstructionEditorDropHandler>([this]() { return GetRootSessionItem(); }))
 {
   SetController(
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionEditorRowStrategy>(model,
@@ -133,51 +127,14 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
                                                  int row, int column,
                                                  const QModelIndex& parent) const
 {
-  (void)action;
   (void)column;
 
-  if (data == nullptr)
-  {
-    return false;
-  }
-
-  const QStringList formats = data ? data->formats() : QStringList();
+  const QStringList formats = (data == nullptr) ? QStringList() : data->formats();
   qDebug() << "InstructionEditorViewModel::canDropMimeData:" << data << formats
            << ", action:" << action << ", row:" << row << ", column:" << column
            << ", parent:" << parent;
 
-  auto parent_item = GetSessionItemFromIndex(parent);
-  if (parent_item == nullptr)
-  {
-    return false;
-  }
-
-  if (data->hasFormat(kInstructionEditorMimeType))
-  {
-    for (const auto& id : GetStringListFromMime(data, kInstructionEditorMimeType))
-    {
-      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      auto destination_tagindex = GetTreeInternalMoveTagIndex(row, *item, *parent_item);
-      const auto move_info =
-          mvvm::utils::GetMoveOperationInfo(*item, *parent_item, destination_tagindex);
-      if (move_info.error_code)
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  if (data->hasFormat(kNewInstructionMimeType))
-  {
-    auto drop_type = GetNewInstructionType(data);
-    if (!mvvm::utils::GetInsertTypeErrorCode(drop_type, *parent_item, GetDropTagIndex(row)))
-    {
-      return true;
-    }
-  }
-
-  return false;
+  return m_drop_handler->CanDropMimeData(data, action, row, parent);
 }
 
 bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row,
@@ -187,43 +144,7 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData* data, Qt::DropAct
   {
     return false;
   }
-
-  auto parent_item = GetSessionItemFromIndex(parent);
-
-  if (data->hasFormat(kInstructionEditorMimeType))
-  {
-    for (const auto& id : GetStringListFromMime(data, kInstructionEditorMimeType))
-    {
-      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      auto destination_tagindex = GetTreeInternalMoveTagIndex(row, *item, *parent_item);
-
-      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination_tagindex);
-    }
-    return true;
-  }
-
-  if (data->hasFormat(kNewInstructionMimeType))
-  {
-    if (auto drop_type = GetNewInstructionType(data); !drop_type.empty())
-    {
-      m_action_handler->InsertItem(drop_type, parent_item, GetDropTagIndex(row));
-    }
-    return true;
-  }
-
-  return false;
-}
-
-InstructionEditorContext InstructionEditorViewModel::CreateInstructionEditorContext()
-{
-  // no need to fully configure the context, here we are using only its limited part
-  InstructionEditorContext result;
-  result.instruction_container = [this]() { return GetRootSessionItem(); };
-  result.selected_instructions = []() { return std::vector<InstructionItem*>(); };
-  auto on_select_request = [](mvvm::SessionItem* item) { (void)item; };
-  result.notify_request = on_select_request;
-  result.create_instruction = [](const std::string& name) { return CreateInstructionTree(name); };
-  return result;
+  return m_drop_handler->DropMimeData(data, action, row, parent);
 }
 
 }  // namespace oac_tree_gui
