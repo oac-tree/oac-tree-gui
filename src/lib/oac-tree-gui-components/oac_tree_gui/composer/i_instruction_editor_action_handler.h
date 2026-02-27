@@ -35,7 +35,7 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The InstructionEditorActionHandler class is an interface to manipulate instructions in
+ * @brief The IInstructionEditorActionHandler class is an interface to manipulate instructions in
  * the instruction container.
  */
 class IInstructionEditorActionHandler

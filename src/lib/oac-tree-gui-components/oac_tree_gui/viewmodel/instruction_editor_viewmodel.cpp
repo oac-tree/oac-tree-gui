@@ -141,7 +141,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData* data, Qt::Drop
     return false;
   }
 
-  QStringList formats = data ? data->formats() : QStringList();
+  const QStringList formats = data ? data->formats() : QStringList();
   qDebug() << "InstructionEditorViewModel::canDropMimeData:" << data << formats
            << ", action:" << action << ", row:" << row << ", column:" << column
            << ", parent:" << parent;

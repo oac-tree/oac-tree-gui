@@ -4,17 +4,20 @@ target_sources(${library_name} PRIVATE
   attribute_editor_action_handler.cpp
   attribute_editor_action_handler.h
   attribute_editor_context.h
+  i_item_drop_handler.h
   i_workspace_editor_action_handler.h
   instruction_copy_helper.cpp
   instruction_copy_helper.h
   instruction_editor_action_handler.cpp
   instruction_editor_action_handler.h
   instruction_editor_context.h
+  instruction_editor_drop_handler.cpp
+  instruction_editor_drop_handler.h
   procedure_list_context.h
+  widget_focus_handler.h
   workspace_editor_action_handler.cpp
   workspace_editor_action_handler.h
   workspace_editor_context.h
-  widget_focus_handler.h
 )
 
 add_subdirectory(objects)
