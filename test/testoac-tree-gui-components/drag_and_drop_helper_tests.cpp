@@ -570,20 +570,20 @@ TEST_F(DragAndDropHelperTest, CanInsertNewType)
 
   {  // area [0]
     const std::int32_t drop_indicator = 0;
-    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *container));
-    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::MoveAction, drop_indicator, *container));
+    EXPECT_TRUE(CanDropNewType(*mime_data, Qt::CopyAction, drop_indicator, *container));
+    EXPECT_TRUE(CanDropNewType(*mime_data, Qt::MoveAction, drop_indicator, *container));
   }
 
   {  // area [1]
     const std::int32_t drop_indicator = -1;
-    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
-    EXPECT_TRUE(CanInsertNewType(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(CanDropNewType(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(CanDropNewType(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
   }
 
   {  // area [4]
     const std::int32_t drop_indicator = -1;
-    EXPECT_FALSE(CanInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
-    EXPECT_FALSE(CanInsertNewType(*mime_data, Qt::MoveAction, drop_indicator, *wait0));
+    EXPECT_FALSE(CanDropNewType(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
+    EXPECT_FALSE(CanDropNewType(*mime_data, Qt::MoveAction, drop_indicator, *wait0));
   }
 }
 
@@ -604,7 +604,7 @@ TEST_F(DragAndDropHelperTest, HandleInsertNewType)
 
   {  // area [0]
     const std::int32_t drop_indicator = 0;
-    EXPECT_TRUE(HandleInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *container));
+    EXPECT_TRUE(HandleDropNewType(*mime_data, Qt::CopyAction, drop_indicator, *container));
     ASSERT_EQ(container->GetAllItems().size(), 2);
     EXPECT_EQ(container->GetAllItems().at(0)->GetDisplayName(),
               domainconstants::kWaitInstructionType);
@@ -612,7 +612,7 @@ TEST_F(DragAndDropHelperTest, HandleInsertNewType)
 
   {  // area [1]
     const std::int32_t drop_indicator = -1;
-    EXPECT_TRUE(HandleInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(HandleDropNewType(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
     ASSERT_EQ(sequence0->GetInstructions().size(), 2);
     EXPECT_EQ(sequence0->GetInstructions().at(0)->GetDisplayName(),
               domainconstants::kWaitInstructionType);
@@ -622,7 +622,7 @@ TEST_F(DragAndDropHelperTest, HandleInsertNewType)
 
   {  // area [4]
     const std::int32_t drop_indicator = -1;
-    EXPECT_FALSE(HandleInsertNewType(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
+    EXPECT_FALSE(HandleDropNewType(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
   }
 }
 

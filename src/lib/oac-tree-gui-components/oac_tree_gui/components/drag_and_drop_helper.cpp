@@ -167,8 +167,8 @@ mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,
   return mvvm::TagIndex::Default(destination_index);
 }
 
-bool CanInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
-                      const mvvm::SessionItem& parent)
+bool CanDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                    const mvvm::SessionItem& parent)
 {
   // we don't care about action for new type insertion, it will be always new object creation
   (void)action;
@@ -186,8 +186,8 @@ bool CanInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop
   return false;
 }
 
-bool HandleInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
-                         mvvm::SessionItem& parent)
+bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                       mvvm::SessionItem& parent)
 {
   // we don't care about action for new type insertion, it will be always new object creation
   (void)action;

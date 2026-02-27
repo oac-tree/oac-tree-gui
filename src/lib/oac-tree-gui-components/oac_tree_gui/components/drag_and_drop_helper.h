@@ -148,8 +148,8 @@ mvvm::TagIndex GetListInternalMoveTagIndex(std::int32_t drop_indicator_row,
  *
  * @return True if items described by mime data can be inserted, false otherwise.
  */
-bool CanInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
-                      const mvvm::SessionItem& parent);
+bool CanDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                    const mvvm::SessionItem& parent);
 
 /**
  * @brief Inserts new item described by mime data into the parent item at the position corresponding
@@ -162,8 +162,8 @@ bool CanInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop
  *
  * @return True if item was successfully inserted, false otherwise.
  */
-bool HandleInsertNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
-                         mvvm::SessionItem& parent);
+bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
+                       mvvm::SessionItem& parent);
 
 }  // namespace oac_tree_gui
 
