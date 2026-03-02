@@ -65,16 +65,8 @@ QStringList InstructionEditorViewModel::mimeTypes() const
 
 QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_list) const
 {
-  // we assume that first column contains a display name, and this will lead us to actual
-  // SessionItem being copied
-  QModelIndexList first_column_indexes;
-  for (const auto& index : index_list)
-  {
-    if (index.column() == 0)
-    {
-      first_column_indexes.append(index);
-    }
-  }
+  // first column contains a display name, and this will lead us to actual SessionItem being copied
+  const auto first_column_indexes = GetFirstColumnIndexes(index_list);
 
   // ownership will be taken by QDrag operation
   return CreateItemIdentifierMimeData(first_column_indexes, kInstructionEditorMimeType).release();

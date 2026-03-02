@@ -44,9 +44,9 @@ std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& 
   return sup::gui::CreateCopyMimeData(instruction, kCopyInstructionMimeType, filter_func);
 }
 
-std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeData* mime_data)
+std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction)
 {
-  return sup::gui::CreateSessionItems(mime_data, kCopyInstructionMimeType);
+  return sup::gui::CreateCopyMimeData(instruction, kCopyInstructionMimeType, {});
 }
 
 std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
@@ -69,9 +69,9 @@ std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
                                       kCopyInstructionMimeType, filter_func);
 }
 
-std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction)
+std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeData* mime_data)
 {
-  return sup::gui::CreateCopyMimeData(instruction, kCopyInstructionMimeType, {});
+  return sup::gui::CreateSessionItems(mime_data, kCopyInstructionMimeType);
 }
 
 }  // namespace oac_tree_gui

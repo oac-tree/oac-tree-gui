@@ -52,6 +52,24 @@ public:
   mvvm::ApplicationModel m_model;
 };
 
+TEST_F(DragAndDropHelperTest, GetFirstColumnIndexes)
+{
+  auto vector_item = m_model.InsertItem<mvvm::VectorItem>();
+  const mvvm::AllItemsViewModel view_model(&m_model);
+  auto vector_item_name_index = view_model.index(0, 0);
+  auto vector_item_value_index = view_model.index(0, 1);
+  auto vector_child_name_index = view_model.index(0, 0, vector_item_name_index);
+  auto vector_child_value_index = view_model.index(0, 1, vector_item_name_index);
+
+  const QModelIndexList indexes({vector_item_name_index, vector_item_value_index,
+                                 vector_child_name_index, vector_child_value_index});
+  auto result = GetFirstColumnIndexes(indexes);
+  EXPECT_EQ(result, QModelIndexList({vector_item_name_index, vector_child_name_index}));
+
+  // empty list
+  EXPECT_TRUE(GetFirstColumnIndexes({}).empty());
+}
+
 TEST_F(DragAndDropHelperTest, GetStringListFromMime)
 {
   const QString test_mime("test_mime");

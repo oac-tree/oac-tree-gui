@@ -37,6 +37,19 @@
 namespace oac_tree_gui
 {
 
+QModelIndexList GetFirstColumnIndexes(const QModelIndexList& indexes)
+{
+  QModelIndexList result;
+  for (const auto& index : indexes)
+  {
+    if (index.column() == 0)
+    {
+      result.push_back(index);
+    }
+  }
+  return result;
+}
+
 std::vector<std::string> GetStringListFromMime(const QMimeData* mime_data, const QString& mime_type)
 {
   if ((mime_data == nullptr) || !mime_data->hasFormat(mime_type))

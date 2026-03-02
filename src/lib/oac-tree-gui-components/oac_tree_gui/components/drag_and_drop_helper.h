@@ -62,6 +62,13 @@ constexpr auto kCopyInstructionMimeType = "application/coa.sequencer.instruction
 //! Mime type for variable copy.
 constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
 
+
+/**
+  * @brief Returns list of indexes corresponding to the first column for each row in the given list of
+ * indexes.
+ */
+QModelIndexList GetFirstColumnIndexes(const QModelIndexList& indexes);
+
 /**
  * @brief Returns vector of identifiers representing instructions involved into the drag-and-move
  * operation.
