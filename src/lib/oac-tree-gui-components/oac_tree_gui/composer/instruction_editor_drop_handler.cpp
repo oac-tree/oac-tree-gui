@@ -65,6 +65,11 @@ bool InstructionEditorDropHandler::CanDropMimeData(const QMimeData* data, Qt::Dr
     return true;
   }
 
+  if (CanDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
+
   return false;
 }
 
@@ -87,6 +92,12 @@ bool InstructionEditorDropHandler::DropMimeData(const QMimeData* data, Qt::DropA
 
   // processing move of existing instruction, if we can
   if (HandleDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
+
+  // processing copy on instruction copy-object
+  if (HandleDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }

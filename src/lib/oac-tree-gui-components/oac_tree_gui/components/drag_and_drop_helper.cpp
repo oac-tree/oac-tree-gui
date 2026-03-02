@@ -20,6 +20,7 @@
 
 #include "drag_and_drop_helper.h"
 
+#include <oac_tree_gui/composer/instruction_copy_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 
@@ -300,15 +301,13 @@ bool HandleDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction act
 
   if (data.hasFormat(kCopyInstructionMimeType))
   {
-    auto item_type_to_copy = sup::gui::GetSessionItemType(&data, kCopyInstructionMimeType);
-    auto new_item = CreateInstructionTree(item_type_to_copy);
-    const auto drop_tag_index = GetDropTagIndex(drop_row_indicator);
-    if (mvvm::utils::GetInsertTypeErrorCode(item_type_to_copy, parent, drop_tag_index))
+    auto new_items = CreateInstructions(&data);
+    auto last_tag_index = GetDropTagIndex(drop_row_indicator);
+    for (auto& item : new_items)
     {
-      return false;
+      auto result = parent.InsertItem(std::move(item), last_tag_index);
+      last_tag_index = result->GetTagIndex().Next();
     }
-
-    parent.InsertItem(std::move(new_item), drop_tag_index);
     return true;
   }
 

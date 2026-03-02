@@ -21,11 +21,13 @@
 #include "oac_tree_gui/viewmodel/instruction_editor_viewmodel.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/composer/instruction_copy_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
@@ -347,6 +349,34 @@ TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
   EXPECT_EQ(sequence->GetInstructions().size(), 3);
   EXPECT_EQ(sequence->GetInstructions().at(1)->GetDomainType(),
             domainconstants::kIncludeInstructionType);
+}
+
+TEST_F(InstructionEditorViewModelTest, DropInstructionCopyBetweenTwoChildren)
+{
+  // Sequence
+  //    Wait0
+  //    Wait1
+
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence = m_model.InsertItem<SequenceItem>(container);
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto container_index = m_view_model.index(0, 0);
+  auto sequence_index = m_view_model.index(0, 0, container_index);
+  auto wait0_index = m_view_model.index(0, 0, sequence_index);
+  auto wait1_index = m_view_model.index(1, 0, sequence_index);
+
+  auto message_instruction = CreateInstructionItem(domainconstants::kMessageInstructionType);
+  auto mime_data = CreateInstructionSelectionCopyMimeData({message_instruction.get()});
+
+  // drop between Wait0 and Wait1
+  EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::CopyAction, 1, 0, sequence_index));
+
+  // validating new layout
+  EXPECT_EQ(sequence->GetInstructions().size(), 3);
+  EXPECT_EQ(sequence->GetInstructions().at(1)->GetDomainType(),
+            domainconstants::kMessageInstructionType);
 }
 
 TEST_F(InstructionEditorViewModelTest, DropAggregateIntoContainer)

@@ -21,9 +21,13 @@
 #include "oac_tree_gui/composer/instruction_editor_drop_handler.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/composer/instruction_copy_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
+
+#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/session_item.h>
@@ -158,6 +162,44 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionEditorMimeDataBetweenIte
   EXPECT_EQ(sequence0->GetInstructions().at(0), wait2);
   EXPECT_EQ(sequence0->GetInstructions().at(1), wait0);
   EXPECT_EQ(sequence0->GetInstructions().at(2), wait1);
+}
+
+TEST_F(InstructionEditorDropHandlerTest, DropInstructionCopyMimeDataBetweenItems)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+  // [6 ]      Wait1        row_col=(-1, -1)    QModelIndex(1, 0)
+  // [7 ]      -----------  row_col=( 2,  0)    QModelIndex(0, 0)     Sequence
+  // [8 ]      Wait2        row_col=(-1, -1)    QModelIndex(2, 0)
+  // [9 ]      -----------  row_col=( 3,  0)    QModelIndex(0, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
+
+  auto message_instruction = CreateInstructionItem(domainconstants::kMessageInstructionType);
+  auto mime_data = CreateInstructionSelectionCopyMimeData({message_instruction.get()});
+
+  // copying it into position [3]
+  auto handler = CreateDefaultDropHandler();
+
+  const std::int32_t drop_indicator = 0;
+  auto sequence0_index = m_view_model.index(0, 0);
+  EXPECT_TRUE(
+      handler->CanDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, sequence0_index));
+  EXPECT_TRUE(
+      handler->DropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, sequence0_index));
+  ASSERT_EQ(sequence0->GetInstructions().size(), 4);
+  EXPECT_EQ(sequence0->GetInstructions().at(0)->GetType(), message_instruction->GetType());
+  EXPECT_EQ(sequence0->GetInstructions().at(1), wait0);
+  EXPECT_EQ(sequence0->GetInstructions().at(2), wait1);
+  EXPECT_EQ(sequence0->GetInstructions().at(3), wait2);
 }
 
 }  // namespace oac_tree_gui::test
