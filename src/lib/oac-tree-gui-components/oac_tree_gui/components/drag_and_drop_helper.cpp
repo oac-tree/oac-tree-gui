@@ -23,6 +23,8 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/session_model.h>
 #include <mvvm/model/validate_utils.h>
@@ -267,6 +269,46 @@ bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction a
       }
       parent.GetModel()->MoveItem(item, &parent, destination_tagindex);
     }
+    return true;
+  }
+
+  return false;
+}
+
+bool CanDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action,
+                                    int32_t drop_row_indicator, const mvvm::SessionItem& parent)
+{
+  // we don't care about action for new type insertion, it will be always new object creation
+  (void)action;
+
+  if (data.hasFormat(kCopyInstructionMimeType))
+  {
+    auto type_to_copy = sup::gui::GetSessionItemType(&data, kCopyInstructionMimeType);
+    return mvvm::utils::GetInsertTypeErrorCode(type_to_copy, parent,
+                                               GetDropTagIndex(drop_row_indicator))
+           == mvvm::ModelError::Success;
+  }
+
+  return false;
+}
+
+bool HandleDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action,
+                                       int32_t drop_row_indicator, mvvm::SessionItem& parent)
+{
+  // we don't care about action for new type insertion, it will be always new object creation
+  (void)action;
+
+  if (data.hasFormat(kCopyInstructionMimeType))
+  {
+    auto item_type_to_copy = sup::gui::GetSessionItemType(&data, kCopyInstructionMimeType);
+    auto new_item = CreateInstructionTree(item_type_to_copy);
+    const auto drop_tag_index = GetDropTagIndex(drop_row_indicator);
+    if (mvvm::utils::GetInsertTypeErrorCode(item_type_to_copy, parent, drop_tag_index))
+    {
+      return false;
+    }
+
+    parent.InsertItem(std::move(new_item), drop_tag_index);
     return true;
   }
 

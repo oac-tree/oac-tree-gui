@@ -674,4 +674,41 @@ TEST_F(DragAndDropHelperTest, DropInstructionEditorMimeDataBetweenItems)
   }
 }
 
+TEST_F(DragAndDropHelperTest, DropInstructionCopyMimeDataBetweenItems)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+
+  // making copy of wait0
+  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kCopyInstructionMimeType);
+
+  // we can't drop into area [4]
+  {
+    const std::int32_t drop_indicator = -1;
+    EXPECT_FALSE(
+        CanDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
+  }
+
+  // but we can drop into area [5]
+  {
+    const std::int32_t drop_indicator = 1;
+
+    EXPECT_TRUE(
+        CanDropInstructionCopyMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(
+        HandleDropInstructionCopyMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    ASSERT_EQ(sequence0->GetInstructions().size(), 2);
+    EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);
+    EXPECT_NE(sequence0->GetInstructions().at(1), wait0);  // should be a different instance
+  }
+}
+
 }  // namespace oac_tree_gui::test

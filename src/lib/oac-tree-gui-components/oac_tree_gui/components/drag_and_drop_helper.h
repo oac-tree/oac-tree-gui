@@ -150,6 +150,8 @@ mvvm::TagIndex GetListInternalMoveTagIndex(std::int32_t drop_indicator_row,
  * @brief Checks if given mime data contains information about items that can be inserted into
  * the parent item at the position corresponding to drop indicator.
  *
+ * Mime data is what AvailableInstructionsTreeView produces.
+ *
  * @param data Mime data to check.
  * @param action Drop action.
  * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
@@ -163,6 +165,8 @@ bool CanDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_r
 /**
  * @brief Inserts new item described by mime data into the parent item at the position corresponding
  * to drop indicator.
+ *
+ * Mime data is what AvailableInstructionsTreeView produces.
  *
  * @param data Mime data describing item to insert.
  * @param action Drop action.
@@ -178,6 +182,8 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
  * @brief Checks if given mime data contains information about items that can be moved into
  * the parent item at the position corresponding to drop indicator.
  *
+ * Mime data is what InstructionEditor produces.
+ *
  * @param data Mime data to check.
  * @param action Drop action.
  * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
@@ -192,6 +198,8 @@ bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction acti
  * @brief Moves items described by mime data into the parent item at the position corresponding to
  * drop indicator.
  *
+ * Mime data is what InstructionEditor produces.
+ *
  * @param data Mime data describing items to move.
  * @param action Drop action.
  * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
@@ -201,6 +209,38 @@ bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction acti
  */
 bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction action,
                                          int32_t drop_row_indicator, mvvm::SessionItem& parent);
+
+/**
+ * @brief Checks if given mime data contains information about instructions that can be copied into
+ * the parent item at the position corresponding to drop indicator.
+ *
+ * Mime data represents generic item copy.
+ *
+ * @param data Mime data to check.
+ * @param action Drop action.
+ * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
+ * @param parent Parent item to check copy into.
+ *
+ * @return True if items described by mime data can be copied, false otherwise.
+ */
+bool CanDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action,
+                                    int32_t drop_row_indicator, const mvvm::SessionItem& parent);
+
+/**
+ * @brief Copies instructions described by mime data into the parent item at the position
+ * corresponding to drop indicator.
+ *
+ * Mime data represents generic item copy.
+ *
+ * @param data Mime data describing items to copy.
+ * @param action Drop action.
+ * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
+ * @param parent Parent item to copy into.
+ *
+ * @return True if items were successfully copied, false otherwise.
+ */
+bool HandleDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action,
+                                       int32_t drop_row_indicator, mvvm::SessionItem &parent);
 
 }  // namespace oac_tree_gui
 
