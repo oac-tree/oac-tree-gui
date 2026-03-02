@@ -30,18 +30,47 @@
 #include <mvvm/providers/standard_row_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
-#include <QMimeData>
 #include <QDebug>
+#include <QMimeData>
 
 namespace oac_tree_gui
 {
 
 FavoriteInstructionsViewModel::FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
                                                              QObject* parent_object)
-    : FlatListViewModel({kInstructionIdentifierMimeType, kInstructionEditorMimeType}, parent_object)
+    : ViewModel(parent_object)
 {
   SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(
       model, this));
+}
+
+int FavoriteInstructionsViewModel::rowCount(const QModelIndex& index) const
+{
+  // we do not want to show any children beneath top level items in the container
+  return index.isValid() ? 0 : ViewModel::rowCount(index);
+}
+
+QStringList FavoriteInstructionsViewModel::mimeTypes() const
+{
+  return {kInstructionIdentifierMimeType, kInstructionEditorMimeType};
+}
+
+QMimeData* FavoriteInstructionsViewModel::mimeData(const QModelIndexList& indexes) const
+{
+  // we assume that first column contains a display name, and this will lead us to actual
+  // SessionItem being copied
+  QModelIndexList first_column_indexes;
+  for (const auto& index : indexes)
+  {
+    if (index.column() == 0)
+    {
+      first_column_indexes.append(index);
+    }
+  }
+
+  // ownership will be taken by QDrag operation
+  return CreateItemIdentifierMimeData(first_column_indexes, kInstructionIdentifierMimeType)
+      .release();
 }
 
 bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action,
@@ -132,6 +161,23 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
 Qt::DropActions FavoriteInstructionsViewModel::supportedDropActions() const
 {
   return Qt::MoveAction | Qt::CopyAction;
+}
+
+Qt::DropActions FavoriteInstructionsViewModel::supportedDragActions() const
+{
+  return Qt::MoveAction | Qt::CopyAction;
+}
+
+Qt::ItemFlags FavoriteInstructionsViewModel::flags(const QModelIndex& index) const
+{
+  auto default_flags = ViewModel::flags(index);
+  if (index.isValid())
+  {
+    return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | default_flags;
+  }
+
+  // invalid item (root) can receive drops for appending at the end
+  return Qt::ItemIsDropEnabled | default_flags;
 }
 
 }  // namespace oac_tree_gui
