@@ -79,15 +79,6 @@ std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& i
                                                         const QString& mime_type);
 
 /**
- * @brief Creates mime data carrying identifiers of items corersponding to given items.
- *
- * @param items List of items participating in drag-and-drop operation.
- * @param mime_type Mime type of the data to encode inside mime object.
- */
-std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(
-    const std::vector<mvvm::SessionItem*>& items, const QString& mime_type);
-
-/**
  * @brief Creates mime data carrying information for new instruction creation.
  *
  * @param name The model type name of the instruction.

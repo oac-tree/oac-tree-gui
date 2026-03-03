@@ -55,23 +55,7 @@ std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& i
 {
   auto items = mvvm::utils::ItemsFromIndex(indexes);
   auto unique_items = mvvm::utils::UniqueWithOrder(items);
-  return CreateItemIdentifierMimeData(unique_items, mime_type);
-}
-
-std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(
-    const std::vector<mvvm::SessionItem*>& items, const QString& mime_type)
-{
-  QStringList identifiers;
-  identifiers.reserve(static_cast<qsizetype>(items.size()));
-  for (const auto& item : items)
-  {
-    identifiers.push_back(QString::fromStdString(item->GetIdentifier()));
-  }
-
-  auto result = std::make_unique<QMimeData>();
-  // saving identifiers in mime data
-  result->setData(mime_type, mvvm::utils::GetByteArray(identifiers));
-  return result;
+  return sup::gui::CreateItemSelectionIdentifierMimeData(mvvm::utils::MakeConst(unique_items), mime_type);
 }
 
 std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name)

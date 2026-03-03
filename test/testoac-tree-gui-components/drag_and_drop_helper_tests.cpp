@@ -125,8 +125,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeDataForVectorItem)
       {vector_item_name_index, x_item_display_index, x_item_value_index}, mime_type);
 
   auto identifiers = sup::gui::GetStringListFromMime(*mime_data, mime_type);
-  EXPECT_EQ(identifiers,
-            std::vector<std::string>({vector_item->GetIdentifier(), x_item->GetIdentifier()}));
+  EXPECT_EQ(identifiers, std::vector<std::string>({vector_item->GetIdentifier()}));
 }
 
 TEST_F(DragAndDropHelperTest, GetNewInstructionType)
@@ -678,7 +677,7 @@ TEST_F(DragAndDropHelperTest, DropInstructionEditorMimeDataBetweenItems)
   auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
 
   {  // move wait 3 to position [7]
-    auto mime_data = CreateItemIdentifierMimeData({wait3}, kInstructionEditorMimeType);
+    auto mime_data = sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionEditorMimeType);
     const std::int32_t drop_indicator = 2;
     EXPECT_TRUE(
         CanDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
