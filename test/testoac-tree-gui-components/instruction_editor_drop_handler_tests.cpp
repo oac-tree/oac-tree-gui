@@ -184,7 +184,8 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionCopyMimeDataBetweenItems
   auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
 
   auto message_instruction = CreateInstructionItem(domainconstants::kMessageInstructionType);
-  auto mime_data = CreateInstructionSelectionCopyMimeData({message_instruction.get()});
+  auto mime_data = sup::gui::CreateItemSelectionCopyMimeData({message_instruction.get()},
+                                                             kCopyInstructionMimeType);
 
   // copying it into position [3]
   auto handler = CreateDefaultDropHandler();

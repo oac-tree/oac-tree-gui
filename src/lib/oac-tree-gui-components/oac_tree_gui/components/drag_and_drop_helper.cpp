@@ -266,8 +266,10 @@ bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction a
 bool CanDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action,
                                     int32_t drop_row_indicator, const mvvm::SessionItem& parent)
 {
-  // we don't care about action for new type insertion, it will be always new object creation
-  (void)action;
+  if (action != Qt::CopyAction)
+  {
+    return false;
+  }
 
   if (data.hasFormat(kCopyInstructionMimeType))
   {
@@ -283,8 +285,10 @@ bool CanDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action
 bool HandleDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action,
                                        int32_t drop_row_indicator, mvvm::SessionItem& parent)
 {
-  // we don't care about action for new type insertion, it will be always new object creation
-  (void)action;
+  if (action != Qt::CopyAction)
+  {
+    return false;
+  }
 
   if (data.hasFormat(kCopyInstructionMimeType))
   {

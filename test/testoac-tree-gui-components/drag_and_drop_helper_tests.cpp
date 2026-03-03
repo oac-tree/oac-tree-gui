@@ -677,7 +677,8 @@ TEST_F(DragAndDropHelperTest, DropInstructionEditorMimeDataBetweenItems)
   auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
 
   {  // move wait 3 to position [7]
-    auto mime_data = sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionEditorMimeType);
+    auto mime_data =
+        sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionEditorMimeType);
     const std::int32_t drop_indicator = 2;
     EXPECT_TRUE(
         CanDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
@@ -725,6 +726,34 @@ TEST_F(DragAndDropHelperTest, DropInstructionCopyMimeDataBetweenItems)
     ASSERT_EQ(sequence0->GetInstructions().size(), 2);
     EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);
     EXPECT_NE(sequence0->GetInstructions().at(1), wait0);  // should be a different instance
+  }
+}
+
+TEST_F(DragAndDropHelperTest, AttemptToDropInstructionVCopyViaMove)
+{
+  // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
+  // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [2 ]  --------------   row_col=( 1,  0)    QModelIndex(-1, -1)   Container
+  // [3 ]      -----------  row_col=( 0,  0)    QModelIndex(0, 0)     Sequence
+  // [4 ]      Wait0        row_col=(-1, -1)    QModelIndex(0, 0)
+  // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
+
+  auto container = m_model.GetRootItem();
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  // making copy of wait0
+  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kCopyInstructionMimeType);
+
+  // attempting to move copy of wait0 into area [5] (which normally would be valid for move of
+  // original item)
+  {
+    const std::int32_t drop_indicator = 1;
+    EXPECT_FALSE(
+        CanDropInstructionEditorMimeData(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
+    EXPECT_FALSE(HandleDropInstructionEditorMimeData(*mime_data, Qt::MoveAction, drop_indicator,
+                                                     *sequence0));
+    ASSERT_EQ(sequence0->GetInstructions().size(), 1);
+    EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);  // original item should remain unchanged
   }
 }
 
