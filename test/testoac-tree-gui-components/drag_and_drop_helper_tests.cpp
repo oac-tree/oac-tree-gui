@@ -340,7 +340,7 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
   auto data = sup::gui::CreateCopyMimeData(item, mime_type);
   EXPECT_TRUE(data->hasFormat(mime_type));
 
-  auto reconstructed_item = sup::gui::CreateSessionItem(data.get(), mime_type);
+  auto reconstructed_item = sup::gui::CreateSessionItem(*data, mime_type);
   EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
   EXPECT_NE(dynamic_cast<WaitItem*>(reconstructed_item.get()), nullptr);
 }

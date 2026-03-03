@@ -296,8 +296,14 @@ void InstructionEditorActionHandler::Copy()
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
 {
+  auto mime = GetMimeData();
+  if (mime == nullptr)
+  {
+    return false;
+  }
+
   auto querry = CanInsertTypeAfterCurrentSelection(
-      sup::gui::GetSessionItemType(GetMimeData(), kCopyInstructionMimeType));
+      sup::gui::GetSessionItemType(*mime, kCopyInstructionMimeType));
   return querry.IsSuccess();
 }
 
@@ -313,8 +319,14 @@ void InstructionEditorActionHandler::PasteAfter()
 
 bool InstructionEditorActionHandler::CanPasteInto() const
 {
+  auto mime = GetMimeData();
+  if (mime == nullptr)
+  {
+    return false;
+  }
+
   auto querry = CanInsertTypeIntoCurrentSelection(
-      sup::gui::GetSessionItemType(GetMimeData(), kCopyInstructionMimeType));
+      sup::gui::GetSessionItemType(*mime, kCopyInstructionMimeType));
   return querry.IsSuccess();
 }
 

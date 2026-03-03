@@ -119,8 +119,7 @@ void ProcedureListActionHandler::Paste()
     return;
   }
 
-  auto mime_data = GetMimeData();
-  InsertProcedure(sup::gui::CreateSessionItem(mime_data, kCopyProcedureMimeType));
+  InsertProcedure(sup::gui::CreateSessionItem(*GetMimeData(), kCopyProcedureMimeType));
 }
 
 mvvm::ContainerItem* ProcedureListActionHandler::GetProcedureContainer() const

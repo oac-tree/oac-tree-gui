@@ -70,7 +70,12 @@ std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
 
 std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeData* mime_data)
 {
-  return sup::gui::CreateSessionItems(mime_data, kCopyInstructionMimeType);
+  if (mime_data == nullptr)
+  {
+    return {};
+  }
+
+  return sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
 }
 
 }  // namespace oac_tree_gui

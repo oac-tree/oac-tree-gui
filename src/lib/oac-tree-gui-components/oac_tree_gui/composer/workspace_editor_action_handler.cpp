@@ -211,7 +211,7 @@ void WorkspaceEditorActionHandler::Paste()
   }
 
   InsertVariableAfterCurrentSelection(
-      sup::gui::CreateSessionItems(GetMimeData(), kCopyVariableMimeType));
+      sup::gui::CreateSessionItems(*GetMimeData(), kCopyVariableMimeType));
 }
 
 VariableItem* WorkspaceEditorActionHandler::GetSelectedVariable() const
