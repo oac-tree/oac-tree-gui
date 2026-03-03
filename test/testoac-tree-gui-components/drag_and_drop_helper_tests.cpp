@@ -76,7 +76,7 @@ TEST_F(DragAndDropHelperTest, GetStringListFromMime)
 
   {  // empty data
     const QMimeData mime_data;
-    EXPECT_TRUE(GetStringListFromMime(&mime_data, test_mime).empty());
+    EXPECT_TRUE(sup::gui::GetStringListFromMime(mime_data, test_mime).empty());
   }
 
   {  // two elements
@@ -84,7 +84,7 @@ TEST_F(DragAndDropHelperTest, GetStringListFromMime)
     auto mime_data = std::make_unique<QMimeData>();
     mime_data->setData(test_mime, mvvm::utils::GetByteArray(list));
 
-    auto result = GetStringListFromMime(mime_data.get(), test_mime);
+    auto result = sup::gui::GetStringListFromMime(*mime_data, test_mime);
     EXPECT_EQ(result, std::vector<std::string>({"abc", "def"}));
   }
 }
@@ -94,7 +94,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
   const QString mime_type("mime_type");
   {  // empty list
     auto mime_data = CreateItemIdentifierMimeData(QModelIndexList(), mime_type);
-    auto identifiers = GetStringListFromMime({}, mime_type);
+    auto identifiers = sup::gui::GetStringListFromMime({}, mime_type);
     EXPECT_TRUE(identifiers.empty());
   }
 
@@ -105,7 +105,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
 
     auto mime_data = CreateItemIdentifierMimeData({sequence_displayname_index}, mime_type);
 
-    auto identifiers = GetStringListFromMime(mime_data.get(), mime_type);
+    auto identifiers = sup::gui::GetStringListFromMime(*mime_data, mime_type);
     EXPECT_EQ(identifiers, std::vector<std::string>({sequence->GetIdentifier()}));
   }
 }
@@ -124,7 +124,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeDataForVectorItem)
   auto mime_data = CreateItemIdentifierMimeData(
       {vector_item_name_index, x_item_display_index, x_item_value_index}, mime_type);
 
-  auto identifiers = GetStringListFromMime(mime_data.get(), mime_type);
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, mime_type);
   EXPECT_EQ(identifiers,
             std::vector<std::string>({vector_item->GetIdentifier(), x_item->GetIdentifier()}));
 }

@@ -26,6 +26,8 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/application_model.h>
 
 #include <gtest/gtest.h>
@@ -117,7 +119,7 @@ TEST_F(JobListViewModelTest, MimeDataEncoding)
 
   // restored identifiers contains only single identifier, which leads us to actual job being
   // dragged
-  auto identifiers = GetStringListFromMime(mime_data.get(), kJobIdentifierMimeType);
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kJobIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), job0->GetIdentifier());
 }

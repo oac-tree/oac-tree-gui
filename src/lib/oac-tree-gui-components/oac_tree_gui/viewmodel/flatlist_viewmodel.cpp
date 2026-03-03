@@ -23,6 +23,8 @@
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/validate_utils.h>
@@ -101,7 +103,7 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
 
   for (const auto& format : data->formats())
   {
-    for (const auto& id : GetStringListFromMime(data, format))
+    for (const auto& id : sup::gui::GetStringListFromMime(*data, format))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       if (item == nullptr)

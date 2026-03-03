@@ -50,16 +50,6 @@ QModelIndexList GetFirstColumnIndexes(const QModelIndexList& indexes)
   return result;
 }
 
-std::vector<std::string> GetStringListFromMime(const QMimeData* mime_data, const QString& mime_type)
-{
-  if ((mime_data == nullptr) || !mime_data->hasFormat(mime_type))
-  {
-    return {};
-  }
-  const auto string_list = mvvm::utils::GetStringList(mime_data->data(mime_type));
-  return mvvm::utils::GetStdStringVector(string_list);
-}
-
 std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& indexes,
                                                         const QString& mime_type)
 {
@@ -240,7 +230,7 @@ bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction acti
 
   if (data.hasFormat(kInstructionEditorMimeType))
   {
-    for (const auto& id : GetStringListFromMime(&data, kInstructionEditorMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionEditorMimeType))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)
@@ -268,7 +258,7 @@ bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction a
 
   if (data.hasFormat(kInstructionEditorMimeType))
   {
-    for (const auto& id : GetStringListFromMime(&data, kInstructionEditorMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionEditorMimeType))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)

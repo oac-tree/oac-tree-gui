@@ -23,6 +23,8 @@
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/session_item.h>
@@ -113,7 +115,7 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
   // internal move (change own list ordering)
   if (data->hasFormat(kInstructionIdentifierMimeType) && action == Qt::MoveAction)
   {
-    for (const auto& id : GetStringListFromMime(data, kInstructionIdentifierMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(*data, kInstructionIdentifierMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       if (item == nullptr)
@@ -131,7 +133,7 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
   // copy from outside (InstructionEditorViewmodel)
   if (data->hasFormat(kInstructionEditorMimeType) && action == Qt::CopyAction)
   {
-    for (const auto& id : GetStringListFromMime(data, kInstructionEditorMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(*data, kInstructionEditorMimeType))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       if (item == nullptr)

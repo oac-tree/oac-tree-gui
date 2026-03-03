@@ -26,6 +26,8 @@
 #include <mvvm/model/application_model.h>
 #include <mvvm/standarditems/container_item.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <gtest/gtest.h>
 
 #include <QMimeData>
@@ -134,7 +136,7 @@ TEST_F(ProcedureListViewModelTest, MimeDataEncoding)
 
   EXPECT_TRUE(mime_data->hasFormat(kProcedureIdentifierMimeType));
 
-  auto identifiers = GetStringListFromMime(mime_data.get(), kProcedureIdentifierMimeType);
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kProcedureIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), procedure_item->GetIdentifier());
 }

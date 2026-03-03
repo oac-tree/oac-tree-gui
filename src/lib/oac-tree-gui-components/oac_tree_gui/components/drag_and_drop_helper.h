@@ -70,16 +70,6 @@ constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy"
 QModelIndexList GetFirstColumnIndexes(const QModelIndexList& indexes);
 
 /**
- * @brief Returns vector of identifiers representing instructions involved into the drag-and-move
- * operation.
- *
- * @param mime_data Mime data carrying the list of strings.
- * @param mime_type Expected mime type of the data.
- */
-std::vector<std::string> GetStringListFromMime(const QMimeData* mime_data,
-                                               const QString& mime_type);
-
-/**
  * @brief Creates mime data carrying identifiers of items corersponding to given indexes.
  *
  * @param indexes List of indexes participating in drag-and-drop operation.

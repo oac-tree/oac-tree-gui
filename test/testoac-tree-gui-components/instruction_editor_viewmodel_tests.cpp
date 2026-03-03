@@ -29,6 +29,8 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/providers/viewitem.h>
@@ -158,7 +160,7 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
 
   EXPECT_TRUE(mime_data->hasFormat(kInstructionEditorMimeType));
 
-  auto identifiers = GetStringListFromMime(mime_data.get(), kInstructionEditorMimeType);
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionEditorMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 }

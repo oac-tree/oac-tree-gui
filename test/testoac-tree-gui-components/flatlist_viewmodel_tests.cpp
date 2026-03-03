@@ -25,11 +25,14 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/application_model.h>
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/standard_row_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 #include <mvvm/standarditems/container_item.h>
+
 
 #include <gtest/gtest.h>
 
@@ -181,7 +184,7 @@ TEST_F(FlatListViewModelTest, MimeDataEncoding)
 
   EXPECT_TRUE(mime_data->hasFormat(kItemIdentifierMimeType));
 
-  auto identifiers = GetStringListFromMime(mime_data.get(), kItemIdentifierMimeType);
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kItemIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), procedure_item->GetIdentifier());
 }

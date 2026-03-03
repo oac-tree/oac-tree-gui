@@ -24,6 +24,8 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/application_model.h>
 
 #include <gtest/gtest.h>
@@ -123,7 +125,7 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
 
   EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
 
-  auto identifiers = GetStringListFromMime(mime_data.get(), kInstructionIdentifierMimeType);
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence_item->GetIdentifier());
 }
