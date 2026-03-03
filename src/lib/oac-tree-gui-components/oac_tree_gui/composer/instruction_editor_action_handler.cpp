@@ -184,11 +184,11 @@ void InstructionEditorActionHandler::RemoveInstruction()
   mvvm::SessionItem* next_to_select{nullptr};
 
   // remove children from the selection list to avoid double delete
-  auto selected = mvvm::utils::CastItems<mvvm::SessionItem>(GetSelectedInstructions());
+  auto selected = mvvm::utils::CastItems<const mvvm::SessionItem>(GetSelectedInstructions());
   for (auto item : sup::gui::FilterOutChildren(selected))
   {
-    next_to_select = mvvm::utils::FindNextSiblingToSelect(item);
-    GetModel()->RemoveItem(item);
+    next_to_select = mvvm::utils::FindNextSiblingToSelect(const_cast<mvvm::SessionItem*>(item));
+    GetModel()->RemoveItem(const_cast<mvvm::SessionItem*>(item));
   }
 
   UpdateProcedurePreamble();

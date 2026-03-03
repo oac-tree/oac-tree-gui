@@ -35,6 +35,7 @@
 #include <sup/gui/core/environment.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
+#include <mvvm/utils/container_utils.h>
 #include <mvvm/views/component_provider_helper.h>
 #include <mvvm/widgets/widget_utils.h>
 
@@ -202,7 +203,8 @@ void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
     return;
   }
 
-  auto filtered = sup::gui::GetBottomLevelSelection(m_component_provider->GetSelectedItems());
+  auto filtered = sup::gui::GetBottomLevelSelection(
+      mvvm::utils::MakeConst(m_component_provider->GetSelectedItems()));
   if (!filtered.empty())
   {
     auto indexes = m_component_provider->GetViewIndexes(filtered.front());

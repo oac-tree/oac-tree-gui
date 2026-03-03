@@ -64,9 +64,8 @@ std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
 
   // FIXME Find the way to fix this CastItems/MakeConst mess
   auto top_level_selection =
-      sup::gui::GetTopLevelSelection(mvvm::utils::CastItems<mvvm::SessionItem>(selection));
-  return sup::gui::CreateCopyMimeData(mvvm::utils::MakeConst(top_level_selection),
-                                      kCopyInstructionMimeType, filter_func);
+      sup::gui::GetTopLevelSelection(mvvm::utils::CastItems<const mvvm::SessionItem>(selection));
+  return sup::gui::CreateCopyMimeData(top_level_selection, kCopyInstructionMimeType, filter_func);
 }
 
 std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeData* mime_data)
