@@ -21,12 +21,12 @@
 #ifndef OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_
 #define OAC_TREE_GUI_COMPONENTS_DRAG_AND_DROP_HELPER_H_
 
+//! @file
 //! Helper functions for drag-and-drop operations.
 
 #include <QModelIndexList>
 #include <memory>
 #include <string>
-#include <vector>
 
 namespace mvvm
 {

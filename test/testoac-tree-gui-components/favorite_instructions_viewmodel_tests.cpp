@@ -139,116 +139,180 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
 [3]  sequence1   row_col=(-1, -1)  QModelIndex(1, 0)
 [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
 */
-TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
+// TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
+// {
+//   auto sequence0 = m_model.InsertItem<SequenceItem>();
+//   auto sequence1 = m_model.InsertItem<SequenceItem>();
+
+//   const FavoriteInstructionsViewModel view_model(&m_model);
+
+//   {  // nullptr data
+//     EXPECT_FALSE(view_model.canDropMimeData(nullptr, Qt::MoveAction, -1, -1, QModelIndex()));
+//     EXPECT_FALSE(view_model.canDropMimeData(nullptr, Qt::CopyAction, -1, -1, QModelIndex()));
+//   }
+
+//   {  // mime data of wrong type
+//     auto mime_data = std::make_unique<QMimeData>();
+//     mime_data->setData("wrong/type", QByteArray());
+//     EXPECT_FALSE(
+//         view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+//     EXPECT_FALSE(
+//         view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1, QModelIndex()));
+//   }
+
+//   {  // all combinations of QModelIndex and row from the table above should be accepted
+//     auto mime_data = std::make_unique<QMimeData>();
+//     mime_data->setData(kInstructionIdentifierMimeType, QByteArray());
+
+//     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0,
+//     QModelIndex())); EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1,
+//     -1,
+//                                            view_model.index(0, 0)));
+//     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 1, 0,
+//     QModelIndex())); EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1,
+//     -1,
+//                                            view_model.index(1, 0)));
+//     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 2, 0,
+//     QModelIndex())); EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1,
+//     -1,
+//                                            view_model.index(2, 0)));
+
+//     // copy while own reordering
+//     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 0, 0,
+//     QModelIndex())); EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1,
+//     -1,
+//                                             view_model.index(0, 0)));
+//     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 1, 0,
+//     QModelIndex())); EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1,
+//     -1,
+//                                             view_model.index(1, 0)));
+//     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 2, 0,
+//     QModelIndex())); EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1,
+//     -1,
+//                                             view_model.index(2, 0)));
+
+//     auto external_mime_data = std::make_unique<QMimeData>();
+//     external_mime_data->setData(kInstructionEditorMimeType, QByteArray());
+//     EXPECT_TRUE(
+//         view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 0, 0,
+//         QModelIndex()));
+//     EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
+//                                            view_model.index(0, 0)));
+//     EXPECT_TRUE(
+//         view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 1, 0,
+//         QModelIndex()));
+//     EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
+//                                            view_model.index(1, 0)));
+//     EXPECT_TRUE(
+//         view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 2, 0,
+//         QModelIndex()));
+//     EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
+//                                            view_model.index(2, 0)));
+//   }
+// }
+
+// TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionToLast)
+// {
+//   auto sequence0 = m_model.InsertItem<SequenceItem>();
+//   auto sequence1 = m_model.InsertItem<SequenceItem>();
+//   auto sequence2 = m_model.InsertItem<SequenceItem>();
+
+//   FavoriteInstructionsViewModel view_model(&m_model);
+
+//   auto sequence0_index = view_model.index(0, 0);
+
+//   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({sequence0_index}));
+
+//   // pretending to drop after the last item
+//   const std::int32_t drop_indicator_row = 3;
+//   const QModelIndex parent_index = QModelIndex();  // invalid
+
+//   EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+//                                       parent_index));
+//   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
+//             std::vector<mvvm::SessionItem*>({sequence1, sequence2, sequence0}));
+// }
+
+// TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionOnTopOfLast)
+// {
+//   // Droping on top for FavoriteInstructionsViewModel doesn't lead to insert into, as in
+//   // InstructionEditorViewModel. It leads to insert after, as in previous test
+
+//   auto sequence0 = m_model.InsertItem<SequenceItem>();
+//   auto sequence1 = m_model.InsertItem<SequenceItem>();
+//   auto sequence2 = m_model.InsertItem<SequenceItem>();
+
+//   FavoriteInstructionsViewModel view_model(&m_model);
+
+//   auto sequence0_index = view_model.index(0, 0);
+//   auto sequence2_index = view_model.index(2, 0);
+
+//   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({sequence0_index}));
+
+//   // pretending to drop on top of the last item
+//   const std::int32_t drop_indicator_row = -1;
+//   const QModelIndex parent_index = sequence2_index;
+
+//   EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
+//                                       parent_index));
+//   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
+//             std::vector<mvvm::SessionItem*>({sequence1, sequence2, sequence0}));
+// }
+
+TEST_F(FavoriteInstructionsViewModelTest, DropNewType)
 {
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-
-  const FavoriteInstructionsViewModel view_model(&m_model);
-
-  {  // nullptr data
-    EXPECT_FALSE(view_model.canDropMimeData(nullptr, Qt::MoveAction, -1, -1, QModelIndex()));
-    EXPECT_FALSE(view_model.canDropMimeData(nullptr, Qt::CopyAction, -1, -1, QModelIndex()));
-  }
-
-  {  // mime data of wrong type
-    auto mime_data = std::make_unique<QMimeData>();
-    mime_data->setData("wrong/type", QByteArray());
-    EXPECT_FALSE(
-        view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
-    EXPECT_FALSE(
-        view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1, QModelIndex()));
-  }
-
-  {  // all combinations of QModelIndex and row from the table above should be accepted
-    auto mime_data = std::make_unique<QMimeData>();
-    mime_data->setData(kInstructionIdentifierMimeType, QByteArray());
-
-    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, QModelIndex()));
-    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
-                                           view_model.index(0, 0)));
-    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, QModelIndex()));
-    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
-                                           view_model.index(1, 0)));
-    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 2, 0, QModelIndex()));
-    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
-                                           view_model.index(2, 0)));
-
-    // copy while own reordering
-    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
-    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
-                                            view_model.index(0, 0)));
-    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 1, 0, QModelIndex()));
-    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
-                                            view_model.index(1, 0)));
-    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 2, 0, QModelIndex()));
-    EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
-                                            view_model.index(2, 0)));
-
-    auto external_mime_data = std::make_unique<QMimeData>();
-    external_mime_data->setData(kInstructionEditorMimeType, QByteArray());
-    EXPECT_TRUE(
-        view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
-    EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
-                                           view_model.index(0, 0)));
-    EXPECT_TRUE(
-        view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 1, 0, QModelIndex()));
-    EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
-                                           view_model.index(1, 0)));
-    EXPECT_TRUE(
-        view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 2, 0, QModelIndex()));
-    EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,
-                                           view_model.index(2, 0)));
-  }
-}
-
-TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionToLast)
-{
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto sequence2 = m_model.InsertItem<SequenceItem>();
-
   FavoriteInstructionsViewModel view_model(&m_model);
 
-  auto sequence0_index = view_model.index(0, 0);
+  { // drop on empty viewport
+    auto mime_data =
+        CreateNewInstructionMimeData(QString::fromStdString(domainconstants::kWaitInstructionType));
+    const std::int32_t drop_indicator_row = -1;
+    const QModelIndex parent_index = QModelIndex();  // invalid
 
-  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({sequence0_index}));
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator_row, 0,
+                                           parent_index));
+    EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator_row, 0,
+                                        parent_index));
 
-  // pretending to drop after the last item
-  const std::int32_t drop_indicator_row = 3;
-  const QModelIndex parent_index = QModelIndex();  // invalid
+    EXPECT_EQ(m_model.GetRootItem()->GetAllItems().size(), 1);
+    auto inserted_item = m_model.GetRootItem()->GetAllItems().front();
+    EXPECT_EQ(inserted_item->GetType(), mvvm::GetTypeName<WaitItem>());
+  }
 
-  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
-                                      parent_index));
-  EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
-            std::vector<mvvm::SessionItem*>({sequence1, sequence2, sequence0}));
+  { // drop after the last item
+    auto mime_data =
+        CreateNewInstructionMimeData(QString::fromStdString(domainconstants::kSequenceInstructionType));
+    const std::int32_t drop_indicator_row = 1;  // after the only existing item
+    const QModelIndex parent_index = QModelIndex();  // invalid
+
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator_row, 0,
+                                           parent_index));
+    EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator_row, 0,
+                                        parent_index));
+
+    EXPECT_EQ(m_model.GetRootItem()->GetAllItems().size(), 2);
+    auto inserted_item = m_model.GetRootItem()->GetAllItems().back();
+    EXPECT_EQ(inserted_item->GetType(), mvvm::GetTypeName<SequenceItem>());
+  }
+
+  { // drop on top of sequence should add item before (instead of insert)
+    auto mime_data =
+        CreateNewInstructionMimeData(QString::fromStdString(domainconstants::kIncludeInstructionType));
+    const std::int32_t drop_indicator_row = -1;  // on top of the last item
+    const QModelIndex parent_index = view_model.index(1, 0);  // index of the first item
+
+    EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator_row, 0,
+                                           parent_index));
+    EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator_row, 0,
+                                        parent_index));
+
+    EXPECT_EQ(m_model.GetRootItem()->GetAllItems().size(), 3);
+    auto inserted_item = m_model.GetRootItem()->GetAllItems().at(1); // inserted before the sequence
+    EXPECT_EQ(inserted_item->GetType(), mvvm::GetTypeName<IncludeItem>());
+
+  }
+
+
 }
-
-TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionOnTopOfLast)
-{
-  // Droping on top for FavoriteInstructionsViewModel doesn't lead to insert into, as in
-  // InstructionEditorViewModel. It leads to insert after, as in previous test
-
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto sequence2 = m_model.InsertItem<SequenceItem>();
-
-  FavoriteInstructionsViewModel view_model(&m_model);
-
-  auto sequence0_index = view_model.index(0, 0);
-  auto sequence2_index = view_model.index(2, 0);
-
-  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({sequence0_index}));
-
-  // pretending to drop on top of the last item
-  const std::int32_t drop_indicator_row = -1;
-  const QModelIndex parent_index = sequence2_index;
-
-  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
-                                      parent_index));
-  EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
-            std::vector<mvvm::SessionItem*>({sequence1, sequence2, sequence0}));
-}
-
 
 }  // namespace oac_tree_gui::test

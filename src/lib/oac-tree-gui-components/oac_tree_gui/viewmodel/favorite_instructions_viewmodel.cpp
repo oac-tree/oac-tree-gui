@@ -84,6 +84,20 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
            << ", action:" << action << ", row:" << row << ", column:" << column
            << ", parent:" << parent;
 
+  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
+  int drop_row_indicator = row;
+
+  // drop on top of item will mean append before
+  if (parent.isValid() && drop_row_indicator == -1)
+  {
+    drop_row_indicator = parent.row();
+  }
+
+  if (CanDropNewType(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
+
   // internal move (change own list ordering)
   if (data->hasFormat(kInstructionIdentifierMimeType) && action == Qt::MoveAction)
   {
@@ -111,6 +125,17 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
   // In this list we want to treat dropping on top of item as appending after it, need to change
   // parent.
   auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
+  int drop_row_indicator = row;
+  if (parent.isValid() && drop_row_indicator == -1)
+  {
+    drop_row_indicator = parent.row();
+  }
+
+  // processing new instruction, if we can, and be done with it
+  if (HandleDropNewType(*data, action, drop_row_indicator, *parent_item))
+  {
+    return true;
+  }
 
   // internal move (change own list ordering)
   if (data->hasFormat(kInstructionIdentifierMimeType) && action == Qt::MoveAction)
