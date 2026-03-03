@@ -24,9 +24,12 @@
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/composer/instruction_editor_drop_handler.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
+#include <mvvm/providers/viewmodel_utils.h>
 
 #include <QDebug>
 #include <QMimeData>
@@ -67,9 +70,14 @@ QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_lis
 {
   // first column contains a display name, and this will lead us to actual SessionItem being copied
   const auto first_column_indexes = GetFirstColumnIndexes(index_list);
+  auto items = mvvm::utils::MakeConst(mvvm::utils::ItemsFromIndex(first_column_indexes));
+
+  auto result = std::make_unique<QMimeData>();
+  sup::gui::AddItemSelectionIdentifierToMimeData(items, kInstructionEditorMimeType, *result);
+  sup::gui::AddItemSelectionCopyToMimeData(items, kCopyInstructionMimeType, *result);
 
   // ownership will be taken by QDrag operation
-  return CreateItemIdentifierMimeData(first_column_indexes, kInstructionEditorMimeType).release();
+  return result.release();
 }
 
 Qt::DropActions InstructionEditorViewModel::supportedDragActions() const

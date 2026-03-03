@@ -103,8 +103,7 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
             std::string("Wait"));
 }
 
-//! Check that view model send notification on name change.
-TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
+TEST_F(InstructionEditorViewModelTest, NotificationOnNameChange)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
 
@@ -144,7 +143,7 @@ TEST_F(InstructionEditorViewModelTest, SupportedActions)
 
 TEST_F(InstructionEditorViewModelTest, MimeTypes)
 {
-  QStringList expected_mime_types = {kInstructionEditorMimeType, kNewInstructionMimeType};
+  const QStringList expected_mime_types = {kInstructionEditorMimeType, kNewInstructionMimeType};
   EXPECT_EQ(expected_mime_types, m_view_model.mimeTypes());
 }
 
@@ -158,11 +157,19 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
   std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({display_index, data_index}));
   EXPECT_NE(mime_data, nullptr);
 
-  EXPECT_TRUE(mime_data->hasFormat(kInstructionEditorMimeType));
+  // mime data has two objects on board
 
+  // instruction identifier
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionEditorMimeType));
   auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionEditorMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
+
+  // and full copy of instruction
+  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
+  auto copied_items = sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
+  EXPECT_EQ(copied_items.size(), 1);
+  EXPECT_EQ(copied_items.at(0)->GetType(), sequence->GetDomainType());
 }
 
 TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
@@ -284,7 +291,7 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
 
   auto sequence_index = m_view_model.index(0, 0);
   auto wait0_index_name = m_view_model.index(0, 0, sequence_index);
-  auto wait0_index_custom_name = m_view_model.index(0, 0, sequence_index);
+  auto wait0_index_custom_name = m_view_model.index(0, 1, sequence_index);
 
   // going to drag Include instruction
   const std::unique_ptr<QMimeData> mime_data(
@@ -311,7 +318,7 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
 
   auto sequence_index = m_view_model.index(0, 0);
   auto wait2_index_name = m_view_model.index(2, 0, sequence_index);
-  auto wait2_index_custom_name = m_view_model.index(2, 0, sequence_index);
+  auto wait2_index_custom_name = m_view_model.index(2, 1, sequence_index);
 
   // going to drag Wait2 instruction
   const std::unique_ptr<QMimeData> mime_data(
