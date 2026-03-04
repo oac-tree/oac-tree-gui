@@ -164,7 +164,7 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
  * @brief Checks if given mime data contains information about items that can be moved into
  * the parent item at the position corresponding to drop indicator.
  *
- * Mime data is what InstructionEditor produces.
+ * Mime data contains an info about instruction identifiers to move.
  *
  * @param data Mime data to check.
  * @param action Drop action.
@@ -173,14 +173,14 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
  *
  * @return True if items described by mime data can be moved, false otherwise.
  */
-bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction action,
+bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
                                       int32_t drop_row_indicator, const mvvm::SessionItem& parent);
 
 /**
  * @brief Moves items described by mime data into the parent item at the position corresponding to
  * drop indicator.
  *
- * Mime data is what InstructionEditor produces.
+ * Mime data contains an info about instruction identifiers to move.
  *
  * @param data Mime data describing items to move.
  * @param action Drop action.
@@ -189,7 +189,7 @@ bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction acti
  *
  * @return True if items were successfully moved, false otherwise.
  */
-bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction action,
+bool HandleDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
                                          int32_t drop_row_indicator, mvvm::SessionItem& parent);
 
 /**

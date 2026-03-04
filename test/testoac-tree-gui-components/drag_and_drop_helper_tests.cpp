@@ -649,7 +649,7 @@ TEST_F(DragAndDropHelperTest, HandleInsertNewType)
   }
 }
 
-TEST_F(DragAndDropHelperTest, DropInstructionEditorMimeDataBetweenItems)
+TEST_F(DragAndDropHelperTest, DropInstructionIdentifierMimeDataBetweenItems)
 {
   // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
   // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)
@@ -681,8 +681,8 @@ TEST_F(DragAndDropHelperTest, DropInstructionEditorMimeDataBetweenItems)
         sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionIdentifierMimeType);
     const std::int32_t drop_indicator = 2;
     EXPECT_TRUE(
-        CanDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
-    EXPECT_TRUE(HandleDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator,
+        CanDropInstructionIdentifierMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(HandleDropInstructionIdentifierMimeData(*mime_data, Qt::CopyAction, drop_indicator,
                                                     *sequence0));
     ASSERT_EQ(sequence0->GetInstructions().size(), 4);
     EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);
@@ -712,7 +712,7 @@ TEST_F(DragAndDropHelperTest, DropInstructionCopyMimeDataBetweenItems)
   {
     const std::int32_t drop_indicator = -1;
     EXPECT_FALSE(
-        CanDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
+        CanDropInstructionIdentifierMimeData(*mime_data, Qt::CopyAction, drop_indicator, *wait0));
   }
 
   // but we can drop into area [5]
@@ -749,8 +749,8 @@ TEST_F(DragAndDropHelperTest, AttemptToDropInstructionVCopyViaMove)
   {
     const std::int32_t drop_indicator = 1;
     EXPECT_FALSE(
-        CanDropInstructionEditorMimeData(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
-    EXPECT_FALSE(HandleDropInstructionEditorMimeData(*mime_data, Qt::MoveAction, drop_indicator,
+        CanDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
+    EXPECT_FALSE(HandleDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator,
                                                      *sequence0));
     ASSERT_EQ(sequence0->GetInstructions().size(), 1);
     EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);  // original item should remain unchanged

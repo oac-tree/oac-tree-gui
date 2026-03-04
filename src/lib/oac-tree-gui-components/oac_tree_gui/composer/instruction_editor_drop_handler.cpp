@@ -63,7 +63,7 @@ bool InstructionEditorDropHandler::CanDropMimeData(const QMimeData* data, Qt::Dr
     return true;
   }
 
-  if (CanDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
+  if (CanDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
@@ -98,7 +98,7 @@ bool InstructionEditorDropHandler::DropMimeData(const QMimeData* data, Qt::DropA
 
   // drop of object corresponding to internal move (from the same view model or same type of view
   // model, i.e. InstructionEditorViewModel)
-  if (HandleDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
+  if (HandleDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }

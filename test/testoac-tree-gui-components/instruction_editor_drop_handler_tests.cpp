@@ -119,7 +119,7 @@ TEST_F(InstructionEditorDropHandlerTest, InsertNewType)
   }
 }
 
-TEST_F(InstructionEditorDropHandlerTest, DropInstructionEditorMimeDataBetweenItems)
+TEST_F(InstructionEditorDropHandlerTest, DropInstructionIdentifierMimeDataBetweenItems)
 {
   // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container
   // [1 ]  sequence0        row_col=(-1, -1)    QModelIndex(0, 0)

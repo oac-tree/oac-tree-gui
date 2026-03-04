@@ -101,7 +101,7 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
     return false;
   }
 
-  if (CanDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
+  if (CanDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
@@ -141,7 +141,7 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
     return false;
   }
 
-  if (HandleDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
+  if (HandleDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
