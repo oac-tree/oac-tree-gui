@@ -85,10 +85,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   m_actions->RegisterActionsForContext(context, m_command_service);
 
   // configure list to allow internal move of procedures (handled by FlatListViewModel)
-  m_list_view->setDragEnabled(true);
-  m_list_view->setDropIndicatorShown(true);
   m_list_view->setDefaultDropAction(Qt::MoveAction);
-  m_list_view->setDragDropMode(QAbstractItemView::DragDrop);
 
   SetupConnections();
 }

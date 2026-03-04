@@ -19,8 +19,11 @@
  *****************************************************************************/
 
 #include "flatlist_view.h"
+
 #include <mvvm/style/mvvm_style_helper.h>
 
+#include <QDragMoveEvent>
+#include <QDropEvent>
 #include <QHeaderView>
 #include <QMouseEvent>
 
@@ -29,26 +32,14 @@ namespace oac_tree_gui
 
 FlatListView::FlatListView(QWidget* parent) : QTreeView(parent)
 {
-  setRootIsDecorated(false);
-  setTextElideMode(Qt::ElideMiddle);
-  setFrameStyle(QFrame::NoFrame);
-  setAttribute(Qt::WA_MacShowFocusRect, false);
-  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-  viewport()->setAttribute(Qt::WA_Hover);
-
-  setSelectionMode(QAbstractItemView::SingleSelection);
-  setSelectionBehavior(QAbstractItemView::SelectRows);
+  SetupTreeAppearance();
+  SetupDragAndDrop();
 }
 
 void FlatListView::setModel(QAbstractItemModel* model)
 {
   QTreeView::setModel(model);
-  header()->hide();
-  header()->setStretchLastSection(false);
-  header()->setSectionResizeMode(0, QHeaderView::Stretch);
-  header()->setSectionResizeMode(1, QHeaderView::Fixed);
-  header()->setMinimumSectionSize(0);
-  header()->resizeSection(1, mvvm::style::UnitSize(1.5));
+  SetupHeaderAppearance();
 }
 
 void FlatListView::mousePressEvent(QMouseEvent* event)
@@ -69,7 +60,7 @@ void FlatListView::mouseReleaseEvent(QMouseEvent* event)
   // manually handle click in "close button" column
   // to avoid selection
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-  const QModelIndex mouse_index = indexAt(event -> pos());
+  const QModelIndex mouse_index = indexAt(event->pos());
 #else
   const QModelIndex mouse_index = indexAt(event->position().toPoint());
 #endif
@@ -81,6 +72,59 @@ void FlatListView::mouseReleaseEvent(QMouseEvent* event)
   {
     QTreeView::mouseReleaseEvent(event);
   }
+}
+
+void FlatListView::SetupTreeAppearance()
+{
+  setRootIsDecorated(false);
+  setTextElideMode(Qt::ElideMiddle);
+  setFrameStyle(QFrame::NoFrame);
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+  viewport()->setAttribute(Qt::WA_Hover);
+
+  setSelectionMode(QAbstractItemView::SingleSelection);
+  setSelectionBehavior(QAbstractItemView::SelectRows);
+}
+
+void FlatListView::SetupHeaderAppearance()
+{
+  header()->hide();
+  header()->setStretchLastSection(false);
+  header()->setSectionResizeMode(0, QHeaderView::Stretch);
+  header()->setSectionResizeMode(1, QHeaderView::Fixed);
+  header()->setMinimumSectionSize(0);
+  header()->resizeSection(1, mvvm::style::UnitSize(1.5));
+}
+
+void FlatListView::SetupDragAndDrop()
+{
+  // configure drag-and-drop
+  setDragEnabled(true);
+  setDropIndicatorShown(true);
+
+  // we set it Qt::CopyAction to provide copying while dragging from here to InstructionEditorView
+  // The downside, is that drop indicator will be always "+", even when we are moving items inside
+  // the list. But this is a minor issue, and it is better to provide correct action for cross-view
+  // drag, than to have correct indicator for internal drag. Can be fixed reimplementing
+  // dragMoveEvent/dragEnterEvent
+  setDefaultDropAction(Qt::CopyAction);
+
+  setDragDropMode(QAbstractItemView::DragDrop);
+}
+
+void FlatListView::dropEvent(QDropEvent* event)
+{
+  if (event->source() == this)
+  {
+    event->setDropAction(Qt::MoveAction);
+  }
+  else
+  {
+    // Cross-view drag - use CopyAction to copy item to this view
+    event->setDropAction(Qt::CopyAction);
+  }
+
+  QTreeView::dropEvent(event);
 }
 
 }  // namespace oac_tree_gui

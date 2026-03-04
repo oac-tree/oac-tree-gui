@@ -49,6 +49,19 @@ public:
 
 signals:
   void closeActivated(const QModelIndex& index);
+
+protected:
+  void SetupTreeAppearance();
+  void SetupHeaderAppearance();
+  void SetupDragAndDrop();
+
+  /**
+   * @brief Reimplemented to support internal move operations.
+   *
+   * Explicitely set drop action to CopyAction when moving from outside, and to MoveAction when
+   * moving from inside.
+   */
+  void dropEvent(QDropEvent* event) override;
 };
 
 }  // namespace oac_tree_gui
