@@ -116,27 +116,6 @@ mvvm::TagIndex GetTreeInternalMoveTagIndex(int32_t drop_indicator_row,
 mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row);
 
 /**
- * @brief Calculate TagIndex corresponding to the drop indicator position for internal move in the
- * list view.
- *
- * This functions is intended to be used for internal move operations in the views showing flat list
- * of items (e.g. FlatListViewModel) where the drop indicator position and parent's QModelIndex
- * are reported by QAbstractItemModel::dropMimeData.
- *
- * The only difference with GetTreeInternalMoveTagIndex is that dropping on top of a child will lead
- * to appending after that child (it never tries to insert into).
- *
- * @param drop_indicator_row Position of drop indicator as reported by QListView.
- * @param source_tag_index TagIndex of the item being moved.
- * @param parent The parent index as reported by QListView.
- *
- * @return TagIndex corresponding to the drop indicator position.
- */
-mvvm::TagIndex GetListInternalMoveTagIndex(std::int32_t drop_indicator_row,
-                                           const mvvm::TagIndex& source_tag_index,
-                                           const QModelIndex& parent);
-
-/**
  * @brief Checks if given mime data contains information about items that can be inserted into
  * the parent item at the position corresponding to drop indicator.
  *

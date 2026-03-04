@@ -33,7 +33,6 @@
 #include <mvvm/providers/viewmodel_controller_factory.h>
 #include <mvvm/standarditems/container_item.h>
 
-
 #include <gtest/gtest.h>
 
 #include <QMimeData>
@@ -263,6 +262,37 @@ TEST_F(FlatListViewModelTest, DragProcedureFromFirstPositionToLast)
   EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_row, 0, QModelIndex()));
   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
             std::vector<mvvm::SessionItem*>({procedure1, procedure2, procedure0}));
+}
+
+TEST_F(FlatListViewModelTest, DragProcedureFromFirstPositionOnTopOfLast)
+{
+  // [0]  ----------  row_col=( 0,  0)  QModelIndex(-1, -1)
+  // [1]  procedure0  row_col=(-1, -1)  QModelIndex(0, 0)
+  // [2]  ----------  row_col=( 1,  0)  QModelIndex(-1, -1)
+  // [3]  procedure1  row_col=(-1, -1)  QModelIndex(1, 0)
+  // [4]  ----------  row_col=( 2,  0)  QModelIndex(-1, -1)
+  // [5]  procedure2  row_col=(-1, -1)  QModelIndex(2, 0)
+  // [6]  ----------  row_col=( 3,  0)  QModelIndex(-1, -1)
+
+  auto procedure0 = m_model.InsertItem<ProcedureItem>();
+  auto procedure1 = m_model.InsertItem<ProcedureItem>();
+  auto procedure2 = m_model.InsertItem<ProcedureItem>();
+
+  TestViewModel view_model(&m_model);
+
+  auto procedure0_index = view_model.index(0, 0);
+  auto procedure1_index = view_model.index(1, 0);
+  auto procedure2_index = view_model.index(2, 0);
+
+  const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({procedure0_index}));
+
+  // hovering case [5]
+  QModelIndex drop_index = procedure2_index;  // dropping on top of the last item
+  const std::int32_t drop_row = -1;           // dropping after the last item
+
+  EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_row, 0, drop_index));
+  EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({procedure1, procedure0, procedure2}));
 }
 
 TEST_F(FlatListViewModelTest, DragLastProcedureOnTopOfFirst)

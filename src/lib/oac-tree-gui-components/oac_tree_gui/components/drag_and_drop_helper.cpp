@@ -146,36 +146,6 @@ mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row)
   return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row));
 }
 
-mvvm::TagIndex GetListInternalMoveTagIndex(int32_t drop_indicator_row,
-                                           const mvvm::TagIndex& source_tag_index,
-                                           const QModelIndex& parent)
-{
-  std::int32_t destination_index{-1};
-  if (drop_indicator_row != -1)
-  {
-    // dropping between items
-    destination_index = drop_indicator_row;
-  }
-  else if (parent.isValid())
-  {
-    // dropped on an item
-    destination_index = parent.row();
-    if (static_cast<std::int32_t>(source_tag_index.GetIndex()) < destination_index)
-    {
-      // need to increment destination index to match SessionModel::MoveItem conventions
-      // we want to move after the item, not into it
-      destination_index++;
-    }
-  }
-  else
-  {
-    // dropped on viewport
-    return mvvm::TagIndex::Append();
-  }
-
-  return mvvm::TagIndex::Default(destination_index);
-}
-
 bool CanDropNewType(const QMimeData& data, Qt::DropAction action, int32_t drop_row_indicator,
                     const mvvm::SessionItem& parent)
 {
