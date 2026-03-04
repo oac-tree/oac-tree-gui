@@ -84,28 +84,20 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
            << ", action:" << action << ", row:" << row << ", column:" << column
            << ", parent:" << parent;
 
-  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
-  int drop_row_indicator = row;
-
-  // drop on top of item will mean append before
-  if (parent.isValid() && drop_row_indicator == -1)
-  {
-    drop_row_indicator = parent.row();
-  }
+  auto [parent_item, drop_row_indicator] = GetDropTarget(row, parent);
 
   if (CanDropNewType(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
 
-  // internal move (change own list ordering)
-  if (data->hasFormat(kInstructionIdentifierMimeType) && action == Qt::MoveAction)
+  if (CanDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
 
-  // copy from outside (InstructionEditorViewmodel)
-  if (data->hasFormat(kInstructionEditorMimeType) && action == Qt::CopyAction)
+  // internal move (change own list ordering)
+  if (data->hasFormat(kInstructionIdentifierMimeType) && action == Qt::MoveAction)
   {
     return true;
   }
@@ -121,18 +113,18 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
     return false;
   }
 
-  // row == -1 when we are dropping on top of an item
-  // In this list we want to treat dropping on top of item as appending after it, need to change
-  // parent.
-  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
-  int drop_row_indicator = row;
-  if (parent.isValid() && drop_row_indicator == -1)
+  auto [target_item, drop_row_indicator] = GetDropTarget(row, parent);
+  auto parent_item = const_cast<mvvm::SessionItem*>(target_item);
+
+  // drop of object corresponding to a new type creation (i.e. from AvailableInstructionsTree)
+  if (HandleDropNewType(*data, action, drop_row_indicator, *parent_item))
   {
-    drop_row_indicator = parent.row();
+    return true;
   }
 
-  // processing new instruction, if we can, and be done with it
-  if (HandleDropNewType(*data, action, drop_row_indicator, *parent_item))
+  // drop of object corresponding to instruction copy from another place (i.e.
+  // InstructionEditorViewModel)
+  if (HandleDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
@@ -151,25 +143,6 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
       const auto destination_tagindex =
           GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
       GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination_tagindex);
-    }
-    return true;
-  }
-
-  // copy from outside (InstructionEditorViewmodel)
-  if (data->hasFormat(kInstructionEditorMimeType) && action == Qt::CopyAction)
-  {
-    for (const auto& id : sup::gui::GetStringListFromMime(*data, kInstructionEditorMimeType))
-    {
-      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      if (item == nullptr)
-      {
-        throw RuntimeException("Item with id " + id + " not found in the model");
-      }
-
-      const auto destination_tagindex =
-          GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
-      mvvm::utils::CopyItem(item, GetRootSessionItem()->GetModel(), parent_item,
-                            destination_tagindex);
     }
     return true;
   }
@@ -197,6 +170,27 @@ Qt::ItemFlags FavoriteInstructionsViewModel::flags(const QModelIndex& index) con
 
   // invalid item (root) can receive drops for appending at the end
   return Qt::ItemIsDropEnabled | default_flags;
+}
+
+std::pair<const mvvm::SessionItem*, std::int32_t> FavoriteInstructionsViewModel::GetDropTarget(
+    std::int32_t row, const QModelIndex& parent) const
+{
+  // row == -1 is when we are dropping on top of an item
+  // row == -1, QModelIndex(-1, -1) is when we are dropping on empty space after the last item or on
+  // empty viewport
+
+  // In this list we want to treat dropping on top of item as appending before it, need to change
+  // parent.
+
+  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
+
+  std::int32_t drop_row_indicator = row;
+  if (parent.isValid() && drop_row_indicator == -1)
+  {
+    drop_row_indicator = parent.row();
+  }
+
+  return std::make_pair(parent_item, drop_row_indicator);
 }
 
 }  // namespace oac_tree_gui

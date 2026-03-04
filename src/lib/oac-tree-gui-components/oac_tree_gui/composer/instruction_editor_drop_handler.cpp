@@ -55,6 +55,9 @@ bool InstructionEditorDropHandler::CanDropMimeData(const QMimeData* data, Qt::Dr
 
   auto parent_item = GetParentItem(parent);
 
+  // Mime object might content various data on board. We will try to handle all supported formats,
+  // and if some of them can be handled, we consider potential drop as successful.
+
   if (CanDropNewType(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
@@ -84,19 +87,24 @@ bool InstructionEditorDropHandler::DropMimeData(const QMimeData* data, Qt::DropA
 
   auto parent_item = GetParentItem(parent);
 
-  // processing new instruction, if we can, and be done with it
+  // Mime object might content various data on board. We will try to handle all supported formats,
+  // and if some of them is handled, we will consider drop successful.
+
+  // drop of object corresponding to a new type creation (i.e. from AvailableInstructionsTree)
   if (HandleDropNewType(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
 
-  // processing move of existing instruction, if we can
+  // drop of object corresponding to internal move (from the same view model or same type of view
+  // model, i.e. InstructionEditorViewModel)
   if (HandleDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
 
-  // processing copy on instruction copy-object
+  // drop of object corresponding to instruction copy from another place (i.e.
+  // FavoriteInstructionTree)
   if (HandleDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;

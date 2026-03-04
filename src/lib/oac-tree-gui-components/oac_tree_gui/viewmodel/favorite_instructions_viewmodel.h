@@ -36,7 +36,7 @@ namespace oac_tree_gui
  * - allow drop of new instructions (copy from the toolbox's tree of available instructions)
  * - allow drop from the tree of main instruction editor (copies are created)
  */
-class FavoriteInstructionsViewModel :  public mvvm::ViewModel
+class FavoriteInstructionsViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 
@@ -61,6 +61,16 @@ public:
   Qt::DropActions supportedDragActions() const override;
 
   Qt::ItemFlags flags(const QModelIndex& index) const override;
+
+private:
+  /**
+   * @brief Returns parent and drop indicator position for drop at given row and parent index.
+   *
+   * In this list we treat drop on top of an item as drop before that item, so we adjust drop
+   * indicator position accordingly.
+   */
+  std::pair<const mvvm::SessionItem*, std::int32_t> GetDropTarget(std::int32_t row,
+                                                                  const QModelIndex& parent) const;
 };
 
 }  // namespace oac_tree_gui
