@@ -230,7 +230,7 @@ TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionToLast)
 TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionOnTopOfLast)
 {
   // Droping on top for FavoriteInstructionsViewModel doesn't lead to insert into, as in
-  // InstructionEditorViewModel. It leads to insert after, as in previous test
+  // InstructionEditorViewModel. It leads to insert before, as in previous test
 
   auto sequence0 = m_model.InsertItem<SequenceItem>();
   auto sequence1 = m_model.InsertItem<SequenceItem>();
@@ -250,7 +250,7 @@ TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionOnTopOfLa
   EXPECT_TRUE(view_model.dropMimeData(mime_data.get(), Qt::MoveAction, drop_indicator_row, 0,
                                       parent_index));
   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
-            std::vector<mvvm::SessionItem*>({sequence1, sequence2, sequence0}));
+            std::vector<mvvm::SessionItem*>({sequence1, sequence0, sequence2}));
 }
 
 TEST_F(FavoriteInstructionsViewModelTest, DropNewType)

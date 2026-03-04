@@ -96,8 +96,12 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
     return true;
   }
 
-  // internal move (change own list ordering)
-  if (data->hasFormat(kInstructionIdentifierMimeType) && action == Qt::MoveAction)
+  if (action != Qt::MoveAction)
+  {
+    return false;
+  }
+
+  if (CanDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
@@ -129,21 +133,16 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
     return true;
   }
 
-  // internal move (change own list ordering)
-  if (data->hasFormat(kInstructionIdentifierMimeType) && action == Qt::MoveAction)
-  {
-    for (const auto& id : sup::gui::GetStringListFromMime(*data, kInstructionIdentifierMimeType))
-    {
-      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      if (item == nullptr)
-      {
-        throw RuntimeException("Item with id " + id + " not found in the model");
-      }
+  // drop of object corresponding to internal move (from the same view model or same type of view
+  // model, i.e. InstructionEditorViewModel)
 
-      const auto destination_tagindex =
-          GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
-      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination_tagindex);
-    }
+  if (action != Qt::MoveAction)
+  {
+    return false;
+  }
+
+  if (HandleDropInstructionEditorMimeData(*data, action, drop_row_indicator, *parent_item))
+  {
     return true;
   }
 
