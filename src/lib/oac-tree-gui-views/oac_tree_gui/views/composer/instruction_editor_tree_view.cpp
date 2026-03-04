@@ -20,9 +20,26 @@
 
 #include "instruction_editor_tree_view.h"
 
+#include <QDropEvent>
+
 namespace oac_tree_gui
 {
 
 InstructionEditorTreeView::InstructionEditorTreeView(QWidget* parent) : QTreeView(parent) {}
+
+void InstructionEditorTreeView::dropEvent(QDropEvent* event)
+{
+  if (auto widget = dynamic_cast<InstructionEditorTreeView*>(event->source()); widget)
+  {
+    // we handle all events coming from the same type of the widget as moveAction
+    event->setDropAction(Qt::MoveAction);
+  }
+  else
+  {
+    event->setDropAction(Qt::CopyAction);
+  }
+
+  QTreeView::dropEvent(event);
+}
 
 }  // namespace oac_tree_gui

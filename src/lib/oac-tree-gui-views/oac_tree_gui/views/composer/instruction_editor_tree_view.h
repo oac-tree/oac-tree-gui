@@ -37,6 +37,10 @@ class InstructionEditorTreeView : public QTreeView
 
 public:
   explicit InstructionEditorTreeView(QWidget* parent = nullptr);
+
+protected:
+  void dropEvent(QDropEvent* event) override;
+
 };
 
 }  // namespace oac_tree_gui
