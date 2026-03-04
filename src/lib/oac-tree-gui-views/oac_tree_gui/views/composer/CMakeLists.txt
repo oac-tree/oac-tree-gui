@@ -3,10 +3,10 @@
 target_sources(${library_name} PRIVATE
   attribute_editor_actions.cpp
   attribute_editor_actions.h
-  available_instructions_widget.cpp
-  available_instructions_widget.h
   available_instructions_tree_view.cpp
   available_instructions_tree_view.h
+  available_instructions_widget.cpp
+  available_instructions_widget.h
   composer_tools_panel.cpp
   composer_tools_panel.h
   custom_celleditor_factory.cpp
@@ -17,6 +17,8 @@ target_sources(${library_name} PRIVATE
   instruction_attribute_editor.h
   instruction_editor_actions.cpp
   instruction_editor_actions.h
+  instruction_editor_tree_view.cpp
+  instruction_editor_tree_view.h
   instruction_editor_widget.cpp
   instruction_editor_widget.h
   procedure_composer_combo_panel.cpp

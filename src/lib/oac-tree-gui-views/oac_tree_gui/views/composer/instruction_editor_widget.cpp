@@ -22,6 +22,7 @@
 
 #include "instruction_attribute_editor.h"
 #include "instruction_editor_actions.h"
+#include "instruction_editor_tree_view.h"
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/composer/instruction_editor_context.h>
@@ -29,11 +30,11 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <oac_tree_gui/widgets/custom_tree_view_style.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
@@ -49,7 +50,6 @@
 #include <mvvm/views/component_provider_helper.h>
 #include <mvvm/views/property_tree_view.h>
 
-#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace
@@ -77,7 +77,7 @@ InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService& c
                                                  QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
-    , m_tree_view(new QTreeView)
+    , m_tree_view(new InstructionEditorTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(CreateProvider())
     , m_attribute_editor(new InstructionAttributeEditor(CreateVariableNameFunc()))

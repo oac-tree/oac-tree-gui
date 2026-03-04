@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_WIDGETS_FLATLIST_VIEW_H_
-#define OAC_TREE_GUI_WIDGETS_FLATLIST_VIEW_H_
+#ifndef OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_EITOR_TREE_VIEW_H_
+#define OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_EITOR_TREE_VIEW_H_
 
 #include <QTreeView>
 
@@ -27,30 +27,18 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The FlatListView class shows flat list of items and provides machinery to remove items
- * from the list.
+ * @brief The InstructionEditorTreeView class is a main instruction tree of instruction editor.
  *
- * It is a two-column tree tuned to look like a list, with close indicator in a second column.
- * Intended to work together with FlatListDelegate.
- *
- * Inspired by QtCreator's own OpenDocumentsTreeView class (opendocumentstreeview.cpp).
+ * It's main purpose is force MoveAction during drop operation.
  */
-class FlatListView : public QTreeView
+class InstructionEditorTreeView : public QTreeView
 {
   Q_OBJECT
 
 public:
-  explicit FlatListView(QWidget* parent = nullptr);
-
-  void setModel(QAbstractItemModel* model) override;
-
-  void mousePressEvent(QMouseEvent* event) override;
-  void mouseReleaseEvent(QMouseEvent* event) override;
-
-signals:
-  void closeActivated(const QModelIndex& index);
+  explicit InstructionEditorTreeView(QWidget* parent = nullptr);
 };
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_WIDGETS_FLATLIST_VIEW_H_
+#endif  // OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_EITOR_TREE_VIEW_H_
