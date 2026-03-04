@@ -680,9 +680,11 @@ TEST_F(DragAndDropHelperTest, DropInstructionIdentifierMimeDataBetweenItems)
     auto mime_data =
         sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionIdentifierMimeType);
     const std::int32_t drop_indicator = 2;
-    EXPECT_TRUE(
+    EXPECT_FALSE(
         CanDropInstructionIdentifierMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
-    EXPECT_TRUE(HandleDropInstructionIdentifierMimeData(*mime_data, Qt::CopyAction, drop_indicator,
+    EXPECT_TRUE(
+        CanDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
+    EXPECT_TRUE(HandleDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator,
                                                     *sequence0));
     ASSERT_EQ(sequence0->GetInstructions().size(), 4);
     EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);

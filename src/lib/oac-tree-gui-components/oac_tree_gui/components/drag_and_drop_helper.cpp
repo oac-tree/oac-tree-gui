@@ -209,8 +209,10 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
 bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
                                       int32_t drop_row_indicator, const mvvm::SessionItem& parent)
 {
-  // we don't care about action for move operations, it will be always move
-  (void)action;
+  if (action != Qt::MoveAction)
+  {
+    return false;
+  }
 
   if (data.hasFormat(kInstructionIdentifierMimeType))
   {
@@ -237,8 +239,10 @@ bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction 
 bool HandleDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
                                          int32_t drop_row_indicator, mvvm::SessionItem& parent)
 {
-  // we don't care about action for drop operations, it will be always move
-  (void)action;
+  if (action != Qt::MoveAction)
+  {
+    return false;
+  }
 
   if (data.hasFormat(kInstructionIdentifierMimeType))
   {

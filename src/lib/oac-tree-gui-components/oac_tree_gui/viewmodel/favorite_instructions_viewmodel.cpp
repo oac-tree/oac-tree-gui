@@ -96,11 +96,6 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
     return true;
   }
 
-  if (action != Qt::MoveAction)
-  {
-    return false;
-  }
-
   if (CanDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
@@ -135,11 +130,6 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
 
   // drop of object corresponding to internal move (from the same view model or same type of view
   // model, i.e. InstructionEditorViewModel)
-
-  if (action != Qt::MoveAction)
-  {
-    return false;
-  }
 
   if (HandleDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
