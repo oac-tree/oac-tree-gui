@@ -146,6 +146,36 @@ TEST_F(DragAndDropHelperTest, CreateNewInstructionMimeData)
   EXPECT_EQ(GetNewInstructionType(mime_data.get()), std::string(""));
 }
 
+TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
+{
+  const mvvm::AllItemsViewModel view_model(&m_model);
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  sequence->SetDisplayName("abc");
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  wait->SetDisplayName("def");
+  auto sequence_displayname_index = view_model.index(0, 0);
+
+  auto mime_data = CreateInstructionEditorMimeData({sequence_displayname_index});
+
+  // instruction identifier
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
+  EXPECT_EQ(identifiers.size(), 1);
+  EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
+
+  // and full copy of instruction
+  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
+  auto copied_items = sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
+  ASSERT_EQ(copied_items.size(), 1);
+  auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
+  ASSERT_NE(copied_sequence, nullptr);
+  EXPECT_EQ(copied_sequence->GetType(), sequence->GetDomainType());
+  EXPECT_EQ(copied_sequence->GetDisplayName(), std::string("abc"));
+  ASSERT_EQ(copied_sequence->GetInstructions().size(), 1);
+  auto copied_waits = copied_sequence->GetInstructions().at(0);
+  EXPECT_EQ(copied_waits->GetDisplayName(), std::string("def"));
+}
+
 TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexLastWaitToVariousPlaces)
 {
   auto sequence0 = m_model.InsertItem<SequenceItem>();
@@ -680,12 +710,12 @@ TEST_F(DragAndDropHelperTest, DropInstructionIdentifierMimeDataBetweenItems)
     auto mime_data =
         sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionIdentifierMimeType);
     const std::int32_t drop_indicator = 2;
-    EXPECT_FALSE(
-        CanDropInstructionIdentifierMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));
-    EXPECT_TRUE(
-        CanDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
+    EXPECT_FALSE(CanDropInstructionIdentifierMimeData(*mime_data, Qt::CopyAction, drop_indicator,
+                                                      *sequence0));
+    EXPECT_TRUE(CanDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator,
+                                                     *sequence0));
     EXPECT_TRUE(HandleDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator,
-                                                    *sequence0));
+                                                        *sequence0));
     ASSERT_EQ(sequence0->GetInstructions().size(), 4);
     EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);
     EXPECT_EQ(sequence0->GetInstructions().at(1), wait1);
@@ -750,10 +780,10 @@ TEST_F(DragAndDropHelperTest, AttemptToDropInstructionVCopyViaMove)
   // original item)
   {
     const std::int32_t drop_indicator = 1;
-    EXPECT_FALSE(
-        CanDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator, *sequence0));
+    EXPECT_FALSE(CanDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator,
+                                                      *sequence0));
     EXPECT_FALSE(HandleDropInstructionIdentifierMimeData(*mime_data, Qt::MoveAction, drop_indicator,
-                                                     *sequence0));
+                                                         *sequence0));
     ASSERT_EQ(sequence0->GetInstructions().size(), 1);
     EXPECT_EQ(sequence0->GetInstructions().at(0), wait0);  // original item should remain unchanged
   }

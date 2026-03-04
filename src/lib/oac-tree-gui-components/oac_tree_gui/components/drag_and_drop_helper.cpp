@@ -55,7 +55,8 @@ std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& i
 {
   auto items = mvvm::utils::ItemsFromIndex(indexes);
   auto unique_items = mvvm::utils::UniqueWithOrder(items);
-  return sup::gui::CreateItemSelectionIdentifierMimeData(mvvm::utils::MakeConst(unique_items), mime_type);
+  return sup::gui::CreateItemSelectionIdentifierMimeData(mvvm::utils::MakeConst(unique_items),
+                                                         mime_type);
 }
 
 std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name)
@@ -80,6 +81,19 @@ std::string GetNewInstructionType(const QMimeData* mime_data)
   auto binary_data = mime_data->data(kNewInstructionMimeType);
   auto list = mvvm::utils::GetStringList(binary_data);
   return list.empty() ? std::string() : list.front().toStdString();
+}
+
+std::unique_ptr<QMimeData> CreateInstructionEditorMimeData(const QModelIndexList& indexes)
+{
+  // first column contains a display name, and this will lead us to actual SessionItem being copied
+  const auto first_column_indexes = GetFirstColumnIndexes(indexes);
+  auto items = mvvm::utils::MakeConst(mvvm::utils::ItemsFromIndex(first_column_indexes));
+
+  auto result = std::make_unique<QMimeData>();
+  sup::gui::AddItemSelectionIdentifierToMimeData(items, kInstructionIdentifierMimeType, *result);
+  sup::gui::AddItemSelectionCopyToMimeData(items, kCopyInstructionMimeType, *result);
+
+  return result;
 }
 
 // Positions of drop indicator and reported parameters of canDropMimeData:
@@ -207,7 +221,8 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
 }
 
 bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
-                                      int32_t drop_row_indicator, const mvvm::SessionItem& parent)
+                                          int32_t drop_row_indicator,
+                                          const mvvm::SessionItem& parent)
 {
   if (action != Qt::MoveAction)
   {
@@ -237,7 +252,7 @@ bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction 
 }
 
 bool HandleDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
-                                         int32_t drop_row_indicator, mvvm::SessionItem& parent)
+                                             int32_t drop_row_indicator, mvvm::SessionItem& parent)
 {
   if (action != Qt::MoveAction)
   {

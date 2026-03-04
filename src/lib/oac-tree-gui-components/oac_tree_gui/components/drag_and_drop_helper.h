@@ -85,6 +85,14 @@ std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name);
 std::string GetNewInstructionType(const QMimeData* mime_data);
 
 /**
+ * @brief Creates a mime data for drag-and-drop operations related to instruction editor.
+ *
+ * This mime data will contain both identifiers of items being moved and their copies, so it can be
+ * used for both move and copy operations.
+ */
+std::unique_ptr<QMimeData> CreateInstructionEditorMimeData(const QModelIndexList& indexes);
+
+/**
  * @brief Calculate TagIndex to move item to a parent within a tree.
  *
  * @param item Item which will be moved.
