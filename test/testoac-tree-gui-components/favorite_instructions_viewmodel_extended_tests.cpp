@@ -106,4 +106,44 @@ TEST_F(FavoriteInstructionsViewModelExtendedTest, DragFromInstructionEditorViewM
       wait->GetIdentifier());
 }
 
+TEST_F(FavoriteInstructionsViewModelExtendedTest,
+       DragFromFavoriteInstructionViewToInstructionEditor)
+{
+  // ProjectModel contains instruction with a child
+  auto project_model = m_models.GetProjectModel();
+  auto sequence =
+      project_model->InsertItem<SequenceItem>(project_model->GetFavoriteInstructionContainer());
+  auto wait = project_model->InsertItem<WaitItem>(sequence);
+  wait->SetDisplayName("abc");
+
+  // we are going to drag this instruction from FavoriteInstructionsViewModel
+  FavoriteInstructionsViewModel source_view_model(project_model);
+  source_view_model.SetRootSessionItem(project_model->GetFavoriteInstructionContainer());
+  auto sequence_index = source_view_model.index(0, 0);
+  const std::unique_ptr<QMimeData> mime_data(source_view_model.mimeData({sequence_index}));
+
+  // sequencer model contains procedure with no instructions
+  auto sequencer_model = m_models.GetSequencerModel();
+  auto procedure =
+      sequencer_model->InsertItem<ProcedureItem>(sequencer_model->GetProcedureContainer());
+
+  // we are going to drop it into InstructionEditorViewModel, to viewport
+  InstructionEditorViewModel target_view_model(sequencer_model);
+  target_view_model.SetRootSessionItem(procedure->GetInstructionContainer());
+  const std::int32_t drop_indicator_row = -1;
+  const QModelIndex parent_index = QModelIndex();  // invalid
+
+  EXPECT_TRUE(target_view_model.dropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator_row, 0,
+                                             parent_index));
+
+  // procedure should contain one instruction with one child now
+  EXPECT_EQ(procedure->GetInstructionContainer()->GetInstructionCount(), 1);
+  auto inserted_sequence = procedure->GetInstructionContainer()->GetInstructions().at(0);
+  EXPECT_EQ(inserted_sequence->GetType(), mvvm::GetTypeName<SequenceItem>());
+  EXPECT_EQ(inserted_sequence->GetInstructions().size(), 1);
+  auto inserted_wait = inserted_sequence->GetInstructions().at(0);
+  EXPECT_EQ(inserted_wait->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(inserted_wait->GetDisplayName(), "abc");
+}
+
 }  // namespace oac_tree_gui::test
