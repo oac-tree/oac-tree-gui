@@ -71,6 +71,14 @@ public:
   Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:
+  /**
+   * @brief Returns parent and drop indicator position for drop at given row and parent index.
+   *
+   * In this list we treat drop on top of an item as drop before that item, so we adjust drop
+   * indicator position accordingly.
+   */
+  std::pair<const mvvm::SessionItem*, std::int32_t> GetDropTarget(std::int32_t row,
+                                                                  const QModelIndex& parent) const;
   QString GetPrimaryMimeType() const;
 
   QStringList m_expected_mime_types;

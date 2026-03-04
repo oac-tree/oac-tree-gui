@@ -21,13 +21,9 @@
 #include "flatlist_viewmodel.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
-#include <oac_tree_gui/core/exceptions.h>
-
-#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/session_item.h>
-#include <mvvm/model/validate_utils.h>
 
 #include <QDebug>
 #include <QMimeData>
@@ -96,25 +92,14 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
     return false;
   }
 
-  // row == -1 when we are dropping on top of an item
-  // In this list we want to treat dropping on top of item as appending after it, need to change
-  // parent.
-  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
-
-  for (const auto& format : data->formats())
+  auto [target_item, drop_row_indicator] = GetDropTarget(row, parent);
+  auto parent_item = const_cast<mvvm::SessionItem*>(target_item);
+  // drop of object corresponding to internal move (from the same view model or same type of view
+  // model, i.e. InstructionEditorViewModel)
+  if (HandleDropItemIdentifierMimeData(*data, GetPrimaryMimeType(), action, drop_row_indicator,
+                                       *parent_item))
   {
-    for (const auto& id : sup::gui::GetStringListFromMime(*data, format))
-    {
-      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-      if (item == nullptr)
-      {
-        throw RuntimeException("Item with id " + id + " not found in the model");
-      }
-
-      const auto destination_tagindex =
-          GetListInternalMoveTagIndex(row, item->GetTagIndex(), parent);
-      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, destination_tagindex);
-    }
+    return true;
   }
 
   return true;
@@ -140,6 +125,27 @@ Qt::ItemFlags FlatListViewModel::flags(const QModelIndex& index) const
 
   // invalid item (root) can receive drops for appending at the end
   return Qt::ItemIsDropEnabled | default_flags;
+}
+
+std::pair<const mvvm::SessionItem*, int32_t> FlatListViewModel::GetDropTarget(
+    int32_t row, const QModelIndex& parent) const
+{
+  // row == -1 is when we are dropping on top of an item
+  // row == -1, QModelIndex(-1, -1) is when we are dropping on empty space after the last item or on
+  // empty viewport
+
+  // In this list we want to treat dropping on top of item as appending before it, need to change
+  // parent.
+
+  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
+
+  std::int32_t drop_row_indicator = row;
+  if (parent.isValid() && drop_row_indicator == -1)
+  {
+    drop_row_indicator = parent.row();
+  }
+
+  return std::make_pair(parent_item, drop_row_indicator);
 }
 
 QString FlatListViewModel::GetPrimaryMimeType() const
