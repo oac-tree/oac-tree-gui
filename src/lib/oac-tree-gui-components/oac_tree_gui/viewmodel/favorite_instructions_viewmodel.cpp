@@ -54,7 +54,7 @@ int FavoriteInstructionsViewModel::rowCount(const QModelIndex& index) const
 
 QStringList FavoriteInstructionsViewModel::mimeTypes() const
 {
-  return {kInstructionIdentifierMimeType};
+  return {kNewInstructionMimeType, kInstructionIdentifierMimeType, kCopyInstructionMimeType};
 }
 
 QMimeData* FavoriteInstructionsViewModel::mimeData(const QModelIndexList& indexes) const
@@ -91,12 +91,12 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
     return true;
   }
 
-  if (CanDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
+  if (CanDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
 
-  if (CanDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
+  if (CanDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
@@ -121,17 +121,16 @@ bool FavoriteInstructionsViewModel::dropMimeData(const QMimeData* data, Qt::Drop
     return true;
   }
 
-  // drop of object corresponding to instruction copy from another place (i.e.
-  // InstructionEditorViewModel)
-  if (HandleDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
+  // drop of object corresponding to internal move (from the same view model or same type of view
+  // model, i.e. InstructionEditorViewModel)
+  if (HandleDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }
 
-  // drop of object corresponding to internal move (from the same view model or same type of view
-  // model, i.e. InstructionEditorViewModel)
-
-  if (HandleDropInstructionIdentifierMimeData(*data, action, drop_row_indicator, *parent_item))
+  // drop of object corresponding to instruction copy from another place (i.e.
+  // InstructionEditorViewModel)
+  if (HandleDropInstructionCopyMimeData(*data, action, drop_row_indicator, *parent_item))
   {
     return true;
   }

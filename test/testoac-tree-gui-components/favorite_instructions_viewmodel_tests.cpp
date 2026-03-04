@@ -111,7 +111,8 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeTypes)
 {
   const FavoriteInstructionsViewModel model(&m_model);
 
-  const QStringList expected_mime_types = {kInstructionIdentifierMimeType};
+  const QStringList expected_mime_types = {kNewInstructionMimeType, kInstructionIdentifierMimeType,
+                                           kCopyInstructionMimeType};
   EXPECT_EQ(expected_mime_types, model.mimeTypes());
 }
 

@@ -143,7 +143,8 @@ TEST_F(InstructionEditorViewModelTest, SupportedActions)
 
 TEST_F(InstructionEditorViewModelTest, MimeTypes)
 {
-  const QStringList expected_mime_types = {kInstructionIdentifierMimeType, kNewInstructionMimeType};
+  const QStringList expected_mime_types = {kNewInstructionMimeType, kInstructionIdentifierMimeType,
+                                           kCopyInstructionMimeType};
   EXPECT_EQ(expected_mime_types, m_view_model.mimeTypes());
 }
 
