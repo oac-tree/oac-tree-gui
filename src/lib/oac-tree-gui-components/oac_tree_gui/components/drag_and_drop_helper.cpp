@@ -220,18 +220,18 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
   return false;
 }
 
-bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
-                                          int32_t drop_row_indicator,
-                                          const mvvm::SessionItem& parent)
+bool CanDropItemIdentifierMimeData(const QMimeData& data, const QString& mime_type,
+                                   Qt::DropAction action, int32_t drop_row_indicator,
+                                   const mvvm::SessionItem& parent)
 {
   if (action != Qt::MoveAction)
   {
     return false;
   }
 
-  if (data.hasFormat(kInstructionIdentifierMimeType))
+  if (data.hasFormat(mime_type))
   {
-    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionIdentifierMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(data, mime_type))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)
@@ -251,17 +251,18 @@ bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction 
   return false;
 }
 
-bool HandleDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
-                                             int32_t drop_row_indicator, mvvm::SessionItem& parent)
+bool HandleDropItemIdentifierMimeData(const QMimeData& data, const QString& mime_type,
+                                      Qt::DropAction action, int32_t drop_row_indicator,
+                                      mvvm::SessionItem& parent)
 {
   if (action != Qt::MoveAction)
   {
     return false;
   }
 
-  if (data.hasFormat(kInstructionIdentifierMimeType))
+  if (data.hasFormat(mime_type))
   {
-    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionIdentifierMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(data, mime_type))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)

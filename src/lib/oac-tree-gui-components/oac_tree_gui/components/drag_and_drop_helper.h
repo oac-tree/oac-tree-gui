@@ -175,14 +175,16 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
  * Mime data contains an info about instruction identifiers to move.
  *
  * @param data Mime data to check.
+ * @param mime_type Mime type to check in the data.
  * @param action Drop action.
  * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
  * @param parent Parent item to check move into.
  *
  * @return True if items described by mime data can be moved, false otherwise.
  */
-bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
-                                      int32_t drop_row_indicator, const mvvm::SessionItem& parent);
+bool CanDropItemIdentifierMimeData(const QMimeData& data, const QString& mime_type,
+                                   Qt::DropAction action, int32_t drop_row_indicator,
+                                   const mvvm::SessionItem& parent);
 
 /**
  * @brief Moves items described by mime data into the parent item at the position corresponding to
@@ -191,14 +193,16 @@ bool CanDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction 
  * Mime data contains an info about instruction identifiers to move.
  *
  * @param data Mime data describing items to move.
+ * @param mime_type Mime type to check in the data.
  * @param action Drop action.
  * @param drop_row_indicator Position of drop indicator as reported by QTreeView.
  * @param parent Parent item to move into.
  *
  * @return True if items were successfully moved, false otherwise.
  */
-bool HandleDropInstructionIdentifierMimeData(const QMimeData& data, Qt::DropAction action,
-                                         int32_t drop_row_indicator, mvvm::SessionItem& parent);
+bool HandleDropItemIdentifierMimeData(const QMimeData& data, const QString& mime_type,
+                                      Qt::DropAction action, int32_t drop_row_indicator,
+                                      mvvm::SessionItem& parent);
 
 /**
  * @brief Checks if given mime data contains information about instructions that can be copied into
