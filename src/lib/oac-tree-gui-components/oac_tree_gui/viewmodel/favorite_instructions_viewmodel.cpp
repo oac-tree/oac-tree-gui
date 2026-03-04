@@ -54,7 +54,7 @@ int FavoriteInstructionsViewModel::rowCount(const QModelIndex& index) const
 
 QStringList FavoriteInstructionsViewModel::mimeTypes() const
 {
-  return {kInstructionIdentifierMimeType, kInstructionEditorMimeType};
+  return {kInstructionIdentifierMimeType};
 }
 
 QMimeData* FavoriteInstructionsViewModel::mimeData(const QModelIndexList& indexes) const

@@ -678,7 +678,7 @@ TEST_F(DragAndDropHelperTest, DropInstructionEditorMimeDataBetweenItems)
 
   {  // move wait 3 to position [7]
     auto mime_data =
-        sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionEditorMimeType);
+        sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionIdentifierMimeType);
     const std::int32_t drop_indicator = 2;
     EXPECT_TRUE(
         CanDropInstructionEditorMimeData(*mime_data, Qt::CopyAction, drop_indicator, *sequence0));

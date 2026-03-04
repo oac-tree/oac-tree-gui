@@ -63,7 +63,7 @@ Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex& index) const
 
 QStringList InstructionEditorViewModel::mimeTypes() const
 {
-  return {kInstructionEditorMimeType, kNewInstructionMimeType};
+  return {kInstructionIdentifierMimeType, kNewInstructionMimeType};
 }
 
 QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_list) const
@@ -73,7 +73,7 @@ QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_lis
   auto items = mvvm::utils::MakeConst(mvvm::utils::ItemsFromIndex(first_column_indexes));
 
   auto result = std::make_unique<QMimeData>();
-  sup::gui::AddItemSelectionIdentifierToMimeData(items, kInstructionEditorMimeType, *result);
+  sup::gui::AddItemSelectionIdentifierToMimeData(items, kInstructionIdentifierMimeType, *result);
   sup::gui::AddItemSelectionCopyToMimeData(items, kCopyInstructionMimeType, *result);
 
   // ownership will be taken by QDrag operation

@@ -45,11 +45,6 @@ constexpr auto kInstructionIdentifierMimeType = "application/coa.sequencer.instr
 constexpr auto kJobIdentifierMimeType = "application/coa.sequencer.job.identifier";
 constexpr auto kProcedureIdentifierMimeType = "application/coa.sequencer.procedure.identifier";
 
-//! Mime type for drag-and-drop events in instruction editor. This is similar to
-//! kInstructionIdentifierMimeType, but it is used to distinguish between moving instruction within
-//! the procedure and dragging instruction from the favorite instructions list.
-constexpr auto kInstructionEditorMimeType = "application/coa.sequencer.instruction.move";
-
 //! Mime type for drag-and-drop events leading to the creation of new instruction.
 constexpr auto kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
 
@@ -62,10 +57,9 @@ constexpr auto kCopyInstructionMimeType = "application/coa.sequencer.instruction
 //! Mime type for variable copy.
 constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
 
-
 /**
-  * @brief Returns list of indexes corresponding to the first column for each row in the given list of
- * indexes.
+ * @brief Returns list of indexes corresponding to the first column for each row in the given list
+ * of indexes.
  */
 QModelIndexList GetFirstColumnIndexes(const QModelIndexList& indexes);
 
@@ -228,7 +222,7 @@ bool CanDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action
  * @return True if items were successfully copied, false otherwise.
  */
 bool HandleDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action,
-                                       int32_t drop_row_indicator, mvvm::SessionItem &parent);
+                                       int32_t drop_row_indicator, mvvm::SessionItem& parent);
 
 }  // namespace oac_tree_gui
 

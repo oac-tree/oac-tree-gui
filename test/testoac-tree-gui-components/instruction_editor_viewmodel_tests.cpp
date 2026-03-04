@@ -143,7 +143,7 @@ TEST_F(InstructionEditorViewModelTest, SupportedActions)
 
 TEST_F(InstructionEditorViewModelTest, MimeTypes)
 {
-  const QStringList expected_mime_types = {kInstructionEditorMimeType, kNewInstructionMimeType};
+  const QStringList expected_mime_types = {kInstructionIdentifierMimeType, kNewInstructionMimeType};
   EXPECT_EQ(expected_mime_types, m_view_model.mimeTypes());
 }
 
@@ -160,8 +160,8 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
   // mime data has two objects on board
 
   // instruction identifier
-  EXPECT_TRUE(mime_data->hasFormat(kInstructionEditorMimeType));
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionEditorMimeType);
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
@@ -266,7 +266,8 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
 
   // going to drag Include instruction
-  std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({incl_index_col0, incl_index_col1}));
+  const std::unique_ptr<QMimeData> mime_data(
+      m_view_model.mimeData({incl_index_col0, incl_index_col1}));
 
   // drop between Wait0 and Wait1
   EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, sequence_index));

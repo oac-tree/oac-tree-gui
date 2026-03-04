@@ -212,9 +212,9 @@ bool CanDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction acti
   // we don't care about action for move operations, it will be always move
   (void)action;
 
-  if (data.hasFormat(kInstructionEditorMimeType))
+  if (data.hasFormat(kInstructionIdentifierMimeType))
   {
-    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionEditorMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionIdentifierMimeType))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)
@@ -240,9 +240,9 @@ bool HandleDropInstructionEditorMimeData(const QMimeData& data, Qt::DropAction a
   // we don't care about action for drop operations, it will be always move
   (void)action;
 
-  if (data.hasFormat(kInstructionEditorMimeType))
+  if (data.hasFormat(kInstructionIdentifierMimeType))
   {
-    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionEditorMimeType))
+    for (const auto& id : sup::gui::GetStringListFromMime(data, kInstructionIdentifierMimeType))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)
