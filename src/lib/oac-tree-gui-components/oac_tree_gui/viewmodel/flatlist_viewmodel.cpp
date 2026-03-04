@@ -22,18 +22,13 @@
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 
-#include <mvvm/model/i_session_model.h>
-#include <mvvm/model/session_item.h>
-
-#include <QDebug>
 #include <QMimeData>
-#include <algorithm>
 
 namespace oac_tree_gui
 {
 
-FlatListViewModel::FlatListViewModel(const QStringList& expected_mime_types, QObject* parent_object)
-    : ViewModel(parent_object), m_expected_mime_types(expected_mime_types)
+FlatListViewModel::FlatListViewModel(const QString& mime_type, QObject* parent_object)
+    : ViewModel(parent_object), m_mime_type(mime_type)
 {
 }
 
@@ -45,7 +40,7 @@ int FlatListViewModel::rowCount(const QModelIndex& index) const
 
 QStringList FlatListViewModel::mimeTypes() const
 {
-  return m_expected_mime_types;
+  return {m_mime_type};
 }
 
 QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
@@ -54,34 +49,26 @@ QMimeData* FlatListViewModel::mimeData(const QModelIndexList& indexes) const
   const auto first_column_indexes = GetFirstColumnIndexes(indexes);
 
   // ownership will be taken by QDrag operation
-  return CreateItemIdentifierMimeData(first_column_indexes, GetPrimaryMimeType()).release();
+  return CreateItemIdentifierMimeData(first_column_indexes, m_mime_type).release();
 }
 
 bool FlatListViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row,
                                         int column, const QModelIndex& parent) const
 {
-  (void)row;
   (void)column;
-  (void)parent;
 
   if (data == nullptr)
   {
     return false;
   }
 
-  qDebug() << "FlatListViewModel::canDropMimeData:" << data << data->formats()
-           << ", action:" << action << ", row:" << row << ", column:" << column
-           << ", parent:" << parent;
+  // qDebug() << "FlatListViewModel::canDropMimeData:" << data << data->formats()
+  //          << ", action:" << action << ", row:" << row << ", column:" << column
+  //          << ", parent:" << parent;
 
-  if (!(action & supportedDropActions()))
-  {
-    return false;
-  }
-
-  const QStringList model_types = mimeTypes();
-
-  return std::any_of(model_types.cbegin(), model_types.cend(),
-                     [data](const QString& mime_type) { return data->hasFormat(mime_type); });
+  auto [parent_item, drop_row_indicator] = GetDropTarget(row, parent);
+  return CanDropItemIdentifierMimeData(*data, m_mime_type, action, drop_row_indicator,
+                                       *parent_item);
 }
 
 bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row,
@@ -94,9 +81,9 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
 
   auto [target_item, drop_row_indicator] = GetDropTarget(row, parent);
   auto parent_item = const_cast<mvvm::SessionItem*>(target_item);
-  // drop of object corresponding to internal move (from the same view model or same type of view
-  // model, i.e. InstructionEditorViewModel)
-  if (HandleDropItemIdentifierMimeData(*data, GetPrimaryMimeType(), action, drop_row_indicator,
+
+  // drop of object corresponding to internal move
+  if (HandleDropItemIdentifierMimeData(*data, m_mime_type, action, drop_row_indicator,
                                        *parent_item))
   {
     return true;
@@ -146,12 +133,6 @@ std::pair<const mvvm::SessionItem*, int32_t> FlatListViewModel::GetDropTarget(
   }
 
   return std::make_pair(parent_item, drop_row_indicator);
-}
-
-QString FlatListViewModel::GetPrimaryMimeType() const
-{
-  // by default drag operation will create mime object corresponding to the first type in the list
-  return m_expected_mime_types.empty() ? QString() : m_expected_mime_types.front();
 }
 
 }  // namespace oac_tree_gui

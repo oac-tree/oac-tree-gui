@@ -47,8 +47,7 @@ class FlatListViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit FlatListViewModel(const QStringList& expected_mime_types,
-                             QObject* parent_object = nullptr);
+  explicit FlatListViewModel(const QString& mime_type, QObject* parent_object = nullptr);
 
   int rowCount(const QModelIndex& index = {}) const override;
 
@@ -79,9 +78,7 @@ private:
    */
   std::pair<const mvvm::SessionItem*, std::int32_t> GetDropTarget(std::int32_t row,
                                                                   const QModelIndex& parent) const;
-  QString GetPrimaryMimeType() const;
-
-  QStringList m_expected_mime_types;
+  QString m_mime_type;
 };
 
 }  // namespace oac_tree_gui

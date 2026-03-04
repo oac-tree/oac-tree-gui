@@ -56,7 +56,7 @@ public:
   class TestViewModel : public FlatListViewModel
   {
   public:
-    explicit TestViewModel(mvvm::SessionModel* model) : FlatListViewModel({kItemIdentifierMimeType})
+    explicit TestViewModel(mvvm::SessionModel* model) : FlatListViewModel(kItemIdentifierMimeType)
     {
       SetController(
           mvvm::factory::CreateController<mvvm::TopItemsStrategy, mvvm::LabelDataRowStrategy>(

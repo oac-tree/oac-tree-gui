@@ -26,7 +26,6 @@
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
-#include <mvvm/model/item_utils.h>
 #include <mvvm/providers/abstract_row_strategy.h>
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewitem.h>
@@ -64,7 +63,7 @@ public:
 };
 
 JobListViewModel::JobListViewModel(mvvm::ISessionModel* model, QObject* parent_object)
-    : FlatListViewModel({kJobIdentifierMimeType}, parent_object)
+    : FlatListViewModel(kJobIdentifierMimeType, parent_object)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
 }

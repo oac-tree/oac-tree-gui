@@ -60,9 +60,7 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
                                                     int row, int column,
                                                     const QModelIndex& parent) const
 {
-  (void)row;
   (void)column;
-  (void)parent;
 
   if (data == nullptr)
   {
