@@ -26,7 +26,7 @@
 #include <mvvm/providers/standard_row_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
-#include <QDebug>
+// #include <QDebug>
 #include <QMimeData>
 
 namespace oac_tree_gui
@@ -67,9 +67,9 @@ bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::D
     return false;
   }
 
-  qDebug() << "FlatListViewModel::canDropMimeData:" << data << data->formats()
-           << ", action:" << action << ", row:" << row << ", column:" << column
-           << ", parent:" << parent;
+  // qDebug() << "FlatListViewModel::canDropMimeData:" << data << data->formats()
+  //          << ", action:" << action << ", row:" << row << ", column:" << column
+  //          << ", parent:" << parent;
 
   auto [parent_item, drop_row_indicator] = GetDropTarget(row, parent);
 

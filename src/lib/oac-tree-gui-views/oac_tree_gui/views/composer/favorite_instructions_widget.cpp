@@ -25,6 +25,7 @@
 #include <oac_tree_gui/widgets/flatlist_delegate.h>
 #include <oac_tree_gui/widgets/flatlist_view.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/views/component_provider_helper.h>
 
 #include <QVBoxLayout>
@@ -41,6 +42,18 @@ FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_list_view);
+
+  // handles click on close button in column=1
+  auto on_activated = [this](const QModelIndex& index)
+  {
+    auto item = const_cast<mvvm::SessionItem*>(m_component_provider->GetItemFromViewIndex(index));
+    if (item != nullptr)
+    {
+      mvvm::utils::RemoveItem(*item);
+    }
+  };
+
+  connect(m_list_view, &FlatListView::activated, this, on_activated);
 }
 
 FavoriteInstructionsWidget::~FavoriteInstructionsWidget() = default;
