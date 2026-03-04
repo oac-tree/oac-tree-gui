@@ -21,13 +21,7 @@
 #include "favorite_instructions_viewmodel.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
-#include <oac_tree_gui/core/exceptions.h>
 
-#include <sup/gui/components/mime_conversion_helper.h>
-
-#include <mvvm/model/i_session_model.h>
-#include <mvvm/model/model_utils.h>
-#include <mvvm/model/session_item.h>
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/standard_row_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
@@ -59,12 +53,7 @@ QStringList FavoriteInstructionsViewModel::mimeTypes() const
 
 QMimeData* FavoriteInstructionsViewModel::mimeData(const QModelIndexList& indexes) const
 {
-  // first column contains a display name, and this will lead us to actual SessionItem being copied
-  const auto first_column_indexes = GetFirstColumnIndexes(indexes);
-
-  // ownership will be taken by QDrag operation
-  return CreateItemIdentifierMimeData(first_column_indexes, kInstructionIdentifierMimeType)
-      .release();
+  return CreateInstructionEditorMimeData(indexes).release();
 }
 
 bool FavoriteInstructionsViewModel::canDropMimeData(const QMimeData* data, Qt::DropAction action,

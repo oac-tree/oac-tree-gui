@@ -127,11 +127,17 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
   std::unique_ptr<QMimeData> mime_data(model.mimeData({display_index, data_index}));
   EXPECT_NE(mime_data, nullptr);
 
+  // instruction identifier
   EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
-
   auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence_item->GetIdentifier());
+
+  // and full copy of instruction
+  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
+  auto copied_items = sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
+  EXPECT_EQ(copied_items.size(), 1);
+  EXPECT_EQ(copied_items.at(0)->GetType(), sequence_item->GetDomainType());
 }
 
 /*
