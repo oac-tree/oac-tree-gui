@@ -31,6 +31,7 @@
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
+#include <mvvm/model/item_selection.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 
@@ -151,7 +152,7 @@ void WorkspaceEditorWidget::SetupConnections()
 {
   auto on_item_select_request = [this](auto item)
   {
-    m_component_provider->SetSelectedItem(item);
+    m_component_provider->SetSelection(mvvm::ItemSelection(item));
 
     auto index_of_inserted = m_component_provider->GetViewIndexes(item);
     if (!index_of_inserted.empty())

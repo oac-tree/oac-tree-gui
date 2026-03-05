@@ -70,12 +70,12 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  ProcedureItem* GetSelectedProcedure();
+  ProcedureItem* GetSelectedProcedure() const;
   std::vector<ProcedureItem*> GetSelectedProcedures() const;
 
   void SetSelectedProcedure(ProcedureItem* procedure);
 
-  QTreeView *GetTreeView();
+  QTreeView* GetTreeView();
 
   mvvm::ViewModel* GetViewModel();
 

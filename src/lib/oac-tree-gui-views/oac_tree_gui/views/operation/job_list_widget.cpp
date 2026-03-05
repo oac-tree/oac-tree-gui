@@ -25,6 +25,7 @@
 #include <oac_tree_gui/viewmodel/job_list_viewmodel.h>
 
 #include <sup/gui/widgets/custom_header_view.h>
+#include <mvvm/model/item_selection.h>
 
 #include <mvvm/views/component_provider_helper.h>
 
@@ -83,7 +84,7 @@ JobItem* JobListWidget::GetSelectedJob()
 
 void JobListWidget::SetSelectedJob(JobItem* job)
 {
-  m_component_provider->SetSelectedItem(job);
+  m_component_provider->SetSelection(mvvm::ItemSelection(job));
   m_custom_header->AdjustColumnsWidth();
 }
 

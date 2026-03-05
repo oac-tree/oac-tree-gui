@@ -45,6 +45,7 @@
 #include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/providers/qtcore_helper.h>
 #include <mvvm/views/component_provider_helper.h>
@@ -251,7 +252,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
 
   auto on_notify_request = [this](auto item)
   {
-    m_component_provider->SetSelectedItem(item);
+    m_component_provider->SetSelection(mvvm::ItemSelection(item));
     auto index_of_inserted = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
     if (!index_of_inserted.empty())
     {

@@ -35,6 +35,7 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/views/component_provider_helper.h>
+#include <mvvm/model/item_selection.h>
 
 #include <QMenu>
 #include <QTreeView>
@@ -104,7 +105,7 @@ void ProcedureListWidget::SetModel(SequencerModel* model)
   }
 }
 
-ProcedureItem* ProcedureListWidget::GetSelectedProcedure()
+ProcedureItem* ProcedureListWidget::GetSelectedProcedure() const
 {
   auto selected = GetSelectedProcedures();
   return selected.empty() ? nullptr : selected.front();
@@ -117,7 +118,7 @@ std::vector<ProcedureItem*> ProcedureListWidget::GetSelectedProcedures() const
 
 void ProcedureListWidget::SetSelectedProcedure(ProcedureItem* procedure)
 {
-  m_component_provider->SetSelectedItem(procedure);
+  m_component_provider->SetSelection(mvvm::ItemSelection(procedure));
 }
 
 QTreeView* ProcedureListWidget::GetTreeView()
