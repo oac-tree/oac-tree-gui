@@ -230,7 +230,7 @@ void InstructionEditorWidget::SetupConnections()
     m_attribute_editor->SetInstruction(selected);
     emit InstructionSelected(selected);
   };
-  connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
+  connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectionChanged, this,
           on_selected_instruction_changed);
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
@@ -238,7 +238,7 @@ void InstructionEditorWidget::SetupConnections()
           [this]() { m_action_handler->OnEditAnyvalueRequest(); });
 
   // selection change from tree view to update actions
-  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
+  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectionChanged, this,
           [this](auto) { m_editor_actions->UpdateEnabledStatus(); });
 }
 

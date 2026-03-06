@@ -65,7 +65,7 @@ JobListWidget::JobListWidget(QWidget* parent_widget)
   m_tree_view->setDefaultDropAction(Qt::MoveAction);
   m_tree_view->setDragDropMode(QAbstractItemView::DragDrop);
 
-  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
+  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectionChanged, this,
           [this](auto) { emit JobSelected(GetSelectedJob()); });
 }
 

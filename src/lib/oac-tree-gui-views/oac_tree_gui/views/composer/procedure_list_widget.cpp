@@ -61,7 +61,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   layout->setSpacing(0);
   layout->addWidget(m_list_view);
 
-  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
+  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectionChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
 
   connect(m_actions, &ProcedureListActions::CreateNewProcedureRequest, m_action_handler,
