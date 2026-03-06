@@ -35,6 +35,7 @@
 #include <sup/gui/core/environment.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/utils/container_utils.h>
 #include <mvvm/views/component_provider_helper.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -99,7 +100,8 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget* parent_wid
 
   auto on_branch_change = [this]()
   {
-    m_component_provider->SetSelectedItems(m_expand_controller->GetInstructionsToSelect());
+    m_component_provider->SetSelection(
+        mvvm::ItemSelection(m_expand_controller->GetInstructionsToSelect()));
     ScrollViewportToSelection();
   };
   connect(m_expand_controller.get(), &InstructionTreeExpandController::VisibilityHasChanged, this,
@@ -130,7 +132,8 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem* procedure_item)
 void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem*> items)
 {
   m_expand_controller->SaveSelectionRequest(items);
-  m_component_provider->SetSelectedItems(m_expand_controller->GetInstructionsToSelect());
+  m_component_provider->SetSelection(
+      mvvm::ItemSelection(m_expand_controller->GetInstructionsToSelect()));
   ScrollViewportToSelection();
 }
 

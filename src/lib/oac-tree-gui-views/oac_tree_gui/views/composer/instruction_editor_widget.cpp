@@ -25,8 +25,6 @@
 #include "instruction_editor_tree_view.h"
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
-#include <oac_tree_gui/composer/instruction_editor_context.h>
-#include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -49,7 +47,6 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/providers/qtcore_helper.h>
 #include <mvvm/views/component_provider_helper.h>
-#include <mvvm/views/property_tree_view.h>
 
 #include <QVBoxLayout>
 
@@ -150,7 +147,7 @@ void InstructionEditorWidget::SetSelectedInstructions(
   {
     return;
   }
-  m_component_provider->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
+  m_component_provider->SetSelection(mvvm::ItemSelection(instructions));
 }
 
 std::vector<InstructionItem*> InstructionEditorWidget::GetSelectedInstructions() const
