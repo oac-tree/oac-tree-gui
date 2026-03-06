@@ -129,7 +129,8 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem* procedure_item)
   }
 }
 
-void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem*> items)
+void RealTimeInstructionTreeWidget::SetSelectedInstructions(
+    const std::vector<InstructionItem*>& items)
 {
   m_expand_controller->SaveSelectionRequest(items);
   m_component_provider->SetSelection(
@@ -175,7 +176,8 @@ void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex& index)
 {
   if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
   {
-    auto instruction = m_component_provider->GetSelected<InstructionItem>();
+    auto selection = m_component_provider->GetSelection();
+    auto instruction = const_cast<InstructionItem*>(selection.GetSelected<InstructionItem>());
     emit ToggleBreakpointRequest(instruction);
   }
 }

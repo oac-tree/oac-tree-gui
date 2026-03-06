@@ -63,7 +63,7 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
-  void SetSelectedInstructions(std::vector<InstructionItem*> items);
+  void SetSelectedInstructions(const std::vector<InstructionItem*>& items);
 
   /**
    * @brief Makes tree viewport follow currently selected instruction.

@@ -79,7 +79,8 @@ void JobListWidget::SetJobModel(JobModel* model)
 
 JobItem* JobListWidget::GetSelectedJob()
 {
-  return m_component_provider->GetSelected<JobItem>();
+  auto selection = m_component_provider->GetSelection();
+  return const_cast<JobItem*>(selection.GetSelected<JobItem>());
 }
 
 void JobListWidget::SetSelectedJob(JobItem* job)
