@@ -31,8 +31,9 @@
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
-#include <mvvm/model/item_selection.h>
 
+#include <mvvm/model/item_selection.h>
+#include <mvvm/utils/container_utils.h>
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 
 #include <QLineEdit>
@@ -79,7 +80,13 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService& comma
     , m_component_provider(CreateProvider(presentation))
     , m_line_edit(new QLineEdit)
     , m_editor(new WorkspaceEditor(
-          command_service, [this]() { return m_component_provider->GetSelectedItems(); }, this))
+          command_service,
+          [this]()
+          {
+            return mvvm::utils::RemoveConst(
+                m_component_provider->GetSelection().GetSelectedItems());
+          },
+          this))
     , m_edit_type(WorkspaceEditType::kEditorEnabled)
 {
   setWindowTitle("Workspace");

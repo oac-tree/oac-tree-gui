@@ -32,10 +32,10 @@
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/views/component_provider_helper.h>
-#include <mvvm/model/item_selection.h>
 
 #include <QMenu>
 #include <QTreeView>
@@ -113,7 +113,8 @@ ProcedureItem* ProcedureListWidget::GetSelectedProcedure() const
 
 std::vector<ProcedureItem*> ProcedureListWidget::GetSelectedProcedures() const
 {
-  return m_component_provider->GetSelectedItems<ProcedureItem>();
+  auto selection = m_component_provider->GetSelection();
+  return mvvm::utils::RemoveConst(selection.GetSelectedItems<ProcedureItem>());
 }
 
 void ProcedureListWidget::SetSelectedProcedure(ProcedureItem* procedure)

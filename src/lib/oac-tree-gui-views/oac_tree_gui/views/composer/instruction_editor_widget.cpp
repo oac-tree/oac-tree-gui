@@ -152,7 +152,8 @@ void InstructionEditorWidget::SetSelectedInstructions(
 
 std::vector<InstructionItem*> InstructionEditorWidget::GetSelectedInstructions() const
 {
-  return ::mvvm::utils::CastItems<InstructionItem>(m_component_provider->GetSelectedItems());
+  auto selection = m_component_provider->GetSelection();
+  return ::mvvm::utils::RemoveConst(selection.GetSelectedItems<InstructionItem>());
 }
 
 InstructionItem* InstructionEditorWidget::GetSelectedInstruction() const

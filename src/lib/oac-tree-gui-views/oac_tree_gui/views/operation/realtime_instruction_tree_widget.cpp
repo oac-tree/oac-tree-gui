@@ -208,8 +208,8 @@ void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
     return;
   }
 
-  auto filtered = sup::gui::GetBottomLevelSelection(
-      mvvm::utils::MakeConst(m_component_provider->GetSelectedItems()));
+  auto filtered =
+      sup::gui::GetBottomLevelSelection(m_component_provider->GetSelection().GetSelectedItems());
   if (!filtered.empty())
   {
     auto indexes = m_component_provider->GetViewIndexes(filtered.front());

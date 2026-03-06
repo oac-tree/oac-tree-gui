@@ -31,7 +31,9 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/model/session_item.h>
+#include <mvvm/utils/container_utils.h>
 #include <mvvm/views/component_provider_helper.h>
 
 #include <QMenu>
@@ -102,7 +104,8 @@ void InstructionAttributeEditor::SummonContextMenu(const QPoint& point)
 
 AttributeEditorContext InstructionAttributeEditor::CreateAttributeEditorActionContext()
 {
-  auto selected_items_callback = [this]() { return m_component_provider->GetSelectedItems(); };
+  auto selected_items_callback = [this]()
+  { return mvvm::utils::RemoveConst(m_component_provider->GetSelection().GetSelectedItems()); };
 
   return {selected_items_callback};
 }
