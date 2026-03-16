@@ -59,8 +59,8 @@ TEST_F(InstructionTreeExpandControllerTest, SelectWaitInFullyExpandedTree)
   auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
   auto wait = m_model.InsertItem<SequenceItem>(sequence1);
 
-  EXPECT_EQ(m_viewmodel.rowCount(), 1);
-  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+  EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 3);
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);
@@ -86,8 +86,8 @@ TEST_F(InstructionTreeExpandControllerTest, SelectWaitInCollapsedBranch)
   auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
   auto wait = m_model.InsertItem<SequenceItem>(sequence1);
 
-  EXPECT_EQ(m_viewmodel.rowCount(), 1);
-  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+  EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 3);
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);
@@ -115,8 +115,8 @@ TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandState)
   (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
   auto wait = m_model.InsertItem<SequenceItem>(sequence1);
 
-  EXPECT_EQ(m_viewmodel.rowCount(), 1);
-  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+  EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 3);
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);
@@ -149,8 +149,8 @@ TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstruction
   (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
   auto wait = m_model.InsertItem<SequenceItem>(sequence1);
 
-  EXPECT_EQ(m_viewmodel.rowCount(), 1);
-  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+  EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 3);
 
   auto container_index = m_viewmodel.index(0, 0);
   auto sequence0_index = m_viewmodel.index(0, 0, container_index);

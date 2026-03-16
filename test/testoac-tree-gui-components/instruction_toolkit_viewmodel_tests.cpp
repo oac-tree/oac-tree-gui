@@ -40,8 +40,8 @@ TEST_F(InstructionOperationViewModelTest, InitialState)
 {
   const ToolKitViewModel model;
 
-  EXPECT_EQ(model.rowCount(), 0);
-  EXPECT_EQ(model.columnCount(), 0);
+  EXPECT_EQ(model.rowCount(QModelIndex()), 0);
+  EXPECT_EQ(model.columnCount(QModelIndex()), 0);
 }
 
 TEST_F(InstructionOperationViewModelTest, PopulateFromList)
@@ -50,8 +50,8 @@ TEST_F(InstructionOperationViewModelTest, PopulateFromList)
 
   model.PopulateModel(std::vector<std::string>({"a1", "a2"}));
 
-  EXPECT_EQ(model.rowCount(), 2);
-  EXPECT_EQ(model.columnCount(), 1);
+  EXPECT_EQ(model.rowCount(QModelIndex()), 2);
+  EXPECT_EQ(model.columnCount(QModelIndex()), 1);
 
   auto index0 = model.index(0, 0, QModelIndex());
   auto index1 = model.index(1, 0, QModelIndex());
@@ -85,8 +85,8 @@ TEST_F(InstructionOperationViewModelTest, PopulateFromTree)
 
   model.PopulateModel(group_info);
 
-  EXPECT_EQ(model.rowCount(), 2);
-  EXPECT_EQ(model.columnCount(), 1);
+  EXPECT_EQ(model.rowCount(QModelIndex()), 2);
+  EXPECT_EQ(model.columnCount(QModelIndex()), 1);
 
   auto index_group0 = model.index(0, 0, QModelIndex());
   auto index_group1 = model.index(1, 0, QModelIndex());
@@ -118,8 +118,8 @@ TEST_F(InstructionOperationViewModelTest, MimeFromTree)
 
   model.PopulateModel(group_info);
 
-  EXPECT_EQ(model.rowCount(), 2);
-  EXPECT_EQ(model.columnCount(), 1);
+  EXPECT_EQ(model.rowCount(QModelIndex()), 2);
+  EXPECT_EQ(model.columnCount(QModelIndex()), 1);
 
   auto index_group0 = model.index(0, 0, QModelIndex());
   auto index_group1 = model.index(1, 0, QModelIndex());

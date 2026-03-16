@@ -55,14 +55,14 @@ TEST_F(ProcedureListViewModelTest, InitialState)
 {
   {  // no model defined
     const ProcedureListViewModel view_model(nullptr);
-    EXPECT_EQ(view_model.rowCount(), 0);
-    EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+    EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
+    EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
   }
 
   {
     const ProcedureListViewModel view_model(&m_model);
-    EXPECT_EQ(view_model.rowCount(), 0);
-    EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+    EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
+    EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
   }
 }
 
@@ -81,9 +81,9 @@ TEST_F(ProcedureListViewModelTest, ContainerChange)
 
   ProcedureListViewModel view_model(nullptr);
   view_model.SetRootSessionItem(container0);
-  EXPECT_EQ(view_model.rowCount(), 2);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
   view_model.SetRootSessionItem(container1);
-  EXPECT_EQ(view_model.rowCount(), 3);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 3);
 }
 
 TEST_F(ProcedureListViewModelTest, FlagsForDragAndDrop)

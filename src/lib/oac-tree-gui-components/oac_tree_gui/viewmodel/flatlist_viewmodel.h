@@ -49,7 +49,7 @@ class FlatListViewModel : public mvvm::ViewModel
 public:
   explicit FlatListViewModel(const QString& mime_type, QObject* parent_object = nullptr);
 
-  int rowCount(const QModelIndex& index = {}) const override;
+  int rowCount(const QModelIndex& index) const override;
 
   // drag-and-drop support
 

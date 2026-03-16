@@ -178,8 +178,8 @@ TEST_F(WorkspaceFilterViewModelTest, FilterViewmodel)
   viewmodel_proxy.setSourceModel(&viewmodel);
 
   // second item was filtered out
-  EXPECT_EQ(viewmodel_proxy.columnCount(), 2);
-  EXPECT_EQ(viewmodel_proxy.rowCount(), 1);
+  EXPECT_EQ(viewmodel_proxy.columnCount(QModelIndex()), 2);
+  EXPECT_EQ(viewmodel_proxy.rowCount(QModelIndex()), 1);
   EXPECT_TRUE(viewmodel_proxy.filterAcceptsRow(0, QModelIndex()));
   EXPECT_FALSE(viewmodel_proxy.filterAcceptsRow(1, QModelIndex()));
   EXPECT_EQ(viewmodel_proxy.index(0, 0, QModelIndex()).data().toString(), QString("ABC"));

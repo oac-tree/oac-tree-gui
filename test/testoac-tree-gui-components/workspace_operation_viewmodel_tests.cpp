@@ -59,13 +59,13 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithoutAnyValue)
 
   WorkspaceOperationViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // checking viewmodel layout
 
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   auto variable_name_index = viewmodel.index(0, 0);
   auto variable_value_index = viewmodel.index(0, 1);
@@ -95,13 +95,13 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValue)
 
   WorkspaceOperationViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // checking viewmodel layout
 
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   auto variable_name_index = viewmodel.index(0, 0);
   auto variable_value_index = viewmodel.index(0, 1);
@@ -132,13 +132,13 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValueConstruct
 
   WorkspaceOperationViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // checking viewmodel layout
 
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   auto variable_name_index = viewmodel.index(0, 0);
   auto variable_value_index = viewmodel.index(0, 1);
@@ -167,8 +167,8 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 
   WorkspaceOperationViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // setting AnyValue
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
@@ -176,8 +176,8 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 
   // checking viewmodel layout
 
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   auto variable_name_index = viewmodel.index(0, 0);
   auto variable_value_index = viewmodel.index(0, 1);
@@ -216,16 +216,16 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
 
   WorkspaceOperationViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // setting AnyValue
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
 
   // checking viewmodel layout
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // reading data from cell
   auto variable_channel_index = viewmodel.index(0, 3);
@@ -284,12 +284,12 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatusInfoItemCa
 
   WorkspaceOperationViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // checking viewmodel layout
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 4);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // reading data from cell
   auto variable_channel_index = viewmodel.index(0, 3);

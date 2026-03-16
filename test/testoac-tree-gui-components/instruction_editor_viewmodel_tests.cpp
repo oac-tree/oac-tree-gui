@@ -61,8 +61,8 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
   auto sequence = m_model.InsertItem<SequenceItem>();
   sequence->SetStatus(InstructionStatus::kRunning);
 
-  EXPECT_EQ(m_view_model.rowCount(), 1);
-  EXPECT_EQ(m_view_model.columnCount(), 2);
+  EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(m_view_model.columnCount(QModelIndex()), 2);
 
   auto sequence_displayname_index = m_view_model.index(0, 0);
   auto sequence_customname_index = m_view_model.index(0, 1);
@@ -107,8 +107,8 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnNameChange)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
 
-  EXPECT_EQ(m_view_model.rowCount(), 1);
-  EXPECT_EQ(m_view_model.columnCount(), 2);
+  EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(m_view_model.columnCount(QModelIndex()), 2);
 
   const QSignalSpy spy_data_changed(&m_view_model, &InstructionEditorViewModel::dataChanged);
 
@@ -417,8 +417,8 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   InstructionEditorViewModel view_model(nullptr, {});
   view_model.SetRootSessionItem(procedure->GetInstructionContainer());
 
-  EXPECT_EQ(view_model.rowCount(), 1);
-  EXPECT_EQ(view_model.columnCount(), 2);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
 
   // Mimicking the reset of the document. The viewmodel will be reset to show top level item, no
   // crash occur.
@@ -426,8 +426,8 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   auto procedure_container = root_item->InsertItem<mvvm::ContainerItem>(mvvm::TagIndex::Append());
   model.ReplaceRootItem(std::move(root_item));
 
-  EXPECT_EQ(view_model.rowCount(), 1);
-  EXPECT_EQ(view_model.columnCount(), 2);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
   EXPECT_EQ(view_model.rootItem()->GetRowCount(), 1);
   EXPECT_EQ(view_model.rootItem()->GetColumnCount(), 2);
 }

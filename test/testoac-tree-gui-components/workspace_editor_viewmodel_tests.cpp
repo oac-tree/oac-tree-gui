@@ -59,8 +59,8 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
 
   WorkspaceEditorViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 0);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 0);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   // adding single variable and populating with values
   auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
@@ -71,8 +71,8 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
   // checking viewmodel layout
 
   // one parent item with type, and editable name
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   auto variable_displayname_index = viewmodel.index(0, 0);
   auto variable_emptylabel_index = viewmodel.index(0, 1);
@@ -133,8 +133,8 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
 
   WorkspaceEditorViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
-  EXPECT_EQ(viewmodel.rowCount(), 0);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 0);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   // adding single variable and populating with values
   auto variable_item = model.InsertItem<ChannelAccessVariableItem>(workspace_item);
@@ -145,8 +145,8 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   // checking viewmodel layout
 
   // one parent item with type, and editable name
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   auto variable_displayname_index = viewmodel.index(0, 0);
   auto variable_emptylabel_index = viewmodel.index(0, 1);

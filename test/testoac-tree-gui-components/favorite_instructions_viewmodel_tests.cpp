@@ -58,14 +58,14 @@ TEST_F(FavoriteInstructionsViewModelTest, InitialState)
 {
   {  // no model defined
     const FavoriteInstructionsViewModel view_model(nullptr);
-    EXPECT_EQ(view_model.rowCount(), 0);
-    EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+    EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
+    EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
   }
 
   {
     const FavoriteInstructionsViewModel view_model(&m_model);
-    EXPECT_EQ(view_model.rowCount(), 0);
-    EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+    EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
+    EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
   }
 }
 
@@ -75,8 +75,8 @@ TEST_F(FavoriteInstructionsViewModelTest, ViewmodelWithItems)
   m_model.InsertItem<WaitItem>();
 
   const FavoriteInstructionsViewModel view_model(&m_model);
-  EXPECT_EQ(view_model.rowCount(), 2);
-  EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
 }
 
 TEST_F(FavoriteInstructionsViewModelTest, FlagsForDragAndDrop)

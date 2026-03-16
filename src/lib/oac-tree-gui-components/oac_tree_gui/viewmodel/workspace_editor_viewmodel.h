@@ -45,7 +45,7 @@ class WorkspaceEditorViewModel : public mvvm::ViewModel
 public:
   explicit WorkspaceEditorViewModel(mvvm::ISessionModel* mode, QObject* parent_object = nullptr);
 
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+  int columnCount(const QModelIndex& parent) const override;
 };
 
 }  // namespace oac_tree_gui

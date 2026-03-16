@@ -59,8 +59,8 @@ TEST_F(JobListViewModelTest, SingleProcedure)
   item->SetStatus(expected_status);
 
   JobListViewModel view_model(&model);
-  EXPECT_EQ(view_model.rowCount(), 1);
-  EXPECT_EQ(view_model.columnCount(), 2);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
 
   auto displayname_index = view_model.index(0, 0);
   auto status_index = view_model.index(0, 1);
@@ -91,8 +91,8 @@ TEST_F(JobListViewModelTest, NotificationOnStatusChange)
   auto job1 = model.InsertItem<LocalJobItem>();
 
   JobListViewModel view_model(&model);
-  EXPECT_EQ(view_model.rowCount(), 2);
-  EXPECT_EQ(view_model.columnCount(), 2);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
 
   auto status_index = view_model.index(0, 1);
 

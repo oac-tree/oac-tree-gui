@@ -71,14 +71,14 @@ TEST_F(FlatListViewModelTest, InitialState)
 {
   {  // no model defined
     const TestViewModel view_model(nullptr);
-    EXPECT_EQ(view_model.rowCount(), 0);
-    EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+    EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
+    EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
   }
 
   {
     const TestViewModel view_model(&m_model);
-    EXPECT_EQ(view_model.rowCount(), 0);
-    EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+    EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
+    EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
   }
 }
 
@@ -91,8 +91,8 @@ TEST_F(FlatListViewModelTest, InstructionWithChildren)
   auto message0 = m_model.InsertItem<RepeatItem>();
 
   // two children, sequence0 and message0, at top level
-  EXPECT_EQ(view_model.rowCount(), 2);
-  EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
 
   auto sequence_index = view_model.index(0, 0);
   EXPECT_EQ(view_model.data(sequence_index, Qt::DisplayRole).toString().toStdString(),
@@ -112,8 +112,8 @@ TEST_F(FlatListViewModelTest, MixtureOfItemsOfVeryDifferentType)
   auto procedure = m_model.InsertItem<ProcedureItem>();
   auto job = m_model.InsertItem<LocalJobItem>();
 
-  EXPECT_EQ(view_model.rowCount(), 3);  // sequence, procedure, job
-  EXPECT_EQ(view_model.columnCount(), kExpectedColumnCount);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 3);  // sequence, procedure, job
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
 }
 
 TEST_F(FlatListViewModelTest, ContainerChange)
@@ -128,9 +128,9 @@ TEST_F(FlatListViewModelTest, ContainerChange)
 
   TestViewModel view_model(nullptr);
   view_model.SetRootSessionItem(container0);
-  EXPECT_EQ(view_model.rowCount(), 2);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
   view_model.SetRootSessionItem(container1);
-  EXPECT_EQ(view_model.rowCount(), 3);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 3);
 }
 
 TEST_F(FlatListViewModelTest, FlagsForDragAndDrop)

@@ -77,8 +77,8 @@ TEST_F(InstructionOperationViewModelTest, SingleInstruction)
   SetBreakpointStatus(*sequence, BreakpointStatus::kSet);
 
   InstructionOperationViewModel viewmodel(&model);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   auto sequence_displayname_index = viewmodel.index(0, 0);
   auto sequence_status_index = viewmodel.index(0, 1);
@@ -133,8 +133,8 @@ TEST_F(InstructionOperationViewModelTest, NotificationOnStatusChange)
   auto sequence = model.InsertItem<SequenceItem>();
 
   InstructionOperationViewModel viewmodel(&model);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   QSignalSpy spy_data_changed(&viewmodel, &InstructionOperationViewModel::dataChanged);
 

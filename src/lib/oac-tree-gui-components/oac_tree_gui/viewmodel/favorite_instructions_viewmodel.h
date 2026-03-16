@@ -44,7 +44,7 @@ public:
   explicit FavoriteInstructionsViewModel(mvvm::ISessionModel* model,
                                          QObject* parent_object = nullptr);
 
-  int rowCount(const QModelIndex& index = {}) const override;
+  int rowCount(const QModelIndex& index) const override;
 
   QStringList mimeTypes() const override;
 
