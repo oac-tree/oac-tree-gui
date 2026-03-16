@@ -48,7 +48,7 @@ public:
   void mouseReleaseEvent(QMouseEvent* event) override;
 
 signals:
-  void closeActivated(const QModelIndex& index);
+  void closeHandleClicked(const QModelIndex& index);
 
 protected:
   void SetupTreeAppearance();

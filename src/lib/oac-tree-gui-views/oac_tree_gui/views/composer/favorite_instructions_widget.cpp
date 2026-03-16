@@ -44,7 +44,7 @@ FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
   layout->addWidget(m_list_view);
 
   // handles click on close button in column=1
-  auto on_activated = [this](const QModelIndex& index)
+  auto on_close = [this](const QModelIndex& index)
   {
     auto item = const_cast<mvvm::SessionItem*>(m_component_provider->GetItemFromViewIndex(index));
     if (item != nullptr)
@@ -53,7 +53,7 @@ FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
     }
   };
 
-  connect(m_list_view, &FlatListView::activated, this, on_activated);
+  connect(m_list_view, &FlatListView::closeHandleClicked, this, on_close);
 }
 
 FavoriteInstructionsWidget::~FavoriteInstructionsWidget() = default;

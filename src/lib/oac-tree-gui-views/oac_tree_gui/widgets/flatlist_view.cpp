@@ -66,7 +66,7 @@ void FlatListView::mouseReleaseEvent(QMouseEvent* event)
 #endif
   if (mouse_index.column() == 1)
   {
-    emit activated(mouse_index);
+    emit closeHandleClicked(mouse_index);
   }
   else
   {

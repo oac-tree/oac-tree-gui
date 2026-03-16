@@ -35,7 +35,6 @@ public:
   explicit FlatListDelegate(QObject* parent = nullptr);
 
   void setCloseButtonVisible(bool visible);
-  void handlePressed(const QModelIndex& index);
   void paint(QPainter* painter, const QStyleOptionViewItem& option,
              const QModelIndex& index) const override;
 

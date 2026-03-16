@@ -168,7 +168,7 @@ std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProv
 void ProcedureListWidget::SetupConnections()
 {
   // handles click on close button in column=1
-  auto on_activated = [this](const QModelIndex& index)
+  auto on_close = [this](const QModelIndex& index)
   {
     auto procedure =
         const_cast<mvvm::SessionItem*>(m_component_provider->GetItemFromViewIndex(index));
@@ -178,7 +178,7 @@ void ProcedureListWidget::SetupConnections()
     }
   };
 
-  connect(m_list_view, &FlatListView::activated, this, on_activated);
+  connect(m_list_view, &FlatListView::closeHandleClicked, this, on_close);
 }
 
 }  // namespace oac_tree_gui
