@@ -132,7 +132,7 @@ void MonitorRealTimeActions::SetCurrentTickTimeout(int msec)
 
 void MonitorRealTimeActions::ReadSettings()
 {
-  QSettings settings;
+  const QSettings settings;
   m_current_tick_timeout =
       settings.value(kTickTimeOutSettingName, itemconstants::kDefaultTickTimeoutMsec).toInt();
 }

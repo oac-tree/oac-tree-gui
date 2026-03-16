@@ -76,7 +76,7 @@ FileTreeView::FileTreeView(QWidget* parent_widget)
   layout->addWidget(m_tree_view);
 
   m_path_label->setWordWrap(true);
-  connect(m_path_label, &QLabel::linkActivated, this, [this](auto link) { OnLabelClick(link); });
+  connect(m_path_label, &QLabel::linkActivated, this, [this](const auto& link) { OnLabelClick(link); });
 
   connect(m_tree_view, &QTreeView::doubleClicked, this,
           [this](auto index) { OnTreeDoubleClick(index); });

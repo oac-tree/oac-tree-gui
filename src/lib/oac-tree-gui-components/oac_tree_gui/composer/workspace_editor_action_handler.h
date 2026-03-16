@@ -81,7 +81,7 @@ private:
       std::vector<std::unique_ptr<mvvm::SessionItem> > variable_items);
 
   void SendMessage(const std::string& text, const std::string& informative = {},
-                   const std::string& details = {});
+                   const std::string& details = {}) const;
 
   WorkspaceItem* m_workspace{nullptr};
   WorkspaceEditorContext m_context;

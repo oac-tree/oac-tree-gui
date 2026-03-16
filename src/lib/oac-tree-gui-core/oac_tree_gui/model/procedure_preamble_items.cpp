@@ -104,7 +104,7 @@ mvvm::ContainerItem* ProcedurePreambleItem::GetPluginContainer() const
   return GetItem<mvvm::ContainerItem>(kPluginContainerTag);
 }
 
-void ProcedurePreambleItem::AddTypeRegistration(std::int32_t mode, const std::string& str)
+void ProcedurePreambleItem::AddTypeRegistration(std::int32_t mode, const std::string& str) const
 {
   auto type_item = std::make_unique<TypeRegistrationItem>();
   auto type_item_ptr = type_item.get();
@@ -123,7 +123,7 @@ std::vector<std::pair<std::int32_t, std::string> > ProcedurePreambleItem::GetTyp
   result.reserve(type_items.size());
   for (auto item : type_items)
   {
-    result.push_back({item->GetRegistrationMode(), item->GetRegistrationString()});
+    result.emplace_back(item->GetRegistrationMode(), item->GetRegistrationString());
   }
 
   return result;
@@ -149,7 +149,7 @@ void ProcedurePreambleItem::AddPluginPath(const std::string& value) const
   (void)GetPluginContainer()->InsertItem(std::move(property_item), mvvm::TagIndex::Append());
 }
 
-void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string>& plugin_paths)
+void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string>& plugin_paths) const
 {
   // remove previous if plugin list is not the same
   if (plugin_paths == GetPluginPaths())

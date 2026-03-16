@@ -202,7 +202,7 @@ void CheckForConflicts(AlignNode& node)
     for (std::int32_t level = static_cast<std::int32_t>(node.GetY()) + 1;
          level <= std::min(GetMaxKey(siblingContour), GetMaxKey(nodeContour)); level++)
     {
-      double distance = nodeContour[level] - siblingContour[level];
+      const double distance = nodeContour[level] - siblingContour[level];
       if ((distance + shiftValue) < minDistance)
       {
         shiftValue = std::max(minDistance - distance, shiftValue);
@@ -241,8 +241,8 @@ void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
     {
       auto middleNode = leftNode.GetParent()->GetChildren().at(i);
 
-      double desiredX = rightNode.GetX() + (distanceBetweenNodes * count);
-      double offset = desiredX - middleNode->GetX();
+      const double desiredX = rightNode.GetX() + (distanceBetweenNodes * count);
+      const double offset = desiredX - middleNode->GetX();
       middleNode->SetX(middleNode->GetX() + offset);
       middleNode->SetMod(middleNode->GetMod() + offset);
 

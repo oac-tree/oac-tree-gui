@@ -67,7 +67,7 @@ std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 
 RemoteJobItem::RemoteJobItem() : JobItem(mvvm::GetTypeName<RemoteJobItem>())
 {
-  (void)AddProperty(kJobIndex, std::size_t(0))
+  (void)AddProperty(kJobIndex, std::size_t{0})
       .SetDisplayName("Job index")
       .SetToolTip("Remote job index");
 

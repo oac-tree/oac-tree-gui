@@ -60,7 +60,7 @@ public:
 
   mvvm::ContainerItem* GetPluginContainer() const;
 
-  void AddTypeRegistration(std::int32_t mode, const std::string& str);
+  void AddTypeRegistration(std::int32_t mode, const std::string& str) const;
   std::vector<std::pair<std::int32_t, std::string> > GetTypeRegistrations() const;
 
   std::vector<std::string> GetPluginPaths() const;
@@ -69,7 +69,7 @@ public:
   /**
    * @brief Sets plugin names, all previous names will be removed.
    */
-  void SetPluginPaths(const std::vector<std::string>& plugin_paths);
+  void SetPluginPaths(const std::vector<std::string>& plugin_paths) const;
 };
 
 }  // namespace oac_tree_gui

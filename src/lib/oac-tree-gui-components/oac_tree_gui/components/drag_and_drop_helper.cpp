@@ -215,6 +215,7 @@ bool CanDropItemIdentifierMimeData(const QMimeData& data, const QString& mime_ty
         return false;
       }
     }
+
     return true;
   }
 

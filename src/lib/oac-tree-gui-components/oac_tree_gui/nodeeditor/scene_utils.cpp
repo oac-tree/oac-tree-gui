@@ -121,7 +121,7 @@ std::string InsertSpaceAtCamelCase(std::string str)
   while (pos != str.end())
   {
     // find next lower-case char followed by upper-case char
-    if (std::islower(*(pos - 1)) && std::isupper(*pos))
+    if ((std::islower(*(pos - 1)) != 0) && (std::isupper(*pos) != 0))
     {
       pos = str.insert(pos, ' ');
     }

@@ -147,7 +147,7 @@ std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()
   m_description->setWordWrap(true);
   m_description->setText(label_text);
   connect(m_description, &QLabel::linkActivated, this,
-          [this](auto) { SummonLoadedPluginDialog(); });
+          [this](const auto&) { SummonLoadedPluginDialog(); });
 
   result->addWidget(m_description);
 

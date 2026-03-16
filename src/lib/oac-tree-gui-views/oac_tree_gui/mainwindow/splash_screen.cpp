@@ -86,11 +86,11 @@ void SplashScreen::drawContents(QPainter* painter)
   const auto bottom_gap = char_height * 3.5;
   const auto text_rect_height = char_height * 3.0;
 
-  QRect text_rect(img_rect.width() * 0.035, img_rect.height() - bottom_gap, img_rect.width() * 0.5,
+  const QRect text_rect(img_rect.width() * 0.035, img_rect.height() - bottom_gap, img_rect.width() * 0.5,
                   text_rect_height);
   style()->drawItemText(painter, text_rect, 0, this->palette(), true, GetVersionText());
 
-  QRect loading_rect(img_rect.width() * 0.8, img_rect.height() - bottom_gap, img_rect.width(),
+  const QRect loading_rect(img_rect.width() * 0.8, img_rect.height() - bottom_gap, img_rect.width(),
                      text_rect_height);
   style()->drawItemText(painter, loading_rect, 0, this->palette(), true, GetLoadingText(5));
 }

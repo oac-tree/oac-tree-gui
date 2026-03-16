@@ -93,7 +93,7 @@ void OperationRealTimePanel::SetCurrentJob(JobItem* job_item)
   }
 }
 
-void OperationRealTimePanel::SetSelectedInstructions(std::vector<InstructionItem*> items)
+void OperationRealTimePanel::SetSelectedInstructions(const std::vector<InstructionItem*>& items)
 {
   m_realtime_instruction_tree->SetSelectedInstructions(items);
 }

@@ -52,7 +52,7 @@ int RunApplication(int argc, char** argv)
   auto options = oac_tree_gui::ParseOptions(argc, argv);
   mvvm::utils::SetupHighDpiScaling(options.scale);
 
-  QApplication app(argc, argv);
+  const QApplication app(argc, argv);
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 

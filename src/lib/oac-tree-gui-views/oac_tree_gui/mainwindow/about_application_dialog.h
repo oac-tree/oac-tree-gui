@@ -37,10 +37,10 @@ class AboutApplicationDialog : public QDialog
   Q_OBJECT
 
 public:
-  AboutApplicationDialog(QWidget* parent_widget = nullptr);
+  explicit AboutApplicationDialog(QWidget* parent_widget = nullptr);
 
 private:
-  std::unique_ptr<QBoxLayout> CreateLogoLayout();
+  static std::unique_ptr<QBoxLayout> CreateLogoLayout();
   std::unique_ptr<QBoxLayout> CreateTextLayout();
   std::unique_ptr<QBoxLayout> CreateButtonLayout();
 };

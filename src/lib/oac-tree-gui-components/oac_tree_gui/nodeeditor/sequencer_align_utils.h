@@ -48,7 +48,7 @@ void TranslatePositions(const QPointF& reference, AlignNode& root_node);
 
 //! Update positions of instruction items using positions of nodes.
 void UpdatePositions(const AlignNode* node, InstructionItem* item);
-void UpdatePositions(const AlignNode* node, std::vector<InstructionItem*> instructions);
+void UpdatePositions(const AlignNode* node, const std::vector<InstructionItem *> &instructions);
 
 //! Align children of given instruction on graphics scene.  The position of parent `instruction`
 //! remains unchanged.

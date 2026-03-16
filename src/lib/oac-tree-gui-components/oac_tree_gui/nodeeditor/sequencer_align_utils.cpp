@@ -123,7 +123,7 @@ void TranslatePositions(const QPointF& reference, AlignNode& root_node)
   }
 }
 
-void UpdatePositions(const AlignNode* node, std::vector<InstructionItem*> instructions)
+void UpdatePositions(const AlignNode* node, const std::vector<InstructionItem*>& instructions)
 {
   for (auto child : instructions)
   {

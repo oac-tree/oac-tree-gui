@@ -72,7 +72,7 @@ private:
   void SetupViewMenu();
   void SetupHelpMenu();
 
-  void OnAbout();
+  static void OnAbout();
   void OnChangeSystemFont();
   void OnResetSettings();
 

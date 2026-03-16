@@ -77,7 +77,7 @@ void BreakpointModelDelegate::paint(QPainter* painter, const QStyleOptionViewIte
 {
   if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
   {
-    if (option.state & QStyle::State_Selected)
+    if (option.state.testFlag(QStyle::State_Selected))
     {
       // to highlight background when the whole row is selected
       painter->fillRect(option.rect, option.palette.highlight());

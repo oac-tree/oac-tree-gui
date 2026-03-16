@@ -79,7 +79,7 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs& args, QWidge
   const bool is_editable{false};
   bool was_accepted{true};
 
-  QString selection = QInputDialog::getItem(
+  const QString selection = QInputDialog::getItem(
       parent, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
       selection_list, selected_item_index, is_editable, &was_accepted);
 

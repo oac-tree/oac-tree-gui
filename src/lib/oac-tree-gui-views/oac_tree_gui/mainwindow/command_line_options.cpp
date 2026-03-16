@@ -125,7 +125,7 @@ Options ParseOptions(int argc, char** argv)
 {
   // Parser requires an application to be created upfront.
   // Create an application solely for parser needs (fortunately it is cheap).
-  QCoreApplication app(argc, argv);
+  const QCoreApplication app(argc, argv);
 
   QCommandLineParser parser;
   PopulateOptions(parser);

@@ -41,7 +41,8 @@ std::pair<std::size_t, std::size_t> FindQuotes(const std::string& str, std::size
 {
   const char quote = '"';
   auto pos1 = str.find(quote, pos);
-  std::size_t pos2 = (pos1 == std::string::npos) ? std::string::npos : str.find(quote, pos1 + 1);
+  const std::size_t pos2 =
+      (pos1 == std::string::npos) ? std::string::npos : str.find(quote, pos1 + 1);
   return {pos1, pos2};
 }
 

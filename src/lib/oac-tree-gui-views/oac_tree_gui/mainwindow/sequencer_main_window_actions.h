@@ -110,7 +110,7 @@ private:
   void SetupToolsMenu();
   void SetupHelpMenu();
 
-  void OnAbout();
+  static void OnAbout();
   void OnChangeSystemFont();
   void OnApplicationSettingsDialog();
   void OnResetSettings();

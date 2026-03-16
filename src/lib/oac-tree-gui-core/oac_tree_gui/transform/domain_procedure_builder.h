@@ -43,7 +43,7 @@ class ProcedurePreambleItem;
 class DomainProcedureBuilder
 {
 public:
-  std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem& procedure_item);
+  static std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem& procedure_item);
 
   DomainProcedureBuilder() = default;
 

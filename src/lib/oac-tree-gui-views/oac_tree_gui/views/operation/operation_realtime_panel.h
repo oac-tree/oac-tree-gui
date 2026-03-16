@@ -62,7 +62,7 @@ public:
 
   void SetCurrentJob(JobItem* job_item);
 
-  void SetSelectedInstructions(std::vector<InstructionItem*> items);
+  void SetSelectedInstructions(const std::vector<InstructionItem *> &items);
 
   void SetJobLog(JobLog* job_log);
 

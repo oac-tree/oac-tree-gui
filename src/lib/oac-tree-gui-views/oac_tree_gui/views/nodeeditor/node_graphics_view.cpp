@@ -164,7 +164,7 @@ void NodeGraphicsView::keyReleaseEvent(QKeyEvent* event)
 
 void NodeGraphicsView::wheelEvent(QWheelEvent* event)
 {
-  if (event->modifiers() & Qt::ControlModifier)
+  if (event->modifiers().testFlag(Qt::ControlModifier))
   {
     const bool zoom_in_wheel = event->angleDelta().y() > 0;
     const bool zoom_out_wheel = !zoom_in_wheel;

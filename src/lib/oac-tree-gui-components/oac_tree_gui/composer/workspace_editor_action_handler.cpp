@@ -291,7 +291,7 @@ void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
 
 void WorkspaceEditorActionHandler::SendMessage(const std::string& text,
                                                const std::string& informative,
-                                               const std::string& details)
+                                               const std::string& details) const
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message(message);

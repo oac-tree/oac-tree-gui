@@ -86,7 +86,7 @@ signals:
   void ConnectRequest();
 
 private:
-  std::unique_ptr<QMenu> CreateSubmitProcedureMenu();
+  std::unique_ptr<QMenu> CreateSubmitProcedureMenu() const;
   void OnAboutToShowMenu();
 
   std::unique_ptr<QMenu> m_submit_procedure_menu;

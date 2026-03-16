@@ -46,7 +46,7 @@ const QString kGroupName("MessagePanel");
 const QString kUncheckedSeveritiesSettingName = kGroupName + "/" + "unchecked";
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 
-std::vector<oac_tree_gui::Severity> kSeveritiesToSelect = {
+const std::vector<oac_tree_gui::Severity> kSeveritiesToSelect = {
     oac_tree_gui::Severity::kEmergency, oac_tree_gui::Severity::kAlert,
     oac_tree_gui::Severity::kCritical,  oac_tree_gui::Severity::kError,
     oac_tree_gui::Severity::kWarning,   oac_tree_gui::Severity::kNotice,
