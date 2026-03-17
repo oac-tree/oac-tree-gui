@@ -25,6 +25,7 @@ cert-*,
 -bugprone-reserved-identifier,
 -cert-err58-cpp,
 -misc-include-cleaner,
+-bugprone-easily-swappable-parameters
 '
 CheckOptions:
   - key:             misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
