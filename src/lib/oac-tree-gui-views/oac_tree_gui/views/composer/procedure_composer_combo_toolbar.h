@@ -80,7 +80,7 @@ public:
 signals:
   void splitViewRequest();
   void closeViewRequest();
-  void selectProcedureRequest(oac_tree_gui::ProcedureItem* item);
+  void selectProcedureRequest(const oac_tree_gui::ProcedureItem* item);
 
 protected:
   void paintEvent(QPaintEvent* event) override;

@@ -69,7 +69,7 @@ public:
    * @details The actual list of instruction to select can be obtained via GetInstructionToSelect
    * and will depend on current branch collapse/expand status.
    */
-  void SaveSelectionRequest(const std::vector<InstructionItem*>& instructions);
+  void SaveSelectionRequest(const std::vector<const InstructionItem *> &instructions);
 
   /**
    * @brief Returns list of instructions to make actual selection.
@@ -103,7 +103,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   InstructionContainerItem* m_instruction_container{nullptr};
 
-  std::vector<InstructionItem*> m_selection_preferences;
+  std::vector<const InstructionItem*> m_selection_preferences;
 };
 
 }  // namespace oac_tree_gui

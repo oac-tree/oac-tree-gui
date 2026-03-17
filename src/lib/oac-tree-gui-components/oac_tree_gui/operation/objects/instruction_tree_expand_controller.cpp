@@ -55,7 +55,7 @@ void InstructionTreeExpandController::SetInstructionContainer(
 }
 
 void InstructionTreeExpandController::SaveSelectionRequest(
-    const std::vector<InstructionItem*>& instructions)
+    const std::vector<const InstructionItem*>& instructions)
 {
   m_selection_preferences = instructions;
 }

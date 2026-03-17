@@ -45,7 +45,7 @@ public:
 
 signals:
   void dropInstructionRequested(const QString& name, const QPointF& pos);
-  void instructionDoubleClick(oac_tree_gui::InstructionItem* instruction);
+  void instructionDoubleClick(const oac_tree_gui::InstructionItem* instruction);
   void portDoubleClick(const mvvm::INodePort* port);
 
 protected:

@@ -67,7 +67,7 @@ public:
 
 signals:
   void JobSelected(const oac_tree_gui::JobItem* item);
-  void SubmitProcedureRequest(oac_tree_gui::ProcedureItem* item);
+  void SubmitProcedureRequest(const oac_tree_gui::ProcedureItem* item);
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();

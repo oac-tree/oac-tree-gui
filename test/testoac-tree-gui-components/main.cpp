@@ -19,10 +19,13 @@
  *****************************************************************************/
 
 #include <testutils/init_tests.h>
+#include <oac_tree_gui/components/load_resources.h>
 
 int main(int argc, char** argv)
 {
   oac_tree_gui::test::InitTests(argc, argv);
+
+  oac_tree_gui::RegisterCustomMetaTypes();  // before InitCoreApplication for QSettings
 
   return RUN_ALL_TESTS();
 }

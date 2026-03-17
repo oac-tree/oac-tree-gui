@@ -164,7 +164,7 @@ void JobManager::SetActiveJob(JobItem* item)
 }
 
 void JobManager::OnActiveInstructionChanged(
-    const std::vector<InstructionItem*>& active_instructions)
+    const std::vector<const InstructionItem*>& active_instructions)
 {
   auto sending_job_handler = qobject_cast<AbstractJobHandler*>(sender());
 

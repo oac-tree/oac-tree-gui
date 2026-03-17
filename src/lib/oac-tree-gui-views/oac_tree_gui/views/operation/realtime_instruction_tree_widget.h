@@ -63,7 +63,7 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
-  void SetSelectedInstructions(const std::vector<InstructionItem*>& items);
+  void SetSelectedInstructions(const std::vector<const InstructionItem *> &items);
 
   /**
    * @brief Makes tree viewport follow currently selected instruction.
@@ -71,7 +71,7 @@ public:
   void SetViewportFollowsSelectionFlag(bool value);
 
 signals:
-  void ToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction);
+  void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
 
 protected:
   bool event(QEvent* event) override;

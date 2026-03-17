@@ -83,7 +83,7 @@ public:
   void SetActiveJob(JobItem* item) override;
 
 signals:
-  void ActiveInstructionChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
+  void ActiveInstructionChanged(const std::vector<const oac_tree_gui::InstructionItem*>&);
 
 private:
   /**
@@ -95,7 +95,7 @@ private:
    * @brief Process "Active instructions" events from all job handlers, forwards active job
    * notifications up.
    */
-  void OnActiveInstructionChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
+  void OnActiveInstructionChanged(const std::vector<const oac_tree_gui::InstructionItem*>&);
 
   std::vector<std::unique_ptr<IJobHandler>> m_job_handlers;
   JobItem* m_active_job{nullptr};  //!< job which is allowed to send signals up

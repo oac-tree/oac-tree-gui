@@ -203,7 +203,7 @@ TEST_F(ProcedureListActionHandlerTest, RemoveLastProcedure)
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
   // request to select a procedure just after the deleted one
-  auto send_item = mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request);
+  auto send_item = mvvm::test::GetSendItem<const ProcedureItem*>(spy_selection_request);
   EXPECT_EQ(send_item, nullptr);
 }
 

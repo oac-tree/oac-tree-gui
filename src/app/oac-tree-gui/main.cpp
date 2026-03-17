@@ -18,15 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/components/load_resources.h>
 #include <oac_tree_gui/core/version.h>
 #include <oac_tree_gui/mainwindow/run_application.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window.h>
 
 int main(int argc, char** argv)
 {
-  oac_tree_gui::RegisterCustomMetaTypes();  // before InitCoreApplication for QSettings
-
   auto version = QString::fromStdString(oac_tree_gui::ProjectVersion());
   sup::gui::InitCoreApplication("oac-tree-gui", version);
 

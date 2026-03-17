@@ -79,15 +79,15 @@ public:
 
   JobLog* GetJobLog() const override;
 
-  void OnToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction) override;
+  void OnToggleBreakpointRequest(InstructionItem* instruction) override;
 
   JobItem* GetJobItem() override;
 
   ProcedureItem* GetExpandedProcedure() const override;
 
 signals:
-  void InstructionStatusChanged(oac_tree_gui::InstructionItem* instruction);
-  void ActiveInstructionChanged(const std::vector<oac_tree_gui::InstructionItem*>&);
+  void InstructionStatusChanged(const oac_tree_gui::InstructionItem* instruction);
+  void ActiveInstructionChanged(const std::vector<const oac_tree_gui::InstructionItem*>&);
 
 protected:
   /**

@@ -130,7 +130,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem* procedure_item)
 }
 
 void RealTimeInstructionTreeWidget::SetSelectedInstructions(
-    const std::vector<InstructionItem*>& items)
+    const std::vector<const InstructionItem*>& items)
 {
   m_expand_controller->SaveSelectionRequest(items);
   m_component_provider->SetSelection(

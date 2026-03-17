@@ -231,7 +231,8 @@ void OperationMonitorView::SetupConnections()
 
   // job submission request
   connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_action_handler,
-          &OperationActionHandler::SubmitLocalJob);
+          [this](const auto* item)
+          { m_action_handler->SubmitLocalJob(const_cast<ProcedureItem*>(item)); });
 
   // import request
   connect(m_job_panel, &OperationJobPanel::ImportJobRequest, this,
@@ -254,7 +255,8 @@ void OperationMonitorView::SetupConnections()
           &OperationJobPanel::SetSelectedJob);
 
   connect(m_realtime_panel, &OperationRealTimePanel::ToggleBreakpointRequest, m_action_handler,
-          &OperationActionHandler::OnToggleBreakpoint);
+          [this](const auto* instruction)
+          { m_action_handler->OnToggleBreakpoint(const_cast<InstructionItem*>(instruction)); });
 }
 
 void OperationMonitorView::SetupWidgetActions()

@@ -62,7 +62,7 @@ public:
 
   void SetCurrentJob(JobItem* job_item);
 
-  void SetSelectedInstructions(const std::vector<InstructionItem *> &items);
+  void SetSelectedInstructions(const std::vector<const InstructionItem *> &items);
 
   void SetJobLog(JobLog* job_log);
 
@@ -75,7 +75,7 @@ signals:
   void StopRequest();
   void ResetRequest();
   void ChangeDelayRequest(int msec);
-  void ToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction);
+  void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
 
 private:
   void ReadSettings();

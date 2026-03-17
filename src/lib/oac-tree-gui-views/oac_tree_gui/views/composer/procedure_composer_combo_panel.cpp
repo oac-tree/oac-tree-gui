@@ -145,7 +145,7 @@ void ProcedureComposerComboPanel::SetupConnections()
   connect(m_tool_bar, &ProcedureComposerComboToolBar::closeViewRequest, this,
           &ProcedureComposerComboPanel::closeViewRequest);
   connect(m_tool_bar, &ProcedureComposerComboToolBar::selectProcedureRequest, this,
-          &ProcedureComposerComboPanel::SetProcedureIntern);
+          [this](const auto* item) { SetProcedureIntern(const_cast<ProcedureItem*>(item)); });
 }
 
 void ProcedureComposerComboPanel::SetupModelListener()

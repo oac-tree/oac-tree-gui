@@ -193,7 +193,7 @@ void AbstractJobHandler::onLogEvent(const oac_tree_gui::LogEvent& event)
 
 void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstructionChangedEvent& event)
 {
-  std::vector<InstructionItem*> items;
+  std::vector<const InstructionItem*> items;
   for (auto instruction_index : event.instr_idx)
   {
     if (auto* item = m_procedure_item_builder->GetInstruction(instruction_index); item)

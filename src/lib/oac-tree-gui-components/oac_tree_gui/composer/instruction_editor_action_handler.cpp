@@ -56,14 +56,14 @@ namespace
  * @brief Returns coordinate located not far from the given reference.
  */
 IInstructionEditorActionHandler::position_t GetCoordinateNearby(
-    const oac_tree_gui::InstructionItem* reference)
+    const InstructionItem* reference)
 {
   const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
   const double x = (reference != nullptr)
-                       ? (reference->GetX() + oac_tree_gui::GetInstructionDropOffset())
+                       ? (reference->GetX() + GetInstructionDropOffset())
                        : default_center.x();
   const double y = (reference != nullptr)
-                       ? (reference->GetY() + oac_tree_gui::GetInstructionDropOffset())
+                       ? (reference->GetY() + GetInstructionDropOffset())
                        : default_center.y();
 
   return {x, y};

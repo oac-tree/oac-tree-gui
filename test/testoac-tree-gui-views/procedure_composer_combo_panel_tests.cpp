@@ -117,7 +117,7 @@ TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
   EXPECT_EQ(widget.GetCurrentProcedure(), nullptr);
 
   ASSERT_EQ(signal_spy.count(), 1);
-  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), nullptr);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<const ProcedureItem*>(), nullptr);
 
   EXPECT_EQ(stacked_widget->currentIndex(),
             static_cast<std::int32_t>(ProcedureComposerComboPanel::PlaceholderMode::kOn));

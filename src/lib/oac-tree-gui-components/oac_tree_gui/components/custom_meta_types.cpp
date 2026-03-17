@@ -44,7 +44,7 @@ void RegisterCustomMetaTypes()
   {
     (void)qRegisterMetaType<const oac_tree_gui::ProcedureItem*>("const oac_tree_gui::ProcedureItem*");
     (void)qRegisterMetaType<std::vector<const oac_tree_gui::InstructionItem*>>(
-        "std::vector<oac_tree_gui::InstructionItem*>");
+        "std::vector<const oac_tree_gui::InstructionItem*>");
     (void)qRegisterMetaType<const oac_tree_gui::InstructionItem*>(
         "const oac_tree_gui::InstructionItem*");
     (void)qRegisterMetaType<instruction_t*>("instruction_t*");
