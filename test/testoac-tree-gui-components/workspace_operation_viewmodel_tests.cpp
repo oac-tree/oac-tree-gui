@@ -67,10 +67,10 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithoutAnyValue)
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
-  auto variable_name_index = viewmodel.index(0, 0);
-  auto variable_value_index = viewmodel.index(0, 1);
-  auto variable_type_index = viewmodel.index(0, 2);
-  auto variable_channel_index = viewmodel.index(0, 3);
+  auto variable_name_index = viewmodel.index(0, 0, QModelIndex());
+  auto variable_value_index = viewmodel.index(0, 1, QModelIndex());
+  auto variable_type_index = viewmodel.index(0, 2, QModelIndex());
+  auto variable_channel_index = viewmodel.index(0, 3, QModelIndex());
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_name_index, Qt::DisplayRole).toString().toStdString(),
@@ -103,10 +103,10 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValue)
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
-  auto variable_name_index = viewmodel.index(0, 0);
-  auto variable_value_index = viewmodel.index(0, 1);
-  auto variable_type_index = viewmodel.index(0, 2);
-  auto variable_channel_index = viewmodel.index(0, 3);
+  auto variable_name_index = viewmodel.index(0, 0, QModelIndex());
+  auto variable_value_index = viewmodel.index(0, 1, QModelIndex());
+  auto variable_type_index = viewmodel.index(0, 2, QModelIndex());
+  auto variable_channel_index = viewmodel.index(0, 3, QModelIndex());
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_name_index, Qt::DisplayRole).toString().toStdString(),
@@ -140,10 +140,10 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValueConstruct
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
-  auto variable_name_index = viewmodel.index(0, 0);
-  auto variable_value_index = viewmodel.index(0, 1);
-  auto variable_type_index = viewmodel.index(0, 2);
-  auto variable_channel_index = viewmodel.index(0, 3);
+  auto variable_name_index = viewmodel.index(0, 0, QModelIndex());
+  auto variable_value_index = viewmodel.index(0, 1, QModelIndex());
+  auto variable_type_index = viewmodel.index(0, 2, QModelIndex());
+  auto variable_channel_index = viewmodel.index(0, 3, QModelIndex());
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_name_index, Qt::DisplayRole).toString().toStdString(),
@@ -179,10 +179,10 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
-  auto variable_name_index = viewmodel.index(0, 0);
-  auto variable_value_index = viewmodel.index(0, 1);
-  auto variable_type_index = viewmodel.index(0, 2);
-  auto variable_channel_index = viewmodel.index(0, 3);
+  auto variable_name_index = viewmodel.index(0, 0, QModelIndex());
+  auto variable_value_index = viewmodel.index(0, 1, QModelIndex());
+  auto variable_type_index = viewmodel.index(0, 2, QModelIndex());
+  auto variable_channel_index = viewmodel.index(0, 3, QModelIndex());
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_name_index, Qt::DisplayRole).toString().toStdString(),
@@ -228,7 +228,7 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // reading data from cell
-  auto variable_channel_index = viewmodel.index(0, 3);
+  auto variable_channel_index = viewmodel.index(0, 3, QModelIndex());
   EXPECT_FALSE(viewmodel.data(variable_channel_index, Qt::EditRole).isValid());
   EXPECT_TRUE(viewmodel.data(variable_channel_index, Qt::DisplayRole).isValid());
   EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DisplayRole).toString(),
@@ -292,7 +292,7 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatusInfoItemCa
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   // reading data from cell
-  auto variable_channel_index = viewmodel.index(0, 3);
+  auto variable_channel_index = viewmodel.index(0, 3, QModelIndex());
   EXPECT_FALSE(viewmodel.data(variable_channel_index, Qt::EditRole).isValid());
   EXPECT_TRUE(viewmodel.data(variable_channel_index, Qt::DisplayRole).isValid());
   EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DisplayRole).toString(),

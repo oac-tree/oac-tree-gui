@@ -70,7 +70,7 @@ TEST_F(FavoriteInstructionsViewModelExtendedTest, DragFromInstructionEditorViewM
   // we are going to drag this instruction from InstructionEditorViewModel
   InstructionEditorViewModel source_view_model(sequencer_model);
   source_view_model.SetRootSessionItem(procedure->GetInstructionContainer());
-  const auto wait_index = source_view_model.index(0, 0);
+  const auto wait_index = source_view_model.index(0, 0, QModelIndex());
   const std::unique_ptr<QMimeData> mime_data(source_view_model.mimeData({wait_index}));
 
   // project model contains two instructions in favorite container
@@ -119,7 +119,7 @@ TEST_F(FavoriteInstructionsViewModelExtendedTest,
   // we are going to drag this instruction from FavoriteInstructionsViewModel
   FavoriteInstructionsViewModel source_view_model(project_model);
   source_view_model.SetRootSessionItem(project_model->GetFavoriteInstructionContainer());
-  auto sequence_index = source_view_model.index(0, 0);
+  auto sequence_index = source_view_model.index(0, 0, QModelIndex());
   const std::unique_ptr<QMimeData> mime_data(source_view_model.mimeData({sequence_index}));
 
   // sequencer model contains procedure with no instructions

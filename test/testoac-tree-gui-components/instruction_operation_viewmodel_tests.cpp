@@ -80,9 +80,9 @@ TEST_F(InstructionOperationViewModelTest, SingleInstruction)
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
-  auto sequence_displayname_index = viewmodel.index(0, 0);
-  auto sequence_status_index = viewmodel.index(0, 1);
-  auto sequence_breakpoint_index = viewmodel.index(0, 2);
+  auto sequence_displayname_index = viewmodel.index(0, 0, QModelIndex());
+  auto sequence_status_index = viewmodel.index(0, 1, QModelIndex());
+  auto sequence_breakpoint_index = viewmodel.index(0, 2, QModelIndex());
 
   auto views = viewmodel.FindViews(GetStatusItem(*sequence));
   EXPECT_EQ(views.size(), 1);
@@ -110,7 +110,7 @@ TEST_F(InstructionOperationViewModelTest, SequenceWithChild)
   auto wait1 = model.InsertItem<WaitItem>(sequence);
 
   InstructionOperationViewModel viewmodel(&model);
-  auto sequence_ndex = viewmodel.index(0, 0);
+  auto sequence_ndex = viewmodel.index(0, 0, QModelIndex());
   EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
   EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 3);
 
@@ -161,7 +161,7 @@ TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
   wait1->SetDisplayName("Wait");
 
   InstructionOperationViewModel viewmodel(&model);
-  auto sequence_ndex = viewmodel.index(0, 0);
+  auto sequence_ndex = viewmodel.index(0, 0, QModelIndex());
   EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
   EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 3);
 

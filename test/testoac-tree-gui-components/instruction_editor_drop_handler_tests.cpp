@@ -80,7 +80,7 @@ TEST_F(InstructionEditorDropHandlerTest, InsertNewType)
   auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
 
   auto container_index = QModelIndex();
-  auto sequence_index = m_view_model.index(0, 0);
+  auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   auto wait_index = m_view_model.index(0, 0, sequence_index);
 
   auto mime_data = CreateNewInstructionMimeData(domainconstants::kWaitInstructionType);
@@ -146,7 +146,7 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionIdentifierMimeDataBetwee
   auto sequence1 = m_model.InsertItem<SequenceItem>();
   auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
 
-  auto sequence0_index = m_view_model.index(0, 0);
+  auto sequence0_index = m_view_model.index(0, 0, QModelIndex());
   auto wait2_index = m_view_model.index(2, 0, sequence0_index);
 
   // move Wait2 to position [3]
@@ -191,7 +191,7 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionCopyMimeDataBetweenItems
   auto handler = CreateDefaultDropHandler();
 
   const std::int32_t drop_indicator = 0;
-  auto sequence0_index = m_view_model.index(0, 0);
+  auto sequence0_index = m_view_model.index(0, 0, QModelIndex());
   EXPECT_TRUE(
       handler->CanDropMimeData(mime_data.get(), Qt::CopyAction, drop_indicator, sequence0_index));
   EXPECT_TRUE(

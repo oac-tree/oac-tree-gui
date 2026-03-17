@@ -152,7 +152,7 @@ TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstruction
   EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 3);
 
-  auto container_index = m_viewmodel.index(0, 0);
+  auto container_index = m_viewmodel.index(0, 0, QModelIndex());
   auto sequence0_index = m_viewmodel.index(0, 0, container_index);
 
   QTreeView tree;

@@ -64,8 +64,8 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
   EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 1);
   EXPECT_EQ(m_view_model.columnCount(QModelIndex()), 2);
 
-  auto sequence_displayname_index = m_view_model.index(0, 0);
-  auto sequence_customname_index = m_view_model.index(0, 1);
+  auto sequence_displayname_index = m_view_model.index(0, 0, QModelIndex());
+  auto sequence_customname_index = m_view_model.index(0, 1, QModelIndex());
 
   auto views = m_view_model.FindViews(GetNameItem(*sequence));
   EXPECT_EQ(views.size(), 1);
@@ -87,7 +87,7 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
 
-  auto sequence_index = m_view_model.index(0, 0);
+  auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   EXPECT_EQ(m_view_model.rowCount(sequence_index), 2);
   EXPECT_EQ(m_view_model.columnCount(sequence_index), 2);
 
@@ -121,7 +121,7 @@ TEST_F(InstructionEditorViewModelTest, FlagsForDragAndDrop)
   auto wait0 = m_model.InsertItem<SequenceItem>();
 
   // Valid index should have drag and drop enabled
-  const Qt::ItemFlags valid_flags = m_view_model.flags(m_view_model.index(0, 0));
+  const Qt::ItemFlags valid_flags = m_view_model.flags(m_view_model.index(0, 0, QModelIndex()));
   EXPECT_TRUE(valid_flags & Qt::ItemIsEnabled);
   EXPECT_TRUE(valid_flags & Qt::ItemIsSelectable);
   EXPECT_TRUE(valid_flags & Qt::ItemIsDragEnabled);
@@ -152,8 +152,8 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
 
-  auto display_index = m_view_model.index(0, 0);
-  auto data_index = m_view_model.index(0, 1);
+  auto display_index = m_view_model.index(0, 0, QModelIndex());
+  auto data_index = m_view_model.index(0, 1, QModelIndex());
 
   std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({display_index, data_index}));
   EXPECT_NE(mime_data, nullptr);
@@ -187,12 +187,12 @@ TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
   auto wait2 = m_model.InsertItem<WaitItem>();
 
-  auto incl_index_col0 = m_view_model.index(0, 0);  // name
-  auto incl_index_col1 = m_view_model.index(0, 1);  // custom name
-  auto sequence_index = m_view_model.index(1, 0);
+  auto incl_index_col0 = m_view_model.index(0, 0, QModelIndex());  // name
+  auto incl_index_col1 = m_view_model.index(0, 1, QModelIndex());  // custom name
+  auto sequence_index = m_view_model.index(1, 0, QModelIndex());
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
-  auto wait2_index = m_view_model.index(2, 0);
+  auto wait2_index = m_view_model.index(2, 0, QModelIndex());
 
   {  // only one index is selected is allowed
     const std::unique_ptr<QMimeData> mime_data(m_view_model.mimeData({incl_index_col0}));
@@ -228,7 +228,7 @@ TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
   auto wait2 = m_model.InsertItem<WaitItem>();
 
-  auto sequence_index = m_view_model.index(0, 0);
+  auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
 
@@ -260,9 +260,9 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
   auto wait2 = m_model.InsertItem<WaitItem>();
 
-  auto incl_index_col0 = m_view_model.index(0, 0);  // name
-  auto incl_index_col1 = m_view_model.index(0, 1);  // custom name
-  auto sequence_index = m_view_model.index(1, 0);
+  auto incl_index_col0 = m_view_model.index(0, 0, QModelIndex());  // name
+  auto incl_index_col1 = m_view_model.index(0, 1, QModelIndex());  // custom name
+  auto sequence_index = m_view_model.index(1, 0, QModelIndex());
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
 
@@ -291,7 +291,7 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
   auto wait2 = m_model.InsertItem<WaitItem>(sequence);
 
-  auto sequence_index = m_view_model.index(0, 0);
+  auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   auto wait0_index_name = m_view_model.index(0, 0, sequence_index);
   auto wait0_index_custom_name = m_view_model.index(0, 1, sequence_index);
 
@@ -318,7 +318,7 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
   auto wait2 = m_model.InsertItem<WaitItem>(sequence);
 
-  auto sequence_index = m_view_model.index(0, 0);
+  auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   auto wait2_index_name = m_view_model.index(2, 0, sequence_index);
   auto wait2_index_custom_name = m_view_model.index(2, 1, sequence_index);
 
@@ -344,7 +344,7 @@ TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
 
-  auto container_index = m_view_model.index(0, 0);
+  auto container_index = m_view_model.index(0, 0, QModelIndex());
   auto sequence_index = m_view_model.index(0, 0, container_index);
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
@@ -373,7 +373,7 @@ TEST_F(InstructionEditorViewModelTest, DropInstructionCopyBetweenTwoChildren)
   auto wait0 = m_model.InsertItem<WaitItem>(sequence);
   auto wait1 = m_model.InsertItem<WaitItem>(sequence);
 
-  auto container_index = m_view_model.index(0, 0);
+  auto container_index = m_view_model.index(0, 0, QModelIndex());
   auto sequence_index = m_view_model.index(0, 0, container_index);
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
@@ -393,7 +393,7 @@ TEST_F(InstructionEditorViewModelTest, DropInstructionCopyBetweenTwoChildren)
 TEST_F(InstructionEditorViewModelTest, DropAggregateIntoContainer)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto container_index = m_view_model.index(0, 0);
+  auto container_index = m_view_model.index(0, 0, QModelIndex());
 
   // going to drag Include instruction
   auto mime_data = CreateNewInstructionMimeData("if-then-else");

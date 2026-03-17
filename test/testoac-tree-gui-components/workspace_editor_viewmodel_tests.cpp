@@ -74,9 +74,9 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
-  auto variable_displayname_index = viewmodel.index(0, 0);
-  auto variable_emptylabel_index = viewmodel.index(0, 1);
-  auto variable_typename_index = viewmodel.index(0, 2);
+  auto variable_displayname_index = viewmodel.index(0, 0, QModelIndex());
+  auto variable_emptylabel_index = viewmodel.index(0, 1, QModelIndex());
+  auto variable_typename_index = viewmodel.index(0, 2, QModelIndex());
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_emptylabel_index), variable_item);
@@ -148,9 +148,9 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
-  auto variable_displayname_index = viewmodel.index(0, 0);
-  auto variable_emptylabel_index = viewmodel.index(0, 1);
-  auto variable_typename_index = viewmodel.index(0, 2);
+  auto variable_displayname_index = viewmodel.index(0, 0, QModelIndex());
+  auto variable_emptylabel_index = viewmodel.index(0, 1, QModelIndex());
+  auto variable_typename_index = viewmodel.index(0, 2, QModelIndex());
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_emptylabel_index), variable_item);

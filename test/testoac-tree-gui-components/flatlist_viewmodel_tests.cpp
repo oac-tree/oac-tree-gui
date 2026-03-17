@@ -94,7 +94,7 @@ TEST_F(FlatListViewModelTest, InstructionWithChildren)
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
   EXPECT_EQ(view_model.columnCount(QModelIndex()), kExpectedColumnCount);
 
-  auto sequence_index = view_model.index(0, 0);
+  auto sequence_index = view_model.index(0, 0, QModelIndex());
   EXPECT_EQ(view_model.data(sequence_index, Qt::DisplayRole).toString().toStdString(),
             mvvm::GetTypeName<SequenceItem>());
 
@@ -139,7 +139,7 @@ TEST_F(FlatListViewModelTest, FlagsForDragAndDrop)
   const TestViewModel model(&m_model);
 
   // Valid index should have drag and drop enabled
-  const Qt::ItemFlags valid_flags = model.flags(model.index(0, 0));
+  const Qt::ItemFlags valid_flags = model.flags(model.index(0, 0, QModelIndex()));
   EXPECT_TRUE(valid_flags & Qt::ItemIsEnabled);
   EXPECT_TRUE(valid_flags & Qt::ItemIsSelectable);
   EXPECT_TRUE(valid_flags & Qt::ItemIsDragEnabled);
@@ -175,8 +175,8 @@ TEST_F(FlatListViewModelTest, MimeDataEncoding)
   const TestViewModel model(&m_model);
 
   auto procedure_item = m_model.InsertItem<ProcedureItem>();
-  auto display_index = model.index(0, 0);
-  auto data_index = model.index(0, 1);
+  auto display_index = model.index(0, 0, QModelIndex());
+  auto data_index = model.index(0, 1, QModelIndex());
 
   std::unique_ptr<QMimeData> mime_data(model.mimeData({display_index, data_index}));
   EXPECT_NE(mime_data, nullptr);
@@ -224,24 +224,24 @@ TEST_F(FlatListViewModelTest, CanDropMimeData)
 
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, QModelIndex()));
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
-                                           view_model.index(0, 0)));
+                                           view_model.index(0, 0, QModelIndex())));
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, QModelIndex()));
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
-                                           view_model.index(1, 0)));
+                                           view_model.index(1, 0, QModelIndex())));
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 2, 0, QModelIndex()));
     EXPECT_TRUE(view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1,
-                                           view_model.index(2, 0)));
+                                           view_model.index(2, 0, QModelIndex())));
 
     // copy is not yet implemented, so it should be rejected
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
-                                            view_model.index(0, 0)));
+                                            view_model.index(0, 0, QModelIndex())));
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 1, 0, QModelIndex()));
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
-                                            view_model.index(1, 0)));
+                                            view_model.index(1, 0, QModelIndex())));
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, 2, 0, QModelIndex()));
     EXPECT_FALSE(view_model.canDropMimeData(mime_data.get(), Qt::CopyAction, -1, -1,
-                                            view_model.index(2, 0)));
+                                            view_model.index(2, 0, QModelIndex())));
   }
 }
 
@@ -253,7 +253,7 @@ TEST_F(FlatListViewModelTest, DragProcedureFromFirstPositionToLast)
 
   TestViewModel view_model(&m_model);
 
-  auto procedure0_index = view_model.index(0, 0);
+  auto procedure0_index = view_model.index(0, 0, QModelIndex());
 
   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({procedure0_index}));
 
@@ -280,9 +280,9 @@ TEST_F(FlatListViewModelTest, DragProcedureFromFirstPositionOnTopOfLast)
 
   TestViewModel view_model(&m_model);
 
-  auto procedure0_index = view_model.index(0, 0);
-  auto procedure1_index = view_model.index(1, 0);
-  auto procedure2_index = view_model.index(2, 0);
+  auto procedure0_index = view_model.index(0, 0, QModelIndex());
+  auto procedure1_index = view_model.index(1, 0, QModelIndex());
+  auto procedure2_index = view_model.index(2, 0, QModelIndex());
 
   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({procedure0_index}));
 
@@ -303,8 +303,8 @@ TEST_F(FlatListViewModelTest, DragLastProcedureOnTopOfFirst)
 
   TestViewModel view_model(&m_model);
 
-  auto procedure0_index = view_model.index(0, 0);
-  auto procedure2_index = view_model.index(2, 0);
+  auto procedure0_index = view_model.index(0, 0, QModelIndex());
+  auto procedure2_index = view_model.index(2, 0, QModelIndex());
 
   // dropping on top of the first item should move dragged item to the first position
   const std::int32_t drop_row = -1;

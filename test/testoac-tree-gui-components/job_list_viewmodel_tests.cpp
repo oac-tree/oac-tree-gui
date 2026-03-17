@@ -62,8 +62,8 @@ TEST_F(JobListViewModelTest, SingleProcedure)
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
   EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
 
-  auto displayname_index = view_model.index(0, 0);
-  auto status_index = view_model.index(0, 1);
+  auto displayname_index = view_model.index(0, 0, QModelIndex());
+  auto status_index = view_model.index(0, 1, QModelIndex());
 
   auto views = view_model.FindViews(item->GetItem(itemconstants::kStatus));
   ASSERT_EQ(views.size(), 1);
@@ -94,7 +94,7 @@ TEST_F(JobListViewModelTest, NotificationOnStatusChange)
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
   EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
 
-  auto status_index = view_model.index(0, 1);
+  auto status_index = view_model.index(0, 1, QModelIndex());
 
   const QSignalSpy spy_data_changed(&view_model, &JobListViewModel::dataChanged);
 
@@ -108,8 +108,8 @@ TEST_F(JobListViewModelTest, MimeDataEncoding)
 
   auto job0 = model.InsertItem<LocalJobItem>();
   const JobListViewModel view_model(&model);
-  auto display_name_index = view_model.index(0, 0);
-  auto status_index = view_model.index(0, 1);
+  auto display_name_index = view_model.index(0, 0, QModelIndex());
+  auto status_index = view_model.index(0, 1, QModelIndex());
 
   // building mime object as if the whole row with job0 is dragged (display name and status)
   std::unique_ptr<QMimeData> mime_data(view_model.mimeData({display_name_index, status_index}));
@@ -133,8 +133,8 @@ TEST_F(JobListViewModelTest, DragJobFromFirstPositionToLast)
   auto job2 = model.InsertItem<LocalJobItem>();
 
   JobListViewModel view_model(&model);
-  auto job0_index = view_model.index(0, 0);
-  auto job2_index = view_model.index(2, 0);
+  auto job0_index = view_model.index(0, 0, QModelIndex());
+  auto job2_index = view_model.index(2, 0, QModelIndex());
 
   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({job0_index}));
 
@@ -157,8 +157,8 @@ TEST_F(JobListViewModelTest, DragJobFromFirstToEmptyAreaOfViewport)
   auto job2 = model.InsertItem<LocalJobItem>();
 
   JobListViewModel view_model(&model);
-  auto job0_index = view_model.index(0, 0);
-  auto job2_index = view_model.index(2, 0);
+  auto job0_index = view_model.index(0, 0, QModelIndex());
+  auto job2_index = view_model.index(2, 0, QModelIndex());
 
   const std::unique_ptr<QMimeData> mime_data(view_model.mimeData({job0_index}));
 
@@ -183,10 +183,10 @@ TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirstJob)
   auto job2 = model.InsertItem<LocalJobItem>();
 
   JobListViewModel view_model(&model);
-  auto job0_name_index = view_model.index(0, 0);
-  auto job0_status_index = view_model.index(0, 1);
-  auto job2_name_index = view_model.index(2, 0);
-  auto job2_status_index = view_model.index(2, 1);
+  auto job0_name_index = view_model.index(0, 0, QModelIndex());
+  auto job0_status_index = view_model.index(0, 1, QModelIndex());
+  auto job2_name_index = view_model.index(2, 0, QModelIndex());
+  auto job2_status_index = view_model.index(2, 1, QModelIndex());
 
   // pretending to drop on top of the first item
   const std::int32_t drop_indicator_row = -1;
@@ -214,10 +214,10 @@ TEST_F(JobListViewModelTest, DragLastJobOnTopOfFirstJobSecondCell)
   auto job2 = model.InsertItem<LocalJobItem>();
 
   JobListViewModel view_model(&model);
-  auto job0_name_index = view_model.index(0, 0);
-  auto job0_status_index = view_model.index(0, 1);
-  auto job2_name_index = view_model.index(2, 0);
-  auto job2_status_index = view_model.index(2, 1);
+  auto job0_name_index = view_model.index(0, 0, QModelIndex());
+  auto job0_status_index = view_model.index(0, 1, QModelIndex());
+  auto job2_name_index = view_model.index(2, 0, QModelIndex());
+  auto job2_status_index = view_model.index(2, 1, QModelIndex());
 
   // pretending to drop on top of the first item
   const std::int32_t drop_indicator_row = -1;

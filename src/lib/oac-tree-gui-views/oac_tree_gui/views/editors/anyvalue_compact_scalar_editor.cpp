@@ -71,10 +71,10 @@ void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem* 
   m_widget_mapper->setModel(m_view_model.get());
   m_widget_mapper->setItemDelegate(m_delegate.get());
   m_widget_mapper->setRootIndex(QModelIndex());
-  m_widget_mapper->setCurrentModelIndex(m_view_model->index(0, 0));
+  m_widget_mapper->setCurrentModelIndex(m_view_model->index(0, 0, QModelIndex()));
 
   // index of value
-  auto index = m_view_model->index(0, 1);
+  auto index = m_view_model->index(0, 1, QModelIndex());
 
   const QStyleOptionViewItem view_item;
   auto editor = std::unique_ptr<QWidget>(m_delegate->createEditor(nullptr, view_item, index));

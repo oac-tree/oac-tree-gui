@@ -56,8 +56,8 @@ TEST_F(DragAndDropHelperTest, GetFirstColumnIndexes)
 {
   auto vector_item = m_model.InsertItem<mvvm::VectorItem>();
   const mvvm::AllItemsViewModel view_model(&m_model);
-  auto vector_item_name_index = view_model.index(0, 0);
-  auto vector_item_value_index = view_model.index(0, 1);
+  auto vector_item_name_index = view_model.index(0, 0, QModelIndex());
+  auto vector_item_value_index = view_model.index(0, 1, QModelIndex());
   auto vector_child_name_index = view_model.index(0, 0, vector_item_name_index);
   auto vector_child_value_index = view_model.index(0, 1, vector_item_name_index);
 
@@ -101,7 +101,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
   {  // single instruction
     const mvvm::AllItemsViewModel view_model(&m_model);
     auto sequence = m_model.InsertItem<SequenceItem>();
-    auto sequence_displayname_index = view_model.index(0, 0);
+    auto sequence_displayname_index = view_model.index(0, 0, QModelIndex());
 
     auto mime_data = CreateItemIdentifierMimeData({sequence_displayname_index}, mime_type);
 
@@ -115,7 +115,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeDataForVectorItem)
   const QString mime_type("mime_type");
   const mvvm::AllItemsViewModel view_model(&m_model);
   auto vector_item = m_model.InsertItem<mvvm::VectorItem>();
-  auto vector_item_name_index = view_model.index(0, 0);
+  auto vector_item_name_index = view_model.index(0, 0, QModelIndex());
 
   auto x_item = vector_item->GetItem(mvvm::VectorItem::kX);
   auto x_item_display_index = view_model.index(0, 0, vector_item_name_index);
@@ -153,7 +153,7 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
   sequence->SetDisplayName("abc");
   auto wait = m_model.InsertItem<WaitItem>(sequence);
   wait->SetDisplayName("def");
-  auto sequence_displayname_index = view_model.index(0, 0);
+  auto sequence_displayname_index = view_model.index(0, 0, QModelIndex());
 
   auto mime_data = CreateInstructionEditorMimeData({sequence_displayname_index});
 
