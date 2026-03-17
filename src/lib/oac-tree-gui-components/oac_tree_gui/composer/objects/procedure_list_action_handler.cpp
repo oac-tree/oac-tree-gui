@@ -64,7 +64,7 @@ void ProcedureListActionHandler::OnRemoveProcedureRequest()
   if (auto selected_procedure = GetSelectedProcedure(); selected_procedure)
   {
     const auto* next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_procedure);
-    GetModel()->RemoveItem(const_cast<ProcedureItem*>(selected_procedure));
+    GetModel()->RemoveItem(selected_procedure);
     // suggest to select something else instead of just deleted procedure
     emit SelectProcedureRequest(dynamic_cast<const ProcedureItem*>(next_to_select));
   }

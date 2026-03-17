@@ -170,8 +170,7 @@ void ProcedureListWidget::SetupConnections()
   // handles click on close button in column=1
   auto on_close = [this](const QModelIndex& index)
   {
-    auto procedure =
-        const_cast<mvvm::SessionItem*>(m_component_provider->GetItemFromViewIndex(index));
+    auto procedure = m_component_provider->GetItemFromViewIndex(index);
     if (procedure != nullptr)
     {
       mvvm::utils::RemoveItem(*procedure);

@@ -188,7 +188,7 @@ void InstructionEditorActionHandler::RemoveInstruction()
   for (const auto* item : sup::gui::FilterOutChildren(selected))
   {
     next_to_select = mvvm::utils::FindNextSiblingToSelect(item);
-    GetModel()->RemoveItem(const_cast<mvvm::SessionItem*>(item));
+    GetModel()->RemoveItem(item);
   }
 
   UpdateProcedurePreamble();

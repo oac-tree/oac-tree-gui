@@ -96,7 +96,7 @@ void WorkspaceEditorActionHandler::RemoveVariable()
   for (const auto* selected : GetSelectedVariables())
   {
     next_to_select = mvvm::utils::FindNextSiblingToSelect(selected);
-    GetModel()->RemoveItem(const_cast<VariableItem*>(selected));
+    GetModel()->RemoveItem(selected);
   }
   UpdateProcedurePreamble();
   mvvm::utils::EndMacro(*GetModel());
