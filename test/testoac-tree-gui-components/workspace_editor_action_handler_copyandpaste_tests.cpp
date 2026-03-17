@@ -60,7 +60,7 @@ public:
    * @param current_mime The content of the clipboard.
    */
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
-      const std::vector<mvvm::SessionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
+      const std::vector<const mvvm::SessionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));
     return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
@@ -149,7 +149,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   auto handler = CreateActionHandler({}, std::move(mime_data));
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -179,7 +179,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   // creating action handler mimicking `var0` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler({var0}, std::move(mime_data));
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
@@ -206,7 +206,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   // creating action handler mimicking `var0` instruction selected
   auto handler = CreateActionHandler({var0}, nullptr);
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
@@ -231,7 +231,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, RemoveTwoVariables)
   // both iveriables are selected
   auto handler = CreateActionHandler({var0, var1});
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 

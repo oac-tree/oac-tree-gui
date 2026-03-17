@@ -34,7 +34,7 @@
 #include <QSignalSpy>
 #include <QStackedWidget>
 
-Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
+Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui::test
 {
@@ -102,7 +102,7 @@ TEST_F(ProcedureComposerComboPanelTest, SetProcedure)
   EXPECT_EQ(widget.GetCurrentProcedure(), procedure);
 
   ASSERT_EQ(signal_spy.count(), 1);
-  EXPECT_EQ(signal_spy.takeFirst().at(0).value<ProcedureItem*>(), procedure);
+  EXPECT_EQ(signal_spy.takeFirst().at(0).value<const ProcedureItem*>(), procedure);
 
   auto toolbar = widget.findChild<ProcedureComposerComboToolBar*>();
   ASSERT_NE(toolbar, nullptr);

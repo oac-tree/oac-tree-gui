@@ -36,7 +36,7 @@
 #include <QTreeView>
 #include <QSignalSpy>
 
-Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
+Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui::test
 {
@@ -75,9 +75,9 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   // selecting an item and checking results
   view.SetSelectedProcedure(procedure);
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
-  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
+  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
 
   spy_selected.clear();
 
@@ -85,7 +85,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   view.SetSelectedProcedure(nullptr);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -106,7 +106,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
   view.SetSelectedProcedure(procedure);
 
   // checking selections
-  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<oac_tree_gui::ProcedureItem*>({procedure}));
+  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
 
   QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
 
@@ -114,7 +114,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
   model.RemoveItem(procedure);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -141,9 +141,9 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
   view.GetTreeView()->setCurrentIndex(indexes.at(0));
 
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
-  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
+  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
 }
 
 }  // namespace oac_tree_gui::test

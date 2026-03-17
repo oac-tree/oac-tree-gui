@@ -56,7 +56,7 @@ namespace
  * @brief Returns coordinate located not far from the given reference.
  */
 IInstructionEditorActionHandler::position_t GetCoordinateNearby(
-    oac_tree_gui::InstructionItem* reference)
+    const oac_tree_gui::InstructionItem* reference)
 {
   const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
   const double x = (reference != nullptr)
@@ -181,13 +181,13 @@ void InstructionEditorActionHandler::RemoveInstruction()
 
   mvvm::utils::BeginMacro(*GetModel(), "Remove instruction");
 
-  mvvm::SessionItem* next_to_select{nullptr};
+  const mvvm::SessionItem* next_to_select{nullptr};
 
   // remove children from the selection list to avoid double delete
   auto selected = mvvm::utils::CastItems<const mvvm::SessionItem>(GetSelectedInstructions());
-  for (auto item : sup::gui::FilterOutChildren(selected))
+  for (const auto* item : sup::gui::FilterOutChildren(selected))
   {
-    next_to_select = mvvm::utils::FindNextSiblingToSelect(const_cast<mvvm::SessionItem*>(item));
+    next_to_select = mvvm::utils::FindNextSiblingToSelect(item);
     GetModel()->RemoveItem(const_cast<mvvm::SessionItem*>(item));
   }
 
@@ -226,7 +226,7 @@ void InstructionEditorActionHandler::MoveDown()
 
 void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 {
-  auto instruction_item = GetSelectedInstruction();
+  auto instruction_item = const_cast<InstructionItem*>(GetSelectedInstruction());
 
   if ((instruction_item == nullptr)
       || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
@@ -349,13 +349,13 @@ void InstructionEditorActionHandler::InsertItem(const std::string& item_type,
   InsertItem(std::move(items), parent, index, GetCoordinateNearby(nullptr));
 }
 
-InstructionItem* InstructionEditorActionHandler::GetSelectedInstruction() const
+const InstructionItem* InstructionEditorActionHandler::GetSelectedInstruction() const
 {
   auto instructions = GetSelectedInstructions();
   return instructions.empty() ? nullptr : instructions.front();
 }
 
-std::vector<InstructionItem*> InstructionEditorActionHandler::GetSelectedInstructions() const
+std::vector<const InstructionItem*> InstructionEditorActionHandler::GetSelectedInstructions() const
 {
   return m_context.selected_instructions();
 }
@@ -370,7 +370,7 @@ mvvm::SessionItem* InstructionEditorActionHandler::GetInstructionContainer() con
   return m_context.instruction_container();
 }
 
-void InstructionEditorActionHandler::SelectNotify(mvvm::SessionItem* item) const
+void InstructionEditorActionHandler::SelectNotify(const mvvm::SessionItem* item) const
 {
   m_context.notify_request(item);
 }
@@ -496,8 +496,8 @@ void InstructionEditorActionHandler::InsertIntoCurrentSelection(
     std::vector<std::unique_ptr<mvvm::SessionItem>> items)
 {
   auto selected_item = GetSelectedInstruction();
-  InsertItem(std::move(items), selected_item, mvvm::TagIndex::Append(),
-             GetCoordinateNearby(selected_item));
+  InsertItem(std::move(items), const_cast<InstructionItem*>(selected_item),
+             mvvm::TagIndex::Append(), GetCoordinateNearby(selected_item));
 }
 
 void InstructionEditorActionHandler::InsertItem(

@@ -42,16 +42,15 @@ void RegisterCustomMetaTypes()
 
   auto register_func = []()
   {
-    (void)qRegisterMetaType<oac_tree_gui::InstructionItem*>("oac_tree_gui::InstructionItem*");
-    (void)qRegisterMetaType<oac_tree_gui::ProcedureItem*>("oac_tree_gui::ProcedureItem*");
-    (void)qRegisterMetaType<std::vector<oac_tree_gui::InstructionItem*>>(
+    (void)qRegisterMetaType<const oac_tree_gui::ProcedureItem*>("const oac_tree_gui::ProcedureItem*");
+    (void)qRegisterMetaType<std::vector<const oac_tree_gui::InstructionItem*>>(
         "std::vector<oac_tree_gui::InstructionItem*>");
     (void)qRegisterMetaType<const oac_tree_gui::InstructionItem*>(
         "const oac_tree_gui::InstructionItem*");
     (void)qRegisterMetaType<instruction_t*>("instruction_t*");
     (void)qRegisterMetaType<const instruction_t*>("const instruction_t*");
-    (void)qRegisterMetaType<mvvm::SessionItem*>("mvvm::SessionItem*");
-    (void)qRegisterMetaType<oac_tree_gui::JobItem*>("oac_tree_gui::JobItem*");
+    (void)qRegisterMetaType<const mvvm::SessionItem*>("const mvvm::SessionItem*");
+    (void)qRegisterMetaType<const oac_tree_gui::JobItem*>("const oac_tree_gui::JobItem*");
     (void)qRegisterMetaType<LogEvent>("oac_tree_gui::LogEvent");
     (void)qRegisterMetaType<oac_tree_gui::RunnerStatus>("oac_tree_gui::RunnerStatus");
     (void)qRegisterMetaType<QList<int>>("QList<int>");

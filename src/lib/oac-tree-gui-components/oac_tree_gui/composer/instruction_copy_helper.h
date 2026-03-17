@@ -63,7 +63,7 @@ std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionIt
  * containing a single child "message". "Wait" child will be ignored.
  */
 std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
-    const std::vector<InstructionItem*>& selection);
+    const std::vector<const InstructionItem *> &selection);
 
 /**
  * @brief Returns vector of instructions from given mime data.

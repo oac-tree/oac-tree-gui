@@ -63,12 +63,12 @@ public:
 
   void SetModels(ApplicationModels* models);
 
-  ProcedureItem* GetSelectedProcedure();
+  const ProcedureItem* GetSelectedProcedure();
 
-  void SetSelectedProcedure(ProcedureItem* procedure);
+  void SetSelectedProcedure(const ProcedureItem* procedure);
 
 signals:
-  void ProcedureSelected(oac_tree_gui::ProcedureItem* procedureItem);
+  void ProcedureSelected(const oac_tree_gui::ProcedureItem* procedure);
 
   /**
    * @brief Emmited when the user double clicks on instruction/aggregate name in the left

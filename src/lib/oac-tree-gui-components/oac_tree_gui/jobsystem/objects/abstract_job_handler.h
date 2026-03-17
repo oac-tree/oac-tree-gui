@@ -186,6 +186,6 @@ private:
 
 }  // namespace oac_tree_gui
 
-Q_DECLARE_METATYPE(oac_tree_gui::InstructionItem*)
+Q_DECLARE_METATYPE(const oac_tree_gui::InstructionItem*)
 
 #endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_ABSTRACT_JOB_HANDLER_H_

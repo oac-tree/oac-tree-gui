@@ -55,7 +55,7 @@ public:
    * @brief Creates action handler.
    */
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
-      const std::vector<mvvm::SessionItem*>& selection)
+      const std::vector<const mvvm::SessionItem*>& selection)
   {
     return m_mock_context.CreateActionHandler(m_model.GetWorkspaceItem(), selection);
   }
@@ -83,14 +83,14 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialis
   {
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
-    context.selected_items_callback = []() -> std::vector<mvvm::SessionItem*> { return {}; };
+    context.selected_items_callback = []() -> std::vector<const mvvm::SessionItem*> { return {}; };
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
 
   {
     WorkspaceEditorContext context;
     context.selected_workspace = []() -> WorkspaceItem* { return nullptr; };
-    context.selected_items_callback = []() -> std::vector<mvvm::SessionItem*> { return {}; };
+    context.selected_items_callback = []() -> std::vector<const mvvm::SessionItem*> { return {}; };
     context.notify_request = [](auto item) {};
     EXPECT_THROW(WorkspaceEditorActionHandler{context}, RuntimeException);
   }
@@ -116,13 +116,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, SelectedVariables)
   {
     auto handler = CreateActionHandler({var0, var1});
     EXPECT_EQ(handler->GetSelectedVariable(), var0);
-    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<VariableItem*>({var0, var1}));
+    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<const VariableItem*>({var0, var1}));
   }
 
   {  // part of var0 is selected, and var1
     auto handler = CreateActionHandler({initial_anyvalue_item, var1});
     EXPECT_EQ(handler->GetSelectedVariable(), var1);
-    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<VariableItem*>({var1}));
+    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<const VariableItem*>({var1}));
   }
 }
 
@@ -131,7 +131,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   // pretending that nothing is selected
   auto handler = CreateActionHandler({});
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 

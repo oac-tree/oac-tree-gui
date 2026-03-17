@@ -64,14 +64,14 @@ public:
 
   void Paste() override;
 
-  VariableItem* GetSelectedVariable() const;
+  const VariableItem *GetSelectedVariable() const;
 
-  std::vector<VariableItem*> GetSelectedVariables() const;
+  std::vector<const VariableItem *> GetSelectedVariables() const;
 
 private:
   mvvm::ISessionModel* GetModel() const;
   WorkspaceItem* GetWorkspaceItem() const;
-  void SelectNotify(mvvm::SessionItem* item) const;
+  void SelectNotify(const mvvm::SessionItem *item) const;
 
   const QMimeData* GetMimeData() const;
 

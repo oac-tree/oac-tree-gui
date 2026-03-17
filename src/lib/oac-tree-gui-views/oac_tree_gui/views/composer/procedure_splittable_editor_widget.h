@@ -138,7 +138,7 @@ public:
   void SetComposerViewInfo(const ComposerViewInfo& view_info);
 
 signals:
-  void focusWidgetProcedureSelectionChanged(oac_tree_gui::ProcedureItem* item);
+  void focusWidgetProcedureSelectionChanged(const oac_tree_gui::ProcedureItem* item);
 
 private:
   /**
@@ -152,7 +152,7 @@ private:
    * Also notifies if focus widget changed, and the procedure is not the same as in previous focus
    * widget. This is used to propate focus procedure change to procedure list.
    */
-  void NotifyFocusWidgetProcedureSelectionChanged(ProcedureItem* item);
+  void NotifyFocusWidgetProcedureSelectionChanged(const ProcedureItem *item);
 
   sup::gui::IAppCommandService& m_command_service;
   QSplitter* m_splitter{nullptr};
@@ -161,7 +161,7 @@ private:
   bool m_block_selection_change_notification{false};
 
   //! cached value of current procedure item in focus widget
-  ProcedureItem* m_procedure_item_in_focus_cache{nullptr};
+  const ProcedureItem* m_procedure_item_in_focus_cache{nullptr};
 };
 
 }  // namespace oac_tree_gui

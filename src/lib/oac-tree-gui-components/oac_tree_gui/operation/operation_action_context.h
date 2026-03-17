@@ -40,7 +40,7 @@ struct RemoteConnectionInfo;
 struct OperationActionContext
 {
   //! callback to get currently selected job
-  std::function<JobItem*()> selected_job;
+  std::function<const JobItem*()> selected_job;
 
   //!< callback to report an error
   std::function<void(const sup::gui::MessageEvent&)> send_message;

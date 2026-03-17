@@ -53,12 +53,12 @@ struct WorkspaceEditorContext
   std::function<WorkspaceItem*()> selected_workspace;
 
   //!< callback to retrieve currently selected items
-  std::function<std::vector<mvvm::SessionItem*>()> selected_items_callback;
+  std::function<std::vector<const mvvm::SessionItem*>()> selected_items_callback;
 
   //!< A callback to notify the user that the item should be selected in a widget. This can
   //!< happen when a new item was just inserted, or some other item should be selected instead of
   //!< just removed.
-  std::function<void(mvvm::SessionItem*)> notify_request;
+  std::function<void(const mvvm::SessionItem*)> notify_request;
 
   //!< callback to report an error
   std::function<void(const sup::gui::MessageEvent&)> send_message;

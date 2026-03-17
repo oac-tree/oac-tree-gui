@@ -62,16 +62,16 @@ public:
 
   void SetJobModel(JobModel* model);
 
-  JobItem* GetSelectedJob();
+  const JobItem* GetSelectedJob() const;
 
-  void SetSelectedJob(JobItem* job);
+  void SetSelectedJob(const JobItem *job);
 
   QTreeView* GetTreeView();
 
   mvvm::ViewModel* GetViewModel();
 
 signals:
-  void JobSelected(oac_tree_gui::JobItem* job_item);
+  void JobSelected(const oac_tree_gui::JobItem* job_item);
 
 private:
   QTreeView* m_tree_view{nullptr};

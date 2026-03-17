@@ -141,7 +141,7 @@ public:
   void OnToggleBreakpoint(InstructionItem* instruction);
 
 signals:
-  void MakeJobSelectedRequest(oac_tree_gui::JobItem* item);
+  void MakeJobSelectedRequest(const oac_tree_gui::JobItem* item);
 
 private:
   /**
@@ -170,7 +170,7 @@ private:
    */
   mvvm::SessionItem* GetJobContainer() const;
 
-  JobItem* GetSelectedJob() const;
+  JobItem *GetSelectedJob() const;
 
   mvvm::SessionItem* m_job_container{nullptr};
   IJobItemManager* m_job_manager{nullptr};

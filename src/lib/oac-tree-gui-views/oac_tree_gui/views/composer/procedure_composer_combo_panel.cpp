@@ -34,7 +34,7 @@
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
-Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
+Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui
 {

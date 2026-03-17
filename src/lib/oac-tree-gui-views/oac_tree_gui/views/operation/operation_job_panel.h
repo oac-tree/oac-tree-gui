@@ -57,16 +57,16 @@ public:
 
   void SetModels(ApplicationModels* models);
 
-  JobItem* GetSelectedJob() const;
+  const JobItem* GetSelectedJob() const;
 
-  void SetSelectedJob(JobItem* job_item);
+  void SetSelectedJob(const JobItem *job_item);
 
   QList<QAction*> GetSequencerMonitorViewActions();
 
   QList<QAction*> GetOperationMonitorViewActions();
 
 signals:
-  void JobSelected(oac_tree_gui::JobItem* item);
+  void JobSelected(const oac_tree_gui::JobItem* item);
   void SubmitProcedureRequest(oac_tree_gui::ProcedureItem* item);
   void ImportJobRequest();
   void RegenerateJobRequest();
@@ -75,7 +75,7 @@ signals:
 
 private:
   void SetupConnections();
-  void OnJobSelectedIntern(JobItem* item);
+  void OnJobSelectedIntern(const JobItem *item);
 
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};

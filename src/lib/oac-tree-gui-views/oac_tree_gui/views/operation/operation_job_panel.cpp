@@ -67,12 +67,12 @@ void OperationJobPanel::SetModels(ApplicationModels* models)
   m_job_list_widget->SetJobModel(models->GetJobModel());
 }
 
-JobItem* OperationJobPanel::GetSelectedJob() const
+const JobItem *OperationJobPanel::GetSelectedJob() const
 {
   return m_job_list_widget->GetSelectedJob();
 }
 
-void OperationJobPanel::SetSelectedJob(JobItem* job_item)
+void OperationJobPanel::SetSelectedJob(const JobItem* job_item)
 {
   m_job_list_widget->SetSelectedJob(job_item);
 }
@@ -108,9 +108,9 @@ void OperationJobPanel::SetupConnections()
           &OperationJobPanel::ConnectRequest);
 }
 
-void OperationJobPanel::OnJobSelectedIntern(JobItem* item)
+void OperationJobPanel::OnJobSelectedIntern(const JobItem* item)
 {
-  m_job_property_widget->SetJob(item);
+  m_job_property_widget->SetJob(const_cast<JobItem*>(item));
   emit JobSelected(item);
 }
 

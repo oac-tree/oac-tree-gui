@@ -42,7 +42,8 @@ namespace oac_tree_gui
 
 WorkspaceEditor::WorkspaceEditor(
     sup::gui::IAppCommandService& command_service,
-    const std::function<std::vector<mvvm::SessionItem*>()>& selected_items, QWidget* parent_widget)
+    const std::function<std::vector<const mvvm::SessionItem*>()>& selected_items,
+    QWidget* parent_widget)
     : QObject(parent_widget)
     , m_get_selected_items(selected_items)
     , m_action_handler(
@@ -99,7 +100,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   auto selected_workspace_callback = [this]() { return m_workspace_item; };
   result.selected_workspace = selected_workspace_callback;
   result.selected_items_callback = m_get_selected_items;
-  result.notify_request = [this](auto item) { emit ItemSelectRequest(item); };
+  result.notify_request = [this](const auto* item) { emit ItemSelectRequest(item); };
 
   auto send_message_callback = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   result.send_message = send_message_callback;

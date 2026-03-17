@@ -91,11 +91,11 @@ public:
   void Paste();
 
 signals:
-  void SelectProcedureRequest(oac_tree_gui::ProcedureItem* item);
+  void SelectProcedureRequest(const oac_tree_gui::ProcedureItem* item);
 
 private:
   mvvm::ContainerItem* GetProcedureContainer() const;
-  ProcedureItem* GetSelectedProcedure() const;
+  const ProcedureItem* GetSelectedProcedure() const;
   mvvm::ISessionModel* GetModel();
   const QMimeData* GetMimeData() const;
 

@@ -172,7 +172,7 @@ bool OperationActionHandler::OnRemoveJobRequest()
     if (next_to_select != nullptr)
     {
       // suggest to select something else instead of just deleted item
-      emit MakeJobSelectedRequest(dynamic_cast<JobItem*>(next_to_select));
+      emit MakeJobSelectedRequest(dynamic_cast<const JobItem*>(next_to_select));
     }
   }
 
@@ -278,9 +278,9 @@ mvvm::SessionItem* OperationActionHandler::GetJobContainer() const
   return m_job_container;
 }
 
-JobItem* OperationActionHandler::GetSelectedJob() const
+JobItem *OperationActionHandler::GetSelectedJob() const
 {
-  return m_operation_context.selected_job();
+  return const_cast<JobItem*>(m_operation_context.selected_job());
 }
 
 }  // namespace oac_tree_gui

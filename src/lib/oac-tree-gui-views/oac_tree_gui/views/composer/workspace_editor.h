@@ -56,9 +56,10 @@ class WorkspaceEditor : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditor(sup::gui::IAppCommandService& command_service,
-                           const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
-                           QWidget* parent_widget = nullptr);
+  explicit WorkspaceEditor(
+      sup::gui::IAppCommandService& command_service,
+      const std::function<std::vector<const mvvm::SessionItem*>()>& selected_items,
+      QWidget* parent_widget = nullptr);
   ~WorkspaceEditor() override;
 
   WorkspaceEditor(const WorkspaceEditor&) = delete;
@@ -76,14 +77,14 @@ public:
   void SetupContextMenu(QMenu& menu);
 
 signals:
-  void ItemSelectRequest(mvvm::SessionItem*);
+  void ItemSelectRequest(const mvvm::SessionItem*);
 
 private:
   void SetupConnections();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
   AttributeEditorContext CreateAttributeEditorContext();
 
-  std::function<std::vector<mvvm::SessionItem*>()> m_get_selected_items;
+  std::function<std::vector<const mvvm::SessionItem*>()> m_get_selected_items;
   WorkspaceItem* m_workspace_item{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
   WorkspaceEditorActions* m_editor_actions{nullptr};

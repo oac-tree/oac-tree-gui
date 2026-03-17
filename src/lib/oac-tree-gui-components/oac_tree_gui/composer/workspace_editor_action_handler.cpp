@@ -35,24 +35,12 @@
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/model_utils.h>
+#include <mvvm/utils/container_utils.h>
 
 #include <QMimeData>
 
 namespace oac_tree_gui
 {
-
-namespace
-{
-
-std::vector<const mvvm::SessionItem*> GetItemVector(const std::vector<VariableItem*>& vec)
-{
-  std::vector<const mvvm::SessionItem*> result;
-  (void)std::transform(vec.begin(), vec.end(), std::back_inserter(result),
-                       [](auto element) { return element; });
-  return result;
-}
-
-}  // namespace
 
 WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context)
     : m_context(std::move(context))
@@ -102,13 +90,13 @@ bool WorkspaceEditorActionHandler::CanRemoveVariable() const
 
 void WorkspaceEditorActionHandler::RemoveVariable()
 {
-  mvvm::SessionItem* next_to_select{nullptr};
+  const mvvm::SessionItem* next_to_select{nullptr};
 
   mvvm::utils::BeginMacro(*GetModel(), "Remove variable");
-  for (auto selected : GetSelectedVariables())
+  for (const auto* selected : GetSelectedVariables())
   {
     next_to_select = mvvm::utils::FindNextSiblingToSelect(selected);
-    GetModel()->RemoveItem(selected);
+    GetModel()->RemoveItem(const_cast<VariableItem*>(selected));
   }
   UpdateProcedurePreamble();
   mvvm::utils::EndMacro(*GetModel());
@@ -157,7 +145,8 @@ void WorkspaceEditorActionHandler::EditAnyValue()
       GetModel()->RemoveItem(selected_anyvalue);
     }
 
-    (void)GetModel()->InsertItem(std::move(edited_anyvalue.result), selected_variable, {});
+    (void)GetModel()->InsertItem(std::move(edited_anyvalue.result),
+                                 const_cast<VariableItem*>(selected_variable), {});
   }
 }
 
@@ -192,7 +181,7 @@ void WorkspaceEditorActionHandler::Copy()
     return;
   }
 
-  auto items = GetItemVector(GetSelectedVariables());
+  auto items = mvvm::utils::CastItems<const mvvm::SessionItem>(GetSelectedVariables());
   m_context.set_mime_data(sup::gui::CreateCopyMimeData(items, kCopyVariableMimeType));
 }
 
@@ -214,15 +203,15 @@ void WorkspaceEditorActionHandler::Paste()
       sup::gui::CreateSessionItems(*GetMimeData(), kCopyVariableMimeType));
 }
 
-VariableItem* WorkspaceEditorActionHandler::GetSelectedVariable() const
+const VariableItem* WorkspaceEditorActionHandler::GetSelectedVariable() const
 {
   auto selected_variables = GetSelectedVariables();
   return selected_variables.empty() ? nullptr : selected_variables.front();
 }
 
-std::vector<VariableItem*> WorkspaceEditorActionHandler::GetSelectedVariables() const
+std::vector<const VariableItem*> WorkspaceEditorActionHandler::GetSelectedVariables() const
 {
-  return mvvm::utils::CastItems<VariableItem>(m_context.selected_items_callback());
+  return mvvm::utils::CastItems<const VariableItem>(m_context.selected_items_callback());
 }
 
 mvvm::ISessionModel* WorkspaceEditorActionHandler::GetModel() const
@@ -235,7 +224,7 @@ WorkspaceItem* WorkspaceEditorActionHandler::GetWorkspaceItem() const
   return m_context.selected_workspace();
 }
 
-void WorkspaceEditorActionHandler::SelectNotify(mvvm::SessionItem* item) const
+void WorkspaceEditorActionHandler::SelectNotify(const mvvm::SessionItem* item) const
 {
   m_context.notify_request(item);
 }

@@ -110,13 +110,13 @@ void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
   SetupSceneComponentProvider();
 }
 
-std::vector<InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
+std::vector<const InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
 {
   return m_scene_component_provider->GetSelectedInstructions();
 }
 
 void NodeEditorWidget::SetSelectedInstructions(
-    const std::vector<InstructionItem*>& instructions) const
+    const std::vector<const InstructionItem*>& instructions) const
 {
   if (isHidden())
   {

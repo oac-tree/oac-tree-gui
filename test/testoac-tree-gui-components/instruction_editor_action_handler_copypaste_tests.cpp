@@ -62,7 +62,7 @@ public:
    * @param current_mime The content of the clipboard.
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      const std::vector<InstructionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
+      const std::vector<const InstructionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));
     return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), selection);
@@ -206,7 +206,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   // nothing is selected, copied item in a buffer
   auto handler = CreateActionHandler({nullptr}, std::move(mime_data));
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -238,7 +238,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   item_to_paste.SetDisplayName("abc");
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
@@ -282,7 +282,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   item_to_paste.SetDisplayName("abc");
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
@@ -320,7 +320,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   item_to_paste.SetDisplayName("abc");
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
@@ -354,7 +354,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   // wait0 is selected
   auto handler = CreateActionHandler({wait0}, nullptr);
 
-  mvvm::SessionItem* reported_item{nullptr};
+  const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
@@ -407,7 +407,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
 
   // validating request to select just inserted item
   EXPECT_EQ(m_mock_context.GetNotifyRequests(),
-            std::vector<mvvm::SessionItem*>({instructions.at(1)}));
+            std::vector<const mvvm::SessionItem*>({instructions.at(1)}));
 }
 
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTreeIntoRepeat)

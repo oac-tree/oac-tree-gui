@@ -80,9 +80,9 @@ void GraphicsSceneComponentProvider::OnDeleteSelected()
   mvvm::utils::EndMacro(*GetModel());
 }
 
-std::vector<InstructionItem*> GraphicsSceneComponentProvider::GetSelectedInstructions() const
+std::vector<const InstructionItem *> GraphicsSceneComponentProvider::GetSelectedInstructions() const
 {
-  std::vector<InstructionItem*> result;
+  std::vector<const InstructionItem*> result;
   for (auto shape : mvvm::GetSelectedShapes<mvvm::ConnectableShape>(*m_scene))
   {
     result.push_back(mvvm::GetUnderlyingItem<InstructionItem>(shape));
@@ -91,7 +91,7 @@ std::vector<InstructionItem*> GraphicsSceneComponentProvider::GetSelectedInstruc
 }
 
 void GraphicsSceneComponentProvider::SetSelectedInstructions(
-    const std::vector<InstructionItem*>& to_select)
+    const std::vector<const InstructionItem*>& to_select)
 {
   m_scene->clearSelection();
   for (auto instruction : to_select)
@@ -109,11 +109,11 @@ void GraphicsSceneComponentProvider::DropInstruction(const std::string& item_typ
   m_instruction_editor_action_handler->DropInstruction(item_type, pos);
 }
 
-void GraphicsSceneComponentProvider::SelectInstructionBranch(InstructionItem* instruction)
+void GraphicsSceneComponentProvider::SelectInstructionBranch(const InstructionItem *instruction)
 {
-  std::vector<InstructionItem*> to_select;
-  auto on_instruction = [&to_select](InstructionItem* item) { to_select.push_back(item); };
-  IterateInstruction<InstructionItem*>(instruction, on_instruction);
+  std::vector<const InstructionItem*> to_select;
+  auto on_instruction = [&to_select](const InstructionItem* item) { to_select.push_back(item); };
+  IterateInstruction<const InstructionItem*>(instruction, on_instruction);
   SetSelectedInstructions(to_select);
 }
 
@@ -186,7 +186,7 @@ InstructionEditorContext GraphicsSceneComponentProvider::CreateContext()
   result.selected_instructions = [this]() { return GetSelectedInstructions(); };
   result.notify_request = [this](auto item)
   {
-    const std::vector<InstructionItem*> to_select({dynamic_cast<InstructionItem*>(item)});
+    const std::vector<const InstructionItem*> to_select({dynamic_cast<const InstructionItem*>(item)});
     SetSelectedInstructions(to_select);
   };
 

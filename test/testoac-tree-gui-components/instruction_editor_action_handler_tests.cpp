@@ -61,7 +61,7 @@ public:
    * @param selection Instruction which will be reported as user selection.
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      const std::vector<InstructionItem*>& selection)
+      const std::vector<const InstructionItem*>& selection)
   {
     return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), selection);
   }
@@ -90,7 +90,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
     // no notify callback defined
     InstructionEditorContext context;
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
-    context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
+    context.selected_instructions = []() -> std::vector<const InstructionItem*> { return {}; };
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
 
@@ -98,7 +98,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
     // no create instruction callback defined
     InstructionEditorContext context;
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
-    context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
+    context.selected_instructions = []() -> std::vector<const InstructionItem*> { return {}; };
     context.notify_request = [](auto item) {};
     EXPECT_THROW(InstructionEditorActionHandler{context}, RuntimeException);
   }
@@ -106,7 +106,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
   {
     InstructionEditorContext context;
     context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
-    context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
+    context.selected_instructions = []() -> std::vector<const InstructionItem*> { return {}; };
     context.notify_request = [](auto item) {};
     context.create_instruction = [](const std::string&) -> std::unique_ptr<InstructionItem>
     { return nullptr; };
@@ -130,7 +130,7 @@ TEST_F(InstructionEditorActionHandlerTest, GetSelectedInstructions)
     auto handler = CreateActionHandler({sequence0, sequence1});
     EXPECT_EQ(handler->GetSelectedInstruction(), sequence0);
     EXPECT_EQ(handler->GetSelectedInstructions(),
-              std::vector<InstructionItem*>({sequence0, sequence1}));
+              std::vector<const InstructionItem*>({sequence0, sequence1}));
   }
 }
 
@@ -167,7 +167,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddToWrongPlaceWhenNoMessageCallbackD
 {
   InstructionEditorContext context;
   context.instruction_container = []() -> InstructionContainerItem* { return nullptr; };
-  context.selected_instructions = []() -> std::vector<InstructionItem*> { return {}; };
+  context.selected_instructions = []() -> std::vector<const InstructionItem*> { return {}; };
   context.notify_request = [](auto item) {};
   context.create_instruction = [](const std::string&) -> std::unique_ptr<InstructionItem>
   { return nullptr; };
@@ -414,7 +414,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveTwoInstructions)
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(m_mock_context.GetNotifyRequests(), std::vector<mvvm::SessionItem*>({sequence2}));
+  EXPECT_EQ(m_mock_context.GetNotifyRequests(), std::vector<const mvvm::SessionItem*>({sequence2}));
 }
 
 TEST_F(InstructionEditorActionHandlerTest, RemoveParentAndChild)

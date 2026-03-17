@@ -77,13 +77,13 @@ void JobListWidget::SetJobModel(JobModel* model)
   m_component_provider->SetApplicationModel(model);
 }
 
-JobItem* JobListWidget::GetSelectedJob()
+const JobItem *JobListWidget::GetSelectedJob() const
 {
   auto selection = m_component_provider->GetSelection();
-  return const_cast<JobItem*>(selection.GetSelected<JobItem>());
+  return selection.GetSelected<JobItem>();
 }
 
-void JobListWidget::SetSelectedJob(JobItem* job)
+void JobListWidget::SetSelectedJob(const JobItem* job)
 {
   m_component_provider->SetSelection(mvvm::ItemSelection(job));
   m_custom_header->AdjustColumnsWidth();

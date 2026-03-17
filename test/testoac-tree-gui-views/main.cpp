@@ -30,6 +30,8 @@ int main(int argc, char** argv)
 {
   oac_tree_gui::test::InitTests(argc, argv);
 
+  oac_tree_gui::RegisterCustomMetaTypes();  // before InitCoreApplication for QSettings
+
   mvvm::SetHeadless();
   const QApplication app(argc, argv);
   Q_UNUSED(app)

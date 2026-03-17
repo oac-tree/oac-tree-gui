@@ -133,7 +133,7 @@ signals:
   void splitViewRequest();
   void closeViewRequest();
   void panelFocusRequest();
-  void selectedProcedureChanged(oac_tree_gui::ProcedureItem* item);
+  void selectedProcedureChanged(const oac_tree_gui::ProcedureItem* item);
   void newProcedureRequest();
 
 protected:

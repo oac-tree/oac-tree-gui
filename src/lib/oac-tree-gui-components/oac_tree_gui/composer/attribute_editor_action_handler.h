@@ -106,7 +106,7 @@ private:
   /**
    * @brief Returns currently seleced attribute item.
    */
-  sup::gui::AnyValueItem* GetSelectedAttributeItem() const;
+  const sup::gui::AnyValueItem* GetSelectedAttributeItem() const;
 
   /**
    * @brief Checks if the currently selected attribute represents a full-fledged AnyValue.

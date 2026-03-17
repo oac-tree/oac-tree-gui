@@ -39,7 +39,7 @@
 #include <QSignalSpy>
 
 Q_DECLARE_METATYPE(const mvvm::INodePort*)
-Q_DECLARE_METATYPE(oac_tree_gui::InstructionItem*)
+Q_DECLARE_METATYPE(const oac_tree_gui::InstructionItem*)
 
 namespace oac_tree_gui::test
 {
@@ -99,7 +99,7 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstruction)
   EXPECT_EQ(spy_shape_clicks.count(), 1);
   EXPECT_EQ(spy_port_clicks.count(), 0);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<InstructionItem*>(spy_shape_clicks), &item);
+  EXPECT_EQ(mvvm::test::GetSendItem<const InstructionItem*>(spy_shape_clicks), &item);
 }
 
 TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstructionPort)

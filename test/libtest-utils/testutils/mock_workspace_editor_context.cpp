@@ -31,7 +31,7 @@ namespace oac_tree_gui::test
 {
 
 WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
-    WorkspaceItem* workspace, const std::vector<mvvm::SessionItem*>& selection)
+    WorkspaceItem* workspace, const std::vector<const mvvm::SessionItem *> &selection)
 {
   WorkspaceEditorContext result;
 
@@ -59,7 +59,7 @@ WorkspaceEditorContext MockWorkspaceEditorContext::CreateContext(
 }
 
 std::unique_ptr<WorkspaceEditorActionHandler> MockWorkspaceEditorContext::CreateActionHandler(
-    WorkspaceItem* workspace, const std::vector<mvvm::SessionItem*>& selection)
+    WorkspaceItem* workspace, const std::vector<const mvvm::SessionItem *> &selection)
 {
   return std::make_unique<WorkspaceEditorActionHandler>(CreateContext(workspace, selection));
 }

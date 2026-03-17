@@ -105,19 +105,19 @@ void ProcedureListWidget::SetModel(SequencerModel* model)
   }
 }
 
-ProcedureItem* ProcedureListWidget::GetSelectedProcedure() const
+const ProcedureItem *ProcedureListWidget::GetSelectedProcedure() const
 {
   auto selected = GetSelectedProcedures();
   return selected.empty() ? nullptr : selected.front();
 }
 
-std::vector<ProcedureItem*> ProcedureListWidget::GetSelectedProcedures() const
+std::vector<const ProcedureItem *> ProcedureListWidget::GetSelectedProcedures() const
 {
   auto selection = m_component_provider->GetSelection();
-  return mvvm::utils::RemoveConst(selection.GetSelectedItems<ProcedureItem>());
+  return selection.GetSelectedItems<ProcedureItem>();
 }
 
-void ProcedureListWidget::SetSelectedProcedure(ProcedureItem* procedure)
+void ProcedureListWidget::SetSelectedProcedure(const ProcedureItem* procedure)
 {
   m_component_provider->SetSelection(mvvm::ItemSelection(procedure));
 }

@@ -43,7 +43,7 @@ namespace oac_tree_gui::test
 class MockWorkspaceEditorContext
 {
 public:
-  MOCK_METHOD(void, NotifyRequest, (mvvm::SessionItem*), ());
+  MOCK_METHOD(void, NotifyRequest, (const mvvm::SessionItem*), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(AnyValueDialogResult, OnEditAnyvalue, (const sup::gui::AnyValueItem*), ());
   MOCK_METHOD(const QMimeData*, OnGetMimeData, (), ());
@@ -56,7 +56,7 @@ public:
    * @param selected_items The list of items that will be reported as selected by the user.
    */
   WorkspaceEditorContext CreateContext(WorkspaceItem* workspace,
-                                       const std::vector<mvvm::SessionItem*>& selection);
+                                       const std::vector<const mvvm::SessionItem*>& selection);
 
   /**
    * @brief Creates action handler.
@@ -65,7 +65,7 @@ public:
    * selected by the user.
    */
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
-      WorkspaceItem* workspace, const std::vector<mvvm::SessionItem*>& selection);
+      WorkspaceItem* workspace, const std::vector<const mvvm::SessionItem*>& selection);
 
   QMimeData* GetClipboardContent() const;
 
@@ -73,7 +73,7 @@ public:
 
   //!< here we save copy result reported via set_mime_data callback
   std::unique_ptr<QMimeData> m_clipboard_content;
-  std::vector<mvvm::SessionItem*> m_current_selection;
+  std::vector<const mvvm::SessionItem*> m_current_selection;
 };
 
 }  // namespace oac_tree_gui::test

@@ -150,13 +150,13 @@ void InstructionEditorWidget::SetSelectedInstructions(
   m_component_provider->SetSelection(mvvm::ItemSelection(instructions));
 }
 
-std::vector<InstructionItem*> InstructionEditorWidget::GetSelectedInstructions() const
+std::vector<const InstructionItem*> InstructionEditorWidget::GetSelectedInstructions() const
 {
   auto selection = m_component_provider->GetSelection();
-  return ::mvvm::utils::RemoveConst(selection.GetSelectedItems<InstructionItem>());
+  return selection.GetSelectedItems<InstructionItem>();
 }
 
-InstructionItem* InstructionEditorWidget::GetSelectedInstruction() const
+const InstructionItem* InstructionEditorWidget::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
@@ -227,7 +227,7 @@ void InstructionEditorWidget::SetupConnections()
   auto on_selected_instruction_changed = [this](auto)
   {
     auto selected = GetSelectedInstruction();
-    m_attribute_editor->SetInstruction(selected);
+    m_attribute_editor->SetInstruction(const_cast<InstructionItem*>(selected));
     emit InstructionSelected(selected);
   };
   connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectionChanged, this,

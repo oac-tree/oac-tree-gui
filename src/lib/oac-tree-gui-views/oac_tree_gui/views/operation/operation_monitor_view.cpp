@@ -273,17 +273,19 @@ void OperationMonitorView::SetupWidgetActions()
 }
 
 //! Setup widgets to show currently selected job.
-void OperationMonitorView::OnJobSelected(JobItem* item)
+void OperationMonitorView::OnJobSelected(const JobItem* selected_item)
 {
-  m_job_manager->SetActiveJob(item);
-  m_realtime_panel->SetCurrentJob(item);
+  auto job_item = const_cast<JobItem*>(selected_item);
+  m_job_manager->SetActiveJob(job_item);
+  m_realtime_panel->SetCurrentJob(job_item);
 
-  if (auto handler = m_job_manager->GetJobHandler(item); handler)
+  if (auto handler = m_job_manager->GetJobHandler(job_item); handler)
   {
     m_realtime_panel->SetJobLog(handler->GetJobLog());
   }
 
-  m_workspace_panel->SetProcedure((item != nullptr) ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_panel->SetProcedure((selected_item != nullptr) ? job_item->GetExpandedProcedure()
+                                                             : nullptr);
 }
 
 OperationActionContext OperationMonitorView::CreateOperationContext()

@@ -30,7 +30,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
+Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui
 {
@@ -303,7 +303,7 @@ ProcedureSplittableEditorWidget::CreateProcedureEditor()
   };
   connect(result.get(), &ProcedureComposerComboPanel::panelFocusRequest, this, on_focus_request);
 
-  auto on_selected_procedure_changed = [this](oac_tree_gui::ProcedureItem* item)
+  auto on_selected_procedure_changed = [this](const oac_tree_gui::ProcedureItem* item)
   {
     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
 
@@ -319,7 +319,7 @@ ProcedureSplittableEditorWidget::CreateProcedureEditor()
 }
 
 void ProcedureSplittableEditorWidget::NotifyFocusWidgetProcedureSelectionChanged(
-    ProcedureItem* item)
+    const ProcedureItem* item)
 {
   if (m_block_selection_change_notification)
   {

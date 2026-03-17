@@ -48,7 +48,7 @@ struct ProcedureListContext
   std::function<mvvm::ContainerItem*()> procedure_container;
 
   //! callback to get currently selected procedure
-  std::function<ProcedureItem*()> selected_procedure;
+  std::function<const ProcedureItem*()> selected_procedure;
 
   //! callback to get mime data from the clipboard
   std::function<const QMimeData*()> get_mime_data;

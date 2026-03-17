@@ -70,10 +70,10 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  ProcedureItem* GetSelectedProcedure() const;
-  std::vector<ProcedureItem*> GetSelectedProcedures() const;
+  const ProcedureItem* GetSelectedProcedure() const;
+  std::vector<const ProcedureItem*> GetSelectedProcedures() const;
 
-  void SetSelectedProcedure(ProcedureItem* procedure);
+  void SetSelectedProcedure(const ProcedureItem *procedure);
 
   QTreeView* GetTreeView();
 
@@ -82,7 +82,7 @@ public:
   QList<QAction*> GetActions(const std::vector<ProcedureListActions::ActionKey>& action_keys);
 
 signals:
-  void ProcedureSelected(oac_tree_gui::ProcedureItem* procedure_item);
+  void ProcedureSelected(const oac_tree_gui::ProcedureItem* procedure_item);
 
 private:
   ProcedureListContext CreateContext();

@@ -41,7 +41,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-Q_DECLARE_METATYPE(oac_tree_gui::ProcedureItem*)
+Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 
 namespace oac_tree_gui
 {
@@ -118,10 +118,10 @@ void SequencerComposerView::WriteSettings()
 void SequencerComposerView::SetupConnections()
 {
   // procedure selection request from toolbox to procedure editor
-  auto on_procedure_selected = [this](ProcedureItem* procedure_item)
+  auto on_procedure_selected = [this](const ProcedureItem* procedure_item)
   {
-    m_splittable_editor_widget->SetProcedure(procedure_item);
-    m_composer_actions->SetProcedure(procedure_item);
+    m_splittable_editor_widget->SetProcedure(const_cast<ProcedureItem*>(procedure_item));
+    m_composer_actions->SetProcedure(const_cast<ProcedureItem*>(procedure_item));
   };
   connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected, this,
           on_procedure_selected);

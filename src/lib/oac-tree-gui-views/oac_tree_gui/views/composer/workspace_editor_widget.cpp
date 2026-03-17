@@ -81,12 +81,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService& comma
     , m_line_edit(new QLineEdit)
     , m_editor(new WorkspaceEditor(
           command_service,
-          [this]()
-          {
-            return mvvm::utils::RemoveConst(
-                m_component_provider->GetSelection().GetSelectedItems());
-          },
-          this))
+          [this]() { return m_component_provider->GetSelection().GetSelectedItems(); }, this))
     , m_edit_type(WorkspaceEditType::kEditorEnabled)
 {
   setWindowTitle("Workspace");
@@ -157,7 +152,7 @@ void WorkspaceEditorWidget::resizeEvent(QResizeEvent* event)
 
 void WorkspaceEditorWidget::SetupConnections()
 {
-  auto on_item_select_request = [this](auto item)
+  auto on_item_select_request = [this](const auto* item)
   {
     m_component_provider->SetSelection(mvvm::ItemSelection(item));
 

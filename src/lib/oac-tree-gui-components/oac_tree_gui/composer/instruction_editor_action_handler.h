@@ -99,14 +99,14 @@ public:
   void InsertItem(const std::string& item_type, mvvm::SessionItem* parent,
                   const mvvm::TagIndex& index) override;
 
-  InstructionItem* GetSelectedInstruction() const;
+  const InstructionItem *GetSelectedInstruction() const;
 
-  std::vector<InstructionItem*> GetSelectedInstructions() const;
+  std::vector<const InstructionItem*> GetSelectedInstructions() const;
 
 private:
   mvvm::ISessionModel* GetModel() const;
   mvvm::SessionItem* GetInstructionContainer() const;
-  void SelectNotify(mvvm::SessionItem* item) const;
+  void SelectNotify(const mvvm::SessionItem *item) const;
 
   /**
    * @brief Creates a single instruction or complex instruction aggregate.

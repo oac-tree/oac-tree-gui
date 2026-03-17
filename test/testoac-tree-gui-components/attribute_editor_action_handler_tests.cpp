@@ -49,10 +49,10 @@ public:
    *
    * @param selected_item Item pretending it is currently selected in the attribute editor.
    */
-  AttributeEditorContext CreateContext(mvvm::SessionItem* selected_item)
+  AttributeEditorContext CreateContext(const mvvm::SessionItem* selected_item)
   {
     AttributeEditorContext result;
-    result.selected_items_callback = [selected_item]() -> std::vector<mvvm::SessionItem*>
+    result.selected_items_callback = [selected_item]() -> std::vector<const mvvm::SessionItem*>
     { return {selected_item}; };
     return result;
   }

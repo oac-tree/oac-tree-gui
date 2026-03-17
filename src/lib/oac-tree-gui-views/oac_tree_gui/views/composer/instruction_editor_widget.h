@@ -74,9 +74,9 @@ public:
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
 
-  std::vector<InstructionItem*> GetSelectedInstructions() const;
+  std::vector<const InstructionItem*> GetSelectedInstructions() const;
 
-  InstructionItem* GetSelectedInstruction() const;
+  const InstructionItem* GetSelectedInstruction() const;
 
   /**
    * @brief Insert instruction from toolbox to the instruction container.
@@ -86,7 +86,7 @@ public:
   void InsertInstructionFromToolBox(const QString& name);
 
 signals:
-  void InstructionSelected(oac_tree_gui::InstructionItem* instruction);
+  void InstructionSelected(const oac_tree_gui::InstructionItem* instruction);
 
 private:
   void ReadSettings();

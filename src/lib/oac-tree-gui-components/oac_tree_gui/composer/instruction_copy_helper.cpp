@@ -50,7 +50,7 @@ std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionIt
 }
 
 std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
-    const std::vector<InstructionItem*>& selection)
+    const std::vector<const InstructionItem*>& selection)
 {
   // accept all items that are instructions and in the selection list, accept all properties
   auto filter_func = [&selection](const mvvm::SessionItem& item)

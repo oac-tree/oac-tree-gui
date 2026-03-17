@@ -43,7 +43,7 @@ namespace oac_tree_gui::test
 class MockInstructionEditorContext
 {
 public:
-  MOCK_METHOD(void, NotifyRequest, (mvvm::SessionItem*), ());
+  MOCK_METHOD(void, NotifyRequest, (const mvvm::SessionItem*), ());
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(AnyValueDialogResult, OnEditAnyvalue, (const sup::gui::AnyValueItem*), ());
   MOCK_METHOD(const QMimeData*, OnGetMimeData, (), ());
@@ -56,23 +56,23 @@ public:
    * @param current_selection The instructions which will be reported as selected by the user.
    */
   InstructionEditorContext CreateContext(InstructionContainerItem* instruction_container,
-                                         const std::vector<InstructionItem*>& current_selection);
+                                         const std::vector<const InstructionItem*>& current_selection);
 
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
       InstructionContainerItem* instruction_container,
-      const std::vector<InstructionItem*>& current_selection);
+      const std::vector<const InstructionItem *> &current_selection);
 
   QMimeData* GetClipboardContent() const;
 
   void SetClipboardContent(std::unique_ptr<QMimeData> clipboard);
 
-  std::vector<mvvm::SessionItem*> GetNotifyRequests() const;
+  std::vector<const mvvm::SessionItem *> GetNotifyRequests() const;
 
-  void SetAsCurrentSelection(const std::vector<InstructionItem*>& selection);
+  void SetAsCurrentSelection(const std::vector<const InstructionItem*>& selection);
 
   std::unique_ptr<QMimeData> m_clipboard_content;
-  std::vector<InstructionItem*> m_current_selection;
-  std::vector<mvvm::SessionItem*> m_notify_requests;
+  std::vector<const InstructionItem*> m_current_selection;
+  std::vector<const mvvm::SessionItem*> m_notify_requests;
 };
 
 }  // namespace oac_tree_gui::test

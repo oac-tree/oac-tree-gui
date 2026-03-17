@@ -37,7 +37,7 @@ namespace oac_tree_gui::test
 
 InstructionEditorContext MockInstructionEditorContext::CreateContext(
     InstructionContainerItem* instruction_container,
-    const std::vector<InstructionItem*>& current_selection)
+    const std::vector<const InstructionItem *> &current_selection)
 {
   InstructionEditorContext result;
 
@@ -72,7 +72,7 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
 
 std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::CreateActionHandler(
     InstructionContainerItem* instruction_container,
-    const std::vector<InstructionItem*>& current_selection)
+    const std::vector<const InstructionItem*>& current_selection)
 {
   return std::make_unique<InstructionEditorActionHandler>(
       CreateContext(instruction_container, current_selection));
@@ -88,13 +88,13 @@ void MockInstructionEditorContext::SetClipboardContent(std::unique_ptr<QMimeData
   m_clipboard_content = std::move(clipboard);
 }
 
-std::vector<mvvm::SessionItem*> MockInstructionEditorContext::GetNotifyRequests() const
+std::vector<const mvvm::SessionItem*> MockInstructionEditorContext::GetNotifyRequests() const
 {
   return m_notify_requests;
 }
 
 void MockInstructionEditorContext::SetAsCurrentSelection(
-    const std::vector<InstructionItem*>& selection)
+    const std::vector<const InstructionItem *> &selection)
 {
   m_current_selection = selection;
 }

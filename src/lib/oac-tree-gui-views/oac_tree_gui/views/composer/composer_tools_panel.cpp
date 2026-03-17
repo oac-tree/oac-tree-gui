@@ -99,12 +99,12 @@ void ComposerToolsPanel::SetModels(ApplicationModels* models)
       models->GetProjectModel()->GetFavoriteInstructionContainer());
 }
 
-ProcedureItem* ComposerToolsPanel::GetSelectedProcedure()
+const ProcedureItem *ComposerToolsPanel::GetSelectedProcedure()
 {
   return m_procedure_list_view->GetSelectedProcedure();
 }
 
-void ComposerToolsPanel::SetSelectedProcedure(ProcedureItem* procedure)
+void ComposerToolsPanel::SetSelectedProcedure(const ProcedureItem *procedure)
 {
   m_procedure_list_view->SetSelectedProcedure(procedure);
 }

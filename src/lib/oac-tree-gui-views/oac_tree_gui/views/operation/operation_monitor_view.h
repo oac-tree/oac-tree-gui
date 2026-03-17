@@ -96,7 +96,7 @@ private:
   void WriteSettings();
   void SetupConnections();
   void SetupWidgetActions();
-  void OnJobSelected(oac_tree_gui::JobItem* item);
+  void OnJobSelected(const JobItem *selected_item);
   OperationActionContext CreateOperationContext();
 
   sup::gui::IAppCommandService& m_command_service;

@@ -120,7 +120,7 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
   wait1->SetX(45);
 
   {  // user selection contains two children only
-    const std::vector<InstructionItem*> selection({wait0, sequence1});
+    const std::vector<const InstructionItem*> selection({wait0, sequence1});
 
     const auto mime_data = CreateInstructionSelectionCopyMimeData(selection);
 
@@ -136,7 +136,7 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
   }
 
   {  // user selection contains main sequence
-    const std::vector<InstructionItem*> selection({sequence0, sequence1, wait1});
+    const std::vector<const InstructionItem*> selection({sequence0, sequence1, wait1});
 
     const auto mime_data = CreateInstructionSelectionCopyMimeData(selection);
 

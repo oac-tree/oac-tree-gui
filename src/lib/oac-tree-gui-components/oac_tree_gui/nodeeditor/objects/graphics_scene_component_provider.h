@@ -92,14 +92,14 @@ public:
    *
    * Converts all selected shapes to selected instructions.
    */
-  std::vector<InstructionItem*> GetSelectedInstructions() const;
+  std::vector<const InstructionItem*> GetSelectedInstructions() const;
 
   /**
    * @brief Sets selected instructions.
    *
    * Converts instructions to shapes and selects them on the scene.
    */
-  void SetSelectedInstructions(const std::vector<InstructionItem*>& to_select);
+  void SetSelectedInstructions(const std::vector<const InstructionItem *> &to_select);
 
   /**
    * @brief Drops instruction on the canvas.
@@ -109,7 +109,7 @@ public:
   /**
    * @brief Selects instruction and all its children.
    */
-  void SelectInstructionBranch(InstructionItem* instruction);
+  void SelectInstructionBranch(const InstructionItem* instruction);
 
   /**
    * @brief Process double click on ports
