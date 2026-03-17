@@ -1,5 +1,7 @@
 Changes for 2.2.0:
 
+- Remove default arguments from viewmodel virtual methods
+- Switch to const in item selection/notification machinery
 - Implement drag-and-drop from InstructionEditor to the box with favorite instructions and back
 - Implement dynamic "close" indicator in the list of opened procedures
 - Provide possibility to reorder jobs and opened procedures
