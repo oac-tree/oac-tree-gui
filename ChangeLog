@@ -1,5 +1,6 @@
 Changes for 2.2.0:
 
+- Allow to remove AnyValue from the variable using the editor
 - Fix GUI crash on attempt to edit local Variable without AnyValueItem set
 - Remove default arguments from viewmodel virtual methods
 - Switch to const in item selection/notification machinery

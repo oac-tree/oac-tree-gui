@@ -133,20 +133,17 @@ void WorkspaceEditorActionHandler::EditAnyValue()
   // existent value means that the user exited from the dialog with OK
   if (edited_anyvalue.is_accepted)
   {
-    if (!edited_anyvalue.result)
-    {
-      SendMessage("It is not possible to remove AnyValue from variable.");
-      return;
-    }
-
     // remove previous AnyValueItem
     if (selected_anyvalue != nullptr)
     {
       GetModel()->RemoveItem(selected_anyvalue);
     }
 
-    (void)GetModel()->InsertItem(std::move(edited_anyvalue.result),
-                                 const_cast<VariableItem*>(selected_variable), {});
+    if (edited_anyvalue.result)
+    {
+      (void)GetModel()->InsertItem(std::move(edited_anyvalue.result),
+                                   const_cast<VariableItem*>(selected_variable), {});
+    }
   }
 }
 

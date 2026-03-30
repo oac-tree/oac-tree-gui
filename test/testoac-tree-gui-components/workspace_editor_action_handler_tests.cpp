@@ -351,7 +351,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem. Pretending that the user has
-//! removed initial AnyValueItem and has pushed OK button. That should trigger the warning.
+//! removed initial AnyValueItem and has pushed OK button. This should be allowed, and AnyValueItem
+//! removed.
 TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
 {
   const bool dialog_was_acccepted = true;
@@ -372,7 +373,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   auto handler = CreateActionHandler({initial_anyvalue_item});
 
   // expecting no warning callbacks
-  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(0);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
 
@@ -380,7 +381,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   handler->EditAnyValue();
 
   // checking that previous AnyValueItem has been removed
-  EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
+  EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem. Pretending that the user has
