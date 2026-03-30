@@ -286,6 +286,36 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
 }
 
+//! Variable initially doesn't have any value defined.
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelectedAndAnyValueIsAbsent)
+{
+  const bool dialog_was_acccepted = true;
+
+  // creating variable with AnyValue on board
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  const sup::gui::AnyValueItem* initial_anyvalue_item{nullptr};
+
+  // item mimicking editing result
+  auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
+  auto editing_result_ptr = editing_result.get();
+  AnyValueDialogResult dialog_result{dialog_was_acccepted, std::move(editing_result)};
+
+  ON_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item))
+      .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
+
+  // preparing handler
+  auto handler = CreateActionHandler({var0});
+
+  // expecting call to editing widget
+  EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
+
+  // editing request
+  handler->EditAnyValue();
+
+  // checking that variable got new AnyValueItem
+  EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
+}
+
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem.
 //! The only difference with previous test is that we mimick selection of AnyValueItem instead
 //! of VariableItem.
