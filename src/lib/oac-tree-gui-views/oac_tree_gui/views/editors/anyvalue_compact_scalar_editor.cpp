@@ -87,7 +87,7 @@ void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem* 
   m_layout->addSpacing(mvvm::style::UnitSize(0.5));
 }
 
-std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactScalarEditor::GetResult()
+std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactScalarEditor::GetResult() const
 {
   m_widget_mapper->submit();
   return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(*m_model));

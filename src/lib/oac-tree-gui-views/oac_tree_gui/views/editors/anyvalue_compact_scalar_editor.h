@@ -72,7 +72,7 @@ public:
 
   void SetInitialValue(const sup::gui::AnyValueItem* item) override;
 
-  std::unique_ptr<sup::gui::AnyValueItem> GetResult() override;
+  std::unique_ptr<sup::gui::AnyValueItem> GetResult() const override;
 
 private:
   std::unique_ptr<mvvm::ApplicationModel> m_model;

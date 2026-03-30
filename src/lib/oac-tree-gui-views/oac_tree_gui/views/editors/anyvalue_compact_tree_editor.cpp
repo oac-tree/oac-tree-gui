@@ -82,7 +82,7 @@ void AnyValueCompactTreeEditor::SetInitialValue(const sup::gui::AnyValueItem* it
   m_tree_view->expandAll();
 }
 
-std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactTreeEditor::GetResult()
+std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactTreeEditor::GetResult() const
 {
   return mvvm::utils::CloneItem(*mvvm::utils::GetTopItem<sup::gui::AnyValueItem>(*m_model));
 }
