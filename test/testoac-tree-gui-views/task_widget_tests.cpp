@@ -67,6 +67,9 @@ TEST_F(TaskWidgetTest, CreateAndAddChild)
   auto group_box = widget.findChild<QGroupBox*>();
   ASSERT_NE(group_box, nullptr);
   EXPECT_TRUE(group_box->isVisible());
+
+  EXPECT_EQ(widget.GetChildWidgets().size(), 1);
+  EXPECT_EQ(widget.GetChildWidgets().at(0), child_widget);
 }
 
 }  // namespace oac_tree_gui::test

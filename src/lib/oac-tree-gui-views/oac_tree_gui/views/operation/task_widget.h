@@ -62,7 +62,7 @@ public:
    */
   TaskWidget* CreateAndAddChild(const QString& child_name);
 
-   /**
+  /**
    * @brief Adds separator line between children widgets.
    */
   void AddSeparator();
@@ -72,10 +72,16 @@ public:
    */
   QString GetLabelText() const;
 
+  /**
+   * @brief Returns vector of child TaskWidgets.
+   */
+  std::vector<TaskWidget*> GetChildWidgets() const;
+
 private:
   StatusIndicatorWidget* m_status_widget{nullptr};
   QLabel* m_instruction_label{nullptr};
   QGroupBox* m_children_group{nullptr};
+  std::vector<TaskWidget*> m_children_widgets;
 };
 
 }  // namespace oac_tree_gui

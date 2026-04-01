@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   instruction_task_area_widget.h
   instruction_task_monitor.cpp
   instruction_task_monitor.h
+  instruction_task_widget_builder.cpp
+  instruction_task_widget_builder.h
   job_list_widget.cpp
   job_list_widget.h
   job_property_widget.cpp

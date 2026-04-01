@@ -65,6 +65,7 @@ void TaskWidget::SetInstructionStatus(InstructionStatus status)
 TaskWidget* TaskWidget::CreateAndAddChild(const QString& child_name)
 {
   auto child_widget = new TaskWidget(child_name, this);
+  m_children_widgets.push_back(child_widget);
   m_children_group->layout()->addWidget(child_widget);
   m_children_group->setVisible(true);
   m_status_widget->SetVerticalExpandPolicy(true);
@@ -82,6 +83,11 @@ void TaskWidget::AddSeparator()
 QString TaskWidget::GetLabelText() const
 {
   return m_instruction_label->text();
+}
+
+std::vector<TaskWidget*> TaskWidget::GetChildWidgets() const
+{
+  return m_children_widgets;
 }
 
 }  // namespace oac_tree_gui
