@@ -21,6 +21,7 @@
 #include "instruction_task_monitor.h"
 
 #include "instruction_task_area_widget.h"
+#include "instruction_task_widget_builder.h"
 #include "task_widget.h"
 
 #include <QVBoxLayout>
@@ -29,14 +30,17 @@ namespace oac_tree_gui
 {
 
 InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
-    : QWidget(parent_widget)
-    , m_task_area_widget(new InstructionTaskAreaWidget(CreateTestTask().release()))
+    : QWidget(parent_widget), m_task_area_widget(new InstructionTaskAreaWidget(this))
 {
   auto layout = new QVBoxLayout(this);
 
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(m_task_area_widget);
+
+  m_task_area_widget->SetTaskWidget(CreateTestTask().release());
 }
+
+void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container) {}
 
 std::unique_ptr<TaskWidget> InstructionTaskMonitor::CreateTestTask() const
 {

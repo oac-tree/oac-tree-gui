@@ -28,6 +28,7 @@ namespace oac_tree_gui
 
 class InstructionTaskAreaWidget;
 class TaskWidget;
+class InstructionContainerItem;
 
 /**
  * @brief The InstructionTaskAreaWidget class is a scroll area holding TaskWidget with the
@@ -39,6 +40,8 @@ class InstructionTaskMonitor : public QWidget
 
 public:
   explicit InstructionTaskMonitor(QWidget* parent_widget = nullptr);
+
+  void SetInstructionContainer(InstructionContainerItem* container);
 
 private:
   std::unique_ptr<TaskWidget> CreateTestTask() const;

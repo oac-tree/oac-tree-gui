@@ -39,10 +39,13 @@ class InstructionTaskAreaWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit InstructionTaskAreaWidget(TaskWidget* root_task_widget,
-                                     QWidget* parent_widget = nullptr);
+  explicit InstructionTaskAreaWidget(QWidget* parent_widget = nullptr);
+
+  void SetTaskWidget(TaskWidget* task_widget);
 
 private:
+  std::unique_ptr<QWidget> CreateWrapperWidget(TaskWidget* task_widget) const;
+
   QScrollArea* m_scroll_area{nullptr};
 };
 

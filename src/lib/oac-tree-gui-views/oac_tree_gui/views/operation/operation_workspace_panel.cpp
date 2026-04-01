@@ -82,6 +82,8 @@ void OperationWorkspacePanel::SetProcedure(ProcedureItem* item)
   m_workspace_tree_widget->SetWorkspaceItem(workspace_item);
   m_workspace_table_widget->SetWorkspaceItem(workspace_item);
   m_node_editor_widget->SetProcedure(item);
+  m_instruction_task_monitor->SetInstructionContainer(
+      (item != nullptr) ? item->GetInstructionContainer() : nullptr);
 }
 
 void OperationWorkspacePanel::ReadSettings()

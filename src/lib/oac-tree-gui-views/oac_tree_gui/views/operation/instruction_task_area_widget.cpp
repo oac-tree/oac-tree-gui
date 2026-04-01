@@ -28,20 +28,31 @@
 namespace oac_tree_gui
 {
 
-InstructionTaskAreaWidget::InstructionTaskAreaWidget(TaskWidget* root_task_widget,
-                                                     QWidget* parent_widget)
+InstructionTaskAreaWidget::InstructionTaskAreaWidget(QWidget* parent_widget)
     : QWidget(parent_widget), m_scroll_area(new QScrollArea)
 {
   m_scroll_area->setWidgetResizable(true);
-
-  auto scroll_area_widget = new QWidget;
-  auto scroll_layout = new QVBoxLayout(scroll_area_widget);
-  scroll_layout->addWidget(root_task_widget);
-  scroll_layout->addStretch();
-  m_scroll_area->setWidget(scroll_area_widget);
-
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_scroll_area);
+}
+
+void InstructionTaskAreaWidget::SetTaskWidget(TaskWidget* task_widget)
+{
+  if (m_scroll_area->widget())
+  {
+    m_scroll_area->widget()->deleteLater();
+  }
+  m_scroll_area->setWidget(CreateWrapperWidget(task_widget).release());
+}
+
+std::unique_ptr<QWidget> InstructionTaskAreaWidget::CreateWrapperWidget(
+    TaskWidget* task_widget) const
+{
+  auto wrapper_widget = std::make_unique<QWidget>();
+  auto layout = new QVBoxLayout(wrapper_widget.get());
+  layout->addWidget(task_widget);
+  layout->addStretch();
+  return wrapper_widget;
 }
 
 }  // namespace oac_tree_gui
