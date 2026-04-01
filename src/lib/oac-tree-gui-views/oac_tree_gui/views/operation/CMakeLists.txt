@@ -1,6 +1,10 @@
 # Widgets for real time operation views
 
 target_sources(${library_name} PRIVATE
+  instruction_task_area_widget.cpp
+  instruction_task_area_widget.h
+  instruction_task_monitor.cpp
+  instruction_task_monitor.h
   job_list_widget.cpp
   job_list_widget.h
   job_property_widget.cpp
