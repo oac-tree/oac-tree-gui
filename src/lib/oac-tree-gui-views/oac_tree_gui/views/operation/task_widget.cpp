@@ -67,6 +67,7 @@ TaskWidget* TaskWidget::CreateAndAddChild(const QString& child_name)
   auto child_widget = new TaskWidget(child_name, this);
   m_children_group->layout()->addWidget(child_widget);
   m_children_group->setVisible(true);
+  m_status_widget->SetVerticalExpandPolicy(true);
   return child_widget;
 }
 

@@ -33,6 +33,7 @@ InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
     , m_task_area_widget(new InstructionTaskAreaWidget(CreateTestTask().release()))
 {
   auto layout = new QVBoxLayout(this);
+
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(m_task_area_widget);
 }
@@ -42,10 +43,16 @@ std::unique_ptr<TaskWidget> InstructionTaskMonitor::CreateTestTask() const
   auto result = std::make_unique<TaskWidget>("Sequence");
   result->SetInstructionStatus(InstructionStatus::kFailure);
 
-  auto wait0 = result->CreateAndAddChild("wait0");
-  wait0->SetInstructionStatus(InstructionStatus::kSuccess);
-  auto wait1 = result->CreateAndAddChild("wait1");
-  wait1->SetInstructionStatus(InstructionStatus::kRunning);
+  auto child0 = result->CreateAndAddChild("wait0");
+  child0->SetInstructionStatus(InstructionStatus::kSuccess);
+  auto child1 = result->CreateAndAddChild("wait1");
+  child1->SetInstructionStatus(InstructionStatus::kRunning);
+
+  auto sequence = result->CreateAndAddChild("Sequence");
+  auto child2 = sequence->CreateAndAddChild("wait2");
+  child2->SetInstructionStatus(InstructionStatus::kNotFinished);
+  auto child3 = sequence->CreateAndAddChild("wait3");
+  child3->SetInstructionStatus(InstructionStatus::kNotFinished);
 
   return result;
 }

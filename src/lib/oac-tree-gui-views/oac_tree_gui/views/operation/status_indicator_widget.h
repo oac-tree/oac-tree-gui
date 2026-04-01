@@ -50,6 +50,13 @@ public:
    */
   InstructionStatus GetInstructionStatus() const;
 
+  /**
+   * @brief Will be shown as long vertical bar if true, and as small square if false.
+   *
+   * Used for different appearance of branches and leafs in the task tree.
+   */
+  void SetVerticalExpandPolicy(bool expand);
+
 private:
   StatusIndicator* m_status_indicator{nullptr};
 };

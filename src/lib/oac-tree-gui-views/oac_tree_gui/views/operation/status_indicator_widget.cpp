@@ -22,6 +22,8 @@
 
 #include "status_indicator.h"
 
+#include <mvvm/style/mvvm_style_helper.h>
+
 #include <QHBoxLayout>
 
 namespace oac_tree_gui
@@ -33,7 +35,7 @@ StatusIndicatorWidget::StatusIndicatorWidget(QWidget* parent_widget)
   auto layout = new QHBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(m_status_indicator);
-  // setFixedSize(30, 30);
+  SetVerticalExpandPolicy(false);
 }
 
 void StatusIndicatorWidget::SetInstructionStatus(InstructionStatus status)
@@ -44,6 +46,12 @@ void StatusIndicatorWidget::SetInstructionStatus(InstructionStatus status)
 InstructionStatus StatusIndicatorWidget::GetInstructionStatus() const
 {
   return m_status_indicator->GetInstructionStatus();
+}
+
+void StatusIndicatorWidget::SetVerticalExpandPolicy(bool expand)
+{
+  const auto length = mvvm::style::UnitSize(2);
+  setFixedSize(length, expand ? QWIDGETSIZE_MAX : length);
 }
 
 }  // namespace oac_tree_gui
