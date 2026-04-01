@@ -24,6 +24,8 @@
 #include "instruction_task_widget_builder.h"
 #include "task_widget.h"
 
+#include <oac_tree_gui/model/instruction_container_item.h>
+
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -37,10 +39,24 @@ InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(m_task_area_widget);
 
-  m_task_area_widget->SetTaskWidget(CreateTestTask().release());
+  // m_task_area_widget->SetTaskWidget(CreateTestTask().release());
 }
 
-void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container) {}
+void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container)
+{
+  InstructionTaskWidgetBuilder builder;
+
+  for (auto instruction : container->GetInstructions())
+  {
+    // we create only first widget for the instruction task. In any case real time container can have
+    // only one instruction, so it should be enough.
+    if (auto task_widget = builder.CreateTaskWidget(*instruction))
+    {
+      m_task_area_widget->SetTaskWidget(task_widget.release());
+      break;
+    }
+  }
+}
 
 std::unique_ptr<TaskWidget> InstructionTaskMonitor::CreateTestTask() const
 {
