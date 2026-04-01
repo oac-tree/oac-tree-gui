@@ -20,6 +20,8 @@
 
 #include "operation_workspace_panel.h"
 
+#include "instruction_task_monitor.h"
+
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/views/composer/workspace_editor_widget.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
@@ -47,6 +49,7 @@ OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService& c
     , m_workspace_table_widget(
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTable))
     , m_node_editor_widget(new NodeEditorWidget(NodeEditorMode::kNodeViewer))
+    , m_instruction_task_monitor(new InstructionTaskMonitor)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -58,6 +61,7 @@ OperationWorkspacePanel::OperationWorkspacePanel(sup::gui::IAppCommandService& c
   m_stack_widget->AddWidget(m_workspace_tree_widget);
   m_stack_widget->AddWidget(m_workspace_table_widget);
   m_stack_widget->AddWidget(m_node_editor_widget, m_node_editor_widget->actions());
+  m_stack_widget->AddWidget(m_instruction_task_monitor, m_instruction_task_monitor->actions());
 
   layout->addWidget(m_stack_widget);
 

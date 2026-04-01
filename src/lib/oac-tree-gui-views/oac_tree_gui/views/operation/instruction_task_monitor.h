@@ -27,6 +27,7 @@ namespace oac_tree_gui
 {
 
 class InstructionTaskAreaWidget;
+class TaskWidget;
 
 /**
  * @brief The InstructionTaskAreaWidget class is a scroll area holding TaskWidget with the
@@ -40,7 +41,7 @@ public:
   explicit InstructionTaskMonitor(QWidget* parent_widget = nullptr);
 
 private:
-
+  std::unique_ptr<TaskWidget> CreateTestTask() const;
 
   InstructionTaskAreaWidget* m_task_area_widget{nullptr};
 };

@@ -39,6 +39,7 @@ namespace oac_tree_gui
 class ProcedureItem;
 class WorkspaceEditorWidget;
 class NodeEditorWidget;
+class InstructionTaskMonitor;
 
 /**
  * @brief The OperationWorkspacePanel class represents vertical panel on the right part of
@@ -71,6 +72,7 @@ private:
   WorkspaceEditorWidget* m_workspace_tree_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_table_widget{nullptr};
   NodeEditorWidget* m_node_editor_widget{nullptr};
+  InstructionTaskMonitor* m_instruction_task_monitor{nullptr};
 };
 
 }  // namespace oac_tree_gui
