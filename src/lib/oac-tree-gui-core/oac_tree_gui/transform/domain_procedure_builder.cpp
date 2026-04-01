@@ -55,7 +55,11 @@ struct InstructionStackNode
 };
 
 /**
- * @brief CreateAdjustedDomainInstruction
+ * @brief Creates domain instruction from the given item with possible behavior adjustment.
+ *
+ * Depending on the flag, stored on board of the item, the real domain instruction can be replaced
+ * by a dummy instruction with succeed or fail behavior.
+ *
  */
 std::unique_ptr<instruction_t> CreateAdjustedDomainInstruction(const InstructionItem& item)
 {
@@ -83,15 +87,6 @@ std::unique_ptr<instruction_t> CreateAdjustedDomainInstruction(const Instruction
 }  // namespace
 
 DomainProcedureBuilder::~DomainProcedureBuilder() = default;
-
-std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
-    const ProcedureItem& procedure_item)
-{
-  DomainProcedureBuilder builder;
-  auto result = std::make_unique<procedure_t>(procedure_item.GetFileName());
-  builder.PopulateProcedure(procedure_item, *result);
-  return result;
-}
 
 void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContainerItem* container,
                                                         procedure_t* procedure)
@@ -168,8 +163,10 @@ std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t*
 
 std::unique_ptr<procedure_t> CreateDomainProcedure(const ProcedureItem& procedure_item)
 {
+  auto result = std::make_unique<procedure_t>(procedure_item.GetFileName());
   DomainProcedureBuilder builder;
-  return builder.CreateProcedure(procedure_item);
+  builder.PopulateProcedure(procedure_item, *result);
+  return result;
 }
 
 }  // namespace oac_tree_gui

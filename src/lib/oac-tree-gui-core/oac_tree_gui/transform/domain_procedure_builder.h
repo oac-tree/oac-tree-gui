@@ -35,7 +35,6 @@ class InstructionItem;
 class InstructionContainerItem;
 class WorkspaceItem;
 class DomainWorkspaceBuilder;
-class ProcedurePreambleItem;
 
 //! Creates domain Procedure from ProcedureItem.
 //! Saves correspondence of SessionItem identifiers to newly created domain objects.
@@ -43,8 +42,6 @@ class ProcedurePreambleItem;
 class DomainProcedureBuilder
 {
 public:
-  static std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem& procedure_item);
-
   DomainProcedureBuilder() = default;
 
   ~DomainProcedureBuilder();
