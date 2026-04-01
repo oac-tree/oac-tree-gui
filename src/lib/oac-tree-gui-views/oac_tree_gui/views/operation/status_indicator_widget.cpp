@@ -41,4 +41,9 @@ void StatusIndicatorWidget::SetInstructionStatus(InstructionStatus status)
   m_status_indicator->SetInstructionStatus(status);
 }
 
+InstructionStatus StatusIndicatorWidget::GetInstructionStatus() const
+{
+  return m_status_indicator->GetInstructionStatus();
+}
+
 }  // namespace oac_tree_gui

@@ -46,6 +46,11 @@ public:
    */
   void SetInstructionStatus(InstructionStatus status);
 
+  /**
+   * @brief Returns current instruction status shown by the widget.
+   */
+  InstructionStatus GetInstructionStatus() const;
+
 private:
   void UpdateAppearance();
   InstructionStatus m_current_status{InstructionStatus::kUndefined};

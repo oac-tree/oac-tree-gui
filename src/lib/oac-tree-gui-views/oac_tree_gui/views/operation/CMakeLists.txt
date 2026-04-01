@@ -29,4 +29,6 @@ target_sources(${library_name} PRIVATE
   status_indicator.h
   status_indicator_widget.cpp
   status_indicator_widget.h
+  task_widget.cpp
+  task_widget.h
 )

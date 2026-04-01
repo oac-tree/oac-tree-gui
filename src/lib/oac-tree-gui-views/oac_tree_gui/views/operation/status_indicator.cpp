@@ -84,6 +84,11 @@ void StatusIndicator::SetInstructionStatus(InstructionStatus status)
   }
 }
 
+InstructionStatus StatusIndicator::GetInstructionStatus() const
+{
+  return m_current_status;
+}
+
 void StatusIndicator::UpdateAppearance()
 {
   const auto background_color = GetColorForStatus(m_current_status);
