@@ -62,6 +62,11 @@ public:
    */
   TaskWidget* CreateAndAddChild(const QString& child_name);
 
+   /**
+   * @brief Adds separator line between children widgets.
+   */
+  void AddSeparator();
+
   /**
    * @brief Returns text of the instruction label.
    */

@@ -45,12 +45,16 @@ std::unique_ptr<TaskWidget> InstructionTaskMonitor::CreateTestTask() const
 
   auto child0 = result->CreateAndAddChild("wait0");
   child0->SetInstructionStatus(InstructionStatus::kSuccess);
+
+  result->AddSeparator();
   auto child1 = result->CreateAndAddChild("wait1");
   child1->SetInstructionStatus(InstructionStatus::kRunning);
 
+  result->AddSeparator();
   auto sequence = result->CreateAndAddChild("Sequence");
   auto child2 = sequence->CreateAndAddChild("wait2");
   child2->SetInstructionStatus(InstructionStatus::kNotFinished);
+  sequence->AddSeparator();
   auto child3 = sequence->CreateAndAddChild("wait3");
   child3->SetInstructionStatus(InstructionStatus::kNotFinished);
 

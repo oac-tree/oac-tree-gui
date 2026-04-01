@@ -71,6 +71,14 @@ TaskWidget* TaskWidget::CreateAndAddChild(const QString& child_name)
   return child_widget;
 }
 
+void TaskWidget::AddSeparator()
+{
+  auto frame = new QFrame;
+  frame->setFrameShape(QFrame::HLine);
+  frame->setFrameShadow(QFrame::Sunken);
+  m_children_group->layout()->addWidget(frame);
+}
+
 QString TaskWidget::GetLabelText() const
 {
   return m_instruction_label->text();
