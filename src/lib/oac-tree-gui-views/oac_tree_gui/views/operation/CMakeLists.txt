@@ -25,4 +25,8 @@ target_sources(${library_name} PRIVATE
   realtime_instruction_tree_widget.h
   remote_connection_dialog.cpp
   remote_connection_dialog.h
+  status_indicator.cpp
+  status_indicator.h
+  status_indicator_widget.cpp
+  status_indicator_widget.h
 )
