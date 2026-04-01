@@ -31,17 +31,28 @@ namespace oac_tree_gui
 
 namespace
 {
+
+/**
+ * @brief The StackNode helper struct to populate stack.
+ */
 struct StackNode
 {
   const InstructionItem& item;
   TaskWidget& widget;
 };
+
+QString GetInstructionLabel(const InstructionItem& item)
+{
+  const std::string result = item.GetName().empty() ? item.GetDisplayName() : item.GetName();
+  return QString::fromStdString(result);
+}
+
 }  // namespace
 
 std::unique_ptr<TaskWidget> InstructionTaskWidgetBuilder::CreateTaskWidget(
     const InstructionItem& root_instruction)
 {
-  auto result = std::make_unique<TaskWidget>(QString::fromStdString(root_instruction.GetName()));
+  auto result = std::make_unique<TaskWidget>(GetInstructionLabel(root_instruction));
 
   std::stack<StackNode> stack;
 
@@ -55,8 +66,7 @@ std::unique_ptr<TaskWidget> InstructionTaskWidgetBuilder::CreateTaskWidget(
 
     for (const auto& child_instruction : node.item.GetInstructions())
     {
-      auto child_widget =
-          node.widget.CreateAndAddChild(QString::fromStdString(child_instruction->GetName()));
+      auto child_widget = node.widget.CreateAndAddChild(GetInstructionLabel(*child_instruction));
       m_instruction_to_widget[child_instruction] = child_widget;
       stack.push({*child_instruction, *child_widget});
     }
