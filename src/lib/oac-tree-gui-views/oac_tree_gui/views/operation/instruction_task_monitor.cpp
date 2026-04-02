@@ -25,6 +25,11 @@
 #include "task_widget.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_constants.h>
+
+#include <mvvm/model/model_utils.h>
+#include <mvvm/signals/model_listener.h>
 
 #include <QVBoxLayout>
 
@@ -32,15 +37,17 @@ namespace oac_tree_gui
 {
 
 InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
-    : QWidget(parent_widget), m_task_area_widget(new InstructionTaskAreaWidget(this))
+    : QWidget(parent_widget)
+    , m_task_area_widget(new InstructionTaskAreaWidget(this))
+    , m_task_widget_builder(std::make_unique<InstructionTaskWidgetBuilder>())
 {
   auto layout = new QVBoxLayout(this);
 
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(m_task_area_widget);
-
-  // m_task_area_widget->SetTaskWidget(CreateTestTask().release());
 }
+
+InstructionTaskMonitor::~InstructionTaskMonitor() = default;
 
 void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container)
 {
@@ -49,38 +56,30 @@ void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* c
     m_task_area_widget->Clear();
     return;
   }
-  InstructionTaskWidgetBuilder builder;
+
+  m_listener = std::make_unique<mvvm::ModelListener>(container->GetModel());
+  m_listener->Connect<mvvm::DataChangedEvent>(this, &InstructionTaskMonitor::OnDataChangedEvent);
 
   for (auto instruction : container->GetInstructions())
   {
     // we create only first widget for the instruction task. In any case real time container can
     // have only one instruction, so it should be enough.
-    m_task_area_widget->SetTaskWidget(builder.CreateTaskWidget(*instruction));
+    m_task_area_widget->SetTaskWidget(m_task_widget_builder->CreateTaskWidget(*instruction));
     break;
   }
 }
 
-std::unique_ptr<TaskWidget> InstructionTaskMonitor::CreateTestTask() const
+void InstructionTaskMonitor::OnDataChangedEvent(const mvvm::DataChangedEvent& event)
 {
-  auto result = std::make_unique<TaskWidget>("Sequence");
-  result->SetInstructionStatus(InstructionStatus::kFailure);
-
-  auto child0 = result->CreateAndAddChild("wait0");
-  child0->SetInstructionStatus(InstructionStatus::kSuccess);
-
-  result->AddSeparator();
-  auto child1 = result->CreateAndAddChild("wait1");
-  child1->SetInstructionStatus(InstructionStatus::kRunning);
-
-  result->AddSeparator();
-  auto sequence = result->CreateAndAddChild("Sequence");
-  auto child2 = sequence->CreateAndAddChild("wait2");
-  child2->SetInstructionStatus(InstructionStatus::kNotFinished);
-  sequence->AddSeparator();
-  auto child3 = sequence->CreateAndAddChild("wait3");
-  child3->SetInstructionStatus(InstructionStatus::kNotFinished);
-
-  return result;
+  auto instruction_item = mvvm::utils::FindItemUp<InstructionItem>(event.item);
+  if (instruction_item != nullptr)
+  {
+    if (auto task_widget = m_task_widget_builder->FindWidgetForInstruction(instruction_item);
+        task_widget)
+    {
+      task_widget->SetInstructionStatus(instruction_item->GetStatus());
+    }
+  }
 }
 
 }  // namespace oac_tree_gui
