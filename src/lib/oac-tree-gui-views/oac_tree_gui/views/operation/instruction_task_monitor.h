@@ -40,8 +40,11 @@ class InstructionContainerItem;
 class InstructionTaskWidgetBuilder;
 
 /**
- * @brief The InstructionTaskAreaWidget class is a scroll area holding TaskWidget with the
- * instruction task tree.
+ * @brief The InstructionTaskMonitor class is a main widget that holds TaskTree representation
+ * of instruction tree.
+ *
+ * It contains vertical colored bars repesenting instruction statuses, and their descriptions in a
+ * deep nested structure.
  */
 class InstructionTaskMonitor : public QWidget
 {

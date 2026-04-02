@@ -30,6 +30,12 @@ namespace oac_tree_gui
 class TaskWidget;
 class InstructionItem;
 
+/**
+ * @brief The InstructionTaskWidgetBuilder class is used to build nested
+ * TaskWidget structure representing given root instruction.
+ *
+ * It also allows to find particular TaskWIdget for a given child instruction.
+ */
 class InstructionTaskWidgetBuilder
 {
 public:
