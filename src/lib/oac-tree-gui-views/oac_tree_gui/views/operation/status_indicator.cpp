@@ -50,7 +50,7 @@ QColor GetColorForStatus(InstructionStatus status)
   // We use the same color for not started and not finished states.
   static const std::map<InstructionStatus, QColor> status_to_color{
       {InstructionStatus::kNotStarted, Qt::lightGray},
-      {InstructionStatus::kNotFinished, Qt::lightGray},
+      {InstructionStatus::kNotFinished, Qt::yellow},
       {InstructionStatus::kRunning, Qt::yellow},
       {InstructionStatus::kSuccess, Qt::green},
       {InstructionStatus::kFailure, Qt::red},
