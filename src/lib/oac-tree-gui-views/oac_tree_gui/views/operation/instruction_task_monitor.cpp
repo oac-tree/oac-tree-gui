@@ -44,17 +44,19 @@ InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
 
 void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container)
 {
+  if (container == nullptr)
+  {
+    m_task_area_widget->Clear();
+    return;
+  }
   InstructionTaskWidgetBuilder builder;
 
   for (auto instruction : container->GetInstructions())
   {
-    // we create only first widget for the instruction task. In any case real time container can have
-    // only one instruction, so it should be enough.
-    if (auto task_widget = builder.CreateTaskWidget(*instruction))
-    {
-      m_task_area_widget->SetTaskWidget(task_widget.release());
-      break;
-    }
+    // we create only first widget for the instruction task. In any case real time container can
+    // have only one instruction, so it should be enough.
+    m_task_area_widget->SetTaskWidget(builder.CreateTaskWidget(*instruction));
+    break;
   }
 }
 

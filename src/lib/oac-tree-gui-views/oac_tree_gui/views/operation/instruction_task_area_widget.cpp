@@ -36,23 +36,29 @@ InstructionTaskAreaWidget::InstructionTaskAreaWidget(QWidget* parent_widget)
   layout->addWidget(m_scroll_area);
 }
 
-void InstructionTaskAreaWidget::SetTaskWidget(TaskWidget* task_widget)
+void InstructionTaskAreaWidget::SetTaskWidget(std::unique_ptr<TaskWidget> task_widget)
 {
-  if (m_scroll_area->widget())
-  {
-    m_scroll_area->widget()->deleteLater();
-  }
-  m_scroll_area->setWidget(CreateWrapperWidget(task_widget).release());
+  Clear();
+  AddWidgetToArea(std::move(task_widget));
 }
 
-std::unique_ptr<QWidget> InstructionTaskAreaWidget::CreateWrapperWidget(
-    TaskWidget* task_widget) const
+void InstructionTaskAreaWidget::Clear()
 {
-  auto wrapper_widget = std::make_unique<QWidget>();
-  auto layout = new QVBoxLayout(wrapper_widget.get());
-  layout->addWidget(task_widget);
+  if (m_scroll_area->widget() != nullptr)
+  {
+    m_scroll_area->takeWidget()->deleteLater();
+  }
+}
+
+void InstructionTaskAreaWidget::AddWidgetToArea(std::unique_ptr<TaskWidget> task_widget) const
+{
+  // we need wrapper widget to add stretch at the end of task widget to align it to top of scroll
+  // area
+  auto wrapper_widget = new QWidget;
+  auto layout = new QVBoxLayout(wrapper_widget);
+  layout->addWidget(task_widget.release());  // task widget ownership goes to layout
   layout->addStretch();
-  return wrapper_widget;
+  m_scroll_area->setWidget(wrapper_widget);  // wrapper ownership goes to scroll area
 }
 
 }  // namespace oac_tree_gui

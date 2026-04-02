@@ -41,10 +41,21 @@ class InstructionTaskAreaWidget : public QWidget
 public:
   explicit InstructionTaskAreaWidget(QWidget* parent_widget = nullptr);
 
-  void SetTaskWidget(TaskWidget* task_widget);
+  /**
+   * @brief Set widget to show in a scroll area.
+   *
+   * Ownership of the widget is transferred to InstructionTaskAreaWidget, so it will be deleted when
+   * the new widget is set or when InstructionTaskAreaWidget is deleted.
+   */
+  void SetTaskWidget(std::unique_ptr<TaskWidget> task_widget);
+
+  /**
+   * @brief Clear the content of scroll area.
+   */
+  void Clear();
 
 private:
-  std::unique_ptr<QWidget> CreateWrapperWidget(TaskWidget* task_widget) const;
+  void AddWidgetToArea(std::unique_ptr<TaskWidget> task_widget) const;
 
   QScrollArea* m_scroll_area{nullptr};
 };
