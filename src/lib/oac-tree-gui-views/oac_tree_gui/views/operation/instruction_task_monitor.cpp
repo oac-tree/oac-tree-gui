@@ -41,6 +41,8 @@ InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
     , m_task_area_widget(new InstructionTaskAreaWidget(this))
     , m_task_widget_builder(std::make_unique<InstructionTaskWidgetBuilder>())
 {
+  setWindowTitle("Instruction Task Monitor");
+
   auto layout = new QVBoxLayout(this);
 
   layout->setContentsMargins(0, 0, 0, 0);
