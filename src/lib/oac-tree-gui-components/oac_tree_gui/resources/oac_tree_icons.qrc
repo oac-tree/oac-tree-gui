@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/oac-tree">
+        <file>icons/progressindicator.png</file>
         <file>style/default_dark_style.json</file>
         <file>style/default_light_style.json</file>
         <file>icons/dialog-close-16.svg</file>

@@ -21,6 +21,7 @@
 #include "status_indicator.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/widgets/progressindicator.h>
 
 #include <map>
 
@@ -66,7 +67,8 @@ QColor GetColorForStatus(InstructionStatus status)
 
 }  // namespace
 
-StatusIndicator::StatusIndicator(QWidget* parent_widget) : QLabel(parent_widget)
+StatusIndicator::StatusIndicator(QWidget* parent_widget)
+    : QLabel(parent_widget), m_progress_indicator(new ProgressIndicator(this))
 {
   setAlignment(Qt::AlignCenter);
   QFont f = font();
@@ -93,6 +95,7 @@ void StatusIndicator::UpdateAppearance()
 {
   const auto background_color = GetColorForStatus(m_current_status);
   setStyleSheet(GetColorButtonStyleSheet(background_color));
+  m_progress_indicator->show();
 }
 
 }  // namespace oac_tree_gui

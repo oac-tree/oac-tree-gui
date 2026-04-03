@@ -7,16 +7,21 @@
 
 #include <QObject>
 
+namespace oac_tree_gui
+{
+
 class ProgressIndicator : public QObject
 {
 public:
-    ProgressIndicator(QWidget *parent = nullptr);
+  ProgressIndicator(QWidget* parent = nullptr);
 
-    void show();
-    void hide();
+  void show();
+  void hide();
 
 private:
-    class ProgressIndicatorWidget *m_widget = nullptr;
+  class ProgressIndicatorWidget* m_widget = nullptr;
 };
 
-#endif // PROGRESSINDICATOR_H
+}  // namespace oac_tree_gui
+
+#endif  // PROGRESSINDICATOR_H
