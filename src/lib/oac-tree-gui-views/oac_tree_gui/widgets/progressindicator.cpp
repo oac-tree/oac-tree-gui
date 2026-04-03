@@ -121,7 +121,8 @@ void ProgressIndicatorPainter::paint(QPainter& painter, const QRect& rect) const
 class ProgressIndicatorWidget : public OverlayWidget
 {
 public:
-  explicit ProgressIndicatorWidget(QWidget* parent = nullptr) : OverlayWidget(parent)
+  explicit ProgressIndicatorWidget(QWidget* parent = nullptr)
+      : OverlayWidget(parent)
   {
     setPaintFunction([this](QWidget* w, QPainter& p, QPaintEvent*)
                      { m_paint.paint(p, w->rect()); });
@@ -131,9 +132,26 @@ public:
 
   QSize sizeHint() const final { return m_paint.size(); }
 
+  void StartAnimation() { m_paint.startAnimation(); }
+  void StopAnimation() { m_paint.stopAnimation(); }
+
 protected:
-  void showEvent(QShowEvent*) final { m_paint.startAnimation(); }
-  void hideEvent(QHideEvent*) final { m_paint.stopAnimation(); }
+  void showEvent(QShowEvent*) final
+  {
+    qDebug() << "show event";
+    // if (m_indicator_type == IndicatorType::kAnimated)
+    // {
+    //   m_paint.startAnimation();
+    // }
+  }
+  void hideEvent(QHideEvent*) final
+  {
+     qDebug() << "hide event";
+    // if (m_indicator_type == IndicatorType::kAnimated)
+    // {
+    //   m_paint.stopAnimation();
+    // }
+  }
 
 private:
   ProgressIndicatorPainter m_paint;
@@ -144,14 +162,36 @@ ProgressIndicator::ProgressIndicator(QWidget* parent)
 {
 }
 
-void ProgressIndicator::show()
+void ProgressIndicator::SetIndicatorType(IndicatorType indicator_type)
 {
-  m_widget->show();
+  if (indicator_type == IndicatorType::kHidden)
+  {
+    m_widget->hide();
+    m_widget->StopAnimation();
+  }
+  else
+  {
+    m_widget->show();
+    if (indicator_type == IndicatorType::kAnimated)
+    {
+      m_widget->StartAnimation();
+    }
+    else
+    {
+      m_widget->StopAnimation();
+    }
+  }
+
 }
 
-void ProgressIndicator::hide()
-{
-  m_widget->hide();
-}
+// void ProgressIndicator::show()
+// {
+//   m_widget->show();
+// }
+
+// void ProgressIndicator::hide()
+// {
+//   m_widget->hide();
+// }
 
 }  // namespace oac_tree_gui

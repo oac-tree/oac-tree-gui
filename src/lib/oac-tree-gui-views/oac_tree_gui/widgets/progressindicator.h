@@ -10,13 +10,22 @@
 namespace oac_tree_gui
 {
 
+enum class IndicatorType : int
+{
+  kHidden,
+  kStatic,
+  kAnimated
+};
+
 class ProgressIndicator : public QObject
 {
 public:
-  ProgressIndicator(QWidget* parent = nullptr);
+  explicit ProgressIndicator(QWidget* parent = nullptr);
 
-  void show();
-  void hide();
+  void SetIndicatorType(IndicatorType indicator_type);
+
+  // void show();
+  // void hide();
 
 private:
   class ProgressIndicatorWidget* m_widget = nullptr;

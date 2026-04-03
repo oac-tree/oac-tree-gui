@@ -68,7 +68,8 @@ QColor GetColorForStatus(InstructionStatus status)
 }  // namespace
 
 StatusIndicator::StatusIndicator(QWidget* parent_widget)
-    : QLabel(parent_widget), m_progress_indicator(new ProgressIndicator(this))
+    : QLabel(parent_widget)
+    , m_progress_indicator(new ProgressIndicator(this))
 {
   setAlignment(Qt::AlignCenter);
   QFont f = font();
@@ -93,9 +94,18 @@ InstructionStatus StatusIndicator::GetInstructionStatus() const
 
 void StatusIndicator::UpdateAppearance()
 {
+  static const std::map<InstructionStatus, IndicatorType> status_to_indicator_type{
+      {InstructionStatus::kNotStarted, IndicatorType::kHidden},
+      {InstructionStatus::kNotFinished, IndicatorType::kAnimated},
+      {InstructionStatus::kRunning, IndicatorType::kAnimated},
+      {InstructionStatus::kSuccess, IndicatorType::kHidden},
+      {InstructionStatus::kFailure, IndicatorType::kHidden},
+      {InstructionStatus::kUndefined, IndicatorType::kHidden}};
+
   const auto background_color = GetColorForStatus(m_current_status);
   setStyleSheet(GetColorButtonStyleSheet(background_color));
-  m_progress_indicator->show();
+
+  m_progress_indicator->SetIndicatorType(status_to_indicator_type.at(m_current_status));
 }
 
 }  // namespace oac_tree_gui
