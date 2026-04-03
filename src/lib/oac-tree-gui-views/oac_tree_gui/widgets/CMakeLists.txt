@@ -10,4 +10,6 @@ target_sources(${library_name} PRIVATE
   flatlist_delegate.h
   flatlist_view.cpp
   flatlist_view.h
+  progressindicator.cpp
+  progressindicator.h
 )
