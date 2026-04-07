@@ -42,12 +42,28 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
+  /**
+   * @brief Returns procedure description.
+   *
+   * This is what is stored in the domain procedure's as name attribute.
+   */
   std::string GetDescription() const;
 
+  /**
+   * @brief Sets procedure description.
+   *
+   * This is what is stored in the domain procedure's as name attribute.
+   */
   void SetDescription(const std::string& value);
 
+  /**
+   * @brief Returns file name from which procedure was imported.
+   */
   std::string GetFileName() const;
 
+  /**
+   * @brief Sets file name from which procedure was imported.
+   */
   void SetFileName(const std::string& value);
 
   InstructionContainerItem* GetInstructionContainer() const;

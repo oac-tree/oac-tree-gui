@@ -51,8 +51,7 @@ class ProcedureItemTransformHelperTest : public ::testing::Test
 {
 };
 
-//! Populate InstructionContainerItem from empty Procedure.
-TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromEmptyProcedure)
+TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromEmptyProcedure)
 {
   const ::sup::oac_tree::Procedure procedure;
 
@@ -60,10 +59,19 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromEmptyProcedure)
 
   EXPECT_EQ(procedure_item->GetInstructionContainer()->GetTotalItemCount(), 0);
   EXPECT_EQ(procedure_item->GetWorkspace()->GetTotalItemCount(), 0);
+  EXPECT_EQ(procedure_item->GetDescription(), std::string());
 }
 
-//! Populate InstructionContainerItem from Procedure with two Wait instruction.
-TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithTwoWaits)
+TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromNamedProcedure)
+{
+  ::sup::oac_tree::Procedure procedure;
+  procedure.AddAttribute(domainconstants::kNameAttribute, "abc");
+
+  auto procedure_item = CreateProcedureItem(procedure);
+  EXPECT_EQ(procedure_item->GetDescription(), "abc");
+}
+
+TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromDomainProcedureWithTwoWaits)
 {
   ::sup::oac_tree::Procedure procedure;
 
@@ -90,8 +98,8 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithTwoWaits)
   EXPECT_TRUE(wait_item1->IsRoot());
 }
 
-//! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
-TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithSequence)
+TEST_F(ProcedureItemTransformHelperTest,
+       CreateProcedureItemFromDomainProcedureWithNestedInstructions)
 {
   ::sup::oac_tree::Procedure procedure;
 
@@ -114,7 +122,7 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithSequence)
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
 
-TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithLocalVariable)
+TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromDomainProcedureWithLocalVariable)
 {
   ::sup::oac_tree::Procedure procedure;
 
@@ -145,7 +153,6 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithLocalVaria
   EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 }
 
-//! Procedure with local include.
 TEST_F(ProcedureItemTransformHelperTest, LocalIncludeProcedure)
 {
   auto procedure = test::CreateLocalIncludeProcedure();
@@ -219,7 +226,6 @@ TEST_F(ProcedureItemTransformHelperTest, PopulateProcedurePreambleItem)
   }
 }
 
-//! Populate ProcedureItem from the domain procedure containing preamble.
 TEST_F(ProcedureItemTransformHelperTest, PopulateItemFromProcedureWithPreamble)
 {
   using sup::oac_tree::TypeRegistrationInfo;

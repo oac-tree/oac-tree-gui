@@ -21,6 +21,7 @@
 #include "procedure_item_transform_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -75,6 +76,11 @@ void PopulateInstructionContainerItem(const procedure_t& procedure,
  */
 void PopulateProcedureItem(const procedure_t& procedure, ProcedureItem& procedure_item)
 {
+  if (procedure.HasAttribute(domainconstants::kNameAttribute))
+  {
+    procedure_item.SetDescription(procedure.GetAttributeString(domainconstants::kNameAttribute));
+  }
+
   auto instruction_container = procedure_item.GetInstructionContainer();
   PopulateInstructionContainerItem(procedure, *instruction_container);
 
