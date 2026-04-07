@@ -40,8 +40,9 @@ Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 namespace oac_tree_gui::test
 {
 
-//! Tests for ProcedureListActionHandler class.
-
+/**
+ * @brief Tests for ProcedureListActionHandler class.
+ */
 class ProcedureListActionHandlerTest : public ::testing::Test
 {
 public:
@@ -82,7 +83,6 @@ public:
   std::unique_ptr<QMimeData> m_copy_result;
 };
 
-//! Initial state of action handler.
 TEST_F(ProcedureListActionHandlerTest, InitialState)
 {
   // all callbacks should be initialised
@@ -93,7 +93,6 @@ TEST_F(ProcedureListActionHandlerTest, InitialState)
                RuntimeException);
 }
 
-//! Insert new procedure in empty container.
 TEST_F(ProcedureListActionHandlerTest, InsertInEmptyContainer)
 {
   auto handler = CreateActionHandler(nullptr);  // nothing is selected
@@ -115,8 +114,7 @@ TEST_F(ProcedureListActionHandlerTest, InsertInEmptyContainer)
   EXPECT_EQ(mvvm::test::GetSendItem<const ProcedureItem*>(spy_selection_request), inserted);
 }
 
-//! Insert procedure after inserted procedure.
-TEST_F(ProcedureListActionHandlerTest, AppendInContainerWhenNothingIsSelected)
+TEST_F(ProcedureListActionHandlerTest, AppendProcedureWhenNothingIsSelected)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
 
@@ -136,11 +134,10 @@ TEST_F(ProcedureListActionHandlerTest, AppendInContainerWhenNothingIsSelected)
 
   // in the absence of selection item was appended to the container
   EXPECT_TRUE(mvvm::utils::AreTheSame(m_procedure_container->GetAllItems(),
-                                    std::vector<const mvvm::SessionItem*>({proc0, send_item})));
+                                      std::vector<const mvvm::SessionItem*>({proc0, send_item})));
 }
 
-//! Insert procedure between two procedures.
-TEST_F(ProcedureListActionHandlerTest, InsertBetweenTwoProceduresContainer)
+TEST_F(ProcedureListActionHandlerTest, InsertBetweenTwoProcedures)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
   auto proc1 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
@@ -160,11 +157,11 @@ TEST_F(ProcedureListActionHandlerTest, InsertBetweenTwoProceduresContainer)
   auto send_item = mvvm::test::GetSendItem<const ProcedureItem*>(spy_selection_request);
 
   // sent item should be located between two procedures
-  EXPECT_TRUE(mvvm::utils::AreTheSame(m_procedure_container->GetAllItems(),
-            std::vector<const mvvm::SessionItem*>({proc0, send_item, proc1})));
+  EXPECT_TRUE(
+      mvvm::utils::AreTheSame(m_procedure_container->GetAllItems(),
+                              std::vector<const mvvm::SessionItem*>({proc0, send_item, proc1})));
 }
 
-//! Remove procedure from the middle.
 TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
@@ -188,7 +185,6 @@ TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
   EXPECT_EQ(m_procedure_container->GetAllItems(), std::vector<mvvm::SessionItem*>({proc0, proc2}));
 }
 
-//! Remove last procedure. We expect nullptr to be emited as procedure select suggestion.
 TEST_F(ProcedureListActionHandlerTest, RemoveLastProcedure)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
@@ -202,12 +198,11 @@ TEST_F(ProcedureListActionHandlerTest, RemoveLastProcedure)
 
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
-  // request to select a procedure just after the deleted one
+  // request to select a procedure just after the deleted one, nullptr is expected
   auto send_item = mvvm::test::GetSendItem<const ProcedureItem*>(spy_selection_request);
   EXPECT_EQ(send_item, nullptr);
 }
 
-//! Copy operation when nothing is selected.
 TEST_F(ProcedureListActionHandlerTest, CopyPasteWhenNothingIsSelected)
 {
   // nothing is selected
@@ -217,11 +212,10 @@ TEST_F(ProcedureListActionHandlerTest, CopyPasteWhenNothingIsSelected)
   EXPECT_FALSE(handler->CanCut());
 }
 
-//! Copy operation when item is selected.
-TEST_F(ProcedureListActionHandlerTest, CopyOperation)
+TEST_F(ProcedureListActionHandlerTest, CopyOperationWhenItemIsSelected)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
-  proc0->SetName("abc");
+  proc0->SetDisplayName("abc");
 
   EXPECT_EQ(m_copy_result.get(), nullptr);
 
@@ -235,8 +229,7 @@ TEST_F(ProcedureListActionHandlerTest, CopyOperation)
   EXPECT_TRUE(m_copy_result->hasFormat(kCopyProcedureMimeType));
 }
 
-//! Paste when mime data has wrong type.
-TEST_F(ProcedureListActionHandlerTest, PasteWrongType)
+TEST_F(ProcedureListActionHandlerTest, PasteWrongMimeType)
 {
   const QMimeData mime_data;
 
@@ -255,11 +248,10 @@ TEST_F(ProcedureListActionHandlerTest, PasteWrongType)
   EXPECT_EQ(spy_selection_request.count(), 0);
 }
 
-//! Paste operation in empty model.
 TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
 {
   ProcedureItem item_to_paste;
-  item_to_paste.SetName("abc");
+  item_to_paste.SetDisplayName("abc");
 
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
 
@@ -280,19 +272,18 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
   auto pasted_item = dynamic_cast<ProcedureItem*>(m_procedure_container->GetAllItems().at(0));
   ASSERT_NE(pasted_item, nullptr);
 
-  EXPECT_EQ(pasted_item->GetName(), std::string("abc"));
+  EXPECT_EQ(pasted_item->GetDisplayName(), std::string("abc"));
   // request to select just inserted procedure
   EXPECT_EQ(mvvm::test::GetSendItem<const ProcedureItem*>(spy_selection_request), pasted_item);
 }
 
-//! Paste operation between two existing items.
 TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
   auto proc1 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
 
   ProcedureItem item_to_paste;
-  item_to_paste.SetName("abc");
+  item_to_paste.SetDisplayName("abc");
 
   auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
 
@@ -313,13 +304,12 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
   auto pasted_item = dynamic_cast<ProcedureItem*>(m_procedure_container->GetAllItems().at(1));
   ASSERT_NE(pasted_item, nullptr);
 
-  EXPECT_EQ(pasted_item->GetName(), std::string("abc"));
+  EXPECT_EQ(pasted_item->GetDisplayName(), std::string("abc"));
   // request to select just inserted procedure
   EXPECT_EQ(mvvm::test::GetSendItem<const ProcedureItem*>(spy_selection_request), pasted_item);
 }
 
-//! Cut operation when item is selected.
-TEST_F(ProcedureListActionHandlerTest, CutOperation)
+TEST_F(ProcedureListActionHandlerTest, CutOperationWhenItemIsSelected)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
   auto proc1 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());

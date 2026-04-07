@@ -82,7 +82,6 @@ void CollectInstructionPluginNames(const oac_tree_gui::InstructionContainerItem&
 
 ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>())
 {
-  (void)AddProperty(itemconstants::kName, std::string()).SetDisplayName("Name");
   (void)AddProperty(itemconstants::kDescription, std::string()).SetDisplayName("Description");
   (void)AddProperty(kFileName, std::string()).SetDisplayName("File name");
   (void)AddBranch<InstructionContainerItem>(kInstructions).SetDisplayName("Instructions");
@@ -95,16 +94,6 @@ ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>()
 std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone() const
 {
   return std::make_unique<ProcedureItem>(*this);
-}
-
-std::string ProcedureItem::GetName() const
-{
-  return Property<std::string>(itemconstants::kName);
-}
-
-void ProcedureItem::SetName(const std::string& value)
-{
-  (void)SetProperty(itemconstants::kName, value);
 }
 
 std::string ProcedureItem::GetDescription() const

@@ -30,17 +30,17 @@ class WorkspaceItem;
 class InstructionContainerItem;
 class ProcedurePreambleItem;
 
-//! Represents Procedure.
+/**
+ * @brief The ProcedureItem class represents a sequencer procedure.
+ *
+ * It has a container with instructions, and a workspace with variables.
+ */
 class ProcedureItem : public mvvm::CompoundItem
 {
 public:
   ProcedureItem();
 
   std::unique_ptr<SessionItem> Clone() const override;
-
-  std::string GetName() const;
-
-  void SetName(const std::string& value);
 
   std::string GetDescription() const;
 

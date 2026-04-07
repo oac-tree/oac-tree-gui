@@ -55,12 +55,8 @@ TEST_F(ProcedureItemTest, GetterAndSetter)
 {
   ProcedureItem item;
 
-  EXPECT_EQ(item.GetName(), std::string());
   EXPECT_EQ(item.GetDescription(), std::string());
   EXPECT_EQ(item.GetFileName(), std::string());
-
-  item.SetName("abc");
-  EXPECT_EQ(item.GetName(), std::string("abc"));
 
   item.SetDescription("def");
   EXPECT_EQ(item.GetDescription(), std::string("def"));

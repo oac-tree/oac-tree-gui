@@ -26,6 +26,9 @@
 namespace oac_tree_gui::test
 {
 
+/**
+ * @brief Tests for WorkspaceItem class.
+ */
 class WorkspaceItemTest : public ::testing::Test
 {
 };
