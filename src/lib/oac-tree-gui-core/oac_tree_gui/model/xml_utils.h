@@ -21,6 +21,7 @@
 #ifndef OAC_TREE_GUI_MODEL_XML_UTILS_H_
 #define OAC_TREE_GUI_MODEL_XML_UTILS_H_
 
+//! @file
 //! Collection of utility functions to import xml files from disk into SessionModel.
 
 #include <memory>
@@ -60,7 +61,6 @@ std::string ExportToXMLString(const ProcedureItem& procedure_item);
  *
  * @details If HTML quotation marks are not there, leave everything, including quotes, untouched.
  */
-
 std::string ReplaceQuotationMarks(const std::string& str);
 }  // namespace oac_tree_gui
 

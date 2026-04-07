@@ -37,15 +37,14 @@
 namespace oac_tree_gui
 {
 
-//! Testing methods from importutils.h
-
+/**
+ * @brief Tests for XML import and export utilities.
+ */
 class XmlUtilsTest : public test::FolderTest
 {
 public:
   XmlUtilsTest() : FolderTest("XmlUtilsTest") {}
 };
-
-//! Importing xml Procedure containing a single instruction.
 
 TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
 {
@@ -60,13 +59,14 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
   auto procedure_item = oac_tree_gui::ImportFromFile(file_name);
 
   EXPECT_EQ(procedure_item->GetFileName(), file_name);
+  // as hard-coded in test::CreateProcedureString
+  const std::string expected_description = "Trivial procedure for testing purposes";
+  EXPECT_EQ(procedure_item->GetDescription(), expected_description);
 
   auto container = procedure_item->GetInstructionContainer();
   auto wait_item = container->GetItem<oac_tree_gui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
-
-//! Importing xml Procedure containing a single instruction.
 
 TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 {
@@ -88,11 +88,9 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
   EXPECT_EQ(expected_anyvalue, GetAnyValue(*variable_item));
 }
 
-//! Exporting xml Procedure containing a single instruction.
-
 TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
 {
-  oac_tree_gui::ProcedureItem procedure_item;
+  const oac_tree_gui::ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto wait0 = container->InsertItem<oac_tree_gui::WaitItem>(mvvm::TagIndex::Append());
@@ -103,7 +101,9 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   <Workspace/>
 )"};
 
-  // current ExportToXMLString doesn't know how export with schema
+  // current ExportToXMLString doesn't know how export with schema, and it doesn't know how to
+  // export Procedure name attribute, so we don't expect them in the output string.
+  // This is because underlying  sup::oac_tree::GetXMLString doesn't know it either.
   auto expected_string = test::CreateProcedureString(body, /*schema*/ false);
   EXPECT_EQ(oac_tree_gui::ExportToXMLString(procedure_item), expected_string);
 }

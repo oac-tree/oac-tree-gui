@@ -20,16 +20,13 @@
 
 #include "xml_utils.h"
 
-#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/transform/domain_procedure_builder.h>
-#include <oac_tree_gui/transform/domain_workspace_builder.h>
 #include <oac_tree_gui/transform/procedure_item_transform_helper.h>
 
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/sequence_parser.h>
-
-#include <stdexcept>
 
 namespace
 {
@@ -81,12 +78,6 @@ namespace oac_tree_gui
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string& file_name)
 {
   auto procedure = sup::oac_tree::ParseProcedureFile(file_name);
-
-  if (!procedure)
-  {
-    throw std::runtime_error("Error: uninitialised procedure");
-  }
-
   auto result = CreateProcedureItem(*procedure);
   result->SetFileName(file_name);
 
