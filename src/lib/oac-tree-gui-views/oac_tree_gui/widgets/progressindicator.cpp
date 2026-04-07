@@ -1,6 +1,28 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP oac-tree
+ *
+ * Description   : Integrated development environment for oac-tree procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2026 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ * SPDX-License-Identifier: MIT
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file LICENSE located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
 // Copyright (C) 2025 Jarek Kobus
 // Copyright (C) 2025 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
+//
+// Copy of progress indicator from Qt's TaskTree demo in examples/widgets/demo/progressindicator.
 
 #include "progressindicator.h"
 
@@ -20,44 +42,51 @@ public:
   explicit OverlayWidget(QWidget* parent = nullptr)
   {
     setAttribute(Qt::WA_TransparentForMouseEvents);
-    if (parent)
+    if (parent != nullptr)
+    {
       attachToWidget(parent);
+    }
   }
 
   void attachToWidget(QWidget* parent)
   {
-    if (parentWidget())
+    if (parentWidget() != nullptr)
+    {
       parentWidget()->removeEventFilter(this);
+    }
     setParent(parent);
-    if (parent)
+    if (parent != nullptr)
     {
       parent->installEventFilter(this);
       resizeToParent();
       raise();
     }
   }
-  void setPaintFunction(PaintFunction&& paint) { m_paint = std::move(paint); }
+  void setPaintFunction(PaintFunction&& paint) { m_paint_func = std::move(paint); }
 
 protected:
-  bool eventFilter(QObject* obj, QEvent* ev) override
+  bool eventFilter(QObject* obj, QEvent* event) override
   {
-    if (obj == parent() && ev->type() == QEvent::Resize)
+    if ((obj == parent()) && (event->type() == QEvent::Resize))
+    {
       resizeToParent();
-    return QWidget::eventFilter(obj, ev);
+    }
+    return QWidget::eventFilter(obj, event);
   }
-  void paintEvent(QPaintEvent* ev) override
+
+  void paintEvent(QPaintEvent* event) override
   {
-    if (m_paint)
+    if (m_paint_func)
     {
       QPainter p(this);
-      m_paint(this, p, ev);
+      m_paint_func(this, p, event);
     }
   }
 
 private:
   void resizeToParent() { setGeometry(QRect(QPoint(0, 0), parentWidget()->size())); }
 
-  PaintFunction m_paint;
+  PaintFunction m_paint_func;
 };
 
 class ProgressIndicatorPainter
@@ -72,21 +101,15 @@ public:
   QSize size() const { return m_pixmap.size() / m_pixmap.devicePixelRatio(); }
 
   void paint(QPainter& painter, const QRect& rect) const;
-  void startAnimation()
-  {
-    m_timer.start();
-  }
-  void stopAnimation()
-  {
-    m_timer.stop();
-  }
+  void startAnimation() { m_timer.start(); }
+  void stopAnimation() { m_timer.stop(); }
 
 protected:
-  void nextAnimationStep() { m_rotation = (m_rotation + m_rotationStep + 360) % 360; }
+  void nextAnimationStep() { m_rotation = (m_rotation + m_rotation_step + 360) % 360; }
 
 private:
-  const int m_rotationStep = 45;
-  int m_rotation = 0;
+  const int m_rotation_step{45};
+  int m_rotation{0};
   QTimer m_timer;
   QPixmap m_pixmap;
   UpdateCallback m_callback;
@@ -95,13 +118,16 @@ private:
 ProgressIndicatorPainter::ProgressIndicatorPainter()
 {
   m_timer.setSingleShot(false);
-  QObject::connect(&m_timer, &QTimer::timeout, &m_timer,
-                   [this]
-                   {
-                     nextAnimationStep();
-                     if (m_callback)
-                       m_callback();
-                   });
+
+  auto on_timeout = [this]
+  {
+    nextAnimationStep();
+    if (m_callback)
+    {
+      m_callback();
+    }
+  };
+  QObject::connect(&m_timer, &QTimer::timeout, &m_timer, on_timeout);
 
   m_timer.setInterval(100);
   m_pixmap = QPixmap(QString(":/oac-tree/icons/progressindicator.png"));
@@ -111,7 +137,7 @@ void ProgressIndicatorPainter::paint(QPainter& painter, const QRect& rect) const
 {
   painter.save();
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
-  const QPoint translate(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+  const QPoint translate(rect.x() + (rect.width() / 2), rect.y() + (rect.height() / 2));
   QTransform t;
   t.translate(translate.x(), translate.y());
   t.rotate(m_rotation);
@@ -129,8 +155,12 @@ class ProgressIndicatorWidget : public OverlayWidget
 public:
   explicit ProgressIndicatorWidget(QWidget* parent = nullptr) : OverlayWidget(parent)
   {
-    setPaintFunction([this](QWidget* w, QPainter& p, QPaintEvent*)
-                     { m_paint.paint(p, w->rect()); });
+    auto paint_func = [this](QWidget* widget, QPainter& painter, QPaintEvent* event)
+    {
+      (void)event;
+      m_paint.paint(painter, widget->rect());
+    };
+    setPaintFunction(paint_func);
     m_paint.setUpdateCallback([this] { update(); });
     updateGeometry();
   }
@@ -144,8 +174,17 @@ public:
   }
 
 protected:
-  void showEvent(QShowEvent*) final { UpdateAnimation(); }
-  void hideEvent(QHideEvent*) final { UpdateAnimation(); }
+  void showEvent(QShowEvent* event) final
+  {
+    (void)event;
+    UpdateAnimation();
+  }
+
+  void hideEvent(QHideEvent* event) final
+  {
+    (void)event;
+    UpdateAnimation();
+  }
 
 private:
   /**
@@ -166,8 +205,8 @@ private:
   bool m_animation_enabled{false};
 };
 
-ProgressIndicator::ProgressIndicator(QWidget* parent)
-    : QObject(parent), m_widget(new ProgressIndicatorWidget(parent))
+ProgressIndicator::ProgressIndicator(QWidget* parent_widget)
+    : QObject(parent_widget), m_widget(new ProgressIndicatorWidget(parent_widget))
 {
 }
 
