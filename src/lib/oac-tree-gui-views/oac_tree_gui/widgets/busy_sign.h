@@ -24,34 +24,41 @@
 //
 // Copy of progress indicator from Qt's TaskTree demo in examples/widgets/demo/progressindicator.
 
-#ifndef OAC_TREE_GUI_WIDGETS_PROGRESS_INDICATOR_H_
-#define OAC_TREE_GUI_WIDGETS_PROGRESS_INDICATOR_H_
+#ifndef OAC_TREE_GUI_WIDGETS_BUSY_SIGN_H_
+#define OAC_TREE_GUI_WIDGETS_BUSY_SIGN_H_
 
 #include <QObject>
 
 namespace oac_tree_gui
 {
 
-enum class IndicatorType : int
+/**
+ * @brief The BusySignType enum holds types of BusySign indicator.
+ */
+enum class BusySignType : int
 {
   kHidden,
   kStatic,
   kAnimated
 };
 
-class ProgressIndicatorWidget;
+class BusySignWidget;
 
-class ProgressIndicator : public QObject
+/**
+ * @brief The BusySign class controls appearance of BusySignWidget, which is an overlay widget
+ * showing progress of some operation.
+ */
+class BusySign : public QObject
 {
 public:
-  explicit ProgressIndicator(QWidget* parent_widget = nullptr);
+  explicit BusySign(QWidget* parent_widget = nullptr);
 
-  void SetIndicatorType(IndicatorType indicator_type);
+  void SetIndicatorType(BusySignType indicator_type);
 
 private:
-  ProgressIndicatorWidget* m_widget{nullptr};
+  BusySignWidget* m_widget{nullptr};
 };
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_WIDGETS_PROGRESS_INDICATOR_H_
+#endif  // OAC_TREE_GUI_WIDGETS_BUSY_SIGN_H_

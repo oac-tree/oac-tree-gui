@@ -21,7 +21,7 @@
 #include "status_indicator.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/widgets/progressindicator.h>
+#include <oac_tree_gui/widgets/busy_sign.h>
 
 #include <map>
 
@@ -68,8 +68,7 @@ QColor GetColorForStatus(InstructionStatus status)
 }  // namespace
 
 StatusIndicator::StatusIndicator(QWidget* parent_widget)
-    : QLabel(parent_widget)
-    , m_progress_indicator(new ProgressIndicator(this))
+    : QLabel(parent_widget), m_progress_indicator(new BusySign(this))
 {
   setAlignment(Qt::AlignCenter);
   QFont f = font();
@@ -94,13 +93,13 @@ InstructionStatus StatusIndicator::GetInstructionStatus() const
 
 void StatusIndicator::UpdateAppearance()
 {
-  static const std::map<InstructionStatus, IndicatorType> status_to_indicator_type{
-      {InstructionStatus::kNotStarted, IndicatorType::kHidden},
-      {InstructionStatus::kNotFinished, IndicatorType::kAnimated},
-      {InstructionStatus::kRunning, IndicatorType::kAnimated},
-      {InstructionStatus::kSuccess, IndicatorType::kHidden},
-      {InstructionStatus::kFailure, IndicatorType::kHidden},
-      {InstructionStatus::kUndefined, IndicatorType::kHidden}};
+  static const std::map<InstructionStatus, BusySignType> status_to_indicator_type{
+      {InstructionStatus::kNotStarted, BusySignType::kHidden},
+      {InstructionStatus::kNotFinished, BusySignType::kAnimated},
+      {InstructionStatus::kRunning, BusySignType::kAnimated},
+      {InstructionStatus::kSuccess, BusySignType::kHidden},
+      {InstructionStatus::kFailure, BusySignType::kHidden},
+      {InstructionStatus::kUndefined, BusySignType::kHidden}};
 
   const auto background_color = GetColorForStatus(m_current_status);
   setStyleSheet(GetColorButtonStyleSheet(background_color));

@@ -2,6 +2,8 @@
 # specifics.
 
 target_sources(${library_name} PRIVATE
+  busy_sign.cpp
+  busy_sign.h
   custom_tree_view_style.cpp
   custom_tree_view_style.h
   file_tree_view.cpp
@@ -10,6 +12,4 @@ target_sources(${library_name} PRIVATE
   flatlist_delegate.h
   flatlist_view.cpp
   flatlist_view.h
-  progressindicator.cpp
-  progressindicator.h
 )

@@ -28,7 +28,7 @@
 namespace oac_tree_gui
 {
 
-class ProgressIndicator;
+class BusySign;
 
 /**
  * @brief The StatusIndicator class is a vertical colored bar representing InstructionItem execution
@@ -56,7 +56,7 @@ public:
 private:
   void UpdateAppearance();
   InstructionStatus m_current_status{InstructionStatus::kUndefined};
-  ProgressIndicator* m_progress_indicator{nullptr};
+  BusySign* m_progress_indicator{nullptr};
 };
 
 }  // namespace oac_tree_gui

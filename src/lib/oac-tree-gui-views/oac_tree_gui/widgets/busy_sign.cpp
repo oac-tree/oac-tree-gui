@@ -24,7 +24,7 @@
 //
 // Copy of progress indicator from Qt's TaskTree demo in examples/widgets/demo/progressindicator.
 
-#include "progressindicator.h"
+#include "busy_sign.h"
 
 #include <QEvent>
 #include <QPainter>
@@ -89,12 +89,12 @@ private:
   PaintFunction m_paint_func;
 };
 
-class ProgressIndicatorPainter
+class BusySignPainter
 {
 public:
   using UpdateCallback = std::function<void()>;
 
-  ProgressIndicatorPainter();
+  BusySignPainter();
 
   void setUpdateCallback(UpdateCallback&& cb) { m_callback = std::move(cb); }
 
@@ -105,7 +105,11 @@ public:
   void stopAnimation() { m_timer.stop(); }
 
 protected:
-  void nextAnimationStep() { m_rotation = (m_rotation + m_rotation_step + 360) % 360; }
+  void nextAnimationStep()
+  {
+    const int degrees_in_circle = 360;
+    m_rotation = (m_rotation + m_rotation_step + degrees_in_circle) % degrees_in_circle;
+  }
 
 private:
   const int m_rotation_step{45};
@@ -115,7 +119,7 @@ private:
   UpdateCallback m_callback;
 };
 
-ProgressIndicatorPainter::ProgressIndicatorPainter()
+BusySignPainter::BusySignPainter()
 {
   m_timer.setSingleShot(false);
 
@@ -133,7 +137,7 @@ ProgressIndicatorPainter::ProgressIndicatorPainter()
   m_pixmap = QPixmap(QString(":/oac-tree/icons/progressindicator.png"));
 }
 
-void ProgressIndicatorPainter::paint(QPainter& painter, const QRect& rect) const
+void BusySignPainter::paint(QPainter& painter, const QRect& rect) const
 {
   painter.save();
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
@@ -150,10 +154,10 @@ void ProgressIndicatorPainter::paint(QPainter& painter, const QRect& rect) const
   painter.restore();
 }
 
-class ProgressIndicatorWidget : public OverlayWidget
+class BusySignWidget : public OverlayWidget
 {
 public:
-  explicit ProgressIndicatorWidget(QWidget* parent = nullptr) : OverlayWidget(parent)
+  explicit BusySignWidget(QWidget* parent = nullptr) : OverlayWidget(parent)
   {
     auto paint_func = [this](QWidget* widget, QPainter& painter, QPaintEvent* event)
     {
@@ -201,19 +205,19 @@ private:
       m_paint.stopAnimation();
     }
   }
-  ProgressIndicatorPainter m_paint;
+  BusySignPainter m_paint;
   bool m_animation_enabled{false};
 };
 
-ProgressIndicator::ProgressIndicator(QWidget* parent_widget)
-    : QObject(parent_widget), m_widget(new ProgressIndicatorWidget(parent_widget))
+BusySign::BusySign(QWidget* parent_widget)
+    : QObject(parent_widget), m_widget(new BusySignWidget(parent_widget))
 {
 }
 
-void ProgressIndicator::SetIndicatorType(IndicatorType indicator_type)
+void BusySign::SetIndicatorType(BusySignType indicator_type)
 {
-  m_widget->setVisible(indicator_type != IndicatorType::kHidden);
-  m_widget->SetAnimationEnabled(indicator_type == IndicatorType::kAnimated);
+  m_widget->setVisible(indicator_type != BusySignType::kHidden);
+  m_widget->SetAnimationEnabled(indicator_type == BusySignType::kAnimated);
 }
 
 }  // namespace oac_tree_gui
