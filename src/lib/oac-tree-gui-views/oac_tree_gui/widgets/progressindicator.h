@@ -24,9 +24,6 @@ public:
 
   void SetIndicatorType(IndicatorType indicator_type);
 
-  // void show();
-  // void hide();
-
 private:
   class ProgressIndicatorWidget* m_widget = nullptr;
 };
