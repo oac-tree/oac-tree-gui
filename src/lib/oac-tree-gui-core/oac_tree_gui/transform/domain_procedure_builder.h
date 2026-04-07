@@ -31,14 +31,16 @@ namespace oac_tree_gui
 {
 
 class ProcedureItem;
-class InstructionItem;
 class InstructionContainerItem;
 class WorkspaceItem;
 class DomainWorkspaceBuilder;
 
-//! Creates domain Procedure from ProcedureItem.
-//! Saves correspondence of SessionItem identifiers to newly created domain objects.
-
+/**
+ * @brief The DomainProcedureBuilder class populates empty domain procedure with information from
+ * ProcedureItem.
+ *
+ * Allows to find item identifiers for domain instructions and variables.
+ */
 class DomainProcedureBuilder
 {
 public:
@@ -58,7 +60,6 @@ public:
   std::string FindVariableItemIdentifier(const variable_t* variable) const;
 
 private:
-  void Iterate(const oac_tree_gui::InstructionItem* instruction, instruction_t* parent);
   void PopulateDomainInstructions(const InstructionContainerItem* container,
                                   procedure_t* procedure);
   void PopulateDomainWorkspace(const WorkspaceItem* workspace, procedure_t* procedure);

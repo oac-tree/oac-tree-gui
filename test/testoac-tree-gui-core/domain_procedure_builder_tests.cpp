@@ -55,12 +55,24 @@ class DomainProcedureBuilderTest : public ::testing::Test
 
 TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
 {
+  const ProcedureItem procedure_item;
+
+  auto procedure = CreateDomainProcedure(procedure_item);
+
+  EXPECT_TRUE(procedure->GetFilename().empty());
+  EXPECT_TRUE(procedure->GetAttributeString(domainconstants::kNameAttribute).empty());
+}
+
+TEST_F(DomainProcedureBuilderTest, EmptyNamedProcedure)
+{
   ProcedureItem procedure_item;
   procedure_item.SetFileName("aaa.xml");
+  procedure_item.SetDescription("abc");
 
   auto procedure = CreateDomainProcedure(procedure_item);
 
   EXPECT_EQ(procedure->GetFilename(), "aaa.xml");
+  EXPECT_EQ(procedure->GetAttributeString(domainconstants::kNameAttribute), "abc");
 
   // Test constructed
   EXPECT_EQ(procedure->GetStatus(), ::sup::oac_tree::ExecutionStatus::SUCCESS);
