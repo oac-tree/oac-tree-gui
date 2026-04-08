@@ -88,6 +88,9 @@ public:
 signals:
   void InstructionSelected(const oac_tree_gui::InstructionItem* instruction);
 
+protected:
+  void resizeEvent(QResizeEvent* event) override;
+
 private:
   void ReadSettings();
   void WriteSettings();

@@ -167,6 +167,12 @@ void InstructionEditorWidget::InsertInstructionFromToolBox(const QString& name)
   m_action_handler->InsertInstructionAfter(name.toStdString());
 }
 
+void InstructionEditorWidget::resizeEvent(QResizeEvent *event)
+{
+  QWidget::resizeEvent(event);
+  m_custom_header->AdjustColumnsWidth();
+}
+
 void InstructionEditorWidget::ReadSettings()
 {
   m_splitter->ReadSettings();
