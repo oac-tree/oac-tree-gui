@@ -51,7 +51,10 @@ mvvm::ComboProperty CreateBehaviorProperty()
 
 }  // namespace
 
-InstructionItem::InstructionItem(const std::string& item_type) : CompoundItem(item_type) {}
+InstructionItem::InstructionItem(const std::string& item_type) : CompoundItem(item_type)
+{
+  (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
+}
 
 std::string InstructionItem::GetDomainType() const
 {

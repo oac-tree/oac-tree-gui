@@ -208,7 +208,6 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
 {
   {
     SequenceItem item;
-    item.SetName("abc");
     InstructionEditorRowStrategy strategy;
 
     auto view_items = strategy.ConstructRow(&item);
@@ -216,8 +215,19 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
     ASSERT_EQ(view_items.size(), 2);
     EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 2);
 
-    EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("Sequence"));
-    EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString("abc"));
+    // first item contains editable display name
+    auto view_item0 = view_items.at(0).get();
+    EXPECT_EQ(view_item0->Data(Qt::DisplayRole).toString(), QString("Sequence"));
+    item.SetDisplayName("abc");
+    EXPECT_EQ(view_item0->Data(Qt::DisplayRole).toString(), QString("abc"));
+
+    // setting display name through view item
+    EXPECT_TRUE(view_item0->SetData(QString("def"), Qt::EditRole));
+    EXPECT_EQ(item.GetDisplayName(), "def");
+
+    // second item contains model type
+    auto view_item1 = view_items.at(1).get();
+    EXPECT_EQ(view_item1->Data(Qt::DisplayRole).toString(), QString("Sequence"));
   }
 }
 

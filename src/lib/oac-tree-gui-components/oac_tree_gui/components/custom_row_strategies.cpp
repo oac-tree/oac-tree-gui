@@ -244,7 +244,7 @@ std::size_t InstructionEditorRowStrategy::GetSize() const
 
 QStringList InstructionEditorRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static const QStringList result = {"Type", "Name"};
+  static const QStringList result = {"Name", "Type"};
   return result;
 }
 
@@ -257,12 +257,13 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> InstructionEditorRowStrategy::Const
 
   if (auto instruction = dynamic_cast<InstructionItem*>(item); instruction)
   {
-    (void)result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
+    (void)result.emplace_back(mvvm::CreateLabelViewItem(instruction, instruction->GetDomainType()));
   }
   else
   {
-    (void)result.emplace_back(mvvm::CreateLabelViewItem(item));
+    (void)result.emplace_back(mvvm::CreateLabelViewItem(item, ""));
   }
+
   return result;
 }
 

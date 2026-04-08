@@ -65,20 +65,15 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
   EXPECT_EQ(m_view_model.columnCount(QModelIndex()), 2);
 
   auto sequence_displayname_index = m_view_model.index(0, 0, QModelIndex());
-  auto sequence_customname_index = m_view_model.index(0, 1, QModelIndex());
-
-  auto views = m_view_model.FindViews(GetNameItem(*sequence));
-  EXPECT_EQ(views.size(), 1);
-  EXPECT_EQ(m_view_model.indexFromItem(views[0]), sequence_customname_index);
+  auto sequence_type_index = m_view_model.index(0, 1, QModelIndex());
 
   EXPECT_EQ(m_view_model.GetSessionItemFromIndex(sequence_displayname_index), sequence);
-  EXPECT_EQ(m_view_model.GetSessionItemFromIndex(sequence_customname_index),
-            GetNameItem(*sequence));
+  EXPECT_EQ(m_view_model.GetSessionItemFromIndex(sequence_type_index), sequence);
 
   EXPECT_EQ(m_view_model.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Sequence"));
-  EXPECT_EQ(m_view_model.data(sequence_customname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string(""));
+  EXPECT_EQ(m_view_model.data(sequence_type_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("Sequence"));
 }
 
 TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
@@ -105,15 +100,30 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 
 TEST_F(InstructionEditorViewModelTest, NotificationOnNameChange)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>();
+  mvvm::ApplicationModel model;
 
-  EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(m_view_model.columnCount(QModelIndex()), 2);
+  auto sequence = model.InsertItem<SequenceItem>();
 
-  const QSignalSpy spy_data_changed(&m_view_model, &InstructionEditorViewModel::dataChanged);
+  InstructionEditorViewModel view_model(&model);
 
-  sequence->SetName("abc");
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
+
+  const QModelIndex label_index = view_model.index(0, 0, QModelIndex());
+  const QModelIndex data_index = view_model.index(0, 1, QModelIndex());
+
+  QSignalSpy spy_data_changed(&view_model, &InstructionEditorViewModel::dataChanged);
+
+  sequence->SetDisplayName("abc");
+  // we have notifications from displayName
   EXPECT_EQ(spy_data_changed.count(), 1);
+
+  const QList<QVariant> arguments = spy_data_changed.takeLast();
+  EXPECT_EQ(arguments.size(), 3);  // QModelIndex left, QModelIndex right, QVector<int> roles
+  EXPECT_EQ(arguments.at(0).value<QModelIndex>(), label_index);
+  EXPECT_EQ(arguments.at(1).value<QModelIndex>(), label_index);
+  const QVector<int> expected_roles = {Qt::DisplayRole, Qt::EditRole};
+  EXPECT_EQ(arguments.at(2).value<QVector<int>>(), expected_roles);
 }
 
 TEST_F(InstructionEditorViewModelTest, FlagsForDragAndDrop)

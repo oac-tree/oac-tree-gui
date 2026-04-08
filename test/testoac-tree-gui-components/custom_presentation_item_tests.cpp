@@ -61,7 +61,7 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   EXPECT_TRUE(item.SetProperty(TestItem::kIsAvailable, false));
   EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetDisonnectedVariableColor());
 
-  EXPECT_EQ(presentation.GetQtRoles(mvvm::DataRole::kDisplay),
+  EXPECT_EQ(presentation.GetQtRolesToEmit(mvvm::DataRole::kDisplay),
             QVector<int>({Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole}));
 }
 
