@@ -58,9 +58,9 @@ bool ChannelPresentationItem::SetData(const QVariant& data, mvvm::role_t qt_role
   return false;
 }
 
-QVector<int> ChannelPresentationItem::GetQtRoles(mvvm::role_t data_role) const
+QVector<int> ChannelPresentationItem::GetQtRolesToEmit(mvvm::role_t data_role) const
 {
-  auto result = mvvm::DataPresentationItem::GetQtRoles(data_role);
+  auto result = mvvm::DataPresentationItem::GetQtRolesToEmit(data_role);
   // When IsAvailable status changes, the decoration role (green/gray box rectangle) should be
   // reported too
   result.push_back(Qt::DecorationRole);
