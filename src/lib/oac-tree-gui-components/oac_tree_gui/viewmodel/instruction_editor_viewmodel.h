@@ -37,12 +37,30 @@ class IItemDropHandler;
  * @brief The InstructionEditorViewModel class is a model with two columns: display name and
  * editable description.
  *
+ * It is used during instruction tree composition in InstructionEditorWidget.
  * It has following features:
- * - allow internal move (reodering, move instructions from one parent to another)
- * - allow external move (move from another instance of the same viewmodel)
- * - allow drop of new instructions (copy from the toolbox's tree of available instructions)
- * - TODO allow drop of favorite instructions (copy from the toolbox's tree of favorite
- * instructions)
+ *
+ * 1) Internal move within the same tree view.
+ * Drag of item leads to children reordering, or move from one parent to another.
+ *
+ * 2) External move (from one panel to another, same view model type, different instances).
+ * Viewmodels can look to the same instruction trees, or to the trees belonging to the different
+ * procedures. Same behavior as in [1]. The item will be removed from the source and added to the
+ * target.
+ *
+ * 3) New item drop.
+ * Copy from the toolbox's tree of available instructions will lead to the creation of new
+ * instruction.
+ *
+ * 4) Drag from here and drop to favorite instructions panel.
+ * Will create a copy of the instruction in the favorites. This viewmodel will remain intact.
+ *
+ * 5) Drag from favorites and drop here.
+ * Will create a copy of the instruction from favorites here. Favorites will remain intact.
+ *
+ * 6) Drag between different applications.
+ * Unlike 1 and 2, will lead just to the copy of the instruction, without removing it from the
+ * source.
  */
 class InstructionEditorViewModel : public mvvm::ViewModel
 {
@@ -67,7 +85,7 @@ public:
 
   Qt::DropActions supportedDropActions() const override;
 
-  bool canDropMimeData(const QMimeData* data, Qt::DropAction, int row, int column,
+  bool canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
                        const QModelIndex& parent) const override;
 
   bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
