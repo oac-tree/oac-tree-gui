@@ -155,7 +155,9 @@ TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
   auto wait1 = model.InsertItem<InstructionInfoItem>(sequence);
   InitFromDomainType(domainconstants::kWaitInstructionType,
                      *wait1);  // to get children tag initialized
-  wait1->SetDisplayName("Wait");
+
+  // deliberately not setting custom display name for wait1 to check if view model will show
+  // display name correesponding to domain type
 
   InstructionOperationViewModel viewmodel(&model);
   auto sequence_ndex = viewmodel.index(0, 0, QModelIndex());
@@ -171,7 +173,8 @@ TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
   EXPECT_EQ(viewmodel.data(wait0_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Wait"));
   EXPECT_EQ(viewmodel.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Wait"));
+            std::string("Wait"));  // InstructionInfoItem correctly shows domain type in the absence
+                                   // of custom name
 }
 
 }  // namespace oac_tree_gui::test

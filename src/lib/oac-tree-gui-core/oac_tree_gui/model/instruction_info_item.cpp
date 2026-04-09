@@ -53,6 +53,7 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
   }
 
   SetDomainType(info.GetType());
+  (void)SetDisplayName(info.GetType());
 
   for (auto& [attr_name, attr_value] : info.GetAttributes())
   {
