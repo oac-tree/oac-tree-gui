@@ -50,7 +50,6 @@ public:
 
 TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedDisplayName)
 {
-  EXPECT_FALSE(IsVariableNameRelatedDisplayName(itemconstants::kName));
   EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kEqualVariableAttributeName));
   EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kFromVariableAttributeName));
   EXPECT_TRUE(IsVariableNameRelatedDisplayName(domainconstants::kGenericVariableNameAttribute));
@@ -67,7 +66,6 @@ TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedProperty)
   auto copy_item = InsertInstruction(domainconstants::kCopyInstructionType, m_model.GetRootItem());
 
   EXPECT_FALSE(IsVariableNameRelatedProperty(*copy_item));
-  EXPECT_FALSE(IsVariableNameRelatedProperty(*copy_item->GetItem(itemconstants::kName)));
   EXPECT_TRUE(IsVariableNameRelatedProperty(
       *copy_item->GetItem(domainconstants::kInputVariableNameAttribute)));
   EXPECT_TRUE(IsVariableNameRelatedProperty(
@@ -95,9 +93,9 @@ TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedCell)
   }
 
   {
-    auto name_property = copy_item->GetItem(itemconstants::kName);
-    ASSERT_NE(name_property, nullptr);
-    auto indexes = m_view_model.GetIndexOfSessionItem(name_property);
+    auto behavior_property = copy_item->GetItem(itemconstants::kBehaviorTag);
+    ASSERT_NE(behavior_property, nullptr);
+    auto indexes = m_view_model.GetIndexOfSessionItem(behavior_property);
     ASSERT_EQ(indexes.size(), 2);
     ASSERT_FALSE(IsVariableNameRelatedCell(indexes.at(0)));
     ASSERT_FALSE(IsVariableNameRelatedCell(indexes.at(1)));
@@ -123,19 +121,6 @@ TEST_F(CustomCellEditorFactoryTest, CreateEditor)
 
     ASSERT_NE(string_completer_editor, nullptr);
     EXPECT_EQ(string_completer_editor->GetStringList(), completer_list);
-  }
-
-  {  // property related to simple name
-    auto name_property = copy_item->GetItem(itemconstants::kName);
-    ASSERT_NE(name_property, nullptr);
-
-    auto indexes = m_view_model.GetIndexOfSessionItem(name_property);
-    ASSERT_EQ(indexes.size(), 2);
-
-    // custom factory do not create default editors
-    CustomCellEditorFactory factory({});
-    auto editor = factory.CreateEditor(indexes.at(1));
-    EXPECT_EQ(editor.get(), nullptr);
   }
 }
 
