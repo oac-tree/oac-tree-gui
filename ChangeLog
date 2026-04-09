@@ -1,5 +1,7 @@
 Changes for 2.3.0:
 
+- Remove separate name property from instruction, use editable display name instead
+- Add instruction domain type in a tree of the InstructionEditorWidget and RealTimeSintructionTree
 - Implement prototype of instruction TaskMonitor.
 
 Changes for 2.2.0:

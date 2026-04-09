@@ -65,7 +65,7 @@ TEST_F(InstructionInfoItemTest, InitFromWaitInstructionInfo)
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kWaitInstructionType);
-  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetDisplayName(), expected_name);
 
   ASSERT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
   EXPECT_EQ(item.Property<std::string>(domainconstants::kTimeoutAttribute), "42");
@@ -93,7 +93,7 @@ TEST_F(InstructionInfoItemTest, InitFromInstructionInfoTwice)
   item.InitFromDomainInfo(info);
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kWaitInstructionType);
-  EXPECT_EQ(item.GetName(), expected_value);
+  EXPECT_EQ(item.GetDisplayName(), expected_value);
 
   ASSERT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
   EXPECT_EQ(item.Property<std::string>(domainconstants::kTimeoutAttribute), "42");
@@ -109,7 +109,7 @@ TEST_F(InstructionInfoItemTest, InitFromSequenceInstructionInfo)
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kSequenceInstructionType);
-  EXPECT_EQ(item.GetName(), expected_value);
+  EXPECT_EQ(item.GetDisplayName(), expected_value);
 
   const std::vector<std::string> expected_tags(
       {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
@@ -130,7 +130,7 @@ TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfo)
   InstructionInfoItem item;
   item.InitFromDomainInfo(info);
   EXPECT_EQ(item.GetDomainType(), oac_tree_gui::domainconstants::kIncludeInstructionType);
-  EXPECT_EQ(item.GetName(), expected_value);
+  EXPECT_EQ(item.GetDisplayName(), expected_value);
 
   const std::vector<std::string> expected_tags(
       {domainconstants::kNameAttribute, itemconstants::kChildInstructions,

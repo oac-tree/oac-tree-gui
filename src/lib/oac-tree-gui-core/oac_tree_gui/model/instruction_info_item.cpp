@@ -59,7 +59,7 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
   {
     if (attr_name == domainconstants::kNameAttribute)
     {
-      SetName(attr_value);
+      SetDisplayName(attr_value);
     }
 
     else if (attr_name == domainconstants::kShowCollapsedAttribute)

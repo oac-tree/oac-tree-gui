@@ -38,7 +38,7 @@ class InstructionTaskWidgetBuilderTest : public ::testing::Test
 TEST_F(InstructionTaskWidgetBuilderTest, SingleSequenceInstruction)
 {
   SequenceItem item;
-  item.SetName("abc");
+  item.SetDisplayName("abc");
 
   InstructionTaskWidgetBuilder builder;
 
@@ -53,11 +53,11 @@ TEST_F(InstructionTaskWidgetBuilderTest, SingleSequenceInstruction)
 TEST_F(InstructionTaskWidgetBuilderTest, SequenceWithTwoChildren)
 {
   SequenceItem sequence;
-  sequence.SetName("seq");
+  sequence.SetDisplayName("seq");
   auto wait0 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  wait0->SetName("wait0");
+  wait0->SetDisplayName("wait0");
   auto wait1 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  wait1->SetName("wait1");
+  wait1->SetDisplayName("wait1");
 
   InstructionTaskWidgetBuilder builder;
   auto root_task_widget = builder.CreateTaskWidget(sequence);
@@ -80,13 +80,13 @@ TEST_F(InstructionTaskWidgetBuilderTest, SequenceWithTwoChildren)
 TEST_F(InstructionTaskWidgetBuilderTest, SequenceWithChildrenAndGrandchildren)
 {
   SequenceItem sequence;
-  sequence.SetName("sequence");
+  sequence.SetDisplayName("sequence");
   auto child0 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  child0->SetName("child0");
+  child0->SetDisplayName("child0");
   auto child1 = sequence.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  child1->SetName("child1");
+  child1->SetDisplayName("child1");
   auto grandchild0 = child1->InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  grandchild0->SetName("grandchild0");
+  grandchild0->SetDisplayName("grandchild0");
 
   InstructionTaskWidgetBuilder builder;
   auto root_task_widget = builder.CreateTaskWidget(sequence);

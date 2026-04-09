@@ -43,8 +43,7 @@ struct StackNode
 
 QString GetInstructionLabel(const InstructionItem& item)
 {
-  const std::string result = item.GetName().empty() ? item.GetDisplayName() : item.GetName();
-  return QString::fromStdString(result);
+  return QString::fromStdString(item.GetDisplayName());
 }
 
 }  // namespace

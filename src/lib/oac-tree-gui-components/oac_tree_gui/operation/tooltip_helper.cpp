@@ -139,7 +139,7 @@ QString GetInstructionToolTipText(const mvvm::SessionItem* item)
   const auto base_font = text_edit.font();
 
   AppendTitle(instruction->GetDomainType(), text_edit);
-  AppendDescription(instruction->GetName(), text_edit);
+  AppendDescription(instruction->GetDisplayName(), text_edit);
   AppendLittleVerticalGap(text_edit);
 
   auto attributes = CollectToolTipAttributes(item);
