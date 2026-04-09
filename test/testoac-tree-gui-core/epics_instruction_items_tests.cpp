@@ -333,7 +333,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemFromDomain)
   EXPECT_EQ(item.GetTimeout(), 42.0);
 
   const std::vector<std::string> expected_tags(
-      {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
+      {domainconstants::kIsRootAttribute,
        domainconstants::kChannelAttribute, domainconstants::kGenericVariableNameAttribute,
        domainconstants::kTimeoutAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
        itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint,

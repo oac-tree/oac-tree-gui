@@ -443,8 +443,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
     WaitItem wait_item;
     wait_item.InitFromDomain(wait.get());
 
-    EXPECT_EQ(wait_item.GetDisplayName(), "Wait");
-    EXPECT_EQ(wait_item.Property<std::string>(itemconstants::kName), "First");
+    EXPECT_EQ(wait_item.GetDisplayName(), "First");
     EXPECT_EQ(wait_item.GetTimeout(), 0.0);
     EXPECT_TRUE(wait_item.IsBlocking());
   }

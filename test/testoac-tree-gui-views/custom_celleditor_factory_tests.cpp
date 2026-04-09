@@ -80,8 +80,8 @@ TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedCell)
 
   EXPECT_FALSE(IsVariableNameRelatedCell(QModelIndex()));
 
-  // properties of copy instruction: name, isRoot, inputVar, outputVar, Behavior
-  EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 5);
+  // properties of copy instruction: isRoot, inputVar, outputVar, Behavior
+  EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 4);
 
   {
     auto input_var_property = copy_item->GetItem(domainconstants::kInputVariableNameAttribute);

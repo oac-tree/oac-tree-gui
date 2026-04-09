@@ -39,8 +39,7 @@ namespace
 const std::vector<std::string>& GetSkipAttributeList()
 {
   static const std::vector<std::string> kSkipAttributeList = {
-      oac_tree_gui::itemconstants::kName, oac_tree_gui::domainconstants::kIsRootAttribute,
-      oac_tree_gui::itemconstants::kBehaviorTag};
+      oac_tree_gui::domainconstants::kIsRootAttribute, oac_tree_gui::itemconstants::kBehaviorTag};
   return kSkipAttributeList;
 }
 

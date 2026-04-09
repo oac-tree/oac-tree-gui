@@ -71,7 +71,7 @@ TEST_F(InstructionInfoItemTest, InitFromWaitInstructionInfo)
   EXPECT_EQ(item.Property<std::string>(domainconstants::kTimeoutAttribute), "42");
 
   const std::vector<std::string> expected_tags(
-      {domainconstants::kNameAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
+      {itemconstants::kBehaviorTag, itemconstants::kStatus,
        itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint,
        domainconstants::kTimeoutAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
@@ -112,7 +112,7 @@ TEST_F(InstructionInfoItemTest, InitFromSequenceInstructionInfo)
   EXPECT_EQ(item.GetDisplayName(), expected_value);
 
   const std::vector<std::string> expected_tags(
-      {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
+      {itemconstants::kChildInstructions,
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
        itemconstants::kYpos, itemconstants::kBreakpoint, domainconstants::kShowCollapsedAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
@@ -133,7 +133,7 @@ TEST_F(InstructionInfoItemTest, InitFromIncludeInstructionInfo)
   EXPECT_EQ(item.GetDisplayName(), expected_value);
 
   const std::vector<std::string> expected_tags(
-      {domainconstants::kNameAttribute, itemconstants::kChildInstructions,
+      {itemconstants::kChildInstructions,
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
        itemconstants::kYpos, itemconstants::kBreakpoint, domainconstants::kShowCollapsedAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);

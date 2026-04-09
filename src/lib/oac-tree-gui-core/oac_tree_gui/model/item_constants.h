@@ -29,7 +29,6 @@ namespace oac_tree_gui::itemconstants
 {
 
 //! Constants to register property items.
-constexpr auto kName = "name";
 constexpr auto kStatus = "kStatus";
 constexpr auto kDescription = "description";
 constexpr auto kXpos = "kXpos";

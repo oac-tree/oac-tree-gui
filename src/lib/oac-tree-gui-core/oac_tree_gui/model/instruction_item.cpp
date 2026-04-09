@@ -107,12 +107,12 @@ void InstructionItem::SetIsRootFlag(bool value)
 
 std::string InstructionItem::GetName() const
 {
-  return Property<std::string>(itemconstants::kName);
+  return GetDisplayName();
 }
 
 void InstructionItem::SetName(const std::string& name)
 {
-  (void)SetProperty(itemconstants::kName, name);
+  SetDisplayName(name);
 }
 
 InstructionStatus InstructionItem::GetStatus() const

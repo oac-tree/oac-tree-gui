@@ -45,6 +45,7 @@ namespace
 bool IsDomainAttributeToExpose(const std::string& domain_attribute_name)
 {
   static const std::vector<std::string> kSkipDomainAttributeList = {
+      oac_tree_gui::domainconstants::kNameAttribute,  // handled via display name
       oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
       oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
   };
@@ -114,6 +115,9 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t* instructi
     }
   }
 
+  (void)SetDisplayName(instruction->GetName().empty() ? instruction->GetType()
+                                                      : instruction->GetName());
+
   if (mvvm::utils::HasTag(*this, oac_tree_gui::itemconstants::kAnyValueTag))
   {
     // FIXME What to do with registry of types (see UniversalVariableItem::InitFromDomainImpl
@@ -126,6 +130,11 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t* instruction) const
   for (const auto& [attribute_name, item] : GetAttributeItems())
   {
     SetDomainAttribute(*item, attribute_name, *instruction);
+  }
+
+  if (GetDisplayName() != GetDomainType())
+  {
+    instruction->SetName(GetDisplayName());
   }
 
   auto anyvalue_item = GetAnyValueItem(*this);
@@ -175,8 +184,6 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
   }
 
   (void)SetData(instruction->GetType(), itemconstants::kDomainTypeNameRole);
-
-  (void)SetDisplayName(instruction->GetType());
 
   for (const auto& definition : instruction->GetAttributeDefinitions())
   {

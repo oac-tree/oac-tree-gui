@@ -70,7 +70,7 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
 
   // registered tags should coincide with instruction attribute and AnyValueTag
   const std::vector<std::string> expected_tags(
-      {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
+      {domainconstants::kIsRootAttribute,
        domainconstants::kTimeoutAttribute, domainconstants::kBlockingAttribute,
        itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
        itemconstants::kYpos, itemconstants::kBreakpoint});
@@ -78,14 +78,9 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
 
   // property items should provide an access to underlying values
   auto properties = mvvm::utils::SinglePropertyItems(item);
-  ASSERT_EQ(properties.size(), 5);
-  EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
-  EXPECT_TRUE(item.Property<std::string>(domainconstants::kNameAttribute).empty());
-
-  EXPECT_EQ(properties.at(1)->GetDisplayName(), domainconstants::kIsRootAttribute);
-  EXPECT_EQ(item.Property<bool>(domainconstants::kIsRootAttribute), false);
-
-  EXPECT_EQ(properties.at(2)->GetDisplayName(), domainconstants::kTimeoutAttribute);
+  ASSERT_EQ(properties.size(), 4);
+  EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kIsRootAttribute);
+  EXPECT_EQ(properties.at(1)->GetDisplayName(), domainconstants::kTimeoutAttribute);
   EXPECT_EQ(item.Property<double>(domainconstants::kTimeoutAttribute), 0);
 }
 
@@ -95,7 +90,7 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
 TEST_F(UniversalInstructionItemTest, CreateUsingDomainName)
 {
   UniversalInstructionItem item(domainconstants::kWaitInstructionType);
-  (void)item.SetProperty(domainconstants::kNameAttribute, "abc");
+  item.SetName("abc");
 
   // different wrt test below
   EXPECT_EQ(item.GetType(), domainconstants::kWaitInstructionType);
@@ -122,7 +117,7 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
-  (void)item.SetProperty(domainconstants::kNameAttribute, "abc");
+  (void)item.SetName("abc");
 
   auto domain_instruction = item.CreateDomainInstruction();
   EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
