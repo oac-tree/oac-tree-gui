@@ -64,9 +64,6 @@ public:
   };
 };
 
-//! Single instruction in a model.
-//! ViewModel should see single row and 3 columns.
-
 TEST_F(InstructionOperationViewModelTest, SingleInstruction)
 {
   TestModel model;
