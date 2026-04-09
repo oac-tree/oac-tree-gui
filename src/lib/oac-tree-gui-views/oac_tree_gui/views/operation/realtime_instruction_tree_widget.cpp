@@ -51,7 +51,7 @@
 namespace
 {
 const QString kHeaderStateSettingName("RealTimeInstructionTreeWidget/header_state");
-const std::vector<int> kDefaultColumnStretch({15, 5, 1});
+const std::vector<int> kDefaultColumnStretch({15, 5, 5, 1});
 
 QString GetCustomToolTipStyle()
 {
