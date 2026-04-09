@@ -34,8 +34,8 @@ namespace oac_tree_gui
 class IItemDropHandler;
 
 /**
- * @brief The InstructionEditorViewModel class is a model with two columns: display name and
- * editable description.
+ * @brief The InstructionEditorViewModel class is a model with two columns: editable display name
+ * and redaonly domain type.
  *
  * It is used during instruction tree composition in InstructionEditorWidget.
  * It has following features:
