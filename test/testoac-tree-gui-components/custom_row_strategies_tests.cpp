@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/components/custom_row_strategies.h"
 
+#include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
@@ -228,6 +229,7 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
     // second item contains model type
     auto view_item1 = view_items.at(1).get();
     EXPECT_EQ(view_item1->Data(Qt::DisplayRole).toString(), QString("Sequence"));
+    EXPECT_EQ(view_item1->Data(Qt::ForegroundRole).value<QColor>(), GetReadOnlyDomainTypeColor());
   }
 }
 

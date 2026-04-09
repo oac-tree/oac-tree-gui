@@ -35,4 +35,9 @@ QColor GetDisonnectedVariableColor()
   return result;
 }
 
+QColor GetReadOnlyDomainTypeColor()
+{
+  return QColor(Qt::gray);
+}
+
 }  // namespace oac_tree_gui

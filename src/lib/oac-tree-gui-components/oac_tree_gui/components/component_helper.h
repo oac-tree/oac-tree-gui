@@ -48,6 +48,11 @@ QColor GetConnectedVariableColor();
  */
 QColor GetDisonnectedVariableColor();
 
+/**
+ * @brief Returns color for the decoration used to display read-only types.
+ */
+QColor GetReadOnlyDomainTypeColor();
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_COMPONENT_HELPER_H_
