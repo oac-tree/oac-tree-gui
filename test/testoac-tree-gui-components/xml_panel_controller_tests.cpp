@@ -119,25 +119,28 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)
   auto controller = CreateController();
 
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml1)).Times(1);
-  m_model.InsertItem<FileVariableItem>(m_procedure_item->GetWorkspace(), mvvm::TagIndex::Append());
+  auto var0 = m_model.InsertItem<FileVariableItem>(m_procedure_item->GetWorkspace(),
+                                                   mvvm::TagIndex::Append());
 
   const std::string expected_xml2(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure>
   <Workspace>
-    <File name="File0"/>
-    <File name="File1"/>
+    <File name="File"/>
+    <File name="AnotherVarName"/>
   </Workspace>
 </Procedure>
 )RAW");
 
   // adding second variable
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml2)).Times(1);
-  auto var1 = m_model.InsertItem<FileVariableItem>(m_procedure_item->GetWorkspace(),
-                                                   mvvm::TagIndex::Append());
+  auto new_var = std::make_unique<FileVariableItem>();
+  new_var->SetName("AnotherVarName");
+  auto var1 = m_model.InsertItem(std::move(new_var), m_procedure_item->GetWorkspace(),
+                                 mvvm::TagIndex::Append());
 
   // making names of variables the same and expecting error report
   EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(1);
-  var1->SetDisplayName("File0");
+  var0->SetDisplayName("AnotherVarName");
 }
 
 }  // namespace oac_tree_gui::test
