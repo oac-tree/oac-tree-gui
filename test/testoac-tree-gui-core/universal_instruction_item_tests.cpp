@@ -44,9 +44,11 @@ TEST_F(UniversalInstructionItemTest, InitialState)
 {
   const UniversalInstructionItem item;
 
+  EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
+  EXPECT_EQ(item.GetDomainType(), std::string());
   EXPECT_EQ(item.GetDisplayName(), mvvm::GetTypeName<UniversalInstructionItem>());
+
   EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
-  EXPECT_TRUE(item.GetDomainType().empty());
 }
 
 //! Attempt to create domain variable using uninitialized item.
@@ -64,16 +66,22 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
   auto domain_instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
   UniversalInstructionItem item;
+
+  EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
+  EXPECT_EQ(item.GetDomainType(), std::string());
+  EXPECT_EQ(item.GetDisplayName(), mvvm::GetTypeName<UniversalInstructionItem>());
+
   item.InitFromDomain(domain_instruction.get());
 
+  EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(item.GetDisplayName(), domainconstants::kWaitInstructionType);
 
   // registered tags should coincide with instruction attribute and AnyValueTag
   const std::vector<std::string> expected_tags(
-      {domainconstants::kIsRootAttribute,
-       domainconstants::kTimeoutAttribute, domainconstants::kBlockingAttribute,
-       itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
-       itemconstants::kYpos, itemconstants::kBreakpoint});
+      {domainconstants::kIsRootAttribute, domainconstants::kTimeoutAttribute,
+       domainconstants::kBlockingAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
+       itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should provide an access to underlying values
@@ -90,11 +98,14 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
 TEST_F(UniversalInstructionItemTest, CreateUsingDomainName)
 {
   UniversalInstructionItem item(domainconstants::kWaitInstructionType);
-  item.SetName("abc");
 
   // different wrt test below
   EXPECT_EQ(item.GetType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(item.GetDisplayName(), domainconstants::kWaitInstructionType);
+
+  item.SetName("abc");
+  EXPECT_EQ(item.GetDisplayName(), "abc");
 
   auto domain_instruction = item.CreateDomainInstruction();
   EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
@@ -117,7 +128,7 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
-  (void)item.SetName("abc");
+  item.SetName("abc");
 
   auto domain_instruction = item.CreateDomainInstruction();
   EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);

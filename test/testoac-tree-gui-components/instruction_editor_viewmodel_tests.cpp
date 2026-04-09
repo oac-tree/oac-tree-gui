@@ -70,10 +70,21 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
   EXPECT_EQ(m_view_model.GetSessionItemFromIndex(sequence_displayname_index), sequence);
   EXPECT_EQ(m_view_model.GetSessionItemFromIndex(sequence_type_index), sequence);
 
-  EXPECT_EQ(m_view_model.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Sequence"));
-  EXPECT_EQ(m_view_model.data(sequence_type_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Sequence"));
+  EXPECT_EQ(m_view_model.data(sequence_displayname_index, Qt::DisplayRole).toString(), "Sequence");
+  EXPECT_EQ(m_view_model.data(sequence_type_index, Qt::DisplayRole).toString(), "Sequence");
+}
+
+TEST_F(InstructionEditorViewModelTest, SingleUniversalInstruction)
+{
+  auto fallback = std::make_unique<UniversalInstructionItem>();
+  fallback->SetDomainType(domainconstants::kFallbackInstructionType);
+  m_model.InsertItem(std::move(fallback), m_model.GetRootItem(), mvvm::TagIndex::Append());
+
+  auto displayname_index = m_view_model.index(0, 0, QModelIndex());
+  auto type_index = m_view_model.index(0, 1, QModelIndex());
+
+  EXPECT_EQ(m_view_model.data(displayname_index, Qt::DisplayRole).toString(), "Fallback");
+  EXPECT_EQ(m_view_model.data(type_index, Qt::DisplayRole).toString(), "Fallback");
 }
 
 TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
@@ -92,10 +103,8 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
   EXPECT_EQ(m_view_model.GetSessionItemFromIndex(wait0_displayname_index), wait0);
   EXPECT_EQ(m_view_model.GetSessionItemFromIndex(wait1_displayname_index), wait1);
 
-  EXPECT_EQ(m_view_model.data(wait0_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Wait"));
-  EXPECT_EQ(m_view_model.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Wait"));
+  EXPECT_EQ(m_view_model.data(wait0_displayname_index, Qt::DisplayRole).toString(), "Wait");
+  EXPECT_EQ(m_view_model.data(wait1_displayname_index, Qt::DisplayRole).toString(), "Wait");
 }
 
 TEST_F(InstructionEditorViewModelTest, NotificationOnNameChange)

@@ -184,6 +184,8 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
   }
 
   (void)SetData(instruction->GetType(), itemconstants::kDomainTypeNameRole);
+  (void)SetDisplayName(instruction->GetName().empty() ? instruction->GetType()
+                                                      : instruction->GetName());
 
   for (const auto& definition : instruction->GetAttributeDefinitions())
   {
