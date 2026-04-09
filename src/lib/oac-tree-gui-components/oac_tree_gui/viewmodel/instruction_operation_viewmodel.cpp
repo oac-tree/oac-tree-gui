@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/components/custom_viewitem_factory.h>
 
 #include <mvvm/providers/abstract_row_strategy.h>
 #include <mvvm/providers/standard_children_strategies.h>
@@ -48,11 +49,11 @@ namespace oac_tree_gui
 class InstructionOperationRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
-  std::size_t GetSize() const override { return 3U; }
+  std::size_t GetSize() const override { return 4U; }
 
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static const QStringList result = {"Instruction", "Status", "BP"};
+    static const QStringList result = {"Name", "Type", "Status", "BP"};
     return result;
   }
 
@@ -64,12 +65,14 @@ private:
     if (auto instruction = dynamic_cast<InstructionItem*>(item); instruction)
     {
       result.emplace_back(mvvm::CreateLabelViewItem(instruction, GetText(*instruction)));
+      result.emplace_back(CreateInstructionTypeViewItem(*instruction));
       result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
       result.emplace_back(mvvm::CreateDataViewItem(GetBreakpointItem(*instruction)));
     }
     else
     {
       result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+      result.emplace_back(mvvm::CreateLabelViewItem(item));
       result.emplace_back(mvvm::CreateLabelViewItem(item));
       result.emplace_back(mvvm::CreateLabelViewItem(item));
     }
@@ -88,7 +91,7 @@ InstructionOperationViewModel::InstructionOperationViewModel(mvvm::ISessionModel
 
 int InstructionOperationViewModel::GetBreakpointColumn()
 {
-  return 2;
+  return 3;
 }
 
 }  // namespace oac_tree_gui

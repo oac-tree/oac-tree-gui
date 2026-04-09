@@ -78,11 +78,12 @@ TEST_F(InstructionOperationViewModelTest, SingleInstruction)
 
   InstructionOperationViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
   auto sequence_displayname_index = viewmodel.index(0, 0, QModelIndex());
-  auto sequence_status_index = viewmodel.index(0, 1, QModelIndex());
-  auto sequence_breakpoint_index = viewmodel.index(0, 2, QModelIndex());
+  auto sequence_type_index = viewmodel.index(0, 1, QModelIndex());
+  auto sequence_status_index = viewmodel.index(0, 2, QModelIndex());
+  auto sequence_breakpoint_index = viewmodel.index(0, 3, QModelIndex());
 
   auto views = viewmodel.FindViews(GetStatusItem(*sequence));
   EXPECT_EQ(views.size(), 1);
@@ -93,10 +94,9 @@ TEST_F(InstructionOperationViewModelTest, SingleInstruction)
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_breakpoint_index),
             GetBreakpointItem(*sequence));
 
-  EXPECT_EQ(viewmodel.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Sequence"));
-  EXPECT_EQ(viewmodel.data(sequence_status_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Running"));
+  EXPECT_EQ(viewmodel.data(sequence_displayname_index, Qt::DisplayRole).toString(), "Sequence");
+  EXPECT_EQ(viewmodel.data(sequence_type_index, Qt::DisplayRole).toString(), "Sequence");
+  EXPECT_EQ(viewmodel.data(sequence_status_index, Qt::DisplayRole).toString(), "Running");
   // returns int corresponding to BreakpointStatus::kSet
   EXPECT_EQ(viewmodel.data(sequence_breakpoint_index, Qt::DisplayRole).toInt(), 1);
 }
@@ -112,7 +112,7 @@ TEST_F(InstructionOperationViewModelTest, SequenceWithChild)
   InstructionOperationViewModel viewmodel(&model);
   auto sequence_ndex = viewmodel.index(0, 0, QModelIndex());
   EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
-  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 3);
+  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 4);
 
   auto wait0_displayname_index = viewmodel.index(0, 0, sequence_ndex);
   auto wait1_displayname_index = viewmodel.index(1, 0, sequence_ndex);
@@ -134,9 +134,9 @@ TEST_F(InstructionOperationViewModelTest, NotificationOnStatusChange)
 
   InstructionOperationViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
+  EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 4);
 
-  QSignalSpy spy_data_changed(&viewmodel, &InstructionOperationViewModel::dataChanged);
+  const QSignalSpy spy_data_changed(&viewmodel, &InstructionOperationViewModel::dataChanged);
 
   sequence->SetStatus(InstructionStatus::kRunning);
   EXPECT_EQ(spy_data_changed.count(), 1);
@@ -163,7 +163,7 @@ TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
   InstructionOperationViewModel viewmodel(&model);
   auto sequence_ndex = viewmodel.index(0, 0, QModelIndex());
   EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
-  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 3);
+  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 4);
 
   auto wait0_displayname_index = viewmodel.index(0, 0, sequence_ndex);
   auto wait1_displayname_index = viewmodel.index(1, 0, sequence_ndex);
