@@ -35,6 +35,8 @@ class SessionItem;
 namespace oac_tree_gui
 {
 
+class InstructionItem;
+
 /**
  * @brief Returns view item to present channel name and is_available status.
  *
@@ -42,6 +44,13 @@ namespace oac_tree_gui
  * will return placeholder.
  */
 std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionItem& item);
+
+/**
+ * @brief Returns ViewItem representing instruction domain type.
+ *
+ * The item is made in gray color, to stress it is not editable.
+ */
+std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& item);
 
 }  // namespace oac_tree_gui
 

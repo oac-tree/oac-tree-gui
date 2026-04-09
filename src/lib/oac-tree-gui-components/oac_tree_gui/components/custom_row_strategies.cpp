@@ -21,7 +21,6 @@
 #include "custom_row_strategies.h"
 
 #include "custom_viewitem_factory.h"
-#include "component_helper.h"
 
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -157,21 +156,6 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
   (void)result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeStringForVariableTree(item)));
 
   return result;
-}
-
-
-/**
- * @brief Returns ViewItem representing instruction domain type.
- *
- * The item is made in gray color, to stress it is not editable.
- */
-std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& item)
-{
-  auto view_item = mvvm::CreateFixedDataViewItem(&item);
-  (void)view_item->SetData(GetReadOnlyDomainTypeColor(), Qt::ForegroundRole);
-  (void)view_item->SetData(QString::fromStdString(item.GetDomainType()), Qt::DisplayRole);
-
-  return view_item;
 }
 
 }  // namespace

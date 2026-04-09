@@ -23,6 +23,7 @@
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <mvvm/providers/viewitem.h>
@@ -80,6 +81,24 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
   // it is not possible to set any data
   EXPECT_FALSE(viewitem->SetData(QString("aaa"), Qt::DisplayRole));
   EXPECT_FALSE(viewitem->SetData(QString("bbb"), Qt::EditRole));
+}
+
+TEST_F(CustomViewItemFactoryTest, CreateInstructionTypeViewItem)
+{
+  SequenceItem item;
+  auto viewitem = CreateInstructionTypeViewItem(item);
+
+  // it should be just empty non-editable placeholder.
+  EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
+  EXPECT_TRUE(viewitem->Data(Qt::DisplayRole).isValid());
+  EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString("Sequence"));
+  EXPECT_TRUE(viewitem->Data(Qt::ForegroundRole).isValid());
+  EXPECT_EQ(viewitem->Data(Qt::ForegroundRole).value<QColor>(), GetReadOnlyDomainTypeColor());
+
+  // programmatically it is still possible to change the data (peculiaritires of
+  // FixedDataPresentationItem)
+  EXPECT_TRUE(viewitem->SetData(QString("aaa"), Qt::DisplayRole));
+  EXPECT_TRUE(viewitem->SetData(QString("bbb"), Qt::EditRole));
 }
 
 }  // namespace oac_tree_gui::test

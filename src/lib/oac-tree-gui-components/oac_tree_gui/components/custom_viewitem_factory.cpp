@@ -20,8 +20,10 @@
 
 #include "custom_viewitem_factory.h"
 
+#include "component_helper.h"
 #include "custom_presentation_items.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 
 #include <mvvm/model/session_item.h>
@@ -47,6 +49,15 @@ std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionI
   }
 
   return mvvm::CreateLabelViewItem(&item);
+}
+
+std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& item)
+{
+  auto view_item = mvvm::CreateFixedDataViewItem(&item);
+  (void)view_item->SetData(GetReadOnlyDomainTypeColor(), Qt::ForegroundRole);
+  (void)view_item->SetData(QString::fromStdString(item.GetDomainType()), Qt::DisplayRole);
+
+  return view_item;
 }
 
 }  // namespace oac_tree_gui
