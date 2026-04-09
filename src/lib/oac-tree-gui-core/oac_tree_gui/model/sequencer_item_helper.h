@@ -24,6 +24,8 @@
 //! @file
 //! Various auxiliary functions for sequencer items.
 
+#include <string>
+
 namespace mvvm
 {
 class SessionItem;
@@ -46,10 +48,10 @@ bool IsCompoundInstruction(const InstructionItem* instruction);
 bool IsDecoratorInstruction(const InstructionItem* instruction);
 
 /**
- * @brief Returns an item representing a name property, or nullptr if the given parent doesn't have
- * such property registered.
+ * @brief Returns an item representing a property with a given tag, or nullptr if the given parent
+ * doesn't have such property registered.
  */
-mvvm::SessionItem* GetNameItem(const mvvm::SessionItem& parent);
+mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag);
 
 /**
  * @brief Returns an item representing a status property, or nullptr if the given parent doesn't

@@ -43,7 +43,6 @@ public:
   public:
     TestItem() : CompoundItem("TestItem")
     {
-      AddProperty(itemconstants::kName, "");
       AddProperty(itemconstants::kStatus, "");
       AddProperty(itemconstants::kBreakpoint, "");
     }
@@ -136,13 +135,11 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
 {
   // item doesn't have property items
   const mvvm::SessionItem item;
-  EXPECT_EQ(GetNameItem(item), nullptr);
   EXPECT_EQ(GetStatusItem(item), nullptr);
   EXPECT_EQ(GetBreakpointItem(item), nullptr);
 
   // test item has property items
   const TestItem test_item;
-  EXPECT_NE(GetNameItem(test_item), nullptr);
   EXPECT_NE(GetStatusItem(test_item), nullptr);
   EXPECT_NE(GetBreakpointItem(test_item), nullptr);
 }

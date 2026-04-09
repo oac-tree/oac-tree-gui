@@ -45,11 +45,6 @@ std::vector<std::string> GetDomainDecoratorNames()
   return result;
 }
 
-mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag)
-{
-  return mvvm::utils::HasTag(parent, tag) ? parent.GetItem(tag) : nullptr;
-}
-
 }  // namespace
 
 namespace oac_tree_gui
@@ -66,9 +61,9 @@ bool IsDecoratorInstruction(const InstructionItem* instruction)
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
 }
 
-mvvm::SessionItem* GetNameItem(const mvvm::SessionItem& parent)
+mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag)
 {
-  return GetPropertyItem(parent, itemconstants::kName);
+  return mvvm::utils::HasTag(parent, tag) ? parent.GetItem(tag) : nullptr;
 }
 
 mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent)

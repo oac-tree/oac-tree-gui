@@ -69,9 +69,7 @@ public:
   }
 };
 
-//! No items or their attributes selected in the property editor.
-
-TEST_F(AttributeEditorActionHandlerTest, NothingIsSelected)
+TEST_F(AttributeEditorActionHandlerTest, WhenNothingIsSelectedHandlerCanNotPerformAnyAction)
 {
   // no items are selected in the property editor
   auto handler = CreateActionHandler(nullptr);
@@ -82,14 +80,12 @@ TEST_F(AttributeEditorActionHandlerTest, NothingIsSelected)
   EXPECT_FALSE(handler->CanEditAnyValue());
 }
 
-//! Name attribute is selected.
-
-TEST_F(AttributeEditorActionHandlerTest, NameAttributeSelected)
+TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelectedCallingEditorIsNotPossible)
 {
-  WaitItem item;
-  auto name_attribute = GetNameItem(item);
+  const WaitItem item;
+  auto timeout_attribute = GetPropertyItem(item, domainconstants::kTimeoutAttribute);
 
-  auto handler = CreateActionHandler(name_attribute);
+  auto handler = CreateActionHandler(timeout_attribute);
 
   EXPECT_TRUE(handler->CanToggleExposedFlag());
   EXPECT_TRUE(handler->CanSetDefaultType());
@@ -99,9 +95,7 @@ TEST_F(AttributeEditorActionHandlerTest, NameAttributeSelected)
   EXPECT_FALSE(handler->CanEditAnyValue());
 }
 
-//! AnyValue on board of LocalVariableItem is selected.
-
-TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
+TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 {
   LocalVariableItem item;
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, item);
@@ -118,26 +112,23 @@ TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
   EXPECT_TRUE(handler->CanEditAnyValue());
 }
 
-//! Name attribute is selected, enabling/disabling attribute.
-
-TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlag)
+TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlagForTimeoutAttribute)
 {
   const WaitItem item;
-  auto name_attribute = dynamic_cast<sup::gui::AnyValueItem*>(GetNameItem(item));
+  auto timeout_attribute = dynamic_cast<sup::gui::AnyValueItem*>(
+      GetPropertyItem(item, domainconstants::kTimeoutAttribute));
 
-  auto handler = CreateActionHandler(name_attribute);
+  auto handler = CreateActionHandler(timeout_attribute);
 
   EXPECT_TRUE(handler->GetExposedFlag());
-  EXPECT_TRUE(GetAttributeExposedFlag(*name_attribute));
+  EXPECT_TRUE(GetAttributeExposedFlag(*timeout_attribute));
 
   handler->OnToggleExposedFlag();
   EXPECT_FALSE(handler->GetExposedFlag());
-  EXPECT_FALSE(GetAttributeExposedFlag(*name_attribute));
+  EXPECT_FALSE(GetAttributeExposedFlag(*timeout_attribute));
 }
 
-//! Scalar attribute is selected, turning it into placeholder.
-
-TEST_F(AttributeEditorActionHandlerTest, OnSetPlaceholderTypeAndBack)
+TEST_F(AttributeEditorActionHandlerTest, TuringScalarAttributeIntoPlaceholder)
 {
   sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kInt8TypeName);
