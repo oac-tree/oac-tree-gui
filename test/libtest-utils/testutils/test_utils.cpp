@@ -70,7 +70,7 @@ std::string CreateProcedureString(const std::string &body, bool schema)
            xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">)RAW"};
 
   static const std::string header{R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure>)RAW"};
+<Procedure name="">)RAW"};
 
   static const std::string footer{R"RAW(</Procedure>
 )RAW"};

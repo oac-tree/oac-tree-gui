@@ -70,7 +70,7 @@ TEST_F(XmlPanelControllerTest, ConstructorParameter)
 TEST_F(XmlPanelControllerTest, CheckInitialUpdate)
 {
   const std::string expected_xml(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure>
+<Procedure name="">
   <Workspace/>
 </Procedure>
 )RAW");
@@ -91,7 +91,7 @@ TEST_F(XmlPanelControllerTest, NotificationOnProcedureRemoval)
 TEST_F(XmlPanelControllerTest, XmlUpdateOnItemInsert)
 {
   const std::string expected_xml(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure>
+<Procedure name="">
   <Sequence/>
   <Workspace/>
 </Procedure>
@@ -108,7 +108,7 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnItemInsert)
 TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)
 {
   const std::string expected_xml1(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure>
+<Procedure name="">
   <Workspace>
     <File name="File"/>
   </Workspace>
@@ -123,7 +123,7 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)
                                                    mvvm::TagIndex::Append());
 
   const std::string expected_xml2(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure>
+<Procedure name="">
   <Workspace>
     <File name="File"/>
     <File name="AnotherVarName"/>
