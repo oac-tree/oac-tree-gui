@@ -21,6 +21,7 @@
 #include "oac_tree_gui/domain/domain_constants.h"
 
 #include <sup/oac-tree/constants.h>
+#include <sup/oac-tree/procedure.h>
 
 #include <gtest/gtest.h>
 
@@ -80,6 +81,15 @@ TEST_F(DomainConstantsTest, CheckDomainConstants)
   EXPECT_EQ(domainconstants::kBlockingAttribute, sup::oac_tree::Constants::BLOCKING_ATTRIBUTE_NAME);
 
   EXPECT_EQ(domainconstants::kCorePluginName, sup::oac_tree::Constants::DOC_CORE_LIBRARY_NAME);
+
+  // procedure related constants
+  EXPECT_EQ(domainconstants::kTickTimeoutAttributeName, sup::oac_tree::kTickTimeoutAttributeName);
+  EXPECT_EQ(domainconstants::kTimingAccuracyAttributeName,
+            sup::oac_tree::kTimingAccuracyAttributeName);
+  EXPECT_EQ(domainconstants::kDefaultTickTimeoutSec * 1e9,
+            sup::oac_tree::DefaultSettings::DEFAULT_SLEEP_TIME_NS);
+  EXPECT_EQ(domainconstants::kDefaultTimingAccuracySec * 1e9,
+            sup::oac_tree::DefaultSettings::DEFAULT_TIMING_ACCURACY_NS);
 }
 
 }  // namespace oac_tree_gui::test

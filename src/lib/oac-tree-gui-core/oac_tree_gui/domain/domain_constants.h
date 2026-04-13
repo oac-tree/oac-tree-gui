@@ -130,6 +130,13 @@ constexpr auto kFromVariableAttributeName = "fromVar";
 constexpr auto kEqualVariableAttributeName = "equalsVar";
 constexpr auto kBlockingAttribute = "blocking";
 
+// procedure related
+constexpr auto kTickTimeoutAttributeName = "tickTimeout";
+constexpr double kDefaultTickTimeoutSec = 0.1; // DEFAULT_SLEEP_TIME_NS in sequencer
+
+constexpr auto kTimingAccuracyAttributeName = "timingAccuracy";
+constexpr double kDefaultTimingAccuracySec = 0.05; // DEFAULT_TIMING_ACCURACY_NS in sequencer
+
 }  // namespace oac_tree_gui::domainconstants
 
 #endif  // OAC_TREE_GUI_DOMAIN_DOMAIN_CONSTANTS_H_
