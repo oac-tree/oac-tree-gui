@@ -28,6 +28,9 @@
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
+#include <mvvm/style/mvvm_style_helper.h>
+
+#include <QLabel>
 #include <QTabWidget>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -53,6 +56,8 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
 
   m_tool_bar->setIconSize(NarrowToolBarIconSize());
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  // to have fixed height when no actions are added
+  m_tool_bar->setFixedHeight(NarrowToolBarIconSize().height() + mvvm::style::UnitSize(1.9));
 
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tab_widget);
