@@ -32,6 +32,7 @@
 #include <oac_tree_gui/transform/domain_workspace_builder.h>
 
 #include <mvvm/model/session_model.h>
+#include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure.h>
@@ -147,6 +148,18 @@ void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_it
   {
     // do not generate attribute for empty name
     procedure.AddAttribute(domainconstants::kNameAttribute, procedure_item.GetDescription());
+  }
+
+  if (procedure_item.GetTickTimeout() != domainconstants::kDefaultTickTimeoutSec)
+  {
+    procedure.AddAttribute(domainconstants::kTickTimeoutAttributeName,
+                           mvvm::utils::DoubleToString(procedure_item.GetTickTimeout()));
+  }
+
+  if (procedure_item.GetTimingAccuracy() != domainconstants::kDefaultTimingAccuracySec)
+  {
+    procedure.AddAttribute(domainconstants::kTimingAccuracyAttributeName,
+                           mvvm::utils::DoubleToString(procedure_item.GetTimingAccuracy()));
   }
 
   PopulateDomainInstructions(procedure_item.GetInstructionContainer(), &procedure);

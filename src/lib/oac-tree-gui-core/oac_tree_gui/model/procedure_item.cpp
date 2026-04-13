@@ -90,10 +90,10 @@ ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>()
       .SetToolTip("The name of the file from which a procedure was imported");
 
   (void)AddProperty(domainconstants::kTickTimeoutAttributeName,
-                    domainconstants::kDefaultTickTimeoutSec)
+                    mvvm::float64{domainconstants::kDefaultTickTimeoutSec})
       .SetToolTip("Default sleep time between ticks (in sec)");
   (void)AddProperty(domainconstants::kTimingAccuracyAttributeName,
-                    domainconstants::kDefaultTimingAccuracySec)
+                    mvvm::float64{domainconstants::kDefaultTimingAccuracySec})
       .SetToolTip("Desired accuracy (in sec) for instructions containing time related functions");
 
   (void)AddBranch<InstructionContainerItem>(kInstructions).SetDisplayName("Instructions");

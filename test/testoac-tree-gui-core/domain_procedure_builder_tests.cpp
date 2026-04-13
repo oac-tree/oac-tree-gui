@@ -61,6 +61,8 @@ TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
 
   EXPECT_TRUE(procedure->GetFilename().empty());
   EXPECT_FALSE(procedure->HasAttribute(domainconstants::kNameAttribute));
+  EXPECT_FALSE(procedure->HasAttribute(domainconstants::kTickTimeoutAttributeName));
+  EXPECT_FALSE(procedure->HasAttribute(domainconstants::kTimingAccuracyAttributeName));
 }
 
 TEST_F(DomainProcedureBuilderTest, EmptyNamedProcedure)
@@ -83,6 +85,18 @@ TEST_F(DomainProcedureBuilderTest, EmptyNamedProcedure)
   EXPECT_EQ(instructions.size(), 0);
   EXPECT_EQ(procedure->GetInstructionCount(), 0);
   EXPECT_TRUE(procedure->VariableNames().empty());
+}
+
+TEST_F(DomainProcedureBuilderTest, TimingAttributes)
+{
+  ProcedureItem procedure_item;
+  procedure_item.SetTickTimeout(0.01);
+  procedure_item.SetTimingAccuracy(0.023);
+
+  auto procedure = CreateDomainProcedure(procedure_item);
+
+  EXPECT_EQ(procedure->GetAttributeString(domainconstants::kTickTimeoutAttributeName), "0.01");
+  EXPECT_EQ(procedure->GetAttributeString(domainconstants::kTimingAccuracyAttributeName), "0.023");
 }
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
