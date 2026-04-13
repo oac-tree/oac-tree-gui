@@ -82,12 +82,18 @@ void CollectInstructionPluginNames(const oac_tree_gui::InstructionContainerItem&
 
 ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>())
 {
-  (void)AddProperty(itemconstants::kDescription, std::string()).SetDisplayName("Description");
-  (void)AddProperty(kFileName, std::string()).SetDisplayName("File name");
+  (void)AddProperty(itemconstants::kDescription, std::string())
+      .SetDisplayName("Description")
+      .SetToolTip("Describe procedure in more details, if necessary");
+  (void)AddProperty(kFileName, std::string())
+      .SetDisplayName("File name")
+      .SetToolTip("The name of the file from which a procedure was imported");
   (void)AddBranch<InstructionContainerItem>(kInstructions).SetDisplayName("Instructions");
   (void)AddBranch<WorkspaceItem>(kWorkspace).SetDisplayName("Workspace");
   (void)AddBranch<ProcedurePreambleItem>(kPreamble).SetDisplayName("Preamble");
 
+  // Editable display name allows users to change procedure name quickly in a tree view. It doesn't
+  // go to the XML.
   (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
 
