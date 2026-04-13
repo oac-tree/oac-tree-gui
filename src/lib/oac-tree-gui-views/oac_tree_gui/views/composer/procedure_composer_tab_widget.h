@@ -41,6 +41,7 @@ class InstructionEditorWidget;
 class WorkspaceEditorWidget;
 class XmlPanel;
 class NodeEditorWidget;
+class ProcedureAttributeEditorWidget;
 
 class ProcedureComposerTabWidget : public QWidget
 {
@@ -76,6 +77,7 @@ private:
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
   NodeEditorWidget* m_node_editor{nullptr};
   XmlPanel* m_xml_panel{nullptr};
+  ProcedureAttributeEditorWidget* m_procedure_attribute_widget{nullptr};
   QTabWidget* m_tab_widget{nullptr};
 };
 

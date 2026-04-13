@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   instruction_editor_tree_view.h
   instruction_editor_widget.cpp
   instruction_editor_widget.h
+  procedure_attribute_editor_widget.cpp
+  procedure_attribute_editor_widget.h
   procedure_composer_combo_panel.cpp
   procedure_composer_combo_panel.h
   procedure_composer_combo_toolbar.cpp

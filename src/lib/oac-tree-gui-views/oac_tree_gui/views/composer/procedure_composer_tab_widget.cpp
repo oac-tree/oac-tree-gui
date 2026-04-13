@@ -21,6 +21,7 @@
 #include "procedure_composer_tab_widget.h"
 
 #include "instruction_editor_widget.h"
+#include "procedure_attribute_editor_widget.h"
 #include "workspace_editor_widget.h"
 #include "xml_panel.h"
 
@@ -43,6 +44,7 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
           new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
     , m_node_editor(new NodeEditorWidget(NodeEditorMode::kNodeEditor))
     , m_xml_panel(new XmlPanel)
+    , m_procedure_attribute_widget(new ProcedureAttributeEditorWidget)
     , m_tab_widget(new QTabWidget)
 {
   auto layout = new QVBoxLayout(this);
@@ -60,6 +62,8 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
   AddTab(m_workspace_editor_widget, "Workspace", "Workspace editor");
   AddTab(m_node_editor, "Node editor", "Instruction editor with node graph view of instructions");
   AddTab(m_xml_panel, "XML", "XML representation of the procedure");
+  AddTab(m_procedure_attribute_widget, "Procedure attributes",
+         "Propety editor for main procedure attributes");
 
   m_tab_widget->setTabPosition(QTabWidget::South);
 
@@ -78,6 +82,7 @@ void ProcedureComposerTabWidget::SetProcedure(ProcedureItem* procedure_item)
       (procedure_item != nullptr) ? procedure_item->GetWorkspace() : nullptr);
   m_node_editor->SetProcedure(procedure_item);
   m_xml_panel->SetProcedure(procedure_item);
+  m_procedure_attribute_widget->SetProcedure(procedure_item);
 }
 
 ProcedureEditorType ProcedureComposerTabWidget::GetEditorType() const
