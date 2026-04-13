@@ -86,10 +86,12 @@ TEST_F(DomainConstantsTest, CheckDomainConstants)
   EXPECT_EQ(domainconstants::kTickTimeoutAttributeName, sup::oac_tree::kTickTimeoutAttributeName);
   EXPECT_EQ(domainconstants::kTimingAccuracyAttributeName,
             sup::oac_tree::kTimingAccuracyAttributeName);
-  EXPECT_EQ(domainconstants::kDefaultTickTimeoutSec * 1e9,
-            sup::oac_tree::DefaultSettings::DEFAULT_SLEEP_TIME_NS);
-  EXPECT_EQ(domainconstants::kDefaultTimingAccuracySec * 1e9,
-            sup::oac_tree::DefaultSettings::DEFAULT_TIMING_ACCURACY_NS);
+
+  const double nsec_in_sec = 1e9;
+  EXPECT_DOUBLE_EQ(domainconstants::kDefaultTickTimeoutSec,
+                   sup::oac_tree::DefaultSettings::DEFAULT_SLEEP_TIME_NS / nsec_in_sec);
+  EXPECT_DOUBLE_EQ(domainconstants::kDefaultTimingAccuracySec,
+                   sup::oac_tree::DefaultSettings::DEFAULT_TIMING_ACCURACY_NS / nsec_in_sec);
 }
 
 }  // namespace oac_tree_gui::test
