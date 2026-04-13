@@ -66,6 +66,26 @@ public:
    */
   void SetFileName(const std::string& value);
 
+  /**
+   * @brief Returns default tick timeout in seconds between ticks.
+   */
+  double GetTickTimeout() const;
+
+  /**
+   * @brief Sets default tick timeout in seconds between ticks.
+   */
+  void SetTickTimeout(double value);
+
+  /**
+   * @brief Returns desired accuracy in seconds for instructions containing time related functions.
+   */
+  double GetTimingAccuracy() const;
+
+  /**
+   * @brief Sets desired accuracy in seconds for instructions containing time related functions.
+   */
+  void SetTimingAccuracy(double value);
+
   InstructionContainerItem* GetInstructionContainer() const;
   WorkspaceItem* GetWorkspace() const;
 

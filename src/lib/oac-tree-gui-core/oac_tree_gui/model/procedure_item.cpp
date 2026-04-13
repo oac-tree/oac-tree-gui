@@ -88,6 +88,14 @@ ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>()
   (void)AddProperty(kFileName, std::string())
       .SetDisplayName("File name")
       .SetToolTip("The name of the file from which a procedure was imported");
+
+  (void)AddProperty(domainconstants::kTickTimeoutAttributeName,
+                    domainconstants::kDefaultTickTimeoutSec)
+      .SetToolTip("Default sleep time between ticks (in sec)");
+  (void)AddProperty(domainconstants::kTimingAccuracyAttributeName,
+                    domainconstants::kDefaultTimingAccuracySec)
+      .SetToolTip("Desired accuracy (in sec) for instructions containing time related functions");
+
   (void)AddBranch<InstructionContainerItem>(kInstructions).SetDisplayName("Instructions");
   (void)AddBranch<WorkspaceItem>(kWorkspace).SetDisplayName("Workspace");
   (void)AddBranch<ProcedurePreambleItem>(kPreamble).SetDisplayName("Preamble");
@@ -120,6 +128,26 @@ std::string ProcedureItem::GetFileName() const
 void ProcedureItem::SetFileName(const std::string& value)
 {
   (void)SetProperty(kFileName, value);
+}
+
+double ProcedureItem::GetTickTimeout() const
+{
+  return Property<double>(domainconstants::kTickTimeoutAttributeName);
+}
+
+void ProcedureItem::SetTickTimeout(double value)
+{
+  (void)SetProperty(domainconstants::kTickTimeoutAttributeName, value);
+}
+
+double ProcedureItem::GetTimingAccuracy() const
+{
+  return Property<double>(domainconstants::kTimingAccuracyAttributeName);
+}
+
+void ProcedureItem::SetTimingAccuracy(double value)
+{
+  (void)SetProperty(domainconstants::kTimingAccuracyAttributeName, value);
 }
 
 InstructionContainerItem* ProcedureItem::GetInstructionContainer() const

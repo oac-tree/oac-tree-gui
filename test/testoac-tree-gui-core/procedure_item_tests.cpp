@@ -49,6 +49,10 @@ TEST_F(ProcedureItemTest, InitialState)
   EXPECT_TRUE(item.GetInstructionContainer());
   EXPECT_TRUE(item.GetWorkspace());
   EXPECT_TRUE(item.GetPreambleItem());
+  EXPECT_EQ(item.GetDescription(), std::string());
+  EXPECT_EQ(item.GetFileName(), std::string());
+  EXPECT_EQ(item.GetTickTimeout(), domainconstants::kDefaultTickTimeoutSec);
+  EXPECT_EQ(item.GetTimingAccuracy(), domainconstants::kDefaultTimingAccuracySec);
 }
 
 TEST_F(ProcedureItemTest, GetterAndSetter)
@@ -63,6 +67,12 @@ TEST_F(ProcedureItemTest, GetterAndSetter)
 
   item.SetFileName("jhk");
   EXPECT_EQ(item.GetFileName(), std::string("jhk"));
+
+  item.SetTickTimeout(42.0);
+  EXPECT_EQ(item.GetTickTimeout(), 42.0);
+
+  item.SetTimingAccuracy(43.0);
+  EXPECT_EQ(item.GetTimingAccuracy(), 43.0);
 }
 
 //! Checking CollectPluginNames when procedure contains only core objects.
