@@ -143,7 +143,11 @@ void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* worksp
 void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_item,
                                                procedure_t& procedure)
 {
-  procedure.AddAttribute(domainconstants::kNameAttribute, procedure_item.GetDescription());
+  if (!procedure_item.GetDescription().empty())
+  {
+    // do not generate attribute for empty name
+    procedure.AddAttribute(domainconstants::kNameAttribute, procedure_item.GetDescription());
+  }
 
   PopulateDomainInstructions(procedure_item.GetInstructionContainer(), &procedure);
   PopulateDomainWorkspace(procedure_item.GetWorkspace(), &procedure);

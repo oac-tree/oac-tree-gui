@@ -109,20 +109,20 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForSequence)
 TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
 {
   const std::string expected_xml1(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure name="">
+<Procedure>
   <Workspace/>
 </Procedure>
 )RAW");
 
   const std::string expected_xml2(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure name="">
+<Procedure>
   <PvAccessRead timeout="1.0"/>
   <Workspace/>
 </Procedure>
 )RAW");
 
   const std::string expected_xml3(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure name="">
+<Procedure>
   <Plugin>oac-tree-pvxs</Plugin>
   <PvAccessRead timeout="1.0"/>
   <Workspace/>
@@ -150,14 +150,14 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   const std::string expected_xml4(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure name="">
+<Procedure>
   <PvAccessRead timeout="1.0"/>
   <Workspace/>
 </Procedure>
 )RAW");
 
   const std::string expected_xml5(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure name="">
+<Procedure>
   <Workspace/>
 </Procedure>
 )RAW");

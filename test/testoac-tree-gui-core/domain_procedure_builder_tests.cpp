@@ -60,7 +60,7 @@ TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
   auto procedure = CreateDomainProcedure(procedure_item);
 
   EXPECT_TRUE(procedure->GetFilename().empty());
-  EXPECT_TRUE(procedure->GetAttributeString(domainconstants::kNameAttribute).empty());
+  EXPECT_FALSE(procedure->HasAttribute(domainconstants::kNameAttribute));
 }
 
 TEST_F(DomainProcedureBuilderTest, EmptyNamedProcedure)
