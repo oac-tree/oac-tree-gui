@@ -1,5 +1,7 @@
 Changes for 2.3.0:
 
+- Add tickTimeout and timingAccuracy attributes support for ProcedureItem
+- Provide procedure attribute editor.
 - Remove separate name property from instruction, use editable display name instead
 - Add instruction domain type in a tree of the InstructionEditorWidget and RealTimeSintructionTree
 - Implement prototype of instruction TaskMonitor.
