@@ -29,6 +29,8 @@
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
+#include <mvvm/utils/string_utils.h>
+
 #include <sup/dto/anytype_registry.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure.h>
@@ -79,6 +81,26 @@ void PopulateProcedureItem(const procedure_t& procedure, ProcedureItem& procedur
   if (procedure.HasAttribute(domainconstants::kNameAttribute))
   {
     procedure_item.SetDescription(procedure.GetAttributeString(domainconstants::kNameAttribute));
+  }
+
+  if (procedure.HasAttribute(domainconstants::kTickTimeoutAttributeName))
+  {
+    auto value = mvvm::utils::StringToDouble(
+        procedure.GetAttributeString(domainconstants::kTickTimeoutAttributeName));
+    if (value.has_value())
+    {
+      procedure_item.SetTickTimeout(value.value());
+    }
+  }
+
+  if (procedure.HasAttribute(domainconstants::kTimingAccuracyAttributeName))
+  {
+    auto value = mvvm::utils::StringToDouble(
+        procedure.GetAttributeString(domainconstants::kTimingAccuracyAttributeName));
+    if (value.has_value())
+    {
+      procedure_item.SetTimingAccuracy(value.value());
+    }
   }
 
   auto instruction_container = procedure_item.GetInstructionContainer();

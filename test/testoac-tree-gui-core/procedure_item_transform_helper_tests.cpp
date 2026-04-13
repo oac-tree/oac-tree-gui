@@ -71,6 +71,17 @@ TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromNamedProcedure)
   EXPECT_EQ(procedure_item->GetDescription(), "abc");
 }
 
+TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromProcedureWithTimingAttributes)
+{
+  ::sup::oac_tree::Procedure procedure;
+  procedure.AddAttribute(domainconstants::kTickTimeoutAttributeName, "42.0");
+  procedure.AddAttribute(domainconstants::kTimingAccuracyAttributeName, "43.0");
+
+  auto procedure_item = CreateProcedureItem(procedure);
+  EXPECT_EQ(procedure_item->GetTickTimeout(), 42.0);
+  EXPECT_EQ(procedure_item->GetTimingAccuracy(), 43.0);
+}
+
 TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromDomainProcedureWithTwoWaits)
 {
   ::sup::oac_tree::Procedure procedure;
