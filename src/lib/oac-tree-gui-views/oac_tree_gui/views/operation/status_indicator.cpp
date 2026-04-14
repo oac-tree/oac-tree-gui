@@ -68,7 +68,7 @@ QColor GetColorForStatus(InstructionStatus status)
 }  // namespace
 
 StatusIndicator::StatusIndicator(QWidget* parent_widget)
-    : QLabel(parent_widget), m_progress_indicator(new BusySign(this))
+    : QLabel(parent_widget), m_busy_sign(new BusySign(this))
 {
   setAlignment(Qt::AlignCenter);
   QFont f = font();
@@ -104,7 +104,7 @@ void StatusIndicator::UpdateAppearance()
   const auto background_color = GetColorForStatus(m_current_status);
   setStyleSheet(GetColorButtonStyleSheet(background_color));
 
-  m_progress_indicator->SetIndicatorType(status_to_indicator_type.at(m_current_status));
+  m_busy_sign->SetIndicatorType(status_to_indicator_type.at(m_current_status));
 }
 
 }  // namespace oac_tree_gui

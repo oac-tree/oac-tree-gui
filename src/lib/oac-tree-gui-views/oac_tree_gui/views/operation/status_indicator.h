@@ -56,7 +56,7 @@ public:
 private:
   void UpdateAppearance();
   InstructionStatus m_current_status{InstructionStatus::kUndefined};
-  BusySign* m_progress_indicator{nullptr};
+  BusySign* m_busy_sign{nullptr};
 };
 
 }  // namespace oac_tree_gui
