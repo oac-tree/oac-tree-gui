@@ -31,6 +31,11 @@ namespace mvvm
 class ModelListener;
 }
 
+namespace sup::gui
+{
+class VisibilityAgentBase;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
@@ -66,7 +71,9 @@ public:
 private:
   void SetInstructionContainerIntern(InstructionContainerItem* container);
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
+  void SetupVisibilityAgent();
 
+  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
   InstructionTaskAreaWidget* m_task_area_widget{nullptr};
   std::unique_ptr<InstructionTaskWidgetBuilder> m_task_widget_builder;
   std::unique_ptr<mvvm::ModelListener> m_listener;

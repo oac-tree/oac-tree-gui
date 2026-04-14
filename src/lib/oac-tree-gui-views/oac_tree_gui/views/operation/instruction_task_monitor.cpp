@@ -28,6 +28,8 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 
+#include <sup/gui/widgets/visibility_agent_base.h>
+
 #include <mvvm/model/model_utils.h>
 #include <mvvm/signals/model_listener.h>
 
@@ -47,6 +49,8 @@ InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
 
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(m_task_area_widget);
+
+  SetupVisibilityAgent();
 }
 
 InstructionTaskMonitor::~InstructionTaskMonitor() = default;
@@ -104,6 +108,15 @@ void InstructionTaskMonitor::OnDataChangedEvent(const mvvm::DataChangedEvent& ev
       task_widget->SetInstructionStatus(instruction_item->GetStatus());
     }
   }
+}
+
+void InstructionTaskMonitor::SetupVisibilityAgent()
+{
+  auto on_subscribe = [this]() { SetInstructionContainerIntern(m_container_item); };
+  auto on_unsubscribe = [this]() { SetInstructionContainerIntern(nullptr); };
+
+  // will be deleted as a child of QObject
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 }  // namespace oac_tree_gui

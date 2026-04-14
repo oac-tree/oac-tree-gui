@@ -77,6 +77,11 @@ StatusIndicator::StatusIndicator(QWidget* parent_widget)
   UpdateAppearance();
 }
 
+StatusIndicator::~StatusIndicator()
+{
+  qDebug() << "StatusIndicator destructor";
+}
+
 void StatusIndicator::SetInstructionStatus(InstructionStatus status)
 {
   if (status != m_current_status)
