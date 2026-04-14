@@ -74,4 +74,28 @@ TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToEmpty)
   EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
 }
 
+TEST_F(InstructionTaskMonitorTest, UpdateInstructionStatus)
+{
+  mvvm::ApplicationModel model;
+  auto container0 = model.InsertItem<InstructionContainerItem>();
+  auto sequence = model.InsertItem<SequenceItem>(container0);
+
+  InstructionTaskMonitor task_monitor;
+  task_monitor.show();
+  task_monitor.SetInstructionContainer(container0);
+
+  sequence->SetStatus(InstructionStatus::kRunning);
+
+  auto builder = const_cast<InstructionTaskWidgetBuilder*>(task_monitor.GetTaskWidgetBuilder());
+  ASSERT_NE(builder, nullptr);
+  auto widget = builder->FindWidgetForInstruction(sequence);
+  EXPECT_EQ(widget->GetInstructionStatus(), InstructionStatus::kRunning);
+
+  task_monitor.hide();
+
+  // at this point all widgets are destroyed, listener should stop listening to instruction status
+  // changes
+  EXPECT_NO_FATAL_FAILURE(sequence->SetStatus(InstructionStatus::kSuccess));
+}
+
 }  // namespace oac_tree_gui::test

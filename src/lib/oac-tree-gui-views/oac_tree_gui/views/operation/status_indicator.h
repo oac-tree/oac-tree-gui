@@ -42,7 +42,6 @@ class StatusIndicator : public QLabel
 
 public:
   explicit StatusIndicator(QWidget* parent_widget = nullptr);
-  ~StatusIndicator();
 
   /**
    * @brief Update indicator color to match instruction execution status.

@@ -79,6 +79,7 @@ void InstructionTaskMonitor::SetInstructionContainerIntern(InstructionContainerI
 {
   if (container == nullptr)
   {
+    m_listener.reset();
     m_task_area_widget->Clear();
     m_task_widget_builder.reset();
     return;
