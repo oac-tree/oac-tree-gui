@@ -51,6 +51,8 @@ public:
 
   /**
    * @brief Clear the content of scroll area.
+   *
+   * All TaskWidgets will be deleted.
    */
   void Clear();
 

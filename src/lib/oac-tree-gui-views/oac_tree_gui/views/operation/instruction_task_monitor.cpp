@@ -56,9 +56,11 @@ void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* c
   if (container == nullptr)
   {
     m_task_area_widget->Clear();
+    m_task_widget_builder.reset();
     return;
   }
 
+  m_task_widget_builder = std::make_unique<InstructionTaskWidgetBuilder>();
   m_listener = std::make_unique<mvvm::ModelListener>(container->GetModel());
   m_listener->Connect<mvvm::DataChangedEvent>(this, &InstructionTaskMonitor::OnDataChangedEvent);
 
@@ -71,7 +73,7 @@ void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* c
   }
 }
 
-const InstructionTaskWidgetBuilder *InstructionTaskMonitor::GetTaskWidgetBuilder() const
+const InstructionTaskWidgetBuilder* InstructionTaskMonitor::GetTaskWidgetBuilder() const
 {
   return m_task_widget_builder.get();
 }

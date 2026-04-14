@@ -55,4 +55,19 @@ TEST_F(InstructionTaskMonitorTest, SetEmptyContainer)
   EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
 }
 
+TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToEmpty)
+{
+  mvvm::ApplicationModel model;
+  auto container0 = model.InsertItem<InstructionContainerItem>();
+  auto sequence = model.InsertItem<SequenceItem>(container0);
+  auto container1 = model.InsertItem<InstructionContainerItem>();
+
+  InstructionTaskMonitor task_monitor;
+  task_monitor.SetInstructionContainer(container0);
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 1U);
+
+  task_monitor.SetInstructionContainer(container1);
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
+}
+
 }  // namespace oac_tree_gui::test
