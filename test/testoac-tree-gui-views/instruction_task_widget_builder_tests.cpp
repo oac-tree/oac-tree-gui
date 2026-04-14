@@ -41,10 +41,12 @@ TEST_F(InstructionTaskWidgetBuilderTest, SingleSequenceInstruction)
   item.SetDisplayName("abc");
 
   InstructionTaskWidgetBuilder builder;
+  EXPECT_EQ(builder.GetInstructionCount(), 0U);
 
   auto task_widget = builder.CreateTaskWidget(item);
   EXPECT_EQ(task_widget->GetInstructionStatus(), item.GetStatus());
   EXPECT_EQ(task_widget->GetLabelText(), "abc");
+  EXPECT_EQ(builder.GetInstructionCount(), 1U);
 
   EXPECT_EQ(builder.FindWidgetForInstruction(&item), task_widget.get());
   EXPECT_EQ(builder.FindWidgetForInstruction(nullptr), nullptr);

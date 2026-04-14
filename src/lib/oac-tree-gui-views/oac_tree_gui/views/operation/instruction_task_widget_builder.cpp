@@ -80,4 +80,9 @@ TaskWidget* InstructionTaskWidgetBuilder::FindWidgetForInstruction(const Instruc
   return it == m_instruction_to_widget.end() ? nullptr : it->second;
 }
 
+std::size_t InstructionTaskWidgetBuilder::GetInstructionCount() const
+{
+  return m_instruction_to_widget.size();
+}
+
 }  // namespace oac_tree_gui

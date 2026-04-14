@@ -71,6 +71,11 @@ void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* c
   }
 }
 
+const InstructionTaskWidgetBuilder *InstructionTaskMonitor::GetTaskWidgetBuilder() const
+{
+  return m_task_widget_builder.get();
+}
+
 void InstructionTaskMonitor::OnDataChangedEvent(const mvvm::DataChangedEvent& event)
 {
   auto instruction_item = mvvm::utils::FindItemUp<InstructionItem>(event.item);

@@ -61,6 +61,8 @@ public:
 
   void SetInstructionContainer(InstructionContainerItem* container);
 
+  const InstructionTaskWidgetBuilder* GetTaskWidgetBuilder() const;
+
 private:
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
 

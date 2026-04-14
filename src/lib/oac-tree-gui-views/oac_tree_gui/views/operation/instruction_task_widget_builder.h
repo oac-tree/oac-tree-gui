@@ -48,6 +48,11 @@ public:
    */
   TaskWidget* FindWidgetForInstruction(const InstructionItem* item);
 
+  /**
+   * @brief Returns number of instruction-widget pairs stored in the builder.
+   */
+  std::size_t GetInstructionCount() const;
+
 private:
   std::map<const InstructionItem*, TaskWidget*> m_instruction_to_widget;
 };
