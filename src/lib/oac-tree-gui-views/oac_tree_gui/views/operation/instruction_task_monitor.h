@@ -64,11 +64,13 @@ public:
   const InstructionTaskWidgetBuilder* GetTaskWidgetBuilder() const;
 
 private:
+  void SetInstructionContainerIntern(InstructionContainerItem* container);
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
 
   InstructionTaskAreaWidget* m_task_area_widget{nullptr};
   std::unique_ptr<InstructionTaskWidgetBuilder> m_task_widget_builder;
   std::unique_ptr<mvvm::ModelListener> m_listener;
+  InstructionContainerItem* m_container_item{nullptr};
 };
 
 }  // namespace oac_tree_gui

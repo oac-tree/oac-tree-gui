@@ -53,6 +53,26 @@ InstructionTaskMonitor::~InstructionTaskMonitor() = default;
 
 void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container)
 {
+  if (container == m_container_item)
+  {
+    return;
+  }
+
+  m_container_item = container;
+
+  if ((m_container_item != nullptr) && isVisible())
+  {
+    SetInstructionContainerIntern(m_container_item);
+  }
+}
+
+const InstructionTaskWidgetBuilder* InstructionTaskMonitor::GetTaskWidgetBuilder() const
+{
+  return m_task_widget_builder.get();
+}
+
+void InstructionTaskMonitor::SetInstructionContainerIntern(InstructionContainerItem* container)
+{
   if (container == nullptr)
   {
     m_task_area_widget->Clear();
@@ -71,11 +91,6 @@ void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* c
     m_task_area_widget->SetTaskWidget(m_task_widget_builder->CreateTaskWidget(*instruction));
     break;
   }
-}
-
-const InstructionTaskWidgetBuilder* InstructionTaskMonitor::GetTaskWidgetBuilder() const
-{
-  return m_task_widget_builder.get();
 }
 
 void InstructionTaskMonitor::OnDataChangedEvent(const mvvm::DataChangedEvent& event)

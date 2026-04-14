@@ -63,6 +63,10 @@ TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToEmpty)
   auto container1 = model.InsertItem<InstructionContainerItem>();
 
   InstructionTaskMonitor task_monitor;
+
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
+
+  task_monitor.show();
   task_monitor.SetInstructionContainer(container0);
   EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 1U);
 
