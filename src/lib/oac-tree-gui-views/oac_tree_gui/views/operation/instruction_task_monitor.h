@@ -73,7 +73,7 @@ private:
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
   void SetupVisibilityAgent();
 
-  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
+  std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
   InstructionTaskAreaWidget* m_task_area_widget{nullptr};
   std::unique_ptr<InstructionTaskWidgetBuilder> m_task_widget_builder;
   std::unique_ptr<mvvm::ModelListener> m_listener;

@@ -54,11 +54,17 @@ XmlPanel::XmlPanel(QWidget* parent_widget)
 
   auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
   auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
-  // will be deleted as a child of QObject
-  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent =
+      std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
+  m_visibility_agent->SetTarget(this);
 }
 
-XmlPanel::~XmlPanel() = default;
+XmlPanel::~XmlPanel()
+{
+  // we should reset visibility agent since on destruction widget becomes invisible (in
+  // uncontrollable moment of time) and agent might try to call invalid callbacks.
+  m_visibility_agent.reset();
+}
 
 void XmlPanel::SetProcedure(ProcedureItem* procedure)
 {

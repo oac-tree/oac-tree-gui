@@ -94,7 +94,7 @@ private:
   NodeGraphicsView* m_graphics_view{nullptr};
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
   std::unique_ptr<sup::gui::IMessageHandler> m_graphics_view_message_handler;
-  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
+  std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
 
   ProcedureItem* m_procedure_item{nullptr};
 };

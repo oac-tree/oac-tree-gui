@@ -41,8 +41,8 @@ class InstructionTaskMonitorTest : public ::testing::Test
 
 TEST_F(InstructionTaskMonitorTest, InitialState)
 {
-  InstructionTaskMonitor task_monitor;
-  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
+  const InstructionTaskMonitor task_monitor;
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
 }
 
 TEST_F(InstructionTaskMonitorTest, SetEmptyContainer)
@@ -51,8 +51,13 @@ TEST_F(InstructionTaskMonitorTest, SetEmptyContainer)
   auto container = model.InsertItem<InstructionContainerItem>();
 
   InstructionTaskMonitor task_monitor;
+  task_monitor.show();
   task_monitor.SetInstructionContainer(container);
+  ASSERT_NE(task_monitor.GetTaskWidgetBuilder(), nullptr);
   EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
+
+  task_monitor.hide();
+  ASSERT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
 }
 
 TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToEmpty)
@@ -64,10 +69,14 @@ TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToEmpty)
 
   InstructionTaskMonitor task_monitor;
 
-  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
 
   task_monitor.show();
+  ASSERT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
   task_monitor.SetInstructionContainer(container0);
+  ASSERT_NE(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
   EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 1U);
 
   task_monitor.SetInstructionContainer(container1);

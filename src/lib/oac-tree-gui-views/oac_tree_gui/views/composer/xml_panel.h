@@ -68,7 +68,7 @@ private:
   sup::gui::CodeView* m_xml_view{nullptr};
   std::unique_ptr<XmlPanelController> m_panel_controller;
   ProcedureItem* m_procedure{nullptr};
-  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
+  std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
   std::unique_ptr<sup::gui::IMessageHandler> m_message_handler;
 };
 

@@ -108,11 +108,10 @@ InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService& c
   addActions(m_editor_actions->GetActions(GetToolBarActionKeys()));
 
   auto on_subscribe = [this]() { SetInstructionContainerIntern(m_instruction_container); };
-
   auto on_unsubscribe = [this]() { SetInstructionContainerIntern(nullptr); };
-
-  // will be deleted as a child of QObject
-  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent =
+      std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
+  m_visibility_agent->SetTarget(this);
 
   auto context = m_command_service.RegisterWidgetUniqueId(this);
   m_editor_actions->RegisterActionsForContext(context, m_command_service);
@@ -120,6 +119,10 @@ InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService& c
 
 InstructionEditorWidget::~InstructionEditorWidget()
 {
+  // we should reset visibility agent since on destruction widget becomes invisible (in
+  // uncontrollable moment of time) and agent might try to call invalid callbacks.
+  m_visibility_agent.reset();
+
   WriteSettings();
   m_command_service.UnregisterWidgetUniqueId(this);
 }
@@ -167,7 +170,7 @@ void InstructionEditorWidget::InsertInstructionFromToolBox(const QString& name)
   m_action_handler->InsertInstructionAfter(name.toStdString());
 }
 
-void InstructionEditorWidget::resizeEvent(QResizeEvent *event)
+void InstructionEditorWidget::resizeEvent(QResizeEvent* event)
 {
   QWidget::resizeEvent(event);
   m_custom_header->AdjustColumnsWidth();

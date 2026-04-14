@@ -118,7 +118,7 @@ private:
   std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
   InstructionEditorActions* m_editor_actions{nullptr};
 
-  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
+  std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
   CustomTreeViewStyle* m_tree_view_style{nullptr};
 };
 

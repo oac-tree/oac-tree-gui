@@ -100,11 +100,10 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService& comma
   addActions(m_editor->GetToolBarActions());
 
   auto on_subscribe = [this]() { SetWorkspaceItemIntern(m_workspace_item); };
-
   auto on_unsubscribe = [this]() { SetWorkspaceItemIntern(nullptr); };
-
-  // will be deleted as a child of QObject
-  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent =
+      std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
+  m_visibility_agent->SetTarget(this);
 
   auto on_text = [this]() { m_component_provider->SetFilterPattern(m_line_edit->text()); };
   connect(m_line_edit, &QLineEdit::textChanged, this, on_text);
@@ -112,7 +111,12 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService& comma
   SetupConnections();
 }
 
-WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
+WorkspaceEditorWidget::~WorkspaceEditorWidget()
+{
+  // we should reset visibility agent since on destruction widget becomes invisible (in
+  // uncontrollable moment of time) and agent might try to call invalid callbacks.
+  m_visibility_agent.reset();
+}
 
 void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem* workspace)
 {

@@ -99,7 +99,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
-  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
+  std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
   QLineEdit* m_line_edit{nullptr};
   WorkspaceEditor* m_editor{nullptr};
 

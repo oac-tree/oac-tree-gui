@@ -39,9 +39,7 @@ namespace oac_tree_gui
 {
 
 InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
-    : QWidget(parent_widget)
-    , m_task_area_widget(new InstructionTaskAreaWidget(this))
-    , m_task_widget_builder(std::make_unique<InstructionTaskWidgetBuilder>())
+    : QWidget(parent_widget), m_task_area_widget(new InstructionTaskAreaWidget(this))
 {
   setWindowTitle("Instruction Task Monitor");
 
@@ -53,7 +51,12 @@ InstructionTaskMonitor::InstructionTaskMonitor(QWidget* parent_widget)
   SetupVisibilityAgent();
 }
 
-InstructionTaskMonitor::~InstructionTaskMonitor() = default;
+InstructionTaskMonitor::~InstructionTaskMonitor()
+{
+  // we should reset visibility agent since on destruction widget becomes invisible (in
+  // uncontrollable moment of time) and agent might try to call invalid callbacks.
+  m_visibility_agent.reset();
+}
 
 void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container)
 {
@@ -115,9 +118,9 @@ void InstructionTaskMonitor::SetupVisibilityAgent()
 {
   auto on_subscribe = [this]() { SetInstructionContainerIntern(m_container_item); };
   auto on_unsubscribe = [this]() { SetInstructionContainerIntern(nullptr); };
-
-  // will be deleted as a child of QObject
-  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent =
+      std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
+  m_visibility_agent->SetTarget(this);
 }
 
 }  // namespace oac_tree_gui

@@ -24,6 +24,7 @@
 #include "node_graphics_view.h"
 #include "node_graphics_view_actions.h"
 
+#include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -32,7 +33,6 @@
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
-#include <oac_tree_gui/domain/domain_object_group_helper.h>
 
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
@@ -82,16 +82,20 @@ NodeEditorWidget::NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_w
   SetupConnections();
 
   auto on_subscribe = [this]() { SetupSceneComponentProvider(); };
-
   auto on_unsubscribe = [this]() { m_scene_component_provider.reset(); };
-
-  // will be deleted as a child of QObject
-  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent =
+      std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
+  m_visibility_agent->SetTarget(this);
 
   addActions(GetToolBarActions(m_view_actions));
 }
 
-NodeEditorWidget::~NodeEditorWidget() = default;
+NodeEditorWidget::~NodeEditorWidget()
+{
+  // we should reset visibility agent since on destruction widget becomes invisible (in
+  // uncontrollable moment of time) and agent might try to call invalid callbacks.
+  m_visibility_agent.reset();
+}
 
 void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
 {
@@ -179,8 +183,7 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider(NodeEditorMode editor_mod
   { m_graphics_view_message_handler->SendMessage(message); };
 
   auto result = std::make_unique<GraphicsSceneComponentProvider>(
-      message_callback, m_graphics_scene.get(),
-      m_procedure_item->GetInstructionContainer());
+      message_callback, m_graphics_scene.get(), m_procedure_item->GetInstructionContainer());
 
   // forward instruction selection from graphics scene
   connect(result.get(), &GraphicsSceneComponentProvider::selectionChanged, this,
