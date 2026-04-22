@@ -21,8 +21,8 @@
 #include "drag_and_drop_helper.h"
 
 #include <oac_tree_gui/composer/instruction_copy_helper.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
@@ -175,7 +175,7 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
   {
     if (auto drop_type = GetNewInstructionType(&data); !drop_type.empty())
     {
-      auto new_item = CreateInstructionTree(drop_type);
+      auto new_item = CreateInstructionItem(drop_type);
       const auto drop_tag_index = GetDropTagIndex(drop_row_indicator);
       if (mvvm::utils::GetInsertTypeErrorCode(drop_type, parent, drop_tag_index))
       {

@@ -24,8 +24,8 @@
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/iterate_helper.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_action_handler.h>
 
@@ -80,7 +80,7 @@ void GraphicsSceneComponentProvider::OnDeleteSelected()
   mvvm::utils::EndMacro(*GetModel());
 }
 
-std::vector<const InstructionItem *> GraphicsSceneComponentProvider::GetSelectedInstructions() const
+std::vector<const InstructionItem*> GraphicsSceneComponentProvider::GetSelectedInstructions() const
 {
   std::vector<const InstructionItem*> result;
   for (auto shape : mvvm::GetSelectedShapes<mvvm::ConnectableShape>(*m_scene))
@@ -109,7 +109,7 @@ void GraphicsSceneComponentProvider::DropInstruction(const std::string& item_typ
   m_instruction_editor_action_handler->DropInstruction(item_type, pos);
 }
 
-void GraphicsSceneComponentProvider::SelectInstructionBranch(const InstructionItem *instruction)
+void GraphicsSceneComponentProvider::SelectInstructionBranch(const InstructionItem* instruction)
 {
   std::vector<const InstructionItem*> to_select;
   auto on_instruction = [&to_select](const InstructionItem* item) { to_select.push_back(item); };
@@ -186,11 +186,12 @@ InstructionEditorContext GraphicsSceneComponentProvider::CreateContext()
   result.selected_instructions = [this]() { return GetSelectedInstructions(); };
   result.notify_request = [this](auto item)
   {
-    const std::vector<const InstructionItem*> to_select({dynamic_cast<const InstructionItem*>(item)});
+    const std::vector<const InstructionItem*> to_select(
+        {dynamic_cast<const InstructionItem*>(item)});
     SetSelectedInstructions(to_select);
   };
 
-  result.create_instruction = [](const std::string& name) { return CreateInstructionTree(name); };
+  result.create_instruction = [](const std::string& name) { return CreateInstructionItem(name); };
 
   result.send_message = m_send_message_callback;
   return result;

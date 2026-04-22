@@ -28,7 +28,7 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
@@ -272,7 +272,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.edit_anyvalue = CreateAnyValueDialogCallback(this);
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
-  result.create_instruction = [](const std::string& name) { return CreateInstructionTree(name); };
+  result.create_instruction = [](const std::string& name) { return CreateInstructionItem(name); };
 
   return result;
 }

@@ -24,7 +24,7 @@
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/model/item_factory.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -37,7 +37,7 @@ namespace oac_tree_gui::test
 
 InstructionEditorContext MockInstructionEditorContext::CreateContext(
     InstructionContainerItem* instruction_container,
-    const std::vector<const InstructionItem *> &current_selection)
+    const std::vector<const InstructionItem*>& current_selection)
 {
   InstructionEditorContext result;
 
@@ -66,7 +66,7 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
   };
 
   result.create_instruction = [this](const std::string& item_type)
-  { return CreateInstructionTree(item_type); };
+  { return CreateInstructionItem(item_type); };
   return result;
 }
 
@@ -94,7 +94,7 @@ std::vector<const mvvm::SessionItem*> MockInstructionEditorContext::GetNotifyReq
 }
 
 void MockInstructionEditorContext::SetAsCurrentSelection(
-    const std::vector<const InstructionItem *> &selection)
+    const std::vector<const InstructionItem*>& selection)
 {
   m_current_selection = selection;
 }

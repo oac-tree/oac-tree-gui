@@ -149,9 +149,4 @@ sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
              : nullptr;
 }
 
-std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& name)
-{
-  return CreateInstructionItem(name);
-}
-
 }  // namespace oac_tree_gui
