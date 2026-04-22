@@ -25,19 +25,16 @@
 #include "sequencer_main_window_context.h"
 
 #include <oac_tree_gui/components/component_helper.h>
-#include <oac_tree_gui/model/plugin_settings_item.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
+#include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_constants.h>
-#include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/component_objects/proxy_action.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/mainwindow/settings_editor_dialog.h>
-#include <sup/gui/mainwindow/settings_helper.h>
 #include <sup/gui/mainwindow/status_bar_helper.h>
 
 #include <mvvm/project/project_handler.h>
@@ -48,7 +45,6 @@
 #include <QApplication>
 #include <QMainWindow>
 #include <QMenu>
-#include <QMenuBar>
 #include <QStatusBar>
 #include <QToolButton>
 

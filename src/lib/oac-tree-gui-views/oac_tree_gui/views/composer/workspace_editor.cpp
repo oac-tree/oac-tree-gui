@@ -25,8 +25,6 @@
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_action_handler.h>
 #include <oac_tree_gui/composer/workspace_editor_context.h>
-#include <oac_tree_gui/domain/domain_object_group_helper.h>
-#include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/views/composer/workspace_editor_actions.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 

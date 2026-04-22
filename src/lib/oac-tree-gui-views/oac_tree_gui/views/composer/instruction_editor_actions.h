@@ -25,10 +25,7 @@
 
 #include <QList>
 #include <QMenu>
-#include <QWidget>
 #include <memory>
-
-class QMenu;
 
 namespace sup::gui
 {

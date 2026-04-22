@@ -24,16 +24,12 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/component_objects/proxy_action.h>
 #include <sup/gui/widgets/action_menu.h>
 
-#include <mvvm/widgets/widget_utils.h>
-
 #include <QMenu>
-#include <QToolButton>
 
 namespace oac_tree_gui
 {

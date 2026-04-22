@@ -25,15 +25,11 @@
 
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/model/application_models.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
-
-#include <sup/gui/app/app_constants.h>
 
 #include <mvvm/widgets/app_restarter.h>
 
 #include <QCloseEvent>
-#include <QMenuBar>
 #include <QSettings>
 
 namespace

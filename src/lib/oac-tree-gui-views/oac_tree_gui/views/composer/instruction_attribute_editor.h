@@ -21,7 +21,6 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_
 
-#include <QStringList>
 #include <QWidget>
 #include <functional>
 

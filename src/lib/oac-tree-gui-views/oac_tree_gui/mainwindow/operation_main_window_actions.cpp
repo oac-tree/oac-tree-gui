@@ -21,7 +21,6 @@
 #include "operation_main_window_actions.h"
 
 #include <oac_tree_gui/mainwindow/about_application_dialog.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_command.h>
@@ -37,7 +36,6 @@
 #include <QApplication>
 #include <QMainWindow>
 #include <QMenu>
-#include <QMenuBar>
 #include <QStatusBar>
 #include <QToolButton>
 

@@ -21,15 +21,11 @@
 #include "attribute_editor_actions.h"
 
 #include <oac_tree_gui/composer/attribute_editor_action_handler.h>
-#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/style/style_helper.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <QMenu>
-#include <QToolButton>
 
 namespace
 {

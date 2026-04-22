@@ -32,8 +32,6 @@
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QMenu>
-#include <QSettings>
-#include <QToolButton>
 #include <QTreeView>
 #include <QVBoxLayout>
 

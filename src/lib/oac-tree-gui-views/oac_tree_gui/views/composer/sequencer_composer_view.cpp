@@ -24,12 +24,10 @@
 #include "procedure_splittable_editor_widget.h"
 #include "sequencer_composer_actions.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/composer_settings_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/project_model.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_command_context.h>
@@ -38,7 +36,6 @@
 #include <sup/gui/widgets/custom_splitter.h>
 
 #include <QAction>
-#include <QSplitter>
 #include <QVBoxLayout>
 
 Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)

@@ -27,7 +27,6 @@
 
 class QMainWindow;
 class QAction;
-class QMenuBar;
 class QStatusBar;
 class QToolButton;
 

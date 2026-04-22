@@ -23,7 +23,6 @@
 
 #include <QWidget>
 
-class QSplitter;
 class QAction;
 
 namespace sup::gui
@@ -37,7 +36,6 @@ namespace oac_tree_gui
 
 class ApplicationModels;
 class ComposerToolsPanel;
-class SequencerModel;
 class ProcedureSplittableEditorWidget;
 class SequencerComposerActions;
 class ProjectModel;

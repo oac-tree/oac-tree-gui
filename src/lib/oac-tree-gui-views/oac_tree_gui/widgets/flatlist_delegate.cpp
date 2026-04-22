@@ -24,7 +24,6 @@
 
 #include <mvvm/style/mvvm_style_helper.h>
 
-#include <QApplication>
 #include <QPainter>
 
 namespace oac_tree_gui

@@ -21,7 +21,6 @@
 #include "sequencer_composer_actions.h"
 
 #include <oac_tree_gui/components/component_helper.h>
-#include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/operation/procedure_action_handler.h>
 

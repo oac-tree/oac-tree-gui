@@ -23,11 +23,9 @@
 #include <oac_tree_gui/composer/objects/procedure_list_action_handler.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/i_app_command_service.h>
 
-#include <QAction>
 #include <QMenu>
 
 namespace oac_tree_gui

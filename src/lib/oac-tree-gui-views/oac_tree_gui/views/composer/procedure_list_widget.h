@@ -31,7 +31,6 @@ namespace mvvm
 {
 class ViewModel;
 class ItemViewComponentProvider;
-class ISessionModel;
 }  // namespace mvvm
 
 namespace sup::gui

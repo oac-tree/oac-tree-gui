@@ -26,8 +26,6 @@
 #include <QMainWindow>
 #include <memory>
 
-class QCloseEvent;
-
 namespace mvvm
 {
 class MainVerticalBarWidget;
@@ -42,7 +40,6 @@ class SequencerComposerView;
 class SequencerExplorerView;
 class SequencerMainWindowActions;
 class SequencerMainWindowContext;
-class SequencerSettingsModel;
 
 /**
  * @brief The SequencerMainWindow class is the main window of sequencer-gui application.

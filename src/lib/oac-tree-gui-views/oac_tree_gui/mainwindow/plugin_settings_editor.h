@@ -21,8 +21,6 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_PLUGIN_SETTINGS_EDITOR_H_
 #define OAC_TREE_GUI_MAINWINDOW_PLUGIN_SETTINGS_EDITOR_H_
 
-#include "oac_tree_gui/domain/i_domain_plugin_service.h"
-
 #include <sup/gui/mainwindow/session_item_widget.h>
 
 #include <memory>

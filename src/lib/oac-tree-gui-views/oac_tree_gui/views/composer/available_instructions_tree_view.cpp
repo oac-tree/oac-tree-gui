@@ -23,10 +23,8 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QDrag>
-#include <QMimeData>
 #include <QPainter>
 #include <QPixmap>
 

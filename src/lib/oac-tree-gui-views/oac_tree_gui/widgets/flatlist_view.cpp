@@ -23,9 +23,7 @@
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QDragMoveEvent>
-#include <QDropEvent>
 #include <QHeaderView>
-#include <QMouseEvent>
 
 namespace oac_tree_gui
 {

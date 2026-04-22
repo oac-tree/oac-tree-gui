@@ -36,7 +36,6 @@ namespace oac_tree_gui
 class FileTreeView;
 class ProcedureListWidget;
 class SequencerModel;
-class ProcedureItem;
 
 /**
  * @brief The ExplorerPanel class represents a vertical panel on the left of SequencerExplorerView.

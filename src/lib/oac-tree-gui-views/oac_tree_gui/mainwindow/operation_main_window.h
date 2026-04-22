@@ -26,8 +26,6 @@
 #include <QMainWindow>
 #include <memory>
 
-class QCloseEvent;
-
 namespace oac_tree_gui
 {
 

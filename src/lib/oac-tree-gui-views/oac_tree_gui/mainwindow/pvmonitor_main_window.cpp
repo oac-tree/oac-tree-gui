@@ -23,11 +23,9 @@
 #include "pvmonitor_project.h"
 #include "sequencer_main_window_context.h"
 
-#include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_main_window_actions.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_widget.h>
 
-#include <QMenuBar>
 #include <QSettings>
 
 namespace

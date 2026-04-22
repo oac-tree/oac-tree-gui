@@ -28,16 +28,12 @@
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/viewmodel/attribute_editor_viewmodel.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/model/item_selection.h>
-#include <mvvm/model/session_item.h>
-#include <mvvm/utils/container_utils.h>
 #include <mvvm/views/component_provider_helper.h>
 
 #include <QMenu>
-#include <QSettings>
 #include <QToolBar>
 #include <QTreeView>
 #include <QVBoxLayout>

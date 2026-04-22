@@ -22,7 +22,6 @@
 
 #include "available_instructions_tree_view.h"
 
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/viewmodel/toolkit_viewmodel.h>
 

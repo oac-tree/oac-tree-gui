@@ -20,14 +20,12 @@
 
 #include "procedure_composer_combo_toolbar.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QAction>
-#include <QComboBox>
 #include <QMenu>
 #include <QPainter>
 #include <QToolButton>

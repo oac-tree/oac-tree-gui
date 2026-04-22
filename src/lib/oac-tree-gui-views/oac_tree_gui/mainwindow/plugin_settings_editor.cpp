@@ -36,7 +36,6 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPlainTextEdit>
-#include <QVBoxLayout>
 
 namespace oac_tree_gui
 {

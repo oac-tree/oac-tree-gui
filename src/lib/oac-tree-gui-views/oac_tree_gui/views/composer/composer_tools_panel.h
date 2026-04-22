@@ -23,8 +23,6 @@
 
 #include <QWidget>
 
-class QSplitter;
-
 namespace sup::gui
 {
 class CollapsibleListView;

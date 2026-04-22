@@ -21,7 +21,6 @@
 #include "instruction_editor_actions.h"
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 
@@ -29,10 +28,6 @@
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/component_objects/proxy_action.h>
 #include <sup/gui/widgets/action_menu.h>
-
-#include <mvvm/widgets/widget_utils.h>
-
-#include <QToolButton>
 
 namespace oac_tree_gui
 {

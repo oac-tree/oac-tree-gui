@@ -25,12 +25,12 @@
 #include "workspace_editor_widget.h"
 #include "xml_panel.h"
 
+#include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
 
-#include <QLabel>
 #include <QTabWidget>
 #include <QToolBar>
 #include <QVBoxLayout>
