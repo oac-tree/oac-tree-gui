@@ -24,11 +24,9 @@
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/composer/instruction_editor_drop_handler.h>
 
-#include <mvvm/model/i_session_model.h>
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
-// #include <QDebug>
 #include <QMimeData>
 
 namespace oac_tree_gui

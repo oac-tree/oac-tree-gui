@@ -26,14 +26,10 @@
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-
 #include <mvvm/model/item_utils.h>
 #include <mvvm/signals/model_listener.h>
 
 #include <sup/oac-tree/workspace.h>
-
-#include <QDebug>
 
 namespace oac_tree_gui
 {

@@ -21,8 +21,8 @@
 #include "instruction_operation_viewmodel.h"
 
 #include <oac_tree_gui/components/custom_viewitem_factory.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <mvvm/providers/abstract_row_strategy.h>
 #include <mvvm/providers/standard_children_strategies.h>

@@ -23,16 +23,9 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
-#include <mvvm/model/session_item.h>
-
 namespace sup::dto
 {
 class AnyValue;
-}
-
-namespace mvvm
-{
-class SessionItem;
 }
 
 namespace oac_tree_gui

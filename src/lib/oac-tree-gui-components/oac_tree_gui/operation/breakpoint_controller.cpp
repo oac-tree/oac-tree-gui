@@ -22,7 +22,6 @@
 
 #include "breakpoint_helper.h"
 
-#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 
 namespace oac_tree_gui

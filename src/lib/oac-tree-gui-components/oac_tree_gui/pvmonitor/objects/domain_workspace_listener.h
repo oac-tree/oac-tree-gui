@@ -33,8 +33,6 @@ namespace oac_tree_gui
 {
 
 struct VariableUpdatedEvent;
-class WorkspaceItem;
-class VariableItem;
 
 /**
  * @brief The DomainWorkspaceListener class propagates sequencer domain Workspace events to

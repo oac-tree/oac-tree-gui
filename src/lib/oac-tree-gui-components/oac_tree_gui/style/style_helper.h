@@ -27,7 +27,6 @@
 
 #include <QJsonObject>
 #include <QString>
-#include <QStringList>
 
 class QIcon;
 

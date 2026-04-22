@@ -22,10 +22,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
-#include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
-#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-
-#include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/utils/threadsafe_queue.h>
 

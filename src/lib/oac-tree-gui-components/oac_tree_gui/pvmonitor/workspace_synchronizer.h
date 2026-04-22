@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
 #define OAC_TREE_GUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
 
-#include <QObject>
+#include <functional>
 #include <memory>
 
 namespace sup::oac_tree

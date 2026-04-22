@@ -20,7 +20,6 @@
 
 #include "workspace_monitor_helper.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
 #include <oac_tree_gui/model/item_constants.h>

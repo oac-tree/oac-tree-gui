@@ -26,7 +26,6 @@
 #include <oac_tree_gui/model/iterate_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 
-#include <mvvm/model/i_session_model.h>
 #include <mvvm/model/model_utils.h>
 
 #include <map>

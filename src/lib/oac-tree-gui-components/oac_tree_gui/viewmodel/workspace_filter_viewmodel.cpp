@@ -20,9 +20,8 @@
 
 #include "workspace_filter_viewmodel.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/viewmodel.h>
