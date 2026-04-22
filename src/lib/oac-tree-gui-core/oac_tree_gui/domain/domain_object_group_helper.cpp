@@ -22,7 +22,6 @@
 
 #include "domain_constants.h"
 
-#include <mvvm/utils/container_utils.h>
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction_registry.h>

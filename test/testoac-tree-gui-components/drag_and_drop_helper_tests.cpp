@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>

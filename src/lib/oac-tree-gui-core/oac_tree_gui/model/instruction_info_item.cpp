@@ -21,16 +21,13 @@
 #include "instruction_info_item.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/domain_automation_helper.h>
-#include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction_info.h>
-#include <sup/oac-tree/instruction_info_utils.h>
 
 namespace oac_tree_gui
 {

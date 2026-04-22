@@ -26,6 +26,7 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 

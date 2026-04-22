@@ -24,8 +24,6 @@
 
 #include <sup/gui/core/environment.h>
 
-#include <mvvm/core/platform.h>
-#include <mvvm/utils/container_utils.h>
 #include <mvvm/utils/file_utils.h>
 
 #include <algorithm>

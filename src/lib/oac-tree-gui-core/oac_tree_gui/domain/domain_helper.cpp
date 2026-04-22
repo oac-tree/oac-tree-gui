@@ -29,7 +29,6 @@
 #include <sup/oac-tree/i_job_info_io.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_registry.h>
-#include <sup/oac-tree/sequence_parser.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_registry.h>
 #include <sup/platform/library_names.h>

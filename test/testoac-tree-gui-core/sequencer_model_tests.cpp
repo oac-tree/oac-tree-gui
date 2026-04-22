@@ -25,6 +25,7 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/item_factory.h>

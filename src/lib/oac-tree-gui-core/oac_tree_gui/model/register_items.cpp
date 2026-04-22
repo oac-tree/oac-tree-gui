@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/model/sequencer_item_includes.h>
 
-#include <mvvm/model/item_catalogue.h>
 #include <mvvm/model/item_factory.h>
 
 namespace oac_tree_gui

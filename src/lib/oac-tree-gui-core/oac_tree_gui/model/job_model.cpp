@@ -20,8 +20,6 @@
 
 #include "job_model.h"
 
-#include <oac_tree_gui/model/sequencer_item_helper.h>
-
 namespace oac_tree_gui
 {
 

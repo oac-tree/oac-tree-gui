@@ -21,6 +21,7 @@
 #include "oac_tree_gui/composer/instruction_editor_action_handler.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -62,7 +63,8 @@ public:
    * @param current_mime The content of the clipboard.
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      const std::vector<const InstructionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
+      const std::vector<const InstructionItem*>& selection,
+      std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));
     return m_mock_context.CreateActionHandler(m_procedure->GetInstructionContainer(), selection);

@@ -21,7 +21,6 @@
 #include "sequencer_model.h"
 
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/sequencer_item_helper.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>

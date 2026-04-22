@@ -20,8 +20,6 @@
 
 #include "component_types.h"
 
-#include <mvvm/utils/string_utils.h>
-
 #include <iomanip>
 
 namespace oac_tree_gui

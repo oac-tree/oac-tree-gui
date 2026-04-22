@@ -21,9 +21,8 @@
 #ifndef OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_
 #define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_
 
-#include <sup/gui/model/common_settings_item.h>
-
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/compound_item.h>
 #include <mvvm/model/item_utils.h>
 
 namespace oac_tree_gui

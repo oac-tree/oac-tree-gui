@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/project_model.h>
-#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
 #include <mvvm/model/item_pool.h>

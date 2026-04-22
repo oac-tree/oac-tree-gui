@@ -35,7 +35,6 @@ namespace oac_tree_gui
 {
 
 class InstructionItem;
-class SequencerModel;
 
 /**
  * @brief Checks if the given instruction represents a compound with multiple children.
