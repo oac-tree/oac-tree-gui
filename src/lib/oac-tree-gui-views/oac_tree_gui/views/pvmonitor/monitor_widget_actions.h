@@ -27,11 +27,6 @@
 
 namespace oac_tree_gui
 {
-class WorkspaceItem;
-}
-
-namespace oac_tree_gui
-{
 
 /**
  * @brief The MonitorWidgetActions class defines main actions of MonitorWidget.

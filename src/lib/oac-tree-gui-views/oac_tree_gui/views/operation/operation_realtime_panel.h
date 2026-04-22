@@ -23,8 +23,6 @@
 
 #include <QWidget>
 
-class QToolBar;
-
 namespace sup::gui
 {
 class CollapsibleListView;
@@ -39,7 +37,6 @@ class JobLog;
 class MessagePanel;
 class MonitorRealTimeActions;
 class RealTimeInstructionTreeWidget;
-class SequencerModel;
 
 /**
  * @brief The OperationRealTimePanel class is a central panel of the OperationMonitorView.

@@ -21,16 +21,12 @@
 #include "xml_panel.h"
 
 #include <oac_tree_gui/components/xml_panel_controller.h>
-#include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/xml_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/operation/procedure_action_handler.h>
 
 #include <sup/gui/views/codeeditor/code_view.h>
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
-
-#include <mvvm/model/session_item.h>
 
 #include <QAction>
 #include <QVBoxLayout>

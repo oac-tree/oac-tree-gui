@@ -26,7 +26,6 @@
 
 #include <QGraphicsView>
 
-class QKeyEvent;
 class QGraphicsScene;
 
 namespace oac_tree_gui

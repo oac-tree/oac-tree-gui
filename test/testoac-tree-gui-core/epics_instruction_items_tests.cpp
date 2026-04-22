@@ -20,17 +20,15 @@
 
 #include "oac_tree_gui/model/epics_instruction_items.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
-#include <oac_tree_gui/transform/transform_from_domain.h>
-#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
-#include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/item_utils.h>
 
 #include <sup/oac-tree/exceptions.h>
@@ -38,7 +36,6 @@
 #include <sup/oac-tree/procedure.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -334,11 +331,10 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemFromDomain)
   EXPECT_EQ(item.GetTimeout(), 42.0);
 
   const std::vector<std::string> expected_tags(
-      {domainconstants::kIsRootAttribute,
-       domainconstants::kChannelAttribute, domainconstants::kGenericVariableNameAttribute,
-       domainconstants::kTimeoutAttribute, itemconstants::kBehaviorTag, itemconstants::kStatus,
-       itemconstants::kXpos, itemconstants::kYpos, itemconstants::kBreakpoint,
-       itemconstants::kAnyValueTag});
+      {domainconstants::kIsRootAttribute, domainconstants::kChannelAttribute,
+       domainconstants::kGenericVariableNameAttribute, domainconstants::kTimeoutAttribute,
+       itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
+       itemconstants::kYpos, itemconstants::kBreakpoint, itemconstants::kAnyValueTag});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 }
 

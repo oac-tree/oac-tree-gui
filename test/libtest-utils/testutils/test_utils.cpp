@@ -20,7 +20,6 @@
 
 #include "test_utils.h"
 
-#include <algorithm>
 #include <string>
 #include <thread>
 

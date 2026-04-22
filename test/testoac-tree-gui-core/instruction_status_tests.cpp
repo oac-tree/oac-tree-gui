@@ -22,8 +22,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 
-#include <sup/oac-tree/job_states.h>
-
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test

@@ -24,7 +24,6 @@
 #include <sup/gui/views/anyvalueeditor/abstract_anyvalue_editor.h>
 
 class QLabel;
-class QString;
 class QTreeView;
 
 namespace sup::gui
@@ -37,11 +36,6 @@ namespace mvvm
 class ItemViewComponentProvider;
 class ApplicationModel;
 }  // namespace mvvm
-
-namespace sup::gui
-{
-class AnyValueItem;
-}  // namespace sup::gui
 
 namespace oac_tree_gui
 {

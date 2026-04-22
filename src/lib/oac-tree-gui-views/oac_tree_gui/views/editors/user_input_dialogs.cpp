@@ -22,7 +22,6 @@
 
 #include "anyvalue_editor_dialog_factory.h"
 
-#include <oac_tree_gui/components/anyvalue_dialog_result.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 
@@ -31,8 +30,6 @@
 #include <sup/gui/views/anyvalueeditor/anyvalue_editor_dialog.h>
 
 #include <mvvm/widgets/widget_utils.h>
-
-#include <sup/oac-tree/constants.h>
 
 #include <QInputDialog>
 #include <QMainWindow>

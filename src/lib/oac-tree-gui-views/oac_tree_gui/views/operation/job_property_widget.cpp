@@ -24,7 +24,6 @@
 
 #include <mvvm/views/property_tree_view.h>
 
-#include <QListWidget>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui

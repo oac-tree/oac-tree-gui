@@ -33,12 +33,9 @@
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/item_selection.h>
-#include <mvvm/utils/container_utils.h>
-#include <mvvm/viewmodel/all_items_viewmodel.h>
 
 #include <QLineEdit>
 #include <QMenu>
-#include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
 

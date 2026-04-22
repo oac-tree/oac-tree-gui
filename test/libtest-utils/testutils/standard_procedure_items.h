@@ -24,7 +24,10 @@
 //! @file
 //! Collection of pocedure items for testing purpose.
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
+namespace sup::dto
+{
+class AnyValue;
+}
 
 #include <chrono>
 #include <memory>

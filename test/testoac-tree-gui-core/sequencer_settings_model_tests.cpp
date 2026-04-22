@@ -26,7 +26,6 @@
 #include <sup/gui/model/common_settings_item.h>
 
 #include <gtest/gtest.h>
-#include <testutils/folder_test.h>
 
 namespace oac_tree_gui::test
 {

@@ -23,7 +23,7 @@
 
 #include <mvvm/project/i_project.h>
 
-#include <QWidget>
+#include <QObject>
 
 class QMainWindow;
 class QAction;
@@ -32,7 +32,6 @@ class QMenu;
 
 namespace mvvm
 {
-class ISessionModel;
 class ProjectHandler;
 }  // namespace mvvm
 

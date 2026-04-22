@@ -21,8 +21,6 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_XML_PANEL_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_XML_PANEL_H_
 
-#include <mvvm/signals/event_types.h>
-
 #include <QWidget>
 
 class QAction;

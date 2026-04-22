@@ -28,8 +28,6 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <testutils/sequencer_test_utils.h>
-
 #include <QMimeData>
 
 namespace oac_tree_gui::test

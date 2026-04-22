@@ -40,7 +40,6 @@ namespace oac_tree_gui
 {
 
 class InstructionTaskAreaWidget;
-class TaskWidget;
 class InstructionContainerItem;
 class InstructionTaskWidgetBuilder;
 

@@ -29,7 +29,6 @@
 
 class QSlider;
 class QAction;
-class QMenu;
 
 namespace sup::gui
 {

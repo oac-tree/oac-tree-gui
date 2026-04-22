@@ -25,10 +25,7 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <mvvm/style/color_flavor.h>
-
 #include <QKeyEvent>
-#include <QWheelEvent>
 #include <cmath>
 
 namespace oac_tree_gui

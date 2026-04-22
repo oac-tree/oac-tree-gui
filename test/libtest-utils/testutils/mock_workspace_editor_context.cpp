@@ -21,7 +21,6 @@
 #include "mock_workspace_editor_context.h"
 
 #include <oac_tree_gui/composer/workspace_editor_action_handler.h>
-#include <oac_tree_gui/domain/domain_object_group_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 

@@ -21,17 +21,14 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_MESSAGE_PANEL_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_MESSAGE_PANEL_H_
 
-#include <oac_tree_gui/jobsystem/log_event.h>
+#include <oac_tree_gui/jobsystem/job_log_severity.h>
 
-#include <QStringList>
 #include <QWidget>
 #include <map>
 #include <memory>
 
-class QAction;
 class QTreeView;
 class QSortFilterProxyModel;
-class QToolButton;
 class QWidgetAction;
 
 namespace sup::gui

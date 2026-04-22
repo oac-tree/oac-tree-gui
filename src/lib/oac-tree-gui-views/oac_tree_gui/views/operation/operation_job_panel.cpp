@@ -25,8 +25,6 @@
 #include "operation_job_actions.h"
 
 #include <oac_tree_gui/model/application_models.h>
-#include <oac_tree_gui/model/job_item.h>
-#include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
 #include <sup/gui/widgets/collapsible_list_view.h>

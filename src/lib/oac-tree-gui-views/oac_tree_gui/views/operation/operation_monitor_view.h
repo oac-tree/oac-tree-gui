@@ -25,9 +25,6 @@
 
 #include <QWidget>
 
-class QSplitter;
-class QShowEvent;
-
 namespace sup::gui
 {
 class CustomSplitter;
@@ -44,7 +41,6 @@ class JobManager;
 class OperationWorkspacePanel;
 class OperationRealTimePanel;
 class OperationJobPanel;
-class ProcedureItem;
 class OperationActionHandler;
 class OperationActionContext;
 class IRemoteConnectionService;

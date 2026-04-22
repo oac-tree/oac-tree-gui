@@ -20,21 +20,16 @@
 
 #include "node_graphics_view_actions.h"
 
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_types.h>
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <sup/gui/widgets/action_menu.h>
-
-#include <mvvm/widgets/widget_utils.h>
-
 #include <QButtonGroup>
-#include <QMenu>
 #include <QToolButton>
 #include <QWidgetAction>
 
 namespace oac_tree_gui
 {
+
 NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget* parent_widget)
     : QObject(parent_widget)
     , m_pointer_mode_group(new QButtonGroup(this))

@@ -24,11 +24,9 @@
 #include "node_graphics_view.h"
 #include "node_graphics_view_actions.h"
 
-#include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
@@ -37,14 +35,11 @@
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
-#include <mvvm/model/application_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
-#include <mvvm/nodeeditor/i_node_port.h>
 
 #include <QPointF>
 #include <QVBoxLayout>
-#include <QWidgetAction>
 
 namespace
 {

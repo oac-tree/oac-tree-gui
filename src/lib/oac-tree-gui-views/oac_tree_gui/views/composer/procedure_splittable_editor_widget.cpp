@@ -23,7 +23,6 @@
 #include "procedure_composer_combo_panel.h"
 
 #include <oac_tree_gui/composer/widget_focus_handler.h>
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 

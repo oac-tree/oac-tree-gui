@@ -28,8 +28,6 @@
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/steady_menu.h>
 
-#include <mvvm/editors/selectable_combobox_editor.h>
-
 #include <QAction>
 #include <QRegularExpression>
 #include <QScrollBar>

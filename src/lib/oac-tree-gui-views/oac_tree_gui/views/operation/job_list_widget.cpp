@@ -29,7 +29,6 @@
 
 #include <mvvm/views/component_provider_helper.h>
 
-#include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
 

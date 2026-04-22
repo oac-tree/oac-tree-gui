@@ -25,7 +25,6 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QVBoxLayout>
 
 namespace oac_tree_gui
 {

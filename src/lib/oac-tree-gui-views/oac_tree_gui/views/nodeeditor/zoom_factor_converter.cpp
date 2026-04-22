@@ -23,7 +23,6 @@
 #include <oac_tree_gui/core/exceptions.h>
 
 #include <algorithm>
-#include <cmath>
 
 namespace oac_tree_gui
 {

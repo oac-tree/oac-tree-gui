@@ -22,7 +22,6 @@
 
 #include "monitor_widget_actions.h"
 
-#include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/pvmonitor/workspace_synchronizer.h>

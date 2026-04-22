@@ -30,7 +30,6 @@
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QApplication>
-#include <QDebug>
 #include <QHBoxLayout>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
@@ -39,7 +38,6 @@
 #include <QPushButton>
 #include <QSettings>
 #include <QStandardItemModel>
-#include <QVBoxLayout>
 
 namespace oac_tree_gui
 {

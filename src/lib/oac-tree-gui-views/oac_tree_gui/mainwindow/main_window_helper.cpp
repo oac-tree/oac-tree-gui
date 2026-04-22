@@ -20,8 +20,6 @@
 
 #include "main_window_helper.h"
 
-#include <oac_tree_gui/domain/domain_helper.h>
-
 #include <sup/gui/widgets/settings_callbacks.h>
 
 #include <mvvm/utils/file_utils.h>

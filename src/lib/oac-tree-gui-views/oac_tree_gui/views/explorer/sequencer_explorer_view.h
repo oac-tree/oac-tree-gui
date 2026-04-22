@@ -36,7 +36,6 @@ namespace oac_tree_gui
 
 class SequencerModel;
 class ExplorerPanel;
-class ProcedureItem;
 
 /**
  * @brief The SequencerExplorerView class is a main widget to browse procedures on disk.

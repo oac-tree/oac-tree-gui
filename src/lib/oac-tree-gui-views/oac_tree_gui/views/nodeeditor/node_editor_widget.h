@@ -23,22 +23,13 @@
 
 #include <oac_tree_gui/model/component_types.h>
 
-#include <sup/gui/core/i_message_handler.h>
-
 #include <QWidget>
-
-class QKeyEvent;
 
 namespace sup::gui
 {
 class IMessageHandler;
 class VisibilityAgentBase;
 }  // namespace sup::gui
-
-namespace mvvm
-{
-class ApplicationModel;
-}
 
 namespace oac_tree_gui
 {

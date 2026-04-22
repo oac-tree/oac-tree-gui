@@ -23,9 +23,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/xml_utils.h>
 #include <oac_tree_gui/transform/domain_procedure_builder.h>
-#include <oac_tree_gui/transform/domain_workspace_builder.h>
 
-#include <sup/gui/core/message_event.h>
 #include <sup/gui/widgets/message_helper.h>
 
 #include <mvvm/utils/file_utils.h>

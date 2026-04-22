@@ -23,7 +23,6 @@
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
@@ -38,7 +37,7 @@
 #include <sup/oac-tree/job_info.h>
 #include <sup/oac-tree/job_info_utils.h>
 #include <sup/oac-tree/sequence_parser.h>
-#include <sup/oac-tree/workspace.h>
+#include <sup/oac-tree/variable.h>
 
 #include <testutils/test_utils.h>
 

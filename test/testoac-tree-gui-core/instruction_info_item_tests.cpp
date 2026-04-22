@@ -20,7 +20,6 @@
 
 #include "oac_tree_gui/model/instruction_info_item.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
@@ -34,7 +33,6 @@
 #include <sup/oac-tree/instruction_info.h>
 
 #include <gtest/gtest.h>
-#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {

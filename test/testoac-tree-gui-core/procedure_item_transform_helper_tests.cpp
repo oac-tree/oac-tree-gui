@@ -32,8 +32,6 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/procedure_preamble.h>

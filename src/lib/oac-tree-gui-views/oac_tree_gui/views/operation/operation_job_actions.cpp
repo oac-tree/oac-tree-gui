@@ -26,7 +26,6 @@
 #include <sup/gui/widgets/action_menu.h>
 
 #include <QMenu>
-#include <QToolButton>
 
 namespace oac_tree_gui
 {

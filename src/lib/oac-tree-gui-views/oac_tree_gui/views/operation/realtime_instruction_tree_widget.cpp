@@ -20,11 +20,9 @@
 
 #include "realtime_instruction_tree_widget.h"
 
-#include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/operation/objects/breakpoint_model_delegate.h>
 #include <oac_tree_gui/operation/objects/instruction_tree_expand_controller.h>
 #include <oac_tree_gui/operation/tooltip_helper.h>
@@ -36,14 +34,11 @@
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/model/item_selection.h>
-#include <mvvm/utils/container_utils.h>
 #include <mvvm/views/component_provider_helper.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QEvent>
 #include <QHelpEvent>
 #include <QMenu>
-#include <QSettings>
 #include <QToolTip>
 #include <QTreeView>
 #include <QVBoxLayout>

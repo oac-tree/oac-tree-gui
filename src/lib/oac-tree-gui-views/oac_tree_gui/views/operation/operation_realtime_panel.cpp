@@ -24,9 +24,7 @@
 #include "monitor_realtime_actions.h"
 #include "realtime_instruction_tree_widget.h"
 
-#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/job_item.h>
-#include <oac_tree_gui/model/procedure_item.h>
 
 #include <sup/gui/widgets/collapsible_list_view.h>
 
@@ -93,7 +91,8 @@ void OperationRealTimePanel::SetCurrentJob(JobItem* job_item)
   }
 }
 
-void OperationRealTimePanel::SetSelectedInstructions(const std::vector<const InstructionItem*>& items)
+void OperationRealTimePanel::SetSelectedInstructions(
+    const std::vector<const InstructionItem*>& items)
 {
   m_realtime_instruction_tree->SetSelectedInstructions(items);
 }

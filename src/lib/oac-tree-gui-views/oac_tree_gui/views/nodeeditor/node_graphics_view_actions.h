@@ -34,11 +34,6 @@ class QToolButton;
 class QMenu;
 class QWidgetAction;
 
-namespace sup::gui
-{
-class ActionMenu;
-}
-
 namespace oac_tree_gui
 {
 

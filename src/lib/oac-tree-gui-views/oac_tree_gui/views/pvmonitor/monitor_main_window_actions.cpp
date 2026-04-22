@@ -20,13 +20,10 @@
 
 #include "monitor_main_window_actions.h"
 
-#include <oac_tree_gui/model/sequencer_model.h>
-
 #include <sup/gui/app/app_constants.h>
 
 #include <mvvm/project/project_handler.h>
 #include <mvvm/project/project_handler_utils.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
 #include <QMainWindow>

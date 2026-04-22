@@ -22,8 +22,6 @@
 
 #include <oac_tree_gui/style/style_helper.h>
 
-#include <QAction>
-
 namespace oac_tree_gui
 {
 

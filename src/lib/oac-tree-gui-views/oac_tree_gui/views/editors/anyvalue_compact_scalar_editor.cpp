@@ -27,7 +27,6 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/style/mvvm_style_helper.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
-#include <mvvm/views/item_view_component_provider.h>
 #include <mvvm/views/viewmodel_delegate.h>
 
 #include <QDataWidgetMapper>

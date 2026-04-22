@@ -20,7 +20,6 @@
 
 #include "node_editor_navigation_toolbar.h"
 
-#include <oac_tree_gui/nodeeditor/scene_constants.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
 

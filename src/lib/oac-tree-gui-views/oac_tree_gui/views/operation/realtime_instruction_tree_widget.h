@@ -25,7 +25,6 @@
 #include <memory>
 
 class QTreeView;
-class QAction;
 
 namespace mvvm
 {

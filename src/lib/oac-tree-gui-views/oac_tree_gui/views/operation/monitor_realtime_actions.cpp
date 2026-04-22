@@ -25,7 +25,6 @@
 
 #include <sup/gui/widgets/action_menu.h>
 
-#include <QAction>
 #include <QMenu>
 #include <QSettings>
 #include <QToolButton>

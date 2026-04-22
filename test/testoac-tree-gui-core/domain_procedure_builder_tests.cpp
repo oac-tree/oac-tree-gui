@@ -20,7 +20,6 @@
 
 #include "oac_tree_gui/transform/domain_procedure_builder.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -33,8 +32,6 @@
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/domain_workspace_builder.h>
-
-#include <mvvm/model/session_item.h>
 
 #include <sup/oac-tree/execution_status.h>
 #include <sup/oac-tree/instruction.h>
