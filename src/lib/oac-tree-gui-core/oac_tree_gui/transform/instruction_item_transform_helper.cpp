@@ -25,6 +25,7 @@
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
+#include <oac_tree_gui/model/item_factory.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 

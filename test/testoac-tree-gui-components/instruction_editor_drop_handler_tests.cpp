@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
+#include <oac_tree_gui/model/item_factory.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 

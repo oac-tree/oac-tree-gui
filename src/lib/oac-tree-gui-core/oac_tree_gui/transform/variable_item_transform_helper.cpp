@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
+#include <oac_tree_gui/model/item_factory.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>

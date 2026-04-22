@@ -7,8 +7,8 @@ target_sources(${library_name} PRIVATE
   aggregate_factory.h
   application_models.cpp
   application_models.h
-  component_types.h
   component_types.cpp
+  component_types.h
   composer_settings_item.cpp
   composer_settings_item.h
   epics_instruction_items.cpp
@@ -22,6 +22,8 @@ target_sources(${library_name} PRIVATE
   instruction_status.cpp
   instruction_status.h
   item_constants.h
+  item_factory.cpp
+  item_factory.h
   iterate_helper.h
   job_item.cpp
   job_item.h

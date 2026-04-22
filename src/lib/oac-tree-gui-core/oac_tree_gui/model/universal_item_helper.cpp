@@ -27,6 +27,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/iterate_helper.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/transform_from_domain.h>
 
