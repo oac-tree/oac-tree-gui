@@ -25,7 +25,6 @@
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/test/mock_item_listener.h>
-#include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
 

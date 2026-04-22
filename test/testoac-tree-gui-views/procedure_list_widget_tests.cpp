@@ -25,7 +25,6 @@
 
 #include <sup/gui/app/null_command_service.h>
 
-#include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/test_helper.h>
 #include <mvvm/viewmodel/viewmodel.h>

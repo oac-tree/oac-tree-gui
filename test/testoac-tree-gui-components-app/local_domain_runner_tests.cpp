@@ -20,7 +20,6 @@
 
 #include "oac_tree_gui/jobsystem/local_domain_runner.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 

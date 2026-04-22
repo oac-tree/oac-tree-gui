@@ -26,7 +26,6 @@
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -48,7 +47,6 @@
 #include <testutils/standard_procedure_items.h>
 #include <testutils/test_utils.h>
 
-#include <QSignalSpy>
 #include <QTest>
 
 namespace oac_tree_gui::test

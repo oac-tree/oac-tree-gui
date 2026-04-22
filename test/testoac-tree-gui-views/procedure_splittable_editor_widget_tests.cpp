@@ -20,13 +20,11 @@
 
 #include "oac_tree_gui/views/composer/procedure_splittable_editor_widget.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/composer/procedure_composer_combo_panel.h>
-#include <oac_tree_gui/views/composer/procedure_composer_combo_toolbar.h>
 
 #include <sup/gui/app/null_command_service.h>
 
@@ -35,10 +33,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <QApplication>
 #include <QSignalSpy>
 #include <QSplitter>
-#include <QStackedWidget>
 
 Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 

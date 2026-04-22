@@ -20,7 +20,6 @@
 
 #include "oac_tree_gui/jobsystem/objects/job_manager.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 

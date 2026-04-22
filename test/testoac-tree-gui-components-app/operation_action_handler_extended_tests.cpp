@@ -21,7 +21,6 @@
 #include "oac_tree_gui/operation/objects/operation_action_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/job_utils.h>
 #include <oac_tree_gui/jobsystem/objects/job_manager.h>
 #include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/user_context.h>

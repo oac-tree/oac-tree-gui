@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/jobsystem/job_utils.h>
 #include <oac_tree_gui/jobsystem/objects/job_log.h>
 #include <oac_tree_gui/jobsystem/request_types.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
@@ -32,17 +31,14 @@
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 
 #include <mvvm/model/model_utils.h>
-#include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/mock_item_listener.h>
 
 #include <sup/oac-tree/exceptions.h>
-#include <sup/oac-tree/instruction.h>
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>

@@ -23,7 +23,6 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <mvvm/nodeeditor/connectable_shape.h>
-#include <mvvm/nodeeditor/i_connectable_shape_adapter.h>
 #include <mvvm/standarditems/vector_item.h>
 
 #include <gtest/gtest.h>

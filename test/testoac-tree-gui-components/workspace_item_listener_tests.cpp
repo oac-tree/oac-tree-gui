@@ -21,7 +21,6 @@
 #include "oac_tree_gui/pvmonitor/workspace_item_listener.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>

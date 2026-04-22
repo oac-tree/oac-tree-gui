@@ -19,7 +19,6 @@
  *****************************************************************************/
 
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/jobsystem/job_utils.h>
 #include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/application_models.h>
@@ -36,7 +35,6 @@
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
-#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>

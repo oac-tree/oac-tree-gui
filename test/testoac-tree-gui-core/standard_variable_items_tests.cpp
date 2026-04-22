@@ -20,25 +20,20 @@
 
 #include "oac_tree_gui/model/standard_variable_items.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
-#include <oac_tree_gui/transform/transform_from_domain.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/property_item.h>
 
-#include <sup/oac-tree/exceptions.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {

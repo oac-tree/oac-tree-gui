@@ -20,9 +20,7 @@
 
 #include "oac_tree_gui/components/custom_children_strategies.h"
 
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
@@ -30,9 +28,6 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/anyvalue_item_constants.h>
-
-#include <mvvm/model/item_utils.h>
 
 #include <sup/dto/anyvalue.h>
 

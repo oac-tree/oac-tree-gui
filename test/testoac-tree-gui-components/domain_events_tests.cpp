@@ -20,10 +20,6 @@
 
 #include "oac_tree_gui/jobsystem/domain_events.h"
 
-#include <oac_tree_gui/domain/domain_constants.h>
-
-#include <sup/oac-tree/instruction.h>
-
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test

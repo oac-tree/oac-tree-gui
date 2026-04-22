@@ -20,13 +20,10 @@
 
 #include "oac_tree_gui/pvmonitor/objects/domain_workspace_listener.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/dto/anyvalue_helper.h>
-#include <sup/epics-test/unit_test_helper.h>
 #include <sup/oac-tree/workspace.h>
 
 #include <gmock/gmock.h>

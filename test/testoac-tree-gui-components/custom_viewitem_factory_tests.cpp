@@ -21,7 +21,6 @@
 #include "oac_tree_gui/components/custom_viewitem_factory.h"
 
 #include <oac_tree_gui/components/component_helper.h>
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>

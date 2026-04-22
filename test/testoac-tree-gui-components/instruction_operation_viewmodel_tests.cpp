@@ -25,7 +25,6 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 
@@ -35,9 +34,7 @@
 #include <sup/oac-tree/instruction_info.h>
 
 #include <gtest/gtest.h>
-#include <testutils/sequencer_test_utils.h>
 
-#include <QDebug>
 #include <QSignalSpy>
 
 namespace oac_tree_gui::test

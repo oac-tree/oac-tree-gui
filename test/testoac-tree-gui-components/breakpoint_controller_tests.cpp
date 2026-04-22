@@ -21,7 +21,6 @@
 #include "oac_tree_gui/operation/breakpoint_controller.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>

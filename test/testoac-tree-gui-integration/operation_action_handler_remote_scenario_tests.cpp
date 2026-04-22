@@ -21,7 +21,6 @@
 #include "oac_tree_gui/operation/objects/operation_action_handler.h"
 #include "test_automation_server.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/automation_client.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
 #include <oac_tree_gui/jobsystem/objects/job_manager.h>

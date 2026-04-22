@@ -34,10 +34,9 @@
 #include <mvvm/test/mock_model_listener.h>
 
 #include <sup/epics-test/softioc_runner.h>
+#include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/mock_domain_workspace_listener.h>
-#include <testutils/test_utils.h>
 
 #include <QTest>
 

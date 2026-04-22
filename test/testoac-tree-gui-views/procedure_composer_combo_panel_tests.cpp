@@ -28,7 +28,6 @@
 
 #include <mvvm/standarditems/container_item.h>
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>

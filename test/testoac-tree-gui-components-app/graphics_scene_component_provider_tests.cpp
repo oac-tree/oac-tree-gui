@@ -24,7 +24,6 @@
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>

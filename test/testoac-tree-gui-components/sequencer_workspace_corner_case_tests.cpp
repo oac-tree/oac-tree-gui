@@ -19,7 +19,6 @@
  *****************************************************************************/
 
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/epics-test/unit_test_helper.h>
@@ -28,7 +27,6 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/sequencer_test_utils.h>
-#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {

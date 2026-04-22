@@ -29,8 +29,6 @@
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-
 #include <sup/oac-tree/sequence_parser.h>
 #include <sup/oac-tree/variable_info.h>
 #include <sup/oac-tree/workspace_info.h>

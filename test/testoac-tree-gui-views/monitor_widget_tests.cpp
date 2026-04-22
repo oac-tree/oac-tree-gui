@@ -26,7 +26,6 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/gui/app/null_command_service.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
 

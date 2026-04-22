@@ -20,12 +20,10 @@
 
 #include "oac_tree_gui/composer/instruction_editor_action_handler.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -35,12 +33,10 @@
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/test/test_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_instruction_editor_context.h>
-#include <testutils/test_utils.h>
 
 #include <QMimeData>
 

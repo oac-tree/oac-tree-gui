@@ -35,7 +35,6 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {

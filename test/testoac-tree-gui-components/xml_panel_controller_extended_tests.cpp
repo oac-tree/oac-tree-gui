@@ -21,15 +21,12 @@
 #include "oac_tree_gui/components/xml_panel_controller.h"
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
-#include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 

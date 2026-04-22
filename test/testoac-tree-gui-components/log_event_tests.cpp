@@ -23,8 +23,6 @@
 #include <gtest/gtest.h>
 
 #include <QDate>
-#include <QDateTime>
-#include <QTime>
 
 namespace oac_tree_gui::test
 {

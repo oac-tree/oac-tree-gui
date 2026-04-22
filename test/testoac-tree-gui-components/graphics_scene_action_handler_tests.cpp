@@ -29,7 +29,6 @@
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
 #include <mvvm/nodeeditor/node_connection.h>
-#include <mvvm/nodeeditor/node_editor_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

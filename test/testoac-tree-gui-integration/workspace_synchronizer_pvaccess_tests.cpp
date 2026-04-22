@@ -29,9 +29,7 @@
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
-#include <sup/gui/core/sup_gui_core_exceptions.h>
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/test/mock_model_listener.h>
 
@@ -41,7 +39,6 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/sequencer_test_utils.h>
-#include <testutils/test_utils.h>
 
 #include <QTest>
 

@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
-#include <oac_tree_gui/model/item_constants.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>

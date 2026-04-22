@@ -22,8 +22,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
@@ -40,7 +38,7 @@ class BreakpointHelperTest : public ::testing::Test
 
 TEST_F(BreakpointHelperTest, GetBreakpointStatus)
 {
-  SequenceItem item;
+  const SequenceItem item;
   EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kNotSet);
 
   SetBreakpointStatus(item, BreakpointStatus::kSet);
@@ -52,7 +50,7 @@ TEST_F(BreakpointHelperTest, GetBreakpointStatus)
 
 TEST_F(BreakpointHelperTest, ToggleBreakpointStatus)
 {
-  SequenceItem item;
+  const SequenceItem item;
 
   ToggleBreakpointStatus(item);
   EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kSet);
@@ -67,7 +65,7 @@ TEST_F(BreakpointHelperTest, ToggleBreakpointStatus)
 TEST_F(BreakpointHelperTest, CollectBreakpointInfo)
 {
   // item should be part of the model
-  SequenceItem item;
+  const SequenceItem item;
   EXPECT_THROW(CollectBreakpointInfo(item), LogicErrorException);
 
   SequencerModel model;

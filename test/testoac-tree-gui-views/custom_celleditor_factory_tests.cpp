@@ -27,14 +27,9 @@
 
 #include <mvvm/editors/string_completer_combo_editor.h>
 #include <mvvm/model/application_model.h>
-#include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include <QDebug>
-#include <QLineEdit>
 
 namespace oac_tree_gui
 {

@@ -33,12 +33,10 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/test/test_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_instruction_editor_context.h>
-#include <testutils/test_utils.h>
 
 #include <QMimeData>
 

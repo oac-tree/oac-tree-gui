@@ -24,7 +24,6 @@
 #include <oac_tree_gui/jobsystem/domain_events.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/dto/anyvalue_helper.h>
 #include <sup/epics-test/unit_test_helper.h>
 #include <sup/oac-tree/workspace.h>
 

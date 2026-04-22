@@ -42,7 +42,6 @@
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
 
-#include <QSignalSpy>
 #include <QTest>
 #include <chrono>
 

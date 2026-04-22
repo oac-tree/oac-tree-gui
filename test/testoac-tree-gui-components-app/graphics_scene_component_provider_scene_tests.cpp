@@ -29,9 +29,7 @@
 #include <mvvm/model/application_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
-#include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/node_connection_shape.h>
-#include <mvvm/nodeeditor/node_port_shape.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

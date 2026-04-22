@@ -25,8 +25,6 @@
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
-#include <mvvm/nodeeditor/node_port.h>
-
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test

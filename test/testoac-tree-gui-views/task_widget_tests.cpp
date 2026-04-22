@@ -23,7 +23,6 @@
 #include <gtest/gtest.h>
 
 #include <QGroupBox>
-#include <QLabel>
 
 namespace oac_tree_gui::test
 {

@@ -27,7 +27,6 @@
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/utils/numeric_utils.h>
 
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>

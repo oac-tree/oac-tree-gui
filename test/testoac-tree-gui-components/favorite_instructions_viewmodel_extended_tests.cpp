@@ -20,7 +20,6 @@
 
 #include "oac_tree_gui/viewmodel/favorite_instructions_viewmodel.h"
 
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>

@@ -21,13 +21,11 @@
 #include "oac_tree_gui/components/custom_row_strategies.h"
 
 #include <oac_tree_gui/components/component_helper.h>
-#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
-#include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>

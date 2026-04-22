@@ -29,8 +29,6 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 
-#include <sup/gui/model/anyvalue_item.h>
-
 #include <mvvm/model/application_model.h>
 
 #include <sup/dto/anyvalue.h>

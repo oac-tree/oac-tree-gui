@@ -23,9 +23,6 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/viewmodel/instruction_operation_viewmodel.h>
