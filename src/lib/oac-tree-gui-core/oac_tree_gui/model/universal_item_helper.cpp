@@ -45,13 +45,6 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
   return InsertInstruction(CreateInstructionItem(domain_type), parent, tag_index);
 }
 
-InstructionItem* InsertAggregate(const std::string& domain_type, mvvm::SessionItem* parent,
-                                 const mvvm::TagIndex& tag_index)
-{
-  static AggregateFactory factory;
-  return InsertInstruction(factory.Create(domain_type), parent, tag_index);
-}
-
 InstructionItem* InsertInstruction(std::unique_ptr<InstructionItem> item, mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index)
 {

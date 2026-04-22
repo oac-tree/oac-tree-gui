@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h"
 
+#include <oac_tree_gui/model/aggregate_examples.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
@@ -306,7 +307,8 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, ComplexAggregateRemoval)
 {
   auto provider = CreateProvider();
 
-  auto item = InsertAggregate("if-then-else", m_instruction_container);
+  auto instruction_tree = Examples::CreateIfThenElseAggregate();
+  m_instruction_container->InsertItem(std::move(instruction_tree), mvvm::TagIndex::Append());
 
   auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
   ASSERT_EQ(shapes.size(), 6);

@@ -21,7 +21,8 @@
 #ifndef OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_
 #define OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_
 
-//! Helper functions to simplify construction of UniversalInstructionItem and UniversalVariableItem.
+//! @file
+//! Helper functions to simplify UniversalInstructionItem and UniversalVariableItem handling.
 
 #include <mvvm/model/tagindex.h>
 
@@ -30,7 +31,6 @@
 
 namespace mvvm
 {
-class ISessionModel;
 class SessionItem;
 }  // namespace mvvm
 
@@ -56,18 +56,6 @@ class InstructionContainerItem;
  */
 InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
-
-/**
- * @brief Convenience function to insert instruction aggregate.
- *
- * @param domain_type The name of ergistered aggregate type.
- * @param parent The parent to get a new child
- * @param parent Child position
- *
- * @return Inserted item.
- */
-InstructionItem* InsertAggregate(const std::string& domain_type, mvvm::SessionItem* parent,
-                                 const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**
  * @brief Convenience function to insert instruction in another instruction.
