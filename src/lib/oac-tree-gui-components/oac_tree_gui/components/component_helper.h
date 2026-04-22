@@ -24,10 +24,7 @@
 //! @file
 //! Collection of helper function to retrieve values of presentation-related constants.
 
-#include <oac_tree_gui/model/component_types.h>
-
 #include <QColor>
-#include <QFont>
 
 namespace oac_tree_gui
 {

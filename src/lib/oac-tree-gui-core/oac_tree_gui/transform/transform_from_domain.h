@@ -24,7 +24,6 @@
 //! @file
 //! Collection of utility functions to convert sup::oac_tree::Procedure into SessionModel.
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/instruction_status.h>
 #include <oac_tree_gui/model/runner_status.h>
 

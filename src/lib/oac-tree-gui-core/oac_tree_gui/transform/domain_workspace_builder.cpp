@@ -21,7 +21,7 @@
 #include "domain_workspace_builder.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/oac-tree/variable.h>

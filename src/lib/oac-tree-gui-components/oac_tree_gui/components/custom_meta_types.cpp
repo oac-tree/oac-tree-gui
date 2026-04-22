@@ -24,13 +24,14 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/runner_status.h>
 
 #include <mvvm/nodeeditor/i_node_port.h>
 
 #include <sup/oac-tree/instruction.h>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDataStream>
+#endif
 #include <mutex>
 
 namespace oac_tree_gui

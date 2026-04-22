@@ -31,7 +31,6 @@ namespace oac_tree_gui
 {
 
 class ProcedureItem;
-struct InstructionTree;
 class InstructionItem;
 class VariableItem;
 

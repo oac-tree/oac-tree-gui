@@ -20,19 +20,16 @@
 
 #include "domain_procedure_builder.h"
 
-#include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
-#include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/domain_workspace_builder.h>
 
-#include <mvvm/model/session_model.h>
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction.h>

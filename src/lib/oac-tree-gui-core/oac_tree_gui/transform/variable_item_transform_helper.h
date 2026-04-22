@@ -32,7 +32,6 @@
 namespace oac_tree_gui
 {
 
-class InstructionItem;
 class VariableItem;
 class WorkspaceItem;
 

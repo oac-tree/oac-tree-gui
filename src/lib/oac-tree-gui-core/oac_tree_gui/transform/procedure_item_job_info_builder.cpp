@@ -28,10 +28,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 
-#include <sup/oac-tree/instruction_info.h>
 #include <sup/oac-tree/job_info.h>
-#include <sup/oac-tree/variable_info.h>
-#include <sup/oac-tree/workspace_info.h>
 
 namespace oac_tree_gui
 {

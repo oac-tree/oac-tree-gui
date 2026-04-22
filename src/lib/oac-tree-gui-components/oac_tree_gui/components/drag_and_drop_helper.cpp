@@ -22,7 +22,7 @@
 
 #include <oac_tree_gui/composer/instruction_copy_helper.h>
 #include <oac_tree_gui/model/item_factory.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 

@@ -32,7 +32,6 @@
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/dto/anytype_registry.h>
-#include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/procedure_preamble.h>
 

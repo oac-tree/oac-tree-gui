@@ -33,11 +33,6 @@
 
 #include <string>
 
-namespace mvvm
-{
-class CompoundItem;
-}
-
 namespace oac_tree_gui
 {
 
