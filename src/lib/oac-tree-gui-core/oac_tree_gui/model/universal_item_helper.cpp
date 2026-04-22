@@ -150,11 +150,6 @@ sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
 
 std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& name)
 {
-  static ::oac_tree_gui::AggregateFactory factory;
-  if (factory.Contains(name))
-  {
-    return factory.Create(name);
-  }
   return CreateInstructionItem(name);
 }
 

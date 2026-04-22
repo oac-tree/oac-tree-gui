@@ -409,23 +409,6 @@ TEST_F(InstructionEditorViewModelTest, DropInstructionCopyBetweenTwoChildren)
             domainconstants::kMessageInstructionType);
 }
 
-TEST_F(InstructionEditorViewModelTest, DropAggregateIntoContainer)
-{
-  auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto container_index = m_view_model.index(0, 0, QModelIndex());
-
-  // going to drag Include instruction
-  auto mime_data = CreateNewInstructionMimeData("if-then-else");
-
-  // drop between Wait0 and Wait1
-  EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, container_index));
-
-  auto children = container->GetInstructions();
-  ASSERT_EQ(children.size(), 1);
-  EXPECT_EQ(children.at(0)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
-  EXPECT_EQ(children.at(0)->GetDomainType(), domainconstants::kFallbackInstructionType);
-}
-
 TEST_F(InstructionEditorViewModelTest, ModelReset)
 {
   SequencerModel model;
