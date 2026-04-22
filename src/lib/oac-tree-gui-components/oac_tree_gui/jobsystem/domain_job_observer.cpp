@@ -28,12 +28,8 @@
 
 #include <sup/gui/model/anyvalue_utils.h>
 
-#include <mvvm/utils/string_utils.h>
-
 #include <sup/oac-tree/active_instruction_monitor.h>
-#include <sup/oac-tree/instruction.h>
 
-#include <cmath>
 #include <sstream>
 #include <thread>
 

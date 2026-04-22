@@ -20,12 +20,8 @@
 
 #include "domain_event_helper.h"
 
-#include <sup/gui/model/anyvalue_utils.h>
-
 #include <sup/dto/anyvalue_helper.h>
-#include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_filters.h>
-#include <sup/oac-tree/instruction_info.h>
 #include <sup/oac-tree/instruction_info_utils.h>
 
 #include <sstream>

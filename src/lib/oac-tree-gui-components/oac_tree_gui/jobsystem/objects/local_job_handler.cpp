@@ -20,7 +20,6 @@
 
 #include "local_job_handler.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/domain_event_dispatcher_context.h>  // IWYU pragma: keep
 #include <oac_tree_gui/jobsystem/local_domain_runner.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
@@ -33,7 +32,6 @@
 #include <mvvm/signals/item_listener.h>
 
 #include <sup/oac-tree/procedure.h>
-#include <sup/oac-tree/workspace.h>
 
 namespace oac_tree_gui
 {

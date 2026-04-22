@@ -21,7 +21,6 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_ABSTRACT_JOB_HANDLER_H_
 #define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_ABSTRACT_JOB_HANDLER_H_
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
 #include <oac_tree_gui/model/instruction_item.h>

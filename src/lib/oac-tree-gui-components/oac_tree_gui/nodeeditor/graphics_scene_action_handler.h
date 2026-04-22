@@ -21,12 +21,16 @@
 #ifndef OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_ACTION_HANDLER_H_
 #define OAC_TREE_GUI_NODEEDITOR_GRAPHICS_SCENE_ACTION_HANDLER_H_
 
-#include <oac_tree_gui/composer/instruction_editor_context.h>
 #include <oac_tree_gui/nodeeditor/i_graphics_scene_action_handler.h>
 
 #include <sup/gui/core/message_event.h>
 
 #include <functional>
+
+namespace mvvm
+{
+class SessionItem;
+}
 
 namespace oac_tree_gui
 {

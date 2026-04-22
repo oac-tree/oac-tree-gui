@@ -21,10 +21,12 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_
 #define OAC_TREE_GUI_JOBSYSTEM_REMOTE_DOMAIN_RUNNER_H_
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/jobsystem/abstract_domain_runner.h>
 
-#include <sup/oac-tree-server/i_job_manager.h>
+namespace sup::oac_tree_server
+{
+class IJobManager;
+}
 
 namespace oac_tree_gui
 {

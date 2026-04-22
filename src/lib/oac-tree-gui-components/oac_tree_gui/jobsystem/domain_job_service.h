@@ -26,6 +26,11 @@
 #include <chrono>
 #include <memory>
 
+namespace sup::oac_tree
+{
+class IJobInfoIO;
+}
+
 namespace oac_tree_gui
 {
 

@@ -25,7 +25,6 @@
 //! Contains a collection of classes representing various events happening on the domain side during
 //! sequencer execution.
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/jobsystem/log_event.h>
 
 #include <sup/dto/anyvalue.h>

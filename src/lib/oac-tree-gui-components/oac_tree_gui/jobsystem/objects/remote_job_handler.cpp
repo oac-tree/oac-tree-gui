@@ -26,8 +26,6 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/procedure_item_job_info_builder.h>
 
-#include <sup/oac-tree/workspace.h>
-
 #include <iostream>
 
 namespace oac_tree_gui

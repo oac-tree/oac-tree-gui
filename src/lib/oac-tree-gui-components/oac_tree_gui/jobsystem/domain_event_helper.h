@@ -28,6 +28,11 @@
 
 #include <string>
 
+namespace sup::oac_tree
+{
+class InstructionInfo;
+}
+
 namespace oac_tree_gui
 {
 

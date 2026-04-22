@@ -22,9 +22,6 @@
 
 #include <oac_tree_gui/nodeeditor/align_node.h>
 
-#include <mvvm/utils/container_utils.h>
-
-#include <QDebug>
 #include <algorithm>
 #include <stack>
 

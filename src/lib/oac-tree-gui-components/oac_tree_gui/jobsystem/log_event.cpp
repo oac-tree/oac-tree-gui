@@ -21,7 +21,6 @@
 #include "log_event.h"
 
 #include <QDate>
-#include <QTime>
 
 namespace oac_tree_gui
 {

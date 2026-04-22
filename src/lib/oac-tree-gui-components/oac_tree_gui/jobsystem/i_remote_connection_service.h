@@ -31,7 +31,7 @@ namespace oac_tree_gui
 class IAutomationClient;
 class AbstractJobHandler;
 class RemoteJobItem;
-class UserContext;
+struct UserContext;
 
 /**
  * @brief The IRemoteConnectionService class is an interface to hold collection of clients connected
