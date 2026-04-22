@@ -26,7 +26,6 @@
 
 #include <mvvm/model/tagindex.h>
 
-#include <memory>
 #include <vector>
 
 namespace mvvm
@@ -55,19 +54,6 @@ class InstructionContainerItem;
  * @return Inserted item.
  */
 InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::SessionItem* parent,
-                                   const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
-
-/**
- * @brief Convenience function to insert instruction in another instruction.
- *
- * @param item Child to insert.
- * @param parent The parent to get a new child
- * @param parent Child position
- *
- * @return Inserted item.
- */
-InstructionItem* InsertInstruction(std::unique_ptr<oac_tree_gui::InstructionItem> item,
-                                   mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**

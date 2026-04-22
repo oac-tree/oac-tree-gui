@@ -22,20 +22,17 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/model/aggregate_factory.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/iterate_helper.h>
 #include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/iterate_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
-#include <oac_tree_gui/transform/transform_from_domain.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
-#include <mvvm/utils/container_utils.h>
 
 namespace oac_tree_gui
 {
@@ -43,13 +40,8 @@ namespace oac_tree_gui
 InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index)
 {
-  return InsertInstruction(CreateInstructionItem(domain_type), parent, tag_index);
-}
-
-InstructionItem* InsertInstruction(std::unique_ptr<InstructionItem> item, mvvm::SessionItem* parent,
-                                   const mvvm::TagIndex& tag_index)
-{
-  return static_cast<InstructionItem*>(parent->InsertItem(std::move(item), tag_index));
+  return dynamic_cast<InstructionItem*>(
+      parent->InsertItem(CreateInstructionItem(domain_type), tag_index));
 }
 
 void SetInput(const std::string& value, InstructionItem* item)
