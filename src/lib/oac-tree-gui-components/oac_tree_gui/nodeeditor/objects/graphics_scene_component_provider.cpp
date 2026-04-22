@@ -33,10 +33,8 @@
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/connectable_view_model_controller.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
-#include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/node_connection_guide.h>
 #include <mvvm/nodeeditor/node_connection_shape.h>
-#include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/signals/model_listener.h>
 
 namespace oac_tree_gui

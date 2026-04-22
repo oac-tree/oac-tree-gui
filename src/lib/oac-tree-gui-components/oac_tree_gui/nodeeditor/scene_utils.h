@@ -31,15 +31,12 @@ class QGradient;
 class QColor;
 class QRectF;
 class QPointF;
-class QString;
 class QSizeF;
 
 namespace oac_tree_gui
 {
 
-class InstructionContainerItem;
 class InstructionItem;
-class SequencerModel;
 
 /**
  * @brief Returns maximum size of graphics viewport.

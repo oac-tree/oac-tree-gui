@@ -20,7 +20,6 @@
 
 #include "sequencer_align_utils.h"
 
-#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/nodeeditor/align_node.h>
 #include <oac_tree_gui/nodeeditor/align_utils.h>

@@ -21,7 +21,6 @@
 #ifndef OAC_TREE_GUI_OPERATION_BREAKPOINT_CONTROLLER_H_
 #define OAC_TREE_GUI_OPERATION_BREAKPOINT_CONTROLLER_H_
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/operation/breakpoint_types.h>
 
 namespace oac_tree_gui

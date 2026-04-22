@@ -29,7 +29,6 @@
 #include <mvvm/nodeeditor/node_port_shape.h>
 #include <mvvm/style/mvvm_style_helper.h>
 
-#include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 

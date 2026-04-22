@@ -33,7 +33,6 @@ namespace mvvm
 class NodeConnectionGuide;
 class ConnectableViewModelController;
 class SessionItem;
-class ConnectableShape;
 class ISessionModel;
 class INodePort;
 }  // namespace mvvm
@@ -45,7 +44,7 @@ namespace oac_tree_gui
 
 class IGraphicsSceneActionHandler;
 class IInstructionEditorActionHandler;
-class InstructionEditorContext;
+struct InstructionEditorContext;
 class InstructionItem;
 
 /**
@@ -99,7 +98,7 @@ public:
    *
    * Converts instructions to shapes and selects them on the scene.
    */
-  void SetSelectedInstructions(const std::vector<const InstructionItem *> &to_select);
+  void SetSelectedInstructions(const std::vector<const InstructionItem*>& to_select);
 
   /**
    * @brief Drops instruction on the canvas.
