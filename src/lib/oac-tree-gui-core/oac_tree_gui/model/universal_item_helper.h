@@ -59,27 +59,27 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
 /**
  * @brief Set input property to instruction item.
  */
-void SetInput(const std::string& value, InstructionItem* item);
+void SetInput(const std::string& value, InstructionItem& item);
 
 /**
  * @brief Set output property to instruction item.
  */
-void SetOutput(const std::string& value, InstructionItem* item);
+void SetOutput(const std::string& value, InstructionItem& item);
 
 /**
  * @brief Set description property to instruction item.
  */
-void SetDescription(const std::string& value, InstructionItem* item);
+void SetDescription(const std::string& value, InstructionItem& item);
 
 /**
  * @brief Set text attribute property to instruction item.
  */
-void SetText(const std::string& value, InstructionItem* item);
+void SetText(const std::string& value, InstructionItem& item);
 
 /**
  * @brief Set variable name property to instruction item.
  */
-void SetVariableName(const std::string& value, InstructionItem* item);
+void SetVariableName(const std::string& value, InstructionItem& item);
 
 /**
  * @brief Checks if item can be collapsed or expanded.

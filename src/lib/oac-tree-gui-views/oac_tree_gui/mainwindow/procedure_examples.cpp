@@ -43,29 +43,29 @@ ProcedureItem* AddCopyProcedure(SequencerModel* model)
   auto sequence = model->InsertItem<SequenceItem>(repeat);
 
   auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("var_const42", copy0);
-  SetOutput("var0", copy0);
+  SetInput("var_const42", *copy0);
+  SetOutput("var0", *copy0);
 
   model->InsertItem<WaitItem>(sequence);
 
   auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
-  SetText("Hello World", message);
+  SetText("Hello World", *message);
 
   auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("var_const0", copy1);
-  SetOutput("var1", copy1);
+  SetInput("var_const0", *copy1);
+  SetOutput("var1", *copy1);
 
   model->InsertItem<WaitItem>(sequence);
 
   auto copy2 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("var_const42", copy2);
-  SetOutput("var1", copy2);
+  SetInput("var_const42", *copy2);
+  SetOutput("var1", *copy2);
 
   model->InsertItem<WaitItem>(sequence);
 
   auto copy3 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("var_const0", copy3);
-  SetOutput("var0", copy3);
+  SetInput("var_const0", *copy3);
+  SetOutput("var0", *copy3);
 
   model->InsertItem<WaitItem>(sequence);
 
@@ -113,8 +113,8 @@ ProcedureItem* AddInputProcedure(SequencerModel* model)
   sequence->SetName("MySequence");
 
   auto input0 = InsertInstruction(domainconstants::kInputInstructionType, sequence);
-  SetOutput("var1", input0);
-  SetDescription("Your ID", input0);
+  SetOutput("var1", *input0);
+  SetDescription("Your ID", *input0);
 
   model->InsertItem<WaitItem>(sequence);
 

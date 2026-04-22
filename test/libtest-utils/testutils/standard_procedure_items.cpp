@@ -107,8 +107,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateCopyProcedureItem()
   auto result = std::make_unique<ProcedureItem>();
   auto copy =
       InsertInstruction(domainconstants::kCopyInstructionType, result->GetInstructionContainer());
-  SetInput("var0", copy);
-  SetOutput("var1", copy);
+  SetInput("var0", *copy);
+  SetOutput("var1", *copy);
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("var0");
@@ -157,8 +157,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem(
   sequence->SetName("MySequence");
 
   auto input0 = InsertInstruction(domainconstants::kInputInstructionType, sequence);
-  SetOutput("var1", input0);
-  SetDescription("Your ID", input0);
+  SetOutput("var1", *input0);
+  SetDescription("Your ID", *input0);
 
   sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
@@ -187,8 +187,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateUserChoiceProcedureItem()
   wait0->SetTimeout(10.0);
 
   auto copy = InsertInstruction(domainconstants::kCopyInstructionType, userchoice);
-  SetInput("var0", copy);
-  SetOutput("var1", copy);
+  SetInput("var0", *copy);
+  SetOutput("var1", *copy);
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("var0");
@@ -211,7 +211,7 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateMessageProcedureItem(const st
   auto result = std::make_unique<ProcedureItem>();
   auto message = InsertInstruction(domainconstants::kMessageInstructionType,
                                    result->GetInstructionContainer());
-  SetText(text, message);
+  SetText(text, *message);
   return result;
 }
 
@@ -229,15 +229,15 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateVariableResetProcedureItem()
       result->GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
   auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("a", copy0);
-  SetOutput("target", copy0);
+  SetInput("a", *copy0);
+  SetOutput("target", *copy0);
 
   auto reset = InsertInstruction(domainconstants::kVariableResetInstructionType, sequence);
-  SetVariableName("target", reset);
+  SetVariableName("target", *reset);
 
   auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("b", copy1);
-  SetOutput("target", copy1);
+  SetInput("b", *copy1);
+  SetOutput("target", *copy1);
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("a");
@@ -266,14 +266,14 @@ std::unique_ptr<ProcedureItem> CreateIncrementProcedureItem()
       result->GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
   auto increment0 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
-  SetVariableName("var0", increment0);
+  SetVariableName("var0", *increment0);
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("var0");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
 
   auto increment1 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
-  SetVariableName("var1", increment1);
+  SetVariableName("var1", *increment1);
 
   auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var1->SetName("var1");

@@ -44,29 +44,29 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
       parent->InsertItem(CreateInstructionItem(domain_type), tag_index));
 }
 
-void SetInput(const std::string& value, InstructionItem* item)
+void SetInput(const std::string& value, InstructionItem& item)
 {
-  (void)item->SetProperty(domainconstants::kInputVariableNameAttribute, value);
+  (void)item.SetProperty(domainconstants::kInputVariableNameAttribute, value);
 }
 
-void SetOutput(const std::string& value, InstructionItem* item)
+void SetOutput(const std::string& value, InstructionItem& item)
 {
-  (void)item->SetProperty(domainconstants::kOutputVariableNameAttribute, value);
+  (void)item.SetProperty(domainconstants::kOutputVariableNameAttribute, value);
 }
 
-void SetDescription(const std::string& value, InstructionItem* item)
+void SetDescription(const std::string& value, InstructionItem& item)
 {
-  (void)item->SetProperty(domainconstants::kDescriptionAttribute, value);
+  (void)item.SetProperty(domainconstants::kDescriptionAttribute, value);
 }
 
-void SetText(const std::string& value, InstructionItem* item)
+void SetText(const std::string& value, InstructionItem& item)
 {
-  (void)item->SetProperty(domainconstants::kTextAttribute, value);
+  (void)item.SetProperty(domainconstants::kTextAttribute, value);
 }
 
-void SetVariableName(const std::string& value, InstructionItem* item)
+void SetVariableName(const std::string& value, InstructionItem& item)
 {
-  (void)item->SetProperty(domainconstants::kGenericVariableNameAttribute, value);
+  (void)item.SetProperty(domainconstants::kGenericVariableNameAttribute, value);
 }
 
 bool IsCollapsible(const InstructionItem& item)
