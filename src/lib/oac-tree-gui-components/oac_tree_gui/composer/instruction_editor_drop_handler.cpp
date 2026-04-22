@@ -23,11 +23,7 @@
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 
-#include <mvvm/model/validate_utils.h>
 #include <mvvm/providers/viewmodel_utils.h>
-
-#include <QMimeData>
-#include <QModelIndex>
 
 namespace oac_tree_gui
 {

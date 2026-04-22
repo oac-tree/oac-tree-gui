@@ -29,6 +29,7 @@
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
+#include "oac_tree_gui/jobsystem/user_context.h"
 
 #include <mvvm/model/application_model.h>
 

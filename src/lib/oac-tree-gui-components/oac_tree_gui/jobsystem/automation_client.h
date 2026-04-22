@@ -21,9 +21,6 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 #define OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 
-#include "oac_tree_gui/jobsystem/user_context.h"
-
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
 
 #include <memory>
@@ -35,8 +32,6 @@ class IJobManager;
 
 namespace oac_tree_gui
 {
-
-class AbstractJobHandler;
 
 /**
  * @brief The AutomationClient class is a simple wrapper around automation server machinery to hide

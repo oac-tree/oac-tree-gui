@@ -24,10 +24,9 @@
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
-#include <oac_tree_gui/transform/transform_from_domain.h>
 #include <oac_tree_gui/model/item_factory.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>

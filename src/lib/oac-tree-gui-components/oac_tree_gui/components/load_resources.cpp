@@ -20,7 +20,6 @@
 
 #include "load_resources.h"
 
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/register_items.h>
 
 #include <sup/gui/model/register_items.h>

@@ -39,9 +39,6 @@ class QueryResult;
 namespace oac_tree_gui
 {
 
-class SequencerModel;
-class InstructionContainerItem;
-
 /**
  * @brief The InstructionEditorActionHandler class implements logic to add/remove instructions in
  * InstructionContainerItem.

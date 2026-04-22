@@ -23,7 +23,7 @@
 
 #include <mvvm/signals/item_controller.h>
 
-#include <QObject>
+#include <QMetaObject>
 
 class QPlainTextEdit;
 class QCheckBox;
