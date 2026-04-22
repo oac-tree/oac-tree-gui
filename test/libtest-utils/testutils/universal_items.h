@@ -36,7 +36,9 @@
 namespace oac_tree_gui::test
 {
 
-//! Test instruction playing the role of domain instruction unknown to the GUI.
+/**
+ * @brief The UnknownDomainInstruction plays the rold of domain instruction unknown to the GUI.
+ */
 class UnknownDomainInstruction : public ::sup::oac_tree::Instruction
 {
 public:
@@ -58,14 +60,24 @@ public:
   }
 };
 
-//! Test instruction playing the role of domain variable unknown to the GUI.
+/**
+ * @brief The UnknownDomainInstruction plays the rold of domain variable unknown to the GUI.
+ */
 class UnknownDomainVariable : public ::sup::oac_tree::Variable
 {
 public:
   UnknownDomainVariable() : Variable(Type) {}
 
-  bool GetValueImpl(sup::dto::AnyValue& value) const override { return true; }
-  bool SetValueImpl(const sup::dto::AnyValue& value) override { return true; }
+  bool GetValueImpl(sup::dto::AnyValue& value) const override
+  {
+    (void)value;
+    return true;
+  }
+  bool SetValueImpl(const sup::dto::AnyValue& value) override
+  {
+    (void)value;
+    return true;
+  }
 
   static inline const std::string Type = "UnknownDomainVariable";
 

@@ -83,11 +83,6 @@ InstructionItem* InsertInstruction(std::unique_ptr<oac_tree_gui::InstructionItem
                                    const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**
- * @brief Returns true if given name correspond to the name of registered aggregate.
- */
-bool IsAggregateName(const std::string& name);
-
-/**
  * @brief Set input property to instruction item.
  */
 void SetInput(const std::string& value, InstructionItem* item);

@@ -58,12 +58,6 @@ InstructionItem* InsertInstruction(std::unique_ptr<InstructionItem> item, mvvm::
   return static_cast<InstructionItem*>(parent->InsertItem(std::move(item), tag_index));
 }
 
-bool IsAggregateName(const std::string& name)
-{
-  static AggregateFactory factory;
-  return factory.Contains(name);
-}
-
 void SetInput(const std::string& value, InstructionItem* item)
 {
   (void)item->SetProperty(domainconstants::kInputVariableNameAttribute, value);

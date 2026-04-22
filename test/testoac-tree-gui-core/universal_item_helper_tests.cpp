@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -36,24 +35,14 @@
 namespace oac_tree_gui::test
 {
 
-//! Tests for helper methods from universal_item_helper.h
-
+/**
+ * @brief Tests for helper methods from universal_item_helper.h
+ */
 class UniversalItemHelperTest : public ::testing::Test
 {
 };
 
-//! Validating helper method GetDropTagIndex.
-
-TEST_F(UniversalItemHelperTest, IsAggregateName)
-{
-  EXPECT_FALSE(IsAggregateName(""));
-  EXPECT_FALSE(IsAggregateName("Wait"));
-  EXPECT_TRUE(IsAggregateName("if-then-else"));
-}
-
-//! Checking adding known domain_type instruction to SequencerModel.
-
-TEST_F(UniversalItemHelperTest, AddKnownInstruction)
+TEST_F(UniversalItemHelperTest, AddKnownInstructionToSequencerModel)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -66,9 +55,7 @@ TEST_F(UniversalItemHelperTest, AddKnownInstruction)
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
 
-//! Checking adding unknown domain_type instruction to SequencerModel.
-
-TEST_F(UniversalItemHelperTest, AddUnknownInstruction)
+TEST_F(UniversalItemHelperTest, AddUnknownDomainInstructionToTheGUI)
 {
   using test::UnknownDomainInstruction;
 
