@@ -20,7 +20,6 @@
 
 #include "universal_item_helper.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -31,7 +30,6 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
 
 namespace oac_tree_gui

@@ -21,6 +21,7 @@
 #include "oac_tree_gui/composer/workspace_editor_action_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>

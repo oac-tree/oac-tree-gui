@@ -21,6 +21,7 @@
 #include "oac_tree_gui/transform/variable_item_transform_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>

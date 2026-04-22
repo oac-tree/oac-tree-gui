@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/viewmodel/workspace_editor_viewmodel.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>

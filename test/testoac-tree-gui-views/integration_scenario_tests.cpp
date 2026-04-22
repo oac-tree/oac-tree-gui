@@ -32,6 +32,7 @@
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/model/xml_utils.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>

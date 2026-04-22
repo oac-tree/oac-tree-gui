@@ -37,7 +37,6 @@
 #include <mvvm/model/item_utils.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/oac-tree/attribute_definition.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure_preamble.h>
 #include <sup/oac-tree/variable.h>

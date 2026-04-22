@@ -20,7 +20,6 @@
 
 #include "xml_utils.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/transform/domain_procedure_builder.h>
 #include <oac_tree_gui/transform/procedure_item_transform_helper.h>

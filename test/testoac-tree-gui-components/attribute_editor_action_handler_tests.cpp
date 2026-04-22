@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/composer/attribute_editor_action_handler.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>

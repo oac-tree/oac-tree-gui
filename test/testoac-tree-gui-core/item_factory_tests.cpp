@@ -21,6 +21,7 @@
 #include "oac_tree_gui/model/item_factory.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>

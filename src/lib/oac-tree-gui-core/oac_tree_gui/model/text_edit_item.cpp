@@ -22,9 +22,6 @@
 
 #include "sequencer_settings_constants.h"
 
-#include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/sequencer_settings_helper.h>
-
 #include <mvvm/utils/string_utils.h>
 
 namespace oac_tree_gui

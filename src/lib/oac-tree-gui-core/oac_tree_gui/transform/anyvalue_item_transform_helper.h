@@ -28,11 +28,6 @@
 
 #include <string>
 
-namespace sup::gui
-{
-class AnyValueItem;
-}
-
 namespace oac_tree_gui
 {
 
