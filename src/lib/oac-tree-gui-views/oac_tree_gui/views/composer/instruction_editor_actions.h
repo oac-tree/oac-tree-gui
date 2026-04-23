@@ -38,7 +38,7 @@ class IAppCommandService;
 namespace oac_tree_gui
 {
 
-class InstructionEditorActionHandler;
+class IInstructionEditorActionHandler;
 
 /**
  * @brief The InstructionEditorActions class defines actions related to the contrsution of the
@@ -75,7 +75,7 @@ public:
    * @param An action handler to retrieve status of enabled/disabled actions.
    * @param parent_object Parent Qobject.
    */
-  explicit InstructionEditorActions(InstructionEditorActionHandler* handler,
+  explicit InstructionEditorActions(IInstructionEditorActionHandler* handler,
                                     QObject* parent_object = nullptr);
   ~InstructionEditorActions() override;
 
@@ -134,7 +134,7 @@ private:
    */
   void AboutToShowInsertMenu();
 
-  InstructionEditorActionHandler* m_action_handler{nullptr};
+  IInstructionEditorActionHandler* m_action_handler{nullptr};
 
   std::unique_ptr<QMenu> m_insert_after_menu;
   std::unique_ptr<QMenu> m_insert_into_menu;

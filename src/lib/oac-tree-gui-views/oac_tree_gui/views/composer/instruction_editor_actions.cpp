@@ -20,7 +20,7 @@
 
 #include "instruction_editor_actions.h"
 
-#include <oac_tree_gui/composer/instruction_editor_action_handler.h>
+#include <oac_tree_gui/composer/i_instruction_editor_action_handler.h>
 #include <oac_tree_gui/domain/domain_object_group_helper.h>
 #include <oac_tree_gui/style/style_helper.h>
 
@@ -32,7 +32,7 @@
 namespace oac_tree_gui
 {
 
-InstructionEditorActions::InstructionEditorActions(InstructionEditorActionHandler* handler,
+InstructionEditorActions::InstructionEditorActions(IInstructionEditorActionHandler *handler,
                                                    QObject* parent_object)
     : QObject(parent_object)
     , m_action_handler(handler)

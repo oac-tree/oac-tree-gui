@@ -27,8 +27,8 @@
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
@@ -286,6 +286,7 @@ std::unique_ptr<mvvm::ItemViewComponentProvider> InstructionEditorWidget::Create
 void InstructionEditorWidget::OnContextMenuRequest(const QPoint& point)
 {
   QMenu menu;
+  menu.setToolTipsVisible(true);
 
   m_editor_actions->SetupMenu(menu);
 
