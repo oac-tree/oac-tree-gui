@@ -25,6 +25,8 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/style/style_helper.h>
 
+#include <mvvm/nodeeditor/i_node_port.h>
+
 #include <QKeyEvent>
 #include <cmath>
 
