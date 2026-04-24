@@ -53,16 +53,13 @@ namespace
 /**
  * @brief Returns coordinate located not far from the given reference.
  */
-IInstructionEditorActionHandler::position_t GetCoordinateNearby(
-    const InstructionItem* reference)
+IInstructionEditorActionHandler::position_t GetCoordinateNearby(const InstructionItem* reference)
 {
   const auto default_center = oac_tree_gui::GetGraphicsViewportCenter();
-  const double x = (reference != nullptr)
-                       ? (reference->GetX() + GetInstructionDropOffset())
-                       : default_center.x();
-  const double y = (reference != nullptr)
-                       ? (reference->GetY() + GetInstructionDropOffset())
-                       : default_center.y();
+  const double x = (reference != nullptr) ? (reference->GetX() + GetInstructionDropOffset())
+                                          : default_center.x();
+  const double y = (reference != nullptr) ? (reference->GetY() + GetInstructionDropOffset())
+                                          : default_center.y();
 
   return {x, y};
 }
@@ -300,8 +297,9 @@ bool InstructionEditorActionHandler::CanPasteAfter() const
     return false;
   }
 
-  auto querry = CanInsertTypeAfterCurrentSelection(
-      sup::gui::GetSessionItemType(*mime, kInstructionCopyMimeType));
+  auto item_types = sup::gui::GetItemTypesFromMime(*mime, kTopSelectedItemTypesMimeType);
+  auto querry =
+      CanInsertTypeAfterCurrentSelection(item_types.empty() ? std::string() : item_types.front());
   return querry.IsSuccess();
 }
 
@@ -323,8 +321,10 @@ bool InstructionEditorActionHandler::CanPasteInto() const
     return false;
   }
 
-  auto querry = CanInsertTypeIntoCurrentSelection(
-      sup::gui::GetSessionItemType(*mime, kInstructionCopyMimeType));
+  auto item_types = sup::gui::GetItemTypesFromMime(*mime, kTopSelectedItemTypesMimeType);
+
+  auto querry =
+      CanInsertTypeIntoCurrentSelection(item_types.empty() ? std::string() : item_types.front());
   return querry.IsSuccess();
 }
 
