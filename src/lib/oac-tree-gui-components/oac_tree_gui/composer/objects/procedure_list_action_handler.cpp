@@ -119,7 +119,11 @@ void ProcedureListActionHandler::Paste()
     return;
   }
 
-  InsertProcedure(sup::gui::CreateSessionItem(*GetMimeData(), kCopyProcedureMimeType));
+  auto items = sup::gui::CreateSessionItemsFromMimeData(*GetMimeData(), kCopyProcedureMimeType);
+  if (!items.empty())
+  {
+    InsertProcedure(std::move(items.at(0)));
+  }
 }
 
 mvvm::ContainerItem* ProcedureListActionHandler::GetProcedureContainer() const
