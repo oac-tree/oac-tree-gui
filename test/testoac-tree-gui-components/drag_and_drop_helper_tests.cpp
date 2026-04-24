@@ -145,7 +145,7 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
 
   // and full copy of instruction
   EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
-  auto copied_items = sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
+  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
   ASSERT_EQ(copied_items.size(), 1);
   auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
   ASSERT_NE(copied_sequence, nullptr);
@@ -177,7 +177,7 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelectio
 
   // and full copy of instruction
   EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
-  auto copied_items = sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
+  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
   ASSERT_EQ(copied_items.size(), 1);
   auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
   ASSERT_NE(copied_sequence, nullptr);

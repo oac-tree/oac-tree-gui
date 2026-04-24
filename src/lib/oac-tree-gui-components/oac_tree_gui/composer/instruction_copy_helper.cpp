@@ -82,7 +82,7 @@ std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeD
     return {};
   }
 
-  return sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
+  return sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
 }
 
 }  // namespace oac_tree_gui
