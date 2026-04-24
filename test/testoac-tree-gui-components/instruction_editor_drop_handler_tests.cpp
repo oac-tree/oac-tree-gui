@@ -22,10 +22,10 @@
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
-#include <oac_tree_gui/model/item_factory.h>
-#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
@@ -184,8 +184,8 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionCopyMimeDataBetweenItems
   auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
 
   auto message_instruction = CreateInstructionItem(domainconstants::kMessageInstructionType);
-  auto mime_data = sup::gui::CreateItemSelectionCopyMimeData({message_instruction.get()},
-                                                             kCopyInstructionMimeType);
+  auto mime_data = std::make_unique<QMimeData>();
+  sup::gui::CopyItemsToMimeData({message_instruction.get()}, kCopyInstructionMimeType, *mime_data);
 
   // copying it into position [3]
   auto handler = CreateDefaultDropHandler();
