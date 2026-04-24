@@ -488,8 +488,8 @@ TEST_F(DragAndDropHelperTest, DropInstructionIdentifierMimeDataBetweenItems)
   auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
 
   {  // move wait 3 to position [7]
-    auto mime_data =
-        sup::gui::CreateItemSelectionIdentifierMimeData({wait3}, kInstructionIdentifierMimeType);
+    auto mime_data = std::make_unique<QMimeData>();
+    sup::gui::SetItemIdentifiersToMime({wait3}, kInstructionIdentifierMimeType, *mime_data);
     const std::int32_t drop_indicator = 2;
     EXPECT_FALSE(CanDropItemIdentifierMimeData(*mime_data, kInstructionIdentifierMimeType,
                                                Qt::CopyAction, drop_indicator, *sequence0));

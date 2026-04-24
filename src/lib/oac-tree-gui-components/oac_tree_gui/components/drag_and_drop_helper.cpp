@@ -54,10 +54,13 @@ QModelIndexList GetFirstColumnIndexes(const QModelIndexList& indexes)
 std::unique_ptr<QMimeData> CreateItemIdentifierMimeData(const QModelIndexList& indexes,
                                                         const QString& mime_type)
 {
-  auto items = mvvm::utils::ItemsFromIndex(indexes);
+  auto items = mvvm::utils::MakeConst(mvvm::utils::ItemsFromIndex(indexes));
   auto unique_items = mvvm::utils::UniqueWithOrder(items);
-  return sup::gui::CreateItemSelectionIdentifierMimeData(mvvm::utils::MakeConst(unique_items),
-                                                         mime_type);
+  const auto top_level_selection = sup::gui::GetTopLevelSelection(items);
+
+  auto result = std::make_unique<QMimeData>();
+  sup::gui::SetItemIdentifiersToMime(top_level_selection, mime_type, *result);
+  return result;
 }
 
 std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name)

@@ -66,6 +66,9 @@ QModelIndexList GetFirstColumnIndexes(const QModelIndexList& indexes);
 /**
  * @brief Creates mime data carrying identifiers of items corersponding to given indexes.
  *
+ * Function cleans up the list of items corresponding to given indexes, leaving only top-level
+ * items.
+ *
  * @param indexes List of indexes participating in drag-and-drop operation.
  * @param mime_type Mime type of the data to encode inside mime object.
  */
