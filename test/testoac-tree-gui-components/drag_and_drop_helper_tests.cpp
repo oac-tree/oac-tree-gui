@@ -143,7 +143,13 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
-  // and full copy of instruction
+  // item types
+  EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
+  auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
+  EXPECT_EQ(item_types.size(), 1);
+  EXPECT_EQ(item_types.at(0), sequence->GetDomainType());
+
+  // full copy of instruction
   EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
   auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   ASSERT_EQ(copied_items.size(), 1);
@@ -175,7 +181,13 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelectio
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
-  // and full copy of instruction
+  // item types
+  EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
+  auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
+  EXPECT_EQ(item_types.size(), 1);
+  EXPECT_EQ(item_types.at(0), sequence->GetDomainType());
+
+  // full copy of instruction
   EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
   auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   ASSERT_EQ(copied_items.size(), 1);

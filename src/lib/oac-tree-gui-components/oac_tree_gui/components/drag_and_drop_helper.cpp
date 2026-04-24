@@ -97,6 +97,7 @@ std::unique_ptr<QMimeData> CreateInstructionEditorMimeData(const QModelIndexList
 
   auto result = std::make_unique<QMimeData>();
 
+  sup::gui::SetItemTypesToMime(top_level_selection, kTopSelectedItemTypesMimeType, *result);
   sup::gui::SetItemIdentifiersToMime(top_level_selection, kInstructionIdentifierMimeType, *result);
   sup::gui::CopyItemsToMimeData(top_level_selection, kInstructionCopyMimeType, *result);
 
