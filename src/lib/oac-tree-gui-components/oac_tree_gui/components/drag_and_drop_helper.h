@@ -51,11 +51,14 @@ constexpr auto kNewInstructionMimeType = "application/coa.sequencer.instruction.
 //! Mime type for procedure copy.
 constexpr auto kProcedureCopyMimeType = "application/coa.sequencer.procedure.copy";
 
-//! Mime type for instruction copy.
+//! mime type to hold instruction copy
 constexpr auto kInstructionCopyMimeType = "application/coa.sequencer.instruction.copy";
 
 //! Mime type for variable copy.
 constexpr auto kVariableCopyMimeType = "application/coa.sequencer.variable.copy";
+
+//! mime type to hold top selected item types
+constexpr auto kTopSelectedItemTypesMimeType = "application/coa.sequencer.topselecteditemtypes";
 
 /**
  * @brief Returns list of indexes corresponding to the first column for each row in the given list

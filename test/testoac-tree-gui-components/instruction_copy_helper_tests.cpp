@@ -20,7 +20,10 @@
 
 #include "oac_tree_gui/composer/instruction_copy_helper.h"
 
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
+
+#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/utils/container_utils.h>
@@ -63,6 +66,9 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionCopyMimeData)
 
   auto mime_data = CreateInstructionCopyMimeData(*sequence);
 
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+  EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
+
   auto reconstructed_items = CreateInstructions(mime_data.get());
   auto reconstructed_instructions = GetInstructionsPtr(reconstructed_items);
   ASSERT_EQ(reconstructed_instructions.size(), 1);
@@ -74,6 +80,10 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionCopyMimeData)
 
   // children instruction wasn't copied
   EXPECT_TRUE(reconstructed_sequence->GetInstructions().empty());
+
+  // item type block
+  auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
+  EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
 }
 
 TEST_F(InstructionCopyHelperTest, CreateInstructionTreeCopyMimeData)
@@ -87,6 +97,9 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionTreeCopyMimeData)
 
   auto mime_data = CreateInstructionTreeCopyMimeData(*sequence);
 
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+  EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
+
   auto reconstructed_items = CreateInstructions(mime_data.get());
   auto reconstructed_instructions = GetInstructionsPtr(reconstructed_items);
   ASSERT_EQ(reconstructed_instructions.size(), 1);
@@ -97,6 +110,10 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionTreeCopyMimeData)
   // children were copied
   ASSERT_EQ(reconstructed_sequence->GetInstructions().size(), 1);
   EXPECT_EQ(reconstructed_sequence->GetInstructions().at(0)->GetDisplayName(), std::string("def"));
+
+  // item type block
+  auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
+  EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
 }
 
 TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
@@ -123,6 +140,8 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
     const std::vector<const InstructionItem*> selection({wait0, sequence1});
 
     const auto mime_data = CreateInstructionSelectionCopyMimeData(selection);
+    EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+    EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
 
     auto reconstructed_items = CreateInstructions(mime_data.get());
     auto reconstructed_instructions = GetInstructionsPtr(reconstructed_items);
@@ -130,6 +149,11 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
     ASSERT_EQ(reconstructed_instructions.size(), 2);
     EXPECT_EQ(reconstructed_instructions.at(0)->GetDisplayName(), std::string("wait0"));
     EXPECT_EQ(reconstructed_instructions.at(1)->GetDisplayName(), std::string("sequence1"));
+
+    // item type block
+    auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
+    EXPECT_EQ(item_types, std::vector<std::string>(
+                              {mvvm::GetTypeName<WaitItem>(), mvvm::GetTypeName<SequenceItem>()}));
 
     // sequence doesn't contain any childre
     EXPECT_TRUE(reconstructed_instructions.at(1)->GetInstructions().empty());
@@ -139,6 +163,8 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
     const std::vector<const InstructionItem*> selection({sequence0, sequence1, wait1});
 
     const auto mime_data = CreateInstructionSelectionCopyMimeData(selection);
+    EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+    EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
 
     auto reconstructed_items = CreateInstructions(mime_data.get());
     auto reconstructed_instructions = GetInstructionsPtr(reconstructed_items);
@@ -147,6 +173,10 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
     auto reconstructed_parent = reconstructed_instructions.at(0);
     EXPECT_EQ(reconstructed_parent->GetDisplayName(), std::string("sequence0"));
     EXPECT_EQ(reconstructed_parent->GetX(), 42);
+
+    // item type block
+    auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
+    EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
 
     // checking child
     ASSERT_EQ(reconstructed_parent->GetInstructions().size(), 1);
