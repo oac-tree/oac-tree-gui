@@ -156,6 +156,38 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
   EXPECT_EQ(copied_waits->GetDisplayName(), std::string("def"));
 }
 
+TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelection)
+{
+  const mvvm::AllItemsViewModel view_model(&m_model);
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  sequence->SetDisplayName("abc");
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  wait->SetDisplayName("def");
+  auto sequence_displayname_index = view_model.index(0, 0, QModelIndex());
+  auto wait_displayname_index = view_model.index(0, 0, sequence_displayname_index);
+
+  auto mime_data =
+      CreateInstructionEditorMimeData({wait_displayname_index, sequence_displayname_index});
+
+  // same as in previous test, since children should be filtered out
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
+  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
+  EXPECT_EQ(identifiers.size(), 1);
+  EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
+
+  // and full copy of instruction
+  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
+  auto copied_items = sup::gui::CreateSessionItems(*mime_data, kCopyInstructionMimeType);
+  ASSERT_EQ(copied_items.size(), 1);
+  auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
+  ASSERT_NE(copied_sequence, nullptr);
+  EXPECT_EQ(copied_sequence->GetType(), sequence->GetDomainType());
+  EXPECT_EQ(copied_sequence->GetDisplayName(), std::string("abc"));
+  ASSERT_EQ(copied_sequence->GetInstructions().size(), 1);
+  auto copied_waits = copied_sequence->GetInstructions().at(0);
+  EXPECT_EQ(copied_waits->GetDisplayName(), std::string("def"));
+}
+
 TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexLastWaitToVariousPlaces)
 {
   auto sequence0 = m_model.InsertItem<SequenceItem>();

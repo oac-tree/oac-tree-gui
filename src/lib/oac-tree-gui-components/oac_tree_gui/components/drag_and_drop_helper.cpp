@@ -21,9 +21,10 @@
 #include "drag_and_drop_helper.h"
 
 #include <oac_tree_gui/composer/instruction_copy_helper.h>
-#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 
+#include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/session_item.h>
@@ -89,9 +90,12 @@ std::unique_ptr<QMimeData> CreateInstructionEditorMimeData(const QModelIndexList
   const auto first_column_indexes = GetFirstColumnIndexes(indexes);
   auto items = mvvm::utils::MakeConst(mvvm::utils::ItemsFromIndex(first_column_indexes));
 
+  const auto top_level_selection = sup::gui::GetTopLevelSelection(items);
+
   auto result = std::make_unique<QMimeData>();
-  sup::gui::AddItemSelectionIdentifierToMimeData(items, kInstructionIdentifierMimeType, *result);
-  sup::gui::AddItemSelectionCopyToMimeData(items, kCopyInstructionMimeType, *result);
+
+  sup::gui::SetItemIdentifiersToMime(top_level_selection, kInstructionIdentifierMimeType, *result);
+  sup::gui::CopyItemsToMimeData(top_level_selection, kCopyInstructionMimeType, *result);
 
   return result;
 }

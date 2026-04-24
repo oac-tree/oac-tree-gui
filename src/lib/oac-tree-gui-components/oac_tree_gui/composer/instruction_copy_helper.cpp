@@ -41,12 +41,16 @@ std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& 
   auto filter_func = [&children](const mvvm::SessionItem& item)
   { return !mvvm::utils::Contains(children, &item); };
 
-  return sup::gui::CreateCopyMimeData(instruction, kCopyInstructionMimeType, filter_func);
+  auto result = std::make_unique<QMimeData>();
+  sup::gui::CopyItemsToMimeData({&instruction}, kCopyInstructionMimeType, *result, filter_func);
+  return result;
 }
 
 std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction)
 {
-  return sup::gui::CreateCopyMimeData(instruction, kCopyInstructionMimeType, {});
+  auto result = std::make_unique<QMimeData>();
+  sup::gui::CopyItemsToMimeData({&instruction}, kCopyInstructionMimeType, *result);
+  return result;
 }
 
 std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
@@ -65,7 +69,10 @@ std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
   // FIXME Find the way to fix this CastItems/MakeConst mess
   auto top_level_selection =
       sup::gui::GetTopLevelSelection(mvvm::utils::CastItems<const mvvm::SessionItem>(selection));
-  return sup::gui::CreateCopyMimeData(top_level_selection, kCopyInstructionMimeType, filter_func);
+  auto result = std::make_unique<QMimeData>();
+  sup::gui::CopyItemsToMimeData(top_level_selection, kCopyInstructionMimeType, *result,
+                                filter_func);
+  return result;
 }
 
 std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeData* mime_data)
