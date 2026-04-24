@@ -201,7 +201,7 @@ bool CanDropItemIdentifierMimeData(const QMimeData& data, const QString& mime_ty
 
   if (data.hasFormat(mime_type))
   {
-    for (const auto& id : sup::gui::GetStringListFromMime(data, mime_type))
+    for (const auto& id : sup::gui::GetItemIdentifiersFromMime(data, mime_type))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)
@@ -233,7 +233,7 @@ bool HandleDropItemIdentifierMimeData(const QMimeData& data, const QString& mime
 
   if (data.hasFormat(mime_type))
   {
-    for (const auto& id : sup::gui::GetStringListFromMime(data, mime_type))
+    for (const auto& id : sup::gui::GetItemIdentifiersFromMime(data, mime_type))
     {
       auto item = parent.GetModel()->FindItem(id);
       if (item == nullptr)

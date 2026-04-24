@@ -69,25 +69,6 @@ TEST_F(DragAndDropHelperTest, GetFirstColumnIndexes)
   EXPECT_TRUE(GetFirstColumnIndexes({}).empty());
 }
 
-TEST_F(DragAndDropHelperTest, GetStringListFromMime)
-{
-  const QString test_mime("test_mime");
-
-  {  // empty data
-    const QMimeData mime_data;
-    EXPECT_TRUE(sup::gui::GetStringListFromMime(mime_data, test_mime).empty());
-  }
-
-  {  // two elements
-    const QStringList list({"abc", "def"});
-    auto mime_data = std::make_unique<QMimeData>();
-    mime_data->setData(test_mime, mvvm::utils::GetByteArray(list));
-
-    auto result = sup::gui::GetStringListFromMime(*mime_data, test_mime);
-    EXPECT_EQ(result, std::vector<std::string>({"abc", "def"}));
-  }
-}
-
 TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
 {
   const QString mime_type("mime_type");
@@ -104,7 +85,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
 
     auto mime_data = CreateItemIdentifierMimeData({sequence_displayname_index}, mime_type);
 
-    auto identifiers = sup::gui::GetStringListFromMime(*mime_data, mime_type);
+    auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, mime_type);
     EXPECT_EQ(identifiers, std::vector<std::string>({sequence->GetIdentifier()}));
   }
 }
@@ -123,7 +104,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeDataForVectorItem)
   auto mime_data = CreateItemIdentifierMimeData(
       {vector_item_name_index, x_item_display_index, x_item_value_index}, mime_type);
 
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, mime_type);
+  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, mime_type);
   EXPECT_EQ(identifiers, std::vector<std::string>({vector_item->GetIdentifier()}));
 }
 
