@@ -98,7 +98,7 @@ std::unique_ptr<QMimeData> CreateInstructionEditorMimeData(const QModelIndexList
   auto result = std::make_unique<QMimeData>();
 
   sup::gui::SetItemIdentifiersToMime(top_level_selection, kInstructionIdentifierMimeType, *result);
-  sup::gui::CopyItemsToMimeData(top_level_selection, kCopyInstructionMimeType, *result);
+  sup::gui::CopyItemsToMimeData(top_level_selection, kInstructionCopyMimeType, *result);
 
   return result;
 }
@@ -269,9 +269,9 @@ bool CanDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action
     return false;
   }
 
-  if (data.hasFormat(kCopyInstructionMimeType))
+  if (data.hasFormat(kInstructionCopyMimeType))
   {
-    auto type_to_copy = sup::gui::GetSessionItemType(data, kCopyInstructionMimeType);
+    auto type_to_copy = sup::gui::GetSessionItemType(data, kInstructionCopyMimeType);
     return mvvm::utils::GetInsertTypeErrorCode(type_to_copy, parent,
                                                GetDropTagIndex(drop_row_indicator))
            == mvvm::ModelError::Success;
@@ -288,7 +288,7 @@ bool HandleDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction act
     return false;
   }
 
-  if (data.hasFormat(kCopyInstructionMimeType))
+  if (data.hasFormat(kInstructionCopyMimeType))
   {
     auto new_items = CreateInstructions(&data);
     auto last_tag_index = GetDropTagIndex(drop_row_indicator);

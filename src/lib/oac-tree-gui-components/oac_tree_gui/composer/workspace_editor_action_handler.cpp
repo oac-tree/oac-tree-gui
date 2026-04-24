@@ -179,14 +179,14 @@ void WorkspaceEditorActionHandler::Copy()
   }
 
   auto items = mvvm::utils::CastItems<const mvvm::SessionItem>(GetSelectedVariables());
-  m_context.set_mime_data(sup::gui::CreateCopyMimeData(items, kCopyVariableMimeType));
+  m_context.set_mime_data(sup::gui::CreateCopyMimeData(items, kVariableCopyMimeType));
 }
 
 bool WorkspaceEditorActionHandler::CanPaste() const
 {
   const bool has_model = GetModel() != nullptr;
   auto mime_data = GetMimeData();
-  return has_model && (mime_data != nullptr) && mime_data->hasFormat(kCopyVariableMimeType);
+  return has_model && (mime_data != nullptr) && mime_data->hasFormat(kVariableCopyMimeType);
 }
 
 void WorkspaceEditorActionHandler::Paste()
@@ -197,7 +197,7 @@ void WorkspaceEditorActionHandler::Paste()
   }
 
   InsertVariableAfterCurrentSelection(
-      sup::gui::CreateSessionItemsFromMimeData(*GetMimeData(), kCopyVariableMimeType));
+      sup::gui::CreateSessionItemsFromMimeData(*GetMimeData(), kVariableCopyMimeType));
 }
 
 const VariableItem* WorkspaceEditorActionHandler::GetSelectedVariable() const

@@ -301,7 +301,7 @@ bool InstructionEditorActionHandler::CanPasteAfter() const
   }
 
   auto querry = CanInsertTypeAfterCurrentSelection(
-      sup::gui::GetSessionItemType(*mime, kCopyInstructionMimeType));
+      sup::gui::GetSessionItemType(*mime, kInstructionCopyMimeType));
   return querry.IsSuccess();
 }
 
@@ -324,7 +324,7 @@ bool InstructionEditorActionHandler::CanPasteInto() const
   }
 
   auto querry = CanInsertTypeIntoCurrentSelection(
-      sup::gui::GetSessionItemType(*mime, kCopyInstructionMimeType));
+      sup::gui::GetSessionItemType(*mime, kInstructionCopyMimeType));
   return querry.IsSuccess();
 }
 

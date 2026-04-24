@@ -226,7 +226,7 @@ TEST_F(ProcedureListActionHandlerTest, CopyOperationWhenItemIsSelected)
 
   // As a result of copy QMimeData object was created
   ASSERT_NE(m_copy_result.get(), nullptr);
-  EXPECT_TRUE(m_copy_result->hasFormat(kCopyProcedureMimeType));
+  EXPECT_TRUE(m_copy_result->hasFormat(kProcedureCopyMimeType));
 }
 
 TEST_F(ProcedureListActionHandlerTest, PasteWrongMimeType)
@@ -253,7 +253,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
   ProcedureItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
 
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kProcedureCopyMimeType);
 
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
@@ -285,7 +285,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
   ProcedureItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
 
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kProcedureCopyMimeType);
 
   EXPECT_EQ(m_procedure_container->GetSize(), 2);
 

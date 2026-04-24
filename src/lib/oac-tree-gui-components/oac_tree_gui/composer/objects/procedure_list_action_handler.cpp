@@ -99,14 +99,14 @@ void ProcedureListActionHandler::Copy()
   }
 
   m_context.set_mime_data(
-      sup::gui::CreateCopyMimeData(*GetSelectedProcedure(), kCopyProcedureMimeType));
+      sup::gui::CreateCopyMimeData(*GetSelectedProcedure(), kProcedureCopyMimeType));
 }
 
 bool ProcedureListActionHandler::CanPaste() const
 {
   if (auto mime_data = GetMimeData(); mime_data)
   {
-    return mime_data->hasFormat(kCopyProcedureMimeType);
+    return mime_data->hasFormat(kProcedureCopyMimeType);
   }
 
   return false;
@@ -119,7 +119,7 @@ void ProcedureListActionHandler::Paste()
     return;
   }
 
-  auto items = sup::gui::CreateSessionItemsFromMimeData(*GetMimeData(), kCopyProcedureMimeType);
+  auto items = sup::gui::CreateSessionItemsFromMimeData(*GetMimeData(), kProcedureCopyMimeType);
   if (!items.empty())
   {
     InsertProcedure(std::move(items.at(0)));

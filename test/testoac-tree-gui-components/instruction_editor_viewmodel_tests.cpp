@@ -163,7 +163,7 @@ TEST_F(InstructionEditorViewModelTest, SupportedActions)
 TEST_F(InstructionEditorViewModelTest, MimeTypes)
 {
   const QStringList expected_mime_types = {kNewInstructionMimeType, kInstructionIdentifierMimeType,
-                                           kCopyInstructionMimeType};
+                                           kInstructionCopyMimeType};
   EXPECT_EQ(expected_mime_types, m_view_model.mimeTypes());
 }
 
@@ -186,8 +186,8 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
   // and full copy of instruction
-  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
-  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   EXPECT_EQ(copied_items.size(), 1);
   EXPECT_EQ(copied_items.at(0)->GetType(), sequence->GetDomainType());
 }

@@ -112,7 +112,7 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeTypes)
   const FavoriteInstructionsViewModel model(&m_model);
 
   const QStringList expected_mime_types = {kNewInstructionMimeType, kInstructionIdentifierMimeType,
-                                           kCopyInstructionMimeType};
+                                           kInstructionCopyMimeType};
   EXPECT_EQ(expected_mime_types, model.mimeTypes());
 }
 
@@ -134,8 +134,8 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
   EXPECT_EQ(identifiers.at(0), sequence_item->GetIdentifier());
 
   // and full copy of instruction
-  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
-  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   EXPECT_EQ(copied_items.size(), 1);
   EXPECT_EQ(copied_items.at(0)->GetType(), sequence_item->GetDomainType());
 }
@@ -196,7 +196,7 @@ TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
                                             view_model.index(2, 0, QModelIndex())));
 
     auto external_mime_data = std::make_unique<QMimeData>();
-    external_mime_data->setData(kCopyInstructionMimeType, QByteArray());
+    external_mime_data->setData(kInstructionCopyMimeType, QByteArray());
     EXPECT_TRUE(
         view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, 0, 0, QModelIndex()));
     EXPECT_TRUE(view_model.canDropMimeData(external_mime_data.get(), Qt::CopyAction, -1, -1,

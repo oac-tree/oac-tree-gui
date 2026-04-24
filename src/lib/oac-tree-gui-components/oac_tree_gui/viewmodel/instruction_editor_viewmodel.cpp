@@ -58,7 +58,7 @@ Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex& index) const
 
 QStringList InstructionEditorViewModel::mimeTypes() const
 {
-  return {kNewInstructionMimeType, kInstructionIdentifierMimeType, kCopyInstructionMimeType};
+  return {kNewInstructionMimeType, kInstructionIdentifierMimeType, kInstructionCopyMimeType};
 }
 
 QMimeData* InstructionEditorViewModel::mimeData(const QModelIndexList& index_list) const

@@ -42,14 +42,14 @@ std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& 
   { return !mvvm::utils::Contains(children, &item); };
 
   auto result = std::make_unique<QMimeData>();
-  sup::gui::CopyItemsToMimeData({&instruction}, kCopyInstructionMimeType, *result, filter_func);
+  sup::gui::CopyItemsToMimeData({&instruction}, kInstructionCopyMimeType, *result, filter_func);
   return result;
 }
 
 std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction)
 {
   auto result = std::make_unique<QMimeData>();
-  sup::gui::CopyItemsToMimeData({&instruction}, kCopyInstructionMimeType, *result);
+  sup::gui::CopyItemsToMimeData({&instruction}, kInstructionCopyMimeType, *result);
   return result;
 }
 
@@ -70,7 +70,7 @@ std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
   auto top_level_selection =
       sup::gui::GetTopLevelSelection(mvvm::utils::CastItems<const mvvm::SessionItem>(selection));
   auto result = std::make_unique<QMimeData>();
-  sup::gui::CopyItemsToMimeData(top_level_selection, kCopyInstructionMimeType, *result,
+  sup::gui::CopyItemsToMimeData(top_level_selection, kInstructionCopyMimeType, *result,
                                 filter_func);
   return result;
 }
@@ -82,7 +82,7 @@ std::vector<std::unique_ptr<mvvm::SessionItem> > CreateInstructions(const QMimeD
     return {};
   }
 
-  return sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
+  return sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
 }
 
 }  // namespace oac_tree_gui

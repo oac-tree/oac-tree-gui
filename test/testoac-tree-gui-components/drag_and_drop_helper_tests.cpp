@@ -144,8 +144,8 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
   // and full copy of instruction
-  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
-  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   ASSERT_EQ(copied_items.size(), 1);
   auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
   ASSERT_NE(copied_sequence, nullptr);
@@ -176,8 +176,8 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelectio
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
   // and full copy of instruction
-  EXPECT_TRUE(mime_data->hasFormat(kCopyInstructionMimeType));
-  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kCopyInstructionMimeType);
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   ASSERT_EQ(copied_items.size(), 1);
   auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
   ASSERT_NE(copied_sequence, nullptr);
@@ -373,7 +373,7 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
 
 TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
 {
-  const QString mime_type = kCopyInstructionMimeType;
+  const QString mime_type = kInstructionCopyMimeType;
 
   const std::string expected_name("abc");
   WaitItem item;
@@ -520,7 +520,7 @@ TEST_F(DragAndDropHelperTest, DropInstructionCopyMimeDataBetweenItems)
   auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
 
   // making copy of wait0
-  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kInstructionCopyMimeType);
 
   // we can't drop into area [4]
   {
@@ -556,7 +556,7 @@ TEST_F(DragAndDropHelperTest, AttemptToDropInstructionVCopyViaMove)
   auto sequence0 = m_model.InsertItem<SequenceItem>();
   auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
   // making copy of wait0
-  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kInstructionCopyMimeType);
 
   // attempting to move copy of wait0 into area [5] (which normally would be valid for move of
   // original item)

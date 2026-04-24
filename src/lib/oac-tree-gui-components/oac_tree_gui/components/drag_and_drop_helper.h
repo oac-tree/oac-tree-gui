@@ -49,13 +49,13 @@ constexpr auto kProcedureIdentifierMimeType = "application/coa.sequencer.procedu
 constexpr auto kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
 
 //! Mime type for procedure copy.
-constexpr auto kCopyProcedureMimeType = "application/coa.sequencer.procedure.copy";
+constexpr auto kProcedureCopyMimeType = "application/coa.sequencer.procedure.copy";
 
 //! Mime type for instruction copy.
-constexpr auto kCopyInstructionMimeType = "application/coa.sequencer.instruction.copy";
+constexpr auto kInstructionCopyMimeType = "application/coa.sequencer.instruction.copy";
 
 //! Mime type for variable copy.
-constexpr auto kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
+constexpr auto kVariableCopyMimeType = "application/coa.sequencer.variable.copy";
 
 /**
  * @brief Returns list of indexes corresponding to the first column for each row in the given list

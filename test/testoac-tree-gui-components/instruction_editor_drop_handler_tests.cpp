@@ -185,7 +185,7 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionCopyMimeDataBetweenItems
 
   auto message_instruction = CreateInstructionItem(domainconstants::kMessageInstructionType);
   auto mime_data = std::make_unique<QMimeData>();
-  sup::gui::CopyItemsToMimeData({message_instruction.get()}, kCopyInstructionMimeType, *mime_data);
+  sup::gui::CopyItemsToMimeData({message_instruction.get()}, kInstructionCopyMimeType, *mime_data);
 
   // copying it into position [3]
   auto handler = CreateDefaultDropHandler();

@@ -107,7 +107,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
 
   // As a result of copy QMimeData object was created
   ASSERT_NE(m_mock_context.GetClipboardContent(), nullptr);
-  EXPECT_TRUE(m_mock_context.GetClipboardContent()->hasFormat(kCopyInstructionMimeType));
+  EXPECT_TRUE(m_mock_context.GetClipboardContent()->hasFormat(kInstructionCopyMimeType));
 }
 
 //! Testing CanPasteAfter and CanPasteInto methods at different selections.
@@ -130,7 +130,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // nothing is selected, correct mime data
     const WaitItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
     auto handler = CreateActionHandler({}, std::move(mime_data));
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
@@ -144,7 +144,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // selected item in the container, correct mime data
     const WaitItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -156,7 +156,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // repeat instruction with Sequence
     const WaitItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
 
     auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
     auto sequence = m_model.InsertItem<SequenceItem>(repeat);
@@ -175,7 +175,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // sequence instruction inside Sequence
     const WaitItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
 
     auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
     auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
@@ -199,7 +199,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
@@ -236,7 +236,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
 
   const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
@@ -280,7 +280,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
 
   const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
@@ -318,7 +318,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kInstructionCopyMimeType);
 
   const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
