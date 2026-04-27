@@ -117,6 +117,44 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeData)
   EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
 }
 
+TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeDataWhenTwoSequencesAreSelected)
+{
+  mvvm::ApplicationModel model;
+
+  auto sequence0 = model.InsertItem<SequenceItem>();
+  sequence0->SetDisplayName("abc");
+  auto wait0 = model.InsertItem<WaitItem>(sequence0);
+  wait0->SetDisplayName("def");
+  auto sequence1 = model.InsertItem<SequenceItem>();
+  sequence1->SetDisplayName("jkl");
+
+  // selecting two sequences and one wait instruction in between
+  auto mime_data = CreateInstructionTreeCopyMimeData({sequence0, wait0, sequence1});
+
+  EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
+  EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
+
+  // wait0 is not copied as top-level item despite of explicit selection
+  auto reconstructed_items = CreateInstructions(mime_data.get());
+  auto reconstructed_instructions = GetInstructionsPtr(reconstructed_items);
+  ASSERT_EQ(reconstructed_instructions.size(), 2);
+
+  auto reconstructed_sequence0 = reconstructed_instructions.at(0);
+  EXPECT_EQ(reconstructed_sequence0->GetDisplayName(), std::string("abc"));
+
+  // children were copied
+  ASSERT_EQ(reconstructed_sequence0->GetInstructions().size(), 1);
+  EXPECT_EQ(reconstructed_sequence0->GetInstructions().at(0)->GetDisplayName(), std::string("def"));
+
+  auto reconstructed_sequence1 = reconstructed_instructions.at(1);
+  EXPECT_EQ(reconstructed_sequence1->GetDisplayName(), std::string("jkl"));
+
+  // item type block
+  auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
+  EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>(),
+                                                  mvvm::GetTypeName<SequenceItem>()}));
+}
+
 TEST_F(CopyAndPasteHelperTest, CreateInstructionSelectionCopyMimeData)
 {
   mvvm::ApplicationModel model;

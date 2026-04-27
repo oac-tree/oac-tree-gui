@@ -21,9 +21,9 @@
 #ifndef OAC_TREE_GUI_COMPONENTS_COPY_AND_PASTE_HELPER_H_
 #define OAC_TREE_GUI_COMPONENTS_COPY_AND_PASTE_HELPER_H_
 
+#include <QString>
 #include <memory>
 #include <vector>
-#include <QString>
 
 class QMimeData;
 
@@ -45,12 +45,27 @@ class InstructionItem;
 std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& instruction);
 
 /**
- * @brief Creates copy object for single instruction (children included).
+ * @brief Creates copy object for the list of top-level selected instructions (children included).
+ *
+ * It is safe to add in the selection both parent and child instructions. Child instruction will
+ * be ignored (as a separate top-level object) and will appear in the copy object only as a part of
+ * its parent instruction.
+ *
+ * Example:
+ * Sequence  <- selected
+ *   Wait
+ *   Message <- selected
+ * Log <- selected
+ *
+ * Selection list [sequence, wait, log] will generate a copy object for "sequence" and "log"
+ * instructions. Reconstruction from this object will lead to the list of two items: "sequence"
+ * with all its children (wait, message) and "log" instruction.
  */
-std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const std::vector<const InstructionItem*>& selection);
+std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(
+    const std::vector<const InstructionItem*>& selection);
 
 /**
- * @brief Creates copy object for selection tree.
+ * @brief Creates copy object for selection tree (exactly as selected).
  *
  * Selection tree is a list of instructions obtained when the user manually picks parent and child
  * instructions from a large instruction tree.
