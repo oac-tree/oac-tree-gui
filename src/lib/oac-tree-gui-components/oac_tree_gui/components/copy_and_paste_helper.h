@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_COMPOSER_INSTRUCTION_COPY_HELPER_H_
-#define OAC_TREE_GUI_COMPOSER_INSTRUCTION_COPY_HELPER_H_
+#ifndef OAC_TREE_GUI_COMPONENTS_COPY_AND_PASTE_HELPER_H_
+#define OAC_TREE_GUI_COMPONENTS_COPY_AND_PASTE_HELPER_H_
 
 #include <memory>
 #include <vector>
@@ -72,4 +72,4 @@ std::vector<std::unique_ptr<mvvm::SessionItem>> CreateInstructions(const QMimeDa
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_COMPOSER_INSTRUCTION_COPY_HELPER_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_COPY_AND_PASTE_HELPER_H_

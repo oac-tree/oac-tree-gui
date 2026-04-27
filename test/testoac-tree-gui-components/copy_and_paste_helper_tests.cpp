@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/composer/instruction_copy_helper.h"
+#include "oac_tree_gui/components/copy_and_paste_helper.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
@@ -36,9 +36,9 @@ namespace oac_tree_gui::test
 {
 
 /**
- * @brief Testing helper methods from instruction_copy_helper.h header.
+ * @brief Testing helper methods from copy_and_paste_helper.h header.
  */
-class InstructionCopyHelperTest : public ::testing::Test
+class CopyAndPasteHelperTest : public ::testing::Test
 {
 public:
   /**
@@ -55,7 +55,7 @@ public:
 
 //! Validating that CreateInstructionCopyMimeData copies only top level instruction and skips
 //! children instructions.
-TEST_F(InstructionCopyHelperTest, CreateInstructionCopyMimeData)
+TEST_F(CopyAndPasteHelperTest, CreateInstructionCopyMimeData)
 {
   mvvm::ApplicationModel model;
 
@@ -86,7 +86,7 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionCopyMimeData)
   EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
 }
 
-TEST_F(InstructionCopyHelperTest, CreateInstructionTreeCopyMimeData)
+TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeData)
 {
   mvvm::ApplicationModel model;
 
@@ -116,7 +116,7 @@ TEST_F(InstructionCopyHelperTest, CreateInstructionTreeCopyMimeData)
   EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
 }
 
-TEST_F(InstructionCopyHelperTest, CreateInstructionSelectionCopyMimeData)
+TEST_F(CopyAndPasteHelperTest, CreateInstructionSelectionCopyMimeData)
 {
   mvvm::ApplicationModel model;
 

@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_copy_helper.h"
+#include "copy_and_paste_helper.h"
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
