@@ -255,7 +255,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
   ProcedureItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
 
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kProcedureCopyMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kProcedureCopyMimeType);
 
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
@@ -287,7 +287,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
   ProcedureItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
 
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kProcedureCopyMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kProcedureCopyMimeType);
 
   EXPECT_EQ(m_procedure_container->GetSize(), 2);
 

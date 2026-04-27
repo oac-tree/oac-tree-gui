@@ -26,6 +26,7 @@
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/property_item.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <gtest/gtest.h>

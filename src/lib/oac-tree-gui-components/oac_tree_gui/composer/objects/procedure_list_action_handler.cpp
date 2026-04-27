@@ -99,7 +99,7 @@ void ProcedureListActionHandler::Copy()
   }
 
   m_context.set_mime_data(
-      sup::gui::CreateCopyMimeData(*GetSelectedProcedure(), kProcedureCopyMimeType));
+      sup::gui::CreateCopyMimeData({GetSelectedProcedure()}, kProcedureCopyMimeType));
 }
 
 bool ProcedureListActionHandler::CanPaste() const
@@ -131,7 +131,7 @@ mvvm::ContainerItem* ProcedureListActionHandler::GetProcedureContainer() const
   return m_context.procedure_container();
 }
 
-const ProcedureItem *ProcedureListActionHandler::GetSelectedProcedure() const
+const ProcedureItem* ProcedureListActionHandler::GetSelectedProcedure() const
 {
   return m_context.selected_procedure();
 }

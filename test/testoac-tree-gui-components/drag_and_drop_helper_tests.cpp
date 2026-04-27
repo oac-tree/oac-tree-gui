@@ -393,7 +393,7 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
   WaitItem item;
   item.SetDisplayName(expected_name);
 
-  auto data = sup::gui::CreateCopyMimeData(item, mime_type);
+  auto data = sup::gui::CreateCopyMimeData({&item}, mime_type);
   EXPECT_TRUE(data->hasFormat(mime_type));
 
   auto reconstructed_items = sup::gui::CreateSessionItemsFromMimeData(*data, mime_type);
@@ -534,7 +534,7 @@ TEST_F(DragAndDropHelperTest, DropInstructionCopyMimeDataBetweenItems)
   auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
 
   // making copy of wait0
-  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kInstructionCopyMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData({wait0}, kInstructionCopyMimeType);
 
   // we can't drop into area [4]
   {
@@ -570,7 +570,7 @@ TEST_F(DragAndDropHelperTest, AttemptToDropInstructionVCopyViaMove)
   auto sequence0 = m_model.InsertItem<SequenceItem>();
   auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
   // making copy of wait0
-  auto mime_data = sup::gui::CreateCopyMimeData(*wait0, kInstructionCopyMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData({wait0}, kInstructionCopyMimeType);
 
   // attempting to move copy of wait0 into area [5] (which normally would be valid for move of
   // original item)

@@ -113,7 +113,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 
   {  // nothing is selected, correct mime data
     const LocalVariableItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kVariableCopyMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
     auto handler = CreateActionHandler({}, std::move(mime_data));
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
@@ -121,7 +121,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 
   {  // selected item in the container, correct mime data
     const LocalVariableItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kVariableCopyMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
     auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
     auto handler = CreateActionHandler({var0}, std::move(mime_data));
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
@@ -136,7 +136,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   // creating mime data representing clipboard content
   LocalVariableItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kVariableCopyMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
 
   // nothing is selected, copied item in a buffer
   auto handler = CreateActionHandler({}, std::move(mime_data));
@@ -167,7 +167,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 
   LocalVariableItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kVariableCopyMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
 
   // creating action handler mimicking `var0` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler({var0}, std::move(mime_data));
