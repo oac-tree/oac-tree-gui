@@ -272,9 +272,10 @@ bool CanDropInstructionCopyMimeData(const QMimeData& data, Qt::DropAction action
 
   if (data.hasFormat(kInstructionCopyMimeType))
   {
-    auto type_to_copy = sup::gui::GetSessionItemType(data, kInstructionCopyMimeType);
-    return mvvm::utils::GetInsertTypeErrorCode(type_to_copy, parent,
-                                               GetDropTagIndex(drop_row_indicator))
+    auto item_types = sup::gui::GetItemTypesFromMime(data, kInstructionCopyMimeType);
+    return mvvm::utils::GetInsertTypeErrorCode(
+               item_types.empty() ? std::string() : item_types.front(), parent,
+               GetDropTagIndex(drop_row_indicator))
            == mvvm::ModelError::Success;
   }
 
