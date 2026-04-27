@@ -76,7 +76,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
   const QString mime_type("mime_type");
   {  // empty list
     auto mime_data = CreateItemIdentifierMimeData(QModelIndexList(), mime_type);
-    auto identifiers = sup::gui::GetStringListFromMime({}, mime_type);
+    auto identifiers = sup::gui::GetItemIdentifiersFromMime({}, mime_type);
     EXPECT_TRUE(identifiers.empty());
   }
 
@@ -141,7 +141,7 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
 
   // instruction identifier
   EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
+  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, kInstructionIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
@@ -179,7 +179,7 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelectio
 
   // same as in previous test, since children should be filtered out
   EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
+  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, kInstructionIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 

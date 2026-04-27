@@ -1,5 +1,7 @@
 Changes for 2.3.0:
 
+- Modify copy logic: now the whole item tree is coped, not only the item itself
+- Speed-up drop operation
 - Add tickTimeout and timingAccuracy attributes support for ProcedureItem
 - Provide procedure attribute editor.
 - Remove separate name property from instruction, use editable display name instead

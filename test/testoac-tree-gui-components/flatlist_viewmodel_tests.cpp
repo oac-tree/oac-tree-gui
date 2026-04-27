@@ -184,7 +184,7 @@ TEST_F(FlatListViewModelTest, MimeDataEncoding)
 
   EXPECT_TRUE(mime_data->hasFormat(kItemIdentifierMimeType));
 
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kItemIdentifierMimeType);
+  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, kItemIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), procedure_item->GetIdentifier());
 }

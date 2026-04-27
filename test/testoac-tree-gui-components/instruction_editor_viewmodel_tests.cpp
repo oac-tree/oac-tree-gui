@@ -182,7 +182,7 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
 
   // instruction identifier
   EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kInstructionIdentifierMimeType);
+  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, kInstructionIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 

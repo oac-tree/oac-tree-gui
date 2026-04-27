@@ -115,7 +115,7 @@ TEST_F(JobListViewModelTest, MimeDataEncoding)
 
   // restored identifiers contains only single identifier, which leads us to actual job being
   // dragged
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kJobIdentifierMimeType);
+  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, kJobIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), job0->GetIdentifier());
 }

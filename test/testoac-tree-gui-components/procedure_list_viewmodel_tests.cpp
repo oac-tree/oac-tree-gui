@@ -137,7 +137,7 @@ TEST_F(ProcedureListViewModelTest, MimeDataEncoding)
 
   EXPECT_TRUE(mime_data->hasFormat(kProcedureIdentifierMimeType));
 
-  auto identifiers = sup::gui::GetStringListFromMime(*mime_data, kProcedureIdentifierMimeType);
+  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, kProcedureIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), procedure_item->GetIdentifier());
 }
