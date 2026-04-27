@@ -285,7 +285,7 @@ void InstructionEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateInstructionSelectionCopyMimeData(GetSelectedInstructions()));
+  m_context.set_mime_data(CreateInstructionTreeCopyMimeData(GetSelectedInstructions()));
 }
 
 bool InstructionEditorActionHandler::CanPasteAfter() const

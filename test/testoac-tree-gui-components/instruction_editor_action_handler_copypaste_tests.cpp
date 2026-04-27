@@ -20,8 +20,8 @@
 
 #include "oac_tree_gui/composer/instruction_editor_action_handler.h"
 
-#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/components/copy_and_paste_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -418,6 +418,76 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTr
   auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
   auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
 
+  // even if we do not copy child explicitely, it will be copied
+  auto handler = CreateActionHandler({sequence, message});
+
+  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
+
+  handler->Copy();
+
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
+
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
+
+  // appending instruction into repeat
+  m_mock_context.SetAsCurrentSelection({repeat});
+
+  handler->PasteInto();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
+  ASSERT_EQ(repeat->GetInstructions().size(), 1);
+  auto copied_sequence = repeat->GetInstructions().at(0);
+  ASSERT_EQ(copied_sequence->GetInstructions().size(), 2);  // together with its children
+  auto copied_wait = copied_sequence->GetInstructions().at(0);
+  EXPECT_EQ(copied_wait->GetDomainType(), domainconstants::kWaitInstructionType);
+  auto copied_message = copied_sequence->GetInstructions().at(1);
+  EXPECT_EQ(copied_message->GetDomainType(), domainconstants::kMessageInstructionType);
+}
+
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTreeIntoRepeat)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
+  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+
+  auto handler = CreateActionHandler({sequence, message});
+
+  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
+
+  handler->Cut();
+  // mimicking dissapearance of selection after item removal
+  m_mock_context.SetAsCurrentSelection({});
+
+  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
+
+  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
+
+  // appending instruction into repeat
+  m_mock_context.SetAsCurrentSelection({repeat});
+
+  handler->PasteInto();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+  ASSERT_EQ(repeat->GetInstructions().size(), 1);
+  auto copied_sequence = repeat->GetInstructions().at(0);
+  ASSERT_EQ(copied_sequence->GetInstructions().size(), 2);  // together with its children
+  auto copied_wait = copied_sequence->GetInstructions().at(0);
+  EXPECT_EQ(copied_wait->GetDomainType(), domainconstants::kWaitInstructionType);
+  auto copied_message = copied_sequence->GetInstructions().at(1);
+  EXPECT_EQ(copied_message->GetDomainType(), domainconstants::kMessageInstructionType);
+}
+
+// FIXME enable after "SpecialCopy" implementation
+TEST_F(InstructionEditorActionHandlerCopyPasteTest,
+       DISABLED_CopyAndPastePartOfSequenceTreeIntoRepeat)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
+  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+
   auto handler = CreateActionHandler({sequence, message});
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
@@ -440,7 +510,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTr
   EXPECT_EQ(copied_message->GetDomainType(), domainconstants::kMessageInstructionType);
 }
 
-TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTreeIntoRepeat)
+// FIXME enable after "SpecialCopy" implementation
+TEST_F(InstructionEditorActionHandlerCopyPasteTest,
+       DISABLED_CutAndPastePartOfSequenceTreeIntoRepeat)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
