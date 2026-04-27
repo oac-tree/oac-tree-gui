@@ -18,7 +18,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include "oac_tree_gui/components/drag_and_drop_helper.h"
+
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>

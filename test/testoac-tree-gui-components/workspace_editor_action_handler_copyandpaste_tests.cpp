@@ -20,7 +20,7 @@
 
 #include "oac_tree_gui/composer/workspace_editor_action_handler.h"
 
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>

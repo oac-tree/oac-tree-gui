@@ -20,7 +20,7 @@
 
 #include "procedure_list_action_handler.h"
 
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 

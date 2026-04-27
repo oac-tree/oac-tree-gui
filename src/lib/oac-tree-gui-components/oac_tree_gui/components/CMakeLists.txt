@@ -19,6 +19,7 @@ target_sources(${library_name} PRIVATE
   drag_and_drop_helper.h
   load_resources.cpp
   load_resources.h
+  mime_constants.h
   text_edit_controller.cpp
   text_edit_controller.h
   xml_panel_controller.cpp

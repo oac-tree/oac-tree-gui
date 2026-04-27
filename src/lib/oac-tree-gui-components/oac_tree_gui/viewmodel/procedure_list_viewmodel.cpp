@@ -20,7 +20,7 @@
 
 #include "procedure_list_viewmodel.h"
 
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
 
 #include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/standard_row_strategies.h>

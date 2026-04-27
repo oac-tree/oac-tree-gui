@@ -20,7 +20,7 @@
 
 #include "oac_tree_gui/viewmodel/job_list_viewmodel.h"
 
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 

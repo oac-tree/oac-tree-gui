@@ -39,27 +39,6 @@ class QMimeData;
 namespace oac_tree_gui
 {
 
-//! Mime type for drag-and-drop events containing item's identifier information.
-constexpr auto kItemIdentifierMimeType = "application/coa.sequencer.item.identifier";
-constexpr auto kInstructionIdentifierMimeType = "application/coa.sequencer.instruction.identifier";
-constexpr auto kJobIdentifierMimeType = "application/coa.sequencer.job.identifier";
-constexpr auto kProcedureIdentifierMimeType = "application/coa.sequencer.procedure.identifier";
-
-//! Mime type for drag-and-drop events leading to the creation of new instruction.
-constexpr auto kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
-
-//! Mime type for procedure copy.
-constexpr auto kProcedureCopyMimeType = "application/coa.sequencer.procedure.copy";
-
-//! mime type to hold instruction copy
-constexpr auto kInstructionCopyMimeType = "application/coa.sequencer.instruction.copy";
-
-//! Mime type for variable copy.
-constexpr auto kVariableCopyMimeType = "application/coa.sequencer.variable.copy";
-
-//! mime type to hold top selected item types
-constexpr auto kTopSelectedItemTypesMimeType = "application/coa.sequencer.topselecteditemtypes";
-
 /**
  * @brief Returns list of indexes corresponding to the first column for each row in the given list
  * of indexes.

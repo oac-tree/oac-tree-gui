@@ -20,6 +20,7 @@
 
 #include "favorite_instructions_viewmodel.h"
 
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 
 #include <mvvm/providers/standard_children_strategies.h>

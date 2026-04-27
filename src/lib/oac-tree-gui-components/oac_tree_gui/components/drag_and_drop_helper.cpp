@@ -20,6 +20,8 @@
 
 #include "drag_and_drop_helper.h"
 
+#include "mime_constants.h"
+
 #include <oac_tree_gui/components/copy_and_paste_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_factory.h>
