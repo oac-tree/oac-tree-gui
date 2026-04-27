@@ -96,7 +96,7 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeData)
   auto wait = model.InsertItem<WaitItem>(sequence);
   wait->SetDisplayName("def");
 
-  auto mime_data = CreateInstructionTreeCopyMimeData(*sequence);
+  auto mime_data = CreateInstructionTreeCopyMimeData({sequence});
 
   EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
   EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));

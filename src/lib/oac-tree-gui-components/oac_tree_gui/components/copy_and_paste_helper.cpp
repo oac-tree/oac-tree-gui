@@ -47,11 +47,15 @@ std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& 
   return result;
 }
 
-std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction)
+std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(
+    const std::vector<const InstructionItem*>& selection)
 {
   auto result = std::make_unique<QMimeData>();
-  sup::gui::CopyItemsToMimeData({&instruction}, kInstructionCopyMimeType, *result);
-  sup::gui::SetItemTypesToMime({&instruction}, kTopSelectedItemTypesMimeType, *result);
+
+  auto items = mvvm::utils::CastItems<const mvvm::SessionItem>(selection);
+
+  sup::gui::CopyItemsToMimeData(items, kInstructionCopyMimeType, *result);
+  sup::gui::SetItemTypesToMime(items, kTopSelectedItemTypesMimeType, *result);
   return result;
 }
 

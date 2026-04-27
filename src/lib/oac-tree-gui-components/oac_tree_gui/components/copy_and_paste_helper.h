@@ -47,7 +47,7 @@ std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& 
 /**
  * @brief Creates copy object for single instruction (children included).
  */
-std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const InstructionItem& instruction);
+std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(const std::vector<const InstructionItem*>& selection);
 
 /**
  * @brief Creates copy object for selection tree.

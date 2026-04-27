@@ -130,7 +130,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // nothing is selected, correct mime data
     const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData(item_to_paste);
+    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
     auto handler = CreateActionHandler({}, std::move(mime_data));
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
@@ -144,7 +144,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // selected item in the container, correct mime data
     const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData(item_to_paste);
+    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -156,7 +156,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // repeat instruction with Sequence
     const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData(item_to_paste);
+    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
 
     auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
     auto sequence = m_model.InsertItem<SequenceItem>(repeat);
@@ -175,7 +175,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // sequence instruction inside Sequence
     const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData(item_to_paste);
+    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
 
     auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
     auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
@@ -199,7 +199,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateInstructionTreeCopyMimeData(item_to_paste);
+  auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
