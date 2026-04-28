@@ -133,7 +133,7 @@ private:
    * @brief Checks if SessionItem of the given type can be inserted into the current selection.
    *
    * @param item_type Type of the SessionItem to insert.
-   * @return A result of the querry with error flag and message.
+   * @return A result of the query with error flag and message.
    */
   sup::gui::QueryResult CanInsertTypeIntoCurrentSelection(const std::string& item_type) const;
 

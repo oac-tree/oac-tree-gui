@@ -126,10 +126,10 @@ bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string
 
 void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& item_type)
 {
-  auto querry = CanInsertTypeAfterCurrentSelection(item_type);
-  if (!querry.IsSuccess())
+  auto query = CanInsertTypeAfterCurrentSelection(item_type);
+  if (!query.IsSuccess())
   {
-    SendMessage(querry.GetMessage());
+    SendMessage(query.GetMessage());
     return;
   }
 
@@ -146,10 +146,10 @@ bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string&
 
 void InstructionEditorActionHandler::InsertInstructionInto(const std::string& item_type)
 {
-  auto querry = CanInsertTypeIntoCurrentSelection(item_type);
-  if (!querry.IsSuccess())
+  auto query = CanInsertTypeIntoCurrentSelection(item_type);
+  if (!query.IsSuccess())
   {
-    SendMessage(querry.GetMessage());
+    SendMessage(query.GetMessage());
     return;
   }
 
@@ -297,9 +297,9 @@ bool InstructionEditorActionHandler::CanPasteAfter() const
   }
 
   auto item_types = sup::gui::GetItemTypesFromMime(*mime, kTopSelectedItemTypesMimeType);
-  auto querry =
+  auto query =
       CanInsertTypeAfterCurrentSelection(item_types.empty() ? std::string() : item_types.front());
-  return querry.IsSuccess();
+  return query.IsSuccess();
 }
 
 void InstructionEditorActionHandler::PasteAfter()
@@ -322,9 +322,9 @@ bool InstructionEditorActionHandler::CanPasteInto() const
 
   auto item_types = sup::gui::GetItemTypesFromMime(*mime, kTopSelectedItemTypesMimeType);
 
-  auto querry =
+  auto query =
       CanInsertTypeIntoCurrentSelection(item_types.empty() ? std::string() : item_types.front());
-  return querry.IsSuccess();
+  return query.IsSuccess();
 }
 
 void InstructionEditorActionHandler::PasteInto()
