@@ -41,6 +41,7 @@ enum class InstructionStatus : std::uint8_t
   kRunning,      //!< instruction or one of its descendants is running asynchroniously
   kSuccess,      //!< finished successfully
   kFailure,      //!< finished unsuccessfully
+  kHalted,       //!< halted by the user
   kUndefined     //!< we do not receive any status updates from the domain
 };
 

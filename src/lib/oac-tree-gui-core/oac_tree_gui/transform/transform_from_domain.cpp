@@ -58,7 +58,8 @@ std::map<sup::oac_tree::ExecutionStatus, InstructionStatus> CreateInstructionSta
       {ExecutionStatus::NOT_FINISHED, InstructionStatus::kNotFinished},
       {ExecutionStatus::RUNNING, InstructionStatus::kRunning},
       {ExecutionStatus::SUCCESS, InstructionStatus::kSuccess},
-      {ExecutionStatus::FAILURE, InstructionStatus::kFailure}};
+      {ExecutionStatus::FAILURE, InstructionStatus::kFailure},
+      {ExecutionStatus::HALTED, InstructionStatus::kHalted}};
   return result;
 }
 

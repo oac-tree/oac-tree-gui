@@ -39,6 +39,7 @@ std::map<oac_tree_gui::InstructionStatus, std::string> CreateRunnerStatusMap()
       {oac_tree_gui::InstructionStatus::kRunning, "Running"},
       {oac_tree_gui::InstructionStatus::kSuccess, "Success"},
       {oac_tree_gui::InstructionStatus::kFailure, "Failure"},
+      {oac_tree_gui::InstructionStatus::kHalted, "Halted"},
       {oac_tree_gui::InstructionStatus::kUndefined, ""}};
   return result;
 }

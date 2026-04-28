@@ -62,6 +62,7 @@ TEST_F(TransformFromDomainTest, GetInstructionStatusFromDomain)
   EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::RUNNING), InstructionStatus::kRunning);
   EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::SUCCESS), InstructionStatus::kSuccess);
   EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::FAILURE), InstructionStatus::kFailure);
+  EXPECT_EQ(static_cast<InstructionStatus>(ExecutionStatus::HALTED), InstructionStatus::kHalted);
 
   EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::NOT_STARTED),
             InstructionStatus::kNotStarted);
@@ -70,6 +71,7 @@ TEST_F(TransformFromDomainTest, GetInstructionStatusFromDomain)
   EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::RUNNING), InstructionStatus::kRunning);
   EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::SUCCESS), InstructionStatus::kSuccess);
   EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::FAILURE), InstructionStatus::kFailure);
+  EXPECT_EQ(GetInstructionStatusFromDomain(ExecutionStatus::HALTED), InstructionStatus::kHalted);
 }
 
 }  // namespace oac_tree_gui::test

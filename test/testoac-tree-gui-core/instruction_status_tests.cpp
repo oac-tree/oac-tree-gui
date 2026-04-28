@@ -41,16 +41,18 @@ TEST_F(InstructionStatusTest, ToString)
   EXPECT_EQ(ToString(InstructionStatus::kRunning), "Running");
   EXPECT_EQ(ToString(InstructionStatus::kSuccess), "Success");
   EXPECT_EQ(ToString(InstructionStatus::kFailure), "Failure");
+  EXPECT_EQ(ToString(InstructionStatus::kHalted), "Halted");
   EXPECT_EQ(ToString(InstructionStatus::kUndefined), "");
 }
 
-TEST_F(InstructionStatusTest, GetRunnerStatus)
+TEST_F(InstructionStatusTest, GetInstructionStatus)
 {
   EXPECT_EQ(GetInstructionStatus("Not started"), InstructionStatus::kNotStarted);
   EXPECT_EQ(GetInstructionStatus("Not finished"), InstructionStatus::kNotFinished);
   EXPECT_EQ(GetInstructionStatus("Running"), InstructionStatus::kRunning);
   EXPECT_EQ(GetInstructionStatus("Success"), InstructionStatus::kSuccess);
   EXPECT_EQ(GetInstructionStatus("Failure"), InstructionStatus::kFailure);
+  EXPECT_EQ(GetInstructionStatus("Halted"), InstructionStatus::kHalted);
   EXPECT_EQ(GetInstructionStatus(""), InstructionStatus::kUndefined);
   EXPECT_THROW(GetInstructionStatus("abc"), RuntimeException);
 }
