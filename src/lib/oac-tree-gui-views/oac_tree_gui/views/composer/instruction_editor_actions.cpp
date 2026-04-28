@@ -32,7 +32,7 @@
 namespace oac_tree_gui
 {
 
-InstructionEditorActions::InstructionEditorActions(IInstructionEditorActionHandler *handler,
+InstructionEditorActions::InstructionEditorActions(IInstructionEditorActionHandler* handler,
                                                    QObject* parent_object)
     : QObject(parent_object)
     , m_action_handler(handler)
@@ -60,6 +60,7 @@ void InstructionEditorActions::SetupMenu(QMenu& menu)
 
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
+  menu.addAction(m_smart_copy_action);
   menu.addAction(m_paste_after_action);
   menu.addAction(m_paste_into_action);
   menu.addSeparator();
@@ -72,6 +73,7 @@ void InstructionEditorActions::RegisterActionsForContext(
 {
   command_service.AddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
   command_service.AddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
+  // smart copy doesn't have a shortcut
   command_service.AddActionToCommand(m_paste_after_action, sup::gui::constants::kPasteCommandId,
                                      context);
   command_service.AddActionToCommand(m_paste_into_action,
@@ -85,6 +87,7 @@ void InstructionEditorActions::UpdateEnabledStatus()
   m_remove_action->setEnabled(m_action_handler->CanRemoveInstruction());
   m_cut_action->setEnabled(m_action_handler->CanCut());
   m_copy_action->setEnabled(m_action_handler->CanCopy());
+  m_smart_copy_action->setEnabled(m_action_handler->CanCopy());
   m_paste_into_action->setEnabled(m_action_handler->CanPasteInto());
   m_paste_after_action->setEnabled(m_action_handler->CanPasteAfter());
 
@@ -155,7 +158,10 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
 
   m_copy_action = new QAction("Copy", this);
   m_copy_action->setShortcut(QKeySequence::Copy);
-  m_copy_action->setToolTip("Copies selected instruction");
+  m_copy_action->setToolTip(
+      "Copies selected instructions together with all their children.\n"
+      "If parent is selected, all children will be copied together with it, \nno matter if they are "
+      "selected or not.");
   m_action_map.Add(ActionKey::kCopy, m_copy_action);
   auto on_copy_action = [this]()
   {
@@ -163,6 +169,18 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
     UpdateEnabledStatus();  // to update availability of paste operation
   };
   connect(m_copy_action, &QAction::triggered, this, on_copy_action);
+
+  m_smart_copy_action = new QAction("Copy selection", this);
+  m_smart_copy_action->setToolTip(
+      "Copies selected instructions when some children are selected.\n"
+      "Tries to copy exactly selected instruction, if possible.");
+  m_action_map.Add(ActionKey::kSmartCopy, m_smart_copy_action);
+  auto on_smart_copy_action = [this]()
+  {
+    m_action_handler->SmartCopy();
+    UpdateEnabledStatus();  // to update availability of paste operation
+  };
+  connect(m_smart_copy_action, &QAction::triggered, this, on_smart_copy_action);
 
   m_paste_after_action = new QAction("Paste After", this);
   m_paste_after_action->setShortcut(QKeySequence::Paste);

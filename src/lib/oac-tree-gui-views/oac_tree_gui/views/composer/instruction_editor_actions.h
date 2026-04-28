@@ -64,6 +64,7 @@ public:
     kMoveDown,
     kCut,
     kCopy,
+    kSmartCopy,
     kPasteAfter,
     kPasteInto,
     kTotalCount
@@ -149,6 +150,7 @@ private:
 
   QAction* m_cut_action{nullptr};
   QAction* m_copy_action{nullptr};
+  QAction* m_smart_copy_action{nullptr};
   QAction* m_paste_after_action{nullptr};
   QAction* m_paste_into_action{nullptr};
 
