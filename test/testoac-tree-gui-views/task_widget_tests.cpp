@@ -28,7 +28,7 @@ namespace oac_tree_gui::test
 {
 
 /**
- * @brief Tests fot TaskWidget class.
+ * @brief Tests for TaskWidget class.
  */
 class TaskWidgetTest : public ::testing::Test
 {

@@ -21,9 +21,8 @@
 #include "status_indicator.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/views/operation/status_indicator_helper.h>
 #include <oac_tree_gui/widgets/busy_sign.h>
-
-#include <map>
 
 namespace oac_tree_gui
 {
@@ -41,29 +40,6 @@ QString GetColorButtonStyleSheet(const QColor& background_color)
       "border-width: 2px; border-radius: 2px; border-color: %1; border-style: solid; background: "
       "%2;");
   return pattern.arg(border_color.name(), background_color.name());
-}
-
-/**
- * @brief Returns color for given InstructionStatus.
- */
-QColor GetColorForStatus(InstructionStatus status)
-{
-  // We use the same color for not started and not finished states.
-  static const std::map<InstructionStatus, QColor> status_to_color{
-      {InstructionStatus::kNotStarted, Qt::lightGray},
-      {InstructionStatus::kNotFinished, Qt::yellow},
-      {InstructionStatus::kRunning, Qt::yellow},
-      {InstructionStatus::kSuccess, Qt::green},
-      {InstructionStatus::kFailure, Qt::red},
-      {InstructionStatus::kHalted, Qt::cyan},
-      {InstructionStatus::kUndefined, Qt::darkGray}};
-  auto it = status_to_color.find(status);
-  if (it == status_to_color.end())
-  {
-    throw RuntimeException("Unexpected instruction status: " + ToString(status));
-  }
-
-  return it->second;
 }
 
 }  // namespace
@@ -94,19 +70,9 @@ InstructionStatus StatusIndicator::GetInstructionStatus() const
 
 void StatusIndicator::UpdateAppearance()
 {
-  static const std::map<InstructionStatus, BusySignType> status_to_indicator_type{
-      {InstructionStatus::kNotStarted, BusySignType::kHidden},
-      {InstructionStatus::kNotFinished, BusySignType::kAnimated},
-      {InstructionStatus::kRunning, BusySignType::kAnimated},
-      {InstructionStatus::kSuccess, BusySignType::kHidden},
-      {InstructionStatus::kFailure, BusySignType::kHidden},
-      {InstructionStatus::kHalted, BusySignType::kHidden},
-      {InstructionStatus::kUndefined, BusySignType::kHidden}};
-
-  const auto background_color = GetColorForStatus(m_current_status);
+  const auto background_color = GetColorForInstructionStatus(m_current_status);
   setStyleSheet(GetColorButtonStyleSheet(background_color));
-
-  m_busy_sign->SetIndicatorType(status_to_indicator_type.at(m_current_status));
+  m_busy_sign->SetIndicatorType(GetBusySignTypeForInstructionStatus(m_current_status));
 }
 
 }  // namespace oac_tree_gui
