@@ -52,6 +52,7 @@ std::unique_ptr<TaskWidget> InstructionTaskWidgetBuilder::CreateTaskWidget(
     const InstructionItem& root_instruction)
 {
   auto result = std::make_unique<TaskWidget>(GetInstructionLabel(root_instruction));
+  result->SetInstructionStatus(root_instruction.GetStatus());
 
   std::stack<StackNode> stack;
 
@@ -66,6 +67,7 @@ std::unique_ptr<TaskWidget> InstructionTaskWidgetBuilder::CreateTaskWidget(
     for (const auto& child_instruction : node.item.GetInstructions())
     {
       auto child_widget = node.widget.CreateAndAddChild(GetInstructionLabel(*child_instruction));
+      child_widget->SetInstructionStatus(child_instruction->GetStatus());
       m_instruction_to_widget[child_instruction] = child_widget;
       stack.push({*child_instruction, *child_widget});
     }

@@ -56,10 +56,12 @@ TEST_F(InstructionTaskWidgetBuilderTest, SequenceWithTwoChildren)
 {
   SequenceItem sequence;
   sequence.SetDisplayName("seq");
+  sequence.SetStatus(InstructionStatus::kRunning);
   auto wait0 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   wait0->SetDisplayName("wait0");
   auto wait1 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   wait1->SetDisplayName("wait1");
+  wait1->SetStatus(InstructionStatus::kRunning);
 
   InstructionTaskWidgetBuilder builder;
   auto root_task_widget = builder.CreateTaskWidget(sequence);
