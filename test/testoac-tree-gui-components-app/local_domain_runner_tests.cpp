@@ -233,10 +233,9 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
 
   EXPECT_TRUE(runner->IsFinished());
 
-  EXPECT_EQ(runner->GetJobState(), JobState::kFailed);
-  // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
-  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::FAILURE);
-  EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::FAILURE);
+  EXPECT_EQ(runner->GetJobState(), JobState::kHalted);
+  EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::NOT_FINISHED);
+  EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::NOT_FINISHED);
 }
 
 //! Sequence with two messages in normal start mode. Additional tick timeout slows down the

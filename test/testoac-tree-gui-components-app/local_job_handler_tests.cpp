@@ -426,18 +426,18 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
   job_handler.Stop();
 
   EXPECT_TRUE(QTest::qWaitFor(
-      [&spy_instruction_status]() { return spy_instruction_status.count() == 3; }, 100));
+      [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
 
-  EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 3);
-
-  // NOTE The wait inside test procedure is blocking. Current behavior, that
-  // blocking wait (when halted) receives the status "Failure", and not "halted".
+  EXPECT_EQ(spy_instruction_status.count(), 2);
 
   auto instructions = FindExpandedInstructions(domainconstants::kWaitInstructionType);
-  EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kFailure);
+  EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kHalted);
 
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kFailed);
+  EXPECT_TRUE(
+      QTest::qWaitFor([this]() { return m_job_item->GetStatus() == RunnerStatus::kHalted; }, 100));
+
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kHalted);
+  EXPECT_FALSE(job_handler.IsRunning());
 }
 
 //! Control log events with the help of MessageInstruction.

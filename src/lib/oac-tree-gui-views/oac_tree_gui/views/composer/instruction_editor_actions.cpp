@@ -170,7 +170,7 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   };
   connect(m_copy_action, &QAction::triggered, this, on_copy_action);
 
-  m_smart_copy_action = new QAction("Copy selection", this);
+  m_smart_copy_action = new QAction("Copy exact", this);
   m_smart_copy_action->setToolTip(
       "Copies selected instructions when some children are selected.\n"
       "Tries to copy exactly selected instruction, if possible.");
