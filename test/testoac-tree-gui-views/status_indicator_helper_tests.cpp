@@ -57,8 +57,26 @@ TEST_F(StatusIndicatorHelperTest, GetColorForInstructionStatus)
   for (size_t i = 0; i <= static_cast<size_t>(InstructionStatus::kUndefined); ++i)
   {
     const auto status = static_cast<InstructionStatus>(i);
-    QColor color = GetColorForInstructionStatus(status);
+    const QColor color = GetColorForInstructionStatus(status);
     EXPECT_TRUE(color.isValid());
+  }
+}
+
+TEST_F(StatusIndicatorHelperTest, GetLabelTextForInstructionStatus)
+{
+  // validated that halted text is non-empty, the rest is empty
+  for (size_t i = 0; i <= static_cast<size_t>(InstructionStatus::kUndefined); ++i)
+  {
+    const auto status = static_cast<InstructionStatus>(i);
+    const QString text = GetLabelTextForInstructionStatus(status);
+    if (status == InstructionStatus::kHalted)
+    {
+      EXPECT_FALSE(text.isEmpty());
+    }
+    else
+    {
+      EXPECT_TRUE(text.isEmpty());
+    }
   }
 }
 

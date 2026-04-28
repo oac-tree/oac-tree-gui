@@ -28,6 +28,7 @@
 #include <oac_tree_gui/widgets/busy_sign.h>
 
 #include <QColor>
+#include <QString>
 
 namespace oac_tree_gui
 {
@@ -41,6 +42,11 @@ BusySignType GetBusySignTypeForInstructionStatus(InstructionStatus status);
  * @brief Returns color corresponding to a given instruction status.
  */
 QColor GetColorForInstructionStatus(InstructionStatus status);
+
+/**
+ * @brief Returns text label corresponding to a given instruction status.
+ */
+QString GetLabelTextForInstructionStatus(InstructionStatus status);
 
 }  // namespace oac_tree_gui
 

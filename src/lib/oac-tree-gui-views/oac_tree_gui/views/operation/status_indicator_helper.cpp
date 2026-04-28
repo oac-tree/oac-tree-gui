@@ -21,6 +21,7 @@
 #include "status_indicator_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+
 #include <map>
 
 namespace oac_tree_gui
@@ -63,6 +64,11 @@ QColor GetColorForInstructionStatus(InstructionStatus status)
   }
 
   return it->second;
+}
+
+QString GetLabelTextForInstructionStatus(InstructionStatus status)
+{
+  return status == InstructionStatus::kHalted ? QString("x") : QString();
 }
 
 }  // namespace oac_tree_gui

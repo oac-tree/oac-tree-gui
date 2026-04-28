@@ -73,6 +73,7 @@ void StatusIndicator::UpdateAppearance()
   const auto background_color = GetColorForInstructionStatus(m_current_status);
   setStyleSheet(GetColorButtonStyleSheet(background_color));
   m_busy_sign->SetIndicatorType(GetBusySignTypeForInstructionStatus(m_current_status));
+  setText(GetLabelTextForInstructionStatus(m_current_status));
 }
 
 }  // namespace oac_tree_gui
