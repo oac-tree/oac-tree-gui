@@ -55,6 +55,7 @@ QColor GetColorForStatus(InstructionStatus status)
       {InstructionStatus::kRunning, Qt::yellow},
       {InstructionStatus::kSuccess, Qt::green},
       {InstructionStatus::kFailure, Qt::red},
+      {InstructionStatus::kHalted, Qt::cyan},
       {InstructionStatus::kUndefined, Qt::darkGray}};
   auto it = status_to_color.find(status);
   if (it == status_to_color.end())
@@ -99,6 +100,7 @@ void StatusIndicator::UpdateAppearance()
       {InstructionStatus::kRunning, BusySignType::kAnimated},
       {InstructionStatus::kSuccess, BusySignType::kHidden},
       {InstructionStatus::kFailure, BusySignType::kHidden},
+      {InstructionStatus::kHalted, BusySignType::kHidden},
       {InstructionStatus::kUndefined, BusySignType::kHidden}};
 
   const auto background_color = GetColorForStatus(m_current_status);
