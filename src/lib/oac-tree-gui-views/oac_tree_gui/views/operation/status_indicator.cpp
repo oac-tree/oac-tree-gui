@@ -48,9 +48,6 @@ StatusIndicator::StatusIndicator(QWidget* parent_widget)
     : QLabel(parent_widget), m_busy_sign(new BusySign(this))
 {
   setAlignment(Qt::AlignCenter);
-  QFont f = font();
-  f.setBold(true);
-  setFont(f);
   UpdateAppearance();
 }
 
