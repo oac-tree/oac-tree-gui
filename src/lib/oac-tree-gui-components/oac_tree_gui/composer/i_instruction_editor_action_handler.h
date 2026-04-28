@@ -133,9 +133,20 @@ public:
   virtual bool CanCopy() const = 0;
 
   /**
-   * @brief Copy selected instruction.
+   * @brief Copy selected instruction together with all its children.
+   *
+   * This operation copies the whole instruction tree when parent instruction is selected. The
+   * action is mapped to ctrl-c shortcut.
    */
   virtual void Copy() = 0;
+
+  /**
+   * @brief Copy selected instructions.
+   *
+   * Alternative way to copy instruction: tries to copy exactly selected instruction, if possible.
+   * Do not have own shortcut, available via context menu.
+   */
+  virtual void SmartCopy() = 0;
 
   /**
    * @brief Checks if paste-after operation is possible.

@@ -288,6 +288,16 @@ void InstructionEditorActionHandler::Copy()
   m_context.set_mime_data(CreateInstructionTreeCopyMimeData(GetSelectedInstructions()));
 }
 
+void InstructionEditorActionHandler::SmartCopy()
+{
+  if (!CanCopy())
+  {
+    return;
+  }
+
+  m_context.set_mime_data(CreateInstructionSelectionCopyMimeData(GetSelectedInstructions()));
+}
+
 bool InstructionEditorActionHandler::CanPasteAfter() const
 {
   auto mime = GetMimeData();

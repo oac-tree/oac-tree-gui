@@ -478,9 +478,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTre
   EXPECT_EQ(copied_message->GetDomainType(), domainconstants::kMessageInstructionType);
 }
 
-// FIXME enable after "SpecialCopy" implementation
 TEST_F(InstructionEditorActionHandlerCopyPasteTest,
-       DISABLED_CopyAndPastePartOfSequenceTreeIntoRepeat)
+       SmartCopyAndPastePartOfSequenceTreeIntoRepeat)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -492,7 +491,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest,
 
   EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
 
-  handler->Copy();
+  handler->SmartCopy();
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -503,41 +502,6 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest,
 
   handler->PasteInto();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
-  ASSERT_EQ(repeat->GetInstructions().size(), 1);
-  auto copied_sequence = repeat->GetInstructions().at(0);
-  ASSERT_EQ(copied_sequence->GetInstructions().size(), 1);
-  auto copied_message = copied_sequence->GetInstructions().at(0);
-  EXPECT_EQ(copied_message->GetDomainType(), domainconstants::kMessageInstructionType);
-}
-
-// FIXME enable after "SpecialCopy" implementation
-TEST_F(InstructionEditorActionHandlerCopyPasteTest,
-       DISABLED_CutAndPastePartOfSequenceTreeIntoRepeat)
-{
-  // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
-  auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
-  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
-
-  auto handler = CreateActionHandler({sequence, message});
-
-  EXPECT_CALL(m_mock_context, OnSetMimeData()).Times(1);
-  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
-
-  handler->Cut();
-  // mimicking dissapearance of selection after item removal
-  m_mock_context.SetAsCurrentSelection({});
-
-  EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
-
-  EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
-
-  // appending instruction to the container
-  m_mock_context.SetAsCurrentSelection({repeat});
-
-  handler->PasteInto();
-  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
   auto copied_sequence = repeat->GetInstructions().at(0);
   ASSERT_EQ(copied_sequence->GetInstructions().size(), 1);

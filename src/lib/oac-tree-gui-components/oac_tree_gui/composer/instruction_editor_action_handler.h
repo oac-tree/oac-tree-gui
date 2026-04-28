@@ -85,6 +85,8 @@ public:
 
   void Copy() override;
 
+  void SmartCopy() override;
+
   bool CanPasteAfter() const override;
 
   void PasteAfter() override;
