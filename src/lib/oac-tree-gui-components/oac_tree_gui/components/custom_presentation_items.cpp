@@ -29,7 +29,8 @@ namespace oac_tree_gui
 
 ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem* item,
                                                  const QString& channel_name)
-    : mvvm::DataPresentationItem(item, mvvm::DataRole::kDisplay), m_channel_name(channel_name)
+    : mvvm::DefaultDataPresentationItem(item, mvvm::DataRole::kDisplay)
+    , m_channel_name(channel_name)
 {
 }
 
@@ -60,11 +61,9 @@ bool ChannelPresentationItem::SetData(const QVariant& data, mvvm::role_t qt_role
 
 QVector<int> ChannelPresentationItem::GetQtRolesToEmit(mvvm::role_t data_role) const
 {
-  auto result = mvvm::DataPresentationItem::GetQtRolesToEmit(data_role);
   // When IsAvailable status changes, the decoration role (green/gray box rectangle) should be
-  // reported too
-  result.push_back(Qt::DecorationRole);
-  return result;
+  // reported
+  return {Qt::DecorationRole};
 }
 
 }  // namespace oac_tree_gui

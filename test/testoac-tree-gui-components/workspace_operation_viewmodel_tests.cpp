@@ -21,13 +21,13 @@
 #include "oac_tree_gui/viewmodel/workspace_operation_viewmodel.h"
 
 #include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -244,8 +244,8 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
   EXPECT_EQ(arguments.size(), 3);  // QModelIndex left, QModelIndex right, QVector<int> roles
   EXPECT_EQ(arguments.at(0).value<QModelIndex>(), variable_channel_index);
   EXPECT_EQ(arguments.at(1).value<QModelIndex>(), variable_channel_index);
-  const QVector<int> expectedRoles = {Qt::DecorationRole};
-  EXPECT_EQ(arguments.at(2).value<QVector<int>>(), expectedRoles);
+  const QVector<int> expected_roles = {Qt::DecorationRole};
+  EXPECT_EQ(arguments.at(2).value<QVector<int>>(), expected_roles);
 
   EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DecorationRole).value<QColor>(),
             GetDisonnectedVariableColor());
@@ -308,8 +308,8 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatusInfoItemCa
   EXPECT_EQ(arguments.size(), 3);  // QModelIndex left, QModelIndex right, QVector<int> roles
   EXPECT_EQ(arguments.at(0).value<QModelIndex>(), variable_channel_index);
   EXPECT_EQ(arguments.at(1).value<QModelIndex>(), variable_channel_index);
-  const QVector<int> expectedRoles = {Qt::DecorationRole};
-  EXPECT_EQ(arguments.at(2).value<QVector<int>>(), expectedRoles);
+  const QVector<int> expected_roles = {Qt::DecorationRole};
+  EXPECT_EQ(arguments.at(2).value<QVector<int>>(), expected_roles);
 
   EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DecorationRole).value<QColor>(),
             GetDisonnectedVariableColor());

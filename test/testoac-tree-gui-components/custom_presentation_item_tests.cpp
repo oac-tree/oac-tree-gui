@@ -61,8 +61,8 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   EXPECT_TRUE(item.SetProperty(TestItem::kIsAvailable, false));
   EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetDisonnectedVariableColor());
 
-  EXPECT_EQ(presentation.GetQtRolesToEmit(mvvm::DataRole::kDisplay),
-            QVector<int>({Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole}));
+  EXPECT_EQ(presentation.GetQtRolesToEmit(mvvm::DataRole::kData),
+            QVector<int>({Qt::DecorationRole}));
 }
 
 }  // namespace oac_tree_gui::test

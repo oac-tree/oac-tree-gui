@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_COMPONENTS_CUSTOM_PRESENTATION_ITEMS_H_
 #define OAC_TREE_GUI_COMPONENTS_CUSTOM_PRESENTATION_ITEMS_H_
 
-#include <mvvm/providers/standard_presentation_items.h>
+#include <mvvm/providers/default_data_presentation_item.h>
 
 namespace oac_tree_gui
 {
@@ -30,7 +30,7 @@ namespace oac_tree_gui
  * @brief The ChannelPresentationItem class is used to show IsAvailable status of InstructionItem
  * together with channel name.
  */
-class ChannelPresentationItem : public mvvm::DataPresentationItem
+class ChannelPresentationItem : public mvvm::DefaultDataPresentationItem
 {
 public:
   /**
