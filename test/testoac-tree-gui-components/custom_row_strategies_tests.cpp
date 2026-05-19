@@ -211,8 +211,8 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
 
     auto view_items = strategy.ConstructRow(&item);
 
-    ASSERT_EQ(view_items.size(), 2);
-    EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 2);
+    ASSERT_EQ(view_items.size(), 3);
+    EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 3);
 
     // first item contains editable display name
     auto view_item0 = view_items.at(0).get();
@@ -228,6 +228,10 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
     auto view_item1 = view_items.at(1).get();
     EXPECT_EQ(view_item1->Data(Qt::DisplayRole).toString(), QString("Sequence"));
     EXPECT_EQ(view_item1->Data(Qt::ForegroundRole).value<QColor>(), GetReadOnlyDomainTypeColor());
+
+    // third item contains empty label (checkbox will appear when item is a part of container)
+    auto view_item2 = view_items.at(2).get();
+    EXPECT_EQ(view_item2->Data(Qt::DisplayRole).toString(), QString(""));
   }
 }
 

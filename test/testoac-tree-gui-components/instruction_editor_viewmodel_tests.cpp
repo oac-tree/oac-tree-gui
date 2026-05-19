@@ -20,9 +20,9 @@
 
 #include "oac_tree_gui/viewmodel/instruction_editor_viewmodel.h"
 
-#include <oac_tree_gui/components/mime_constants.h>
-#include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/components/copy_and_paste_helper.h>
+#include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/item_factory.h>
@@ -63,7 +63,7 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
   sequence->SetStatus(InstructionStatus::kRunning);
 
   EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(m_view_model.columnCount(QModelIndex()), 2);
+  EXPECT_EQ(m_view_model.columnCount(QModelIndex()), 3);
 
   auto sequence_displayname_index = m_view_model.index(0, 0, QModelIndex());
   auto sequence_type_index = m_view_model.index(0, 1, QModelIndex());
@@ -96,7 +96,7 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 
   auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   EXPECT_EQ(m_view_model.rowCount(sequence_index), 2);
-  EXPECT_EQ(m_view_model.columnCount(sequence_index), 2);
+  EXPECT_EQ(m_view_model.columnCount(sequence_index), 3);
 
   auto wait0_displayname_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_displayname_index = m_view_model.index(1, 0, sequence_index);
@@ -117,7 +117,7 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnNameChange)
   InstructionEditorViewModel view_model(&model);
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 3);
 
   const QModelIndex label_index = view_model.index(0, 0, QModelIndex());
   const QModelIndex data_index = view_model.index(0, 1, QModelIndex());
@@ -182,13 +182,15 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
 
   // instruction identifier
   EXPECT_TRUE(mime_data->hasFormat(kInstructionIdentifierMimeType));
-  auto identifiers = sup::gui::GetItemIdentifiersFromMime(*mime_data, kInstructionIdentifierMimeType);
+  auto identifiers =
+      sup::gui::GetItemIdentifiersFromMime(*mime_data, kInstructionIdentifierMimeType);
   EXPECT_EQ(identifiers.size(), 1);
   EXPECT_EQ(identifiers.at(0), sequence->GetIdentifier());
 
   // and full copy of instruction
   EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
-  auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
+  auto copied_items =
+      sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   EXPECT_EQ(copied_items.size(), 1);
   EXPECT_EQ(copied_items.at(0)->GetType(), sequence->GetDomainType());
 }
@@ -421,7 +423,7 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   view_model.SetRootSessionItem(procedure->GetInstructionContainer());
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 3);
 
   // Mimicking the reset of the document. The viewmodel will be reset to show top level item, no
   // crash occur.
@@ -430,9 +432,47 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   model.ReplaceRootItem(std::move(root_item));
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(view_model.columnCount(QModelIndex()), 2);
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 3);
   EXPECT_EQ(view_model.rootItem()->GetRowCount(), 1);
-  EXPECT_EQ(view_model.rootItem()->GetColumnCount(), 2);
+  EXPECT_EQ(view_model.rootItem()->GetColumnCount(), 3);
+}
+
+TEST_F(InstructionEditorViewModelTest, SequenceWithChildInContainerCheckBoxes)
+{
+  SequencerModel model;
+  auto procedure =
+      model.InsertItem<ProcedureItem>(model.GetProcedureContainer(), mvvm::TagIndex::Append());
+  auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
+  auto wait0 = model.InsertItem<WaitItem>(sequence);
+  auto wait1 = model.InsertItem<WaitItem>(sequence);
+
+  InstructionEditorViewModel view_model(nullptr, {});
+  view_model.SetRootSessionItem(procedure->GetInstructionContainer());
+
+  auto container_index = QModelIndex();
+
+  auto sequence_displayname_index = view_model.index(0, 0, container_index);
+  auto sequence_type_index = view_model.index(0, 1, container_index);
+  auto sequence_checkbox_index = view_model.index(0, 2, container_index);
+
+  auto wait_displayname_index = view_model.index(0, 0, sequence_displayname_index);
+  auto wait_type_index = view_model.index(0, 1, sequence_displayname_index);
+  auto wait_checkbox_index = view_model.index(0, 2, sequence_displayname_index);
+
+  EXPECT_EQ(view_model.data(sequence_displayname_index, Qt::DisplayRole).toString(), "Sequence");
+  EXPECT_EQ(view_model.data(sequence_type_index, Qt::DisplayRole).toString(), "Sequence");
+  EXPECT_EQ(view_model.data(sequence_checkbox_index, Qt::CheckStateRole).toInt(),
+            static_cast<int>(Qt::Unchecked));
+
+  // child doesn't have a checkbox
+  EXPECT_EQ(view_model.data(wait_displayname_index, Qt::DisplayRole).toString(), "Wait");
+  EXPECT_EQ(view_model.data(wait_type_index, Qt::DisplayRole).toString(), "Wait");
+  EXPECT_FALSE(view_model.data(wait_checkbox_index, Qt::CheckStateRole).isValid());
+
+  // changing Sequence checkbox via model
+  EXPECT_TRUE(view_model.setData(sequence_checkbox_index, Qt::Checked, Qt::CheckStateRole));
+
+  EXPECT_TRUE(sequence->IsRoot());
 }
 
 }  // namespace oac_tree_gui::test

@@ -24,6 +24,7 @@
 
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/style/style_helper.h>
 
@@ -235,12 +236,12 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
 //! ---------------------------------------------------------------------------
 std::size_t InstructionEditorRowStrategy::GetSize() const
 {
-  return 2U;
+  return 3U;
 }
 
 QStringList InstructionEditorRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static const QStringList result = {"Name", "Type"};
+  static const QStringList result = {"Name", "Type", "Root"};
   return result;
 }
 
@@ -254,9 +255,18 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> InstructionEditorRowStrategy::Const
   if (auto instruction = dynamic_cast<InstructionItem*>(item); instruction)
   {
     (void)result.emplace_back(CreateInstructionTypeViewItem(*instruction));
+    if (IsPotentialRootInstruction(*instruction))
+    {
+      (void)result.emplace_back(CreateRootCheckboxViewItem(*instruction));
+    }
+    else
+    {
+      (void)result.emplace_back(mvvm::CreateLabelViewItem(instruction, ""));
+    }
   }
   else
   {
+    (void)result.emplace_back(mvvm::CreateLabelViewItem(item, ""));
     (void)result.emplace_back(mvvm::CreateLabelViewItem(item, ""));
   }
 
