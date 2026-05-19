@@ -100,4 +100,16 @@ TEST_F(CustomViewItemFactoryTest, CreateInstructionTypeViewItem)
   EXPECT_TRUE(viewitem->SetData(QString("bbb"), Qt::EditRole));
 }
 
+TEST_F(CustomViewItemFactoryTest, CreateRootCheckboxViewItem)
+{
+  SequenceItem item;
+  item.SetIsRootFlag(true);
+
+  auto viewitem = CreateRootCheckboxViewItem(item);
+
+  EXPECT_FALSE(viewitem->Data(Qt::DisplayRole).isValid());  // no text
+  EXPECT_TRUE(viewitem->Data(Qt::CheckStateRole).isValid());
+  EXPECT_EQ(viewitem->Data(Qt::CheckStateRole).toInt(), Qt::Checked);
+}
+
 }  // namespace oac_tree_gui::test

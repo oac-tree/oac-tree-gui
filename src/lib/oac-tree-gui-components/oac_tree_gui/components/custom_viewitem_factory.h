@@ -52,6 +52,12 @@ std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionI
  */
 std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& item);
 
+
+/**
+ * @brief Returns ViewItem representing checkbox to mark instruction as root.
+ */
+std::unique_ptr<mvvm::ViewItem> CreateRootCheckboxViewItem(InstructionItem& item);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_VIEWITEM_FACTORY_H_
