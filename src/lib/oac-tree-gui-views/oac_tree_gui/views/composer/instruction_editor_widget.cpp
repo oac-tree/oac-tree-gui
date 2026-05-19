@@ -55,6 +55,7 @@ namespace
 const QString kGroupName("InstructionEditorWidget");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+const std::vector<int> kDefaultColumnStretch({10, 10, 1});
 
 /**
  * @brief Returns action keys intended for a toolbar.
@@ -76,7 +77,8 @@ InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService& c
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_tree_view(new InstructionEditorTreeView)
-    , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
+    , m_custom_header(
+          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_component_provider(CreateProvider())
     , m_attribute_editor(new InstructionAttributeEditor(CreateVariableNameFunc()))
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
