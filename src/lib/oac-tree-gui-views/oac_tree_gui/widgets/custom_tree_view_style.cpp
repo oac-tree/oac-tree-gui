@@ -43,4 +43,35 @@ void CustomTreeViewStyle::drawPrimitive(PrimitiveElement element, const QStyleOp
   QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
+QRect CustomTreeViewStyle::subElementRect(SubElement element, const QStyleOption* option,
+                                          const QWidget* widget) const
+{
+  QRect rect = QProxyStyle::subElementRect(element, option, widget);
+
+  if (element != SE_ItemViewItemCheckIndicator || !option)
+  {
+    return rect;
+  }
+
+  const auto* viewOpt = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+  if (!viewOpt)
+  {
+    return rect;
+  }
+
+  // Apply only to "check-only" cells: checkbox exists, text does not.
+  const auto features = viewOpt->features;
+  const bool hasCheck = features.testFlag(QStyleOptionViewItem::HasCheckIndicator);
+  const bool hasDisplay = features.testFlag(QStyleOptionViewItem::HasDisplay);
+  if (!hasCheck || hasDisplay)
+  {
+    return rect;
+  }
+
+  const QRect cell = viewOpt->rect;
+  const int x = cell.x() + (cell.width() - rect.width()) / 2;
+  const int y = cell.y() + (cell.height() - rect.height()) / 2;
+  return QRect(QPoint(x, y), rect.size());
+}
+
 }  // namespace oac_tree_gui
