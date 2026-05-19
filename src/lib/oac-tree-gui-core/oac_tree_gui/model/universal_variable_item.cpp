@@ -33,21 +33,28 @@
 
 #include <sup/oac-tree/variable.h>
 
+namespace oac_tree_gui
+{
+
 namespace
 {
 
 /**
- * @brief Returns domain attributes that shouldn't be used to build properties.
- * @return
+ * @brief Checks if given attribute shall be exposed to the GUI.
+ * Some domain attributes shall not be used to build GUI item properties.
+ *
+ * @param domain_attribute_name The name of the attribute in domain attribute definition.
+ * @return True if given attribute shall be exposed to the GUI, false otherwise.
  */
-const std::vector<std::string>& GetSkipDomainAttributeList()
+bool IsDomainAttributeToExpose(const std::string& domain_attribute_name)
 {
   static const std::vector<std::string> kSkipDomainAttributeList = {
-      oac_tree_gui::domainconstants::kNameAttribute,  // handled via display name
-      oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
-      oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
+      domainconstants::kNameAttribute,  // handled via display name
+      domainconstants::kTypeAttribute,  // handled via AnyValueItem
+      domainconstants::kValueAttribute  // handled via AnyValueItem
   };
-  return kSkipDomainAttributeList;
+
+  return !mvvm::utils::Contains(kSkipDomainAttributeList, domain_attribute_name);
 }
 
 /**
@@ -55,15 +62,11 @@ const std::vector<std::string>& GetSkipDomainAttributeList()
  */
 const std::vector<std::string>& GetSkipItemTagList()
 {
-  static const std::vector<std::string> kSkipItemTagList = {
-      oac_tree_gui::itemconstants::kAnyValueTag};
+  static const std::vector<std::string> kSkipItemTagList = {itemconstants::kAnyValueTag};
   return kSkipItemTagList;
 }
 
 }  // namespace
-
-namespace oac_tree_gui
-{
 
 UniversalVariableItem::UniversalVariableItem()
     : VariableItem(mvvm::GetTypeName<UniversalVariableItem>())
@@ -143,7 +146,7 @@ void UniversalVariableItem::SetupDomainImpl(variable_t* variable) const
 void UniversalVariableItem::SetDomainTypeImpl(const std::string& domain_type)
 {
   // temporary domain variable is used to create default properties
-  auto domain_variable = ::oac_tree_gui::CreateDomainVariable(domain_type);
+  const auto domain_variable = ::oac_tree_gui::CreateDomainVariable(domain_type);
   SetupFromDomain(domain_variable.get());
 }
 
@@ -158,7 +161,7 @@ void UniversalVariableItem::SetupFromDomain(const variable_t* variable)
 
   for (const auto& definition : variable->GetAttributeDefinitions())
   {
-    if (!mvvm::utils::Contains(GetSkipDomainAttributeList(), definition.GetName()))
+    if (IsDomainAttributeToExpose(definition.GetName()))
     {
       (void)AddPropertyFromDefinition(definition, *this);
     }

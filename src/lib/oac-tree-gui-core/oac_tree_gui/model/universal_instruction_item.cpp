@@ -35,19 +35,25 @@
 
 #include <sup/oac-tree/instruction.h>
 
+namespace oac_tree_gui
+{
+
 namespace
 {
 
-//! @brief Checks if given attribute shall be exposed to the GUI.
-//! Some domain attributes shall not be used to build GUI item properties.
-//!
-//! @param domain_attribute_name The name of the attribute in domain attribute definition.
+/**
+ * @brief Checks if given attribute shall be exposed to the GUI.
+ * Some domain attributes shall not be used to build GUI item properties.
+ *
+ * @param domain_attribute_name The name of the attribute in domain attribute definition.
+ * @return True if given attribute shall be exposed to the GUI, false otherwise.
+ */
 bool IsDomainAttributeToExpose(const std::string& domain_attribute_name)
 {
   static const std::vector<std::string> kSkipDomainAttributeList = {
-      oac_tree_gui::domainconstants::kNameAttribute,  // handled via display name
-      oac_tree_gui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
-      oac_tree_gui::domainconstants::kValueAttribute  // handled via AnyValueItem
+      domainconstants::kNameAttribute,  // handled via display name
+      domainconstants::kTypeAttribute,  // handled via AnyValueItem
+      domainconstants::kValueAttribute  // handled via AnyValueItem
   };
 
   return !mvvm::utils::Contains(kSkipDomainAttributeList, domain_attribute_name);
@@ -58,15 +64,11 @@ bool IsDomainAttributeToExpose(const std::string& domain_attribute_name)
  */
 const std::vector<std::string>& GetSkipItemTagList()
 {
-  static const std::vector<std::string> kSkipItemTagList = {
-      oac_tree_gui::itemconstants::kAnyValueTag};
+  static const std::vector<std::string> kSkipItemTagList = {itemconstants::kAnyValueTag};
   return kSkipItemTagList;
 }
 
 }  // namespace
-
-namespace oac_tree_gui
-{
 
 UniversalInstructionItem::UniversalInstructionItem()
     : InstructionItem(mvvm::GetTypeName<UniversalInstructionItem>())
