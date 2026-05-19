@@ -21,6 +21,7 @@
 #include "sequencer_item_helper.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 
@@ -84,6 +85,18 @@ mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent)
 mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, domainconstants::kChannelAttribute);
+}
+
+bool IsPotentialRootInstruction(const InstructionItem& instruction)
+{
+  if (auto parent = instruction.GetParent(); parent != nullptr)
+  {
+    if (parent->GetType() == mvvm::GetTypeName<InstructionContainerItem>())
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 }  // namespace oac_tree_gui

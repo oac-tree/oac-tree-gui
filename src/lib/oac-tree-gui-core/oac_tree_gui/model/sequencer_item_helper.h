@@ -75,6 +75,14 @@ mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
  * have such property registered.
  */
 mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
+
+/**
+ * @brief Checks if the instruction can be considered as potential root of the procedure.
+ *
+ * The instruction is considered as potential root it is a top instruction in instruction container.
+ */
+bool IsPotentialRootInstruction(const InstructionItem& instruction);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_HELPER_H_

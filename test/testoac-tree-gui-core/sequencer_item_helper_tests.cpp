@@ -21,6 +21,7 @@
 #include "oac_tree_gui/model/sequencer_item_helper.h"
 
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_includes.h>
 #include <oac_tree_gui/model/universal_instruction_item.h>
@@ -142,6 +143,30 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
   const TestItem test_item;
   EXPECT_NE(GetStatusItem(test_item), nullptr);
   EXPECT_NE(GetBreakpointItem(test_item), nullptr);
+}
+
+TEST_F(SequencerItemHelperTest, IsPotentialRootInstruction)
+{
+  {  // instruction outside container
+    const SequenceItem sequence;
+    EXPECT_FALSE(IsPotentialRootInstruction(sequence));
+  }
+
+  {  // two instructions in container
+    InstructionContainerItem container;
+    auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+    auto sequence1 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+    EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
+    EXPECT_TRUE(IsPotentialRootInstruction(*sequence1));
+  }
+
+  {  // instruction with child in container
+    InstructionContainerItem container;
+    auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+    auto wait0 = sequence0->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+    EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
+    EXPECT_FALSE(IsPotentialRootInstruction(*wait0));
+  }
 }
 
 }  // namespace oac_tree_gui::test
