@@ -87,11 +87,11 @@ void SetVariableName(const std::string& value, InstructionItem& item);
 bool IsCollapsible(const InstructionItem& item);
 
 /**
- * @brief Add property to show children as collapsed branch.
+ * @brief Updates appearance of the property responsible to show children as collapsed branch.
  *
- * @details This property will be added to all instructions which can have children. For
- * IncludeProcedure and Include instructions the value of this property will be put to true by
- * default.
+ * The method is used in the context, when we create the property from the domain attribute list
+ * and need to setup its appearance according to the instruction type. For example, for
+ * IncludeProcedure and Include instructions we want to show children as collapsed by default.
  */
 void AddShowCollapsedProperty(InstructionItem& item);
 

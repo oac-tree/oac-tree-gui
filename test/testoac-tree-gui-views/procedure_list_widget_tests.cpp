@@ -32,8 +32,8 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 
-#include <QTreeView>
 #include <QSignalSpy>
+#include <QTreeView>
 
 Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
 
@@ -55,7 +55,7 @@ public:
 
 TEST_F(ProcedureListWidgetTest, InitialState)
 {
-  ProcedureListWidget view(m_command_service);
+  const ProcedureListWidget view(m_command_service);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
   EXPECT_TRUE(view.GetSelectedProcedures().empty());
 }
@@ -87,13 +87,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
-//! Removing selected and checking notifications
-
-// FIXME find a way to enable test, or remove test
-// Tests generates same pointers to the ProcedureListWidget objects, that leads to duplication of
-// action context registration
-
-TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
+TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -116,13 +110,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
   EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
-//! Checking selection when acting through the view.
-
-// FIXME find a way to enable test, or remove test
-// Tests generates same pointers to the ProcedureListWidget objects, that leads to duplication of
-// action context registration
-
-TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
+TEST_F(ProcedureListWidgetTest, SetCurrentIndexViaView)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -135,8 +123,7 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
 
   // selecting an item and checking results
   auto indexes = view.GetViewModel()->GetIndexOfSessionItem(procedure);
-  ASSERT_EQ(indexes.size(),
-            1);  // ProcedureViewModel for the moment generate the row with single entry only
+  ASSERT_EQ(indexes.size(), 2); // display name and close button
   view.GetTreeView()->setCurrentIndex(indexes.at(0));
 
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
