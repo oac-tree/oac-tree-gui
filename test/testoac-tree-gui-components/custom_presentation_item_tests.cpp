@@ -23,10 +23,14 @@
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 
+#include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/compound_item.h>
+#include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 
@@ -128,6 +132,56 @@ TEST_F(CustomPresentationItemTest, ExclusiveCheckStatePresentationItem)
   EXPECT_FALSE(sequence0->IsRoot());
   EXPECT_FALSE(sequence1->IsRoot());
   EXPECT_TRUE(sequence2->IsRoot());
+}
+
+TEST_F(CustomPresentationItemTest, ExclusiveCheckStateInUndoScenario)
+{
+  SequencerModel model;
+  model.SetUndoEnabled(true, 100);
+
+  auto procedure =
+      model.InsertItem<ProcedureItem>(model.GetProcedureContainer(), mvvm::TagIndex::Append());
+
+  auto instruction_container = procedure->GetInstructionContainer();
+
+  auto sequence0 = instruction_container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence1 = instruction_container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence2 = instruction_container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+
+  sequence1->SetIsRootFlag(true);
+
+  auto root_property0 = GetIsRootItem(*sequence0);
+  auto root_property1 = GetIsRootItem(*sequence1);
+  auto root_property2 = GetIsRootItem(*sequence2);
+
+  ExclusiveCheckStatePresentationItem presentation0(root_property0);
+  ExclusiveCheckStatePresentationItem presentation1(root_property1);
+  ExclusiveCheckStatePresentationItem presentation2(root_property2);
+
+  // check middle item
+  EXPECT_EQ(presentation0.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+  EXPECT_EQ(presentation1.Data(Qt::CheckStateRole).toInt(), Qt::Checked);
+  EXPECT_EQ(presentation2.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+  // check first item
+  EXPECT_TRUE(presentation0.SetData(QVariant(Qt::Checked), Qt::CheckStateRole));
+
+  EXPECT_EQ(presentation0.Data(Qt::CheckStateRole).toInt(), Qt::Checked);
+  EXPECT_EQ(presentation1.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+  EXPECT_EQ(presentation2.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+  // undo
+  model.GetCommandStack()->Undo();
+
+  EXPECT_EQ(presentation0.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+  EXPECT_EQ(presentation1.Data(Qt::CheckStateRole).toInt(), Qt::Checked);
+  EXPECT_EQ(presentation2.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+  // redo
+  model.GetCommandStack()->Redo();
+  EXPECT_EQ(presentation0.Data(Qt::CheckStateRole).toInt(), Qt::Checked);
+  EXPECT_EQ(presentation1.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+  EXPECT_EQ(presentation2.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
 }
 
 }  // namespace oac_tree_gui::test

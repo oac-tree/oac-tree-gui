@@ -24,6 +24,11 @@
 #include <mvvm/providers/boolean_data_presentation_item.h>
 #include <mvvm/providers/default_data_presentation_item.h>
 
+namespace mvvm
+{
+class ISessionModel;
+}
+
 namespace oac_tree_gui
 {
 
@@ -76,6 +81,11 @@ public:
   const InstructionContainerItem* GetInstructionContainer() const;
 
   InstructionItem* GetInstructionItem() const;
+
+private:
+  mvvm::ISessionModel* GetModel();
+  void BeginMacro();
+  void EndMacro();
 };
 
 }  // namespace oac_tree_gui

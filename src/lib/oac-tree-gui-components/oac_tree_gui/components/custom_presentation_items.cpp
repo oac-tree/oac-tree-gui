@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/model/session_item.h>
 
 namespace oac_tree_gui
@@ -77,6 +78,7 @@ ExclusiveCheckStatePresentationItem::ExclusiveCheckStatePresentationItem(mvvm::S
 
 bool ExclusiveCheckStatePresentationItem::SetData(const QVariant& data, mvvm::role_t qt_role)
 {
+  BeginMacro();
   auto result = BooleanDataPresentationItem::SetData(data, qt_role);
   if (result)
   {
@@ -86,6 +88,7 @@ bool ExclusiveCheckStatePresentationItem::SetData(const QVariant& data, mvvm::ro
       instruction->SetIsRootFlag(!changed_to_checked);
     }
   }
+  EndMacro();
   return result;
 }
 
@@ -121,6 +124,31 @@ InstructionItem* ExclusiveCheckStatePresentationItem::GetInstructionItem() const
   // Our GetItem() is PropertyItem carrying a boolean property, so we need to get its parent to get
   // InstructionItem
   return (GetItem() == nullptr) ? nullptr : dynamic_cast<InstructionItem*>(GetItem()->GetParent());
+}
+
+mvvm::ISessionModel* ExclusiveCheckStatePresentationItem::GetModel()
+{
+  if (auto instruction_item = GetInstructionItem(); instruction_item != nullptr)
+  {
+    return instruction_item->GetModel();
+  }
+  return nullptr;
+}
+
+void ExclusiveCheckStatePresentationItem::BeginMacro()
+{
+  if (auto model = GetModel())
+  {
+    mvvm::utils::BeginMacro(*model, "Set root instruction");
+  }
+}
+
+void ExclusiveCheckStatePresentationItem::EndMacro()
+{
+  if (auto model = GetModel())
+  {
+    mvvm::utils::EndMacro(*model);
+  }
 }
 
 }  // namespace oac_tree_gui
