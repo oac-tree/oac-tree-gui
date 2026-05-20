@@ -21,10 +21,14 @@
 #ifndef OAC_TREE_GUI_COMPONENTS_CUSTOM_PRESENTATION_ITEMS_H_
 #define OAC_TREE_GUI_COMPONENTS_CUSTOM_PRESENTATION_ITEMS_H_
 
+#include <mvvm/providers/boolean_data_presentation_item.h>
 #include <mvvm/providers/default_data_presentation_item.h>
 
 namespace oac_tree_gui
 {
+
+class InstructionItem;
+class InstructionContainerItem;
 
 /**
  * @brief The ChannelPresentationItem class is used to show IsAvailable status of InstructionItem
@@ -48,6 +52,30 @@ public:
 
 private:
   QString m_channel_name;
+};
+
+/**
+ * @brief The ExclusiveCheckStatePresentationItem class is used to show IsRoot status of
+ * InstructionItem.
+ *
+ * This item is exclusive because only one instruction in procedure can be root, so it has to reset
+ * other root checkboxes when set.
+ *
+ * It is assumed that all instructions for which this presentation is constructed,
+ * are direct children of the same instruction container.
+ */
+class ExclusiveCheckStatePresentationItem : public mvvm::BooleanDataPresentationItem
+{
+public:
+  explicit ExclusiveCheckStatePresentationItem(mvvm::SessionItem* item);
+
+  bool SetData(const QVariant& data, mvvm::role_t qt_role) override;
+
+  std::vector<InstructionItem*> GetSiblings() const;
+
+  const InstructionContainerItem* GetInstructionContainer() const;
+
+  InstructionItem* GetInstructionItem() const;
 };
 
 }  // namespace oac_tree_gui

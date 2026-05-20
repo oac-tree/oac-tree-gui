@@ -21,6 +21,8 @@
 #include "custom_presentation_items.h"
 
 #include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 
 #include <mvvm/model/session_item.h>
 
@@ -61,10 +63,64 @@ bool ChannelPresentationItem::SetData(const QVariant& data, mvvm::role_t qt_role
 
 QVector<int> ChannelPresentationItem::GetQtRolesToEmit(mvvm::role_t data_role) const
 {
-  (void) data_role;
+  (void)data_role;
   // When IsAvailable status changes, the decoration role (green/gray box rectangle) should be
   // reported
   return {Qt::DecorationRole};
+}
+
+ExclusiveCheckStatePresentationItem::ExclusiveCheckStatePresentationItem(mvvm::SessionItem* item)
+    : BooleanDataPresentationItem(item,
+                                  mvvm::BooleanDataPresentationItem::AppearanceMode::kCheckBoxOnly)
+{
+}
+
+bool ExclusiveCheckStatePresentationItem::SetData(const QVariant& data, mvvm::role_t qt_role)
+{
+  auto result = BooleanDataPresentationItem::SetData(data, qt_role);
+  if (result)
+  {
+    const bool changed_to_checked = (data.toInt() == Qt::Checked);
+    for (auto instruction : GetSiblings())
+    {
+      instruction->SetIsRootFlag(!changed_to_checked);
+    }
+  }
+  return result;
+}
+
+std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings() const
+{
+  if (auto container = GetInstructionContainer(); container != nullptr)
+  {
+    std::vector<InstructionItem*> result;
+    auto presented_instruction = GetInstructionItem();
+    for (auto instruction : container->GetInstructions())
+    {
+      if (instruction != presented_instruction)
+      {
+        result.push_back(instruction);
+      }
+    }
+
+    return result;
+  }
+
+  return {};
+}
+
+const InstructionContainerItem* ExclusiveCheckStatePresentationItem::GetInstructionContainer() const
+{
+  return (GetInstructionItem() == nullptr)
+             ? nullptr
+             : dynamic_cast<InstructionContainerItem*>(GetInstructionItem()->GetParent());
+}
+
+InstructionItem* ExclusiveCheckStatePresentationItem::GetInstructionItem() const
+{
+  // Our GetItem() is PropertyItem carrying a boolean property, so we need to get its parent to get
+  // InstructionItem
+  return (GetItem() == nullptr) ? nullptr : dynamic_cast<InstructionItem*>(GetItem()->GetParent());
 }
 
 }  // namespace oac_tree_gui
