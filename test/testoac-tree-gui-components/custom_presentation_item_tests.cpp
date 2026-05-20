@@ -155,10 +155,10 @@ TEST_F(CustomPresentationItemTest, ExclusiveCheckStateInUndoScenario)
   auto root_property2 = GetIsRootItem(*sequence2);
 
   ExclusiveCheckStatePresentationItem presentation0(root_property0);
-  ExclusiveCheckStatePresentationItem presentation1(root_property1);
-  ExclusiveCheckStatePresentationItem presentation2(root_property2);
+  const ExclusiveCheckStatePresentationItem presentation1(root_property1);
+  const ExclusiveCheckStatePresentationItem presentation2(root_property2);
 
-  // check middle item
+  // validate middle item
   EXPECT_EQ(presentation0.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
   EXPECT_EQ(presentation1.Data(Qt::CheckStateRole).toInt(), Qt::Checked);
   EXPECT_EQ(presentation2.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);

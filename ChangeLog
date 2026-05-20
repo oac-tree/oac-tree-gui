@@ -1,5 +1,6 @@
 Changes for 2.3.0:
 
+- Implement dedicated column to check/uncheck instructions as root instruction
 - Implement instructions smart copy (allows partially copying only selected children)
 - Provide support for new instruction's HALTED status
 - Modify copy logic: now the whole item tree is coped, not only the item itself
