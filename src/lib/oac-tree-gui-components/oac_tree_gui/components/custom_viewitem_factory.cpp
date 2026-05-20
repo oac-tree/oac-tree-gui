@@ -65,8 +65,7 @@ std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& i
 std::unique_ptr<mvvm::ViewItem> CreateRootCheckboxViewItem(InstructionItem& item)
 {
   auto property_bool_item = GetPropertyItem(item, domainconstants::kIsRootAttribute);
-  auto presentation = std::make_unique<mvvm::BooleanDataPresentationItem>(
-      property_bool_item, mvvm::BooleanDataPresentationItem::AppearanceMode::kCheckBoxOnly);
+  auto presentation = std::make_unique<ExclusiveCheckStatePresentationItem>(property_bool_item);
   return std::make_unique<mvvm::ViewItem>(std::move(presentation));
 }
 
