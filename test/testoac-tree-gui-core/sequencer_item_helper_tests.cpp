@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/model/sequencer_item_helper.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -46,6 +47,8 @@ public:
     {
       AddProperty(itemconstants::kStatus, "");
       AddProperty(itemconstants::kBreakpoint, "");
+      AddProperty(itemconstants::kIsAvailable, "");
+      AddProperty(domainconstants::kIsRootAttribute, "");
     }
   };
 };
@@ -138,11 +141,15 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
   const mvvm::SessionItem item;
   EXPECT_EQ(GetStatusItem(item), nullptr);
   EXPECT_EQ(GetBreakpointItem(item), nullptr);
+  EXPECT_EQ(GetIsAvailableItem(item), nullptr);
+  EXPECT_EQ(GetIsRootItem(item), nullptr);
 
   // test item has property items
   const TestItem test_item;
   EXPECT_NE(GetStatusItem(test_item), nullptr);
   EXPECT_NE(GetBreakpointItem(test_item), nullptr);
+  EXPECT_NE(GetIsAvailableItem(test_item), nullptr);
+  EXPECT_NE(GetIsRootItem(test_item), nullptr);
 }
 
 TEST_F(SequencerItemHelperTest, IsPotentialRootInstruction)

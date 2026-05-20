@@ -27,7 +27,9 @@ namespace oac_tree_gui
 {
 class InstructionItem;
 
-//! Represents Instructions.
+/**
+ * @brief The InstructionContainerItem class is a basic container for InstructionItems.
+ */
 class InstructionContainerItem : public mvvm::CompoundItem
 {
 public:

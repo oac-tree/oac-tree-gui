@@ -77,6 +77,12 @@ mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
 mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
 
 /**
+ * @brief Returns an item representing is_root property, or nullptr if the given parent doesn't
+ * have such property registered.
+ */
+mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent);
+
+/**
  * @brief Checks if the instruction can be considered as potential root of the procedure.
  *
  * The instruction is considered as potential root it is a top instruction in instruction container.

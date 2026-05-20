@@ -87,6 +87,11 @@ mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent)
   return GetPropertyItem(parent, domainconstants::kChannelAttribute);
 }
 
+mvvm::SessionItem *GetIsRootItem(const mvvm::SessionItem &parent)
+{
+  return GetPropertyItem(parent, domainconstants::kIsRootAttribute);
+}
+
 bool IsPotentialRootInstruction(const InstructionItem& instruction)
 {
   if (auto parent = instruction.GetParent(); parent != nullptr)
@@ -98,5 +103,6 @@ bool IsPotentialRootInstruction(const InstructionItem& instruction)
   }
   return false;
 }
+
 
 }  // namespace oac_tree_gui
