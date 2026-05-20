@@ -54,6 +54,18 @@ public:
   std::vector<mvvm::SessionItem*> GetChildren(const mvvm::SessionItem* item) const override;
 };
 
+/**
+ * @brief The InstructionAttributeChildrenStrategy class reports specific attributes of
+ * InstructionItem.
+ *
+ * Introduced to mainly exclude isRoot attribute from property editor.
+ */
+class InstructionAttributeChildrenStrategy : public mvvm::IChildrenStrategy
+{
+public:
+  std::vector<mvvm::SessionItem*> GetChildren(const mvvm::SessionItem* item) const override;
+};
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_CHILDREN_STRATEGIES_H_

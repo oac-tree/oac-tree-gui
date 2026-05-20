@@ -20,6 +20,7 @@
 
 #include "custom_children_strategies.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
@@ -88,6 +89,28 @@ std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
 
   // instruction container
   return mvvm::utils::TopLevelItems(*item);
+}
+
+std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildren(
+    const mvvm::SessionItem* item) const
+{
+  // FIXME this strategy is invented solely to get rid of kIsRooAttribute in
+  // AttributeEditorViewModel. Remove after refactoring of attribute system.
+
+  if (item == nullptr)
+  {
+    return {};
+  }
+  std::vector<mvvm::SessionItem*> result;
+  for (auto child : item->GetAllItems())
+  {
+    if (child->IsVisible() && child->HasFlag(mvvm::kProperty)
+        && child->GetTagIndex().GetTag() != domainconstants::kIsRootAttribute)
+    {
+      result.push_back(child);
+    }
+  }
+  return result;
 }
 
 }  // namespace oac_tree_gui

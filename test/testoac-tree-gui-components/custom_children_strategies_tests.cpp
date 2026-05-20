@@ -25,7 +25,9 @@
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -44,7 +46,6 @@ class CustomChildrenStrategiesTest : public ::testing::Test
 public:
 };
 
-//! Testing VariableTableChildrenStrategy.
 TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
 {
   {  // workspace with single variable
@@ -106,6 +107,21 @@ TEST_F(CustomChildrenStrategiesTest, InstructionNodeChildrenStrategy)
   SetCollapsed(true, *sequence0);
   EXPECT_EQ(strategy.GetChildren(&container), std::vector<mvvm::SessionItem*>({sequence0}));
   EXPECT_EQ(strategy.GetChildren(sequence0), std::vector<mvvm::SessionItem*>({}));
+}
+
+TEST_F(CustomChildrenStrategiesTest, InstructionAttributeChildrenStrategy)
+{
+  InstructionContainerItem container;
+  auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+
+  const InstructionAttributeChildrenStrategy strategy;
+
+  EXPECT_EQ(strategy.GetChildren(&container).size(), 0);
+  const auto children = strategy.GetChildren(sequence0);
+  // iIsRoot property is not here
+  ASSERT_EQ(children.size(), 2);
+  EXPECT_EQ(children.at(0)->GetTagIndex().GetTag(), domainconstants::kShowCollapsedAttribute);
+  EXPECT_EQ(children.at(1)->GetTagIndex().GetTag(), itemconstants::kBehaviorTag);
 }
 
 }  // namespace oac_tree_gui::test

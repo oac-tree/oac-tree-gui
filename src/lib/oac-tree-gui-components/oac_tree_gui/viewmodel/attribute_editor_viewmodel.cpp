@@ -20,9 +20,9 @@
 
 #include "attribute_editor_viewmodel.h"
 
+#include <oac_tree_gui/components/custom_children_strategies.h>
 #include <oac_tree_gui/components/custom_row_strategies.h>
 
-#include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
 namespace oac_tree_gui
@@ -33,8 +33,9 @@ AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel* model,
     : ViewModel(parent_object)
 {
   // we reuse VariableRowStrategy which covers AnyValueItems too
-  SetController(mvvm::factory::CreateController<mvvm::PropertyItemsStrategy, VariableRowStrategy>(
-      model, this));
+  SetController(
+      mvvm::factory::CreateController<InstructionAttributeChildrenStrategy, VariableRowStrategy>(
+          model, this));
 }
 
 int AttributeEditorViewModel::columnCount(const QModelIndex& parent) const
