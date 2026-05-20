@@ -27,10 +27,12 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The CustomTreeViewStyle class provides drag-and-drop indicator that occupies whole
- * horizontal space of the tree.
+ * @brief The CustomTreeViewStyle class provides custom tree view style for InstructionEditor tree.
  *
- * @details From https://stackoverflow.com/questions/7596584/qtreeview-draw-drop-indicator
+ * - Provides drag-and-drop indicator that occupies whole horizontal space of the tree.
+ * - Centers checkbox in a column, if display name is absent
+ *
+ * @details See https://stackoverflow.com/questions/7596584/qtreeview-draw-drop-indicator
  */
 
 class CustomTreeViewStyle : public QProxyStyle
@@ -38,9 +40,11 @@ class CustomTreeViewStyle : public QProxyStyle
 public:
   explicit CustomTreeViewStyle(QStyle* style);
 
+  //! @brief Draws drag-and-drop indicator that occupies whole horizontal space of the tree.
   void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter,
                      const QWidget* widget) const override;
 
+  //! @brief Centers checkbox in a column, if display name is absent.
   QRect subElementRect(SubElement element, const QStyleOption* option,
                        const QWidget* widget) const override;
 };

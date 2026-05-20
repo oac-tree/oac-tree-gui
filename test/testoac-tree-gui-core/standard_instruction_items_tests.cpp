@@ -277,6 +277,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceFromDomain)
 
   EXPECT_EQ(item.GetSuccessThreshold(), 42);
   EXPECT_EQ(item.GetFailureThreshold(), 1);
+  EXPECT_FALSE(IsCollapsed(item));
 }
 
 TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
@@ -367,6 +368,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
   SequenceItem item;
 
   EXPECT_FALSE(item.IsRoot());
+  EXPECT_FALSE(IsCollapsed(item));
 
   auto wait0 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   auto wait1 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
