@@ -201,7 +201,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
 
   RegisterCommonProperties();
 
-  AddShowCollapsedProperty(*this);
+  UpdateShowCollapsedPropertyAppearance(*this);
 }
 
 }  // namespace oac_tree_gui

@@ -58,7 +58,7 @@ struct InstructionInfoStackNode
  * contain a proper InstructionItem hierarchy.
  *
  * @param info Instruction info from the domain
- * @param info_based Output tree will be based of InstructionInfoItem if true
+ * @param light_tree Output tree will be based of InstructionInfoItem if true
  * @return Instruction tree.
  */
 InstructionTree CreateInstructionItemTreeIntern(const sup::oac_tree::InstructionInfo& info,

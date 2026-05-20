@@ -73,7 +73,7 @@ bool IsCollapsible(const InstructionItem& item)
 }
 
 // FIXME merge with RegisterShowCollapsedProperty
-void AddShowCollapsedProperty(InstructionItem& item)
+void UpdateShowCollapsedPropertyAppearance(InstructionItem& item)
 {
   static const std::vector<std::string> collapsed_by_default{
       domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
@@ -83,11 +83,10 @@ void AddShowCollapsedProperty(InstructionItem& item)
     auto property = item.GetItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
     (void)property->SetDisplayName("Show collapsed");
     (void)property->SetToolTip("Show child branch collapsed duing procedure execution");
-    if (mvvm::utils::Contains(collapsed_by_default, item.GetDomainType()))
-    {
-      (void)property->SetData(true);
-      SetAttributeExposedFlag(true, *property);
-    }
+    const auto is_collapsed_value =
+        mvvm::utils::Contains(collapsed_by_default, item.GetDomainType());
+    (void)property->SetData(is_collapsed_value);
+    SetAttributeExposedFlag(is_collapsed_value, *property);
   }
 }
 

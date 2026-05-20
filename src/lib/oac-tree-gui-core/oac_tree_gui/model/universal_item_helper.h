@@ -93,7 +93,7 @@ bool IsCollapsible(const InstructionItem& item);
  * and need to setup its appearance according to the instruction type. For example, for
  * IncludeProcedure and Include instructions we want to show children as collapsed by default.
  */
-void AddShowCollapsedProperty(InstructionItem& item);
+void UpdateShowCollapsedPropertyAppearance(InstructionItem& item);
 
 /**
  * @brief Returns true if item has is_collapsed property and it is set to true.
