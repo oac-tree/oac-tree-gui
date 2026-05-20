@@ -162,7 +162,7 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
   // - They are visible property items
   // - They are derived from AnyValueItem
 
-  auto properties = mvvm::utils::SinglePropertyItems(*this);
+   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
   for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueItem>(properties))
   {
@@ -202,6 +202,8 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
   RegisterCommonProperties();
 
   UpdateShowCollapsedPropertyAppearance(*this);
+
+  UpdateIsRootPropertyAppearance(*this);
 }
 
 }  // namespace oac_tree_gui

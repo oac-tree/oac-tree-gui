@@ -76,7 +76,7 @@ bool IsReferenceAttribute(const std::string& attribute_value)
   return attribute_value.find_first_of('@') == 0;
 }
 
-bool GetAttributeExposedFlag(const sup::gui::AnyValueItem& attribute_item)
+bool GetAttributeExposedFlag(const mvvm::SessionItem &attribute_item)
 {
   return attribute_item.IsEditable() && attribute_item.IsEnabled();
 }

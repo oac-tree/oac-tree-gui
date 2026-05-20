@@ -138,4 +138,13 @@ sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
              : nullptr;
 }
 
+void UpdateIsRootPropertyAppearance(InstructionItem& item)
+{
+  if (mvvm::utils::HasTag(item, domainconstants::kIsRootAttribute))
+  {
+    auto property = item.GetItem<sup::gui::AnyValueItem>(domainconstants::kIsRootAttribute);
+    SetAttributeExposedFlag(true, *property);
+  }
+}
+
 }  // namespace oac_tree_gui

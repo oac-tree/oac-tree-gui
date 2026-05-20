@@ -129,6 +129,15 @@ std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainer
  */
 sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
 
+/**
+ * @brief Updates appearance of the property responsible to show instruction as root item.
+ *
+ * The method is used in the context, when we create a property from domain attribute.
+ * We have to make it invisible, to exclude them from property editors. They will be shown as
+ * checkbox in dedicated editor.
+ */
+void UpdateIsRootPropertyAppearance(InstructionItem& item);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_

@@ -55,7 +55,7 @@ bool IsReferenceAttribute(const std::string& attribute_value);
  * @param attribute_item The item to set attribute.
  * @return Boolean representing the value of exposed flag.
  */
-bool GetAttributeExposedFlag(const sup::gui::AnyValueItem& attribute_item);
+bool GetAttributeExposedFlag(const mvvm::SessionItem& attribute_item);
 
 /**
  * @brief Sets attribute exposed flag to a given value.

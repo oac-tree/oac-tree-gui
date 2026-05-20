@@ -370,6 +370,9 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
   EXPECT_FALSE(item.IsRoot());
   EXPECT_FALSE(IsCollapsed(item));
 
+  auto root_item_property = item.GetItem(domainconstants::kIsRootAttribute);
+  EXPECT_TRUE(GetAttributeExposedFlag(*root_item_property));
+
   auto wait0 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   auto wait1 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
