@@ -178,4 +178,9 @@ void InstructionItem::RegisterCommonProperties()
       .SetVisible(false);
 }
 
+void InstructionItem::SetDomainTypeRole(const std::string& domain_type)
+{
+  (void)SetData(domain_type, itemconstants::kDomainTypeNameRole);
+}
+
 }  // namespace oac_tree_gui

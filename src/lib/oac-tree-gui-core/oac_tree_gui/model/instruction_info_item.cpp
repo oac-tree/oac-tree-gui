@@ -49,7 +49,6 @@ void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInf
     SetupFromDomain(info);
   }
 
-  SetDomainType(info.GetType());
   (void)SetDisplayName(info.GetType());
 
   for (auto& [attr_name, attr_value] : info.GetAttributes())
@@ -97,6 +96,7 @@ void InstructionInfoItem::SetupDomainImpl(instruction_t* instruction) const
 
 void InstructionInfoItem::SetupFromDomain(const sup::oac_tree::InstructionInfo& info)
 {
+  SetDomainTypeRole(info.GetType());
   RegisterChildrenTag(info.GetCategory(), *this);
   RegisterCommonProperties();
   RegisterShowCollapsedProperty(info.GetCategory(), info.GetType(), *this);

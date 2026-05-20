@@ -137,6 +137,13 @@ protected:
    */
   void RegisterCommonProperties();
 
+  /**
+   * @brief Sets the value of domain type role.
+   *
+   * No attribute initialization.
+   */
+  void SetDomainTypeRole(const std::string& domain_type);
+
 private:
   /**
    * @brief Init this item from domain information.

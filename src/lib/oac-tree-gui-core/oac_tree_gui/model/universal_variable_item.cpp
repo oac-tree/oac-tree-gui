@@ -157,7 +157,7 @@ void UniversalVariableItem::SetupFromDomain(const variable_t* variable)
     throw LogicErrorException("It is not possible to setup variable twice");
   }
 
-  (void)SetData(variable->GetType(), itemconstants::kDomainTypeNameRole);
+  SetDomainTypeRole(variable->GetType());
 
   for (const auto& definition : variable->GetAttributeDefinitions())
   {

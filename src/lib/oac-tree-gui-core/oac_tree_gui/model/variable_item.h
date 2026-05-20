@@ -103,6 +103,13 @@ protected:
    */
   void RegisterAnyValueItemTag();
 
+  /**
+   * @brief Sets the value of domain type role.
+   *
+   * No attribute initialization.
+   */
+  void SetDomainTypeRole(const std::string& domain_type);
+
 private:
   /**
    * @brief Implementation to provide to init this VariableItem from the domain variable.

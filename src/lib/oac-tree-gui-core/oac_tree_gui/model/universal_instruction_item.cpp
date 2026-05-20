@@ -185,7 +185,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
     throw LogicErrorException("It is not possible to setup instruction twice");
   }
 
-  (void)SetData(instruction->GetType(), itemconstants::kDomainTypeNameRole);
+  SetDomainTypeRole(instruction->GetType());
   (void)SetDisplayName(instruction->GetName().empty() ? instruction->GetType()
                                                       : instruction->GetName());
 

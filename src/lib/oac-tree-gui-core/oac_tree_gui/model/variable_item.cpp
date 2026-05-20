@@ -98,4 +98,9 @@ void VariableItem::RegisterAnyValueItemTag()
   RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 }
 
+void VariableItem::SetDomainTypeRole(const std::string& domain_type)
+{
+  (void)SetData(domain_type, itemconstants::kDomainTypeNameRole);
+}
+
 }  // namespace oac_tree_gui
