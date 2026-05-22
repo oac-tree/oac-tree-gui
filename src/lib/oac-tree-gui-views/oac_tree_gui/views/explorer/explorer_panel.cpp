@@ -26,15 +26,28 @@
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
+#include <QFileInfo>
 #include <QVBoxLayout>
-
-namespace
-{
-const QString kCollapsibleListSettingName = "ExplorerPanel/collapsible_list";
-}  // namespace
 
 namespace oac_tree_gui
 {
+
+namespace
+{
+
+constexpr auto kCollapsibleListSettingName = "ExplorerPanel/collapsible_list";
+
+/**
+ * @brief Checks if given file is procedure file candidate.
+ */
+bool IsProcedureFile(const QString& file_info)
+{
+  const QFileInfo info(file_info);
+  return info.isFile() && info.completeSuffix().toLower() == QStringLiteral("xml");
+}
+
+}  // namespace
+
 ExplorerPanel::ExplorerPanel(sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
@@ -57,9 +70,16 @@ ExplorerPanel::ExplorerPanel(sup::gui::IAppCommandService& command_service, QWid
   layout->setSpacing(0);
   layout->addWidget(m_stack_widget);
 
-  connect(m_file_tree_view, &FileTreeView::FileTreeClicked, this, &ExplorerPanel::FileTreeClicked);
-  connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
-          &ExplorerPanel::ProcedureFileDoubleClicked);
+  connect(m_file_tree_view, &FileTreeView::FileClicked, this, &ExplorerPanel::FileTreeClicked);
+
+  auto on_file_double_clicked = [this](const QString& file_name)
+  {
+    if (IsProcedureFile(file_name))
+    {
+      emit ProcedureFileDoubleClicked(file_name);
+    }
+  };
+  connect(m_file_tree_view, &FileTreeView::FileDoubleClicked, this, on_file_double_clicked);
 
   ReadSettings();
 }

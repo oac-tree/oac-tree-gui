@@ -65,8 +65,8 @@ public:
   void SetCurrentDir(const QString& dirname);
 
 signals:
-  void FileTreeClicked(const QString& filename);
-  void ProcedureFileDoubleClicked(const QString& filename);
+  void FileClicked(const QString& filename);
+  void FileDoubleClicked(const QString& filename);
 
 private:
   /**

@@ -35,19 +35,6 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-namespace
-{
-
-/**
- * @brief Checks if given file is procedure file candidate.
- */
-bool IsProcedureFile(const QFileInfo& info)
-{
-  return info.isFile() && info.completeSuffix().toLower() == QStringLiteral("xml");
-}
-
-}  // namespace
-
 namespace oac_tree_gui
 {
 
@@ -74,7 +61,8 @@ FileTreeView::FileTreeView(QWidget* parent_widget)
   layout->addWidget(m_tree_view);
 
   m_path_label->setWordWrap(true);
-  connect(m_path_label, &QLabel::linkActivated, this, [this](const auto& link) { OnLabelClick(link); });
+  connect(m_path_label, &QLabel::linkActivated, this,
+          [this](const auto& link) { OnLabelClick(link); });
 
   connect(m_tree_view, &QTreeView::doubleClicked, this,
           [this](auto index) { OnTreeDoubleClick(index); });
@@ -124,9 +112,9 @@ void FileTreeView::OnImportFromFileRequest()
     if (index.column() == 0)
     {
       const QFileInfo info(m_file_system_model->filePath(index));
-      if (IsProcedureFile(info))
+      if (info.isFile())
       {
-        emit ProcedureFileDoubleClicked(info.filePath());
+        emit FileDoubleClicked(info.filePath());
       }
     }
   }
@@ -138,7 +126,7 @@ void FileTreeView::OnTreeSingleClick(const QModelIndex& index)
 
   if (info.isFile())
   {
-    emit FileTreeClicked(info.filePath());
+    emit FileClicked(info.filePath());
   }
 }
 
