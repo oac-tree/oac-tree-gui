@@ -28,12 +28,12 @@ namespace sup::gui
 class CollapsibleListView;
 class ItemStackWidget;
 class IAppCommandService;
+class FileTreeView;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
 {
 
-class FileTreeView;
 class ProcedureListWidget;
 class SequencerModel;
 
@@ -68,7 +68,7 @@ private:
   void WriteSettings();
 
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
-  FileTreeView* m_file_tree_view{nullptr};
+  sup::gui::FileTreeView* m_file_tree_view{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
