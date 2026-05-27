@@ -22,8 +22,9 @@
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/viewmodel/favorite_instructions_viewmodel.h>
-#include <oac_tree_gui/widgets/flatlist_delegate.h>
-#include <oac_tree_gui/widgets/flatlist_view.h>
+
+#include <sup/gui/widgets/flatlist_view.h>
+#include <sup/gui/widgets/flatlist_delegate.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/views/component_provider_helper.h>
@@ -34,7 +35,9 @@ namespace oac_tree_gui
 {
 
 FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
-    : QWidget(parent_widget), m_list_view(new FlatListView), m_component_provider(CreateProvider())
+    : QWidget(parent_widget)
+    , m_list_view(new sup::gui::FlatListView)
+    , m_component_provider(CreateProvider())
 {
   setWindowTitle("FAVORITE");
 
@@ -53,7 +56,7 @@ FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
     }
   };
 
-  connect(m_list_view, &FlatListView::closeHandleClicked, this, on_close);
+  connect(m_list_view, &sup::gui::FlatListView::closeHandleClicked, this, on_close);
 }
 
 FavoriteInstructionsWidget::~FavoriteInstructionsWidget() = default;
@@ -66,7 +69,7 @@ void FavoriteInstructionsWidget::SetInstructionContainer(
 
 std::unique_ptr<mvvm::ItemViewComponentProvider> FavoriteInstructionsWidget::CreateProvider() const
 {
-  auto delegate = std::make_unique<FlatListDelegate>();
+  auto delegate = std::make_unique<sup::gui::FlatListDelegate>();
   auto viewmodel = std::make_unique<FavoriteInstructionsViewModel>(nullptr);
 
   return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(delegate),

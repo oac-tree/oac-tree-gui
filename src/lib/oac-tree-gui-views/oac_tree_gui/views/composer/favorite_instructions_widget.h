@@ -28,11 +28,15 @@ namespace mvvm
 class ItemViewComponentProvider;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class FlatListView;
+}
+
 namespace oac_tree_gui
 {
 
 class InstructionContainerItem;
-class FlatListView;
 
 /**
  * @brief The FavoriteInstructionsWidget holds the list of user's favorite instructions.
@@ -64,7 +68,7 @@ public:
 private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider() const;
 
-  FlatListView* m_list_view{nullptr};
+  sup::gui::FlatListView* m_list_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 

@@ -36,6 +36,7 @@ class ItemViewComponentProvider;
 namespace sup::gui
 {
 class IAppCommandService;
+class FlatListView;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -45,7 +46,6 @@ class SequencerModel;
 class ProcedureItem;
 class ProcedureListActionHandler;
 class ProcedureListContext;
-class FlatListView;
 
 /**
  * @brief The ProcedureListWidget class represent a simple list with procedures with editable names.
@@ -90,7 +90,7 @@ private:
   void SetupConnections();
 
   sup::gui::IAppCommandService& m_command_service;
-  FlatListView* m_list_view{nullptr};
+  sup::gui::FlatListView* m_list_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureListActions* m_actions{nullptr};
   ProcedureListActionHandler* m_action_handler{nullptr};

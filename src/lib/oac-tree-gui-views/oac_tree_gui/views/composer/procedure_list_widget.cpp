@@ -24,12 +24,12 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/viewmodel/procedure_list_viewmodel.h>
-#include <oac_tree_gui/widgets/flatlist_delegate.h>
-#include <oac_tree_gui/widgets/flatlist_view.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
+#include <sup/gui/widgets/flatlist_delegate.h>
+#include <sup/gui/widgets/flatlist_view.h>
 
 #include <mvvm/model/item_selection.h>
 #include <mvvm/model/item_utils.h>
@@ -37,7 +37,6 @@
 #include <mvvm/views/component_provider_helper.h>
 
 #include <QMenu>
-#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -47,7 +46,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
                                          QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
-    , m_list_view(new FlatListView)
+    , m_list_view(new sup::gui::FlatListView)
     , m_component_provider(CreateProvider())
     , m_actions(new ProcedureListActions(this))
     , m_action_handler(new ProcedureListActionHandler(CreateContext(), this))
@@ -104,13 +103,13 @@ void ProcedureListWidget::SetModel(SequencerModel* model)
   }
 }
 
-const ProcedureItem *ProcedureListWidget::GetSelectedProcedure() const
+const ProcedureItem* ProcedureListWidget::GetSelectedProcedure() const
 {
   auto selected = GetSelectedProcedures();
   return selected.empty() ? nullptr : selected.front();
 }
 
-std::vector<const ProcedureItem *> ProcedureListWidget::GetSelectedProcedures() const
+std::vector<const ProcedureItem*> ProcedureListWidget::GetSelectedProcedures() const
 {
   auto selection = m_component_provider->GetSelection();
   return selection.GetSelectedItems<ProcedureItem>();
@@ -157,7 +156,7 @@ void ProcedureListWidget::OnContextMenuRequest(const QPoint& point)
 
 std::unique_ptr<mvvm::ItemViewComponentProvider> ProcedureListWidget::CreateProvider() const
 {
-  auto delegate = std::make_unique<FlatListDelegate>();
+  auto delegate = std::make_unique<sup::gui::FlatListDelegate>();
   auto viewmodel = std::make_unique<ProcedureListViewModel>(nullptr);
 
   return std::make_unique<mvvm::ItemViewComponentProvider>(std::move(delegate),
@@ -176,7 +175,7 @@ void ProcedureListWidget::SetupConnections()
     }
   };
 
-  connect(m_list_view, &FlatListView::closeHandleClicked, this, on_close);
+  connect(m_list_view, &sup::gui::FlatListView::closeHandleClicked, this, on_close);
 }
 
 }  // namespace oac_tree_gui
