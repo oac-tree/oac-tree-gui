@@ -43,9 +43,9 @@ void TestAutomationServer::Start(const std::string& server_name,
     auto procedure =
         sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_string));
 
-    auto anyvalue_manager_registry =
-        sup::oac_tree_server::utils::CreateEPICSAnyValueManagerRegistry(1);
-    sup::oac_tree_server::AutomationServer auto_server{server_name, *anyvalue_manager_registry};
+    auto server_protocol_factory = sup::oac_tree_server::utils::CreateEPICSServerProtocolFactory(1);
+
+    sup::oac_tree_server::AutomationServer auto_server{server_name, *server_protocol_factory};
     auto_server.AddJob(std::move(procedure));
 
     // Instantiate RPC server for obtaining job information
