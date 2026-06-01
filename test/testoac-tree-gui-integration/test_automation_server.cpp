@@ -43,28 +43,14 @@ void TestAutomationServer::Start(const std::string& server_name,
     auto procedure =
         sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_string));
 
-    auto server_protocol_factory = sup::oac_tree_server::utils::CreateEPICSServerProtocolFactory(1);
+    auto server_protocol_factory =
+      sup::oac_tree_server::utils::CreateEPICSServerProtocolFactory(server_name, 1);
 
-    sup::oac_tree_server::AutomationServer auto_server{server_name, *server_protocol_factory};
+    sup::oac_tree_server::AutomationServer auto_server{*server_protocol_factory};
     auto_server.AddJob(std::move(procedure));
 
-    // Instantiate RPC server for obtaining job information
-    auto info_server_protocol =
-        std::make_unique<sup::oac_tree_server::InfoProtocolServer>(auto_server);
-    const sup::epics::PvAccessRPCServerConfig info_server_config{server_name};
-
-    auto info_server_stack = sup::epics::CreateEPICSRPCServerStack(
-        info_server_config, sup::protocol::ProtocolRPCServerConfig{},
-        std::move(info_server_protocol));
-
-    // Instantiate RPC server for controlling jobs
-    auto control_server_protocol =
-        std::make_unique<sup::oac_tree_server::ControlProtocolServer>(auto_server);
-    auto control_service_name = sup::oac_tree_server::GetControlServerName(server_name);
-    const sup::epics::PvAccessRPCServerConfig control_server_config{control_service_name};
-    auto control_server_stack = sup::epics::CreateEPICSRPCServerStack(
-        control_server_config, sup::protocol::ProtocolRPCServerConfig{},
-        std::move(control_server_protocol));
+    // Instantiate main server for obtaining job information and control
+    auto main_server = server_protocol_factory->CreateMainServer(auto_server);
 
     while (m_continue)
     {
