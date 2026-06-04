@@ -39,7 +39,7 @@ AutomationClient::AutomationClient(const std::string& server_name)
   try
   {
     // current way to check if connection was established
-    [[maybe_unused]] auto job_count = GetNumberOfJobs(*m_client_manager);
+    [[maybe_unused]] auto job_count = m_client_manager->GetNumberOfJobs();
   }
   catch (const sup::oac_tree_server::InvalidOperationException& ex)
   {
@@ -57,12 +57,12 @@ std::string AutomationClient::GetServerName() const
 
 std::size_t AutomationClient::GetJobCount() const
 {
-  return GetNumberOfJobs(*m_client_manager);
+  return m_client_manager->GetNumberOfJobs();
 }
 
 std::string AutomationClient::GetProcedureName(std::uint32_t job_index) const
 {
-  return m_client_manager->GetJobManager().GetJobInfo(job_index).GetProcedureName();
+  return m_client_manager->GetJobInfo(job_index).GetProcedureName();
 }
 
 std::unique_ptr<AbstractJobHandler> AutomationClient::CreateJobHandler(

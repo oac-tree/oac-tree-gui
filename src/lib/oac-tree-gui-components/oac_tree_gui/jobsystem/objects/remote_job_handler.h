@@ -26,7 +26,7 @@
 
 namespace sup::oac_tree_server
 {
-class IClientProtocolManager;
+class IClientJobManager;
 }
 
 namespace oac_tree_gui
@@ -40,7 +40,7 @@ class RemoteJobHandler : public AbstractJobHandler
   Q_OBJECT
 
 public:
-  RemoteJobHandler(JobItem* job_item, sup::oac_tree_server::IClientProtocolManager& manager,
+  RemoteJobHandler(JobItem* job_item, sup::oac_tree_server::IClientJobManager& manager,
                    std::size_t job_index, UserContext user_context);
   ~RemoteJobHandler() override;
 

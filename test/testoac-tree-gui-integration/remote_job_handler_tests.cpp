@@ -68,7 +68,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
   auto client_mgr = sup::oac_tree_server::utils::CreateEPICSClientProtocolManager(server_name);
-  EXPECT_EQ(GetNumberOfJobs(*client_mgr), 1);
+  EXPECT_EQ(client_mgr->GetNumberOfJobs(), 1);
 
   RemoteJobHandler job_handler(m_job_item, *client_mgr, 0, {});
 

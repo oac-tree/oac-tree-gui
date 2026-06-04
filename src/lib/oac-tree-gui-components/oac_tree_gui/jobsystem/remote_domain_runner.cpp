@@ -23,14 +23,14 @@
 #include "domain_event_dispatcher_context.h"
 #include "user_context.h"
 
-#include <sup/oac-tree-server/i_client_protocol_manager.h>
+#include <sup/oac-tree-server/i_client_job_manager.h>
 
 namespace oac_tree_gui
 {
 
 RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
                                        UserContext user_context,
-                                       sup::oac_tree_server::IClientProtocolManager& manager,
+                                       sup::oac_tree_server::IClientJobManager& manager,
                                        std::uint32_t job_index)
     : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {
