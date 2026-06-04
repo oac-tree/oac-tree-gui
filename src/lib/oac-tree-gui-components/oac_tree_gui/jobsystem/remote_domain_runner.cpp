@@ -23,20 +23,18 @@
 #include "domain_event_dispatcher_context.h"
 #include "user_context.h"
 
-#include <sup/oac-tree-server/client_job.h>
-#include <sup/oac-tree-server/epics_config_utils.h>
+#include <sup/oac-tree-server/i_client_protocol_manager.h>
 
 namespace oac_tree_gui
 {
 
 RemoteDomainRunner::RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context,
                                        UserContext user_context,
-                                       sup::oac_tree_server::IJobManager& manager,
+                                       sup::oac_tree_server::IClientProtocolManager& manager,
                                        std::uint32_t job_index)
     : AbstractDomainRunner(std::move(dispatcher_context), std::move(user_context))
 {
-  auto remote_job = sup::oac_tree_server::CreateClientJob(
-      manager, job_index, sup::oac_tree_server::utils::CreateEPICSIOClient, *GetJobInfoIO());
+  auto remote_job = manager.CreateJob(job_index, *GetJobInfoIO());
 
   SetDomainJob(std::move(remote_job));
 }

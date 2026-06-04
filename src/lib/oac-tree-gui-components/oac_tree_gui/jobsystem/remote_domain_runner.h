@@ -25,7 +25,7 @@
 
 namespace sup::oac_tree_server
 {
-class IJobManager;
+class IClientProtocolManager;
 }
 
 namespace oac_tree_gui
@@ -38,7 +38,7 @@ class RemoteDomainRunner : public AbstractDomainRunner
 {
 public:
   RemoteDomainRunner(DomainEventDispatcherContext dispatcher_context, UserContext user_context,
-                     sup::oac_tree_server::IJobManager& manager, std::uint32_t job_index);
+                     sup::oac_tree_server::IClientProtocolManager& manager, std::uint32_t job_index);
 };
 
 }  // namespace oac_tree_gui

@@ -25,7 +25,7 @@
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
-#include <sup/oac-tree-server/epics_config_utils.h>
+#include <sup/oac-tree-server/epics_utils.h>
 #include <sup/oac-tree-server/exceptions.h>
 #include <sup/oac-tree/job_info.h>
 
@@ -34,12 +34,12 @@ namespace oac_tree_gui
 
 AutomationClient::AutomationClient(const std::string& server_name)
     : m_server_name(server_name)
-    , m_automation_job_manager(sup::oac_tree_server::utils::CreateEPICSJobManager(server_name))
+    , m_client_manager(sup::oac_tree_server::utils::CreateEPICSClientProtocolManager(server_name))
 {
   try
   {
     // current way to check if connection was established
-    [[maybe_unused]] auto job_count = m_automation_job_manager->GetNumberOfJobs();
+    [[maybe_unused]] auto job_count = GetNumberOfJobs(*m_client_manager);
   }
   catch (const sup::oac_tree_server::InvalidOperationException& ex)
   {
@@ -57,19 +57,19 @@ std::string AutomationClient::GetServerName() const
 
 std::size_t AutomationClient::GetJobCount() const
 {
-  return m_automation_job_manager->GetNumberOfJobs();
+  return GetNumberOfJobs(*m_client_manager);
 }
 
 std::string AutomationClient::GetProcedureName(std::uint32_t job_index) const
 {
-  return m_automation_job_manager->GetJobInfo(job_index).GetProcedureName();
+  return m_client_manager->GetJobManager().GetJobInfo(job_index).GetProcedureName();
 }
 
 std::unique_ptr<AbstractJobHandler> AutomationClient::CreateJobHandler(
     RemoteJobItem* job_item, const UserContext& user_context)
 {
   auto job_index = job_item->GetRemoteJobIndex();
-  return std::make_unique<RemoteJobHandler>(job_item, *m_automation_job_manager, job_index,
+  return std::make_unique<RemoteJobHandler>(job_item, *m_client_manager, job_index,
                                             user_context);
 }
 

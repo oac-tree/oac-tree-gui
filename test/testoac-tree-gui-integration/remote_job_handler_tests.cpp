@@ -26,7 +26,7 @@
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
-#include <sup/oac-tree-server/epics_config_utils.h>
+#include <sup/oac-tree-server/epics_utils.h>
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
@@ -67,10 +67,10 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
 
   std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
-  auto manager = sup::oac_tree_server::utils::CreateEPICSJobManager(server_name);
-  EXPECT_EQ(manager->GetNumberOfJobs(), 1);
+  auto client_mgr = sup::oac_tree_server::utils::CreateEPICSClientProtocolManager(server_name);
+  EXPECT_EQ(GetNumberOfJobs(*client_mgr), 1);
 
-  RemoteJobHandler job_handler(m_job_item, *manager, 0, {});
+  RemoteJobHandler job_handler(m_job_item, *client_mgr, 0, {});
 
   ASSERT_NE(m_job_item->GetExpandedProcedure(), nullptr);
   EXPECT_FALSE(job_handler.IsRunning());

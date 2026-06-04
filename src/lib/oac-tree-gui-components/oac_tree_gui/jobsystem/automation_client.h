@@ -27,7 +27,7 @@
 
 namespace sup::oac_tree_server
 {
-class IJobManager;
+class IClientProtocolManager;
 }
 
 namespace oac_tree_gui
@@ -59,7 +59,7 @@ public:
 
 private:
   std::string m_server_name;
-  std::unique_ptr<sup::oac_tree_server::IJobManager> m_automation_job_manager;
+  std::unique_ptr<sup::oac_tree_server::IClientProtocolManager> m_client_manager;
 };
 
 }  // namespace oac_tree_gui

@@ -31,7 +31,8 @@
 namespace oac_tree_gui
 {
 
-RemoteJobHandler::RemoteJobHandler(JobItem* job_item, sup::oac_tree_server::IJobManager& manager,
+RemoteJobHandler::RemoteJobHandler(JobItem* job_item,
+                                   sup::oac_tree_server::IClientProtocolManager& manager,
                                    std::size_t job_index, UserContext user_context)
     : AbstractJobHandler(job_item)
 {
