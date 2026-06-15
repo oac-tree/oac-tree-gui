@@ -112,10 +112,7 @@ ProcedureSplittableEditorWidget::~ProcedureSplittableEditorWidget() = default;
 void ProcedureSplittableEditorWidget::SetModel(SequencerModel* model)
 {
   m_model = model;
-  for (auto& widget : m_splitter_controller->GetPanels())
-  {
-    widget->SetModel(m_model);
-  }
+  m_splitter_controller->SetModel(model);
 }
 
 void ProcedureSplittableEditorWidget::SetProcedure(ProcedureItem* procedure_item)
@@ -126,61 +123,10 @@ void ProcedureSplittableEditorWidget::SetProcedure(ProcedureItem* procedure_item
   }
 }
 
-void ProcedureSplittableEditorWidget::CreatePanel()
+sup::gui::SplittableComboPanel* ProcedureSplittableEditorWidget::CreatePanel()
 {
-  m_splitter_controller->CreatePanel();
+  return m_splitter_controller->CreatePanel();
 }
-
-// ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::CreatePanel(
-//     ProcedureComposerComboPanel* after_widget)
-// {
-//   auto new_widget = CreateProcedureEditor();
-//   auto new_widget_ptr = new_widget.get();
-
-//   if (after_widget == nullptr)
-//   {
-//     m_splitter->addWidget(new_widget.release());
-//     m_focus_handler->AddWidget(new_widget_ptr);
-//   }
-//   else
-//   {
-//     const std::int32_t index = m_splitter->indexOf(after_widget);
-//     m_splitter->insertWidget(index + 1, new_widget.release());
-//     m_focus_handler->AddWidget(new_widget_ptr, after_widget);
-//     new_widget_ptr->SetProcedure(after_widget->GetCurrentProcedure());
-//   }
-//   return new_widget_ptr;
-// }
-
-// void ProcedureSplittableEditorWidget::ClosePanel(ProcedureComposerComboPanel* widget_to_close)
-// {
-//   if (widget_to_close == nullptr)
-//   {
-//     return;
-//   }
-//   m_focus_handler->RemoveWidget(widget_to_close);
-//   widget_to_close->hide();
-//   widget_to_close->deleteLater();
-// }
-
-// ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetFocusWidget()
-// {
-//   return m_focus_handler->GetFocusWidget();
-// }
-
-// ProcedureComposerComboPanel* ProcedureSplittableEditorWidget::GetWidgetAt(std::size_t index)
-// {
-//   return m_focus_handler->GetWidgetAt(index);
-// }
-
-// void ProcedureSplittableEditorWidget::SetFocusWidget(ProcedureComposerComboPanel* widget)
-// {
-//   m_focus_handler->SetFocusWidget(widget);
-//   if (widget != nullptr)
-//   {
-//     NotifyFocusWidgetProcedureSelectionChanged(widget->GetCurrentProcedure());
-//   }
-// }
 
 void ProcedureSplittableEditorWidget::ReadSettings(const sup::gui::read_variant_func_t& read_func)
 {
@@ -275,63 +221,27 @@ ComposerViewInfo ProcedureSplittableEditorWidget::GetComposerViewInfo() const
 
 void ProcedureSplittableEditorWidget::SetComposerViewInfo(const ComposerViewInfo& view_info)
 {
-  // // number of panels
-  // for (const auto& procedure_info : view_info.editor_info_list)
-  // {
-  //   auto panel = CreatePanel();
-  //   panel->SetProcedureEditorType(procedure_info.editor_type);
-  //   panel->SetProcedure(FindAppropriateProcedure(m_model, procedure_info.procedure_id));
-  // }
+  // number of panels
+  for (const auto& procedure_info : view_info.editor_info_list)
+  {
+    auto panel = CreatePanel();
+    auto tab_widget = panel->GetMainEditor<ProcedureComposerTabWidget>();
+    tab_widget->SetEditorType(procedure_info.editor_type);
+    panel->SetItem(FindAppropriateProcedure(m_model, procedure_info.procedure_id));
+  }
 
-  // // splitter state
-  // if (!view_info.splitter_state.empty())
-  // {
-  //   m_splitter->restoreState(
-  //       QByteArray::fromBase64(QByteArray::fromStdString(view_info.splitter_state)));
-  // }
+  // splitter state
+  if (!view_info.splitter_state.empty())
+  {
+    m_splitter->restoreState(
+        QByteArray::fromBase64(QByteArray::fromStdString(view_info.splitter_state)));
+  }
 }
 
-// std::unique_ptr<ProcedureComposerComboPanel>
-// ProcedureSplittableEditorWidget::CreateProcedureEditor()
-// {
-//   auto result = std::make_unique<ProcedureComposerComboPanel>(m_command_service, m_model);
-
-//   auto on_add_panel = [this]()
-//   {
-//     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-//     CreatePanel(/*add after*/ sending_panel);
-//   };
-//   connect(result.get(), &ProcedureComposerComboPanel::splitViewRequest, this, on_add_panel);
-
-//   auto on_remove_panel = [this]()
-//   {
-//     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-//     ClosePanel(sending_panel);
-//   };
-//   connect(result.get(), &ProcedureComposerComboPanel::closeViewRequest, this, on_remove_panel);
-
-//   auto on_focus_request = [this]()
-//   {
-//     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-//     m_focus_handler->SetFocusWidget(sending_panel);
-//     NotifyFocusWidgetProcedureSelectionChanged(sending_panel->GetCurrentProcedure());
-//   };
-//   connect(result.get(), &ProcedureComposerComboPanel::panelFocusRequest, this, on_focus_request);
-
-//   auto on_selected_procedure_changed = [this](const oac_tree_gui::ProcedureItem* item)
-//   {
-//     auto sending_panel = qobject_cast<ProcedureComposerComboPanel*>(sender());
-
-//     if (sending_panel == GetFocusWidget())
-//     {
-//       NotifyFocusWidgetProcedureSelectionChanged(item);
-//     }
-//   };
-//   connect(result.get(), &ProcedureComposerComboPanel::selectedProcedureChanged, this,
-//           on_selected_procedure_changed);
-
-//   return result;
-// }
+sup::gui::SplittableEditorController* ProcedureSplittableEditorWidget::GetController() const
+{
+  return m_splitter_controller.get();
+}
 
 void ProcedureSplittableEditorWidget::NotifyFocusWidgetProcedureSelectionChanged(
     mvvm::ItemSelection selection)
@@ -362,10 +272,16 @@ ProcedureSplittableEditorWidget::CreateSplitterController() const
     auto main_editor = std::make_unique<ProcedureComposerTabWidget>(m_command_service);
 
     auto item_list_callback = [this]() -> std::vector<mvvm::SessionItem*>
-    { return mvvm::utils::CastItems<mvvm::SessionItem>(m_model->GetProcedures()); };
+    {
+      return m_model == nullptr
+                 ? std::vector<mvvm::SessionItem*>()
+                 : mvvm::utils::CastItems<mvvm::SessionItem>(m_model->GetProcedures());
+    };
 
-    return std::make_unique<sup::gui::SplittableComboPanel>(std::move(main_editor),
-                                                            item_list_callback);
+    auto result = std::make_unique<sup::gui::SplittableComboPanel>(std::move(main_editor),
+                                                                   item_list_callback);
+    result->SetModel(m_model);
+    return result;
   };
   return std::make_unique<sup::gui::SplittableEditorController>(m_splitter, factory_func);
 }

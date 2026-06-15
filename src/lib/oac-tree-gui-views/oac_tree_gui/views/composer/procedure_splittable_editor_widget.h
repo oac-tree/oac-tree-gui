@@ -30,7 +30,8 @@
 
 class QSplitter;
 
-namespace mvvm {
+namespace mvvm
+{
 class ItemSelection;
 }
 
@@ -38,17 +39,14 @@ namespace sup::gui
 {
 class IAppCommandService;
 class SplittableEditorController;
+class SplittableComboPanel;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
 {
 
 class SequencerModel;
-// class ProcedureComposerComboPanel;
 class ProcedureItem;
-
-// template <typename WidgetT>
-// class WidgetFocusHandler;
 
 /**
  * @brief The ProcedureSplittableEditorWidget holds multiple splittable ProcedureComposerTabWidgets.
@@ -75,42 +73,9 @@ public:
   void SetProcedure(ProcedureItem* procedure_item);
 
   /**
-   * @brief Gets the internal splitter.
-   */
-  QSplitter* GetSplitter() const;
-
-  /**
    * @brief Adds panel to the splitter.
    */
-  void CreatePanel();
-
-  // /**
-  //  * @brief Adds a new widget to the splitter.
-  //  *
-  //  * @param after_widget If nullptr, the new widget is added at the end. Otherwise, it is added
-  //  * after the specified widget.
-  //  */
-  // ProcedureComposerComboPanel* CreatePanel(ProcedureComposerComboPanel* after_widget = nullptr);
-
-  // /**
-  //  * @brief Closes and deletes the specified widget in the splitter.
-  //  */
-  // void ClosePanel(ProcedureComposerComboPanel* widget_to_close);
-
-  // /**
-  //  * @brief Returns the widget currently in focus.
-  //  */
-  // ProcedureComposerComboPanel* GetFocusWidget();
-
-  // /**
-  //  * @brief Returns the widget at specified index.
-  //  */
-  // ProcedureComposerComboPanel* GetWidgetAt(std::size_t index);
-
-  // /**
-  //  * @brief Sets the widget in focus.
-  //  */
-  // void SetFocusWidget(ProcedureComposerComboPanel* widget);
+  sup::gui::SplittableComboPanel *CreatePanel();
 
   /**
    * @brief Read settings from storage using function provided.
@@ -147,15 +112,17 @@ public:
    */
   void SetComposerViewInfo(const ComposerViewInfo& view_info);
 
+  /**
+   * @brief Returns controller of the editor, which allows to manipulate panels and their content.
+   *
+   * Used for testing.
+   */
+  sup::gui::SplittableEditorController* GetController() const;
+
 signals:
   void focusWidgetProcedureSelectionChanged(const oac_tree_gui::ProcedureItem* item);
 
 private:
-  // /**
-  //  * @brief Creates a new procedure editor widget.
-  //  */
-  // std::unique_ptr<ProcedureComposerComboPanel> CreateProcedureEditor();
-
   /**
    * @brief Notifies that the procedure selection in the focus widget has changed.
    *
@@ -170,7 +137,6 @@ private:
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
 
-  // std::unique_ptr<WidgetFocusHandler<ProcedureComposerComboPanel>> m_focus_handler;
   bool m_block_selection_change_notification{false};
   //! cached value of current procedure item in focus widget
   const ProcedureItem* m_procedure_item_in_focus_cache{nullptr};
