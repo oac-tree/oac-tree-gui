@@ -31,6 +31,7 @@
 
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
+#include <mvvm/model/item_selection.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -69,8 +70,8 @@ ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService& command_ser
                                          ProcedureListActions::ActionKey::kRemoveSelected});
   m_stack_widget->AddWidget(m_collapsible_list, toolbar_actions);
 
-  connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
-          &ComposerToolsPanel::ProcedureSelected);
+  connect(m_procedure_list_view, &ProcedureListWidget::procedureSelectionChanged, this,
+          &ComposerToolsPanel::procedureSelectionChanged);
 
   connect(m_available_widget, &AvailableInstructionsWidget::InstructionDoubleClicked, this,
           &ComposerToolsPanel::ToolBoxInstructionRequest);

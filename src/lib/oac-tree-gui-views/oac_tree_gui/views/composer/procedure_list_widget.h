@@ -31,6 +31,7 @@ namespace mvvm
 {
 class ViewModel;
 class ItemViewComponentProvider;
+class ItemSelection;
 }  // namespace mvvm
 
 namespace sup::gui
@@ -80,8 +81,12 @@ public:
 
   QList<QAction*> GetActions(const std::vector<ProcedureListActions::ActionKey>& action_keys);
 
+  mvvm::ItemSelection GetSelection() const;
+
+  void SetSelection(const mvvm::ItemSelection& selection);
+
 signals:
-  void ProcedureSelected(const oac_tree_gui::ProcedureItem* procedure_item);
+  void procedureSelectionChanged(const mvvm::ItemSelection& selection);
 
 private:
   ProcedureListContext CreateContext();

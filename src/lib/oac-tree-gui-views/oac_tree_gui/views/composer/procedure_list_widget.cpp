@@ -60,7 +60,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   layout->addWidget(m_list_view);
 
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectionChanged, this,
-          [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
+          &ProcedureListWidget::procedureSelectionChanged);
 
   connect(m_actions, &ProcedureListActions::CreateNewProcedureRequest, m_action_handler,
           &ProcedureListActionHandler::OnCreateNewProcedureRequest);
@@ -118,6 +118,16 @@ std::vector<const ProcedureItem*> ProcedureListWidget::GetSelectedProcedures() c
 void ProcedureListWidget::SetSelectedProcedure(const ProcedureItem* procedure)
 {
   m_component_provider->SetSelection(mvvm::ItemSelection(procedure));
+}
+
+mvvm::ItemSelection ProcedureListWidget::GetSelection() const
+{
+  return m_component_provider->GetSelection();
+}
+
+void ProcedureListWidget::SetSelection(const mvvm::ItemSelection& selection)
+{
+  m_component_provider->SetSelection(selection);
 }
 
 QTreeView* ProcedureListWidget::GetTreeView()

@@ -25,6 +25,7 @@
 
 #include <sup/gui/app/null_command_service.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/test_helper.h>
 #include <mvvm/viewmodel/viewmodel.h>
@@ -36,6 +37,10 @@
 #include <QTreeView>
 
 Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
+
+// #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+Q_DECLARE_METATYPE(mvvm::ItemSelection)
+// #endif
 
 namespace oac_tree_gui::test
 {
@@ -66,7 +71,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   ProcedureListWidget view(m_command_service);
-  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
+  QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
   view.SetModel(&model);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
@@ -76,7 +81,8 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(spy_selected),
+            mvvm::ItemSelection(procedure));
 
   spy_selected.clear();
 
@@ -101,7 +107,7 @@ TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
   // checking selections
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
 
-  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
+  QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
   // removing item
   model.RemoveItem(procedure);
@@ -116,20 +122,21 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndexViaView)
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   ProcedureListWidget view(m_command_service);
-  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
+  QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
   view.SetModel(&model);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
 
   // selecting an item and checking results
   auto indexes = view.GetViewModel()->GetIndexOfSessionItem(procedure);
-  ASSERT_EQ(indexes.size(), 2); // display name and close button
+  ASSERT_EQ(indexes.size(), 2);  // display name and close button
   view.GetTreeView()->setCurrentIndex(indexes.at(0));
 
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(spy_selected),
+            mvvm::ItemSelection(procedure));
 }
 
 }  // namespace oac_tree_gui::test

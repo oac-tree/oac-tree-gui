@@ -23,6 +23,11 @@
 
 #include <QWidget>
 
+namespace mvvm
+{
+class ItemSelection;
+}  // namespace mvvm
+
 namespace sup::gui
 {
 class CollapsibleListView;
@@ -66,7 +71,7 @@ public:
   void SetSelectedProcedure(const ProcedureItem* procedure);
 
 signals:
-  void ProcedureSelected(const oac_tree_gui::ProcedureItem* procedure);
+  void procedureSelectionChanged(const mvvm::ItemSelection& selection);
 
   /**
    * @brief Emmited when the user double clicks on instruction/aggregate name in the left

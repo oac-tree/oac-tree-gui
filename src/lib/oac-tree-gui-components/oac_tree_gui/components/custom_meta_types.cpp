@@ -25,6 +25,7 @@
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/nodeeditor/i_node_port.h>
 
 #include <sup/oac-tree/instruction.h>
@@ -43,7 +44,8 @@ void RegisterCustomMetaTypes()
 
   auto register_func = []()
   {
-    (void)qRegisterMetaType<const oac_tree_gui::ProcedureItem*>("const oac_tree_gui::ProcedureItem*");
+    (void)qRegisterMetaType<const oac_tree_gui::ProcedureItem*>(
+        "const oac_tree_gui::ProcedureItem*");
     (void)qRegisterMetaType<std::vector<const oac_tree_gui::InstructionItem*>>(
         "std::vector<const oac_tree_gui::InstructionItem*>");
     (void)qRegisterMetaType<const oac_tree_gui::InstructionItem*>(
@@ -58,6 +60,7 @@ void RegisterCustomMetaTypes()
     (void)qRegisterMetaType<oac_tree_gui::GraphicsViewOperationMode>(
         "oac_tree_gui::GraphicsViewOperationMode");
     (void)qRegisterMetaType<const mvvm::INodePort*>("const mvvm::INodePort*");
+    (void)qRegisterMetaType<mvvm::ItemSelection>("mvvm::ItemSelection");
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<QList<int>>("QList<int>");

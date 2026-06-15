@@ -35,6 +35,8 @@
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/widgets/custom_splitter.h>
 
+#include <mvvm/model/item_selection.h>
+
 #include <QAction>
 #include <QVBoxLayout>
 
@@ -115,12 +117,13 @@ void SequencerComposerView::WriteSettings()
 void SequencerComposerView::SetupConnections()
 {
   // procedure selection request from toolbox to procedure editor
-  auto on_procedure_selected = [this](const ProcedureItem* procedure_item)
+  auto on_procedure_selected = [this](const mvvm::ItemSelection& selection)
   {
-    m_splittable_editor_widget->SetProcedure(const_cast<ProcedureItem*>(procedure_item));
-    m_composer_actions->SetProcedure(const_cast<ProcedureItem*>(procedure_item));
+    auto selected_procedure = selection.GetSelected<ProcedureItem>();
+    m_splittable_editor_widget->SetProcedure(const_cast<ProcedureItem*>(selected_procedure));
+    m_composer_actions->SetProcedure(const_cast<ProcedureItem*>(selected_procedure));
   };
-  connect(m_composer_tools_panel, &ComposerToolsPanel::ProcedureSelected, this,
+  connect(m_composer_tools_panel, &ComposerToolsPanel::procedureSelectionChanged, this,
           on_procedure_selected);
 
   // propagate selection from focused procedure editor to toolbox
