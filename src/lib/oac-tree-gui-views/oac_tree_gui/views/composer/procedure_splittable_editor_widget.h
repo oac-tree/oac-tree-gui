@@ -30,20 +30,25 @@
 
 class QSplitter;
 
+namespace mvvm {
+class ItemSelection;
+}
+
 namespace sup::gui
 {
 class IAppCommandService;
-}
+class SplittableEditorController;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
 
 class SequencerModel;
-class ProcedureComposerComboPanel;
+// class ProcedureComposerComboPanel;
 class ProcedureItem;
 
-template <typename WidgetT>
-class WidgetFocusHandler;
+// template <typename WidgetT>
+// class WidgetFocusHandler;
 
 /**
  * @brief The ProcedureSplittableEditorWidget holds multiple splittable ProcedureComposerTabWidgets.
@@ -75,32 +80,37 @@ public:
   QSplitter* GetSplitter() const;
 
   /**
-   * @brief Adds a new widget to the splitter.
-   *
-   * @param after_widget If nullptr, the new widget is added at the end. Otherwise, it is added
-   * after the specified widget.
+   * @brief Adds panel to the splitter.
    */
-  ProcedureComposerComboPanel* CreatePanel(ProcedureComposerComboPanel* after_widget = nullptr);
+  void CreatePanel();
 
-  /**
-   * @brief Closes and deletes the specified widget in the splitter.
-   */
-  void ClosePanel(ProcedureComposerComboPanel* widget_to_close);
+  // /**
+  //  * @brief Adds a new widget to the splitter.
+  //  *
+  //  * @param after_widget If nullptr, the new widget is added at the end. Otherwise, it is added
+  //  * after the specified widget.
+  //  */
+  // ProcedureComposerComboPanel* CreatePanel(ProcedureComposerComboPanel* after_widget = nullptr);
 
-  /**
-   * @brief Returns the widget currently in focus.
-   */
-  ProcedureComposerComboPanel* GetFocusWidget();
+  // /**
+  //  * @brief Closes and deletes the specified widget in the splitter.
+  //  */
+  // void ClosePanel(ProcedureComposerComboPanel* widget_to_close);
 
-  /**
-   * @brief Returns the widget at specified index.
-   */
-  ProcedureComposerComboPanel* GetWidgetAt(std::size_t index);
+  // /**
+  //  * @brief Returns the widget currently in focus.
+  //  */
+  // ProcedureComposerComboPanel* GetFocusWidget();
 
-  /**
-   * @brief Sets the widget in focus.
-   */
-  void SetFocusWidget(ProcedureComposerComboPanel* widget);
+  // /**
+  //  * @brief Returns the widget at specified index.
+  //  */
+  // ProcedureComposerComboPanel* GetWidgetAt(std::size_t index);
+
+  // /**
+  //  * @brief Sets the widget in focus.
+  //  */
+  // void SetFocusWidget(ProcedureComposerComboPanel* widget);
 
   /**
    * @brief Read settings from storage using function provided.
@@ -141,10 +151,10 @@ signals:
   void focusWidgetProcedureSelectionChanged(const oac_tree_gui::ProcedureItem* item);
 
 private:
-  /**
-   * @brief Creates a new procedure editor widget.
-   */
-  std::unique_ptr<ProcedureComposerComboPanel> CreateProcedureEditor();
+  // /**
+  //  * @brief Creates a new procedure editor widget.
+  //  */
+  // std::unique_ptr<ProcedureComposerComboPanel> CreateProcedureEditor();
 
   /**
    * @brief Notifies that the procedure selection in the focus widget has changed.
@@ -152,16 +162,20 @@ private:
    * Also notifies if focus widget changed, and the procedure is not the same as in previous focus
    * widget. This is used to propate focus procedure change to procedure list.
    */
-  void NotifyFocusWidgetProcedureSelectionChanged(const ProcedureItem *item);
+  void NotifyFocusWidgetProcedureSelectionChanged(mvvm::ItemSelection selection);
+
+  std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController() const;
 
   sup::gui::IAppCommandService& m_command_service;
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
-  std::unique_ptr<WidgetFocusHandler<ProcedureComposerComboPanel>> m_focus_handler;
-  bool m_block_selection_change_notification{false};
 
+  // std::unique_ptr<WidgetFocusHandler<ProcedureComposerComboPanel>> m_focus_handler;
+  bool m_block_selection_change_notification{false};
   //! cached value of current procedure item in focus widget
   const ProcedureItem* m_procedure_item_in_focus_cache{nullptr};
+
+  std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
 };
 
 }  // namespace oac_tree_gui
