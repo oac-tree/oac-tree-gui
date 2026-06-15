@@ -23,10 +23,6 @@ target_sources(${library_name} PRIVATE
   instruction_editor_widget.h
   procedure_attribute_editor_widget.cpp
   procedure_attribute_editor_widget.h
-  procedure_composer_combo_panel.cpp
-  procedure_composer_combo_panel.h
-  procedure_composer_combo_toolbar.cpp
-  procedure_composer_combo_toolbar.h
   procedure_composer_tab_widget.cpp
   procedure_composer_tab_widget.h
   procedure_editor_placeholder.cpp

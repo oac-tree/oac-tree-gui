@@ -24,7 +24,6 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/views/composer/procedure_composer_combo_panel.h>
 
 #include <sup/gui/app/null_command_service.h>
 

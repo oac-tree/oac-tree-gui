@@ -12,7 +12,6 @@ target_sources(${library_name} PRIVATE
   instruction_editor_drop_handler.cpp
   instruction_editor_drop_handler.h
   procedure_list_context.h
-  widget_focus_handler.h
   workspace_editor_action_handler.cpp
   workspace_editor_action_handler.h
   workspace_editor_context.h
