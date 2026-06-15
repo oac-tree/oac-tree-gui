@@ -23,6 +23,8 @@
 
 #include <oac_tree_gui/model/component_types.h>
 
+#include <sup/gui/mainwindow/session_item_widget.h>
+
 #include <QWidget>
 
 class QTabWidget;
@@ -43,7 +45,7 @@ class XmlPanel;
 class NodeEditorWidget;
 class ProcedureAttributeEditorWidget;
 
-class ProcedureComposerTabWidget : public QWidget
+class ProcedureComposerTabWidget : public sup::gui::SessionItemWidget
 {
   Q_OBJECT
 
@@ -56,6 +58,8 @@ public:
   ProcedureComposerTabWidget& operator=(const ProcedureComposerTabWidget&) = delete;
   ProcedureComposerTabWidget(ProcedureComposerTabWidget&&) = delete;
   ProcedureComposerTabWidget& operator=(ProcedureComposerTabWidget&&) = delete;
+
+  void SetItem(mvvm::SessionItem* procedure_item) override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 

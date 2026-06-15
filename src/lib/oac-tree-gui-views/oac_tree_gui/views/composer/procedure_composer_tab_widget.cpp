@@ -40,7 +40,7 @@ namespace oac_tree_gui
 
 ProcedureComposerTabWidget::ProcedureComposerTabWidget(
     sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
-    : QWidget(parent_widget)
+    : SessionItemWidget(parent_widget)
     , m_tool_bar(new QToolBar)
     , m_instruction_editor_widget(new InstructionEditorWidget(command_service))
     , m_workspace_editor_widget(
@@ -77,6 +77,11 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(
 }
 
 ProcedureComposerTabWidget::~ProcedureComposerTabWidget() = default;
+
+void ProcedureComposerTabWidget::SetItem(mvvm::SessionItem* procedure_item)
+{
+  SetProcedure(dynamic_cast<ProcedureItem*>(procedure_item));
+}
 
 void ProcedureComposerTabWidget::SetProcedure(ProcedureItem* procedure_item)
 {
