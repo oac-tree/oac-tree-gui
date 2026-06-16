@@ -31,6 +31,7 @@
 #include <sup/gui/views/dtoeditor/splittable_editor_controller.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/test_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -149,7 +150,8 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
   editor.SetProcedure(procedure);
 
   ASSERT_EQ(signal_spy.count(), 1);
-  EXPECT_EQ(signal_spy.takeFirst().at(0).value<const ProcedureItem*>(), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(signal_spy),
+            mvvm::ItemSelection(procedure));
 
   EXPECT_EQ(second_widget->GetCurrentItem(), procedure);
 

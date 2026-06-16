@@ -129,7 +129,7 @@ void SequencerComposerView::SetupConnections()
   // propagate selection from focused procedure editor to toolbox
   connect(m_splittable_editor_widget,
           &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged,
-          m_composer_tools_panel, &ComposerToolsPanel::SetSelectedProcedure);
+          m_composer_tools_panel, &ComposerToolsPanel::SetProcedureSelection);
 
   // instruction toolbox requests form left panel
   connect(m_composer_tools_panel, &ComposerToolsPanel::ToolBoxInstructionRequest,

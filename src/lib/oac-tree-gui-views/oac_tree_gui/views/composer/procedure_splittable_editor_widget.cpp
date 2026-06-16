@@ -104,7 +104,7 @@ ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
 
   connect(m_splitter_controller.get(),
           &sup::gui::SplittableEditorController::focusPanelSelectionChanged, this,
-          &ProcedureSplittableEditorWidget::NotifyFocusWidgetProcedureSelectionChanged);
+          &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 }
 
 ProcedureSplittableEditorWidget::~ProcedureSplittableEditorWidget() = default;
@@ -241,27 +241,6 @@ void ProcedureSplittableEditorWidget::SetComposerViewInfo(const ComposerViewInfo
 sup::gui::SplittableEditorController* ProcedureSplittableEditorWidget::GetController() const
 {
   return m_splitter_controller.get();
-}
-
-void ProcedureSplittableEditorWidget::NotifyFocusWidgetProcedureSelectionChanged(
-    mvvm::ItemSelection selection)
-{
-  if (m_block_selection_change_notification)
-  {
-    return;
-  }
-
-  auto selected_procedure = selection.GetSelected<ProcedureItem>();
-
-  m_block_selection_change_notification = true;
-
-  if (selected_procedure != m_procedure_item_in_focus_cache)
-  {
-    m_procedure_item_in_focus_cache = selected_procedure;
-    emit focusWidgetProcedureSelectionChanged(selected_procedure);
-  }
-
-  m_block_selection_change_notification = false;
 }
 
 std::unique_ptr<sup::gui::SplittableEditorController>

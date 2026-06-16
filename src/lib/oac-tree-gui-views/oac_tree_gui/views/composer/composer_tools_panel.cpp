@@ -93,21 +93,22 @@ void ComposerToolsPanel::SetModels(ApplicationModels* models)
       (sequencer_model != nullptr) ? sequencer_model->GetProcedureContainer() : nullptr;
   if (procedure_container != nullptr)
   {
-    SetSelectedProcedure(procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::First()));
+    SetProcedureSelection(
+        mvvm::ItemSelection(procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::First())));
   }
 
   m_favorite_widget->SetInstructionContainer(
       models->GetProjectModel()->GetFavoriteInstructionContainer());
 }
 
-const ProcedureItem* ComposerToolsPanel::GetSelectedProcedure()
+mvvm::ItemSelection ComposerToolsPanel::GetProcedureSelection() const
 {
-  return m_procedure_list_view->GetSelection().GetSelected<ProcedureItem>();
+  return m_procedure_list_view->GetSelection();
 }
 
-void ComposerToolsPanel::SetSelectedProcedure(const ProcedureItem* procedure)
+void ComposerToolsPanel::SetProcedureSelection(const mvvm::ItemSelection& selection)
 {
-  m_procedure_list_view->SetSelection(mvvm::ItemSelection(procedure));
+  m_procedure_list_view->SetSelection(selection);
 }
 
 void ComposerToolsPanel::ReadSettings()

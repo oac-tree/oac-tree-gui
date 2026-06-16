@@ -120,27 +120,20 @@ public:
   sup::gui::SplittableEditorController* GetController() const;
 
 signals:
-  void focusWidgetProcedureSelectionChanged(const oac_tree_gui::ProcedureItem* item);
-
-private:
   /**
    * @brief Notifies that the procedure selection in the focus widget has changed.
    *
    * Also notifies if focus widget changed, and the procedure is not the same as in previous focus
    * widget. This is used to propate focus procedure change to procedure list.
    */
-  void NotifyFocusWidgetProcedureSelectionChanged(mvvm::ItemSelection selection);
+  void focusWidgetProcedureSelectionChanged(const mvvm::ItemSelection& selection);
 
+private:
   std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController() const;
 
   sup::gui::IAppCommandService& m_command_service;
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
-
-  bool m_block_selection_change_notification{false};
-  //! cached value of current procedure item in focus widget
-  const ProcedureItem* m_procedure_item_in_focus_cache{nullptr};
-
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
 };
 

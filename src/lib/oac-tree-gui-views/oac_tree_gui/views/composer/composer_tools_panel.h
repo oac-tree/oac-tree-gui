@@ -66,9 +66,9 @@ public:
 
   void SetModels(ApplicationModels* models);
 
-  const ProcedureItem* GetSelectedProcedure();
+  mvvm::ItemSelection GetProcedureSelection() const;
 
-  void SetSelectedProcedure(const ProcedureItem* procedure);
+  void SetProcedureSelection(const mvvm::ItemSelection& selection);
 
 signals:
   void procedureSelectionChanged(const mvvm::ItemSelection& selection);
