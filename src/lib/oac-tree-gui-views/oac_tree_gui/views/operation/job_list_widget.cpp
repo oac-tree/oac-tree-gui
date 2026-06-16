@@ -25,8 +25,8 @@
 #include <oac_tree_gui/viewmodel/job_list_viewmodel.h>
 
 #include <sup/gui/widgets/custom_header_view.h>
-#include <mvvm/model/item_selection.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/views/component_provider_helper.h>
 
 #include <QTreeView>
@@ -34,7 +34,7 @@
 
 namespace
 {
-const QString kHeaderStateSettingName = "JobListWidget/header_state";
+constexpr auto kHeaderStateSettingName = "JobListWidget/header_state";
 }  // namespace
 
 namespace oac_tree_gui
@@ -76,10 +76,10 @@ void JobListWidget::SetJobModel(JobModel* model)
   m_component_provider->SetApplicationModel(model);
 }
 
-const JobItem *JobListWidget::GetSelectedJob() const
+const JobItem* JobListWidget::GetSelectedJob() const
 {
   auto selection = m_component_provider->GetSelection();
-  return selection.GetSelected<JobItem>();
+  return selection.GetItem<JobItem>();
 }
 
 void JobListWidget::SetSelectedJob(const JobItem* job)

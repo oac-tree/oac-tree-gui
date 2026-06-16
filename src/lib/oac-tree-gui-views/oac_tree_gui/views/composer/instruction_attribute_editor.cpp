@@ -101,7 +101,7 @@ void InstructionAttributeEditor::SummonContextMenu(const QPoint& point)
 AttributeEditorContext InstructionAttributeEditor::CreateAttributeEditorActionContext()
 {
   auto selected_items_callback = [this]()
-  { return m_component_provider->GetSelection().GetSelectedItems(); };
+  { return m_component_provider->GetSelection().GetItems(); };
 
   return {selected_items_callback};
 }

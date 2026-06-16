@@ -134,7 +134,7 @@ ProcedureListContext ProcedureListWidget::CreateContext()
   ProcedureListContext result;
   result.procedure_container = [this]()
   { return m_model ? m_model->GetProcedureContainer() : nullptr; };
-  result.selected_procedure = [this]() { return GetSelection().GetSelected<ProcedureItem>(); };
+  result.selected_procedure = [this]() { return GetSelection().GetItem<ProcedureItem>(); };
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
   return result;

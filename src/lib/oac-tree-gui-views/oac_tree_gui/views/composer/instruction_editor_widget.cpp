@@ -158,7 +158,7 @@ void InstructionEditorWidget::SetSelectedInstructions(
 std::vector<const InstructionItem*> InstructionEditorWidget::GetSelectedInstructions() const
 {
   auto selection = m_component_provider->GetSelection();
-  return selection.GetSelectedItems<InstructionItem>();
+  return selection.GetItems<InstructionItem>();
 }
 
 const InstructionItem* InstructionEditorWidget::GetSelectedInstruction() const

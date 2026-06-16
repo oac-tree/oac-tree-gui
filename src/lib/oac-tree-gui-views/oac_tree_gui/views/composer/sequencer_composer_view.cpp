@@ -119,7 +119,7 @@ void SequencerComposerView::SetupConnections()
   // procedure selection request from toolbox to procedure editor
   auto on_procedure_selected = [this](const mvvm::ItemSelection& selection)
   {
-    auto selected_procedure = selection.GetSelected<ProcedureItem>();
+    auto selected_procedure = selection.GetItem<ProcedureItem>();
     m_splittable_editor_widget->SetProcedure(const_cast<ProcedureItem*>(selected_procedure));
     m_composer_actions->SetProcedure(const_cast<ProcedureItem*>(selected_procedure));
   };

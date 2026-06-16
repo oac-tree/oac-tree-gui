@@ -77,8 +77,8 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService& comma
     , m_component_provider(CreateProvider(presentation))
     , m_line_edit(new QLineEdit)
     , m_editor(new WorkspaceEditor(
-          command_service,
-          [this]() { return m_component_provider->GetSelection().GetSelectedItems(); }, this))
+          command_service, [this]() { return m_component_provider->GetSelection().GetItems(); },
+          this))
     , m_edit_type(WorkspaceEditType::kEditorEnabled)
 {
   setWindowTitle("Workspace");
