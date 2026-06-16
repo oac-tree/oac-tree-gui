@@ -39,7 +39,9 @@
 #include <QSignalSpy>
 #include <QSplitter>
 
-Q_DECLARE_METATYPE(const oac_tree_gui::ProcedureItem*)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+Q_DECLARE_METATYPE(mvvm::ItemSelection)
+#endif
 
 namespace oac_tree_gui::test
 {
