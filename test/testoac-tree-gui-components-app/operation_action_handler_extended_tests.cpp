@@ -135,7 +135,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), job_item);
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_item);
 
   // we can submit same procedure twice, it will be two different jobs
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -305,7 +305,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
   // on regeneration status should be reset
   EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kUndefined);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), job_item);
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_item);
 
   ASSERT_EQ(GetJobItems().size(), 1);
 

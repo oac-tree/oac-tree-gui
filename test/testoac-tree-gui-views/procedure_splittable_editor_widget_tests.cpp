@@ -150,7 +150,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
   editor.SetProcedure(procedure);
 
   ASSERT_EQ(signal_spy.count(), 1);
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(signal_spy),
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(signal_spy),
             mvvm::ItemSelection(procedure));
 
   EXPECT_EQ(second_widget->GetCurrentItem(), procedure);

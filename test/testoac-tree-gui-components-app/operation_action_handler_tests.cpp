@@ -131,7 +131,7 @@ TEST_F(OperationActionHandlerTest, SubmitLocalJob)
   ASSERT_EQ(job_items.size(), 1);
 
   ASSERT_EQ(job_items.at(0)->GetProcedure(), procedure_item);
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), job_items.at(0));
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_items.at(0));
 }
 
 TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
@@ -158,7 +158,7 @@ TEST_F(OperationActionHandlerTest, SubmitThrowingLocalJob)
   auto job = job_items.at(0);
   ASSERT_EQ(job->GetProcedure(), procedure_item);
   EXPECT_EQ(job->GetStatus(), RunnerStatus::kSubmitFailure);
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), job);
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job);
 }
 
 TEST_F(OperationActionHandlerTest, SubmitFileBasedJob)
@@ -181,7 +181,7 @@ TEST_F(OperationActionHandlerTest, SubmitFileBasedJob)
   ASSERT_EQ(job_items.size(), 1);
 
   ASSERT_EQ(job_items.at(0)->GetFileName(), procedure_file);
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), job_items.at(0));
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_items.at(0));
 }
 
 //! Testing import of a single remote job.
@@ -214,7 +214,7 @@ TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)
 
   EXPECT_EQ(job_item->GetServerName(), server_name);
   EXPECT_EQ(job_item->GetRemoteJobIndex(), job_index);
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), job_item);
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_item);
 }
 
 //! Testing import of two remote jobs between two existing one.
@@ -312,7 +312,7 @@ TEST_F(OperationActionHandlerTest, RemoveLocalJobInTheMiddle)
   EXPECT_EQ(GetJobs<JobItem>(), std::vector<JobItem*>({job_item0, job_item2}));
 
   // last job reported as new selection
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), job_item2);
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_item2);
 }
 
 TEST_F(OperationActionHandlerTest, StartPauseStepStopResetJob)
@@ -365,7 +365,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
   EXPECT_TRUE(operation_handler->OnRegenerateJobRequest());
 
   EXPECT_EQ(spy_selected_request.count(), 1);
-  EXPECT_EQ(mvvm::test::GetSendItem<const JobItem*>(spy_selected_request), &job_item);
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), &job_item);
   EXPECT_EQ(job_item.GetStatus(), RunnerStatus::kUndefined);
 }
 

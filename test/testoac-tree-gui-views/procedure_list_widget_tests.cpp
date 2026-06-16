@@ -79,7 +79,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   view.SetSelection(mvvm::ItemSelection(procedure));
   EXPECT_EQ(view.GetSelection(), mvvm::ItemSelection(procedure));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(spy_selected),
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected),
             mvvm::ItemSelection(procedure));
 
   spy_selected.clear();
@@ -88,7 +88,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   view.SetSelection(mvvm::ItemSelection());
   EXPECT_TRUE(view.GetSelection().IsEmpty());
 
-  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::TakeValue<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
@@ -111,7 +111,7 @@ TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
   model.RemoveItem(procedure);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::TakeValue<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 TEST_F(ProcedureListWidgetTest, SetCurrentIndexViaView)
@@ -132,7 +132,7 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndexViaView)
 
   EXPECT_EQ(view.GetSelection(), mvvm::ItemSelection(procedure));
 
-  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(spy_selected),
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected),
             mvvm::ItemSelection(procedure));
 }
 

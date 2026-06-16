@@ -99,7 +99,7 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstruction)
   EXPECT_EQ(spy_shape_clicks.count(), 1);
   EXPECT_EQ(spy_port_clicks.count(), 0);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<const InstructionItem*>(spy_shape_clicks), &item);
+  EXPECT_EQ(mvvm::test::TakeValue<const InstructionItem*>(spy_shape_clicks), &item);
 }
 
 TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstructionPort)
@@ -130,7 +130,7 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstructionPort)
   EXPECT_EQ(spy_shape_clicks.count(), 0);
   EXPECT_EQ(spy_port_clicks.count(), 1);
 
-  EXPECT_EQ(mvvm::test::GetSendItem<const mvvm::INodePort*>(spy_port_clicks),
+  EXPECT_EQ(mvvm::test::TakeValue<const mvvm::INodePort*>(spy_port_clicks),
             mvvm::GetInputPort(*shape_ptr));
 }
 
