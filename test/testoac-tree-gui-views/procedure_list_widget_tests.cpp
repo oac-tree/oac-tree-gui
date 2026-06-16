@@ -61,8 +61,7 @@ public:
 TEST_F(ProcedureListWidgetTest, InitialState)
 {
   const ProcedureListWidget view(m_command_service);
-  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
-  EXPECT_TRUE(view.GetSelectedProcedures().empty());
+  EXPECT_TRUE(view.GetSelection().IsEmpty());
 }
 
 TEST_F(ProcedureListWidgetTest, SelectProcedure)
@@ -74,12 +73,11 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
   view.SetModel(&model);
-  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
+  EXPECT_TRUE(view.GetSelection().IsEmpty());
 
   // selecting an item and checking results
-  view.SetSelectedProcedure(procedure);
-  EXPECT_EQ(view.GetSelectedProcedure(), procedure);
-  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
+  view.SetSelection(mvvm::ItemSelection(procedure));
+  EXPECT_EQ(view.GetSelection(), mvvm::ItemSelection(procedure));
 
   EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(spy_selected),
             mvvm::ItemSelection(procedure));
@@ -87,8 +85,8 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   spy_selected.clear();
 
   // removing selection
-  view.SetSelectedProcedure(nullptr);
-  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
+  view.SetSelection(mvvm::ItemSelection());
+  EXPECT_TRUE(view.GetSelection().IsEmpty());
 
   EXPECT_EQ(mvvm::test::GetSendItem<const oac_tree_gui::ProcedureItem*>(spy_selected), nullptr);
 }
@@ -102,10 +100,10 @@ TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
   view.SetModel(&model);
 
   // selecting single item
-  view.SetSelectedProcedure(procedure);
+  view.SetSelection(mvvm::ItemSelection(procedure));
 
   // checking selections
-  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
+  EXPECT_EQ(view.GetSelection(), mvvm::ItemSelection(procedure));
 
   QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
@@ -125,15 +123,14 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndexViaView)
   QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
   view.SetModel(&model);
-  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
+  EXPECT_TRUE(view.GetSelection().IsEmpty());
 
   // selecting an item and checking results
   auto indexes = view.GetViewModel()->GetIndexOfSessionItem(procedure);
   ASSERT_EQ(indexes.size(), 2);  // display name and close button
   view.GetTreeView()->setCurrentIndex(indexes.at(0));
 
-  EXPECT_EQ(view.GetSelectedProcedure(), procedure);
-  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<const ProcedureItem*>({procedure}));
+  EXPECT_EQ(view.GetSelection(), mvvm::ItemSelection(procedure));
 
   EXPECT_EQ(mvvm::test::GetSendItem<mvvm::ItemSelection>(spy_selected),
             mvvm::ItemSelection(procedure));

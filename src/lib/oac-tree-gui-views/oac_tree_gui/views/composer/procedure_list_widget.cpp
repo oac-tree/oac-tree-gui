@@ -67,7 +67,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   connect(m_actions, &ProcedureListActions::RemoveProcedureRequest, m_action_handler,
           &ProcedureListActionHandler::OnRemoveProcedureRequest);
   connect(m_action_handler, &ProcedureListActionHandler::SelectProcedureRequest, this,
-          &ProcedureListWidget::SetSelectedProcedure);
+          [this](auto procedure) { SetSelection(mvvm::ItemSelection(procedure)); });
 
   connect(m_actions, &ProcedureListActions::CutRequest, m_action_handler,
           &ProcedureListActionHandler::Cut);
@@ -103,23 +103,6 @@ void ProcedureListWidget::SetModel(SequencerModel* model)
   }
 }
 
-const ProcedureItem* ProcedureListWidget::GetSelectedProcedure() const
-{
-  auto selected = GetSelectedProcedures();
-  return selected.empty() ? nullptr : selected.front();
-}
-
-std::vector<const ProcedureItem*> ProcedureListWidget::GetSelectedProcedures() const
-{
-  auto selection = m_component_provider->GetSelection();
-  return selection.GetSelectedItems<ProcedureItem>();
-}
-
-void ProcedureListWidget::SetSelectedProcedure(const ProcedureItem* procedure)
-{
-  m_component_provider->SetSelection(mvvm::ItemSelection(procedure));
-}
-
 mvvm::ItemSelection ProcedureListWidget::GetSelection() const
 {
   return m_component_provider->GetSelection();
@@ -151,7 +134,7 @@ ProcedureListContext ProcedureListWidget::CreateContext()
   ProcedureListContext result;
   result.procedure_container = [this]()
   { return m_model ? m_model->GetProcedureContainer() : nullptr; };
-  result.selected_procedure = [this]() { return GetSelectedProcedure(); };
+  result.selected_procedure = [this]() { return GetSelection().GetSelected<ProcedureItem>(); };
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
   return result;

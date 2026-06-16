@@ -31,8 +31,8 @@
 
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
-#include <mvvm/model/item_selection.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <QVBoxLayout>
@@ -100,14 +100,14 @@ void ComposerToolsPanel::SetModels(ApplicationModels* models)
       models->GetProjectModel()->GetFavoriteInstructionContainer());
 }
 
-const ProcedureItem *ComposerToolsPanel::GetSelectedProcedure()
+const ProcedureItem* ComposerToolsPanel::GetSelectedProcedure()
 {
-  return m_procedure_list_view->GetSelectedProcedure();
+  return m_procedure_list_view->GetSelection().GetSelected<ProcedureItem>();
 }
 
-void ComposerToolsPanel::SetSelectedProcedure(const ProcedureItem *procedure)
+void ComposerToolsPanel::SetSelectedProcedure(const ProcedureItem* procedure)
 {
-  m_procedure_list_view->SetSelectedProcedure(procedure);
+  m_procedure_list_view->SetSelection(mvvm::ItemSelection(procedure));
 }
 
 void ComposerToolsPanel::ReadSettings()
