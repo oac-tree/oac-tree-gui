@@ -96,7 +96,7 @@ TEST_F(OperationMonitorViewTest, ReloadJob)
   EXPECT_TRUE(action_handler->OnRegenerateJobRequest());
 
   // tree still sees single message instruction
-  EXPECT_EQ(realtime_instruction_tree->model()->rowCount(), 1); //  <-- failing here, ==0, not 1
+  EXPECT_EQ(realtime_instruction_tree->model()->rowCount(), 1);
   EXPECT_EQ(realtime_instruction_tree->model()->columnCount(), 4);
 }
 

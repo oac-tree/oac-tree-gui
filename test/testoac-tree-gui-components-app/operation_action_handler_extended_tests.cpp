@@ -305,6 +305,8 @@ TEST_F(OperationActionHandlerExtendedTest, OnRegenerateJobRequest)
   // on regeneration status should be reset
   EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kUndefined);
 
+  // FIXME this is how OperationActionHandler::OnRegenerateJobRequest() emits signals
+  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), nullptr);
   EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_item);
 
   ASSERT_EQ(GetJobItems().size(), 1);
