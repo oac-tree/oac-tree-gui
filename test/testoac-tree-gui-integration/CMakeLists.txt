@@ -1,4 +1,5 @@
-# Tests for oac-tree-gui-components library, which require QApplication.
+# Complex integration tests for oac-tree-gui-components library (require QApplication,
+# might require SoftIoc setup in global environment).
 
 set(test testoac-tree-gui-integration)
 

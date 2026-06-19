@@ -83,6 +83,8 @@ public:
    */
   void RegisterActionsForContext(const sup::gui::AppCommandContext& context);
 
+  OperationActionHandler* GetOperationActionHandler();
+
 protected:
   void showEvent(QShowEvent* event) override;
   void closeEvent(QCloseEvent* event) override;

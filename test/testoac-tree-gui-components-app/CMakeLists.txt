@@ -18,7 +18,6 @@ target_sources(${test} PRIVATE
   node_graphics_scene_tests.cpp
   operation_action_handler_extended_tests.cpp
   operation_action_handler_tests.cpp
-  operation_monitor_view_tests.cpp
   resource_folder_tests.cpp
   sequencer_align_utils_tests.cpp
   text_edit_controller_tests.cpp

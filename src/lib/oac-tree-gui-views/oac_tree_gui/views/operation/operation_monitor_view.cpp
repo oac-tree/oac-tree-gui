@@ -162,6 +162,11 @@ void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandC
                                        sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
+OperationActionHandler *OperationMonitorView::GetOperationActionHandler()
+{
+  return m_action_handler;
+}
+
 void OperationMonitorView::showEvent(QShowEvent* event)
 {
   Q_UNUSED(event);
