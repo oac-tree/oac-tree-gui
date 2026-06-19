@@ -2,10 +2,20 @@
 
 set(test testoac-tree-gui-integration)
 
-file(GLOB source_files "*.cpp")
-file(GLOB include_files "*.h")
+add_executable(${test})
 
-add_executable(${test} ${source_files} ${include_files})
+target_sources(${test} PRIVATE
+  domain_workspace_listener_softioc_tests.cpp
+  global_ioc_environment.cpp
+  job_manager_remote_scenario_tests.cpp
+  main.cpp
+  operation_action_handler_remote_scenario_tests.cpp
+  remote_job_handler_tests.cpp
+  test_automation_server.cpp
+  test_automation_server.h
+  workspace_synchronizer_pvaccess_tests.cpp
+  workspace_synchronizer_softioc_tests.cpp
+)
 
 target_link_libraries(${test} PRIVATE oac-tree-gui-components oac-tree-gui-test-utils sup-epics::sup-epics-test)
 

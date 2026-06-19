@@ -2,10 +2,27 @@
 
 set(test testoac-tree-gui-views)
 
-file(GLOB source_files "*.cpp")
-file(GLOB include_files "*.h")
+add_executable(${test})
 
-add_executable(${test} ${source_files} ${include_files})
+target_sources(${test} PRIVATE
+  custom_celleditor_factory_tests.cpp
+  instruction_editor_actions_tests.cpp
+  instruction_task_area_widget_tests.cpp
+  instruction_task_monitor_tests.cpp
+  instruction_task_widget_builder_tests.cpp
+  integration_scenario_tests.cpp
+  job_list_widget_tests.cpp
+  main.cpp
+  main_window_helper_tests.cpp
+  monitor_widget_tests.cpp
+  procedure_list_actions_test.cpp
+  procedure_list_widget_tests.cpp
+  procedure_splittable_editor_widget_tests.cpp
+  sequencer_main_window_context_tests.cpp
+  status_indicator_helper_tests.cpp
+  task_widget_tests.cpp
+  zoom_factor_converter_tests.cpp
+)
 
 target_link_libraries(${test} PRIVATE oac-tree-gui-views oac-tree-gui-test-utils)
 
