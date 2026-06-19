@@ -20,12 +20,21 @@
 
 #include "job_model.h"
 
+#include <oac_tree_gui/model/job_item.h>
+
+#include <mvvm/model/model_utils.h>
+
 namespace oac_tree_gui
 {
 
 JobModel::JobModel(std::shared_ptr<mvvm::ItemPool> pool)
     : mvvm::ApplicationModel("JobModel", std::move(pool))
 {
+}
+
+std::vector<JobItem*> JobModel::GetJobItems()
+{
+  return mvvm::utils::GetTopItems<JobItem>(*this);
 }
 
 }  // namespace oac_tree_gui

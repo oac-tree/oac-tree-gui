@@ -20,15 +20,16 @@
 
 #include "oac_tree_gui/model/job_model.h"
 
-#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/standard_job_items.h>
 
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test
 {
 
-//! Tests for JobModel class.
-
+/**
+ * @brief Tests for JobModel class.
+ */
 class JobModelTest : public ::testing::Test
 {
 };
@@ -36,11 +37,12 @@ class JobModelTest : public ::testing::Test
 TEST_F(JobModelTest, InitialState)
 {
   JobModel model;
+  EXPECT_TRUE(model.GetJobItems().empty());
 
-  // trying to insert procedure to make sure that catalogue is there
-  auto item = model.InsertItem<ProcedureItem>();
-  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<ProcedureItem>());
-  EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
+  auto job0 = model.InsertItem<LocalJobItem>();
+  auto job1 = model.InsertItem<LocalJobItem>();
+
+  EXPECT_EQ(model.GetJobItems(), std::vector<JobItem*>({job0, job1}));
 }
 
 }  // namespace oac_tree_gui::test

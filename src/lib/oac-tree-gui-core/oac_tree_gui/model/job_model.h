@@ -23,15 +23,22 @@
 
 #include <mvvm/model/application_model.h>
 
+#include <vector>
+
 namespace oac_tree_gui
 {
 
-//! The model to hold running procedures.
+class JobItem;
 
+/**
+ * @brief The JobModel class holds collection of JobItem to run procedures.
+ */
 class JobModel : public mvvm::ApplicationModel
 {
 public:
   explicit JobModel(std::shared_ptr<mvvm::ItemPool> pool = {});
+
+  std::vector<JobItem*> GetJobItems();
 };
 
 }  // namespace oac_tree_gui
