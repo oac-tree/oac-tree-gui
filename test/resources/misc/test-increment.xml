@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Procedure name="Simple procedure to test increment on the remote server">
-  <Repeat maxCount="3">
+  <Repeat maxCount="99">
     <Sequence>
       <Output fromVar="var0" description="Variable is"/>
       <Increment varName="var0"/>

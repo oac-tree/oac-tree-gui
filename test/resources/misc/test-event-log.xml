@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Procedure>
-  <Repeat name="" isRoot="false" maxCount="100">
-    <Sequence name="" isRoot="false">
-      <Wait name="" isRoot="false" timeout="0.5"/>
-      <Message name="" isRoot="false" text="Hello A"/>
-      <Message name="" isRoot="false" text="Hello B"/>
-      <Message name="" isRoot="false" text="Hello C"/>
-      <Wait name="" isRoot="false" timeout="0.5"/>
-      <Output name="" isRoot="false" fromVar="monitor" description=""/>
+<Procedure xmlns="http://codac.iter.org/sup/oac-tree" version="1.0"
+           name="Procedure to generate lots of messages and test GUIs log window"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/oac-tree oac-tree.xsd">
+<Repeat maxCount="100">
+    <Sequence>
+      <Wait timeout="0.5"/>
+      <Message text="Hello A"/>
+      <Message text="Hello B"/>
+      <Message text="Hello C"/>
+      <Wait timeout="0.5"/>
+      <Output fromVar="monitor" description=""/>
     </Sequence>
   </Repeat>
   <Workspace>
