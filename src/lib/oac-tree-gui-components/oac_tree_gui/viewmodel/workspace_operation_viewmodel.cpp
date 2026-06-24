@@ -27,26 +27,6 @@
 
 #include <mvvm/model/session_item.h>
 #include <mvvm/providers/viewmodel_controller.h>
-#include <mvvm/providers/viewmodel_controller_impl.h>
-
-namespace
-{
-
-/**
- * @brief Creates implementation for ViewModelController with custom children and row strategies.
- */
-std::unique_ptr<mvvm::IViewModelController> CreateImpl(mvvm::ViewModelBase* viewmodel)
-{
-  auto children_strategy = std::make_unique<oac_tree_gui::VariableTableChildrenStrategy>();
-  auto row_strategy = std::make_unique<oac_tree_gui::VariableTableRowStrategy>();
-
-  auto result = std::make_unique<mvvm::ViewModelControllerImpl>(
-      viewmodel, std::move(children_strategy), std::move(row_strategy));
-
-  return result;
-}
-
-}  // namespace
 
 namespace oac_tree_gui
 {
@@ -60,7 +40,9 @@ class WorkspaceOperationViewModelController : public mvvm::ViewModelController
 {
 public:
   explicit WorkspaceOperationViewModelController(mvvm::ViewModelBase* viewmodel)
-      : mvvm::ViewModelController(CreateImpl(viewmodel))
+      : mvvm::ViewModelController(viewmodel,
+                                  std::make_unique<oac_tree_gui::VariableTableChildrenStrategy>(),
+                                  std::make_unique<oac_tree_gui::VariableTableRowStrategy>())
   {
   }
 
