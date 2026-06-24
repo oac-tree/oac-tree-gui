@@ -38,6 +38,7 @@ class SequencerSettingsModel : public mvvm::ApplicationModel
 {
 public:
   SequencerSettingsModel();
+  SequencerSettingsModel(std::string model_type, std::shared_ptr<mvvm::ItemPool> pool);
 
   std::unique_ptr<ISessionModel> Clone() const override;
 
