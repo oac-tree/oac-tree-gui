@@ -30,6 +30,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/model/make_clone.h>
 
 #include <sup/oac-tree/variable.h>
 
@@ -81,7 +82,7 @@ UniversalVariableItem::UniversalVariableItem(const std::string& item_type)
 
 std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone() const
 {
-  return std::make_unique<UniversalVariableItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 void UniversalVariableItem::SetDomainType(const std::string& domain_type)

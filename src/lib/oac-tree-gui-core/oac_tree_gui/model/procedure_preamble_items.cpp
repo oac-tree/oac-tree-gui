@@ -22,6 +22,7 @@
 
 #include <mvvm/model/combo_property.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -51,7 +52,7 @@ TypeRegistrationItem::TypeRegistrationItem()
 
 std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone() const
 {
-  return std::make_unique<TypeRegistrationItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::int32_t TypeRegistrationItem::GetRegistrationMode() const
@@ -91,7 +92,7 @@ ProcedurePreambleItem::ProcedurePreambleItem()
 
 std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone() const
 {
-  return std::make_unique<ProcedurePreambleItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 mvvm::ContainerItem* ProcedurePreambleItem::GetTypeRegistrationContainer() const

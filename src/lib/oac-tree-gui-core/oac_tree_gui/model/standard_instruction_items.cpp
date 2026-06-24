@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -34,7 +35,7 @@ IncludeItem::IncludeItem() : UniversalInstructionItem(mvvm::GetTypeName<IncludeI
 
 std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone() const
 {
-  return std::make_unique<IncludeItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::string IncludeItem::GetFileName() const
@@ -68,7 +69,7 @@ ParallelSequenceItem::ParallelSequenceItem()
 
 std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone() const
 {
-  return std::make_unique<ParallelSequenceItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 mvvm::uint32 ParallelSequenceItem::GetSuccessThreshold() const
@@ -102,7 +103,7 @@ RepeatItem::RepeatItem() : UniversalInstructionItem(mvvm::GetTypeName<RepeatItem
 
 std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone() const
 {
-  return std::make_unique<RepeatItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 mvvm::int32 RepeatItem::GetRepeatCount() const
@@ -122,7 +123,7 @@ SequenceItem::SequenceItem() : UniversalInstructionItem(mvvm::GetTypeName<Sequen
 
 std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone() const
 {
-  return std::make_unique<SequenceItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -137,7 +138,7 @@ WaitItem::WaitItem() : UniversalInstructionItem(mvvm::GetTypeName<WaitItem>())
 
 std::unique_ptr<mvvm::SessionItem> WaitItem::Clone() const
 {
-  return std::make_unique<WaitItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 void WaitItem::SetTimeout(double value)

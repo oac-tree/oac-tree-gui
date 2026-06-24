@@ -26,6 +26,7 @@
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/string_utils.h>
+#include <mvvm/model/make_clone.h>
 
 #include <sup/oac-tree/instruction_info.h>
 
@@ -39,7 +40,7 @@ InstructionInfoItem::InstructionInfoItem()
 
 std::unique_ptr<mvvm::SessionItem> InstructionInfoItem::Clone() const
 {
-  return std::make_unique<InstructionInfoItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 void InstructionInfoItem::InitFromDomainInfo(const sup::oac_tree::InstructionInfo& info)

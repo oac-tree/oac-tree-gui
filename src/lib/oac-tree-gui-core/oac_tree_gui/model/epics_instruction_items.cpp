@@ -27,6 +27,7 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
+#include <mvvm/model/make_clone.h>
 
 namespace
 {
@@ -145,7 +146,7 @@ ChannelAccessReadInstructionItem::ChannelAccessReadInstructionItem()
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone() const
 {
-  return std::make_unique<ChannelAccessReadInstructionItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -159,7 +160,7 @@ ChannelAccessWriteInstructionItem::ChannelAccessWriteInstructionItem()
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone() const
 {
-  return std::make_unique<ChannelAccessWriteInstructionItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -173,7 +174,7 @@ PvAccessReadInstructionItem::PvAccessReadInstructionItem()
 
 std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone() const
 {
-  return std::make_unique<PvAccessReadInstructionItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -187,7 +188,7 @@ PvAccessWriteInstructionItem::PvAccessWriteInstructionItem()
 
 std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone() const
 {
-  return std::make_unique<PvAccessWriteInstructionItem>(*this);
+  return MakeClone(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -203,7 +204,7 @@ RPCClientInstruction::RPCClientInstruction()
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone() const
 {
-  return std::make_unique<RPCClientInstruction>(*this);
+  return mvvm::MakeClone(*this);
 }
 std::string RPCClientInstruction::GetService() const
 {
@@ -256,7 +257,7 @@ LogInstructionItem::LogInstructionItem()
 
 std::unique_ptr<mvvm::SessionItem> LogInstructionItem::Clone() const
 {
-  return std::make_unique<LogInstructionItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::string LogInstructionItem::GetMessage() const

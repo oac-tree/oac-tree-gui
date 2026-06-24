@@ -25,6 +25,7 @@
 
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_settings_helper.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -86,7 +87,7 @@ PluginSettingsItem::PluginSettingsItem() : CompoundItem(mvvm::GetTypeName<Plugin
 
 std::unique_ptr<mvvm::SessionItem> PluginSettingsItem::Clone() const
 {
-  return std::make_unique<PluginSettingsItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 bool PluginSettingsItem::UsePluginDirList() const

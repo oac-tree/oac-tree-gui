@@ -20,6 +20,7 @@
 
 #include "composer_settings_item.h"
 
+#include <mvvm/model/make_clone.h>
 #include <mvvm/utils/string_utils.h>
 
 namespace oac_tree_gui
@@ -78,7 +79,7 @@ ComposerSettingsItem::ComposerSettingsItem()
 
 std::unique_ptr<mvvm::SessionItem> ComposerSettingsItem::Clone() const
 {
-  return std::make_unique<ComposerSettingsItem>(*this);
+  return MakeClone(*this);
 }
 
 std::vector<ProcedureEditorInfo> ComposerSettingsItem::GetProcedureEditorInfoList() const

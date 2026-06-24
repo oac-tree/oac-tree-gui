@@ -23,6 +23,8 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 
+#include <mvvm/model/make_clone.h>
+
 namespace oac_tree_gui
 {
 
@@ -35,7 +37,7 @@ InstructionContainerItem::InstructionContainerItem()
 
 std::unique_ptr<mvvm::SessionItem> InstructionContainerItem::Clone() const
 {
-  return std::make_unique<InstructionContainerItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::vector<InstructionItem*> InstructionContainerItem::GetInstructions() const

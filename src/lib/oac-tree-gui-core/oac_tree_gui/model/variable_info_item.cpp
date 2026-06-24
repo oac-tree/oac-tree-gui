@@ -26,6 +26,7 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/model/make_clone.h>
 
 #include <sup/oac-tree/variable_info.h>
 
@@ -72,7 +73,7 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
 
 std::unique_ptr<mvvm::SessionItem> VariableInfoItem::Clone() const
 {
-  return std::make_unique<VariableInfoItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 void VariableInfoItem::InitFromDomainImpl(const variable_t* variable,

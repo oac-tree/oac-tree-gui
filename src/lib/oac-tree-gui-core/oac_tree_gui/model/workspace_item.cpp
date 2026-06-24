@@ -22,6 +22,8 @@
 
 #include <oac_tree_gui/model/variable_item.h>
 
+#include <mvvm/model/make_clone.h>
+
 #include <algorithm>
 
 namespace oac_tree_gui
@@ -39,7 +41,7 @@ WorkspaceItem::WorkspaceItem() : CompoundItem(mvvm::GetTypeName<WorkspaceItem>()
 
 std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone() const
 {
-  return std::make_unique<WorkspaceItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::vector<VariableItem*> WorkspaceItem::GetVariables() const

@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -62,7 +63,7 @@ ChannelAccessVariableItem::ChannelAccessVariableItem()
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone() const
 {
-  return std::make_unique<ChannelAccessVariableItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -75,7 +76,7 @@ FileVariableItem::FileVariableItem()
 
 std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone() const
 {
-  return std::make_unique<FileVariableItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::string FileVariableItem::GetFileName() const
@@ -99,7 +100,7 @@ LocalVariableItem::LocalVariableItem()
 
 std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone() const
 {
-  return std::make_unique<LocalVariableItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ----------------------------------------------------------------------------
@@ -108,7 +109,7 @@ std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone() const
 
 std::unique_ptr<mvvm::SessionItem> PvAccessClientVariableItem::Clone() const
 {
-  return std::make_unique<PvAccessClientVariableItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 PvAccessClientVariableItem::PvAccessClientVariableItem()
@@ -122,7 +123,7 @@ PvAccessClientVariableItem::PvAccessClientVariableItem()
 
 std::unique_ptr<mvvm::SessionItem> PvAccessServerVariableItem::Clone() const
 {
-  return std::make_unique<PvAccessServerVariableItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 PvAccessServerVariableItem::PvAccessServerVariableItem()

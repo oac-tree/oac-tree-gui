@@ -26,6 +26,8 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
+#include <mvvm/model/make_clone.h>
+
 #include <gtest/gtest.h>
 
 namespace
@@ -35,7 +37,7 @@ class TestItem : public oac_tree_gui::JobItem
 public:
   TestItem() : JobItem("TestItem") {}
 
-  std::unique_ptr<SessionItem> Clone() const override { return std::make_unique<TestItem>(*this); }
+  std::unique_ptr<SessionItem> Clone() const override { return mvvm::MakeClone(*this); }
 };
 
 }  // namespace

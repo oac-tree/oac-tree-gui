@@ -34,6 +34,7 @@
 #include <mvvm/model/item_utils.h>
 
 #include <sup/oac-tree/instruction.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -83,7 +84,7 @@ UniversalInstructionItem::UniversalInstructionItem(const std::string& item_type)
 
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
 {
-  return std::make_unique<UniversalInstructionItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 void UniversalInstructionItem::SetDomainType(const std::string& domain_type)

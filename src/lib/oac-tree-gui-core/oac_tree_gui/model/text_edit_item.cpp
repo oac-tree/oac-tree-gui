@@ -23,6 +23,7 @@
 #include "sequencer_settings_constants.h"
 
 #include <mvvm/utils/string_utils.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -46,7 +47,7 @@ TextEditItem::TextEditItem() : CompoundItem(mvvm::GetTypeName<TextEditItem>())
 
 std::unique_ptr<mvvm::SessionItem> TextEditItem::Clone() const
 {
-  return std::make_unique<TextEditItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 bool TextEditItem::IsEditorEnabled() const

@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 
 #include <mvvm/utils/file_utils.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -43,7 +44,7 @@ LocalJobItem::LocalJobItem() : JobItem(mvvm::GetTypeName<LocalJobItem>()) {}
 
 std::unique_ptr<mvvm::SessionItem> LocalJobItem::Clone() const
 {
-  return std::make_unique<LocalJobItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -58,7 +59,7 @@ ImportedJobItem::ImportedJobItem() : JobItem(mvvm::GetTypeName<ImportedJobItem>(
 
 std::unique_ptr<mvvm::SessionItem> ImportedJobItem::Clone() const
 {
-  return std::make_unique<ImportedJobItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -78,7 +79,7 @@ RemoteJobItem::RemoteJobItem() : JobItem(mvvm::GetTypeName<RemoteJobItem>())
 
 std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone() const
 {
-  return std::make_unique<RemoteJobItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::size_t RemoteJobItem::GetRemoteJobIndex() const
@@ -112,7 +113,7 @@ FileBasedJobItem::FileBasedJobItem() : JobItem(mvvm::GetTypeName<FileBasedJobIte
 
 std::unique_ptr<mvvm::SessionItem> FileBasedJobItem::Clone() const
 {
-  return std::make_unique<FileBasedJobItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::string FileBasedJobItem::GetFileName() const

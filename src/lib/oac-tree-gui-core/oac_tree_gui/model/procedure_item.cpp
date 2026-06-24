@@ -30,6 +30,8 @@
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
+#include <mvvm/model/make_clone.h>
+
 #include <set>
 
 namespace oac_tree_gui
@@ -107,7 +109,7 @@ ProcedureItem::ProcedureItem() : CompoundItem(mvvm::GetTypeName<ProcedureItem>()
 
 std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone() const
 {
-  return std::make_unique<ProcedureItem>(*this);
+  return mvvm::MakeClone(*this);
 }
 
 std::string ProcedureItem::GetDescription() const
