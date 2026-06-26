@@ -51,6 +51,12 @@ ServerSettingsWidget::ServerSettingsWidget(QWidget* parent_widget)
   auto layout = new QHBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
 
+  m_server_type_combo->setObjectName(kServerTypeComboName);
+  m_server_name_line_edit->setObjectName(kServerNameLineEditName);
+  m_server_address_line_edit->setObjectName(kServerAddressLineEditName);
+  m_port_line_edit->setObjectName(kPortLineEditName);
+  m_connect_button->setObjectName(kConnectButtonName);
+
   m_server_type_combo->addItem("Web Sockets", static_cast<int>(AutomationServerType::kWebSockets));
   m_server_type_combo->addItem("EPICS", static_cast<int>(AutomationServerType::kEPICS));
   m_server_type_combo->setCurrentIndex(0);

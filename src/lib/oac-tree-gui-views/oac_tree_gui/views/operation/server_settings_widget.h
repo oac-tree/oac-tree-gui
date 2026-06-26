@@ -45,6 +45,13 @@ class ServerSettingsWidget : public QWidget
   Q_OBJECT
 
 public:
+  // object names of internal widgets (used to look them up in tests)
+  static constexpr auto kServerTypeComboName = "server_type_combo";
+  static constexpr auto kServerNameLineEditName = "server_name_line_edit";
+  static constexpr auto kServerAddressLineEditName = "server_address_line_edit";
+  static constexpr auto kPortLineEditName = "port_line_edit";
+  static constexpr auto kConnectButtonName = "connect_button";
+
   explicit ServerSettingsWidget(QWidget* parent_widget = nullptr);
 
   ~ServerSettingsWidget() override;

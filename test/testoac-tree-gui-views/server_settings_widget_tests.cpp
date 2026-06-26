@@ -35,19 +35,6 @@ namespace oac_tree_gui::test
  */
 class ServerSettingsWidgetTest : public ::testing::Test
 {
-protected:
-  //! Returns the line edit owned by the widget whose placeholder text matches the given string.
-  static QLineEdit* FindLineEdit(const ServerSettingsWidget& widget, const QString& placeholder)
-  {
-    for (auto line_edit : widget.findChildren<QLineEdit*>())
-    {
-      if (line_edit->placeholderText() == placeholder)
-      {
-        return line_edit;
-      }
-    }
-    return nullptr;
-  }
 };
 
 TEST_F(ServerSettingsWidgetTest, InitialState)
@@ -66,8 +53,9 @@ TEST_F(ServerSettingsWidgetTest, GetServerInfoForWebSockets)
 {
   const ServerSettingsWidget widget;
 
-  auto address_line_edit = FindLineEdit(widget, "WebSockets server address");
-  auto port_line_edit = FindLineEdit(widget, "1024");
+  auto address_line_edit =
+      widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerAddressLineEditName);
+  auto port_line_edit = widget.findChild<QLineEdit*>(ServerSettingsWidget::kPortLineEditName);
   ASSERT_NE(address_line_edit, nullptr);
   ASSERT_NE(port_line_edit, nullptr);
 
@@ -86,12 +74,13 @@ TEST_F(ServerSettingsWidgetTest, GetServerInfoForEPICS)
   const ServerSettingsWidget widget;
 
   // selecting EPICS server type via the combo box
-  auto combo = widget.findChild<QComboBox*>();
+  auto combo = widget.findChild<QComboBox*>(ServerSettingsWidget::kServerTypeComboName);
   ASSERT_NE(combo, nullptr);
   combo->setCurrentIndex(combo->findData(static_cast<int>(AutomationServerType::kEPICS)));
   EXPECT_EQ(widget.GetServerType(), AutomationServerType::kEPICS);
 
-  auto name_line_edit = FindLineEdit(widget, "EPICS server name");
+  auto name_line_edit =
+      widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName);
   ASSERT_NE(name_line_edit, nullptr);
   name_line_edit->setText("MyEPICSServer");
 
@@ -104,8 +93,10 @@ TEST_F(ServerSettingsWidgetTest, SetServerType)
 {
   ServerSettingsWidget widget;
 
-  auto name_line_edit = FindLineEdit(widget, "EPICS server name");
-  auto address_line_edit = FindLineEdit(widget, "WebSockets server address");
+  auto name_line_edit =
+      widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName);
+  auto address_line_edit =
+      widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerAddressLineEditName);
   ASSERT_NE(name_line_edit, nullptr);
   ASSERT_NE(address_line_edit, nullptr);
 
@@ -126,7 +117,7 @@ TEST_F(ServerSettingsWidgetTest, ConnectButtonEmitsConnectRequest)
 
   const QSignalSpy spy(&widget, &ServerSettingsWidget::connectRequest);
 
-  auto connect_button = widget.findChild<QPushButton*>();
+  auto connect_button = widget.findChild<QPushButton*>(ServerSettingsWidget::kConnectButtonName);
   ASSERT_NE(connect_button, nullptr);
   connect_button->click();
 
