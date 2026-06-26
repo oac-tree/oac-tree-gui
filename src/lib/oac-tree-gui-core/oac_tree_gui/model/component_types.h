@@ -121,6 +121,16 @@ struct ComposerViewInfo
 bool operator==(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs);
 bool operator!=(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs);
 
+/**
+ * @brief The AutomationServerType enum defines types of the remote automation server.
+ */
+enum class AutomationServerType : std::uint8_t
+{
+  kUnknown,    //!< unknown automation server type
+  kEPICS,      //!< EPICS-based automation server
+  kWebSockets,  //!< WebSocket-based automation server
+};
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_COMPONENTS_COMPONENT_TYPES_H_
