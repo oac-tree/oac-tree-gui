@@ -18,6 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/user_context.h"
 #include "oac_tree_gui/operation/objects/operation_action_handler.h"
 #include "test_automation_server.h"
 
@@ -32,7 +33,6 @@
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
-#include "oac_tree_gui/jobsystem/user_context.h"
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -50,7 +50,8 @@ namespace oac_tree_gui
 namespace
 {
 
-const std::string kServerName = "OperationActionHandlerRemoteScenarioTestServer";
+const std::string kServerName{"OperationActionHandlerRemoteScenarioTestServer"};
+const EPICSServerInfo kServerInfo{"OperationActionHandlerRemoteScenarioTestServer"};
 const std::size_t kJobIndex{0};
 
 const std::string kProcedureBodyText{
@@ -148,7 +149,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
 
   // setup remote dialog to return remote job info
   // setting up context, so it report "user choice" related to remote job import
-  const RemoteConnectionInfo connection_context{kServerName, {kJobIndex}};
+  const RemoteConnectionInfo connection_context{kServerInfo, {kJobIndex}};
   ON_CALL(m_mock_context, OnGetRemoteConnectionInfo())
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
@@ -199,7 +200,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 
   // setup remote dialog to return remote job info
   // setting up context, so it report "user choice" related to remote job import
-  const RemoteConnectionInfo connection_context{kServerName, {kJobIndex}};
+  const RemoteConnectionInfo connection_context{kServerInfo, {kJobIndex}};
   ON_CALL(m_mock_context, OnGetRemoteConnectionInfo())
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 

@@ -107,7 +107,7 @@ RemoteConnectionInfo RemoteConnectionDialog::GetResult() const
     indexes.insert(static_cast<std::size_t>(index.row()));
   }
 
-  return {m_current_server_name, indexes};
+  return {m_current_server_info, indexes};
 }
 
 void RemoteConnectionDialog::keyPressEvent(QKeyEvent* event)
@@ -125,19 +125,20 @@ void RemoteConnectionDialog::keyPressEvent(QKeyEvent* event)
 
 void RemoteConnectionDialog::OnConnectRequest()
 {
-  // setCursor(Qt::WaitCursor);
-  // QApplication::processEvents();
+  setCursor(Qt::WaitCursor);
+  QApplication::processEvents();
 
-  // // TODO establish connection in a thread with possibility to cancel hanging
-  // const auto server_name = m_server_name_line_edit->text().toStdString();
-  // if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
-  // {
-  //   PopulateJobInfoModel(server_name);
-  //   m_current_server_name = server_name;
-  // }
+  // TODO establish connection in a thread with possibility to cancel hanging
+  const auto server_info = m_server_settings_widget->GetServerInfo();
+  const auto server_name = GetServerName(server_info);
+  if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
+  {
+    PopulateJobInfoModel(server_name);
+    m_current_server_info = server_info;
+  }
 
-  // unsetCursor();
-  // QApplication::processEvents();
+  unsetCursor();
+  QApplication::processEvents();
 }
 
 void RemoteConnectionDialog::ReadSettings()

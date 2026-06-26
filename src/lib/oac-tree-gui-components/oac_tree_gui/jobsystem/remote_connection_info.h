@@ -21,9 +21,9 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
 #define OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
 
+#include <cstdint>
 #include <set>
 #include <string>
-#include <cstdint>
 #include <variant>
 
 namespace oac_tree_gui
@@ -34,8 +34,8 @@ namespace oac_tree_gui
  */
 enum class AutomationServerType : std::uint8_t
 {
-  kUnknown,    //!< unknown automation server type
-  kEPICS,      //!< EPICS-based automation server
+  kUnknown,     //!< unknown automation server type
+  kEPICS,       //!< EPICS-based automation server
   kWebSockets,  //!< WebSocket-based automation server
 };
 
@@ -62,8 +62,9 @@ struct WebSocketsServerInfo
 bool operator==(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs);
 bool operator!=(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs);
 
-// Comparison of AutomationServerInfo is provided automatically by std::variant via the operators
-// defined above for its alternatives.
+/**
+ * Defines how to connect to the remote server.
+ */
 using AutomationServerInfo = std::variant<EPICSServerInfo, WebSocketsServerInfo>;
 
 /**
@@ -80,7 +81,7 @@ std::string GetServerName(const AutomationServerInfo& server_info);
  */
 struct RemoteConnectionInfo
 {
-  std::string server_name;            //!< the name of the server to connect
+  AutomationServerInfo server_info;   //!< server connection info
   std::set<std::size_t> job_indexes;  //!< list of job indices to import into the job system
 };
 

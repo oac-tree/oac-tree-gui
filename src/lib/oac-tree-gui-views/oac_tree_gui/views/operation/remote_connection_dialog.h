@@ -25,6 +25,8 @@
 #include <memory>
 #include <optional>
 
+#include <oac_tree_gui/jobsystem/remote_connection_info.h>
+
 class QListView;
 class QStandardItemModel;
 class QHBoxLayout;
@@ -93,7 +95,7 @@ private:
   QStandardItemModel* m_job_info_model{nullptr};
 
   IRemoteConnectionService* m_connection_service{nullptr};
-  std::string m_current_server_name;
+  AutomationServerInfo m_current_server_info;
 };
 
 /**

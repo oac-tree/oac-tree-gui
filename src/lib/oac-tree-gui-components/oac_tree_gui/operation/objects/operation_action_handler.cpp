@@ -21,8 +21,8 @@
 #include "operation_action_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/jobsystem/objects/job_manager.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/job_manager.h>
 #include <oac_tree_gui/jobsystem/remote_connection_info.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/job_item.h>
@@ -113,14 +113,16 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
   }
 
   bool is_success{false};
-  if (auto user_choice = m_operation_context.get_remote_connection_info(); user_choice.has_value())
+  if (auto connection_info = m_operation_context.get_remote_connection_info();
+      connection_info.has_value())
   {
     is_success = true;
-    auto user_choice_value = user_choice.value();
-    for (auto index : user_choice_value.job_indexes)
+    auto connection_info_value = connection_info.value();
+    for (auto index : connection_info_value.job_indexes)
     {
       // all should succeed
-      is_success &= SubmitJob(CreateRemoteJobItem(user_choice_value.server_name, index));
+      is_success &=
+          SubmitJob(CreateRemoteJobItem(GetServerName(connection_info_value.server_info), index));
     }
   }
 
@@ -282,7 +284,7 @@ mvvm::SessionItem* OperationActionHandler::GetJobContainer() const
   return m_job_container;
 }
 
-JobItem *OperationActionHandler::GetSelectedJob() const
+JobItem* OperationActionHandler::GetSelectedJob() const
 {
   return const_cast<JobItem*>(m_operation_context.selected_job());
 }
