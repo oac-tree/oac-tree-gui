@@ -58,6 +58,8 @@ public:
 
   void SetServerType(AutomationServerType server_type);
 
+  AutomationServerInfo GetServerInfo() const;
+
 signals:
   void connectRequest();
 

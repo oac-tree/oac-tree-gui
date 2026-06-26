@@ -20,6 +20,8 @@
 
 #include "server_settings_widget.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QComboBox>
@@ -98,6 +100,28 @@ void ServerSettingsWidget::SetServerType(AutomationServerType server_type)
 
   // visible for EPICS
   m_server_name_line_edit->setVisible(server_type == AutomationServerType::kEPICS);
+}
+
+AutomationServerInfo ServerSettingsWidget::GetServerInfo() const
+{
+  const AutomationServerType server_type = GetServerType();
+  if (server_type == AutomationServerType::kWebSockets)
+  {
+    WebSocketsServerInfo info;
+    info.server_address = m_server_address_line_edit->text().toStdString();
+    info.server_port = static_cast<std::uint16_t>(m_port_line_edit->text().toUInt());
+    return info;
+  }
+  else if (server_type == AutomationServerType::kEPICS)
+  {
+    EPICSServerInfo info;
+    info.server_name = m_server_name_line_edit->text().toStdString();
+    return info;
+  }
+  else
+  {
+    throw RuntimeException("Unknown server type");
+  }
 }
 
 void ServerSettingsWidget::OnServerTypeComboChanged()

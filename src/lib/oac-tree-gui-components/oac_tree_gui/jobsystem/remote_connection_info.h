@@ -24,6 +24,7 @@
 #include <set>
 #include <string>
 #include <cstdint>
+#include <variant>
 
 namespace oac_tree_gui
 {
@@ -37,6 +38,25 @@ enum class AutomationServerType : std::uint8_t
   kEPICS,      //!< EPICS-based automation server
   kWebSockets,  //!< WebSocket-based automation server
 };
+
+/**
+ * @brief The EPICSServerInfo struct holds info related to the EPICS automation server.
+ */
+struct EPICSServerInfo
+{
+  std::string server_name;
+};
+
+/**
+ * @brief The WebSocketsServerInfo class
+ */
+struct WebSocketsServerInfo
+{
+  std::string server_address;
+  std::uint16_t server_port;
+};
+
+using AutomationServerInfo = std::variant<EPICSServerInfo, WebSocketsServerInfo>;
 
 /**
  * @brief The RemoteConnectionInfo struct holds information about remote jobs that should be
