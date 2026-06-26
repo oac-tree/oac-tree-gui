@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_SERVER_SETTINGS_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_SERVER_SETTINGS_WIDGET_H_
 
-#include <oac_tree_gui/model/component_types.h>
+#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 #include <sup/gui/widgets/settings_callbacks.h>
 

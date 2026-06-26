@@ -23,9 +23,20 @@
 
 #include <set>
 #include <string>
+#include <cstdint>
 
 namespace oac_tree_gui
 {
+
+/**
+ * @brief The AutomationServerType enum defines types of the remote automation server.
+ */
+enum class AutomationServerType : std::uint8_t
+{
+  kUnknown,    //!< unknown automation server type
+  kEPICS,      //!< EPICS-based automation server
+  kWebSockets,  //!< WebSocket-based automation server
+};
 
 /**
  * @brief The RemoteConnectionInfo struct holds information about remote jobs that should be
