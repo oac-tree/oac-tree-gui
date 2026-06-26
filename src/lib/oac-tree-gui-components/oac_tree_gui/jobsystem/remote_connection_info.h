@@ -59,6 +59,14 @@ struct WebSocketsServerInfo
 using AutomationServerInfo = std::variant<EPICSServerInfo, WebSocketsServerInfo>;
 
 /**
+ * @brief Returns the name of the server used to establish a connection.
+ *
+ * For an EPICS server it is the server name as provided. For a WebSockets server it is the server
+ * address combined with the port in the form "address:port".
+ */
+std::string GetServerName(const AutomationServerInfo& server_info);
+
+/**
  * @brief The RemoteConnectionInfo struct holds information about remote jobs that should be
  * imported into the job system.
  */
