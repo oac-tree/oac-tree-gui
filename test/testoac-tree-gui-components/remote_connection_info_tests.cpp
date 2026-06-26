@@ -44,4 +44,40 @@ TEST_F(RemoteConnectionInfoTest, GetServerNameForWebSockets)
   EXPECT_EQ(GetServerName(info), std::string("localhost:8080"));
 }
 
+TEST_F(RemoteConnectionInfoTest, EPICSServerInfoComparison)
+{
+  EXPECT_TRUE(EPICSServerInfo{"server"} == EPICSServerInfo{"server"});
+  EXPECT_FALSE(EPICSServerInfo{"server"} != EPICSServerInfo{"server"});
+
+  EXPECT_TRUE(EPICSServerInfo{"server"} != EPICSServerInfo{"other"});
+  EXPECT_FALSE(EPICSServerInfo{"server"} == EPICSServerInfo{"other"});
+}
+
+TEST_F(RemoteConnectionInfoTest, WebSocketsServerInfoComparison)
+{
+  const WebSocketsServerInfo info{"localhost", 8080};
+
+  EXPECT_TRUE(info == (WebSocketsServerInfo{"localhost", 8080}));
+  EXPECT_FALSE(info != (WebSocketsServerInfo{"localhost", 8080}));
+
+  // different address
+  EXPECT_TRUE(info != (WebSocketsServerInfo{"remote", 8080}));
+  // different port
+  EXPECT_TRUE(info != (WebSocketsServerInfo{"localhost", 9090}));
+}
+
+TEST_F(RemoteConnectionInfoTest, AutomationServerInfoComparison)
+{
+  const AutomationServerInfo epics{EPICSServerInfo{"server"}};
+  const AutomationServerInfo websockets{WebSocketsServerInfo{"localhost", 8080}};
+
+  EXPECT_TRUE(epics == AutomationServerInfo{EPICSServerInfo{"server"}});
+  EXPECT_TRUE(websockets == (AutomationServerInfo{WebSocketsServerInfo{"localhost", 8080}}));
+
+  // same value, different alternative
+  EXPECT_TRUE(epics != websockets);
+  // same alternative, different value
+  EXPECT_TRUE(epics != AutomationServerInfo{EPICSServerInfo{"other"}});
+}
+
 }  // namespace oac_tree_gui

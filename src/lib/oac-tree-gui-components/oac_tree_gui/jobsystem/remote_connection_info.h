@@ -47,15 +47,23 @@ struct EPICSServerInfo
   std::string server_name;
 };
 
+bool operator==(const EPICSServerInfo& lhs, const EPICSServerInfo& rhs);
+bool operator!=(const EPICSServerInfo& lhs, const EPICSServerInfo& rhs);
+
 /**
  * @brief The WebSocketsServerInfo class
  */
 struct WebSocketsServerInfo
 {
   std::string server_address;
-  std::uint16_t server_port;
+  std::uint16_t server_port{};
 };
 
+bool operator==(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs);
+bool operator!=(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs);
+
+// Comparison of AutomationServerInfo is provided automatically by std::variant via the operators
+// defined above for its alternatives.
 using AutomationServerInfo = std::variant<EPICSServerInfo, WebSocketsServerInfo>;
 
 /**

@@ -23,6 +23,26 @@
 namespace oac_tree_gui
 {
 
+bool operator==(const EPICSServerInfo& lhs, const EPICSServerInfo& rhs)
+{
+  return lhs.server_name == rhs.server_name;
+}
+
+bool operator!=(const EPICSServerInfo& lhs, const EPICSServerInfo& rhs)
+{
+  return !(lhs == rhs);
+}
+
+bool operator==(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs)
+{
+  return lhs.server_address == rhs.server_address && lhs.server_port == rhs.server_port;
+}
+
+bool operator!=(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs)
+{
+  return !(lhs == rhs);
+}
+
 std::string GetServerName(const AutomationServerInfo& server_info)
 {
   if (std::holds_alternative<EPICSServerInfo>(server_info))
