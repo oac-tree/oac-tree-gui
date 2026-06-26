@@ -54,36 +54,27 @@ public:
 
   explicit ServerSettingsWidget(QWidget* parent_widget = nullptr);
 
-  ~ServerSettingsWidget() override;
-
-  ServerSettingsWidget(const ServerSettingsWidget&) = delete;
-  ServerSettingsWidget& operator=(const ServerSettingsWidget&) = delete;
-  ServerSettingsWidget(ServerSettingsWidget&&) = delete;
-  ServerSettingsWidget& operator=(ServerSettingsWidget&&) = delete;
-
   AutomationServerType GetServerType() const;
 
   void SetServerType(AutomationServerType server_type);
 
   AutomationServerInfo GetServerInfo() const;
 
+  /**
+   * @brief Loads dialog persistence widget settings from disk.
+   */
+  void ReadSettings(const sup::gui::read_variant_func_t& read_func);
+
+  /**
+   * @brief Writes persistence widget settings on disk.
+   */
+  void WriteSettings(const sup::gui::write_variant_func_t& write_func);
+
 signals:
   void connectRequest();
 
 private:
   void OnServerTypeComboChanged();
-
-  /**
-   * @brief Loads dialog persistence widget settings from disk.
-   */
-  void ReadSettings(
-      const sup::gui::read_variant_func_t& read_func = sup::gui::GetSettingsReadFunc());
-
-  /**
-   * @brief Writes persistence widget settings on disk.
-   */
-  void WriteSettings(
-      const sup::gui::write_variant_func_t& write_func = sup::gui::GetSettingsWriteFunc());
 
   QComboBox* m_server_type_combo{nullptr};
   QLineEdit* m_server_name_line_edit{nullptr};

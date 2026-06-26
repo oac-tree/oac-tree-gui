@@ -24,6 +24,7 @@
 
 #include <QComboBox>
 #include <QLineEdit>
+#include <QMap>
 #include <QPushButton>
 #include <QSignalSpy>
 
@@ -35,6 +36,19 @@ namespace oac_tree_gui::test
  */
 class ServerSettingsWidgetTest : public ::testing::Test
 {
+protected:
+  //! In-memory persistent storage emulating QSettings for ReadSettings/WriteSettings testing.
+  QMap<QString, QVariant> m_storage;
+
+  sup::gui::read_variant_func_t GetReadFunc()
+  {
+    return [this](const QString& key) { return m_storage.value(key); };
+  }
+
+  sup::gui::write_variant_func_t GetWriteFunc()
+  {
+    return [this](const QString& key, const QVariant& value) { m_storage.insert(key, value); };
+  }
 };
 
 TEST_F(ServerSettingsWidgetTest, InitialState)
@@ -122,6 +136,34 @@ TEST_F(ServerSettingsWidgetTest, ConnectButtonEmitsConnectRequest)
   connect_button->click();
 
   EXPECT_EQ(spy.count(), 1);
+}
+
+//! Settings written by one widget are restored in another one.
+TEST_F(ServerSettingsWidgetTest, WriteAndReadSettings)
+{
+  {
+    ServerSettingsWidget widget;
+    widget.SetServerType(AutomationServerType::kEPICS);
+    widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName)
+        ->setText("MyEPICSServer");
+    widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerAddressLineEditName)
+        ->setText("localhost");
+    widget.findChild<QLineEdit*>(ServerSettingsWidget::kPortLineEditName)->setText("8080");
+
+    widget.WriteSettings(GetWriteFunc());
+  }
+
+  // a fresh widget restores the previously stored state
+  ServerSettingsWidget widget;
+  widget.ReadSettings(GetReadFunc());
+
+  EXPECT_EQ(widget.GetServerType(), AutomationServerType::kEPICS);
+  EXPECT_EQ(widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName)->text(),
+            QString("MyEPICSServer"));
+  EXPECT_EQ(widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerAddressLineEditName)->text(),
+            QString("localhost"));
+  EXPECT_EQ(widget.findChild<QLineEdit*>(ServerSettingsWidget::kPortLineEditName)->text(),
+            QString("8080"));
 }
 
 }  // namespace oac_tree_gui::test

@@ -28,6 +28,7 @@
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
 
 #include <sup/gui/widgets/dialog_helper.h>
+#include <sup/gui/widgets/settings_callbacks.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
 
@@ -144,12 +145,16 @@ void RemoteConnectionDialog::ReadSettings()
   const QSettings settings;
   const auto default_size = QSize(mvvm::style::UnitSize(30), mvvm::style::UnitSize(30));
   resize(settings.value(kWindowSizeSettingName, default_size).toSize());
+
+  m_server_settings_widget->ReadSettings(sup::gui::GetSettingsReadFunc());
 }
 
 void RemoteConnectionDialog::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
+
+  m_server_settings_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
 }
 
 void RemoteConnectionDialog::PopulateJobInfoModel(const std::string& server_name)

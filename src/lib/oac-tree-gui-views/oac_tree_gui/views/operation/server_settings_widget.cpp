@@ -37,6 +37,11 @@ namespace
 {
 const std::int32_t kMinRegisteredUserPort = 1024;
 const std::int32_t kMaxRegisteredUserPort = 49151;
+
+constexpr auto kServerTypeComboKey = "ServerSettingsWidget/server_type_combo_value";
+constexpr auto kServerNameKey = "ServerSettingsWidget/server_name";
+constexpr auto kServerAddressKey = "ServerSettingsWidget/server_address";
+constexpr auto kServerPortKey = "ServerSettingsWidget/server_port";
 }  // namespace
 
 ServerSettingsWidget::ServerSettingsWidget(QWidget* parent_widget)
@@ -84,13 +89,6 @@ ServerSettingsWidget::ServerSettingsWidget(QWidget* parent_widget)
   layout->addWidget(m_connect_button);
 
   SetServerType(AutomationServerType::kWebSockets);
-
-  ReadSettings();
-}
-
-ServerSettingsWidget::~ServerSettingsWidget()
-{
-  WriteSettings();
 }
 
 AutomationServerType ServerSettingsWidget::GetServerType() const
@@ -101,7 +99,8 @@ AutomationServerType ServerSettingsWidget::GetServerType() const
 void ServerSettingsWidget::SetServerType(AutomationServerType server_type)
 {
   // sync the combo box selection (no-op if already selected, won't re-emit the signal)
-  m_server_type_combo->setCurrentIndex(m_server_type_combo->findData(static_cast<int>(server_type)));
+  m_server_type_combo->setCurrentIndex(
+      m_server_type_combo->findData(static_cast<int>(server_type)));
 
   // visible for WebSockets
   m_server_address_line_edit->setVisible(server_type == AutomationServerType::kWebSockets);
@@ -121,16 +120,15 @@ AutomationServerInfo ServerSettingsWidget::GetServerInfo() const
     info.server_port = static_cast<std::uint16_t>(m_port_line_edit->text().toUInt());
     return info;
   }
-  else if (server_type == AutomationServerType::kEPICS)
+
+  if (server_type == AutomationServerType::kEPICS)
   {
     EPICSServerInfo info;
     info.server_name = m_server_name_line_edit->text().toStdString();
     return info;
   }
-  else
-  {
-    throw RuntimeException("Unknown server type");
-  }
+
+  throw RuntimeException("Unknown server type");
 }
 
 void ServerSettingsWidget::OnServerTypeComboChanged()
@@ -138,8 +136,35 @@ void ServerSettingsWidget::OnServerTypeComboChanged()
   SetServerType(GetServerType());
 }
 
-void ServerSettingsWidget::ReadSettings(const sup::gui::read_variant_func_t& read_func) {}
+void ServerSettingsWidget::ReadSettings(const sup::gui::read_variant_func_t& read_func)
+{
+  if (const auto server_type = read_func(kServerTypeComboKey); server_type.isValid())
+  {
+    SetServerType(static_cast<AutomationServerType>(server_type.toInt()));
+  }
 
-void ServerSettingsWidget::WriteSettings(const sup::gui::write_variant_func_t& write_func) {}
+  if (const auto server_name = read_func(kServerNameKey); server_name.isValid())
+  {
+    m_server_name_line_edit->setText(server_name.toString());
+  }
+
+  if (const auto server_address = read_func(kServerAddressKey); server_address.isValid())
+  {
+    m_server_address_line_edit->setText(server_address.toString());
+  }
+
+  if (const auto server_port = read_func(kServerPortKey); server_port.isValid())
+  {
+    m_port_line_edit->setText(server_port.toString());
+  }
+}
+
+void ServerSettingsWidget::WriteSettings(const sup::gui::write_variant_func_t& write_func)
+{
+  write_func(kServerTypeComboKey, static_cast<int>(GetServerType()));
+  write_func(kServerNameKey, m_server_name_line_edit->text());
+  write_func(kServerAddressKey, m_server_address_line_edit->text());
+  write_func(kServerPortKey, m_port_line_edit->text());
+}
 
 }  // namespace oac_tree_gui
