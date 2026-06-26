@@ -24,11 +24,18 @@
 
 #include <QComboBox>
 #include <QHBoxLayout>
+#include <QIntValidator>
 #include <QLineEdit>
 #include <QPushButton>
 
 namespace oac_tree_gui
 {
+
+namespace
+{
+const std::int32_t kMinRegisteredUserPort = 1024;
+const std::int32_t kMaxRegisteredUserPort = 49151;
+}  // namespace
 
 ServerSettingsWidget::ServerSettingsWidget(QWidget* parent_widget)
     : QWidget(parent_widget)
@@ -37,8 +44,10 @@ ServerSettingsWidget::ServerSettingsWidget(QWidget* parent_widget)
     , m_server_address_line_edit(new QLineEdit)
     , m_port_line_edit(new QLineEdit)
     , m_connect_button(new QPushButton("Connect"))
+    , m_port_validator(new QIntValidator)
 {
   auto layout = new QHBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
 
   m_server_type_combo->addItem("Web Sockets", static_cast<int>(AutomationServerType::kWebSockets));
   m_server_type_combo->addItem("EPICS", static_cast<int>(AutomationServerType::kEPICS));
@@ -55,8 +64,10 @@ ServerSettingsWidget::ServerSettingsWidget(QWidget* parent_widget)
   m_server_address_line_edit->setClearButtonEnabled(true);
   layout->addWidget(m_server_address_line_edit);
 
-  m_port_line_edit->setPlaceholderText("Port");
+  m_port_line_edit->setPlaceholderText(QString::number(kMinRegisteredUserPort));
   m_port_line_edit->setFixedWidth(mvvm::style::UnitSize(4));
+  m_port_validator->setRange(kMinRegisteredUserPort, kMaxRegisteredUserPort);
+  m_port_line_edit->setValidator(m_port_validator);
   layout->addWidget(m_port_line_edit);
 
   connect(m_connect_button, &QPushButton::clicked, this, &ServerSettingsWidget::connectRequest);

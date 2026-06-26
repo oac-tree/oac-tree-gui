@@ -30,6 +30,7 @@
 class QComboBox;
 class QLineEdit;
 class QPushButton;
+class QIntValidator;
 
 namespace oac_tree_gui
 {
@@ -80,6 +81,7 @@ private:
   QLineEdit* m_server_address_line_edit{nullptr};
   QLineEdit* m_port_line_edit{nullptr};
   QPushButton* m_connect_button{nullptr};
+  QIntValidator* m_port_validator{nullptr};
 };
 
 }  // namespace oac_tree_gui
