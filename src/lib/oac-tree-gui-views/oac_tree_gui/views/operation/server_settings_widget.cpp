@@ -94,6 +94,9 @@ AutomationServerType ServerSettingsWidget::GetServerType() const
 
 void ServerSettingsWidget::SetServerType(AutomationServerType server_type)
 {
+  // sync the combo box selection (no-op if already selected, won't re-emit the signal)
+  m_server_type_combo->setCurrentIndex(m_server_type_combo->findData(static_cast<int>(server_type)));
+
   // visible for WebSockets
   m_server_address_line_edit->setVisible(server_type == AutomationServerType::kWebSockets);
   m_port_line_edit->setVisible(server_type == AutomationServerType::kWebSockets);
