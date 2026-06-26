@@ -26,8 +26,6 @@
 #include <optional>
 
 class QListView;
-class QLineEdit;
-class QPushButton;
 class QStandardItemModel;
 class QHBoxLayout;
 
@@ -36,6 +34,7 @@ namespace oac_tree_gui
 
 class IRemoteConnectionService;
 struct RemoteConnectionInfo;
+class ServerSettingsWidget;
 
 /**
  * @brief The RemoteConnectionDialog class is a modal dialog to connect with remote server and
@@ -89,8 +88,7 @@ private:
    */
   void PopulateJobInfoModel(const std::string& server_name);
 
-  QLineEdit* m_server_name_line_edit{nullptr};
-  QPushButton* m_connect_button{nullptr};
+  ServerSettingsWidget* m_server_settings_widget{nullptr};
   QListView* m_job_list_view{nullptr};
   QStandardItemModel* m_job_info_model{nullptr};
 

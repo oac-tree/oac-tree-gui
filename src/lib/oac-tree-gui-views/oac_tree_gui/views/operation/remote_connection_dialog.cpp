@@ -20,6 +20,8 @@
 
 #include "remote_connection_dialog.h"
 
+#include "server_settings_widget.h"
+
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
 #include <oac_tree_gui/jobsystem/remote_connection_info.h>
@@ -33,9 +35,7 @@
 #include <QHBoxLayout>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
-#include <QLineEdit>
 #include <QListView>
-#include <QPushButton>
 #include <QSettings>
 #include <QStandardItemModel>
 
@@ -64,8 +64,7 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string& name)
 RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connection_service,
                                                QWidget* parent_widget)
     : QDialog(parent_widget)
-    , m_server_name_line_edit(new QLineEdit)
-    , m_connect_button(new QPushButton("Connect"))
+    , m_server_settings_widget(new ServerSettingsWidget(this))
     , m_job_list_view(new QListView)
     , m_job_info_model(new QStandardItemModel(this))
     , m_connection_service(connection_service)
@@ -78,22 +77,16 @@ RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connect
   setWindowTitle("Connect to server");
 
   auto layout = new QVBoxLayout(this);
-  layout->addLayout(CreateConnectLayout().release());
+  layout->addWidget(m_server_settings_widget);
   layout->addWidget(m_job_list_view);
   layout->addLayout(
       sup::gui::CreateButtonLayout(this, "Attach to selected jobs", "Cancel").release());
-
-  m_server_name_line_edit->setClearButtonEnabled(true);
-  m_server_name_line_edit->setPlaceholderText("Server name");
-  m_connect_button->setFixedWidth(mvvm::style::UnitSize(12));
 
   m_job_list_view->setAlternatingRowColors(true);
   m_job_list_view->setModel(m_job_info_model);
   m_job_list_view->setSelectionMode(QAbstractItemView::MultiSelection);
 
-  connect(m_connect_button, &QPushButton::clicked, this, &RemoteConnectionDialog::OnConnectRequest);
-
-  connect(m_server_name_line_edit, &QLineEdit::returnPressed, this,
+  connect(m_server_settings_widget, &ServerSettingsWidget::connectRequest, this,
           &RemoteConnectionDialog::OnConnectRequest);
 
   ReadSettings();
@@ -131,27 +124,19 @@ void RemoteConnectionDialog::keyPressEvent(QKeyEvent* event)
 
 void RemoteConnectionDialog::OnConnectRequest()
 {
-  setCursor(Qt::WaitCursor);
-  QApplication::processEvents();
+  // setCursor(Qt::WaitCursor);
+  // QApplication::processEvents();
 
-  // TODO establish connection in a thread with possibility to cancel hanging
-  const auto server_name = m_server_name_line_edit->text().toStdString();
-  if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
-  {
-    PopulateJobInfoModel(server_name);
-    m_current_server_name = server_name;
-  }
+  // // TODO establish connection in a thread with possibility to cancel hanging
+  // const auto server_name = m_server_name_line_edit->text().toStdString();
+  // if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
+  // {
+  //   PopulateJobInfoModel(server_name);
+  //   m_current_server_name = server_name;
+  // }
 
-  unsetCursor();
-  QApplication::processEvents();
-}
-
-std::unique_ptr<QHBoxLayout> RemoteConnectionDialog::CreateConnectLayout()
-{
-  auto result = std::make_unique<QHBoxLayout>();
-  result->addWidget(m_server_name_line_edit);
-  result->addWidget(m_connect_button);
-  return result;
+  // unsetCursor();
+  // QApplication::processEvents();
 }
 
 void RemoteConnectionDialog::ReadSettings()

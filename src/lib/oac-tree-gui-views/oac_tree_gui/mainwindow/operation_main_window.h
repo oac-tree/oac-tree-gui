@@ -34,8 +34,9 @@ class OperationMainWindowActions;
 class ApplicationModels;
 class SequencerMainWindowContext;
 
-//! The main window of sequencer-operation applcation
-
+/**
+ * @brief The OperationMainWindow class is a main window of oac-tree-operation GUI.
+ */
 class OperationMainWindow : public QMainWindow
 {
   Q_OBJECT
