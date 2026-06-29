@@ -45,17 +45,11 @@ namespace oac_tree_gui
 class RemoteConnectionServiceTest : public ::testing::Test
 {
 public:
-  /**
-   * @brief Returns factory function creating clients decorating our mocking object.
-   */
-  AutomationClientFunc CreateFunc()
+  std::unique_ptr<RemoteConnectionService> CreateService()
   {
-    return test::AutomationClientDecoratorCreateFunc(m_mock_client);
-  }
-
-  static RemoteConnectionService::message_func_t CreateMessageFunc()
-  {
-    return [](const sup::gui::MessageEvent&) {};
+    auto factory_func = test::AutomationClientDecoratorCreateFunc(m_mock_client);
+    auto message_func = [](const sup::gui::MessageEvent&) {};
+    return std::make_unique<RemoteConnectionService>(factory_func, message_func);
   }
 
   testing::NiceMock<test::MockAutomationClient> m_mock_client;
@@ -65,17 +59,18 @@ TEST_F(RemoteConnectionServiceTest, Connect)
 {
   EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
 
-  RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
-  EXPECT_TRUE(service.GetServerNames().empty());
-  EXPECT_FALSE(service.HasClient("abc"));
+  auto service = CreateService();
 
-  EXPECT_TRUE(service.Connect("abc"));
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
-  EXPECT_TRUE(service.HasClient("abc"));
+  EXPECT_TRUE(service->GetServerNames().empty());
+  EXPECT_FALSE(service->HasClient("abc"));
+
+  EXPECT_TRUE(service->Connect("abc"));
+  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc"}));
+  EXPECT_TRUE(service->HasClient("abc"));
 
   // connecting again to the same server is a no-op
-  EXPECT_TRUE(service.Connect("abc"));
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
+  EXPECT_TRUE(service->Connect("abc"));
+  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc"}));
 }
 
 TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
@@ -83,7 +78,8 @@ TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
   auto factory_func = [](const AutomationServerInfo&) -> std::unique_ptr<IAutomationClient>
   { throw RuntimeException("Connection problem"); };
 
-  RemoteConnectionService service(factory_func, CreateMessageFunc());
+  auto message_func = [](const sup::gui::MessageEvent&) {};
+  RemoteConnectionService service(factory_func, message_func);
 
   EXPECT_FALSE(service.Connect("abc"));
 }
@@ -92,34 +88,36 @@ TEST_F(RemoteConnectionServiceTest, Disconnect)
 {
   EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
 
-  RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
-  EXPECT_TRUE(service.Connect("abc"));
-  EXPECT_TRUE(service.HasClient("abc"));
+  auto service = CreateService();
+
+  EXPECT_TRUE(service->Connect("abc"));
+  EXPECT_TRUE(service->HasClient("abc"));
 
   // disconnecting non-existing server is a no-op
-  service.Disconnect("def");
-  EXPECT_TRUE(service.HasClient("abc"));
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
+  service->Disconnect("def");
+  EXPECT_TRUE(service->HasClient("abc"));
+  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc"}));
 
   // disconnecting existing server removes the client
-  service.Disconnect("abc");
-  EXPECT_FALSE(service.HasClient("abc"));
-  EXPECT_TRUE(service.GetServerNames().empty());
+  service->Disconnect("abc");
+  EXPECT_FALSE(service->HasClient("abc"));
+  EXPECT_TRUE(service->GetServerNames().empty());
 }
 
 TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
 {
   EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
 
-  RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
-  EXPECT_TRUE(service.Connect("abc"));
-  EXPECT_TRUE(service.HasClient("abc"));
+  auto service = CreateService();
+
+  EXPECT_TRUE(service->Connect("abc"));
+  EXPECT_TRUE(service->HasClient("abc"));
 
   // the client returned by the service is a decorator forwarding calls to our mock
   EXPECT_CALL(m_mock_client, GetJobCount()).WillOnce(Return(42));
-  EXPECT_EQ(service.GetAutomationClient("abc").GetJobCount(), 42);
+  EXPECT_EQ(service->GetAutomationClient("abc").GetJobCount(), 42);
 
-  EXPECT_THROW(service.GetAutomationClient("def"), RuntimeException);
+  EXPECT_THROW(service->GetAutomationClient("def"), RuntimeException);
 }
 
 }  // namespace oac_tree_gui
