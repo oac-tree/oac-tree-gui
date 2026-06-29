@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
+#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 #include <memory>
 
@@ -61,6 +62,12 @@ private:
   std::string m_server_name;
   std::unique_ptr<sup::oac_tree_server::IClientJobManager> m_client_manager;
 };
+
+/**
+ * @brief Returns connection manager from given info.
+ */
+std::unique_ptr<sup::oac_tree_server::IClientJobManager> CreateConnectionManager(
+    const AutomationServerInfo& connection_info);
 
 }  // namespace oac_tree_gui
 
