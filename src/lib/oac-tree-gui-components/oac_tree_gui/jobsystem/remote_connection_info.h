@@ -76,6 +76,11 @@ using AutomationServerInfo = std::variant<EPICSServerInfo, WebSocketsServerInfo>
 std::string GetServerName(const AutomationServerInfo& server_info);
 
 /**
+ * @brief Constructs AutomationServerInfo from server name.
+ */
+AutomationServerInfo GetAutomationServerInfo(const std::string& server_name);
+
+/**
  * @brief The RemoteConnectionInfo struct holds information about remote jobs that should be
  * imported into the job system.
  */

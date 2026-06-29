@@ -20,6 +20,10 @@
 
 #include "remote_connection_info.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+
+#include <mvvm/utils/string_utils.h>
+
 namespace oac_tree_gui
 {
 
@@ -52,6 +56,26 @@ std::string GetServerName(const AutomationServerInfo& server_info)
 
   const auto& info = std::get<WebSocketsServerInfo>(server_info);
   return info.server_address + ":" + std::to_string(info.server_port);
+}
+
+AutomationServerInfo GetAutomationServerInfo(const std::string& server_name)
+{
+  const auto parts = mvvm::utils::SplitString(server_name, ":");
+  if (parts.size() == 1)
+  {
+    return EPICSServerInfo{parts.at(0)};
+  }
+
+  if (parts.size() == 2)
+  {
+    const auto port = mvvm::utils::StringToInteger(parts.at(1));
+    if (port.has_value())
+    {
+      return WebSocketsServerInfo{parts.at(0), static_cast<std::uint16_t>(port.value())};
+    }
+  }
+
+  throw RuntimeException("Can't create server info from server string");
 }
 
 }  // namespace oac_tree_gui
