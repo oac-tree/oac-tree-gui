@@ -78,7 +78,8 @@ std::function<std::unique_ptr<IAutomationClient>(const std::string&)> GetClientF
  */
 std::unique_ptr<RemoteConnectionService> CreateRemoteConnectionService()
 {
-  return std::make_unique<RemoteConnectionService>(GetClientFactoryFunc());
+  auto on_error = [](const sup::gui::MessageEvent& event) { SendWarningMessage(event); };
+  return std::make_unique<RemoteConnectionService>(GetClientFactoryFunc(), on_error);
 }
 
 }  // namespace
@@ -162,7 +163,7 @@ void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandC
                                        sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
-OperationActionHandler *OperationMonitorView::GetOperationActionHandler()
+OperationActionHandler* OperationMonitorView::GetOperationActionHandler()
 {
   return m_action_handler;
 }

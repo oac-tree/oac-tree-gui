@@ -30,24 +30,28 @@
 #include <sup/oac-tree-server/ws_utils.h>
 #include <sup/oac-tree/job_info.h>
 
+#include <chrono>
+
 namespace oac_tree_gui
 {
+
+namespace
+{
+const std::uint32_t kConnectionTimeout{1};
+}
 
 AutomationClient::AutomationClient(const std::string& server_name)
     : m_server_name(server_name)
     , m_client_manager(CreateConnectionManager(GetAutomationServerInfo(server_name)))
 {
-  try
+  if (auto is_connected =
+          m_client_manager->WaitForConnection(std::chrono::seconds(kConnectionTimeout));
+      !is_connected)
   {
-    // current way to check if connection was established
-    [[maybe_unused]] auto job_count = m_client_manager->GetNumberOfJobs();
+    throw RuntimeException("Connection to the server [" + GetServerName() + "] has failed within "
+                           + std::to_string(kConnectionTimeout) + " sec timeout");
   }
-  catch (const sup::oac_tree_server::InvalidOperationException& ex)
-  {
-    throw RuntimeException("Connection to the server [" + GetServerName()
-                           + "] has failed with the message [" + ex.what() + "]");
-  }
-}  // namespace oac_tree_gui
+}
 
 AutomationClient::~AutomationClient() = default;
 

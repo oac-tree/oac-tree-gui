@@ -24,6 +24,8 @@
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
 #include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
 
+#include <sup/gui/core/message_event.h>
+
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui
@@ -69,11 +71,16 @@ public:
     auto result = [](const std::string& name) { return std::make_unique<TestClient>(name); };
     return result;
   }
+
+  static RemoteConnectionService::message_func_t CreateMessageFunc()
+  {
+    return [](const sup::gui::MessageEvent&) {};
+  }
 };
 
 TEST_F(RemoteConnectionServiceTest, Connect)
 {
-  RemoteConnectionService service(CreateFunc());
+  RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
   EXPECT_TRUE(service.GetServerNames().empty());
   EXPECT_FALSE(service.HasClient("abc"));
 
@@ -94,14 +101,14 @@ TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
   auto factory_func = [](const std::string&) -> std::unique_ptr<IAutomationClient>
   { throw RuntimeException("Connection problem"); };
 
-  RemoteConnectionService service(factory_func);
+  RemoteConnectionService service(factory_func, CreateMessageFunc());
 
   EXPECT_FALSE(service.Connect("abc"));
 }
 
 TEST_F(RemoteConnectionServiceTest, Disconnect)
 {
-  RemoteConnectionService service(CreateFunc());
+  RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
   EXPECT_TRUE(service.GetServerNames().empty());
   EXPECT_FALSE(service.HasClient("abc"));
 
@@ -124,7 +131,7 @@ TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
 
   auto factory_func = [&client](const std::string&) { return std::move(client); };
 
-  RemoteConnectionService service(factory_func);
+  RemoteConnectionService service(factory_func, CreateMessageFunc());
 
   EXPECT_TRUE(service.Connect("abc"));
 

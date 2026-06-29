@@ -78,7 +78,7 @@ class OperationActionHandlerRemoteScenarioTest : public ::testing::Test
 {
 public:
   OperationActionHandlerRemoteScenarioTest()
-      : m_remote_connection_service(GetAutomationClientFunc())
+      : m_remote_connection_service(GetAutomationClientFunc(), {})
       , m_job_manager(GetJobHandlerFactoryFunc(m_user_context, m_remote_connection_service))
   {
     m_models.CreateEmpty();

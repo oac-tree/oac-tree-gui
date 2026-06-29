@@ -25,6 +25,11 @@
 
 #include <functional>
 
+namespace sup::gui
+{
+struct MessageEvent;
+}
+
 namespace oac_tree_gui
 {
 
@@ -36,7 +41,9 @@ class RemoteConnectionService : public IRemoteConnectionService
 {
 public:
   using create_client_t = std::function<std::unique_ptr<IAutomationClient>(const std::string&)>;
-  explicit RemoteConnectionService(const create_client_t& create_connection);
+  using message_func_t = std::function<void(const sup::gui::MessageEvent&)>;
+
+  explicit RemoteConnectionService(const create_client_t& create_connection, const message_func_t& message_func);
 
   bool Connect(const std::string& server_name) override;
 
@@ -58,6 +65,7 @@ private:
   std::vector<std::unique_ptr<IAutomationClient>> m_clients;
 
   create_client_t m_create_client;
+  message_func_t m_message_func;
 };
 
 }  // namespace oac_tree_gui

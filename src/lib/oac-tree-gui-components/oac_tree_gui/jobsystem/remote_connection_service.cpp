@@ -26,15 +26,18 @@
 #include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
+#include <sup/gui/core/message_event.h>
+
 #include <algorithm>
 
 namespace oac_tree_gui
 {
 
-RemoteConnectionService::RemoteConnectionService(const create_client_t& create_connection)
-    : m_create_client(create_connection)
+RemoteConnectionService::RemoteConnectionService(const create_client_t& create_connection,
+                                                 const message_func_t& message_func)
+    : m_create_client(create_connection), m_message_func(message_func)
 {
-  if (!create_connection)
+  if (!m_create_client)
   {
     throw RuntimeException("Uninitialised function to create connections");
   }
@@ -52,8 +55,18 @@ bool RemoteConnectionService::Connect(const std::string& server_name)
   {
     client = m_create_client(server_name);
   }
-  catch (const RuntimeException&)
+  catch (const RuntimeException& ex)
   {
+    if (m_message_func)
+    {
+      sup::gui::MessageEvent message;
+      message.title = "Connection failed";
+      message.text = "Connection failed";
+      message.informative = "Exception was thrown";
+      message.detailed = ex.what();
+      m_message_func(message);
+    }
+
     return false;
   }
 

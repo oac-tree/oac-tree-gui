@@ -18,6 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "oac_tree_gui/jobsystem/user_context.h"
 #include "test_automation_server.h"
 
 #include <oac_tree_gui/jobsystem/automation_client.h>
@@ -28,7 +29,6 @@
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
-#include "oac_tree_gui/jobsystem/user_context.h"
 
 #include <mvvm/model/application_model.h>
 
@@ -67,7 +67,7 @@ const std::string kProcedureBodyText{
 class JobManagerRemoteScenarioTest : public ::testing::Test
 {
 public:
-  JobManagerRemoteScenarioTest() : m_remote_connection_service(GetAutomationClientFactoryFunc())
+  JobManagerRemoteScenarioTest() : m_remote_connection_service(GetAutomationClientFactoryFunc(), {})
   {
     // creating remote job item
     const std::size_t job_index{0};
