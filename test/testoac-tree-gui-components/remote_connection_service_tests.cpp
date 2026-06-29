@@ -26,60 +26,46 @@
 
 #include <sup/gui/core/message_event.h>
 
+#include <testutils/mock_automation_client.h>
+
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+using ::testing::Return;
 
 namespace oac_tree_gui
 {
 
 /**
- * @brief Tests for RemoteConnectionServiceTest class.
+ * @brief Tests for RemoteConnectionService class.
+ *
+ * Clients are created via AutomationClientDecoratorCreateFunc, which produces lightweight
+ * decorators forwarding all calls to a single mocking object. As a consequence every client
+ * created by the service shares the same mock and reports the same server name.
  */
 class RemoteConnectionServiceTest : public ::testing::Test
 {
 public:
-  class TestClient : public IAutomationClient
-  {
-  public:
-    explicit TestClient(const std::string& name) : m_name(name) {}
-
-    std::string GetServerName() const override { return m_name; };
-
-    std::size_t GetJobCount() const override { return 42; }
-
-    std::string GetProcedureName(std::uint32_t job_index) const override
-    {
-      (void)job_index;
-      return {};
-    }
-
-    std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
-                                                         const UserContext& user_context) override
-    {
-      (void)job_item;
-      (void)user_context;
-      return {};
-    }
-
-    std::string m_name;
-  };
-
   /**
-   * @brief Returns lamba to create test clients.
+   * @brief Returns factory function creating clients decorating our mocking object.
    */
-  static RemoteConnectionService::create_client_t CreateFunc()
+  RemoteConnectionService::create_client_t CreateFunc()
   {
-    auto result = [](const std::string& name) { return std::make_unique<TestClient>(name); };
-    return result;
+    return test::AutomationClientDecoratorCreateFunc(m_mock_client);
   }
 
   static RemoteConnectionService::message_func_t CreateMessageFunc()
   {
     return [](const sup::gui::MessageEvent&) {};
   }
+
+  testing::NiceMock<test::MockAutomationClient> m_mock_client;
 };
 
 TEST_F(RemoteConnectionServiceTest, Connect)
 {
+  EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
+
   RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
   EXPECT_TRUE(service.GetServerNames().empty());
   EXPECT_FALSE(service.HasClient("abc"));
@@ -88,12 +74,9 @@ TEST_F(RemoteConnectionServiceTest, Connect)
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
   EXPECT_TRUE(service.HasClient("abc"));
 
-  // same name, do nothing
+  // connecting again to the same server is a no-op
   EXPECT_TRUE(service.Connect("abc"));
   EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
-
-  service.Connect("def");
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc", "def"}));
 }
 
 TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
@@ -108,35 +91,35 @@ TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
 
 TEST_F(RemoteConnectionServiceTest, Disconnect)
 {
+  EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
+
   RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
-  EXPECT_TRUE(service.GetServerNames().empty());
-  EXPECT_FALSE(service.HasClient("abc"));
+  EXPECT_TRUE(service.Connect("abc"));
+  EXPECT_TRUE(service.HasClient("abc"));
 
-  EXPECT_TRUE(service.Connect("a1"));
-  EXPECT_TRUE(service.Connect("a2"));
-  EXPECT_TRUE(service.Connect("a3"));
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a2", "a3"}));
-
+  // disconnecting non-existing server is a no-op
   service.Disconnect("def");
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a2", "a3"}));
+  EXPECT_TRUE(service.HasClient("abc"));
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc"}));
 
-  service.Disconnect("a2");
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"a1", "a3"}));
+  // disconnecting existing server removes the client
+  service.Disconnect("abc");
+  EXPECT_FALSE(service.HasClient("abc"));
+  EXPECT_TRUE(service.GetServerNames().empty());
 }
 
 TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
 {
-  auto client = std::make_unique<TestClient>("abc");
-  auto client_ptr = client.get();
+  EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
 
-  auto factory_func = [&client](const std::string&) { return std::move(client); };
-
-  RemoteConnectionService service(factory_func, CreateMessageFunc());
-
+  RemoteConnectionService service(CreateFunc(), CreateMessageFunc());
   EXPECT_TRUE(service.Connect("abc"));
-
   EXPECT_TRUE(service.HasClient("abc"));
-  EXPECT_EQ(&service.GetAutomationClient("abc"), client_ptr);
+
+  // the client returned by the service is a decorator forwarding calls to our mock
+  EXPECT_CALL(m_mock_client, GetJobCount()).WillOnce(Return(42));
+  EXPECT_EQ(service.GetAutomationClient("abc").GetJobCount(), 42);
+
   EXPECT_THROW(service.GetAutomationClient("def"), RuntimeException);
 }
 
