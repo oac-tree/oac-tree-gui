@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   abstract_domain_runner.h
   automation_client.cpp
   automation_client.h
+  automation_client_factory.cpp
+  automation_client_factory.h
   domain_event_helper.cpp
   domain_event_helper.h
   domain_events.cpp

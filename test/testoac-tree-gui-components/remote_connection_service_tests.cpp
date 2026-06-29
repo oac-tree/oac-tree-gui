@@ -26,10 +26,9 @@
 
 #include <sup/gui/core/message_event.h>
 
-#include <testutils/mock_automation_client.h>
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <testutils/mock_automation_client.h>
 
 using ::testing::Return;
 
@@ -49,7 +48,7 @@ public:
   /**
    * @brief Returns factory function creating clients decorating our mocking object.
    */
-  RemoteConnectionService::create_client_t CreateFunc()
+  AutomationClientFunc CreateFunc()
   {
     return test::AutomationClientDecoratorCreateFunc(m_mock_client);
   }

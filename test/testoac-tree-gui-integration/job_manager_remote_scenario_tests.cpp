@@ -92,17 +92,6 @@ public:
   }
 
   /**
-   * @brief Returns factory function to create automation clients.
-   *
-   * This function is used to setup RemoteConnectionService.
-   */
-  static RemoteConnectionService::create_client_t GetAutomationClientFactoryFunc()
-  {
-    return [](const AutomationServerInfo& info)
-    { return std::make_unique<AutomationClient>(info); };
-  }
-
-  /**
    * @brief Creates new fully set JobManager.
    */
   std::unique_ptr<JobManager> CreateJobManager()

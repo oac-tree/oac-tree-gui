@@ -78,7 +78,7 @@ class OperationActionHandlerRemoteScenarioTest : public ::testing::Test
 {
 public:
   OperationActionHandlerRemoteScenarioTest()
-      : m_remote_connection_service(GetAutomationClientFunc(), {})
+      : m_remote_connection_service(GetAutomationClientFactoryFunc(), {})
       , m_job_manager(GetJobHandlerFactoryFunc(m_user_context, m_remote_connection_service))
   {
     m_models.CreateEmpty();
@@ -95,17 +95,6 @@ public:
   }
 
   static void TearDownTestSuite() { m_test_automation_server.Stop(); }
-
-  /**
-   * @brief Returns factory function to create automation clients.
-   *
-   * This function is used to setup RemoteConnectionService.
-   */
-  static RemoteConnectionService::create_client_t GetAutomationClientFunc()
-  {
-    return [](const AutomationServerInfo& info)
-    { return std::make_unique<AutomationClient>(info); };
-  }
 
   /**
    * @brief Creates operation action handler.

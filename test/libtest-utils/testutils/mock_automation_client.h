@@ -21,12 +21,11 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_AUTOMATION_CLIENT_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_AUTOMATION_CLIENT_H_
 
+#include <oac_tree_gui/jobsystem/automation_client_factory.h>
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
 #include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 #include <gmock/gmock.h>
-
-#include <functional>
 
 namespace oac_tree_gui::test
 {
@@ -34,14 +33,14 @@ namespace oac_tree_gui::test
 /**
  * @brief The MockAutomationClient class helps to test RemoteConnectionService.
  */
-class MockAutomationClient : public oac_tree_gui::IAutomationClient
+class MockAutomationClient : public IAutomationClient
 {
 public:
   MOCK_METHOD(std::string, GetServerName, (), (const, override));
   MOCK_METHOD(std::size_t, GetJobCount, (), (const, override));
   MOCK_METHOD(std::string, GetProcedureName, (std::uint32_t), (const, override));
-  MOCK_METHOD(std::unique_ptr<oac_tree_gui::AbstractJobHandler>, CreateJobHandler,
-              (oac_tree_gui::RemoteJobItem*, const oac_tree_gui::UserContext&), (override));
+  MOCK_METHOD(std::unique_ptr<AbstractJobHandler>, CreateJobHandler,
+              (RemoteJobItem*, const UserContext&), (override));
 };
 
 /**
@@ -51,10 +50,10 @@ public:
  * It is used in situations when we have to use unique_ptr<IAutomationClient>, and do not want to
  * loose an ownerhsip on gtest mocking object.
  */
-class AutomationClientDecorator : public oac_tree_gui::IAutomationClient
+class AutomationClientDecorator : public IAutomationClient
 {
 public:
-  AutomationClientDecorator(oac_tree_gui::IAutomationClient& decoratee);
+  AutomationClientDecorator(IAutomationClient& decoratee);
 
   std::string GetServerName() const override;
 
@@ -62,26 +61,22 @@ public:
 
   std::string GetProcedureName(std::uint32_t job_index) const override;
 
-  std::unique_ptr<oac_tree_gui::AbstractJobHandler> CreateJobHandler(
-      oac_tree_gui::RemoteJobItem* job_item,
-      const oac_tree_gui::UserContext& user_context) override;
+  std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
+                                                       const UserContext& user_context) override;
 
 private:
-  oac_tree_gui::IAutomationClient& m_decoratee;
+  IAutomationClient& m_decoratee;
 };
 
 /**
  * @brief Creates simple forward decorator around mocking object.
  */
-std::unique_ptr<oac_tree_gui::IAutomationClient> CreateAutomationClientDecorator(
-    oac_tree_gui::IAutomationClient& decoratee);
+std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationClient& decoratee);
 
 /**
  * @brief Creates factory functions to create decorators around mocking objects.
  */
-std::function<
-    std::unique_ptr<oac_tree_gui::IAutomationClient>(const AutomationServerInfo& server_info)>
-AutomationClientDecoratorCreateFunc(oac_tree_gui::IAutomationClient& decoratee);
+AutomationClientFunc AutomationClientDecoratorCreateFunc(IAutomationClient& decoratee);
 
 }  // namespace oac_tree_gui::test
 

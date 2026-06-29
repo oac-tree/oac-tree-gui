@@ -33,7 +33,7 @@
 namespace oac_tree_gui
 {
 
-RemoteConnectionService::RemoteConnectionService(const create_client_t& create_connection,
+RemoteConnectionService::RemoteConnectionService(const AutomationClientFunc& create_connection,
                                                  const message_func_t& message_func)
     : m_create_client(create_connection), m_message_func(message_func)
 {
