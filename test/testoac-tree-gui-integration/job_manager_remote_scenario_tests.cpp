@@ -98,8 +98,8 @@ public:
    */
   static RemoteConnectionService::create_client_t GetAutomationClientFactoryFunc()
   {
-    auto result = [](const std::string& name) { return std::make_unique<AutomationClient>(name); };
-    return result;
+    return [](const AutomationServerInfo& info)
+    { return std::make_unique<AutomationClient>(info); };
   }
 
   /**

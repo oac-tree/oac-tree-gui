@@ -67,10 +67,11 @@ const QString kWorkdirSettingName = kGroupName + "/" + "workdir";
 /**
  * @brief Creates factory function to create clients to talk with remote server.
  */
-std::function<std::unique_ptr<IAutomationClient>(const std::string&)> GetClientFactoryFunc()
+std::function<std::unique_ptr<IAutomationClient>(const AutomationServerInfo&)>
+GetClientFactoryFunc()
 {
-  return [](const std::string& server_name)
-  { return std::make_unique<AutomationClient>(server_name); };
+  return [](const AutomationServerInfo& server_info)
+  { return std::make_unique<AutomationClient>(server_info); };
 }
 
 /**
@@ -314,8 +315,6 @@ QWidget* OperationMonitorView::CreateLeftPanel()
   result->AddWidget(m_job_panel, actions);
   return result;
 }
-
-//! Create central panel with single OperationRealTimePanel.
 
 QWidget* OperationMonitorView::CreateCentralPanel()
 {

@@ -81,7 +81,7 @@ TEST_F(RemoteConnectionServiceTest, Connect)
 
 TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
 {
-  auto factory_func = [](const std::string&) -> std::unique_ptr<IAutomationClient>
+  auto factory_func = [](const AutomationServerInfo&) -> std::unique_ptr<IAutomationClient>
   { throw RuntimeException("Connection problem"); };
 
   RemoteConnectionService service(factory_func, CreateMessageFunc());

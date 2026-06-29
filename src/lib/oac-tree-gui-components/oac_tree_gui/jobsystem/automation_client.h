@@ -41,7 +41,7 @@ namespace oac_tree_gui
 class AutomationClient : public IAutomationClient
 {
 public:
-  explicit AutomationClient(const std::string& server_name);
+  explicit AutomationClient(const AutomationServerInfo& server_info);
   ~AutomationClient() override;
 
   AutomationClient(const AutomationClient&) = delete;
@@ -59,7 +59,7 @@ public:
                                                        const UserContext& user_context) override;
 
 private:
-  std::string m_server_name;
+  AutomationServerInfo m_server_info;
   std::unique_ptr<sup::oac_tree_server::IClientJobManager> m_client_manager;
 };
 

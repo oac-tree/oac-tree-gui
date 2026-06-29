@@ -53,7 +53,7 @@ bool RemoteConnectionService::Connect(const std::string& server_name)
   std::unique_ptr<IAutomationClient> client;
   try
   {
-    client = m_create_client(server_name);
+    client = m_create_client(GetAutomationServerInfo(server_name));
   }
   catch (const RuntimeException& ex)
   {

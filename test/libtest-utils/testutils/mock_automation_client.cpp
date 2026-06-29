@@ -25,7 +25,7 @@
 namespace oac_tree_gui::test
 {
 
-AutomationClientDecorator::AutomationClientDecorator(IAutomationClient &decoratee)
+AutomationClientDecorator::AutomationClientDecorator(IAutomationClient& decoratee)
     : m_decoratee(decoratee)
 {
 }
@@ -46,21 +46,22 @@ std::string AutomationClientDecorator::GetProcedureName(std::uint32_t job_index)
 }
 
 std::unique_ptr<oac_tree_gui::AbstractJobHandler> AutomationClientDecorator::CreateJobHandler(
-    oac_tree_gui::RemoteJobItem *job_item, const oac_tree_gui::UserContext &user_context)
+    oac_tree_gui::RemoteJobItem* job_item, const oac_tree_gui::UserContext& user_context)
 {
   return m_decoratee.CreateJobHandler(job_item, user_context);
 }
 
 std::unique_ptr<oac_tree_gui::IAutomationClient> CreateAutomationClientDecorator(
-    oac_tree_gui::IAutomationClient &decoratee)
+    oac_tree_gui::IAutomationClient& decoratee)
 {
   return std::make_unique<AutomationClientDecorator>(decoratee);
 }
 
-std::function<std::unique_ptr<oac_tree_gui::IAutomationClient>(const std::string &server_name)>
-AutomationClientDecoratorCreateFunc(oac_tree_gui::IAutomationClient &decoratee)
+std::function<
+    std::unique_ptr<oac_tree_gui::IAutomationClient>(const AutomationServerInfo& server_info)>
+AutomationClientDecoratorCreateFunc(oac_tree_gui::IAutomationClient& decoratee)
 {
-  auto result = [&decoratee](const std::string &server_name)
+  auto result = [&decoratee](const AutomationServerInfo& server_name)
   {
     (void)server_name;
     return CreateAutomationClientDecorator(decoratee);

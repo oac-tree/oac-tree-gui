@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_SERVICE_H_
 
 #include <oac_tree_gui/jobsystem/i_remote_connection_service.h>
+#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 #include <functional>
 
@@ -40,10 +41,12 @@ namespace oac_tree_gui
 class RemoteConnectionService : public IRemoteConnectionService
 {
 public:
-  using create_client_t = std::function<std::unique_ptr<IAutomationClient>(const std::string&)>;
+  using create_client_t =
+      std::function<std::unique_ptr<IAutomationClient>(const AutomationServerInfo&)>;
   using message_func_t = std::function<void(const sup::gui::MessageEvent&)>;
 
-  explicit RemoteConnectionService(const create_client_t& create_connection, const message_func_t& message_func);
+  explicit RemoteConnectionService(const create_client_t& create_connection,
+                                   const message_func_t& message_func);
 
   bool Connect(const std::string& server_name) override;
 

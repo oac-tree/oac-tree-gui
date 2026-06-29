@@ -22,6 +22,7 @@
 #define LIBTEST_UTILS_TESTUTILS_MOCK_AUTOMATION_CLIENT_H_
 
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
+#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 #include <gmock/gmock.h>
 
@@ -78,7 +79,8 @@ std::unique_ptr<oac_tree_gui::IAutomationClient> CreateAutomationClientDecorator
 /**
  * @brief Creates factory functions to create decorators around mocking objects.
  */
-std::function<std::unique_ptr<oac_tree_gui::IAutomationClient>(const std::string& server_name)>
+std::function<
+    std::unique_ptr<oac_tree_gui::IAutomationClient>(const AutomationServerInfo& server_info)>
 AutomationClientDecoratorCreateFunc(oac_tree_gui::IAutomationClient& decoratee);
 
 }  // namespace oac_tree_gui::test
