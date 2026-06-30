@@ -43,9 +43,9 @@ RemoteConnectionService::RemoteConnectionService(const AutomationClientFunc& cre
   }
 }
 
-bool RemoteConnectionService::Connect(const std::string& server_name)
+bool RemoteConnectionService::Connect(const AutomationServerInfo& server_info)
 {
-  if (HasClient(server_name))
+  if (HasClient(server_info))
   {
     return true;
   }
@@ -53,7 +53,7 @@ bool RemoteConnectionService::Connect(const std::string& server_name)
   std::unique_ptr<IAutomationClient> client;
   try
   {
-    client = m_create_client(GetAutomationServerInfo(server_name));
+    client = m_create_client(server_info);
   }
   catch (const RuntimeException& ex)
   {
@@ -74,46 +74,46 @@ bool RemoteConnectionService::Connect(const std::string& server_name)
   return true;
 }
 
-void RemoteConnectionService::Disconnect(const std::string& server_name)
+void RemoteConnectionService::Disconnect(const AutomationServerInfo& server_info)
 {
-  auto on_element = [&server_name](auto& element)
-  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()) == server_name; };
+  auto on_element = [&server_info](auto& element)
+  { return element->GetServerInfo() == server_info; };
   (void)m_clients.erase(std::remove_if(m_clients.begin(), m_clients.end(), on_element),
                         m_clients.end());
 }
 
-bool RemoteConnectionService::IsConnected(const std::string& server_name) const
+bool RemoteConnectionService::IsConnected(const AutomationServerInfo& server_info) const
 {
   // how to check if connection is alive
-  return HasClient(server_name);
+  return HasClient(server_info);
 }
 
-bool RemoteConnectionService::HasClient(const std::string& server_name) const
+bool RemoteConnectionService::HasClient(const AutomationServerInfo& server_info) const
 {
-  auto on_element = [&server_name](auto& element)
-  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()) == server_name; };
+  auto on_element = [&server_info](auto& element)
+  { return element->GetServerInfo() == server_info; };
   auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
   return pos != m_clients.end();
 }
 
-std::vector<std::string> RemoteConnectionService::GetServerNames() const
+std::vector<AutomationServerInfo> RemoteConnectionService::GetServerInfos() const
 {
-  std::vector<std::string> result;
-  auto on_element = [](const auto& element)
-  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()); };
+  std::vector<AutomationServerInfo> result;
+  auto on_element = [](const auto& element) { return element->GetServerInfo(); };
   (void)std::transform(m_clients.begin(), m_clients.end(), std::back_inserter(result), on_element);
   return result;
 }
 
-IAutomationClient& RemoteConnectionService::GetAutomationClient(const std::string& server_name)
+IAutomationClient& RemoteConnectionService::GetAutomationClient(
+    const AutomationServerInfo& server_info)
 {
-  auto on_element = [&server_name](auto& element)
-  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()) == server_name; };
+  auto on_element = [&server_info](auto& element)
+  { return element->GetServerInfo() == server_info; };
   auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
 
   if (pos == m_clients.end())
   {
-    throw RuntimeException("No client for server [" + server_name + "]");
+    throw RuntimeException("No client for server [" + GetAutomationServerName(server_info) + "]");
   }
 
   IAutomationClient* client = pos->get();
@@ -127,14 +127,14 @@ std::unique_ptr<AbstractJobHandler> RemoteConnectionService::CreateJobHandler(
   {
     throw RuntimeException("JobItem is not initialized");
   }
-  auto server_name = GetAutomationServerName(job_item->GetAutomationServerInfo());
+  const auto server_info = job_item->GetAutomationServerInfo();
 
-  if (!Connect(server_name))
+  if (!Connect(server_info))
   {
     throw RuntimeException("Can't connect to server");
   }
 
-  return GetAutomationClient(server_name).CreateJobHandler(job_item, user_context);
+  return GetAutomationClient(server_info).CreateJobHandler(job_item, user_context);
 }
 
 }  // namespace oac_tree_gui

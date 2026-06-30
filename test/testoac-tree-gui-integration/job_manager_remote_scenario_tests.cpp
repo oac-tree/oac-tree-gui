@@ -113,7 +113,7 @@ TEST_F(JobManagerRemoteScenarioTest, InitialState)
 {
   auto job_manager = CreateJobManager();
   EXPECT_EQ(job_manager->GetJobCount(), 0);
-  EXPECT_TRUE(m_remote_connection_service.GetServerNames().empty());
+  EXPECT_TRUE(m_remote_connection_service.GetServerInfos().empty());
 }
 
 TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
@@ -131,7 +131,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
   EXPECT_EQ(job_handler->GetRunnerStatus(), RunnerStatus::kInitial);
 
   // validating that connection service has established client connection
-  EXPECT_TRUE(m_remote_connection_service.HasClient(kServerName));
+  EXPECT_TRUE(m_remote_connection_service.HasClient(GetAutomationServerInfo(kServerName)));
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kInitial; };

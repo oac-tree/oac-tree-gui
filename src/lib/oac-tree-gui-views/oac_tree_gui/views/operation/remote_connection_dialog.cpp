@@ -130,10 +130,9 @@ void RemoteConnectionDialog::OnConnectRequest()
 
   // TODO establish connection in a thread with possibility to cancel hanging
   const auto server_info = m_server_settings_widget->GetServerInfo();
-  const auto server_name = GetAutomationServerName(server_info);
-  if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
+  if (auto is_connected = m_connection_service->Connect(server_info); is_connected)
   {
-    PopulateJobInfoModel(server_name);
+    PopulateJobInfoModel(server_info);
     m_current_server_info = server_info;
   }
 
@@ -158,12 +157,12 @@ void RemoteConnectionDialog::WriteSettings()
   m_server_settings_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
 }
 
-void RemoteConnectionDialog::PopulateJobInfoModel(const std::string& server_name)
+void RemoteConnectionDialog::PopulateJobInfoModel(const AutomationServerInfo& server_info)
 {
   m_job_info_model->clear();
 
   auto parent_item = m_job_info_model->invisibleRootItem();
-  auto& client = m_connection_service->GetAutomationClient(server_name);
+  auto& client = m_connection_service->GetAutomationClient(server_info);
   for (std::size_t job_index = 0; job_index < client.GetJobCount(); ++job_index)
   {
     auto procedure_name = client.GetProcedureName(job_index);

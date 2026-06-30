@@ -22,6 +22,7 @@
 #define LIBTEST_UTILS_TESTUTILS_MOCK_REMOTE_CONNECTION_SERVICE_H_
 
 #include <oac_tree_gui/jobsystem/i_remote_connection_service.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 #include <gmock/gmock.h>
 
@@ -43,13 +44,13 @@ namespace test
 class MockRemoteConnectionService : public oac_tree_gui::IRemoteConnectionService
 {
 public:
-  MOCK_METHOD(bool, Connect, (const std::string& server_name), (override));
-  MOCK_METHOD(void, Disconnect, (const std::string& server_name), (override));
-  MOCK_METHOD(bool, IsConnected, (const std::string& server_name), (const, override));
-  MOCK_METHOD(bool, HasClient, (const std::string& server_name), (const, override));
-  MOCK_METHOD(std::vector<std::string>, GetServerNames, (), (const, override));
+  MOCK_METHOD(bool, Connect, (const AutomationServerInfo& server_info), (override));
+  MOCK_METHOD(void, Disconnect, (const AutomationServerInfo& server_info), (override));
+  MOCK_METHOD(bool, IsConnected, (const AutomationServerInfo& server_info), (const, override));
+  MOCK_METHOD(bool, HasClient, (const AutomationServerInfo& server_info), (const, override));
+  MOCK_METHOD(std::vector<AutomationServerInfo>, GetServerInfos, (), (const, override));
   MOCK_METHOD(oac_tree_gui::IAutomationClient&, GetAutomationClient,
-              (const std::string& server_name), (override));
+              (const AutomationServerInfo& server_info), (override));
   MOCK_METHOD(std::unique_ptr<oac_tree_gui::AbstractJobHandler>, CreateJobHandler,
               (oac_tree_gui::RemoteJobItem*, const oac_tree_gui::UserContext&), (override));
 };
