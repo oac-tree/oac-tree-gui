@@ -97,12 +97,12 @@ public:
   /**
    * @brief Returns automation server info constructed from the currently selected item.
    */
-  AutomationServerInfo GetAutomationServerInfo() const;
+  AutomationServerInfo GetServerInfo() const;
 
   /**
    * @brief Selects the item matching the given server info and saves the info into it.
    */
-  void SetAutomationServerInfo(const AutomationServerInfo& server_info);
+  void SetServerInfo(const AutomationServerInfo& server_info);
 };
 
 }  // namespace oac_tree_gui

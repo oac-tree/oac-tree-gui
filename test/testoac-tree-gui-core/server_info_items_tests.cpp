@@ -128,7 +128,7 @@ TEST_F(ServerGroupItemTest, InitialState)
   EXPECT_EQ(item.GetCurrentIndex(), 0);
   EXPECT_EQ(item.GetCurrentType(), mvvm::GetTypeName<EPICSServerInfoItem>());
 
-  EXPECT_EQ(item.GetAutomationServerInfo(), AutomationServerInfo{EPICSServerInfo{}});
+  EXPECT_EQ(item.GetServerInfo(), AutomationServerInfo{EPICSServerInfo{}});
 }
 
 TEST_F(ServerGroupItemTest, SetAndGetEPICSServerInfo)
@@ -136,10 +136,10 @@ TEST_F(ServerGroupItemTest, SetAndGetEPICSServerInfo)
   ServerGroupItem item;
 
   const AutomationServerInfo info{EPICSServerInfo{"MyServer"}};
-  item.SetAutomationServerInfo(info);
+  item.SetServerInfo(info);
 
   EXPECT_EQ(item.GetCurrentType(), mvvm::GetTypeName<EPICSServerInfoItem>());
-  EXPECT_EQ(item.GetAutomationServerInfo(), info);
+  EXPECT_EQ(item.GetServerInfo(), info);
 }
 
 TEST_F(ServerGroupItemTest, SetAndGetWebSocketsServerInfo)
@@ -147,31 +147,31 @@ TEST_F(ServerGroupItemTest, SetAndGetWebSocketsServerInfo)
   ServerGroupItem item;
 
   const AutomationServerInfo info{WebSocketsServerInfo{"localhost", 8080}};
-  item.SetAutomationServerInfo(info);
+  item.SetServerInfo(info);
 
   // setting WebSockets info switches the currently selected item
   EXPECT_EQ(item.GetCurrentIndex(), 1);
   EXPECT_EQ(item.GetCurrentType(), mvvm::GetTypeName<WebSocketsServerInfoItem>());
-  EXPECT_EQ(item.GetAutomationServerInfo(), info);
+  EXPECT_EQ(item.GetServerInfo(), info);
 }
 
 TEST_F(ServerGroupItemTest, SwitchBetweenServerTypes)
 {
   ServerGroupItem item;
 
-  item.SetAutomationServerInfo(AutomationServerInfo{WebSocketsServerInfo{"localhost", 8080}});
+  item.SetServerInfo(AutomationServerInfo{WebSocketsServerInfo{"localhost", 8080}});
   EXPECT_EQ(item.GetCurrentType(), mvvm::GetTypeName<WebSocketsServerInfoItem>());
 
   const AutomationServerInfo epics_info{EPICSServerInfo{"MyServer"}};
-  item.SetAutomationServerInfo(epics_info);
+  item.SetServerInfo(epics_info);
   EXPECT_EQ(item.GetCurrentType(), mvvm::GetTypeName<EPICSServerInfoItem>());
-  EXPECT_EQ(item.GetAutomationServerInfo(), epics_info);
+  EXPECT_EQ(item.GetServerInfo(), epics_info);
 }
 
 TEST_F(ServerGroupItemTest, Clone)
 {
   ServerGroupItem item;
-  item.SetAutomationServerInfo(AutomationServerInfo{WebSocketsServerInfo{"localhost", 8080}});
+  item.SetServerInfo(AutomationServerInfo{WebSocketsServerInfo{"localhost", 8080}});
 
   auto clone = item.Clone();
 
@@ -179,7 +179,7 @@ TEST_F(ServerGroupItemTest, Clone)
   ASSERT_NE(clone_ptr, nullptr);
   EXPECT_EQ(clone_ptr->GetIdentifier(), item.GetIdentifier());
   EXPECT_EQ(clone_ptr->GetCurrentType(), mvvm::GetTypeName<WebSocketsServerInfoItem>());
-  EXPECT_EQ(clone_ptr->GetAutomationServerInfo(),
+  EXPECT_EQ(clone_ptr->GetServerInfo(),
             (AutomationServerInfo{WebSocketsServerInfo{"localhost", 8080}}));
 }
 

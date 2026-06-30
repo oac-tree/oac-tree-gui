@@ -85,7 +85,7 @@ std::unique_ptr<mvvm::SessionItem> ServerGroupItem::Clone() const
   return mvvm::MakeClone(*this);
 }
 
-AutomationServerInfo ServerGroupItem::GetAutomationServerInfo() const
+AutomationServerInfo ServerGroupItem::GetServerInfo() const
 {
   if (GetCurrentType() == mvvm::GetTypeName<EPICSServerInfoItem>())
   {
@@ -100,17 +100,22 @@ AutomationServerInfo ServerGroupItem::GetAutomationServerInfo() const
   throw RuntimeException("ServerGroupItem doesn't have a valid automation server item selected");
 }
 
-void ServerGroupItem::SetAutomationServerInfo(const AutomationServerInfo& server_info)
+void ServerGroupItem::SetServerInfo(const AutomationServerInfo& server_info)
 {
   if (std::holds_alternative<EPICSServerInfo>(server_info))
   {
     SetCurrentType<EPICSServerInfoItem>()->SetServerInfo(std::get<EPICSServerInfo>(server_info));
+    return;
   }
-  else
+
+  if (std::holds_alternative<WebSocketsServerInfo>(server_info))
   {
     SetCurrentType<WebSocketsServerInfoItem>()->SetServerInfo(
         std::get<WebSocketsServerInfo>(server_info));
+    return;
   }
+
+  throw RuntimeException("ServerGroupItem can't set an unknown automation server type");
 }
 
 }  // namespace oac_tree_gui
