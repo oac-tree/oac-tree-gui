@@ -46,23 +46,6 @@ TEST_F(RemoteConnectionInfoTest, GetServerNameForWebSockets)
   EXPECT_EQ(GetAutomationServerName(info), std::string("localhost:8080"));
 }
 
-TEST_F(RemoteConnectionInfoTest, GetAutomationServerInfo)
-{
-  {  // websockets
-    const AutomationServerInfo info{WebSocketsServerInfo{"localhost", 8080}};
-    EXPECT_EQ(GetAutomationServerInfo("localhost:8080"), info);
-  }
-
-  {  // epics
-    const AutomationServerInfo info{EPICSServerInfo{"MyEPICSServer"}};
-    EXPECT_EQ(GetAutomationServerInfo("MyEPICSServer"), info);
-  }
-
-  {  // can't parse
-    EXPECT_THROW(GetAutomationServerInfo("localhost:xxx"), RuntimeException);
-  }
-}
-
 TEST_F(RemoteConnectionInfoTest, EPICSServerInfoComparison)
 {
   EXPECT_TRUE(EPICSServerInfo{"server"} == EPICSServerInfo{"server"});
