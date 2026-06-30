@@ -50,7 +50,7 @@ WebSocketsServerInfoItem::WebSocketsServerInfoItem()
     : mvvm::CompoundItem(mvvm::GetTypeName<WebSocketsServerInfoItem>())
 {
   (void)AddProperty(kServerName, std::string()).SetDisplayName("Server address");
-  (void)AddProperty(kServerPort, mvvm::int16{}).SetDisplayName("Port");
+  (void)AddProperty(kServerPort, mvvm::uint16{}).SetDisplayName("Port");
 }
 
 std::unique_ptr<mvvm::SessionItem> WebSocketsServerInfoItem::Clone() const
@@ -62,14 +62,14 @@ WebSocketsServerInfo WebSocketsServerInfoItem::GetServerInfo() const
 {
   WebSocketsServerInfo result;
   result.server_address = Property<std::string>(kServerName);
-  result.server_port = static_cast<std::uint16_t>(Property<mvvm::int16>(kServerPort));
+  result.server_port = Property<mvvm::uint16>(kServerPort);
   return result;
 }
 
 void WebSocketsServerInfoItem::SetServerInfo(const WebSocketsServerInfo& server_info)
 {
   (void)SetProperty<std::string>(kServerName, server_info.server_address);
-  (void)SetProperty<mvvm::int16>(kServerPort, static_cast<mvvm::int16>(server_info.server_port));
+  (void)SetProperty<mvvm::uint16>(kServerPort, server_info.server_port);
 }
 
 }  // namespace oac_tree_gui

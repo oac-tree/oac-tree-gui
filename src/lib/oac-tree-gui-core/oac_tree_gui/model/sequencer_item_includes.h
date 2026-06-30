@@ -32,6 +32,7 @@
 #include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
+#include <oac_tree_gui/model/server_info_items.h>
 #include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>

@@ -72,6 +72,9 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::PluginSettingsItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::TextEditItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ComposerSettingsItem>();
+
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::EPICSServerInfoItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::WebSocketsServerInfoItem>();
 }
 
 }  // namespace oac_tree_gui

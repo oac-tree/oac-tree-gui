@@ -110,6 +110,9 @@ TEST_F(SequencerItemHelperTest, Clone)
 
   EXPECT_TRUE(IsCloneImplemented<PluginSettingsItem>());
   EXPECT_TRUE(IsCloneImplemented<ComposerSettingsItem>());
+
+  EXPECT_TRUE(IsCloneImplemented<EPICSServerInfoItem>());
+  EXPECT_TRUE(IsCloneImplemented<WebSocketsServerInfoItem>());
 }
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)

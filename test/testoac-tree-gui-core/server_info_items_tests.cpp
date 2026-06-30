@@ -79,7 +79,7 @@ TEST_F(WebSocketsServerInfoItemTest, InitialState)
 
   EXPECT_EQ(item.GetType(), "WebSocketsServerInfoItem");
   EXPECT_EQ(item.Property<std::string>(WebSocketsServerInfoItem::kServerName), std::string());
-  EXPECT_EQ(item.Property<mvvm::int16>(WebSocketsServerInfoItem::kServerPort), mvvm::int16{});
+  EXPECT_EQ(item.Property<mvvm::uint16>(WebSocketsServerInfoItem::kServerPort), mvvm::uint16{});
 
   EXPECT_EQ(item.GetServerInfo(), WebSocketsServerInfo{});
 }
@@ -93,7 +93,7 @@ TEST_F(WebSocketsServerInfoItemTest, SetAndGetServerInfo)
 
   EXPECT_EQ(item.Property<std::string>(WebSocketsServerInfoItem::kServerName),
             std::string("localhost"));
-  EXPECT_EQ(item.Property<mvvm::int16>(WebSocketsServerInfoItem::kServerPort), mvvm::int16{8080});
+  EXPECT_EQ(item.Property<mvvm::uint16>(WebSocketsServerInfoItem::kServerPort), mvvm::uint16{8080});
   EXPECT_EQ(item.GetServerInfo(), info);
 }
 
