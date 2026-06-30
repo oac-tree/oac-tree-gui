@@ -50,11 +50,11 @@ public:
   std::unique_ptr<RemoteConnectionService> CreateService()
   {
     auto factory_func = test::AutomationClientDecoratorCreateFunc(m_mock_client);
-    auto message_func = [](const sup::gui::MessageEvent&) {};
-    return std::make_unique<RemoteConnectionService>(factory_func, message_func);
+    return std::make_unique<RemoteConnectionService>(factory_func, m_message_func.AsStdFunction());
   }
 
   testing::NiceMock<test::MockAutomationClient> m_mock_client;
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_message_func;
 };
 
 TEST_F(RemoteConnectionServiceTest, Connect)
@@ -78,8 +78,10 @@ TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
   auto factory_func = [](const AutomationServerInfo&) -> std::unique_ptr<IAutomationClient>
   { throw RuntimeException("Connection problem"); };
 
-  auto message_func = [](const sup::gui::MessageEvent&) {};
-  RemoteConnectionService service(factory_func, message_func);
+  // failed client creation must be reported via the message callback
+  EXPECT_CALL(m_message_func, Call(::testing::_)).Times(1);
+
+  RemoteConnectionService service(factory_func, m_message_func.AsStdFunction());
 
   EXPECT_FALSE(service.Connect("abc"));
 }
@@ -150,8 +152,7 @@ TEST_F(RemoteConnectionServiceTest, CreatesClientPerServer)
       .WillOnce([this](const AutomationServerInfo&)
                 { return test::CreateAutomationClientDecorator(m_mock_client, "def"); });
 
-  auto message_func = [](const sup::gui::MessageEvent&) {};
-  RemoteConnectionService service(factory.CreateFunc(), message_func);
+  RemoteConnectionService service(factory.CreateFunc(), m_message_func.AsStdFunction());
 
   EXPECT_TRUE(service.Connect("abc"));
   EXPECT_TRUE(service.Connect("def"));
