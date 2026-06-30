@@ -21,8 +21,9 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_I_REMOTE_CONNECTION_SERVICE_H_
 #define OAC_TREE_GUI_JOBSYSTEM_I_REMOTE_CONNECTION_SERVICE_H_
 
+#include <oac_tree_gui/model/remote_connection_info.h>
+
 #include <memory>
-#include <string>
 #include <vector>
 
 namespace oac_tree_gui
@@ -51,40 +52,40 @@ public:
   IRemoteConnectionService& operator=(IRemoteConnectionService&&) = delete;
 
   /**
-   * @brief Connect with the server using the given server name.
+   * @brief Connect with the server using the given server info.
    *
    * If connection was already established, does nothing. Connection remains.
    *
    * @return True if connected.
    */
-  virtual bool Connect(const std::string& server_name) = 0;
+  virtual bool Connect(const AutomationServerInfo& server_info) = 0;
 
   /**
    * @brief Disconnect the server by removing underlying client.
    *
    * If connection was already established, does nothing.
    */
-  virtual void Disconnect(const std::string& server_name) = 0;
+  virtual void Disconnect(const AutomationServerInfo& server_info) = 0;
 
   /**
    * @brief Checks if client exists and server is responding.
    */
-  virtual bool IsConnected(const std::string& server_name) const = 0;
+  virtual bool IsConnected(const AutomationServerInfo& server_info) const = 0;
 
   /**
-   * @brief Checks if client exists for server with the given name.
+   * @brief Checks if client exists for the given server.
    */
-  virtual bool HasClient(const std::string& server_name) const = 0;
+  virtual bool HasClient(const AutomationServerInfo& server_info) const = 0;
 
   /**
    * @brief Returns list of already connected servers.
    */
-  virtual std::vector<std::string> GetServerNames() const = 0;
+  virtual std::vector<AutomationServerInfo> GetServerInfos() const = 0;
 
   /**
-   * @brief Returns the client connected with the remote server with the given name.
+   * @brief Returns the client connected with the given remote server.
    */
-  virtual IAutomationClient& GetAutomationClient(const std::string& server_name) = 0;
+  virtual IAutomationClient& GetAutomationClient(const AutomationServerInfo& server_info) = 0;
 
   /**
    * @brief Creates job handler for given remote job item.

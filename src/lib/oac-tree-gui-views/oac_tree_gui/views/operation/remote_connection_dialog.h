@@ -88,7 +88,7 @@ private:
   /**
    * @brief Populates the model with information about remote jobs.
    */
-  void PopulateJobInfoModel(const std::string& server_name);
+  void PopulateJobInfoModel(const AutomationServerInfo& server_info);
 
   ServerSettingsWidget* m_server_settings_widget{nullptr};
   QListView* m_job_list_view{nullptr};

@@ -55,22 +55,25 @@ public:
 
   testing::NiceMock<test::MockAutomationClient> m_mock_client;
   testing::MockFunction<void(const sup::gui::MessageEvent&)> m_message_func;
+
+  const AutomationServerInfo m_info_abc{EPICSServerInfo{"abc"}};
+  const AutomationServerInfo m_info_def{EPICSServerInfo{"def"}};
 };
 
 TEST_F(RemoteConnectionServiceTest, Connect)
 {
   auto service = CreateService();
 
-  EXPECT_TRUE(service->GetServerNames().empty());
-  EXPECT_FALSE(service->HasClient("abc"));
+  EXPECT_TRUE(service->GetServerInfos().empty());
+  EXPECT_FALSE(service->HasClient(m_info_abc));
 
-  EXPECT_TRUE(service->Connect("abc"));
-  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc"}));
-  EXPECT_TRUE(service->HasClient("abc"));
+  EXPECT_TRUE(service->Connect(m_info_abc));
+  EXPECT_EQ(service->GetServerInfos(), std::vector<AutomationServerInfo>({m_info_abc}));
+  EXPECT_TRUE(service->HasClient(m_info_abc));
 
   // connecting again to the same server is a no-op
-  EXPECT_TRUE(service->Connect("abc"));
-  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc"}));
+  EXPECT_TRUE(service->Connect(m_info_abc));
+  EXPECT_EQ(service->GetServerInfos(), std::vector<AutomationServerInfo>({m_info_abc}));
 }
 
 TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
@@ -83,39 +86,39 @@ TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
 
   RemoteConnectionService service(factory_func, m_message_func.AsStdFunction());
 
-  EXPECT_FALSE(service.Connect("abc"));
+  EXPECT_FALSE(service.Connect(m_info_abc));
 }
 
 TEST_F(RemoteConnectionServiceTest, Disconnect)
 {
   auto service = CreateService();
 
-  EXPECT_TRUE(service->Connect("abc"));
-  EXPECT_TRUE(service->HasClient("abc"));
+  EXPECT_TRUE(service->Connect(m_info_abc));
+  EXPECT_TRUE(service->HasClient(m_info_abc));
 
   // disconnecting non-existing server is a no-op
-  service->Disconnect("def");
-  EXPECT_TRUE(service->HasClient("abc"));
-  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc"}));
+  service->Disconnect(m_info_def);
+  EXPECT_TRUE(service->HasClient(m_info_abc));
+  EXPECT_EQ(service->GetServerInfos(), std::vector<AutomationServerInfo>({m_info_abc}));
 
   // disconnecting existing server removes the client
-  service->Disconnect("abc");
-  EXPECT_FALSE(service->HasClient("abc"));
-  EXPECT_TRUE(service->GetServerNames().empty());
+  service->Disconnect(m_info_abc);
+  EXPECT_FALSE(service->HasClient(m_info_abc));
+  EXPECT_TRUE(service->GetServerInfos().empty());
 }
 
 TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
 {
   auto service = CreateService();
 
-  EXPECT_TRUE(service->Connect("abc"));
-  EXPECT_TRUE(service->HasClient("abc"));
+  EXPECT_TRUE(service->Connect(m_info_abc));
+  EXPECT_TRUE(service->HasClient(m_info_abc));
 
   // the client returned by the service is a decorator forwarding calls to our mock
   EXPECT_CALL(m_mock_client, GetJobCount()).WillOnce(Return(42));
-  EXPECT_EQ(service->GetAutomationClient("abc").GetJobCount(), 42);
+  EXPECT_EQ(service->GetAutomationClient(m_info_abc).GetJobCount(), 42);
 
-  EXPECT_THROW(service->GetAutomationClient("def"), RuntimeException);
+  EXPECT_THROW(service->GetAutomationClient(m_info_def), RuntimeException);
 }
 
 //! Connecting to several servers yields several distinct clients.
@@ -123,23 +126,22 @@ TEST_F(RemoteConnectionServiceTest, ConnectMultipleClients)
 {
   auto service = CreateService();
 
-  EXPECT_TRUE(service->Connect("abc"));
-  EXPECT_TRUE(service->Connect("def"));
+  EXPECT_TRUE(service->Connect(m_info_abc));
+  EXPECT_TRUE(service->Connect(m_info_def));
 
-  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc", "def"}));
-  EXPECT_TRUE(service->HasClient("abc"));
-  EXPECT_TRUE(service->HasClient("def"));
+  EXPECT_EQ(service->GetServerInfos(),
+            std::vector<AutomationServerInfo>({m_info_abc, m_info_def}));
+  EXPECT_TRUE(service->HasClient(m_info_abc));
+  EXPECT_TRUE(service->HasClient(m_info_def));
 
-  // each name resolves to its own client
-  EXPECT_EQ(service->GetAutomationClient("abc").GetServerInfo(),
-            AutomationServerInfo(EPICSServerInfo{"abc"}));
-  EXPECT_EQ(service->GetAutomationClient("def").GetServerInfo(),
-            AutomationServerInfo(EPICSServerInfo{"def"}));
+  // each server resolves to its own client
+  EXPECT_EQ(service->GetAutomationClient(m_info_abc).GetServerInfo(), m_info_abc);
+  EXPECT_EQ(service->GetAutomationClient(m_info_def).GetServerInfo(), m_info_def);
 
   // disconnecting one server leaves the other intact
-  service->Disconnect("abc");
-  EXPECT_FALSE(service->HasClient("abc"));
-  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"def"}));
+  service->Disconnect(m_info_abc);
+  EXPECT_FALSE(service->HasClient(m_info_abc));
+  EXPECT_EQ(service->GetServerInfos(), std::vector<AutomationServerInfo>({m_info_def}));
 }
 
 //! The service creates one client per distinct server and reuses it on repeated connect.
@@ -159,13 +161,13 @@ TEST_F(RemoteConnectionServiceTest, CreatesClientPerServer)
 
   RemoteConnectionService service(factory.CreateFunc(), m_message_func.AsStdFunction());
 
-  EXPECT_TRUE(service.Connect("abc"));
-  EXPECT_TRUE(service.Connect("def"));
+  EXPECT_TRUE(service.Connect(info1));
+  EXPECT_TRUE(service.Connect(info2));
 
   // connecting again to an existing server does not create a new client
-  EXPECT_TRUE(service.Connect("abc"));
+  EXPECT_TRUE(service.Connect(info1));
 
-  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc", "def"}));
+  EXPECT_EQ(service.GetServerInfos(), std::vector<AutomationServerInfo>({info1, info2}));
 }
 
 }  // namespace oac_tree_gui

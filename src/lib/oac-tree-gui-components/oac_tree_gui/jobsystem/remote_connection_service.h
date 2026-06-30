@@ -47,23 +47,23 @@ public:
   explicit RemoteConnectionService(const AutomationClientFunc& create_client,
                                    const message_func_t& message_func);
 
-  bool Connect(const std::string& server_name) override;
+  bool Connect(const AutomationServerInfo& server_info) override;
 
-  void Disconnect(const std::string& server_name) override;
+  void Disconnect(const AutomationServerInfo& server_info) override;
 
-  bool IsConnected(const std::string& server_name) const override;
+  bool IsConnected(const AutomationServerInfo& server_info) const override;
 
-  bool HasClient(const std::string& server_name) const override;
+  bool HasClient(const AutomationServerInfo& server_info) const override;
 
-  std::vector<std::string> GetServerNames() const override;
+  std::vector<AutomationServerInfo> GetServerInfos() const override;
 
-  IAutomationClient& GetAutomationClient(const std::string& server_name) override;
+  IAutomationClient& GetAutomationClient(const AutomationServerInfo& server_info) override;
 
   std::unique_ptr<AbstractJobHandler> CreateJobHandler(RemoteJobItem* job_item,
                                                        const UserContext& user_context) override;
 
 private:
-  //!< collection of remote clients, one client per server name
+  //!< collection of remote clients, one client per server
   std::vector<std::unique_ptr<IAutomationClient>> m_clients;
 
   AutomationClientFunc m_create_client;
