@@ -51,7 +51,6 @@ target_sources(${test} PRIVATE
   operation_action_helper_tests.cpp
   procedure_list_action_handler_tests.cpp
   procedure_list_viewmodel_tests.cpp
-  remote_connection_info_tests.cpp
   remote_connection_service_tests.cpp
   request_handler_queue_tests.cpp
   request_handler_tests.cpp

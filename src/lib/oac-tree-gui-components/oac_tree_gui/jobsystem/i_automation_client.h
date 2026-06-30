@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_
 #define OAC_TREE_GUI_JOBSYSTEM_I_AUTOMATION_CLIENT_H_
 
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 #include <cstdint>
 #include <memory>

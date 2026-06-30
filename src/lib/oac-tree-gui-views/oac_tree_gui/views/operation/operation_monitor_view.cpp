@@ -27,7 +27,6 @@
 #include <oac_tree_gui/jobsystem/automation_client.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
 #include <oac_tree_gui/jobsystem/objects/job_manager.h>
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
 #include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/model/application_models.h>
@@ -35,6 +34,7 @@
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 #include <oac_tree_gui/operation/objects/operation_action_handler.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
 #include <oac_tree_gui/style/style_helper.h>

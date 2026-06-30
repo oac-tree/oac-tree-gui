@@ -36,6 +36,7 @@ target_sources(${test} PRIVATE
   procedure_item_transform_helper_tests.cpp
   procedure_preamble_items_tests.cpp
   project_model_tests.cpp
+  remote_connection_info_tests.cpp
   runner_status_tests.cpp
   sequencer_item_helper_tests.cpp
   sequencer_model_tests.cpp

@@ -23,9 +23,9 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
 #include <oac_tree_gui/jobsystem/objects/job_manager.h>
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/job_item.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
 #include <mvvm/model/i_session_model.h>
@@ -121,8 +121,8 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
     for (auto index : connection_info_value.job_indexes)
     {
       // all should succeed
-      is_success &=
-          SubmitJob(CreateRemoteJobItem(GetAutomationServerName(connection_info_value.server_info), index));
+      is_success &= SubmitJob(
+          CreateRemoteJobItem(GetAutomationServerName(connection_info_value.server_info), index));
     }
   }
 

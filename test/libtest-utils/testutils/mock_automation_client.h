@@ -23,7 +23,7 @@
 
 #include <oac_tree_gui/jobsystem/automation_client_factory.h>
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 #include <gmock/gmock.h>
 
@@ -86,8 +86,8 @@ std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationCl
 /**
  * @brief Creates a forward decorator around mocking object reporting the given server name.
  */
-std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationClient& decoratee,
-                                                                   AutomationServerInfo server_info);
+std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(
+    IAutomationClient& decoratee, AutomationServerInfo server_info);
 
 /**
  * @brief Creates factory functions to create decorators around mocking objects.

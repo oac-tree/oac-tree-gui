@@ -21,11 +21,11 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_REMOTE_CONNECTION_DIALOG_H_
 
+#include <oac_tree_gui/model/remote_connection_info.h>
+
 #include <QDialog>
 #include <memory>
 #include <optional>
-
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 class QListView;
 class QStandardItemModel;

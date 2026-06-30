@@ -22,7 +22,7 @@
 #define OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_FACTORY_H_
 
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 #include <functional>
 #include <memory>

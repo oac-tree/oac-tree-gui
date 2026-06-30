@@ -23,7 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
 #include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 #include <sup/gui/core/message_event.h>
 

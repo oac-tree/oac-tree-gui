@@ -39,6 +39,8 @@ target_sources(${library_name} PRIVATE
   project_model.h
   register_items.cpp
   register_items.h
+  remote_connection_info.cpp
+  remote_connection_info.h
   runner_status.cpp
   runner_status.h
   sequencer_item_helper.cpp

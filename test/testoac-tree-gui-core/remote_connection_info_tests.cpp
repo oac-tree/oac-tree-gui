@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/jobsystem/remote_connection_info.h"
+#include "oac_tree_gui/model/remote_connection_info.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 

@@ -27,8 +27,6 @@ target_sources(${library_name} PRIVATE
   local_domain_runner.h
   log_event.cpp
   log_event.h
-  remote_connection_info.cpp
-  remote_connection_info.h
   remote_connection_service.cpp
   remote_connection_service.h
   remote_domain_runner.cpp

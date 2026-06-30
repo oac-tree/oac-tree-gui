@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
-#define OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
+#ifndef OAC_TREE_GUI_MODEL_REMOTE_CONNECTION_INFO_H_
+#define OAC_TREE_GUI_MODEL_REMOTE_CONNECTION_INFO_H_
 
 #include <cstdint>
 #include <set>
@@ -92,4 +92,4 @@ struct RemoteConnectionInfo
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_JOBSYSTEM_REMOTE_CONNECTION_INFO_H_
+#endif  // OAC_TREE_GUI_MODEL_REMOTE_CONNECTION_INFO_H_

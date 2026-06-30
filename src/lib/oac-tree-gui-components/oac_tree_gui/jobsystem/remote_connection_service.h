@@ -23,7 +23,7 @@
 
 #include <oac_tree_gui/jobsystem/automation_client_factory.h>
 #include <oac_tree_gui/jobsystem/i_remote_connection_service.h>
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 #include <functional>
 
