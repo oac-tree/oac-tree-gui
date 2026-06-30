@@ -27,6 +27,9 @@
 
 #include <gmock/gmock.h>
 
+#include <optional>
+#include <string>
+
 namespace oac_tree_gui::test
 {
 
@@ -49,11 +52,17 @@ public:
  *
  * It is used in situations when we have to use unique_ptr<IAutomationClient>, and do not want to
  * loose an ownerhsip on gtest mocking object.
+ *
+ * When constructed with an explicit server name, GetServerName() reports that name instead of
+ * forwarding to the decoratee. This allows a single mocking object to back several decorators, each
+ * representing a distinct server.
  */
 class AutomationClientDecorator : public IAutomationClient
 {
 public:
-  AutomationClientDecorator(IAutomationClient& decoratee);
+  explicit AutomationClientDecorator(IAutomationClient& decoratee);
+
+  AutomationClientDecorator(IAutomationClient& decoratee, std::string server_name);
 
   std::string GetServerName() const override;
 
@@ -66,6 +75,7 @@ public:
 
 private:
   IAutomationClient& m_decoratee;
+  std::optional<std::string> m_server_name;
 };
 
 /**
@@ -74,9 +84,37 @@ private:
 std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationClient& decoratee);
 
 /**
+ * @brief Creates a forward decorator around mocking object reporting the given server name.
+ */
+std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationClient& decoratee,
+                                                                   std::string server_name);
+
+/**
  * @brief Creates factory functions to create decorators around mocking objects.
+ *
+ * Each created decorator reports the server name derived from the requested AutomationServerInfo,
+ * so the service can manage several distinct clients backed by the same mocking object.
  */
 AutomationClientFunc AutomationClientDecoratorCreateFunc(IAutomationClient& decoratee);
+
+/**
+ * @brief The MockAutomationClientFactory class helps to test how RemoteConnectionService creates
+ * clients.
+ *
+ * Unlike AutomationClientDecoratorCreateFunc, it exposes the creation call itself as a mocking
+ * method, so tests can verify with which AutomationServerInfo and how many times clients are
+ * created.
+ */
+class MockAutomationClientFactory
+{
+public:
+  MOCK_METHOD(std::unique_ptr<IAutomationClient>, CreateClient, (const AutomationServerInfo&));
+
+  /**
+   * @brief Returns factory function forwarding to the mocked CreateClient method.
+   */
+  AutomationClientFunc CreateFunc();
+};
 
 }  // namespace oac_tree_gui::test
 

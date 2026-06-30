@@ -22,6 +22,8 @@
 
 #include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
 
+#include <utility>
+
 namespace oac_tree_gui::test
 {
 
@@ -30,9 +32,15 @@ AutomationClientDecorator::AutomationClientDecorator(IAutomationClient& decorate
 {
 }
 
+AutomationClientDecorator::AutomationClientDecorator(IAutomationClient& decoratee,
+                                                     std::string server_name)
+    : m_decoratee(decoratee), m_server_name(std::move(server_name))
+{
+}
+
 std::string AutomationClientDecorator::GetServerName() const
 {
-  return m_decoratee.GetServerName();
+  return m_server_name.has_value() ? m_server_name.value() : m_decoratee.GetServerName();
 }
 
 std::size_t AutomationClientDecorator::GetJobCount() const
@@ -56,15 +64,23 @@ std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationCl
   return std::make_unique<AutomationClientDecorator>(decoratee);
 }
 
+std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationClient& decoratee,
+                                                                   std::string server_name)
+{
+  return std::make_unique<AutomationClientDecorator>(decoratee, std::move(server_name));
+}
+
 AutomationClientFunc AutomationClientDecoratorCreateFunc(IAutomationClient& decoratee)
 {
-  auto result = [&decoratee](const AutomationServerInfo& server_name)
-  {
-    (void)server_name;
-    return CreateAutomationClientDecorator(decoratee);
-  };
+  auto result = [&decoratee](const AutomationServerInfo& server_info)
+  { return CreateAutomationClientDecorator(decoratee, GetServerName(server_info)); };
 
   return result;
+}
+
+AutomationClientFunc MockAutomationClientFactory::CreateFunc()
+{
+  return [this](const AutomationServerInfo& server_info) { return CreateClient(server_info); };
 }
 
 }  // namespace oac_tree_gui::test

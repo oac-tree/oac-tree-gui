@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
 #include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
+#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 #include <sup/gui/core/message_event.h>
 
@@ -39,8 +40,9 @@ namespace oac_tree_gui
  * @brief Tests for RemoteConnectionService class.
  *
  * Clients are created via AutomationClientDecoratorCreateFunc, which produces lightweight
- * decorators forwarding all calls to a single mocking object. As a consequence every client
- * created by the service shares the same mock and reports the same server name.
+ * decorators forwarding behavioral calls to a single mocking object. Each decorator reports the
+ * server name it was created for, so the service can manage several distinct clients backed by the
+ * same mock.
  */
 class RemoteConnectionServiceTest : public ::testing::Test
 {
@@ -57,8 +59,6 @@ public:
 
 TEST_F(RemoteConnectionServiceTest, Connect)
 {
-  EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
-
   auto service = CreateService();
 
   EXPECT_TRUE(service->GetServerNames().empty());
@@ -86,8 +86,6 @@ TEST_F(RemoteConnectionServiceTest, ThrowOnConnect)
 
 TEST_F(RemoteConnectionServiceTest, Disconnect)
 {
-  EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
-
   auto service = CreateService();
 
   EXPECT_TRUE(service->Connect("abc"));
@@ -106,8 +104,6 @@ TEST_F(RemoteConnectionServiceTest, Disconnect)
 
 TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
 {
-  EXPECT_CALL(m_mock_client, GetServerName()).WillRepeatedly(Return("abc"));
-
   auto service = CreateService();
 
   EXPECT_TRUE(service->Connect("abc"));
@@ -118,6 +114,52 @@ TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
   EXPECT_EQ(service->GetAutomationClient("abc").GetJobCount(), 42);
 
   EXPECT_THROW(service->GetAutomationClient("def"), RuntimeException);
+}
+
+//! Connecting to several servers yields several distinct clients.
+TEST_F(RemoteConnectionServiceTest, ConnectMultipleClients)
+{
+  auto service = CreateService();
+
+  EXPECT_TRUE(service->Connect("abc"));
+  EXPECT_TRUE(service->Connect("def"));
+
+  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"abc", "def"}));
+  EXPECT_TRUE(service->HasClient("abc"));
+  EXPECT_TRUE(service->HasClient("def"));
+
+  // each name resolves to its own client
+  EXPECT_EQ(service->GetAutomationClient("abc").GetServerName(), "abc");
+  EXPECT_EQ(service->GetAutomationClient("def").GetServerName(), "def");
+
+  // disconnecting one server leaves the other intact
+  service->Disconnect("abc");
+  EXPECT_FALSE(service->HasClient("abc"));
+  EXPECT_EQ(service->GetServerNames(), std::vector<std::string>({"def"}));
+}
+
+//! The service creates one client per distinct server and reuses it on repeated connect.
+TEST_F(RemoteConnectionServiceTest, CreatesClientPerServer)
+{
+  test::MockAutomationClientFactory factory;
+
+  EXPECT_CALL(factory, CreateClient(GetAutomationServerInfo("abc")))
+      .WillOnce([this](const AutomationServerInfo&)
+                { return test::CreateAutomationClientDecorator(m_mock_client, "abc"); });
+  EXPECT_CALL(factory, CreateClient(GetAutomationServerInfo("def")))
+      .WillOnce([this](const AutomationServerInfo&)
+                { return test::CreateAutomationClientDecorator(m_mock_client, "def"); });
+
+  auto message_func = [](const sup::gui::MessageEvent&) {};
+  RemoteConnectionService service(factory.CreateFunc(), message_func);
+
+  EXPECT_TRUE(service.Connect("abc"));
+  EXPECT_TRUE(service.Connect("def"));
+
+  // connecting again to an existing server does not create a new client
+  EXPECT_TRUE(service.Connect("abc"));
+
+  EXPECT_EQ(service.GetServerNames(), std::vector<std::string>({"abc", "def"}));
 }
 
 }  // namespace oac_tree_gui
