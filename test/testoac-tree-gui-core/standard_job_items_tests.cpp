@@ -115,7 +115,7 @@ TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
   const std::string server_name("abc");
   const std::size_t job_index{42};
 
-  auto item = CreateRemoteJobItem(server_name, job_index);
+  auto item = CreateRemoteJobItem(EPICSServerInfo{server_name}, job_index);
 
   EXPECT_EQ(item->GetRemoteJobIndex(), job_index);
   EXPECT_EQ(item->GetAutomationServerInfo(), AutomationServerInfo{EPICSServerInfo{server_name}});

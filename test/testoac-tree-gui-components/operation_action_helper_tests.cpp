@@ -96,7 +96,7 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForRemoteJob)
   const std::size_t job_index{42};
 
   // all job handlers further down requres that procedure and job are part of models
-  auto job_item = CreateRemoteJobItem(server_name, job_index);
+  auto job_item = CreateRemoteJobItem(EPICSServerInfo{server_name}, job_index);
   auto job_item_ptr = job_item.get();
 
   m_model.InsertItem(std::move(job_item), m_model.GetRootItem(), mvvm::TagIndex::Append());

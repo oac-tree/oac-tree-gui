@@ -145,11 +145,11 @@ std::unique_ptr<JobItem> CreateImportedJobItem(
 /**
  * @brief Creates job item intended to control remote procedures.
  *
- * @param server_name The name of the automation server.
+ * @param server_info The automation server info.
  * @param job_index Index of servers' job.
  * @return New job item.
  */
-std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
+std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const AutomationServerInfo& server_info,
                                                    std::size_t job_index);
 
 /**

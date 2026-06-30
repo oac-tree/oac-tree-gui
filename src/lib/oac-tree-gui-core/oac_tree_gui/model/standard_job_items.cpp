@@ -171,13 +171,14 @@ std::unique_ptr<JobItem> CreateImportedJobItem(std::unique_ptr<ProcedureItem> pr
   return result;
 }
 
-std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_name,
+std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const AutomationServerInfo& server_info,
                                                    std::size_t job_index)
 {
   auto result = std::make_unique<RemoteJobItem>();
-  result->SetAutomationServerInfo(GetAutomationServerInfo(server_name));
+  result->SetAutomationServerInfo(server_info);
   result->SetRemoteJobIndex(job_index);
-  (void)result->SetDisplayName(server_name + "_" + std::to_string(job_index));
+  (void)result->SetDisplayName(GetAutomationServerName(server_info) + "_"
+                               + std::to_string(job_index));
   return result;
 }
 
