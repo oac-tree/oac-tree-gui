@@ -40,24 +40,24 @@ namespace
 const std::uint32_t kConnectionTimeout{1};
 }
 
-AutomationClient::AutomationClient(const AutomationServerInfo &server_info)
-    : m_server_info(server_info)
-    , m_client_manager(CreateConnectionManager(m_server_info))
+AutomationClient::AutomationClient(const AutomationServerInfo& server_info)
+    : m_server_info(server_info), m_client_manager(CreateConnectionManager(m_server_info))
 {
   if (auto is_connected =
           m_client_manager->WaitForConnection(std::chrono::seconds(kConnectionTimeout));
       !is_connected)
   {
-    throw RuntimeException("Connection to the server [" + GetServerName() + "] has failed within "
+    throw RuntimeException("Connection to the server ["
+                           + ::oac_tree_gui::GetAutomationServerName(GetServerInfo()) + "] has failed within "
                            + std::to_string(kConnectionTimeout) + " sec timeout");
   }
 }
 
 AutomationClient::~AutomationClient() = default;
 
-std::string AutomationClient::GetServerName() const
+AutomationServerInfo AutomationClient::GetServerInfo() const
 {
-  return ::oac_tree_gui::GetServerName(m_server_info);
+  return m_server_info;
 }
 
 std::size_t AutomationClient::GetJobCount() const

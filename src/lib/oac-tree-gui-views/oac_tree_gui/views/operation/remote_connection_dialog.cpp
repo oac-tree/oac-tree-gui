@@ -130,7 +130,7 @@ void RemoteConnectionDialog::OnConnectRequest()
 
   // TODO establish connection in a thread with possibility to cancel hanging
   const auto server_info = m_server_settings_widget->GetServerInfo();
-  const auto server_name = GetServerName(server_info);
+  const auto server_name = GetAutomationServerName(server_info);
   if (auto is_connected = m_connection_service->Connect(server_name); is_connected)
   {
     PopulateJobInfoModel(server_name);

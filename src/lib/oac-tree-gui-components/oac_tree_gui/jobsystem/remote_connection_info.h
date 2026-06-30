@@ -73,7 +73,7 @@ using AutomationServerInfo = std::variant<EPICSServerInfo, WebSocketsServerInfo>
  * For an EPICS server it is the server name as provided. For a WebSockets server it is the server
  * address combined with the port in the form "address:port".
  */
-std::string GetServerName(const AutomationServerInfo& server_info);
+std::string GetAutomationServerName(const AutomationServerInfo& server_info);
 
 /**
  * @brief Constructs AutomationServerInfo from server name.

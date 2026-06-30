@@ -77,7 +77,7 @@ bool RemoteConnectionService::Connect(const std::string& server_name)
 void RemoteConnectionService::Disconnect(const std::string& server_name)
 {
   auto on_element = [&server_name](auto& element)
-  { return element->GetServerName() == server_name; };
+  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()) == server_name; };
   (void)m_clients.erase(std::remove_if(m_clients.begin(), m_clients.end(), on_element),
                         m_clients.end());
 }
@@ -91,7 +91,7 @@ bool RemoteConnectionService::IsConnected(const std::string& server_name) const
 bool RemoteConnectionService::HasClient(const std::string& server_name) const
 {
   auto on_element = [&server_name](auto& element)
-  { return element->GetServerName() == server_name; };
+  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()) == server_name; };
   auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
   return pos != m_clients.end();
 }
@@ -99,7 +99,8 @@ bool RemoteConnectionService::HasClient(const std::string& server_name) const
 std::vector<std::string> RemoteConnectionService::GetServerNames() const
 {
   std::vector<std::string> result;
-  auto on_element = [](const auto& element) { return element->GetServerName(); };
+  auto on_element = [](const auto& element)
+  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()); };
   (void)std::transform(m_clients.begin(), m_clients.end(), std::back_inserter(result), on_element);
   return result;
 }
@@ -107,7 +108,7 @@ std::vector<std::string> RemoteConnectionService::GetServerNames() const
 IAutomationClient& RemoteConnectionService::GetAutomationClient(const std::string& server_name)
 {
   auto on_element = [&server_name](auto& element)
-  { return element->GetServerName() == server_name; };
+  { return ::oac_tree_gui::GetAutomationServerName(element->GetServerInfo()) == server_name; };
   auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
 
   if (pos == m_clients.end())

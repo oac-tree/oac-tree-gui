@@ -47,7 +47,7 @@ bool operator!=(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs
   return !(lhs == rhs);
 }
 
-std::string GetServerName(const AutomationServerInfo& server_info)
+std::string GetAutomationServerName(const AutomationServerInfo& server_info)
 {
   if (std::holds_alternative<EPICSServerInfo>(server_info))
   {

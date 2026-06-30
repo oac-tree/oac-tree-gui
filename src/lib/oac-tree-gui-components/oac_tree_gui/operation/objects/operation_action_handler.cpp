@@ -122,7 +122,7 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
     {
       // all should succeed
       is_success &=
-          SubmitJob(CreateRemoteJobItem(GetServerName(connection_info_value.server_info), index));
+          SubmitJob(CreateRemoteJobItem(GetAutomationServerName(connection_info_value.server_info), index));
     }
   }
 

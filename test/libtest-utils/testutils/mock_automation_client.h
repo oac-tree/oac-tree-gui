@@ -39,7 +39,7 @@ namespace oac_tree_gui::test
 class MockAutomationClient : public IAutomationClient
 {
 public:
-  MOCK_METHOD(std::string, GetServerName, (), (const, override));
+  MOCK_METHOD(AutomationServerInfo, GetServerInfo, (), (const, override));
   MOCK_METHOD(std::size_t, GetJobCount, (), (const, override));
   MOCK_METHOD(std::string, GetProcedureName, (std::uint32_t), (const, override));
   MOCK_METHOD(std::unique_ptr<AbstractJobHandler>, CreateJobHandler,
@@ -62,9 +62,9 @@ class AutomationClientDecorator : public IAutomationClient
 public:
   explicit AutomationClientDecorator(IAutomationClient& decoratee);
 
-  AutomationClientDecorator(IAutomationClient& decoratee, std::string server_name);
+  AutomationClientDecorator(IAutomationClient& decoratee, AutomationServerInfo server_info);
 
-  std::string GetServerName() const override;
+  AutomationServerInfo GetServerInfo() const override;
 
   std::size_t GetJobCount() const override;
 
@@ -75,7 +75,7 @@ public:
 
 private:
   IAutomationClient& m_decoratee;
-  std::optional<std::string> m_server_name;
+  std::optional<AutomationServerInfo> m_server_info;
 };
 
 /**
@@ -87,7 +87,7 @@ std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationCl
  * @brief Creates a forward decorator around mocking object reporting the given server name.
  */
 std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationClient& decoratee,
-                                                                   std::string server_name);
+                                                                   AutomationServerInfo server_info);
 
 /**
  * @brief Creates factory functions to create decorators around mocking objects.

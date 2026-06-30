@@ -33,14 +33,14 @@ AutomationClientDecorator::AutomationClientDecorator(IAutomationClient& decorate
 }
 
 AutomationClientDecorator::AutomationClientDecorator(IAutomationClient& decoratee,
-                                                     std::string server_name)
-    : m_decoratee(decoratee), m_server_name(std::move(server_name))
+                                                     AutomationServerInfo server_info)
+    : m_decoratee(decoratee), m_server_info(std::move(server_info))
 {
 }
 
-std::string AutomationClientDecorator::GetServerName() const
+AutomationServerInfo AutomationClientDecorator::GetServerInfo() const
 {
-  return m_server_name.has_value() ? m_server_name.value() : m_decoratee.GetServerName();
+  return m_server_info.has_value() ? m_server_info.value() : m_decoratee.GetServerInfo();
 }
 
 std::size_t AutomationClientDecorator::GetJobCount() const
@@ -65,15 +65,15 @@ std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationCl
 }
 
 std::unique_ptr<IAutomationClient> CreateAutomationClientDecorator(IAutomationClient& decoratee,
-                                                                   std::string server_name)
+                                                                   AutomationServerInfo server_info)
 {
-  return std::make_unique<AutomationClientDecorator>(decoratee, std::move(server_name));
+  return std::make_unique<AutomationClientDecorator>(decoratee, std::move(server_info));
 }
 
 AutomationClientFunc AutomationClientDecoratorCreateFunc(IAutomationClient& decoratee)
 {
   auto result = [&decoratee](const AutomationServerInfo& server_info)
-  { return CreateAutomationClientDecorator(decoratee, GetServerName(server_info)); };
+  { return CreateAutomationClientDecorator(decoratee, server_info); };
 
   return result;
 }

@@ -22,7 +22,6 @@
 #define OAC_TREE_GUI_JOBSYSTEM_AUTOMATION_CLIENT_H_
 
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
-#include <oac_tree_gui/jobsystem/remote_connection_info.h>
 
 #include <memory>
 
@@ -49,7 +48,7 @@ public:
   AutomationClient(AutomationClient&&) = delete;
   AutomationClient& operator=(AutomationClient&&) = delete;
 
-  std::string GetServerName() const override;
+  AutomationServerInfo GetServerInfo() const override;
 
   std::size_t GetJobCount() const override;
 

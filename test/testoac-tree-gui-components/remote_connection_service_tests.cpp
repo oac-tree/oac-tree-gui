@@ -131,8 +131,10 @@ TEST_F(RemoteConnectionServiceTest, ConnectMultipleClients)
   EXPECT_TRUE(service->HasClient("def"));
 
   // each name resolves to its own client
-  EXPECT_EQ(service->GetAutomationClient("abc").GetServerName(), "abc");
-  EXPECT_EQ(service->GetAutomationClient("def").GetServerName(), "def");
+  EXPECT_EQ(service->GetAutomationClient("abc").GetServerInfo(),
+            AutomationServerInfo(EPICSServerInfo{"abc"}));
+  EXPECT_EQ(service->GetAutomationClient("def").GetServerInfo(),
+            AutomationServerInfo(EPICSServerInfo{"def"}));
 
   // disconnecting one server leaves the other intact
   service->Disconnect("abc");
@@ -145,12 +147,15 @@ TEST_F(RemoteConnectionServiceTest, CreatesClientPerServer)
 {
   test::MockAutomationClientFactory factory;
 
-  EXPECT_CALL(factory, CreateClient(GetAutomationServerInfo("abc")))
-      .WillOnce([this](const AutomationServerInfo&)
-                { return test::CreateAutomationClientDecorator(m_mock_client, "abc"); });
-  EXPECT_CALL(factory, CreateClient(GetAutomationServerInfo("def")))
-      .WillOnce([this](const AutomationServerInfo&)
-                { return test::CreateAutomationClientDecorator(m_mock_client, "def"); });
+  AutomationServerInfo info1(EPICSServerInfo{"abc"});
+  AutomationServerInfo info2(EPICSServerInfo{"def"});
+
+  EXPECT_CALL(factory, CreateClient(info1))
+      .WillOnce([this, &info1](const AutomationServerInfo&)
+                { return test::CreateAutomationClientDecorator(m_mock_client, info1); });
+  EXPECT_CALL(factory, CreateClient(info2))
+      .WillOnce([this, &info2](const AutomationServerInfo&)
+                { return test::CreateAutomationClientDecorator(m_mock_client, info2); });
 
   RemoteConnectionService service(factory.CreateFunc(), m_message_func.AsStdFunction());
 
