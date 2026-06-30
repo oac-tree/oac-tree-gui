@@ -25,6 +25,7 @@
 //! Collection of items derived from JobItem class.
 
 #include <oac_tree_gui/model/job_item.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 namespace oac_tree_gui
 {
@@ -91,6 +92,16 @@ public:
    * @brief Sets the name of the remote server.
    */
   void SetServerName(const std::string& name);
+
+  /**
+   * @brief Returns automation server info.
+   */
+  AutomationServerInfo GetAutomationServerInfo() const;
+
+  /**
+   * @brief Sets the automation server info.
+   */
+  void SetAutomationServerInfo(const AutomationServerInfo& info);
 };
 
 /**

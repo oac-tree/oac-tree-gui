@@ -53,6 +53,8 @@ target_sources(${library_name} PRIVATE
   sequencer_settings_helper.h
   sequencer_settings_model.cpp
   sequencer_settings_model.h
+  server_info_items.cpp
+  server_info_items.h
   standard_instruction_items.cpp
   standard_instruction_items.h
   standard_job_items.cpp

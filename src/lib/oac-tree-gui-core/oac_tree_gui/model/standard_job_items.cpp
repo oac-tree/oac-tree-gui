@@ -23,8 +23,8 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
 
-#include <mvvm/utils/file_utils.h>
 #include <mvvm/model/make_clone.h>
+#include <mvvm/utils/file_utils.h>
 
 namespace oac_tree_gui
 {
@@ -100,6 +100,16 @@ std::string RemoteJobItem::GetServerName() const
 void RemoteJobItem::SetServerName(const std::string& name)
 {
   (void)SetProperty(kServerName, name);
+}
+
+AutomationServerInfo RemoteJobItem::GetAutomationServerInfo() const
+{
+  return {};
+}
+
+void RemoteJobItem::SetAutomationServerInfo(const AutomationServerInfo& info)
+{
+  (void)info;
 }
 
 // ------------------------------------------------------------------------------------------------
