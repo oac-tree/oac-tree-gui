@@ -87,16 +87,14 @@ std::unique_ptr<mvvm::SessionItem> ServerGroupItem::Clone() const
 
 AutomationServerInfo ServerGroupItem::GetAutomationServerInfo() const
 {
-  const auto* current = GetCurrentItem();
-
-  if (const auto* epics = dynamic_cast<const EPICSServerInfoItem*>(current))
+  if (GetCurrentType() == mvvm::GetTypeName<EPICSServerInfoItem>())
   {
-    return epics->GetServerInfo();
+    return GetCurrentItem<EPICSServerInfoItem>()->GetServerInfo();
   }
 
-  if (const auto* websockets = dynamic_cast<const WebSocketsServerInfoItem*>(current))
+  if (GetCurrentType() == mvvm::GetTypeName<WebSocketsServerInfoItem>())
   {
-    return websockets->GetServerInfo();
+    return GetCurrentItem<WebSocketsServerInfoItem>()->GetServerInfo();
   }
 
   throw RuntimeException("ServerGroupItem doesn't have a valid automation server item selected");
@@ -106,15 +104,12 @@ void ServerGroupItem::SetAutomationServerInfo(const AutomationServerInfo& server
 {
   if (std::holds_alternative<EPICSServerInfo>(server_info))
   {
-    SetCurrentType(mvvm::GetTypeName<EPICSServerInfoItem>());
-    dynamic_cast<EPICSServerInfoItem&>(*GetCurrentItem())
-        .SetServerInfo(std::get<EPICSServerInfo>(server_info));
+    SetCurrentType<EPICSServerInfoItem>()->SetServerInfo(std::get<EPICSServerInfo>(server_info));
   }
   else
   {
-    SetCurrentType(mvvm::GetTypeName<WebSocketsServerInfoItem>());
-    dynamic_cast<WebSocketsServerInfoItem&>(*GetCurrentItem())
-        .SetServerInfo(std::get<WebSocketsServerInfo>(server_info));
+    SetCurrentType<WebSocketsServerInfoItem>()->SetServerInfo(
+        std::get<WebSocketsServerInfo>(server_info));
   }
 }
 
