@@ -113,6 +113,7 @@ TEST_F(SequencerItemHelperTest, Clone)
 
   EXPECT_TRUE(IsCloneImplemented<EPICSServerInfoItem>());
   EXPECT_TRUE(IsCloneImplemented<WebSocketsServerInfoItem>());
+  EXPECT_TRUE(IsCloneImplemented<ServerGroupItem>());
 }
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)

@@ -75,6 +75,7 @@ void RegisterSessionItems()
 
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::EPICSServerInfoItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::WebSocketsServerInfoItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ServerGroupItem>();
 }
 
 }  // namespace oac_tree_gui

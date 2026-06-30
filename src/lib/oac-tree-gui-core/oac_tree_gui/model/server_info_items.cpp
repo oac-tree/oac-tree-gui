@@ -20,6 +20,8 @@
 
 #include "server_info_items.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+
 #include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
@@ -70,6 +72,50 @@ void WebSocketsServerInfoItem::SetServerInfo(const WebSocketsServerInfo& server_
 {
   (void)SetProperty<std::string>(kServerName, server_info.server_address);
   (void)SetProperty<mvvm::uint16>(kServerPort, server_info.server_port);
+}
+
+ServerGroupItem::ServerGroupItem() : mvvm::GroupItem(mvvm::GetTypeName<ServerGroupItem>())
+{
+  AddToGroup<EPICSServerInfoItem>("EPICS");
+  AddToGroup<WebSocketsServerInfoItem>("WebSockets");
+}
+
+std::unique_ptr<mvvm::SessionItem> ServerGroupItem::Clone() const
+{
+  return mvvm::MakeClone(*this);
+}
+
+AutomationServerInfo ServerGroupItem::GetAutomationServerInfo() const
+{
+  const auto* current = GetCurrentItem();
+
+  if (const auto* epics = dynamic_cast<const EPICSServerInfoItem*>(current))
+  {
+    return epics->GetServerInfo();
+  }
+
+  if (const auto* websockets = dynamic_cast<const WebSocketsServerInfoItem*>(current))
+  {
+    return websockets->GetServerInfo();
+  }
+
+  throw RuntimeException("ServerGroupItem doesn't have a valid automation server item selected");
+}
+
+void ServerGroupItem::SetAutomationServerInfo(const AutomationServerInfo& server_info)
+{
+  if (std::holds_alternative<EPICSServerInfo>(server_info))
+  {
+    SetCurrentType(mvvm::GetTypeName<EPICSServerInfoItem>());
+    dynamic_cast<EPICSServerInfoItem&>(*GetCurrentItem())
+        .SetServerInfo(std::get<EPICSServerInfo>(server_info));
+  }
+  else
+  {
+    SetCurrentType(mvvm::GetTypeName<WebSocketsServerInfoItem>());
+    dynamic_cast<WebSocketsServerInfoItem&>(*GetCurrentItem())
+        .SetServerInfo(std::get<WebSocketsServerInfo>(server_info));
+  }
 }
 
 }  // namespace oac_tree_gui

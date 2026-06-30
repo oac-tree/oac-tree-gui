@@ -80,6 +80,31 @@ public:
   void SetServerInfo(const WebSocketsServerInfo& server_info);
 };
 
+/**
+ * @brief The ServerGroupItem class represents a group of possible automation servers with only one
+ * of them being current at a time.
+ *
+ * The group holds an EPICSServerInfoItem and a WebSocketsServerInfoItem; the currently selected one
+ * defines the type of the automation server.
+ */
+class ServerGroupItem : public mvvm::GroupItem
+{
+public:
+  ServerGroupItem();
+
+  std::unique_ptr<SessionItem> Clone() const override;
+
+  /**
+   * @brief Returns automation server info constructed from the currently selected item.
+   */
+  AutomationServerInfo GetAutomationServerInfo() const;
+
+  /**
+   * @brief Selects the item matching the given server info and saves the info into it.
+   */
+  void SetAutomationServerInfo(const AutomationServerInfo& server_info);
+};
+
 }  // namespace oac_tree_gui
 
 namespace mvvm
@@ -95,6 +120,12 @@ template <>
 struct item_traits<oac_tree_gui::WebSocketsServerInfoItem>
 {
   static constexpr std::string_view type_name() noexcept { return "WebSocketsServerInfoItem"; }
+};
+
+template <>
+struct item_traits<oac_tree_gui::ServerGroupItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "ServerGroupItem"; }
 };
 
 }  // namespace mvvm
