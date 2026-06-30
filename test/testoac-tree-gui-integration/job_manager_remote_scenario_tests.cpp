@@ -72,7 +72,7 @@ public:
     // creating remote job item
     const std::size_t job_index{0};
     m_job_item = m_model.InsertItem<RemoteJobItem>();
-    m_job_item->SetServerName(kServerName);
+    m_job_item->SetAutomationServerInfo(GetAutomationServerInfo(kServerName));
     m_job_item->SetRemoteJobIndex(job_index);
   }
 

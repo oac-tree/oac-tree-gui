@@ -151,7 +151,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   auto submitted_jobs = GetJobs<RemoteJobItem>();
   ASSERT_EQ(submitted_jobs.size(), 1);
   auto job_item = submitted_jobs.at(0);
-  EXPECT_EQ(job_item->GetServerName(), kServerName);
+  EXPECT_EQ(GetAutomationServerName(job_item->GetAutomationServerInfo()), kServerName);
   EXPECT_EQ(job_item->GetRemoteJobIndex(), kJobIndex);
 
   // validating initial state of RemoteJobHandler

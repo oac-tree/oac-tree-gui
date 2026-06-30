@@ -84,16 +84,6 @@ public:
   void SetRemoteJobIndex(std::size_t value);
 
   /**
-   * @brief Returns the remote server name.
-   */
-  std::string GetServerName() const;
-
-  /**
-   * @brief Sets the name of the remote server.
-   */
-  void SetServerName(const std::string& name);
-
-  /**
    * @brief Returns automation server info.
    */
   AutomationServerInfo GetAutomationServerInfo() const;

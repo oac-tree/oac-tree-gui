@@ -212,7 +212,7 @@ TEST_F(OperationActionHandlerTest, OnImportRemoteJobRequest)
 
   auto job_item = job_items.at(0);
 
-  EXPECT_EQ(job_item->GetServerName(), server_name);
+  EXPECT_EQ(GetAutomationServerName(job_item->GetAutomationServerInfo()), server_name);
   EXPECT_EQ(job_item->GetRemoteJobIndex(), job_index);
   EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), job_item);
 }
@@ -253,9 +253,9 @@ TEST_F(OperationActionHandlerTest, ImportTwoRemoteJobs)
   auto item_inserted_first = inserted_job_items.at(1);
   auto item_inserted_second = inserted_job_items.at(0);
   ASSERT_EQ(inserted_job_items.size(), 2);
-  EXPECT_EQ(item_inserted_first->GetServerName(), server_name);
+  EXPECT_EQ(GetAutomationServerName(item_inserted_first->GetAutomationServerInfo()), server_name);
   EXPECT_EQ(item_inserted_first->GetRemoteJobIndex(), job_index0);
-  EXPECT_EQ(item_inserted_second->GetServerName(), server_name);
+  EXPECT_EQ(GetAutomationServerName(item_inserted_second->GetAutomationServerInfo()), server_name);
   EXPECT_EQ(item_inserted_second->GetRemoteJobIndex(), job_index1);
 
   EXPECT_EQ(spy_selected_request.count(), 2);

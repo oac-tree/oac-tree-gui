@@ -42,13 +42,14 @@ TEST_F(StandardJobItemsTest, RemoteJobItem)
   RemoteJobItem item;
 
   EXPECT_EQ(item.GetRemoteJobIndex(), 0);
-  EXPECT_EQ(item.GetServerName(), std::string());
+  EXPECT_EQ(item.GetAutomationServerInfo(), AutomationServerInfo{EPICSServerInfo{}});
 
   item.SetRemoteJobIndex(42);
   EXPECT_EQ(item.GetRemoteJobIndex(), 42);
 
-  item.SetServerName("abc");
-  EXPECT_EQ(item.GetServerName(), std::string("abc"));
+  const AutomationServerInfo info{WebSocketsServerInfo{"localhost", 8080}};
+  item.SetAutomationServerInfo(info);
+  EXPECT_EQ(item.GetAutomationServerInfo(), info);
 }
 
 TEST_F(StandardJobItemsTest, FileBasedJobItem)
@@ -117,7 +118,7 @@ TEST_F(StandardJobItemsTest, CreateRemoteJobItem)
   auto item = CreateRemoteJobItem(server_name, job_index);
 
   EXPECT_EQ(item->GetRemoteJobIndex(), job_index);
-  EXPECT_EQ(item->GetServerName(), server_name);
+  EXPECT_EQ(item->GetAutomationServerInfo(), AutomationServerInfo{EPICSServerInfo{server_name}});
   EXPECT_EQ(item->GetDisplayName(), "abc_42");
 }
 

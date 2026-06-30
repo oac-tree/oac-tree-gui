@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/server_info_items.h>
 
 #include <mvvm/model/make_clone.h>
 #include <mvvm/utils/file_utils.h>
@@ -31,7 +32,7 @@ namespace oac_tree_gui
 
 namespace
 {
-constexpr auto kServerName = "kServerName";
+constexpr auto kServerInfo = "kServerInfo";
 constexpr auto kJobIndex = "kJobIndex";
 constexpr auto kFileName = "kFileName";
 }  // namespace
@@ -72,9 +73,9 @@ RemoteJobItem::RemoteJobItem() : JobItem(mvvm::GetTypeName<RemoteJobItem>())
       .SetDisplayName("Job index")
       .SetToolTip("Remote job index");
 
-  (void)AddProperty(kServerName, std::string())
-      .SetDisplayName("Server name")
-      .SetToolTip("Remote server name");
+  (void)AddProperty<ServerGroupItem>(kServerInfo)
+      .SetDisplayName("Server")
+      .SetToolTip("Remote automation server");
 }
 
 std::unique_ptr<mvvm::SessionItem> RemoteJobItem::Clone() const
@@ -92,24 +93,14 @@ void RemoteJobItem::SetRemoteJobIndex(std::size_t value)
   (void)SetProperty(kJobIndex, value);
 }
 
-std::string RemoteJobItem::GetServerName() const
-{
-  return Property<std::string>(kServerName);
-}
-
-void RemoteJobItem::SetServerName(const std::string& name)
-{
-  (void)SetProperty(kServerName, name);
-}
-
 AutomationServerInfo RemoteJobItem::GetAutomationServerInfo() const
 {
-  return {};
+  return GetItem<ServerGroupItem>(kServerInfo)->GetServerInfo();
 }
 
 void RemoteJobItem::SetAutomationServerInfo(const AutomationServerInfo& info)
 {
-  (void)info;
+  GetItem<ServerGroupItem>(kServerInfo)->SetServerInfo(info);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -184,7 +175,7 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const std::string& server_nam
                                                    std::size_t job_index)
 {
   auto result = std::make_unique<RemoteJobItem>();
-  result->SetServerName(server_name);
+  result->SetAutomationServerInfo(GetAutomationServerInfo(server_name));
   result->SetRemoteJobIndex(job_index);
   (void)result->SetDisplayName(server_name + "_" + std::to_string(job_index));
   return result;

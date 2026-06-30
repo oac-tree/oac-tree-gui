@@ -127,7 +127,7 @@ std::unique_ptr<AbstractJobHandler> RemoteConnectionService::CreateJobHandler(
   {
     throw RuntimeException("JobItem is not initialized");
   }
-  auto server_name = job_item->GetServerName();
+  auto server_name = GetAutomationServerName(job_item->GetAutomationServerInfo());
 
   if (!Connect(server_name))
   {
