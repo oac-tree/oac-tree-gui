@@ -24,26 +24,60 @@
 //! @file
 //! Collection of items to store automation server information.
 
+#include <oac_tree_gui/model/remote_connection_info.h>
+
 #include <mvvm/model/compound_item.h>
 #include <mvvm/standarditems/group_item.h>
 
 namespace oac_tree_gui
 {
 
+/**
+ * @brief The EPICSServerInfoItem class represents an EPICS-based automation server in the model.
+ */
 class EPICSServerInfoItem : public mvvm::CompoundItem
 {
 public:
+  static constexpr auto kServerName = "kServerName";
+
   EPICSServerInfoItem();
 
   std::unique_ptr<SessionItem> Clone() const override;
+
+  /**
+   * @brief Returns server info constructed from item's properties.
+   */
+  EPICSServerInfo GetServerInfo() const;
+
+  /**
+   * @brief Saves server info into item's properties.
+   */
+  void SetServerInfo(const EPICSServerInfo& server_info);
 };
 
+/**
+ * @brief The WebSocketsServerInfoItem class represents a WebSocket-based automation server in the
+ * model.
+ */
 class WebSocketsServerInfoItem : public mvvm::CompoundItem
 {
 public:
+  static constexpr auto kServerName = "kServerName";
+  static constexpr auto kServerPort = "kServerPort";
+
   WebSocketsServerInfoItem();
 
   std::unique_ptr<SessionItem> Clone() const override;
+
+  /**
+   * @brief Returns server info constructed from item's properties.
+   */
+  WebSocketsServerInfo GetServerInfo() const;
+
+  /**
+   * @brief Saves server info into item's properties.
+   */
+  void SetServerInfo(const WebSocketsServerInfo& server_info);
 };
 
 }  // namespace oac_tree_gui
