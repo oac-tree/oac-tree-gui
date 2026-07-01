@@ -45,6 +45,8 @@ public:
   void WaitForResult();
 
 private:
+  void RunServer(AutomationServerInfo server_info, std::string procedure_string);
+
   std::future<void> m_future;
   std::atomic<bool> m_continue{true};
 };
