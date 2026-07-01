@@ -52,8 +52,13 @@ std::string GetAutomationServerName(const AutomationServerInfo& server_info)
     return std::get<EPICSServerInfo>(server_info).server_name;
   }
 
-  const auto& info = std::get<WebSocketsServerInfo>(server_info);
-  return info.server_address + ":" + std::to_string(info.server_port);
+  if (std::holds_alternative<WebSocketsServerInfo>(server_info))
+  {
+    const auto& info = std::get<WebSocketsServerInfo>(server_info);
+    return info.server_address + ":" + std::to_string(info.server_port);
+  }
+
+  throw RuntimeException("Unknown server type");
 }
 
 }  // namespace oac_tree_gui
