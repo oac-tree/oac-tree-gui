@@ -50,8 +50,33 @@ namespace oac_tree_gui
 namespace
 {
 
-constexpr auto kServerName = "OperationActionHandlerRemoteScenarioEPICSTestServer";
 const std::size_t kJobIndex{0};
+
+/**
+ * @brief Transport tag types used to parameterize the scenario tests over the automation server
+ * protocol.
+ *
+ * Each tag exposes the AutomationServerInfo describing the server to run for that transport. Using
+ * types (rather than values) lets the templated fixture start/stop a dedicated server once per
+ * transport in SetUpTestSuite()/TearDownTestSuite().
+ */
+struct EpicsTransport
+{
+  static AutomationServerInfo GetServerInfo()
+  {
+    return EPICSServerInfo{"OperationActionHandlerRemoteScenarioEPICSTestServer"};
+  }
+};
+
+struct WebSocketsTransport
+{
+  static AutomationServerInfo GetServerInfo()
+  {
+    return WebSocketsServerInfo{"localhost", 8080};
+  }
+};
+
+using TransportTypes = ::testing::Types<EpicsTransport, WebSocketsTransport>;
 
 const std::string kProcedureBodyText{
     R"RAW(
@@ -71,9 +96,13 @@ const std::string kProcedureBodyText{
 }  // namespace
 
 /**
- * @brief Tests for OperationActionHandler class in his full glory to run remote jobs based on EPICS
- * automation.
+ * @brief Tests for OperationActionHandler class in his full glory to run remote jobs based on
+ * automation server.
+ *
+ * The suite is parameterized over the transport (EPICS, WebSockets) via typed tests, so each
+ * transport runs its own automation server, started and stopped once per suite.
  */
+template <typename TransportT>
 class OperationActionHandlerRemoteScenarioTest : public ::testing::Test
 {
 public:
@@ -85,14 +114,14 @@ public:
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
   }
 
-  static EPICSServerInfo GetEpicsServerInfo() { return EPICSServerInfo{kServerName}; }
+  static AutomationServerInfo GetServerInfo() { return TransportT::GetServerInfo(); }
 
   /**
    * @brief Runs remote server with single procedure on board.
    */
   static void SetUpTestSuite()
   {
-    m_test_automation_server.Start(GetEpicsServerInfo(), kProcedureBodyText);
+    m_test_automation_server.Start(GetServerInfo(), kProcedureBodyText);
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
 
@@ -114,7 +143,7 @@ public:
   template <typename T>
   std::vector<T*> GetJobs()
   {
-    return GetJobModel()->GetRootItem()->GetItems<T>(mvvm::TagIndex::GetDefaultTag());
+    return GetJobModel()->GetRootItem()->template GetItems<T>(mvvm::TagIndex::GetDefaultTag());
   }
 
   ApplicationModels m_models;
@@ -125,50 +154,54 @@ public:
   static test::TestAutomationServer m_test_automation_server;
 };
 
-test::TestAutomationServer OperationActionHandlerRemoteScenarioTest::m_test_automation_server;
+template <typename TransportT>
+test::TestAutomationServer
+    OperationActionHandlerRemoteScenarioTest<TransportT>::m_test_automation_server;
 
-TEST_F(OperationActionHandlerRemoteScenarioTest, InitialState)
+TYPED_TEST_SUITE(OperationActionHandlerRemoteScenarioTest, TransportTypes);
+
+TYPED_TEST(OperationActionHandlerRemoteScenarioTest, InitialState)
 {
-  auto handler = CreateOperationHandler();
-  EXPECT_EQ(m_job_manager.GetJobCount(), 0);
-  EXPECT_TRUE(m_remote_connection_service.GetServerInfos().empty());
+  auto handler = this->CreateOperationHandler();
+  EXPECT_EQ(this->m_job_manager.GetJobCount(), 0);
+  EXPECT_TRUE(this->m_remote_connection_service.GetServerInfos().empty());
 }
 
-TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
+TYPED_TEST(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
 {
-  auto handler = CreateOperationHandler();
+  auto handler = this->CreateOperationHandler();
 
   // setup remote dialog to return remote job info
   // setting up context, so it report "user choice" related to remote job import
-  const RemoteConnectionInfo connection_context{GetEpicsServerInfo(), {kJobIndex}};
-  ON_CALL(m_mock_context, OnGetRemoteConnectionInfo())
+  const RemoteConnectionInfo connection_context{TestFixture::GetServerInfo(), {kJobIndex}};
+  ON_CALL(this->m_mock_context, OnGetRemoteConnectionInfo())
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
   // submit job
-  EXPECT_CALL(m_mock_context, OnGetRemoteConnectionInfo());
-  EXPECT_CALL(m_mock_context, OnSelectedJob());
+  EXPECT_CALL(this->m_mock_context, OnGetRemoteConnectionInfo());
+  EXPECT_CALL(this->m_mock_context, OnSelectedJob());
   handler->OnImportRemoteJobRequest();
 
   // validating job model
-  auto submitted_jobs = GetJobs<RemoteJobItem>();
+  auto submitted_jobs = this->template GetJobs<RemoteJobItem>();
   ASSERT_EQ(submitted_jobs.size(), 1);
   auto job_item = submitted_jobs.at(0);
-  EXPECT_EQ(job_item->GetAutomationServerInfo(), AutomationServerInfo{GetEpicsServerInfo()});
+  EXPECT_EQ(job_item->GetAutomationServerInfo(), TestFixture::GetServerInfo());
   EXPECT_EQ(job_item->GetRemoteJobIndex(), kJobIndex);
 
   // validating initial state of RemoteJobHandler
-  EXPECT_EQ(m_job_manager.GetJobCount(), 1);
-  EXPECT_EQ(m_job_manager.GetJobItems(), std::vector<JobItem*>({job_item}));
-  auto job_handler = m_job_manager.GetJobHandler(job_item);
+  EXPECT_EQ(this->m_job_manager.GetJobCount(), 1);
+  EXPECT_EQ(this->m_job_manager.GetJobItems(), std::vector<JobItem*>({job_item}));
+  auto job_handler = this->m_job_manager.GetJobHandler(job_item);
   ASSERT_NE(job_handler, nullptr);
   EXPECT_FALSE(job_handler->IsRunning());
   EXPECT_EQ(job_handler->GetRunnerStatus(), RunnerStatus::kInitial);
 
   // validating that connection service has established client connection
-  EXPECT_TRUE(m_remote_connection_service.HasClient(GetEpicsServerInfo()));
+  EXPECT_TRUE(this->m_remote_connection_service.HasClient(TestFixture::GetServerInfo()));
 
   // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this, job_item]() { return job_item->GetStatus() == RunnerStatus::kInitial; };
+  auto predicate = [job_item]() { return job_item->GetStatus() == RunnerStatus::kInitial; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 5000));
 
   // validating internal expanded ProcedureItem
@@ -178,44 +211,44 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 42};
 
-  auto predicate2 = [this, &expected_value, &variables]()
+  auto predicate2 = [&expected_value, &variables]()
   { return test::IsEqual(*variables.at(0), expected_value); };
   EXPECT_TRUE(QTest::qWaitFor(predicate2, 5000));
 
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
-TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
+TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 {
-  auto handler = CreateOperationHandler();
+  auto handler = this->CreateOperationHandler();
 
   // setup remote dialog to return remote job info
   // setting up context, so it report "user choice" related to remote job import
-  const RemoteConnectionInfo connection_context{GetEpicsServerInfo(), {kJobIndex}};
-  ON_CALL(m_mock_context, OnGetRemoteConnectionInfo())
+  const RemoteConnectionInfo connection_context{TestFixture::GetServerInfo(), {kJobIndex}};
+  ON_CALL(this->m_mock_context, OnGetRemoteConnectionInfo())
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
   // submit job
-  EXPECT_CALL(m_mock_context, OnGetRemoteConnectionInfo());
-  EXPECT_CALL(m_mock_context, OnSelectedJob());
+  EXPECT_CALL(this->m_mock_context, OnGetRemoteConnectionInfo());
+  EXPECT_CALL(this->m_mock_context, OnSelectedJob());
   handler->OnImportRemoteJobRequest();
 
   // validating job model
-  auto submitted_jobs = GetJobs<RemoteJobItem>();
+  auto submitted_jobs = this->template GetJobs<RemoteJobItem>();
   ASSERT_EQ(submitted_jobs.size(), 1);
   auto job_item = submitted_jobs.at(0);
 
   // making item selected
-  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+  ON_CALL(this->m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  EXPECT_CALL(m_mock_context, OnSelectedJob());
+  EXPECT_CALL(this->m_mock_context, OnSelectedJob());
   handler->OnStartJobRequest();
 
   // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this, job_item]() { return job_item->GetStatus() == RunnerStatus::kSucceeded; };
+  auto predicate = [job_item]() { return job_item->GetStatus() == RunnerStatus::kSucceeded; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
 
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
+  EXPECT_FALSE(this->m_job_manager.GetJobHandler(job_item)->IsRunning());
 
   // validating internal expanded ProcedureItem
   auto procedure_item = job_item->GetExpandedProcedure();
@@ -224,7 +257,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 45};
 
-  auto predicate2 = [this, &expected_value, &variables]()
+  auto predicate2 = [&expected_value, &variables]()
   { return test::IsEqual(*variables.at(0), expected_value); };
   EXPECT_TRUE(QTest::qWaitFor(predicate2, 5000));
 
