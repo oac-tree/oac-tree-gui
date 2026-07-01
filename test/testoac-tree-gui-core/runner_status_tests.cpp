@@ -44,7 +44,7 @@ TEST_F(RunnerStatusTest, ToString)
   EXPECT_EQ(ToString(RunnerStatus::kFailed), "Failure");
   EXPECT_EQ(ToString(RunnerStatus::kHalted), "Halted");
   EXPECT_EQ(ToString(RunnerStatus::kUndefined), "");
-  EXPECT_EQ(ToString(RunnerStatus::kSubmitFailure), "SubmitFailure");
+  EXPECT_EQ(ToString(RunnerStatus::kSubmitFailure), "Submit failure");
 }
 
 TEST_F(RunnerStatusTest, GetRunnerStatus)
@@ -56,7 +56,7 @@ TEST_F(RunnerStatusTest, GetRunnerStatus)
   EXPECT_EQ(GetRunnerStatus("Success"), RunnerStatus::kSucceeded);
   EXPECT_EQ(GetRunnerStatus("Failure"), RunnerStatus::kFailed);
   EXPECT_EQ(GetRunnerStatus("Halted"), RunnerStatus::kHalted);
-  EXPECT_EQ(GetRunnerStatus("SubmitFailure"), RunnerStatus::kSubmitFailure);
+  EXPECT_EQ(GetRunnerStatus("Submit failure"), RunnerStatus::kSubmitFailure);
   EXPECT_THROW(GetRunnerStatus("abc"), RuntimeException);
 }
 

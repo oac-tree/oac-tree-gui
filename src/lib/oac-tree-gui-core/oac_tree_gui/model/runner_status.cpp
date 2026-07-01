@@ -39,7 +39,7 @@ std::map<oac_tree_gui::RunnerStatus, std::string> CreateRunnerStatusDescriptionM
       {oac_tree_gui::RunnerStatus::kFailed, "Failure"},
       {oac_tree_gui::RunnerStatus::kHalted, "Halted"},
       {oac_tree_gui::RunnerStatus::kUndefined, ""},
-      {oac_tree_gui::RunnerStatus::kSubmitFailure, "SubmitFailure"}};
+      {oac_tree_gui::RunnerStatus::kSubmitFailure, "Submit failure"}};
   return result;
 }
 
