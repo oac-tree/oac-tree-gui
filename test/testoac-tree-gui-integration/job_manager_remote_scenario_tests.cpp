@@ -45,7 +45,7 @@ namespace oac_tree_gui
 namespace
 {
 
-const std::string kServerName = "JobManagerRemoteScenarioTestServer";
+constexpr auto kServerName = "JobManagerRemoteScenarioEPICSTestServer";
 
 const std::string kProcedureBodyText{
     R"RAW(
@@ -62,7 +62,7 @@ const std::string kProcedureBodyText{
 }  // namespace
 
 /**
- * @brief Tests for JobManager class to run remote jobs.
+ * @brief Tests for JobManager class to run remote jobs using EPICS based automation.
  */
 class JobManagerRemoteScenarioTest : public ::testing::Test
 {
@@ -72,16 +72,18 @@ public:
     // creating remote job item
     const std::size_t job_index{0};
     m_job_item = m_model.InsertItem<RemoteJobItem>();
-    m_job_item->SetAutomationServerInfo(EPICSServerInfo{kServerName});
+    m_job_item->SetAutomationServerInfo(GetEpicsServerInfo());
     m_job_item->SetRemoteJobIndex(job_index);
   }
+
+  static EPICSServerInfo GetEpicsServerInfo() { return EPICSServerInfo{kServerName}; }
 
   /**
    * @brief Runs remoet server with single procedure on board.
    */
   static void SetUpTestSuite()
   {
-    m_test_automation_server.Start(EPICSServerInfo{kServerName}, kProcedureBodyText);
+    m_test_automation_server.Start(GetEpicsServerInfo(), kProcedureBodyText);
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
 
@@ -131,7 +133,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
   EXPECT_EQ(job_handler->GetRunnerStatus(), RunnerStatus::kInitial);
 
   // validating that connection service has established client connection
-  EXPECT_TRUE(m_remote_connection_service.HasClient(EPICSServerInfo{kServerName}));
+  EXPECT_TRUE(m_remote_connection_service.HasClient(GetEpicsServerInfo()));
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kInitial; };

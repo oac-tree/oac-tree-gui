@@ -50,8 +50,7 @@ namespace oac_tree_gui
 namespace
 {
 
-const std::string kServerName{"OperationActionHandlerRemoteScenarioTestServer"};
-const EPICSServerInfo kServerInfo{"OperationActionHandlerRemoteScenarioTestServer"};
+constexpr auto kServerName = "OperationActionHandlerRemoteScenarioEPICSTestServer";
 const std::size_t kJobIndex{0};
 
 const std::string kProcedureBodyText{
@@ -72,7 +71,8 @@ const std::string kProcedureBodyText{
 }  // namespace
 
 /**
- * @brief Tests for OperationActionHandler class in his full glory to run remote jobs.
+ * @brief Tests for OperationActionHandler class in his full glory to run remote jobs based on EPICS
+ * automation.
  */
 class OperationActionHandlerRemoteScenarioTest : public ::testing::Test
 {
@@ -85,12 +85,14 @@ public:
     m_models.GetSequencerModel()->GetProcedureContainer()->Clear();  // our untitled procedure
   }
 
+  static EPICSServerInfo GetEpicsServerInfo() { return EPICSServerInfo{kServerName}; }
+
   /**
    * @brief Runs remote server with single procedure on board.
    */
   static void SetUpTestSuite()
   {
-    m_test_automation_server.Start(EPICSServerInfo{kServerName}, kProcedureBodyText);
+    m_test_automation_server.Start(GetEpicsServerInfo(), kProcedureBodyText);
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
 
@@ -138,7 +140,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
 
   // setup remote dialog to return remote job info
   // setting up context, so it report "user choice" related to remote job import
-  const RemoteConnectionInfo connection_context{kServerInfo, {kJobIndex}};
+  const RemoteConnectionInfo connection_context{GetEpicsServerInfo(), {kJobIndex}};
   ON_CALL(m_mock_context, OnGetRemoteConnectionInfo())
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
@@ -151,7 +153,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   auto submitted_jobs = GetJobs<RemoteJobItem>();
   ASSERT_EQ(submitted_jobs.size(), 1);
   auto job_item = submitted_jobs.at(0);
-  EXPECT_EQ(GetAutomationServerName(job_item->GetAutomationServerInfo()), kServerName);
+  EXPECT_EQ(job_item->GetAutomationServerInfo(), AutomationServerInfo{GetEpicsServerInfo()});
   EXPECT_EQ(job_item->GetRemoteJobIndex(), kJobIndex);
 
   // validating initial state of RemoteJobHandler
@@ -163,7 +165,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   EXPECT_EQ(job_handler->GetRunnerStatus(), RunnerStatus::kInitial);
 
   // validating that connection service has established client connection
-  EXPECT_TRUE(m_remote_connection_service.HasClient(kServerInfo));
+  EXPECT_TRUE(m_remote_connection_service.HasClient(GetEpicsServerInfo()));
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this, job_item]() { return job_item->GetStatus() == RunnerStatus::kInitial; };
@@ -189,7 +191,7 @@ TEST_F(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 
   // setup remote dialog to return remote job info
   // setting up context, so it report "user choice" related to remote job import
-  const RemoteConnectionInfo connection_context{kServerInfo, {kJobIndex}};
+  const RemoteConnectionInfo connection_context{GetEpicsServerInfo(), {kJobIndex}};
   ON_CALL(m_mock_context, OnGetRemoteConnectionInfo())
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
 
