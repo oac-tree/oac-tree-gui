@@ -63,7 +63,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   const std::string server_name("RemoteJobHandlerTestServer");
   test::TestAutomationServer server;
 
-  server.Start(server_name, kProcedureBodyText);
+  server.Start(EPICSServerInfo{server_name}, kProcedureBodyText);
 
   std::this_thread::sleep_for(std::chrono::milliseconds(20));
 

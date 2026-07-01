@@ -32,16 +32,17 @@
 namespace oac_tree_gui::test
 {
 
-void TestAutomationServer::Start(const std::string& server_name,
+void TestAutomationServer::Start(const AutomationServerInfo& server_info,
                                  const std::string& procedure_string)
 {
-  auto worker = [this, &server_name, &procedure_string]()
+  // passing parameters by copy, not by reference (since etmporary objects can be used in Start()
+  auto worker = [this, server_info, procedure_string]()
   {
     auto procedure =
         sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_string));
 
-    auto server_protocol_factory =
-      sup::oac_tree_server::utils::CreateEPICSServerProtocolFactory(server_name, 1);
+    auto server_protocol_factory = sup::oac_tree_server::utils::CreateEPICSServerProtocolFactory(
+        GetAutomationServerName(server_info), 1);
 
     sup::oac_tree_server::AutomationServer auto_server{*server_protocol_factory};
     auto_server.AddJob(std::move(procedure));

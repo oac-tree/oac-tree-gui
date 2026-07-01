@@ -25,6 +25,8 @@
 #include <future>
 #include <string>
 
+#include <oac_tree_gui/model/remote_connection_info.h>
+
 namespace oac_tree_gui::test
 {
 
@@ -36,7 +38,7 @@ class TestAutomationServer
 public:
   TestAutomationServer() = default;
 
-  void Start(const std::string& server_name, const std::string& procedure_string);
+  void Start(const AutomationServerInfo& server_info, const std::string& procedure_string);
 
   void Stop();
 
