@@ -20,6 +20,8 @@
 
 #include "oac_tree_gui/model/server_info_items.h"
 
+#include <oac_tree_gui/core/exceptions.h>
+
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test
@@ -153,6 +155,14 @@ TEST_F(ServerGroupItemTest, SetAndGetWebSocketsServerInfo)
   EXPECT_EQ(item.GetCurrentIndex(), 1);
   EXPECT_EQ(item.GetCurrentType(), mvvm::GetTypeName<WebSocketsServerInfoItem>());
   EXPECT_EQ(item.GetServerInfo(), info);
+}
+
+TEST_F(ServerGroupItemTest, SetUndefinedServerInfo)
+{
+  ServerGroupItem item;
+
+  const AutomationServerInfo info;
+  EXPECT_THROW(item.SetServerInfo(info), RuntimeException);
 }
 
 TEST_F(ServerGroupItemTest, SwitchBetweenServerTypes)

@@ -34,16 +34,22 @@ class RemoteConnectionInfoTest : public ::testing::Test
 {
 };
 
-TEST_F(RemoteConnectionInfoTest, GetServerNameForEPICS)
+TEST_F(RemoteConnectionInfoTest, GetServerName)
 {
-  const AutomationServerInfo info{EPICSServerInfo{"MyEPICSServer"}};
-  EXPECT_EQ(GetAutomationServerName(info), std::string("MyEPICSServer"));
-}
+  {  // EPICS
+    const AutomationServerInfo info{EPICSServerInfo{"MyEPICSServer"}};
+    EXPECT_EQ(GetAutomationServerName(info), std::string("MyEPICSServer"));
+  }
 
-TEST_F(RemoteConnectionInfoTest, GetServerNameForWebSockets)
-{
-  const AutomationServerInfo info{WebSocketsServerInfo{"localhost", 8080}};
-  EXPECT_EQ(GetAutomationServerName(info), std::string("localhost:8080"));
+  {  // websockets
+    const AutomationServerInfo info{WebSocketsServerInfo{"localhost", 8080}};
+    EXPECT_EQ(GetAutomationServerName(info), std::string("localhost:8080"));
+  }
+
+  {  // undefined
+    const AutomationServerInfo info;
+    EXPECT_THROW(GetAutomationServerName(info), RuntimeException);
+  }
 }
 
 TEST_F(RemoteConnectionInfoTest, EPICSServerInfoComparison)

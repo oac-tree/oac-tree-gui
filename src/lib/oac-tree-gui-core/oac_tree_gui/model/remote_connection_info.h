@@ -65,7 +65,7 @@ bool operator!=(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs
 /**
  * Defines how to connect to the remote server.
  */
-using AutomationServerInfo = std::variant<EPICSServerInfo, WebSocketsServerInfo>;
+using AutomationServerInfo = std::variant<std::monostate, EPICSServerInfo, WebSocketsServerInfo>;
 
 /**
  * @brief Returns the name of the server used to establish a connection.

@@ -40,15 +40,20 @@ class AutomationClientTest : public ::testing::Test
 TEST_F(AutomationClientTest, CreateConnectionManager)
 {
   {  // for EPICS server
-    EPICSServerInfo info{"server_name"};
+    const EPICSServerInfo info{"server_name"};
     auto manager = CreateConnectionManager(info);
     EXPECT_NE(CreateConnectionManager(info).get(), nullptr);
   }
 
   {  // for WebSockets
-    WebSocketsServerInfo info{"localhost", 8080};
+    const WebSocketsServerInfo info{"localhost", 8080};
     auto manager = CreateConnectionManager(info);
     EXPECT_NE(CreateConnectionManager(info).get(), nullptr);
+  }
+
+  {  // undefined
+    const AutomationServerInfo info;
+    EXPECT_THROW(CreateConnectionManager(info), RuntimeException);
   }
 }
 
