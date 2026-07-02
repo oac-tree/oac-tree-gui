@@ -39,6 +39,15 @@ enum class StopScope
 };
 
 /**
+ * @brief The RemovalPolicy enum defines how a running job should be treated on removal.
+ */
+enum class RemovalPolicy
+{
+  kRejectIfRunning,  //!< refuse to remove a job that is currently running
+  kForce             //!< remove the job even if it is running
+};
+
+/**
  * @brief The IJobItemManager class is a base to manage the execution of sequencer jobs.
  *
  * The job is represented by the JobItem, that carries all information about sequencer procedure.
@@ -111,9 +120,11 @@ public:
   /**
    * @brief Removes a job corresponding to a given JobItem from the manager.
    *
-   * Internally removes JobHandler, do not affect JobItem.
+   * Internally removes JobHandler, do not affect JobItem. By default refuses to remove a running
+   * job; use RemovalPolicy::kForce to remove it regardless.
    */
-  virtual void RemoveJobHandler(JobItem* job) = 0;
+  virtual void RemoveJobHandler(JobItem* job,
+                                RemovalPolicy policy = RemovalPolicy::kRejectIfRunning) = 0;
 
   /**
    * @brief Checks if there are jobs running.

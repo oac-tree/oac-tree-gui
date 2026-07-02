@@ -233,6 +233,29 @@ TEST_F(JobManagerExtendedTest, AttemptToRemoveLongRunningJob)
   EXPECT_FALSE(manager.HasRunningJobs());
 }
 
+//! A running job can be removed with RemovalPolicy::kForce.
+TEST_F(JobManagerExtendedTest, ForceRemoveLongRunningJob)
+{
+  auto procedure = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+
+  m_job_item->SetProcedure(procedure);
+
+  JobManager manager(GetContext());
+
+  manager.SubmitJob(m_job_item);
+  manager.Start(m_job_item);
+
+  auto job_handler = manager.GetJobHandler(m_job_item);
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
+  EXPECT_TRUE(manager.HasRunningJobs());
+
+  // forced removal succeeds even though the job is running
+  EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item, RemovalPolicy::kForce));
+
+  EXPECT_EQ(manager.GetJobCount(), 0);
+  EXPECT_FALSE(manager.HasRunningJobs());
+}
+
 //! Long running job removal.
 TEST_F(JobManagerExtendedTest, StopAllJobs)
 {

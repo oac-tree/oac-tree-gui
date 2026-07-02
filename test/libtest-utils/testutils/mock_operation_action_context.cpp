@@ -31,6 +31,8 @@ OperationActionContext MockOperationActionContext::CreateContext()
   result.get_remote_connection_info = [this]() { return OnGetRemoteConnectionInfo(); };
   result.drop_remote_connection = [this](const AutomationServerInfo& info)
   { OnDropRemoteConnection(info); };
+  result.confirm_job_removal = [this](const std::string& question)
+  { return OnConfirmJobRemoval(question); };
   return result;
 }
 

@@ -53,7 +53,8 @@ public:
   MOCK_METHOD(void, Step, (oac_tree_gui::JobItem *), (override));
   MOCK_METHOD(void, Reset, (oac_tree_gui::JobItem *), (override));
 
-  MOCK_METHOD(void, RemoveJobHandler, (oac_tree_gui::JobItem *), (override));
+  MOCK_METHOD(void, RemoveJobHandler, (oac_tree_gui::JobItem *, oac_tree_gui::RemovalPolicy),
+              (override));
   MOCK_METHOD(bool, HasRunningJobs, (), (const, override));
   MOCK_METHOD(void, StopJobs, (oac_tree_gui::StopScope), (override));
 

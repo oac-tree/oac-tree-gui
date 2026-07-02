@@ -237,8 +237,8 @@ TEST_F(OperationActionHandlerExtendedTest, OnRemoveJobRequest)
   EXPECT_TRUE(GetJobItems().empty());
 }
 
-//! Attempt to remove long running job.
-TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
+//! Declining the confirmation keeps a running job in the list.
+TEST_F(OperationActionHandlerExtendedTest, DeclineRemovalOfLongRunningJob)
 {
   auto procedure = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
@@ -257,11 +257,13 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 100));
   EXPECT_TRUE(job_handler->IsRunning());
 
-  // it shouldn't be possible to remove running job without first stopping it
+  // removing a running job requires confirmation; the user declines, so the job stays
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+  EXPECT_CALL(m_mock_context, OnConfirmJobRemoval(::testing::_)).WillOnce(::testing::Return(false));
   EXPECT_FALSE(handler->OnRemoveJobRequest());
   QTest::qWait(10);
+
+  EXPECT_EQ(GetJobItems().size(), 1);
 
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnStopJobRequest();
@@ -270,6 +272,34 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToRemoveLongRunningJob)
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 100));
 
   EXPECT_FALSE(job_handler->IsRunning());
+}
+
+//! Confirming the removal removes a running job (its handler is destroyed, halting it).
+TEST_F(OperationActionHandlerExtendedTest, ConfirmRemovalOfLongRunningJob)
+{
+  auto procedure = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+
+  auto handler = CreateOperationHandler();
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->SubmitLocalJob(procedure);
+
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  handler->OnStartJobRequest();
+
+  auto job_handler = m_job_manager.GetJobHandler(job_item);
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 100));
+
+  // the user confirms, so the running job is force-removed
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_CALL(m_mock_context, OnConfirmJobRemoval(::testing::_)).WillOnce(::testing::Return(true));
+  EXPECT_TRUE(handler->OnRemoveJobRequest());
+
+  EXPECT_TRUE(GetJobItems().empty());
+  EXPECT_FALSE(m_job_manager.HasRunningJobs());
 }
 
 //! Regenerate submitted job.

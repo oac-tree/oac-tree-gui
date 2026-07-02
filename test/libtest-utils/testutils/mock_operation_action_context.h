@@ -40,6 +40,7 @@ public:
   MOCK_METHOD(void, OnMessage, (const sup::gui::MessageEvent&), ());
   MOCK_METHOD(std::optional<RemoteConnectionInfo>, OnGetRemoteConnectionInfo, (), ());
   MOCK_METHOD(void, OnDropRemoteConnection, (const AutomationServerInfo&), ());
+  MOCK_METHOD(bool, OnConfirmJobRemoval, (const std::string&), ());
 
   /**
    * @brief Returns context necessary for OperationActionHandler to function.

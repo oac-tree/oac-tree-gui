@@ -27,6 +27,7 @@
 
 #include <functional>
 #include <optional>
+#include <string>
 
 namespace oac_tree_gui
 {
@@ -52,6 +53,9 @@ struct OperationActionContext
 
   //!< callback to drop a remote connection no longer used by any job
   std::function<void(const AutomationServerInfo&)> drop_remote_connection;
+
+  //!< callback to confirm removal of a running job; returns true if the user confirms
+  std::function<bool(const std::string& question)> confirm_job_removal;
 };
 
 }  // namespace oac_tree_gui

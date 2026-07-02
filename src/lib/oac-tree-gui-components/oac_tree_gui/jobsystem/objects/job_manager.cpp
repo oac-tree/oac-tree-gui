@@ -130,11 +130,11 @@ void JobManager::Step(JobItem* item)
   }
 }
 
-void JobManager::RemoveJobHandler(JobItem* job)
+void JobManager::RemoveJobHandler(JobItem* job, RemovalPolicy policy)
 {
   if (auto job_handler = GetJobHandler(job); job_handler)
   {
-    if (job_handler->IsRunning())
+    if (job_handler->IsRunning() && policy == RemovalPolicy::kRejectIfRunning)
     {
       throw RuntimeException("Attempt to modify running job");
     }

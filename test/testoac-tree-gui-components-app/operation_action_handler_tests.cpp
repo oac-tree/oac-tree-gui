@@ -51,6 +51,11 @@ public:
   {
     m_procedure_container = m_model.InsertItem<mvvm::ContainerItem>();
     m_job_container = m_model.InsertItem<mvvm::ContainerItem>();
+
+    // by default a job has no handler (i.e. is not running); allowed as a background query
+    EXPECT_CALL(m_mock_job_manager, GetJobHandler(::testing::_))
+        .Times(::testing::AnyNumber())
+        .WillRepeatedly(::testing::Return(nullptr));
   }
 
   /**
@@ -278,7 +283,7 @@ TEST_F(OperationActionHandlerTest, RemoveLocalJob)
   ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(job_item));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(job_item, RemovalPolicy::kRejectIfRunning));
 
   const QSignalSpy spy_selected_request(operation_handler.get(),
                                         &OperationActionHandler::MakeJobSelectedRequest);
@@ -302,7 +307,7 @@ TEST_F(OperationActionHandlerTest, RemoveLocalJobInTheMiddle)
   ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item1));
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(job_item1));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(job_item1, RemovalPolicy::kRejectIfRunning));
 
   QSignalSpy spy_selected_request(operation_handler.get(),
                                   &OperationActionHandler::MakeJobSelectedRequest);
@@ -360,7 +365,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
   ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
-  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item, RemovalPolicy::kRejectIfRunning));
   EXPECT_CALL(m_mock_job_manager, SubmitJob(&job_item));
 
   EXPECT_TRUE(operation_handler->OnRegenerateJobRequest());
@@ -386,12 +391,12 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenRemovalFailed)
 
   // job_item will be reported as selected
   ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
-  ON_CALL(m_mock_job_manager, RemoveJobHandler(::testing::_))
+  ON_CALL(m_mock_job_manager, RemoveJobHandler(::testing::_, ::testing::_))
       .WillByDefault(::testing::Throw(RuntimeException("Removal failure")));
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_));
-  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item, RemovalPolicy::kRejectIfRunning));
 
   EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
 
@@ -419,7 +424,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobIsBroken)
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_));
-  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item, RemovalPolicy::kRejectIfRunning));
   EXPECT_CALL(m_mock_job_manager, SubmitJob(&job_item));
 
   EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
@@ -449,7 +454,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenJobBecomeBroken)
 
   EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_operation_context, OnMessage(::testing::_));
-  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item));
+  EXPECT_CALL(m_mock_job_manager, RemoveJobHandler(&job_item, RemovalPolicy::kRejectIfRunning));
   EXPECT_CALL(m_mock_job_manager, SubmitJob(&job_item));
 
   EXPECT_FALSE(operation_handler->OnRegenerateJobRequest());
