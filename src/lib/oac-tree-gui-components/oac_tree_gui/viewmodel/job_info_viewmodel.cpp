@@ -44,6 +44,8 @@ void JobInfoViewModel::PopulateModel(const std::vector<std::string>& job_list)
 {
   clear();
 
+  setHorizontalHeaderLabels({"Index", "Procedure name"});
+
   auto parent_item = invisibleRootItem();
   for (std::size_t index = 0; index < job_list.size(); ++index)
   {

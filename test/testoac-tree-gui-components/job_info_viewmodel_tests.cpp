@@ -49,6 +49,9 @@ TEST_F(JobInfoViewModelTest, PopulateModel)
   EXPECT_EQ(model.rowCount(QModelIndex()), 2);
   EXPECT_EQ(model.columnCount(QModelIndex()), 2);
 
+  EXPECT_EQ(model.headerData(0, Qt::Horizontal).toString(), QString("Index"));
+  EXPECT_EQ(model.headerData(1, Qt::Horizontal).toString(), QString("Procedure name"));
+
   // first column contains the job index, second column contains the job name
   EXPECT_EQ(model.data(model.index(0, 0, QModelIndex())).toString(), QString("0"));
   EXPECT_EQ(model.data(model.index(0, 1, QModelIndex())).toString(), QString("job1"));
