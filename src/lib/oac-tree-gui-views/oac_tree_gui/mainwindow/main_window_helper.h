@@ -26,6 +26,7 @@
 
 #include <QString>
 #include <functional>
+#include <string>
 #include <vector>
 
 namespace oac_tree_gui
@@ -48,6 +49,14 @@ enum class RunningJobsCloseAction
  * or to cancel the exit.
  */
 RunningJobsCloseAction ShouldStopRunningJobs();
+
+/**
+ * @brief Asks the user to confirm removal of a running job.
+ *
+ * @param question The question to show to the user (local/remote specific).
+ * @return True if the user confirms the removal, false otherwise.
+ */
+bool ShouldRemoveRunningJob(const std::string& question);
 
 /**
  * @brief Returns vector of names representing sequencer procedures located in a given folder.

@@ -64,6 +64,19 @@ RunningJobsCloseAction ShouldStopRunningJobs()
   return RunningJobsCloseAction::kNoAction;
 }
 
+bool ShouldRemoveRunningJob(const std::string& question)
+{
+  QMessageBox msgBox;
+  msgBox.setText("The selected job is in a running state.");
+  msgBox.setInformativeText(QString::fromStdString(question));
+
+  auto yes_button = msgBox.addButton("Yes, remove", QMessageBox::YesRole);
+  msgBox.addButton("Cancel", QMessageBox::NoRole);
+
+  msgBox.exec();
+  return msgBox.clickedButton() == yes_button;
+}
+
 std::vector<std::string> GetProcedureFiles(const std::string& path_name)
 {
   std::vector<std::string> result;
