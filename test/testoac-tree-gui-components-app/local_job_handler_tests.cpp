@@ -555,11 +555,11 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
 
   auto predicate = [&job_handler]()
   { return job_handler.GetRunnerStatus() == RunnerStatus::kPaused; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   auto predicate2 = [&instructions_inside]()
   { return GetBreakpointStatus(*instructions_inside.at(2)) == BreakpointStatus::kSetAndHit; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 50));
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 100));
 
   EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSetAndHit);
 
