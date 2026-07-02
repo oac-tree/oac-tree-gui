@@ -127,6 +127,20 @@ TEST_F(RemoteConnectionServiceTest, GetAutomationClient)
   EXPECT_THROW(service->GetAutomationClient(m_info_def), RuntimeException);
 }
 
+//! GetAutomationClient throws for a present-but-disconnected client instead of handing it out.
+TEST_F(RemoteConnectionServiceTest, GetAutomationClientThrowsOnBrokenConnection)
+{
+  auto service = CreateService();
+
+  EXPECT_TRUE(service->Connect(m_info_abc));
+  EXPECT_NO_THROW(service->GetAutomationClient(m_info_abc));
+
+  // the client is still present, but its connection has dropped
+  ON_CALL(m_mock_client, IsConnected()).WillByDefault(Return(false));
+  EXPECT_TRUE(service->HasClient(m_info_abc));
+  EXPECT_THROW(service->GetAutomationClient(m_info_abc), RuntimeException);
+}
+
 //! Connecting to several servers yields several distinct clients.
 TEST_F(RemoteConnectionServiceTest, ConnectMultipleClients)
 {

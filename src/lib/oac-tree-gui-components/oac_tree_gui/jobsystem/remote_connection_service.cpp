@@ -110,6 +110,12 @@ IAutomationClient& RemoteConnectionService::GetAutomationClient(
     throw RuntimeException("No client for server [" + GetAutomationServerName(server_info) + "]");
   }
 
+  if (!client->IsConnected())
+  {
+    throw RuntimeException("Connection to server [" + GetAutomationServerName(server_info)
+                           + "] is broken");
+  }
+
   return *client;
 }
 
