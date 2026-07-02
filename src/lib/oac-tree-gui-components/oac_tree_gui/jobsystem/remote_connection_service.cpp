@@ -45,10 +45,13 @@ RemoteConnectionService::RemoteConnectionService(const AutomationClientFunc& cre
 
 bool RemoteConnectionService::Connect(const AutomationServerInfo& server_info)
 {
-  if (HasClient(server_info))
+  if (IsConnected(server_info))
   {
     return true;
   }
+
+  // Drop a stale client, if any, so a broken connection can be re-established.
+  RemoveClient(server_info);
 
   std::unique_ptr<IAutomationClient> client;
   try
@@ -76,24 +79,18 @@ bool RemoteConnectionService::Connect(const AutomationServerInfo& server_info)
 
 void RemoteConnectionService::Disconnect(const AutomationServerInfo& server_info)
 {
-  auto on_element = [&server_info](auto& element)
-  { return element->GetServerInfo() == server_info; };
-  (void)m_clients.erase(std::remove_if(m_clients.begin(), m_clients.end(), on_element),
-                        m_clients.end());
+  RemoveClient(server_info);
 }
 
 bool RemoteConnectionService::IsConnected(const AutomationServerInfo& server_info) const
 {
-  // how to check if connection is alive
-  return HasClient(server_info);
+  auto* client = FindClient(server_info);
+  return client != nullptr && client->IsConnected();
 }
 
 bool RemoteConnectionService::HasClient(const AutomationServerInfo& server_info) const
 {
-  auto on_element = [&server_info](auto& element)
-  { return element->GetServerInfo() == server_info; };
-  auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
-  return pos != m_clients.end();
+  return FindClient(server_info) != nullptr;
 }
 
 std::vector<AutomationServerInfo> RemoteConnectionService::GetServerInfos() const
@@ -107,16 +104,12 @@ std::vector<AutomationServerInfo> RemoteConnectionService::GetServerInfos() cons
 IAutomationClient& RemoteConnectionService::GetAutomationClient(
     const AutomationServerInfo& server_info)
 {
-  auto on_element = [&server_info](auto& element)
-  { return element->GetServerInfo() == server_info; };
-  auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
-
-  if (pos == m_clients.end())
+  auto* client = FindClient(server_info);
+  if (client == nullptr)
   {
     throw RuntimeException("No client for server [" + GetAutomationServerName(server_info) + "]");
   }
 
-  IAutomationClient* client = pos->get();
   return *client;
 }
 
@@ -135,6 +128,22 @@ std::unique_ptr<AbstractJobHandler> RemoteConnectionService::CreateJobHandler(
   }
 
   return GetAutomationClient(server_info).CreateJobHandler(job_item, user_context);
+}
+
+IAutomationClient* RemoteConnectionService::FindClient(const AutomationServerInfo& server_info) const
+{
+  auto on_element = [&server_info](const auto& element)
+  { return element->GetServerInfo() == server_info; };
+  auto pos = std::find_if(m_clients.begin(), m_clients.end(), on_element);
+  return pos == m_clients.end() ? nullptr : pos->get();
+}
+
+void RemoteConnectionService::RemoveClient(const AutomationServerInfo& server_info)
+{
+  auto on_element = [&server_info](const auto& element)
+  { return element->GetServerInfo() == server_info; };
+  (void)m_clients.erase(std::remove_if(m_clients.begin(), m_clients.end(), on_element),
+                        m_clients.end());
 }
 
 }  // namespace oac_tree_gui

@@ -63,6 +63,16 @@ public:
                                                        const UserContext& user_context) override;
 
 private:
+  /**
+   * @brief Returns client for given server, or nullptr if no such client exists.
+   */
+  IAutomationClient* FindClient(const AutomationServerInfo& server_info) const;
+
+  /**
+   * @brief Removes client for given server from the list, if it exists.
+   */
+  void RemoveClient(const AutomationServerInfo& server_info);
+
   //!< collection of remote clients, one client per server
   std::vector<std::unique_ptr<IAutomationClient>> m_clients;
 

@@ -47,6 +47,12 @@ namespace oac_tree_gui
 class RemoteConnectionServiceTest : public ::testing::Test
 {
 public:
+  RemoteConnectionServiceTest()
+  {
+    // by default a freshly created client reports a live connection
+    ON_CALL(m_mock_client, IsConnected()).WillByDefault(Return(true));
+  }
+
   std::unique_ptr<RemoteConnectionService> CreateService()
   {
     auto factory_func = test::AutomationClientDecoratorCreateFunc(m_mock_client);
@@ -168,6 +174,47 @@ TEST_F(RemoteConnectionServiceTest, CreatesClientPerServer)
   EXPECT_TRUE(service.Connect(info1));
 
   EXPECT_EQ(service.GetServerInfos(), std::vector<AutomationServerInfo>({info1, info2}));
+}
+
+//! IsConnected reflects the liveness reported by the client, not mere existence.
+TEST_F(RemoteConnectionServiceTest, IsConnectedReflectsClientLiveness)
+{
+  auto service = CreateService();
+
+  // no client yet
+  EXPECT_FALSE(service->IsConnected(m_info_abc));
+
+  EXPECT_TRUE(service->Connect(m_info_abc));
+  EXPECT_TRUE(service->HasClient(m_info_abc));
+  EXPECT_TRUE(service->IsConnected(m_info_abc));
+
+  // the client is still present, but its connection has dropped
+  ON_CALL(m_mock_client, IsConnected()).WillByDefault(Return(false));
+  EXPECT_TRUE(service->HasClient(m_info_abc));
+  EXPECT_FALSE(service->IsConnected(m_info_abc));
+}
+
+//! Connecting to a server whose client has a broken connection drops the stale client and
+//! re-creates it.
+TEST_F(RemoteConnectionServiceTest, ReconnectDropsStaleClient)
+{
+  test::MockAutomationClientFactory factory;
+
+  // client is created twice: initial connect, and re-connect after the connection breaks
+  EXPECT_CALL(factory, CreateClient(m_info_abc))
+      .Times(2)
+      .WillRepeatedly([this](const AutomationServerInfo&)
+                      { return test::CreateAutomationClientDecorator(m_mock_client, m_info_abc); });
+
+  RemoteConnectionService service(factory.CreateFunc(), m_message_func.AsStdFunction());
+
+  EXPECT_TRUE(service.Connect(m_info_abc));
+
+  // connection breaks; the next connect must prune the dead client and create a fresh one
+  ON_CALL(m_mock_client, IsConnected()).WillByDefault(Return(false));
+  EXPECT_TRUE(service.Connect(m_info_abc));
+
+  EXPECT_EQ(service.GetServerInfos(), std::vector<AutomationServerInfo>({m_info_abc}));
 }
 
 }  // namespace oac_tree_gui
