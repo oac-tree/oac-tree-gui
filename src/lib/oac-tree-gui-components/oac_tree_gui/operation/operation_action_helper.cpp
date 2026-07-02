@@ -30,6 +30,8 @@
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/sequence_parser.h>
 
+#include <algorithm>
+
 namespace oac_tree_gui
 {
 
@@ -80,6 +82,17 @@ std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
   };
 
   return result;
+}
+
+bool IsAutomationServerInUse(const std::vector<JobItem*>& jobs,
+                             const AutomationServerInfo& server_info)
+{
+  auto uses_server = [&server_info](const JobItem* job)
+  {
+    auto remote_job = dynamic_cast<const RemoteJobItem*>(job);
+    return remote_job != nullptr && remote_job->GetAutomationServerInfo() == server_info;
+  };
+  return std::any_of(jobs.begin(), jobs.end(), uses_server);
 }
 
 }  // namespace oac_tree_gui

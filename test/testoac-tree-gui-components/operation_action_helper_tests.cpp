@@ -107,6 +107,29 @@ TEST_F(OperationActionHelperTest, CreateJobHandlerForRemoteJob)
   auto job_handler = create_func(*job_item_ptr);
 }
 
+TEST_F(OperationActionHelperTest, IsAutomationServerInUse)
+{
+  const AutomationServerInfo info_abc{EPICSServerInfo{"abc"}};
+  const AutomationServerInfo info_def{EPICSServerInfo{"def"}};
+
+  UnknownJobItem local_job;
+  auto remote_job_abc = CreateRemoteJobItem(EPICSServerInfo{"abc"}, 0);
+
+  const std::vector<JobItem*> jobs{&local_job, remote_job_abc.get()};
+
+  // the remote job uses server "abc"
+  EXPECT_TRUE(IsAutomationServerInUse(jobs, info_abc));
+
+  // no job uses server "def"
+  EXPECT_FALSE(IsAutomationServerInUse(jobs, info_def));
+
+  // empty list, nothing in use
+  EXPECT_FALSE(IsAutomationServerInUse({}, info_abc));
+
+  // a list with only a non-remote job never uses any server
+  EXPECT_FALSE(IsAutomationServerInUse({&local_job}, info_abc));
+}
+
 TEST_F(OperationActionHelperTest, CreateJobHandlerForFileBasedJobWhenFileIsAbsent)
 {
   // all job handlers further down requres that procedure and job are part of models

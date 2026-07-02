@@ -26,9 +26,11 @@
 //! and local jobs.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+#include <oac_tree_gui/model/remote_connection_info.h>
 
 #include <functional>
 #include <memory>
+#include <vector>
 
 namespace oac_tree_gui
 {
@@ -61,6 +63,18 @@ std::unique_ptr<procedure_t> CreateDomainProcedure(const JobItem& item);
  */
 std::function<std::unique_ptr<IJobHandler>(JobItem&)> GetJobHandlerFactoryFunc(
     const UserContext& user_context, IRemoteConnectionService& service);
+
+/**
+ * @brief Checks if any of the given jobs is a remote job using the given automation server.
+ *
+ * Used to decide whether a remote connection can be dropped after a remote job removal.
+ *
+ * @param jobs The jobs to inspect.
+ * @param server_info The automation server to look for.
+ * @return True if at least one RemoteJobItem in the list uses the given server.
+ */
+bool IsAutomationServerInUse(const std::vector<JobItem*>& jobs,
+                             const AutomationServerInfo& server_info);
 
 }  // namespace oac_tree_gui
 
