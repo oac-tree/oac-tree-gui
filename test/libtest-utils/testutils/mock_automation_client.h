@@ -40,6 +40,7 @@ class MockAutomationClient : public IAutomationClient
 {
 public:
   MOCK_METHOD(AutomationServerInfo, GetServerInfo, (), (const, override));
+  MOCK_METHOD(bool, IsConnected, (), (const, override));
   MOCK_METHOD(std::size_t, GetJobCount, (), (const, override));
   MOCK_METHOD(std::string, GetProcedureName, (std::uint32_t), (const, override));
   MOCK_METHOD(std::unique_ptr<AbstractJobHandler>, CreateJobHandler,
@@ -65,6 +66,8 @@ public:
   AutomationClientDecorator(IAutomationClient& decoratee, AutomationServerInfo server_info);
 
   AutomationServerInfo GetServerInfo() const override;
+
+  bool IsConnected() const override;
 
   std::size_t GetJobCount() const override;
 

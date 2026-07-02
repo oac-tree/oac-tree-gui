@@ -43,6 +43,11 @@ AutomationServerInfo AutomationClientDecorator::GetServerInfo() const
   return m_server_info.has_value() ? m_server_info.value() : m_decoratee.GetServerInfo();
 }
 
+bool AutomationClientDecorator::IsConnected() const
+{
+  return m_decoratee.IsConnected();
+}
+
 std::size_t AutomationClientDecorator::GetJobCount() const
 {
   return m_decoratee.GetJobCount();

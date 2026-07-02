@@ -50,6 +50,8 @@ public:
 
   AutomationServerInfo GetServerInfo() const override;
 
+  bool IsConnected() const override;
+
   std::size_t GetJobCount() const override;
 
   std::string GetProcedureName(std::uint32_t job_index) const override;

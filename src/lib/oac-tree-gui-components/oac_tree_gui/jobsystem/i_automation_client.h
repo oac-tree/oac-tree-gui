@@ -56,6 +56,11 @@ public:
   virtual AutomationServerInfo GetServerInfo() const = 0;
 
   /**
+   * @brief Checks if the client is connected to the server.
+   */
+  virtual bool IsConnected() const = 0;
+
+  /**
    * @brief Returns number of server jobs.
    */
   virtual std::size_t GetJobCount() const = 0;

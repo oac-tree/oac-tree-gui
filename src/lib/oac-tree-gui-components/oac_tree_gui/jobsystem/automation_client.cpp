@@ -27,6 +27,7 @@
 
 #include <sup/oac-tree-server/epics_utils.h>
 #include <sup/oac-tree-server/exceptions.h>
+#include <sup/oac-tree-server/i_client_job_manager.h>
 #include <sup/oac-tree-server/ws_utils.h>
 #include <sup/oac-tree/job_info.h>
 
@@ -58,6 +59,11 @@ AutomationClient::~AutomationClient() = default;
 AutomationServerInfo AutomationClient::GetServerInfo() const
 {
   return m_server_info;
+}
+
+bool AutomationClient::IsConnected() const
+{
+  return sup::oac_tree_server::IsConnected(*m_client_manager);
 }
 
 std::size_t AutomationClient::GetJobCount() const
