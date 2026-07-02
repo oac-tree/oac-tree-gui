@@ -27,6 +27,8 @@
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/remote_connection_info.h>
 
+#include <optional>
+
 namespace oac_tree_gui
 {
 
@@ -162,6 +164,19 @@ std::unique_ptr<RemoteJobItem> CreateRemoteJobItem(const AutomationServerInfo& s
 std::unique_ptr<JobItem> CreateFileBasedJobItem(
     const std::string& file_name,
     std::chrono::milliseconds tick_timeout = std::chrono::milliseconds{0});
+
+/**
+ * @brief Checks if the given job item is a remote job item.
+ */
+bool IsRemoteJobItem(const JobItem& item);
+
+/**
+ * @brief Returns automation server info for the given job item.
+ *
+ * @return The server info if the item is a remote job item, an empty optional otherwise.
+ */
+std::optional<AutomationServerInfo> GetAutomationServerInfo(const JobItem& item);
+
 }  // namespace oac_tree_gui
 
 namespace mvvm

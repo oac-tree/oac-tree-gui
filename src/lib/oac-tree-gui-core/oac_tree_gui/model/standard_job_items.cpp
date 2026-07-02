@@ -194,4 +194,18 @@ std::unique_ptr<JobItem> CreateFileBasedJobItem(const std::string& file_name,
   return result;
 }
 
+bool IsRemoteJobItem(const JobItem& item)
+{
+  return dynamic_cast<const RemoteJobItem*>(&item) != nullptr;
+}
+
+std::optional<AutomationServerInfo> GetAutomationServerInfo(const JobItem& item)
+{
+  if (auto remote_job = dynamic_cast<const RemoteJobItem*>(&item); remote_job != nullptr)
+  {
+    return remote_job->GetAutomationServerInfo();
+  }
+  return {};
+}
+
 }  // namespace oac_tree_gui

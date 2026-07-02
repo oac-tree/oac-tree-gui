@@ -88,10 +88,7 @@ bool IsAutomationServerInUse(const std::vector<JobItem*>& jobs,
                              const AutomationServerInfo& server_info)
 {
   auto uses_server = [&server_info](const JobItem* job)
-  {
-    auto remote_job = dynamic_cast<const RemoteJobItem*>(job);
-    return remote_job != nullptr && remote_job->GetAutomationServerInfo() == server_info;
-  };
+  { return GetAutomationServerInfo(*job) == server_info; };
   return std::any_of(jobs.begin(), jobs.end(), uses_server);
 }
 

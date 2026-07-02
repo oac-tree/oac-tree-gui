@@ -156,9 +156,7 @@ void JobManager::StopJobs(StopScope scope)
   std::for_each(m_job_handlers.begin(), m_job_handlers.end(),
                 [scope](const auto& handler)
                 {
-                  const bool is_remote =
-                      dynamic_cast<const RemoteJobItem*>(handler->GetJobItem()) != nullptr;
-                  if (scope == StopScope::kAll || !is_remote)
+                  if (scope == StopScope::kAll || !IsRemoteJobItem(*handler->GetJobItem()))
                   {
                     handler->Stop();
                   }

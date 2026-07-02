@@ -137,4 +137,28 @@ TEST_F(StandardJobItemsTest, CreateFileBasedJobItem)
   EXPECT_EQ(file_based_item->GetDisplayName(), std::string("abc"));
 }
 
+TEST_F(StandardJobItemsTest, IsRemoteJobItem)
+{
+  const LocalJobItem local_job;
+  auto remote_job = CreateRemoteJobItem(EPICSServerInfo{"abc"}, 0);
+
+  EXPECT_FALSE(IsRemoteJobItem(local_job));
+  EXPECT_TRUE(IsRemoteJobItem(*remote_job));
+}
+
+TEST_F(StandardJobItemsTest, GetAutomationServerInfo)
+{
+  const LocalJobItem local_job;
+  const AutomationServerInfo server_info{EPICSServerInfo{"abc"}};
+  auto remote_job = CreateRemoteJobItem(EPICSServerInfo{"abc"}, 0);
+
+  // a non-remote job has no server info
+  EXPECT_FALSE(GetAutomationServerInfo(local_job).has_value());
+
+  // a remote job reports its server info
+  auto result = GetAutomationServerInfo(*remote_job);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result.value(), server_info);
+}
+
 }  // namespace oac_tree_gui

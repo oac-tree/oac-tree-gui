@@ -166,11 +166,7 @@ bool OperationActionHandler::OnRemoveJobRequest()
   }
 
   // capture the remote server before removal, so the connection can be cleaned up afterwards
-  std::optional<AutomationServerInfo> remote_server_info;
-  if (auto remote_job = dynamic_cast<const RemoteJobItem*>(job); remote_job != nullptr)
-  {
-    remote_server_info = remote_job->GetAutomationServerInfo();
-  }
+  const auto remote_server_info = GetAutomationServerInfo(*job);
 
   auto is_success = InvokeAndCatch([this, job]() { m_job_manager->RemoveJobHandler(job); },
                                    "Job removal", m_operation_context.send_message);
