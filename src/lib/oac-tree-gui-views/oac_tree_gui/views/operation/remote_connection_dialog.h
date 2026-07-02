@@ -27,7 +27,7 @@
 #include <memory>
 #include <optional>
 
-class QListView;
+class QTreeView;
 class QHBoxLayout;
 
 namespace oac_tree_gui
@@ -91,7 +91,7 @@ private:
   void PopulateJobInfoModel(const AutomationServerInfo& server_info);
 
   ServerSettingsWidget* m_server_settings_widget{nullptr};
-  QListView* m_job_list_view{nullptr};
+  QTreeView* m_job_list_view{nullptr};
   JobInfoViewModel* m_job_info_model{nullptr};
 
   IRemoteConnectionService* m_connection_service{nullptr};

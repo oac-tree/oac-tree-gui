@@ -37,8 +37,8 @@
 #include <QHBoxLayout>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
-#include <QListView>
 #include <QSettings>
+#include <QTreeView>
 
 namespace oac_tree_gui
 {
@@ -55,7 +55,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connect
                                                QWidget* parent_widget)
     : QDialog(parent_widget)
     , m_server_settings_widget(new ServerSettingsWidget(this))
-    , m_job_list_view(new QListView)
+    , m_job_list_view(new QTreeView)
     , m_job_info_model(new JobInfoViewModel(this))
     , m_connection_service(connection_service)
 {
@@ -73,6 +73,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connect
       sup::gui::CreateButtonLayout(this, "Attach to selected jobs", "Cancel").release());
 
   m_job_list_view->setAlternatingRowColors(true);
+  m_job_list_view->setRootIsDecorated(false);
   m_job_list_view->setModel(m_job_info_model);
   m_job_list_view->setSelectionMode(QAbstractItemView::MultiSelection);
 

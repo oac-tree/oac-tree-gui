@@ -47,13 +47,13 @@ TEST_F(JobInfoViewModelTest, PopulateModel)
   model.PopulateModel(std::vector<std::string>({"job1", "job2"}));
 
   EXPECT_EQ(model.rowCount(QModelIndex()), 2);
-  EXPECT_EQ(model.columnCount(QModelIndex()), 1);
+  EXPECT_EQ(model.columnCount(QModelIndex()), 2);
 
-  auto index0 = model.index(0, 0, QModelIndex());
-  auto index1 = model.index(1, 0, QModelIndex());
-
-  EXPECT_EQ(model.data(index0).toString(), QString("job1"));
-  EXPECT_EQ(model.data(index1).toString(), QString("job2"));
+  // first column contains the job index, second column contains the job name
+  EXPECT_EQ(model.data(model.index(0, 0, QModelIndex())).toString(), QString("0"));
+  EXPECT_EQ(model.data(model.index(0, 1, QModelIndex())).toString(), QString("job1"));
+  EXPECT_EQ(model.data(model.index(1, 0, QModelIndex())).toString(), QString("1"));
+  EXPECT_EQ(model.data(model.index(1, 1, QModelIndex())).toString(), QString("job2"));
 }
 
 TEST_F(JobInfoViewModelTest, PopulateModelClearsPreviousContent)
@@ -64,10 +64,10 @@ TEST_F(JobInfoViewModelTest, PopulateModelClearsPreviousContent)
   model.PopulateModel(std::vector<std::string>({"job3"}));
 
   EXPECT_EQ(model.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(model.columnCount(QModelIndex()), 1);
+  EXPECT_EQ(model.columnCount(QModelIndex()), 2);
 
-  auto index0 = model.index(0, 0, QModelIndex());
-  EXPECT_EQ(model.data(index0).toString(), QString("job3"));
+  EXPECT_EQ(model.data(model.index(0, 0, QModelIndex())).toString(), QString("0"));
+  EXPECT_EQ(model.data(model.index(0, 1, QModelIndex())).toString(), QString("job3"));
 }
 
 }  // namespace oac_tree_gui::test

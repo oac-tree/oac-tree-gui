@@ -28,11 +28,11 @@ namespace oac_tree_gui
 namespace
 {
 
-std::unique_ptr<QStandardItem> CreateItem(const std::string& name)
+std::unique_ptr<QStandardItem> CreateItem(const QString& text)
 {
-  auto result = std::make_unique<QStandardItem>(QString::fromStdString(name));
+  auto result = std::make_unique<QStandardItem>(text);
   result->setEditable(false);
-  result->setToolTip(QString::fromStdString(name));
+  result->setToolTip(text);
   return result;
 }
 
@@ -45,9 +45,11 @@ void JobInfoViewModel::PopulateModel(const std::vector<std::string>& job_list)
   clear();
 
   auto parent_item = invisibleRootItem();
-  for (const auto& name : job_list)
+  for (std::size_t index = 0; index < job_list.size(); ++index)
   {
-    parent_item->appendRow(CreateItem(name).release());
+    auto index_item = CreateItem(QString::number(index));
+    auto name_item = CreateItem(QString::fromStdString(job_list[index]));
+    parent_item->appendRow({index_item.release(), name_item.release()});
   }
 }
 
