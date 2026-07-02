@@ -32,9 +32,22 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief Opens a message box with the question if running jobs should be stopped.
+ * @brief The RunningJobsCloseAction enum defines what to do with running jobs on application exit.
  */
-bool ShouldStopRunningJobs();
+enum class RunningJobsCloseAction
+{
+  kNoAction,       //!< do not close the application (cancel the exit)
+  kStopAllJobs,    //!< stop all jobs (local and remote) and close
+  kStopLocalJobs   //!< stop only local jobs, leave remote jobs running, and close
+};
+
+/**
+ * @brief Asks the user what to do with running jobs when closing the application.
+ *
+ * Offers to stop all jobs, to stop only local jobs (leaving remote jobs running on their servers),
+ * or to cancel the exit.
+ */
+RunningJobsCloseAction ShouldStopRunningJobs();
 
 /**
  * @brief Returns vector of names representing sequencer procedures located in a given folder.

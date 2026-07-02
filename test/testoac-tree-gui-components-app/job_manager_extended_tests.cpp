@@ -247,7 +247,7 @@ TEST_F(JobManagerExtendedTest, StopAllJobs)
 
   JobManager manager(GetContext());
 
-  EXPECT_NO_FATAL_FAILURE(manager.StopAllJobs());
+  EXPECT_NO_FATAL_FAILURE(manager.StopJobs(StopScope::kAll));
 
   manager.SubmitJob(job_item1);
   manager.SubmitJob(job_item2);
@@ -259,7 +259,27 @@ TEST_F(JobManagerExtendedTest, StopAllJobs)
 
   EXPECT_TRUE(manager.HasRunningJobs());
 
-  manager.StopAllJobs();
+  manager.StopJobs(StopScope::kAll);
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
+
+  EXPECT_FALSE(manager.HasRunningJobs());
+}
+
+//! StopJobs with kLocalOnly stops running local jobs (remote preservation is covered by
+//! integration tests).
+TEST_F(JobManagerExtendedTest, StopLocalJobs)
+{
+  auto procedure = test::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+  m_job_item->SetProcedure(procedure);
+
+  JobManager manager(GetContext());
+
+  manager.SubmitJob(m_job_item);
+  manager.Start(m_job_item);
+
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return manager.HasRunningJobs(); }, 100));
+
+  manager.StopJobs(StopScope::kLocalOnly);
   EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
 
   EXPECT_FALSE(manager.HasRunningJobs());

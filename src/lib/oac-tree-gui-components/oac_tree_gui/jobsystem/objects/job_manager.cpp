@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/standard_job_items.h>
 
 #include <mvvm/utils/container_utils.h>
 
@@ -150,10 +151,18 @@ bool JobManager::HasRunningJobs() const
                      [](const auto& handler) { return handler->IsRunning(); });
 }
 
-void JobManager::StopAllJobs()
+void JobManager::StopJobs(StopScope scope)
 {
   std::for_each(m_job_handlers.begin(), m_job_handlers.end(),
-                [](const auto& handler) { handler->Stop(); });
+                [scope](const auto& handler)
+                {
+                  const bool is_remote =
+                      dynamic_cast<const RemoteJobItem*>(handler->GetJobItem()) != nullptr;
+                  if (scope == StopScope::kAll || !is_remote)
+                  {
+                    handler->Stop();
+                  }
+                });
 }
 
 void JobManager::SetActiveJob(JobItem* item)

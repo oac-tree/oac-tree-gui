@@ -105,12 +105,15 @@ bool OperationMainWindow::CanCloseApplication()
 {
   if (m_operation_view->HasRunningJobs())
   {
-    if (ShouldStopRunningJobs())
+    switch (ShouldStopRunningJobs())
     {
-      m_operation_view->StopAllJobs();
-    }
-    else
-    {
+    case RunningJobsCloseAction::kStopAllJobs:
+      m_operation_view->StopJobs(StopScope::kAll);
+      break;
+    case RunningJobsCloseAction::kStopLocalJobs:
+      m_operation_view->StopJobs(StopScope::kLocalOnly);
+      break;
+    case RunningJobsCloseAction::kNoAction:
       return false;
     }
   }

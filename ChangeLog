@@ -1,5 +1,8 @@
 Changes for 2.3.0:
 
+- Allow to close the GUI while having automation jobs still running
+- Cleanup automation clients on job removal
+- Fix application crash on attempt to use broken connection to automation server
 - Provide support for WebSockets servers
 - Switch to a new item clone API
 - Switch to a new splittable editor machinery in sup-gui-core

@@ -21,6 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_MONITOR_VIEW_H_
 
+#include <oac_tree_gui/jobsystem/i_job_item_manager.h>
 #include <oac_tree_gui/model/component_types.h>
 
 #include <QWidget>
@@ -74,9 +75,9 @@ public:
   bool HasRunningJobs() const;
 
   /**
-   * @brief Stop all running jobs.
+   * @brief Stop running jobs within the given scope.
    */
-  void StopAllJobs();
+  void StopJobs(StopScope scope);
 
   /**
    * @brief Registers actions for given context.

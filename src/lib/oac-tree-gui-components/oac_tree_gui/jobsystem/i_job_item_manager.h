@@ -30,6 +30,15 @@ class JobItem;
 class IJobHandler;
 
 /**
+ * @brief The StopScope enum defines which subset of jobs should be stopped.
+ */
+enum class StopScope
+{
+  kAll,       //!< stop all jobs (local and remote)
+  kLocalOnly  //!< stop only local jobs, leaving remote jobs running on their servers
+};
+
+/**
  * @brief The IJobItemManager class is a base to manage the execution of sequencer jobs.
  *
  * The job is represented by the JobItem, that carries all information about sequencer procedure.
@@ -112,9 +121,9 @@ public:
   virtual bool HasRunningJobs() const = 0;
 
   /**
-   * @brief Stop all running jobs.
+   * @brief Stop running jobs within the given scope.
    */
-  virtual void StopAllJobs() = 0;
+  virtual void StopJobs(StopScope scope) = 0;
 
   /**
    * @brief Set active job.

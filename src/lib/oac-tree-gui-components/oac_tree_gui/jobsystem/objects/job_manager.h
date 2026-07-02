@@ -78,7 +78,7 @@ public:
 
   bool HasRunningJobs() const override;
 
-  void StopAllJobs() override;
+  void StopJobs(StopScope scope) override;
 
   void SetActiveJob(JobItem* item) override;
 

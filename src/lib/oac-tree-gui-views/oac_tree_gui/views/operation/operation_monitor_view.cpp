@@ -151,9 +151,9 @@ bool OperationMonitorView::HasRunningJobs() const
   return m_job_manager->HasRunningJobs();
 }
 
-void OperationMonitorView::StopAllJobs()
+void OperationMonitorView::StopJobs(StopScope scope)
 {
-  m_job_manager->StopAllJobs();
+  m_job_manager->StopJobs(scope);
 }
 
 void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandContext& context)

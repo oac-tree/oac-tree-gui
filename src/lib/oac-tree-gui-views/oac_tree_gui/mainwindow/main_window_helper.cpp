@@ -38,17 +38,30 @@ const std::string kProcedureExtension(".xml");
 namespace oac_tree_gui
 {
 
-bool ShouldStopRunningJobs()
+RunningJobsCloseAction ShouldStopRunningJobs()
 {
   QMessageBox msgBox;
   msgBox.setText("Some procedures are in a running state.");
-  msgBox.setInformativeText("Do you want to stop all running jobs?\n");
+  msgBox.setInformativeText(
+      "You can stop all jobs, or leave remote jobs running on their servers and stop only local "
+      "jobs.\n");
 
-  auto yes_button = msgBox.addButton("Yes, stop jobs and quit", QMessageBox::YesRole);
+  auto stop_all_button = msgBox.addButton("Stop all jobs and quit", QMessageBox::YesRole);
+  auto stop_local_button =
+      msgBox.addButton("Leave remote jobs running", QMessageBox::YesRole);
   msgBox.addButton("Cancel", QMessageBox::NoRole);
 
   msgBox.exec();
-  return msgBox.clickedButton() == yes_button;
+
+  if (msgBox.clickedButton() == stop_all_button)
+  {
+    return RunningJobsCloseAction::kStopAllJobs;
+  }
+  if (msgBox.clickedButton() == stop_local_button)
+  {
+    return RunningJobsCloseAction::kStopLocalJobs;
+  }
+  return RunningJobsCloseAction::kNoAction;
 }
 
 std::vector<std::string> GetProcedureFiles(const std::string& path_name)
