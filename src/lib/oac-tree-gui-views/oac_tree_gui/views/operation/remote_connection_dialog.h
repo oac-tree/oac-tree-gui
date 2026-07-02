@@ -28,13 +28,13 @@
 #include <optional>
 
 class QListView;
-class QStandardItemModel;
 class QHBoxLayout;
 
 namespace oac_tree_gui
 {
 
 class IRemoteConnectionService;
+class JobInfoViewModel;
 struct RemoteConnectionInfo;
 class ServerSettingsWidget;
 
@@ -92,7 +92,7 @@ private:
 
   ServerSettingsWidget* m_server_settings_widget{nullptr};
   QListView* m_job_list_view{nullptr};
-  QStandardItemModel* m_job_info_model{nullptr};
+  JobInfoViewModel* m_job_info_model{nullptr};
 
   IRemoteConnectionService* m_connection_service{nullptr};
   AutomationServerInfo m_current_server_info;

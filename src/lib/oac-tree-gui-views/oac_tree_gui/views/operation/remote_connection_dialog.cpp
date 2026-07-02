@@ -26,6 +26,7 @@
 #include <oac_tree_gui/jobsystem/i_automation_client.h>
 #include <oac_tree_gui/jobsystem/remote_connection_service.h>
 #include <oac_tree_gui/model/remote_connection_info.h>
+#include <oac_tree_gui/viewmodel/job_info_viewmodel.h>
 
 #include <sup/gui/widgets/dialog_helper.h>
 #include <sup/gui/widgets/settings_callbacks.h>
@@ -38,7 +39,6 @@
 #include <QKeyEvent>
 #include <QListView>
 #include <QSettings>
-#include <QStandardItemModel>
 
 namespace oac_tree_gui
 {
@@ -49,17 +49,6 @@ namespace
 const QString kGroupName = "RemoteConnectionDialog";
 const QString kWindowSizeSettingName = kGroupName + "/" + "size";
 
-/**
- * @brief Creates item for job list model.
- */
-std::unique_ptr<QStandardItem> CreateItem(const std::string& name)
-{
-  auto result = std::make_unique<QStandardItem>(QString::fromStdString(name));
-  result->setEditable(false);
-  result->setToolTip(QString::fromStdString(name));
-  return result;
-}
-
 }  // namespace
 
 RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connection_service,
@@ -67,7 +56,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connect
     : QDialog(parent_widget)
     , m_server_settings_widget(new ServerSettingsWidget(this))
     , m_job_list_view(new QListView)
-    , m_job_info_model(new QStandardItemModel(this))
+    , m_job_info_model(new JobInfoViewModel(this))
     , m_connection_service(connection_service)
 {
   if (m_connection_service == nullptr)
@@ -159,15 +148,14 @@ void RemoteConnectionDialog::WriteSettings()
 
 void RemoteConnectionDialog::PopulateJobInfoModel(const AutomationServerInfo& server_info)
 {
-  m_job_info_model->clear();
-
-  auto parent_item = m_job_info_model->invisibleRootItem();
+  std::vector<std::string> job_list;
   auto& client = m_connection_service->GetAutomationClient(server_info);
   for (std::size_t job_index = 0; job_index < client.GetJobCount(); ++job_index)
   {
-    auto procedure_name = client.GetProcedureName(job_index);
-    parent_item->appendRow(CreateItem(procedure_name).release());
+    job_list.push_back(client.GetProcedureName(job_index));
   }
+
+  m_job_info_model->PopulateModel(job_list);
 }
 
 std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
