@@ -303,6 +303,8 @@ OperationActionContext OperationMonitorView::CreateOperationContext()
   result.send_message = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   result.get_remote_connection_info = [this]()
   { return GetDialogRemoteConnectionInfo(*m_connection_service, this); };
+  result.drop_remote_connection = [this](const AutomationServerInfo& server_info)
+  { m_connection_service->Disconnect(server_info); };
   return result;
 }
 

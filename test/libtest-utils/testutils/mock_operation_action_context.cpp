@@ -29,6 +29,8 @@ OperationActionContext MockOperationActionContext::CreateContext()
   result.selected_job = [this]() { return OnSelectedJob(); };
   result.send_message = [this](const auto& message) { OnMessage(message); };
   result.get_remote_connection_info = [this]() { return OnGetRemoteConnectionInfo(); };
+  result.drop_remote_connection = [this](const AutomationServerInfo& info)
+  { OnDropRemoteConnection(info); };
   return result;
 }
 

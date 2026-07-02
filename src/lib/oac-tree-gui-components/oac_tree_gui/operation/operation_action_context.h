@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_OPERATION_OPERATION_ACTION_CONTEXT_H_
 #define OAC_TREE_GUI_OPERATION_OPERATION_ACTION_CONTEXT_H_
 
+#include <oac_tree_gui/model/remote_connection_info.h>
+
 #include <sup/gui/core/message_event.h>
 
 #include <functional>
@@ -47,6 +49,9 @@ struct OperationActionContext
 
   //!< callback to ask about remote job import information
   std::function<std::optional<RemoteConnectionInfo>()> get_remote_connection_info;
+
+  //!< callback to drop a remote connection no longer used by any job
+  std::function<void(const AutomationServerInfo&)> drop_remote_connection;
 };
 
 }  // namespace oac_tree_gui

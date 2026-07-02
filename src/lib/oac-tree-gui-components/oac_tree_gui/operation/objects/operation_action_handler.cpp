@@ -27,9 +27,12 @@
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/remote_connection_info.h>
 #include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/operation/operation_action_helper.h>
 
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
+
+#include <optional>
 
 namespace oac_tree_gui
 {
@@ -162,6 +165,13 @@ bool OperationActionHandler::OnRemoveJobRequest()
     return false;
   }
 
+  // capture the remote server before removal, so the connection can be cleaned up afterwards
+  std::optional<AutomationServerInfo> remote_server_info;
+  if (auto remote_job = dynamic_cast<const RemoteJobItem*>(job); remote_job != nullptr)
+  {
+    remote_server_info = remote_job->GetAutomationServerInfo();
+  }
+
   auto is_success = InvokeAndCatch([this, job]() { m_job_manager->RemoveJobHandler(job); },
                                    "Job removal", m_operation_context.send_message);
 
@@ -169,6 +179,15 @@ bool OperationActionHandler::OnRemoveJobRequest()
   {
     auto next_to_select = mvvm::utils::FindNextSiblingToSelect(job);
     GetModel()->RemoveItem(job);
+
+    // The job (and its handler) is gone now; drop the remote connection if no other remote job
+    // uses the same automation server.
+    if (remote_server_info.has_value() && m_operation_context.drop_remote_connection
+        && !IsAutomationServerInUse(m_job_manager->GetJobItems(), remote_server_info.value()))
+    {
+      m_operation_context.drop_remote_connection(remote_server_info.value());
+    }
+
     if (next_to_select != nullptr)
     {
       // suggest to select something else instead of just deleted item

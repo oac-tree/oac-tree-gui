@@ -264,4 +264,36 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
 
+//! Removing the last remote job for a server drops the corresponding remote connection.
+TYPED_TEST(OperationActionHandlerRemoteScenarioTest, RemoveRemoteJobDropsConnection)
+{
+  auto handler = this->CreateOperationHandler();
+
+  // the drop_remote_connection callback forwards to the real connection service
+  ON_CALL(this->m_mock_context, OnDropRemoteConnection(::testing::_))
+      .WillByDefault([this](const AutomationServerInfo& info)
+                     { this->m_remote_connection_service.Disconnect(info); });
+
+  // submit a remote job
+  const RemoteConnectionInfo connection_context{TestFixture::GetServerInfo(), {kJobIndex}};
+  ON_CALL(this->m_mock_context, OnGetRemoteConnectionInfo())
+      .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
+  handler->OnImportRemoteJobRequest();
+
+  auto submitted_jobs = this->template GetJobs<RemoteJobItem>();
+  ASSERT_EQ(submitted_jobs.size(), 1);
+  auto job_item = submitted_jobs.at(0);
+
+  EXPECT_TRUE(this->m_remote_connection_service.HasClient(TestFixture::GetServerInfo()));
+
+  // remove the job; as it is the last one using the server, the connection must be dropped
+  ON_CALL(this->m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+  EXPECT_CALL(this->m_mock_context, OnDropRemoteConnection(TestFixture::GetServerInfo())).Times(1);
+
+  EXPECT_TRUE(handler->OnRemoveJobRequest());
+
+  EXPECT_TRUE(this->template GetJobs<RemoteJobItem>().empty());
+  EXPECT_FALSE(this->m_remote_connection_service.HasClient(TestFixture::GetServerInfo()));
+}
+
 }  // namespace oac_tree_gui
