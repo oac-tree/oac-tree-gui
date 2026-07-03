@@ -202,25 +202,29 @@ void OperationMonitorView::SetupConnections()
 {
   // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
+  // Execution requests act on the currently selected job. TODO route the emitting panel's own
+  // JobItem once the toolbar signals carry it, to enable per-panel control.
+  auto selected_job = [this]() { return const_cast<JobItem*>(m_job_panel->GetSelectedJob()); };
+
   // start request
   connect(m_splittable_widget, &OperationSplittableWidget::RunRequest, m_action_handler,
-          &OperationActionHandler::OnStartJobRequest);
+          [this, selected_job]() { m_action_handler->OnStartJobRequest(selected_job()); });
 
   // pause request
   connect(m_splittable_widget, &OperationSplittableWidget::PauseRequest, m_action_handler,
-          &OperationActionHandler::OnPauseJobRequest);
+          [this, selected_job]() { m_action_handler->OnPauseJobRequest(selected_job()); });
 
   // step request
   connect(m_splittable_widget, &OperationSplittableWidget::StepRequest, m_action_handler,
-          &OperationActionHandler::OnMakeStepRequest);
+          [this, selected_job]() { m_action_handler->OnMakeStepRequest(selected_job()); });
 
   // stop request
   connect(m_splittable_widget, &OperationSplittableWidget::StopRequest, m_action_handler,
-          &OperationActionHandler::OnStopJobRequest);
+          [this, selected_job]() { m_action_handler->OnStopJobRequest(selected_job()); });
 
   // reset request
   connect(m_splittable_widget, &OperationSplittableWidget::ResetRequest, m_action_handler,
-          &OperationActionHandler::OnResetJobRequest);
+          [this, selected_job]() { m_action_handler->OnResetJobRequest(selected_job()); });
 
   // change delay request
   auto on_change_delay = [this](int msec)
@@ -265,7 +269,11 @@ void OperationMonitorView::SetupConnections()
 
   connect(m_splittable_widget, &OperationSplittableWidget::ToggleBreakpointRequest, m_action_handler,
           [this](const auto* instruction)
-          { m_action_handler->OnToggleBreakpoint(const_cast<InstructionItem*>(instruction)); });
+          {
+            m_action_handler->OnToggleBreakpoint(
+                const_cast<JobItem*>(m_job_panel->GetSelectedJob()),
+                const_cast<InstructionItem*>(instruction));
+          });
 }
 
 void OperationMonitorView::SetupWidgetActions()

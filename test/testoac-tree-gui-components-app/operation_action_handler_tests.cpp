@@ -327,28 +327,20 @@ TEST_F(OperationActionHandlerTest, StartPauseStepStopResetJob)
 
   auto operation_handler = CreateOperationHandler();
 
-  // job_item will be reported as selected
-  ON_CALL(m_mock_operation_context, OnSelectedJob()).WillByDefault(::testing::Return(&job_item));
-
-  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_job_manager, Start(&job_item));
-  operation_handler->OnStartJobRequest();
+  operation_handler->OnStartJobRequest(&job_item);
 
-  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_job_manager, Pause(&job_item));
-  operation_handler->OnPauseJobRequest();
+  operation_handler->OnPauseJobRequest(&job_item);
 
-  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_job_manager, Step(&job_item));
-  operation_handler->OnMakeStepRequest();
+  operation_handler->OnMakeStepRequest(&job_item);
 
-  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_job_manager, Stop(&job_item));
-  operation_handler->OnStopJobRequest();
+  operation_handler->OnStopJobRequest(&job_item);
 
-  EXPECT_CALL(m_mock_operation_context, OnSelectedJob());
   EXPECT_CALL(m_mock_job_manager, Reset(&job_item));
-  operation_handler->OnResetJobRequest();
+  operation_handler->OnResetJobRequest(&job_item);
 }
 
 TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)

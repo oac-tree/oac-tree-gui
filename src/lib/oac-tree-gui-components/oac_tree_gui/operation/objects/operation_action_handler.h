@@ -91,31 +91,31 @@ public:
   bool OnImportRemoteJobRequest();
 
   /**
-   * @brief Start currently selected job.
+   * @brief Start given job.
    */
-  void OnStartJobRequest();
+  void OnStartJobRequest(JobItem* job);
 
   /**
-   * @brief Pause currently selected job.
+   * @brief Pause given job.
    */
-  void OnPauseJobRequest();
+  void OnPauseJobRequest(JobItem* job);
 
   /**
-   * @brief Execute a single step of the currently selected job.
+   * @brief Execute a single step of the given job.
    */
-  void OnMakeStepRequest();
+  void OnMakeStepRequest(JobItem* job);
 
   /**
-   * @brief Make step for currently selected job.
+   * @brief Stop given job.
    */
-  void OnStopJobRequest();
+  void OnStopJobRequest(JobItem* job);
 
   /**
-   * @brief Reset domain runner.
+   * @brief Reset domain runner of the given job.
    *
    * Works only for finished/halted jobs.
    */
-  void OnResetJobRequest();
+  void OnResetJobRequest(JobItem* job);
 
   /**
    * @brief Removes currently selected job.
@@ -131,14 +131,14 @@ public:
    */
   bool OnRegenerateJobRequest();
   /**
-   * @brief Sets tick timeout of currently selected job to given value.
+   * @brief Sets the default tick timeout applied to newly submitted jobs.
    */
   void OnSetTickTimeoutRequest(std::chrono::milliseconds timeout);
 
   /**
-   * @brief Set/unset a breakpoint for given instruction for currently active job.
+   * @brief Set/unset a breakpoint for given instruction of the given job.
    */
-  void OnToggleBreakpoint(InstructionItem* instruction);
+  void OnToggleBreakpoint(JobItem* job, InstructionItem* instruction);
 
 signals:
   void MakeJobSelectedRequest(const oac_tree_gui::JobItem* item);

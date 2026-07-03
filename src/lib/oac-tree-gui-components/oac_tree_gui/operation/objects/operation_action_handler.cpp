@@ -131,29 +131,29 @@ bool OperationActionHandler::OnImportRemoteJobRequest()
   return is_success;
 }
 
-void OperationActionHandler::OnStartJobRequest()
+void OperationActionHandler::OnStartJobRequest(JobItem* job)
 {
-  m_job_manager->Start(GetSelectedJob());
+  m_job_manager->Start(job);
 }
 
-void OperationActionHandler::OnPauseJobRequest()
+void OperationActionHandler::OnPauseJobRequest(JobItem* job)
 {
-  m_job_manager->Pause(GetSelectedJob());
+  m_job_manager->Pause(job);
 }
 
-void OperationActionHandler::OnMakeStepRequest()
+void OperationActionHandler::OnMakeStepRequest(JobItem* job)
 {
-  m_job_manager->Step(GetSelectedJob());
+  m_job_manager->Step(job);
 }
 
-void OperationActionHandler::OnStopJobRequest()
+void OperationActionHandler::OnStopJobRequest(JobItem* job)
 {
-  m_job_manager->Stop(GetSelectedJob());
+  m_job_manager->Stop(job);
 }
 
-void OperationActionHandler::OnResetJobRequest()
+void OperationActionHandler::OnResetJobRequest(JobItem* job)
 {
-  m_job_manager->Reset(GetSelectedJob());
+  m_job_manager->Reset(job);
 }
 
 bool OperationActionHandler::OnRemoveJobRequest()
@@ -250,15 +250,11 @@ bool OperationActionHandler::OnRegenerateJobRequest()
 void OperationActionHandler::OnSetTickTimeoutRequest(std::chrono::milliseconds timeout)
 {
   m_tick_timeout = timeout;
-  if (auto job_item = GetSelectedJob(); job_item)
-  {
-    job_item->SetTickTimeout(timeout);
-  }
 }
 
-void OperationActionHandler::OnToggleBreakpoint(InstructionItem* instruction)
+void OperationActionHandler::OnToggleBreakpoint(JobItem* job, InstructionItem* instruction)
 {
-  if (auto job_handler = m_job_manager->GetJobHandler(GetSelectedJob()); job_handler)
+  if (auto job_handler = m_job_manager->GetJobHandler(job); job_handler)
   {
     job_handler->OnToggleBreakpointRequest(instruction);
   }

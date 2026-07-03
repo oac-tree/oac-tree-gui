@@ -238,11 +238,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   ASSERT_EQ(submitted_jobs.size(), 1);
   auto job_item = submitted_jobs.at(0);
 
-  // making item selected
-  ON_CALL(this->m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
-
-  EXPECT_CALL(this->m_mock_context, OnSelectedJob());
-  handler->OnStartJobRequest();
+  handler->OnStartJobRequest(job_item);
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [job_item]() { return job_item->GetStatus() == RunnerStatus::kSucceeded; };

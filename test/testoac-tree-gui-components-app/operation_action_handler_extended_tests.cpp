@@ -112,7 +112,6 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
 
   QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
 
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   handler->OnSetTickTimeoutRequest(std::chrono::milliseconds{42});
 
   EXPECT_FALSE(handler->SubmitLocalJob(nullptr));
@@ -181,17 +180,13 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   auto job_item = GetJobItems().at(0);
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item));
 
-  // starting the job when no JobItem is selected
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  // starting the job when no JobItem is given
+  handler->OnStartJobRequest(nullptr);
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
-  // making item selected
-  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
-
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  // starting the given job
+  handler->OnStartJobRequest(job_item);
 
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 200));
 
@@ -201,8 +196,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   // starting second time, jobHandler should be the same as before
   auto prev_job_handler = m_job_manager.GetJobHandler(job_item);
 
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  handler->OnStartJobRequest(job_item);
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 200));
 
   EXPECT_TRUE(QTest::qWaitFor(
@@ -250,8 +244,7 @@ TEST_F(OperationActionHandlerExtendedTest, DeclineRemovalOfLongRunningJob)
   auto job_item = GetJobItems().at(0);
   ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  handler->OnStartJobRequest(job_item);
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 100));
@@ -265,8 +258,7 @@ TEST_F(OperationActionHandlerExtendedTest, DeclineRemovalOfLongRunningJob)
 
   EXPECT_EQ(GetJobItems().size(), 1);
 
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStopJobRequest();
+  handler->OnStopJobRequest(job_item);
   QTest::qWait(10);
 
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 100));
@@ -287,8 +279,7 @@ TEST_F(OperationActionHandlerExtendedTest, ConfirmRemovalOfLongRunningJob)
   auto job_item = GetJobItems().at(0);
   ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
 
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  handler->OnStartJobRequest(job_item);
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 100));
@@ -404,11 +395,8 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   auto job_item = GetJobItems().at(0);
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item));
 
-  // starting the job when now JobItem is selected
-  ON_CALL(m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
-
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  // starting the given job
+  handler->OnStartJobRequest(job_item);
 
   // check that JobItem got correct state via queued connection
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
@@ -419,8 +407,7 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   QTest::qWait(20);
 
   // starting same job again
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  handler->OnStartJobRequest(job_item);
 
   // check that JobItem got correct state via queued connection
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
@@ -469,8 +456,7 @@ TEST_F(OperationActionHandlerExtendedTest, SubmitMalFormedFileBasedJobThenResubm
   EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kUndefined);  // not a failure anymore
 
   // sarting the job
-  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
-  handler->OnStartJobRequest();
+  handler->OnStartJobRequest(job_item);
 
   EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
 
