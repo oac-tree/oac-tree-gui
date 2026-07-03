@@ -21,6 +21,7 @@
 #include "oac_tree_gui/jobsystem/objects/job_manager.h"
 
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
+#include <oac_tree_gui/jobsystem/objects/abstract_job_handler.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 
 #include <gtest/gtest.h>
@@ -28,6 +29,29 @@
 
 namespace oac_tree_gui
 {
+
+namespace
+{
+
+/**
+ * @brief The TestJobHandler is a minimal AbstractJobHandler which lets a test emit the
+ * ActiveInstructionChanged signal on demand.
+ *
+ * We derive from AbstractJobHandler (rather than use MockJobHandler) because JobManager only
+ * connects to AbstractJobHandler-based handlers when routing active-instruction notifications.
+ */
+class TestJobHandler : public AbstractJobHandler
+{
+public:
+  using AbstractJobHandler::AbstractJobHandler;
+
+  void EmitActiveInstructionChanged(const std::vector<const InstructionItem*>& instructions)
+  {
+    emit ActiveInstructionChanged(GetJobItem(), instructions);
+  }
+};
+
+}  // namespace
 
 /**
  * @brief Tests for JobManager class using mock dependencies.
@@ -137,4 +161,54 @@ TEST_F(JobManagerTest, StepJob)
   }
   manager->Step(&job_item);
 }
+
+//! Only jobs marked as active via SetActiveJobs propagate ActiveInstructionChanged notifications.
+TEST_F(JobManagerTest, SetActiveJobs)
+{
+  LocalJobItem job_item1;
+  LocalJobItem job_item2;
+
+  auto factory = [](JobItem& item) -> std::unique_ptr<IJobHandler>
+  { return std::make_unique<TestJobHandler>(&item); };
+  JobManager manager(factory);
+
+  manager.SubmitJob(&job_item1);
+  manager.SubmitJob(&job_item2);
+
+  auto handler1 = dynamic_cast<TestJobHandler*>(manager.GetJobHandler(&job_item1));
+  auto handler2 = dynamic_cast<TestJobHandler*>(manager.GetJobHandler(&job_item2));
+  ASSERT_NE(handler1, nullptr);
+  ASSERT_NE(handler2, nullptr);
+
+  std::vector<JobItem*> reported_jobs;
+  QObject::connect(&manager, &JobManager::ActiveInstructionChanged,
+                   [&reported_jobs](JobItem* job, const std::vector<const InstructionItem*>&)
+                   { reported_jobs.push_back(job); });
+
+  // no active jobs -> nothing propagates
+  handler1->EmitActiveInstructionChanged({});
+  handler2->EmitActiveInstructionChanged({});
+  EXPECT_TRUE(reported_jobs.empty());
+
+  // only job1 is active -> only job1 propagates
+  manager.SetActiveJobs({&job_item1});
+  handler1->EmitActiveInstructionChanged({});
+  handler2->EmitActiveInstructionChanged({});
+  EXPECT_EQ(reported_jobs, std::vector<JobItem*>({&job_item1}));
+
+  // both jobs active -> both propagate
+  reported_jobs.clear();
+  manager.SetActiveJobs({&job_item1, &job_item2});
+  handler1->EmitActiveInstructionChanged({});
+  handler2->EmitActiveInstructionChanged({});
+  EXPECT_EQ(reported_jobs, std::vector<JobItem*>({&job_item1, &job_item2}));
+
+  // active set cleared -> nothing propagates
+  reported_jobs.clear();
+  manager.SetActiveJobs({});
+  handler1->EmitActiveInstructionChanged({});
+  handler2->EmitActiveInstructionChanged({});
+  EXPECT_TRUE(reported_jobs.empty());
+}
+
 }  // namespace oac_tree_gui

@@ -78,4 +78,9 @@ oac_tree_gui::ProcedureItem *MockJobHandler::GetExpandedProcedure() const
   return m_listener.GetExpandedProcedure(this);
 }
 
+std::vector<const oac_tree_gui::InstructionItem *> MockJobHandler::GetActiveInstructions() const
+{
+  return {};
+}
+
 }  // namespace oac_tree_gui::test

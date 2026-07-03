@@ -92,6 +92,8 @@ public:
 
   oac_tree_gui::ProcedureItem* GetExpandedProcedure() const override;
 
+  std::vector<const oac_tree_gui::InstructionItem*> GetActiveInstructions() const override;
+
   MockJobHandlerListener& m_listener;
   oac_tree_gui::JobItem* m_job_item{nullptr};
 };

@@ -23,6 +23,8 @@
 
 #include <oac_tree_gui/model/runner_status.h>
 
+#include <vector>
+
 namespace oac_tree_gui
 {
 
@@ -102,6 +104,14 @@ public:
    * @brief Returns job item served by this handler.
    */
   virtual JobItem* GetJobItem() = 0;
+
+  /**
+   * @brief Returns the list of currently active (executing) instructions.
+   *
+   * Allows a freshly shown view to initialize its highlight for an already running job, without
+   * waiting for the next active-instruction change.
+   */
+  virtual std::vector<const InstructionItem*> GetActiveInstructions() const = 0;
 
   /**
    * @brief Returns expanded ProcedureItem.

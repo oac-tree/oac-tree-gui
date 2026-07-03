@@ -230,8 +230,10 @@ void OperationMonitorView::SetupConnections()
   on_change_delay(m_splittable_widget->GetCurrentTickTimeout());
 
   // instruction next leave request from JobManager to OperationSplittableWidget
+  // TODO route by JobItem to the panel showing it once multi-panel wiring is in place
   connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_splittable_widget,
-          &OperationSplittableWidget::SetSelectedInstructions);
+          [this](JobItem*, const std::vector<const InstructionItem*>& instructions)
+          { m_splittable_widget->SetSelectedInstructions(instructions); });
 
   // job selection request from MonitorPanel
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);
@@ -285,7 +287,8 @@ void OperationMonitorView::SetupWidgetActions()
 void OperationMonitorView::OnJobSelected(const JobItem* selected_item)
 {
   auto job_item = const_cast<JobItem*>(selected_item);
-  m_job_manager->SetActiveJob(job_item);
+  m_job_manager->SetActiveJobs(job_item != nullptr ? std::vector<JobItem*>{job_item}
+                                                    : std::vector<JobItem*>{});
   m_splittable_widget->SetCurrentJob(job_item);
 
   if (auto handler = m_job_manager->GetJobHandler(job_item); handler)

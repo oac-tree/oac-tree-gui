@@ -125,6 +125,11 @@ ProcedureItem* AbstractJobHandler::GetExpandedProcedure() const
   return m_job_item->GetExpandedProcedure();
 }
 
+std::vector<const InstructionItem*> AbstractJobHandler::GetActiveInstructions() const
+{
+  return m_active_instructions;
+}
+
 AbstractDomainRunner* AbstractJobHandler::GetDomainRunner()
 {
   return m_domain_runner.get();
@@ -206,7 +211,8 @@ void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstruction
     }
   }
 
-  emit ActiveInstructionChanged(items);
+  m_active_instructions = items;
+  emit ActiveInstructionChanged(m_job_item, items);
 }
 
 void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent& event)

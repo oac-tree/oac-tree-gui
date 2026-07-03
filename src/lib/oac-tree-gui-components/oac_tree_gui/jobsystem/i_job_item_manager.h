@@ -53,8 +53,8 @@ enum class RemovalPolicy
  * The job is represented by the JobItem, that carries all information about sequencer procedure.
  * The API contains interface to submit, start, pause and stop jobs.
  *
- * JobManager holds all jobs, submitted, paused, or running. Only one job at a time, set as the
- * active job, can report its status up.
+ * JobManager holds all jobs, submitted, paused, or running. Only jobs marked as active (currently
+ * shown by the user) report their active instructions up.
  */
 class IJobItemManager
 {
@@ -136,12 +136,12 @@ public:
   virtual void StopJobs(StopScope scope) = 0;
 
   /**
-   * @brief Set active job.
+   * @brief Sets the collection of active jobs.
    *
-   * An active job is what is currently selected by the user. This job is allowed to send signals
-   * and is used for toggling breakpoints requests.
+   * Active jobs are those currently shown by the user in operation panels. Only these jobs are
+   * allowed to report their active instructions up.
    */
-  virtual void SetActiveJob(JobItem* item) = 0;
+  virtual void SetActiveJobs(const std::vector<JobItem*>& items) = 0;
 };
 
 }  // namespace oac_tree_gui

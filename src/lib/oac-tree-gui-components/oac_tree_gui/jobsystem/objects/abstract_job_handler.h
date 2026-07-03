@@ -84,9 +84,12 @@ public:
 
   ProcedureItem* GetExpandedProcedure() const override;
 
+  std::vector<const InstructionItem*> GetActiveInstructions() const override;
+
 signals:
   void InstructionStatusChanged(const oac_tree_gui::InstructionItem* instruction);
-  void ActiveInstructionChanged(const std::vector<const oac_tree_gui::InstructionItem*>&);
+  void ActiveInstructionChanged(oac_tree_gui::JobItem* job,
+                                const std::vector<const oac_tree_gui::InstructionItem*>&);
 
 protected:
   /**
@@ -181,6 +184,9 @@ private:
 
   //!< the JobItem being handled
   JobItem* m_job_item{nullptr};
+
+  //!< currently active (executing) instructions, as of the last active-instruction event
+  std::vector<const InstructionItem*> m_active_instructions;
 };
 
 }  // namespace oac_tree_gui

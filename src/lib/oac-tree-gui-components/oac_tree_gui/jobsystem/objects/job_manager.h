@@ -25,6 +25,7 @@
 
 #include <QObject>
 #include <memory>
+#include <set>
 
 namespace oac_tree_gui
 {
@@ -38,8 +39,8 @@ class InstructionItem;
  * The job is represented by the JobItem, that carries all information about sequencer procedure.
  * The API contains interface to submit, start, pause and stop jobs.
  *
- * JobManager holds all jobs, submitted, paused, or running. Only one job at a time, set as the
- * active job, can report its status up.
+ * JobManager holds all jobs, submitted, paused, or running. Only jobs marked as active (currently
+ * shown by the user) report their active instructions up.
  */
 class JobManager : public QObject, public IJobItemManager
 {
@@ -80,10 +81,11 @@ public:
 
   void StopJobs(StopScope scope) override;
 
-  void SetActiveJob(JobItem* item) override;
+  void SetActiveJobs(const std::vector<JobItem*>& items) override;
 
 signals:
-  void ActiveInstructionChanged(const std::vector<const oac_tree_gui::InstructionItem*>&);
+  void ActiveInstructionChanged(oac_tree_gui::JobItem* job,
+                                const std::vector<const oac_tree_gui::InstructionItem*>&);
 
 private:
   /**
@@ -92,13 +94,14 @@ private:
   void InsertJobHandler(std::unique_ptr<IJobHandler> job_handler);
 
   /**
-   * @brief Process "Active instructions" events from all job handlers, forwards active job
-   * notifications up.
+   * @brief Process "Active instructions" events from all job handlers, forwards notifications up for
+   * jobs currently marked as active.
    */
-  void OnActiveInstructionChanged(const std::vector<const oac_tree_gui::InstructionItem*>&);
+  void OnActiveInstructionChanged(oac_tree_gui::JobItem* job,
+                                  const std::vector<const oac_tree_gui::InstructionItem*>&);
 
   std::vector<std::unique_ptr<IJobHandler>> m_job_handlers;
-  JobItem* m_active_job{nullptr};  //!< job which is allowed to send signals up
+  std::set<JobItem*> m_active_jobs;  //!< jobs which are allowed to send signals up
   create_handler_func_t m_create_handler_func;
 };
 

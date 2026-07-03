@@ -163,20 +163,18 @@ void JobManager::StopJobs(StopScope scope)
                 });
 }
 
-void JobManager::SetActiveJob(JobItem* item)
+void JobManager::SetActiveJobs(const std::vector<JobItem*>& items)
 {
-  m_active_job = item;
+  m_active_jobs = std::set<JobItem*>(items.begin(), items.end());
 }
 
 void JobManager::OnActiveInstructionChanged(
-    const std::vector<const InstructionItem*>& active_instructions)
+    JobItem* job, const std::vector<const InstructionItem*>& active_instructions)
 {
-  auto sending_job_handler = qobject_cast<AbstractJobHandler*>(sender());
-
-  // we want to send notifications only from the job the user is currently looking at
-  if (sending_job_handler->GetJobItem() == m_active_job)
+  // we want to send notifications only from the jobs the user is currently looking at
+  if (m_active_jobs.find(job) != m_active_jobs.end())
   {
-    emit ActiveInstructionChanged(active_instructions);
+    emit ActiveInstructionChanged(job, active_instructions);
   }
 }
 
