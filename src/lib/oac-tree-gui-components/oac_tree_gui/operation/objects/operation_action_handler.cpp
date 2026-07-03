@@ -179,17 +179,17 @@ bool OperationActionHandler::OnRemoveJobRequest()
               "server."
             : "Do you really want to remove the running local job? This will stop it.";
 
-    if (!m_operation_context.confirm_job_removal || !m_operation_context.confirm_job_removal(question))
+    if (!m_operation_context.confirm_job_removal
+        || !m_operation_context.confirm_job_removal(question))
     {
       return false;
     }
     removal_policy = RemovalPolicy::kForce;
   }
 
-  auto is_success =
-      InvokeAndCatch([this, job, removal_policy]()
-                     { m_job_manager->RemoveJobHandler(job, removal_policy); },
-                     "Job removal", m_operation_context.send_message);
+  auto is_success = InvokeAndCatch([this, job, removal_policy]()
+                                   { m_job_manager->RemoveJobHandler(job, removal_policy); },
+                                   "Job removal", m_operation_context.send_message);
 
   if (is_success)
   {
@@ -223,8 +223,9 @@ bool OperationActionHandler::OnRegenerateJobRequest()
     return false;
   }
 
-  auto is_success = InvokeAndCatch([this, job]() { m_job_manager->RemoveJobHandler(job); },
-                                   "Job removal", m_operation_context.send_message);
+  auto is_success = InvokeAndCatch(
+      [this, job]() { m_job_manager->RemoveJobHandler(job, RemovalPolicy::kRejectIfRunning); },
+      "Job removal", m_operation_context.send_message);
 
   if (is_success)
   {

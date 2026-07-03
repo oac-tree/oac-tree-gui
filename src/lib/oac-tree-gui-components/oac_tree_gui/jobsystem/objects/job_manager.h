@@ -74,8 +74,7 @@ public:
 
   void Reset(JobItem* item) override;
 
-  void RemoveJobHandler(JobItem* job,
-                        RemovalPolicy policy = RemovalPolicy::kRejectIfRunning) override;
+  void RemoveJobHandler(JobItem* job, RemovalPolicy policy) override;
 
   bool HasRunningJobs() const override;
 

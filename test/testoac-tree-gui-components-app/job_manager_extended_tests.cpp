@@ -194,12 +194,12 @@ TEST_F(JobManagerExtendedTest, OnRemoveJobRequest)
   JobManager manager(GetContext());
 
   // nothing wrong if we are trying to remove non-submitted job
-  EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item));
+  EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item, RemovalPolicy::kRejectIfRunning));
 
   manager.SubmitJob(m_job_item);
 
   // should be possible to remove submitted, but non-running job
-  EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item));
+  EXPECT_NO_THROW(manager.RemoveJobHandler(m_job_item, RemovalPolicy::kRejectIfRunning));
 
   EXPECT_EQ(manager.GetJobHandler(m_job_item), nullptr);
 }
@@ -223,7 +223,8 @@ TEST_F(JobManagerExtendedTest, AttemptToRemoveLongRunningJob)
   EXPECT_TRUE(manager.HasRunningJobs());
 
   // it shouldn't be possible to remove running job without first stopping it
-  EXPECT_THROW(manager.RemoveJobHandler(m_job_item), RuntimeException);
+  EXPECT_THROW(manager.RemoveJobHandler(m_job_item, RemovalPolicy::kRejectIfRunning),
+               RuntimeException);
   QTest::qWait(20);
 
   manager.Stop(m_job_item);

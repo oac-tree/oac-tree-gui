@@ -123,8 +123,7 @@ public:
    * Internally removes JobHandler, do not affect JobItem. By default refuses to remove a running
    * job; use RemovalPolicy::kForce to remove it regardless.
    */
-  virtual void RemoveJobHandler(JobItem* job,
-                                RemovalPolicy policy = RemovalPolicy::kRejectIfRunning) = 0;
+  virtual void RemoveJobHandler(JobItem* job, RemovalPolicy policy) = 0;
 
   /**
    * @brief Checks if there are jobs running.
