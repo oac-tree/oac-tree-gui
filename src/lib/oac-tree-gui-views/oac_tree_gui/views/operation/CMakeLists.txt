@@ -21,8 +21,12 @@ target_sources(${library_name} PRIVATE
   operation_job_panel.h
   operation_monitor_view.cpp
   operation_monitor_view.h
+  operation_tab_widget.cpp
+  operation_tab_widget.h
   operation_realtime_panel.cpp
   operation_realtime_panel.h
+  operation_splittable_widget.cpp
+  operation_splittable_widget.h
   operation_workspace_panel.cpp
   operation_workspace_panel.h
   procedure_action_handler.cpp
