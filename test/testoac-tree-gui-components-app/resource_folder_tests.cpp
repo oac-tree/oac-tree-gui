@@ -36,7 +36,6 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 
-#include <QSignalSpy>
 #include <QTest>
 
 namespace oac_tree_gui
@@ -84,7 +83,6 @@ TEST_P(ResourceFolderTest, RunProcedure)
   // setup JobHandler to run procedure with the help of JobItem
   m_job_item->SetProcedure(procedure_ptr);
   LocalJobHandler job_handler(m_job_item, UserContext{});
-  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
 
   // starting procedure and waiting for completion
   job_handler.Start();

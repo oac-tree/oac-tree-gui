@@ -178,7 +178,6 @@ void AbstractJobHandler::OnInstructionStateUpdated(const InstructionStateUpdated
   if (auto* item = m_procedure_item_builder->GetInstruction(event.index); item)
   {
     item->SetStatus(GetInstructionStatusFromDomain(event.state.m_execution_status));
-    emit InstructionStatusChanged(item);
   }
   else
   {

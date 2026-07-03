@@ -27,6 +27,7 @@
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -36,7 +37,9 @@
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 
 #include <mvvm/model/model_utils.h>
+#include <mvvm/signals/event_types.h>
 #include <mvvm/test/mock_item_listener.h>
+#include <mvvm/test/mock_model_listener.h>
 
 #include <sup/oac-tree/exceptions.h>
 
@@ -44,7 +47,6 @@
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
 
-#include <QSignalSpy>
 #include <QTest>
 #include <chrono>
 
@@ -52,6 +54,50 @@ using msec = std::chrono::milliseconds;
 
 namespace oac_tree_gui::test
 {
+
+namespace
+{
+
+//! Returns true when a data-changed event represents an instruction status change.
+bool IsInstructionStatusChange(const mvvm::DataChangedEvent& event)
+{
+  auto parent = event.item == nullptr ? nullptr : event.item->GetParent();
+  return dynamic_cast<const InstructionItem*>(parent) != nullptr
+         && event.item->GetTagIndex().GetTag() == itemconstants::kStatus;
+}
+
+/**
+ * @brief The InstructionStatusCounter counts instruction status changes propagated by a model.
+ *
+ * It replaces the QSignalSpy previously attached to AbstractJobHandler::InstructionStatusChanged.
+ * Since the instruction status now reaches the GUI purely via the model, we observe it there with a
+ * MockModelListener (a single MockItemListener would only see one instruction).
+ */
+class InstructionStatusCounter
+{
+public:
+  explicit InstructionStatusCounter(const mvvm::ISessionModel* model) : m_listener(model)
+  {
+    EXPECT_CALL(m_listener, OnDataChanged(::testing::_))
+        .Times(::testing::AnyNumber())
+        .WillRepeatedly(
+            [this](const mvvm::DataChangedEvent& event)
+            {
+              if (IsInstructionStatusChange(event))
+              {
+                ++m_count;
+              }
+            });
+  }
+
+  int GetCount() const { return m_count; }
+
+private:
+  ::testing::NiceMock<mvvm::test::MockModelListener> m_listener;
+  int m_count{0};
+};
+
+}  // namespace
 
 /**
  * @brief Tests for LocalJobHandler class.
@@ -169,16 +215,16 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  InstructionStatusCounter counter(m_models.GetJobModel());
 
   job_handler.Start();
 
-  auto predicate = [this, &job_handler, &spy_instruction_status]()
-  { return !job_handler.IsRunning() && spy_instruction_status.count() == 2; };
+  auto predicate = [this, &job_handler, &counter]()
+  { return !job_handler.IsRunning() && counter.GetCount() == 2; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 2);
+  EXPECT_EQ(counter.GetCount(), 2);
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   ASSERT_EQ(instructions.size(), 1);
@@ -263,14 +309,14 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  InstructionStatusCounter counter(m_models.GetJobModel());
 
   job_handler.Start();
   // We are testing here queued signals, need special waiting
   QTest::qWait(50);
 
   EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
+  EXPECT_EQ(counter.GetCount(), 8);  // Repeat, Include, Sequence, Wait x 2
 
   auto instructions = mvvm::utils::FindItems<InstructionItem>(*m_models.GetJobModel());
   ASSERT_EQ(instructions.size(), 4);
@@ -299,7 +345,7 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
 
   LocalJobHandler job_handler(m_job_item, UserContext{on_user_input});
 
-  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  InstructionStatusCounter counter(m_models.GetJobModel());
 
   job_handler.Start();
 
@@ -310,10 +356,10 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
   auto predicate2 = [&job_handler]() { return !job_handler.IsRunning(); };
   EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
 
-  auto predicate3 = [&spy_instruction_status]() { return spy_instruction_status.count() == 9; };
+  auto predicate3 = [&counter]() { return counter.GetCount() == 9; };
   EXPECT_TRUE(QTest::qWaitFor(predicate3, 200));
 
-  EXPECT_EQ(spy_instruction_status.count(), 9);  // 3 instructions
+  EXPECT_EQ(counter.GetCount(), 9);  // 3 instructions
 
   EXPECT_FALSE(job_handler.IsRunning());
 
@@ -346,7 +392,7 @@ TEST_F(LocalJobHandlerTest, UserInputIncrementScenario)
 
   LocalJobHandler job_handler(m_job_item, UserContext{on_user_input});
 
-  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  InstructionStatusCounter counter(m_models.GetJobModel());
 
   job_handler.Start();
 
@@ -357,10 +403,10 @@ TEST_F(LocalJobHandlerTest, UserInputIncrementScenario)
   auto predicate2 = [&job_handler]() { return !job_handler.IsRunning(); };
   EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
 
-  auto predicate3 = [&spy_instruction_status]() { return spy_instruction_status.count() == 9; };
+  auto predicate3 = [&counter]() { return counter.GetCount() == 9; };
   EXPECT_TRUE(QTest::qWaitFor(predicate3, 200));
 
-  EXPECT_EQ(spy_instruction_status.count(), 9);  // 3 instructions
+  EXPECT_EQ(counter.GetCount(), 9);  // 3 instructions
 
   EXPECT_FALSE(job_handler.IsRunning());
 
@@ -383,7 +429,7 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
 
   LocalJobHandler job_handler(m_job_item, {{}, on_user_choice});
 
-  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  InstructionStatusCounter counter(m_models.GetJobModel());
 
   job_handler.Start();
 
@@ -394,8 +440,8 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
   };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 200));
 
-  auto predicate2 = [this, &job_handler, &spy_instruction_status]()
-  { return !job_handler.IsRunning() && spy_instruction_status.count() == 6; };
+  auto predicate2 = [this, &job_handler, &counter]()
+  { return !job_handler.IsRunning() && counter.GetCount() == 6; };
   EXPECT_TRUE(QTest::qWaitFor(predicate2, 200));
 
   // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
@@ -413,22 +459,20 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  InstructionStatusCounter counter(m_models.GetJobModel());
 
   job_handler.Start();
 
-  EXPECT_TRUE(QTest::qWaitFor(
-      [&spy_instruction_status]() { return spy_instruction_status.count() == 1; }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([&counter]() { return counter.GetCount() == 1; }, 100));
 
   EXPECT_TRUE(job_handler.IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 1);
+  EXPECT_EQ(counter.GetCount(), 1);
 
   job_handler.Stop();
 
-  EXPECT_TRUE(QTest::qWaitFor(
-      [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([&counter]() { return counter.GetCount() == 2; }, 100));
 
-  EXPECT_EQ(spy_instruction_status.count(), 2);
+  EXPECT_EQ(counter.GetCount(), 2);
 
   auto instructions = FindExpandedInstructions(domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kHalted);
@@ -449,7 +493,7 @@ TEST_F(LocalJobHandlerTest, LogEvents)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  const QSignalSpy spy_instruction_status(&job_handler, &LocalJobHandler::InstructionStatusChanged);
+  InstructionStatusCounter counter(m_models.GetJobModel());
 
   // Put something in the log, to validate that it will be cleaned up before job start
   job_handler.GetJobLog()->Append({});
@@ -460,7 +504,7 @@ TEST_F(LocalJobHandlerTest, LogEvents)
 
   EXPECT_FALSE(job_handler.IsRunning());
 
-  EXPECT_EQ(spy_instruction_status.count(), 2);
+  EXPECT_EQ(counter.GetCount(), 2);
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kSuccess);

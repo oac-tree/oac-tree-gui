@@ -87,7 +87,6 @@ public:
   std::vector<const InstructionItem*> GetActiveInstructions() const override;
 
 signals:
-  void InstructionStatusChanged(const oac_tree_gui::InstructionItem* instruction);
   void ActiveInstructionChanged(oac_tree_gui::JobItem* job);
 
 protected:
