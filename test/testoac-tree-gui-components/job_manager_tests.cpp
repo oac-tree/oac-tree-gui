@@ -45,10 +45,7 @@ class TestJobHandler : public AbstractJobHandler
 public:
   using AbstractJobHandler::AbstractJobHandler;
 
-  void EmitActiveInstructionChanged(const std::vector<const InstructionItem*>& instructions)
-  {
-    emit ActiveInstructionChanged(GetJobItem(), instructions);
-  }
+  void EmitActiveInstructionChanged() { emit ActiveInstructionChanged(GetJobItem()); }
 };
 
 }  // namespace
@@ -182,32 +179,31 @@ TEST_F(JobManagerTest, SetActiveJobs)
 
   std::vector<JobItem*> reported_jobs;
   QObject::connect(&manager, &JobManager::ActiveInstructionChanged,
-                   [&reported_jobs](JobItem* job, const std::vector<const InstructionItem*>&)
-                   { reported_jobs.push_back(job); });
+                   [&reported_jobs](JobItem* job) { reported_jobs.push_back(job); });
 
   // no active jobs -> nothing propagates
-  handler1->EmitActiveInstructionChanged({});
-  handler2->EmitActiveInstructionChanged({});
+  handler1->EmitActiveInstructionChanged();
+  handler2->EmitActiveInstructionChanged();
   EXPECT_TRUE(reported_jobs.empty());
 
   // only job1 is active -> only job1 propagates
   manager.SetActiveJobs({&job_item1});
-  handler1->EmitActiveInstructionChanged({});
-  handler2->EmitActiveInstructionChanged({});
+  handler1->EmitActiveInstructionChanged();
+  handler2->EmitActiveInstructionChanged();
   EXPECT_EQ(reported_jobs, std::vector<JobItem*>({&job_item1}));
 
   // both jobs active -> both propagate
   reported_jobs.clear();
   manager.SetActiveJobs({&job_item1, &job_item2});
-  handler1->EmitActiveInstructionChanged({});
-  handler2->EmitActiveInstructionChanged({});
+  handler1->EmitActiveInstructionChanged();
+  handler2->EmitActiveInstructionChanged();
   EXPECT_EQ(reported_jobs, std::vector<JobItem*>({&job_item1, &job_item2}));
 
   // active set cleared -> nothing propagates
   reported_jobs.clear();
   manager.SetActiveJobs({});
-  handler1->EmitActiveInstructionChanged({});
-  handler2->EmitActiveInstructionChanged({});
+  handler1->EmitActiveInstructionChanged();
+  handler2->EmitActiveInstructionChanged();
   EXPECT_TRUE(reported_jobs.empty());
 }
 

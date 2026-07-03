@@ -168,13 +168,19 @@ void JobManager::SetActiveJobs(const std::vector<JobItem*>& items)
   m_active_jobs = std::set<JobItem*>(items.begin(), items.end());
 }
 
-void JobManager::OnActiveInstructionChanged(
-    JobItem* job, const std::vector<const InstructionItem*>& active_instructions)
+std::vector<const InstructionItem*> JobManager::GetActiveInstructions(JobItem* job)
+{
+  auto job_handler = GetJobHandler(job);
+  return job_handler == nullptr ? std::vector<const InstructionItem*>()
+                                : job_handler->GetActiveInstructions();
+}
+
+void JobManager::OnActiveInstructionChanged(JobItem* job)
 {
   // we want to send notifications only from the jobs the user is currently looking at
   if (m_active_jobs.find(job) != m_active_jobs.end())
   {
-    emit ActiveInstructionChanged(job, active_instructions);
+    emit ActiveInstructionChanged(job);
   }
 }
 

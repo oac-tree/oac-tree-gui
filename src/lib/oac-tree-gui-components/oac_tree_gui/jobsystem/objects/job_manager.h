@@ -83,9 +83,13 @@ public:
 
   void SetActiveJobs(const std::vector<JobItem*>& items) override;
 
+  /**
+   * @brief Returns the list of currently active (executing) instructions for the given job.
+   */
+  std::vector<const InstructionItem*> GetActiveInstructions(JobItem* job);
+
 signals:
-  void ActiveInstructionChanged(oac_tree_gui::JobItem* job,
-                                const std::vector<const oac_tree_gui::InstructionItem*>&);
+  void ActiveInstructionChanged(oac_tree_gui::JobItem* job);
 
 private:
   /**
@@ -97,8 +101,7 @@ private:
    * @brief Process "Active instructions" events from all job handlers, forwards notifications up for
    * jobs currently marked as active.
    */
-  void OnActiveInstructionChanged(oac_tree_gui::JobItem* job,
-                                  const std::vector<const oac_tree_gui::InstructionItem*>&);
+  void OnActiveInstructionChanged(oac_tree_gui::JobItem* job);
 
   std::vector<std::unique_ptr<IJobHandler>> m_job_handlers;
   std::set<JobItem*> m_active_jobs;  //!< jobs which are allowed to send signals up

@@ -232,8 +232,8 @@ void OperationMonitorView::SetupConnections()
   // instruction next leave request from JobManager to OperationSplittableWidget
   // TODO route by JobItem to the panel showing it once multi-panel wiring is in place
   connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_splittable_widget,
-          [this](JobItem*, const std::vector<const InstructionItem*>& instructions)
-          { m_splittable_widget->SetSelectedInstructions(instructions); });
+          [this](JobItem* job)
+          { m_splittable_widget->SetSelectedInstructions(m_job_manager->GetActiveInstructions(job)); });
 
   // job selection request from MonitorPanel
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);

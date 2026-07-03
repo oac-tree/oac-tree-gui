@@ -212,7 +212,7 @@ void AbstractJobHandler::OnActiveInstructionChangedEvent(const ActiveInstruction
   }
 
   m_active_instructions = items;
-  emit ActiveInstructionChanged(m_job_item, items);
+  emit ActiveInstructionChanged(m_job_item);
 }
 
 void AbstractJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent& event)

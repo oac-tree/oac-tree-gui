@@ -88,8 +88,7 @@ public:
 
 signals:
   void InstructionStatusChanged(const oac_tree_gui::InstructionItem* instruction);
-  void ActiveInstructionChanged(oac_tree_gui::JobItem* job,
-                                const std::vector<const oac_tree_gui::InstructionItem*>&);
+  void ActiveInstructionChanged(oac_tree_gui::JobItem* job);
 
 protected:
   /**
