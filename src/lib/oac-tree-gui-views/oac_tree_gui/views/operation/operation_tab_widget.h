@@ -66,13 +66,14 @@ public:
   int GetCurrentTickTimeout();
 
 signals:
-  void RunRequest();
-  void PauseRequest();
-  void StepRequest();
-  void StopRequest();
-  void ResetRequest();
+  void RunRequest(oac_tree_gui::JobItem* job);
+  void PauseRequest(oac_tree_gui::JobItem* job);
+  void StepRequest(oac_tree_gui::JobItem* job);
+  void StopRequest(oac_tree_gui::JobItem* job);
+  void ResetRequest(oac_tree_gui::JobItem* job);
   void ChangeDelayRequest(int msec);
-  void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
+  void ToggleBreakpointRequest(oac_tree_gui::JobItem* job,
+                               const oac_tree_gui::InstructionItem* instruction);
 
 private:
   void SetupConnections();
@@ -82,6 +83,7 @@ private:
   QToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
   OperationRealTimeWidget* m_realtime_widget{nullptr};
+  JobItem* m_current_job{nullptr};
 };
 
 }  // namespace oac_tree_gui

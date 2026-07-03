@@ -80,6 +80,8 @@ void OperationTabWidget::SetItem(mvvm::SessionItem* job_item)
 
 void OperationTabWidget::SetCurrentJob(JobItem* job_item)
 {
+  m_current_job = job_item;
+
   if (job_item != nullptr)
   {
     m_realtime_widget->SetProcedure(job_item->GetExpandedProcedure());
@@ -108,14 +110,17 @@ int OperationTabWidget::GetCurrentTickTimeout()
 
 void OperationTabWidget::SetupConnections()
 {
-  // forward signals from a toolbar further up
-  connect(m_actions, &MonitorRealTimeActions::RunRequest, this, &OperationTabWidget::RunRequest);
+  // forward signals from a toolbar further up, stamping them with the job currently shown here
+  connect(m_actions, &MonitorRealTimeActions::RunRequest, this,
+          [this]() { emit RunRequest(m_current_job); });
   connect(m_actions, &MonitorRealTimeActions::PauseRequest, this,
-          &OperationTabWidget::PauseRequest);
-  connect(m_actions, &MonitorRealTimeActions::StepRequest, this, &OperationTabWidget::StepRequest);
-  connect(m_actions, &MonitorRealTimeActions::StopRequest, this, &OperationTabWidget::StopRequest);
+          [this]() { emit PauseRequest(m_current_job); });
+  connect(m_actions, &MonitorRealTimeActions::StepRequest, this,
+          [this]() { emit StepRequest(m_current_job); });
+  connect(m_actions, &MonitorRealTimeActions::StopRequest, this,
+          [this]() { emit StopRequest(m_current_job); });
   connect(m_actions, &MonitorRealTimeActions::ResetRequest, this,
-          &OperationTabWidget::ResetRequest);
+          [this]() { emit ResetRequest(m_current_job); });
   connect(m_actions, &MonitorRealTimeActions::ChangeDelayRequest, this,
           &OperationTabWidget::ChangeDelayRequest);
 
@@ -123,7 +128,8 @@ void OperationTabWidget::SetupConnections()
           &OperationRealTimeWidget::SetViewportFollowsSelectionFlag);
 
   connect(m_realtime_widget, &OperationRealTimeWidget::ToggleBreakpointRequest, this,
-          &OperationTabWidget::ToggleBreakpointRequest);
+          [this](const InstructionItem* instruction)
+          { emit ToggleBreakpointRequest(m_current_job, instruction); });
 }
 
 void OperationTabWidget::AddTab(QWidget* widget, const QString& label, const QString& tooltip)
