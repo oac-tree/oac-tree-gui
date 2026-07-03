@@ -239,9 +239,18 @@ void OperationMonitorView::SetupConnections()
                                                          m_job_manager->GetActiveInstructions(job));
           });
 
-  // keep the manager's active-jobs set in sync with the jobs shown across the panels
-  connect(m_splittable_widget, &OperationSplittableWidget::activeJobsChanged, m_job_manager,
-          &JobManager::SetActiveJobs);
+  // keep the manager's active-jobs set in sync with the jobs shown across the panels, and seed each
+  // freshly shown panel with the current active instructions of its job
+  connect(m_splittable_widget, &OperationSplittableWidget::activeJobsChanged, this,
+          [this](const std::vector<JobItem*>& jobs)
+          {
+            m_job_manager->SetActiveJobs(jobs);
+            for (auto* job : jobs)
+            {
+              m_splittable_widget->SetSelectedInstructions(job,
+                                                           m_job_manager->GetActiveInstructions(job));
+            }
+          });
 
   // job selection request from MonitorPanel
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);
