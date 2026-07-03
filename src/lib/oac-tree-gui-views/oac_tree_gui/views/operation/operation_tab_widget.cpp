@@ -21,6 +21,7 @@
 #include "operation_tab_widget.h"
 
 #include "monitor_realtime_actions.h"
+#include "operation_realtime_widget.h"
 
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/style/style_helper.h>
@@ -52,6 +53,7 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
     , m_actions(new MonitorRealTimeActions(this))
     , m_tool_bar(new QToolBar)
     , m_tab_widget(new QTabWidget)
+    , m_realtime_widget(new OperationRealTimeWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -66,6 +68,8 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tab_widget);
 
+  AddTab(m_realtime_widget, "Real time", "Real time instruction tree with message panel");
+
   SetupConnections();
 }
 
@@ -76,7 +80,25 @@ void OperationTabWidget::SetItem(mvvm::SessionItem* job_item)
 
 void OperationTabWidget::SetCurrentJob(JobItem* job_item)
 {
-  (void)job_item;
+  if (job_item != nullptr)
+  {
+    m_realtime_widget->SetProcedure(job_item->GetExpandedProcedure());
+    m_actions->SetCurrentTickTimeout(job_item->GetTickTimeout().count());
+  }
+  else
+  {
+    m_realtime_widget->SetProcedure(nullptr);
+  }
+}
+
+void OperationTabWidget::SetSelectedInstructions(const std::vector<const InstructionItem*>& items)
+{
+  m_realtime_widget->SetSelectedInstructions(items);
+}
+
+void OperationTabWidget::SetJobLog(JobLog* job_log)
+{
+  m_realtime_widget->SetJobLog(job_log);
 }
 
 void OperationTabWidget::SetupConnections()
@@ -91,6 +113,12 @@ void OperationTabWidget::SetupConnections()
           &OperationTabWidget::ResetRequest);
   connect(m_actions, &MonitorRealTimeActions::ChangeDelayRequest, this,
           &OperationTabWidget::ChangeDelayRequest);
+
+  connect(m_actions, &MonitorRealTimeActions::ScrollToSelectionRequest, m_realtime_widget,
+          &OperationRealTimeWidget::SetViewportFollowsSelectionFlag);
+
+  connect(m_realtime_widget, &OperationRealTimeWidget::ToggleBreakpointRequest, this,
+          &OperationTabWidget::ToggleBreakpointRequest);
 }
 
 void OperationTabWidget::AddTab(QWidget* widget, const QString& label, const QString& tooltip)

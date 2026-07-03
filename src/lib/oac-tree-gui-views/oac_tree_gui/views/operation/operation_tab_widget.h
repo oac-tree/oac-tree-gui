@@ -24,14 +24,19 @@
 #include <QWidget>
 #include <sup/gui/mainwindow/session_item_widget.h>
 
+#include <vector>
+
 class QTabWidget;
 class QToolBar;
 
 namespace oac_tree_gui
 {
 
+class InstructionItem;
 class JobItem;
+class JobLog;
 class MonitorRealTimeActions;
+class OperationRealTimeWidget;
 
 /**
  * @brief The OperationTabWidget class shows running jobs with the possibility to select what to see
@@ -54,6 +59,10 @@ public:
   void SetItem(mvvm::SessionItem* job_item) override;
   void SetCurrentJob(JobItem* job_item);
 
+  void SetSelectedInstructions(const std::vector<const InstructionItem*>& items);
+
+  void SetJobLog(JobLog* job_log);
+
 signals:
   void RunRequest();
   void PauseRequest();
@@ -61,6 +70,7 @@ signals:
   void StopRequest();
   void ResetRequest();
   void ChangeDelayRequest(int msec);
+  void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
 
 private:
   void SetupConnections();
@@ -69,6 +79,7 @@ private:
   MonitorRealTimeActions* m_actions{nullptr};
   QToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
+  OperationRealTimeWidget* m_realtime_widget{nullptr};
 };
 
 }  // namespace oac_tree_gui
