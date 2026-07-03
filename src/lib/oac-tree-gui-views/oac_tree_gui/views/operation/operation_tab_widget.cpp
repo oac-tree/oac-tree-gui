@@ -20,16 +20,83 @@
 
 #include "operation_tab_widget.h"
 
+#include "monitor_realtime_actions.h"
+
+#include <oac_tree_gui/model/job_item.h>
+#include <oac_tree_gui/style/style_helper.h>
+
+#include <mvvm/style/mvvm_style_helper.h>
+
+#include <QTabWidget>
+#include <QToolBar>
 #include <QVBoxLayout>
+
+namespace
+{
+
+QList<QAction*> GetToolBarActions(oac_tree_gui::MonitorRealTimeActions* actions)
+{
+  using ActionKey = oac_tree_gui::MonitorRealTimeActions::ActionKey;
+  return actions->GetActions({ActionKey::kRun, ActionKey::kPause, ActionKey::kStep,
+                              ActionKey::kStop, ActionKey::kReset, ActionKey::kDelay,
+                              ActionKey::kSettings});
+}
+
+}  // namespace
 
 namespace oac_tree_gui
 {
 
-OperationTabWidget::OperationTabWidget(QWidget* parent_widget) : QWidget(parent_widget)
+OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
+    : sup::gui::SessionItemWidget(parent_widget)
+    , m_actions(new MonitorRealTimeActions(this))
+    , m_tool_bar(new QToolBar)
+    , m_tab_widget(new QTabWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
+
+  m_tool_bar->setIconSize(NarrowToolBarIconSize());
+  m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  // to have fixed height when no actions are added
+  m_tool_bar->setFixedHeight(NarrowToolBarIconSize().height() + mvvm::style::UnitSize(1.9));
+  m_tool_bar->addActions(GetToolBarActions(m_actions));
+
+  layout->addWidget(m_tool_bar);
+  layout->addWidget(m_tab_widget);
+
+  SetupConnections();
+}
+
+void OperationTabWidget::SetItem(mvvm::SessionItem* job_item)
+{
+  SetCurrentJob(dynamic_cast<JobItem*>(job_item));
+}
+
+void OperationTabWidget::SetCurrentJob(JobItem* job_item)
+{
+  (void)job_item;
+}
+
+void OperationTabWidget::SetupConnections()
+{
+  // forward signals from a toolbar further up
+  connect(m_actions, &MonitorRealTimeActions::RunRequest, this, &OperationTabWidget::RunRequest);
+  connect(m_actions, &MonitorRealTimeActions::PauseRequest, this,
+          &OperationTabWidget::PauseRequest);
+  connect(m_actions, &MonitorRealTimeActions::StepRequest, this, &OperationTabWidget::StepRequest);
+  connect(m_actions, &MonitorRealTimeActions::StopRequest, this, &OperationTabWidget::StopRequest);
+  connect(m_actions, &MonitorRealTimeActions::ResetRequest, this,
+          &OperationTabWidget::ResetRequest);
+  connect(m_actions, &MonitorRealTimeActions::ChangeDelayRequest, this,
+          &OperationTabWidget::ChangeDelayRequest);
+}
+
+void OperationTabWidget::AddTab(QWidget* widget, const QString& label, const QString& tooltip)
+{
+  m_tab_widget->addTab(widget, label);
+  m_tab_widget->setTabToolTip(m_tab_widget->indexOf(widget), tooltip);
 }
 
 }  // namespace oac_tree_gui

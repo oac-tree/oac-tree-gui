@@ -22,18 +22,53 @@
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_TAB_WIDGET_H_
 
 #include <QWidget>
+#include <sup/gui/mainwindow/session_item_widget.h>
+
+class QTabWidget;
+class QToolBar;
 
 namespace oac_tree_gui
 {
 
-//! Placeholder widget for future operation tab development.
+class JobItem;
+class MonitorRealTimeActions;
 
-class OperationTabWidget : public QWidget
+/**
+ * @brief The OperationTabWidget class shows running jobs with the possibility to select what to see
+ * in a tab.
+ *
+ * Contains following views:
+ * - main panel with real time tree
+ * - workspace with variable tree
+ * - workspace with variable table
+ * - task monitor
+ * - node editor
+ */
+class OperationTabWidget : public sup::gui::SessionItemWidget
 {
   Q_OBJECT
 
 public:
   explicit OperationTabWidget(QWidget* parent_widget = nullptr);
+
+  void SetItem(mvvm::SessionItem* job_item) override;
+  void SetCurrentJob(JobItem* job_item);
+
+signals:
+  void RunRequest();
+  void PauseRequest();
+  void StepRequest();
+  void StopRequest();
+  void ResetRequest();
+  void ChangeDelayRequest(int msec);
+
+private:
+  void SetupConnections();
+  void AddTab(QWidget* widget, const QString& label, const QString& tooltip);
+
+  MonitorRealTimeActions* m_actions{nullptr};
+  QToolBar* m_tool_bar{nullptr};
+  QTabWidget* m_tab_widget{nullptr};
 };
 
 }  // namespace oac_tree_gui
