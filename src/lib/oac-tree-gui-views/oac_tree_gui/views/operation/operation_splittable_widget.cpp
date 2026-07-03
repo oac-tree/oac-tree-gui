@@ -50,6 +50,13 @@ OperationSplittableWidget::OperationSplittableWidget(QWidget* parent_widget)
           &sup::gui::SplittableEditorController::focusPanelSelectionChanged, this,
           &OperationSplittableWidget::focusWidgetJobSelectionChanged);
 
+  // track changes of the active-jobs set (wired before the first panel is created below)
+  connect(m_splitter_controller.get(), &sup::gui::SplittableEditorController::newPanelAdded, this,
+          &OperationSplittableWidget::OnPanelAdded);
+  connect(m_splitter_controller.get(), &sup::gui::SplittableEditorController::aboutToClosePanel,
+          this, [this](sup::gui::SplittableComboPanel* panel)
+          { emit activeJobsChanged(CollectActiveJobs(panel)); });
+
   CreatePanel();
 }
 
@@ -115,6 +122,37 @@ OperationTabWidget* OperationSplittableWidget::GetFocusTabWidget() const
 {
   auto focus_widget = m_splitter_controller->GetFocusWidget();
   return focus_widget == nullptr ? nullptr : focus_widget->GetMainEditor<OperationTabWidget>();
+}
+
+std::vector<JobItem*> OperationSplittableWidget::GetActiveJobs() const
+{
+  return CollectActiveJobs();
+}
+
+std::vector<JobItem*> OperationSplittableWidget::CollectActiveJobs(
+    const sup::gui::SplittableComboPanel* excluded) const
+{
+  std::vector<JobItem*> result;
+  for (auto panel : m_splitter_controller->GetPanels())
+  {
+    if (panel == excluded)
+    {
+      continue;
+    }
+    if (auto job = dynamic_cast<JobItem*>(panel->GetCurrentItem()); job != nullptr)
+    {
+      result.push_back(job);
+    }
+  }
+  return result;
+}
+
+void OperationSplittableWidget::OnPanelAdded(sup::gui::SplittableComboPanel* panel)
+{
+  connect(panel, &sup::gui::SplittableComboPanel::itemSelectionChanged, this,
+          [this](const mvvm::ItemSelection&) { emit activeJobsChanged(CollectActiveJobs()); });
+
+  emit activeJobsChanged(CollectActiveJobs());
 }
 
 std::unique_ptr<sup::gui::SplittableEditorController>

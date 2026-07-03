@@ -97,11 +97,21 @@ public:
    */
   sup::gui::SplittableEditorController* GetController() const;
 
+  /**
+   * @brief Returns the set of jobs currently shown across all panels.
+   */
+  std::vector<JobItem*> GetActiveJobs() const;
+
 signals:
   /**
    * @brief Notifies that the job selection in the focus widget has changed.
    */
   void focusWidgetJobSelectionChanged(const mvvm::ItemSelection& selection);
+
+  /**
+   * @brief Notifies that the set of jobs shown across the panels has changed.
+   */
+  void activeJobsChanged(const std::vector<oac_tree_gui::JobItem*>& active_jobs);
 
   void RunRequest(oac_tree_gui::JobItem* job);
   void PauseRequest(oac_tree_gui::JobItem* job);
@@ -119,6 +129,19 @@ private:
    * @brief Returns the tab widget of the currently focused panel, or nullptr if none.
    */
   OperationTabWidget* GetFocusTabWidget() const;
+
+  /**
+   * @brief Collects jobs shown across all panels, optionally excluding one panel.
+   *
+   * The excluded panel is used when a panel is about to close and should no longer contribute.
+   */
+  std::vector<JobItem*> CollectActiveJobs(
+      const sup::gui::SplittableComboPanel* excluded = nullptr) const;
+
+  /**
+   * @brief Wires a newly added panel and announces the updated active-jobs set.
+   */
+  void OnPanelAdded(sup::gui::SplittableComboPanel* panel);
 
   QSplitter* m_splitter{nullptr};
   JobModel* m_model{nullptr};
