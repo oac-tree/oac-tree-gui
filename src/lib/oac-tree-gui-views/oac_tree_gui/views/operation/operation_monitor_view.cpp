@@ -232,11 +232,12 @@ void OperationMonitorView::SetupConnections()
           on_change_delay);
   on_change_delay(m_splittable_widget->GetCurrentTickTimeout());
 
-  // instruction next leave request from JobManager to OperationSplittableWidget
-  // TODO route by JobItem to the panel showing it once multi-panel wiring is in place
+  // active instructions of a job are routed to every panel showing that job
   connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_splittable_widget,
-          [this](JobItem* job)
-          { m_splittable_widget->SetSelectedInstructions(m_job_manager->GetActiveInstructions(job)); });
+          [this](JobItem* job) {
+            m_splittable_widget->SetSelectedInstructions(job,
+                                                         m_job_manager->GetActiveInstructions(job));
+          });
 
   // job selection request from MonitorPanel
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);

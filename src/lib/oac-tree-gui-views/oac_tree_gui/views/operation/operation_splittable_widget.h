@@ -76,9 +76,9 @@ public:
   void SetJobLog(JobLog* job_log);
 
   /**
-   * @brief Sets currently selected instructions in the focused panel.
+   * @brief Sets currently selected instructions in every panel showing the given job.
    */
-  void SetSelectedInstructions(const std::vector<const InstructionItem*>& items);
+  void SetSelectedInstructions(JobItem* job, const std::vector<const InstructionItem*>& items);
 
   /**
    * @brief Returns tick timeout currently set in the focused panel.
