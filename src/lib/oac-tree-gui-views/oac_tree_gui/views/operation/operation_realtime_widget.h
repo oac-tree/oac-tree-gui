@@ -22,18 +22,57 @@
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_REALTIME_WIDGET_H_
 
 #include <QWidget>
+#include <vector>
+
+namespace sup::gui
+{
+class CollapsibleListView;
+}
 
 namespace oac_tree_gui
 {
 
-//! Placeholder widget for future operation real time development.
+class InstructionItem;
+class JobLog;
+class MessagePanel;
+class ProcedureItem;
+class RealTimeInstructionTreeWidget;
 
+/**
+ * @brief The OperationRealTimeWidget class shows a real-time instruction tree with a message panel
+ * at the bottom.
+ */
 class OperationRealTimeWidget : public QWidget
 {
   Q_OBJECT
 
 public:
   explicit OperationRealTimeWidget(QWidget* parent_widget = nullptr);
+  ~OperationRealTimeWidget() override;
+
+  OperationRealTimeWidget(const OperationRealTimeWidget&) = delete;
+  OperationRealTimeWidget& operator=(const OperationRealTimeWidget&) = delete;
+  OperationRealTimeWidget(OperationRealTimeWidget&&) = delete;
+  OperationRealTimeWidget& operator=(OperationRealTimeWidget&&) = delete;
+
+  void SetProcedure(ProcedureItem* procedure_item);
+
+  void SetSelectedInstructions(const std::vector<const InstructionItem*>& items);
+
+  void SetJobLog(JobLog* job_log);
+
+  void SetViewportFollowsSelectionFlag(bool value);
+
+signals:
+  void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
+
+private:
+  void ReadSettings();
+  void WriteSettings();
+
+  sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
+  RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};
+  MessagePanel* m_message_panel{nullptr};
 };
 
 }  // namespace oac_tree_gui

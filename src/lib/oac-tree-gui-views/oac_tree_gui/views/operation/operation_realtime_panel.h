@@ -23,20 +23,14 @@
 
 #include <QWidget>
 
-namespace sup::gui
-{
-class CollapsibleListView;
-}
-
 namespace oac_tree_gui
 {
 
 class InstructionItem;
 class JobItem;
 class JobLog;
-class MessagePanel;
 class MonitorRealTimeActions;
-class RealTimeInstructionTreeWidget;
+class OperationRealTimeWidget;
 
 /**
  * @brief The OperationRealTimePanel class is a central panel of the OperationMonitorView.
@@ -75,15 +69,10 @@ signals:
   void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
   void SetupConnections();
 
   MonitorRealTimeActions* m_actions{nullptr};
-
-  sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
-  RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};
-  MessagePanel* m_message_panel{nullptr};
+  OperationRealTimeWidget* m_realtime_widget{nullptr};
 };
 
 }  // namespace oac_tree_gui

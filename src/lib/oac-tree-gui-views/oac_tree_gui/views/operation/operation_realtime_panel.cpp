@@ -20,22 +20,15 @@
 
 #include "operation_realtime_panel.h"
 
-#include "message_panel.h"
 #include "monitor_realtime_actions.h"
-#include "realtime_instruction_tree_widget.h"
+#include "operation_realtime_widget.h"
 
 #include <oac_tree_gui/model/job_item.h>
-#include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/instruction_item.h>
-
-#include <sup/gui/widgets/collapsible_list_view.h>
 
 #include <QVBoxLayout>
 
 namespace
 {
-
-const QString kCollapsibleListSettingName = "OperationRealTimePanel/collapsible_list";
 
 QList<QAction*> GetToolBarActions(oac_tree_gui::MonitorRealTimeActions* actions)
 {
@@ -53,9 +46,7 @@ namespace oac_tree_gui
 OperationRealTimePanel::OperationRealTimePanel(QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_actions(new MonitorRealTimeActions(this))
-    , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
-    , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
-    , m_message_panel(new MessagePanel)
+    , m_realtime_widget(new OperationRealTimeWidget)
 {
   setWindowTitle("Operations");
 
@@ -63,60 +54,42 @@ OperationRealTimePanel::OperationRealTimePanel(QWidget* parent_widget)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_collapsible_list->AddWidget(m_realtime_instruction_tree);
-
-  m_collapsible_list->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
-
-  layout->addWidget(m_collapsible_list);
+  layout->addWidget(m_realtime_widget);
 
   SetupConnections();
-  ReadSettings();
 
   addActions(GetToolBarActions(m_actions));
 }
 
-OperationRealTimePanel::~OperationRealTimePanel()
-{
-  WriteSettings();
-}
+OperationRealTimePanel::~OperationRealTimePanel() = default;
 
 void OperationRealTimePanel::SetCurrentJob(JobItem* job_item)
 {
   if (job_item != nullptr)
   {
-    m_realtime_instruction_tree->SetProcedure(job_item->GetExpandedProcedure());
+    m_realtime_widget->SetProcedure(job_item->GetExpandedProcedure());
     m_actions->SetCurrentTickTimeout(job_item->GetTickTimeout().count());
   }
   else
   {
-    m_realtime_instruction_tree->SetProcedure(nullptr);
+    m_realtime_widget->SetProcedure(nullptr);
   }
 }
 
 void OperationRealTimePanel::SetSelectedInstructions(
     const std::vector<const InstructionItem*>& items)
 {
-  m_realtime_instruction_tree->SetSelectedInstructions(items);
+  m_realtime_widget->SetSelectedInstructions(items);
 }
 
 void OperationRealTimePanel::SetJobLog(JobLog* job_log)
 {
-  m_message_panel->SetLog(job_log);
+  m_realtime_widget->SetJobLog(job_log);
 }
 
 int OperationRealTimePanel::GetCurrentTickTimeout()
 {
   return m_actions->GetCurrentTickTimeout();
-}
-
-void OperationRealTimePanel::ReadSettings()
-{
-  m_collapsible_list->ReadSettings();
-}
-
-void OperationRealTimePanel::WriteSettings()
-{
-  m_collapsible_list->WriteSettings();
 }
 
 void OperationRealTimePanel::SetupConnections()
@@ -135,10 +108,10 @@ void OperationRealTimePanel::SetupConnections()
   connect(m_actions, &MonitorRealTimeActions::ChangeDelayRequest, this,
           &OperationRealTimePanel::ChangeDelayRequest);
 
-  connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest,
-          this, &OperationRealTimePanel::ToggleBreakpointRequest);
-  connect(m_actions, &MonitorRealTimeActions::ScrollToSelectionRequest, m_realtime_instruction_tree,
-          &RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag);
+  connect(m_realtime_widget, &OperationRealTimeWidget::ToggleBreakpointRequest, this,
+          &OperationRealTimePanel::ToggleBreakpointRequest);
+  connect(m_actions, &MonitorRealTimeActions::ScrollToSelectionRequest, m_realtime_widget,
+          &OperationRealTimeWidget::SetViewportFollowsSelectionFlag);
 }
 
 }  // namespace oac_tree_gui
