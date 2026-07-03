@@ -25,6 +25,8 @@ target_sources(${library_name} PRIVATE
   operation_tab_widget.h
   operation_realtime_panel.cpp
   operation_realtime_panel.h
+  operation_realtime_widget.cpp
+  operation_realtime_widget.h
   operation_splittable_widget.cpp
   operation_splittable_widget.h
   operation_workspace_panel.cpp
