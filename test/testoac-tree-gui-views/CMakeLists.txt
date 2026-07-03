@@ -16,6 +16,7 @@ target_sources(${test} PRIVATE
   main_window_helper_tests.cpp
   monitor_widget_tests.cpp
   operation_monitor_view_tests.cpp
+  operation_splittable_widget_tests.cpp
   procedure_list_actions_test.cpp
   procedure_list_widget_tests.cpp
   procedure_splittable_editor_widget_tests.cpp
