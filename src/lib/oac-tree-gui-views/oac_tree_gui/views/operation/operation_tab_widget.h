@@ -63,6 +63,8 @@ public:
 
   void SetJobLog(JobLog* job_log);
 
+  int GetCurrentTickTimeout();
+
 signals:
   void RunRequest();
   void PauseRequest();

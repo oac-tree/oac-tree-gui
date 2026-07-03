@@ -40,7 +40,7 @@ class ApplicationModels;
 class JobItem;
 class JobManager;
 class OperationWorkspacePanel;
-class OperationRealTimePanel;
+class OperationSplittableWidget;
 class OperationJobPanel;
 class OperationActionHandler;
 class OperationActionContext;
@@ -103,13 +103,12 @@ private:
   OperationPresentationMode m_presentation_mode;
 
   QWidget* CreateLeftPanel();
-  QWidget* CreateCentralPanel();
 
   QAction* m_toggle_left_sidebar{nullptr};
   QAction* m_toggle_right_sidebar{nullptr};
 
   OperationJobPanel* m_job_panel{nullptr};
-  OperationRealTimePanel* m_realtime_panel{nullptr};
+  OperationSplittableWidget* m_splittable_widget{nullptr};
   QWidget* m_left_panel{nullptr};
   OperationWorkspacePanel* m_workspace_panel{nullptr};
 

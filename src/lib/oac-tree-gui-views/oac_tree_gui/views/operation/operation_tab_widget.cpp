@@ -101,6 +101,11 @@ void OperationTabWidget::SetJobLog(JobLog* job_log)
   m_realtime_widget->SetJobLog(job_log);
 }
 
+int OperationTabWidget::GetCurrentTickTimeout()
+{
+  return m_actions->GetCurrentTickTimeout();
+}
+
 void OperationTabWidget::SetupConnections()
 {
   // forward signals from a toolbar further up

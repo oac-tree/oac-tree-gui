@@ -69,6 +69,32 @@ void OperationSplittableWidget::SetCurrentJob(JobItem* job_item)
   }
 }
 
+void OperationSplittableWidget::SetJobLog(JobLog* job_log)
+{
+  if (auto tab_widget = GetFocusTabWidget(); tab_widget)
+  {
+    tab_widget->SetJobLog(job_log);
+  }
+}
+
+void OperationSplittableWidget::SetSelectedInstructions(
+    const std::vector<const InstructionItem*>& items)
+{
+  if (auto tab_widget = GetFocusTabWidget(); tab_widget)
+  {
+    tab_widget->SetSelectedInstructions(items);
+  }
+}
+
+int OperationSplittableWidget::GetCurrentTickTimeout()
+{
+  if (auto tab_widget = GetFocusTabWidget(); tab_widget)
+  {
+    return tab_widget->GetCurrentTickTimeout();
+  }
+  return 0;
+}
+
 sup::gui::SplittableComboPanel* OperationSplittableWidget::CreatePanel()
 {
   return m_splitter_controller->CreatePanel();
@@ -79,12 +105,36 @@ sup::gui::SplittableEditorController* OperationSplittableWidget::GetController()
   return m_splitter_controller.get();
 }
 
+OperationTabWidget* OperationSplittableWidget::GetFocusTabWidget() const
+{
+  auto focus_widget = m_splitter_controller->GetFocusWidget();
+  return focus_widget == nullptr ? nullptr : focus_widget->GetMainEditor<OperationTabWidget>();
+}
+
 std::unique_ptr<sup::gui::SplittableEditorController>
 OperationSplittableWidget::CreateSplitterController() const
 {
   auto factory_func = [this]() -> std::unique_ptr<sup::gui::SplittableComboPanel>
   {
     auto main_editor = std::make_unique<OperationTabWidget>();
+
+    // re-emit the panel's toolbar signals through the splittable widget, so that a single
+    // set of connections in the parent view serves all panels
+    auto* tab_widget = main_editor.get();
+    connect(tab_widget, &OperationTabWidget::RunRequest, this,
+            &OperationSplittableWidget::RunRequest);
+    connect(tab_widget, &OperationTabWidget::PauseRequest, this,
+            &OperationSplittableWidget::PauseRequest);
+    connect(tab_widget, &OperationTabWidget::StepRequest, this,
+            &OperationSplittableWidget::StepRequest);
+    connect(tab_widget, &OperationTabWidget::StopRequest, this,
+            &OperationSplittableWidget::StopRequest);
+    connect(tab_widget, &OperationTabWidget::ResetRequest, this,
+            &OperationSplittableWidget::ResetRequest);
+    connect(tab_widget, &OperationTabWidget::ChangeDelayRequest, this,
+            &OperationSplittableWidget::ChangeDelayRequest);
+    connect(tab_widget, &OperationTabWidget::ToggleBreakpointRequest, this,
+            &OperationSplittableWidget::ToggleBreakpointRequest);
 
     auto item_list_callback = [this]() -> std::vector<mvvm::SessionItem*>
     {

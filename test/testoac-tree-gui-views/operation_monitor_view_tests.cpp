@@ -27,7 +27,6 @@
 #include <oac_tree_gui/operation/objects/operation_action_handler.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
 #include <oac_tree_gui/views/operation/operation_job_panel.h>
-#include <oac_tree_gui/views/operation/operation_realtime_panel.h>
 #include <oac_tree_gui/views/operation/realtime_instruction_tree_widget.h>
 
 #include <sup/gui/app/null_command_service.h>
@@ -68,12 +67,9 @@ TEST_F(OperationMonitorViewTest, ReloadJob)
   // accessing internals
   auto action_handler = view.GetOperationActionHandler();
   ASSERT_NE(action_handler, nullptr);
-  auto operation_realtime_panel = view.findChild<OperationRealTimePanel*>();
-  ASSERT_NE(operation_realtime_panel, nullptr);
   auto operation_job_panel = view.findChild<OperationJobPanel*>();
   ASSERT_NE(operation_job_panel, nullptr);
-  auto realtime_instruction_tree_widget =
-      operation_realtime_panel->findChild<RealTimeInstructionTreeWidget*>();
+  auto realtime_instruction_tree_widget = view.findChild<RealTimeInstructionTreeWidget*>();
   ASSERT_NE(realtime_instruction_tree_widget, nullptr);
   auto realtime_instruction_tree = realtime_instruction_tree_widget->findChild<QTreeView*>();
   ASSERT_NE(realtime_instruction_tree, nullptr);

@@ -23,6 +23,7 @@
 
 #include <QWidget>
 #include <memory>
+#include <vector>
 
 class QSplitter;
 
@@ -40,8 +41,11 @@ class SplittableComboPanel;
 namespace oac_tree_gui
 {
 
+class InstructionItem;
+class JobLog;
 class JobModel;
 class JobItem;
+class OperationTabWidget;
 
 /**
  * @brief The OperationSplittableWidget holds multiple splittable OperationTabWidgets.
@@ -67,6 +71,21 @@ public:
   void SetCurrentJob(JobItem* job_item);
 
   /**
+   * @brief Sets the log to be shown in the currently focused panel.
+   */
+  void SetJobLog(JobLog* job_log);
+
+  /**
+   * @brief Sets currently selected instructions in the focused panel.
+   */
+  void SetSelectedInstructions(const std::vector<const InstructionItem*>& items);
+
+  /**
+   * @brief Returns tick timeout currently set in the focused panel.
+   */
+  int GetCurrentTickTimeout();
+
+  /**
    * @brief Adds panel to the splitter.
    */
   sup::gui::SplittableComboPanel* CreatePanel();
@@ -84,8 +103,21 @@ signals:
    */
   void focusWidgetJobSelectionChanged(const mvvm::ItemSelection& selection);
 
+  void RunRequest();
+  void PauseRequest();
+  void StepRequest();
+  void StopRequest();
+  void ResetRequest();
+  void ChangeDelayRequest(int msec);
+  void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
+
 private:
   std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController() const;
+
+  /**
+   * @brief Returns the tab widget of the currently focused panel, or nullptr if none.
+   */
+  OperationTabWidget* GetFocusTabWidget() const;
 
   QSplitter* m_splitter{nullptr};
   JobModel* m_model{nullptr};

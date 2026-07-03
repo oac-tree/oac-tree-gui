@@ -21,7 +21,7 @@
 #include "operation_monitor_view.h"
 
 #include "operation_job_panel.h"
-#include "operation_realtime_panel.h"
+#include "operation_splittable_widget.h"
 #include "operation_workspace_panel.h"
 
 #include <oac_tree_gui/jobsystem/automation_client.h>
@@ -91,7 +91,7 @@ OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService& command
     , m_command_service(command_service)
     , m_presentation_mode(mode)
     , m_job_panel(new OperationJobPanel)
-    , m_realtime_panel(new OperationRealTimePanel)
+    , m_splittable_widget(new OperationSplittableWidget)
     , m_left_panel(CreateLeftPanel())
     , m_workspace_panel{new OperationWorkspacePanel(command_service)}
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
@@ -104,7 +104,7 @@ OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService& command
   layout->setContentsMargins(4, 1, 4, 4);
 
   m_splitter->addWidget(m_left_panel);
-  m_splitter->addWidget(CreateCentralPanel());
+  m_splitter->addWidget(m_splittable_widget);
   m_splitter->addWidget(m_workspace_panel);
   m_splitter->setSizes({300, 900, 300});
 
@@ -131,6 +131,7 @@ void OperationMonitorView::SetModels(ApplicationModels* models)
 {
   m_models = models;
   m_job_panel->SetModels(models);
+  m_splittable_widget->SetModel(models->GetJobModel());
   m_action_handler->SetJobContainer(models->GetJobModel()->GetRootItem());
 }
 
@@ -202,35 +203,35 @@ void OperationMonitorView::SetupConnections()
   // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
   // start request
-  connect(m_realtime_panel, &OperationRealTimePanel::RunRequest, m_action_handler,
+  connect(m_splittable_widget, &OperationSplittableWidget::RunRequest, m_action_handler,
           &OperationActionHandler::OnStartJobRequest);
 
   // pause request
-  connect(m_realtime_panel, &OperationRealTimePanel::PauseRequest, m_action_handler,
+  connect(m_splittable_widget, &OperationSplittableWidget::PauseRequest, m_action_handler,
           &OperationActionHandler::OnPauseJobRequest);
 
   // step request
-  connect(m_realtime_panel, &OperationRealTimePanel::StepRequest, m_action_handler,
+  connect(m_splittable_widget, &OperationSplittableWidget::StepRequest, m_action_handler,
           &OperationActionHandler::OnMakeStepRequest);
 
   // stop request
-  connect(m_realtime_panel, &OperationRealTimePanel::StopRequest, m_action_handler,
+  connect(m_splittable_widget, &OperationSplittableWidget::StopRequest, m_action_handler,
           &OperationActionHandler::OnStopJobRequest);
 
   // reset request
-  connect(m_realtime_panel, &OperationRealTimePanel::ResetRequest, m_action_handler,
+  connect(m_splittable_widget, &OperationSplittableWidget::ResetRequest, m_action_handler,
           &OperationActionHandler::OnResetJobRequest);
 
   // change delay request
   auto on_change_delay = [this](int msec)
   { m_action_handler->OnSetTickTimeoutRequest(std::chrono::milliseconds{msec}); };
-  connect(m_realtime_panel, &OperationRealTimePanel::ChangeDelayRequest, m_action_handler,
+  connect(m_splittable_widget, &OperationSplittableWidget::ChangeDelayRequest, m_action_handler,
           on_change_delay);
-  on_change_delay(m_realtime_panel->GetCurrentTickTimeout());
+  on_change_delay(m_splittable_widget->GetCurrentTickTimeout());
 
-  // instruction next leave request from JobManager to OperationRealTimePanel
-  connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_realtime_panel,
-          &OperationRealTimePanel::SetSelectedInstructions);
+  // instruction next leave request from JobManager to OperationSplittableWidget
+  connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_splittable_widget,
+          &OperationSplittableWidget::SetSelectedInstructions);
 
   // job selection request from MonitorPanel
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);
@@ -260,7 +261,7 @@ void OperationMonitorView::SetupConnections()
   connect(m_action_handler, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 
-  connect(m_realtime_panel, &OperationRealTimePanel::ToggleBreakpointRequest, m_action_handler,
+  connect(m_splittable_widget, &OperationSplittableWidget::ToggleBreakpointRequest, m_action_handler,
           [this](const auto* instruction)
           { m_action_handler->OnToggleBreakpoint(const_cast<InstructionItem*>(instruction)); });
 }
@@ -285,11 +286,11 @@ void OperationMonitorView::OnJobSelected(const JobItem* selected_item)
 {
   auto job_item = const_cast<JobItem*>(selected_item);
   m_job_manager->SetActiveJob(job_item);
-  m_realtime_panel->SetCurrentJob(job_item);
+  m_splittable_widget->SetCurrentJob(job_item);
 
   if (auto handler = m_job_manager->GetJobHandler(job_item); handler)
   {
-    m_realtime_panel->SetJobLog(handler->GetJobLog());
+    m_splittable_widget->SetJobLog(handler->GetJobLog());
   }
 
   m_workspace_panel->SetProcedure((selected_item != nullptr) ? job_item->GetExpandedProcedure()
@@ -317,13 +318,6 @@ QWidget* OperationMonitorView::CreateLeftPanel()
                      ? m_job_panel->GetSequencerMonitorViewActions()
                      : m_job_panel->GetOperationMonitorViewActions();
   result->AddWidget(m_job_panel, actions);
-  return result;
-}
-
-QWidget* OperationMonitorView::CreateCentralPanel()
-{
-  auto result = new sup::gui::ItemStackWidget;
-  result->AddWidget(m_realtime_panel, m_realtime_panel->actions());
   return result;
 }
 
