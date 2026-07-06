@@ -37,6 +37,7 @@ class JobItem;
 class JobLog;
 class MonitorRealTimeActions;
 class OperationRealTimeWidget;
+class WorkspaceVariableTreeView;
 
 /**
  * @brief The OperationTabWidget class shows running jobs with the possibility to select what to see
@@ -83,6 +84,8 @@ private:
   QToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
   OperationRealTimeWidget* m_realtime_widget{nullptr};
+  WorkspaceVariableTreeView* m_workspace_tree{nullptr};
+  WorkspaceVariableTreeView* m_workspace_table{nullptr};
   JobItem* m_current_job{nullptr};
 };
 
