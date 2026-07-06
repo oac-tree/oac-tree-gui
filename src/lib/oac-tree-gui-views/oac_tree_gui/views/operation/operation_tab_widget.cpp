@@ -64,8 +64,8 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
     , m_node_editor_widget(new NodeEditorWidget(NodeEditorMode::kNodeViewer))
     , m_instruction_task_monitor(new InstructionTaskMonitor)
 {
-  m_workspace_tree->SetEditable(false);
-  m_workspace_table->SetEditable(false);
+  m_workspace_tree->SetEditable(true);
+  m_workspace_table->SetEditable(true);
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
