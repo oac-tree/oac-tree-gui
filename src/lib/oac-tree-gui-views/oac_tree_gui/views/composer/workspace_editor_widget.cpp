@@ -56,6 +56,7 @@ WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
 
 void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem* workspace)
 {
+  m_editor->SetWorkspaceItem(workspace);
   m_tree_view->SetWorkspaceItem(workspace);
 }
 
@@ -75,10 +76,6 @@ void WorkspaceEditorWidget::SetupConnections()
 {
   connect(m_editor, &WorkspaceEditor::ItemSelectRequest, m_tree_view,
           &WorkspaceVariableTreeView::SelectItem);
-
-  // the editor learns about the workspace item once the tree view actually subscribes to it
-  connect(m_tree_view, &WorkspaceVariableTreeView::WorkspaceItemChanged, m_editor,
-          &WorkspaceEditor::SetWorkspaceItem);
 }
 
 void WorkspaceEditorWidget::OnTreeContextMenuRequest(QMenu& menu)

@@ -96,12 +96,6 @@ public:
    */
   void SetContextMenuCallback(std::function<void(QMenu&)> callback);
 
-signals:
-  /**
-   * @brief Emitted when the effective (visible/subscribed) workspace item changes.
-   */
-  void WorkspaceItemChanged(oac_tree_gui::WorkspaceItem* workspace_item);
-
 protected:
   void resizeEvent(QResizeEvent* event) override;
 

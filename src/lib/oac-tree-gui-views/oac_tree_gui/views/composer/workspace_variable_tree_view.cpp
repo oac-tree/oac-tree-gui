@@ -213,8 +213,6 @@ void WorkspaceVariableTreeView::SetWorkspaceItemIntern(WorkspaceItem* workspace_
   {
     AdjustTreeAppearance();
   }
-
-  emit WorkspaceItemChanged(workspace_item);
 }
 
 }  // namespace oac_tree_gui
