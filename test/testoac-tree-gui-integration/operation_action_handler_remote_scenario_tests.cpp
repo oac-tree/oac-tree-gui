@@ -274,6 +274,9 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, RemoveRemoteJobDropsConnect
   const RemoteConnectionInfo connection_context{TestFixture::GetServerInfo(), {kJobIndex}};
   ON_CALL(this->m_mock_context, OnGetRemoteConnectionInfo())
       .WillByDefault(::testing::Return(std::optional<RemoteConnectionInfo>(connection_context)));
+  EXPECT_CALL(this->m_mock_context, OnGetRemoteConnectionInfo()).Times(1);
+  EXPECT_CALL(this->m_mock_context, OnSelectedJob()).Times(1);
+
   handler->OnImportRemoteJobRequest();
 
   auto submitted_jobs = this->template GetJobs<RemoteJobItem>();
@@ -284,6 +287,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, RemoveRemoteJobDropsConnect
 
   // remove the job; as it is the last one using the server, the connection must be dropped
   ON_CALL(this->m_mock_context, OnSelectedJob()).WillByDefault(::testing::Return(job_item));
+  EXPECT_CALL(this->m_mock_context, OnSelectedJob()).Times(1);
   EXPECT_CALL(this->m_mock_context, OnDropRemoteConnection(TestFixture::GetServerInfo())).Times(1);
 
   EXPECT_TRUE(handler->OnRemoveJobRequest());
