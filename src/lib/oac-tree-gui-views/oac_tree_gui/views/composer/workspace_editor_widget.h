@@ -25,13 +25,10 @@
 
 #include <QWidget>
 
-class QTreeView;
-class QLineEdit;
+class QMenu;
 
 namespace sup::gui
 {
-class CustomHeaderView;
-class VisibilityAgentBase;
 class IAppCommandService;
 }  // namespace sup::gui
 
@@ -40,7 +37,7 @@ namespace oac_tree_gui
 
 class WorkspaceItem;
 class WorkspaceEditor;
-class WorkspaceViewComponentProvider;
+class WorkspaceVariableTreeView;
 
 /**
  * @brief The WorkspaceEditorWidget class is intended for editing of workspace variables.
@@ -67,37 +64,17 @@ public:
 
   void SetWorkspaceEditType(WorkspaceEditType edit_type);
 
-protected:
-  void resizeEvent(QResizeEvent* event) override;
-
 private:
   void SetupConnections();
-  void SetupTree();
-  void AdjustTreeAppearance();
 
   /**
-   * @brief Creates tree component provider for given type of workspace presentation.
-   *
-   * Tree will be equipped with the model, generating either variable tree, or variable table.
+   * @brief Populates the tree context menu with editor actions to modify attributes.
    */
-  std::unique_ptr<WorkspaceViewComponentProvider> CreateProvider(
-      WorkspacePresentationType presentation) const;
+  void OnTreeContextMenuRequest(QMenu& menu);
 
-  /**
-   * @brief Summons custom tree context menu to modify attributes.
-   */
-  void OnTreeContextMenuRequest(const QPoint& point);
-
-  void SetWorkspaceItemIntern(WorkspaceItem* workspace_item);
-
-  QTreeView* m_tree_view{nullptr};
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
-  std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
-  std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
-  QLineEdit* m_line_edit{nullptr};
+  WorkspaceVariableTreeView* m_tree_view{nullptr};
   WorkspaceEditor* m_editor{nullptr};
 
-  WorkspaceItem* m_workspace_item{nullptr};
   WorkspaceEditType m_edit_type;
 };
 

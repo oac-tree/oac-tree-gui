@@ -43,6 +43,8 @@ target_sources(${library_name} PRIVATE
   workspace_editor_actions.h
   workspace_editor_widget.cpp
   workspace_editor_widget.h
+  workspace_variable_tree_view.cpp
+  workspace_variable_tree_view.h
   xml_panel.cpp
   xml_panel.h
 )
