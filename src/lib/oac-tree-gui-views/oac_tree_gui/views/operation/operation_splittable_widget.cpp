@@ -76,11 +76,17 @@ void OperationSplittableWidget::SetCurrentJob(JobItem* job_item)
   }
 }
 
-void OperationSplittableWidget::SetJobLog(JobLog* job_log)
+void OperationSplittableWidget::SetJobLog(JobItem* job, JobLog* job_log)
 {
-  if (auto tab_widget = GetFocusTabWidget(); tab_widget)
+  for (auto panel : m_splitter_controller->GetPanels())
   {
-    tab_widget->SetJobLog(job_log);
+    if (panel->GetCurrentItem() == job)
+    {
+      if (auto tab_widget = panel->GetMainEditor<OperationTabWidget>(); tab_widget)
+      {
+        tab_widget->SetJobLog(job_log);
+      }
+    }
   }
 }
 

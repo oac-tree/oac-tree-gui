@@ -71,9 +71,9 @@ public:
   void SetCurrentJob(JobItem* job_item);
 
   /**
-   * @brief Sets the log to be shown in the currently focused panel.
+   * @brief Sets the log to be shown in every panel showing the given job.
    */
-  void SetJobLog(JobLog* job_log);
+  void SetJobLog(JobItem* job, JobLog* job_log);
 
   /**
    * @brief Sets currently selected instructions in every panel showing the given job.

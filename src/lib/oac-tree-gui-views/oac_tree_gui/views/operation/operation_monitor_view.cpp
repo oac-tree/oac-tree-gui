@@ -240,7 +240,7 @@ void OperationMonitorView::SetupConnections()
           });
 
   // keep the manager's active-jobs set in sync with the jobs shown across the panels, and seed each
-  // freshly shown panel with the current active instructions of its job
+  // freshly shown panel with the current active instructions and log of its job
   connect(m_splittable_widget, &OperationSplittableWidget::activeJobsChanged, this,
           [this](const std::vector<JobItem*>& jobs)
           {
@@ -249,6 +249,10 @@ void OperationMonitorView::SetupConnections()
             {
               m_splittable_widget->SetSelectedInstructions(job,
                                                            m_job_manager->GetActiveInstructions(job));
+              if (auto handler = m_job_manager->GetJobHandler(job); handler != nullptr)
+              {
+                m_splittable_widget->SetJobLog(job, handler->GetJobLog());
+              }
             }
           });
 
@@ -304,12 +308,10 @@ void OperationMonitorView::SetupWidgetActions()
 void OperationMonitorView::OnJobSelected(const JobItem* selected_item)
 {
   auto job_item = const_cast<JobItem*>(selected_item);
-  m_splittable_widget->SetCurrentJob(job_item);
 
-  if (auto handler = m_job_manager->GetJobHandler(job_item); handler)
-  {
-    m_splittable_widget->SetJobLog(handler->GetJobLog());
-  }
+  // showing the job in the focused panel triggers activeJobsChanged, which seeds that panel with
+  // the job's active instructions and log
+  m_splittable_widget->SetCurrentJob(job_item);
 
   m_workspace_panel->SetProcedure((selected_item != nullptr) ? job_item->GetExpandedProcedure()
                                                              : nullptr);
