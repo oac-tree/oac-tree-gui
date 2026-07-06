@@ -68,13 +68,18 @@ public:
 
   int GetCurrentTickTimeout();
 
+  /**
+   * @brief Updates the tick timeout shown in the toolbar without emitting a change request.
+   */
+  void SetCurrentTickTimeout(int msec);
+
 signals:
   void RunRequest(oac_tree_gui::JobItem* job);
   void PauseRequest(oac_tree_gui::JobItem* job);
   void StepRequest(oac_tree_gui::JobItem* job);
   void StopRequest(oac_tree_gui::JobItem* job);
   void ResetRequest(oac_tree_gui::JobItem* job);
-  void ChangeDelayRequest(int msec);
+  void ChangeDelayRequest(oac_tree_gui::JobItem* job, int msec);
   void ToggleBreakpointRequest(oac_tree_gui::JobItem* job,
                                const oac_tree_gui::InstructionItem* instruction);
 

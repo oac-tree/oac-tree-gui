@@ -219,12 +219,16 @@ void OperationMonitorView::SetupConnections()
   connect(m_splittable_widget, &OperationSplittableWidget::ResetRequest, m_action_handler,
           &OperationActionHandler::OnResetJobRequest);
 
-  // change delay request
-  auto on_change_delay = [this](int msec)
-  { m_action_handler->OnSetTickTimeoutRequest(std::chrono::milliseconds{msec}); };
+  // change delay request: update the job's tick timeout and reflect it in every panel showing it
   connect(m_splittable_widget, &OperationSplittableWidget::ChangeDelayRequest, m_action_handler,
-          on_change_delay);
-  on_change_delay(m_splittable_widget->GetCurrentTickTimeout());
+          [this](JobItem* job, int msec)
+          {
+            m_action_handler->OnSetTickTimeoutRequest(job, std::chrono::milliseconds{msec});
+            m_splittable_widget->SetTickTimeout(job, msec);
+          });
+  // seed the default tick timeout applied to newly submitted jobs
+  m_action_handler->OnSetTickTimeoutRequest(
+      nullptr, std::chrono::milliseconds{m_splittable_widget->GetCurrentTickTimeout()});
 
   // active instructions of a job are routed to every panel showing that job
   connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_splittable_widget,

@@ -102,6 +102,26 @@ TEST_F(OperationActionHandlerExtendedTest, AttemptToUseWhenMisconfigured)
   EXPECT_THROW(OperationActionHandler(&m_job_manager, {}), RuntimeException);
 }
 
+//! Changing tick timeout for a given job updates the job's tick timeout, while the value with no
+//! job only sets the default used for newly submitted jobs.
+TEST_F(OperationActionHandlerExtendedTest, OnSetTickTimeoutRequestForJob)
+{
+  auto procedure = test::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  auto handler = CreateOperationHandler();
+
+  handler->OnSetTickTimeoutRequest(nullptr, std::chrono::milliseconds{42});
+
+  EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
+  EXPECT_TRUE(handler->SubmitLocalJob(procedure));
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  EXPECT_EQ(job_item->GetTickTimeout(), std::chrono::milliseconds{42});
+
+  // changing the tick timeout for the given job updates the job itself
+  handler->OnSetTickTimeoutRequest(job_item, std::chrono::milliseconds{100});
+  EXPECT_EQ(job_item->GetTickTimeout(), std::chrono::milliseconds{100});
+}
+
 //! Submission of the procedure.
 TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
 {
@@ -112,7 +132,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnSubmitJobRequest)
 
   QSignalSpy spy_selected_request(handler.get(), &OperationActionHandler::MakeJobSelectedRequest);
 
-  handler->OnSetTickTimeoutRequest(std::chrono::milliseconds{42});
+  handler->OnSetTickTimeoutRequest(nullptr, std::chrono::milliseconds{42});
 
   EXPECT_FALSE(handler->SubmitLocalJob(nullptr));
 

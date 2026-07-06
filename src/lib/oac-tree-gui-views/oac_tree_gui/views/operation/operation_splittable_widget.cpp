@@ -106,6 +106,20 @@ void OperationSplittableWidget::SetSelectedInstructions(
   }
 }
 
+void OperationSplittableWidget::SetTickTimeout(JobItem* job, int msec)
+{
+  for (auto panel : m_splitter_controller->GetPanels())
+  {
+    if (panel->GetCurrentItem() == job)
+    {
+      if (auto tab_widget = panel->GetMainEditor<OperationTabWidget>(); tab_widget)
+      {
+        tab_widget->SetCurrentTickTimeout(msec);
+      }
+    }
+  }
+}
+
 int OperationSplittableWidget::GetCurrentTickTimeout()
 {
   if (auto tab_widget = GetFocusTabWidget(); tab_widget)

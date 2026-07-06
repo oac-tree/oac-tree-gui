@@ -131,9 +131,12 @@ public:
    */
   bool OnRegenerateJobRequest();
   /**
-   * @brief Sets the default tick timeout applied to newly submitted jobs.
+   * @brief Updates tick timeout to the given value.
+   *
+   * The value becomes the default applied to newly submitted jobs. When a job is provided, its tick
+   * timeout is updated too, which propagates down to a running domain runner.
    */
-  void OnSetTickTimeoutRequest(std::chrono::milliseconds timeout);
+  void OnSetTickTimeoutRequest(JobItem* job, std::chrono::milliseconds timeout);
 
   /**
    * @brief Set/unset a breakpoint for given instruction of the given job.

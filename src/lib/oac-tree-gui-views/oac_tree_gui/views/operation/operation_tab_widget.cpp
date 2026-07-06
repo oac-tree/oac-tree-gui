@@ -110,7 +110,7 @@ void OperationTabWidget::SetCurrentJob(JobItem* job_item)
 
   if (job_item != nullptr)
   {
-    m_actions->SetCurrentTickTimeout(job_item->GetTickTimeout().count());
+    SetCurrentTickTimeout(job_item->GetTickTimeout().count());
   }
 }
 
@@ -129,6 +129,11 @@ int OperationTabWidget::GetCurrentTickTimeout()
   return m_actions->GetCurrentTickTimeout();
 }
 
+void OperationTabWidget::SetCurrentTickTimeout(int msec)
+{
+  m_actions->SetCurrentTickTimeout(msec);
+}
+
 void OperationTabWidget::SetupConnections()
 {
   // forward signals from a toolbar further up, stamping them with the job currently shown here
@@ -143,7 +148,7 @@ void OperationTabWidget::SetupConnections()
   connect(m_actions, &MonitorRealTimeActions::ResetRequest, this,
           [this]() { emit ResetRequest(m_current_job); });
   connect(m_actions, &MonitorRealTimeActions::ChangeDelayRequest, this,
-          &OperationTabWidget::ChangeDelayRequest);
+          [this](int msec) { emit ChangeDelayRequest(m_current_job, msec); });
 
   connect(m_actions, &MonitorRealTimeActions::ScrollToSelectionRequest, m_realtime_widget,
           &OperationRealTimeWidget::SetViewportFollowsSelectionFlag);

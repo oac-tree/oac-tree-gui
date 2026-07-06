@@ -247,9 +247,17 @@ bool OperationActionHandler::OnRegenerateJobRequest()
   return is_success;
 }
 
-void OperationActionHandler::OnSetTickTimeoutRequest(std::chrono::milliseconds timeout)
+void OperationActionHandler::OnSetTickTimeoutRequest(JobItem* job,
+                                                     std::chrono::milliseconds timeout)
 {
+  // becomes the default applied to newly submitted jobs
   m_tick_timeout = timeout;
+
+  // updating the currently shown job propagates the new value to its running domain runner
+  if (job != nullptr)
+  {
+    job->SetTickTimeout(timeout);
+  }
 }
 
 void OperationActionHandler::OnToggleBreakpoint(JobItem* job, InstructionItem* instruction)

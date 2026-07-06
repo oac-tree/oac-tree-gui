@@ -81,6 +81,11 @@ public:
   void SetSelectedInstructions(JobItem* job, const std::vector<const InstructionItem*>& items);
 
   /**
+   * @brief Updates the tick timeout shown in every panel showing the given job.
+   */
+  void SetTickTimeout(JobItem* job, int msec);
+
+  /**
    * @brief Returns tick timeout currently set in the focused panel.
    */
   int GetCurrentTickTimeout();
@@ -118,7 +123,7 @@ signals:
   void StepRequest(oac_tree_gui::JobItem* job);
   void StopRequest(oac_tree_gui::JobItem* job);
   void ResetRequest(oac_tree_gui::JobItem* job);
-  void ChangeDelayRequest(int msec);
+  void ChangeDelayRequest(oac_tree_gui::JobItem* job, int msec);
   void ToggleBreakpointRequest(oac_tree_gui::JobItem* job,
                                const oac_tree_gui::InstructionItem* instruction);
 
