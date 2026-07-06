@@ -21,22 +21,20 @@ target_sources(${library_name} PRIVATE
   operation_job_panel.h
   operation_monitor_view.cpp
   operation_monitor_view.h
-  operation_tab_widget.cpp
-  operation_tab_widget.h
-  operation_realtime_panel.cpp
-  operation_realtime_panel.h
   operation_realtime_widget.cpp
   operation_realtime_widget.h
   operation_splittable_widget.cpp
   operation_splittable_widget.h
-  operation_workspace_panel.cpp
-  operation_workspace_panel.h
+  operation_tab_widget.cpp
+  operation_tab_widget.h
   procedure_action_handler.cpp
   procedure_action_handler.h
   realtime_instruction_tree_widget.cpp
   realtime_instruction_tree_widget.h
   remote_connection_dialog.cpp
   remote_connection_dialog.h
+  server_settings_widget.cpp
+  server_settings_widget.h
   status_indicator.cpp
   status_indicator.h
   status_indicator_helper.cpp
@@ -45,6 +43,4 @@ target_sources(${library_name} PRIVATE
   status_indicator_widget.h
   task_widget.cpp
   task_widget.h
-  server_settings_widget.cpp
-  server_settings_widget.h
 )

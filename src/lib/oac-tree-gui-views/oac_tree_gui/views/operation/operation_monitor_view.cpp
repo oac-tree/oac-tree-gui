@@ -22,7 +22,6 @@
 
 #include "operation_job_panel.h"
 #include "operation_splittable_widget.h"
-#include "operation_workspace_panel.h"
 
 #include <oac_tree_gui/jobsystem/automation_client.h>
 #include <oac_tree_gui/jobsystem/i_job_handler.h>
@@ -93,7 +92,6 @@ OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService& command
     , m_job_panel(new OperationJobPanel)
     , m_splittable_widget(new OperationSplittableWidget)
     , m_left_panel(CreateLeftPanel())
-    , m_workspace_panel{new OperationWorkspacePanel(command_service)}
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_connection_service(CreateRemoteConnectionService())
     , m_job_manager(new JobManager(
@@ -105,15 +103,12 @@ OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService& command
 
   m_splitter->addWidget(m_left_panel);
   m_splitter->addWidget(m_splittable_widget);
-  m_splitter->addWidget(m_workspace_panel);
-  m_splitter->setSizes({300, 900, 300});
+  m_splitter->setSizes({300, 900});
 
   layout->addWidget(m_splitter);
 
   SetupConnections();
   SetupWidgetActions();
-
-  m_workspace_panel->setVisible(false);
 
   ReadSettings();
 
@@ -161,8 +156,6 @@ void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandC
 {
   m_command_service.AddActionToCommand(m_toggle_left_sidebar,
                                        sup::gui::constants::kToggleLeftPanelCommandId, context);
-  m_command_service.AddActionToCommand(m_toggle_right_sidebar,
-                                       sup::gui::constants::kToggleRightPanelCommandId, context);
 }
 
 OperationActionHandler* OperationMonitorView::GetOperationActionHandler()
@@ -296,12 +289,6 @@ void OperationMonitorView::SetupWidgetActions()
   m_toggle_left_sidebar->setIcon(FindIcon("dock-left"));
   connect(m_toggle_left_sidebar, &QAction::triggered, this,
           [this](auto) { m_left_panel->setVisible(!m_left_panel->isVisible()); });
-
-  m_toggle_right_sidebar = new QAction("Show/hide right panel", this);
-  m_toggle_right_sidebar->setToolTip("Show/hide right panel");
-  m_toggle_right_sidebar->setIcon(FindIcon("dock-right"));
-  connect(m_toggle_right_sidebar, &QAction::triggered, this,
-          [this](auto) { m_workspace_panel->setVisible(!m_workspace_panel->isVisible()); });
 }
 
 //! Setup widgets to show currently selected job.
@@ -312,9 +299,6 @@ void OperationMonitorView::OnJobSelected(const JobItem* selected_item)
   // showing the job in the focused panel triggers activeJobsChanged, which seeds that panel with
   // the job's active instructions and log
   m_splittable_widget->SetCurrentJob(job_item);
-
-  m_workspace_panel->SetProcedure((selected_item != nullptr) ? job_item->GetExpandedProcedure()
-                                                             : nullptr);
 }
 
 OperationActionContext OperationMonitorView::CreateOperationContext()

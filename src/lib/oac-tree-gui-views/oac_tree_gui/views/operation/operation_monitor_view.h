@@ -39,7 +39,6 @@ namespace oac_tree_gui
 class ApplicationModels;
 class JobItem;
 class JobManager;
-class OperationWorkspacePanel;
 class OperationSplittableWidget;
 class OperationJobPanel;
 class OperationActionHandler;
@@ -105,12 +104,10 @@ private:
   QWidget* CreateLeftPanel();
 
   QAction* m_toggle_left_sidebar{nullptr};
-  QAction* m_toggle_right_sidebar{nullptr};
 
   OperationJobPanel* m_job_panel{nullptr};
   OperationSplittableWidget* m_splittable_widget{nullptr};
   QWidget* m_left_panel{nullptr};
-  OperationWorkspacePanel* m_workspace_panel{nullptr};
 
   sup::gui::CustomSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};

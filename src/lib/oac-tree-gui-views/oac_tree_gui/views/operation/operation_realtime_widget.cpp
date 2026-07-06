@@ -32,7 +32,7 @@
 namespace
 {
 
-const QString kCollapsibleListSettingName = "OperationRealTimePanel/collapsible_list";
+const QString kCollapsibleListSettingName = "OperationRealTimeWidget/collapsible_list";
 
 }  // namespace
 

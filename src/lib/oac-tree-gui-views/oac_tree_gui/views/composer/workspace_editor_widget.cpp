@@ -23,6 +23,8 @@
 #include "workspace_editor.h"
 #include "workspace_variable_tree_view.h"
 
+#include <mvvm/model/session_item.h>
+
 #include <QMenu>
 #include <QVBoxLayout>
 

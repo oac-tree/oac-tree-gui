@@ -71,7 +71,7 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_tool_bar->setIconSize(NarrowToolBarIconSize());
+  m_tool_bar->setIconSize(ToolBarIconSize());
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   // to have fixed height when no actions are added
   m_tool_bar->setFixedHeight(NarrowToolBarIconSize().height() + mvvm::style::UnitSize(1.9));
