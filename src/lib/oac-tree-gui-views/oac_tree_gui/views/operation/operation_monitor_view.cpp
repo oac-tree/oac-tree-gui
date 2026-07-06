@@ -47,6 +47,7 @@
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/model/model_utils.h>
 
 #include <QAction>
@@ -227,7 +228,8 @@ void OperationMonitorView::SetupConnections()
 
   // active instructions of a job are routed to every panel showing that job
   connect(m_job_manager, &JobManager::ActiveInstructionChanged, m_splittable_widget,
-          [this](JobItem* job) {
+          [this](JobItem* job)
+          {
             m_splittable_widget->SetSelectedInstructions(job,
                                                          m_job_manager->GetActiveInstructions(job));
           });
@@ -240,8 +242,8 @@ void OperationMonitorView::SetupConnections()
             m_job_manager->SetActiveJobs(jobs);
             for (auto* job : jobs)
             {
-              m_splittable_widget->SetSelectedInstructions(job,
-                                                           m_job_manager->GetActiveInstructions(job));
+              m_splittable_widget->SetSelectedInstructions(
+                  job, m_job_manager->GetActiveInstructions(job));
               if (auto handler = m_job_manager->GetJobHandler(job); handler != nullptr)
               {
                 m_splittable_widget->SetJobLog(job, handler->GetJobLog());
@@ -277,9 +279,16 @@ void OperationMonitorView::SetupConnections()
   connect(m_action_handler, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 
-  connect(m_splittable_widget, &OperationSplittableWidget::ToggleBreakpointRequest, m_action_handler,
-          [this](JobItem* job, const auto* instruction)
-          { m_action_handler->OnToggleBreakpoint(job, const_cast<InstructionItem*>(instruction)); });
+  connect(
+      m_splittable_widget, &OperationSplittableWidget::ToggleBreakpointRequest, m_action_handler,
+      [this](JobItem* job, const auto* instruction)
+      { m_action_handler->OnToggleBreakpoint(job, const_cast<InstructionItem*>(instruction)); });
+
+  // propagate combo selection from current active panel to list with jobs
+  auto on_selected_job = [this](const mvvm::ItemSelection& selection)
+  { m_job_panel->SetSelectedJob(selection.GetItem<JobItem>()); };
+  connect(m_splittable_widget, &OperationSplittableWidget::focusWidgetJobSelectionChanged, this,
+          on_selected_job);
 }
 
 void OperationMonitorView::SetupWidgetActions()
