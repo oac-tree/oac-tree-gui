@@ -20,6 +20,7 @@
 
 #include "operation_tab_widget.h"
 
+#include "instruction_task_monitor.h"
 #include "monitor_realtime_actions.h"
 #include "operation_realtime_widget.h"
 
@@ -28,6 +29,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/workspace_variable_tree_view.h>
+#include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
 
@@ -59,6 +61,8 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
     , m_realtime_widget(new OperationRealTimeWidget)
     , m_workspace_tree(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTable))
+    , m_node_editor_widget(new NodeEditorWidget(NodeEditorMode::kNodeViewer))
+    , m_instruction_task_monitor(new InstructionTaskMonitor)
 {
   m_workspace_tree->SetEditable(false);
   m_workspace_table->SetEditable(false);
@@ -79,6 +83,8 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
   AddTab(m_realtime_widget, "Instructions", "Real time instruction tree with message panel");
   AddTab(m_workspace_tree, "Variable tree", "Workspace variables as a tree");
   AddTab(m_workspace_table, "Variable table", "Workspace variables as a table");
+  AddTab(m_node_editor_widget, "Node view", "Instruction tree as a node graph");
+  AddTab(m_instruction_task_monitor, "Task monitor", "Instruction task monitor");
 
   SetupConnections();
 }
@@ -92,20 +98,19 @@ void OperationTabWidget::SetCurrentJob(JobItem* job_item)
 {
   m_current_job = job_item;
 
+  auto procedure = (m_current_job == nullptr) ? nullptr : job_item->GetExpandedProcedure();
+  auto workspace_item = (procedure == nullptr) ? nullptr : procedure->GetWorkspace();
+  auto instructions = (procedure == nullptr) ? nullptr : procedure->GetInstructionContainer();
+
+  m_realtime_widget->SetProcedure(procedure);
+  m_workspace_tree->SetWorkspaceItem(workspace_item);
+  m_workspace_table->SetWorkspaceItem(workspace_item);
+  m_node_editor_widget->SetProcedure(procedure);
+  m_instruction_task_monitor->SetInstructionContainer(instructions);
+
   if (job_item != nullptr)
   {
-    auto procedure = job_item->GetExpandedProcedure();
-    m_realtime_widget->SetProcedure(procedure);
-    auto workspace_item = (procedure != nullptr) ? procedure->GetWorkspace() : nullptr;
-    m_workspace_tree->SetWorkspaceItem(workspace_item);
-    m_workspace_table->SetWorkspaceItem(workspace_item);
     m_actions->SetCurrentTickTimeout(job_item->GetTickTimeout().count());
-  }
-  else
-  {
-    m_realtime_widget->SetProcedure(nullptr);
-    m_workspace_tree->SetWorkspaceItem(nullptr);
-    m_workspace_table->SetWorkspaceItem(nullptr);
   }
 }
 

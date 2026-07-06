@@ -38,6 +38,8 @@ class JobLog;
 class MonitorRealTimeActions;
 class OperationRealTimeWidget;
 class WorkspaceVariableTreeView;
+class NodeEditorWidget;
+class InstructionTaskMonitor;
 
 /**
  * @brief The OperationTabWidget class shows running jobs with the possibility to select what to see
@@ -86,6 +88,8 @@ private:
   OperationRealTimeWidget* m_realtime_widget{nullptr};
   WorkspaceVariableTreeView* m_workspace_tree{nullptr};
   WorkspaceVariableTreeView* m_workspace_table{nullptr};
+  NodeEditorWidget* m_node_editor_widget{nullptr};
+  InstructionTaskMonitor* m_instruction_task_monitor{nullptr};
   JobItem* m_current_job{nullptr};
 };
 
