@@ -23,6 +23,8 @@
 #include "message_panel.h"
 #include "realtime_instruction_tree_widget.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
+
 #include <sup/gui/widgets/collapsible_list_view.h>
 
 #include <QVBoxLayout>

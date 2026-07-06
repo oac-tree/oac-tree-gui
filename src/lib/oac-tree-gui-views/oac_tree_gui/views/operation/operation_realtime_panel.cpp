@@ -23,6 +23,7 @@
 #include "monitor_realtime_actions.h"
 #include "operation_realtime_widget.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/job_item.h>
 
 #include <QVBoxLayout>

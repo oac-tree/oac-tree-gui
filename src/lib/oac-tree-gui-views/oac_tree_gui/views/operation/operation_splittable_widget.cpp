@@ -22,13 +22,14 @@
 
 #include "operation_tab_widget.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/job_model.h>
 
-#include <mvvm/utils/container_utils.h>
-
 #include <sup/gui/views/dtoeditor/splittable_combo_panel.h>
 #include <sup/gui/views/dtoeditor/splittable_editor_controller.h>
+
+#include <mvvm/utils/container_utils.h>
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -188,9 +189,8 @@ OperationSplittableWidget::CreateSplitterController() const
 
     auto item_list_callback = [this]() -> std::vector<mvvm::SessionItem*>
     {
-      return m_model == nullptr
-                 ? std::vector<mvvm::SessionItem*>()
-                 : mvvm::utils::CastItems<mvvm::SessionItem>(m_model->GetJobItems());
+      return m_model == nullptr ? std::vector<mvvm::SessionItem*>()
+                                : mvvm::utils::CastItems<mvvm::SessionItem>(m_model->GetJobItems());
     };
 
     auto result = std::make_unique<sup::gui::SplittableComboPanel>(std::move(main_editor),

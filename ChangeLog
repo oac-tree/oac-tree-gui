@@ -1,5 +1,6 @@
 Changes for 2.3.0:
 
+- Implement splittable panels for oac-tree-operation to run procedures side-by-side
 - Allow to close the GUI while having automation jobs still running
 - Cleanup automation clients on job removal
 - Fix application crash on attempt to use broken connection to automation server
