@@ -116,14 +116,15 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget
 
   auto anyvalue_item = sup::gui::CreateAnyValueItem(args.value);
   std::unique_ptr<sup::gui::AnyValueEditorDialog> dialog;
-  if (anyvalue_item->IsScalar())
-  {
-    dialog = CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), parent_widget);
-  }
-  else
-  {
+  // FIXME Uncomment after fixing COA-2184
+  // if (anyvalue_item->IsScalar())
+  // {
+  //   dialog = CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), parent_widget);
+  // }
+  // else
+  // {
     dialog = CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), parent_widget);
-  }
+  // }
   dialog->SetDescription(QString::fromStdString(args.description));
   if (dialog->exec() == QDialog::Accepted)
   {
