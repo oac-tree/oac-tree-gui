@@ -41,8 +41,8 @@ public:
 protected:
   MessageException(const MessageException& other) = default;
   MessageException& operator=(const MessageException& other) & = default;
-  MessageException(MessageException&&) = default;
-  MessageException& operator=(MessageException&&) = default;
+  MessageException(MessageException&&) noexcept = default;
+  MessageException& operator=(MessageException&&) & noexcept = default;
 
 private:
   std::string m_message;
@@ -58,8 +58,8 @@ public:
   ~RuntimeException() override = default;
   RuntimeException(const RuntimeException& other) = default;
   RuntimeException& operator=(const RuntimeException& other) & = default;
-  RuntimeException(RuntimeException&&) = default;
-  RuntimeException& operator=(RuntimeException&&) = default;
+  RuntimeException(RuntimeException&&) noexcept = default;
+  RuntimeException& operator=(RuntimeException&&) & noexcept = default;
 };
 
 /**
@@ -72,8 +72,8 @@ public:
   ~NullArgumentException() override = default;
   NullArgumentException(const NullArgumentException& other) = default;
   NullArgumentException& operator=(const NullArgumentException& other) & = default;
-  NullArgumentException(NullArgumentException&&) = default;
-  NullArgumentException& operator=(NullArgumentException&&) = default;
+  NullArgumentException(NullArgumentException&&) noexcept = default;
+  NullArgumentException& operator=(NullArgumentException&&) & noexcept = default;
 };
 
 /**
@@ -86,8 +86,8 @@ public:
   ~NotImplementedException() override = default;
   NotImplementedException(const NotImplementedException& other) = default;
   NotImplementedException& operator=(const NotImplementedException& other) & = default;
-  NotImplementedException(NotImplementedException&&) = default;
-  NotImplementedException& operator=(NotImplementedException&&) = default;
+  NotImplementedException(NotImplementedException&&) noexcept = default;
+  NotImplementedException& operator=(NotImplementedException&&) & noexcept = default;
 };
 
 /**
@@ -100,8 +100,8 @@ public:
   ~InvalidOperationException() override = default;
   InvalidOperationException(const InvalidOperationException& other) = default;
   InvalidOperationException& operator=(const InvalidOperationException& other) & = default;
-  InvalidOperationException(InvalidOperationException&&) = default;
-  InvalidOperationException& operator=(InvalidOperationException&&) = default;
+  InvalidOperationException(InvalidOperationException&&) noexcept = default;
+  InvalidOperationException& operator=(InvalidOperationException&&) & noexcept = default;
 };
 
 /**
@@ -114,8 +114,8 @@ public:
   ~LogicErrorException() override = default;
   LogicErrorException(const LogicErrorException& other) = default;
   LogicErrorException& operator=(const LogicErrorException& other) & = default;
-  LogicErrorException(LogicErrorException&&) = default;
-  LogicErrorException& operator=(LogicErrorException&&) = default;
+  LogicErrorException(LogicErrorException&&) noexcept = default;
+  LogicErrorException& operator=(LogicErrorException&&) & noexcept = default;
 };
 
 }  // namespace oac_tree_gui
