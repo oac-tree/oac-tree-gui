@@ -47,7 +47,7 @@ InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer() const
 void ProjectModel::PopulateModel()
 {
   (void)InsertItem<ComposerSettingsItem>();
-  InsertItem<InstructionContainerItem>();
+  (void)InsertItem<InstructionContainerItem>();
 }
 
 }  // namespace oac_tree_gui

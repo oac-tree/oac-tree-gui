@@ -111,7 +111,7 @@ std::string InstructionItem::GetName() const
 
 void InstructionItem::SetName(const std::string& name)
 {
-  SetDisplayName(name);
+  (void)SetDisplayName(name);
 }
 
 InstructionStatus InstructionItem::GetStatus() const

@@ -124,7 +124,7 @@ std::vector<std::pair<std::int32_t, std::string> > ProcedurePreambleItem::GetTyp
   result.reserve(type_items.size());
   for (auto item : type_items)
   {
-    result.emplace_back(item->GetRegistrationMode(), item->GetRegistrationString());
+    (void)result.emplace_back(item->GetRegistrationMode(), item->GetRegistrationString());
   }
 
   return result;

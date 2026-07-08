@@ -192,7 +192,7 @@ bool HandleDropNewType(const QMimeData& data, Qt::DropAction action, int32_t dro
         return false;
       }
 
-      parent.InsertItem(std::move(new_item), drop_tag_index);
+      (void)parent.InsertItem(std::move(new_item), drop_tag_index);
     }
     return true;
   }

@@ -146,19 +146,20 @@ void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_it
   if (!procedure_item.GetDescription().empty())
   {
     // do not generate attribute for empty name
-    procedure.AddAttribute(domainconstants::kNameAttribute, procedure_item.GetDescription());
+    (void)procedure.AddAttribute(domainconstants::kNameAttribute,
+                                 procedure_item.GetDescription());
   }
 
   if (procedure_item.GetTickTimeout() != domainconstants::kDefaultTickTimeoutSec)
   {
-    procedure.AddAttribute(domainconstants::kTickTimeoutAttributeName,
-                           mvvm::utils::DoubleToString(procedure_item.GetTickTimeout()));
+    (void)procedure.AddAttribute(domainconstants::kTickTimeoutAttributeName,
+                                 mvvm::utils::DoubleToString(procedure_item.GetTickTimeout()));
   }
 
   if (procedure_item.GetTimingAccuracy() != domainconstants::kDefaultTimingAccuracySec)
   {
-    procedure.AddAttribute(domainconstants::kTimingAccuracyAttributeName,
-                           mvvm::utils::DoubleToString(procedure_item.GetTimingAccuracy()));
+    (void)procedure.AddAttribute(domainconstants::kTimingAccuracyAttributeName,
+                                 mvvm::utils::DoubleToString(procedure_item.GetTimingAccuracy()));
   }
 
   PopulateDomainInstructions(procedure_item.GetInstructionContainer(), &procedure);

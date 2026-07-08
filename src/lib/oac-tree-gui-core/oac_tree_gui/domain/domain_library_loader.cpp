@@ -59,7 +59,7 @@ void CloseLibrary(DomainLibraryLoader::LibraryHandle handle)
 {
   if (handle != nullptr)
   {
-    sup::oac_tree::utils::UnloadLibrary(handle);
+    (void)sup::oac_tree::utils::UnloadLibrary(handle);
   }
 }
 
@@ -93,7 +93,7 @@ void DomainLibraryLoader::LoadLibrary(const std::string& library_name)
   {
     m_library_handles.push_back(handle);
   }
-  m_library_info.emplace_back(library_name, ok);
+  (void)m_library_info.emplace_back(library_name, ok);
 }
 
 std::vector<std::pair<std::string, bool> > DomainLibraryLoader::GetPluginLoadInfo() const

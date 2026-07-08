@@ -99,7 +99,7 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
   auto loaded_plugin_names = GetAllPluginNames(sup::oac_tree::GlobalInstructionRegistry());
 
   // add core "library" to loaded plugins
-  loaded_plugin_names.insert(domainconstants::kCorePluginName);
+  (void)loaded_plugin_names.insert(domainconstants::kCorePluginName);
 
   std::map<std::string, std::vector<std::string>> group_to_instructions;
   for (const auto& plugin_name : loaded_plugin_names)
