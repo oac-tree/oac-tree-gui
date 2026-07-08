@@ -43,7 +43,8 @@ void PopulateStyleFromJSON(const QJsonObject& json, GraphicsViewStyle& style)
   style.background_color = QColor(obj[BackgroundColorKey].toString());
   style.fine_grid_size = mvvm::style::ScaleToSystem(obj[FineGridSizeKey].toDouble());
   style.fine_grid_color = QColor(obj[FineGridColorKey].toString());
-  style.coarse_grid_size = obj[CoarseGridFactorKey].toInt() * style.fine_grid_size;
+  style.coarse_grid_size =
+      static_cast<double>(obj[CoarseGridFactorKey].toInt()) * style.fine_grid_size;
   style.coarse_grid_color = QColor(obj[CoarseGridColorKey].toString());
 }
 

@@ -231,14 +231,15 @@ void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
 
   if (numNodesBetween > 0)
   {
-    double distanceBetweenNodes = (leftNode.GetX() - rightNode.GetX()) / (numNodesBetween + 1);
+    double distanceBetweenNodes =
+        (leftNode.GetX() - rightNode.GetX()) / static_cast<double>(numNodesBetween + 1);
 
     std::int32_t count = 1;
     for (std::int32_t i = left_index + 1; i < right_index; i++)
     {
       auto middleNode = leftNode.GetParent()->GetChildren().at(i);
 
-      const double desiredX = rightNode.GetX() + (distanceBetweenNodes * count);
+      const double desiredX = rightNode.GetX() + (distanceBetweenNodes * static_cast<double>(count));
       const double offset = desiredX - middleNode->GetX();
       middleNode->SetX(middleNode->GetX() + offset);
       middleNode->SetMod(middleNode->GetMod() + offset);

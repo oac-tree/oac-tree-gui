@@ -65,7 +65,7 @@ void AppendLittleVerticalGap(QTextEdit& text_edit)
 {
   const auto base_font = text_edit.font();
   auto new_font = base_font;
-  new_font.setPointSize(static_cast<std::int32_t>(base_font.pointSize() * 0.3));
+  new_font.setPointSize(static_cast<std::int32_t>(static_cast<double>(base_font.pointSize()) * 0.3));
   text_edit.setCurrentFont(new_font);
   text_edit.append(" ");
   text_edit.setCurrentFont(base_font);
@@ -109,8 +109,8 @@ std::string GetAttributeHtml(const std::vector<std::pair<std::string, std::strin
                  .operator std::string();
     for (auto& [name, value] : attributes)
     {
-      const auto cell_width1 = static_cast<std::int32_t>(total_width * 0.3);
-      const auto cell_width2 = static_cast<std::int32_t>(total_width * 0.7);
+      const auto cell_width1 = static_cast<std::int32_t>(static_cast<double>(total_width) * 0.3);
+      const auto cell_width2 = static_cast<std::int32_t>(static_cast<double>(total_width) * 0.7);
       const std::string str = mvvm::utils::StringFormat(cell_pattern)
                                   .arg(std::to_string(cell_width1))
                                   .arg(name)
