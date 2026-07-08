@@ -42,6 +42,12 @@ class JobItem : public mvvm::CompoundItem
 {
 public:
   explicit JobItem(const std::string& type);
+  ~JobItem() override = default;
+
+  JobItem(const JobItem&) = delete;
+  JobItem& operator=(const JobItem&) = delete;
+  JobItem(JobItem&&) = delete;
+  JobItem& operator=(JobItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
 

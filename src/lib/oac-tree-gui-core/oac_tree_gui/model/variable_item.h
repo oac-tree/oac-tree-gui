@@ -40,6 +40,12 @@ class VariableItem : public mvvm::CompoundItem
 {
 public:
   explicit VariableItem(const std::string& item_type);
+  ~VariableItem() override = default;
+
+  VariableItem(const VariableItem&) = delete;
+  VariableItem& operator=(const VariableItem&) = delete;
+  VariableItem(VariableItem&&) = delete;
+  VariableItem& operator=(VariableItem&&) = delete;
 
   /**
    * @brief Returns domain type.

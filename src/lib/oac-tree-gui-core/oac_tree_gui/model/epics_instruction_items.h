@@ -33,6 +33,12 @@ class EpicsReadInstructionItem : public UniversalInstructionItem
 {
 public:
   explicit EpicsReadInstructionItem(const std::string& instruction_type);
+  ~EpicsReadInstructionItem() override = default;
+
+  EpicsReadInstructionItem(const EpicsReadInstructionItem&) = delete;
+  EpicsReadInstructionItem& operator=(const EpicsReadInstructionItem&) = delete;
+  EpicsReadInstructionItem(EpicsReadInstructionItem&&) = delete;
+  EpicsReadInstructionItem& operator=(EpicsReadInstructionItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
 
@@ -54,6 +60,12 @@ class EpicsWriteInstructionItem : public UniversalInstructionItem
 {
 public:
   explicit EpicsWriteInstructionItem(const std::string& instruction_type);
+  ~EpicsWriteInstructionItem() override = default;
+
+  EpicsWriteInstructionItem(const EpicsWriteInstructionItem&) = delete;
+  EpicsWriteInstructionItem& operator=(const EpicsWriteInstructionItem&) = delete;
+  EpicsWriteInstructionItem(EpicsWriteInstructionItem&&) = delete;
+  EpicsWriteInstructionItem& operator=(EpicsWriteInstructionItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
 

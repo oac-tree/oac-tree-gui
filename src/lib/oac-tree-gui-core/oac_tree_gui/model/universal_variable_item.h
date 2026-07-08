@@ -50,6 +50,12 @@ public:
    * Temporary domain instruction is created to initialize item properties.
    */
   explicit UniversalVariableItem(const std::string& item_type);
+  ~UniversalVariableItem() override = default;
+
+  UniversalVariableItem(const UniversalVariableItem&) = delete;
+  UniversalVariableItem& operator=(const UniversalVariableItem&) = delete;
+  UniversalVariableItem(UniversalVariableItem&&) = delete;
+  UniversalVariableItem& operator=(UniversalVariableItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
 

@@ -33,6 +33,12 @@ class ConnectableVariableItem : public UniversalVariableItem
 {
 public:
   explicit ConnectableVariableItem(const std::string& variable_type);
+  ~ConnectableVariableItem() override = default;
+
+  ConnectableVariableItem(const ConnectableVariableItem&) = delete;
+  ConnectableVariableItem& operator=(const ConnectableVariableItem&) = delete;
+  ConnectableVariableItem(ConnectableVariableItem&&) = delete;
+  ConnectableVariableItem& operator=(ConnectableVariableItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
 

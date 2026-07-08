@@ -37,6 +37,12 @@ class InstructionItem : public mvvm::CompoundItem
 {
 public:
   explicit InstructionItem(const std::string& item_type);
+  ~InstructionItem() override = default;
+
+  InstructionItem(const InstructionItem&) = delete;
+  InstructionItem& operator=(const InstructionItem&) = delete;
+  InstructionItem(InstructionItem&&) = delete;
+  InstructionItem& operator=(InstructionItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
 
