@@ -77,7 +77,7 @@ std::size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem* item) c
     throw RuntimeException("Can't find automation index for given item");
   }
 
-  return std::distance(m_index_to_instruction.begin(), pos);
+  return static_cast<std::size_t>(std::distance(m_index_to_instruction.begin(), pos));
 }
 
 VariableItem* ProcedureItemJobInfoBuilder::GetVariable(std::size_t index) const

@@ -55,7 +55,7 @@ std::string GetAutomationServerName(const AutomationServerInfo& server_info)
   if (std::holds_alternative<WebSocketsServerInfo>(server_info))
   {
     const auto& info = std::get<WebSocketsServerInfo>(server_info);
-    return info.server_address + ":" + std::to_string(info.server_port);
+    return info.server_address + ":" + std::to_string(static_cast<unsigned>(info.server_port));
   }
 
   throw RuntimeException("Unknown server type");

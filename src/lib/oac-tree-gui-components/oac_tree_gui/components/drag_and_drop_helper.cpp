@@ -142,7 +142,7 @@ mvvm::TagIndex GetTreeInternalMoveTagIndex(int32_t drop_indicator_row,
   }
 
   // our TagIndex convention for move operations coincides  with Qt's drop indicator convention
-  return mvvm::TagIndex::Default(drop_indicator_row);
+  return mvvm::TagIndex::Default(static_cast<std::size_t>(drop_indicator_row));
 }
 
 mvvm::TagIndex GetDropTagIndex(std::int32_t drop_indicator_row)

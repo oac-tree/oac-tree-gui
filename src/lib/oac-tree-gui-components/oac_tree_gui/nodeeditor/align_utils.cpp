@@ -237,7 +237,7 @@ void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
     std::int32_t count = 1;
     for (std::int32_t i = left_index + 1; i < right_index; i++)
     {
-      auto middleNode = leftNode.GetParent()->GetChildren().at(i);
+      auto middleNode = leftNode.GetParent()->GetChildren().at(static_cast<std::size_t>(i));
 
       const double desiredX = rightNode.GetX() + (distanceBetweenNodes * static_cast<double>(count));
       const double offset = desiredX - middleNode->GetX();

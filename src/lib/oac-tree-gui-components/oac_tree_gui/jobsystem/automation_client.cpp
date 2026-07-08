@@ -70,7 +70,7 @@ bool AutomationClient::IsConnected() const
 
 std::size_t AutomationClient::GetJobCount() const
 {
-  return m_client_manager->GetNumberOfJobs();
+  return static_cast<std::size_t>(m_client_manager->GetNumberOfJobs());
 }
 
 std::string AutomationClient::GetProcedureName(std::uint32_t job_index) const
