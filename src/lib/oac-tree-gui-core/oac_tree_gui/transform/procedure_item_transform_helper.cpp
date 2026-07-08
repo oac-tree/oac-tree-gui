@@ -129,7 +129,7 @@ void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreamble
 
   for (const auto& info : preamble.GetTypeRegistrations())
   {
-    item.AddTypeRegistration(static_cast<int>(info.GetRegistrationMode()), info.GetString());
+    item.AddTypeRegistration(info.GetRegistrationMode(), info.GetString());
   }
 }
 

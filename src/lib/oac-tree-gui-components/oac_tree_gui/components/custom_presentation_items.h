@@ -53,7 +53,7 @@ public:
 
   bool SetData(const QVariant& data, mvvm::role_t qt_role) override;
 
-  QVector<int> GetQtRolesToEmit(mvvm::role_t data_role) const override;
+  QVector<mvvm::role_t> GetQtRolesToEmit(mvvm::role_t data_role) const override;
 
 private:
   QString m_channel_name;

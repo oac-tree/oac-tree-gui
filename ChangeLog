@@ -18,7 +18,7 @@ Changes for 2.3.0:
 - Provide procedure attribute editor.
 - Remove separate name property from instruction, use editable display name instead
 - Add instruction domain type in a tree of the InstructionEditorWidget and RealTimeSintructionTree
-- Implement prototype of instruction TaskMonitor.
+- Implement prototype of instruction TaskMonitor
 
 Changes for 2.2.0:
 
@@ -33,7 +33,7 @@ Changes for 2.2.0:
 - Refactor domain plugin loader so it relies on sequencer plugin load machinery
 - Introduce ProjectModel to save session specific settings (breakes project file compatibility)
 - Fix missed mathexpr/control plugin load on CODAC machines
-- Switch to a new "application restarter" machinery in all main windows.
+- Switch to a new "application restarter" machinery in all main windows
 
 Changes for 2.1.0:
 

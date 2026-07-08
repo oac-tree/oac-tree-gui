@@ -30,6 +30,8 @@
 #include <QList>
 #include <QMetaType>
 
+#include <cstdint>
+
 namespace oac_tree_gui
 {
 
@@ -39,7 +41,7 @@ void RegisterCustomMetaTypes();
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 Q_DECLARE_METATYPE(oac_tree_gui::LogEvent)
-Q_DECLARE_METATYPE(QList<int>)
+Q_DECLARE_METATYPE(QList<std::int32_t>)
 Q_DECLARE_METATYPE(oac_tree_gui::GraphicsViewOperationMode)
 #endif  // OAC_TREE_GUI_COMPONENTS_CUSTOM_META_TYPES_H_
 
