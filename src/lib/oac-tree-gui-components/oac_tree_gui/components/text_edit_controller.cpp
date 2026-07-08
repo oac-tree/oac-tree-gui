@@ -50,7 +50,8 @@ QString GetText(const std::vector<std::string>& lines)
 }  // namespace
 
 TextEditController::TextEditController(const TextControllerContext& context)
-    : m_context(context)
+    : mvvm::ItemController<TextEditItem>()
+    , m_context(context)
     , m_text_edit_connection(std::make_unique<QMetaObject::Connection>())
     , m_checkbox_connection(std::make_unique<QMetaObject::Connection>())
 {

@@ -42,7 +42,9 @@ const std::uint32_t kConnectionTimeout{1};
 }
 
 AutomationClient::AutomationClient(const AutomationServerInfo& server_info)
-    : m_server_info(server_info), m_client_manager(CreateConnectionManager(m_server_info))
+    : IAutomationClient()
+    , m_server_info(server_info)
+    , m_client_manager(CreateConnectionManager(m_server_info))
 {
   if (auto is_connected =
           m_client_manager->WaitForConnection(std::chrono::seconds(kConnectionTimeout));

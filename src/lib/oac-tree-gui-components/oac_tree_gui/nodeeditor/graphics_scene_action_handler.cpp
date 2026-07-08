@@ -33,7 +33,9 @@ namespace oac_tree_gui
 
 GraphicsSceneActionHandler::GraphicsSceneActionHandler(mvvm::SessionItem* container_item,
                                                        const send_message_t& send_message_callback)
-    : m_instruction_container(container_item), m_send_message(send_message_callback)
+    : IGraphicsSceneActionHandler()
+    , m_instruction_container(container_item)
+    , m_send_message(send_message_callback)
 {
   if (m_instruction_container == nullptr)
   {

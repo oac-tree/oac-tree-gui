@@ -62,7 +62,7 @@ void UpdateOperationStateFromInstructionStatus(InstructionStatus status,
 }  // namespace
 
 ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem* instruction)
-    : m_instruction(instruction)
+    : mvvm::IConnectableShapeAdapter(), m_instruction(instruction)
 {
   if (m_instruction == nullptr)
   {

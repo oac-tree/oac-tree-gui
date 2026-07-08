@@ -44,7 +44,7 @@ namespace oac_tree_gui
 {
 
 WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context)
-    : m_context(std::move(context))
+    : IWorkspaceEditorActionHandler(), m_context(std::move(context))
 {
   if (!m_context.selected_workspace)
   {

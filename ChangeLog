@@ -1,5 +1,7 @@
 Changes for 2.3.0:
 
+- MISRA/Sonar quality round
+- Heavy refactoring of JobManager to allow to steer jobs execution from different tabs
 - Implement splittable panels for oac-tree-operation to run procedures side-by-side
 - Allow to close the GUI while having automation jobs still running
 - Cleanup automation clients on job removal

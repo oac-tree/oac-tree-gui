@@ -35,7 +35,7 @@ namespace oac_tree_gui
 
 RemoteConnectionService::RemoteConnectionService(const AutomationClientFunc& create_connection,
                                                  const message_func_t& message_func)
-    : m_create_client(create_connection), m_message_func(message_func)
+    : IRemoteConnectionService(), m_create_client(create_connection), m_message_func(message_func)
 {
   if (!m_create_client)
   {

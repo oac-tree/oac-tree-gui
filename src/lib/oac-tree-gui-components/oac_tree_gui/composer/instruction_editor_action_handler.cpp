@@ -85,7 +85,7 @@ constexpr auto kFailedActionTitle = "Invalid Operation";
 }  // namespace
 
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context)
-    : m_context(std::move(context))
+    : IInstructionEditorActionHandler(), m_context(std::move(context))
 {
   if (!m_context.instruction_container)
   {

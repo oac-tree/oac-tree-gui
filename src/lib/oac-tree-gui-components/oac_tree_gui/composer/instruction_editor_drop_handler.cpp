@@ -31,7 +31,7 @@ namespace oac_tree_gui
 
 InstructionEditorDropHandler::InstructionEditorDropHandler(
     const container_callback_t& container_callback)
-    : m_container_callback(container_callback)
+    : IItemDropHandler(), m_container_callback(container_callback)
 {
   if (!m_container_callback)
   {

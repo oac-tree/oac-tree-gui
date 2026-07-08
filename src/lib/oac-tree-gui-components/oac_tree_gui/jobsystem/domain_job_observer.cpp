@@ -38,7 +38,8 @@ namespace oac_tree_gui
 
 DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback,
                                      const UserContext& user_context)
-    : m_post_event_callback(std::move(post_event_callback))
+    : sup::oac_tree::IJobInfoIO()
+    , m_post_event_callback(std::move(post_event_callback))
     , m_active_instruction_monitor(CreateActiveInstructionMonitor({}))
 {
   if (!m_post_event_callback)

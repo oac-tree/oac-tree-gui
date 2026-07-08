@@ -66,6 +66,7 @@ void CloseLibrary(DomainLibraryLoader::LibraryHandle handle)
 }  // namespace
 
 DomainLibraryLoader::DomainLibraryLoader(const std::vector<std::string>& library_names)
+    : IDomainPluginService()
 {
   m_library_handles.reserve(library_names.size());
   m_library_info.reserve(library_names.size());
