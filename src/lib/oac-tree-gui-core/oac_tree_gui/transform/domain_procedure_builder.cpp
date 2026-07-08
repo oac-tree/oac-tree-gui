@@ -20,6 +20,7 @@
 
 #include "domain_procedure_builder.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -174,8 +175,14 @@ std::string DomainProcedureBuilder::FindInstructionIdentifier(
 
 std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t* variable) const
 {
-  return m_workspace_builder->GetVariableItemFromDomainVariableName(variable->GetName())
-      ->GetIdentifier();
+  const auto* variable_item =
+      m_workspace_builder->GetVariableItemFromDomainVariableName(variable->GetName());
+  if (variable_item == nullptr)
+  {
+    throw LogicErrorException("Can't find variable item for domain variable '" + variable->GetName()
+                              + "'");
+  }
+  return variable_item->GetIdentifier();
 }
 
 std::unique_ptr<procedure_t> CreateDomainProcedure(const ProcedureItem& procedure_item)

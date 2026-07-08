@@ -35,12 +35,21 @@ namespace oac_tree_gui
 
 BreakpointStatus GetBreakpointStatus(const InstructionItem& item)
 {
-  return static_cast<BreakpointStatus>(GetBreakpointItem(item)->Data<std::int32_t>());
+  const auto* breakpoint_property = GetBreakpointItem(item);
+  if (breakpoint_property == nullptr)
+  {
+    throw LogicErrorException("Instruction doesn't have a breakpoint property");
+  }
+  return static_cast<BreakpointStatus>(breakpoint_property->Data<std::int32_t>());
 }
 
 void SetBreakpointStatus(const InstructionItem& item, BreakpointStatus status)
 {
   auto breakpoint_property = GetBreakpointItem(item);
+  if (breakpoint_property == nullptr)
+  {
+    throw LogicErrorException("Instruction doesn't have a breakpoint property");
+  }
   (void)breakpoint_property->SetData(static_cast<std::int32_t>(status));
 }
 

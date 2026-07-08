@@ -114,9 +114,10 @@ std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings()
 
 const InstructionContainerItem* ExclusiveCheckStatePresentationItem::GetInstructionContainer() const
 {
-  return (GetInstructionItem() == nullptr)
+  auto* instruction_item = GetInstructionItem();
+  return (instruction_item == nullptr)
              ? nullptr
-             : dynamic_cast<InstructionContainerItem*>(GetInstructionItem()->GetParent());
+             : dynamic_cast<InstructionContainerItem*>(instruction_item->GetParent());
 }
 
 InstructionItem* ExclusiveCheckStatePresentationItem::GetInstructionItem() const

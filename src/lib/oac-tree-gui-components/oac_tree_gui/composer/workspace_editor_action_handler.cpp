@@ -91,16 +91,22 @@ bool WorkspaceEditorActionHandler::CanRemoveVariable() const
 
 void WorkspaceEditorActionHandler::RemoveVariable()
 {
+  auto* model = GetModel();
+  if (model == nullptr)
+  {
+    return;
+  }
+
   const mvvm::SessionItem* next_to_select{nullptr};
 
-  mvvm::utils::BeginMacro(*GetModel(), "Remove variable");
+  mvvm::utils::BeginMacro(*model, "Remove variable");
   for (const auto* selected : GetSelectedVariables())
   {
     next_to_select = mvvm::utils::FindNextSiblingToSelect(selected);
-    GetModel()->RemoveItem(selected);
+    model->RemoveItem(selected);
   }
   UpdateProcedurePreamble();
-  mvvm::utils::EndMacro(*GetModel());
+  mvvm::utils::EndMacro(*model);
 
   if (next_to_select != nullptr)
   {
@@ -122,10 +128,17 @@ void WorkspaceEditorActionHandler::EditAnyValue()
 
   auto selected_item = selected_items.front();
 
-  auto selected_variable =
+  const auto* selected_variable =
       (GetSelectedVariable() != nullptr)
           ? GetSelectedVariable()
-          : const_cast<VariableItem*>(mvvm::utils::FindItemUp<VariableItem>(selected_item));
+          : mvvm::utils::FindItemUp<VariableItem>(selected_item);
+
+  if (selected_variable == nullptr)
+  {
+    SendMessage("Please select Workspace variable (or any of it's leaves) to modify corresponding "
+                "AnyValue.");
+    return;
+  }
 
   auto selected_anyvalue = selected_variable->GetAnyValueItem();
 
@@ -134,16 +147,22 @@ void WorkspaceEditorActionHandler::EditAnyValue()
   // existent value means that the user exited from the dialog with OK
   if (edited_anyvalue.is_accepted)
   {
+    auto* model = GetModel();
+    if (model == nullptr)
+    {
+      return;
+    }
+
     // remove previous AnyValueItem
     if (selected_anyvalue != nullptr)
     {
-      GetModel()->RemoveItem(selected_anyvalue);
+      model->RemoveItem(selected_anyvalue);
     }
 
     if (edited_anyvalue.result)
     {
-      (void)GetModel()->InsertItem(std::move(edited_anyvalue.result),
-                                   const_cast<VariableItem*>(selected_variable), {});
+      (void)model->InsertItem(std::move(edited_anyvalue.result),
+                              const_cast<VariableItem*>(selected_variable), {});
     }
   }
 }
