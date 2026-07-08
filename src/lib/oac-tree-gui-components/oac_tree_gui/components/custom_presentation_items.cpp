@@ -26,6 +26,7 @@
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/session_item.h>
+#include <mvvm/providers/presentation_item_helper.h>
 
 namespace oac_tree_gui
 {
@@ -42,12 +43,12 @@ QVariant ChannelPresentationItem::Data(mvvm::role_t qt_role) const
   static const QColor kConnectedColor = GetConnectedVariableColor();
   static const QColor kDisonnectedColor = GetDisonnectedVariableColor();
 
-  if (qt_role == Qt::DecorationRole)
+  if (qt_role == mvvm::GetQtRole(Qt::DecorationRole))
   {
     return GetItem()->Data<bool>() ? kConnectedColor : kDisonnectedColor;
   }
 
-  if (qt_role == Qt::DisplayRole)
+  if (qt_role == mvvm::GetQtRole(Qt::DisplayRole))
   {
     return m_channel_name;
   }
@@ -67,7 +68,7 @@ QVector<mvvm::role_t> ChannelPresentationItem::GetQtRolesToEmit(mvvm::role_t dat
   (void)data_role;
   // When IsAvailable status changes, the decoration role (green/gray box rectangle) should be
   // reported
-  return {Qt::DecorationRole};
+  return {mvvm::GetQtRole(Qt::DecorationRole)};
 }
 
 ExclusiveCheckStatePresentationItem::ExclusiveCheckStatePresentationItem(mvvm::SessionItem* item)
@@ -82,7 +83,7 @@ bool ExclusiveCheckStatePresentationItem::SetData(const QVariant& data, mvvm::ro
   auto result = BooleanDataPresentationItem::SetData(data, qt_role);
   if (result)
   {
-    const bool changed_to_checked = (data.toInt() == Qt::Checked);
+    const bool changed_to_checked = (static_cast<Qt::CheckState>(data.toInt()) == Qt::Checked);
     for (auto instruction : GetSiblings())
     {
       instruction->SetIsRootFlag(!changed_to_checked);

@@ -110,7 +110,7 @@ void TextEditController::SetQtConnected()
       return;
     }
 
-    const bool enabled = (state == Qt::Checked);
+    const bool enabled = (static_cast<Qt::CheckState>(state) == Qt::Checked);
     m_do_not_update_widgets = true;
     GetItem()->SetEditorEnabled(enabled);
     m_context.text_edit->setEnabled(enabled);
