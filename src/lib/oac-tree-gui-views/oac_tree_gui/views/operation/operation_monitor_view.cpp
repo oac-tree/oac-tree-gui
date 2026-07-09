@@ -331,6 +331,7 @@ OperationActionContext OperationMonitorView::CreateOperationContext()
 QWidget* OperationMonitorView::CreateLeftPanel()
 {
   auto result = new sup::gui::ItemStackWidget;
+  result->SetPanelStyle(sup::gui::ItemStackWidget::PanelStyle::kButtonTextUnderIcon);
   auto actions = m_presentation_mode == OperationPresentationMode::kIdeMode
                      ? m_job_panel->GetSequencerMonitorViewActions()
                      : m_job_panel->GetOperationMonitorViewActions();
