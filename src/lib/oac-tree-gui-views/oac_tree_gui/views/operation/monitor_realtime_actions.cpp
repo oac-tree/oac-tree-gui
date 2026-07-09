@@ -91,7 +91,7 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject* parent_object)
 
   m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
   m_delay_button->setIcon(FindIcon("speedometer-slow"));
-  m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_delay_button->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   m_delay_button->setToolTip(
       "Artificial delay after each change of instruction status.\n"
       "Delays < 5msec might make the GUI hang for procedures with tight\n"
