@@ -81,7 +81,7 @@ OperationJobActions::~OperationJobActions() = default;
 
 void OperationJobActions::SetAvailableProcedures(callback_t available_procedures)
 {
-  m_available_procedures = available_procedures;
+  m_available_procedures = std::move(available_procedures);
 }
 
 std::unique_ptr<QMenu> OperationJobActions::CreateSubmitProcedureMenu() const

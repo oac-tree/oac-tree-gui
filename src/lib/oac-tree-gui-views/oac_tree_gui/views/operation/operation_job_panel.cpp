@@ -25,9 +25,9 @@
 #include "operation_job_actions.h"
 
 #include <oac_tree_gui/model/application_models.h>
-#include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
 
 #include <sup/gui/widgets/collapsible_list_view.h>
 
@@ -67,7 +67,7 @@ void OperationJobPanel::SetModels(ApplicationModels* models)
   m_job_list_widget->SetJobModel(models->GetJobModel());
 }
 
-const JobItem *OperationJobPanel::GetSelectedJob() const
+const JobItem* OperationJobPanel::GetSelectedJob() const
 {
   return m_job_list_widget->GetSelectedJob();
 }
@@ -80,8 +80,8 @@ void OperationJobPanel::SetSelectedJob(const JobItem* job_item)
 QList<QAction*> OperationJobPanel::GetSequencerMonitorViewActions()
 {
   using ActionKey = OperationJobActions::ActionKey;
-  return m_job_actions->GetActions(
-      {ActionKey::kSubmitJob, ActionKey::kRegenerateJob, ActionKey::kRemoveJob});
+  return m_job_actions->GetActions({ActionKey::kSubmitJob, ActionKey::kConnect,
+                                    ActionKey::kRegenerateJob, ActionKey::kRemoveJob});
 }
 
 QList<QAction*> OperationJobPanel::GetOperationMonitorViewActions()
