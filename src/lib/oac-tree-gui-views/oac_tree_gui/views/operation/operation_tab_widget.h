@@ -60,6 +60,8 @@ public:
   explicit OperationTabWidget(QWidget* parent_widget = nullptr);
 
   void SetItem(mvvm::SessionItem* job_item) override;
+  const mvvm::SessionItem* GetItem() const override;
+
   void SetCurrentJob(JobItem* job_item);
 
   void SetSelectedInstructions(const std::vector<const InstructionItem*>& items);

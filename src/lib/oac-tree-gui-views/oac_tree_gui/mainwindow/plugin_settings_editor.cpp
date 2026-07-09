@@ -115,8 +115,15 @@ void PluginSettingsEditor::SetItem(mvvm::SessionItem* item)
   SetPluginSettingsItem(dynamic_cast<PluginSettingsItem*>(item));
 }
 
+const mvvm::SessionItem* PluginSettingsEditor::GetItem() const
+{
+  return m_current_item;
+}
+
 void PluginSettingsEditor::SetPluginSettingsItem(PluginSettingsItem* item)
 {
+  m_current_item = item;
+
   if (item == nullptr)
   {
     return;

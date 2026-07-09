@@ -55,6 +55,7 @@ public:
   PluginSettingsEditor& operator=(PluginSettingsEditor&&) = delete;
 
   void SetItem(mvvm::SessionItem* item) override;
+  const mvvm::SessionItem* GetItem() const override;
 
 private:
   void SetPluginSettingsItem(PluginSettingsItem* item);
@@ -88,6 +89,8 @@ private:
 
   std::unique_ptr<TextEditController> m_dir_list_controller;
   std::unique_ptr<TextEditController> m_plugin_list_controller;
+
+  PluginSettingsItem* m_current_item{nullptr};
 };
 
 }  // namespace oac_tree_gui

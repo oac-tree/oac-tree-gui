@@ -94,6 +94,11 @@ void OperationTabWidget::SetItem(mvvm::SessionItem* job_item)
   SetCurrentJob(dynamic_cast<JobItem*>(job_item));
 }
 
+const mvvm::SessionItem* OperationTabWidget::GetItem() const
+{
+  return m_current_job;
+}
+
 void OperationTabWidget::SetCurrentJob(JobItem* job_item)
 {
   m_current_job = job_item;

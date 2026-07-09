@@ -60,6 +60,7 @@ public:
   ProcedureComposerTabWidget& operator=(ProcedureComposerTabWidget&&) = delete;
 
   void SetItem(mvvm::SessionItem* procedure_item) override;
+  const mvvm::SessionItem* GetItem() const override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
@@ -83,6 +84,8 @@ private:
   XmlPanel* m_xml_panel{nullptr};
   ProcedureAttributeEditorWidget* m_procedure_attribute_widget{nullptr};
   QTabWidget* m_tab_widget{nullptr};
+
+  ProcedureItem* m_procedure_item{nullptr};
 };
 
 }  // namespace oac_tree_gui

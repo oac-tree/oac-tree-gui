@@ -83,9 +83,14 @@ void ProcedureComposerTabWidget::SetItem(mvvm::SessionItem* procedure_item)
   SetProcedure(dynamic_cast<ProcedureItem*>(procedure_item));
 }
 
+const mvvm::SessionItem* ProcedureComposerTabWidget::GetItem() const
+{
+  return m_procedure_item;
+}
+
 void ProcedureComposerTabWidget::SetProcedure(ProcedureItem* procedure_item)
 {
-  (void)procedure_item;
+  m_procedure_item = procedure_item;
   m_instruction_editor_widget->SetInstructionContainer(
       (procedure_item != nullptr) ? procedure_item->GetInstructionContainer() : nullptr);
   m_workspace_editor_widget->SetWorkspaceItem(
