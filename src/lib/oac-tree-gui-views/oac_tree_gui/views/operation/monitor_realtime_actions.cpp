@@ -28,13 +28,11 @@
 #include <QMenu>
 #include <QSettings>
 #include <QToolButton>
-#include <QWidgetAction>
 
 namespace
 {
 
-const QString kGroupName("MonitorRealTimeToolBar");
-const QString kTickTimeOutSettingName = kGroupName + "/" + "tick_timeout";
+constexpr auto kTickTimeOutSettingName = "MonitorRealTimeToolBar/tick_timeout";
 
 QString GetDelayText(int delay)
 {
@@ -54,8 +52,7 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject* parent_object)
     , m_step_action(new QAction("Step", this))
     , m_stop_action(new QAction("Stop", this))
     , m_reset_action(new QAction("Reset", this))
-    , m_delay_button(new QToolButton)
-    , m_delay_action(new QWidgetAction(this))
+    , m_delay_action(new sup::gui::ActionMenu(this))
     , m_settings_action(new sup::gui::ActionMenu(this))
     , m_delay_menu(CreateDelayMenu())
     , m_settings_menu(CreateSettingsMenu())
@@ -89,16 +86,13 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject* parent_object)
   connect(m_reset_action, &QAction::triggered, this, &MonitorRealTimeActions::ResetRequest);
   m_action_map.Add(ActionKey::kReset, m_reset_action);
 
-  m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
-  m_delay_button->setIcon(FindIcon("speedometer-slow"));
-  m_delay_button->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-  m_delay_button->setToolTip(
+  m_delay_action->setText(GetDelayText(GetCurrentTickTimeout()));
+  m_delay_action->setIcon(FindIcon("speedometer-slow"));
+  m_delay_action->setToolTip(
       "Artificial delay after each change of instruction status.\n"
       "Delays < 5msec might make the GUI hang for procedures with tight\n"
       "sequence loops and/or frequent variable updates");
-  m_delay_button->setMenu(m_delay_menu.get());
-  m_delay_button->setPopupMode(QToolButton::InstantPopup);
-  m_delay_action->setDefaultWidget(m_delay_button);
+  m_delay_action->setMenu(m_delay_menu.get());
   m_action_map.Add(ActionKey::kDelay, m_delay_action);
 
   m_settings_action->setText("Other");
@@ -126,7 +120,8 @@ int MonitorRealTimeActions::GetCurrentTickTimeout() const
 void MonitorRealTimeActions::SetCurrentTickTimeout(int msec)
 {
   m_current_tick_timeout = msec;
-  m_delay_button->setText(GetDelayText(msec));
+  // m_delay_button->setText(GetDelayText(msec));
+  m_delay_action->setText(GetDelayText(msec));
 }
 
 void MonitorRealTimeActions::ReadSettings()
@@ -157,7 +152,7 @@ std::unique_ptr<QMenu> MonitorRealTimeActions::CreateDelayMenu()
     auto action = result->addAction(name);
     auto on_action = [this, delay, name]()
     {
-      m_delay_button->setText(name);
+      m_delay_action->setText(name);
       m_current_tick_timeout = delay;
       emit ChangeDelayRequest(delay);
     };

@@ -27,8 +27,6 @@
 #include <memory>
 
 class QMenu;
-class QWidgetAction;
-class QToolButton;
 
 namespace sup::gui
 {
@@ -96,8 +94,7 @@ private:
   QAction* m_step_action{nullptr};
   QAction* m_stop_action{nullptr};
   QAction* m_reset_action{nullptr};
-  QToolButton* m_delay_button{nullptr};
-  QWidgetAction* m_delay_action{nullptr};
+  sup::gui::ActionMenu* m_delay_action{nullptr};
   sup::gui::ActionMenu* m_settings_action{nullptr};
 
   std::unique_ptr<QMenu> m_delay_menu;
