@@ -67,6 +67,11 @@ public:
 
   const InstructionTaskWidgetBuilder* GetTaskWidgetBuilder() const;
 
+  /**
+   * @brief Clears widgets of TasjMonitor, stop listening.
+   */
+  void ClearMonitor();
+
 private:
   void SetInstructionContainerIntern(InstructionContainerItem* container);
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);

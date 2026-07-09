@@ -60,6 +60,10 @@ InstructionTaskMonitor::~InstructionTaskMonitor()
 
 void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* container)
 {
+  qDebug() << "\n";
+  qDebug() << "InstructionTaskMonitor::SetInstructionContainer XXX 1.1" << (this);
+  qDebug() << "XXX 1.2 " << "m_container_item" << m_container_item << "container" << container
+           << "visible" << isVisible();
   if (container == m_container_item)
   {
     return;
@@ -69,7 +73,15 @@ void InstructionTaskMonitor::SetInstructionContainer(InstructionContainerItem* c
 
   if ((m_container_item != nullptr) && isVisible())
   {
+    qDebug() << "XXX 1.3 " << "m_container_item" << m_container_item << "container" << container
+             << "visible" << isVisible();
     SetInstructionContainerIntern(m_container_item);
+  }
+  else
+  {
+    qDebug() << "XXX 1.4 " << "m_container_item" << m_container_item << "container" << container
+             << "visible" << isVisible();
+    ClearMonitor();
   }
 }
 
@@ -78,15 +90,25 @@ const InstructionTaskWidgetBuilder* InstructionTaskMonitor::GetTaskWidgetBuilder
   return m_task_widget_builder.get();
 }
 
+void InstructionTaskMonitor::ClearMonitor()
+{
+  m_listener.reset();
+  m_task_area_widget->Clear();
+  m_task_widget_builder.reset();
+}
+
 void InstructionTaskMonitor::SetInstructionContainerIntern(InstructionContainerItem* container)
 {
+  qDebug() << "InstructionTaskMonitor::SetInstructionContainerIntern YYY" << (this);
+  qDebug() << "YYY 1.2 " <<  "m_container_item" << m_container_item << "container"
+           << container << "visible" << isVisible();
   if (container == nullptr)
   {
-    m_listener.reset();
-    m_task_area_widget->Clear();
-    m_task_widget_builder.reset();
+    ClearMonitor();
     return;
   }
+  qDebug() << "YYY 1.3 " <<  "m_container_item" << m_container_item << "container"
+           << container << "visible" << isVisible();
 
   m_task_widget_builder = std::make_unique<InstructionTaskWidgetBuilder>();
   m_listener = std::make_unique<mvvm::ModelListener>(container->GetModel());
@@ -116,8 +138,18 @@ void InstructionTaskMonitor::OnDataChangedEvent(const mvvm::DataChangedEvent& ev
 
 void InstructionTaskMonitor::SetupVisibilityAgent()
 {
-  auto on_subscribe = [this]() { SetInstructionContainerIntern(m_container_item); };
-  auto on_unsubscribe = [this]() { SetInstructionContainerIntern(nullptr); };
+  auto on_subscribe = [this]()
+  {
+    qDebug() << "OnSubscribe" << (this) << "m_container_item" << m_container_item << "visible"
+             << isVisible();
+    SetInstructionContainerIntern(m_container_item);
+  };
+  auto on_unsubscribe = [this]()
+  {
+    qDebug() << "OnUnsubscribe" << (this) << "m_container_item" << m_container_item << "visible"
+             << isVisible();
+    SetInstructionContainerIntern(nullptr);
+  };
   m_visibility_agent =
       std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
   m_visibility_agent->SetTarget(this);

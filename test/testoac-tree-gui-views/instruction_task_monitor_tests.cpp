@@ -60,6 +60,54 @@ TEST_F(InstructionTaskMonitorTest, SetEmptyContainer)
   ASSERT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
 }
 
+TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToNullContainer)
+{
+  mvvm::ApplicationModel model;
+  auto container0 = model.InsertItem<InstructionContainerItem>();
+  auto sequence = model.InsertItem<SequenceItem>(container0);
+  auto container1 = model.InsertItem<InstructionContainerItem>();
+
+  InstructionTaskMonitor task_monitor;
+
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
+  task_monitor.show();
+  ASSERT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
+  task_monitor.SetInstructionContainer(container0);
+  ASSERT_NE(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 1U);
+
+  task_monitor.SetInstructionContainer(nullptr);
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
+}
+
+TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerHideAndThenChangeItToNullContainer)
+{
+  mvvm::ApplicationModel model;
+  auto container0 = model.InsertItem<InstructionContainerItem>();
+  auto sequence = model.InsertItem<SequenceItem>(container0);
+  auto container1 = model.InsertItem<InstructionContainerItem>();
+
+  InstructionTaskMonitor task_monitor;
+
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
+  task_monitor.show();
+  ASSERT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
+  task_monitor.SetInstructionContainer(container0);
+  ASSERT_NE(task_monitor.GetTaskWidgetBuilder(), nullptr);
+
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder()->GetInstructionCount(), 1U);
+
+  task_monitor.hide();
+
+  task_monitor.SetInstructionContainer(nullptr);
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
+}
+
 TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToEmpty)
 {
   mvvm::ApplicationModel model;
@@ -91,7 +139,10 @@ TEST_F(InstructionTaskMonitorTest, UpdateInstructionStatus)
 
   InstructionTaskMonitor task_monitor;
   task_monitor.show();
+
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
   task_monitor.SetInstructionContainer(container0);
+  EXPECT_NE(task_monitor.GetTaskWidgetBuilder(), nullptr);
 
   sequence->SetStatus(InstructionStatus::kRunning);
 
@@ -101,6 +152,8 @@ TEST_F(InstructionTaskMonitorTest, UpdateInstructionStatus)
   EXPECT_EQ(widget->GetInstructionStatus(), InstructionStatus::kRunning);
 
   task_monitor.hide();
+
+  EXPECT_EQ(task_monitor.GetTaskWidgetBuilder(), nullptr);
 
   // at this point all widgets are destroyed, listener should stop listening to instruction status
   // changes
