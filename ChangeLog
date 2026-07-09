@@ -1,5 +1,6 @@
 Changes for 2.3.0:
 
+- Add "connection" button to oac-tree-gui run panel
 - Make operation panel buttons more compact
 - MISRA/Sonar quality round
 - Heavy refactoring of JobManager to allow to steer jobs execution from different tabs
