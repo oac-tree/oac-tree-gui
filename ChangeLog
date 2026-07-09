@@ -1,5 +1,6 @@
 Changes for 2.3.0:
 
+- Make operation panel buttons more compact
 - MISRA/Sonar quality round
 - Heavy refactoring of JobManager to allow to steer jobs execution from different tabs
 - Implement splittable panels for oac-tree-operation to run procedures side-by-side

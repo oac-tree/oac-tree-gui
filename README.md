@@ -27,13 +27,9 @@ Explorer view
 
 Composer view
 
-![Composer view](./doc/nodeeditor-view.png)
-
-Composer view (InstructionTree and NodeEditor panels)
-
 ![Operation View](./doc/operation-view.png)
 
-Operation view (Real-time instruction tree with breakpoints and variable table)
+Operation view (Real-time instruction tree with breakpoints and experimental task tree monitor)
 
 ## Dependencies
 
