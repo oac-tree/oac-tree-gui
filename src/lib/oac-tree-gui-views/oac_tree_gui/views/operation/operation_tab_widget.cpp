@@ -78,6 +78,8 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tab_widget);
 
+  m_tab_widget->setTabPosition(QTabWidget::South);
+
   AddTab(m_realtime_widget, "Instructions", "Real time instruction tree with message panel");
   AddTab(m_workspace_tree, "Variable tree", "Workspace variables as a tree");
   AddTab(m_workspace_table, "Variable table", "Workspace variables as a table");
