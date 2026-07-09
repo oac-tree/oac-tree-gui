@@ -56,7 +56,7 @@ public:
 //! Freshly constructed widget has a controller and a single panel.
 TEST_F(OperationSplittableWidgetTest, InitialState)
 {
-  OperationSplittableWidget widget;
+  const OperationSplittableWidget widget;
 
   ASSERT_NE(widget.GetController(), nullptr);
   EXPECT_EQ(widget.GetController()->GetPanels().size(), 1);
