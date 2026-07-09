@@ -21,13 +21,18 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_TAB_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_TAB_WIDGET_H_
 
-#include <QWidget>
 #include <sup/gui/mainwindow/session_item_widget.h>
 
+#include <QWidget>
 #include <vector>
 
 class QTabWidget;
 class QToolBar;
+
+namespace mvvm
+{
+class ModelListener;
+}
 
 namespace oac_tree_gui
 {
@@ -40,6 +45,7 @@ class OperationRealTimeWidget;
 class WorkspaceVariableTreeView;
 class NodeEditorWidget;
 class InstructionTaskMonitor;
+class ProcedureItem;
 
 /**
  * @brief The OperationTabWidget class shows running jobs with the possibility to select what to see
@@ -58,9 +64,16 @@ class OperationTabWidget : public sup::gui::SessionItemWidget
 
 public:
   explicit OperationTabWidget(QWidget* parent_widget = nullptr);
+  ~OperationTabWidget() override;
+
+  OperationTabWidget(const OperationTabWidget&) = delete;
+  OperationTabWidget& operator=(const OperationTabWidget&) = delete;
+  OperationTabWidget(OperationTabWidget&&) = delete;
+  OperationTabWidget& operator=(OperationTabWidget&&) = delete;
 
   void SetItem(mvvm::SessionItem* job_item) override;
   const mvvm::SessionItem* GetItem() const override;
+  void SetModel(mvvm::ISessionModel* model) override;
 
   void SetCurrentJob(JobItem* job_item);
 
@@ -88,6 +101,7 @@ signals:
 private:
   void SetupConnections();
   void AddTab(QWidget* widget, const QString& label, const QString& tooltip);
+  void SetExpandedProcedureItem(ProcedureItem* procedure);
 
   MonitorRealTimeActions* m_actions{nullptr};
   QToolBar* m_tool_bar{nullptr};
@@ -97,7 +111,11 @@ private:
   WorkspaceVariableTreeView* m_workspace_table{nullptr};
   NodeEditorWidget* m_node_editor_widget{nullptr};
   InstructionTaskMonitor* m_instruction_task_monitor{nullptr};
+
   JobItem* m_current_job{nullptr};
+  ProcedureItem* m_current_expanded_procedure_item{nullptr};
+
+  std::unique_ptr<mvvm::ModelListener> m_model_listener;
 };
 
 }  // namespace oac_tree_gui

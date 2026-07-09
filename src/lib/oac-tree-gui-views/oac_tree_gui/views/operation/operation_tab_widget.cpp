@@ -31,6 +31,7 @@
 #include <oac_tree_gui/views/composer/workspace_variable_tree_view.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
+#include <mvvm/signals/model_listener.h>
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QTabWidget>
@@ -89,6 +90,8 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
   SetupConnections();
 }
 
+OperationTabWidget::~OperationTabWidget() = default;
+
 void OperationTabWidget::SetItem(mvvm::SessionItem* job_item)
 {
   SetCurrentJob(dynamic_cast<JobItem*>(job_item));
@@ -99,19 +102,28 @@ const mvvm::SessionItem* OperationTabWidget::GetItem() const
   return m_current_job;
 }
 
+void OperationTabWidget::SetModel(mvvm::ISessionModel* model)
+{
+  qDebug() << "AAAA\n";
+  qDebug() << "AAAA\n";
+  qDebug() << "AAAA\n";
+  m_model_listener = std::make_unique<mvvm::ModelListener>(model);
+  auto on_event = [this](const mvvm::ItemDestroyedEvent& event)
+  {
+    if (event.item == m_current_expanded_procedure_item)
+    {
+      SetExpandedProcedureItem(nullptr);
+    }
+  };
+  m_model_listener->Connect<mvvm::ItemDestroyedEvent>(on_event);
+}
+
 void OperationTabWidget::SetCurrentJob(JobItem* job_item)
 {
   m_current_job = job_item;
 
-  auto procedure = (m_current_job == nullptr) ? nullptr : job_item->GetExpandedProcedure();
-  auto workspace_item = (procedure == nullptr) ? nullptr : procedure->GetWorkspace();
-  auto instructions = (procedure == nullptr) ? nullptr : procedure->GetInstructionContainer();
-
-  m_realtime_widget->SetProcedure(procedure);
-  m_workspace_tree->SetWorkspaceItem(workspace_item);
-  m_workspace_table->SetWorkspaceItem(workspace_item);
-  m_node_editor_widget->SetProcedure(procedure);
-  m_instruction_task_monitor->SetInstructionContainer(instructions);
+  auto expanded_procedure = (m_current_job == nullptr) ? nullptr : job_item->GetExpandedProcedure();
+  SetExpandedProcedureItem(expanded_procedure);
 
   if (job_item != nullptr)
   {
@@ -167,6 +179,20 @@ void OperationTabWidget::AddTab(QWidget* widget, const QString& label, const QSt
 {
   m_tab_widget->addTab(widget, label);
   m_tab_widget->setTabToolTip(m_tab_widget->indexOf(widget), tooltip);
+}
+
+void OperationTabWidget::SetExpandedProcedureItem(ProcedureItem* procedure)
+{
+  m_current_expanded_procedure_item = procedure;
+
+  auto workspace_item = (procedure == nullptr) ? nullptr : procedure->GetWorkspace();
+  auto instructions = (procedure == nullptr) ? nullptr : procedure->GetInstructionContainer();
+
+  m_realtime_widget->SetProcedure(procedure);
+  m_workspace_tree->SetWorkspaceItem(workspace_item);
+  m_workspace_table->SetWorkspaceItem(workspace_item);
+  m_node_editor_widget->SetProcedure(procedure);
+  m_instruction_task_monitor->SetInstructionContainer(instructions);
 }
 
 }  // namespace oac_tree_gui
