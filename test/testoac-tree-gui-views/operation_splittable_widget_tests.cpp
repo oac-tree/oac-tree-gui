@@ -212,7 +212,7 @@ TEST_F(OperationSplittableWidgetTest, ActiveJobsChangedOnCloseExcludesClosingPan
 
 //! We have single panel (with InstructionTaskMonitor selected) looking on a job with expanded
 //! procedure. Removal of the expanded job should clean-up the panel.
-TEST_F(OperationSplittableWidgetTest, DISABLED_RemoveExpandedProcedure)
+TEST_F(OperationSplittableWidgetTest, RemoveExpandedProcedure)
 {
   OperationSplittableWidget operation_splittable_widget;
   operation_splittable_widget.show();
@@ -223,7 +223,7 @@ TEST_F(OperationSplittableWidgetTest, DISABLED_RemoveExpandedProcedure)
   // creating expanded procedure
   auto procedure = test::CreateMessageProcedureItem(GetSequencerModel(), "abc");
   job0->SetProcedure(procedure);
-  LocalJobHandler job_handler(job0, UserContext{});
+  const LocalJobHandler job_handler(job0, UserContext{});
   ASSERT_NE(job0->GetExpandedProcedure(), nullptr);
 
   // accessing our only panel and underlying tab operation_splittable_widget
@@ -256,7 +256,9 @@ TEST_F(OperationSplittableWidgetTest, DISABLED_RemoveExpandedProcedure)
   EXPECT_EQ(task_monitor->GetTaskWidgetBuilder()->GetInstructionCount(), 1U);
 
   mvvm::utils::RemoveItem(*job0->GetExpandedProcedure());
-  EXPECT_EQ(task_monitor->GetTaskWidgetBuilder()->GetInstructionCount(), 0U);
+
+  // widget should be cleaned up
+  ASSERT_EQ(task_monitor->GetTaskWidgetBuilder(), nullptr);
 }
 
 }  // namespace oac_tree_gui::test

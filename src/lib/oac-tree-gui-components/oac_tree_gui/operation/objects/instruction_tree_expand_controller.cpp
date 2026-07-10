@@ -39,10 +39,6 @@ InstructionTreeExpandController::InstructionTreeExpandController(QTreeView* tree
                                                                  QObject* parent_object)
     : QObject(parent_object), m_tree_view(tree_view)
 {
-  connect(tree_view, &QTreeView::collapsed, this,
-          &InstructionTreeExpandController::OnTreeCollapsedChange);
-  connect(tree_view, &QTreeView::expanded, this,
-          &InstructionTreeExpandController::OnTreeCollapsedChange);
 }
 
 InstructionTreeExpandController::~InstructionTreeExpandController() = default;
@@ -51,6 +47,7 @@ void InstructionTreeExpandController::SetInstructionContainer(
     InstructionContainerItem* instruction_container)
 {
   m_instruction_container = instruction_container;
+  SetConnected(m_instruction_container != nullptr);
 }
 
 void InstructionTreeExpandController::SaveSelectionRequest(
@@ -91,6 +88,8 @@ void InstructionTreeExpandController::SetTreeViewToInstructionExpandState()
     throw RuntimeException("Instruction container is not initialised");
   }
 
+  SetConnected(false);
+
   auto on_index = [this](const auto& index)
   {
     if (!index.isValid())
@@ -104,6 +103,8 @@ void InstructionTreeExpandController::SetTreeViewToInstructionExpandState()
     }
   };
   IterateFirstColumn(*GetViewModel(), QModelIndex(), on_index);
+
+  SetConnected(true);
 }
 
 mvvm::ViewModel* InstructionTreeExpandController::GetViewModel() const
@@ -131,6 +132,24 @@ void InstructionTreeExpandController::OnTreeCollapsedChange(const QModelIndex& i
 InstructionItem* InstructionTreeExpandController::GetInstruction(const QModelIndex& index)
 {
   return mvvm::utils::GetItemFromView<InstructionItem>(GetViewModel()->itemFromIndex(index));
+}
+
+void InstructionTreeExpandController::SetConnected(bool value)
+{
+  if (value)
+  {
+    connect(m_tree_view, &QTreeView::collapsed, this,
+            &InstructionTreeExpandController::OnTreeCollapsedChange, Qt::UniqueConnection);
+    connect(m_tree_view, &QTreeView::expanded, this,
+            &InstructionTreeExpandController::OnTreeCollapsedChange, Qt::UniqueConnection);
+  }
+  else
+  {
+    disconnect(m_tree_view, &QTreeView::collapsed, this,
+               &InstructionTreeExpandController::OnTreeCollapsedChange);
+    disconnect(m_tree_view, &QTreeView::expanded, this,
+               &InstructionTreeExpandController::OnTreeCollapsedChange);
+  }
 }
 
 }  // namespace oac_tree_gui
