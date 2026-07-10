@@ -24,21 +24,18 @@
 #include <sup/gui/mainwindow/session_item_widget.h>
 
 #include <QWidget>
+#include <memory>
 #include <vector>
 
 class QTabWidget;
 class QToolBar;
-
-namespace mvvm
-{
-class ModelListener;
-}
 
 namespace oac_tree_gui
 {
 
 class InstructionItem;
 class JobItem;
+class JobItemController;
 class JobLog;
 class MonitorRealTimeActions;
 class OperationRealTimeWidget;
@@ -73,7 +70,6 @@ public:
 
   void SetItem(mvvm::SessionItem* job_item) override;
   const mvvm::SessionItem* GetItem() const override;
-  void SetModel(mvvm::ISessionModel* model) override;
 
   void SetCurrentJob(JobItem* job_item);
 
@@ -113,9 +109,8 @@ private:
   InstructionTaskMonitor* m_instruction_task_monitor{nullptr};
 
   JobItem* m_current_job{nullptr};
-  ProcedureItem* m_current_expanded_procedure_item{nullptr};
 
-  std::unique_ptr<mvvm::ModelListener> m_model_listener;
+  std::unique_ptr<JobItemController> m_job_controller;
 };
 
 }  // namespace oac_tree_gui

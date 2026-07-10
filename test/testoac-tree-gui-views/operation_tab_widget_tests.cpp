@@ -33,6 +33,7 @@
 #include <oac_tree_gui/views/operation/monitor_realtime_actions.h>
 #include <oac_tree_gui/views/operation/realtime_instruction_tree_widget.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
@@ -216,6 +217,62 @@ TEST_F(OperationTabWidgetTest, SetCurrentJobPopulatesChildWidgets)
 
   // tick timeout is taken from the job
   EXPECT_EQ(widget.GetCurrentTickTimeout(), 42);
+}
+
+// ------------------------------------------------------------------------------------------------
+// Tier 3: expanded procedure life cycle while the same job stays selected. The JobItemController
+// keeps the child views in sync when the expanded procedure is destroyed or (re-)created, as
+// happens when a running job is re-run.
+// ------------------------------------------------------------------------------------------------
+
+//! When the expanded procedure is destroyed while its job stays selected, the child views are
+//! cleared (no dangling pointers) without an explicit SetCurrentJob() call.
+TEST_F(OperationTabWidgetTest, ExpandedProcedureDestroyedClearsViews)
+{
+  auto job = GetJobModel()->InsertItem<LocalJobItem>();
+  (void)GetJobModel()->InsertItem(test::CreateCopyProcedureItem(), job, mvvm::TagIndex::Append());
+  ASSERT_NE(job->GetExpandedProcedure(), nullptr);
+
+  OperationTabWidget widget;
+  widget.SetCurrentJob(job);
+  widget.show();
+
+  auto realtime_tree_widget = widget.findChild<RealTimeInstructionTreeWidget*>();
+  ASSERT_NE(realtime_tree_widget, nullptr);
+  auto realtime_tree = realtime_tree_widget->findChild<QTreeView*>();
+  ASSERT_NE(realtime_tree, nullptr);
+  EXPECT_EQ(realtime_tree->model()->rowCount(), 1);
+
+  // destroying the expanded procedure clears the real time tree via the controller callback
+  mvvm::utils::RemoveItem(*job->GetExpandedProcedure());
+  EXPECT_EQ(job->GetExpandedProcedure(), nullptr);
+  EXPECT_EQ(realtime_tree->model()->rowCount(), 0);
+
+  // the job is still the current one, only its expanded procedure is gone
+  EXPECT_EQ(widget.GetItem(), job);
+}
+
+//! When a new expanded procedure appears while its job stays selected, the child views repopulate
+//! automatically, without an explicit SetCurrentJob() call. This is the behavior the controller
+//! adds on top of the previous destruction-only listener.
+TEST_F(OperationTabWidgetTest, ExpandedProcedureReappearsRepopulatesViews)
+{
+  auto job = GetJobModel()->InsertItem<LocalJobItem>();
+
+  OperationTabWidget widget;
+  widget.SetCurrentJob(job);  // job without expanded procedure yet
+  widget.show();
+
+  auto realtime_tree_widget = widget.findChild<RealTimeInstructionTreeWidget*>();
+  ASSERT_NE(realtime_tree_widget, nullptr);
+  auto realtime_tree = realtime_tree_widget->findChild<QTreeView*>();
+  ASSERT_NE(realtime_tree, nullptr);
+  EXPECT_EQ(realtime_tree->model()->rowCount(), 0);
+
+  // inserting an expanded procedure repopulates the real time tree via the controller callback
+  (void)GetJobModel()->InsertItem(test::CreateCopyProcedureItem(), job, mvvm::TagIndex::Append());
+  ASSERT_NE(job->GetExpandedProcedure(), nullptr);
+  EXPECT_EQ(realtime_tree->model()->rowCount(), 1);
 }
 
 }  // namespace oac_tree_gui::test

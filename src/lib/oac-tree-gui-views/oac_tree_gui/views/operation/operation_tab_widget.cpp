@@ -24,6 +24,7 @@
 #include "monitor_realtime_actions.h"
 #include "operation_realtime_widget.h"
 
+#include <oac_tree_gui/components/job_item_controller.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
@@ -31,7 +32,6 @@
 #include <oac_tree_gui/views/composer/workspace_variable_tree_view.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
-#include <mvvm/signals/model_listener.h>
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QTabWidget>
@@ -87,6 +87,11 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
   AddTab(m_node_editor_widget, "Node view", "Instruction tree as a node graph");
   AddTab(m_instruction_task_monitor, "Task monitor", "Instruction task monitor");
 
+  // The controller tracks the expanded procedure on board of the current job and fans it out into
+  // the child views whenever it appears or disappears (e.g. when the job is re-run).
+  m_job_controller = std::make_unique<JobItemController>(
+      [this](ProcedureItem* procedure) { SetExpandedProcedureItem(procedure); });
+
   SetupConnections();
 }
 
@@ -102,28 +107,13 @@ const mvvm::SessionItem* OperationTabWidget::GetItem() const
   return m_current_job;
 }
 
-void OperationTabWidget::SetModel(mvvm::ISessionModel* model)
-{
-  qDebug() << "AAAA\n";
-  qDebug() << "AAAA\n";
-  qDebug() << "AAAA\n";
-  m_model_listener = std::make_unique<mvvm::ModelListener>(model);
-  auto on_event = [this](const mvvm::ItemDestroyedEvent& event)
-  {
-    if (event.item == m_current_expanded_procedure_item)
-    {
-      SetExpandedProcedureItem(nullptr);
-    }
-  };
-  m_model_listener->Connect<mvvm::ItemDestroyedEvent>(on_event);
-}
-
 void OperationTabWidget::SetCurrentJob(JobItem* job_item)
 {
   m_current_job = job_item;
 
-  auto expanded_procedure = (m_current_job == nullptr) ? nullptr : job_item->GetExpandedProcedure();
-  SetExpandedProcedureItem(expanded_procedure);
+  // The controller invokes SetExpandedProcedureItem() via its callback, both now and whenever the
+  // expanded procedure appears or disappears while this job stays selected.
+  m_job_controller->SetItem(job_item);
 
   if (job_item != nullptr)
   {
@@ -183,8 +173,6 @@ void OperationTabWidget::AddTab(QWidget* widget, const QString& label, const QSt
 
 void OperationTabWidget::SetExpandedProcedureItem(ProcedureItem* procedure)
 {
-  m_current_expanded_procedure_item = procedure;
-
   auto workspace_item = (procedure == nullptr) ? nullptr : procedure->GetWorkspace();
   auto instructions = (procedure == nullptr) ? nullptr : procedure->GetInstructionContainer();
 
