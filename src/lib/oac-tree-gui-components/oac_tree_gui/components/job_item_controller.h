@@ -65,4 +65,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_COMPONENTS_TEXT_EDIT_CONTROLLER_H_
+#endif  // OAC_TREE_GUI_COMPONENTS_JOB_ITEM_CONTROLLER_H_
