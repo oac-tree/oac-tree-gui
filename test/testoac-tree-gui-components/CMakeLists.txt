@@ -39,6 +39,7 @@ target_sources(${test} PRIVATE
   instruction_operation_viewmodel_tests.cpp
   instruction_toolkit_viewmodel_tests.cpp
   job_info_viewmodel_tests.cpp
+  job_item_controller_tests.cpp
   job_list_viewmodel_tests.cpp
   job_log_severity_tests.cpp
   job_log_tests.cpp

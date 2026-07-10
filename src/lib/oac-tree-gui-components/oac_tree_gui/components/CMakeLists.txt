@@ -17,6 +17,8 @@ target_sources(${library_name} PRIVATE
   custom_viewitem_factory.h
   drag_and_drop_helper.cpp
   drag_and_drop_helper.h
+  job_item_controller.cpp
+  job_item_controller.h
   load_resources.cpp
   load_resources.h
   mime_constants.h
