@@ -95,7 +95,7 @@ public:
 signals:
   void VisibilityHasChanged();
 
-private:  
+private:
   mvvm::ViewModel* GetViewModel() const;
   void OnTreeCollapsedChange(const QModelIndex& index);
   InstructionItem* GetInstruction(const QModelIndex& index);

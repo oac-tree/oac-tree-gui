@@ -31,6 +31,7 @@
 
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
 #include <QTreeView>
 
 namespace oac_tree_gui::test
@@ -175,6 +176,130 @@ TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstruction
   tree.expand(sequence0_index);
   EXPECT_FALSE(IsCollapsed(*sequence0));
   EXPECT_TRUE(IsCollapsed(*sequence1));
+}
+
+//! Core regression test: applying the instruction expand state to the tree (model->view) must not
+//! feed back into the model (view->model). Before the fix the tree's expanded/collapsed signals
+//! were connected while SetTreeViewToInstructionExpandState() called setExpanded(), so each change
+//! re-entered OnTreeCollapsedChange(), wrote the branch status back, and emitted VisibilityHas
+//! Changed - a loop of updating the branch status while reading it.
+TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandStateDoesNotFeedBack)
+{
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
+  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  (void)m_model.InsertItem<SequenceItem>(sequence1);  // wait
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  InstructionTreeExpandController controller(&tree);
+  controller.SetInstructionContainer(container);
+
+  QSignalSpy spy(&controller, &InstructionTreeExpandController::VisibilityHasChanged);
+
+  // applying model state expands sequence0/wait and keeps sequence1 collapsed; this must not
+  // trigger any write-back notifications
+  controller.SetTreeViewToInstructionExpandState();
+
+  EXPECT_EQ(spy.count(), 0);
+
+  // model collapsed attributes are untouched by the apply (it is a one-way operation)
+  EXPECT_FALSE(IsCollapsed(*sequence0));
+  EXPECT_TRUE(IsCollapsed(*sequence1));
+}
+
+//! Before a container is set, the controller does not track the tree: user expand/collapse actions
+//! neither notify nor write into the model.
+TEST_F(InstructionTreeExpandControllerTest, NotConnectedBeforeContainerIsSet)
+{
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
+  (void)m_model.InsertItem<SequenceItem>(sequence0);  // sequence1
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  InstructionTreeExpandController controller(&tree);  // no SetInstructionContainer
+
+  QSignalSpy spy(&controller, &InstructionTreeExpandController::VisibilityHasChanged);
+
+  tree.expandAll();
+  tree.collapseAll();
+
+  EXPECT_EQ(spy.count(), 0);
+  EXPECT_FALSE(IsCollapsed(*sequence0));
+}
+
+//! Resetting the container to nullptr stops the controller from tracking the tree.
+TEST_F(InstructionTreeExpandControllerTest, SetInstructionContainerNullptrDisconnects)
+{
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
+  (void)m_model.InsertItem<SequenceItem>(sequence0);  // sequence1
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  InstructionTreeExpandController controller(&tree);
+
+  controller.SetInstructionContainer(container);
+  controller.SetInstructionContainer(nullptr);
+
+  QSignalSpy spy(&controller, &InstructionTreeExpandController::VisibilityHasChanged);
+
+  tree.expandAll();
+
+  EXPECT_EQ(spy.count(), 0);
+  EXPECT_FALSE(IsCollapsed(*sequence0));
+}
+
+//! After SetTreeViewToInstructionExpandState() the write-back path is restored, so a subsequent
+//! genuine user action updates the model and notifies again.
+TEST_F(InstructionTreeExpandControllerTest, ConnectionsRestoredAfterApply)
+{
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
+  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  (void)m_model.InsertItem<SequenceItem>(sequence1);  // wait
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  InstructionTreeExpandController controller(&tree);
+  controller.SetInstructionContainer(container);
+  controller.SetTreeViewToInstructionExpandState();
+  ASSERT_TRUE(IsCollapsed(*sequence1));
+
+  QSignalSpy spy(&controller, &InstructionTreeExpandController::VisibilityHasChanged);
+
+  // genuine user action: expanding the still-collapsed sequence1 branch
+  tree.expand(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0));
+
+  EXPECT_GE(spy.count(), 1);
+  EXPECT_FALSE(IsCollapsed(*sequence1));
+}
+
+//! Calling SetInstructionContainer() repeatedly must not create duplicate connections, otherwise a
+//! single user action would notify (and write back) more than once.
+TEST_F(InstructionTreeExpandControllerTest, RepeatedSetInstructionContainerDoesNotDuplicate)
+{
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
+  (void)m_model.InsertItem<SequenceItem>(sequence0);  // sequence1
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  InstructionTreeExpandController controller(&tree);
+
+  controller.SetInstructionContainer(container);
+  controller.SetInstructionContainer(container);  // second time must not double-connect
+
+  QSignalSpy spy(&controller, &InstructionTreeExpandController::VisibilityHasChanged);
+
+  // single user action on a collapsed node
+  tree.expand(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0));
+
+  EXPECT_EQ(spy.count(), 1);
+  EXPECT_FALSE(IsCollapsed(*sequence0));
 }
 
 }  // namespace oac_tree_gui::test
