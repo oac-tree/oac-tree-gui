@@ -235,11 +235,6 @@ bool OperationActionHandler::OnRegenerateJobRequest()
     job->SetStatus(is_success ? RunnerStatus::kUndefined : RunnerStatus::kSubmitFailure);
     if (is_success)
     {
-      // FIXME This is quick hack to notify OperationSplittableWidget
-      // that extended procedure on board of JobItem has changed due to resubmit.
-      // We emit nullptr to pretend that JobItem has changed, even if it is remained the same.
-      emit MakeJobSelectedRequest(nullptr);
-
       emit MakeJobSelectedRequest(job);
     }
   }

@@ -362,8 +362,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 
   EXPECT_TRUE(operation_handler->OnRegenerateJobRequest());
 
-  EXPECT_EQ(spy_selected_request.count(), 2);
-  EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), nullptr);
+  ASSERT_EQ(spy_selected_request.count(), 1);
   EXPECT_EQ(mvvm::test::TakeValue<const JobItem*>(spy_selected_request), &job_item);
   EXPECT_EQ(job_item.GetStatus(), RunnerStatus::kUndefined);
 }
