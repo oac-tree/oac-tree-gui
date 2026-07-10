@@ -49,8 +49,11 @@ void JobItemController::Subscribe()
 
 void JobItemController::Unsubscribe()
 {
-  m_current_procedure_item = nullptr;
-  m_procedure_changed(m_current_procedure_item);
+  if (m_current_procedure_item != nullptr)
+  {
+    m_current_procedure_item = nullptr;
+    m_procedure_changed(m_current_procedure_item);
+  }
 }
 
 void JobItemController::OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event)

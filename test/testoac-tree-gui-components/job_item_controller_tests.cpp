@@ -265,8 +265,7 @@ TEST_F(JobItemControllerTest, SwitchBetweenTwoJobsWithProcedures)
 }
 
 //! Controller is detached (via SetItem(nullptr)) from a job which has no expanded procedure.
-//! Unsubscribe() currently notifies the client with nullptr unconditionally, so a callback is fired
-//! even though the tracked procedure did not actually change from nullptr.
+//! No callbacks are expected, since tracking procedure didn't change.
 TEST_F(JobItemControllerTest, DetachFromJobWithoutProcedure)
 {
   auto job = m_model.InsertItem<LocalJobItem>();
@@ -278,8 +277,8 @@ TEST_F(JobItemControllerTest, DetachFromJobWithoutProcedure)
   EXPECT_CALL(m_mock_procedure_call, Call(::testing::_)).Times(0);
   controller->SetItem(job);
 
-  // detaching: Unsubscribe() unconditionally reports "no procedure", so nullptr is expected
-  EXPECT_CALL(m_mock_procedure_call, Call(nullptr)).Times(1);
+  // detaching: no calls are expected
+  EXPECT_CALL(m_mock_procedure_call, Call(nullptr)).Times(0);
   controller->SetItem(nullptr);
 }
 
