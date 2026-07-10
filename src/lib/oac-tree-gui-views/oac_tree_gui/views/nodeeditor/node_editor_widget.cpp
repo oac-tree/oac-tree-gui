@@ -40,6 +40,7 @@
 #include <mvvm/nodeeditor/i_node_port.h>
 
 #include <QPointF>
+#include <QTimer>
 #include <QVBoxLayout>
 
 namespace
@@ -155,16 +156,46 @@ void NodeEditorWidget::SetupSceneComponentProvider()
 
   m_scene_component_provider.reset();
 
-  if (algorithm::RequiresInitialAlignment(container->GetInstructions()))
+  const bool requires_alignment =
+      algorithm::RequiresInitialAlignment(container->GetInstructions());
+
+  // The provider is created first (a read-only operation on the model); shapes appear at the
+  // instructions' current coordinates and follow later coordinate changes on their own.
+  m_scene_component_provider = CreateGraphicsSceneComponentProvider(m_editor_mode);
+
+  if (requires_alignment && !m_alignment_scheduled)
   {
-    const auto scene_center = m_graphics_view->sceneRect().center();
-    // alignment reference point slightly above the center of the scene
-    const QPointF reference_point{scene_center.x(),
-                                  scene_center.y() - (3 * ConnectableViewRectangle().height())};
-    algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
+    // Initial alignment mutates instruction X/Y coordinates, i.e. it creates a model command. This
+    // method can be reached synchronously from a model notification (e.g. when the expanded
+    // procedure is regenerated on board of a JobItem while the node editor is visible), and the
+    // undo/redo framework forbids starting a command from inside a running one. We therefore post
+    // the alignment to the next event-loop cycle, once the triggering command has finished.
+    m_alignment_scheduled = true;
+    QTimer::singleShot(0, this, &NodeEditorWidget::AlignInstructions);
+  }
+}
+
+void NodeEditorWidget::AlignInstructions()
+{
+  m_alignment_scheduled = false;
+
+  // preconditions may have changed while the alignment was queued
+  if ((m_procedure_item == nullptr) || !isVisible())
+  {
+    return;
   }
 
-  m_scene_component_provider = CreateGraphicsSceneComponentProvider(m_editor_mode);
+  auto container = m_procedure_item->GetInstructionContainer();
+  if (!algorithm::RequiresInitialAlignment(container->GetInstructions()))
+  {
+    return;
+  }
+
+  const auto scene_center = m_graphics_view->sceneRect().center();
+  // alignment reference point slightly above the center of the scene
+  const QPointF reference_point{scene_center.x(),
+                                scene_center.y() - (3 * ConnectableViewRectangle().height())};
+  algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
 }
 
 std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()

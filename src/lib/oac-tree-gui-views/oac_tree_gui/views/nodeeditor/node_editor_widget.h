@@ -74,6 +74,7 @@ private:
   void SetupConnections();
   void OnAlignRequest();
   void SetupSceneComponentProvider();
+  void AlignInstructions();
   static std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
   std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider(
       NodeEditorMode editor_mode);
@@ -88,6 +89,9 @@ private:
   std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
 
   ProcedureItem* m_procedure_item{nullptr};
+
+  //!< true when a deferred initial alignment has already been posted to the event loop
+  bool m_alignment_scheduled{false};
 };
 
 }  // namespace oac_tree_gui
