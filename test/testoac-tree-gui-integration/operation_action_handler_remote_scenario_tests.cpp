@@ -72,7 +72,7 @@ struct WebSocketsTransport
 {
   static AutomationServerInfo GetServerInfo()
   {
-    return WebSocketsServerInfo{"localhost", 8080};
+    return WebSocketsServerInfo{"localhost", 21777u};
   }
 };
 
