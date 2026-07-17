@@ -29,8 +29,8 @@
 namespace oac_tree_gui::style
 {
 
-class GraphicsViewStyle;
-class GraphicsSceneStyle;
+struct GraphicsViewStyle;
+struct GraphicsSceneStyle;
 
 /**
  * @brief Populates existing GraphicsViewStyle from JSON object representing application style.
