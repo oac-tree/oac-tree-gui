@@ -21,6 +21,7 @@
 #include "component_types.h"
 
 #include <iomanip>
+#include <sstream>
 
 namespace oac_tree_gui
 {
