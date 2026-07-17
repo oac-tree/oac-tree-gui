@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+#include <cstddef>
 
 namespace sup::dto
 {
