@@ -23,6 +23,8 @@
 
 #include <sup/gui/mainwindow/session_item_widget.h>
 
+#include <oac_tree_gui/model/job_item.h>
+
 #include <QWidget>
 #include <memory>
 #include <vector>
@@ -34,7 +36,6 @@ namespace oac_tree_gui
 {
 
 class InstructionItem;
-class JobItem;
 class JobItemController;
 class JobLog;
 class MonitorRealTimeActions;

@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_JOB_PANEL_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_JOB_PANEL_H_
 
+#include <oac_tree_gui/model/job_item.h>
+
 #include <QWidget>
 
 namespace sup::gui
@@ -32,7 +34,6 @@ namespace oac_tree_gui
 {
 
 class JobListWidget;
-class JobItem;
 class ProcedureItem;
 class JobPropertyWidget;
 class ApplicationModels;

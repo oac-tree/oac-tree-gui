@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_JOB_LIST_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_JOB_LIST_WIDGET_H_
 
+#include <oac_tree_gui/model/job_item.h>
+
 #include <QWidget>
 #include <memory>
 
@@ -41,7 +43,6 @@ namespace oac_tree_gui
 {
 
 class JobModel;
-class JobItem;
 
 /**
  * @brief The JobListWidget class A list-like view of currently running/idle jobs. Occupies a top
