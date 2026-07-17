@@ -25,6 +25,8 @@
 #include <memory>
 #include <vector>
 
+#include <oac_tree_gui/model/job_item.h>
+
 class QSplitter;
 
 namespace mvvm
@@ -44,7 +46,6 @@ namespace oac_tree_gui
 class InstructionItem;
 class JobLog;
 class JobModel;
-class JobItem;
 class OperationTabWidget;
 
 /**
@@ -154,5 +155,7 @@ private:
 };
 
 }  // namespace oac_tree_gui
+
+Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 
 #endif  // OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_SPLITTABLE_WIDGET_H_

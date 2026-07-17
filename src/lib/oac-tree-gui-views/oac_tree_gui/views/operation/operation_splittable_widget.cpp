@@ -23,7 +23,6 @@
 #include "operation_tab_widget.h"
 
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/job_model.h>
 
 #include <sup/gui/views/dtoeditor/splittable_combo_panel.h>
@@ -33,8 +32,6 @@
 
 #include <QSplitter>
 #include <QVBoxLayout>
-
-Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
 
 namespace oac_tree_gui
 {
