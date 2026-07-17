@@ -1,3 +1,7 @@
+Changes for 2.3.1:
+
+- Fix compilation failure on GitHub action build
+
 Changes for 2.3.0:
 
 - Add "connection" button to oac-tree-gui run panel
