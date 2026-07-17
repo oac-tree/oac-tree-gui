@@ -34,7 +34,7 @@ class ISessionModel;
 
 namespace sup::gui
 {
-class MessageEvent;
+struct MessageEvent;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
