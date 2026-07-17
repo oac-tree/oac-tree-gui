@@ -34,6 +34,8 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
+Q_DECLARE_METATYPE(oac_tree_gui::JobItem*)
+
 namespace oac_tree_gui
 {
 
