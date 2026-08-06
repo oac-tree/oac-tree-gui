@@ -28,8 +28,8 @@ option(COA_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clan
 option(COA_USE_QT6 "Compile with Qt6" ON)
 option(COA_FETCH_DEPS "Fetch and build dependencies from github sources" OFF)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
-set(CMAKE_CONFIG_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/configs)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/module)
+set(CMAKE_CONFIG_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/config)
 include(configuration)
 
 add_subdirectory(src)
