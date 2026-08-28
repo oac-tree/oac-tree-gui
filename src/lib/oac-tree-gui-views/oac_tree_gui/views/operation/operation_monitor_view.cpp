@@ -50,6 +50,7 @@
 
 #include <mvvm/model/item_selection.h>
 #include <mvvm/model/model_utils.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
 #include <QIcon>
@@ -140,7 +141,7 @@ bool OperationMonitorView::OnImportJobRequest(const QString& file_name)
 
   if (!path.isEmpty())
   {
-    return m_action_handler->SubmitFileBasedJob(path.toStdString());
+    return m_action_handler->SubmitFileBasedJob(mvvm::utils::ExpandHomePath(path).toStdString());
   }
 
   return false;
