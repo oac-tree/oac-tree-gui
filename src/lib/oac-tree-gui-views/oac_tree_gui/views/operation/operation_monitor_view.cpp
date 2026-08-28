@@ -43,6 +43,7 @@
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/i_app_command_service.h>
+#include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
@@ -133,7 +134,9 @@ void OperationMonitorView::SetModels(ApplicationModels* models)
 
 bool OperationMonitorView::OnImportJobRequest(const QString& file_name)
 {
-  auto path = file_name.isEmpty() ? GetOpenSequencerProcedureName(kWorkdirSettingName) : file_name;
+  auto path = file_name.isEmpty() ? sup::gui::GetDialogFileNameToOpen("Files (*.xml *.XML)", this,
+                                                                      kWorkdirSettingName)
+                                  : file_name;
 
   if (!path.isEmpty())
   {
