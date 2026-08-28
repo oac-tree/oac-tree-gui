@@ -41,10 +41,10 @@ namespace oac_tree_gui
 {
 
 class WorkspaceItem;
-class WorkspaceEditorContext;
+struct WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorActions;
-class AttributeEditorContext;
+struct AttributeEditorContext;
 class AttributeEditorActions;
 class AttributeEditorActionHandler;
 

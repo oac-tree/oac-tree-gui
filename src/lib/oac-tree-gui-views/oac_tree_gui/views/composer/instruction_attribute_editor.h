@@ -43,7 +43,7 @@ namespace oac_tree_gui
 
 class AttributeEditorActions;
 class AttributeEditorActionHandler;
-class AttributeEditorContext;
+struct AttributeEditorContext;
 
 /**
  * @brief The InstructionAttributeEditor provides a toolbar and three-column tree for editing

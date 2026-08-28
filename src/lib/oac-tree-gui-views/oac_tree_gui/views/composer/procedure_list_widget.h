@@ -46,7 +46,7 @@ namespace oac_tree_gui
 class SequencerModel;
 class ProcedureItem;
 class ProcedureListActionHandler;
-class ProcedureListContext;
+struct ProcedureListContext;
 
 /**
  * @brief The ProcedureListWidget class represent a simple list with procedures with editable names.

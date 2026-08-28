@@ -44,7 +44,7 @@ namespace oac_tree_gui
 
 class InstructionContainerItem;
 class InstructionItem;
-class InstructionEditorContext;
+struct InstructionEditorContext;
 class InstructionEditorActionHandler;
 class InstructionEditorActions;
 class InstructionAttributeEditor;
