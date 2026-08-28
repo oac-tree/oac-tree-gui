@@ -3,8 +3,6 @@ target_sources(${library_name} PRIVATE
   about_application_dialog.h
   color_palette.cpp
   color_palette.h
-  command_line_options.cpp
-  command_line_options.h
   main_window_helper.cpp
   main_window_helper.h
   operation_main_window.cpp

@@ -22,11 +22,11 @@
 #define OAC_TREE_GUI_MAINWINDOW_RUN_APPLICATION_H_
 
 #include <oac_tree_gui/components/load_resources.h>
-#include <oac_tree_gui/mainwindow/command_line_options.h>
 #include <oac_tree_gui/mainwindow/main_window_helper.h>
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/mainwindow/splash_screen.h>
 
+#include <sup/gui/mainwindow/command_line_options.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
 
 #include <mvvm/widgets/app_restarter.h>
@@ -37,6 +37,10 @@
 
 namespace oac_tree_gui
 {
+
+//! Description of --file option in the help message of oac-tree applications.
+constexpr auto kFileOptionDescription =
+    "Load sequencer procedure from a given file name; load multiple procedures if it is a folder";
 
 /**
  * @brief Create QApplication and main window.
@@ -49,7 +53,7 @@ int RunApplication(int argc, char** argv)
 
   oac_tree_gui::LoadOacTreeItems();
 
-  auto options = oac_tree_gui::ParseOptions(argc, argv);
+  auto options = sup::gui::ParseOptions(argc, argv, kFileOptionDescription);
   mvvm::utils::SetupHighDpiScaling(options.scale);
 
   const QApplication app(argc, argv);
