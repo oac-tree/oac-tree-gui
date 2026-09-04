@@ -63,9 +63,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   const std::string server_name("RemoteJobHandlerTestServer");
   test::TestAutomationServer server;
 
-  server.Start(EPICSServerInfo{server_name}, kProcedureBodyText);
-
-  std::this_thread::sleep_for(std::chrono::milliseconds(20));
+  ASSERT_TRUE(server.Start(EPICSServerInfo{server_name}, kProcedureBodyText));
 
   auto client_mgr = sup::oac_tree_server::utils::CreateEPICSClientProtocolManager(server_name);
   EXPECT_EQ(client_mgr->GetNumberOfJobs(), 1);
@@ -77,7 +75,7 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kInitial);
 
   job_handler.Start();
-  QTest::qWait(50);
+  QTest::qWait(2000);
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 

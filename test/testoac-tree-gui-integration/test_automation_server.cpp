@@ -20,6 +20,9 @@
 
 #include "test_automation_server.h"
 
+#include <oac_tree_gui/jobsystem/automation_client_factory.h>
+#include <oac_tree_gui/jobsystem/remote_connection_service.h>
+
 #include <sup/epics/epics_protocol_factory.h>
 #include <sup/oac-tree-server/automation_server.h>
 #include <sup/oac-tree-server/epics_utils.h>
@@ -59,12 +62,17 @@ std::unique_ptr<sup::oac_tree_server::IServerProtocolFactory> CreateProtocolFact
 
 }  // namespace
 
-void TestAutomationServer::Start(const AutomationServerInfo& server_info,
-                                 const std::string& procedure_string)
+bool TestAutomationServer::Start(const AutomationServerInfo& server_info,
+                                 const std::string& procedure_string,
+                                 std::chrono::milliseconds timeout)
 {
   // std::async decay-copies its arguments, so temporaries passed to Start() remain valid
   m_future = std::async(std::launch::async, &TestAutomationServer::RunServer, this, server_info,
                         procedure_string);
+
+  // A connection that succeeds is the definition of ready, so retry one until it does.
+  RemoteConnectionService probe(GetAutomationClientFactoryFunc(), {});
+  return WaitFor([&probe, &server_info]() { return probe.Connect(server_info); }, timeout);
 }
 
 void TestAutomationServer::RunServer(AutomationServerInfo server_info, std::string procedure_string)

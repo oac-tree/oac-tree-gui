@@ -121,8 +121,7 @@ public:
    */
   static void SetUpTestSuite()
   {
-    m_test_automation_server.Start(GetServerInfo(), kProcedureBodyText);
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    ASSERT_TRUE(m_test_automation_server.Start(GetServerInfo(), kProcedureBodyText));
   }
 
   static void TearDownTestSuite() { m_test_automation_server.Stop(); }
@@ -202,7 +201,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [job_item]() { return job_item->GetStatus() == RunnerStatus::kInitial; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 5000));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = job_item->GetExpandedProcedure();
@@ -213,7 +212,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
 
   auto predicate2 = [&expected_value, &variables]()
   { return test::IsEqual(*variables.at(0), expected_value); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 5000));
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
 
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
@@ -242,7 +241,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [job_item]() { return job_item->GetStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
 
   EXPECT_FALSE(this->m_job_manager.GetJobHandler(job_item)->IsRunning());
 
@@ -255,7 +254,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 
   auto predicate2 = [&expected_value, &variables]()
   { return test::IsEqual(*variables.at(0), expected_value); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 5000));
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
 
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }

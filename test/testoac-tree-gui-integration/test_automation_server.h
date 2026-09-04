@@ -22,6 +22,7 @@
 #define LIBTEST_UTILS_TEST_AUTOMATION_SERVER_H_
 
 #include <atomic>
+#include <chrono>
 #include <future>
 #include <string>
 
@@ -38,7 +39,16 @@ class TestAutomationServer
 public:
   TestAutomationServer() = default;
 
-  void Start(const AutomationServerInfo& server_info, const std::string& procedure_string);
+  /**
+   * @brief Starts the server in a thread and waits until it accepts a connection.
+   *
+   * @param server_info how clients should reach the server.
+   * @param procedure_string the procedure the server exposes as a job.
+   * @param timeout how long to wait for the server to come up.
+   * @return false if the server did not accept a connection in time.
+   */
+  bool Start(const AutomationServerInfo& server_info, const std::string& procedure_string,
+             std::chrono::milliseconds timeout = std::chrono::seconds(30));
 
   void Stop();
 

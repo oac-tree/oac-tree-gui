@@ -83,8 +83,7 @@ public:
    */
   static void SetUpTestSuite()
   {
-    m_test_automation_server.Start(GetEpicsServerInfo(), kProcedureBodyText);
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    ASSERT_TRUE(m_test_automation_server.Start(GetEpicsServerInfo(), kProcedureBodyText));
   }
 
   static void TearDownTestSuite()
@@ -137,7 +136,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kInitial; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = m_job_item->GetExpandedProcedure();
@@ -148,7 +147,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
 
   auto predicate2 = [this, &variables, &expected_value]()
   { return test::IsEqual(*variables.at(0), expected_value); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 100));
+  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
 
   EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
 }
@@ -163,7 +162,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
 
   // after queued connection processed all event, JobItem should get its status
   auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
 
   EXPECT_FALSE(job_manager->GetJobHandler(m_job_item)->IsRunning());
 
