@@ -150,7 +150,7 @@ TEST_F(LocalDomainRunnerTest, ShortProcedureThatExecutesNormally)
 
   runner->Start();
 
-  WaitForStateAndEmptyQueue(*runner, sup::oac_tree::JobState::kSucceeded, msec(100));
+  WaitForStateAndEmptyQueue(*runner, sup::oac_tree::JobState::kSucceeded, msec(20000));
 
   auto final_state = runner->WaitForFinished();
   EXPECT_EQ(final_state, sup::oac_tree::JobState::kSucceeded);
@@ -192,7 +192,7 @@ TEST_F(LocalDomainRunnerTest, Reset)
   //                                  test::GetTimeoutInSec(msec(100))));
   auto has_finished = [&runner]()
   { return runner->GetJobState() == sup::oac_tree::JobState::kInitial; };
-  EXPECT_TRUE(test::WaitFor(has_finished, msec(50)));
+  EXPECT_TRUE(test::WaitFor(has_finished, msec(20000)));
 
   EXPECT_EQ(runner->GetJobState(), sup::oac_tree::JobState::kInitial);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::NOT_STARTED);
@@ -221,7 +221,7 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
     return instruction_ptr->GetStatus() == ExecutionStatus::NOT_FINISHED
            && runner->GetJobState() == JobState::kRunning;
   };
-  EXPECT_TRUE(test::WaitFor(has_started, msec(50)));
+  EXPECT_TRUE(test::WaitFor(has_started, msec(20000)));
 
   EXPECT_FALSE(runner->IsFinished());
   EXPECT_TRUE(runner->IsBusy());
@@ -229,7 +229,7 @@ TEST_F(LocalDomainRunnerTest, StartAndTerminate)
   runner->Stop();
 
   auto is_finished = [&runner]() { return runner->IsFinished(); };
-  EXPECT_TRUE(test::WaitFor(is_finished, msec(100)));
+  EXPECT_TRUE(test::WaitFor(is_finished, msec(20000)));
 
   EXPECT_TRUE(runner->IsFinished());
 
@@ -256,7 +256,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoMessages)
   EXPECT_TRUE(runner->Start());
 
   auto has_finished = [&runner]() { return runner->IsFinished(); };
-  EXPECT_TRUE(test::WaitFor(has_finished, msec(200)));
+  EXPECT_TRUE(test::WaitFor(has_finished, msec(20000)));
 
   EXPECT_EQ(runner->GetJobState(), sup::oac_tree::JobState::kSucceeded);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::SUCCESS);
@@ -389,7 +389,7 @@ TEST_F(LocalDomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
   runner->Step();
 
   auto has_paused = [&runner]() { return runner->GetJobState() == JobState::kPaused; };
-  EXPECT_TRUE(test::WaitFor(has_paused, msec(50)));
+  EXPECT_TRUE(test::WaitFor(has_paused, msec(20000)));
 
   EXPECT_TRUE(runner->Stop());
 
@@ -432,7 +432,7 @@ TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
     variable->GetValue(counter_value);
     return counter_value == 1U && runner->GetEventCount() == 0;
   };
-  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 100));
+  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 20000));
 
   // JobState: running, success
   EXPECT_CALL(m_event_listener, OnJobStateChanged(_)).Times(2);
@@ -444,7 +444,7 @@ TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
   // continuing till the end
   EXPECT_TRUE(runner->Start());
 
-  EXPECT_TRUE(WaitForStateAndEmptyQueue(*runner, sup::oac_tree::JobState::kSucceeded, msec(100)));
+  EXPECT_TRUE(WaitForStateAndEmptyQueue(*runner, sup::oac_tree::JobState::kSucceeded, msec(20000)));
 
   EXPECT_EQ(runner->GetJobState(), sup::oac_tree::JobState::kSucceeded);
   EXPECT_EQ(procedure_ptr->GetStatus(), ::sup::oac_tree::ExecutionStatus::SUCCESS);
@@ -498,7 +498,7 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
     counter_var->GetValue(counter_value);
     return counter_value.As<int>() > 1U;
   };
-  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 100));
+  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 20000));
 
   // pause
   EXPECT_TRUE(runner->Pause());

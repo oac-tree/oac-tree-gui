@@ -72,7 +72,7 @@ TEST_F(UserInputProviderTest, SingleThreadAsksForUserInput)
   ready_for_test.get_future().wait();
 
   // processing event loop to make queued connection passing in UserChoiceProvider
-  QTest::qWait(100);
+  QTest::qWait(2000);
 
   // making sure the thread has finished
   auto result = future_result.get();

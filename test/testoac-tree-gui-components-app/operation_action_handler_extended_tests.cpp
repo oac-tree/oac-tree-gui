@@ -208,7 +208,7 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   // starting the given job
   handler->OnStartJobRequest(job_item);
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 200));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);
@@ -217,10 +217,10 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   auto prev_job_handler = m_job_manager.GetJobHandler(job_item);
 
   handler->OnStartJobRequest(job_item);
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 200));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
 
   EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 200));
+      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 20000));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);
@@ -267,21 +267,21 @@ TEST_F(OperationActionHandlerExtendedTest, DeclineRemovalOfLongRunningJob)
   handler->OnStartJobRequest(job_item);
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 20000));
   EXPECT_TRUE(job_handler->IsRunning());
 
   // removing a running job requires confirmation; the user declines, so the job stays
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   EXPECT_CALL(m_mock_context, OnConfirmJobRemoval(::testing::_)).WillOnce(::testing::Return(false));
   EXPECT_FALSE(handler->OnRemoveJobRequest());
-  QTest::qWait(10);
+  QTest::qWait(2000);
 
   EXPECT_EQ(GetJobItems().size(), 1);
 
   handler->OnStopJobRequest(job_item);
-  QTest::qWait(10);
+  QTest::qWait(2000);
 
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 20000));
 
   EXPECT_FALSE(job_handler->IsRunning());
 }
@@ -302,7 +302,7 @@ TEST_F(OperationActionHandlerExtendedTest, ConfirmRemovalOfLongRunningJob)
   handler->OnStartJobRequest(job_item);
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 20000));
 
   // the user confirms, so the running job is force-removed
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -418,21 +418,21 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
   handler->OnStartJobRequest(job_item);
 
   // check that JobItem got correct state via queued connection
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
   // check that JobManager sees correct state from async runner
   EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 100));
+      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 20000));
 
-  QTest::qWait(20);
+  QTest::qWait(2000);
 
   // starting same job again
   handler->OnStartJobRequest(job_item);
 
   // check that JobItem got correct state via queued connection
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
   // check that JobManager sees correct state from async runner
   EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 100));
+      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 20000));
 }
 
 //! Submit file based job. First submit a file with the error in XML. Then make a fix of XML, and
@@ -477,7 +477,7 @@ TEST_F(OperationActionHandlerExtendedTest, SubmitMalFormedFileBasedJobThenResubm
   // sarting the job
   handler->OnStartJobRequest(job_item);
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);

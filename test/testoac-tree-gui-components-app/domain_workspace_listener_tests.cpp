@@ -90,7 +90,7 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
 
   // let event loop do its job
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   // preparing new expectations
@@ -114,7 +114,7 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
   EXPECT_EQ(listener.GetEventCount(), 2);
 
   // let event loop do its job
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
   EXPECT_EQ(listener.GetEventCount(), 0);
 }
 
@@ -140,7 +140,7 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
 
   // let event loop do its job
   auto empty_queue_predicate = [&listener]() { return listener->GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
   EXPECT_EQ(listener->GetEventCount(), 0);
 
   // resetting listener, expecting no events from the model

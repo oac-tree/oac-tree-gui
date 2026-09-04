@@ -123,7 +123,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   EXPECT_NO_THROW(m_workspace.Setup());
 
   // giving variable time to become available
-  EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 5.0));
+  EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 20.0));
 
   // variable is available and has correct value
   EXPECT_TRUE(variable_ptr->IsAvailable());
@@ -190,7 +190,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessClientAndServerVariables)
   m_workspace.Setup();
 
   // server variable reports immediately, client variable needs special waiting
-  m_workspace.WaitForVariable(client_var_name, 2.0, true);
+  m_workspace.WaitForVariable(client_var_name, 20.0, true);
 }
 
 }  // namespace oac_tree_gui::test

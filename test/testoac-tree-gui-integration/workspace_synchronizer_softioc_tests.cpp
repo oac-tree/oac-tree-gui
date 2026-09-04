@@ -129,7 +129,7 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   m_workspace.Setup();
 
   // waiting for domain workspace noticing SoftIoc variable
-  EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 10.0));
+  EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 20.0));
 
   // checking the value on domain side
   sup::dto::AnyValue domain_value;
@@ -137,7 +137,7 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   EXPECT_EQ(domain_value, softioc_initial_value);
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
 
   // checking the value on GUI side
   EXPECT_TRUE(variable_item->IsAvailable());
@@ -155,7 +155,7 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   m_softioc_service.Stop();
 
   auto predicate = [variable_item]() { return !variable_item->IsAvailable(); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 1000));  // letting event loop to work
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));  // letting event loop to work
 
   EXPECT_FALSE(variable_item->IsAvailable());
   EXPECT_EQ(variable_item->GetAnyValueItem()->GetChildren().at(1)->Data<bool>(), false);

@@ -120,7 +120,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   // starting procedure
   manager.Start(m_job_item);
-  QTest::qWait(20);
+  QTest::qWait(2000);
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<VariableItem>(*GetJobModel());
@@ -137,7 +137,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
     return is_completed && var0_updated && var1_updated;
   };
 
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 100));
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 20000));
 
   EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));

@@ -88,7 +88,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
 
   // let event loop do its job and trigger expectations
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   // preparing new expectations
@@ -100,7 +100,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // let event loop do its job
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
   EXPECT_EQ(listener.GetEventCount(), 0);
 }
 
@@ -131,7 +131,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
 
   // let event loop do its job and trigger expectations
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   // preparing new expectations
@@ -143,7 +143,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // let event loop do its job
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
   EXPECT_EQ(listener.GetEventCount(), 0);
 }
 

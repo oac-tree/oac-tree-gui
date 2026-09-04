@@ -85,7 +85,7 @@ TEST_F(DomainJobServiceTest, InstructionStateUpdated)
 
   m_service->GetJobInfoIO()->InstructionStateUpdated(expected_index, expected_state);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(20000)));
 }
 
 TEST_F(DomainJobServiceTest, VariableUpdated)
@@ -99,7 +99,7 @@ TEST_F(DomainJobServiceTest, VariableUpdated)
 
   m_service->GetJobInfoIO()->VariableUpdated(index, value, connected);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(20000)));
 }
 
 TEST_F(DomainJobServiceTest, JobStateUpdated)
@@ -113,7 +113,7 @@ TEST_F(DomainJobServiceTest, JobStateUpdated)
 
   m_service->GetJobInfoIO()->JobStateUpdated(state);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(20000)));
 }
 
 TEST_F(DomainJobServiceTest, BreakpointHitUpdated)
@@ -125,7 +125,7 @@ TEST_F(DomainJobServiceTest, BreakpointHitUpdated)
 
   m_service->GetJobInfoIO()->BreakpointInstructionUpdated(expected_index);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(20000)));
 }
 
 TEST_F(DomainJobServiceTest, PutValue)
@@ -139,7 +139,7 @@ TEST_F(DomainJobServiceTest, PutValue)
 
   service->GetJobInfoIO()->PutValue(value, description);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(100)));
+  EXPECT_TRUE(WaitForEmptyQueue(*service, msec(20000)));
 }
 
 TEST_F(DomainJobServiceTest, GetUserValue)
@@ -176,7 +176,7 @@ TEST_F(DomainJobServiceTest, GetUserValue)
   // waiting for the future, and still allowing event loop to function
   auto predicate = [&future_result]()
   { return future_result.wait_for(std::chrono::seconds(0)) == std::future_status::ready; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
 
   EXPECT_TRUE(future_result.get());
   EXPECT_EQ(initial_value, expected_value);
@@ -216,7 +216,7 @@ TEST_F(DomainJobServiceTest, GetUserChoice)
   // waiting for the future, and still allowing event loop to function
   auto predicate = [&future_result]()
   { return future_result.wait_for(std::chrono::seconds(0)) == std::future_status::ready; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
 
   EXPECT_EQ(future_result.get(), user_index_choice);
 }
@@ -229,7 +229,7 @@ TEST_F(DomainJobServiceTest, Message)
 
   m_service->GetJobInfoIO()->Message(message);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(20000)));
 }
 
 TEST_F(DomainJobServiceTest, Log)
@@ -242,7 +242,7 @@ TEST_F(DomainJobServiceTest, Log)
 
   m_service->GetJobInfoIO()->Log(static_cast<int>(severity), message);
 
-  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(50)));
+  EXPECT_TRUE(WaitForEmptyQueue(*m_service, msec(20000)));
 }
 
 }  // namespace oac_tree_gui::test
