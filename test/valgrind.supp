@@ -1,0 +1,62 @@
+# EPICS and glibc allocations Memcheck cannot follow. Anchored on third-party frames only, so
+# a leak originating in sequencer-gui is still reported.
+# Regenerate: valgrind --leak-check=full --show-leak-kinds=definite,possible --gen-suppressions=all
+
+# TLS the dynamic loader allocates for every thread EPICS starts.
+{
+   epics-thread-tls-possibly-lost
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:_dl_allocate_tls
+   fun:pthread_create@@GLIBC_2.2.5
+   fun:epicsThreadCreateOpt
+   ...
+}
+
+# glibc's resolver cache; anchored on ipAddrToHostName because osdSock.c reaches glibc through
+# either getnameinfo or gethostbyaddr depending on the EPICS build.
+{
+   glibc-resolv-conf-cache-definitely-lost
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:__libc_alloc_buffer_allocate
+   fun:__resolv_conf_allocate
+   ...
+   fun:ipAddrToHostName
+   ...
+}
+
+# Per-thread exit state EPICS registers and never frees.
+{
+   epics-thread-exit-state-definitely-lost
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   fun:createExitPvt
+   fun:epicsAtThreadExit
+   ...
+}
+
+# TLS the loader allocates for EPICS's own thread-priority probe at library init.
+{
+   epics-thread-init-tls-possibly-lost
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:_dl_allocate_tls
+   fun:pthread_create@@GLIBC_2.2.5
+   fun:findPriorityRange
+   ...
+}
+
+# Qt loads the offscreen platform plugin once per process and never unloads it.
+{
+   qt-offscreen-platform-plugin-definitely-lost
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:_Znwm
+   obj:*libqoffscreen.so
+   ...
+}

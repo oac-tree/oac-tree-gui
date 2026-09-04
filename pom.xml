@@ -41,7 +41,10 @@
         <sourcepath>SOURCE</sourcepath>
         <makefile.args>install</makefile.args>
         <coverage>false</coverage>
-        <valgrind.enable>false</valgrind.enable>
+        <!-- These executables are excluded from Valgrind instrumentation and run natively. -->
+        <valgrind.trace-children-skip>*/sudo,*/sh,*/screen,*/softIoc</valgrind.trace-children-skip>
+        <!-- Fair thread scheduling, and suppression of Memcheck leak reports from third-party code. -->
+        <valgrind.args>--fair-sched=yes --suppressions=${project.basedir}/test/valgrind.supp</valgrind.args>
         <!-- -->
         <sonar.language>cpp</sonar.language>
         <sonar.sources.cpp>src</sonar.sources.cpp>
