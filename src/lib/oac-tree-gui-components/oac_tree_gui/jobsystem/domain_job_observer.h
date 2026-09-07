@@ -27,6 +27,7 @@
 
 #include <chrono>
 #include <condition_variable>
+#include <cstdint>
 #include <functional>
 #include <mutex>
 
@@ -84,14 +85,14 @@ public:
   bool GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue& value,
                     const std::string& description) override;
 
-  int GetUserChoice(sup::dto::uint64 id, const std::vector<std::string>& options,
-                    const sup::dto::AnyValue& metadata) override;
+  std::int32_t GetUserChoice(sup::dto::uint64 id, const std::vector<std::string>& options,
+                             const sup::dto::AnyValue& metadata) override;
 
   void Interrupt(sup::dto::uint64 id) override;
 
   void Message(const std::string& message) override;
 
-  void Log(int severity, const std::string& message) override;
+  void Log(std::int32_t severity, const std::string& message) override;
 
   void NextInstructionsUpdated(const std::vector<sup::dto::uint32>& instr_indices);
 
