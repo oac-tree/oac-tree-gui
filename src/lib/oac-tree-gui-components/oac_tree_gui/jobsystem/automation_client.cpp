@@ -50,9 +50,9 @@ AutomationClient::AutomationClient(const AutomationServerInfo& server_info)
           m_client_manager->WaitForConnection(std::chrono::seconds(kConnectionTimeout));
       !is_connected)
   {
-    throw RuntimeException("Connection to the server ["
-                           + ::oac_tree_gui::GetAutomationServerName(GetServerInfo()) + "] has failed within "
-                           + std::to_string(kConnectionTimeout) + " sec timeout");
+    throw RuntimeException(
+        "Connection to the server [" + ::oac_tree_gui::GetAutomationServerName(m_server_info)
+        + "] has failed within " + std::to_string(kConnectionTimeout) + " sec timeout");
   }
 }
 

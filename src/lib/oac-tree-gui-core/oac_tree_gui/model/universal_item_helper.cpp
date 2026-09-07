@@ -73,7 +73,7 @@ bool IsCollapsible(const InstructionItem& item)
 }
 
 // FIXME merge with RegisterShowCollapsedProperty
-void UpdateShowCollapsedPropertyAppearance(InstructionItem& item)
+void UpdateShowCollapsedPropertyAppearance(const InstructionItem& item)
 {
   static const std::vector<std::string> collapsed_by_default{
       domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
@@ -138,7 +138,7 @@ sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
              : nullptr;
 }
 
-void UpdateIsRootPropertyAppearance(InstructionItem& item)
+void UpdateIsRootPropertyAppearance(const InstructionItem& item)
 {
   if (mvvm::utils::HasTag(item, domainconstants::kIsRootAttribute))
   {

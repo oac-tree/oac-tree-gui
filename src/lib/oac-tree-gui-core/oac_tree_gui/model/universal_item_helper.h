@@ -93,7 +93,7 @@ bool IsCollapsible(const InstructionItem& item);
  * and need to setup its appearance according to the instruction type. For example, for
  * IncludeProcedure and Include instructions we want to show children as collapsed by default.
  */
-void UpdateShowCollapsedPropertyAppearance(InstructionItem& item);
+void UpdateShowCollapsedPropertyAppearance(const InstructionItem& item);
 
 /**
  * @brief Returns true if item has is_collapsed property and it is set to true.
@@ -136,7 +136,7 @@ sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
  * We have to make it invisible, to exclude them from property editors. They will be shown as
  * checkbox in dedicated editor.
  */
-void UpdateIsRootPropertyAppearance(InstructionItem& item);
+void UpdateIsRootPropertyAppearance(const InstructionItem& item);
 
 }  // namespace oac_tree_gui
 

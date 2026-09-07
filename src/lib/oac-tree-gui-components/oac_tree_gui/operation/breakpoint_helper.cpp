@@ -98,7 +98,7 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
   return result;
 }
 
-void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item)
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, const InstructionItem& item)
 {
   const auto* model = item.GetModel();
   if (model == nullptr)

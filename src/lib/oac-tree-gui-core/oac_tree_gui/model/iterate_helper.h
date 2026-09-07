@@ -21,6 +21,7 @@
 #ifndef OAC_TREE_GUI_MODEL_ITERATE_HELPER_H_
 #define OAC_TREE_GUI_MODEL_ITERATE_HELPER_H_
 
+#include <algorithm>
 #include <functional>
 #include <stack>
 
@@ -44,9 +45,10 @@ void IterateInstruction(ItemT item, std::function<void(ItemT)> func)
     func(item);
 
     auto children = item->GetInstructions();
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    std::reverse(children.begin(), children.end());
+    for (auto* child : children)
     {
-      stack.push(*it);
+      stack.push(child);
     }
   }
 }

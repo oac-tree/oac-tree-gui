@@ -35,6 +35,8 @@
 #include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/procedure_preamble.h>
 
+#include <cstdint>
+
 namespace oac_tree_gui
 {
 
@@ -50,7 +52,8 @@ std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t& pro
 {
   auto result = std::make_unique<sup::dto::AnyTypeRegistry>();
 
-  for (const auto& type_registration : procedure.GetPreamble().GetTypeRegistrations())
+  const auto& preamble = procedure.GetPreamble();
+  for (const auto& type_registration : preamble.GetTypeRegistrations())
   {
     auto anytype = ParseTypeRegistrationInfo(type_registration, procedure.GetFilename(), *result);
     result->RegisterType(anytype);
@@ -115,7 +118,7 @@ void PopulateProcedureItem(const procedure_t& procedure, ProcedureItem& procedur
 
 }  // namespace
 
-void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item)
+void PopulateProcedurePreambleItem(const preamble_t& preamble, const ProcedurePreambleItem& item)
 {
   if (!item.GetPluginPaths().empty() || !item.GetTypeRegistrations().empty())
   {
@@ -129,7 +132,8 @@ void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreamble
 
   for (const auto& info : preamble.GetTypeRegistrations())
   {
-    item.AddTypeRegistration(info.GetRegistrationMode(), info.GetString());
+    item.AddTypeRegistration(static_cast<std::int32_t>(info.GetRegistrationMode()),
+                             info.GetString());
   }
 }
 

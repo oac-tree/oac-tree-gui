@@ -54,8 +54,9 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
 
   index_to_variable_item.resize(info.GetNumberOfVariables());
 
-  for (const auto& [name, variable_info] : info.GetVariableInfos())
+  for (const auto& name_and_info : info.GetVariableInfos())
   {
+    const auto& variable_info = name_and_info.second;
     auto variable_item = CreateVariableInfoItem(variable_info);
     auto variable_item_ptr = variable_item.get();
     index_to_variable_item[static_cast<std::size_t>(variable_info.GetIndex())] = variable_item_ptr;

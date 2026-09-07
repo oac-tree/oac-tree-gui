@@ -128,7 +128,7 @@ std::vector<std::string> GetJobItemTypes();
  * @return New job item.
  */
 std::unique_ptr<JobItem> CreateLocalJobItem(
-    ProcedureItem* procedure,
+    const ProcedureItem* procedure,
     std::chrono::milliseconds tick_timeout = std::chrono::milliseconds{0});
 
 /**

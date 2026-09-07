@@ -25,10 +25,9 @@
 
 #include <mvvm/style/color_flavor.h>
 
+#include <QIcon>
 #include <QJsonObject>
 #include <QString>
-
-class QIcon;
 
 namespace oac_tree_gui
 {

@@ -29,7 +29,7 @@ namespace oac_tree_gui
 {
 
 JobItemController::JobItemController(const procedure_changed_t& procedure_changed)
-    : m_procedure_changed(procedure_changed)
+    : mvvm::ItemController<JobItem>(), m_procedure_changed(procedure_changed)
 {
   if (!m_procedure_changed)
   {

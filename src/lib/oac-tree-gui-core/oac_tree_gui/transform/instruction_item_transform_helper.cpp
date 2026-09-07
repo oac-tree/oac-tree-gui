@@ -155,6 +155,10 @@ void RegisterChildrenTag(instruction_t::Category category, mvvm::CompoundItem& i
     item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
                      /*as_default*/ true);
   }
+  else
+  {
+    // leaf instructions do not have children
+  }
 }
 
 void RegisterShowCollapsedProperty(instruction_t::Category category, const std::string& domain_type,

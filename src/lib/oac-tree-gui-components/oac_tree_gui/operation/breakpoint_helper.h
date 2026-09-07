@@ -71,7 +71,7 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
  * from another hierarchy. It is expected that the layout (parent/child relation) coincides for both
  * hierarchies.
  */
-void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item);
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, const InstructionItem& item);
 
 /**
  * @brief Set breakpoint information to all instructions in the container.

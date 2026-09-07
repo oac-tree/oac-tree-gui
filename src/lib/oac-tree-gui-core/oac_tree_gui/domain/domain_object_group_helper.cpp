@@ -82,7 +82,7 @@ std::string GetGroupNameFromPluginName(const std::string& plugin_name)
 {
   static const auto kGroupMap = CreatePluginNameToGroupNameMap();
 
-  const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(plugin_name);
+  const auto stripped_basename = sup::platform::SplitDynamicLibFilename(plugin_name).second;
 
   auto iter = kGroupMap.find(stripped_basename);
   if (iter != kGroupMap.end())
@@ -131,8 +131,7 @@ std::string GetPluginNameForVariable(const std::string& domain_type)
   const auto domain_plugin_name =
       sup::oac_tree::GetPluginForVariable(variable_registry, domain_type);
 
-  const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(domain_plugin_name);
-  return stripped_basename;
+  return sup::platform::SplitDynamicLibFilename(domain_plugin_name).second;
 }
 
 std::string GetPluginNameForInstruction(const std::string& domain_type)
@@ -141,8 +140,7 @@ std::string GetPluginNameForInstruction(const std::string& domain_type)
   const auto domain_plugin_name =
       sup::oac_tree::GetPluginForInstruction(instruction_registry, domain_type);
 
-  const auto [path, stripped_basename] = sup::platform::SplitDynamicLibFilename(domain_plugin_name);
-  return stripped_basename;
+  return sup::platform::SplitDynamicLibFilename(domain_plugin_name).second;
 }
 
 std::string GetPluginNameFromDomainTypeName(const std::string& object_name)

@@ -137,7 +137,7 @@ std::vector<std::string> GetJobItemTypes()
 // Factory methods
 // ------------------------------------------------------------------------------------------------
 
-std::unique_ptr<JobItem> CreateLocalJobItem(ProcedureItem* procedure,
+std::unique_ptr<JobItem> CreateLocalJobItem(const ProcedureItem* procedure,
                                             std::chrono::milliseconds tick_timeout)
 {
   if (procedure == nullptr)

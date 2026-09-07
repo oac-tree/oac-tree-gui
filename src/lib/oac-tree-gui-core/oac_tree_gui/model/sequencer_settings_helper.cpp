@@ -92,7 +92,6 @@ std::vector<std::string> CleanupLegacyPluginNames(const std::vector<std::string>
   }
 
   return result;
-  ;
 }
 
 }  // namespace oac_tree_gui

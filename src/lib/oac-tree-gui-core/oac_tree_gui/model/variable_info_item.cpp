@@ -63,9 +63,13 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
         (void)SetProperty(attr_name, attr_value);
       }
     }
+    else
+    {
+      // other attributes are not represented as properties
+    }
   }
 
-  if (itemconstants::kProvideVariableInfoInitialValue)
+  if constexpr (itemconstants::kProvideVariableInfoInitialValue)
   {
     SetAnyValueFromDomainVariableInfo(info, *this);
   }

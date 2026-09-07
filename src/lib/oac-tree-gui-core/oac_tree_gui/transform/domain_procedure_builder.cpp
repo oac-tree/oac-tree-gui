@@ -31,6 +31,7 @@
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/domain_workspace_builder.h>
 
+#include <mvvm/utils/numeric_utils.h>
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/oac-tree/instruction.h>
@@ -150,13 +151,15 @@ void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_it
                                  procedure_item.GetDescription());
   }
 
-  if (procedure_item.GetTickTimeout() != domainconstants::kDefaultTickTimeoutSec)
+  if (!mvvm::utils::AreAlmostEqual(procedure_item.GetTickTimeout(),
+                                   domainconstants::kDefaultTickTimeoutSec))
   {
     (void)procedure.AddAttribute(domainconstants::kTickTimeoutAttributeName,
                                  mvvm::utils::DoubleToString(procedure_item.GetTickTimeout()));
   }
 
-  if (procedure_item.GetTimingAccuracy() != domainconstants::kDefaultTimingAccuracySec)
+  if (!mvvm::utils::AreAlmostEqual(procedure_item.GetTimingAccuracy(),
+                                   domainconstants::kDefaultTimingAccuracySec))
   {
     (void)procedure.AddAttribute(domainconstants::kTimingAccuracyAttributeName,
                                  mvvm::utils::DoubleToString(procedure_item.GetTimingAccuracy()));
