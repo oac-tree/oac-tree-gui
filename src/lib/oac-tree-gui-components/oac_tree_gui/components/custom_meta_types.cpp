@@ -38,10 +38,13 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+std::once_flag register_once_flag;
+}  // namespace
+
 void RegisterCustomMetaTypes()
 {
-  static std::once_flag register_once_flag;
-
   auto register_func = []()
   {
     (void)qRegisterMetaType<const oac_tree_gui::ProcedureItem*>(
