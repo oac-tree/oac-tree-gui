@@ -36,10 +36,10 @@ struct LogEvent
   Severity severity = Severity::kNotice;  //!< log message severity level
   std::string source;                     //!< source of the message
   std::string message;                    //!< text of the message
-
-  bool operator==(const LogEvent& other) const;
-  bool operator!=(const LogEvent& other) const;
 };
+
+bool operator==(const LogEvent& lhs, const LogEvent& rhs);
+bool operator!=(const LogEvent& lhs, const LogEvent& rhs);
 
 //! Creates log event for the current moment of time with a given severity level and message text.
 LogEvent CreateLogEvent(Severity severity, const std::string& message);

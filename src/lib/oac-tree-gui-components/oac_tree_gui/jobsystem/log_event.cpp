@@ -25,15 +25,15 @@
 namespace oac_tree_gui
 {
 
-bool LogEvent::operator==(const LogEvent& other) const
+bool operator==(const LogEvent& lhs, const LogEvent& rhs)
 {
-  return (source == other.source) && (severity == other.severity) && (date == other.date)
-         && (time == other.time) && (message == other.message);
+  return (lhs.source == rhs.source) && (lhs.severity == rhs.severity) && (lhs.date == rhs.date)
+         && (lhs.time == rhs.time) && (lhs.message == rhs.message);
 }
 
-bool LogEvent::operator!=(const LogEvent& other) const
+bool operator!=(const LogEvent& lhs, const LogEvent& rhs)
 {
-  return !(*this == other);
+  return !(lhs == rhs);
 }
 
 LogEvent CreateLogEvent(Severity severity, const std::string& message)
