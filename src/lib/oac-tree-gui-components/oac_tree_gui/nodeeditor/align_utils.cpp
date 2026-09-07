@@ -64,9 +64,10 @@ std::map<std::int32_t, double> GetCountour(oac_tree_gui::algorithm::AlignNode& n
 
     auto children = node->GetChildren();
     // reverse iteration to get preorder
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    std::reverse(children.begin(), children.end());
+    for (auto* child : children)
     {
-      node_stack.push({*it, mod_sum + node->GetMod()});
+      node_stack.push({child, mod_sum + node->GetMod()});
     }
   }
 
@@ -107,9 +108,10 @@ void InitializeNodes(AlignNode& node)
 
     auto children = node->GetChildren();
     // reverse iteration to get preorder
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    std::reverse(children.begin(), children.end());
+    for (auto* child : children)
     {
-      node_stack.push({*it, depth + 1.0});
+      node_stack.push({child, depth + 1.0});
     }
   }
 }
@@ -196,8 +198,9 @@ void CheckForConflicts(AlignNode& node)
   {
     auto siblingContour = GetRightCountour(*sibling, 0.0);
 
-    for (std::int32_t level = static_cast<std::int32_t>(node.GetY()) + 1;
-         level <= std::min(GetMaxKey(siblingContour), GetMaxKey(nodeContour)); level++)
+    const std::int32_t max_level = std::min(GetMaxKey(siblingContour), GetMaxKey(nodeContour));
+    for (std::int32_t level = static_cast<std::int32_t>(node.GetY()) + 1; level <= max_level;
+         level++)
     {
       const double distance = nodeContour[level] - siblingContour[level];
       if ((distance + shiftValue) < minDistance)
@@ -218,11 +221,10 @@ void CheckForConflicts(AlignNode& node)
   {
     node.SetX(node.GetX() + shiftValue);
     node.SetMod(node.GetMod() + shiftValue);
-    shiftValue = 0;
   }
 }
 
-void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
+void CenterNodesBetween(AlignNode& leftNode, const AlignNode& rightNode)
 {
   const std::int32_t left_index = leftNode.GetIndex();
   const std::int32_t right_index = rightNode.GetIndex();

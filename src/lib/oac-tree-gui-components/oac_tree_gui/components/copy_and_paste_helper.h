@@ -21,11 +21,10 @@
 #ifndef OAC_TREE_GUI_COMPONENTS_COPY_AND_PASTE_HELPER_H_
 #define OAC_TREE_GUI_COMPONENTS_COPY_AND_PASTE_HELPER_H_
 
+#include <QMimeData>
 #include <QString>
 #include <memory>
 #include <vector>
-
-class QMimeData;
 
 namespace mvvm
 {

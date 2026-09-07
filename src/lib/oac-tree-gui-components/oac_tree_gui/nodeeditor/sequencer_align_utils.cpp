@@ -28,6 +28,7 @@
 #include <mvvm/model/session_model.h>
 
 #include <QPointF>
+#include <algorithm>
 #include <stack>
 #include <stdexcept>
 
@@ -71,9 +72,10 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* instruction)
 
   std::stack<Data> node_stack;
   auto children = instruction->GetInstructions();
-  for (auto it = children.rbegin(); it != children.rend(); ++it)
+  std::reverse(children.begin(), children.end());
+  for (auto* child : children)
   {
-    node_stack.push({*it, result.get()});
+    node_stack.push({child, result.get()});
   }
 
   while (!node_stack.empty())
@@ -84,9 +86,10 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* instruction)
     auto new_parent = PopulateNode(*instruction, *node);
 
     auto children = instruction->GetInstructions();
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    std::reverse(children.begin(), children.end());
+    for (auto* child : children)
     {
-      node_stack.push({*it, new_parent});
+      node_stack.push({child, new_parent});
     }
   }
 
@@ -115,9 +118,10 @@ void TranslatePositions(const QPointF& reference, AlignNode& root_node)
 
     auto children = node->GetChildren();
     // reverse iteration to get preorder
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    std::reverse(children.begin(), children.end());
+    for (auto* child : children)
     {
-      node_stack.push(*it);
+      node_stack.push(child);
     }
   }
 }
@@ -130,7 +134,7 @@ void UpdatePositions(const AlignNode* node, const std::vector<InstructionItem*>&
   }
 }
 
-void UpdatePositions(const AlignNode* node, InstructionItem* item)
+void UpdatePositions(const AlignNode* node, const InstructionItem* item)
 {
   // Current implementation relies on the instruction identifier, that has been stored
   // in AlignNode on previous steps (while building AlignNodes from items). Identifier
@@ -162,9 +166,10 @@ void UpdatePositions(const AlignNode* node, InstructionItem* item)
 
     auto children = node->GetChildren();
     // reverse iteration to get preorder
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    std::reverse(children.begin(), children.end());
+    for (auto* child : children)
     {
-      node_stack.push(*it);
+      node_stack.push(child);
     }
   }
 }

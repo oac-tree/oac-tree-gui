@@ -49,7 +49,7 @@ void CalculateInitialX(AlignNode& node);
 
 void CheckForConflicts(AlignNode& node);
 
-void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode);
+void CenterNodesBetween(AlignNode& leftNode, const AlignNode& rightNode);
 
 void CalculateFinalPositions(AlignNode& node, double mod_sum = 0.0);
 

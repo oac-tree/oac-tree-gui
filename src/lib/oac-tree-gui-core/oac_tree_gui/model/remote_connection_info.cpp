@@ -22,6 +22,9 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 
+#include <cstdint>
+#include <string>
+
 namespace oac_tree_gui
 {
 
@@ -37,7 +40,7 @@ bool operator!=(const EPICSServerInfo& lhs, const EPICSServerInfo& rhs)
 
 bool operator==(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs)
 {
-  return lhs.server_address == rhs.server_address && lhs.server_port == rhs.server_port;
+  return (lhs.server_address == rhs.server_address) && (lhs.server_port == rhs.server_port);
 }
 
 bool operator!=(const WebSocketsServerInfo& lhs, const WebSocketsServerInfo& rhs)
@@ -55,7 +58,7 @@ std::string GetAutomationServerName(const AutomationServerInfo& server_info)
   if (std::holds_alternative<WebSocketsServerInfo>(server_info))
   {
     const auto& info = std::get<WebSocketsServerInfo>(server_info);
-    return info.server_address + ":" + std::to_string(static_cast<unsigned>(info.server_port));
+    return info.server_address + ":" + std::to_string(static_cast<std::uint32_t>(info.server_port));
   }
 
   throw RuntimeException("Unknown server type");

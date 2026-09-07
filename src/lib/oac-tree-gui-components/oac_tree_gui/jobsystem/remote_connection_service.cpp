@@ -33,9 +33,9 @@
 namespace oac_tree_gui
 {
 
-RemoteConnectionService::RemoteConnectionService(const AutomationClientFunc& create_connection,
+RemoteConnectionService::RemoteConnectionService(const AutomationClientFunc& create_client,
                                                  const message_func_t& message_func)
-    : IRemoteConnectionService(), m_create_client(create_connection), m_message_func(message_func)
+    : IRemoteConnectionService(), m_create_client(create_client), m_message_func(message_func)
 {
   if (!m_create_client)
   {
@@ -85,7 +85,7 @@ void RemoteConnectionService::Disconnect(const AutomationServerInfo& server_info
 bool RemoteConnectionService::IsConnected(const AutomationServerInfo& server_info) const
 {
   auto* client = FindClient(server_info);
-  return client != nullptr && client->IsConnected();
+  return (client != nullptr) && client->IsConnected();
 }
 
 bool RemoteConnectionService::HasClient(const AutomationServerInfo& server_info) const

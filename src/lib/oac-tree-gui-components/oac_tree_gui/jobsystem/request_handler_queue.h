@@ -108,7 +108,7 @@ private:
   struct RequestPack
   {
     //! Request arguments.
-    ArgT args;
+    ArgT args{};
 
     //! Handler who knows how to pass data to the thread.
     request_handler_t request_handler;

@@ -23,10 +23,9 @@
 
 //! Collection of utility functions to align oac-tree instruction tree on the graphics scene.
 
+#include <QPointF>
 #include <memory>
 #include <vector>
-
-class QPointF;
 
 namespace oac_tree_gui
 {
@@ -47,7 +46,7 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* instruction);
 void TranslatePositions(const QPointF& reference, AlignNode& root_node);
 
 //! Update positions of instruction items using positions of nodes.
-void UpdatePositions(const AlignNode* node, InstructionItem* item);
+void UpdatePositions(const AlignNode* node, const InstructionItem* item);
 void UpdatePositions(const AlignNode* node, const std::vector<InstructionItem *> &instructions);
 
 //! Align children of given instruction on graphics scene.  The position of parent `instruction`

@@ -121,8 +121,9 @@ bool DomainJobObserver::GetUserValue(sup::dto::uint64 id, sup::dto::AnyValue& va
   return false;
 }
 
-int DomainJobObserver::GetUserChoice(sup::dto::uint64 id, const std::vector<std::string>& options,
-                                     const sup::dto::AnyValue& metadata)
+std::int32_t DomainJobObserver::GetUserChoice(sup::dto::uint64 id,
+                                              const std::vector<std::string>& options,
+                                              const sup::dto::AnyValue& metadata)
 {
   (void)id;  // TODO send this id to the GUI
 
@@ -147,7 +148,7 @@ void DomainJobObserver::Message(const std::string& message)
   m_post_event_callback(CreateLogEvent(Severity::kInfo, message));
 }
 
-void DomainJobObserver::Log(int severity, const std::string& message)
+void DomainJobObserver::Log(std::int32_t severity, const std::string& message)
 {
   // assuming sequencer severity is the same as GUI severity
   m_post_event_callback(CreateLogEvent(static_cast<Severity>(severity), message));
