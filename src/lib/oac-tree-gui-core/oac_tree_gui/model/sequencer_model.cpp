@@ -61,7 +61,8 @@ void SequencerModel::Clear()
 void SequencerModel::PopulateModel()
 {
   (void)InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
-  if (auto command_stack = GetCommandStack(); command_stack)
+  // explicit qualification: the method is also called from the constructor
+  if (auto command_stack = mvvm::SessionModel::GetCommandStack(); command_stack)
   {
     command_stack->Clear();  // to disallow "undo" of our main container
   }
