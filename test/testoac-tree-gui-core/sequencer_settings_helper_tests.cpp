@@ -22,12 +22,12 @@
 
 #include <oac_tree_gui/domain/domain_helper.h>
 
-#include <sup/gui/core/environment.h>
-
 #include <mvvm/core/platform.h>
 #include <mvvm/test/test_helper.h>
 #include <mvvm/utils/container_utils.h>
 #include <mvvm/utils/file_utils.h>
+
+#include <sup/platform/environment.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
@@ -56,7 +56,7 @@ public:
 
 TEST_F(SequencerSettingsHelperTest, GetDefaultPluginDirList)
 {
-  if (sup::gui::IsOnCodac())
+  if (sup::platform::IsOnCodac())
   {
     EXPECT_EQ(GetDefaultPluginDirList(),
               std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"}));
@@ -69,7 +69,7 @@ TEST_F(SequencerSettingsHelperTest, GetDefaultPluginDirList)
 
 TEST_F(SequencerSettingsHelperTest, GetDefaultPluginList)
 {
-  if (sup::gui::IsOnCodac())
+  if (sup::platform::IsOnCodac())
   {
     EXPECT_TRUE(GetDefaultPluginList().empty());
   }

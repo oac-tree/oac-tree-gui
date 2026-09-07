@@ -23,7 +23,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 
-#include <sup/gui/core/environment.h>
+#include <sup/platform/environment.h>
 
 #include <mvvm/test/test_helper.h>
 #include <mvvm/utils/file_utils.h>
@@ -47,7 +47,7 @@ TEST_F(PluginsSettingsItemTest, PluginSettingsItemInitialState)
 {
   const PluginSettingsItem item;
 
-  if (sup::gui::IsOnCodac())
+  if (sup::platform::IsOnCodac())
   {
     EXPECT_EQ(item.GetPluginDirList(),
               std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"}));

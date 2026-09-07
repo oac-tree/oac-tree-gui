@@ -30,11 +30,12 @@
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/tree_helper.h>
-#include <sup/gui/core/environment.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/model/item_selection.h>
 #include <mvvm/views/component_provider_helper.h>
+
+#include <sup/platform/environment.h>
 
 #include <QEvent>
 #include <QHelpEvent>
@@ -59,7 +60,7 @@ QString GetCustomToolTipStyle()
       "QToolTip {border: 2px solid lightgray; padding: 5px; border-radius: 3px; background-color: "
       "darkgray}");
 
-  return sup::gui::IsOnCodac() ? adwaita_style : style;
+  return sup::platform::IsOnCodac() ? adwaita_style : style;
 }
 
 }  // namespace

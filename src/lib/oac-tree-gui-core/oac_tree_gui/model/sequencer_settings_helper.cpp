@@ -22,7 +22,7 @@
 
 #include <oac_tree_gui/domain/domain_helper.h>
 
-#include <sup/gui/core/environment.h>
+#include <sup/platform/environment.h>
 
 #include <mvvm/utils/file_utils.h>
 
@@ -39,7 +39,7 @@ constexpr auto kSharedLibMacExtension = ".dylib";
 
 std::vector<std::string> GetDefaultPluginDirList()
 {
-  if (sup::gui::IsOnCodac())
+  if (sup::platform::IsOnCodac())
   {
     return std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"});
   }
@@ -49,7 +49,7 @@ std::vector<std::string> GetDefaultPluginDirList()
 
 std::vector<std::string> GetDefaultPluginList()
 {
-  if (sup::gui::IsOnCodac())
+  if (sup::platform::IsOnCodac())
   {
     return {};
   }
@@ -68,7 +68,7 @@ std::vector<std::string> FindSharedLibraries(const std::string& dir)
   (void)result.insert(result.end(), so_names.begin(), so_names.end());
   (void)result.insert(result.end(), dylib_names.begin(), dylib_names.end());
 
-  if (sup::gui::IsOnCodac())
+  if (sup::platform::IsOnCodac())
   {
     result = CleanupLegacyPluginNames(result);
   }
