@@ -28,9 +28,9 @@
 
 #include <mvvm/nodeeditor/node_editor_constants.h>
 
+#include <QChar>
 #include <QLinearGradient>
 #include <QRectF>
-#include <cctype>
 
 namespace
 {
@@ -115,7 +115,7 @@ std::string InsertSpaceAtCamelCase(std::string str)
   while (pos != str.end())
   {
     // find next lower-case char followed by upper-case char
-    if ((std::islower(*(pos - 1)) != 0) && (std::isupper(*pos) != 0))
+    if (QChar(*(pos - 1)).isLower() && QChar(*pos).isUpper())
     {
       pos = str.insert(pos, ' ');
     }
