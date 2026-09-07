@@ -83,7 +83,8 @@ bool ExclusiveCheckStatePresentationItem::SetData(const QVariant& data, mvvm::ro
   auto result = BooleanDataPresentationItem::SetData(data, qt_role);
   if (result)
   {
-    const bool changed_to_checked = (static_cast<Qt::CheckState>(data.toInt()) == Qt::Checked);
+    // the base class has already converted the check state into the boolean data role
+    const bool changed_to_checked = GetItem()->Data<bool>();
     for (auto instruction : GetSiblings())
     {
       instruction->SetIsRootFlag(!changed_to_checked);

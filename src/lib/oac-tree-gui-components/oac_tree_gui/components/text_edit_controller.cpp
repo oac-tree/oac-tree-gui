@@ -103,14 +103,14 @@ void TextEditController::SetQtConnected()
   *m_text_edit_connection =
       QObject::connect(m_context.text_edit, &QPlainTextEdit::textChanged, on_text_changed);
 
-  auto on_checkstate_changed = [this](std::int32_t state)
+  auto on_checkstate_changed = [this]()
   {
     if (!GetItem())
     {
       return;
     }
 
-    const bool enabled = (static_cast<Qt::CheckState>(state) == Qt::Checked);
+    const bool enabled = m_context.check_box->isChecked();
     m_do_not_update_widgets = true;
     GetItem()->SetEditorEnabled(enabled);
     m_context.text_edit->setEnabled(enabled);
