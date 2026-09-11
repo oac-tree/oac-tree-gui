@@ -39,14 +39,14 @@ BreakpointStatus GetBreakpointStatus(const InstructionItem& item);
 /**
  * @brief Sets status of the breakpoint for given instruction.
  */
-void SetBreakpointStatus(const InstructionItem& item, BreakpointStatus status);
+void SetBreakpointStatus(InstructionItem& item, BreakpointStatus status);
 
 /**
  * @brief Toggles status of the breakpoint for given instruction.
  *
  * @details kNotSet -> kSet -> kDisabled -> kNotSet
  */
-void ToggleBreakpointStatus(const InstructionItem& item);
+void ToggleBreakpointStatus(InstructionItem& item);
 
 /**
  * @brief Visits instruction tree and collect information about breakpoints.
@@ -71,7 +71,7 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
  * from another hierarchy. It is expected that the layout (parent/child relation) coincides for both
  * hierarchies.
  */
-void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, const InstructionItem& item);
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item);
 
 /**
  * @brief Set breakpoint information to all instructions in the container.

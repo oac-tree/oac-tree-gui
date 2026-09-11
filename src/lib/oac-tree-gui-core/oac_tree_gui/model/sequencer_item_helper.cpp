@@ -62,32 +62,63 @@ bool IsDecoratorInstruction(const InstructionItem* instruction)
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
 }
 
-mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag)
+const mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag)
 {
-  return mvvm::utils::HasTag(parent, tag) ? parent.GetItem(tag) : nullptr;
+  // FindItem is total, it returns nullptr when the tag is not registered
+  return parent.FindItem(tag);
 }
 
-mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent)
+mvvm::SessionItem* GetPropertyItem(mvvm::SessionItem& parent, const std::string& tag)
+{
+  return parent.FindItem(tag);
+}
+
+const mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, itemconstants::kStatus);
 }
 
-mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent)
+mvvm::SessionItem* GetStatusItem(mvvm::SessionItem& parent)
+{
+  return GetPropertyItem(parent, itemconstants::kStatus);
+}
+
+const mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, itemconstants::kBreakpoint);
 }
 
-mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent)
+mvvm::SessionItem* GetBreakpointItem(mvvm::SessionItem& parent)
+{
+  return GetPropertyItem(parent, itemconstants::kBreakpoint);
+}
+
+const mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, itemconstants::kIsAvailable);
 }
 
-mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent)
+mvvm::SessionItem* GetIsAvailableItem(mvvm::SessionItem& parent)
+{
+  return GetPropertyItem(parent, itemconstants::kIsAvailable);
+}
+
+const mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, domainconstants::kChannelAttribute);
 }
 
-mvvm::SessionItem *GetIsRootItem(const mvvm::SessionItem &parent)
+mvvm::SessionItem* GetChannelItem(mvvm::SessionItem& parent)
+{
+  return GetPropertyItem(parent, domainconstants::kChannelAttribute);
+}
+
+const mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent)
+{
+  return GetPropertyItem(parent, domainconstants::kIsRootAttribute);
+}
+
+mvvm::SessionItem* GetIsRootItem(mvvm::SessionItem& parent)
 {
   return GetPropertyItem(parent, domainconstants::kIsRootAttribute);
 }

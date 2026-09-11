@@ -54,7 +54,12 @@ void SequencerSettingsModel::Clear()
   PopulateModel();
 }
 
-std::vector<mvvm::CompoundItem*> SequencerSettingsModel::GetSettingsItems() const
+std::vector<const mvvm::CompoundItem*> SequencerSettingsModel::GetSettingsItems() const
+{
+  return mvvm::utils::GetTopItems<mvvm::CompoundItem>(*this);
+}
+
+std::vector<mvvm::CompoundItem*> SequencerSettingsModel::GetSettingsItems()
 {
   return mvvm::utils::GetTopItems<mvvm::CompoundItem>(*this);
 }

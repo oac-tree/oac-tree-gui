@@ -38,7 +38,7 @@ class BreakpointHelperTest : public ::testing::Test
 
 TEST_F(BreakpointHelperTest, GetBreakpointStatus)
 {
-  const SequenceItem item;
+  SequenceItem item;
   EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kNotSet);
 
   SetBreakpointStatus(item, BreakpointStatus::kSet);
@@ -50,7 +50,7 @@ TEST_F(BreakpointHelperTest, GetBreakpointStatus)
 
 TEST_F(BreakpointHelperTest, ToggleBreakpointStatus)
 {
-  const SequenceItem item;
+  SequenceItem item;
 
   ToggleBreakpointStatus(item);
   EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kSet);
@@ -65,7 +65,7 @@ TEST_F(BreakpointHelperTest, ToggleBreakpointStatus)
 TEST_F(BreakpointHelperTest, CollectBreakpointInfo)
 {
   // item should be part of the model
-  const SequenceItem item;
+  SequenceItem item;
   EXPECT_THROW(CollectBreakpointInfo(item), LogicErrorException);
 
   SequencerModel model;

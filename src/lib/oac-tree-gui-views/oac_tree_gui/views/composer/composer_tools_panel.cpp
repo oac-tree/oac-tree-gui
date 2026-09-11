@@ -94,7 +94,7 @@ void ComposerToolsPanel::SetModels(ApplicationModels* models)
   if (procedure_container != nullptr)
   {
     SetProcedureSelection(
-        mvvm::ItemSelection(procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::First())));
+        mvvm::ItemSelection(procedure_container->FindItem<ProcedureItem>(mvvm::TagIndex::First())));
   }
 
   m_favorite_widget->SetInstructionContainer(

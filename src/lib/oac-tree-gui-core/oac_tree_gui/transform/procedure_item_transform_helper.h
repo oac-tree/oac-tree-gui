@@ -37,7 +37,7 @@ class ProcedurePreambleItem;
 /**
  * @brief Populates empty PreambleItem with the domain information.
  */
-void PopulateProcedurePreambleItem(const preamble_t& preamble, const ProcedurePreambleItem& item);
+void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item);
 
 /**
  * @brief Creates ProcedureItem from given domain procedure.

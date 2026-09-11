@@ -129,8 +129,8 @@ void PluginSettingsEditor::SetPluginSettingsItem(PluginSettingsItem* item)
     return;
   }
 
-  m_dir_list_controller->SetItem(item->GetItem<TextEditItem>(constants::kPluginDirListProperty));
-  m_plugin_list_controller->SetItem(item->GetItem<TextEditItem>(constants::kPluginListProperty));
+  m_dir_list_controller->SetItem(item->FindItem<TextEditItem>(constants::kPluginDirListProperty));
+  m_plugin_list_controller->SetItem(item->FindItem<TextEditItem>(constants::kPluginListProperty));
 }
 
 std::unique_ptr<QLayout> PluginSettingsEditor::CreateDescriptionLayout()

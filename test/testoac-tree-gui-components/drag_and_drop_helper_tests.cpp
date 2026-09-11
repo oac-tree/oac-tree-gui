@@ -99,7 +99,7 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeDataForVectorItem)
   auto vector_item = m_model.InsertItem<mvvm::VectorItem>();
   auto vector_item_name_index = view_model.index(0, 0, QModelIndex());
 
-  auto x_item = vector_item->GetItem(mvvm::VectorItem::kX);
+  auto x_item = vector_item->FindItem(mvvm::VectorItem::kX);
   auto x_item_display_index = view_model.index(0, 0, vector_item_name_index);
   auto x_item_value_index = view_model.index(0, 1, vector_item_name_index);
 

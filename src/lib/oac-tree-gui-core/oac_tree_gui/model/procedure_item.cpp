@@ -152,19 +152,34 @@ void ProcedureItem::SetTimingAccuracy(double value)
   (void)SetProperty(domainconstants::kTimingAccuracyAttributeName, value);
 }
 
-InstructionContainerItem* ProcedureItem::GetInstructionContainer() const
+const InstructionContainerItem* ProcedureItem::GetInstructionContainer() const
 {
-  return GetItem<InstructionContainerItem>(kInstructions);
+  return FindItem<InstructionContainerItem>(kInstructions);
 }
 
-WorkspaceItem* ProcedureItem::GetWorkspace() const
+InstructionContainerItem* ProcedureItem::GetInstructionContainer()
 {
-  return GetItem<WorkspaceItem>(kWorkspace);
+  return FindItem<InstructionContainerItem>(kInstructions);
 }
 
-ProcedurePreambleItem* ProcedureItem::GetPreambleItem() const
+const WorkspaceItem* ProcedureItem::GetWorkspace() const
 {
-  return GetItem<ProcedurePreambleItem>(kPreamble);
+  return FindItem<WorkspaceItem>(kWorkspace);
+}
+
+WorkspaceItem* ProcedureItem::GetWorkspace()
+{
+  return FindItem<WorkspaceItem>(kWorkspace);
+}
+
+const ProcedurePreambleItem* ProcedureItem::GetPreambleItem() const
+{
+  return FindItem<ProcedurePreambleItem>(kPreamble);
+}
+
+ProcedurePreambleItem* ProcedureItem::GetPreambleItem()
+{
+  return FindItem<ProcedurePreambleItem>(kPreamble);
 }
 
 std::vector<std::string> CollectPluginNames(const ProcedureItem& item)
@@ -177,7 +192,7 @@ std::vector<std::string> CollectPluginNames(const ProcedureItem& item)
   return {result.begin(), result.end()};
 }
 
-void UpdatePluginNames(const ProcedureItem& item)
+void UpdatePluginNames(ProcedureItem& item)
 {
   const auto names = CollectPluginNames(item);
   item.GetPreambleItem()->SetPluginPaths(names);

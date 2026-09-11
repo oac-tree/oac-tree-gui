@@ -27,6 +27,7 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/providers/presentation_item_helper.h>
+#include <mvvm/utils/container_utils.h>
 
 namespace oac_tree_gui
 {
@@ -98,9 +99,11 @@ std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings()
 {
   if (auto container = GetInstructionContainer(); container != nullptr)
   {
-    std::vector<InstructionItem*> result;
-    auto presented_instruction = GetInstructionItem();
-    for (auto instruction : container->GetInstructions())
+    // FIXME the siblings are reached through a const container but the caller sets flags on
+    // them. Revisit together with AnyValueItem::GetChildren().
+    std::vector<const InstructionItem*> result;
+    const auto* presented_instruction = GetInstructionItem();
+    for (const auto* instruction : container->GetInstructions())
     {
       if (instruction != presented_instruction)
       {
@@ -108,7 +111,7 @@ std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings()
       }
     }
 
-    return result;
+    return mvvm::utils::RemoveConst(result);
   }
 
   return {};

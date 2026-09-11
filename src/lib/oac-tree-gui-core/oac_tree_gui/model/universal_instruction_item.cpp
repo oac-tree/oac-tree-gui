@@ -163,9 +163,13 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
   // - They are visible property items
   // - They are derived from AnyValueItem
 
-   auto properties = mvvm::utils::SinglePropertyItems(*this);
+  auto properties = mvvm::utils::SinglePropertyItems(*this);
 
-  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueItem>(properties))
+  // FIXME GetAttributeItems() is const but yields mutable attribute items, because
+  // InitFromDomainImpl() writes through them. Revisit together with
+  // AnyValueItem::GetChildren().
+  for (auto* property :
+       mvvm::utils::RemoveConst(mvvm::utils::CastItems<const sup::gui::AnyValueItem>(properties)))
   {
     auto tag = property->GetTagIndex().GetTag();
 

@@ -80,17 +80,17 @@ void JobItem::SetTickTimeout(std::chrono::milliseconds timeout)
 
 void JobItem::SetProcedure(const ProcedureItem* item)
 {
-  GetItem<mvvm::LinkedItem>(kLink)->SetLink(item);
+  GetItem<mvvm::LinkedItem>(kLink).SetLink(item);
 }
 
 ProcedureItem* JobItem::GetProcedure() const
 {
-  return GetItem<mvvm::LinkedItem>(kLink)->Get<ProcedureItem>();
+  return GetItem<mvvm::LinkedItem>(kLink).Get<ProcedureItem>();
 }
 
 ProcedureItem* JobItem::GetExpandedProcedure()
 {
-  return GetItem<ProcedureItem>(kExpandedProcedure);
+  return FindItem<ProcedureItem>(kExpandedProcedure);
 }
 
 }  // namespace oac_tree_gui

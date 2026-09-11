@@ -245,15 +245,15 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
 
   // expected events from client variable
   {
-    auto expected_event1 = mvvm::DataChangedEvent{client_item->GetItem(itemconstants::kIsAvailable),
-                                                  mvvm::DataRole::kData};
+    auto expected_event1 = mvvm::DataChangedEvent{
+        client_item->FindItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
   }
 
   // expected events from server variable
   {
-    auto expected_event2 = mvvm::DataChangedEvent{server_item->GetItem(itemconstants::kIsAvailable),
-                                                  mvvm::DataRole::kData};
+    auto expected_event2 = mvvm::DataChangedEvent{
+        server_item->FindItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
   }
 
@@ -319,8 +319,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
 
   // expected events from client variable
   {
-    auto expected_event1 = mvvm::DataChangedEvent{client_item->GetItem(itemconstants::kIsAvailable),
-                                                  mvvm::DataRole::kData};
+    auto expected_event1 = mvvm::DataChangedEvent{
+        client_item->FindItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
     EXPECT_CALL(model_listener, OnAboutToInsertItem(::testing::_)).Times(1);
     EXPECT_CALL(model_listener, OnItemInserted(::testing::_)).Times(1);
@@ -328,8 +328,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
 
   // expected events from server variable
   {
-    auto expected_event2 = mvvm::DataChangedEvent{server_item->GetItem(itemconstants::kIsAvailable),
-                                                  mvvm::DataRole::kData};
+    auto expected_event2 = mvvm::DataChangedEvent{
+        server_item->FindItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
   }
 

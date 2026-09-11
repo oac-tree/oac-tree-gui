@@ -95,8 +95,8 @@ bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValu
 /**
  * @brief Finds InstructionItem representing given domain type.
  */
-std::vector<InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
-                                               const std::string& domain_type);
+std::vector<const InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
+                                                     const std::string& domain_type);
 
 /**
  * @brief Creates VariableItem from string representing the type of sup::oac_tree::Variable.

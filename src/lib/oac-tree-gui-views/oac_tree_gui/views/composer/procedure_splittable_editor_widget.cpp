@@ -70,7 +70,7 @@ QString GetProcedureEditorTabStateKey()
  *
  * If no procedure with such identifier exist, returns first procedure in the model.
  */
-ProcedureItem* FindAppropriateProcedure(const SequencerModel* model, const std::string& identifier)
+ProcedureItem* FindAppropriateProcedure(SequencerModel* model, const std::string& identifier)
 {
   if (model == nullptr)
   {

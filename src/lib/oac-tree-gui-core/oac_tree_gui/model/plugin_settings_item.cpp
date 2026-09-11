@@ -23,7 +23,6 @@
 #include "sequencer_settings_constants.h"
 #include "text_edit_item.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_settings_helper.h>
 
@@ -34,21 +33,6 @@ namespace oac_tree_gui
 
 namespace
 {
-
-/**
- * @brief Returns the text edit item registered under the given tag.
- *
- * @throws RuntimeException if the property with the given tag doesn't exist.
- */
-TextEditItem& GetTextEditItem(const mvvm::CompoundItem& parent, const std::string& tag)
-{
-  auto* result = parent.GetItem<TextEditItem>(tag);
-  if (result == nullptr)
-  {
-    throw RuntimeException("Property '" + tag + "' is not registered");
-  }
-  return *result;
-}
 
 /**
  * @brief Returns the list of shared libraries found in the list of given folders.
@@ -109,42 +93,42 @@ std::unique_ptr<mvvm::SessionItem> PluginSettingsItem::Clone() const
 
 bool PluginSettingsItem::UsePluginDirList() const
 {
-  return GetTextEditItem(*this, constants::kPluginDirListProperty).IsEditorEnabled();
+  return GetItem<TextEditItem>(constants::kPluginDirListProperty).IsEditorEnabled();
 }
 
 void PluginSettingsItem::SetUsePluginDirList(bool value)
 {
-  GetTextEditItem(*this, constants::kPluginDirListProperty).SetEditorEnabled(value);
+  GetItem<TextEditItem>(constants::kPluginDirListProperty).SetEditorEnabled(value);
 }
 
 std::vector<std::string> PluginSettingsItem::GetPluginDirList() const
 {
-  return GetTextEditItem(*this, constants::kPluginDirListProperty).GetText();
+  return GetItem<TextEditItem>(constants::kPluginDirListProperty).GetText();
 }
 
 void PluginSettingsItem::SetPluginDirList(const std::vector<std::string>& dir_list)
 {
-  GetTextEditItem(*this, constants::kPluginDirListProperty).SetText(dir_list);
+  GetItem<TextEditItem>(constants::kPluginDirListProperty).SetText(dir_list);
 }
 
 bool PluginSettingsItem::UsePluginList() const
 {
-  return GetTextEditItem(*this, constants::kPluginListProperty).IsEditorEnabled();
+  return GetItem<TextEditItem>(constants::kPluginListProperty).IsEditorEnabled();
 }
 
 void PluginSettingsItem::SetUsePluginList(bool value)
 {
-  GetTextEditItem(*this, constants::kPluginListProperty).SetEditorEnabled(value);
+  GetItem<TextEditItem>(constants::kPluginListProperty).SetEditorEnabled(value);
 }
 
 std::vector<std::string> PluginSettingsItem::GetPluginList() const
 {
-  return GetTextEditItem(*this, constants::kPluginListProperty).GetText();
+  return GetItem<TextEditItem>(constants::kPluginListProperty).GetText();
 }
 
 void PluginSettingsItem::SetPluginList(const std::vector<std::string>& dir_list)
 {
-  GetTextEditItem(*this, constants::kPluginListProperty).SetText(dir_list);
+  GetItem<TextEditItem>(constants::kPluginListProperty).SetText(dir_list);
 }
 
 std::vector<std::string> GetPluginFileNames(const PluginSettingsItem& item)

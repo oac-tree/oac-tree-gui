@@ -81,7 +81,7 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   const std::vector<std::string> expected_tags({attribute_name});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
-  auto property_item = item.GetItem(attribute_name);
+  auto property_item = item.FindItem(attribute_name);
   ASSERT_EQ(property_item, property);
   EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
   auto attribute_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item);
@@ -93,8 +93,8 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   // Checking that we can convert AnyValueScalarItem property back to AnyValue
   const sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type};
 
-  auto anyvalue_item = item.GetItem<sup::gui::AnyValueScalarItem>(attr.GetName());
-  auto any_value = sup::gui::GetAnyValueFromScalar(anyvalue_item->Data());
+  auto& anyvalue_item = item.GetItem<sup::gui::AnyValueScalarItem>(attr.GetName());
+  auto any_value = sup::gui::GetAnyValueFromScalar(anyvalue_item.Data());
 
   EXPECT_EQ(expected_anyvalue, any_value);
 }

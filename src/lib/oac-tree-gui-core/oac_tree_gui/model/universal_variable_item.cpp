@@ -97,7 +97,11 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
   // for the moment any registered property has it's correspondance as domain attribute
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
-  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueItem>(properties))
+  // FIXME GetAttributeItems() is const but yields mutable attribute items, because
+  // InitFromDomainImpl() writes through them. Revisit together with
+  // AnyValueItem::GetChildren().
+  for (auto* property :
+       mvvm::utils::RemoveConst(mvvm::utils::CastItems<const sup::gui::AnyValueItem>(properties)))
   {
     auto tag = property->GetTagIndex().GetTag();
 

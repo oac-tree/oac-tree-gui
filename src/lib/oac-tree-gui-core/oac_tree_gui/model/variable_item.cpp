@@ -76,11 +76,14 @@ void VariableItem::SetName(const std::string& value)
   (void)SetDisplayName(value);
 }
 
-sup::gui::AnyValueItem* VariableItem::GetAnyValueItem() const
+const sup::gui::AnyValueItem* VariableItem::GetAnyValueItem() const
 {
-  return mvvm::utils::HasTag(*this, itemconstants::kAnyValueTag)
-             ? GetItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
-             : nullptr;
+  return FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag);
+}
+
+sup::gui::AnyValueItem* VariableItem::GetAnyValueItem()
+{
+  return FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag);
 }
 
 bool VariableItem::IsAvailable() const

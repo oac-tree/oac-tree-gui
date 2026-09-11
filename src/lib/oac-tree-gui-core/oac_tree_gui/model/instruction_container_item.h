@@ -37,7 +37,9 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  std::vector<InstructionItem*> GetInstructions() const;
+  std::vector<const InstructionItem*> GetInstructions() const;
+
+  std::vector<InstructionItem*> GetInstructions();
 
   std::size_t GetInstructionCount() const;
 };

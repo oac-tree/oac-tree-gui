@@ -114,7 +114,7 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
   ASSERT_EQ(job_indexes.size(), 1);
 
   auto job_status_indexes =
-      view.GetViewModel()->GetIndexOfSessionItem(job->GetItem(itemconstants::kStatus));
+      view.GetViewModel()->GetIndexOfSessionItem(job->FindItem(itemconstants::kStatus));
   ASSERT_EQ(job_status_indexes.size(), 1);
 
   view.GetTreeView()->setCurrentIndex(job_indexes.at(0));

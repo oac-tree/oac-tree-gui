@@ -85,7 +85,9 @@ public:
   /**
    * @brief Returns underlying AnyValueItem if exists, or nullptr if no item has been set.
    */
-  sup::gui::AnyValueItem* GetAnyValueItem() const;
+  const sup::gui::AnyValueItem* GetAnyValueItem() const;
+
+  sup::gui::AnyValueItem* GetAnyValueItem();
 
   /**
    * @brief Checks if variable is available.

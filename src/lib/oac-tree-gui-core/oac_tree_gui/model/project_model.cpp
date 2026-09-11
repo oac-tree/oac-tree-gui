@@ -39,7 +39,12 @@ void ProjectModel::Clear()
   PopulateModel();
 }
 
-InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer() const
+const InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer() const
+{
+  return mvvm::utils::GetTopItem<InstructionContainerItem>(*this);
+}
+
+InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer()
 {
   return mvvm::utils::GetTopItem<InstructionContainerItem>(*this);
 }

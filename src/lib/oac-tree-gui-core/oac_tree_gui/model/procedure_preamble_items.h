@@ -56,20 +56,24 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  mvvm::ContainerItem* GetTypeRegistrationContainer() const;
+  const mvvm::ContainerItem* GetTypeRegistrationContainer() const;
 
-  mvvm::ContainerItem* GetPluginContainer() const;
+  mvvm::ContainerItem* GetTypeRegistrationContainer();
 
-  void AddTypeRegistration(std::int32_t mode, const std::string& str) const;
+  const mvvm::ContainerItem* GetPluginContainer() const;
+
+  mvvm::ContainerItem* GetPluginContainer();
+
+  void AddTypeRegistration(std::int32_t mode, const std::string& str);
   std::vector<std::pair<std::int32_t, std::string> > GetTypeRegistrations() const;
 
   std::vector<std::string> GetPluginPaths() const;
-  void AddPluginPath(const std::string& value) const;
+  void AddPluginPath(const std::string& value);
 
   /**
    * @brief Sets plugin names, all previous names will be removed.
    */
-  void SetPluginPaths(const std::vector<std::string>& plugin_paths) const;
+  void SetPluginPaths(const std::vector<std::string>& plugin_paths);
 };
 
 }  // namespace oac_tree_gui

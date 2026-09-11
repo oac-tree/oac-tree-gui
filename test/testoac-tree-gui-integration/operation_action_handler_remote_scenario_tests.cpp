@@ -142,7 +142,7 @@ public:
   template <typename T>
   std::vector<T*> GetJobs()
   {
-    return GetJobModel()->GetRootItem()->template GetItems<T>(mvvm::TagIndex::GetDefaultTag());
+    return GetJobModel()->GetRootItem()->template FindItems<T>(mvvm::TagIndex::GetDefaultTag());
   }
 
   ApplicationModels m_models;

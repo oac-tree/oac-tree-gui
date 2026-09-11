@@ -62,9 +62,9 @@ TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedProperty)
 
   EXPECT_FALSE(IsVariableNameRelatedProperty(*copy_item));
   EXPECT_TRUE(IsVariableNameRelatedProperty(
-      *copy_item->GetItem(domainconstants::kInputVariableNameAttribute)));
+      *copy_item->FindItem(domainconstants::kInputVariableNameAttribute)));
   EXPECT_TRUE(IsVariableNameRelatedProperty(
-      *copy_item->GetItem(domainconstants::kOutputVariableNameAttribute)));
+      *copy_item->FindItem(domainconstants::kOutputVariableNameAttribute)));
 }
 
 TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedCell)
@@ -79,7 +79,7 @@ TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedCell)
   EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 4);
 
   {
-    auto input_var_property = copy_item->GetItem(domainconstants::kInputVariableNameAttribute);
+    auto input_var_property = copy_item->FindItem(domainconstants::kInputVariableNameAttribute);
     ASSERT_NE(input_var_property, nullptr);
     auto indexes = m_view_model.GetIndexOfSessionItem(input_var_property);
     ASSERT_EQ(indexes.size(), 2);
@@ -88,7 +88,7 @@ TEST_F(CustomCellEditorFactoryTest, IsVariableNameRelatedCell)
   }
 
   {
-    auto behavior_property = copy_item->GetItem(itemconstants::kBehaviorTag);
+    auto behavior_property = copy_item->FindItem(itemconstants::kBehaviorTag);
     ASSERT_NE(behavior_property, nullptr);
     auto indexes = m_view_model.GetIndexOfSessionItem(behavior_property);
     ASSERT_EQ(indexes.size(), 2);
@@ -103,7 +103,7 @@ TEST_F(CustomCellEditorFactoryTest, CreateEditor)
   m_view_model.SetRootSessionItem(copy_item);
 
   {  // property related to variable
-    auto input_var_property = copy_item->GetItem(domainconstants::kInputVariableNameAttribute);
+    auto input_var_property = copy_item->FindItem(domainconstants::kInputVariableNameAttribute);
     ASSERT_NE(input_var_property, nullptr);
 
     auto indexes = m_view_model.GetIndexOfSessionItem(input_var_property);

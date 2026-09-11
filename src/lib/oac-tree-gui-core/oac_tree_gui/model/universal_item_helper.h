@@ -93,7 +93,7 @@ bool IsCollapsible(const InstructionItem& item);
  * and need to setup its appearance according to the instruction type. For example, for
  * IncludeProcedure and Include instructions we want to show children as collapsed by default.
  */
-void UpdateShowCollapsedPropertyAppearance(const InstructionItem& item);
+void UpdateShowCollapsedPropertyAppearance(InstructionItem& item);
 
 /**
  * @brief Returns true if item has is_collapsed property and it is set to true.
@@ -127,7 +127,9 @@ std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainer
  * For the moment PvAccessWriteItem, ChannelAccessWriteItem and RPCClientInstructionItem
  * might cary AnyValueItem representing json type and value attributes.
  */
-sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
+const sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
+
+sup::gui::AnyValueItem* GetAnyValueItem(InstructionItem& item);
 
 /**
  * @brief Updates appearance of the property responsible to show instruction as root item.
@@ -136,7 +138,7 @@ sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
  * We have to make it invisible, to exclude them from property editors. They will be shown as
  * checkbox in dedicated editor.
  */
-void UpdateIsRootPropertyAppearance(const InstructionItem& item);
+void UpdateIsRootPropertyAppearance(InstructionItem& item);
 
 }  // namespace oac_tree_gui
 

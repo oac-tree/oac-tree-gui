@@ -52,7 +52,7 @@ class DomainProcedureBuilderTest : public ::testing::Test
 
 TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
 
   auto procedure = CreateDomainProcedure(procedure_item);
 
@@ -98,7 +98,7 @@ TEST_F(DomainProcedureBuilderTest, TimingAttributes)
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   procedure_item.GetPreambleItem()->AddPluginPath("plugin_path");
   procedure_item.GetPreambleItem()->AddTypeRegistration(1, "json_type");
 
@@ -113,7 +113,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence_item = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
@@ -130,7 +130,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto wait0 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
@@ -153,7 +153,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
@@ -198,13 +198,13 @@ TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
 
 TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto inverter = InsertInstruction(domainconstants::kInverterInstructionType, container);
 
   auto sequence = inverter->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  EXPECT_EQ(inverter->GetItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
+  EXPECT_EQ(inverter->FindItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
   auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   auto procedure = std::make_unique<procedure_t>();
@@ -233,12 +233,12 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
 
 TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto repeater = container->InsertItem<RepeatItem>(mvvm::TagIndex::Append());
   auto sequence = repeater->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  EXPECT_EQ(repeater->GetItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
+  EXPECT_EQ(repeater->FindItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
@@ -262,7 +262,7 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto workspace = procedure_item.GetWorkspace();
 
   auto var_item0 = workspace->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -288,7 +288,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence = container->InsertItem<ParallelSequenceItem>(mvvm::TagIndex::Append());
@@ -311,7 +311,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
 
 TEST_F(DomainProcedureBuilderTest, SequenceWIthFourChildrenAndAdjustedBehavior)
 {
-  const ProcedureItem procedure_item;
+  ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());

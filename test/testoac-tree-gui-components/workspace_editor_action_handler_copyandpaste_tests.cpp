@@ -44,7 +44,7 @@ class WorkspaceEditorActionHandlerCopyAndPasteTest : public ::testing::Test
 public:
   WorkspaceEditorActionHandlerCopyAndPasteTest() { m_model.InsertItem<WorkspaceItem>(); }
 
-  WorkspaceItem* GetWorkspaceItem() const { return m_model.GetWorkspaceItem(); }
+  WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   /**
    * @brief Creates action handler.
@@ -112,7 +112,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
   }
 
   {  // nothing is selected, correct mime data
-    const LocalVariableItem item_to_paste;
+    LocalVariableItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
     auto handler = CreateActionHandler({}, std::move(mime_data));
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
@@ -120,7 +120,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
   }
 
   {  // selected item in the container, correct mime data
-    const LocalVariableItem item_to_paste;
+    LocalVariableItem item_to_paste;
     auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
     auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
     auto handler = CreateActionHandler({var0}, std::move(mime_data));

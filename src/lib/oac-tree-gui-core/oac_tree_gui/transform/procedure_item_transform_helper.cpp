@@ -118,7 +118,7 @@ void PopulateProcedureItem(const procedure_t& procedure, ProcedureItem& procedur
 
 }  // namespace
 
-void PopulateProcedurePreambleItem(const preamble_t& preamble, const ProcedurePreambleItem& item)
+void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item)
 {
   if (!item.GetPluginPaths().empty() || !item.GetTypeRegistrations().empty())
   {

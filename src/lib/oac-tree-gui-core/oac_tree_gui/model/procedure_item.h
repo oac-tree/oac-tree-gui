@@ -86,10 +86,16 @@ public:
    */
   void SetTimingAccuracy(double value);
 
-  InstructionContainerItem* GetInstructionContainer() const;
-  WorkspaceItem* GetWorkspace() const;
+  const InstructionContainerItem* GetInstructionContainer() const;
 
-  ProcedurePreambleItem* GetPreambleItem() const;
+  InstructionContainerItem* GetInstructionContainer();
+  const WorkspaceItem* GetWorkspace() const;
+
+  WorkspaceItem* GetWorkspace();
+
+  const ProcedurePreambleItem* GetPreambleItem() const;
+
+  ProcedurePreambleItem* GetPreambleItem();
 };
 
 /**
@@ -104,7 +110,7 @@ std::vector<std::string> CollectPluginNames(const ProcedureItem& item);
  *
  * @param item The procedure to update preamble.
  */
-void UpdatePluginNames(const ProcedureItem& item);
+void UpdatePluginNames(ProcedureItem& item);
 
 }  // namespace oac_tree_gui
 

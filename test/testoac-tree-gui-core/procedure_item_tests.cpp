@@ -43,7 +43,7 @@ class ProcedureItemTest : public ::testing::Test
 
 TEST_F(ProcedureItemTest, InitialState)
 {
-  const ProcedureItem item;
+  ProcedureItem item;
 
   EXPECT_TRUE(item.GetInstructionContainer());
   EXPECT_TRUE(item.GetWorkspace());
@@ -78,14 +78,14 @@ TEST_F(ProcedureItemTest, GetterAndSetter)
 TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
 {
   {  // empty procedure
-    const ProcedureItem item;
+    ProcedureItem item;
 
     // no plugin names are necessary
     EXPECT_TRUE(CollectPluginNames(item).empty());
   }
 
   {  // procedure with local variable
-    const ProcedureItem item;
+    ProcedureItem item;
     item.GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
     // no plugin names are necessary
@@ -93,7 +93,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
   }
 
   {  // procedure with sequence
-    const ProcedureItem item;
+    ProcedureItem item;
     item.GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
     // no plugin names are necessary
@@ -110,7 +110,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
   }
 
   {  // procedure with ChannelAccessVariable
-    const ProcedureItem item;
+    ProcedureItem item;
     item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
 
     const std::vector<std::string> expected({domainconstants::kEpicsCAPluginName});
@@ -118,7 +118,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
   }
 
   {  // procedure with ChannelAccessVariable and PvAccessWriteInstructionItem
-    const ProcedureItem item;
+    ProcedureItem item;
     item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
     item.GetInstructionContainer()->InsertItem<PvAccessWriteInstructionItem>(
         mvvm::TagIndex::Append());
@@ -137,7 +137,7 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
     GTEST_SKIP();
   }
 
-  const ProcedureItem item;
+  ProcedureItem item;
   item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
   item.GetInstructionContainer()->InsertItem<PvAccessWriteInstructionItem>(
       mvvm::TagIndex::Append());

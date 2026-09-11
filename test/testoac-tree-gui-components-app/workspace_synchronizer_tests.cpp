@@ -207,12 +207,12 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 
 //   auto synchronizer = CreateSynchronizer();
 
-//   EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
+//   EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute).IsEditable());
 
 //   synchronizer->Start();
 //   EXPECT_TRUE(synchronizer->HasStarted());
 
-//   EXPECT_FALSE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
+//   EXPECT_FALSE(var_item->GetItem(domainconstants::kNameAttribute).IsEditable());
 
 //   ASSERT_TRUE(synchronizer->GetWorkspace() != nullptr);
 //   EXPECT_EQ(synchronizer->GetWorkspace()->GetVariables().size(), 1);
@@ -226,7 +226,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 //   EXPECT_EQ(domain_value, value0);
 
 //   synchronizer->Shutdown();
-//   EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
+//   EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute).IsEditable());
 // }
 
 }  // namespace oac_tree_gui::test

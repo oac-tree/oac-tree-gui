@@ -50,37 +50,49 @@ bool IsDecoratorInstruction(const InstructionItem* instruction);
  * @brief Returns an item representing a property with a given tag, or nullptr if the given parent
  * doesn't have such property registered.
  */
-mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag);
+const mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag);
+
+mvvm::SessionItem* GetPropertyItem(mvvm::SessionItem& parent, const std::string& tag);
 
 /**
  * @brief Returns an item representing a status property, or nullptr if the given parent doesn't
  * have such property registered.
  */
-mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent);
+const mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent);
+
+mvvm::SessionItem* GetStatusItem(mvvm::SessionItem& parent);
 
 /**
  * @brief Returns an item representing a breakpoint property, or nullptr if the given parent doesn't
  * have such property registered.
  */
-mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent);
+const mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent);
+
+mvvm::SessionItem* GetBreakpointItem(mvvm::SessionItem& parent);
 
 /**
  * @brief Returns an item representing is_available property, or nullptr if the given parent doesn't
  * have such property registered.
  */
-mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
+const mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
+
+mvvm::SessionItem* GetIsAvailableItem(mvvm::SessionItem& parent);
 
 /**
  * @brief Returns an item representing channel property, or nullptr if the given parent doesn't
  * have such property registered.
  */
-mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
+const mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
+
+mvvm::SessionItem* GetChannelItem(mvvm::SessionItem& parent);
 
 /**
  * @brief Returns an item representing is_root property, or nullptr if the given parent doesn't
  * have such property registered.
  */
-mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent);
+const mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent);
+
+mvvm::SessionItem* GetIsRootItem(mvvm::SessionItem& parent);
 
 /**
  * @brief Checks if the instruction can be considered as potential root of the procedure.

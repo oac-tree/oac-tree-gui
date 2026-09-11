@@ -89,12 +89,12 @@ AutomationServerInfo ServerGroupItem::GetServerInfo() const
 {
   if (GetCurrentType() == mvvm::GetTypeName<EPICSServerInfoItem>())
   {
-    return GetCurrentItem<EPICSServerInfoItem>()->GetServerInfo();
+    return GetCurrentItem<EPICSServerInfoItem>().GetServerInfo();
   }
 
   if (GetCurrentType() == mvvm::GetTypeName<WebSocketsServerInfoItem>())
   {
-    return GetCurrentItem<WebSocketsServerInfoItem>()->GetServerInfo();
+    return GetCurrentItem<WebSocketsServerInfoItem>().GetServerInfo();
   }
 
   throw RuntimeException("ServerGroupItem doesn't have a valid automation server item selected");
@@ -104,13 +104,13 @@ void ServerGroupItem::SetServerInfo(const AutomationServerInfo& server_info)
 {
   if (std::holds_alternative<EPICSServerInfo>(server_info))
   {
-    SetCurrentType<EPICSServerInfoItem>()->SetServerInfo(std::get<EPICSServerInfo>(server_info));
+    SetCurrentType<EPICSServerInfoItem>().SetServerInfo(std::get<EPICSServerInfo>(server_info));
     return;
   }
 
   if (std::holds_alternative<WebSocketsServerInfo>(server_info))
   {
-    SetCurrentType<WebSocketsServerInfoItem>()->SetServerInfo(
+    SetCurrentType<WebSocketsServerInfoItem>().SetServerInfo(
         std::get<WebSocketsServerInfo>(server_info));
     return;
   }

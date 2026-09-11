@@ -61,13 +61,13 @@ TEST_F(JobListViewModelTest, SingleProcedure)
   auto displayname_index = view_model.index(0, 0, QModelIndex());
   auto status_index = view_model.index(0, 1, QModelIndex());
 
-  auto views = view_model.FindViews(item->GetItem(itemconstants::kStatus));
+  auto views = view_model.FindViews(item->FindItem(itemconstants::kStatus));
   ASSERT_EQ(views.size(), 1);
   EXPECT_EQ(view_model.indexFromItem(views[0]), status_index);
 
   EXPECT_EQ(view_model.GetSessionItemFromIndex(displayname_index), item);
   EXPECT_EQ(view_model.GetSessionItemFromIndex(status_index),
-            item->GetItem(itemconstants::kStatus));
+            item->FindItem(itemconstants::kStatus));
 
   EXPECT_EQ(view_model.data(displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("LocalJob"));

@@ -55,7 +55,7 @@ public:
   void OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event) override
   {
     auto [parent, tag_index] = event;
-    if (auto child = dynamic_cast<sup::gui::AnyValueItem*>(parent->GetItem(tag_index)); child)
+    if (parent->FindItem<sup::gui::AnyValueItem>(tag_index) != nullptr)
     {
       UpdateBranch(parent);  // update VariableItem row
     }
@@ -74,7 +74,7 @@ public:
   void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event) override
   {
     auto [parent, tag_index] = event;
-    if (auto child = dynamic_cast<sup::gui::AnyValueItem*>(parent->GetItem(tag_index)); child)
+    if (parent->FindItem<sup::gui::AnyValueItem>(tag_index) != nullptr)
     {
       UpdateBranch(parent);  // update VariableItem row
     }

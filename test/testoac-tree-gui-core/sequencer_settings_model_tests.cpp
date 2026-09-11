@@ -39,7 +39,7 @@ class SequencerSettingsModelTest : public ::testing::Test
 
 TEST_F(SequencerSettingsModelTest, InitialState)
 {
-  const SequencerSettingsModel model;
+  SequencerSettingsModel model;
 
   EXPECT_EQ(model.GetSettingsItems().size(), 2);
 
@@ -67,24 +67,24 @@ TEST_F(SequencerSettingsModelTest, Clear)
 
 TEST_F(SequencerSettingsModelTest, AutoDisableSettings)
 {
-  const SequencerSettingsModel model;
+  SequencerSettingsModel model;
 
   auto common_settings = model.GetSettingsItems().at(0);
   ASSERT_EQ(model.GetSettingsItems().size(), 2);
 
-  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUseUndoSetting)->IsEnabled());
-  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUndoLimitSetting)->IsEnabled());
+  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUseUndoSetting).IsEnabled());
+  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUndoLimitSetting).IsEnabled());
 
   // changing the value of the setting
-  common_settings->GetItem(sup::gui::constants::kUseUndoSetting)->SetData(false);
+  common_settings->GetItem(sup::gui::constants::kUseUndoSetting).SetData(false);
 
-  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUseUndoSetting)->IsEnabled());
-  EXPECT_FALSE(common_settings->GetItem(sup::gui::constants::kUndoLimitSetting)->IsEnabled());
+  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUseUndoSetting).IsEnabled());
+  EXPECT_FALSE(common_settings->GetItem(sup::gui::constants::kUndoLimitSetting).IsEnabled());
 }
 
 TEST_F(SequencerSettingsModelTest, Clone)
 {
-  const SequencerSettingsModel model;
+  SequencerSettingsModel model;
 
   auto clone = model.Clone();
   auto cloned_model = dynamic_cast<SequencerSettingsModel*>(clone.get());
@@ -98,7 +98,7 @@ TEST_F(SequencerSettingsModelTest, Clone)
 
 TEST_F(SequencerSettingsModelTest, GetItem)
 {
-  const SequencerSettingsModel model;
+  SequencerSettingsModel model;
 
   EXPECT_NE(model.Get<PluginSettingsItem>(), nullptr);
   EXPECT_NE(model.Get<sup::gui::CommonSettingsItem>(), nullptr);

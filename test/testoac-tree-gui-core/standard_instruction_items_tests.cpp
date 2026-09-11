@@ -151,7 +151,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomainWithCustomAttributes)
   EXPECT_EQ(item.GetPath(), std::string("def"));
 
   EXPECT_TRUE(mvvm::utils::HasTag(item, custom_name));
-  auto property_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(custom_name));
+  auto property_item = item.FindItem<sup::gui::AnyValueScalarItem>(custom_name);
   ASSERT_TRUE(property_item);
   EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kStringTypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(property_item->Data()));
@@ -164,7 +164,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
     IncludeItem item;
     item.SetPath("def");
 
-    item.GetItem(domainconstants::kShowCollapsedAttribute)->SetData(false);
+    item.GetItem(domainconstants::kShowCollapsedAttribute).SetData(false);
 
     EXPECT_FALSE(IsCollapsed(item));
 
@@ -370,7 +370,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
   EXPECT_FALSE(item.IsRoot());
   EXPECT_FALSE(IsCollapsed(item));
 
-  auto root_item_property = item.GetItem(domainconstants::kIsRootAttribute);
+  auto root_item_property = item.FindItem(domainconstants::kIsRootAttribute);
   EXPECT_TRUE(GetAttributeExposedFlag(*root_item_property));
 
   auto wait0 = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
@@ -397,7 +397,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   }
 
   {  // when IsRoot and collapsed = false
-    const SequenceItem item;
+    SequenceItem item;
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
@@ -456,7 +456,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 {
   // Correctly initialised item
-  const WaitItem wait_item;
+  WaitItem wait_item;
   EXPECT_EQ(wait_item.GetTimeout(), 0.0);
 
   auto domain_item = wait_item.CreateDomainInstruction();
@@ -472,10 +472,10 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 TEST_F(StandardInstructionItemsTest, WaitItemToDomainVaryingTimeout)
 {
   // Correctly initialised item
-  const WaitItem item;
+  WaitItem item;
 
-  auto property_item =
-      dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
+  auto property_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(
+      item.FindItem(domainconstants::kTimeoutAttribute));
   ASSERT_TRUE(property_item);
 
   SetAttributeAsString("$par1", *property_item);

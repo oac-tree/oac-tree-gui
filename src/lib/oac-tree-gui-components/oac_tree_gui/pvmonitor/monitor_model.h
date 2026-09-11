@@ -36,7 +36,9 @@ class MonitorModel : public mvvm::ApplicationModel
 public:
   MonitorModel();
 
-  oac_tree_gui::WorkspaceItem* GetWorkspaceItem() const;
+  const oac_tree_gui::WorkspaceItem* GetWorkspaceItem() const;
+
+  oac_tree_gui::WorkspaceItem* GetWorkspaceItem();
 
   void Clear() override;
 

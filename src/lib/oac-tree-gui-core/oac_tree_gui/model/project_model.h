@@ -53,7 +53,9 @@ public:
    * @brief Returns an instruction container holding user's favorite instructions for
    * ComposerToolsPanel.
    */
-  InstructionContainerItem* GetFavoriteInstructionContainer() const;
+  const InstructionContainerItem* GetFavoriteInstructionContainer() const;
+
+  InstructionContainerItem* GetFavoriteInstructionContainer();
 
 private:
   void PopulateModel();

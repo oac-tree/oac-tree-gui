@@ -50,7 +50,7 @@ class WorkspaceEditorActionHandlerTest : public ::testing::Test
 public:
   WorkspaceEditorActionHandlerTest() { m_model.InsertItem<WorkspaceItem>(); }
 
-  WorkspaceItem* GetWorkspaceItem() const { return m_model.GetWorkspaceItem(); }
+  WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   /**
    * @brief Creates action handler.

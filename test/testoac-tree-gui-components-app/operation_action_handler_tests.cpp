@@ -70,7 +70,7 @@ public:
   template <typename T>
   std::vector<T*> GetJobs()
   {
-    return m_job_container->GetItems<T>(mvvm::TagIndex::GetDefaultTag());
+    return m_job_container->FindItems<T>(mvvm::TagIndex::GetDefaultTag());
   }
 
   /**
@@ -83,7 +83,7 @@ public:
 
   std::vector<ProcedureItem*> GetProcedures()
   {
-    return m_procedure_container->GetItems<ProcedureItem>(mvvm::TagIndex::GetDefaultTag());
+    return m_procedure_container->FindItems<ProcedureItem>(mvvm::TagIndex::GetDefaultTag());
   }
 
   /**

@@ -63,14 +63,14 @@ TEST_F(ProcedureItemJobInfoBuilderTest, GetInstruction)
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto sequence = procedure_item->GetInstructionContainer()->GetItem<InstructionInfoItem>(
+  auto* sequence = procedure_item->GetInstructionContainer()->FindItem<InstructionInfoItem>(
       mvvm::TagIndex::Default(0));
   ASSERT_NE(sequence, nullptr);
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
-  auto wait0 = sequence->GetItem<InstructionInfoItem>(mvvm::TagIndex::Default(0));
+  auto* wait0 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(0));
   ASSERT_NE(wait0, nullptr);
-  auto wait1 = sequence->GetItem<InstructionInfoItem>(mvvm::TagIndex::Default(1));
+  auto* wait1 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(1));
   ASSERT_NE(wait1, nullptr);
 
   EXPECT_EQ(builder.GetInstruction(0), sequence);
@@ -104,13 +104,13 @@ TEST_F(ProcedureItemJobInfoBuilderTest, GetInstructionIndex)
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto sequence = procedure_item->GetInstructionContainer()->GetItem<InstructionInfoItem>(
+  auto* sequence = procedure_item->GetInstructionContainer()->FindItem<InstructionInfoItem>(
       mvvm::TagIndex::Default(0));
   ASSERT_NE(sequence, nullptr);
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
-  auto wait0 = sequence->GetItem<InstructionInfoItem>(mvvm::TagIndex::Default(0));
-  auto wait1 = sequence->GetItem<InstructionInfoItem>(mvvm::TagIndex::Default(1));
+  auto* wait0 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(0));
+  auto* wait1 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(1));
 
   EXPECT_EQ(builder.GetIndex(sequence), 0);
   EXPECT_EQ(builder.GetIndex(wait0), 1);
@@ -138,16 +138,16 @@ TEST_F(ProcedureItemJobInfoBuilderTest, BuildFromIncludeAfterSteup)
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto repeat_item =
-      procedure_item->GetInstructionContainer()->GetItem<oac_tree_gui::InstructionInfoItem>(
+  auto* repeat_item =
+      procedure_item->GetInstructionContainer()->FindItem<oac_tree_gui::InstructionInfoItem>(
           mvvm::TagIndex::Default(0));
 
-  auto include_item =
-      repeat_item->GetItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
-  auto sequence_item =
-      include_item->GetItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
-  auto wait_item =
-      sequence_item->GetItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
+  auto* include_item =
+      repeat_item->FindItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
+  auto* sequence_item =
+      include_item->FindItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
+  auto* wait_item =
+      sequence_item->FindItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
 
   EXPECT_EQ(builder.GetInstruction(0), repeat_item);
   EXPECT_EQ(builder.GetInstruction(1), include_item);

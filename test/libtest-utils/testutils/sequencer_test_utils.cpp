@@ -166,12 +166,12 @@ bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValu
   return false;
 }
 
-std::vector<InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
-                                               const std::string& domain_type)
+std::vector<const InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
+                                                     const std::string& domain_type)
 {
-  std::vector<InstructionItem*> result;
+  std::vector<const InstructionItem*> result;
   auto candidates = mvvm::utils::FindItems<InstructionItem>(model);
-  for (auto instruction : candidates)
+  for (const auto* instruction : candidates)
   {
     if (instruction->GetDomainType() == domain_type)
     {

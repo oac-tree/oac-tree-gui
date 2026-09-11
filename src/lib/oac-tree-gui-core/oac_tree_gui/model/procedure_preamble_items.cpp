@@ -95,17 +95,27 @@ std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone() const
   return mvvm::MakeClone(*this);
 }
 
-mvvm::ContainerItem* ProcedurePreambleItem::GetTypeRegistrationContainer() const
+const mvvm::ContainerItem* ProcedurePreambleItem::GetTypeRegistrationContainer() const
 {
-  return GetItem<mvvm::ContainerItem>(kTypeRegistrationContainerTag);
+  return FindItem<mvvm::ContainerItem>(kTypeRegistrationContainerTag);
 }
 
-mvvm::ContainerItem* ProcedurePreambleItem::GetPluginContainer() const
+mvvm::ContainerItem* ProcedurePreambleItem::GetTypeRegistrationContainer()
 {
-  return GetItem<mvvm::ContainerItem>(kPluginContainerTag);
+  return FindItem<mvvm::ContainerItem>(kTypeRegistrationContainerTag);
 }
 
-void ProcedurePreambleItem::AddTypeRegistration(std::int32_t mode, const std::string& str) const
+const mvvm::ContainerItem* ProcedurePreambleItem::GetPluginContainer() const
+{
+  return FindItem<mvvm::ContainerItem>(kPluginContainerTag);
+}
+
+mvvm::ContainerItem* ProcedurePreambleItem::GetPluginContainer()
+{
+  return FindItem<mvvm::ContainerItem>(kPluginContainerTag);
+}
+
+void ProcedurePreambleItem::AddTypeRegistration(std::int32_t mode, const std::string& str)
 {
   auto type_item = std::make_unique<TypeRegistrationItem>();
   auto type_item_ptr = type_item.get();
@@ -119,7 +129,7 @@ std::vector<std::pair<std::int32_t, std::string> > ProcedurePreambleItem::GetTyp
     const
 {
   std::vector<std::pair<std::int32_t, std::string> > result;
-  auto type_items = GetTypeRegistrationContainer()->GetItems<TypeRegistrationItem>(
+  auto type_items = GetTypeRegistrationContainer()->FindItems<TypeRegistrationItem>(
       mvvm::TagIndex::GetDefaultTag());
   result.reserve(type_items.size());
   for (auto item : type_items)
@@ -133,7 +143,8 @@ std::vector<std::pair<std::int32_t, std::string> > ProcedurePreambleItem::GetTyp
 std::vector<std::string> ProcedurePreambleItem::GetPluginPaths() const
 {
   std::vector<std::string> result;
-  auto plugin_name_property_items = GetPluginContainer()->GetItems(mvvm::TagIndex::GetDefaultTag());
+  auto plugin_name_property_items =
+      GetPluginContainer()->FindItems(mvvm::TagIndex::GetDefaultTag());
   result.reserve(plugin_name_property_items.size());
   for (auto item : plugin_name_property_items)
   {
@@ -143,14 +154,14 @@ std::vector<std::string> ProcedurePreambleItem::GetPluginPaths() const
   return result;
 }
 
-void ProcedurePreambleItem::AddPluginPath(const std::string& value) const
+void ProcedurePreambleItem::AddPluginPath(const std::string& value)
 {
   auto property_item = std::make_unique<mvvm::PropertyItem>();
   (void)property_item->SetData(value);
   (void)GetPluginContainer()->InsertItem(std::move(property_item), mvvm::TagIndex::Append());
 }
 
-void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string>& plugin_paths) const
+void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string>& plugin_paths)
 {
   // remove previous if plugin list is not the same
   if (plugin_paths == GetPluginPaths())

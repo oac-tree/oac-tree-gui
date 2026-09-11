@@ -145,9 +145,9 @@ extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueI
  * @param value The attribute value
  */
 template <typename T>
-void SetAttribute(const mvvm::CompoundItem& item, const std::string& name, const T& value)
+void SetAttribute(mvvm::CompoundItem& item, const std::string& name, const T& value)
 {
-  auto attribute = item.GetItem<sup::gui::AnyValueItem>(name);
+  auto* attribute = item.FindItem<sup::gui::AnyValueItem>(name);
   SetAttributeExposedFlag(true, *attribute);
   (void)attribute->SetData(value);
 }

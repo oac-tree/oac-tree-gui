@@ -44,9 +44,14 @@ std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone() const
   return mvvm::MakeClone(*this);
 }
 
-std::vector<VariableItem*> WorkspaceItem::GetVariables() const
+std::vector<const VariableItem*> WorkspaceItem::GetVariables() const
 {
-  return GetItems<VariableItem>(kVariableItems);
+  return FindItems<VariableItem>(kVariableItems);
+}
+
+std::vector<VariableItem*> WorkspaceItem::GetVariables()
+{
+  return FindItems<VariableItem>(kVariableItems);
 }
 
 std::vector<std::string> WorkspaceItem::GetVariableNames() const

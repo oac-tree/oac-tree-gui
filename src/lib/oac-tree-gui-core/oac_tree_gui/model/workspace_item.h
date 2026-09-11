@@ -38,7 +38,9 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  std::vector<VariableItem*> GetVariables() const;
+  std::vector<const VariableItem*> GetVariables() const;
+
+  std::vector<VariableItem*> GetVariables();
 
   std::vector<std::string> GetVariableNames() const;
 

@@ -43,12 +43,16 @@ public:
   /**
    * @brief Returns container with procedures.
    */
-  mvvm::ContainerItem* GetProcedureContainer() const;
+  const mvvm::ContainerItem* GetProcedureContainer() const;
+
+  mvvm::ContainerItem* GetProcedureContainer();
 
   /**
    * @brief Returns list of all procedures in the procedure container.
    */
-  std::vector<ProcedureItem*> GetProcedures() const;
+  std::vector<const ProcedureItem*> GetProcedures() const;
+
+  std::vector<ProcedureItem*> GetProcedures();
 
   /**
    * @brief Creates untitled proceduer.

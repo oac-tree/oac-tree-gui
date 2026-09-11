@@ -56,7 +56,7 @@ std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& i
 /**
  * @brief Returns ViewItem representing checkbox to mark instruction as root.
  */
-std::unique_ptr<mvvm::ViewItem> CreateRootCheckboxViewItem(const InstructionItem& item);
+std::unique_ptr<mvvm::ViewItem> CreateRootCheckboxViewItem(InstructionItem& item);
 
 }  // namespace oac_tree_gui
 

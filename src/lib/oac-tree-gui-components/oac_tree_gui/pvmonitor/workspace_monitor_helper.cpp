@@ -65,7 +65,7 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item)
     {
       if (mvvm::utils::HasTag(*variable, attr))
       {
-        (void)variable->GetItem(attr)->SetEditable(!is_running);
+        (void)variable->GetItem(attr).SetEditable(!is_running);
       }
     }
   }

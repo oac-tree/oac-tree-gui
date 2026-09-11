@@ -59,7 +59,7 @@ void JobItemController::Unsubscribe()
 void JobItemController::OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event)
 {
   auto [parent, tag_index] = event;
-  auto item_to_remove = parent->GetItem(tag_index);
+  auto item_to_remove = parent->FindItem(tag_index);
 
   if (m_current_procedure_item == item_to_remove)
   {

@@ -64,7 +64,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
   EXPECT_EQ(procedure_item->GetDescription(), expected_description);
 
   auto container = procedure_item->GetInstructionContainer();
-  auto wait_item = container->GetItem<oac_tree_gui::WaitItem>("");
+  auto wait_item = container->FindItem<oac_tree_gui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
 
@@ -82,7 +82,8 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
   auto procedure_item = oac_tree_gui::ImportFromFile(file_name);
 
-  auto variable_item = procedure_item->GetWorkspace()->GetItem<oac_tree_gui::LocalVariableItem>("");
+  auto variable_item =
+      procedure_item->GetWorkspace()->FindItem<oac_tree_gui::LocalVariableItem>("");
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::UnsignedInteger32Type, 7);
   EXPECT_EQ(expected_anyvalue, GetAnyValue(*variable_item));
@@ -90,7 +91,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
 TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
 {
-  const oac_tree_gui::ProcedureItem procedure_item;
+  oac_tree_gui::ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto wait0 = container->InsertItem<oac_tree_gui::WaitItem>(mvvm::TagIndex::Append());

@@ -69,7 +69,9 @@ public:
   /**
    * @brief Returns all child instructions.
    */
-  std::vector<InstructionItem*> GetInstructions() const;
+  std::vector<const InstructionItem*> GetInstructions() const;
+
+  std::vector<InstructionItem*> GetInstructions();
 
   /**
    * @brief Checks if this instruction has root flag set.

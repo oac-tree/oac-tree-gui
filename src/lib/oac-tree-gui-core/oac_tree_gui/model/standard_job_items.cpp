@@ -95,12 +95,12 @@ void RemoteJobItem::SetRemoteJobIndex(std::size_t value)
 
 AutomationServerInfo RemoteJobItem::GetAutomationServerInfo() const
 {
-  return GetItem<ServerGroupItem>(kServerInfo)->GetServerInfo();
+  return GetItem<ServerGroupItem>(kServerInfo).GetServerInfo();
 }
 
 void RemoteJobItem::SetAutomationServerInfo(const AutomationServerInfo& info)
 {
-  GetItem<ServerGroupItem>(kServerInfo)->SetServerInfo(info);
+  GetItem<ServerGroupItem>(kServerInfo).SetServerInfo(info);
 }
 
 // ------------------------------------------------------------------------------------------------

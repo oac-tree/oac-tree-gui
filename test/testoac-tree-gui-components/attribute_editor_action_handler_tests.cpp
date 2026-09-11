@@ -82,7 +82,7 @@ TEST_F(AttributeEditorActionHandlerTest, WhenNothingIsSelectedHandlerCanNotPerfo
 
 TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelectedCallingEditorIsNotPossible)
 {
-  const WaitItem item;
+  WaitItem item;
   auto timeout_attribute = GetPropertyItem(item, domainconstants::kTimeoutAttribute);
 
   auto handler = CreateActionHandler(timeout_attribute);
@@ -114,7 +114,7 @@ TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 
 TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlagForTimeoutAttribute)
 {
-  const WaitItem item;
+  WaitItem item;
   auto timeout_attribute = dynamic_cast<sup::gui::AnyValueItem*>(
       GetPropertyItem(item, domainconstants::kTimeoutAttribute));
 

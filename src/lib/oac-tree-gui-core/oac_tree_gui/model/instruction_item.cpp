@@ -84,14 +84,15 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
   return result;
 }
 
-std::vector<InstructionItem*> InstructionItem::GetInstructions() const
+std::vector<const InstructionItem*> InstructionItem::GetInstructions() const
 {
-  if (mvvm::utils::HasTag(*this, itemconstants::kChildInstructions))
-  {
-    return GetItems<InstructionItem>(itemconstants::kChildInstructions);
-  }
+  // FindItems is total, it returns an empty vector when the tag is not registered
+  return FindItems<InstructionItem>(itemconstants::kChildInstructions);
+}
 
-  return {};
+std::vector<InstructionItem*> InstructionItem::GetInstructions()
+{
+  return FindItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
 bool InstructionItem::IsRoot() const

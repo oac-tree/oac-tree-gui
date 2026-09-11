@@ -74,7 +74,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
     GTEST_SKIP();
   }
 
-  const ChannelAccessVariableItem item;
+  ChannelAccessVariableItem item;
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 2);
@@ -165,7 +165,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItem)
 
 TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
 {
-  const FileVariableItem item;
+  FileVariableItem item;
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 3);
@@ -239,7 +239,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
 {
-  const LocalVariableItem item;
+  LocalVariableItem item;
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 2);

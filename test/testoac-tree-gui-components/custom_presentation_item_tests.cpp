@@ -55,7 +55,7 @@ public:
 TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
 {
   TestItem item;
-  const ChannelPresentationItem presentation(item.GetItem(TestItem::kIsAvailable), "channel_name");
+  const ChannelPresentationItem presentation(item.FindItem(TestItem::kIsAvailable), "channel_name");
 
   // it should looke like non-editable label with colored rectangle
 

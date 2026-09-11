@@ -40,9 +40,14 @@ std::unique_ptr<mvvm::SessionItem> InstructionContainerItem::Clone() const
   return mvvm::MakeClone(*this);
 }
 
-std::vector<InstructionItem*> InstructionContainerItem::GetInstructions() const
+std::vector<const InstructionItem*> InstructionContainerItem::GetInstructions() const
 {
-  return GetItems<InstructionItem>(itemconstants::kChildInstructions);
+  return FindItems<InstructionItem>(itemconstants::kChildInstructions);
+}
+
+std::vector<InstructionItem*> InstructionContainerItem::GetInstructions()
+{
+  return FindItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
 std::size_t InstructionContainerItem::GetInstructionCount() const

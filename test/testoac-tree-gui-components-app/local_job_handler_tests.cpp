@@ -116,7 +116,7 @@ public:
    *
    * Search is performed in JobModel, where JobHandler builds expanded procedure).
    */
-  std::vector<InstructionItem*> FindExpandedInstructions(const std::string& domain_type)
+  std::vector<const InstructionItem*> FindExpandedInstructions(const std::string& domain_type)
   {
     return test::FindInstructions(*m_models.GetJobModel(), domain_type);
   }
@@ -250,7 +250,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
-  auto message_item = instructions.at(0);
+  auto* message_item = const_cast<InstructionItem*>(instructions.at(0));
 
   mvvm::test::MockItemListener listener(message_item);
 

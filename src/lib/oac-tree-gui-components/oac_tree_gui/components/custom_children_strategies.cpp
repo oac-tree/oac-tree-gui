@@ -41,21 +41,24 @@ namespace oac_tree_gui
 std::vector<mvvm::SessionItem*> VariableTableChildrenStrategy::GetChildren(
     const mvvm::SessionItem* item) const
 {
+  // IChildrenStrategy hands out mutable children from a const item (see
+  // mvvm/providers/i_children_strategy.h); that contract is deliberately left as it is.
+
   // workspace shows all its variables
   if (item->GetType() == mvvm::GetTypeName<WorkspaceItem>())
   {
-    return item->GetAllItems();
+    return mvvm::utils::RemoveConst(item->GetAllItems());
   }
 
   // struct and arrays shows all children's of AnyValueItem base type
   if (item->GetType() == mvvm::GetTypeName<sup::gui::AnyValueStructItem>())
   {
-    return mvvm::utils::SinglePropertyItems(*item);
+    return mvvm::utils::RemoveConst(mvvm::utils::SinglePropertyItems(*item));
   }
 
   if (item->GetType() == mvvm::GetTypeName<sup::gui::AnyValueArrayItem>())
   {
-    return mvvm::utils::SinglePropertyItems(*item);
+    return mvvm::utils::RemoveConst(mvvm::utils::SinglePropertyItems(*item));
   }
 
   // remaining items are variables, let's allow them to show struct and arrays beneath
@@ -63,13 +66,13 @@ std::vector<mvvm::SessionItem*> VariableTableChildrenStrategy::GetChildren(
       mvvm::GetTypeName<sup::gui::AnyValueStructItem>(),
       mvvm::GetTypeName<sup::gui::AnyValueArrayItem>()};
 
-  std::vector<mvvm::SessionItem*> result;
+  std::vector<const mvvm::SessionItem*> result;
   auto children = item->GetAllItems();
-  auto is_correct_type = [](auto child)
+  auto is_correct_type = [](const auto* child)
   { return mvvm::utils::Contains(allowed_variable_children_types, child->GetType()); };
   (void)std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
                      is_correct_type);
-  return result;
+  return mvvm::utils::RemoveConst(result);
 }
 
 std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
@@ -79,16 +82,16 @@ std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
   {
     if (!IsCollapsed(*instruction_item))
     {
-      std::vector<mvvm::SessionItem*> result;
+      std::vector<const mvvm::SessionItem*> result;
       auto children = instruction_item->GetInstructions();
       (void)std::copy(children.begin(), children.end(), std::back_inserter(result));
-      return result;
+      return mvvm::utils::RemoveConst(result);
     }
     return {};
   }
 
   // instruction container
-  return mvvm::utils::TopLevelItems(*item);
+  return mvvm::utils::RemoveConst(mvvm::utils::TopLevelItems(*item));
 }
 
 std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildren(
@@ -101,8 +104,8 @@ std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildre
   {
     return {};
   }
-  std::vector<mvvm::SessionItem*> result;
-  for (auto child : item->GetAllItems())
+  std::vector<const mvvm::SessionItem*> result;
+  for (const auto* child : item->GetAllItems())
   {
     if (child->IsVisible() && child->HasFlag(mvvm::kProperty)
         && child->GetTagIndex().GetTag() != domainconstants::kIsRootAttribute)
@@ -110,7 +113,7 @@ std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildre
       result.push_back(child);
     }
   }
-  return result;
+  return mvvm::utils::RemoveConst(result);
 }
 
 }  // namespace oac_tree_gui
