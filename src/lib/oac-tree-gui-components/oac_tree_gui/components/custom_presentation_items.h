@@ -78,7 +78,7 @@ public:
 
   std::vector<InstructionItem*> GetSiblings() const;
 
-  const InstructionContainerItem* GetInstructionContainer() const;
+  InstructionContainerItem* GetInstructionContainer() const;
 
   InstructionItem* GetInstructionItem() const;
 

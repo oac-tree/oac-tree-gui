@@ -99,11 +99,9 @@ std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings()
 {
   if (auto container = GetInstructionContainer(); container != nullptr)
   {
-    // FIXME the siblings are reached through a const container but the caller sets flags on
-    // them. Revisit together with AnyValueItem::GetChildren().
-    std::vector<const InstructionItem*> result;
+    std::vector<InstructionItem*> result;
     const auto* presented_instruction = GetInstructionItem();
-    for (const auto* instruction : container->GetInstructions())
+    for (auto* instruction : container->GetInstructions())
     {
       if (instruction != presented_instruction)
       {
@@ -111,13 +109,13 @@ std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings()
       }
     }
 
-    return mvvm::utils::RemoveConst(result);
+    return result;
   }
 
   return {};
 }
 
-const InstructionContainerItem* ExclusiveCheckStatePresentationItem::GetInstructionContainer() const
+InstructionContainerItem* ExclusiveCheckStatePresentationItem::GetInstructionContainer() const
 {
   auto* instruction_item = GetInstructionItem();
   return (instruction_item == nullptr)

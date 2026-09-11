@@ -53,17 +53,14 @@ void DomainWorkspaceBuilder::PopulateDomainWorkspace(const WorkspaceItem* item,
       throw RuntimeException("Variable name '" + variable_item->GetName() + "' already exist");
     }
 
-    // FIXME the builder observes a const workspace but exposes its variables mutably through
-    // GetVariableItemFromDomainVariableName(). Revisit together with AnyValueItem::GetChildren().
-    auto* mutable_item = const_cast<VariableItem*>(variable_item);
-    (void)m_domain_variable_to_item.insert({domain_variable.get(), mutable_item});
-    (void)m_domain_name_to_item.insert({variable_item->GetName(), mutable_item});
+    (void)m_domain_variable_to_item.insert({domain_variable.get(), variable_item});
+    (void)m_domain_name_to_item.insert({variable_item->GetName(), variable_item});
 
     (void)workspace->AddVariable(variable_item->GetName(), std::move(domain_variable));
   }
 }
 
-VariableItem* DomainWorkspaceBuilder::GetVariableItemFromDomainVariableName(
+const VariableItem* DomainWorkspaceBuilder::GetVariableItemFromDomainVariableName(
     const std::string& name) const
 {
   auto iter = m_domain_name_to_item.find(name);

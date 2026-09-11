@@ -40,11 +40,11 @@ class DomainWorkspaceBuilder
 public:
   void PopulateDomainWorkspace(const WorkspaceItem* item, workspace_t* workspace);
 
-  VariableItem* GetVariableItemFromDomainVariableName(const std::string& name) const;
+  const VariableItem* GetVariableItemFromDomainVariableName(const std::string& name) const;
 
 private:
-  std::map<const variable_t*, VariableItem*> m_domain_variable_to_item;
-  std::map<std::string, VariableItem*> m_domain_name_to_item;
+  std::map<const variable_t*, const VariableItem*> m_domain_variable_to_item;
+  std::map<std::string, const VariableItem*> m_domain_name_to_item;
 };
 
 }  // namespace oac_tree_gui
