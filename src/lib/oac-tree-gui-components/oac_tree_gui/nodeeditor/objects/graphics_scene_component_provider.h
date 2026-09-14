@@ -91,7 +91,7 @@ public:
    *
    * Converts all selected shapes to selected instructions.
    */
-  std::vector<const InstructionItem*> GetSelectedInstructions() const;
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
 
   /**
    * @brief Sets selected instructions.

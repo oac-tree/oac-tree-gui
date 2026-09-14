@@ -124,7 +124,7 @@ void WorkspaceVariableTreeView::SetEditable(bool value)
                                      : QAbstractItemView::NoEditTriggers);
 }
 
-std::vector<const mvvm::SessionItem*> WorkspaceVariableTreeView::GetSelectedItems() const
+std::vector<mvvm::SessionItem*> WorkspaceVariableTreeView::GetSelectedItems() const
 {
   return m_component_provider->GetSelection().GetItems();
 }

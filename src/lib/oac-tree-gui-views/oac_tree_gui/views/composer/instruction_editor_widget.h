@@ -74,7 +74,7 @@ public:
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
 
-  std::vector<const InstructionItem*> GetSelectedInstructions() const;
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
 
   const InstructionItem* GetSelectedInstruction() const;
 

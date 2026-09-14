@@ -35,7 +35,7 @@ namespace oac_tree_gui::test
 
 InstructionEditorContext MockInstructionEditorContext::CreateContext(
     InstructionContainerItem* instruction_container,
-    const std::vector<const InstructionItem*>& current_selection)
+    const std::vector<InstructionItem*>& current_selection)
 {
   InstructionEditorContext result;
 
@@ -70,7 +70,7 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
 
 std::unique_ptr<InstructionEditorActionHandler> MockInstructionEditorContext::CreateActionHandler(
     InstructionContainerItem* instruction_container,
-    const std::vector<const InstructionItem*>& current_selection)
+    const std::vector<InstructionItem*>& current_selection)
 {
   return std::make_unique<InstructionEditorActionHandler>(
       CreateContext(instruction_container, current_selection));
@@ -92,7 +92,7 @@ std::vector<const mvvm::SessionItem*> MockInstructionEditorContext::GetNotifyReq
 }
 
 void MockInstructionEditorContext::SetAsCurrentSelection(
-    const std::vector<const InstructionItem*>& selection)
+    const std::vector<InstructionItem*>& selection)
 {
   m_current_selection = selection;
 }

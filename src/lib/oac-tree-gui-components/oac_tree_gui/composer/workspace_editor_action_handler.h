@@ -64,9 +64,9 @@ public:
 
   void Paste() override;
 
-  const VariableItem *GetSelectedVariable() const;
+  VariableItem* GetSelectedVariable() const;
 
-  std::vector<const VariableItem *> GetSelectedVariables() const;
+  std::vector<VariableItem*> GetSelectedVariables() const;
 
 private:
   mvvm::ISessionModel* GetModel() const;

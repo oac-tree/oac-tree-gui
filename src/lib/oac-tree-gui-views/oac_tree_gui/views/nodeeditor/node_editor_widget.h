@@ -63,7 +63,7 @@ public:
 
   void SetProcedure(ProcedureItem* procedure);
 
-  std::vector<const InstructionItem *> GetSelectedInstructions() const;
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
 
   void SetSelectedInstructions(const std::vector<const InstructionItem *> &instructions) const;
 

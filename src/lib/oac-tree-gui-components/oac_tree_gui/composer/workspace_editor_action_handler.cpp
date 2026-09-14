@@ -128,10 +128,9 @@ void WorkspaceEditorActionHandler::EditAnyValue()
 
   auto selected_item = selected_items.front();
 
-  const auto* selected_variable =
-      (GetSelectedVariable() != nullptr)
-          ? GetSelectedVariable()
-          : mvvm::utils::FindItemUp<VariableItem>(selected_item);
+  auto* selected_variable = (GetSelectedVariable() != nullptr)
+                                ? GetSelectedVariable()
+                                : mvvm::utils::FindItemUp<VariableItem>(selected_item);
 
   if (selected_variable == nullptr)
   {
@@ -162,7 +161,7 @@ void WorkspaceEditorActionHandler::EditAnyValue()
     if (edited_anyvalue.result)
     {
       (void)model->InsertItem(std::move(edited_anyvalue.result),
-                              const_cast<VariableItem*>(selected_variable), {});
+                              selected_variable, {});
     }
   }
 }
@@ -220,15 +219,15 @@ void WorkspaceEditorActionHandler::Paste()
       sup::gui::CreateSessionItemsFromMimeData(*GetMimeData(), kVariableCopyMimeType));
 }
 
-const VariableItem* WorkspaceEditorActionHandler::GetSelectedVariable() const
+VariableItem* WorkspaceEditorActionHandler::GetSelectedVariable() const
 {
   auto selected_variables = GetSelectedVariables();
   return selected_variables.empty() ? nullptr : selected_variables.front();
 }
 
-std::vector<const VariableItem*> WorkspaceEditorActionHandler::GetSelectedVariables() const
+std::vector<VariableItem*> WorkspaceEditorActionHandler::GetSelectedVariables() const
 {
-  return mvvm::utils::CastItems<const VariableItem>(m_context.selected_items_callback());
+  return mvvm::utils::CastItems<VariableItem>(m_context.selected_items_callback());
 }
 
 mvvm::ISessionModel* WorkspaceEditorActionHandler::GetModel() const

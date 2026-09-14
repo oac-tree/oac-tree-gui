@@ -173,7 +173,7 @@ void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex& index)
   if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
   {
     auto selection = m_component_provider->GetSelection();
-    auto instruction = const_cast<InstructionItem*>(selection.GetItem<InstructionItem>());
+    auto instruction = selection.GetItem<InstructionItem>();
     emit ToggleBreakpointRequest(instruction);
   }
 }
@@ -204,8 +204,8 @@ void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
     return;
   }
 
-  auto filtered =
-      sup::gui::GetBottomLevelSelection(m_component_provider->GetSelection().GetItems());
+  auto filtered = sup::gui::GetBottomLevelSelection(
+      mvvm::utils::ConvertItems<const mvvm::SessionItem>(m_component_provider->GetSelection().GetItems()));
   if (!filtered.empty())
   {
     auto indexes = m_component_provider->GetViewIndexes(filtered.front());

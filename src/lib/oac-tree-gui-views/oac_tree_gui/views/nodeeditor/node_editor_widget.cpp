@@ -111,7 +111,7 @@ void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
   SetupSceneComponentProvider();
 }
 
-std::vector<const InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
+std::vector<InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
 {
   return m_scene_component_provider->GetSelectedInstructions();
 }

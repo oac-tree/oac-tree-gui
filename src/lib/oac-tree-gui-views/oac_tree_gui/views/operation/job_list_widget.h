@@ -63,7 +63,7 @@ public:
 
   void SetJobModel(JobModel* model);
 
-  const JobItem* GetSelectedJob() const;
+  JobItem* GetSelectedJob() const;
 
   void SetSelectedJob(const JobItem *job);
 

@@ -49,7 +49,7 @@ FavoriteInstructionsWidget::FavoriteInstructionsWidget(QWidget* parent_widget)
   // handles click on close button in column=1
   auto on_close = [this](const QModelIndex& index)
   {
-    auto item = const_cast<mvvm::SessionItem*>(m_component_provider->GetItemFromViewIndex(index));
+    auto item = m_component_provider->GetItemFromViewIndex(index);
     if (item != nullptr)
     {
       mvvm::utils::RemoveItem(*item);

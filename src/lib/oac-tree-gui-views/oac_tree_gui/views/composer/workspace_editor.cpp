@@ -40,7 +40,7 @@ namespace oac_tree_gui
 
 WorkspaceEditor::WorkspaceEditor(
     sup::gui::IAppCommandService& command_service,
-    const std::function<std::vector<const mvvm::SessionItem*>()>& selected_items,
+    const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
     QWidget* parent_widget)
     : QObject(parent_widget)
     , m_get_selected_items(selected_items)

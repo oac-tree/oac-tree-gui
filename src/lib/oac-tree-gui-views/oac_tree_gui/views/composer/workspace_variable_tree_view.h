@@ -82,7 +82,7 @@ public:
   /**
    * @brief Returns items currently selected in the tree.
    */
-  std::vector<const mvvm::SessionItem*> GetSelectedItems() const;
+  std::vector<mvvm::SessionItem*> GetSelectedItems() const;
 
   /**
    * @brief Selects given item in the tree and expands it.

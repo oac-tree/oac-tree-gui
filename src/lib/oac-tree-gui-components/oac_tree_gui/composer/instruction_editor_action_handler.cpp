@@ -220,7 +220,7 @@ void InstructionEditorActionHandler::MoveDown()
 
 void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 {
-  auto instruction_item = const_cast<InstructionItem*>(GetSelectedInstruction());
+  auto instruction_item = GetSelectedInstruction();
 
   if ((instruction_item == nullptr)
       || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
@@ -285,7 +285,8 @@ void InstructionEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateInstructionTreeCopyMimeData(GetSelectedInstructions()));
+  m_context.set_mime_data(CreateInstructionTreeCopyMimeData(
+      mvvm::utils::ConvertItems<const InstructionItem>(GetSelectedInstructions())));
 }
 
 void InstructionEditorActionHandler::SmartCopy()
@@ -295,7 +296,8 @@ void InstructionEditorActionHandler::SmartCopy()
     return;
   }
 
-  m_context.set_mime_data(CreateInstructionSelectionCopyMimeData(GetSelectedInstructions()));
+  m_context.set_mime_data(CreateInstructionSelectionCopyMimeData(
+      mvvm::utils::ConvertItems<const InstructionItem>(GetSelectedInstructions())));
 }
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
@@ -356,13 +358,13 @@ void InstructionEditorActionHandler::InsertItem(const std::string& item_type,
   InsertItem(std::move(items), parent, index, GetCoordinateNearby(nullptr));
 }
 
-const InstructionItem* InstructionEditorActionHandler::GetSelectedInstruction() const
+InstructionItem* InstructionEditorActionHandler::GetSelectedInstruction() const
 {
   auto instructions = GetSelectedInstructions();
   return instructions.empty() ? nullptr : instructions.front();
 }
 
-std::vector<const InstructionItem*> InstructionEditorActionHandler::GetSelectedInstructions() const
+std::vector<InstructionItem*> InstructionEditorActionHandler::GetSelectedInstructions() const
 {
   return m_context.selected_instructions();
 }
@@ -503,7 +505,7 @@ void InstructionEditorActionHandler::InsertIntoCurrentSelection(
     std::vector<std::unique_ptr<mvvm::SessionItem>> items)
 {
   auto selected_item = GetSelectedInstruction();
-  InsertItem(std::move(items), const_cast<InstructionItem*>(selected_item),
+  InsertItem(std::move(items), selected_item,
              mvvm::TagIndex::Append(), GetCoordinateNearby(selected_item));
 }
 

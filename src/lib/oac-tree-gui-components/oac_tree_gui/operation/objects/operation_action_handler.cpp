@@ -320,7 +320,7 @@ mvvm::SessionItem* OperationActionHandler::GetJobContainer() const
 
 JobItem* OperationActionHandler::GetSelectedJob() const
 {
-  return const_cast<JobItem*>(m_operation_context.selected_job());
+  return m_operation_context.selected_job();
 }
 
 }  // namespace oac_tree_gui

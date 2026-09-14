@@ -55,7 +55,7 @@ void AttributeEditorActionHandler::OnToggleExposedFlag()
 
   auto attribute_item = GetSelectedAttributeItem();
   SetAttributeExposedFlag(!GetAttributeExposedFlag(*attribute_item),
-                          *const_cast<sup::gui::AnyValueItem*>(attribute_item));
+                          *attribute_item);
 }
 
 bool AttributeEditorActionHandler::CanSetDefaultType() const
@@ -70,8 +70,8 @@ void AttributeEditorActionHandler::OnSetAsDefaultType()
     return;
   }
 
-  const auto* selected = GetSelectedAttributeItem();
-  SetAttributeFromTypeName(*const_cast<sup::gui::AnyValueItem*>(selected));
+  auto* selected = GetSelectedAttributeItem();
+  SetAttributeFromTypeName(*selected);
 }
 
 bool AttributeEditorActionHandler::CanSetPlaceholderType() const
@@ -86,9 +86,9 @@ void AttributeEditorActionHandler::OnSetPlaceholderType()
     return;
   }
 
-  const auto* selected = GetSelectedAttributeItem();
+  auto* selected = GetSelectedAttributeItem();
   SetAttributeAsString(itemconstants::kDefaultPlaceholderAttributeValue,
-                       *const_cast<sup::gui::AnyValueItem*>(selected));
+                       *selected);
 }
 
 bool AttributeEditorActionHandler::CanEditAnyValue() const
@@ -96,14 +96,14 @@ bool AttributeEditorActionHandler::CanEditAnyValue() const
   return IsAnyValue();
 }
 
-const sup::gui::AnyValueItem* AttributeEditorActionHandler::GetSelectedAttributeItem() const
+sup::gui::AnyValueItem* AttributeEditorActionHandler::GetSelectedAttributeItem() const
 {
   if (m_context.selected_items_callback)
   {
     auto selected_items = m_context.selected_items_callback();
     return selected_items.empty()
                ? nullptr
-               : dynamic_cast<const sup::gui::AnyValueItem*>(selected_items.front());
+               : dynamic_cast<sup::gui::AnyValueItem*>(selected_items.front());
   }
 
   return nullptr;

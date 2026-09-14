@@ -61,7 +61,7 @@ public:
    * @param current_mime The content of the clipboard.
    */
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
-      const std::vector<const InstructionItem*>& selection,
+      const std::vector<InstructionItem*>& selection,
       std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));

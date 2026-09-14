@@ -67,7 +67,7 @@ void OperationJobPanel::SetModels(ApplicationModels* models)
   m_job_list_widget->SetJobModel(models->GetJobModel());
 }
 
-const JobItem* OperationJobPanel::GetSelectedJob() const
+JobItem* OperationJobPanel::GetSelectedJob() const
 {
   return m_job_list_widget->GetSelectedJob();
 }

@@ -79,9 +79,9 @@ void GraphicsSceneComponentProvider::OnDeleteSelected()
   mvvm::utils::EndMacro(*GetModel());
 }
 
-std::vector<const InstructionItem*> GraphicsSceneComponentProvider::GetSelectedInstructions() const
+std::vector<InstructionItem*> GraphicsSceneComponentProvider::GetSelectedInstructions() const
 {
-  std::vector<const InstructionItem*> result;
+  std::vector<InstructionItem*> result;
   for (auto shape : mvvm::GetSelectedShapes<mvvm::ConnectableShape>(*m_scene))
   {
     result.push_back(mvvm::GetUnderlyingItem<InstructionItem>(shape));

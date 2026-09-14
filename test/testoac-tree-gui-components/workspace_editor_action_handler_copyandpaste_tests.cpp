@@ -53,7 +53,7 @@ public:
    * @param current_mime The content of the clipboard.
    */
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
-      const std::vector<const mvvm::SessionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
+      const std::vector<mvvm::SessionItem*>& selection, std::unique_ptr<QMimeData> clipboard = {})
   {
     m_mock_context.SetClipboardContent(std::move(clipboard));
     return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);

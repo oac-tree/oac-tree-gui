@@ -58,7 +58,7 @@ public:
 
   void SetModels(ApplicationModels* models);
 
-  const JobItem* GetSelectedJob() const;
+  JobItem* GetSelectedJob() const;
 
   void SetSelectedJob(const JobItem *job_item);
 

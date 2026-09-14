@@ -56,11 +56,11 @@ public:
    * @param current_selection The instructions which will be reported as selected by the user.
    */
   InstructionEditorContext CreateContext(InstructionContainerItem* instruction_container,
-                                         const std::vector<const InstructionItem*>& current_selection);
+                                         const std::vector<InstructionItem*>& current_selection);
 
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
       InstructionContainerItem* instruction_container,
-      const std::vector<const InstructionItem *> &current_selection);
+      const std::vector<InstructionItem*> &current_selection);
 
   QMimeData* GetClipboardContent() const;
 
@@ -68,10 +68,10 @@ public:
 
   std::vector<const mvvm::SessionItem *> GetNotifyRequests() const;
 
-  void SetAsCurrentSelection(const std::vector<const InstructionItem*>& selection);
+  void SetAsCurrentSelection(const std::vector<InstructionItem*>& selection);
 
   std::unique_ptr<QMimeData> m_clipboard_content;
-  std::vector<const InstructionItem*> m_current_selection;
+  std::vector<InstructionItem*> m_current_selection;
   std::vector<const mvvm::SessionItem*> m_notify_requests;
 };
 

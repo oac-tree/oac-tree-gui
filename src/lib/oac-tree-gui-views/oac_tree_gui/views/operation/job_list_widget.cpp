@@ -76,7 +76,7 @@ void JobListWidget::SetJobModel(JobModel* model)
   m_component_provider->SetApplicationModel(model);
 }
 
-const JobItem* JobListWidget::GetSelectedJob() const
+JobItem* JobListWidget::GetSelectedJob() const
 {
   auto selection = m_component_provider->GetSelection();
   return selection.GetItem<JobItem>();
