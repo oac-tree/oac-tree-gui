@@ -117,13 +117,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, SelectedVariables)
   {
     auto handler = CreateActionHandler({var0, var1});
     EXPECT_EQ(handler->GetSelectedVariable(), var0);
-    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<const VariableItem*>({var0, var1}));
+    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<VariableItem*>({var0, var1}));
   }
 
   {  // part of var0 is selected, and var1
     auto handler = CreateActionHandler({initial_anyvalue_item, var1});
     EXPECT_EQ(handler->GetSelectedVariable(), var1);
-    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<const VariableItem*>({var1}));
+    EXPECT_EQ(handler->GetSelectedVariables(), std::vector<VariableItem*>({var1}));
   }
 }
 

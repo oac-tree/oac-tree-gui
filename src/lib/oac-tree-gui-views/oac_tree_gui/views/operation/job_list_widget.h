@@ -23,6 +23,8 @@
 
 #include <oac_tree_gui/model/job_item.h>
 
+#include <mvvm/model/item_selection.h>
+
 #include <QWidget>
 #include <memory>
 
@@ -72,7 +74,7 @@ public:
   mvvm::ViewModel* GetViewModel();
 
 signals:
-  void JobSelected(const oac_tree_gui::JobItem* job_item);
+  void JobSelected(const mvvm::ItemSelection& selection);
 
 private:
   QTreeView* m_tree_view{nullptr};

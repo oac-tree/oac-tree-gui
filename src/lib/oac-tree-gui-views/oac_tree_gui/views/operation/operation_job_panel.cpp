@@ -108,9 +108,10 @@ void OperationJobPanel::SetupConnections()
           &OperationJobPanel::ConnectRequest);
 }
 
-void OperationJobPanel::OnJobSelectedIntern(const JobItem* item)
+void OperationJobPanel::OnJobSelectedIntern(const mvvm::ItemSelection& selection)
 {
-  m_job_property_widget->SetJob(const_cast<JobItem*>(item));
+  auto* item = selection.GetItem<JobItem>();
+  m_job_property_widget->SetJob(item);
   emit JobSelected(item);
 }
 

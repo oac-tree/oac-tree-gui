@@ -64,7 +64,8 @@ TEST_F(JobListWidgetTest, SelectJob)
   view.SetSelectedJob(job);
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(mvvm::test::TakeValue<const oac_tree_gui::JobItem*>(spy_selected), job);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
+            job);
 
   // removing selection
 
@@ -72,7 +73,8 @@ TEST_F(JobListWidgetTest, SelectJob)
   EXPECT_EQ(view.GetSelectedJob(), nullptr);
   EXPECT_EQ(spy_selected.count(), 1);
 
-  EXPECT_EQ(mvvm::test::TakeValue<const oac_tree_gui::JobItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
+            nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -95,7 +97,8 @@ TEST_F(JobListWidgetTest, SelectionAfterRemoval)
   model.RemoveItem(job);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(mvvm::test::TakeValue<const oac_tree_gui::JobItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
+            nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -121,7 +124,8 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
 
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(mvvm::test::TakeValue<const oac_tree_gui::JobItem*>(spy_selected), job);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
+            job);
 }
 
 }  // namespace oac_tree_gui::test

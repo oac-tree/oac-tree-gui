@@ -23,6 +23,8 @@
 
 #include <oac_tree_gui/model/job_item.h>
 
+#include <mvvm/model/item_selection.h>
+
 #include <QWidget>
 
 namespace sup::gui
@@ -76,7 +78,7 @@ signals:
 
 private:
   void SetupConnections();
-  void OnJobSelectedIntern(const JobItem *item);
+  void OnJobSelectedIntern(const mvvm::ItemSelection& selection);
 
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
