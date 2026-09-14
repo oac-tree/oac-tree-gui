@@ -161,7 +161,7 @@ void OperationTabWidget::SetupConnections()
           &OperationRealTimeWidget::SetViewportFollowsSelectionFlag);
 
   connect(m_realtime_widget, &OperationRealTimeWidget::ToggleBreakpointRequest, this,
-          [this](const InstructionItem* instruction)
+          [this](InstructionItem* instruction)
           { emit ToggleBreakpointRequest(m_current_job, instruction); });
 }
 

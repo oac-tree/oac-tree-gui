@@ -70,7 +70,7 @@ public:
   void SetViewportFollowsSelectionFlag(bool value);
 
 signals:
-  void ToggleBreakpointRequest(const oac_tree_gui::InstructionItem* instruction);
+  void ToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction);
 
 protected:
   bool event(QEvent* event) override;

@@ -289,8 +289,8 @@ void OperationMonitorView::SetupConnections()
 
   connect(
       m_splittable_widget, &OperationSplittableWidget::ToggleBreakpointRequest, m_action_handler,
-      [this](JobItem* job, const auto* instruction)
-      { m_action_handler->OnToggleBreakpoint(job, const_cast<InstructionItem*>(instruction)); });
+      [this](JobItem* job, auto* instruction)
+      { m_action_handler->OnToggleBreakpoint(job, instruction); });
 
   // propagate combo selection from current active panel to list with jobs
   auto on_selected_job = [this](const mvvm::ItemSelection& selection)

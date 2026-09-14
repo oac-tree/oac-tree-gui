@@ -126,7 +126,7 @@ signals:
   void ResetRequest(oac_tree_gui::JobItem* job);
   void ChangeDelayRequest(oac_tree_gui::JobItem* job, int msec);
   void ToggleBreakpointRequest(oac_tree_gui::JobItem* job,
-                               const oac_tree_gui::InstructionItem* instruction);
+                               oac_tree_gui::InstructionItem* instruction);
 
 private:
   std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController() const;
