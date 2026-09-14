@@ -95,7 +95,7 @@ bool ExclusiveCheckStatePresentationItem::SetData(const QVariant& data, mvvm::ro
   return result;
 }
 
-std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings() const
+std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings()
 {
   if (auto container = GetInstructionContainer(); container != nullptr)
   {
@@ -115,7 +115,7 @@ std::vector<InstructionItem*> ExclusiveCheckStatePresentationItem::GetSiblings()
   return {};
 }
 
-InstructionContainerItem* ExclusiveCheckStatePresentationItem::GetInstructionContainer() const
+InstructionContainerItem* ExclusiveCheckStatePresentationItem::GetInstructionContainer()
 {
   auto* instruction_item = GetInstructionItem();
   return (instruction_item == nullptr)
@@ -123,7 +123,7 @@ InstructionContainerItem* ExclusiveCheckStatePresentationItem::GetInstructionCon
              : dynamic_cast<InstructionContainerItem*>(instruction_item->GetParent());
 }
 
-InstructionItem* ExclusiveCheckStatePresentationItem::GetInstructionItem() const
+InstructionItem* ExclusiveCheckStatePresentationItem::GetInstructionItem()
 {
   // Our GetItem() is PropertyItem carrying a boolean property, so we need to get its parent to get
   // InstructionItem

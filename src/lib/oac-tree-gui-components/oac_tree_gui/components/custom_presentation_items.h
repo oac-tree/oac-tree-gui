@@ -76,11 +76,11 @@ public:
 
   bool SetData(const QVariant& data, mvvm::role_t qt_role) override;
 
-  std::vector<InstructionItem*> GetSiblings() const;
+  std::vector<InstructionItem*> GetSiblings();
 
-  InstructionContainerItem* GetInstructionContainer() const;
+  InstructionContainerItem* GetInstructionContainer();
 
-  InstructionItem* GetInstructionItem() const;
+  InstructionItem* GetInstructionItem();
 
 private:
   mvvm::ISessionModel* GetModel();
