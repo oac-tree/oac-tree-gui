@@ -42,10 +42,10 @@ std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::Variab
   return result;
 }
 
-std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::WorkspaceInfo& info,
+std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::WorkspaceInfo& info,
                                                        WorkspaceItem* workspace_item)
 {
-  std::vector<const VariableItem*> index_to_variable_item;
+  std::vector<VariableItem*> index_to_variable_item;
 
   if (workspace_item->GetVariableCount() != 0)
   {
@@ -66,11 +66,11 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
   return index_to_variable_item;
 }
 
-std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Workspace& workspace,
+std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Workspace& workspace,
                                                        const anytype_registry_t* registry,
                                                        WorkspaceItem* workspace_item)
 {
-  std::vector<const VariableItem*> result;
+  std::vector<VariableItem*> result;
 
   if (workspace_item->GetTotalItemCount() > 0)
   {

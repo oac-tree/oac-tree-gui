@@ -68,7 +68,7 @@ InstructionTree CreateInstructionItemTreeIntern(const sup::oac_tree::Instruction
 
   std::unique_ptr<InstructionItem> result =
       light_tree ? CreateInstructionInfoItem(info) : CreateInstructionItem(info);
-  std::map<const InstructionItem*, std::uint32_t> item_to_index;
+  std::map<InstructionItem*, std::uint32_t> item_to_index;
 
   stack.push({info, *result});
   item_to_index[result.get()] = info.GetIndex();
@@ -91,7 +91,7 @@ InstructionTree CreateInstructionItemTreeIntern(const sup::oac_tree::Instruction
     }
   }
 
-  std::vector<const InstructionItem*> index_list(item_to_index.size());
+  std::vector<InstructionItem*> index_list(item_to_index.size());
   (void)std::for_each(item_to_index.begin(), item_to_index.end(),
                       [&index_list](auto it) { index_list[it.second] = it.first; });
 

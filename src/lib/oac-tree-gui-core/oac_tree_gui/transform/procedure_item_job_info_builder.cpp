@@ -64,9 +64,7 @@ std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
 
 InstructionItem* ProcedureItemJobInfoBuilder::GetInstruction(std::size_t index) const
 {
-  return (index < m_index_to_instruction.size())
-             ? const_cast<InstructionItem*>(m_index_to_instruction[index])
-             : nullptr;
+  return (index < m_index_to_instruction.size()) ? m_index_to_instruction[index] : nullptr;
 }
 
 std::size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem* item) const
@@ -82,9 +80,7 @@ std::size_t ProcedureItemJobInfoBuilder::GetIndex(const InstructionItem* item) c
 
 VariableItem* ProcedureItemJobInfoBuilder::GetVariable(std::size_t index) const
 {
-  return (index < m_index_to_variable.size())
-             ? const_cast<VariableItem*>(m_index_to_variable[index])
-             : nullptr;
+  return (index < m_index_to_variable.size()) ? m_index_to_variable[index] : nullptr;
 }
 
 }  // namespace oac_tree_gui

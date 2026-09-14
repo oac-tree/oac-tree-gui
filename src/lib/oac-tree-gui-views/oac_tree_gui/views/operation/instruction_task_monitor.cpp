@@ -82,6 +82,11 @@ const InstructionTaskWidgetBuilder* InstructionTaskMonitor::GetTaskWidgetBuilder
   return m_task_widget_builder.get();
 }
 
+InstructionTaskWidgetBuilder* InstructionTaskMonitor::GetTaskWidgetBuilder()
+{
+  return m_task_widget_builder.get();
+}
+
 void InstructionTaskMonitor::ClearMonitor()
 {
   m_listener.reset();

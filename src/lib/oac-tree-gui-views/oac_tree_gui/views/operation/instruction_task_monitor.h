@@ -66,6 +66,7 @@ public:
   void SetInstructionContainer(InstructionContainerItem* container);
 
   const InstructionTaskWidgetBuilder* GetTaskWidgetBuilder() const;
+  InstructionTaskWidgetBuilder* GetTaskWidgetBuilder();
 
   /**
    * @brief Clears widgets of TasjMonitor, stop listening.

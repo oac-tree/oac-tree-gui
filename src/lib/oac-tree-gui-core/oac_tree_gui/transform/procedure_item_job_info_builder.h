@@ -57,8 +57,8 @@ public:
   VariableItem* GetVariable(std::size_t index) const override;
 
 private:
-  std::vector<const InstructionItem*> m_index_to_instruction;
-  std::vector<const VariableItem*> m_index_to_variable;
+  std::vector<InstructionItem*> m_index_to_instruction;
+  std::vector<VariableItem*> m_index_to_variable;
 };
 
 }  // namespace oac_tree_gui

@@ -51,7 +51,7 @@ std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::Variab
  *
  * @return List of all created variables stored according to their automation indexes
  */
-std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::WorkspaceInfo& info,
+std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::WorkspaceInfo& info,
                                                        WorkspaceItem* workspace_item);
 
 /**
@@ -63,7 +63,7 @@ std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Work
  *
  * @return List of all created variables stored according to their automation indexes
  */
-std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Workspace& workspace,
+std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Workspace& workspace,
                                                        const anytype_registry_t* registry,
                                                        WorkspaceItem* workspace_item);
 

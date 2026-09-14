@@ -52,7 +52,7 @@ struct InstructionTree
   std::unique_ptr<InstructionItem> root;  //!< root instruction
 
   //!< all instructions stored according their automation indexes
-  std::vector<const InstructionItem*> indexes;
+  std::vector<InstructionItem*> indexes;
 };
 
 /**
