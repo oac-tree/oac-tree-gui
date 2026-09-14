@@ -40,7 +40,7 @@ namespace oac_tree_gui
 class VariableTableChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
-  std::vector<mvvm::SessionItem*> GetChildren(const mvvm::SessionItem* item) const override;
+  std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
 };
 
 /**
@@ -51,7 +51,7 @@ public:
 class InstructionNodeChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
-  std::vector<mvvm::SessionItem*> GetChildren(const mvvm::SessionItem* item) const override;
+  std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
 };
 
 /**
@@ -63,7 +63,7 @@ public:
 class InstructionAttributeChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
-  std::vector<mvvm::SessionItem*> GetChildren(const mvvm::SessionItem* item) const override;
+  std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
 };
 
 }  // namespace oac_tree_gui
