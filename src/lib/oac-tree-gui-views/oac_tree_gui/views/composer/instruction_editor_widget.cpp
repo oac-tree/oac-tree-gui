@@ -161,7 +161,7 @@ std::vector<InstructionItem*> InstructionEditorWidget::GetSelectedInstructions()
   return selection.GetItems<InstructionItem>();
 }
 
-const InstructionItem* InstructionEditorWidget::GetSelectedInstruction() const
+InstructionItem* InstructionEditorWidget::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
@@ -235,11 +235,10 @@ std::function<QStringList()> InstructionEditorWidget::CreateVariableNameFunc()
 
 void InstructionEditorWidget::SetupConnections()
 {
-  auto on_selected_instruction_changed = [this](auto)
+  auto on_selected_instruction_changed = [this](const mvvm::ItemSelection& selection)
   {
-    auto selected = GetSelectedInstruction();
-    m_attribute_editor->SetInstruction(const_cast<InstructionItem*>(selected));
-    emit InstructionSelected(selected);
+    m_attribute_editor->SetInstruction(GetSelectedInstruction());
+    emit InstructionSelected(selection);
   };
   connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectionChanged, this,
           on_selected_instruction_changed);

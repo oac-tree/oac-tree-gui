@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
 
+#include <mvvm/model/item_selection.h>
+
 #include <QWidget>
 #include <memory>
 
@@ -76,7 +78,7 @@ public:
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
-  const InstructionItem* GetSelectedInstruction() const;
+  InstructionItem* GetSelectedInstruction() const;
 
   /**
    * @brief Insert instruction from toolbox to the instruction container.
@@ -86,7 +88,7 @@ public:
   void InsertInstructionFromToolBox(const QString& name);
 
 signals:
-  void InstructionSelected(const oac_tree_gui::InstructionItem* instruction);
+  void InstructionSelected(const mvvm::ItemSelection& selection);
 
 protected:
   void resizeEvent(QResizeEvent* event) override;
