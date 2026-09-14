@@ -71,6 +71,8 @@ private:
    */
   std::pair<const mvvm::SessionItem*, std::int32_t> GetDropTarget(std::int32_t row,
                                                                   const QModelIndex& parent) const;
+  std::pair<mvvm::SessionItem*, std::int32_t> GetDropTarget(std::int32_t row,
+                                                            const QModelIndex& parent);
 };
 
 }  // namespace oac_tree_gui

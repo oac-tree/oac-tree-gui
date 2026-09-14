@@ -78,6 +78,8 @@ private:
    */
   std::pair<const mvvm::SessionItem*, std::int32_t> GetDropTarget(std::int32_t row,
                                                                   const QModelIndex& parent) const;
+  std::pair<mvvm::SessionItem*, std::int32_t> GetDropTarget(std::int32_t row,
+                                                            const QModelIndex& parent);
   QString m_mime_type;
 };
 

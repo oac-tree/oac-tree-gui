@@ -27,6 +27,40 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+/**
+ * @brief Returns parent item and drop indicator position for a drop at the given row and parent.
+ *
+ * SelfT deduces the constness of the view model, so the const and non-const GetDropTarget
+ * overloads share a single implementation.
+ */
+template <typename SelfT>
+auto GetDropTargetImpl(SelfT& view_model, std::int32_t row, const QModelIndex& parent)
+{
+  // row == -1 is when we are dropping on top of an item
+  // row == -1, QModelIndex(-1, -1) is when we are dropping on empty space after the last item or on
+  // empty viewport
+
+  // In this list we want to treat dropping on top of item as appending before it, need to change
+  // parent.
+
+  auto* parent_item =
+      row == -1 ? view_model.GetRootSessionItem() : view_model.GetSessionItemFromIndex(parent);
+
+  std::int32_t drop_row_indicator = row;
+  if (parent.isValid() && drop_row_indicator == -1)
+  {
+    drop_row_indicator = parent.row();
+  }
+
+  return std::make_pair(parent_item, drop_row_indicator);
+}
+
+}  // namespace
+
+
 FlatListViewModel::FlatListViewModel(const QString& mime_type, QObject* parent_object)
     : ViewModel(parent_object), m_mime_type(mime_type)
 {
@@ -79,8 +113,7 @@ bool FlatListViewModel::dropMimeData(const QMimeData* data, Qt::DropAction actio
     return false;
   }
 
-  auto [target_item, drop_row_indicator] = GetDropTarget(row, parent);
-  auto parent_item = const_cast<mvvm::SessionItem*>(target_item);
+  auto [parent_item, drop_row_indicator] = GetDropTarget(row, parent);
 
   // drop of object corresponding to internal move
   if (HandleDropItemIdentifierMimeData(*data, m_mime_type, action, drop_row_indicator,
@@ -114,25 +147,16 @@ Qt::ItemFlags FlatListViewModel::flags(const QModelIndex& index) const
   return Qt::ItemIsDropEnabled | default_flags;
 }
 
-std::pair<const mvvm::SessionItem*, int32_t> FlatListViewModel::GetDropTarget(
-    int32_t row, const QModelIndex& parent) const
+std::pair<const mvvm::SessionItem*, std::int32_t> FlatListViewModel::GetDropTarget(
+    std::int32_t row, const QModelIndex& parent) const
 {
-  // row == -1 is when we are dropping on top of an item
-  // row == -1, QModelIndex(-1, -1) is when we are dropping on empty space after the last item or on
-  // empty viewport
+  return GetDropTargetImpl(*this, row, parent);
+}
 
-  // In this list we want to treat dropping on top of item as appending before it, need to change
-  // parent.
-
-  auto parent_item = row == -1 ? GetRootSessionItem() : GetSessionItemFromIndex(parent);
-
-  std::int32_t drop_row_indicator = row;
-  if (parent.isValid() && drop_row_indicator == -1)
-  {
-    drop_row_indicator = parent.row();
-  }
-
-  return std::make_pair(parent_item, drop_row_indicator);
+std::pair<mvvm::SessionItem*, std::int32_t> FlatListViewModel::GetDropTarget(
+    std::int32_t row, const QModelIndex& parent)
+{
+  return GetDropTargetImpl(*this, row, parent);
 }
 
 }  // namespace oac_tree_gui
