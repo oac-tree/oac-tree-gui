@@ -47,6 +47,26 @@ namespace oac_tree_gui::test
 namespace
 {
 
+/**
+ * @brief Returns instructions representing the given domain type.
+ *
+ * ModelT deduces the constness of the model.
+ */
+template <typename ModelT>
+auto FindInstructionsImpl(ModelT& model, const std::string& domain_type)
+{
+  auto candidates = mvvm::utils::FindItems<InstructionItem>(model);
+  decltype(candidates) result;
+  for (auto* instruction : candidates)
+  {
+    if (instruction->GetDomainType() == domain_type)
+    {
+      result.push_back(instruction);
+    }
+  }
+  return result;
+}
+
 const std::string db_content = R"RAW(
 record (bo,"SEQUENCERGUI-CA-TESTS:BOOL")
 {
@@ -169,16 +189,13 @@ bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValu
 std::vector<const InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,
                                                      const std::string& domain_type)
 {
-  std::vector<const InstructionItem*> result;
-  auto candidates = mvvm::utils::FindItems<InstructionItem>(model);
-  for (const auto* instruction : candidates)
-  {
-    if (instruction->GetDomainType() == domain_type)
-    {
-      result.push_back(instruction);
-    }
-  }
-  return result;
+  return FindInstructionsImpl(model, domain_type);
+}
+
+std::vector<InstructionItem*> FindInstructions(mvvm::ISessionModel& model,
+                                               const std::string& domain_type)
+{
+  return FindInstructionsImpl(model, domain_type);
 }
 
 std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& domain_type,

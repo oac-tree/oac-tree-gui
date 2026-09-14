@@ -146,7 +146,7 @@ TEST_F(InstructionTaskMonitorTest, UpdateInstructionStatus)
 
   sequence->SetStatus(InstructionStatus::kRunning);
 
-  auto builder = const_cast<InstructionTaskWidgetBuilder*>(task_monitor.GetTaskWidgetBuilder());
+  auto builder = task_monitor.GetTaskWidgetBuilder();
   ASSERT_NE(builder, nullptr);
   auto widget = builder->FindWidgetForInstruction(sequence);
   EXPECT_EQ(widget->GetInstructionStatus(), InstructionStatus::kRunning);

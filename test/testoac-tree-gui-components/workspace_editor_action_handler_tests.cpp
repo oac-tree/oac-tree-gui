@@ -141,17 +141,16 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 
   // validating default values of just inserted variable
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
-  auto inserted_variable0 =
-      dynamic_cast<LocalVariableItem*>(GetWorkspaceItem()->GetVariables().at(0));
-  ASSERT_NE(inserted_variable0, nullptr);
-  EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
+  auto& inserted_variable0 =
+      GetWorkspaceItem()->GetItem<LocalVariableItem>(mvvm::TagIndex::Default(0));
+  EXPECT_EQ(inserted_variable0.GetName(), std::string("var0"));
 
   // just inserted variable was selected
-  EXPECT_EQ(reported_item, inserted_variable0);
+  EXPECT_EQ(reported_item, &inserted_variable0);
 
   // it has scalar AnyValueItem on board by default
   auto anyvalue_item =
-      dynamic_cast<sup::gui::AnyValueScalarItem*>(inserted_variable0->GetAnyValueItem());
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(inserted_variable0.GetAnyValueItem());
   ASSERT_NE(anyvalue_item, nullptr);
   EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
@@ -163,10 +162,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   handler->AddVariable(mvvm::GetTypeName<LocalVariableItem>());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 2);
-  auto inserted_variable1 =
-      dynamic_cast<LocalVariableItem*>(GetWorkspaceItem()->GetVariables().at(1));
-  ASSERT_NE(inserted_variable1, nullptr);
-  EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
+  auto& inserted_variable1 =
+      GetWorkspaceItem()->GetItem<LocalVariableItem>(mvvm::TagIndex::Default(1));
+  EXPECT_EQ(inserted_variable1.GetName(), std::string("var1"));
 
   // attempty to add unknown variable type
   EXPECT_THROW(handler->AddVariable("non-existing-type"), sup::oac_tree::InvalidOperationException);
@@ -188,10 +186,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWhenNothingIsSelected)
   handler->AddVariable(mvvm::GetTypeName<FileVariableItem>());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
-  auto inserted_variable0 =
-      dynamic_cast<FileVariableItem*>(GetWorkspaceItem()->GetVariables().at(2));
-  ASSERT_NE(inserted_variable0, nullptr);
-  EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
+  auto& inserted_variable0 =
+      GetWorkspaceItem()->GetItem<FileVariableItem>(mvvm::TagIndex::Default(2));
+  EXPECT_EQ(inserted_variable0.GetName(), std::string("var2"));
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
@@ -208,10 +205,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   handler->AddVariable(mvvm::GetTypeName<FileVariableItem>());
 
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 3);
-  auto inserted_variable0 =
-      dynamic_cast<FileVariableItem*>(GetWorkspaceItem()->GetVariables().at(1));
-  ASSERT_NE(inserted_variable0, nullptr);
-  EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
+  auto& inserted_variable0 =
+      GetWorkspaceItem()->GetItem<FileVariableItem>(mvvm::TagIndex::Default(1));
+  EXPECT_EQ(inserted_variable0.GetName(), std::string("var2"));
 }
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
@@ -467,12 +463,11 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
 
   // validating default values of just inserted variable
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
-  auto inserted_variable0 =
-      dynamic_cast<UniversalVariableItem*>(GetWorkspaceItem()->GetVariables().at(0));
-  ASSERT_NE(inserted_variable0, nullptr);
-  EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
-  EXPECT_EQ(inserted_variable0->GetDomainType(), domainconstants::kSystemClockVariableType);
-  EXPECT_EQ(inserted_variable0->GetType(), mvvm::GetTypeName<UniversalVariableItem>());
+  auto& inserted_variable0 =
+      GetWorkspaceItem()->GetItem<UniversalVariableItem>(mvvm::TagIndex::Default(0));
+  EXPECT_EQ(inserted_variable0.GetName(), std::string("var0"));
+  EXPECT_EQ(inserted_variable0.GetDomainType(), domainconstants::kSystemClockVariableType);
+  EXPECT_EQ(inserted_variable0.GetType(), mvvm::GetTypeName<UniversalVariableItem>());
 }
 
 }  // namespace oac_tree_gui::test

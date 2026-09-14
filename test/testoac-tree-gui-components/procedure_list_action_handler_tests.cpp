@@ -271,12 +271,12 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
 
   // as a result of operation we have new procedure in a model
   ASSERT_EQ(m_procedure_container->GetSize(), 1);
-  auto pasted_item = dynamic_cast<ProcedureItem*>(m_procedure_container->GetAllItems().at(0));
-  ASSERT_NE(pasted_item, nullptr);
+  auto& pasted_item =
+      m_procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::Default(0));
 
-  EXPECT_EQ(pasted_item->GetDisplayName(), std::string("abc"));
+  EXPECT_EQ(pasted_item.GetDisplayName(), std::string("abc"));
   // request to select just inserted procedure
-  EXPECT_EQ(mvvm::test::TakeValue<const ProcedureItem*>(spy_selection_request), pasted_item);
+  EXPECT_EQ(mvvm::test::TakeValue<const ProcedureItem*>(spy_selection_request), &pasted_item);
 }
 
 TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
@@ -303,12 +303,12 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
 
   // as a result of operation we have new procedure in a model
   ASSERT_EQ(m_procedure_container->GetSize(), 3);
-  auto pasted_item = dynamic_cast<ProcedureItem*>(m_procedure_container->GetAllItems().at(1));
-  ASSERT_NE(pasted_item, nullptr);
+  auto& pasted_item =
+      m_procedure_container->GetItem<ProcedureItem>(mvvm::TagIndex::Default(1));
 
-  EXPECT_EQ(pasted_item->GetDisplayName(), std::string("abc"));
+  EXPECT_EQ(pasted_item.GetDisplayName(), std::string("abc"));
   // request to select just inserted procedure
-  EXPECT_EQ(mvvm::test::TakeValue<const ProcedureItem*>(spy_selection_request), pasted_item);
+  EXPECT_EQ(mvvm::test::TakeValue<const ProcedureItem*>(spy_selection_request), &pasted_item);
 }
 
 TEST_F(ProcedureListActionHandlerTest, CutOperationWhenItemIsSelected)
