@@ -254,7 +254,7 @@ ProcedureSplittableEditorWidget::CreateSplitterController() const
     {
       return m_model == nullptr
                  ? std::vector<mvvm::SessionItem*>()
-                 : mvvm::utils::CastItems<mvvm::SessionItem>(m_model->GetProcedures());
+                 : mvvm::utils::ConvertItems<mvvm::SessionItem>(m_model->GetProcedures());
     };
 
     auto result = std::make_unique<sup::gui::SplittableComboPanel>(std::move(main_editor),

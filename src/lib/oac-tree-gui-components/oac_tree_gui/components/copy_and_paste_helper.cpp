@@ -53,7 +53,7 @@ std::unique_ptr<QMimeData> CreateInstructionTreeCopyMimeData(
   auto result = std::make_unique<QMimeData>();
 
   auto top_level_selection =
-      sup::gui::GetTopLevelSelection(mvvm::utils::CastItems<const mvvm::SessionItem>(selection));
+      sup::gui::GetTopLevelSelection(mvvm::utils::ConvertItems<const mvvm::SessionItem>(selection));
 
   sup::gui::CopyItemsToMimeData(top_level_selection, kInstructionCopyMimeType, *result);
   sup::gui::SetItemTypesToMime(top_level_selection, kTopSelectedItemTypesMimeType, *result);
@@ -74,7 +74,7 @@ std::unique_ptr<QMimeData> CreateInstructionSelectionCopyMimeData(
   };
 
   auto top_level_selection =
-      sup::gui::GetTopLevelSelection(mvvm::utils::CastItems<const mvvm::SessionItem>(selection));
+      sup::gui::GetTopLevelSelection(mvvm::utils::ConvertItems<const mvvm::SessionItem>(selection));
 
   auto result = std::make_unique<QMimeData>();
   sup::gui::CopyItemsToMimeData(top_level_selection, kInstructionCopyMimeType, *result,

@@ -198,7 +198,7 @@ void WorkspaceEditorActionHandler::Copy()
     return;
   }
 
-  auto items = mvvm::utils::CastItems<const mvvm::SessionItem>(GetSelectedVariables());
+  auto items = mvvm::utils::ConvertItems<const mvvm::SessionItem>(GetSelectedVariables());
   m_context.set_mime_data(sup::gui::CreateCopyMimeData(items, kVariableCopyMimeType));
 }
 
