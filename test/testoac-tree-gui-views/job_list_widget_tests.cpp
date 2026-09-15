@@ -32,7 +32,7 @@
 #include <QSignalSpy>
 #include <QTreeView>
 
-Q_DECLARE_METATYPE(const oac_tree_gui::JobItem*)
+Q_DECLARE_METATYPE(mvvm::ItemSelection)
 
 namespace oac_tree_gui::test
 {
