@@ -51,7 +51,7 @@ void UpdatePositions(const AlignNode* node, const std::vector<InstructionItem *>
 
 //! Align children of given instruction on graphics scene.  The position of parent `instruction`
 //! remains unchanged.
-void AlignInstructionTreeWalker(const QPointF& reference, InstructionItem* instruction);
+void AlignInstructionTreeWalker(const QPointF& reference, const InstructionItem *instruction);
 
 void AlignInstructionTreeWalker(const QPointF& reference,
                                 std::vector<InstructionItem*> instructions);

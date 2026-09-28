@@ -174,7 +174,7 @@ void UpdatePositions(const AlignNode* node, const InstructionItem* item)
   }
 }
 
-void AlignInstructionTreeWalker(const QPointF& reference, InstructionItem* instruction)
+void AlignInstructionTreeWalker(const QPointF& reference, const InstructionItem* instruction)
 {
   auto align_tree = CreateAlignTree(instruction);
   AlignNodes(*align_tree);
