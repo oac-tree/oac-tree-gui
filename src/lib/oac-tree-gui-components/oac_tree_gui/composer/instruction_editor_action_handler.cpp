@@ -173,7 +173,8 @@ void InstructionEditorActionHandler::RemoveInstruction()
     return;
   }
 
-  mvvm::utils::BeginMacro(*GetModel(), "Remove instruction");
+  auto& model = GetModelRef();
+  mvvm::utils::BeginMacro(model, "Remove instruction");
 
   const mvvm::SessionItem* next_to_select{nullptr};
 
@@ -182,12 +183,12 @@ void InstructionEditorActionHandler::RemoveInstruction()
   for (auto* item : sup::gui::FilterOutChildren(selected))
   {
     next_to_select = mvvm::utils::FindNextSiblingToSelect(item);
-    GetModel()->RemoveItem(item);
+    model.RemoveItem(item);
   }
 
   UpdateProcedurePreamble();
 
-  mvvm::utils::EndMacro(*GetModel());
+  mvvm::utils::EndMacro(model);
 
   if (next_to_select != nullptr)
   {
@@ -220,9 +221,10 @@ void InstructionEditorActionHandler::MoveDown()
 
 void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 {
+  auto model = GetModel();
   auto instruction_item = GetSelectedInstruction();
 
-  if ((instruction_item == nullptr)
+  if ((model == nullptr) || (instruction_item == nullptr)
       || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
   {
     SendMessage("Please select an instruction which is intended for AnyValue storing");
@@ -247,10 +249,10 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
     // remove previous AnyValueItem
     if (selected_anyvalue != nullptr)
     {
-      GetModel()->RemoveItem(selected_anyvalue);
+      model->RemoveItem(selected_anyvalue);
     }
 
-    (void)GetModel()->InsertItem(std::move(dialog_result.result), instruction_item, {});
+    (void)model->InsertItem(std::move(dialog_result.result), instruction_item, {});
   }
 }
 
@@ -372,6 +374,16 @@ std::vector<InstructionItem*> InstructionEditorActionHandler::GetSelectedInstruc
 mvvm::ISessionModel* InstructionEditorActionHandler::GetModel() const
 {
   return (GetInstructionContainer() != nullptr) ? GetInstructionContainer()->GetModel() : nullptr;
+}
+
+mvvm::ISessionModel& InstructionEditorActionHandler::GetModelRef() const
+{
+  auto model = GetModel();
+  if (model == nullptr)
+  {
+    throw RuntimeException("Uninitialised model");
+  }
+  return *model;
 }
 
 mvvm::SessionItem* InstructionEditorActionHandler::GetInstructionContainer() const
@@ -513,17 +525,14 @@ void InstructionEditorActionHandler::InsertItem(
     std::vector<std::unique_ptr<mvvm::SessionItem>> items, mvvm::SessionItem* parent,
     const mvvm::TagIndex& index, const position_t& position)
 {
-  if (GetModel() == nullptr)
-  {
-    throw RuntimeException("Uninitialised model");
-  }
+  auto& model = GetModelRef();
 
   if (parent == nullptr)
   {
     throw RuntimeException("Uninitialised parent");
   }
 
-  mvvm::utils::BeginMacro(*GetModel(), "Insert instruction");
+  mvvm::utils::BeginMacro(model, "Insert instruction");
 
   auto last_tag_index = index;
   std::vector<mvvm::SessionItem*> to_notify;
@@ -533,7 +542,7 @@ void InstructionEditorActionHandler::InsertItem(
     const auto item_type = item->GetType();
     try
     {
-      result = GetModel()->InsertItem(std::move(item), parent, last_tag_index);
+      result = model.InsertItem(std::move(item), parent, last_tag_index);
       to_notify.push_back(result);
       last_tag_index = result->GetTagIndex().Next();
       UpdateProcedurePreamble();
@@ -548,7 +557,7 @@ void InstructionEditorActionHandler::InsertItem(
     }
   }
 
-  mvvm::utils::EndMacro(*GetModel());
+  mvvm::utils::EndMacro(model);
 
   for (auto item : to_notify)
   {

@@ -104,6 +104,10 @@ public:
 
 private:
   mvvm::ISessionModel* GetModel() const;
+
+  //! Returns the model of the instruction container, throws if it is not set.
+  mvvm::ISessionModel& GetModelRef() const;
+
   mvvm::SessionItem* GetInstructionContainer() const;
   void SelectNotify(const mvvm::SessionItem *item) const;
 
