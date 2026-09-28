@@ -32,9 +32,9 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/model/make_clone.h>
 
 #include <sup/oac-tree/instruction.h>
-#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
@@ -165,11 +165,9 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
 
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
-  // FIXME GetAttributeItems() is const but yields mutable attribute items, because
-  // InitFromDomainImpl() writes through them. Revisit together with
-  // AnyValueItem::GetChildren().
-  for (auto* property :
-       mvvm::utils::RemoveConst(mvvm::utils::CastItems<const sup::gui::AnyValueItem>(properties)))
+  const auto anyvalue_items =
+      mvvm::utils::RemoveConst(mvvm::utils::CastItems<const sup::gui::AnyValueItem>(properties));
+  for (auto* property : anyvalue_items)
   {
     auto tag = property->GetTagIndex().GetTag();
 
