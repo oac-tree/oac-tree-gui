@@ -263,6 +263,29 @@ New files in `test/testoac-tree-gui-components/`:
 8. Review. Decide on migration of the remaining `ReadSettings` / `WriteSettings` widgets
    and on the future of `read_variant_func_t` / `write_variant_func_t` in sup-gui-core.
 
+## Commits
+
+Each commit builds and passes `ctest`. Commits 1–6 only add code.
+
+| # | Commit message | Content | Tests |
+|---|---|---|---|
+| 1 | Add settings storage interface and in-memory storage | `settings/` folder with CMake, `ISettingsStorage`, `InMemorySettingsStorage` | `in_memory_settings_storage_tests.cpp` |
+| 2 | Add settings archives for struct serialization | `WriteArchive`, `ReadArchive`. Plain fields, nested structs, vectors of structs, base64 byte arrays | `settings_archive_tests.cpp` |
+| 3 | Add settings manager | `ISettingsManager`, `SettingsManager`, `SettingsConnection`, `SettingsScope` | `settings_manager_tests.cpp` |
+| 4 | Add application settings storage | `AppSettingsStorage` | Test in `testoac-tree-gui-components-app` with a temporary `QSettings` file |
+| 5 | Add project settings storage | `SettingsContainerItem` in core, item registration, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp`: values survive serialization, an unchanged write doesn't mark the model modified |
+| 6 | Add settings-aware project manager | `SettingsAwareProjectManager` in `mainwindow/` | `settings_aware_project_manager_tests.cpp` with a mock `IProjectManager` |
+| 7 | Wire settings manager into main window | `SequencerMainWindowContext` owns the manager and `AppSettingsStorage`. `SequencerMainWindowActions` uses the decorator. Attach and `NotifyAll` on project load. `Collect` in `CanCloseApplication` | Existing tests pass. Manual: save, close, open |
+| 8 | Add SettingsSplitter and use it in composer view | Pilot 1 | Splitter state round trip through the in-memory storage |
+| 9 | Propagate undo settings via settings manager | Pilot 2. `UndoInfo`, dialog result to `Set`, main window subscription, replaces `Data<bool>(kUseUndoSetting)` | Subscriber called after `Set`. Manual: disable undo in the dialog |
+| 10 | Store composer panels in project via settings manager | Pilot 3. `Visit` for `ComposerViewInfo` and `ProcedureEditorInfo`, provider and subscriber in `ProcedureSplittableEditorWidget`, panels cleared before restore, QSettings read/write removed, commented-out code in `SequencerComposerView` removed | `ComposerViewInfo` round trip. Manual: panels restored once after reload |
+
+- Commits 1–3 have no dependency on Qt widgets or models. They can be squashed.
+- Commit 5 is the only one that touches core item registration. `ProjectModel` is unchanged.
+- Commit 7 is the first behavior change. Without pilots the GUI behaves as before.
+- Commits 8–10 are independent. They can be reordered or dropped.
+- Step 8 has no commit. Its outcome goes into this note.
+
 ## Out of scope
 
 - Generating settings dialog editors from `Visit`.
