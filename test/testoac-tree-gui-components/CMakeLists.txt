@@ -31,6 +31,7 @@ target_sources(${test} PRIVATE
   graphics_scene_action_handler_tests.cpp
   graphics_scene_style_tests.cpp
   graphics_view_style_tests.cpp
+  in_memory_settings_storage_tests.cpp
   instruction_editor_action_handler_copypaste_tests.cpp
   instruction_editor_action_handler_tests.cpp
   instruction_editor_action_handler_undo_tests.cpp
