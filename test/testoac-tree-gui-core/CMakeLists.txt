@@ -48,6 +48,7 @@ target_sources(${test} PRIVATE
   standard_variable_items_tests.cpp
   text_edit_item_tests.cpp
   transform_from_domain_tests.cpp
+  undo_settings_item_tests.cpp
   universal_instruction_item_tests.cpp
   universal_item_helper_tests.cpp
   universal_variable_item_tests.cpp

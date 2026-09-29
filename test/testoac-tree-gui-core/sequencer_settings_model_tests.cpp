@@ -21,9 +21,10 @@
 #include "oac_tree_gui/model/sequencer_settings_model.h"
 
 #include <oac_tree_gui/model/plugin_settings_item.h>
+#include <oac_tree_gui/model/sequencer_settings_constants.h>
+#include <oac_tree_gui/model/undo_settings_item.h>
 
-#include <sup/gui/model/settings_constants.h>
-#include <sup/gui/model/common_settings_item.h>
+#include <mvvm/model/item_utils.h>
 
 #include <gtest/gtest.h>
 
@@ -43,26 +44,22 @@ TEST_F(SequencerSettingsModelTest, InitialState)
 
   EXPECT_EQ(model.GetSettingsItems().size(), 2);
 
-  EXPECT_EQ(model.Data<bool>(sup::gui::constants::kUseUndoSetting),
-            sup::gui::constants::kUseUndoDefault);
-  EXPECT_EQ(model.Data<int>(sup::gui::constants::kUndoLimitSetting),
-            sup::gui::constants::kUndoLimitDefault);
+  EXPECT_EQ(model.Data<bool>(constants::kUseUndoSetting), constants::kUseUndoDefault);
+  EXPECT_EQ(model.Data<int>(constants::kUndoLimitSetting), constants::kUndoLimitDefault);
 }
 
 TEST_F(SequencerSettingsModelTest, Clear)
 {
   SequencerSettingsModel model;
 
-  model.GetSettingsItems().at(0)->SetProperty(sup::gui::constants::kUndoLimitSetting, 42);
-  EXPECT_EQ(model.Data<int>(sup::gui::constants::kUndoLimitSetting), 42);
+  model.GetSettingsItems().at(0)->SetProperty(constants::kUndoLimitSetting, 42);
+  EXPECT_EQ(model.Data<int>(constants::kUndoLimitSetting), 42);
   model.Clear();
 
   // after clearing all setting items, and their values have been re-initialised
   ASSERT_EQ(model.GetSettingsItems().size(), 2);
-  EXPECT_EQ(model.Data<bool>(sup::gui::constants::kUseUndoSetting),
-            sup::gui::constants::kUseUndoDefault);
-  EXPECT_EQ(model.Data<int>(sup::gui::constants::kUndoLimitSetting),
-            sup::gui::constants::kUndoLimitDefault);
+  EXPECT_EQ(model.Data<bool>(constants::kUseUndoSetting), constants::kUseUndoDefault);
+  EXPECT_EQ(model.Data<int>(constants::kUndoLimitSetting), constants::kUndoLimitDefault);
 }
 
 TEST_F(SequencerSettingsModelTest, AutoDisableSettings)
@@ -72,14 +69,14 @@ TEST_F(SequencerSettingsModelTest, AutoDisableSettings)
   auto common_settings = model.GetSettingsItems().at(0);
   ASSERT_EQ(model.GetSettingsItems().size(), 2);
 
-  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUseUndoSetting).IsEnabled());
-  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUndoLimitSetting).IsEnabled());
+  EXPECT_TRUE(common_settings->GetItem(constants::kUseUndoSetting).IsEnabled());
+  EXPECT_TRUE(common_settings->GetItem(constants::kUndoLimitSetting).IsEnabled());
 
   // changing the value of the setting
-  common_settings->GetItem(sup::gui::constants::kUseUndoSetting).SetData(false);
+  common_settings->GetItem(constants::kUseUndoSetting).SetData(false);
 
-  EXPECT_TRUE(common_settings->GetItem(sup::gui::constants::kUseUndoSetting).IsEnabled());
-  EXPECT_FALSE(common_settings->GetItem(sup::gui::constants::kUndoLimitSetting).IsEnabled());
+  EXPECT_TRUE(common_settings->GetItem(constants::kUseUndoSetting).IsEnabled());
+  EXPECT_FALSE(common_settings->GetItem(constants::kUndoLimitSetting).IsEnabled());
 }
 
 TEST_F(SequencerSettingsModelTest, Clone)
@@ -90,10 +87,8 @@ TEST_F(SequencerSettingsModelTest, Clone)
   auto cloned_model = dynamic_cast<SequencerSettingsModel*>(clone.get());
   ASSERT_NE(cloned_model, nullptr);
   EXPECT_EQ(cloned_model->GetSettingsItems().size(), 2);
-  EXPECT_EQ(cloned_model->Data<bool>(sup::gui::constants::kUseUndoSetting),
-            sup::gui::constants::kUseUndoDefault);
-  EXPECT_EQ(cloned_model->Data<int>(sup::gui::constants::kUndoLimitSetting),
-            sup::gui::constants::kUndoLimitDefault);
+  EXPECT_EQ(cloned_model->Data<bool>(constants::kUseUndoSetting), constants::kUseUndoDefault);
+  EXPECT_EQ(cloned_model->Data<int>(constants::kUndoLimitSetting), constants::kUndoLimitDefault);
 }
 
 TEST_F(SequencerSettingsModelTest, GetItem)
@@ -101,7 +96,24 @@ TEST_F(SequencerSettingsModelTest, GetItem)
   SequencerSettingsModel model;
 
   EXPECT_NE(model.Get<PluginSettingsItem>(), nullptr);
-  EXPECT_NE(model.Get<sup::gui::CommonSettingsItem>(), nullptr);
+  EXPECT_NE(model.Get<UndoSettingsItem>(), nullptr);
+}
+
+//! Reproduces how settings dialog propagates edited settings back to the model.
+TEST_F(SequencerSettingsModelTest, ReplaceRootItemWithEditedCopy)
+{
+  SequencerSettingsModel model;
+  auto working_copy = model.Clone();
+  auto working_model = dynamic_cast<SequencerSettingsModel*>(working_copy.get());
+  ASSERT_NE(working_model, nullptr);
+  working_model->Get<UndoSettingsItem>()->SetUndoInfo(UndoInfo{false, 42});
+
+  model.ReplaceRootItem(mvvm::utils::CopyItem(*working_model->GetRootItem()));
+
+  auto undo_settings = model.Get<UndoSettingsItem>();
+  ASSERT_NE(undo_settings, nullptr);
+  EXPECT_FALSE(undo_settings->GetUndoInfo().is_enabled);
+  EXPECT_EQ(undo_settings->GetUndoInfo().undo_limit, 42);
 }
 
 }  // namespace oac_tree_gui::test

@@ -294,7 +294,7 @@ Each commit builds and passes `ctest`. Commits 1–6 only add code.
 | 5 | Add project settings storage | `SettingsContainerItem` in core, item registration, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp`: values survive serialization, an unchanged write doesn't mark the model modified |
 | 6 | Add settings-aware project manager | `SettingsAwareProjectManager` in `mainwindow/` | `settings_aware_project_manager_tests.cpp` with a mock `IProjectManager` |
 | 7 | Wire settings manager into main window | `SequencerMainWindowContext` owns the manager and `AppSettingsStorage`. `Collect(kApplication)` in `WriteSettings` of the three main windows. Application scope only | Context test checks attached storages. Existing tests pass |
-| 8 | Add SettingsSplitter and use it in composer view | Pilot 1 | Splitter state round trip through the in-memory storage |
+| 8 | Add SettingsSplitter and use it in composer view | Pilot 1. `SettingsSplitter` in `widgets/`, stores `saveState()` and child visibility. Replaces `CustomSplitter` in `SequencerComposerView` | `settings_splitter_tests.cpp` with the in-memory storage |
 | 9 | Propagate undo settings via settings manager | Pilot 2. `UndoInfo`, dialog result to `Set`, main window subscription, replaces `Data<bool>(kUseUndoSetting)` | Subscriber called after `Set`. Manual: disable undo in the dialog |
 | 10 | Store composer panels in project via settings manager | Pilot 3. `Visit` for `ComposerViewInfo` and `ProcedureEditorInfo`, provider and subscriber in `ProcedureSplittableEditorWidget`, panels cleared before restore, QSettings read/write removed, commented-out code in `SequencerComposerView` removed | `ComposerViewInfo` round trip. Manual: panels restored once after reload |
 

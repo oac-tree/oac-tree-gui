@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 #define OAC_TREE_GUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 
+#include <oac_tree_gui/settings/scoped_callback.h>
+
 #include <mvvm/widgets/main_window_types.h>
 
 #include <QMainWindow>
@@ -40,6 +42,7 @@ class SequencerComposerView;
 class SequencerExplorerView;
 class SequencerMainWindowActions;
 class SequencerMainWindowContext;
+struct UndoInfo;
 
 /**
  * @brief The SequencerMainWindow class is the main window of sequencer-gui application.
@@ -97,6 +100,11 @@ private:
    */
   void UpdateProjectNames();
 
+  /**
+   * @brief Applies undo settings to the sequencer model.
+   */
+  void ApplyUndoSettings(const UndoInfo& undo_info);
+
   std::unique_ptr<ApplicationModels> CreateProject();
 
   SequencerMainWindowContext& m_context;
@@ -108,6 +116,8 @@ private:
   SequencerExplorerView* m_explorer_view{nullptr};
   SequencerComposerView* m_composer_view{nullptr};
   OperationMonitorView* m_operation_view{nullptr};
+
+  ScopedCallback m_undo_settings_connection;
 };
 
 }  // namespace oac_tree_gui

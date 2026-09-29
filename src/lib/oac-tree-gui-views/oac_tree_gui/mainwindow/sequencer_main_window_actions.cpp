@@ -25,8 +25,10 @@
 #include "sequencer_main_window_context.h"
 
 #include <oac_tree_gui/components/component_helper.h>
-#include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
+#include <oac_tree_gui/model/sequencer_settings_model.h>
+#include <oac_tree_gui/model/undo_settings_item.h>
+#include <oac_tree_gui/settings/i_settings_manager.h>
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/app/app_command.h>
@@ -254,13 +256,22 @@ void SequencerMainWindowActions::OnChangeSystemFont()
 
 void SequencerMainWindowActions::OnApplicationSettingsDialog()
 {
+  // settings model is filled from the settings manager and serves as dialog model
+  auto& settings_manager = m_context.GetSettingsManager();
+  m_context.GetSettingsModel().Get<UndoSettingsItem>()->SetUndoInfo(
+      settings_manager.Get<UndoInfo>(kUndoSettingsGroup, SettingsScope::kApplication));
+
   sup::gui::SettingsEditorDialog dialog(GetSettings());
   dialog.RegisterWidget(
       mvvm::GetTypeName<PluginSettingsItem>(), [this]()
       { return std::make_unique<PluginSettingsEditor>(m_context.GetDomainPluginService()); });
   if (dialog.exec() == QDialog::Accepted)
   {
+    // propagation replaces all items of the settings model
     dialog.PropagateSettingsToModel(GetSettings());
+    settings_manager.Set(kUndoSettingsGroup,
+                         m_context.GetSettingsModel().Get<UndoSettingsItem>()->GetUndoInfo(),
+                         SettingsScope::kApplication);
   }
 }
 

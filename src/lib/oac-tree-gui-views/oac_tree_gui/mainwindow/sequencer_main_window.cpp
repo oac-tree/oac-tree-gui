@@ -27,8 +27,8 @@
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/sequencer_settings_constants.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
+#include <oac_tree_gui/model/undo_settings_item.h>
 #include <oac_tree_gui/settings/i_settings_manager.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
@@ -89,6 +89,10 @@ void SequencerMainWindow::InitApplication()
 {
   ReadSettings();
   InitComponents();
+
+  m_undo_settings_connection = m_context.GetSettingsManager().Subscribe<UndoInfo>(
+      kUndoSettingsGroup, SettingsScope::kApplication,
+      [this](const UndoInfo& undo_info) { ApplyUndoSettings(undo_info); });
 }
 
 void SequencerMainWindow::InitComponents()
@@ -102,7 +106,8 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget->AddWidget(m_explorer_view, "Explore",
                           FindIcon("file-search-outline", mvvm::ColorFlavor::kForDarkThemes));
 
-  m_composer_view = new SequencerComposerView(m_context.GetCommandService());
+  m_composer_view =
+      new SequencerComposerView(m_context.GetCommandService(), m_context.GetSettingsManager());
   m_tab_widget->AddWidget(m_composer_view, "Compose",
                           FindIcon("graph-outline", mvvm::ColorFlavor::kForDarkThemes));
 
@@ -180,9 +185,8 @@ void SequencerMainWindow::OnExitRequest(mvvm::AppExitRequest exit_request)
 
 void SequencerMainWindow::OnProjectLoad()
 {
-  const auto enable_undo = m_context.GetSettingsModel().Data<bool>(constants::kUseUndoSetting);
-  const auto undo_limit = m_context.GetSettingsModel().Data<int>(constants::kUndoLimitSetting);
-  m_models->GetSequencerModel()->SetUndoEnabled(enable_undo, undo_limit);
+  ApplyUndoSettings(m_context.GetSettingsManager().Get<UndoInfo>(kUndoSettingsGroup,
+                                                                 SettingsScope::kApplication));
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModels(m_models.get());
@@ -194,6 +198,14 @@ void SequencerMainWindow::OnProjectLoad()
 void SequencerMainWindow::UpdateProjectNames()
 {
   m_action_manager->UpdateProjectNames();
+}
+
+void SequencerMainWindow::ApplyUndoSettings(const UndoInfo& undo_info)
+{
+  if (auto sequencer_model = m_models->GetSequencerModel(); sequencer_model)
+  {
+    sequencer_model->SetUndoEnabled(undo_info.is_enabled, undo_info.undo_limit);
+  }
 }
 
 std::unique_ptr<ApplicationModels> SequencerMainWindow::CreateProject()
