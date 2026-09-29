@@ -87,7 +87,11 @@ mvvm::variant_t ToSettingsValue(const QByteArray& value);
 /**
  * @brief Assigns a storage value to a field value.
  *
- * @return True if the value was assigned. False if the storage value is absent or has another type.
+ * A string storage value is parsed for bool, int32 and double. Storages losing the type, such as
+ * QSettings, return strings.
+ *
+ * @return True if the value was assigned. False if the storage value is absent, has another type,
+ * or cannot be parsed.
  */
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, bool& value);
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, mvvm::int32& value);

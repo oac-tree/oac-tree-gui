@@ -20,6 +20,8 @@
 
 #include "settings_archive.h"
 
+#include <mvvm/utils/string_utils.h>
+
 namespace oac_tree_gui
 {
 
@@ -27,6 +29,8 @@ namespace
 {
 
 constexpr auto kGroupSeparator = "/";
+constexpr auto kTrue = "true";
+constexpr auto kFalse = "false";
 
 //! Assigns the value if the storage value holds the same type.
 template <typename T>
@@ -42,6 +46,18 @@ bool AssignIfHolds(const std::optional<mvvm::variant_t>& settings_value, T& valu
     return true;
   }
   return false;
+}
+
+//! Assigns the value if the string was parsed.
+template <typename T>
+bool AssignIfParsed(const std::optional<T>& parsed_value, T& value)
+{
+  if (!parsed_value.has_value())
+  {
+    return false;
+  }
+  value = parsed_value.value();
+  return true;
 }
 
 }  // namespace
@@ -78,17 +94,39 @@ mvvm::variant_t ToSettingsValue(const QByteArray& value)
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, bool& value)
 {
-  return AssignIfHolds(settings_value, value);
+  if (AssignIfHolds(settings_value, value))
+  {
+    return true;
+  }
+  std::string str;
+  if (!AssignIfHolds(settings_value, str) || (str != kTrue && str != kFalse))
+  {
+    return false;
+  }
+  value = (str == kTrue);
+  return true;
 }
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, mvvm::int32& value)
 {
-  return AssignIfHolds(settings_value, value);
+  if (AssignIfHolds(settings_value, value))
+  {
+    return true;
+  }
+  std::string str;
+  return AssignIfHolds(settings_value, str)
+         && AssignIfParsed(mvvm::utils::StringToInteger(str), value);
 }
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, double& value)
 {
-  return AssignIfHolds(settings_value, value);
+  if (AssignIfHolds(settings_value, value))
+  {
+    return true;
+  }
+  std::string str;
+  return AssignIfHolds(settings_value, str)
+         && AssignIfParsed(mvvm::utils::StringToDouble(str), value);
 }
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, std::string& value)

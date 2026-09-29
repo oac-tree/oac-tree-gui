@@ -177,14 +177,45 @@ TEST_F(SettingsArchiveTest, MissingKeysKeepInitialValue)
 
 TEST_F(SettingsArchiveTest, WrongTypeKeepsInitialValue)
 {
-  m_storage.Write("Group/flag", mvvm::variant_t{std::string("true")});
+  m_storage.Write("Group/flag", mvvm::variant_t{mvvm::int32{0}});
   m_storage.Write("Group/count", mvvm::variant_t{1.5});
+  m_storage.Write("Group/value", mvvm::variant_t{false});
 
-  const PlainInfo initial{true, 1};
+  const PlainInfo initial{true, 1, 2.0};
   const auto result = ReadFromStorage(m_storage, "Group", initial);
 
   EXPECT_TRUE(result.flag);
   EXPECT_EQ(result.count, 1);
+  EXPECT_EQ(result.value, 2.0);
+}
+
+TEST_F(SettingsArchiveTest, StringValuesAreParsed)
+{
+  m_storage.Write("Group/flag", mvvm::variant_t{std::string("true")});
+  m_storage.Write("Group/count", mvvm::variant_t{std::string("42")});
+  m_storage.Write("Group/value", mvvm::variant_t{std::string("1.5")});
+  m_storage.Write("Group/color", mvvm::variant_t{std::string("2")});
+
+  const auto result = ReadFromStorage<PlainInfo>(m_storage, "Group");
+
+  EXPECT_TRUE(result.flag);
+  EXPECT_EQ(result.count, 42);
+  EXPECT_EQ(result.value, 1.5);
+  EXPECT_EQ(result.color, Color::kBlue);
+}
+
+TEST_F(SettingsArchiveTest, InvalidStringValuesKeepInitialValue)
+{
+  m_storage.Write("Group/flag", mvvm::variant_t{std::string("yes")});
+  m_storage.Write("Group/count", mvvm::variant_t{std::string("42abc")});
+  m_storage.Write("Group/value", mvvm::variant_t{std::string("")});
+
+  const PlainInfo initial{false, 1, 2.0};
+  const auto result = ReadFromStorage(m_storage, "Group", initial);
+
+  EXPECT_FALSE(result.flag);
+  EXPECT_EQ(result.count, 1);
+  EXPECT_EQ(result.value, 2.0);
 }
 
 TEST_F(SettingsArchiveTest, IntVectorRoundTrip)
@@ -217,9 +248,9 @@ TEST_F(SettingsArchiveTest, WriteNestedStructAndVectors)
 
   const std::vector<std::string> expected_keys(
       {"View/main_panel/editor_type", "View/main_panel/procedure_id", "View/names/0",
-       "View/names/1", "View/names/size", "View/panels/0/editor_type",
-       "View/panels/0/procedure_id", "View/panels/1/editor_type", "View/panels/1/procedure_id",
-       "View/panels/size", "View/splitter_state"});
+       "View/names/1", "View/names/size", "View/panels/0/editor_type", "View/panels/0/procedure_id",
+       "View/panels/1/editor_type", "View/panels/1/procedure_id", "View/panels/size",
+       "View/splitter_state"});
   EXPECT_EQ(m_storage.GetKeys(), expected_keys);
   EXPECT_EQ(m_storage.Read("View/panels/size"), mvvm::variant_t{mvvm::int32{2}});
   EXPECT_EQ(m_storage.Read("View/panels/1/procedure_id"), mvvm::variant_t{std::string("proc2")});
