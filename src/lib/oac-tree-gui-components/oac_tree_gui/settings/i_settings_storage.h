@@ -30,9 +30,11 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The ISettingsStorage class is an interface for a flat key/value settings storage.
+ * @brief The ISettingsStorage class is an interface to store key/value pairs in a list-like
+ * storages.
  *
- * Keys have the form "Group/Key". Groups can be nested.
+ * Keys have the form "GroupA/GroupB/Key". The value is a scalar as supported by mvvm::variant_t.
+ * Intended for storing simple settings objects organized into (possibly) nested simple structs.
  */
 class ISettingsStorage
 {
