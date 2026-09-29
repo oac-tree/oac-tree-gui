@@ -20,8 +20,6 @@
 
 #include "settings_archive.h"
 
-#include <mvvm/utils/string_utils.h>
-
 namespace oac_tree_gui
 {
 
@@ -29,35 +27,49 @@ namespace
 {
 
 constexpr auto kGroupSeparator = "/";
-constexpr auto kTrue = "true";
-constexpr auto kFalse = "false";
 
-//! Assigns the value if the storage value holds the same type.
+/**
+ * @brief Assigns the storage value if it holds T, or a string convertible to T.
+ *
+ * The @p settings_value can be either a variant, based on the same type as @p value, or its string
+ * representation. The function is necessary since QSettings storage loses type information, and
+ * gives back everything as QVariant(QString)
+ *
+ * @param settings_value The value obtained after reading settings storage.
+ * @param value The real value which shall be updated.
+ * @return True in the case of success
+ */
 template <typename T>
-bool AssignIfHolds(const std::optional<mvvm::variant_t>& settings_value, T& value)
+bool AssignFromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, T& value)
 {
   if (!settings_value.has_value())
   {
     return false;
   }
+
+  // settings_value contains the same type as we need
   if (const auto stored = std::get_if<T>(&settings_value.value()); stored != nullptr)
   {
     value = *stored;
     return true;
   }
-  return false;
-}
 
-//! Assigns the value if the string was parsed.
-template <typename T>
-bool AssignIfParsed(const std::optional<T>& parsed_value, T& value)
-{
-  if (!parsed_value.has_value())
+  // Settings_value contains a string. We will use our serialization, to encode it into value.
+  const auto str = std::get_if<std::string>(&settings_value.value());
+  if (str == nullptr)
   {
     return false;
   }
-  value = parsed_value.value();
-  return true;
+  try
+  {
+    const auto type_code = mvvm::GetTypeCode(mvvm::variant_t{value});
+    value = std::get<T>(mvvm::utils::ValueFromString(type_code, *str));
+    return true;
+  }
+  catch (const std::exception&)
+  {
+    return false;
+  }
 }
 
 }  // namespace
@@ -67,26 +79,6 @@ std::string JoinSettingsKey(const std::string& group, const std::string& name)
   return group.empty() ? name : group + kGroupSeparator + name;
 }
 
-mvvm::variant_t ToSettingsValue(bool value)
-{
-  return mvvm::variant_t{value};
-}
-
-mvvm::variant_t ToSettingsValue(mvvm::int32 value)
-{
-  return mvvm::variant_t{value};
-}
-
-mvvm::variant_t ToSettingsValue(double value)
-{
-  return mvvm::variant_t{value};
-}
-
-mvvm::variant_t ToSettingsValue(const std::string& value)
-{
-  return mvvm::variant_t{value};
-}
-
 mvvm::variant_t ToSettingsValue(const QByteArray& value)
 {
   return mvvm::variant_t{value.toBase64().toStdString()};
@@ -94,50 +86,28 @@ mvvm::variant_t ToSettingsValue(const QByteArray& value)
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, bool& value)
 {
-  if (AssignIfHolds(settings_value, value))
-  {
-    return true;
-  }
-  std::string str;
-  if (!AssignIfHolds(settings_value, str) || (str != kTrue && str != kFalse))
-  {
-    return false;
-  }
-  value = (str == kTrue);
-  return true;
+  return AssignFromSettingsValue(settings_value, value);
 }
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, mvvm::int32& value)
 {
-  if (AssignIfHolds(settings_value, value))
-  {
-    return true;
-  }
-  std::string str;
-  return AssignIfHolds(settings_value, str)
-         && AssignIfParsed(mvvm::utils::StringToInteger(str), value);
+  return AssignFromSettingsValue(settings_value, value);
 }
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, double& value)
 {
-  if (AssignIfHolds(settings_value, value))
-  {
-    return true;
-  }
-  std::string str;
-  return AssignIfHolds(settings_value, str)
-         && AssignIfParsed(mvvm::utils::StringToDouble(str), value);
+  return AssignFromSettingsValue(settings_value, value);
 }
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, std::string& value)
 {
-  return AssignIfHolds(settings_value, value);
+  return AssignFromSettingsValue(settings_value, value);
 }
 
 bool FromSettingsValue(const std::optional<mvvm::variant_t>& settings_value, QByteArray& value)
 {
   std::string base64;
-  if (!AssignIfHolds(settings_value, base64))
+  if (!AssignFromSettingsValue(settings_value, base64))
   {
     return false;
   }

@@ -206,8 +206,8 @@ TEST_F(SettingsArchiveTest, StringValuesAreParsed)
 
 TEST_F(SettingsArchiveTest, InvalidStringValuesKeepInitialValue)
 {
-  m_storage.Write("Group/flag", mvvm::variant_t{std::string("yes")});
-  m_storage.Write("Group/count", mvvm::variant_t{std::string("42abc")});
+  m_storage.Write("Group/flag", mvvm::variant_t{std::string("maybe")});
+  m_storage.Write("Group/count", mvvm::variant_t{std::string("abc")});
   m_storage.Write("Group/value", mvvm::variant_t{std::string("")});
 
   const PlainInfo initial{false, 1, 2.0};

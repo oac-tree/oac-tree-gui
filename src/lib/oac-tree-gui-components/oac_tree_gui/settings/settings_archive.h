@@ -75,13 +75,16 @@ std::string JoinSettingsKey(const std::string& group, const std::string& name);
 
 /**
  * @brief Converts a field value to a storage value.
- *
- * QByteArray is stored as base64 string.
  */
-mvvm::variant_t ToSettingsValue(bool value);
-mvvm::variant_t ToSettingsValue(mvvm::int32 value);
-mvvm::variant_t ToSettingsValue(double value);
-mvvm::variant_t ToSettingsValue(const std::string& value);
+template <typename T>
+mvvm::variant_t ToSettingsValue(const T& value)
+{
+  return mvvm::variant_t{value};
+}
+
+/**
+ * @brief Converts QByteArray to a storage value holding base64 string.
+ */
 mvvm::variant_t ToSettingsValue(const QByteArray& value);
 
 /**
