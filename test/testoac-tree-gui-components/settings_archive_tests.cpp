@@ -290,7 +290,7 @@ TEST_F(SettingsArchiveTest, EmptyVectorRoundTrip)
   EXPECT_TRUE(result.names.empty());
 }
 
-TEST_F(SettingsArchiveTest, ShrinkingVectorRemovesStaleKeys)
+TEST_F(SettingsArchiveTest, ShrinkingVectorIgnoresStaleKeys)
 {
   ViewInfo info;
   info.names = {"a", "b", "c"};
@@ -299,8 +299,9 @@ TEST_F(SettingsArchiveTest, ShrinkingVectorRemovesStaleKeys)
   info.names = {"d"};
   WriteToStorage(m_storage, "View", info);
 
-  EXPECT_FALSE(m_storage.Read("View/names/1").has_value());
-  EXPECT_FALSE(m_storage.Read("View/names/2").has_value());
+  // stale elements stay in the storage, but are not read
+  EXPECT_TRUE(m_storage.Read("View/names/1").has_value());
+  EXPECT_TRUE(m_storage.Read("View/names/2").has_value());
   EXPECT_EQ(ReadFromStorage<ViewInfo>(m_storage, "View").names, info.names);
 }
 

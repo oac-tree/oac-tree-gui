@@ -27,11 +27,8 @@
 namespace oac_tree_gui
 {
 
-AppSettingsStorage::AppSettingsStorage(read_func_t read_func, write_func_t write_func,
-                                       remove_func_t remove_func)
-    : m_read_func(std::move(read_func))
-    , m_write_func(std::move(write_func))
-    , m_remove_func(std::move(remove_func))
+AppSettingsStorage::AppSettingsStorage(read_func_t read_func, write_func_t write_func)
+    : m_read_func(std::move(read_func)), m_write_func(std::move(write_func))
 {
 }
 
@@ -50,18 +47,12 @@ void AppSettingsStorage::Write(const std::string& key, const mvvm::variant_t& va
   m_write_func(QString::fromStdString(key), mvvm::GetQtVariant(value));
 }
 
-void AppSettingsStorage::RemoveGroup(const std::string& group)
-{
-  m_remove_func(QString::fromStdString(group));
-}
-
 std::unique_ptr<AppSettingsStorage> CreateAppSettingsStorage()
 {
   auto read_func = [](const QString& key) { return QSettings().value(key); };
   auto write_func = [](const QString& key, const QVariant& value)
   { QSettings().setValue(key, value); };
-  auto remove_func = [](const QString& group) { QSettings().remove(group); };
-  return std::make_unique<AppSettingsStorage>(read_func, write_func, remove_func);
+  return std::make_unique<AppSettingsStorage>(read_func, write_func);
 }
 
 }  // namespace oac_tree_gui

@@ -54,13 +54,6 @@ public:
    * @brief Stores the value under the given key, replacing the previous one.
    */
   virtual void Write(const std::string& key, const mvvm::variant_t& value) = 0;
-
-  /**
-   * @brief Removes all keys of the given group, including nested groups.
-   *
-   * A key equal to the group name is removed too. An empty group removes all keys.
-   */
-  virtual void RemoveGroup(const std::string& group) = 0;
 };
 
 }  // namespace oac_tree_gui

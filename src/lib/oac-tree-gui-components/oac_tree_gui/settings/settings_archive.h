@@ -173,7 +173,6 @@ inline void WriteArchive::operator()(const std::string& name, T& value)
   if constexpr (detail::is_vector<T>::value)
   {
     static_assert(!std::is_same_v<T, std::vector<bool>>, "std::vector<bool> is not supported");
-    m_storage.RemoveGroup(key);
     m_storage.Write(JoinSettingsKey(key, kSettingsVectorSizeKey),
                     ToSettingsValue(static_cast<mvvm::int32>(value.size())));
     WriteArchive element_archive(m_storage, key);

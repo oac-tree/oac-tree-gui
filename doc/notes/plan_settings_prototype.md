@@ -113,6 +113,7 @@ void Visit(Archive& archive, UndoInfo& info)
   nested structs, `std::vector` of structs.
 - Byte arrays (splitter state) are stored as base64 strings.
 - Vectors of structs are stored as `group/field/size` plus `group/field/<index>/...`.
+- Shrinking a vector leaves stale elements in the storage. They are not read.
 
 ### ISettingsStorage
 
@@ -123,14 +124,13 @@ public:
   virtual ~ISettingsStorage() = default;
   virtual std::optional<mvvm::variant_t> Read(const std::string& key) const = 0;
   virtual void Write(const std::string& key, const mvvm::variant_t& value) = 0;
-  virtual void RemoveGroup(const std::string& group) = 0;
 };
 ```
 
 Implementations:
 
 - `InMemorySettingsStorage`. A `std::map`. Used in tests.
-- `AppSettingsStorage`. For `kApplication`. Our class. Works via injected read, write and remove
+- `AppSettingsStorage`. For `kApplication`. Our class. Works via injected read and write
   functions. `CreateAppSettingsStorage()` wires them to `QSettings`. Converts via
   `mvvm::GetQtVariant` / `mvvm::GetStdVariant`. QSettings returns strings after restart, so
   `FromSettingsValue` parses strings for `bool`, `int32` and `double`.
@@ -290,7 +290,7 @@ Each commit builds and passes `ctest`. Commits 1–6 only add code.
 | 1 | Add settings storage interface and in-memory storage | `settings/` folder with CMake, `ISettingsStorage`, `InMemorySettingsStorage` | `in_memory_settings_storage_tests.cpp` |
 | 2 | Add settings archives for struct serialization | `WriteArchive`, `ReadArchive`. Plain fields, nested structs, vectors of structs, base64 byte arrays | `settings_archive_tests.cpp` |
 | 3 | Add settings manager | `ISettingsManager`, `SettingsManager`, `ScopedCallback`, `SettingsScope` | `scoped_callback_tests.cpp`, `settings_manager_tests.cpp` |
-| 4 | Add application settings storage | `AppSettingsStorage` with injected read/write/remove functions, `CreateAppSettingsStorage()` for QSettings, string fallback in `FromSettingsValue` | `app_settings_storage_tests.cpp` with mocks and an INI-like fake. QSettings wiring is not tested |
+| 4 | Add application settings storage | `AppSettingsStorage` with injected read/write functions, `CreateAppSettingsStorage()` for QSettings, string fallback in `FromSettingsValue` | `app_settings_storage_tests.cpp` with mocks and an INI-like fake. QSettings wiring is not tested |
 | 5 | Add project settings storage | `SettingsContainerItem` in core, item registration, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp`: values survive serialization, an unchanged write doesn't mark the model modified |
 | 6 | Add settings-aware project manager | `SettingsAwareProjectManager` in `mainwindow/` | `settings_aware_project_manager_tests.cpp` with a mock `IProjectManager` |
 | 7 | Wire settings manager into main window | `SequencerMainWindowContext` owns the manager and `AppSettingsStorage`. `SequencerMainWindowActions` uses the decorator. Attach and `NotifyAll` on project load. `Collect` in `CanCloseApplication` | Existing tests pass. Manual: save, close, open |

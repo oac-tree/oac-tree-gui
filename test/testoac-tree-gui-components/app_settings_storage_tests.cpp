@@ -66,16 +66,6 @@ public:
 
   void Write(const QString& key, const QVariant& value) { m_values[key] = value.toString(); }
 
-  void Remove(const QString& group)
-  {
-    for (auto iter = m_values.begin(); iter != m_values.end();)
-    {
-      const bool in_group = group.isEmpty() || iter.key() == group
-                            || iter.key().startsWith(group + QStringLiteral("/"));
-      iter = in_group ? m_values.erase(iter) : std::next(iter);
-    }
-  }
-
   QMap<QString, QVariant> m_values;
 };
 
@@ -90,8 +80,8 @@ public:
   //! Creates storage working with mock functions.
   std::unique_ptr<AppSettingsStorage> CreateMockedStorage()
   {
-    return std::make_unique<AppSettingsStorage>(
-        m_mock_read.AsStdFunction(), m_mock_write.AsStdFunction(), m_mock_remove.AsStdFunction());
+    return std::make_unique<AppSettingsStorage>(m_mock_read.AsStdFunction(),
+                                                m_mock_write.AsStdFunction());
   }
 
   //! Creates storage working with INI-like file emulation.
@@ -99,13 +89,11 @@ public:
   {
     return std::make_unique<AppSettingsStorage>(
         [this](const QString& key) { return m_file.Read(key); },
-        [this](const QString& key, const QVariant& value) { m_file.Write(key, value); },
-        [this](const QString& group) { m_file.Remove(group); });
+        [this](const QString& key, const QVariant& value) { m_file.Write(key, value); });
   }
 
   ::testing::MockFunction<QVariant(const QString&)> m_mock_read;
   ::testing::MockFunction<void(const QString&, const QVariant&)> m_mock_write;
-  ::testing::MockFunction<void(const QString&)> m_mock_remove;
   IniLikeFile m_file;
 };
 
@@ -145,15 +133,6 @@ TEST_F(AppSettingsStorageTest, ReadAbsentKey)
   EXPECT_FALSE(storage->Read("Group/count").has_value());
 }
 
-TEST_F(AppSettingsStorageTest, RemoveGroup)
-{
-  auto storage = CreateMockedStorage();
-
-  EXPECT_CALL(m_mock_remove, Call(QString("Group"))).Times(1);
-
-  storage->RemoveGroup("Group");
-}
-
 TEST_F(AppSettingsStorageTest, IniLikeFileLosesType)
 {
   auto storage = CreateIniLikeStorage();
@@ -189,7 +168,8 @@ TEST_F(AppSettingsStorageTest, ShrinkingVectorThroughIniLikeFile)
   info.names = {"d"};
   WriteToStorage(*storage, "Group", info);
 
-  EXPECT_FALSE(m_file.m_values.contains("Group/names/1"));
+  // stale elements stay in the file, but are not read
+  EXPECT_TRUE(m_file.m_values.contains("Group/names/1"));
   EXPECT_EQ(ReadFromStorage<PlainInfo>(*storage, "Group").names, info.names);
 }
 

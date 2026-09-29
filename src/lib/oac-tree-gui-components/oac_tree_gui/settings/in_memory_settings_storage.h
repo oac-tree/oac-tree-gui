@@ -39,8 +39,6 @@ public:
 
   void Write(const std::string& key, const mvvm::variant_t& value) override;
 
-  void RemoveGroup(const std::string& group) override;
-
   /**
    * @brief Returns all stored keys in alphabetical order.
    */

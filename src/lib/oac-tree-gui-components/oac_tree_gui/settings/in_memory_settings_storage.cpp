@@ -23,24 +23,6 @@
 namespace oac_tree_gui
 {
 
-namespace
-{
-
-constexpr auto kGroupSeparator = '/';
-
-//! Checks if the key equals the group name, or belongs to the group or to its nested groups.
-bool IsInGroup(const std::string& key, const std::string& group)
-{
-  if (group.empty() || key == group)
-  {
-    return true;
-  }
-  return (key.size() > group.size()) && (key.compare(0, group.size(), group) == 0)
-         && (key[group.size()] == kGroupSeparator);
-}
-
-}  // namespace
-
 std::optional<mvvm::variant_t> InMemorySettingsStorage::Read(const std::string& key) const
 {
   auto iter = m_values.find(key);
@@ -54,14 +36,6 @@ std::optional<mvvm::variant_t> InMemorySettingsStorage::Read(const std::string& 
 void InMemorySettingsStorage::Write(const std::string& key, const mvvm::variant_t& value)
 {
   m_values[key] = value;
-}
-
-void InMemorySettingsStorage::RemoveGroup(const std::string& group)
-{
-  for (auto iter = m_values.begin(); iter != m_values.end();)
-  {
-    iter = IsInGroup(iter->first, group) ? m_values.erase(iter) : std::next(iter);
-  }
 }
 
 std::vector<std::string> InMemorySettingsStorage::GetKeys() const

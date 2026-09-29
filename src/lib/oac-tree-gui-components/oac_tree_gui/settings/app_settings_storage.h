@@ -32,8 +32,8 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The AppSettingsStorage class stores application settings via given read, write and
- * remove functions.
+ * @brief The AppSettingsStorage class stores application settings via given read and write
+ * functions.
  *
  * Converts keys to QString and values to QVariant. In the application the functions work with
  * QSettings, see CreateAppSettingsStorage().
@@ -47,10 +47,7 @@ public:
   //! A function storing the value under the key.
   using write_func_t = std::function<void(const QString& key, const QVariant& value)>;
 
-  //! A function removing all keys of the group.
-  using remove_func_t = std::function<void(const QString& group)>;
-
-  AppSettingsStorage(read_func_t read_func, write_func_t write_func, remove_func_t remove_func);
+  AppSettingsStorage(read_func_t read_func, write_func_t write_func);
 
   /**
    * @copydoc ISettingsStorage::Read
@@ -61,12 +58,9 @@ public:
 
   void Write(const std::string& key, const mvvm::variant_t& value) override;
 
-  void RemoveGroup(const std::string& group) override;
-
 private:
   read_func_t m_read_func;
   write_func_t m_write_func;
-  remove_func_t m_remove_func;
 };
 
 /**
