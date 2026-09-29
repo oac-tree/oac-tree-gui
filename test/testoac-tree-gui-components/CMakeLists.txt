@@ -8,6 +8,7 @@ add_executable(${test})
 target_sources(${test} PRIVATE
   align_node_tests.cpp
   align_utils_tests.cpp
+  app_settings_storage_tests.cpp
   attribute_editor_action_handler_tests.cpp
   automation_client_tests.cpp
   breakpoint_controller_tests.cpp

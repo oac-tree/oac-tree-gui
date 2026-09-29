@@ -130,8 +130,10 @@ public:
 Implementations:
 
 - `InMemorySettingsStorage`. A `std::map`. Used in tests.
-- `AppSettingsStorage`. For `kApplication`. Our class, backed by `QSettings`. Converts via `mvvm::GetQtVariant`.
-  Reading uses the string conversion from `sup::gui::AssignStringBasedVariant`.
+- `AppSettingsStorage`. For `kApplication`. Our class. Works via injected read, write and remove
+  functions. `CreateAppSettingsStorage()` wires them to `QSettings`. Converts via
+  `mvvm::GetQtVariant` / `mvvm::GetStdVariant`. QSettings returns strings after restart, so
+  `FromSettingsValue` parses strings for `bool`, `int32` and `double`.
 - `ProjectSettingsStorage`. For `kProject`. Keeps values in a new `SettingsContainerItem`
   inside `ProjectModel`. One property per key. The item is created lazily, so `ProjectModel`
   and the project file format stay unchanged for the prototype. The storage is re-attached on
@@ -263,8 +265,8 @@ New files in `test/testoac-tree-gui-components/`:
 - `settings_aware_project_manager_tests.cpp`. Collect called on save. Not called on close
   of an unmodified project. Uses a mock `IProjectManager`.
 
-`AppSettingsStorage` is tested in `testoac-tree-gui-components-app` with a temporary
-`QSettings` file.
+`app_settings_storage_tests.cpp` tests `AppSettingsStorage` with mock functions and a fake
+emulating an INI file after restart. No files are created.
 
 ## Steps
 
@@ -288,7 +290,7 @@ Each commit builds and passes `ctest`. Commits 1–6 only add code.
 | 1 | Add settings storage interface and in-memory storage | `settings/` folder with CMake, `ISettingsStorage`, `InMemorySettingsStorage` | `in_memory_settings_storage_tests.cpp` |
 | 2 | Add settings archives for struct serialization | `WriteArchive`, `ReadArchive`. Plain fields, nested structs, vectors of structs, base64 byte arrays | `settings_archive_tests.cpp` |
 | 3 | Add settings manager | `ISettingsManager`, `SettingsManager`, `ScopedCallback`, `SettingsScope` | `scoped_callback_tests.cpp`, `settings_manager_tests.cpp` |
-| 4 | Add application settings storage | `AppSettingsStorage` | Test in `testoac-tree-gui-components-app` with a temporary `QSettings` file |
+| 4 | Add application settings storage | `AppSettingsStorage` with injected read/write/remove functions, `CreateAppSettingsStorage()` for QSettings, string fallback in `FromSettingsValue` | `app_settings_storage_tests.cpp` with mocks and an INI-like fake. QSettings wiring is not tested |
 | 5 | Add project settings storage | `SettingsContainerItem` in core, item registration, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp`: values survive serialization, an unchanged write doesn't mark the model modified |
 | 6 | Add settings-aware project manager | `SettingsAwareProjectManager` in `mainwindow/` | `settings_aware_project_manager_tests.cpp` with a mock `IProjectManager` |
 | 7 | Wire settings manager into main window | `SequencerMainWindowContext` owns the manager and `AppSettingsStorage`. `SequencerMainWindowActions` uses the decorator. Attach and `NotifyAll` on project load. `Collect` in `CanCloseApplication` | Existing tests pass. Manual: save, close, open |

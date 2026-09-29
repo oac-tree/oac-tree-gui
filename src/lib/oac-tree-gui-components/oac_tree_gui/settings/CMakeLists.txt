@@ -1,6 +1,8 @@
 # Settings machinery.
 
 target_sources(${library_name} PRIVATE
+  app_settings_storage.cpp
+  app_settings_storage.h
   i_settings_manager.cpp
   i_settings_manager.h
   i_settings_storage.h
