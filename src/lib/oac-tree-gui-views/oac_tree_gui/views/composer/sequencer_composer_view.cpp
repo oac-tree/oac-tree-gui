@@ -29,11 +29,12 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/style/style_helper.h>
+#include <oac_tree_gui/widgets/settings_splitter.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/i_app_command_service.h>
-#include <sup/gui/widgets/custom_splitter.h>
+#include <sup/gui/widgets/settings_callbacks.h>
 
 #include <mvvm/model/item_selection.h>
 
@@ -50,19 +51,21 @@ namespace
 
 constexpr auto kGroupName("SequencerComposerView");
 
-QString GetSplitterSettingKey()
+//! Returns settings group of the main splitter.
+std::string GetSplitterSettingsGroup()
 {
-  return QString(kGroupName) + "/splitter";
+  return std::string(kGroupName) + "/splitter";
 }
 
 }  // namespace
 
 SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService& command_service,
+                                             ISettingsManager& settings_manager,
                                              QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_composer_actions(new SequencerComposerActions(this))
-    , m_splitter(new sup::gui::CustomSplitter(GetSplitterSettingKey()))
+    , m_splitter(new SettingsSplitter(GetSplitterSettingsGroup(), settings_manager))
     , m_composer_tools_panel(new ComposerToolsPanel(command_service))
     , m_splittable_editor_widget(new ProcedureSplittableEditorWidget(command_service))
 {
@@ -101,13 +104,12 @@ void SequencerComposerView::SetModels(ApplicationModels* models)
 void SequencerComposerView::ReadSettings()
 {
   m_splittable_editor_widget->ReadSettings(sup::gui::GetSettingsReadFunc());
-  m_splitter->ReadSettings();
+  m_splitter->RestoreState();
 }
 
 void SequencerComposerView::WriteSettings()
 {
   m_splittable_editor_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
-  m_splitter->WriteSettings();
 
   // FIXME will crash if uncomment, since project model is destroyed even before our destructor
   // auto composer_info = m_splittable_editor_widget->GetComposerViewInfo();
