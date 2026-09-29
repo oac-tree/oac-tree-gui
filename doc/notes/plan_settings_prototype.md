@@ -4,6 +4,8 @@ Widget settings save the state of the GUI. When the user opens the application a
 it looks as it was left. This is a plan for a prototype of a unified settings machinery.
 Existing code stays untouched until the pilots are proven.
 
+Sections "Types of settings" to "Requirements" describe the code before the prototype.
+
 ## Types of settings
 
 "Editable" means the user edits the setting in the settings dialog.
@@ -15,7 +17,7 @@ Existing code stays untouched until the pilots are proven.
 | (2) | Editable, same for all sessions | Plugin list, undo enabled and limit | `SequencerSettingsModel` (SessionItems), flattened to `QSettings` | Main window |
 | (3) | Non-editable, specific to the opened project | Panels of the splittable procedure editor and their tabs, favorite instructions | `ProjectModel` (SessionItems), in the project file | Project load / save |
 
-## Current code
+## Code before the prototype
 
 - Type 1.
   - `sup::gui::CustomSplitter`, `ProcedureSplittableEditorWidget::ReadSettings/WriteSettings`,
@@ -36,7 +38,7 @@ Existing code stays untouched until the pilots are proven.
   - `ComposerSettingsItem` in `ProjectModel`. Converts to and from `ComposerViewInfo`.
   - Read in `SequencerComposerView::SetModels`. Writing is commented out.
 
-## Current problems
+## Problems before the prototype
 
 - Two storages: `QSettings` for simple values, SessionModel for complex ones. Type 2
   SessionModel goes to `QSettings`, type 3 SessionModel goes to the project file.
@@ -84,19 +86,24 @@ manager.Set("MainWindow", undo_info, SettingsScope::kApplication);
 - Widgets with several instances get their settings group name via constructor, as
   `sup::gui::CustomSplitter` does.
 - `Collect(kProject)` is called explicitly in sequencer-gui. No new hook in sup-mvvm.
+- The settings manager is the source of truth for editable settings too.
+  `SequencerSettingsModel` is only a temporary model for `SettingsEditorDialog`.
+- sup-gui-core is not changed during the prototype. Generic parts move there afterwards.
+- Old `QSettings` keys are not migrated. `~/.config/coa/oac-tree-gui.conf` is deleted once.
 
 ## Components
 
-All new code goes to `src/lib/oac-tree-gui-components/oac_tree_gui/settings/`.
-It needs QtCore only.
+The machinery goes to `src/lib/oac-tree-gui-components/oac_tree_gui/settings/`.
+It needs QtCore only. Settings structs of editable settings live in core, next to their
+items, as core cannot depend on components.
 
 ### Settings struct and Visit
 
 ```cpp
 struct UndoInfo
 {
-  bool is_enabled{true};
-  int undo_limit{-1};
+  bool is_enabled{constants::kUseUndoDefault};
+  mvvm::int32 undo_limit{constants::kUndoLimitDefault};
 };
 
 template <typename Archive>
@@ -109,8 +116,8 @@ void Visit(Archive& archive, UndoInfo& info)
 
 - `WriteArchive` puts every field into a storage under `group/field`.
 - `ReadArchive` reads every field. A missing key keeps the default value of the struct.
-- Supported field types: `bool`, `int`, `double`, `std::string`, `std::vector<std::string>`,
-  nested structs, `std::vector` of structs.
+- Supported field types: `bool`, `int32`, `double`, `std::string`, `QByteArray`, enums,
+  nested structs, `std::vector` of any of them except `bool`.
 - Byte arrays (splitter state) are stored as base64 strings.
 - Vectors of structs are stored as `group/field/size` plus `group/field/<index>/...`.
 - Shrinking a vector leaves stale elements in the storage. They are not read.
@@ -198,16 +205,60 @@ public:
 - Views receive `ISettingsManager&` via constructor, next to `IAppCommandService&`.
 - For the prototype, only the pilot widgets get the new parameter.
 
+### Editable settings
+
+Each item of `SequencerSettingsModel` has a settings struct behind it.
+
+| Item | Struct | Group |
+|---|---|---|
+| `UndoSettingsItem` | `UndoInfo` | `MainWindow/Undo` |
+| `PluginSettingsItem` | `PluginSettingsInfo` | `MainWindow/Plugins` |
+
+- Structs, their `Visit` and group names are in core, next to the items.
+- Items provide `Get...Info()` / `Set...Info()`.
+- `UndoSettingsItem` replaces `sup::gui::CommonSettingsItem`, so sup-gui-core stays untouched.
+- Two helpers in `components/settings/settings_model_helper.h` connect the model and the
+  manager:
+
+```cpp
+//! Creates settings model populated from the settings manager.
+std::unique_ptr<SequencerSettingsModel> CreateSettingsModel(const ISettingsManager& manager);
+
+//! Writes settings from the model to the settings manager.
+void WriteSettingsModel(const SequencerSettingsModel& model, ISettingsManager& manager);
+```
+
+- They are the only place that maps items to structs and groups.
+- The dialog flow:
+
+```cpp
+auto model = CreateSettingsModel(settings_manager);
+sup::gui::SettingsEditorDialog dialog(*model);
+...
+if (dialog.exec() == QDialog::Accepted)
+{
+  dialog.PropagateSettingsToModel(*model);  // replaces all items of the model
+  WriteSettingsModel(*model, settings_manager);
+}
+```
+
+- `PropagateSettingsToModel` replaces the root item. Pointers to items taken before it are
+  invalid.
+- `SequencerMainWindowContext` does not own `SequencerSettingsModel`. `LoadPlugins()` reads
+  `PluginSettingsInfo` from the manager.
+- `ReadApplicationSettings` / `WriteApplicationSettings` from sup-gui-core are not used.
+
 ## Lifecycle
 
 | Event | Action |
 |---|---|
-| Application start | `AppSettingsStorage` attached. Widgets call `Get(kApplication)` in the constructor. |
+| Application start | `AppSettingsStorage` attached. `LoadPlugins()` reads `PluginSettingsInfo`. Widgets call `Get(kApplication)` in the constructor. |
 | Project loaded (`loaded_callback`) | `ProjectSettingsStorage` attached to new `ProjectModel`. `NotifyAll(kProject)`. |
 | Project save / save as | `Collect(kProject)`, then save. |
 | New / open / close project | `Collect(kProject)` only if the project is already modified, then proceed. |
 | Application close (`CanCloseApplication`) | `Collect(kApplication)`, then the project close step above. |
-| Settings dialog accepted | Dialog result converted to struct. `Set(kApplication)`. Subscribers update. |
+| Settings dialog opened | Temporary `SequencerSettingsModel` created by `CreateSettingsModel`. |
+| Settings dialog accepted | `WriteSettingsModel` calls `Set(kApplication)` for each struct. Subscribers update. |
 
 ### Explicit project collect
 
@@ -226,90 +277,160 @@ The `mvvm::Add*ProjectAction` helpers take an `mvvm::IProjectManager&`. Add a de
 
 One pilot per settings type.
 
-### Pilot 1. Splitter (type 1)
+### Pilot 1. Splitter (type 1). Done
 
-- New `SettingsSplitter` widget next to `CustomSplitter`. Group name via constructor.
-- Struct `SplitterInfo { std::string state; }`.
-- Constructor: `Get(kApplication)`, restore. Registers a provider.
+- `SettingsSplitter` in `views/widgets/`. Group name via constructor.
+- Struct `SplitterInfo { QByteArray state; std::vector<std::int32_t> visibility; }`.
+- Registers a provider in the constructor. `RestoreState()` is called after the children are
+  added.
+- Child visibility is read with `isHidden()` on `Collect`. No event filter as in
+  `CustomSplitter`.
 - Used in `SequencerComposerView` in place of `CustomSplitter`.
 
-### Pilot 2. Undo settings (type 2)
+### Pilot 2. Undo settings (type 2). Done
 
-- Struct `UndoInfo` as above.
-- After the settings dialog is accepted, `SequencerSettingsModel` is converted to `UndoInfo`
-  and passed to `Set(kApplication)`.
-- `SequencerMainWindow` subscribes to `MainWindow/Undo` and calls `SetUndoEnabled`.
-- Replaces `GetSettingsModel().Data<bool>(constants::kUseUndoSetting)` in `OnProjectLoad`.
-- `SequencerSettingsModel` stays as the dialog model. It is still written to QSettings as today.
+- `UndoInfo` and `UndoSettingsItem` in core.
+- `SequencerMainWindow` subscribes to `MainWindow/Undo` and calls `SetUndoEnabled`. On project
+  load it uses `Get<UndoInfo>`.
+- `OnApplicationSettingsDialog` fills `UndoSettingsItem` from the manager and calls `Set` on
+  accept. This moves to the helpers of the "Editable settings" section.
 
-### Pilot 3. Composer panels (type 3)
+### Pilot 3. Composer panels
 
-- Existing `ComposerViewInfo` and `ProcedureEditorInfo` get `Visit` functions.
-- `ProcedureSplittableEditorWidget` registers a provider (`GetComposerViewInfo`) and
-  subscribes (`SetComposerViewInfo`) under `kProject`.
-- `SetComposerViewInfo` removes existing panels before creating new ones.
-- Its QSettings-based `ReadSettings` / `WriteSettings` are removed. This fixes the double
-  restore in `SequencerComposerView` and the crash noted in its `WriteSettings`.
+Done in two stages: application scope first (D1), project scope later (E3).
+
+#### Stage 1. Application scope (D1)
+
+The user gets the same number of split panels, and the same tabs in them, even without saving
+the project.
+
+- Existing `ComposerViewInfo` and `ProcedureEditorInfo` in core get `Visit` functions. One
+  struct holds splitter state, and editor type and procedure id of each panel.
+- `ProcedureEditorInfo::editor_type` gets the default `kInstructionTree`. A missing key keeps
+  the default.
+- `splitter_state` stays a base64 `std::string`, as in `ComposerSettingsItem`.
+- `ProcedureSplittableEditorWidget` gets `ISettingsManager&` via constructor. It registers a
+  provider (`GetComposerViewInfo`) under `kApplication`.
+- The widget has one instance. Its group is a constant in its header,
+  `kComposerPanelsSettingsGroup = "ProcedureSplittableEditorWidget"`, as `kUndoSettingsGroup`.
+  It moves to the constructor if a second instance appears.
+- Panels are restored once, in the constructor, from `Get<ComposerViewInfo>`. No stored panels
+  means one panel. Rebuilding panels on every project load would discard the layout changed
+  during the session, as the stored value is refreshed only on application close.
+- `SetComposerViewInfo` is the only restore path. Stage 2 reuses it for project scope. It
+  removes existing panels, creates new ones, assigns procedures if the model is set, and
+  restores the splitter state.
+- Existing panels are deleted immediately after `ClosePanel`, as `ClosePanel` uses
+  `deleteLater` and the hidden panel stays in the splitter. Not needed in the constructor,
+  needed in stage 2.
+- Procedure ids are stored too, for uniformity with project scope.
+- Procedures are assigned on `SetModel`, to every panel. `SplittableComboPanel::SetModel`
+  resets the selection, and `ComposerToolsPanel` selects a procedure in the focus panel only.
+  A stored procedure id selects the procedure if it exists in the model, otherwise the first
+  procedure is used (`FindAppropriateProcedure`).
+- A freshly started application has one untitled procedure. Stored ids are not found, so all
+  restored panels show this procedure. Procedures that existed on close are ignored.
+- `CanCloseApplication` calls `Collect(kApplication)` before `CloseCurrentProject()`.
+  Closing the project destroys the models, and the provider reads procedure ids.
+- Removed:
+  - QSettings-based `ReadSettings` / `WriteSettings` and their keys (`panel_count`,
+    `splitter`, `procedure_tabs`). Only `GetComposerViewInfo` / `SetComposerViewInfo` remain.
+  - Panel creation from `ComposerSettingsItem` in `SequencerComposerView::SetModels`.
+  - `SequencerComposerView::WriteSettings` and the destructor calling it.
+- This fixes the double restore in `SequencerComposerView`.
+
+#### Stage 2. Project scope (E3)
+
+- The same `ComposerViewInfo` is also stored in `kProject`, so each project keeps its own
+  panels and procedures. Application scope stays.
+- `ProcedureSplittableEditorWidget` adds, under the same group constant:
+  - a provider in `kProject` returning `GetComposerViewInfo`;
+  - a subscriber in `kProject` calling `SetComposerViewInfo`.
+- The widget keeps four `ScopedCallback` members: provider and subscriber per scope. The
+  application-scope subscriber is not needed, as nobody calls `Set` for this group.
+- Subscribing before the project storage is attached is allowed. `NotifyAll` does nothing
+  without storage.
+- On project load, `NotifyAll(kProject)` is called after `SequencerComposerView::SetModels`.
+  Procedure ids are resolved against the new model. The project value also overrides the
+  procedure that `ComposerToolsPanel` selects in the focus panel.
+- A project without stored panels gives an empty `editor_info_list`. The subscriber ignores
+  it and keeps the current panels, so the application scope layout is the default. A stored
+  empty list cannot be told apart from a missing one. This is accepted.
 - `ComposerSettingsItem` is not used by the new path.
 
 ## Tests
 
-New files in `test/testoac-tree-gui-components/`:
+Existing, in `test/testoac-tree-gui-components/` unless noted:
 
-- `settings_archive_tests.cpp`. Round trip of structs through `InMemorySettingsStorage`:
-  plain fields, missing keys, nested structs, vectors of structs.
-- `settings_manager_tests.cpp`. Get/Set, subscriber called on `Set`, not called after
-  connection is destroyed, `Collect` calls providers of one scope only, `NotifyAll`.
+- `in_memory_settings_storage_tests.cpp`, `settings_archive_tests.cpp`.
+- `scoped_callback_tests.cpp`, `settings_manager_tests.cpp`.
+- `app_settings_storage_tests.cpp`. Mock functions and a fake emulating an INI file after
+  restart. No files are created.
+- `settings_splitter_tests.cpp` in `testoac-tree-gui-views`.
+- `undo_settings_item_tests.cpp`, `sequencer_settings_model_tests.cpp` in
+  `testoac-tree-gui-core`.
+
+Planned:
+
+- Plugin settings item tests for `PluginSettingsInfo` get/set, in core.
+- `settings_model_helper_tests.cpp`. Model populated from and written to the manager with
+  `InMemorySettingsStorage`.
 - `project_settings_storage_tests.cpp`. Values survive `ProjectModel` serialization.
   Writing an unchanged value does not mark the model modified.
 - `settings_aware_project_manager_tests.cpp`. Collect called on save. Not called on close
   of an unmodified project. Uses a mock `IProjectManager`.
+- `ComposerViewInfo` round trip through the archive, in components. Core tests cannot use
+  the archive.
+- `procedure_splittable_editor_widget_tests.cpp` in `testoac-tree-gui-views` uses
+  `SettingsManager` with `InMemorySettingsStorage`. Tests of `ReadSettings` / `WriteSettings`
+  removed. New tests: one panel by default, panels and tabs restored, `Collect` round trip,
+  procedures assigned on `SetModel`, `SetComposerViewInfo` replaces panels.
 
-`app_settings_storage_tests.cpp` tests `AppSettingsStorage` with mock functions and a fake
-emulating an INI file after restart. No files are created.
+## Status
 
-## Steps
+Done:
 
-1. `ISettingsStorage`, `InMemorySettingsStorage`, archives, `Visit` support. Tests.
-2. `SettingsManager`, `ScopedCallback`. Tests.
-3. `AppSettingsStorage`, `ProjectSettingsStorage`, `SettingsContainerItem`. Tests.
-4. `SettingsAwareProjectManager`. Wire manager into `SequencerMainWindowContext` and
-   main window lifecycle. Tests.
-5. Pilot 1.
-6. Pilot 2.
-7. Pilot 3.
-8. Review. Decide on migration of the remaining `ReadSettings` / `WriteSettings` widgets
-   and on the future of `read_variant_func_t` / `write_variant_func_t` in sup-gui-core.
+| Part | Commits |
+|---|---|
+| Storage interface, in-memory storage | `26af478d` |
+| Archives, string parsing for QSettings | `86447316`, `b468135d`, `e8c8983d`, `b1f6b13b` |
+| `ScopedCallback`, settings manager | `b214904e`, `ae5f60d6` |
+| `AppSettingsStorage`, `RemoveGroup` removed | `eeb1957f`, `407e8b97` |
+| Manager in main windows, application scope | `61630a3c` |
+| Pilot 1: `SettingsSplitter` in composer view | `c6dbbe97`, `9e82987e` |
+| Pilot 2: `UndoSettingsItem`, undo via manager | `ccf27afb`, `e250bffd` |
 
-## Commits
+## Next steps
 
-Each commit builds and passes `ctest`. Commits 1–6 only add code.
-
-| # | Commit message | Content | Tests |
+| # | Commit | Content | Tests |
 |---|---|---|---|
-| 1 | Add settings storage interface and in-memory storage | `settings/` folder with CMake, `ISettingsStorage`, `InMemorySettingsStorage` | `in_memory_settings_storage_tests.cpp` |
-| 2 | Add settings archives for struct serialization | `WriteArchive`, `ReadArchive`. Plain fields, nested structs, vectors of structs, base64 byte arrays | `settings_archive_tests.cpp` |
-| 3 | Add settings manager | `ISettingsManager`, `SettingsManager`, `ScopedCallback`, `SettingsScope` | `scoped_callback_tests.cpp`, `settings_manager_tests.cpp` |
-| 4 | Add application settings storage | `AppSettingsStorage` with injected read/write functions, `CreateAppSettingsStorage()` for QSettings, string fallback in `FromSettingsValue` | `app_settings_storage_tests.cpp` with mocks and an INI-like fake. QSettings wiring is not tested |
-| 5 | Add project settings storage | `SettingsContainerItem` in core, item registration, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp`: values survive serialization, an unchanged write doesn't mark the model modified |
-| 6 | Add settings-aware project manager | `SettingsAwareProjectManager` in `mainwindow/` | `settings_aware_project_manager_tests.cpp` with a mock `IProjectManager` |
-| 7 | Wire settings manager into main window | `SequencerMainWindowContext` owns the manager and `AppSettingsStorage`. `Collect(kApplication)` in `WriteSettings` of the three main windows. Application scope only | Context test checks attached storages. Existing tests pass |
-| 8 | Add SettingsSplitter and use it in composer view | Pilot 1. `SettingsSplitter` in `widgets/`, stores `saveState()` and child visibility. Replaces `CustomSplitter` in `SequencerComposerView` | `settings_splitter_tests.cpp` with the in-memory storage |
-| 9 | Propagate undo settings via settings manager | Pilot 2. `UndoInfo`, dialog result to `Set`, main window subscription, replaces `Data<bool>(kUseUndoSetting)` | Subscriber called after `Set`. Manual: disable undo in the dialog |
-| 10 | Store composer panels in project via settings manager | Pilot 3. `Visit` for `ComposerViewInfo` and `ProcedureEditorInfo`, provider and subscriber in `ProcedureSplittableEditorWidget`, panels cleared before restore, QSettings read/write removed, commented-out code in `SequencerComposerView` removed | `ComposerViewInfo` round trip. Manual: panels restored once after reload |
+| A | Add PluginSettingsInfo | Struct and `Visit` in core. `PluginSettingsItem::Get/SetPluginSettingsInfo()`. `GetPluginFileNames(const PluginSettingsInfo&)` | Core tests for item and struct |
+| B | Add settings model helpers | `CreateSettingsModel`, `WriteSettingsModel` in `components/settings/` | `settings_model_helper_tests.cpp` |
+| C | Use temporary settings model in dialog | `OnApplicationSettingsDialog` uses B. `LoadPlugins()` reads from the manager. `SequencerSettingsModel` removed from `SequencerMainWindowContext`. `ReadApplicationSettings` / `WriteApplicationSettings` calls removed | Context test updated. Manual: dialog, restart |
+| D | Clean up SequencerSettingsModel | `Data()` and `GetSettingsItems()` removed. `Get()` via `GetTopItem` | Model tests updated |
+| D1 | Clean up ProcedureSplittableEditorWidget | Pilot 3, stage 1. `Visit` for `ComposerViewInfo` / `ProcedureEditorInfo`. Panels stored in application scope under a constant group. Duplicated QSettings read/write and panel creation in `SetModels` removed. `Collect(kApplication)` moved before project close | `ComposerViewInfo` round trip. Widget test: panels and tabs restored. Manual: split panels, change tabs, restart without saving |
+| E1 | Add project settings storage | `SettingsContainerItem` in core, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp` |
+| E2 | Add settings-aware project manager | `SettingsAwareProjectManager`. Attach project storage and `NotifyAll(kProject)` on project load | `settings_aware_project_manager_tests.cpp` |
+| E3 | Store composer panels in project | Pilot 3, stage 2. `ProcedureSplittableEditorWidget` adds provider and subscriber in `kProject` under the same group. `NotifyAll(kProject)` after `SetModels`. Empty list keeps current panels | Widget test: project notification replaces panels and procedures, empty list ignored. Manual: panels and procedures restored per project |
 
-- Commits 1–3 have no dependency on Qt widgets or models. They can be squashed.
-- Commit 5 is the only one that touches core item registration. `ProjectModel` is unchanged.
-- Commit 7 is the first behavior change. Without pilots the GUI behaves as before.
-- Order changed: 7, 8, 9 go first, as pilots 1 and 2 need only the application scope. Then 5,
-  6, 10. Project scope wiring (`SettingsAwareProjectManager`, attach and `NotifyAll` on project
-  load) goes with 5 and 6.
-- Commits 8–10 are independent. They can be reordered or dropped.
-- Step 8 has no commit. Its outcome goes into this note.
+- A and B only add code. C and D1 change behavior.
+- Before C, delete `~/.config/coa/oac-tree-gui.conf`.
+- Project scope (E1–E3) comes after D1.
+
+After the prototype:
+
+- Review. Decide on migration of the remaining `ReadSettings` / `WriteSettings` widgets.
+- Move the machinery, `UndoInfo` and `UndoSettingsItem` to sup-gui-core. Replace
+  `CommonSettingsItem` and `PersistentSettingsModel` there. First users:
+  `DtoEditorMainWindow`, `AnyValueEditorMainWindow`.
+- Remove the unused declaration `SettingsEditorDialog::SaveToPersistentSettings()` in
+  sup-gui-core.
+- Consider a helper registering any `QSplitter` instead of the `SettingsSplitter` subclass.
 
 ## Out of scope
 
 - Generating settings dialog editors from `Visit`.
-- Moving the machinery to sup-gui-core.
+- Migration of old `QSettings` keys.
+- Live update of the enabled state of undo/redo actions after the settings dialog.
 - Migration of widgets other than the pilots.
 - `oac-tree-operation` and `sup-pvmonitor` applications.
