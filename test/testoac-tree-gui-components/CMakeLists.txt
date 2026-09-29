@@ -59,8 +59,10 @@ target_sources(${test} PRIVATE
   request_handler_tests.cpp
   request_types_tests.cpp
   scene_utils_tests.cpp
+  scoped_callback_tests.cpp
   sequencer_workspace_corner_case_tests.cpp
   settings_archive_tests.cpp
+  settings_manager_tests.cpp
   style_helper_tests.cpp
   workspace_editor_action_handler_copyandpaste_tests.cpp
   workspace_editor_action_handler_tests.cpp

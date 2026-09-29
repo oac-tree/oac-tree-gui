@@ -140,37 +140,53 @@ Implementations:
 ### ISettingsManager
 
 ```cpp
-enum class SettingsScope { kApplication, kProject };
+enum class SettingsScope : std::uint8_t { kApplication, kProject };
 
 class ISettingsManager
 {
 public:
+  // untyped core
+  virtual ISettingsStorage* GetStorage(SettingsScope scope) const = 0;
+  virtual ScopedCallback AddSubscriber(const std::string& group, SettingsScope scope,
+                                           settings_reader_t reader) = 0;
+  virtual ScopedCallback AddProvider(const std::string& group, SettingsScope scope,
+                                         settings_writer_t writer) = 0;
+  virtual void NotifyGroup(const std::string& group, SettingsScope scope) = 0;
+  virtual void Collect(SettingsScope scope) = 0;
+  virtual void NotifyAll(SettingsScope scope) = 0;
+
+  // typed wrappers
   template <typename T> T Get(const std::string& group, SettingsScope scope) const;
   template <typename T> void Set(const std::string& group, const T& value, SettingsScope scope);
 
   template <typename T>
-  SettingsConnection Subscribe(const std::string& group, std::function<void(const T&)> callback);
+  ScopedCallback Subscribe(const std::string& group, SettingsScope scope,
+                               std::function<void(const T&)> callback);
 
-  template <typename T>
-  SettingsConnection RegisterProvider(const std::string& group, SettingsScope scope,
-                                      std::function<T()> provider);
-
-  void Collect(SettingsScope scope);
-  void NotifyAll(SettingsScope scope);
+  template <typename Func>
+  ScopedCallback RegisterProvider(const std::string& group, SettingsScope scope,
+                                      Func provider);
 };
 ```
 
 - `Get`: reads the struct from the storage of the given scope.
-- `Set`: writes the struct and calls the subscribers of the group.
-- `Subscribe`: the widget is told when the group changes from outside.
-- `RegisterProvider`: the widget tells the manager how to obtain its current state.
+- `Set`: writes the struct and calls the subscribers of the group, including the caller's own
+  subscriber.
+- `Subscribe`: the widget is told when the group changes. `T` is given explicitly.
+- `RegisterProvider`: the widget tells the manager how to obtain its current state. The struct
+  type is deduced from the provider's return type.
 - `Collect`: calls every provider of the scope and writes the results. Does not notify.
 - `NotifyAll`: calls every subscriber of the scope with the stored value. Used after
   project load.
-- `SettingsConnection` is an RAII token. Its destruction removes the provider or subscriber.
-  The widget owns it as a member.
-- Templates are thin wrappers over a type-erased core (`std::function` over storage).
-  The core is a non-template class, so it can be tested and mocked.
+- Without storage for the scope, `Get` and `Set` throw `RuntimeException`. `Collect`,
+  `NotifyAll` and `NotifyGroup` do nothing. Widgets receive project settings via subscription,
+  not via `Get`.
+- Subscribers and providers are called in registration order. A subscriber removed during a
+  notification is not called. A subscriber added during a notification waits for the next one.
+- `Subscribe` and `RegisterProvider` return a `ScopedCallback`. It is a generic move-only
+  class calling a callback on destruction. The manager puts there a callback removing the
+  subscriber or provider. The widget owns it as a member. The manager must outlive it.
+- Templates are thin wrappers over the virtual untyped core, so the manager can be mocked.
 - Class `SettingsManager` implements it. It owns no storage. Storages are set with
   `SetStorage(scope, ISettingsStorage*)`.
 
@@ -253,7 +269,7 @@ New files in `test/testoac-tree-gui-components/`:
 ## Steps
 
 1. `ISettingsStorage`, `InMemorySettingsStorage`, archives, `Visit` support. Tests.
-2. `SettingsManager`, `SettingsConnection`. Tests.
+2. `SettingsManager`, `ScopedCallback`. Tests.
 3. `AppSettingsStorage`, `ProjectSettingsStorage`, `SettingsContainerItem`. Tests.
 4. `SettingsAwareProjectManager`. Wire manager into `SequencerMainWindowContext` and
    main window lifecycle. Tests.
@@ -271,7 +287,7 @@ Each commit builds and passes `ctest`. Commits 1–6 only add code.
 |---|---|---|---|
 | 1 | Add settings storage interface and in-memory storage | `settings/` folder with CMake, `ISettingsStorage`, `InMemorySettingsStorage` | `in_memory_settings_storage_tests.cpp` |
 | 2 | Add settings archives for struct serialization | `WriteArchive`, `ReadArchive`. Plain fields, nested structs, vectors of structs, base64 byte arrays | `settings_archive_tests.cpp` |
-| 3 | Add settings manager | `ISettingsManager`, `SettingsManager`, `SettingsConnection`, `SettingsScope` | `settings_manager_tests.cpp` |
+| 3 | Add settings manager | `ISettingsManager`, `SettingsManager`, `ScopedCallback`, `SettingsScope` | `scoped_callback_tests.cpp`, `settings_manager_tests.cpp` |
 | 4 | Add application settings storage | `AppSettingsStorage` | Test in `testoac-tree-gui-components-app` with a temporary `QSettings` file |
 | 5 | Add project settings storage | `SettingsContainerItem` in core, item registration, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp`: values survive serialization, an unchanged write doesn't mark the model modified |
 | 6 | Add settings-aware project manager | `SettingsAwareProjectManager` in `mainwindow/` | `settings_aware_project_manager_tests.cpp` with a mock `IProjectManager` |
