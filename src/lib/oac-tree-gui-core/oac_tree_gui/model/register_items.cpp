@@ -70,6 +70,7 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::FileBasedJobItem>();
 
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::PluginSettingsItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::UndoSettingsItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::TextEditItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ComposerSettingsItem>();
 

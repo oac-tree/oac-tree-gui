@@ -24,6 +24,7 @@
 //! @file
 //! Includes for all sequencer related items.
 
+#include <oac_tree_gui/model/composer_settings_item.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
@@ -37,10 +38,10 @@
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/text_edit_item.h>
+#include <oac_tree_gui/model/undo_settings_item.h>
 #include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/model/variable_info_item.h>
-#include <oac_tree_gui/model/composer_settings_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #endif  // OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_

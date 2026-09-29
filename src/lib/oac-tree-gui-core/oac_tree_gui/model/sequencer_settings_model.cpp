@@ -21,8 +21,7 @@
 #include "sequencer_settings_model.h"
 
 #include "plugin_settings_item.h"
-
-#include <sup/gui/model/common_settings_item.h>
+#include "undo_settings_item.h"
 
 #include <mvvm/model/model_utils.h>
 
@@ -66,7 +65,7 @@ std::vector<mvvm::CompoundItem*> SequencerSettingsModel::GetSettingsItems()
 
 void SequencerSettingsModel::PopulateModel()
 {
-  (void)InsertItem<sup::gui::CommonSettingsItem>();
+  (void)InsertItem<UndoSettingsItem>();
   (void)InsertItem<PluginSettingsItem>();
 }
 
