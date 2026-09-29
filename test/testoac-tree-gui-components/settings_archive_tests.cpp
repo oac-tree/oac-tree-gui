@@ -71,6 +71,17 @@ void Visit(Archive& archive, PanelInfo& info)
   archive("editor_type", info.editor_type);
 }
 
+struct IntVectorInfo
+{
+  std::vector<std::int32_t> values;
+};
+
+template <typename Archive>
+void Visit(Archive& archive, IntVectorInfo& info)
+{
+  archive("values", info.values);
+}
+
 struct ViewInfo
 {
   std::string splitter_state;
@@ -174,6 +185,24 @@ TEST_F(SettingsArchiveTest, WrongTypeKeepsInitialValue)
 
   EXPECT_TRUE(result.flag);
   EXPECT_EQ(result.count, 1);
+}
+
+TEST_F(SettingsArchiveTest, IntVectorRoundTrip)
+{
+  const IntVectorInfo info{{1, 2, 3}};
+
+  WriteToStorage(m_storage, "Group", info);
+
+  const std::vector<std::string> expected_keys(
+      {"Group/values/0", "Group/values/1", "Group/values/2", "Group/values/size"});
+  EXPECT_EQ(m_storage.GetKeys(), expected_keys);
+  EXPECT_EQ(m_storage.Read("Group/values/size"), mvvm::variant_t{mvvm::int32{3}});
+  EXPECT_EQ(m_storage.Read("Group/values/0"), mvvm::variant_t{mvvm::int32{1}});
+  EXPECT_EQ(m_storage.Read("Group/values/1"), mvvm::variant_t{mvvm::int32{2}});
+  EXPECT_EQ(m_storage.Read("Group/values/2"), mvvm::variant_t{mvvm::int32{3}});
+
+  const auto result = ReadFromStorage<IntVectorInfo>(m_storage, "Group");
+  EXPECT_EQ(result.values, info.values);
 }
 
 TEST_F(SettingsArchiveTest, WriteNestedStructAndVectors)
