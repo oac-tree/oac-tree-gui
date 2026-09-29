@@ -22,6 +22,8 @@
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
+#include <oac_tree_gui/settings/app_settings_storage.h>
+#include <oac_tree_gui/settings/i_settings_manager.h>
 
 #include <sup/gui/app/app_command_service.h>
 
@@ -48,6 +50,13 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
 
   // check settings
   EXPECT_NE(dynamic_cast<SequencerSettingsModel*>(&context.GetSettingsModel()), nullptr);
+
+  // check settings manager
+  auto& settings_manager = context.GetSettingsManager();
+  EXPECT_NE(
+      dynamic_cast<AppSettingsStorage*>(settings_manager.GetStorage(SettingsScope::kApplication)),
+      nullptr);
+  EXPECT_EQ(settings_manager.GetStorage(SettingsScope::kProject), nullptr);
 }
 
 TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)

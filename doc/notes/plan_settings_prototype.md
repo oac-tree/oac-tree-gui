@@ -293,7 +293,7 @@ Each commit builds and passes `ctest`. Commits 1–6 only add code.
 | 4 | Add application settings storage | `AppSettingsStorage` with injected read/write functions, `CreateAppSettingsStorage()` for QSettings, string fallback in `FromSettingsValue` | `app_settings_storage_tests.cpp` with mocks and an INI-like fake. QSettings wiring is not tested |
 | 5 | Add project settings storage | `SettingsContainerItem` in core, item registration, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp`: values survive serialization, an unchanged write doesn't mark the model modified |
 | 6 | Add settings-aware project manager | `SettingsAwareProjectManager` in `mainwindow/` | `settings_aware_project_manager_tests.cpp` with a mock `IProjectManager` |
-| 7 | Wire settings manager into main window | `SequencerMainWindowContext` owns the manager and `AppSettingsStorage`. `SequencerMainWindowActions` uses the decorator. Attach and `NotifyAll` on project load. `Collect` in `CanCloseApplication` | Existing tests pass. Manual: save, close, open |
+| 7 | Wire settings manager into main window | `SequencerMainWindowContext` owns the manager and `AppSettingsStorage`. `Collect(kApplication)` in `WriteSettings` of the three main windows. Application scope only | Context test checks attached storages. Existing tests pass |
 | 8 | Add SettingsSplitter and use it in composer view | Pilot 1 | Splitter state round trip through the in-memory storage |
 | 9 | Propagate undo settings via settings manager | Pilot 2. `UndoInfo`, dialog result to `Set`, main window subscription, replaces `Data<bool>(kUseUndoSetting)` | Subscriber called after `Set`. Manual: disable undo in the dialog |
 | 10 | Store composer panels in project via settings manager | Pilot 3. `Visit` for `ComposerViewInfo` and `ProcedureEditorInfo`, provider and subscriber in `ProcedureSplittableEditorWidget`, panels cleared before restore, QSettings read/write removed, commented-out code in `SequencerComposerView` removed | `ComposerViewInfo` round trip. Manual: panels restored once after reload |
@@ -301,6 +301,9 @@ Each commit builds and passes `ctest`. Commits 1–6 only add code.
 - Commits 1–3 have no dependency on Qt widgets or models. They can be squashed.
 - Commit 5 is the only one that touches core item registration. `ProjectModel` is unchanged.
 - Commit 7 is the first behavior change. Without pilots the GUI behaves as before.
+- Order changed: 7, 8, 9 go first, as pilots 1 and 2 need only the application scope. Then 5,
+  6, 10. Project scope wiring (`SettingsAwareProjectManager`, attach and `NotifyAll` on project
+  load) goes with 5 and 6.
 - Commits 8–10 are independent. They can be reordered or dropped.
 - Step 8 has no commit. Its outcome goes into this note.
 

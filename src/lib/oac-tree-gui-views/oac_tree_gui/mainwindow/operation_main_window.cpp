@@ -25,6 +25,7 @@
 
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/settings/i_settings_manager.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
 
 #include <mvvm/widgets/app_restarter.h>
@@ -99,6 +100,8 @@ void OperationMainWindow::WriteSettings()
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
+
+  m_context.GetSettingsManager().Collect(SettingsScope::kApplication);
 }
 
 bool OperationMainWindow::CanCloseApplication()

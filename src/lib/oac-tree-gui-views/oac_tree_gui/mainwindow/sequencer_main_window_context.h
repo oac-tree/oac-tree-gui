@@ -32,7 +32,10 @@ namespace oac_tree_gui
 {
 
 class IDomainPluginService;
+class ISettingsManager;
+class ISettingsStorage;
 class SequencerSettingsModel;
+class SettingsManager;
 
 /**
  * @brief The SequencerMainWindowContext contains all common resources for SequencerMainWindow.
@@ -59,6 +62,11 @@ public:
 
   IDomainPluginService& GetDomainPluginService();
 
+  /**
+   * @brief Returns settings manager with application storage attached.
+   */
+  ISettingsManager& GetSettingsManager();
+
 private:
   std::unique_ptr<SequencerSettingsModel> m_settings;
 
@@ -67,6 +75,12 @@ private:
 
   //!< knows how to load plugins so all instructions and variables get registered
   std::unique_ptr<IDomainPluginService> m_domain_plugin_service;
+
+  //!< persistent storage for application settings, used by the settings manager
+  std::unique_ptr<ISettingsStorage> m_app_settings_storage;
+
+  //!< reads, writes and observes widget settings
+  std::unique_ptr<SettingsManager> m_settings_manager;
 };
 
 }  // namespace oac_tree_gui

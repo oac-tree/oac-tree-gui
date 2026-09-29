@@ -29,6 +29,7 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/sequencer_settings_constants.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
+#include <oac_tree_gui/settings/i_settings_manager.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
 #include <oac_tree_gui/views/explorer/sequencer_explorer_view.h>
@@ -138,6 +139,8 @@ void SequencerMainWindow::WriteSettings()
   settings.setValue(kWindowPosSettingName, pos());
 
   ::sup::gui::WriteApplicationSettings(GetContext().GetSettingsModel());
+
+  m_context.GetSettingsManager().Collect(SettingsScope::kApplication);
 }
 
 bool SequencerMainWindow::CanCloseApplication()
