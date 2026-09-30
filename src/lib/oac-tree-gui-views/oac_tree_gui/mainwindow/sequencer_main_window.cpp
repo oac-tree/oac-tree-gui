@@ -165,13 +165,10 @@ bool SequencerMainWindow::CanCloseApplication()
     }
   }
 
-  if (m_action_manager->CloseCurrentProject())
-  {
-    WriteSettings();
-    return true;
-  }
+  // settings providers may access models destroyed by project close
+  WriteSettings();
 
-  return false;
+  return m_action_manager->CloseCurrentProject();
 }
 
 void SequencerMainWindow::OnExitRequest(mvvm::AppExitRequest exit_request)
