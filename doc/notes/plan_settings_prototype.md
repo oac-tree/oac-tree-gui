@@ -304,7 +304,7 @@ One pilot per settings type.
 
 ### Pilot 3. Composer panels
 
-Done in two stages: application scope first (D1, done), project scope later (E3).
+Done in two stages: application scope first (D1), project scope later (E3). Both done.
 
 #### Stage 1. Application scope (D1)
 
@@ -347,6 +347,8 @@ the project.
 - This fixes the double restore in `SequencerComposerView`.
 
 #### Stage 2. Project scope (E3)
+
+- The widget keeps its settings connections in one `std::vector<ScopedCallback>`.
 
 - The same `ComposerViewInfo` is also stored in `kProject`, so each project keeps its own
   panels and procedures. Application scope stays.
@@ -396,6 +398,9 @@ Planned:
 
 ## Status
 
+The prototype is complete and checked manually. The follow-up work is in
+`plan_settings_migration.md`.
+
 Done:
 
 | Part | Commits |
@@ -408,44 +413,28 @@ Done:
 | Pilot 1: `SettingsSplitter` in composer view | `c6dbbe97`, `9e82987e` |
 | Pilot 2: `UndoSettingsItem`, undo via manager | `ccf27afb`, `e250bffd` |
 | D1. Pilot 3, stage 1: composer panels in application scope | `2769a45f`, `1a721ef5`, `d2238ce9`, `5b13f1b3`, `a1355c96` |
+| E1a. `SettingsContainerItem` | `b4e8db40` |
+| E1b. `ProjectSettingsStorage` | `1ca487dd` |
+| E2a. Project storage attached, `NotifyAll(kProject)` on load | `fa5e977e` |
+| E2b-mvvm. `ProjectContext::about_to_save_callback` in sup-mvvm | `b0b69fa7` (sup-mvvm) |
+| E2b. `Collect(kProject)` before save | `519c97a7` |
+| E3. Pilot 3, stage 2: composer panels in project scope | `867463c9`, `26588ed6` |
 
-## Next steps
+Differences from the plan above:
 
-| # | Commit | Content | Tests |
-|---|---|---|---|
-| A | Add PluginSettingsInfo | Struct and `Visit` in core. `PluginSettingsItem::Get/SetPluginSettingsInfo()`. `GetPluginFileNames(const PluginSettingsInfo&)` | Core tests for item and struct |
-| B | Add settings model helpers | `CreateSettingsModel`, `WriteSettingsModel` in `components/settings/` | `settings_model_helper_tests.cpp` |
-| C | Use temporary settings model in dialog | `OnApplicationSettingsDialog` uses B. `LoadPlugins()` reads from the manager. `SequencerSettingsModel` removed from `SequencerMainWindowContext`. `ReadApplicationSettings` / `WriteApplicationSettings` calls removed | Context test updated. Manual: dialog, restart |
-| D | Clean up SequencerSettingsModel | `Data()` and `GetSettingsItems()` removed. `Get()` via `GetTopItem` | Model tests updated |
-| E1a | Add SettingsContainerItem | Core. `HasValue`, `GetValue`, `SetValue`. Registered | `settings_container_item_tests.cpp` |
-| E1b | Add ProjectSettingsStorage | Components. Function returning `ProjectModel*` | `project_settings_storage_tests.cpp` |
-| E2a | Attach project settings storage | Owned by `SequencerMainWindow`, attached in constructor, detached in destructor. `NotifyAll(kProject)` in `OnProjectLoad` after `SetModels` | None, no project subscribers yet |
-| E2b-mvvm | Add about_to_save_callback to ProjectContext | sup-mvvm. Called at the start of `AbstractProject::Save()` | sup-mvvm project tests |
-| E2b | Collect project settings before save | `CreateProject()` sets `about_to_save_callback` to `Collect(kProject)` | None, no project providers yet |
-| E3 | Store composer panels in project | Pilot 3, stage 2. `ProcedureSplittableEditorWidget` adds provider and subscriber in `kProject` under the same group. `NotifyAll(kProject)` after `SetModels`. Empty list keeps current panels | Widget test: project notification replaces panels and procedures, empty list ignored. Manual: panels and procedures restored per project |
+- `SettingsContainerItem` has `GetValue` returning `std::optional` and `SetValue`. No
+  `HasValue`. A new key uses `AddProperty`. A type change uses `mvvm::utils::ReplaceData`.
+- `SequencerMainWindowContext::SetProjectSettingsStorage()` attaches the project storage.
+  `ISettingsManager` has no `SetStorage`.
+- `ComposerSettingsItem` is still in `ProjectModel`. Not used.
 
-- A and B only add code. C changes behavior.
-- Before C, delete `~/.config/coa/oac-tree-gui.conf`.
-- E1a to E2b change nothing visible. E3 does.
-- E2b needs the sup-mvvm commit. `COA_FETCH_DEPS` and CODAC builds need a sup-mvvm release.
-- D1 manual check is pending: split panels, change tabs, restart without saving, open a
-  project.
-
-After the prototype:
-
-- Review. Decide on migration of the remaining `ReadSettings` / `WriteSettings` widgets.
-- Move the machinery, `UndoInfo` and `UndoSettingsItem` to sup-gui-core. Replace
-  `CommonSettingsItem` and `PersistentSettingsModel` there. First users:
-  `DtoEditorMainWindow`, `AnyValueEditorMainWindow`.
-- Remove the unused declaration `SettingsEditorDialog::SaveToPersistentSettings()` in
-  sup-gui-core.
-- Consider a helper registering any `QSplitter` instead of the `SettingsSplitter` subclass.
-- Remove `ComposerSettingsItem` from `ProjectModel` and its registration.
+Not done, moved to `plan_settings_migration.md`: steps A to D (plugin settings, settings model
+helpers, temporary settings model in the dialog, `SequencerSettingsModel` cleanup).
 
 ## Out of scope
 
 - Generating settings dialog editors from `Visit`.
 - Migration of old `QSettings` keys.
 - Live update of the enabled state of undo/redo actions after the settings dialog.
-- Migration of widgets other than the pilots.
-- `oac-tree-operation` and `sup-pvmonitor` applications.
+- Migration of widgets other than the pilots. See `plan_settings_migration.md`.
+- `oac-tree-operation` and `sup-pvmonitor` applications. See `plan_settings_migration.md`.
