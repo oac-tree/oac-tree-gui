@@ -54,8 +54,9 @@ constexpr auto kComposerPanelsSettingsGroup = "ProcedureSplittableEditorWidget";
 /**
  * @brief The ProcedureSplittableEditorWidget holds multiple splittable ProcedureComposerTabWidgets.
  *
- * Panels are restored from application settings on construction. Their state is provided to the
- * settings manager on Collect. The settings manager must outlive the widget.
+ * Panels are restored from application settings on construction, and from project settings on
+ * project notification. Their state is provided to the settings manager on Collect of both scopes.
+ * The settings manager must outlive the widget.
  */
 class ProcedureSplittableEditorWidget : public QWidget
 {
@@ -132,7 +133,9 @@ private:
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
-  ScopedCallback m_provider_connection;
+  ScopedCallback m_app_provider_connection;
+  ScopedCallback m_project_provider_connection;
+  ScopedCallback m_project_subscriber_connection;
 };
 
 }  // namespace oac_tree_gui

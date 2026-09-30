@@ -91,9 +91,22 @@ ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
   }
   SetComposerViewInfo(view_info);
 
-  m_provider_connection =
-      m_settings_manager.RegisterProvider(kComposerPanelsSettingsGroup, SettingsScope::kApplication,
-                                          [this]() { return GetComposerViewInfo(); });
+  auto provider = [this]() { return GetComposerViewInfo(); };
+  m_app_provider_connection = m_settings_manager.RegisterProvider(
+      kComposerPanelsSettingsGroup, SettingsScope::kApplication, provider);
+  m_project_provider_connection = m_settings_manager.RegisterProvider(
+      kComposerPanelsSettingsGroup, SettingsScope::kProject, provider);
+
+  // a project without stored panels keeps the current ones
+  auto on_project_settings = [this](const ComposerViewInfo& info)
+  {
+    if (!info.editor_info_list.empty())
+    {
+      SetComposerViewInfo(info);
+    }
+  };
+  m_project_subscriber_connection = m_settings_manager.Subscribe<ComposerViewInfo>(
+      kComposerPanelsSettingsGroup, SettingsScope::kProject, on_project_settings);
 }
 
 ProcedureSplittableEditorWidget::~ProcedureSplittableEditorWidget() = default;
