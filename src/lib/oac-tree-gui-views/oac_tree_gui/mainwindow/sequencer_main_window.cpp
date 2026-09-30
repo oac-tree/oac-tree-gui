@@ -221,6 +221,8 @@ std::unique_ptr<ApplicationModels> SequencerMainWindow::CreateProject()
   mvvm::ProjectContext context;
   context.modified_callback = [this]() { UpdateProjectNames(); };
   context.loaded_callback = [this]() { OnProjectLoad(); };
+  context.about_to_save_callback = [this]()
+  { m_context.GetSettingsManager().Collect(SettingsScope::kProject); };
   context.saved_callback = [this]() { UpdateProjectNames(); };
   context.application_type = ApplicationModels::kApplicationType;
   return std::make_unique<ApplicationModels>(context);
