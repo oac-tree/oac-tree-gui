@@ -8,6 +8,8 @@ target_sources(${library_name} PRIVATE
   i_settings_storage.h
   in_memory_settings_storage.cpp
   in_memory_settings_storage.h
+  project_settings_storage.cpp
+  project_settings_storage.h
   scoped_callback.cpp
   scoped_callback.h
   settings_archive.cpp
