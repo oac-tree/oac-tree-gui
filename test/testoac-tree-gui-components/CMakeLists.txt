@@ -63,6 +63,7 @@ target_sources(${test} PRIVATE
   scoped_callback_tests.cpp
   sequencer_workspace_corner_case_tests.cpp
   settings_archive_tests.cpp
+  settings_info_visit_tests.cpp
   settings_manager_tests.cpp
   style_helper_tests.cpp
   workspace_editor_action_handler_copyandpaste_tests.cpp

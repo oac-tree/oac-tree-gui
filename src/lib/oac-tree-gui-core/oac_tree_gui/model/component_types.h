@@ -95,9 +95,16 @@ enum class ProcedureEditorType : std::uint8_t
  */
 struct ProcedureEditorInfo
 {
-  std::string procedure_id;         //! currently edited procedure
-  ProcedureEditorType editor_type;  //! type of active editor
+  std::string procedure_id;  //! currently edited procedure
+  ProcedureEditorType editor_type{ProcedureEditorType::kInstructionTree};  //! type of active editor
 };
+
+template <typename Archive>
+void Visit(Archive& archive, ProcedureEditorInfo& info)
+{
+  archive("procedure_id", info.procedure_id);
+  archive("editor_type", info.editor_type);
+}
 
 bool operator==(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs);
 bool operator!=(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs);
@@ -112,11 +119,21 @@ std::string GetStringFromProcedureInfo(const ProcedureEditorInfo& info);
  */
 ProcedureEditorInfo GetProcedureInfoFromString(const std::string& str);
 
+/**
+ * @brief The ComposerViewInfo struct defines the state of all procedure editor panels.
+ */
 struct ComposerViewInfo
 {
   std::string splitter_state;                         //! state of the main splitter
   std::vector<ProcedureEditorInfo> editor_info_list;  //! info for each procedure editor panel
 };
+
+template <typename Archive>
+void Visit(Archive& archive, ComposerViewInfo& info)
+{
+  archive("splitter_state", info.splitter_state);
+  archive("editor_info_list", info.editor_info_list);
+}
 
 bool operator==(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs);
 bool operator!=(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs);
