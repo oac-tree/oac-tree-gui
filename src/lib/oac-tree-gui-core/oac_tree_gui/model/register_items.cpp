@@ -73,6 +73,7 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::UndoSettingsItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::TextEditItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ComposerSettingsItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::SettingsContainerItem>();
 
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::EPICSServerInfoItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::WebSocketsServerInfoItem>();
