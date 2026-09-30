@@ -26,6 +26,7 @@
 
 #include <QWidget>
 #include <memory>
+#include <vector>
 
 class QSplitter;
 
@@ -128,14 +129,18 @@ signals:
 private:
   std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController() const;
 
+  //! Creates panels from application settings, or one panel if none are stored.
+  void CreateInitialPanelsFromSettings();
+
+  //! Registers providers in both scopes and the subscriber in project scope.
+  void RegisterOwnSettingsInStore();
+
   sup::gui::IAppCommandService& m_command_service;
   ISettingsManager& m_settings_manager;
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
-  ScopedCallback m_app_provider_connection;
-  ScopedCallback m_project_provider_connection;
-  ScopedCallback m_project_subscriber_connection;
+  std::vector<ScopedCallback> m_settings_connections;
 };
 
 }  // namespace oac_tree_gui

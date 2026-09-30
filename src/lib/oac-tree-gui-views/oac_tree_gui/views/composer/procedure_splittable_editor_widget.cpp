@@ -83,30 +83,8 @@ ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
           &sup::gui::SplittableEditorController::focusPanelSelectionChanged, this,
           &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
 
-  auto view_info = m_settings_manager.Get<ComposerViewInfo>(kComposerPanelsSettingsGroup,
-                                                            SettingsScope::kApplication);
-  if (view_info.editor_info_list.empty())
-  {
-    view_info.editor_info_list.emplace_back();
-  }
-  SetComposerViewInfo(view_info);
-
-  auto provider = [this]() { return GetComposerViewInfo(); };
-  m_app_provider_connection = m_settings_manager.RegisterProvider(
-      kComposerPanelsSettingsGroup, SettingsScope::kApplication, provider);
-  m_project_provider_connection = m_settings_manager.RegisterProvider(
-      kComposerPanelsSettingsGroup, SettingsScope::kProject, provider);
-
-  // a project without stored panels keeps the current ones
-  auto on_project_settings = [this](const ComposerViewInfo& info)
-  {
-    if (!info.editor_info_list.empty())
-    {
-      SetComposerViewInfo(info);
-    }
-  };
-  m_project_subscriber_connection = m_settings_manager.Subscribe<ComposerViewInfo>(
-      kComposerPanelsSettingsGroup, SettingsScope::kProject, on_project_settings);
+  CreateInitialPanelsFromSettings();
+  RegisterOwnSettingsInStore();
 }
 
 ProcedureSplittableEditorWidget::~ProcedureSplittableEditorWidget() = default;
@@ -223,6 +201,40 @@ ProcedureSplittableEditorWidget::CreateSplitterController() const
     return result;
   };
   return std::make_unique<sup::gui::SplittableEditorController>(m_splitter, factory_func);
+}
+
+void ProcedureSplittableEditorWidget::CreateInitialPanelsFromSettings()
+{
+  // using persistent storage
+  auto view_info = m_settings_manager.Get<ComposerViewInfo>(kComposerPanelsSettingsGroup,
+                                                            SettingsScope::kApplication);
+  if (view_info.editor_info_list.empty())
+  {
+    view_info.editor_info_list.emplace_back();
+  }
+  SetComposerViewInfo(view_info);
+}
+
+void ProcedureSplittableEditorWidget::RegisterOwnSettingsInStore()
+{
+  // registers own settings to report them to two different settings store
+  auto provider = [this]() { return GetComposerViewInfo(); };
+  m_settings_connections.push_back(m_settings_manager.RegisterProvider(
+      kComposerPanelsSettingsGroup, SettingsScope::kApplication, provider));
+  m_settings_connections.push_back(m_settings_manager.RegisterProvider(
+      kComposerPanelsSettingsGroup, SettingsScope::kProject, provider));
+
+  // subscribe to notification update in project setting store
+  auto on_project_settings = [this](const ComposerViewInfo& info)
+  {
+    if (!info.editor_info_list.empty())
+    {
+      // a project without stored panels keeps the current ones
+      SetComposerViewInfo(info);
+    }
+  };
+  m_settings_connections.push_back(m_settings_manager.Subscribe<ComposerViewInfo>(
+      kComposerPanelsSettingsGroup, SettingsScope::kProject, on_project_settings));
 }
 
 }  // namespace oac_tree_gui
