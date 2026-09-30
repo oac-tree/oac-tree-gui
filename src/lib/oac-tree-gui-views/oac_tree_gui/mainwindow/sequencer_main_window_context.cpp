@@ -73,4 +73,9 @@ ISettingsManager& SequencerMainWindowContext::GetSettingsManager()
   return *m_settings_manager;
 }
 
+void SequencerMainWindowContext::SetProjectSettingsStorage(ISettingsStorage* storage)
+{
+  m_settings_manager->SetStorage(SettingsScope::kProject, storage);
+}
+
 }  // namespace oac_tree_gui

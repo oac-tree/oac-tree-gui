@@ -67,6 +67,13 @@ public:
    */
   ISettingsManager& GetSettingsManager();
 
+  /**
+   * @brief Sets the storage of project settings, or nullptr to remove it.
+   *
+   * The storage must stay alive until it is removed.
+   */
+  void SetProjectSettingsStorage(ISettingsStorage* storage);
+
 private:
   std::unique_ptr<SequencerSettingsModel> m_settings;
 

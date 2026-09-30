@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/settings/app_settings_storage.h>
 #include <oac_tree_gui/settings/i_settings_manager.h>
+#include <oac_tree_gui/settings/in_memory_settings_storage.h>
 
 #include <sup/gui/app/app_command_service.h>
 
@@ -57,6 +58,18 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
       dynamic_cast<AppSettingsStorage*>(settings_manager.GetStorage(SettingsScope::kApplication)),
       nullptr);
   EXPECT_EQ(settings_manager.GetStorage(SettingsScope::kProject), nullptr);
+}
+
+TEST_F(SequencerMainWindowContextTest, SetProjectSettingsStorage)
+{
+  SequencerMainWindowContext context;
+  InMemorySettingsStorage storage;
+
+  context.SetProjectSettingsStorage(&storage);
+  EXPECT_EQ(context.GetSettingsManager().GetStorage(SettingsScope::kProject), &storage);
+
+  context.SetProjectSettingsStorage(nullptr);
+  EXPECT_EQ(context.GetSettingsManager().GetStorage(SettingsScope::kProject), nullptr);
 }
 
 TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)

@@ -38,6 +38,7 @@ namespace oac_tree_gui
 
 class ApplicationModels;
 class OperationMonitorView;
+class ProjectSettingsStorage;
 class SequencerComposerView;
 class SequencerExplorerView;
 class SequencerMainWindowActions;
@@ -109,6 +110,7 @@ private:
 
   SequencerMainWindowContext& m_context;
   std::unique_ptr<ApplicationModels> m_models;
+  std::unique_ptr<ProjectSettingsStorage> m_project_settings_storage;
 
   SequencerMainWindowActions* m_action_manager{nullptr};
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};

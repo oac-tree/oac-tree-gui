@@ -30,6 +30,7 @@
 #include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/model/undo_settings_item.h>
 #include <oac_tree_gui/settings/i_settings_manager.h>
+#include <oac_tree_gui/settings/project_settings_storage.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
 #include <oac_tree_gui/views/explorer/sequencer_explorer_view.h>
@@ -55,8 +56,12 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 }  // namespace
 
 SequencerMainWindow::SequencerMainWindow(SequencerMainWindowContext& context)
-    : m_context(context), m_models(CreateProject())
+    : m_context(context)
+    , m_models(CreateProject())
+    , m_project_settings_storage(std::make_unique<ProjectSettingsStorage>(
+          [this]() { return m_models->GetProjectModel(); }))
 {
+  m_context.SetProjectSettingsStorage(m_project_settings_storage.get());
   InitApplication();
 
   m_models->CreateEmpty();
@@ -72,7 +77,10 @@ SequencerMainWindowContext& SequencerMainWindow::GetContext() const
   return m_context;
 }
 
-SequencerMainWindow::~SequencerMainWindow() = default;
+SequencerMainWindow::~SequencerMainWindow()
+{
+  m_context.SetProjectSettingsStorage(nullptr);
+}
 
 void SequencerMainWindow::closeEvent(QCloseEvent* event)
 {
@@ -188,6 +196,9 @@ void SequencerMainWindow::OnProjectLoad()
   m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModels(m_models.get());
   m_operation_view->SetModels(m_models.get());
+
+  // after views got new models, so procedure ids are resolved
+  m_context.GetSettingsManager().NotifyAll(SettingsScope::kProject);
 
   UpdateProjectNames();
 }
