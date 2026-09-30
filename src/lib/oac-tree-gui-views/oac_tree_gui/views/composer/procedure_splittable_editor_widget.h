@@ -102,7 +102,7 @@ public:
   ComposerViewInfo GetComposerViewInfo() const;
 
   /**
-   * @brief Creates procedure editor panels from the given state.
+   * @brief Replaces procedure editor panels with panels created from the given state.
    *
    * Procedures are assigned if the model is set.
    */

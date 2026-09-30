@@ -162,7 +162,13 @@ ComposerViewInfo ProcedureSplittableEditorWidget::GetComposerViewInfo() const
 
 void ProcedureSplittableEditorWidget::SetComposerViewInfo(const ComposerViewInfo& view_info)
 {
-  // number of panels
+  // ClosePanel deletes later, the panel would stay in the splitter until then
+  for (auto panel : m_splitter_controller->GetPanels())
+  {
+    m_splitter_controller->ClosePanel(panel);
+    delete panel;
+  }
+
   for (const auto& procedure_info : view_info.editor_info_list)
   {
     auto panel = CreatePanel();

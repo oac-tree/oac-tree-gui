@@ -270,18 +270,18 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoForTwoPanels)
   view_info.editor_info_list = {{procedure0->GetIdentifier(), ProcedureEditorType::kNodeEditor},
                                 {procedure1->GetIdentifier(), ProcedureEditorType::kWorkspace}};
 
-  // panels are appended to the default one
+  // default panel is replaced
   editor.SetComposerViewInfo(view_info);
-  EXPECT_EQ(splitter->count(), 3);
+  EXPECT_EQ(splitter->count(), 2);
 
   auto panels = editor.GetController()->GetPanels();
+  auto editor0 = panels.at(0)->GetMainEditor<ProcedureComposerTabWidget>();
   auto editor1 = panels.at(1)->GetMainEditor<ProcedureComposerTabWidget>();
-  auto editor2 = panels.at(2)->GetMainEditor<ProcedureComposerTabWidget>();
 
-  EXPECT_EQ(panels.at(1)->GetCurrentItem(), procedure0);
-  EXPECT_EQ(editor1->GetEditorType(), ProcedureEditorType::kNodeEditor);
-  EXPECT_EQ(panels.at(2)->GetCurrentItem(), procedure1);
-  EXPECT_EQ(editor2->GetEditorType(), ProcedureEditorType::kWorkspace);
+  EXPECT_EQ(panels.at(0)->GetCurrentItem(), procedure0);
+  EXPECT_EQ(editor0->GetEditorType(), ProcedureEditorType::kNodeEditor);
+  EXPECT_EQ(panels.at(1)->GetCurrentItem(), procedure1);
+  EXPECT_EQ(editor1->GetEditorType(), ProcedureEditorType::kWorkspace);
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoWhenProcedureIdAbsent)
@@ -299,18 +299,37 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoWhenProcedureIdAb
   view_info.editor_info_list = {{"non-existing-id1", ProcedureEditorType::kNodeEditor},
                                 {"non-existing-id2", ProcedureEditorType::kWorkspace}};
 
-  // opens our only procedure in both new panels
+  // opens our only procedure in both panels
   editor.SetComposerViewInfo(view_info);
-  EXPECT_EQ(splitter->count(), 3);
+  EXPECT_EQ(splitter->count(), 2);
 
   auto panels = editor.GetController()->GetPanels();
+  auto editor0 = panels.at(0)->GetMainEditor<ProcedureComposerTabWidget>();
   auto editor1 = panels.at(1)->GetMainEditor<ProcedureComposerTabWidget>();
-  auto editor2 = panels.at(2)->GetMainEditor<ProcedureComposerTabWidget>();
 
+  EXPECT_EQ(panels.at(0)->GetCurrentItem(), procedure0);
+  EXPECT_EQ(editor0->GetEditorType(), ProcedureEditorType::kNodeEditor);
   EXPECT_EQ(panels.at(1)->GetCurrentItem(), procedure0);
-  EXPECT_EQ(editor1->GetEditorType(), ProcedureEditorType::kNodeEditor);
-  EXPECT_EQ(panels.at(2)->GetCurrentItem(), procedure0);
-  EXPECT_EQ(editor2->GetEditorType(), ProcedureEditorType::kWorkspace);
+  EXPECT_EQ(editor1->GetEditorType(), ProcedureEditorType::kWorkspace);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoReplacesPanels)
+{
+  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  editor.SetModel(&m_model);
+  editor.CreatePanel();
+  editor.CreatePanel();
+
+  auto splitter = editor.findChild<QSplitter*>();
+  ASSERT_NE(splitter, nullptr);
+  ASSERT_EQ(splitter->count(), 3);
+
+  editor.SetComposerViewInfo({"", {{"", ProcedureEditorType::kXmlPanel}}});
+
+  EXPECT_EQ(splitter->count(), 1);
+  const std::vector<ProcedureEditorType> expected_types({ProcedureEditorType::kXmlPanel});
+  EXPECT_EQ(GetEditorTypes(editor), expected_types);
+  EXPECT_EQ(editor.GetController()->GetFocusWidget(), editor.GetController()->GetPanels().at(0));
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, RestorePanelsFromSettings)
