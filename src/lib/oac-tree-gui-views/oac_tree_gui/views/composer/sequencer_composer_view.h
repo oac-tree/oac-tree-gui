@@ -39,7 +39,6 @@ class ISettingsManager;
 class ProcedureSplittableEditorWidget;
 class SequencerComposerActions;
 class SettingsSplitter;
-class ProjectModel;
 
 /**
  * @brief The SequencerComposerView class is a main widget for procedure editing.
@@ -66,8 +65,6 @@ public:
   void SetModels(ApplicationModels* models);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
   void SetupConnections();
   void SetupWidgetActions();
 
@@ -78,8 +75,6 @@ private:
   SettingsSplitter* m_splitter{nullptr};
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
   ProcedureSplittableEditorWidget* m_splittable_editor_widget{nullptr};
-
-  ProjectModel* m_project_model{nullptr};
 };
 
 }  // namespace oac_tree_gui

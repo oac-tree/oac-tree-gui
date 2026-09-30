@@ -24,8 +24,6 @@
 #include <oac_tree_gui/model/component_types.h>
 #include <oac_tree_gui/settings/scoped_callback.h>
 
-#include <sup/gui/widgets/settings_callbacks.h>
-
 #include <QWidget>
 #include <memory>
 
@@ -56,8 +54,8 @@ constexpr auto kComposerPanelsSettingsGroup = "ProcedureSplittableEditorWidget";
 /**
  * @brief The ProcedureSplittableEditorWidget holds multiple splittable ProcedureComposerTabWidgets.
  *
- * The state of panels is provided to the settings manager on Collect. The settings manager must
- * outlive the widget.
+ * Panels are restored from application settings on construction. Their state is provided to the
+ * settings manager on Collect. The settings manager must outlive the widget.
  */
 class ProcedureSplittableEditorWidget : public QWidget
 {
@@ -74,6 +72,11 @@ public:
   ProcedureSplittableEditorWidget(ProcedureSplittableEditorWidget&&) = delete;
   ProcedureSplittableEditorWidget& operator=(ProcedureSplittableEditorWidget&&) = delete;
 
+  /**
+   * @brief Sets the model to all panels.
+   *
+   * Each panel gets the procedure stored in settings, or the first procedure of the model.
+   */
   void SetModel(SequencerModel* model);
 
   /**
@@ -87,16 +90,6 @@ public:
   sup::gui::SplittableComboPanel* CreatePanel();
 
   /**
-   * @brief Read settings from storage using function provided.
-   */
-  void ReadSettings(const sup::gui::read_variant_func_t& read_func);
-
-  /**
-   * @brief Write settings to persistent storage using function provided.
-   */
-  void WriteSettings(const sup::gui::write_variant_func_t& write_func);
-
-  /**
    * @brief Insert instruction from toolbox to the instruction container.
    *
    * Will forward the call to underlying active editor.
@@ -104,20 +97,14 @@ public:
   void InsertInstructionFromToolBox(const QString& name);
 
   /**
-   * @brief Returns composer view info.
-   *
-   * FIXME duplication of WriteSettings/ReadSettings
-   *
-   * This is the collection of UI settings for all procedure editor panels.
+   * @brief Returns the state of all procedure editor panels.
    */
   ComposerViewInfo GetComposerViewInfo() const;
 
   /**
-   * @brief Sets composer view info.
+   * @brief Creates procedure editor panels from the given state.
    *
-   * FIXME duplication of WriteSettings/ReadSettings
-   *
-   * This will restore the UI settings for all procedure editor panels.
+   * Procedures are assigned if the model is set.
    */
   void SetComposerViewInfo(const ComposerViewInfo& view_info);
 
@@ -141,6 +128,7 @@ private:
   std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController() const;
 
   sup::gui::IAppCommandService& m_command_service;
+  ISettingsManager& m_settings_manager;
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
