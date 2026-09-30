@@ -85,11 +85,13 @@ manager.Set("MainWindow", undo_info, SettingsScope::kApplication);
   the project as modified. Layout of an unmodified project is lost on close. This is accepted.
 - Widgets with several instances get their settings group name via constructor, as
   `sup::gui::CustomSplitter` does.
-- `Collect(kProject)` is called explicitly in sequencer-gui. No new hook in sup-mvvm.
+- `Collect(kProject)` is called from a new `mvvm::ProjectContext::about_to_save_callback`.
+  sup-mvvm gets this hook.
 - The settings manager is the source of truth for editable settings too.
   `SequencerSettingsModel` is only a temporary model for `SettingsEditorDialog`.
 - sup-gui-core is not changed during the prototype. Generic parts move there afterwards.
 - Old `QSettings` keys are not migrated. `~/.config/coa/oac-tree-gui.conf` is deleted once.
+- Old project files may stop loading.
 
 ## Components
 
@@ -142,9 +144,15 @@ Implementations:
   `mvvm::GetQtVariant` / `mvvm::GetStdVariant`. QSettings returns strings after restart, so
   `FromSettingsValue` parses strings for `bool`, `int32` and `double`.
 - `ProjectSettingsStorage`. For `kProject`. Keeps values in a new `SettingsContainerItem`
-  inside `ProjectModel`. One property per key. The item is created lazily, so `ProjectModel`
-  and the project file format stay unchanged for the prototype. The storage is re-attached on
-  every project load.
+  inside `ProjectModel`, one property per key.
+  - The storage gets a function returning the current `ProjectModel*`. It is attached once.
+    `ApplicationModels::GetProjectModel()` returns `nullptr` after project close, so the
+    storage never holds a destroyed model.
+  - No model: `Read` returns `nullopt`, `Write` does nothing.
+  - The item is created on the first write. `Read` does not create it.
+  - A property is added on the first write of a key. A value of another type replaces the
+    property. Properties added at run time survive serialization, as sup-mvvm restores tags
+    from the file.
 
 ### ISettingsManager
 
@@ -253,25 +261,24 @@ if (dialog.exec() == QDialog::Accepted)
 | Event | Action |
 |---|---|
 | Application start | `AppSettingsStorage` attached. `LoadPlugins()` reads `PluginSettingsInfo`. Widgets call `Get(kApplication)` in the constructor. |
-| Project loaded (`loaded_callback`) | `ProjectSettingsStorage` attached to new `ProjectModel`. `NotifyAll(kProject)`. |
-| Project save / save as | `Collect(kProject)`, then save. |
-| New / open / close project | `Collect(kProject)` only if the project is already modified, then proceed. |
+| Project loaded (`loaded_callback`) | `NotifyAll(kProject)` after views got the new models. |
+| Project saved (`about_to_save_callback`) | `Collect(kProject)`, then save. |
+| New / open / close project | Modified project: `Collect(kProject)` only if the user answers "Save". Unmodified project: nothing collected. |
 | Application close (`CanCloseApplication`) | `Collect(kApplication)`, then the project close step above. |
 | Settings dialog opened | Temporary `SequencerSettingsModel` created by `CreateSettingsModel`. |
 | Settings dialog accepted | `WriteSettingsModel` calls `Set(kApplication)` for each struct. Subscribers update. |
 
-### Explicit project collect
+### Project collect
 
-The `mvvm::Add*ProjectAction` helpers take an `mvvm::IProjectManager&`. Add a decorator
-`SettingsAwareProjectManager : mvvm::IProjectManager` in `mainwindow/`. It wraps
-`mvvm::ProjectHandler` and calls the manager before forwarding:
+sup-mvvm gets `std::function<void()> about_to_save_callback` in `mvvm::ProjectContext`, next
+to `saved_callback`. `AbstractProject::Save()` calls it before `SaveImpl`.
 
-- `SaveCurrentProject`, `SaveProjectAs`: always `Collect(kProject)`.
-- `CreateNewProject`, `OpenExistingProject`, `CloseProject`: `Collect(kProject)` only if
-  `GetProject()->IsModified()`. Otherwise collecting would mark the project modified and
-  trigger the "save changes?" question.
-
-`SequencerMainWindowActions` passes the decorator instead of the handler to the helpers.
+- Every save reaches it: save, save as, and the "Save" answer of `SaveBeforeClosing()`.
+- `ProjectManager::CreateNewProject` saves the new empty project. The current layout is
+  collected into it.
+- Collecting modifies `ProjectModel` and calls `modified_callback`. `Save()` marks the project
+  unmodified afterwards.
+- `SequencerMainWindow::CreateProject()` sets the callback to `Collect(kProject)`.
 
 ## Pilots
 
@@ -297,7 +304,7 @@ One pilot per settings type.
 
 ### Pilot 3. Composer panels
 
-Done in two stages: application scope first (D1), project scope later (E3).
+Done in two stages: application scope first (D1, done), project scope later (E3).
 
 #### Stage 1. Application scope (D1)
 
@@ -356,7 +363,7 @@ the project.
 - A project without stored panels gives an empty `editor_info_list`. The subscriber ignores
   it and keeps the current panels, so the application scope layout is the default. A stored
   empty list cannot be told apart from a missing one. This is accepted.
-- `ComposerSettingsItem` is not used by the new path.
+- `ComposerSettingsItem` is not used by the new path. It is removed after E3.
 
 ## Tests
 
@@ -369,22 +376,23 @@ Existing, in `test/testoac-tree-gui-components/` unless noted:
 - `settings_splitter_tests.cpp` in `testoac-tree-gui-views`.
 - `undo_settings_item_tests.cpp`, `sequencer_settings_model_tests.cpp` in
   `testoac-tree-gui-core`.
+- `settings_info_visit_tests.cpp`. `Visit` of `ComposerViewInfo` and `UndoInfo`.
+- `procedure_splittable_editor_widget_tests.cpp` in `testoac-tree-gui-views`, application
+  scope.
 
 Planned:
 
 - Plugin settings item tests for `PluginSettingsInfo` get/set, in core.
 - `settings_model_helper_tests.cpp`. Model populated from and written to the manager with
   `InMemorySettingsStorage`.
-- `project_settings_storage_tests.cpp`. Values survive `ProjectModel` serialization.
-  Writing an unchanged value does not mark the model modified.
-- `settings_aware_project_manager_tests.cpp`. Collect called on save. Not called on close
-  of an unmodified project. Uses a mock `IProjectManager`.
-- `ComposerViewInfo` round trip through the archive, in components. Core tests cannot use
-  the archive.
-- `procedure_splittable_editor_widget_tests.cpp` in `testoac-tree-gui-views` uses
-  `SettingsManager` with `InMemorySettingsStorage`. Tests of `ReadSettings` / `WriteSettings`
-  removed. New tests: one panel by default, panels and tabs restored, `Collect` round trip,
-  procedures assigned on `SetModel`, `SetComposerViewInfo` replaces panels.
+- `settings_container_item_tests.cpp` in core. Get and set, missing key, type change, unchanged
+  value does not mark the model modified, XML round trip with `/` in keys.
+- `project_settings_storage_tests.cpp`. `Read` does not create the item. Values survive
+  `ProjectModel` serialization. No model.
+- sup-mvvm project tests. `about_to_save_callback` called before save. Changes made in it are
+  saved. Not called when the path dialog is cancelled.
+- `procedure_splittable_editor_widget_tests.cpp`, project scope. Notification replaces panels
+  and procedures. Empty list ignored. `Collect(kProject)` writes to the project storage.
 
 ## Status
 
@@ -399,6 +407,7 @@ Done:
 | Manager in main windows, application scope | `61630a3c` |
 | Pilot 1: `SettingsSplitter` in composer view | `c6dbbe97`, `9e82987e` |
 | Pilot 2: `UndoSettingsItem`, undo via manager | `ccf27afb`, `e250bffd` |
+| D1. Pilot 3, stage 1: composer panels in application scope | `2769a45f`, `1a721ef5`, `d2238ce9`, `5b13f1b3`, `a1355c96` |
 
 ## Next steps
 
@@ -408,14 +417,19 @@ Done:
 | B | Add settings model helpers | `CreateSettingsModel`, `WriteSettingsModel` in `components/settings/` | `settings_model_helper_tests.cpp` |
 | C | Use temporary settings model in dialog | `OnApplicationSettingsDialog` uses B. `LoadPlugins()` reads from the manager. `SequencerSettingsModel` removed from `SequencerMainWindowContext`. `ReadApplicationSettings` / `WriteApplicationSettings` calls removed | Context test updated. Manual: dialog, restart |
 | D | Clean up SequencerSettingsModel | `Data()` and `GetSettingsItems()` removed. `Get()` via `GetTopItem` | Model tests updated |
-| D1 | Clean up ProcedureSplittableEditorWidget | Pilot 3, stage 1. `Visit` for `ComposerViewInfo` / `ProcedureEditorInfo`. Panels stored in application scope under a constant group. Duplicated QSettings read/write and panel creation in `SetModels` removed. `Collect(kApplication)` moved before project close | `ComposerViewInfo` round trip. Widget test: panels and tabs restored. Manual: split panels, change tabs, restart without saving |
-| E1 | Add project settings storage | `SettingsContainerItem` in core, `ProjectSettingsStorage` | `project_settings_storage_tests.cpp` |
-| E2 | Add settings-aware project manager | `SettingsAwareProjectManager`. Attach project storage and `NotifyAll(kProject)` on project load | `settings_aware_project_manager_tests.cpp` |
+| E1a | Add SettingsContainerItem | Core. `HasValue`, `GetValue`, `SetValue`. Registered | `settings_container_item_tests.cpp` |
+| E1b | Add ProjectSettingsStorage | Components. Function returning `ProjectModel*` | `project_settings_storage_tests.cpp` |
+| E2a | Attach project settings storage | Owned by `SequencerMainWindow`, attached in constructor, detached in destructor. `NotifyAll(kProject)` in `OnProjectLoad` after `SetModels` | None, no project subscribers yet |
+| E2b-mvvm | Add about_to_save_callback to ProjectContext | sup-mvvm. Called at the start of `AbstractProject::Save()` | sup-mvvm project tests |
+| E2b | Collect project settings before save | `CreateProject()` sets `about_to_save_callback` to `Collect(kProject)` | None, no project providers yet |
 | E3 | Store composer panels in project | Pilot 3, stage 2. `ProcedureSplittableEditorWidget` adds provider and subscriber in `kProject` under the same group. `NotifyAll(kProject)` after `SetModels`. Empty list keeps current panels | Widget test: project notification replaces panels and procedures, empty list ignored. Manual: panels and procedures restored per project |
 
-- A and B only add code. C and D1 change behavior.
+- A and B only add code. C changes behavior.
 - Before C, delete `~/.config/coa/oac-tree-gui.conf`.
-- Project scope (E1–E3) comes after D1.
+- E1a to E2b change nothing visible. E3 does.
+- E2b needs the sup-mvvm commit. `COA_FETCH_DEPS` and CODAC builds need a sup-mvvm release.
+- D1 manual check is pending: split panels, change tabs, restart without saving, open a
+  project.
 
 After the prototype:
 
@@ -426,6 +440,7 @@ After the prototype:
 - Remove the unused declaration `SettingsEditorDialog::SaveToPersistentSettings()` in
   sup-gui-core.
 - Consider a helper registering any `QSplitter` instead of the `SettingsSplitter` subclass.
+- Remove `ComposerSettingsItem` from `ProjectModel` and its registration.
 
 ## Out of scope
 
