@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
 
 #include <oac_tree_gui/model/component_types.h>
+#include <oac_tree_gui/settings/scoped_callback.h>
 
 #include <sup/gui/widgets/settings_callbacks.h>
 
@@ -45,19 +46,27 @@ class SplittableComboPanel;
 namespace oac_tree_gui
 {
 
+class ISettingsManager;
 class SequencerModel;
 class ProcedureItem;
 
+//! Settings group of composer panels.
+constexpr auto kComposerPanelsSettingsGroup = "ProcedureSplittableEditorWidget";
+
 /**
  * @brief The ProcedureSplittableEditorWidget holds multiple splittable ProcedureComposerTabWidgets.
+ *
+ * The state of panels is provided to the settings manager on Collect. The settings manager must
+ * outlive the widget.
  */
 class ProcedureSplittableEditorWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit ProcedureSplittableEditorWidget(sup::gui::IAppCommandService& command_service,
-                                           QWidget* parent_widget = nullptr);
+  ProcedureSplittableEditorWidget(sup::gui::IAppCommandService& command_service,
+                                  ISettingsManager& settings_manager,
+                                  QWidget* parent_widget = nullptr);
   ~ProcedureSplittableEditorWidget() override;
 
   ProcedureSplittableEditorWidget(const ProcedureSplittableEditorWidget&) = delete;
@@ -75,7 +84,7 @@ public:
   /**
    * @brief Adds panel to the splitter.
    */
-  sup::gui::SplittableComboPanel *CreatePanel();
+  sup::gui::SplittableComboPanel* CreatePanel();
 
   /**
    * @brief Read settings from storage using function provided.
@@ -135,6 +144,7 @@ private:
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
+  ScopedCallback m_provider_connection;
 };
 
 }  // namespace oac_tree_gui

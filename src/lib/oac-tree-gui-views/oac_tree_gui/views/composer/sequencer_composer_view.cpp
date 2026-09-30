@@ -67,7 +67,8 @@ SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService& comma
     , m_composer_actions(new SequencerComposerActions(this))
     , m_splitter(new SettingsSplitter(GetSplitterSettingsGroup(), settings_manager))
     , m_composer_tools_panel(new ComposerToolsPanel(command_service))
-    , m_splittable_editor_widget(new ProcedureSplittableEditorWidget(command_service))
+    , m_splittable_editor_widget(
+          new ProcedureSplittableEditorWidget(command_service, settings_manager))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

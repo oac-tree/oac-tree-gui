@@ -24,6 +24,7 @@
 
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/settings/i_settings_manager.h>
 
 #include <sup/gui/views/dtoeditor/splittable_combo_panel.h>
 #include <sup/gui/views/dtoeditor/splittable_editor_controller.h>
@@ -39,14 +40,12 @@ namespace oac_tree_gui
 namespace
 {
 
-constexpr auto kGroupName = "ProcedureSplittableEditorWidget";
-
 /**
  * @brief Returns QSettings key holding the number of created panels
  */
 QString GetPanelCountKey()
 {
-  return QString(kGroupName) + "/panel_count";
+  return QString(kComposerPanelsSettingsGroup) + "/panel_count";
 }
 
 /**
@@ -54,7 +53,7 @@ QString GetPanelCountKey()
  */
 QString GetSplitterStateKey()
 {
-  return QString(kGroupName) + "/splitter";
+  return QString(kComposerPanelsSettingsGroup) + "/splitter";
 }
 
 /**
@@ -62,7 +61,7 @@ QString GetSplitterStateKey()
  */
 QString GetProcedureEditorTabStateKey()
 {
-  return QString(kGroupName) + "/procedure_tabs";
+  return QString(kComposerPanelsSettingsGroup) + "/procedure_tabs";
 }
 
 /**
@@ -90,7 +89,8 @@ ProcedureItem* FindAppropriateProcedure(SequencerModel* model, const std::string
 }  // namespace
 
 ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
-    sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
+    sup::gui::IAppCommandService& command_service, ISettingsManager& settings_manager,
+    QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_splitter(new QSplitter)
@@ -105,6 +105,10 @@ ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
   connect(m_splitter_controller.get(),
           &sup::gui::SplittableEditorController::focusPanelSelectionChanged, this,
           &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
+
+  m_provider_connection =
+      settings_manager.RegisterProvider(kComposerPanelsSettingsGroup, SettingsScope::kApplication,
+                                        [this]() { return GetComposerViewInfo(); });
 }
 
 ProcedureSplittableEditorWidget::~ProcedureSplittableEditorWidget() = default;
