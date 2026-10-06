@@ -64,31 +64,6 @@ TEST_F(ComponentTypesTest, ProcedureEditorInfoEqualityOperators)
   }
 }
 
-TEST_F(ComponentTypesTest, ProcedureEditorInfoStringConversion)
-{
-  {  // default constructed
-    const ProcedureEditorInfo input_info{};
-    const auto str = GetStringFromProcedureInfo(input_info);
-    EXPECT_EQ(str, "\"\" 0");
-    const auto output_info = GetProcedureInfoFromString(str);
-    EXPECT_TRUE(input_info == output_info);
-  }
-
-  {  // non-default
-    const ProcedureEditorInfo input_info{"my_procedure", ProcedureEditorType::kWorkspace};
-    const auto str = GetStringFromProcedureInfo(input_info);
-    EXPECT_EQ(str, "\"my_procedure\" 1");
-    const auto output_info = GetProcedureInfoFromString(str);
-    EXPECT_TRUE(input_info == output_info);
-  }
-
-  {  // from empty string
-    const auto output_info = GetProcedureInfoFromString("");
-    const ProcedureEditorInfo expected_info{};
-    EXPECT_TRUE(expected_info == output_info);
-  }
-}
-
 TEST_F(ComponentTypesTest, ComposerViewInfoOperators)
 {
   {  // default constructed

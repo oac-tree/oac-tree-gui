@@ -9,7 +9,6 @@ target_sources(${test} PRIVATE
   application_models_tests.cpp
   attribute_item_transform_helper_tests.cpp
   component_types_tests.cpp
-  composer_settings_item_tests.cpp
   domain_automation_helper_tests.cpp
   domain_constants_tests.cpp
   domain_helper_tests.cpp

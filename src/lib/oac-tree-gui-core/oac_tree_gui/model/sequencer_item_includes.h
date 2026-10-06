@@ -24,7 +24,6 @@
 //! @file
 //! Includes for all sequencer related items.
 
-#include <oac_tree_gui/model/composer_settings_item.h>
 #include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_info_item.h>

@@ -20,9 +20,6 @@
 
 #include "component_types.h"
 
-#include <iomanip>
-#include <sstream>
-
 namespace oac_tree_gui
 {
 
@@ -34,22 +31,6 @@ bool operator==(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs)
 bool operator!=(const ProcedureEditorInfo& lhs, const ProcedureEditorInfo& rhs)
 {
   return !(lhs == rhs);
-}
-
-std::string GetStringFromProcedureInfo(const ProcedureEditorInfo& info)
-{
-  std::ostringstream stream;
-  stream << std::quoted(info.procedure_id) << ' ' << static_cast<std::uint32_t>(info.editor_type);
-  return stream.str();
-}
-
-ProcedureEditorInfo GetProcedureInfoFromString(const std::string& str)
-{
-  std::istringstream stream(str);
-  std::string procedure_id;
-  std::uint32_t tab_as_int = 0;
-  stream >> std::quoted(procedure_id) >> tab_as_int;
-  return ProcedureEditorInfo{procedure_id, static_cast<ProcedureEditorType>(tab_as_int)};
 }
 
 bool operator==(const ComposerViewInfo& lhs, const ComposerViewInfo& rhs)

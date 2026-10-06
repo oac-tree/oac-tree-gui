@@ -20,10 +20,6 @@
 
 #include "oac_tree_gui/model/project_model.h"
 
-#include <oac_tree_gui/model/composer_settings_item.h>
-
-#include <mvvm/model/model_utils.h>
-
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test
@@ -37,12 +33,12 @@ TEST_F(ProjectModelTest, InitialState)
 {
   ProjectModel model;
   EXPECT_EQ(model.GetType(), "ProjectModel");
-  EXPECT_NE(mvvm::utils::GetTopItem<ComposerSettingsItem>(model), nullptr);
+  EXPECT_EQ(model.GetRootItem()->GetTotalItemCount(), 1);
   EXPECT_NE(model.GetFavoriteInstructionContainer(), nullptr);
 
   // item recreated after cleanup
   model.Clear();
-  EXPECT_NE(mvvm::utils::GetTopItem<ComposerSettingsItem>(model), nullptr);
+  EXPECT_EQ(model.GetRootItem()->GetTotalItemCount(), 1);
   EXPECT_NE(model.GetFavoriteInstructionContainer(), nullptr);
 }
 

@@ -20,8 +20,6 @@
 
 #include "project_model.h"
 
-#include "composer_settings_item.h"
-
 #include <oac_tree_gui/model/instruction_container_item.h>
 
 namespace oac_tree_gui
@@ -51,7 +49,6 @@ InstructionContainerItem* ProjectModel::GetFavoriteInstructionContainer()
 
 void ProjectModel::PopulateModel()
 {
-  (void)InsertItem<ComposerSettingsItem>();
   (void)InsertItem<InstructionContainerItem>();
 }
 
