@@ -42,12 +42,14 @@ namespace oac_tree_gui
  * @brief Helper function to create a dialog containing full-fledged AnyValueEditor.
  *
  * @param item Initial value.
+ * @param settings_manager The manager to store dialog settings.
  * @param parent Parent widget.
  *
  * @return Created dialog.
  */
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
-    const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
+    const sup::gui::AnyValueItem* item, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent = nullptr);
 
 /**
  * @brief Helper function to create a dialog containing simplified tree-like AnyValue editor.
@@ -78,10 +80,11 @@ std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactScalarEdito
 /**
  * @brief Create callback to summon AnyValueItem editor dialog.
  *
+ * @param settings_manager The manager to store dialog settings. Must outlive the callback.
  * @param parent Parent widget to use for initial dialog placement.
  */
 std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(
-    QWidget* parent);
+    sup::gui::ISettingsManager& settings_manager, QWidget* parent);
 
 }  // namespace oac_tree_gui
 

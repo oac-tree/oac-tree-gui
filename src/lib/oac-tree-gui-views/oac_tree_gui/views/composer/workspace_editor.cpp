@@ -29,6 +29,7 @@
 #include <oac_tree_gui/views/editors/anyvalue_editor_dialog_factory.h>
 
 #include <sup/gui/app/app_command_context.h>
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
 #include <sup/gui/widgets/message_helper.h>
@@ -39,10 +40,10 @@ namespace oac_tree_gui
 {
 
 WorkspaceEditor::WorkspaceEditor(
-    sup::gui::IAppCommandService& command_service,
-    const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
-    QWidget* parent_widget)
+    const sup::gui::AppViewContext& context,
+    const std::function<std::vector<mvvm::SessionItem*>()>& selected_items, QWidget* parent_widget)
     : QObject(parent_widget)
+    , m_settings_manager(context.settings_manager)
     , m_get_selected_items(selected_items)
     , m_action_handler(
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
@@ -53,8 +54,8 @@ WorkspaceEditor::WorkspaceEditor(
 {
   SetupConnections();
 
-  auto context = command_service.RegisterWidgetUniqueId(parent_widget);
-  m_editor_actions->RegisterActionsForContext(context, command_service);
+  auto command_context = context.command_service.RegisterWidgetUniqueId(parent_widget);
+  m_editor_actions->RegisterActionsForContext(command_context, context.command_service);
 }
 
 WorkspaceEditor::~WorkspaceEditor() = default;
@@ -103,7 +104,7 @@ WorkspaceEditorContext WorkspaceEditor::CreateWorkspaceEditorContext()
   auto send_message_callback = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   result.send_message = send_message_callback;
 
-  result.edit_anyvalue = CreateAnyValueDialogCallback(nullptr);
+  result.edit_anyvalue = CreateAnyValueDialogCallback(m_settings_manager, nullptr);
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
 

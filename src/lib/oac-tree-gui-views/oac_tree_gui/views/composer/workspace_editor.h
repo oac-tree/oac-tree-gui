@@ -34,7 +34,8 @@ class SessionItem;
 
 namespace sup::gui
 {
-class IAppCommandService;
+class ISettingsManager;
+struct AppViewContext;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -56,10 +57,14 @@ class WorkspaceEditor : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditor(
-      sup::gui::IAppCommandService& command_service,
-      const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
-      QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The services of the context must outlive the editor.
+   */
+  explicit WorkspaceEditor(const sup::gui::AppViewContext& context,
+                           const std::function<std::vector<mvvm::SessionItem*>()>& selected_items,
+                           QWidget* parent_widget = nullptr);
   ~WorkspaceEditor() override;
 
   WorkspaceEditor(const WorkspaceEditor&) = delete;
@@ -84,6 +89,7 @@ private:
   WorkspaceEditorContext CreateWorkspaceEditorContext();
   AttributeEditorContext CreateAttributeEditorContext();
 
+  sup::gui::ISettingsManager& m_settings_manager;
   std::function<std::vector<mvvm::SessionItem*>()> m_get_selected_items;
   WorkspaceItem* m_workspace_item{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;

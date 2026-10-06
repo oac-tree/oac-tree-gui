@@ -259,7 +259,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.notify_request = on_notify_request;
 
   result.send_message = [](const auto& event) { sup::gui::SendWarningMessage(event); };
-  result.edit_anyvalue = CreateAnyValueDialogCallback(this);
+  result.edit_anyvalue = CreateAnyValueDialogCallback(m_context.settings_manager, this);
   result.get_mime_data = sup::gui::DefaultClipboardGetFunc();
   result.set_mime_data = sup::gui::DefaultClipboardSetFunc();
   result.create_instruction = [](const std::string& name) { return CreateInstructionItem(name); };

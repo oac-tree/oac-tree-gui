@@ -31,12 +31,14 @@ namespace oac_tree_gui
 {
 
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
-    const sup::gui::AnyValueItem* item, QWidget* parent)
+    const sup::gui::AnyValueItem* item, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent)
 {
-  auto editor = std::make_unique<sup::gui::AnyValueEditor>();
+  auto editor = std::make_unique<sup::gui::AnyValueEditor>(settings_manager);
   editor->SetInitialValue(item);
   editor->setWindowTitle("AnyValueExtendedEditor");
-  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), parent);
+  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), settings_manager,
+                                                          parent);
 }
 
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
@@ -60,11 +62,12 @@ std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactScalarEdito
 }
 
 std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(
-    QWidget* parent)
+    sup::gui::ISettingsManager& settings_manager, QWidget* parent)
 {
-  auto edit_anyvalue_callback = [parent](const sup::gui::AnyValueItem* item) -> AnyValueDialogResult
+  auto edit_anyvalue_callback = [&settings_manager,
+                                 parent](const sup::gui::AnyValueItem* item) -> AnyValueDialogResult
   {
-    auto dialog = CreateAnyValueExtendedEditorDialog(item, parent);
+    auto dialog = CreateAnyValueExtendedEditorDialog(item, settings_manager, parent);
     if (dialog->exec() == QDialog::Accepted)
     {
       return {true, dialog->GetResult()};
