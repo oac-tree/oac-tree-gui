@@ -65,4 +65,15 @@ TEST_F(MonitorWidgetTest, StartStopStart)
   EXPECT_NO_FATAL_FAILURE(widget.OnStartMonitoringRequest());
 }
 
+TEST_F(MonitorWidgetTest, CollectSettings)
+{
+  const MonitorWidget widget(m_context);
+
+  m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
+
+  auto storage = m_settings_manager.GetStorage(sup::gui::SettingsScope::kApplication);
+  EXPECT_TRUE(storage->Read("WorkspaceVariableTreeView/tree_header/state").has_value());
+  EXPECT_TRUE(storage->Read("WorkspaceVariableTreeView/table_header/state").has_value());
+}
+
 }  // namespace oac_tree_gui
