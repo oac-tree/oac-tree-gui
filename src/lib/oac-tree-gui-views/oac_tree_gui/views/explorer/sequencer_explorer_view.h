@@ -28,7 +28,7 @@ namespace sup::gui
 class CodeView;
 class ItemStackWidget;
 class CustomSplitter;
-class IAppCommandService;
+struct AppViewContext;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -49,7 +49,7 @@ class SequencerExplorerView : public QWidget
   Q_OBJECT
 
 public:
-  explicit SequencerExplorerView(sup::gui::IAppCommandService& command_service,
+  explicit SequencerExplorerView(const sup::gui::AppViewContext& context,
                                  QWidget* parent_widget = nullptr);
   ~SequencerExplorerView() override;
 

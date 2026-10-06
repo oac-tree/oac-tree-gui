@@ -45,11 +45,11 @@ namespace
 const QString& kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
 }
 
-ComposerToolsPanel::ComposerToolsPanel(sup::gui::IAppCommandService& command_service,
+ComposerToolsPanel::ComposerToolsPanel(const sup::gui::AppViewContext& context,
                                        QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
-    , m_procedure_list_view(new ProcedureListWidget(command_service))
+    , m_procedure_list_view(new ProcedureListWidget(context))
     , m_available_widget(new AvailableInstructionsWidget)
     , m_favorite_widget(new FavoriteInstructionsWidget)
     , m_stack_widget(new sup::gui::ItemStackWidget)

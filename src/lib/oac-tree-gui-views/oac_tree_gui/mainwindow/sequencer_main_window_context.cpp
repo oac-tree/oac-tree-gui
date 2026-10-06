@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_library_loader.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/app/default_command_service.h>
 #include <sup/gui/settings/app_settings_storage.h>
 #include <sup/gui/settings/settings_manager.h>
@@ -55,6 +56,11 @@ SequencerMainWindowContext::~SequencerMainWindowContext() = default;
 sup::gui::IAppCommandService& SequencerMainWindowContext::GetCommandService()
 {
   return *m_command_service;
+}
+
+sup::gui::AppViewContext SequencerMainWindowContext::GetViewContext()
+{
+  return {*m_command_service, *m_settings_manager};
 }
 
 IDomainPluginService& SequencerMainWindowContext::GetDomainPluginService()

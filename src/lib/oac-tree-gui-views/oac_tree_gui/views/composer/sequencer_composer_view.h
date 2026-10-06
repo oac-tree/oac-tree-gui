@@ -21,14 +21,14 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
 
+#include <sup/gui/app/app_view_context.h>
+
 #include <QWidget>
 
 class QAction;
 
 namespace sup::gui
 {
-class IAppCommandService;
-class ISettingsManager;
 class SettingsSplitter;
 }  // namespace sup::gui
 
@@ -53,9 +53,7 @@ class SequencerComposerView : public QWidget
   Q_OBJECT
 
 public:
-  SequencerComposerView(sup::gui::IAppCommandService& command_service,
-                        sup::gui::ISettingsManager& settings_manager,
-                        QWidget* parent_widget = nullptr);
+  SequencerComposerView(const sup::gui::AppViewContext& context, QWidget* parent_widget = nullptr);
   ~SequencerComposerView() override;
 
   SequencerComposerView(const SequencerComposerView&) = delete;
@@ -69,7 +67,7 @@ private:
   void SetupConnections();
   void SetupWidgetActions();
 
-  sup::gui::IAppCommandService& m_command_service;
+  sup::gui::AppViewContext m_context;
   QAction* m_toggle_left_sidebar{nullptr};
   SequencerComposerActions* m_composer_actions{nullptr};
 

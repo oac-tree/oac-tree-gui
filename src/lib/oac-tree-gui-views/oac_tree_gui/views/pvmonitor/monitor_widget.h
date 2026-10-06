@@ -32,7 +32,7 @@ class QToolBar;
 namespace sup::gui
 {
 class ItemStackWidget;
-class IAppCommandService;
+struct AppViewContext;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -49,8 +49,7 @@ class MonitorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit MonitorWidget(sup::gui::IAppCommandService& command_service,
-                         QWidget* parent_widget = nullptr);
+  explicit MonitorWidget(const sup::gui::AppViewContext& context, QWidget* parent_widget = nullptr);
   ~MonitorWidget() override;
 
   MonitorWidget(const MonitorWidget&) = delete;

@@ -33,6 +33,7 @@
 #include <oac_tree_gui/views/explorer/sequencer_explorer_view.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/model/undo_settings_item.h>
 #include <sup/gui/settings/i_settings_manager.h>
 #include <sup/gui/settings/project_settings_storage.h>
@@ -109,17 +110,16 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor(GetMainToolBarColor());
 
-  m_explorer_view = new SequencerExplorerView(m_context.GetCommandService());
+  m_explorer_view = new SequencerExplorerView(m_context.GetViewContext());
   m_tab_widget->AddWidget(m_explorer_view, "Explore",
                           FindIcon("file-search-outline", mvvm::ColorFlavor::kForDarkThemes));
 
-  m_composer_view =
-      new SequencerComposerView(m_context.GetCommandService(), m_context.GetSettingsManager());
+  m_composer_view = new SequencerComposerView(m_context.GetViewContext());
   m_tab_widget->AddWidget(m_composer_view, "Compose",
                           FindIcon("graph-outline", mvvm::ColorFlavor::kForDarkThemes));
 
   m_operation_view =
-      new OperationMonitorView(m_context.GetCommandService(), OperationPresentationMode::kIdeMode);
+      new OperationMonitorView(m_context.GetViewContext(), OperationPresentationMode::kIdeMode);
   m_tab_widget->AddWidget(
       m_operation_view, "Run",
       FindIcon("chevron-right-circle-outline", mvvm::ColorFlavor::kForDarkThemes));

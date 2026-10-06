@@ -25,11 +25,13 @@
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/app/null_command_service.h>
 
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_settings_manager.h>
 
 namespace oac_tree_gui
 {
@@ -40,6 +42,8 @@ class MonitorWidgetTest : public ::testing::Test
 {
 public:
   sup::gui::NullCommandService m_command_service;
+  test::TestSettingsManager m_settings_manager;
+  sup::gui::AppViewContext m_context{m_command_service, m_settings_manager};
 };
 
 TEST_F(MonitorWidgetTest, StartStopStart)
@@ -53,7 +57,7 @@ TEST_F(MonitorWidgetTest, StartStopStart)
   variable_item0->SetName("abc");
   SetAnyValue(value0, *variable_item0);
 
-  MonitorWidget widget(m_command_service);
+  MonitorWidget widget(m_context);
   widget.SetModel(&model);
 
   EXPECT_NO_FATAL_FAILURE(widget.OnStartMonitoringRequest());

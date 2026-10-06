@@ -27,6 +27,7 @@
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/settings/i_settings_manager.h>
 
 #include <mvvm/widgets/app_restarter.h>
@@ -82,7 +83,7 @@ void OperationMainWindow::InitApplication()
   connect(m_action_manager, &OperationMainWindowActions::ExitRequest, this,
           &OperationMainWindow::OnExitRequest);
 
-  m_operation_view = new OperationMonitorView(m_context.GetCommandService(),
+  m_operation_view = new OperationMonitorView(m_context.GetViewContext(),
                                               OperationPresentationMode::kOperationMode, this);
   m_operation_view->SetModels(m_models.get());
 

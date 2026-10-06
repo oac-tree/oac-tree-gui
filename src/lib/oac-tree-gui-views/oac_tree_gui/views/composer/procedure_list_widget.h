@@ -23,6 +23,8 @@
 
 #include <oac_tree_gui/views/composer/procedure_list_actions.h>
 
+#include <sup/gui/app/app_view_context.h>
+
 #include <QWidget>
 
 class QTreeView;
@@ -36,7 +38,6 @@ class ItemSelection;
 
 namespace sup::gui
 {
-class IAppCommandService;
 class FlatListView;
 }  // namespace sup::gui
 
@@ -59,7 +60,7 @@ class ProcedureListWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit ProcedureListWidget(sup::gui::IAppCommandService& command_service,
+  explicit ProcedureListWidget(const sup::gui::AppViewContext& context,
                                QWidget* parent_widget = nullptr);
   ~ProcedureListWidget() override;
 
@@ -89,7 +90,7 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider() const;
   void SetupConnections();
 
-  sup::gui::IAppCommandService& m_command_service;
+  sup::gui::AppViewContext m_context;
   sup::gui::FlatListView* m_list_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureListActions* m_actions{nullptr};

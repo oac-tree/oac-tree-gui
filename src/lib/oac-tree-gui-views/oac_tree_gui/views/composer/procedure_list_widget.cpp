@@ -42,10 +42,10 @@
 namespace oac_tree_gui
 {
 
-ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_service,
+ProcedureListWidget::ProcedureListWidget(const sup::gui::AppViewContext& context,
                                          QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_command_service(command_service)
+    , m_context(context)
     , m_list_view(new sup::gui::FlatListView)
     , m_component_provider(CreateProvider())
     , m_actions(new ProcedureListActions(this))
@@ -80,8 +80,8 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
   connect(m_list_view, &QTreeView::customContextMenuRequested, this,
           &ProcedureListWidget::OnContextMenuRequest);
 
-  auto context = m_command_service.RegisterWidgetUniqueId(this);
-  m_actions->RegisterActionsForContext(context, m_command_service);
+  auto command_context = m_context.command_service.RegisterWidgetUniqueId(this);
+  m_actions->RegisterActionsForContext(command_context, m_context.command_service);
 
   // configure list to allow internal move of procedures (handled by FlatListViewModel)
   m_list_view->setDefaultDropAction(Qt::MoveAction);
@@ -91,7 +91,7 @@ ProcedureListWidget::ProcedureListWidget(sup::gui::IAppCommandService& command_s
 
 ProcedureListWidget::~ProcedureListWidget()
 {
-  m_command_service.UnregisterWidgetUniqueId(this);
+  m_context.command_service.UnregisterWidgetUniqueId(this);
 }
 
 void ProcedureListWidget::SetModel(SequencerModel* model)

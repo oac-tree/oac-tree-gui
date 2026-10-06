@@ -32,7 +32,7 @@ class QToolBar;
 
 namespace sup::gui
 {
-class IAppCommandService;
+struct AppViewContext;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -50,7 +50,7 @@ class ProcedureComposerTabWidget : public sup::gui::SessionItemWidget
   Q_OBJECT
 
 public:
-  explicit ProcedureComposerTabWidget(sup::gui::IAppCommandService& command_service,
+  explicit ProcedureComposerTabWidget(const sup::gui::AppViewContext& context,
                                       QWidget* parent_widget = nullptr);
   ~ProcedureComposerTabWidget() override;
 

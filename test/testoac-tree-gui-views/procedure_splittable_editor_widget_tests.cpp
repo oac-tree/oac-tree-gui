@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/composer/procedure_composer_tab_widget.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/app/null_command_service.h>
 #include <sup/gui/settings/in_memory_settings_storage.h>
 #include <sup/gui/settings/settings_manager.h>
@@ -88,11 +89,12 @@ public:
   sup::gui::InMemorySettingsStorage m_settings_storage;
   sup::gui::InMemorySettingsStorage m_project_storage;
   sup::gui::SettingsManager m_settings_manager;
+  sup::gui::AppViewContext m_context{m_command_service, m_settings_manager};
 };
 
 TEST_F(ProcedureSplittableEditorWidgetTest, InitialState)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
 
   ASSERT_NE(editor.GetController(), nullptr);
 
@@ -107,7 +109,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, InitialState)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanel)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.show();
 
   auto splitter = editor.findChild<QSplitter*>();
@@ -121,7 +123,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CreatePanel)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetModelAfterPanelCreation)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.show();
 
   editor.SetModel(&m_model);
@@ -135,7 +137,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModelAfterPanelCreation)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
 
   QSignalSpy signal_spy(&editor,
@@ -176,7 +178,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidget)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
 
   QSignalSpy signal_spy(&editor,
@@ -211,7 +213,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidg
 
 TEST_F(ProcedureSplittableEditorWidgetTest, GetComposerViewInfoForSinglePannelWithNoProcedure)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
 
   const auto view_info = editor.GetComposerViewInfo();
@@ -223,7 +225,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, GetComposerViewInfoForSinglePannelWi
 
 TEST_F(ProcedureSplittableEditorWidgetTest, GetComposerViewInfoForThreeProcedures)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
   editor.CreatePanel();
   editor.CreatePanel();
@@ -259,7 +261,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, GetComposerViewInfoForThreeProcedure
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoForTwoPanels)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
 
   auto procedure0 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
@@ -289,7 +291,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoForTwoPanels)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoWhenProcedureIdAbsent)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
 
   auto procedure0 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
@@ -318,7 +320,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoWhenProcedureIdAb
 
 TEST_F(ProcedureSplittableEditorWidgetTest, SetComposerViewInfoReplacesPanels)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
   editor.CreatePanel();
   editor.CreatePanel();
@@ -342,7 +344,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, RestorePanelsFromSettings)
                   {"", ProcedureEditorType::kXmlPanel},
                   {"", ProcedureEditorType::kNodeEditor}}});
 
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
 
   const std::vector<ProcedureEditorType> expected_types({ProcedureEditorType::kWorkspace,
                                                          ProcedureEditorType::kXmlPanel,
@@ -352,8 +354,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, RestorePanelsFromSettings)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CollectAndRestore)
 {
-  auto editor =
-      std::make_unique<ProcedureSplittableEditorWidget>(m_command_service, m_settings_manager);
+  auto editor = std::make_unique<ProcedureSplittableEditorWidget>(m_context);
   editor->CreatePanel();
   auto panels = editor->GetController()->GetPanels();
   panels.at(0)->GetMainEditor<ProcedureComposerTabWidget>()->SetEditorType(
@@ -364,7 +365,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CollectAndRestore)
   m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
   editor.reset();
 
-  ProcedureSplittableEditorWidget new_editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget new_editor(m_context);
 
   const std::vector<ProcedureEditorType> expected_types(
       {ProcedureEditorType::kXmlPanel, ProcedureEditorType::kWorkspace});
@@ -379,7 +380,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModelAssignsStoredProcedures)
                  {{procedure1->GetIdentifier(), ProcedureEditorType::kInstructionTree},
                   {procedure0->GetIdentifier(), ProcedureEditorType::kWorkspace}}});
 
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
 
   auto panels = editor.GetController()->GetPanels();
@@ -394,7 +395,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModelAssignsFirstProcedureWhenIdA
   (void)m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   StoreViewInfo({"", {{"non-existing-id", ProcedureEditorType::kInstructionTree}}});
 
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.CreatePanel();  // panel without stored info
   editor.SetModel(&m_model);
 
@@ -406,7 +407,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetModelAssignsFirstProcedureWhenIdA
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CollectStoresComposerViewInfo)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
   editor.CreatePanel();
 
@@ -431,7 +432,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ProjectNotificationReplacesPanels)
   auto procedure0 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   auto procedure1 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
 
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
   editor.CreatePanel();
   editor.CreatePanel();
@@ -455,7 +456,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ProjectNotificationReplacesPanels)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, EmptyProjectNotificationKeepsPanels)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
   editor.CreatePanel();
   editor.CreatePanel();
@@ -470,7 +471,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CollectProjectSettings)
 {
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
 
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
   editor.CreatePanel();
   auto panels = editor.GetController()->GetPanels();
@@ -492,7 +493,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CollectProjectSettings)
 
 TEST_F(ProcedureSplittableEditorWidgetTest, InsertInstructionFromToolbox)
 {
-  ProcedureSplittableEditorWidget editor(m_command_service, m_settings_manager);
+  ProcedureSplittableEditorWidget editor(m_context);
   editor.SetModel(&m_model);
 
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());

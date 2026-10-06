@@ -72,10 +72,10 @@ std::vector<oac_tree_gui::InstructionEditorActions::ActionKey> GetToolBarActionK
 namespace oac_tree_gui
 {
 
-InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService& command_service,
+InstructionEditorWidget::InstructionEditorWidget(const sup::gui::AppViewContext& context,
                                                  QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_command_service(command_service)
+    , m_context(context)
     , m_tree_view(new InstructionEditorTreeView)
     , m_custom_header(
           new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
@@ -115,8 +115,8 @@ InstructionEditorWidget::InstructionEditorWidget(sup::gui::IAppCommandService& c
       std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
   m_visibility_agent->SetTarget(this);
 
-  auto context = m_command_service.RegisterWidgetUniqueId(this);
-  m_editor_actions->RegisterActionsForContext(context, m_command_service);
+  auto command_context = m_context.command_service.RegisterWidgetUniqueId(this);
+  m_editor_actions->RegisterActionsForContext(command_context, m_context.command_service);
 }
 
 InstructionEditorWidget::~InstructionEditorWidget()
@@ -126,7 +126,7 @@ InstructionEditorWidget::~InstructionEditorWidget()
   m_visibility_agent.reset();
 
   WriteSettings();
-  m_command_service.UnregisterWidgetUniqueId(this);
+  m_context.command_service.UnregisterWidgetUniqueId(this);
 }
 
 void InstructionEditorWidget::SetInstructionContainer(

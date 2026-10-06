@@ -23,6 +23,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/app/null_command_service.h>
 
 #include <mvvm/model/item_selection.h>
@@ -32,6 +33,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
+#include <testutils/test_settings_manager.h>
 
 #include <QSignalSpy>
 #include <QTreeView>
@@ -56,11 +58,13 @@ public:
   }
 
   sup::gui::NullCommandService m_command_service;
+  TestSettingsManager m_settings_manager;
+  sup::gui::AppViewContext m_context{m_command_service, m_settings_manager};
 };
 
 TEST_F(ProcedureListWidgetTest, InitialState)
 {
-  const ProcedureListWidget view(m_command_service);
+  const ProcedureListWidget view(m_context);
   EXPECT_TRUE(view.GetSelection().IsEmpty());
 }
 
@@ -69,7 +73,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListWidget view(m_command_service);
+  ProcedureListWidget view(m_context);
   QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
   view.SetModel(&model);
@@ -96,7 +100,7 @@ TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListWidget view(m_command_service);
+  ProcedureListWidget view(m_context);
   view.SetModel(&model);
 
   // selecting single item
@@ -119,7 +123,7 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndexViaView)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListWidget view(m_command_service);
+  ProcedureListWidget view(m_context);
   QSignalSpy spy_selected(&view, &ProcedureListWidget::procedureSelectionChanged);
 
   view.SetModel(&model);

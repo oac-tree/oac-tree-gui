@@ -26,6 +26,7 @@
 namespace sup::gui
 {
 class IAppCommandService;
+struct AppViewContext;
 class ISettingsManager;
 class ISettingsStorage;
 class SettingsManager;
@@ -56,6 +57,11 @@ public:
   void LoadPlugins();
 
   sup::gui::IAppCommandService& GetCommandService();
+
+  /**
+   * @brief Returns services shared by views.
+   */
+  sup::gui::AppViewContext GetViewContext();
 
   IDomainPluginService& GetDomainPluginService();
 

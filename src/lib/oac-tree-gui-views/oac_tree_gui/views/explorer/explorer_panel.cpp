@@ -49,11 +49,11 @@ bool IsProcedureFile(const QString& file_info)
 
 }  // namespace
 
-ExplorerPanel::ExplorerPanel(sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
+ExplorerPanel::ExplorerPanel(const sup::gui::AppViewContext& context, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
     , m_file_tree_view(new sup::gui::FileTreeView(kFileTreeSettingsGroup))
-    , m_procedure_list_view(new ProcedureListWidget(command_service))
+    , m_procedure_list_view(new ProcedureListWidget(context))
     , m_stack_widget(new sup::gui::ItemStackWidget)
 {
   m_collapsible_list->setWindowTitle("Explorer View");

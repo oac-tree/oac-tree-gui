@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
 
+#include <sup/gui/app/app_view_context.h>
+
 #include <mvvm/model/item_selection.h>
 
 #include <QWidget>
@@ -38,7 +40,6 @@ namespace sup::gui
 class CustomHeaderView;
 class VisibilityAgentBase;
 class CustomSplitter;
-class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -63,7 +64,7 @@ class InstructionEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit InstructionEditorWidget(sup::gui::IAppCommandService& command_service,
+  explicit InstructionEditorWidget(const sup::gui::AppViewContext& context,
                                    QWidget* parent_widget = nullptr);
   ~InstructionEditorWidget() override;
 
@@ -107,7 +108,7 @@ private:
 
   void OnContextMenuRequest(const QPoint& point);
 
-  sup::gui::IAppCommandService& m_command_service;
+  sup::gui::AppViewContext m_context;
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};

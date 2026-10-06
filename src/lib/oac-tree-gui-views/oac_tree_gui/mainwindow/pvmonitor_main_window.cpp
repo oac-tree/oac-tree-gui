@@ -26,6 +26,7 @@
 #include <oac_tree_gui/views/pvmonitor/monitor_main_window_actions.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_widget.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/settings/i_settings_manager.h>
 
 #include <QSettings>
@@ -69,7 +70,7 @@ void PvMonitorMainWindow::InitApplication()
   ReadSettings();
   m_actions = new MonitorMainWindowActions(m_project.get(), this);
 
-  m_monitor_widget = new MonitorWidget(m_context.GetCommandService());
+  m_monitor_widget = new MonitorWidget(m_context.GetViewContext());
   setCentralWidget(m_monitor_widget);
 }
 

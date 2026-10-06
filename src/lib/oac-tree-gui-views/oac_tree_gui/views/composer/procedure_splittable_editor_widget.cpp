@@ -65,11 +65,9 @@ ProcedureItem* FindAppropriateProcedure(SequencerModel* model, const std::string
 }  // namespace
 
 ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
-    sup::gui::IAppCommandService& command_service, sup::gui::ISettingsManager& settings_manager,
-    QWidget* parent_widget)
+    const sup::gui::AppViewContext& context, QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_command_service(command_service)
-    , m_settings_manager(settings_manager)
+    , m_context(context)
     , m_splitter(new QSplitter)
     // , m_focus_handler(std::make_unique<WidgetFocusHandler<ProcedureComposerComboPanel>>())
     , m_splitter_controller(CreateSplitterController())
@@ -94,7 +92,7 @@ void ProcedureSplittableEditorWidget::SetModel(SequencerModel* model)
   m_model = model;
   m_splitter_controller->SetModel(model);
 
-  const auto view_info = m_settings_manager.Get<ComposerViewInfo>(
+  const auto view_info = m_context.settings_manager.Get<ComposerViewInfo>(
       kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kApplication);
   const auto panels = m_splitter_controller->GetPanels();
   for (std::size_t index = 0; index < panels.size(); ++index)
@@ -186,7 +184,7 @@ ProcedureSplittableEditorWidget::CreateSplitterController() const
 {
   auto factory_func = [this]() -> std::unique_ptr<sup::gui::SplittableComboPanel>
   {
-    auto main_editor = std::make_unique<ProcedureComposerTabWidget>(m_command_service);
+    auto main_editor = std::make_unique<ProcedureComposerTabWidget>(m_context);
 
     auto item_list_callback = [this]() -> std::vector<mvvm::SessionItem*>
     {
@@ -206,8 +204,8 @@ ProcedureSplittableEditorWidget::CreateSplitterController() const
 void ProcedureSplittableEditorWidget::CreateInitialPanelsFromSettings()
 {
   // using persistent storage
-  auto view_info = m_settings_manager.Get<ComposerViewInfo>(kComposerPanelsSettingsGroup,
-                                                            sup::gui::SettingsScope::kApplication);
+  auto view_info = m_context.settings_manager.Get<ComposerViewInfo>(
+      kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kApplication);
   if (view_info.editor_info_list.empty())
   {
     view_info.editor_info_list.emplace_back();
@@ -219,9 +217,9 @@ void ProcedureSplittableEditorWidget::RegisterOwnSettingsInStore()
 {
   // registers own settings to report them to two different settings store
   auto provider = [this]() { return GetComposerViewInfo(); };
-  m_settings_connections.push_back(m_settings_manager.RegisterProvider(
+  m_settings_connections.push_back(m_context.settings_manager.RegisterProvider(
       kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kApplication, provider));
-  m_settings_connections.push_back(m_settings_manager.RegisterProvider(
+  m_settings_connections.push_back(m_context.settings_manager.RegisterProvider(
       kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kProject, provider));
 
   // subscribe to notification update in project setting store
@@ -233,7 +231,7 @@ void ProcedureSplittableEditorWidget::RegisterOwnSettingsInStore()
       SetComposerViewInfo(info);
     }
   };
-  m_settings_connections.push_back(m_settings_manager.Subscribe<ComposerViewInfo>(
+  m_settings_connections.push_back(m_context.settings_manager.Subscribe<ComposerViewInfo>(
       kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kProject, on_project_settings));
 }
 

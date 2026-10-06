@@ -40,14 +40,14 @@
 namespace oac_tree_gui
 {
 
-MonitorWidget::MonitorWidget(sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
+MonitorWidget::MonitorWidget(const sup::gui::AppViewContext& context, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_tree(
-          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
+          new WorkspaceEditorWidget(context, WorkspacePresentationType::kWorkspaceTree))
     , m_workspace_table(
-          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTable))
+          new WorkspaceEditorWidget(context, WorkspacePresentationType::kWorkspaceTable))
     , m_tool_bar(new QToolBar)
     , m_tab_widget(new QTabWidget)
 {

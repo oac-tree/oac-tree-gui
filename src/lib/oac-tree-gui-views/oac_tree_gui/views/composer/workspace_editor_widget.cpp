@@ -23,6 +23,8 @@
 #include "workspace_editor.h"
 #include "workspace_variable_tree_view.h"
 
+#include <sup/gui/app/app_view_context.h>
+
 #include <mvvm/model/session_item.h>
 
 #include <QMenu>
@@ -31,13 +33,13 @@
 namespace oac_tree_gui
 {
 
-WorkspaceEditorWidget::WorkspaceEditorWidget(sup::gui::IAppCommandService& command_service,
+WorkspaceEditorWidget::WorkspaceEditorWidget(const sup::gui::AppViewContext& context,
                                              WorkspacePresentationType presentation,
                                              QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new WorkspaceVariableTreeView(presentation))
     , m_editor(new WorkspaceEditor(
-          command_service, [this]() { return m_tree_view->GetSelectedItems(); }, this))
+          context.command_service, [this]() { return m_tree_view->GetSelectedItems(); }, this))
     , m_edit_type(WorkspaceEditType::kEditorEnabled)
 {
   setWindowTitle("Workspace");

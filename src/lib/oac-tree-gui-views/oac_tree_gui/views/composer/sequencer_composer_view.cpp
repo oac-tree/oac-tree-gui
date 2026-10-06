@@ -56,16 +56,15 @@ std::string GetSplitterSettingsGroup()
 
 }  // namespace
 
-SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService& command_service,
-                                             sup::gui::ISettingsManager& settings_manager,
+SequencerComposerView::SequencerComposerView(const sup::gui::AppViewContext& context,
                                              QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_command_service(command_service)
+    , m_context(context)
     , m_composer_actions(new SequencerComposerActions(this))
-    , m_splitter(new sup::gui::SettingsSplitter(GetSplitterSettingsGroup(), settings_manager))
-    , m_composer_tools_panel(new ComposerToolsPanel(command_service))
-    , m_splittable_editor_widget(
-          new ProcedureSplittableEditorWidget(command_service, settings_manager))
+    , m_splitter(
+          new sup::gui::SettingsSplitter(GetSplitterSettingsGroup(), context.settings_manager))
+    , m_composer_tools_panel(new ComposerToolsPanel(context))
+    , m_splittable_editor_widget(new ProcedureSplittableEditorWidget(context))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -122,10 +121,10 @@ void SequencerComposerView::SetupWidgetActions()
   connect(m_toggle_left_sidebar, &QAction::triggered, this, [this](auto)
           { m_composer_tools_panel->setVisible(!m_composer_tools_panel->isVisible()); });
 
-  auto context = m_command_service.RegisterWidgetUniqueId(this);
-  m_command_service.AddActionToCommand(m_toggle_left_sidebar,
-                                       sup::gui::constants::kToggleLeftPanelCommandId, context);
-  m_composer_actions->RegisterActionsForContext(context, m_command_service);
+  auto context = m_context.command_service.RegisterWidgetUniqueId(this);
+  m_context.command_service.AddActionToCommand(
+      m_toggle_left_sidebar, sup::gui::constants::kToggleLeftPanelCommandId, context);
+  m_composer_actions->RegisterActionsForContext(context, m_context.command_service);
 }
 
 }  // namespace oac_tree_gui

@@ -23,6 +23,7 @@
 
 #include <oac_tree_gui/model/component_types.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/settings/scoped_callback.h>
 
 #include <QWidget>
@@ -38,8 +39,6 @@ class ItemSelection;
 
 namespace sup::gui
 {
-class IAppCommandService;
-class ISettingsManager;
 class SplittableComboPanel;
 class SplittableEditorController;
 }  // namespace sup::gui
@@ -65,8 +64,7 @@ class ProcedureSplittableEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  ProcedureSplittableEditorWidget(sup::gui::IAppCommandService& command_service,
-                                  sup::gui::ISettingsManager& settings_manager,
+  ProcedureSplittableEditorWidget(const sup::gui::AppViewContext& context,
                                   QWidget* parent_widget = nullptr);
   ~ProcedureSplittableEditorWidget() override;
 
@@ -136,8 +134,7 @@ private:
   //! Registers providers in both scopes and the subscriber in project scope.
   void RegisterOwnSettingsInStore();
 
-  sup::gui::IAppCommandService& m_command_service;
-  sup::gui::ISettingsManager& m_settings_manager;
+  sup::gui::AppViewContext m_context;
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;

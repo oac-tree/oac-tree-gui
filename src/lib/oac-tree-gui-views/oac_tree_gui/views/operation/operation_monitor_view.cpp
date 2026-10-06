@@ -87,10 +87,10 @@ std::unique_ptr<RemoteConnectionService> CreateRemoteConnectionService()
 
 }  // namespace
 
-OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService& command_service,
+OperationMonitorView::OperationMonitorView(const sup::gui::AppViewContext& context,
                                            OperationPresentationMode mode, QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_command_service(command_service)
+    , m_context(context)
     , m_presentation_mode(mode)
     , m_job_panel(new OperationJobPanel)
     , m_splittable_widget(new OperationSplittableWidget)
@@ -115,14 +115,14 @@ OperationMonitorView::OperationMonitorView(sup::gui::IAppCommandService& command
 
   ReadSettings();
 
-  auto context = m_command_service.RegisterWidgetUniqueId(this);
-  RegisterActionsForContext(context);
+  auto command_context = m_context.command_service.RegisterWidgetUniqueId(this);
+  RegisterActionsForContext(command_context);
 }
 
 OperationMonitorView::~OperationMonitorView()
 {
   WriteSettings();
-  m_command_service.UnregisterWidgetUniqueId(this);
+  m_context.command_service.UnregisterWidgetUniqueId(this);
 }
 
 void OperationMonitorView::SetModels(ApplicationModels* models)
@@ -159,8 +159,8 @@ void OperationMonitorView::StopJobs(StopScope scope)
 
 void OperationMonitorView::RegisterActionsForContext(const sup::gui::AppCommandContext& context)
 {
-  m_command_service.AddActionToCommand(m_toggle_left_sidebar,
-                                       sup::gui::constants::kToggleLeftPanelCommandId, context);
+  m_context.command_service.AddActionToCommand(
+      m_toggle_left_sidebar, sup::gui::constants::kToggleLeftPanelCommandId, context);
 }
 
 OperationActionHandler* OperationMonitorView::GetOperationActionHandler()
@@ -287,10 +287,9 @@ void OperationMonitorView::SetupConnections()
   connect(m_action_handler, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 
-  connect(
-      m_splittable_widget, &OperationSplittableWidget::ToggleBreakpointRequest, m_action_handler,
-      [this](JobItem* job, auto* instruction)
-      { m_action_handler->OnToggleBreakpoint(job, instruction); });
+  connect(m_splittable_widget, &OperationSplittableWidget::ToggleBreakpointRequest,
+          m_action_handler, [this](JobItem* job, auto* instruction)
+          { m_action_handler->OnToggleBreakpoint(job, instruction); });
 
   // propagate combo selection from current active panel to list with jobs
   auto on_selected_job = [this](const mvvm::ItemSelection& selection)

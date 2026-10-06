@@ -27,7 +27,7 @@ namespace sup::gui
 {
 class CollapsibleListView;
 class ItemStackWidget;
-class IAppCommandService;
+struct AppViewContext;
 class FileTreeView;
 }  // namespace sup::gui
 
@@ -48,8 +48,7 @@ class ExplorerPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit ExplorerPanel(sup::gui::IAppCommandService& command_service,
-                         QWidget* parent_widget = nullptr);
+  explicit ExplorerPanel(const sup::gui::AppViewContext& context, QWidget* parent_widget = nullptr);
   ~ExplorerPanel() override;
 
   ExplorerPanel(const ExplorerPanel&) = delete;

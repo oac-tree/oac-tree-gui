@@ -29,7 +29,7 @@ class QMenu;
 
 namespace sup::gui
 {
-class IAppCommandService;
+struct AppViewContext;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -50,7 +50,7 @@ class WorkspaceEditorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorWidget(sup::gui::IAppCommandService& command_service,
+  explicit WorkspaceEditorWidget(const sup::gui::AppViewContext& context,
                                  WorkspacePresentationType presentation,
                                  QWidget* parent_widget = nullptr);
   ~WorkspaceEditorWidget() override;

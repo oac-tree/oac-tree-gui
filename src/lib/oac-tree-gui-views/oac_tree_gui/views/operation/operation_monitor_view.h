@@ -24,13 +24,14 @@
 #include <oac_tree_gui/jobsystem/i_job_item_manager.h>
 #include <oac_tree_gui/model/component_types.h>
 
+#include <sup/gui/app/app_view_context.h>
+
 #include <QWidget>
 
 namespace sup::gui
 {
 class CustomSplitter;
 class AppCommandContext;
-class IAppCommandService;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -55,7 +56,7 @@ class OperationMonitorView : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationMonitorView(sup::gui::IAppCommandService& command_service,
+  explicit OperationMonitorView(const sup::gui::AppViewContext& context,
                                 OperationPresentationMode mode, QWidget* parent_widget = nullptr);
   ~OperationMonitorView() override;
 
@@ -94,10 +95,10 @@ private:
   void WriteSettings();
   void SetupConnections();
   void SetupWidgetActions();
-  void OnJobSelected(const JobItem *selected_item);
+  void OnJobSelected(const JobItem* selected_item);
   OperationActionContext CreateOperationContext();
 
-  sup::gui::IAppCommandService& m_command_service;
+  sup::gui::AppViewContext m_context;
 
   OperationPresentationMode m_presentation_mode;
 

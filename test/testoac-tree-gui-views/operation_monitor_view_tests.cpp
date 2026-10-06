@@ -29,10 +29,12 @@
 #include <oac_tree_gui/views/operation/operation_job_panel.h>
 #include <oac_tree_gui/views/operation/realtime_instruction_tree_widget.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/app/null_command_service.h>
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_settings_manager.h>
 
 #include <QTreeView>
 
@@ -53,6 +55,8 @@ public:
 
   ApplicationModels m_models;
   sup::gui::NullCommandService m_command_service;
+  test::TestSettingsManager m_settings_manager;
+  sup::gui::AppViewContext m_context{m_command_service, m_settings_manager};
 };
 
 //! We submit a job, then resubmit and check that real time tree shows non-empty instruction tree.
@@ -60,7 +64,7 @@ public:
 
 TEST_F(OperationMonitorViewTest, ReloadJob)
 {
-  OperationMonitorView view(m_command_service, OperationPresentationMode::kOperationMode);
+  OperationMonitorView view(m_context, OperationPresentationMode::kOperationMode);
   view.SetModels(&m_models);
   view.show();
 

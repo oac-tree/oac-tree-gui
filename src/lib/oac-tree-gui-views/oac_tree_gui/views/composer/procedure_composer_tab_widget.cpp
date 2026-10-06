@@ -38,13 +38,13 @@
 namespace oac_tree_gui
 {
 
-ProcedureComposerTabWidget::ProcedureComposerTabWidget(
-    sup::gui::IAppCommandService& command_service, QWidget* parent_widget)
+ProcedureComposerTabWidget::ProcedureComposerTabWidget(const sup::gui::AppViewContext& context,
+                                                       QWidget* parent_widget)
     : SessionItemWidget(parent_widget)
     , m_tool_bar(new QToolBar)
-    , m_instruction_editor_widget(new InstructionEditorWidget(command_service))
+    , m_instruction_editor_widget(new InstructionEditorWidget(context))
     , m_workspace_editor_widget(
-          new WorkspaceEditorWidget(command_service, WorkspacePresentationType::kWorkspaceTree))
+          new WorkspaceEditorWidget(context, WorkspacePresentationType::kWorkspaceTree))
     , m_node_editor(new NodeEditorWidget(NodeEditorMode::kNodeEditor))
     , m_xml_panel(new XmlPanel)
     , m_procedure_attribute_widget(new ProcedureAttributeEditorWidget)
