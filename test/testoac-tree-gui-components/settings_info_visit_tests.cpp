@@ -108,6 +108,15 @@ TEST_F(SettingsInfoVisitTest, UndoInfoWriteKeys)
   EXPECT_EQ(m_storage.Read("Group/undo_limit"), mvvm::variant_t{mvvm::int32{42}});
 }
 
+TEST_F(SettingsInfoVisitTest, UndoInfoKeysInSettingsGroup)
+{
+  WriteToStorage(m_storage, kUndoSettingsGroup, UndoInfo{});
+
+  const std::vector<std::string> expected_keys(
+      {"Settings/Undo/is_enabled", "Settings/Undo/undo_limit"});
+  EXPECT_EQ(m_storage.GetKeys(), expected_keys);
+}
+
 TEST_F(SettingsInfoVisitTest, UndoInfoRoundTrip)
 {
   WriteToStorage(m_storage, kGroup, UndoInfo{false, 42});
@@ -135,6 +144,16 @@ TEST_F(SettingsInfoVisitTest, PluginSettingsInfoWriteKeys)
        "Group/plugin_list/size", "Group/use_dir_list", "Group/use_plugin_list"});
   EXPECT_EQ(m_storage.GetKeys(), expected_keys);
   EXPECT_EQ(m_storage.Read("Group/plugin_list/1"), mvvm::variant_t{std::string("def")});
+}
+
+TEST_F(SettingsInfoVisitTest, PluginSettingsInfoKeysInSettingsGroup)
+{
+  WriteToStorage(m_storage, kPluginSettingsGroup, PluginSettingsInfo{});
+
+  const std::vector<std::string> expected_keys(
+      {"Settings/Plugins/dir_list/size", "Settings/Plugins/plugin_list/size",
+       "Settings/Plugins/use_dir_list", "Settings/Plugins/use_plugin_list"});
+  EXPECT_EQ(m_storage.GetKeys(), expected_keys);
 }
 
 TEST_F(SettingsInfoVisitTest, PluginSettingsInfoRoundTrip)

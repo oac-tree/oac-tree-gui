@@ -29,7 +29,7 @@ namespace oac_tree_gui
 {
 
 //! Settings group of undo settings.
-constexpr auto kUndoSettingsGroup = "MainWindow/Undo";
+constexpr auto kUndoSettingsGroup = "Settings/Undo";
 
 /**
  * @brief The UndoInfo struct holds undo/redo settings of the sequencer model.

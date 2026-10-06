@@ -29,6 +29,9 @@
 namespace oac_tree_gui
 {
 
+//! Settings group of plugin settings.
+constexpr auto kPluginSettingsGroup = "Settings/Plugins";
+
 /**
  * @brief The PluginSettingsInfo struct holds settings of plugin load.
  */
