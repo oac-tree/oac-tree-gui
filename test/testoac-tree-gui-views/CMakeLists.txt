@@ -5,6 +5,7 @@ set(test testoac-tree-gui-views)
 add_executable(${test})
 
 target_sources(${test} PRIVATE
+  composer_settings_tests.cpp
   custom_celleditor_factory_tests.cpp
   instruction_editor_actions_tests.cpp
   instruction_task_area_widget_tests.cpp

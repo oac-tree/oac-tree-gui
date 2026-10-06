@@ -34,9 +34,9 @@
 namespace oac_tree_gui
 {
 
-XmlPanel::XmlPanel(QWidget* parent_widget)
+XmlPanel::XmlPanel(sup::gui::ISettingsManager& settings_manager, QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML))
+    , m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML, settings_manager))
     , m_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_xml_view))
 {
   setWindowTitle("XML View");

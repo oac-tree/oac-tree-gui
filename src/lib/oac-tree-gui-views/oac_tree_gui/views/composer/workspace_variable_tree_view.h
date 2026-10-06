@@ -39,7 +39,8 @@ class SessionItem;
 
 namespace sup::gui
 {
-class CustomHeaderView;
+class ISettingsManager;
+class SettingsHeaderView;
 class VisibilityAgentBase;
 }  // namespace sup::gui
 
@@ -63,8 +64,15 @@ class WorkspaceVariableTreeView : public QWidget
   Q_OBJECT
 
 public:
-  explicit WorkspaceVariableTreeView(WorkspacePresentationType presentation,
-                                     QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * Tree and table presentations store column widths in different settings groups. The settings
+   * manager must outlive the view.
+   */
+  WorkspaceVariableTreeView(WorkspacePresentationType presentation,
+                            sup::gui::ISettingsManager& settings_manager,
+                            QWidget* parent_widget = nullptr);
   ~WorkspaceVariableTreeView() override;
 
   WorkspaceVariableTreeView(const WorkspaceVariableTreeView&) = delete;
@@ -119,7 +127,7 @@ private:
   void SetWorkspaceItemIntern(WorkspaceItem* workspace_item);
 
   QTreeView* m_tree_view{nullptr};
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::SettingsHeaderView* m_header{nullptr};
   std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
   std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
   QLineEdit* m_line_edit{nullptr};

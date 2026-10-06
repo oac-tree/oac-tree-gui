@@ -28,7 +28,7 @@
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/viewmodel/attribute_editor_viewmodel.h>
 
-#include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/settings_header_view.h>
 
 #include <mvvm/model/item_selection.h>
 #include <mvvm/views/component_provider_helper.h>
@@ -40,7 +40,7 @@
 
 namespace
 {
-const QString kHeaderStateSettingName = "InstructionAttributeEditor/header_state";
+constexpr auto kHeaderSettingsGroup = "InstructionAttributeEditor/header_state";
 const std::vector<int> kDefaultColumnStretch({2, 1, 1});
 }  // namespace
 
@@ -48,13 +48,14 @@ namespace oac_tree_gui
 {
 
 InstructionAttributeEditor::InstructionAttributeEditor(variable_names_func_t variable_names_func,
+                                                       sup::gui::ISettingsManager& settings_manager,
                                                        QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_variable_names_func(std::move(variable_names_func))
     , m_tool_bar(new QToolBar)
     , m_tree_view(new QTreeView)
-    , m_custom_header(
-          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
+    , m_header(new sup::gui::SettingsHeaderView(kHeaderSettingsGroup, settings_manager,
+                                                kDefaultColumnStretch, this))
     , m_component_provider(CreateTreeComponentProvider())
     , m_attribute_action_handler(
           std::make_unique<AttributeEditorActionHandler>(CreateAttributeEditorActionContext()))
@@ -73,7 +74,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(variable_names_func_t var
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
 
-  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setHeader(m_header);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
@@ -88,7 +89,7 @@ InstructionAttributeEditor::~InstructionAttributeEditor() = default;
 void InstructionAttributeEditor::SetInstruction(mvvm::SessionItem* instruction_item)
 {
   m_component_provider->SetItem(instruction_item);
-  m_custom_header->AdjustColumnsWidth();
+  m_header->AdjustColumnsWidth();
 }
 
 void InstructionAttributeEditor::SummonContextMenu(const QPoint& point)

@@ -27,7 +27,7 @@
 #include <oac_tree_gui/viewmodel/workspace_operation_viewmodel.h>
 
 #include <sup/gui/components/tree_helper.h>
-#include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/settings_header_view.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/item_selection.h>
@@ -43,7 +43,15 @@ namespace oac_tree_gui
 namespace
 {
 
-const QString kHeaderStateSettingName("WorkspaceEditorWidget/header_state");
+/**
+ * @brief Returns the settings group of the header for the given presentation.
+ */
+std::string GetHeaderSettingsGroup(WorkspacePresentationType presentation)
+{
+  return presentation == WorkspacePresentationType::kWorkspaceTable
+             ? "WorkspaceEditorWidget/table_header"
+             : "WorkspaceEditorWidget/tree_header";
+}
 
 std::vector<std::int32_t> GetDefaultColumnStretch(WorkspacePresentationType presentation)
 {
@@ -66,11 +74,13 @@ std::vector<std::int32_t> GetDefaultColumnStretch(WorkspacePresentationType pres
 }  // namespace
 
 WorkspaceVariableTreeView::WorkspaceVariableTreeView(WorkspacePresentationType presentation,
+                                                     sup::gui::ISettingsManager& settings_manager,
                                                      QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
-    , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName,
-                                                     GetDefaultColumnStretch(presentation), this))
+    , m_header(new sup::gui::SettingsHeaderView(GetHeaderSettingsGroup(presentation),
+                                                settings_manager,
+                                                GetDefaultColumnStretch(presentation), this))
     , m_component_provider(CreateProvider(presentation))
     , m_line_edit(new QLineEdit)
 {
@@ -154,7 +164,7 @@ void WorkspaceVariableTreeView::resizeEvent(QResizeEvent* event)
 void WorkspaceVariableTreeView::SetupTree()
 {
   m_tree_view->setAlternatingRowColors(true);
-  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setHeader(m_header);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           &WorkspaceVariableTreeView::OnTreeContextMenuRequest);
@@ -164,7 +174,7 @@ void WorkspaceVariableTreeView::SetupTree()
 
 void WorkspaceVariableTreeView::AdjustTreeAppearance()
 {
-  m_custom_header->AdjustColumnsWidth();
+  m_header->AdjustColumnsWidth();
 }
 
 std::unique_ptr<WorkspaceViewComponentProvider> WorkspaceVariableTreeView::CreateProvider(

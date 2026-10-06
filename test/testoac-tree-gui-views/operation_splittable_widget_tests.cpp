@@ -39,6 +39,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_settings_manager.h>
 
 #include <QSplitter>
 #include <QTabWidget>
@@ -60,13 +61,14 @@ public:
 
   JobItem* InsertJob() { return GetJobModel()->InsertItem<LocalJobItem>(); }
 
+  TestSettingsManager m_settings_manager;
   ApplicationModels m_models;
 };
 
 //! Freshly constructed widget has a controller and a single panel.
 TEST_F(OperationSplittableWidgetTest, InitialState)
 {
-  const OperationSplittableWidget widget;
+  const OperationSplittableWidget widget(m_settings_manager);
 
   ASSERT_NE(widget.GetController(), nullptr);
   EXPECT_EQ(widget.GetController()->GetPanels().size(), 1);
@@ -81,7 +83,7 @@ TEST_F(OperationSplittableWidgetTest, InitialState)
 //! Creating a panel adds an OperationTabWidget-based panel to the splitter.
 TEST_F(OperationSplittableWidgetTest, CreatePanel)
 {
-  OperationSplittableWidget widget;
+  OperationSplittableWidget widget(m_settings_manager);
 
   EXPECT_NO_THROW(widget.CreatePanel());
 
@@ -94,7 +96,7 @@ TEST_F(OperationSplittableWidgetTest, CreatePanel)
 //! SetModel propagates the model to all panels, and the combo lists the model's jobs.
 TEST_F(OperationSplittableWidgetTest, SetModelPropagatesToPanels)
 {
-  OperationSplittableWidget widget;
+  OperationSplittableWidget widget(m_settings_manager);
   widget.SetModel(GetJobModel());
   widget.CreatePanel();
 
@@ -111,7 +113,7 @@ TEST_F(OperationSplittableWidgetTest, SetModelPropagatesToPanels)
 //! SetCurrentJob shows the job in the focused panel and it appears in the active-jobs set.
 TEST_F(OperationSplittableWidgetTest, SetCurrentJobShowsJobInFocusPanel)
 {
-  OperationSplittableWidget widget;
+  OperationSplittableWidget widget(m_settings_manager);
   widget.SetModel(GetJobModel());
 
   auto job = InsertJob();
@@ -126,7 +128,7 @@ TEST_F(OperationSplittableWidgetTest, SetCurrentJobShowsJobInFocusPanel)
 //! Adding a panel emits activeJobsChanged with the current union.
 TEST_F(OperationSplittableWidgetTest, ActiveJobsChangedEmittedOnPanelAdded)
 {
-  OperationSplittableWidget widget;
+  OperationSplittableWidget widget(m_settings_manager);
   widget.SetModel(GetJobModel());
 
   auto job = InsertJob();
@@ -145,7 +147,7 @@ TEST_F(OperationSplittableWidgetTest, ActiveJobsChangedEmittedOnPanelAdded)
 //! Changing the job shown in a panel emits activeJobsChanged; reselecting the same job does not.
 TEST_F(OperationSplittableWidgetTest, ActiveJobsChangedEmittedWhenPanelJobChanges)
 {
-  OperationSplittableWidget widget;
+  OperationSplittableWidget widget(m_settings_manager);
   widget.SetModel(GetJobModel());
 
   auto job = InsertJob();
@@ -166,7 +168,7 @@ TEST_F(OperationSplittableWidgetTest, ActiveJobsChangedEmittedWhenPanelJobChange
 //! GetActiveJobs returns the union of jobs shown across all panels.
 TEST_F(OperationSplittableWidgetTest, GetActiveJobsUnionAcrossPanels)
 {
-  OperationSplittableWidget widget;
+  OperationSplittableWidget widget(m_settings_manager);
   widget.SetModel(GetJobModel());
   widget.CreatePanel();
 
@@ -188,7 +190,7 @@ TEST_F(OperationSplittableWidgetTest, GetActiveJobsUnionAcrossPanels)
 //! Closing a panel emits activeJobsChanged with the closing panel's job excluded.
 TEST_F(OperationSplittableWidgetTest, ActiveJobsChangedOnCloseExcludesClosingPanel)
 {
-  OperationSplittableWidget widget;
+  OperationSplittableWidget widget(m_settings_manager);
   widget.SetModel(GetJobModel());
   widget.CreatePanel();
 
@@ -214,7 +216,7 @@ TEST_F(OperationSplittableWidgetTest, ActiveJobsChangedOnCloseExcludesClosingPan
 //! procedure. Removal of the expanded job should clean-up the panel.
 TEST_F(OperationSplittableWidgetTest, RemoveExpandedProcedure)
 {
-  OperationSplittableWidget operation_splittable_widget;
+  OperationSplittableWidget operation_splittable_widget(m_settings_manager);
   operation_splittable_widget.show();
   operation_splittable_widget.SetModel(GetJobModel());
 

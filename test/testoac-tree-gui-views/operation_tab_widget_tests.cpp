@@ -38,6 +38,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_settings_manager.h>
 
 #include <QAbstractItemModel>
 #include <QApplication>
@@ -64,6 +65,7 @@ public:
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
+  TestSettingsManager m_settings_manager;
   ApplicationModels m_models;
 };
 
@@ -74,7 +76,7 @@ public:
 //! Freshly constructed widget has no job and exposes the expected set of tabs.
 TEST_F(OperationTabWidgetTest, InitialState)
 {
-  const OperationTabWidget widget;
+  const OperationTabWidget widget(m_settings_manager);
 
   EXPECT_EQ(widget.GetItem(), nullptr);
 
@@ -91,7 +93,7 @@ TEST_F(OperationTabWidgetTest, InitialState)
 //! Setting a null job is safe and leaves the widget without a current job.
 TEST_F(OperationTabWidgetTest, SetCurrentJobNullptrIsSafe)
 {
-  OperationTabWidget widget;
+  OperationTabWidget widget(m_settings_manager);
 
   EXPECT_NO_FATAL_FAILURE(widget.SetCurrentJob(nullptr));
   EXPECT_EQ(widget.GetItem(), nullptr);
@@ -102,7 +104,7 @@ TEST_F(OperationTabWidgetTest, SetItemDelegatesToSetCurrentJob)
 {
   auto job = GetJobModel()->InsertItem<LocalJobItem>();
 
-  OperationTabWidget widget;
+  OperationTabWidget widget(m_settings_manager);
 
   widget.SetItem(job);
   EXPECT_EQ(widget.GetItem(), job);
@@ -116,7 +118,7 @@ TEST_F(OperationTabWidgetTest, SetItemDelegatesToSetCurrentJob)
 //! Tick timeout can be set and read back without emitting a change request.
 TEST_F(OperationTabWidgetTest, TickTimeoutRoundTrip)
 {
-  OperationTabWidget widget;
+  OperationTabWidget widget(m_settings_manager);
 
   widget.SetCurrentTickTimeout(42);
   EXPECT_EQ(widget.GetCurrentTickTimeout(), 42);
@@ -127,7 +129,7 @@ TEST_F(OperationTabWidgetTest, SignalForwardingStampsCurrentJob)
 {
   auto job = GetJobModel()->InsertItem<LocalJobItem>();
 
-  OperationTabWidget widget;
+  OperationTabWidget widget(m_settings_manager);
   widget.SetCurrentJob(job);
 
   auto actions = widget.findChild<MonitorRealTimeActions*>();
@@ -187,7 +189,7 @@ TEST_F(OperationTabWidgetTest, SetCurrentJobPopulatesChildWidgets)
   LocalJobHandler job_handler(job, UserContext{});
   ASSERT_NE(job->GetExpandedProcedure(), nullptr);
 
-  OperationTabWidget widget;
+  OperationTabWidget widget(m_settings_manager);
   widget.SetCurrentJob(job);
   widget.show();  // workspace views only populate while their tab is visible (visibility agent)
   EXPECT_EQ(widget.GetItem(), job);
@@ -233,7 +235,7 @@ TEST_F(OperationTabWidgetTest, ExpandedProcedureDestroyedClearsViews)
   (void)GetJobModel()->InsertItem(test::CreateCopyProcedureItem(), job, mvvm::TagIndex::Append());
   ASSERT_NE(job->GetExpandedProcedure(), nullptr);
 
-  OperationTabWidget widget;
+  OperationTabWidget widget(m_settings_manager);
   widget.SetCurrentJob(job);
   widget.show();
 
@@ -259,7 +261,7 @@ TEST_F(OperationTabWidgetTest, ExpandedProcedureReappearsRepopulatesViews)
 {
   auto job = GetJobModel()->InsertItem<LocalJobItem>();
 
-  OperationTabWidget widget;
+  OperationTabWidget widget(m_settings_manager);
   widget.SetCurrentJob(job);  // job without expanded procedure yet
   widget.show();
 

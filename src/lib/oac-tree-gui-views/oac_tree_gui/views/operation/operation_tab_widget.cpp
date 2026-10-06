@@ -54,14 +54,17 @@ QList<QAction*> GetToolBarActions(oac_tree_gui::MonitorRealTimeActions* actions)
 namespace oac_tree_gui
 {
 
-OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
+OperationTabWidget::OperationTabWidget(sup::gui::ISettingsManager& settings_manager,
+                                       QWidget* parent_widget)
     : sup::gui::SessionItemWidget(parent_widget)
     , m_actions(new MonitorRealTimeActions(this))
     , m_tool_bar(new QToolBar)
     , m_tab_widget(new QTabWidget)
     , m_realtime_widget(new OperationRealTimeWidget)
-    , m_workspace_tree(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTree))
-    , m_workspace_table(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTable))
+    , m_workspace_tree(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTree,
+                                                     settings_manager))
+    , m_workspace_table(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTable,
+                                                      settings_manager))
     , m_node_editor_widget(new NodeEditorWidget(NodeEditorMode::kNodeViewer))
     , m_instruction_task_monitor(new InstructionTaskMonitor)
 {
@@ -89,8 +92,8 @@ OperationTabWidget::OperationTabWidget(QWidget* parent_widget)
 
   // The controller tracks the expanded procedure on board of the current job and fans it out into
   // the child views whenever it appears or disappears (e.g. when the job is re-run).
-  m_job_controller = std::make_unique<JobItemController>(
-      [this](ProcedureItem* procedure) { SetExpandedProcedureItem(procedure); });
+  m_job_controller = std::make_unique<JobItemController>([this](ProcedureItem* procedure)
+                                                         { SetExpandedProcedureItem(procedure); });
 
   SetupConnections();
 }

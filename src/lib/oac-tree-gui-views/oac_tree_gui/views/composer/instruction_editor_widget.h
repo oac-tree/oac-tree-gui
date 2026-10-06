@@ -37,9 +37,9 @@ class ItemViewComponentProvider;
 
 namespace sup::gui
 {
-class CustomHeaderView;
+class SettingsHeaderView;
 class VisibilityAgentBase;
-class CustomSplitter;
+class SettingsSplitter;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -95,8 +95,6 @@ protected:
   void resizeEvent(QResizeEvent* event) override;
 
 private:
-  void ReadSettings();
-  void WriteSettings();
   void SetupTree();
   void AdjustTreeAppearance();
   void SetInstructionContainerIntern(InstructionContainerItem* instruction_container);
@@ -111,11 +109,11 @@ private:
   sup::gui::AppViewContext m_context;
 
   QTreeView* m_tree_view{nullptr};
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::SettingsHeaderView* m_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   InstructionAttributeEditor* m_attribute_editor{nullptr};
 
-  sup::gui::CustomSplitter* m_splitter{nullptr};
+  sup::gui::SettingsSplitter* m_splitter{nullptr};
   InstructionContainerItem* m_instruction_container{nullptr};
 
   std::unique_ptr<InstructionEditorActionHandler> m_action_handler;

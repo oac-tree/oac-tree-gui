@@ -29,6 +29,7 @@
 #include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
@@ -42,13 +43,14 @@ namespace oac_tree_gui
 
 namespace
 {
-const QString& kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
+constexpr auto kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
 }
 
 ComposerToolsPanel::ComposerToolsPanel(const sup::gui::AppViewContext& context,
                                        QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
+    , m_collapsible_list(
+          new sup::gui::CollapsibleListView(kCollapsibleListSettingName, context.settings_manager))
     , m_procedure_list_view(new ProcedureListWidget(context))
     , m_available_widget(new AvailableInstructionsWidget)
     , m_favorite_widget(new FavoriteInstructionsWidget)
@@ -76,13 +78,10 @@ ComposerToolsPanel::ComposerToolsPanel(const sup::gui::AppViewContext& context,
   connect(m_available_widget, &AvailableInstructionsWidget::InstructionDoubleClicked, this,
           &ComposerToolsPanel::ToolBoxInstructionRequest);
 
-  ReadSettings();
+  m_collapsible_list->ReadSettings();
 }
 
-ComposerToolsPanel::~ComposerToolsPanel()
-{
-  WriteSettings();
-}
+ComposerToolsPanel::~ComposerToolsPanel() = default;
 
 void ComposerToolsPanel::SetModels(ApplicationModels* models)
 {
@@ -109,16 +108,6 @@ mvvm::ItemSelection ComposerToolsPanel::GetProcedureSelection() const
 void ComposerToolsPanel::SetProcedureSelection(const mvvm::ItemSelection& selection)
 {
   m_procedure_list_view->SetSelection(selection);
-}
-
-void ComposerToolsPanel::ReadSettings()
-{
-  m_collapsible_list->ReadSettings();
-}
-
-void ComposerToolsPanel::WriteSettings()
-{
-  m_collapsible_list->WriteSettings();
 }
 
 }  // namespace oac_tree_gui

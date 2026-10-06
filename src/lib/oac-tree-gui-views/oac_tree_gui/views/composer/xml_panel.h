@@ -28,6 +28,7 @@ class QAction;
 namespace sup::gui
 {
 class CodeView;
+class ISettingsManager;
 class VisibilityAgentBase;
 class IMessageHandler;
 }  // namespace sup::gui
@@ -47,7 +48,12 @@ class XmlPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit XmlPanel(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the panel.
+   */
+  explicit XmlPanel(sup::gui::ISettingsManager& settings_manager, QWidget* parent_widget = nullptr);
   ~XmlPanel() override;
 
   XmlPanel(const XmlPanel&) = delete;

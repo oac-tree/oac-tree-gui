@@ -21,11 +21,11 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_SPLITTABLE_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_SPLITTABLE_WIDGET_H_
 
+#include <oac_tree_gui/model/job_item.h>
+
 #include <QWidget>
 #include <memory>
 #include <vector>
-
-#include <oac_tree_gui/model/job_item.h>
 
 class QSplitter;
 
@@ -36,6 +36,7 @@ class ItemSelection;
 
 namespace sup::gui
 {
+class ISettingsManager;
 class SplittableEditorController;
 class SplittableComboPanel;
 }  // namespace sup::gui
@@ -56,7 +57,13 @@ class OperationSplittableWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationSplittableWidget(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the widget.
+   */
+  explicit OperationSplittableWidget(sup::gui::ISettingsManager& settings_manager,
+                                     QWidget* parent_widget = nullptr);
   ~OperationSplittableWidget() override;
 
   OperationSplittableWidget(const OperationSplittableWidget&) = delete;
@@ -149,6 +156,7 @@ private:
    */
   void OnPanelAdded(sup::gui::SplittableComboPanel* panel);
 
+  sup::gui::ISettingsManager& m_settings_manager;
   QSplitter* m_splitter{nullptr};
   JobModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;

@@ -35,8 +35,9 @@ class ItemViewComponentProvider;
 
 namespace sup::gui
 {
-class CustomHeaderView;
-}
+class ISettingsManager;
+class SettingsHeaderView;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -57,8 +58,14 @@ class InstructionAttributeEditor : public QWidget
 
 public:
   using variable_names_func_t = std::function<QStringList()>;
-  explicit InstructionAttributeEditor(variable_names_func_t variable_names_func,
-                                      QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the editor.
+   */
+  InstructionAttributeEditor(variable_names_func_t variable_names_func,
+                             sup::gui::ISettingsManager& settings_manager,
+                             QWidget* parent_widget = nullptr);
   ~InstructionAttributeEditor() override;
 
   InstructionAttributeEditor(const InstructionAttributeEditor&) = delete;
@@ -80,7 +87,7 @@ private:
 
   QToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::SettingsHeaderView* m_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   std::unique_ptr<AttributeEditorActionHandler> m_attribute_action_handler;
   AttributeEditorActions* m_attribute_actions{nullptr};

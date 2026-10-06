@@ -37,7 +37,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(const sup::gui::AppViewContext& con
                                              WorkspacePresentationType presentation,
                                              QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_tree_view(new WorkspaceVariableTreeView(presentation))
+    , m_tree_view(new WorkspaceVariableTreeView(presentation, context.settings_manager))
     , m_editor(new WorkspaceEditor(
           context.command_service, [this]() { return m_tree_view->GetSelectedItems(); }, this))
     , m_edit_type(WorkspaceEditType::kEditorEnabled)

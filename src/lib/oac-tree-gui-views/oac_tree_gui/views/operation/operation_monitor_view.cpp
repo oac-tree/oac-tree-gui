@@ -93,7 +93,7 @@ OperationMonitorView::OperationMonitorView(const sup::gui::AppViewContext& conte
     , m_context(context)
     , m_presentation_mode(mode)
     , m_job_panel(new OperationJobPanel)
-    , m_splittable_widget(new OperationSplittableWidget)
+    , m_splittable_widget(new OperationSplittableWidget(context.settings_manager))
     , m_left_panel(CreateLeftPanel())
     , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
     , m_connection_service(CreateRemoteConnectionService())

@@ -21,9 +21,9 @@
 #ifndef OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_TAB_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_OPERATION_OPERATION_TAB_WIDGET_H_
 
-#include <sup/gui/mainwindow/session_item_widget.h>
-
 #include <oac_tree_gui/model/job_item.h>
+
+#include <sup/gui/mainwindow/session_item_widget.h>
 
 #include <QWidget>
 #include <memory>
@@ -31,6 +31,11 @@
 
 class QTabWidget;
 class QToolBar;
+
+namespace sup::gui
+{
+class ISettingsManager;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -61,7 +66,13 @@ class OperationTabWidget : public sup::gui::SessionItemWidget
   Q_OBJECT
 
 public:
-  explicit OperationTabWidget(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the widget.
+   */
+  explicit OperationTabWidget(sup::gui::ISettingsManager& settings_manager,
+                              QWidget* parent_widget = nullptr);
   ~OperationTabWidget() override;
 
   OperationTabWidget(const OperationTabWidget&) = delete;

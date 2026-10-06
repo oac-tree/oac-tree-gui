@@ -80,9 +80,6 @@ signals:
   void ToolBoxInstructionRequest(const QString& name);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
-
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   AvailableInstructionsWidget* m_available_widget{nullptr};

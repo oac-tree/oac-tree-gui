@@ -36,8 +36,10 @@
 namespace oac_tree_gui
 {
 
-OperationSplittableWidget::OperationSplittableWidget(QWidget* parent_widget)
+OperationSplittableWidget::OperationSplittableWidget(sup::gui::ISettingsManager& settings_manager,
+                                                     QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_settings_manager(settings_manager)
     , m_splitter(new QSplitter)
     , m_splitter_controller(CreateSplitterController())
 {
@@ -180,7 +182,7 @@ OperationSplittableWidget::CreateSplitterController() const
 {
   auto factory_func = [this]() -> std::unique_ptr<sup::gui::SplittableComboPanel>
   {
-    auto main_editor = std::make_unique<OperationTabWidget>();
+    auto main_editor = std::make_unique<OperationTabWidget>(m_settings_manager);
 
     // re-emit the panel's toolbar signals through the splittable widget, so that a single
     // set of connections in the parent view serves all panels

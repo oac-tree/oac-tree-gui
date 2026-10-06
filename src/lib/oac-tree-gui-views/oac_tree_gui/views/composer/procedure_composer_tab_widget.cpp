@@ -29,6 +29,8 @@
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
 
+#include <sup/gui/app/app_view_context.h>
+
 #include <mvvm/style/mvvm_style_helper.h>
 
 #include <QTabWidget>
@@ -46,7 +48,7 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(const sup::gui::AppViewCo
     , m_workspace_editor_widget(
           new WorkspaceEditorWidget(context, WorkspacePresentationType::kWorkspaceTree))
     , m_node_editor(new NodeEditorWidget(NodeEditorMode::kNodeEditor))
-    , m_xml_panel(new XmlPanel)
+    , m_xml_panel(new XmlPanel(context.settings_manager))
     , m_procedure_attribute_widget(new ProcedureAttributeEditorWidget)
     , m_tab_widget(new QTabWidget)
 {

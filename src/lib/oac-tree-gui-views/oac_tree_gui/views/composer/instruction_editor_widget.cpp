@@ -38,9 +38,9 @@
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/components/tree_helper.h>
 #include <sup/gui/mainwindow/clipboard_helper.h>
-#include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/message_helper.h>
+#include <sup/gui/widgets/settings_header_view.h>
+#include <sup/gui/widgets/settings_splitter.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/item_selection.h>
@@ -52,9 +52,8 @@
 
 namespace
 {
-const QString kGroupName("InstructionEditorWidget");
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
-const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+constexpr auto kSplitterSettingsGroup = "InstructionEditorWidget/splitter";
+constexpr auto kHeaderSettingsGroup = "InstructionEditorWidget/header_state";
 const std::vector<int> kDefaultColumnStretch({10, 10, 1});
 
 /**
@@ -77,11 +76,12 @@ InstructionEditorWidget::InstructionEditorWidget(const sup::gui::AppViewContext&
     : QWidget(parent_widget)
     , m_context(context)
     , m_tree_view(new InstructionEditorTreeView)
-    , m_custom_header(
-          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
+    , m_header(new sup::gui::SettingsHeaderView(kHeaderSettingsGroup, context.settings_manager,
+                                                kDefaultColumnStretch, this))
     , m_component_provider(CreateProvider())
-    , m_attribute_editor(new InstructionAttributeEditor(CreateVariableNameFunc()))
-    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
+    , m_attribute_editor(
+          new InstructionAttributeEditor(CreateVariableNameFunc(), context.settings_manager))
+    , m_splitter(new sup::gui::SettingsSplitter(kSplitterSettingsGroup, context.settings_manager))
     , m_action_handler(
           std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
     , m_editor_actions(new InstructionEditorActions(m_action_handler.get(), this))
@@ -100,7 +100,7 @@ InstructionEditorWidget::InstructionEditorWidget(const sup::gui::AppViewContext&
   m_splitter->setSizes({300, 200});
   layout->addWidget(m_splitter);
 
-  ReadSettings();
+  m_splitter->RestoreState();
 
   SetupTree();
 
@@ -125,7 +125,6 @@ InstructionEditorWidget::~InstructionEditorWidget()
   // uncontrollable moment of time) and agent might try to call invalid callbacks.
   m_visibility_agent.reset();
 
-  WriteSettings();
   m_context.command_service.UnregisterWidgetUniqueId(this);
 }
 
@@ -175,23 +174,13 @@ void InstructionEditorWidget::InsertInstructionFromToolBox(const QString& name)
 void InstructionEditorWidget::resizeEvent(QResizeEvent* event)
 {
   QWidget::resizeEvent(event);
-  m_custom_header->AdjustColumnsWidth();
-}
-
-void InstructionEditorWidget::ReadSettings()
-{
-  m_splitter->ReadSettings();
-}
-
-void InstructionEditorWidget::WriteSettings()
-{
-  m_splitter->WriteSettings();
+  m_header->AdjustColumnsWidth();
 }
 
 void InstructionEditorWidget::SetupTree()
 {
   m_tree_view->setAlternatingRowColors(true);
-  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setHeader(m_header);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           &InstructionEditorWidget::OnContextMenuRequest);
@@ -208,7 +197,7 @@ void InstructionEditorWidget::SetupTree()
 void InstructionEditorWidget::AdjustTreeAppearance()
 {
   m_tree_view->expandAll();
-  m_custom_header->AdjustColumnsWidth();
+  m_header->AdjustColumnsWidth();
 }
 
 void InstructionEditorWidget::SetInstructionContainerIntern(
