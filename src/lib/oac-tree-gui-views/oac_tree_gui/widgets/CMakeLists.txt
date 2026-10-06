@@ -6,6 +6,4 @@ target_sources(${library_name} PRIVATE
   busy_sign.h
   custom_tree_view_style.cpp
   custom_tree_view_style.h
-  settings_splitter.cpp
-  settings_splitter.h
 )

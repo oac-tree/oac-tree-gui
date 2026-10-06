@@ -26,15 +26,15 @@
 namespace sup::gui
 {
 class IAppCommandService;
-}
+class ISettingsManager;
+class ISettingsStorage;
+class SettingsManager;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
 
 class IDomainPluginService;
-class ISettingsManager;
-class ISettingsStorage;
-class SettingsManager;
 
 /**
  * @brief The SequencerMainWindowContext contains all common resources for SequencerMainWindow.
@@ -62,14 +62,14 @@ public:
   /**
    * @brief Returns settings manager with application storage attached.
    */
-  ISettingsManager& GetSettingsManager();
+  sup::gui::ISettingsManager& GetSettingsManager();
 
   /**
    * @brief Sets the storage of project settings, or nullptr to remove it.
    *
    * The storage must stay alive until it is removed.
    */
-  void SetProjectSettingsStorage(ISettingsStorage* storage);
+  void SetProjectSettingsStorage(sup::gui::ISettingsStorage* storage);
 
 private:
   //!< knows about global commands and their shortcuts
@@ -79,10 +79,10 @@ private:
   std::unique_ptr<IDomainPluginService> m_domain_plugin_service;
 
   //!< persistent storage for application settings, used by the settings manager
-  std::unique_ptr<ISettingsStorage> m_app_settings_storage;
+  std::unique_ptr<sup::gui::ISettingsStorage> m_app_settings_storage;
 
   //!< reads, writes and observes widget settings
-  std::unique_ptr<SettingsManager> m_settings_manager;
+  std::unique_ptr<sup::gui::SettingsManager> m_settings_manager;
 };
 
 }  // namespace oac_tree_gui

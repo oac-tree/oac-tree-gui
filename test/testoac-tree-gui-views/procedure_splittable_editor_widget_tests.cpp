@@ -24,11 +24,11 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/settings/in_memory_settings_storage.h>
-#include <oac_tree_gui/settings/settings_manager.h>
 #include <oac_tree_gui/views/composer/procedure_composer_tab_widget.h>
 
 #include <sup/gui/app/null_command_service.h>
+#include <sup/gui/settings/in_memory_settings_storage.h>
+#include <sup/gui/settings/settings_manager.h>
 #include <sup/gui/views/dtoeditor/splittable_combo_panel.h>
 #include <sup/gui/views/dtoeditor/splittable_editor_controller.h>
 
@@ -60,14 +60,15 @@ class ProcedureSplittableEditorWidgetTest : public ::testing::Test
 public:
   ProcedureSplittableEditorWidgetTest()
   {
-    m_settings_manager.SetStorage(SettingsScope::kApplication, &m_settings_storage);
-    m_settings_manager.SetStorage(SettingsScope::kProject, &m_project_storage);
+    m_settings_manager.SetStorage(sup::gui::SettingsScope::kApplication, &m_settings_storage);
+    m_settings_manager.SetStorage(sup::gui::SettingsScope::kProject, &m_project_storage);
   }
 
   //! Stores composer view info in application settings.
   void StoreViewInfo(const ComposerViewInfo& view_info)
   {
-    m_settings_manager.Set(kComposerPanelsSettingsGroup, view_info, SettingsScope::kApplication);
+    m_settings_manager.Set(kComposerPanelsSettingsGroup, view_info,
+                           sup::gui::SettingsScope::kApplication);
   }
 
   //! Returns editor types of all panels.
@@ -84,9 +85,9 @@ public:
 
   SequencerModel m_model;
   sup::gui::NullCommandService m_command_service;
-  InMemorySettingsStorage m_settings_storage;
-  InMemorySettingsStorage m_project_storage;
-  SettingsManager m_settings_manager;
+  sup::gui::InMemorySettingsStorage m_settings_storage;
+  sup::gui::InMemorySettingsStorage m_project_storage;
+  sup::gui::SettingsManager m_settings_manager;
 };
 
 TEST_F(ProcedureSplittableEditorWidgetTest, InitialState)
@@ -360,7 +361,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CollectAndRestore)
   panels.at(1)->GetMainEditor<ProcedureComposerTabWidget>()->SetEditorType(
       ProcedureEditorType::kWorkspace);
 
-  m_settings_manager.Collect(SettingsScope::kApplication);
+  m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
   editor.reset();
 
   ProcedureSplittableEditorWidget new_editor(m_command_service, m_settings_manager);
@@ -415,10 +416,10 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CollectStoresComposerViewInfo)
   panels.at(1)->GetMainEditor<ProcedureComposerTabWidget>()->SetEditorType(
       ProcedureEditorType::kXmlPanel);
 
-  m_settings_manager.Collect(SettingsScope::kApplication);
+  m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
 
-  const auto view_info = m_settings_manager.Get<ComposerViewInfo>(kComposerPanelsSettingsGroup,
-                                                                  SettingsScope::kApplication);
+  const auto view_info = m_settings_manager.Get<ComposerViewInfo>(
+      kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kApplication);
   EXPECT_EQ(view_info, editor.GetComposerViewInfo());
   ASSERT_EQ(view_info.editor_info_list.size(), 2);
   EXPECT_EQ(view_info.editor_info_list[1].procedure_id, procedure->GetIdentifier());
@@ -439,9 +440,9 @@ TEST_F(ProcedureSplittableEditorWidgetTest, ProjectNotificationReplacesPanels)
       "",
       {{procedure1->GetIdentifier(), ProcedureEditorType::kWorkspace},
        {procedure0->GetIdentifier(), ProcedureEditorType::kXmlPanel}}};
-  WriteToStorage(m_project_storage, kComposerPanelsSettingsGroup, project_info);
+  sup::gui::WriteToStorage(m_project_storage, kComposerPanelsSettingsGroup, project_info);
 
-  m_settings_manager.NotifyAll(SettingsScope::kProject);
+  m_settings_manager.NotifyAll(sup::gui::SettingsScope::kProject);
 
   auto panels = editor.GetController()->GetPanels();
   ASSERT_EQ(panels.size(), 2);
@@ -460,7 +461,7 @@ TEST_F(ProcedureSplittableEditorWidgetTest, EmptyProjectNotificationKeepsPanels)
   editor.CreatePanel();
   const auto panels = editor.GetController()->GetPanels();
 
-  m_settings_manager.NotifyAll(SettingsScope::kProject);
+  m_settings_manager.NotifyAll(sup::gui::SettingsScope::kProject);
 
   EXPECT_EQ(editor.GetController()->GetPanels(), panels);
 }
@@ -476,10 +477,10 @@ TEST_F(ProcedureSplittableEditorWidgetTest, CollectProjectSettings)
   panels.at(1)->GetMainEditor<ProcedureComposerTabWidget>()->SetEditorType(
       ProcedureEditorType::kNodeEditor);
 
-  m_settings_manager.Collect(SettingsScope::kProject);
+  m_settings_manager.Collect(sup::gui::SettingsScope::kProject);
 
-  const auto view_info = m_settings_manager.Get<ComposerViewInfo>(kComposerPanelsSettingsGroup,
-                                                                  SettingsScope::kProject);
+  const auto view_info = m_settings_manager.Get<ComposerViewInfo>(
+      kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kProject);
   EXPECT_EQ(view_info, editor.GetComposerViewInfo());
   ASSERT_EQ(view_info.editor_info_list.size(), 2);
   EXPECT_EQ(view_info.editor_info_list[0].procedure_id, procedure->GetIdentifier());

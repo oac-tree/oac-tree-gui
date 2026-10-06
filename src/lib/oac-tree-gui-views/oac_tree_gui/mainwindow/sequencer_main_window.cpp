@@ -26,14 +26,16 @@
 
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/undo_settings_item.h>
-#include <oac_tree_gui/settings/i_settings_manager.h>
-#include <oac_tree_gui/settings/project_settings_storage.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
 #include <oac_tree_gui/views/explorer/sequencer_explorer_view.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
+
+#include <sup/gui/model/undo_settings_item.h>
+#include <sup/gui/settings/i_settings_manager.h>
+#include <sup/gui/settings/project_settings_storage.h>
 
 #include <mvvm/widgets/app_restarter.h>
 #include <mvvm/widgets/main_vertical_bar_widget.h>
@@ -55,7 +57,7 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 SequencerMainWindow::SequencerMainWindow(SequencerMainWindowContext& context)
     : m_context(context)
     , m_models(CreateProject())
-    , m_project_settings_storage(std::make_unique<ProjectSettingsStorage>(
+    , m_project_settings_storage(std::make_unique<sup::gui::ProjectSettingsStorage>(
           [this]() { return m_models->GetProjectModel(); }))
 {
   m_context.SetProjectSettingsStorage(m_project_settings_storage.get());
@@ -95,9 +97,9 @@ void SequencerMainWindow::InitApplication()
   ReadSettings();
   InitComponents();
 
-  m_undo_settings_connection = m_context.GetSettingsManager().Subscribe<UndoInfo>(
-      kUndoSettingsGroup, SettingsScope::kApplication,
-      [this](const UndoInfo& undo_info) { ApplyUndoSettings(undo_info); });
+  m_undo_settings_connection = m_context.GetSettingsManager().Subscribe<sup::gui::UndoInfo>(
+      sup::gui::kUndoSettingsGroup, sup::gui::SettingsScope::kApplication,
+      [this](const sup::gui::UndoInfo& undo_info) { ApplyUndoSettings(undo_info); });
 }
 
 void SequencerMainWindow::InitComponents()
@@ -148,7 +150,7 @@ void SequencerMainWindow::WriteSettings()
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
 
-  m_context.GetSettingsManager().Collect(SettingsScope::kApplication);
+  m_context.GetSettingsManager().Collect(sup::gui::SettingsScope::kApplication);
 }
 
 bool SequencerMainWindow::CanCloseApplication()
@@ -186,15 +188,15 @@ void SequencerMainWindow::OnExitRequest(mvvm::AppExitRequest exit_request)
 
 void SequencerMainWindow::OnProjectLoad()
 {
-  ApplyUndoSettings(m_context.GetSettingsManager().Get<UndoInfo>(kUndoSettingsGroup,
-                                                                 SettingsScope::kApplication));
+  ApplyUndoSettings(m_context.GetSettingsManager().Get<sup::gui::UndoInfo>(
+      sup::gui::kUndoSettingsGroup, sup::gui::SettingsScope::kApplication));
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModels(m_models.get());
   m_operation_view->SetModels(m_models.get());
 
   // after views got new models, so procedure ids are resolved
-  m_context.GetSettingsManager().NotifyAll(SettingsScope::kProject);
+  m_context.GetSettingsManager().NotifyAll(sup::gui::SettingsScope::kProject);
 
   UpdateProjectNames();
 }
@@ -204,7 +206,7 @@ void SequencerMainWindow::UpdateProjectNames()
   m_action_manager->UpdateProjectNames();
 }
 
-void SequencerMainWindow::ApplyUndoSettings(const UndoInfo& undo_info)
+void SequencerMainWindow::ApplyUndoSettings(const sup::gui::UndoInfo& undo_info)
 {
   if (auto sequencer_model = m_models->GetSequencerModel(); sequencer_model)
   {
@@ -218,7 +220,7 @@ std::unique_ptr<ApplicationModels> SequencerMainWindow::CreateProject()
   context.modified_callback = [this]() { UpdateProjectNames(); };
   context.loaded_callback = [this]() { OnProjectLoad(); };
   context.about_to_save_callback = [this]()
-  { m_context.GetSettingsManager().Collect(SettingsScope::kProject); };
+  { m_context.GetSettingsManager().Collect(sup::gui::SettingsScope::kProject); };
   context.saved_callback = [this]() { UpdateProjectNames(); };
   context.application_type = ApplicationModels::kApplicationType;
   return std::make_unique<ApplicationModels>(context);

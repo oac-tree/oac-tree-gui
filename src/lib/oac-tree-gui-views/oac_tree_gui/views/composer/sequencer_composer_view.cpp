@@ -27,11 +27,11 @@
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/style/style_helper.h>
-#include <oac_tree_gui/widgets/settings_splitter.h>
 
 #include <sup/gui/app/app_command_context.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/i_app_command_service.h>
+#include <sup/gui/widgets/settings_splitter.h>
 
 #include <mvvm/model/item_selection.h>
 
@@ -57,12 +57,12 @@ std::string GetSplitterSettingsGroup()
 }  // namespace
 
 SequencerComposerView::SequencerComposerView(sup::gui::IAppCommandService& command_service,
-                                             ISettingsManager& settings_manager,
+                                             sup::gui::ISettingsManager& settings_manager,
                                              QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
     , m_composer_actions(new SequencerComposerActions(this))
-    , m_splitter(new SettingsSplitter(GetSplitterSettingsGroup(), settings_manager))
+    , m_splitter(new sup::gui::SettingsSplitter(GetSplitterSettingsGroup(), settings_manager))
     , m_composer_tools_panel(new ComposerToolsPanel(command_service))
     , m_splittable_editor_widget(
           new ProcedureSplittableEditorWidget(command_service, settings_manager))

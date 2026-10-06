@@ -22,32 +22,35 @@
 
 #include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/sequencer_settings_model.h>
-#include <oac_tree_gui/model/undo_settings_item.h>
-#include <oac_tree_gui/settings/i_settings_manager.h>
+
+#include <sup/gui/model/undo_settings_item.h>
+#include <sup/gui/settings/i_settings_manager.h>
 
 namespace oac_tree_gui
 {
 
-std::unique_ptr<SequencerSettingsModel> CreateSettingsModel(const ISettingsManager& manager)
+std::unique_ptr<SequencerSettingsModel> CreateSettingsModel(
+    const sup::gui::ISettingsManager& manager)
 {
   auto result = std::make_unique<SequencerSettingsModel>();
 
-  result->Get<UndoSettingsItem>()->SetUndoInfo(
-      manager.Get<UndoInfo>(kUndoSettingsGroup, SettingsScope::kApplication));
+  result->Get<sup::gui::UndoSettingsItem>()->SetUndoInfo(manager.Get<sup::gui::UndoInfo>(
+      sup::gui::kUndoSettingsGroup, sup::gui::SettingsScope::kApplication));
 
-  result->Get<PluginSettingsItem>()->SetPluginSettingsInfo(manager.Get<PluginSettingsInfo>(
-      kPluginSettingsGroup, SettingsScope::kApplication, CreateDefaultPluginSettingsInfo()));
+  result->Get<PluginSettingsItem>()->SetPluginSettingsInfo(
+      manager.Get<PluginSettingsInfo>(kPluginSettingsGroup, sup::gui::SettingsScope::kApplication,
+                                      CreateDefaultPluginSettingsInfo()));
 
   return result;
 }
 
-void WriteSettingsModel(const SequencerSettingsModel& model, ISettingsManager& manager)
+void WriteSettingsModel(const SequencerSettingsModel& model, sup::gui::ISettingsManager& manager)
 {
-  manager.Set(kUndoSettingsGroup, model.Get<UndoSettingsItem>()->GetUndoInfo(),
-              SettingsScope::kApplication);
+  manager.Set(sup::gui::kUndoSettingsGroup, model.Get<sup::gui::UndoSettingsItem>()->GetUndoInfo(),
+              sup::gui::SettingsScope::kApplication);
 
   manager.Set(kPluginSettingsGroup, model.Get<PluginSettingsItem>()->GetPluginSettingsInfo(),
-              SettingsScope::kApplication);
+              sup::gui::SettingsScope::kApplication);
 }
 
 }  // namespace oac_tree_gui

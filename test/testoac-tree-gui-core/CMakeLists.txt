@@ -41,14 +41,12 @@ target_sources(${test} PRIVATE
   sequencer_model_tests.cpp
   sequencer_settings_helper_tests.cpp
   sequencer_settings_model_tests.cpp
-  settings_container_item_tests.cpp
   server_info_items_tests.cpp
   standard_instruction_items_tests.cpp
   standard_job_items_tests.cpp
   standard_variable_items_tests.cpp
   text_edit_item_tests.cpp
   transform_from_domain_tests.cpp
-  undo_settings_item_tests.cpp
   universal_instruction_item_tests.cpp
   universal_item_helper_tests.cpp
   universal_variable_item_tests.cpp

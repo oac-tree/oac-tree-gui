@@ -25,15 +25,8 @@
 //! Collection of constants related to the global application settings. These constants are used as
 //! keys to register corresponding properties.
 
-#include <cstdint>
-
 namespace oac_tree_gui::constants
 {
-
-constexpr auto kUseUndoSetting = "kUseUndoSetting";
-const bool kUseUndoDefault = true;
-constexpr auto kUndoLimitSetting = "kUndoLimitSetting";
-const std::int32_t kUndoLimitDefault = 100;
 
 constexpr auto kUseTextEditor = "kUseTextEditor";
 constexpr auto kTextEditorContent = "kTextEditorContent";

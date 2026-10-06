@@ -22,10 +22,10 @@
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
-#include <oac_tree_gui/settings/app_settings_storage.h>
-#include <oac_tree_gui/settings/settings_manager.h>
 
 #include <sup/gui/app/default_command_service.h>
+#include <sup/gui/settings/app_settings_storage.h>
+#include <sup/gui/settings/settings_manager.h>
 
 namespace oac_tree_gui
 {
@@ -33,16 +33,18 @@ namespace oac_tree_gui
 SequencerMainWindowContext::SequencerMainWindowContext()
     : m_command_service(sup::gui::CreateDefaultCommandService())
     , m_domain_plugin_service(std::make_unique<DomainLibraryLoader>())
-    , m_app_settings_storage(CreateAppSettingsStorage())
-    , m_settings_manager(std::make_unique<SettingsManager>())
+    , m_app_settings_storage(sup::gui::CreateAppSettingsStorage())
+    , m_settings_manager(std::make_unique<sup::gui::SettingsManager>())
 {
-  m_settings_manager->SetStorage(SettingsScope::kApplication, m_app_settings_storage.get());
+  m_settings_manager->SetStorage(sup::gui::SettingsScope::kApplication,
+                                 m_app_settings_storage.get());
 }
 
 void SequencerMainWindowContext::LoadPlugins()
 {
   const auto plugin_settings = m_settings_manager->Get<PluginSettingsInfo>(
-      kPluginSettingsGroup, SettingsScope::kApplication, CreateDefaultPluginSettingsInfo());
+      kPluginSettingsGroup, sup::gui::SettingsScope::kApplication,
+      CreateDefaultPluginSettingsInfo());
 
   const auto plugin_file_names = GetPluginFileNames(plugin_settings);
   m_domain_plugin_service->LoadPluginFiles(plugin_file_names);
@@ -60,14 +62,14 @@ IDomainPluginService& SequencerMainWindowContext::GetDomainPluginService()
   return *m_domain_plugin_service;
 }
 
-ISettingsManager& SequencerMainWindowContext::GetSettingsManager()
+sup::gui::ISettingsManager& SequencerMainWindowContext::GetSettingsManager()
 {
   return *m_settings_manager;
 }
 
-void SequencerMainWindowContext::SetProjectSettingsStorage(ISettingsStorage* storage)
+void SequencerMainWindowContext::SetProjectSettingsStorage(sup::gui::ISettingsStorage* storage)
 {
-  m_settings_manager->SetStorage(SettingsScope::kProject, storage);
+  m_settings_manager->SetStorage(sup::gui::SettingsScope::kProject, storage);
 }
 
 }  // namespace oac_tree_gui

@@ -21,11 +21,11 @@
 #include "oac_tree_gui/mainwindow/sequencer_main_window_context.h"
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
-#include <oac_tree_gui/settings/app_settings_storage.h>
-#include <oac_tree_gui/settings/i_settings_manager.h>
-#include <oac_tree_gui/settings/in_memory_settings_storage.h>
 
 #include <sup/gui/app/app_command_service.h>
+#include <sup/gui/settings/app_settings_storage.h>
+#include <sup/gui/settings/i_settings_manager.h>
+#include <sup/gui/settings/in_memory_settings_storage.h>
 
 #include <gtest/gtest.h>
 
@@ -50,22 +50,22 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
 
   // check settings manager
   auto& settings_manager = context.GetSettingsManager();
-  EXPECT_NE(
-      dynamic_cast<AppSettingsStorage*>(settings_manager.GetStorage(SettingsScope::kApplication)),
-      nullptr);
-  EXPECT_EQ(settings_manager.GetStorage(SettingsScope::kProject), nullptr);
+  EXPECT_NE(dynamic_cast<sup::gui::AppSettingsStorage*>(
+                settings_manager.GetStorage(sup::gui::SettingsScope::kApplication)),
+            nullptr);
+  EXPECT_EQ(settings_manager.GetStorage(sup::gui::SettingsScope::kProject), nullptr);
 }
 
 TEST_F(SequencerMainWindowContextTest, SetProjectSettingsStorage)
 {
   SequencerMainWindowContext context;
-  InMemorySettingsStorage storage;
+  sup::gui::InMemorySettingsStorage storage;
 
   context.SetProjectSettingsStorage(&storage);
-  EXPECT_EQ(context.GetSettingsManager().GetStorage(SettingsScope::kProject), &storage);
+  EXPECT_EQ(context.GetSettingsManager().GetStorage(sup::gui::SettingsScope::kProject), &storage);
 
   context.SetProjectSettingsStorage(nullptr);
-  EXPECT_EQ(context.GetSettingsManager().GetStorage(SettingsScope::kProject), nullptr);
+  EXPECT_EQ(context.GetSettingsManager().GetStorage(sup::gui::SettingsScope::kProject), nullptr);
 }
 
 TEST_F(SequencerMainWindowContextTest, LoadNonExistingPlugin)

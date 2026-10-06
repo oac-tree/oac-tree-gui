@@ -23,10 +23,14 @@
 
 #include <memory>
 
+namespace sup::gui
+{
+class ISettingsManager;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
-class ISettingsManager;
 class SequencerSettingsModel;
 
 /**
@@ -34,9 +38,10 @@ class SequencerSettingsModel;
  *
  * @param manager The settings manager to read from.
  * @return The settings model.
- * @throw RuntimeException if no application storage is set.
+ * @throw sup::gui::RuntimeException if no application storage is set.
  */
-std::unique_ptr<SequencerSettingsModel> CreateSettingsModel(const ISettingsManager& manager);
+std::unique_ptr<SequencerSettingsModel> CreateSettingsModel(
+    const sup::gui::ISettingsManager& manager);
 
 /**
  * @brief Writes settings from the model to the application scope of the settings manager.
@@ -45,9 +50,9 @@ std::unique_ptr<SequencerSettingsModel> CreateSettingsModel(const ISettingsManag
  *
  * @param model The settings model to read from.
  * @param manager The settings manager to write to.
- * @throw RuntimeException if no application storage is set.
+ * @throw sup::gui::RuntimeException if no application storage is set.
  */
-void WriteSettingsModel(const SequencerSettingsModel& model, ISettingsManager& manager);
+void WriteSettingsModel(const SequencerSettingsModel& model, sup::gui::ISettingsManager& manager);
 
 }  // namespace oac_tree_gui
 

@@ -23,9 +23,10 @@
 #include "pvmonitor_project.h"
 #include "sequencer_main_window_context.h"
 
-#include <oac_tree_gui/settings/i_settings_manager.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_main_window_actions.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_widget.h>
+
+#include <sup/gui/settings/i_settings_manager.h>
 
 #include <QSettings>
 
@@ -85,7 +86,7 @@ void PvMonitorMainWindow::WriteSettings()
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
 
-  m_context.GetSettingsManager().Collect(SettingsScope::kApplication);
+  m_context.GetSettingsManager().Collect(sup::gui::SettingsScope::kApplication);
 }
 
 void PvMonitorMainWindow::OnProjectLoad()

@@ -21,7 +21,8 @@
 #include "sequencer_settings_model.h"
 
 #include "plugin_settings_item.h"
-#include "undo_settings_item.h"
+
+#include <sup/gui/model/undo_settings_item.h>
 
 namespace oac_tree_gui
 {
@@ -53,7 +54,7 @@ void SequencerSettingsModel::Clear()
 
 void SequencerSettingsModel::PopulateModel()
 {
-  (void)InsertItem<UndoSettingsItem>();
+  (void)InsertItem<sup::gui::UndoSettingsItem>();
   (void)InsertItem<PluginSettingsItem>();
 }
 

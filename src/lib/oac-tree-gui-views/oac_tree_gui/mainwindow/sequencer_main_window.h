@@ -21,7 +21,7 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 #define OAC_TREE_GUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 
-#include <oac_tree_gui/settings/scoped_callback.h>
+#include <sup/gui/settings/scoped_callback.h>
 
 #include <mvvm/widgets/main_window_types.h>
 
@@ -33,17 +33,21 @@ namespace mvvm
 class MainVerticalBarWidget;
 }
 
+namespace sup::gui
+{
+class ProjectSettingsStorage;
+struct UndoInfo;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
 class ApplicationModels;
 class OperationMonitorView;
-class ProjectSettingsStorage;
 class SequencerComposerView;
 class SequencerExplorerView;
 class SequencerMainWindowActions;
 class SequencerMainWindowContext;
-struct UndoInfo;
 
 /**
  * @brief The SequencerMainWindow class is the main window of sequencer-gui application.
@@ -104,13 +108,13 @@ private:
   /**
    * @brief Applies undo settings to the sequencer model.
    */
-  void ApplyUndoSettings(const UndoInfo& undo_info);
+  void ApplyUndoSettings(const sup::gui::UndoInfo& undo_info);
 
   std::unique_ptr<ApplicationModels> CreateProject();
 
   SequencerMainWindowContext& m_context;
   std::unique_ptr<ApplicationModels> m_models;
-  std::unique_ptr<ProjectSettingsStorage> m_project_settings_storage;
+  std::unique_ptr<sup::gui::ProjectSettingsStorage> m_project_settings_storage;
 
   SequencerMainWindowActions* m_action_manager{nullptr};
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
@@ -119,7 +123,7 @@ private:
   SequencerComposerView* m_composer_view{nullptr};
   OperationMonitorView* m_operation_view{nullptr};
 
-  ScopedCallback m_undo_settings_connection;
+  sup::gui::ScopedCallback m_undo_settings_connection;
 };
 
 }  // namespace oac_tree_gui

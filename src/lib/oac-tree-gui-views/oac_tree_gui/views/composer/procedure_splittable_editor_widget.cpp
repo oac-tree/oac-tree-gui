@@ -24,8 +24,8 @@
 
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/settings/i_settings_manager.h>
 
+#include <sup/gui/settings/i_settings_manager.h>
 #include <sup/gui/views/dtoeditor/splittable_combo_panel.h>
 #include <sup/gui/views/dtoeditor/splittable_editor_controller.h>
 
@@ -65,7 +65,7 @@ ProcedureItem* FindAppropriateProcedure(SequencerModel* model, const std::string
 }  // namespace
 
 ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
-    sup::gui::IAppCommandService& command_service, ISettingsManager& settings_manager,
+    sup::gui::IAppCommandService& command_service, sup::gui::ISettingsManager& settings_manager,
     QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_command_service(command_service)
@@ -94,8 +94,8 @@ void ProcedureSplittableEditorWidget::SetModel(SequencerModel* model)
   m_model = model;
   m_splitter_controller->SetModel(model);
 
-  const auto view_info = m_settings_manager.Get<ComposerViewInfo>(kComposerPanelsSettingsGroup,
-                                                                  SettingsScope::kApplication);
+  const auto view_info = m_settings_manager.Get<ComposerViewInfo>(
+      kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kApplication);
   const auto panels = m_splitter_controller->GetPanels();
   for (std::size_t index = 0; index < panels.size(); ++index)
   {
@@ -207,7 +207,7 @@ void ProcedureSplittableEditorWidget::CreateInitialPanelsFromSettings()
 {
   // using persistent storage
   auto view_info = m_settings_manager.Get<ComposerViewInfo>(kComposerPanelsSettingsGroup,
-                                                            SettingsScope::kApplication);
+                                                            sup::gui::SettingsScope::kApplication);
   if (view_info.editor_info_list.empty())
   {
     view_info.editor_info_list.emplace_back();
@@ -220,9 +220,9 @@ void ProcedureSplittableEditorWidget::RegisterOwnSettingsInStore()
   // registers own settings to report them to two different settings store
   auto provider = [this]() { return GetComposerViewInfo(); };
   m_settings_connections.push_back(m_settings_manager.RegisterProvider(
-      kComposerPanelsSettingsGroup, SettingsScope::kApplication, provider));
+      kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kApplication, provider));
   m_settings_connections.push_back(m_settings_manager.RegisterProvider(
-      kComposerPanelsSettingsGroup, SettingsScope::kProject, provider));
+      kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kProject, provider));
 
   // subscribe to notification update in project setting store
   auto on_project_settings = [this](const ComposerViewInfo& info)
@@ -234,7 +234,7 @@ void ProcedureSplittableEditorWidget::RegisterOwnSettingsInStore()
     }
   };
   m_settings_connections.push_back(m_settings_manager.Subscribe<ComposerViewInfo>(
-      kComposerPanelsSettingsGroup, SettingsScope::kProject, on_project_settings));
+      kComposerPanelsSettingsGroup, sup::gui::SettingsScope::kProject, on_project_settings));
 }
 
 }  // namespace oac_tree_gui

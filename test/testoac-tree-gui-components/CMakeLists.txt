@@ -8,7 +8,6 @@ add_executable(${test})
 target_sources(${test} PRIVATE
   align_node_tests.cpp
   align_utils_tests.cpp
-  app_settings_storage_tests.cpp
   attribute_editor_action_handler_tests.cpp
   automation_client_tests.cpp
   breakpoint_controller_tests.cpp
@@ -32,8 +31,6 @@ target_sources(${test} PRIVATE
   graphics_scene_action_handler_tests.cpp
   graphics_scene_style_tests.cpp
   graphics_view_style_tests.cpp
-  in_memory_settings_storage_tests.cpp
-  project_settings_storage_tests.cpp
   instruction_editor_action_handler_copypaste_tests.cpp
   instruction_editor_action_handler_tests.cpp
   instruction_editor_action_handler_undo_tests.cpp
@@ -61,11 +58,8 @@ target_sources(${test} PRIVATE
   request_handler_tests.cpp
   request_types_tests.cpp
   scene_utils_tests.cpp
-  scoped_callback_tests.cpp
   sequencer_workspace_corner_case_tests.cpp
-  settings_archive_tests.cpp
   settings_info_visit_tests.cpp
-  settings_manager_tests.cpp
   settings_model_helper_tests.cpp
   style_helper_tests.cpp
   workspace_editor_action_handler_copyandpaste_tests.cpp

@@ -28,6 +28,8 @@ class QAction;
 namespace sup::gui
 {
 class IAppCommandService;
+class ISettingsManager;
+class SettingsSplitter;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
@@ -35,10 +37,8 @@ namespace oac_tree_gui
 
 class ApplicationModels;
 class ComposerToolsPanel;
-class ISettingsManager;
 class ProcedureSplittableEditorWidget;
 class SequencerComposerActions;
-class SettingsSplitter;
 
 /**
  * @brief The SequencerComposerView class is a main widget for procedure editing.
@@ -54,7 +54,8 @@ class SequencerComposerView : public QWidget
 
 public:
   SequencerComposerView(sup::gui::IAppCommandService& command_service,
-                        ISettingsManager& settings_manager, QWidget* parent_widget = nullptr);
+                        sup::gui::ISettingsManager& settings_manager,
+                        QWidget* parent_widget = nullptr);
   ~SequencerComposerView() override;
 
   SequencerComposerView(const SequencerComposerView&) = delete;
@@ -72,7 +73,7 @@ private:
   QAction* m_toggle_left_sidebar{nullptr};
   SequencerComposerActions* m_composer_actions{nullptr};
 
-  SettingsSplitter* m_splitter{nullptr};
+  sup::gui::SettingsSplitter* m_splitter{nullptr};
   ComposerToolsPanel* m_composer_tools_panel{nullptr};
   ProcedureSplittableEditorWidget* m_splittable_editor_widget{nullptr};
 };

@@ -22,7 +22,8 @@
 #define OAC_TREE_GUI_VIEWS_COMPOSER_PROCEDURE_SPLITTABLE_EDITOR_WIDGET_H_
 
 #include <oac_tree_gui/model/component_types.h>
-#include <oac_tree_gui/settings/scoped_callback.h>
+
+#include <sup/gui/settings/scoped_callback.h>
 
 #include <QWidget>
 #include <memory>
@@ -38,14 +39,14 @@ class ItemSelection;
 namespace sup::gui
 {
 class IAppCommandService;
-class SplittableEditorController;
+class ISettingsManager;
 class SplittableComboPanel;
+class SplittableEditorController;
 }  // namespace sup::gui
 
 namespace oac_tree_gui
 {
 
-class ISettingsManager;
 class SequencerModel;
 class ProcedureItem;
 
@@ -65,7 +66,7 @@ class ProcedureSplittableEditorWidget : public QWidget
 
 public:
   ProcedureSplittableEditorWidget(sup::gui::IAppCommandService& command_service,
-                                  ISettingsManager& settings_manager,
+                                  sup::gui::ISettingsManager& settings_manager,
                                   QWidget* parent_widget = nullptr);
   ~ProcedureSplittableEditorWidget() override;
 
@@ -136,11 +137,11 @@ private:
   void RegisterOwnSettingsInStore();
 
   sup::gui::IAppCommandService& m_command_service;
-  ISettingsManager& m_settings_manager;
+  sup::gui::ISettingsManager& m_settings_manager;
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
-  std::vector<ScopedCallback> m_settings_connections;
+  std::vector<sup::gui::ScopedCallback> m_settings_connections;
 };
 
 }  // namespace oac_tree_gui
