@@ -56,7 +56,7 @@ TEST_F(ComposerSettingsTest, ComposerToolsPanel)
 
   m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
 
-  EXPECT_TRUE(HasKey("ComposerPanel/collapsible_list/state"));
+  EXPECT_TRUE(HasKey("ComposerToolsPanel/collapsible_list/state"));
 }
 
 TEST_F(ComposerSettingsTest, InstructionEditorWidget)
@@ -66,8 +66,8 @@ TEST_F(ComposerSettingsTest, InstructionEditorWidget)
   m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
 
   EXPECT_TRUE(HasKey("InstructionEditorWidget/splitter/state"));
-  EXPECT_TRUE(HasKey("InstructionEditorWidget/header_state/state"));
-  EXPECT_TRUE(HasKey("InstructionAttributeEditor/header_state/state"));
+  EXPECT_TRUE(HasKey("InstructionEditorWidget/tree_header/state"));
+  EXPECT_TRUE(HasKey("InstructionAttributeEditor/tree_header/state"));
 }
 
 TEST_F(ComposerSettingsTest, WorkspaceTreeAndTableHaveDifferentGroups)
@@ -79,8 +79,8 @@ TEST_F(ComposerSettingsTest, WorkspaceTreeAndTableHaveDifferentGroups)
 
   m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
 
-  EXPECT_TRUE(HasKey("WorkspaceEditorWidget/tree_header/state"));
-  EXPECT_TRUE(HasKey("WorkspaceEditorWidget/table_header/state"));
+  EXPECT_TRUE(HasKey("WorkspaceVariableTreeView/tree_header/state"));
+  EXPECT_TRUE(HasKey("WorkspaceVariableTreeView/table_header/state"));
 }
 
 }  // namespace oac_tree_gui::test

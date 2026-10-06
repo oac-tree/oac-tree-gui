@@ -40,7 +40,7 @@
 
 namespace
 {
-constexpr auto kHeaderSettingsGroup = "InstructionAttributeEditor/header_state";
+constexpr auto kHeaderSettingsGroup = "InstructionAttributeEditor/tree_header";
 const std::vector<int> kDefaultColumnStretch({2, 1, 1});
 }  // namespace
 

@@ -43,7 +43,7 @@ namespace oac_tree_gui
 
 namespace
 {
-constexpr auto kCollapsibleListSettingName = "ComposerPanel/collapsible_list";
+constexpr auto kCollapsibleListSettingName = "ComposerToolsPanel/collapsible_list";
 }
 
 ComposerToolsPanel::ComposerToolsPanel(const sup::gui::AppViewContext& context,

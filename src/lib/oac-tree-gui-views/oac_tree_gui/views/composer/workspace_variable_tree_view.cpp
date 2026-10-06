@@ -49,8 +49,8 @@ namespace
 std::string GetHeaderSettingsGroup(WorkspacePresentationType presentation)
 {
   return presentation == WorkspacePresentationType::kWorkspaceTable
-             ? "WorkspaceEditorWidget/table_header"
-             : "WorkspaceEditorWidget/tree_header";
+             ? "WorkspaceVariableTreeView/table_header"
+             : "WorkspaceVariableTreeView/tree_header";
 }
 
 std::vector<std::int32_t> GetDefaultColumnStretch(WorkspacePresentationType presentation)
