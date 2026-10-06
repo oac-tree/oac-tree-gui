@@ -27,7 +27,6 @@
 #include <oac_tree_gui/mainwindow/sequencer_main_window_context.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/model/undo_settings_item.h>
 #include <oac_tree_gui/settings/i_settings_manager.h>
 #include <oac_tree_gui/settings/project_settings_storage.h>
@@ -35,8 +34,6 @@
 #include <oac_tree_gui/views/composer/sequencer_composer_view.h>
 #include <oac_tree_gui/views/explorer/sequencer_explorer_view.h>
 #include <oac_tree_gui/views/operation/operation_monitor_view.h>
-
-#include <sup/gui/mainwindow/settings_helper.h>
 
 #include <mvvm/widgets/app_restarter.h>
 #include <mvvm/widgets/main_vertical_bar_widget.h>
@@ -150,8 +147,6 @@ void SequencerMainWindow::WriteSettings()
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
-
-  ::sup::gui::WriteApplicationSettings(GetContext().GetSettingsModel());
 
   m_context.GetSettingsManager().Collect(SettingsScope::kApplication);
 }

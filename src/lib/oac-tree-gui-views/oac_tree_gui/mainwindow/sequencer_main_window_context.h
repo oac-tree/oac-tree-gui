@@ -34,7 +34,6 @@ namespace oac_tree_gui
 class IDomainPluginService;
 class ISettingsManager;
 class ISettingsStorage;
-class SequencerSettingsModel;
 class SettingsManager;
 
 /**
@@ -52,11 +51,9 @@ public:
   SequencerMainWindowContext& operator=(SequencerMainWindowContext&&) = delete;
 
   /**
-   * @brief Loads plugins using the plugin service and settings model.
+   * @brief Loads plugins using the plugin service and plugin settings of the settings manager.
    */
   void LoadPlugins();
-
-  SequencerSettingsModel& GetSettingsModel();
 
   sup::gui::IAppCommandService& GetCommandService();
 
@@ -75,8 +72,6 @@ public:
   void SetProjectSettingsStorage(ISettingsStorage* storage);
 
 private:
-  std::unique_ptr<SequencerSettingsModel> m_settings;
-
   //!< knows about global commands and their shortcuts
   std::unique_ptr<sup::gui::IAppCommandService> m_command_service;
 

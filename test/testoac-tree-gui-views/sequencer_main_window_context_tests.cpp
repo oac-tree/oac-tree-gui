@@ -21,7 +21,6 @@
 #include "oac_tree_gui/mainwindow/sequencer_main_window_context.h"
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
-#include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/settings/app_settings_storage.h>
 #include <oac_tree_gui/settings/i_settings_manager.h>
 #include <oac_tree_gui/settings/in_memory_settings_storage.h>
@@ -48,9 +47,6 @@ TEST_F(SequencerMainWindowContextTest, InitialState)
   auto plugin_service = dynamic_cast<DomainLibraryLoader*>(&context.GetDomainPluginService());
   ASSERT_NE(plugin_service, nullptr);
   EXPECT_EQ(plugin_service->GetPluginLoadInfo().size(), 0);
-
-  // check settings
-  EXPECT_NE(dynamic_cast<SequencerSettingsModel*>(&context.GetSettingsModel()), nullptr);
 
   // check settings manager
   auto& settings_manager = context.GetSettingsManager();

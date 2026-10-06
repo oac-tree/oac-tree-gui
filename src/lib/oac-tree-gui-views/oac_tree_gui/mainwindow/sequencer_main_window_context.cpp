@@ -22,38 +22,30 @@
 
 #include <oac_tree_gui/domain/domain_library_loader.h>
 #include <oac_tree_gui/model/plugin_settings_item.h>
-#include <oac_tree_gui/model/sequencer_settings_model.h>
 #include <oac_tree_gui/settings/app_settings_storage.h>
 #include <oac_tree_gui/settings/settings_manager.h>
 
 #include <sup/gui/app/default_command_service.h>
-#include <sup/gui/mainwindow/settings_helper.h>
 
 namespace oac_tree_gui
 {
 
 SequencerMainWindowContext::SequencerMainWindowContext()
-    : m_settings(std::make_unique<SequencerSettingsModel>())
-    , m_command_service(sup::gui::CreateDefaultCommandService())
+    : m_command_service(sup::gui::CreateDefaultCommandService())
     , m_domain_plugin_service(std::make_unique<DomainLibraryLoader>())
     , m_app_settings_storage(CreateAppSettingsStorage())
     , m_settings_manager(std::make_unique<SettingsManager>())
 {
-  ::sup::gui::ReadApplicationSettings(*m_settings);
   m_settings_manager->SetStorage(SettingsScope::kApplication, m_app_settings_storage.get());
 }
 
 void SequencerMainWindowContext::LoadPlugins()
 {
-  auto plugin_settings = m_settings->Get<PluginSettingsItem>();
+  const auto plugin_settings = m_settings_manager->Get<PluginSettingsInfo>(
+      kPluginSettingsGroup, SettingsScope::kApplication, CreateDefaultPluginSettingsInfo());
 
-  const auto plugin_file_names = GetPluginFileNames(plugin_settings->GetPluginSettingsInfo());
+  const auto plugin_file_names = GetPluginFileNames(plugin_settings);
   m_domain_plugin_service->LoadPluginFiles(plugin_file_names);
-}
-
-SequencerSettingsModel& SequencerMainWindowContext::GetSettingsModel()
-{
-  return *m_settings;
 }
 
 SequencerMainWindowContext::~SequencerMainWindowContext() = default;

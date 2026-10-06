@@ -36,7 +36,6 @@ namespace mvvm
 {
 class IProject;
 class ProjectHandler;
-class ISessionModel;
 }  // namespace mvvm
 
 namespace sup::gui
@@ -115,7 +114,6 @@ private:
   void OnResetSettings();
 
   sup::gui::IAppCommandService& GetCommandService();
-  mvvm::ISessionModel& GetSettings();
 
   QAction* m_exit_action{nullptr};
   QAction* m_about_action{nullptr};
