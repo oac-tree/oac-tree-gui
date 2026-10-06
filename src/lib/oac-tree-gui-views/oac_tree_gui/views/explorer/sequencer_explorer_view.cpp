@@ -26,9 +26,10 @@
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/views/operation/procedure_action_handler.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/views/codeeditor/code_view.h>
-#include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/item_stack_widget.h>
+#include <sup/gui/widgets/settings_splitter.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/utils/bin_utils.h>
@@ -38,8 +39,8 @@
 namespace
 {
 
-const QString kGroupName = "SequencerExplorerView";
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+//! Settings group of the main splitter.
+constexpr auto kSplitterSettingsGroup = "SequencerExplorerView/splitter";
 
 }  // namespace
 
@@ -50,9 +51,9 @@ SequencerExplorerView::SequencerExplorerView(const sup::gui::AppViewContext& con
                                              QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_explorer_panel(new ExplorerPanel(context))
-    , m_xml_view(new sup::gui::CodeView)
+    , m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML, context.settings_manager))
     , m_right_panel(new sup::gui::ItemStackWidget)
-    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
+    , m_splitter(new sup::gui::SettingsSplitter(kSplitterSettingsGroup, context.settings_manager))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -66,13 +67,10 @@ SequencerExplorerView::SequencerExplorerView(const sup::gui::AppViewContext& con
 
   SetupConnections();
 
-  ReadSettings();
+  m_splitter->RestoreState();
 }
 
-SequencerExplorerView::~SequencerExplorerView()
-{
-  WriteSettings();
-}
+SequencerExplorerView::~SequencerExplorerView() = default;
 
 //! Sets the model.
 void SequencerExplorerView::SetModel(SequencerModel* model)
@@ -102,16 +100,6 @@ void SequencerExplorerView::ShowFileContent(const QString& file_name)
   {
     m_xml_view->SetFile(file_name);
   }
-}
-
-void SequencerExplorerView::ReadSettings()
-{
-  m_splitter->ReadSettings();
-}
-
-void SequencerExplorerView::WriteSettings()
-{
-  m_splitter->WriteSettings();
 }
 
 void SequencerExplorerView::SetupConnections()

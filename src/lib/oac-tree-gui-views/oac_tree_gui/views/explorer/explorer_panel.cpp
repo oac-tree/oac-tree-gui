@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/views/composer/procedure_list_widget.h>
 
+#include <sup/gui/app/app_view_context.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/file_tree_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
@@ -51,7 +52,8 @@ bool IsProcedureFile(const QString& file_info)
 
 ExplorerPanel::ExplorerPanel(const sup::gui::AppViewContext& context, QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
+    , m_collapsible_list(
+          new sup::gui::CollapsibleListView(kCollapsibleListSettingName, context.settings_manager))
     , m_file_tree_view(new sup::gui::FileTreeView(kFileTreeSettingsGroup))
     , m_procedure_list_view(new ProcedureListWidget(context))
     , m_stack_widget(new sup::gui::ItemStackWidget)
@@ -84,27 +86,14 @@ ExplorerPanel::ExplorerPanel(const sup::gui::AppViewContext& context, QWidget* p
   connect(m_file_tree_view, &sup::gui::FileTreeView::FileDoubleClicked, this,
           on_file_double_clicked);
 
-  ReadSettings();
+  m_collapsible_list->ReadSettings();
 }
 
-ExplorerPanel::~ExplorerPanel()
-{
-  WriteSettings();
-}
+ExplorerPanel::~ExplorerPanel() = default;
 
 void ExplorerPanel::SetModel(SequencerModel* model)
 {
   m_procedure_list_view->SetModel(model);
-}
-
-void ExplorerPanel::ReadSettings()
-{
-  m_collapsible_list->ReadSettings();
-}
-
-void ExplorerPanel::WriteSettings()
-{
-  m_collapsible_list->WriteSettings();
 }
 
 }  // namespace oac_tree_gui

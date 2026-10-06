@@ -27,7 +27,7 @@ namespace sup::gui
 {
 class CodeView;
 class ItemStackWidget;
-class CustomSplitter;
+class SettingsSplitter;
 struct AppViewContext;
 }  // namespace sup::gui
 
@@ -65,14 +65,12 @@ public:
   void ShowFileContent(const QString& file_name);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
   void SetupConnections();
 
   ExplorerPanel* m_explorer_panel{nullptr};
   sup::gui::CodeView* m_xml_view{nullptr};
   sup::gui::ItemStackWidget* m_right_panel{nullptr};
-  sup::gui::CustomSplitter* m_splitter{nullptr};
+  sup::gui::SettingsSplitter* m_splitter{nullptr};
 
   SequencerModel* m_model{nullptr};
 };

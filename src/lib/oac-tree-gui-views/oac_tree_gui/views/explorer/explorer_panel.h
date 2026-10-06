@@ -63,9 +63,6 @@ signals:
   void ProcedureFileDoubleClicked(const QString& filename);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
-
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   sup::gui::FileTreeView* m_file_tree_view{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
