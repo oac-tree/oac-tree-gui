@@ -57,10 +57,10 @@ namespace oac_tree_gui
 OperationTabWidget::OperationTabWidget(sup::gui::ISettingsManager& settings_manager,
                                        QWidget* parent_widget)
     : sup::gui::SessionItemWidget(parent_widget)
-    , m_actions(new MonitorRealTimeActions(this))
+    , m_actions(new MonitorRealTimeActions(settings_manager, this))
     , m_tool_bar(new QToolBar)
     , m_tab_widget(new QTabWidget)
-    , m_realtime_widget(new OperationRealTimeWidget)
+    , m_realtime_widget(new OperationRealTimeWidget(settings_manager))
     , m_workspace_tree(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTree,
                                                      settings_manager))
     , m_workspace_table(new WorkspaceVariableTreeView(WorkspacePresentationType::kWorkspaceTable,

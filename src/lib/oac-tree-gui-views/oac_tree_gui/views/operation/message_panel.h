@@ -23,9 +23,13 @@
 
 #include <oac_tree_gui/jobsystem/job_log_severity.h>
 
+#include <sup/gui/settings/scoped_callback.h>
+
 #include <QWidget>
 #include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
 class QTreeView;
 class QSortFilterProxyModel;
@@ -33,7 +37,8 @@ class QWidgetAction;
 
 namespace sup::gui
 {
-class CustomHeaderView;
+class ISettingsManager;
+class SettingsHeaderView;
 class SteadyMenu;
 }  // namespace sup::gui
 
@@ -49,12 +54,32 @@ class JobLogViewModel;
  * The table is implemented as a tree view  with columns: date, time, severity, source
  * and the message. It has a selector to filter out certain severity levels.
  */
+/**
+ * @brief The MessagePanelInfo struct holds the persistent state of the message panel.
+ */
+struct MessagePanelInfo
+{
+  std::vector<std::string> unchecked;  //!< names of severities hidden from the log
+};
+
+template <typename Archive>
+void Visit(Archive& archive, MessagePanelInfo& info)
+{
+  archive("unchecked", info.unchecked);
+}
+
 class MessagePanel : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit MessagePanel(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the panel.
+   */
+  explicit MessagePanel(sup::gui::ISettingsManager& settings_manager,
+                        QWidget* parent_widget = nullptr);
   ~MessagePanel() override;
 
   MessagePanel(const MessagePanel&) = delete;
@@ -65,8 +90,9 @@ public:
   void SetLog(JobLog* job_log);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
+  //! Returns the current state of the panel.
+  MessagePanelInfo GetMessagePanelInfo() const;
+
   std::unique_ptr<QWidget> CreateSeveritySelectorWidget();
   std::unique_ptr<sup::gui::SteadyMenu> CreateSeveritySelectorMenu();
 
@@ -83,7 +109,7 @@ private:
   void UpdateSeverityFilter();
 
   QTreeView* m_tree_view{nullptr};
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::SettingsHeaderView* m_header{nullptr};
   JobLogViewModel* m_view_model{nullptr};
   QSortFilterProxyModel* m_proxy_model{nullptr};
   QWidgetAction* m_severity_selector_action{nullptr};
@@ -93,6 +119,7 @@ private:
   //! controls if the tree was scrolled to the bottom to make auto scroll
   bool m_tree_at_the_bottom{false};
   QStringList m_unchecked_severitites;
+  sup::gui::ScopedCallback m_settings_connection;
 };
 }  // namespace oac_tree_gui
 

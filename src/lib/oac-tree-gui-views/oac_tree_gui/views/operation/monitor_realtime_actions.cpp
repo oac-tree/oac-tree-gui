@@ -23,16 +23,16 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/style/style_helper.h>
 
+#include <sup/gui/settings/i_settings_manager.h>
 #include <sup/gui/widgets/action_menu.h>
 
 #include <QMenu>
-#include <QSettings>
 #include <QToolButton>
 
 namespace
 {
 
-constexpr auto kTickTimeOutSettingName = "MonitorRealTimeToolBar/tick_timeout";
+constexpr auto kSettingsGroup = "MonitorRealTimeActions";
 
 QString GetDelayText(int delay)
 {
@@ -45,7 +45,8 @@ QString GetDelayText(int delay)
 namespace oac_tree_gui
 {
 
-MonitorRealTimeActions::MonitorRealTimeActions(QObject* parent_object)
+MonitorRealTimeActions::MonitorRealTimeActions(sup::gui::ISettingsManager& settings_manager,
+                                               QObject* parent_object)
     : QObject(parent_object)
     , m_run_action(new QAction("Run", this))
     , m_pause_action(new QAction("Pause", this))
@@ -57,7 +58,14 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject* parent_object)
     , m_delay_menu(CreateDelayMenu())
     , m_settings_menu(CreateSettingsMenu())
 {
-  ReadSettings();
+  const RealTimeInfo default_info{itemconstants::kDefaultTickTimeoutMsec};
+  m_current_tick_timeout =
+      settings_manager
+          .Get<RealTimeInfo>(kSettingsGroup, sup::gui::SettingsScope::kApplication, default_info)
+          .tick_timeout;
+  m_settings_connection =
+      settings_manager.RegisterProvider(kSettingsGroup, sup::gui::SettingsScope::kApplication,
+                                        [this]() { return RealTimeInfo{m_current_tick_timeout}; });
 
   m_run_action->setIcon(FindIcon("arrow-right-drop-circle-outline"));
   m_run_action->setToolTip("Run procedure");
@@ -102,10 +110,7 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject* parent_object)
   m_action_map.Add(ActionKey::kSettings, m_settings_action);
 }
 
-MonitorRealTimeActions::~MonitorRealTimeActions()
-{
-  WriteSettings();
-}
+MonitorRealTimeActions::~MonitorRealTimeActions() = default;
 
 QList<QAction*> MonitorRealTimeActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
@@ -122,19 +127,6 @@ void MonitorRealTimeActions::SetCurrentTickTimeout(int msec)
   m_current_tick_timeout = msec;
   // m_delay_button->setText(GetDelayText(msec));
   m_delay_action->setText(GetDelayText(msec));
-}
-
-void MonitorRealTimeActions::ReadSettings()
-{
-  const QSettings settings;
-  m_current_tick_timeout =
-      settings.value(kTickTimeOutSettingName, itemconstants::kDefaultTickTimeoutMsec).toInt();
-}
-
-void MonitorRealTimeActions::WriteSettings()
-{
-  QSettings settings;
-  settings.setValue(kTickTimeOutSettingName, m_current_tick_timeout);
 }
 
 std::unique_ptr<QMenu> MonitorRealTimeActions::CreateDelayMenu()

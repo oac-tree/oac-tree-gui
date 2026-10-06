@@ -30,7 +30,7 @@
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/tree_helper.h>
-#include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/settings_header_view.h>
 
 #include <mvvm/model/item_selection.h>
 #include <mvvm/views/component_provider_helper.h>
@@ -46,7 +46,7 @@
 
 namespace
 {
-const QString kHeaderStateSettingName("RealTimeInstructionTreeWidget/header_state");
+constexpr auto kHeaderSettingsGroup = "RealTimeInstructionTreeWidget/tree_header";
 const std::vector<int> kDefaultColumnStretch({15, 5, 5, 1});
 
 QString GetCustomToolTipStyle()
@@ -68,12 +68,13 @@ QString GetCustomToolTipStyle()
 namespace oac_tree_gui
 {
 
-RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget* parent_widget)
+RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(
+    sup::gui::ISettingsManager& settings_manager, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
-    , m_custom_header(
-          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
+    , m_header(new sup::gui::SettingsHeaderView(kHeaderSettingsGroup, settings_manager,
+                                                kDefaultColumnStretch, this))
     , m_delegate(std::make_unique<BreakpointModelDelegate>())
     , m_expand_controller(std::make_unique<InstructionTreeExpandController>(m_tree_view))
 {
@@ -84,7 +85,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget* parent_wid
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
 
-  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setHeader(m_header);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   m_tree_view->setItemDelegate(m_delegate.get());
@@ -121,7 +122,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem* procedure_item)
   if (procedure_item != nullptr)
   {
     m_expand_controller->SetTreeViewToInstructionExpandState();
-    m_custom_header->AdjustColumnsWidth();
+    m_header->AdjustColumnsWidth();
   }
 }
 
@@ -165,7 +166,7 @@ bool RealTimeInstructionTreeWidget::event(QEvent* event)
 void RealTimeInstructionTreeWidget::resizeEvent(QResizeEvent* event)
 {
   QWidget::resizeEvent(event);
-  m_custom_header->AdjustColumnsWidth();
+  m_header->AdjustColumnsWidth();
 }
 
 void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex& index)
@@ -204,8 +205,9 @@ void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
     return;
   }
 
-  auto filtered = sup::gui::GetBottomLevelSelection(
-      mvvm::utils::ConvertItems<const mvvm::SessionItem>(m_component_provider->GetSelection().GetItems()));
+  auto filtered =
+      sup::gui::GetBottomLevelSelection(mvvm::utils::ConvertItems<const mvvm::SessionItem>(
+          m_component_provider->GetSelection().GetItems()));
   if (!filtered.empty())
   {
     auto indexes = m_component_provider->GetViewIndexes(filtered.front());

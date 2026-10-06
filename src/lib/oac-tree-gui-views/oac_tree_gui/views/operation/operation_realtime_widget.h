@@ -26,8 +26,9 @@
 
 namespace sup::gui
 {
+class ISettingsManager;
 class CollapsibleListView;
-}
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -47,7 +48,13 @@ class OperationRealTimeWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationRealTimeWidget(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the widget.
+   */
+  explicit OperationRealTimeWidget(sup::gui::ISettingsManager& settings_manager,
+                                   QWidget* parent_widget = nullptr);
   ~OperationRealTimeWidget() override;
 
   OperationRealTimeWidget(const OperationRealTimeWidget&) = delete;
@@ -67,9 +74,6 @@ signals:
   void ToggleBreakpointRequest(oac_tree_gui::InstructionItem* instruction);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
-
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};
   MessagePanel* m_message_panel{nullptr};

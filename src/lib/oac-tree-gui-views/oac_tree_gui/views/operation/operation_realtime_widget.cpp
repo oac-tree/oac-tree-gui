@@ -32,18 +32,20 @@
 namespace
 {
 
-const QString kCollapsibleListSettingName = "OperationRealTimeWidget/collapsible_list";
+constexpr auto kCollapsibleListSettingsGroup = "OperationRealTimeWidget/collapsible_list";
 
 }  // namespace
 
 namespace oac_tree_gui
 {
 
-OperationRealTimeWidget::OperationRealTimeWidget(QWidget* parent_widget)
+OperationRealTimeWidget::OperationRealTimeWidget(sup::gui::ISettingsManager& settings_manager,
+                                                 QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_collapsible_list(new sup::gui::CollapsibleListView(kCollapsibleListSettingName))
-    , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
-    , m_message_panel(new MessagePanel)
+    , m_collapsible_list(
+          new sup::gui::CollapsibleListView(kCollapsibleListSettingsGroup, settings_manager))
+    , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget(settings_manager))
+    , m_message_panel(new MessagePanel(settings_manager))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -58,13 +60,10 @@ OperationRealTimeWidget::OperationRealTimeWidget(QWidget* parent_widget)
   connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest,
           this, &OperationRealTimeWidget::ToggleBreakpointRequest);
 
-  ReadSettings();
+  m_collapsible_list->ReadSettings();
 }
 
-OperationRealTimeWidget::~OperationRealTimeWidget()
-{
-  WriteSettings();
-}
+OperationRealTimeWidget::~OperationRealTimeWidget() = default;
 
 void OperationRealTimeWidget::SetProcedure(ProcedureItem* procedure_item)
 {
@@ -85,16 +84,6 @@ void OperationRealTimeWidget::SetJobLog(JobLog* job_log)
 void OperationRealTimeWidget::SetViewportFollowsSelectionFlag(bool value)
 {
   m_realtime_instruction_tree->SetViewportFollowsSelectionFlag(value);
-}
-
-void OperationRealTimeWidget::ReadSettings()
-{
-  m_collapsible_list->ReadSettings();
-}
-
-void OperationRealTimeWidget::WriteSettings()
-{
-  m_collapsible_list->WriteSettings();
 }
 
 }  // namespace oac_tree_gui

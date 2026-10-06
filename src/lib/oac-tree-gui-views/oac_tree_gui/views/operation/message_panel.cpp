@@ -25,13 +25,13 @@
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/viewmodel/job_log_viewmodel.h>
 
-#include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/settings/i_settings_manager.h>
+#include <sup/gui/widgets/settings_header_view.h>
 #include <sup/gui/widgets/steady_menu.h>
 
 #include <QAction>
 #include <QRegularExpression>
 #include <QScrollBar>
-#include <QSettings>
 #include <QSortFilterProxyModel>
 #include <QToolButton>
 #include <QTreeView>
@@ -40,9 +40,8 @@
 
 namespace
 {
-const QString kGroupName("MessagePanel");
-const QString kUncheckedSeveritiesSettingName = kGroupName + "/" + "unchecked";
-const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+constexpr auto kSettingsGroup = "MessagePanel";
+constexpr auto kHeaderSettingsGroup = "MessagePanel/tree_header";
 
 const std::vector<oac_tree_gui::Severity> kSeveritiesToSelect = {
     oac_tree_gui::Severity::kEmergency, oac_tree_gui::Severity::kAlert,
@@ -57,17 +56,28 @@ const std::vector<int> kDefaultColumnStretch({2, 2, 2, 1, 6});
 namespace oac_tree_gui
 {
 
-MessagePanel::MessagePanel(QWidget* parent_widget)
+MessagePanel::MessagePanel(sup::gui::ISettingsManager& settings_manager, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
-    , m_custom_header(
-          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
+    , m_header(new sup::gui::SettingsHeaderView(kHeaderSettingsGroup, settings_manager,
+                                                kDefaultColumnStretch, this))
     , m_view_model(new JobLogViewModel(nullptr, this))
     , m_proxy_model(new QSortFilterProxyModel(this))
     , m_severity_selector_action(new QWidgetAction(this))
 {
   setWindowTitle("LOG");
-  ReadSettings();
+
+  // debug messages are hidden by default
+  const MessagePanelInfo default_info{{ToString(Severity::kDebug)}};
+  const auto info = settings_manager.Get<MessagePanelInfo>(
+      kSettingsGroup, sup::gui::SettingsScope::kApplication, default_info);
+  for (const auto& name : info.unchecked)
+  {
+    m_unchecked_severitites.push_back(QString::fromStdString(name));
+  }
+  m_settings_connection =
+      settings_manager.RegisterProvider(kSettingsGroup, sup::gui::SettingsScope::kApplication,
+                                        [this]() { return GetMessagePanelInfo(); });
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -77,7 +87,7 @@ MessagePanel::MessagePanel(QWidget* parent_widget)
   m_severity_selector_action->setDefaultWidget(CreateSeveritySelectorWidget().release());
   addAction(m_severity_selector_action);
 
-  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setHeader(m_header);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setRootIsDecorated(false);
   m_tree_view->setModel(m_proxy_model);
@@ -90,45 +100,24 @@ MessagePanel::MessagePanel(QWidget* parent_widget)
   UpdateSeverityFilter();
 }
 
-MessagePanel::~MessagePanel()
-{
-  WriteSettings();
-}
+MessagePanel::~MessagePanel() = default;
 
 void MessagePanel::SetLog(JobLog* job_log)
 {
   m_view_model->SetLog(job_log);
 }
 
-void MessagePanel::ReadSettings()
+MessagePanelInfo MessagePanel::GetMessagePanelInfo() const
 {
-  const QSettings settings;
-  if (settings.contains(kUncheckedSeveritiesSettingName))
-  {
-    m_unchecked_severitites =
-        settings.value(kUncheckedSeveritiesSettingName, true).value<QStringList>();
-  }
-  else
-  {
-    m_unchecked_severitites.push_back(
-        QString::fromStdString(ToString(oac_tree_gui::Severity::kDebug)));
-  }
-}
-
-void MessagePanel::WriteSettings()
-{
-  m_unchecked_severitites.clear();
-  QSettings settings;
-  // collecting the last status of checked severities
-  for (auto [severity, status] : m_show_severity_flag)
+  MessagePanelInfo result;
+  for (const auto& [severity, status] : m_show_severity_flag)
   {
     if (!status)
     {
-      m_unchecked_severitites.push_back(QString::fromStdString(ToString(severity)));
+      result.unchecked.push_back(ToString(severity));
     }
   }
-
-  settings.setValue(kUncheckedSeveritiesSettingName, m_unchecked_severitites);
+  return result;
 }
 
 std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()

@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/views/operation/operation_tab_widget.h"
 
+#include <oac_tree_gui/jobsystem/job_log_severity.h>
 #include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
 #include <oac_tree_gui/model/application_models.h>
@@ -30,6 +31,7 @@
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/views/composer/workspace_variable_tree_view.h>
+#include <oac_tree_gui/views/operation/message_panel.h>
 #include <oac_tree_gui/views/operation/monitor_realtime_actions.h>
 #include <oac_tree_gui/views/operation/realtime_instruction_tree_widget.h>
 
@@ -275,6 +277,37 @@ TEST_F(OperationTabWidgetTest, ExpandedProcedureReappearsRepopulatesViews)
   (void)GetJobModel()->InsertItem(test::CreateCopyProcedureItem(), job, mvvm::TagIndex::Append());
   ASSERT_NE(job->GetExpandedProcedure(), nullptr);
   EXPECT_EQ(realtime_tree->model()->rowCount(), 1);
+}
+
+TEST_F(OperationTabWidgetTest, CollectSettings)
+{
+  const OperationTabWidget widget(m_settings_manager);
+
+  m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
+
+  auto storage = m_settings_manager.GetStorage(sup::gui::SettingsScope::kApplication);
+  EXPECT_TRUE(storage->Read("OperationRealTimeWidget/collapsible_list/state").has_value());
+  EXPECT_TRUE(storage->Read("RealTimeInstructionTreeWidget/tree_header/state").has_value());
+  EXPECT_TRUE(storage->Read("MessagePanel/tree_header/state").has_value());
+  EXPECT_TRUE(storage->Read("WorkspaceVariableTreeView/tree_header/state").has_value());
+  EXPECT_TRUE(storage->Read("WorkspaceVariableTreeView/table_header/state").has_value());
+
+  // debug messages are hidden by default
+  const auto message_info = m_settings_manager.Get<MessagePanelInfo>(
+      "MessagePanel", sup::gui::SettingsScope::kApplication);
+  EXPECT_EQ(message_info.unchecked, std::vector<std::string>({ToString(Severity::kDebug)}));
+}
+
+TEST_F(OperationTabWidgetTest, TickTimeoutRoundTripViaSettings)
+{
+  {
+    OperationTabWidget widget(m_settings_manager);
+    widget.findChild<MonitorRealTimeActions*>()->SetCurrentTickTimeout(42);
+    m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
+  }
+
+  const OperationTabWidget widget(m_settings_manager);
+  EXPECT_EQ(widget.findChild<MonitorRealTimeActions*>()->GetCurrentTickTimeout(), 42);
 }
 
 }  // namespace oac_tree_gui::test

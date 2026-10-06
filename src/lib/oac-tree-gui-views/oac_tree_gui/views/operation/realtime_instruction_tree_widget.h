@@ -33,8 +33,9 @@ class ItemViewComponentProvider;
 
 namespace sup::gui
 {
-class CustomHeaderView;
-}
+class ISettingsManager;
+class SettingsHeaderView;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -52,7 +53,13 @@ class RealTimeInstructionTreeWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit RealTimeInstructionTreeWidget(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the widget.
+   */
+  explicit RealTimeInstructionTreeWidget(sup::gui::ISettingsManager& settings_manager,
+                                         QWidget* parent_widget = nullptr);
   ~RealTimeInstructionTreeWidget() override;
 
   RealTimeInstructionTreeWidget(const RealTimeInstructionTreeWidget&) = delete;
@@ -62,7 +69,7 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
-  void SetSelectedInstructions(const std::vector<const InstructionItem *> &items);
+  void SetSelectedInstructions(const std::vector<const InstructionItem*>& items);
 
   /**
    * @brief Makes tree viewport follow currently selected instruction.
@@ -87,7 +94,7 @@ private:
 
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::SettingsHeaderView* m_header{nullptr};
   std::unique_ptr<BreakpointModelDelegate> m_delegate;
   std::unique_ptr<InstructionTreeExpandController> m_expand_controller;
   ProcedureItem* m_procedure{nullptr};
