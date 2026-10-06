@@ -110,6 +110,18 @@ TEST_F(SettingsManagerTest, SetAndGet)
   EXPECT_EQ(m_project_storage.Read("Group/count"), mvvm::variant_t{mvvm::int32{2}});
 }
 
+TEST_F(SettingsManagerTest, GetWithInitialValue)
+{
+  const TestInfo initial{true, 42};
+  EXPECT_EQ(m_manager.Get<TestInfo>(kGroup, SettingsScope::kApplication, initial), initial);
+
+  // if one field is stored, it overrides that field and the rest keep the initial values
+  m_app_storage.Write("Group/count", mvvm::int32{1});
+  EXPECT_EQ(m_manager.Get<TestInfo>(kGroup, SettingsScope::kApplication, initial),
+            (TestInfo{true, 1}));
+  EXPECT_EQ(m_manager.Get<TestInfo>(kGroup, SettingsScope::kApplication), (TestInfo{false, 1}));
+}
+
 TEST_F(SettingsManagerTest, GetWithoutStorage)
 {
   const SettingsManager manager;

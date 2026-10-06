@@ -28,6 +28,7 @@
 #include <functional>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 namespace oac_tree_gui
 {
@@ -116,10 +117,14 @@ public:
   /**
    * @brief Reads the settings struct of the group.
    *
+   * @param group The group of the struct.
+   * @param scope The scope of the storage.
+   * @param initial The initial value. Fields missing in the storage keep it.
+   * @return The struct.
    * @throw RuntimeException if no storage is set.
    */
   template <typename T>
-  T Get(const std::string& group, SettingsScope scope) const;
+  T Get(const std::string& group, SettingsScope scope, T initial = T{}) const;
 
   /**
    * @brief Writes the settings struct of the group and calls its subscribers.
@@ -156,9 +161,9 @@ private:
 };
 
 template <typename T>
-inline T ISettingsManager::Get(const std::string& group, SettingsScope scope) const
+inline T ISettingsManager::Get(const std::string& group, SettingsScope scope, T initial) const
 {
-  return ReadFromStorage<T>(GetValidStorage(scope), group);
+  return ReadFromStorage<T>(GetValidStorage(scope), group, std::move(initial));
 }
 
 template <typename T>
