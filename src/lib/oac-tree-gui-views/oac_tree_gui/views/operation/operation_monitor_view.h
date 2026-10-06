@@ -30,7 +30,7 @@
 
 namespace sup::gui
 {
-class CustomSplitter;
+class SettingsSplitter;
 class AppCommandContext;
 }  // namespace sup::gui
 
@@ -88,11 +88,8 @@ public:
 
 protected:
   void showEvent(QShowEvent* event) override;
-  void closeEvent(QCloseEvent* event) override;
 
 private:
-  void ReadSettings();
-  void WriteSettings();
   void SetupConnections();
   void SetupWidgetActions();
   void OnJobSelected(const JobItem* selected_item);
@@ -110,7 +107,7 @@ private:
   OperationSplittableWidget* m_splittable_widget{nullptr};
   QWidget* m_left_panel{nullptr};
 
-  sup::gui::CustomSplitter* m_splitter{nullptr};
+  sup::gui::SettingsSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};
 
   std::unique_ptr<IRemoteConnectionService> m_connection_service;

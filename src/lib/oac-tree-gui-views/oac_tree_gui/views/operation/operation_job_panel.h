@@ -29,8 +29,9 @@
 
 namespace sup::gui
 {
+class ISettingsManager;
 class CollapsibleListView;
-}
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -50,7 +51,13 @@ class OperationJobPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationJobPanel(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the panel.
+   */
+  explicit OperationJobPanel(sup::gui::ISettingsManager& settings_manager,
+                             QWidget* parent_widget = nullptr);
   ~OperationJobPanel() override;
 
   OperationJobPanel(const OperationJobPanel&) = delete;
@@ -62,7 +69,7 @@ public:
 
   JobItem* GetSelectedJob() const;
 
-  void SetSelectedJob(const JobItem *job_item);
+  void SetSelectedJob(const JobItem* job_item);
 
   QList<QAction*> GetSequencerMonitorViewActions();
 

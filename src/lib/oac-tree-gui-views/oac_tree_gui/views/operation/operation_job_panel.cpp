@@ -36,10 +36,17 @@
 namespace oac_tree_gui
 {
 
-OperationJobPanel::OperationJobPanel(QWidget* parent_widget)
+namespace
+{
+constexpr auto kCollapsibleListSettingsGroup = "OperationJobPanel/collapsible_list";
+}  // namespace
+
+OperationJobPanel::OperationJobPanel(sup::gui::ISettingsManager& settings_manager,
+                                     QWidget* parent_widget)
     : QWidget(parent_widget)
-    , m_collapsible_list(new sup::gui::CollapsibleListView)
-    , m_job_list_widget(new JobListWidget)
+    , m_collapsible_list(
+          new sup::gui::CollapsibleListView(kCollapsibleListSettingsGroup, settings_manager))
+    , m_job_list_widget(new JobListWidget(settings_manager))
     , m_job_property_widget(new JobPropertyWidget)
     , m_job_actions(new OperationJobActions(this))
 {
@@ -52,6 +59,7 @@ OperationJobPanel::OperationJobPanel(QWidget* parent_widget)
 
   m_collapsible_list->AddWidget(m_job_list_widget);
   // m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
+  m_collapsible_list->ReadSettings();
 
   SetupConnections();
 

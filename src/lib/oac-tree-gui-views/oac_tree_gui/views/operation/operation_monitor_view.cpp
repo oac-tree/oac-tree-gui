@@ -44,9 +44,9 @@
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/i_app_command_service.h>
 #include <sup/gui/mainwindow/main_window_helper.h>
-#include <sup/gui/widgets/custom_splitter.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
+#include <sup/gui/widgets/settings_splitter.h>
 
 #include <mvvm/model/item_selection.h>
 #include <mvvm/model/model_utils.h>
@@ -62,9 +62,8 @@ namespace oac_tree_gui
 namespace
 {
 
-const QString kGroupName("OperationMonitorView");
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
-const QString kWorkdirSettingName = kGroupName + "/" + "workdir";
+constexpr auto kSplitterSettingsGroup = "OperationMonitorView/splitter";
+constexpr auto kWorkdirSettingsGroup = "OperationMonitorView/workdir";
 
 /**
  * @brief Creates factory function to create clients to talk with remote server.
@@ -92,10 +91,10 @@ OperationMonitorView::OperationMonitorView(const sup::gui::AppViewContext& conte
     : QWidget(parent_widget)
     , m_context(context)
     , m_presentation_mode(mode)
-    , m_job_panel(new OperationJobPanel)
+    , m_job_panel(new OperationJobPanel(context.settings_manager))
     , m_splittable_widget(new OperationSplittableWidget(context.settings_manager))
     , m_left_panel(CreateLeftPanel())
-    , m_splitter(new sup::gui::CustomSplitter(kSplitterSettingName))
+    , m_splitter(new sup::gui::SettingsSplitter(kSplitterSettingsGroup, context.settings_manager))
     , m_connection_service(CreateRemoteConnectionService())
     , m_job_manager(new JobManager(
           GetJobHandlerFactoryFunc(CreateDefaultUserContext(this), *m_connection_service), this))
@@ -113,7 +112,7 @@ OperationMonitorView::OperationMonitorView(const sup::gui::AppViewContext& conte
   SetupConnections();
   SetupWidgetActions();
 
-  ReadSettings();
+  m_splitter->RestoreState();
 
   auto command_context = m_context.command_service.RegisterWidgetUniqueId(this);
   RegisterActionsForContext(command_context);
@@ -121,7 +120,6 @@ OperationMonitorView::OperationMonitorView(const sup::gui::AppViewContext& conte
 
 OperationMonitorView::~OperationMonitorView()
 {
-  WriteSettings();
   m_context.command_service.UnregisterWidgetUniqueId(this);
 }
 
@@ -136,7 +134,8 @@ void OperationMonitorView::SetModels(ApplicationModels* models)
 bool OperationMonitorView::OnImportJobRequest(const QString& file_name)
 {
   auto path = file_name.isEmpty() ? sup::gui::GetDialogFileNameToOpen("Files (*.xml *.XML)", this,
-                                                                      kWorkdirSettingName)
+                                                                      m_context.settings_manager,
+                                                                      kWorkdirSettingsGroup)
                                   : file_name;
 
   if (!path.isEmpty())
@@ -178,22 +177,6 @@ void OperationMonitorView::showEvent(QShowEvent* event)
       m_job_panel->SetSelectedJob(job);
     }
   }
-}
-
-void OperationMonitorView::closeEvent(QCloseEvent* event)
-{
-  Q_UNUSED(event);
-  WriteSettings();
-}
-
-void OperationMonitorView::ReadSettings()
-{
-  m_splitter->ReadSettings();
-}
-
-void OperationMonitorView::WriteSettings()
-{
-  m_splitter->WriteSettings();
 }
 
 void OperationMonitorView::SetupConnections()

@@ -100,4 +100,16 @@ TEST_F(OperationMonitorViewTest, ReloadJob)
   EXPECT_EQ(realtime_instruction_tree->model()->columnCount(), 4);
 }
 
+TEST_F(OperationMonitorViewTest, CollectSettings)
+{
+  const OperationMonitorView view(m_context, OperationPresentationMode::kOperationMode);
+
+  m_settings_manager.Collect(sup::gui::SettingsScope::kApplication);
+
+  auto storage = m_settings_manager.GetStorage(sup::gui::SettingsScope::kApplication);
+  EXPECT_TRUE(storage->Read("OperationMonitorView/splitter/state").has_value());
+  EXPECT_TRUE(storage->Read("OperationJobPanel/collapsible_list/state").has_value());
+  EXPECT_TRUE(storage->Read("JobListWidget/tree_header/state").has_value());
+}
+
 }  // namespace oac_tree_gui

@@ -38,8 +38,9 @@ class ItemViewComponentProvider;
 
 namespace sup::gui
 {
-class CustomHeaderView;
-}
+class ISettingsManager;
+class SettingsHeaderView;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -55,7 +56,13 @@ class JobListWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit JobListWidget(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the widget.
+   */
+  explicit JobListWidget(sup::gui::ISettingsManager& settings_manager,
+                         QWidget* parent_widget = nullptr);
   ~JobListWidget() override;
 
   JobListWidget(const JobListWidget&) = delete;
@@ -67,7 +74,7 @@ public:
 
   JobItem* GetSelectedJob() const;
 
-  void SetSelectedJob(const JobItem *job);
+  void SetSelectedJob(const JobItem* job);
 
   QTreeView* GetTreeView();
 
@@ -79,7 +86,7 @@ signals:
 private:
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::SettingsHeaderView* m_header{nullptr};
 
   JobModel* m_model{nullptr};
 };

@@ -28,6 +28,7 @@
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_settings_manager.h>
 
 #include <QSignalSpy>
 #include <QTreeView>
@@ -41,11 +42,13 @@ namespace oac_tree_gui::test
 
 class JobListWidgetTest : public ::testing::Test
 {
+public:
+  TestSettingsManager m_settings_manager;
 };
 
 TEST_F(JobListWidgetTest, InitialState)
 {
-  JobListWidget view;
+  JobListWidget view(m_settings_manager);
   EXPECT_EQ(view.GetSelectedJob(), nullptr);
 }
 
@@ -54,7 +57,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   JobModel model;
   auto job = model.InsertItem<LocalJobItem>();
 
-  JobListWidget view;
+  JobListWidget view(m_settings_manager);
   QSignalSpy spy_selected(&view, &JobListWidget::JobSelected);
 
   view.SetJobModel(&model);
@@ -64,8 +67,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   view.SetSelectedJob(job);
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
-            job);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(), job);
 
   // removing selection
 
@@ -73,8 +75,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   EXPECT_EQ(view.GetSelectedJob(), nullptr);
   EXPECT_EQ(spy_selected.count(), 1);
 
-  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
-            nullptr);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(), nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -84,7 +85,7 @@ TEST_F(JobListWidgetTest, SelectionAfterRemoval)
   JobModel model;
   auto job = model.InsertItem<LocalJobItem>();
 
-  JobListWidget view;
+  JobListWidget view(m_settings_manager);
   view.SetJobModel(&model);
 
   // selecting single item
@@ -97,8 +98,7 @@ TEST_F(JobListWidgetTest, SelectionAfterRemoval)
   model.RemoveItem(job);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
-            nullptr);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(), nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -108,7 +108,7 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
   JobModel model;
   auto job = model.InsertItem<LocalJobItem>();
 
-  JobListWidget view;
+  JobListWidget view(m_settings_manager);
   view.SetJobModel(&model);
   QSignalSpy spy_selected(&view, &JobListWidget::JobSelected);
 
@@ -124,8 +124,7 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
 
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(),
-            job);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy_selected).GetItem<JobItem>(), job);
 }
 
 }  // namespace oac_tree_gui::test

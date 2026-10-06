@@ -24,7 +24,7 @@
 #include <oac_tree_gui/model/job_model.h>
 #include <oac_tree_gui/viewmodel/job_list_viewmodel.h>
 
-#include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/settings_header_view.h>
 
 #include <mvvm/model/item_selection.h>
 #include <mvvm/views/component_provider_helper.h>
@@ -34,17 +34,17 @@
 
 namespace
 {
-constexpr auto kHeaderStateSettingName = "JobListWidget/header_state";
+constexpr auto kHeaderSettingsGroup = "JobListWidget/tree_header";
 }  // namespace
 
 namespace oac_tree_gui
 {
 
-JobListWidget::JobListWidget(QWidget* parent_widget)
+JobListWidget::JobListWidget(sup::gui::ISettingsManager& settings_manager, QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<JobListViewModel>(m_tree_view))
-    , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
+    , m_header(new sup::gui::SettingsHeaderView(kHeaderSettingsGroup, settings_manager, {}, this))
 {
   setWindowTitle("JOBS");
   setToolTip("List of current sequencer running/idle procedures");
@@ -55,7 +55,7 @@ JobListWidget::JobListWidget(QWidget* parent_widget)
   layout->addWidget(m_tree_view);
 
   m_tree_view->setRootIsDecorated(false);
-  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setHeader(m_header);
   m_tree_view->setAlternatingRowColors(true);
 
   // configure tree to allow internal move of procedures (handled by FlatListViewModel)
@@ -85,7 +85,7 @@ JobItem* JobListWidget::GetSelectedJob() const
 void JobListWidget::SetSelectedJob(const JobItem* job)
 {
   m_component_provider->SetSelection(mvvm::ItemSelection(job));
-  m_custom_header->AdjustColumnsWidth();
+  m_header->AdjustColumnsWidth();
 }
 
 QTreeView* JobListWidget::GetTreeView()
