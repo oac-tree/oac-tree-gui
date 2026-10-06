@@ -23,8 +23,6 @@
 #include "plugin_settings_item.h"
 #include "undo_settings_item.h"
 
-#include <mvvm/model/model_utils.h>
-
 namespace oac_tree_gui
 {
 
@@ -51,16 +49,6 @@ void SequencerSettingsModel::Clear()
 {
   mvvm::ApplicationModel::Clear();
   PopulateModel();
-}
-
-std::vector<const mvvm::CompoundItem*> SequencerSettingsModel::GetSettingsItems() const
-{
-  return mvvm::utils::GetTopItems<mvvm::CompoundItem>(*this);
-}
-
-std::vector<mvvm::CompoundItem*> SequencerSettingsModel::GetSettingsItems()
-{
-  return mvvm::utils::GetTopItems<mvvm::CompoundItem>(*this);
 }
 
 void SequencerSettingsModel::PopulateModel()

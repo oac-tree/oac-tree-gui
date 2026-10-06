@@ -22,17 +22,13 @@
 #define OAC_TREE_GUI_MODEL_SEQUENCER_SETTINGS_MODEL_H_
 
 #include <mvvm/model/application_model.h>
-#include <mvvm/model/compound_item.h>
 #include <mvvm/model/item_utils.h>
 
 namespace oac_tree_gui
 {
 
 /**
- * @brief Contains application settings common across different GUI sessions.
- *
- * It provides a collection of editable setting items, which is written in persistent storage thanks
- * to QSettings machinery.
+ * @brief The SequencerSettingsModel class holds editable settings items of the settings dialog.
  */
 class SequencerSettingsModel : public mvvm::ApplicationModel
 {
@@ -47,29 +43,12 @@ public:
    */
   void Clear() override;
 
-  std::vector<const mvvm::CompoundItem*> GetSettingsItems() const;
-
-  std::vector<mvvm::CompoundItem*> GetSettingsItems();
-
-  /**
-   * @brief Returns data inside property item registered under the given setting name.
-   */
-  template <typename T = mvvm::variant_t>
-  T Data(const std::string& setting_name) const;
-
   template <typename T>
   T* Get() const;
 
 private:
   void PopulateModel();
 };
-
-template <typename T>
-inline T SequencerSettingsModel::Data(const std::string& setting_name) const
-{
-  // for the moment we assume that there is only one settings item, might change in the future
-  return GetSettingsItems().at(0)->Property<T>(setting_name);
-}
 
 template <typename T>
 inline T* SequencerSettingsModel::Get() const

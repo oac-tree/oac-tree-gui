@@ -21,7 +21,6 @@
 #include "oac_tree_gui/model/sequencer_settings_model.h"
 
 #include <oac_tree_gui/model/plugin_settings_item.h>
-#include <oac_tree_gui/model/sequencer_settings_constants.h>
 #include <oac_tree_gui/model/undo_settings_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -40,63 +39,45 @@ class SequencerSettingsModelTest : public ::testing::Test
 
 TEST_F(SequencerSettingsModelTest, InitialState)
 {
-  SequencerSettingsModel model;
+  const SequencerSettingsModel model;
 
-  EXPECT_EQ(model.GetSettingsItems().size(), 2);
+  EXPECT_EQ(model.GetRootItem()->GetTotalItemCount(), 2);
 
-  EXPECT_EQ(model.Data<bool>(constants::kUseUndoSetting), constants::kUseUndoDefault);
-  EXPECT_EQ(model.Data<int>(constants::kUndoLimitSetting), constants::kUndoLimitDefault);
+  ASSERT_NE(model.Get<UndoSettingsItem>(), nullptr);
+  const auto undo_info = model.Get<UndoSettingsItem>()->GetUndoInfo();
+  EXPECT_EQ(undo_info.is_enabled, constants::kUseUndoDefault);
+  EXPECT_EQ(undo_info.undo_limit, constants::kUndoLimitDefault);
+
+  ASSERT_NE(model.Get<PluginSettingsItem>(), nullptr);
+  EXPECT_EQ(model.Get<PluginSettingsItem>()->GetPluginSettingsInfo(),
+            CreateDefaultPluginSettingsInfo());
 }
 
 TEST_F(SequencerSettingsModelTest, Clear)
 {
   SequencerSettingsModel model;
 
-  model.GetSettingsItems().at(0)->SetProperty(constants::kUndoLimitSetting, 42);
-  EXPECT_EQ(model.Data<int>(constants::kUndoLimitSetting), 42);
+  model.Get<UndoSettingsItem>()->SetUndoInfo(UndoInfo{false, 42});
   model.Clear();
 
   // after clearing all setting items, and their values have been re-initialised
-  ASSERT_EQ(model.GetSettingsItems().size(), 2);
-  EXPECT_EQ(model.Data<bool>(constants::kUseUndoSetting), constants::kUseUndoDefault);
-  EXPECT_EQ(model.Data<int>(constants::kUndoLimitSetting), constants::kUndoLimitDefault);
-}
-
-TEST_F(SequencerSettingsModelTest, AutoDisableSettings)
-{
-  SequencerSettingsModel model;
-
-  auto common_settings = model.GetSettingsItems().at(0);
-  ASSERT_EQ(model.GetSettingsItems().size(), 2);
-
-  EXPECT_TRUE(common_settings->GetItem(constants::kUseUndoSetting).IsEnabled());
-  EXPECT_TRUE(common_settings->GetItem(constants::kUndoLimitSetting).IsEnabled());
-
-  // changing the value of the setting
-  common_settings->GetItem(constants::kUseUndoSetting).SetData(false);
-
-  EXPECT_TRUE(common_settings->GetItem(constants::kUseUndoSetting).IsEnabled());
-  EXPECT_FALSE(common_settings->GetItem(constants::kUndoLimitSetting).IsEnabled());
+  EXPECT_EQ(model.GetRootItem()->GetTotalItemCount(), 2);
+  const auto undo_info = model.Get<UndoSettingsItem>()->GetUndoInfo();
+  EXPECT_EQ(undo_info.is_enabled, constants::kUseUndoDefault);
+  EXPECT_EQ(undo_info.undo_limit, constants::kUndoLimitDefault);
 }
 
 TEST_F(SequencerSettingsModelTest, Clone)
 {
   SequencerSettingsModel model;
+  model.Get<UndoSettingsItem>()->SetUndoInfo(UndoInfo{false, 42});
 
   auto clone = model.Clone();
   auto cloned_model = dynamic_cast<SequencerSettingsModel*>(clone.get());
   ASSERT_NE(cloned_model, nullptr);
-  EXPECT_EQ(cloned_model->GetSettingsItems().size(), 2);
-  EXPECT_EQ(cloned_model->Data<bool>(constants::kUseUndoSetting), constants::kUseUndoDefault);
-  EXPECT_EQ(cloned_model->Data<int>(constants::kUndoLimitSetting), constants::kUndoLimitDefault);
-}
-
-TEST_F(SequencerSettingsModelTest, GetItem)
-{
-  SequencerSettingsModel model;
-
-  EXPECT_NE(model.Get<PluginSettingsItem>(), nullptr);
-  EXPECT_NE(model.Get<UndoSettingsItem>(), nullptr);
+  EXPECT_EQ(cloned_model->GetRootItem()->GetTotalItemCount(), 2);
+  EXPECT_EQ(cloned_model->Get<UndoSettingsItem>()->GetUndoInfo().undo_limit, 42);
+  EXPECT_NE(cloned_model->Get<PluginSettingsItem>(), nullptr);
 }
 
 //! Reproduces how settings dialog propagates edited settings back to the model.
