@@ -110,7 +110,9 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs& args, QWidget
   return {index, true};
 }
 
-UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget* parent)
+UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args,
+                                              sup::gui::ISettingsManager& settings_manager,
+                                              QWidget* parent)
 {
   auto parent_widget = (parent != nullptr) ? parent : mvvm::utils::FindMainWindow();
 
@@ -119,11 +121,13 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget
   // FIXME Uncomment after fixing COA-2184
   // if (anyvalue_item->IsScalar())
   // {
-  //   dialog = CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), parent_widget);
+  //   dialog = CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), settings_manager,
+  //                                                    parent_widget);
   // }
   // else
   // {
-    dialog = CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), parent_widget);
+  dialog =
+      CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), settings_manager, parent_widget);
   // }
   dialog->SetDescription(QString::fromStdString(args.description));
   if (dialog->exec() == QDialog::Accepted)
@@ -135,14 +139,14 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget
   return UserInputResult{{}, false};
 }
 
-UserContext CreateDefaultUserContext(QWidget* parent)
+UserContext CreateDefaultUserContext(sup::gui::ISettingsManager& settings_manager, QWidget* parent)
 {
   UserContext result;
   result.user_choice_callback = [parent](const auto& args)
   { return GetUserChoiceDialogResult(args, parent); };
 
-  result.user_input_callback = [parent](const auto& args)
-  { return GetAnyValueEditorDialogResult(args, parent); };
+  result.user_input_callback = [&settings_manager, parent](const auto& args)
+  { return GetAnyValueEditorDialogResult(args, settings_manager, parent); };
 
   return result;
 }

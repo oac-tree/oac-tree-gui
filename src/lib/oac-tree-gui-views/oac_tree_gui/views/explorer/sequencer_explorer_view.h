@@ -25,6 +25,7 @@
 
 namespace sup::gui
 {
+class ISettingsManager;
 class CodeView;
 class ItemStackWidget;
 class SettingsSplitter;
@@ -73,6 +74,7 @@ private:
   sup::gui::SettingsSplitter* m_splitter{nullptr};
 
   SequencerModel* m_model{nullptr};
+  sup::gui::ISettingsManager& m_settings_manager;
 };
 
 }  // namespace oac_tree_gui

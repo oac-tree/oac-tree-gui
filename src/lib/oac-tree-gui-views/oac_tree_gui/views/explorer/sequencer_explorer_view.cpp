@@ -54,6 +54,7 @@ SequencerExplorerView::SequencerExplorerView(const sup::gui::AppViewContext& con
     , m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML, context.settings_manager))
     , m_right_panel(new sup::gui::ItemStackWidget)
     , m_splitter(new sup::gui::SettingsSplitter(kSplitterSettingsGroup, context.settings_manager))
+    , m_settings_manager(context.settings_manager)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -81,7 +82,7 @@ void SequencerExplorerView::SetModel(SequencerModel* model)
 
 void SequencerExplorerView::ImportProcedure(const QString& file_name)
 {
-  ProcedureActionHandler handler;
+  ProcedureActionHandler handler(m_settings_manager);
 
   if (auto procedure_item = handler.LoadProcedureFromFile(file_name); procedure_item)
   {

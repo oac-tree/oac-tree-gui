@@ -30,6 +30,7 @@ class QWidget;
 
 namespace sup::gui
 {
+class ISettingsManager;
 class AnyValueItem;
 class AnyValueEditorDialog;
 }  // namespace sup::gui
@@ -52,23 +53,27 @@ std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueExtendedEditorDial
  * @brief Helper function to create a dialog containing simplified tree-like AnyValue editor.
  *
  * @param item Initial value.
+ * @param settings_manager The manager to store dialog settings.
  * @param parent Parent widget.
  *
  * @return Created dialog.
  */
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
-    const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
+    const sup::gui::AnyValueItem* item, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent = nullptr);
 
 /**
  * @brief Helper function to create a dialog containing simplified scalar AnyValue editor.
  *
  * @param item Initial value.
+ * @param settings_manager The manager to store dialog settings.
  * @param parent Parent widget.
  *
  * @return Created dialog.
  */
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactScalarEditorDialog(
-    const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
+    const sup::gui::AnyValueItem* item, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent = nullptr);
 
 /**
  * @brief Create callback to summon AnyValueItem editor dialog.

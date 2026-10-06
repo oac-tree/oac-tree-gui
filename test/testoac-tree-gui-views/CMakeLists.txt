@@ -26,6 +26,7 @@ target_sources(${test} PRIVATE
   sequencer_explorer_view_tests.cpp
   sequencer_main_window_context_tests.cpp
   server_settings_widget_tests.cpp
+  short_lived_settings_tests.cpp
   status_indicator_helper_tests.cpp
   task_widget_tests.cpp
   zoom_factor_converter_tests.cpp

@@ -97,7 +97,9 @@ OperationMonitorView::OperationMonitorView(const sup::gui::AppViewContext& conte
     , m_splitter(new sup::gui::SettingsSplitter(kSplitterSettingsGroup, context.settings_manager))
     , m_connection_service(CreateRemoteConnectionService())
     , m_job_manager(new JobManager(
-          GetJobHandlerFactoryFunc(CreateDefaultUserContext(this), *m_connection_service), this))
+          GetJobHandlerFactoryFunc(CreateDefaultUserContext(context.settings_manager, this),
+                                   *m_connection_service),
+          this))
     , m_action_handler(new OperationActionHandler(m_job_manager, CreateOperationContext(), this))
 {
   auto layout = new QVBoxLayout(this);
@@ -306,7 +308,9 @@ OperationActionContext OperationMonitorView::CreateOperationContext()
   result.selected_job = [this] { return m_job_panel->GetSelectedJob(); };
   result.send_message = [](const auto& event) { sup::gui::SendWarningMessage(event); };
   result.get_remote_connection_info = [this]()
-  { return GetDialogRemoteConnectionInfo(*m_connection_service, this); };
+  {
+    return GetDialogRemoteConnectionInfo(*m_connection_service, m_context.settings_manager, this);
+  };
   result.drop_remote_connection = [this](const AutomationServerInfo& server_info)
   { m_connection_service->Disconnect(server_info); };
   result.confirm_job_removal = [](const std::string& question)

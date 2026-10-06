@@ -23,9 +23,8 @@
 
 #include <oac_tree_gui/model/remote_connection_info.h>
 
-#include <sup/gui/widgets/settings_callbacks.h>
-
 #include <QWidget>
+#include <string>
 
 class QComboBox;
 class QLineEdit;
@@ -34,6 +33,26 @@ class QIntValidator;
 
 namespace oac_tree_gui
 {
+
+/**
+ * @brief The ServerSettingsInfo struct holds the persistent state of the server settings widget.
+ */
+struct ServerSettingsInfo
+{
+  AutomationServerType server_type{AutomationServerType::kWebSockets};
+  std::string server_name;     //!< EPICS server name
+  std::string server_address;  //!< WebSockets server address
+  std::string server_port;     //!< WebSockets server port, as entered by the user
+};
+
+template <typename Archive>
+void Visit(Archive& archive, ServerSettingsInfo& info)
+{
+  archive("server_type", info.server_type);
+  archive("server_name", info.server_name);
+  archive("server_address", info.server_address);
+  archive("server_port", info.server_port);
+}
 
 /**
  * @brief The ServerSettingsWidget class allows to define the type of remote server.
@@ -61,14 +80,14 @@ public:
   AutomationServerInfo GetServerInfo() const;
 
   /**
-   * @brief Loads dialog persistence widget settings from disk.
+   * @brief Returns the current state of the widget.
    */
-  void ReadSettings(const sup::gui::read_variant_func_t& read_func);
+  ServerSettingsInfo GetServerSettingsInfo() const;
 
   /**
-   * @brief Writes persistence widget settings on disk.
+   * @brief Sets the state of the widget.
    */
-  void WriteSettings(const sup::gui::write_variant_func_t& write_func);
+  void SetServerSettingsInfo(const ServerSettingsInfo& info);
 
 signals:
   void connectRequest();

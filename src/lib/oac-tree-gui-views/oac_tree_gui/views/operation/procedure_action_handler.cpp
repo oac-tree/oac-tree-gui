@@ -24,35 +24,32 @@
 #include <oac_tree_gui/model/xml_utils.h>
 #include <oac_tree_gui/transform/domain_procedure_builder.h>
 
+#include <sup/gui/mainwindow/main_window_helper.h>
 #include <sup/gui/widgets/message_helper.h>
 
 #include <mvvm/utils/file_utils.h>
 
 #include <sup/oac-tree/procedure.h>
 
-#include <QFileDialog>
-#include <QSettings>
 #include <QWidget>
 #include <fstream>
 
 namespace
 {
-const QString kGroupName("ProcedureActionHandler");
-const QString kCurrentWorkdirSettingName = kGroupName + "/" + "workdir";
+constexpr auto kWorkdirSettingsGroup = "ProcedureActionHandler/workdir";
+const QString kFileFilter("Files (*.xml *.XML)");
 }  // namespace
 
 namespace oac_tree_gui
 {
 
-ProcedureActionHandler::ProcedureActionHandler(QWidget* parent_widget) : QObject(parent_widget)
+ProcedureActionHandler::ProcedureActionHandler(sup::gui::ISettingsManager& settings_manager,
+                                               QWidget* parent_widget)
+    : QObject(parent_widget), m_settings_manager(settings_manager)
 {
-  ReadSettings();
 }
 
-ProcedureActionHandler::~ProcedureActionHandler()
-{
-  WriteSettings();
-}
+ProcedureActionHandler::~ProcedureActionHandler() = default;
 
 //! Generates XML content from currently selected procedure and save it to file.
 
@@ -80,12 +77,11 @@ void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem* procedure_item)
     return;
   }
 
-  auto file_name = QFileDialog::getSaveFileName(
-      nullptr, "Save File", m_current_workdir + "/untitled.xml", tr("Files (*.xml *.XML)"));
+  auto file_name = sup::gui::GetDialogFileNameToSave("untitled.xml", kFileFilter, nullptr,
+                                                     m_settings_manager, kWorkdirSettingsGroup);
 
   if (!file_name.isEmpty())
   {
-    UpdateCurrentWorkdir(file_name);
     std::ofstream file_out(file_name.toStdString());
     file_out << xml_content;
     file_out.close();
@@ -129,13 +125,12 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(QSt
 {
   if (file_name.isEmpty())
   {
-    file_name = QFileDialog::getOpenFileName(nullptr, "Open file", m_current_workdir,
-                                             tr("Files (*.xml *.XML)"));
+    file_name = sup::gui::GetDialogFileNameToOpen(kFileFilter, nullptr, m_settings_manager,
+                                                  kWorkdirSettingsGroup);
   }
 
   if (!file_name.isEmpty())
   {
-    UpdateCurrentWorkdir(file_name);
     return LoadProcedureFromFileIntern(file_name);
   }
 
@@ -160,24 +155,6 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileInte
   }
 
   return result;
-}
-
-void ProcedureActionHandler::ReadSettings()
-{
-  const QSettings settings;
-  m_current_workdir = settings.value(kCurrentWorkdirSettingName, QDir::homePath()).toString();
-}
-
-void ProcedureActionHandler::WriteSettings()
-{
-  QSettings settings;
-  settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
-}
-
-void ProcedureActionHandler::UpdateCurrentWorkdir(const QString& file_name)
-{
-  auto parent_path = mvvm::utils::GetParentPath(file_name.toStdString());
-  m_current_workdir = QString::fromStdString(parent_path);
 }
 
 }  // namespace oac_tree_gui

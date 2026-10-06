@@ -87,9 +87,11 @@ oac_tree_another_plugin
 }  // namespace
 
 PluginSettingsEditor::PluginSettingsEditor(IDomainPluginService& plugin_service,
+                                           sup::gui::ISettingsManager& settings_manager,
                                            QWidget* parent_widget)
     : sup::gui::SessionItemWidget(parent_widget)
     , m_plugin_service(plugin_service)
+    , m_settings_manager(settings_manager)
     , m_description(new QLabel)
     , m_dir_list_checkbox(new QCheckBox)
     , m_dir_list_edit(new QPlainTextEdit)
@@ -210,7 +212,7 @@ void PluginSettingsEditor::SummonLoadedPluginDialog()
   message.text = "Following plugins have been loaded on the application startup:";
   message.detailed = GetLoadedPluginTextPresentation(m_plugin_service.GetPluginLoadInfo());
 
-  sup::gui::DetailedMessageBox box("PluginLoadMessageBox", message, this);
+  sup::gui::DetailedMessageBox box("PluginLoadMessageBox", m_settings_manager, message, this);
   auto font = box.GetTextEdit()->font();
   font.setFamily("monospace");
   box.GetTextEdit()->setFont(font);

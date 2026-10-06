@@ -36,6 +36,7 @@ namespace oac_tree_gui
 
 XmlPanel::XmlPanel(sup::gui::ISettingsManager& settings_manager, QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_settings_manager(settings_manager)
     , m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML, settings_manager))
     , m_message_handler(sup::gui::CreateWidgetOverlayMessageHandler(m_xml_view))
 {
@@ -114,7 +115,7 @@ void XmlPanel::SetProcedureIntern(ProcedureItem* procedure)
 
 void XmlPanel::OnExportToFileRequest()
 {
-  ProcedureActionHandler handler;
+  ProcedureActionHandler handler(m_settings_manager);
   handler.OnExportToXmlRequest(m_procedure);
 }
 

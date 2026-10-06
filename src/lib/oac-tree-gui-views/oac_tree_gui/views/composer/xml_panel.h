@@ -69,6 +69,7 @@ private:
   void OnExportToFileRequest();
 
   QAction* m_export_action{nullptr};
+  sup::gui::ISettingsManager& m_settings_manager;
   sup::gui::CodeView* m_xml_view{nullptr};
   std::unique_ptr<XmlPanelController> m_panel_controller;
   ProcedureItem* m_procedure{nullptr};

@@ -38,10 +38,6 @@ namespace
 const std::int32_t kMinRegisteredUserPort = 1024;
 const std::int32_t kMaxRegisteredUserPort = 49151;
 
-constexpr auto kServerTypeComboKey = "ServerSettingsWidget/server_type_combo_value";
-constexpr auto kServerNameKey = "ServerSettingsWidget/server_name";
-constexpr auto kServerAddressKey = "ServerSettingsWidget/server_address";
-constexpr auto kServerPortKey = "ServerSettingsWidget/server_port";
 }  // namespace
 
 ServerSettingsWidget::ServerSettingsWidget(QWidget* parent_widget)
@@ -136,35 +132,18 @@ void ServerSettingsWidget::OnServerTypeComboChanged()
   SetServerType(GetServerType());
 }
 
-void ServerSettingsWidget::ReadSettings(const sup::gui::read_variant_func_t& read_func)
+ServerSettingsInfo ServerSettingsWidget::GetServerSettingsInfo() const
 {
-  if (const auto server_type = read_func(kServerTypeComboKey); server_type.isValid())
-  {
-    SetServerType(static_cast<AutomationServerType>(server_type.toInt()));
-  }
-
-  if (const auto server_name = read_func(kServerNameKey); server_name.isValid())
-  {
-    m_server_name_line_edit->setText(server_name.toString());
-  }
-
-  if (const auto server_address = read_func(kServerAddressKey); server_address.isValid())
-  {
-    m_server_address_line_edit->setText(server_address.toString());
-  }
-
-  if (const auto server_port = read_func(kServerPortKey); server_port.isValid())
-  {
-    m_port_line_edit->setText(server_port.toString());
-  }
+  return {GetServerType(), m_server_name_line_edit->text().toStdString(),
+          m_server_address_line_edit->text().toStdString(), m_port_line_edit->text().toStdString()};
 }
 
-void ServerSettingsWidget::WriteSettings(const sup::gui::write_variant_func_t& write_func)
+void ServerSettingsWidget::SetServerSettingsInfo(const ServerSettingsInfo& info)
 {
-  write_func(kServerTypeComboKey, static_cast<int>(GetServerType()));
-  write_func(kServerNameKey, m_server_name_line_edit->text());
-  write_func(kServerAddressKey, m_server_address_line_edit->text());
-  write_func(kServerPortKey, m_port_line_edit->text());
+  SetServerType(info.server_type);
+  m_server_name_line_edit->setText(QString::fromStdString(info.server_name));
+  m_server_address_line_edit->setText(QString::fromStdString(info.server_address));
+  m_port_line_edit->setText(QString::fromStdString(info.server_port));
 }
 
 }  // namespace oac_tree_gui

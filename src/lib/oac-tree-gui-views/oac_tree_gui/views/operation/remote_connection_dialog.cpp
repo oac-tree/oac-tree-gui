@@ -28,8 +28,9 @@
 #include <oac_tree_gui/model/remote_connection_info.h>
 #include <oac_tree_gui/viewmodel/job_info_viewmodel.h>
 
+#include <sup/gui/settings/i_settings_manager.h>
 #include <sup/gui/widgets/dialog_helper.h>
-#include <sup/gui/widgets/settings_callbacks.h>
+#include <sup/gui/widgets/window_info.h>
 
 #include <mvvm/style/mvvm_style_helper.h>
 
@@ -37,7 +38,6 @@
 #include <QHBoxLayout>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
-#include <QSettings>
 #include <QTreeView>
 
 namespace oac_tree_gui
@@ -46,18 +46,20 @@ namespace oac_tree_gui
 namespace
 {
 
-const QString kGroupName = "RemoteConnectionDialog";
-const QString kWindowSizeSettingName = kGroupName + "/" + "size";
+constexpr auto kWindowSettingsGroup = "RemoteConnectionDialog";
+constexpr auto kServerSettingsGroup = "ServerSettingsWidget";
 
 }  // namespace
 
 RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connection_service,
+                                               sup::gui::ISettingsManager& settings_manager,
                                                QWidget* parent_widget)
     : QDialog(parent_widget)
     , m_server_settings_widget(new ServerSettingsWidget(this))
     , m_job_list_view(new QTreeView)
     , m_job_info_model(new JobInfoViewModel(this))
     , m_connection_service(connection_service)
+    , m_settings_manager(settings_manager)
 {
   if (m_connection_service == nullptr)
   {
@@ -83,10 +85,7 @@ RemoteConnectionDialog::RemoteConnectionDialog(IRemoteConnectionService* connect
   ReadSettings();
 }
 
-RemoteConnectionDialog::~RemoteConnectionDialog()
-{
-  WriteSettings();
-}
+RemoteConnectionDialog::~RemoteConnectionDialog() = default;
 
 RemoteConnectionInfo RemoteConnectionDialog::GetResult() const
 {
@@ -98,6 +97,15 @@ RemoteConnectionInfo RemoteConnectionDialog::GetResult() const
   }
 
   return {m_current_server_info, indexes};
+}
+
+void RemoteConnectionDialog::done(int result)
+{
+  m_settings_manager.Set(kWindowSettingsGroup, sup::gui::WindowInfo{saveGeometry()},
+                         sup::gui::SettingsScope::kApplication);
+  m_settings_manager.Set(kServerSettingsGroup, m_server_settings_widget->GetServerSettingsInfo(),
+                         sup::gui::SettingsScope::kApplication);
+  QDialog::done(result);
 }
 
 void RemoteConnectionDialog::keyPressEvent(QKeyEvent* event)
@@ -132,19 +140,15 @@ void RemoteConnectionDialog::OnConnectRequest()
 
 void RemoteConnectionDialog::ReadSettings()
 {
-  const QSettings settings;
-  const auto default_size = QSize(mvvm::style::UnitSize(30), mvvm::style::UnitSize(30));
-  resize(settings.value(kWindowSizeSettingName, default_size).toSize());
+  const auto window_info = m_settings_manager.Get<sup::gui::WindowInfo>(
+      kWindowSettingsGroup, sup::gui::SettingsScope::kApplication);
+  if (!restoreGeometry(window_info.geometry))
+  {
+    resize(QSize(mvvm::style::UnitSize(30), mvvm::style::UnitSize(30)));
+  }
 
-  m_server_settings_widget->ReadSettings(sup::gui::GetSettingsReadFunc());
-}
-
-void RemoteConnectionDialog::WriteSettings()
-{
-  QSettings settings;
-  settings.setValue(kWindowSizeSettingName, size());
-
-  m_server_settings_widget->WriteSettings(sup::gui::GetSettingsWriteFunc());
+  m_server_settings_widget->SetServerSettingsInfo(m_settings_manager.Get<ServerSettingsInfo>(
+      kServerSettingsGroup, sup::gui::SettingsScope::kApplication));
 }
 
 void RemoteConnectionDialog::PopulateJobInfoModel(const AutomationServerInfo& server_info)
@@ -160,9 +164,10 @@ void RemoteConnectionDialog::PopulateJobInfoModel(const AutomationServerInfo& se
 }
 
 std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
-    IRemoteConnectionService& connection_service, QWidget* parent)
+    IRemoteConnectionService& connection_service, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent)
 {
-  RemoteConnectionDialog dialog(&connection_service, parent);
+  RemoteConnectionDialog dialog(&connection_service, settings_manager, parent);
 
   if (dialog.exec() == QDialog::Accepted)
   {

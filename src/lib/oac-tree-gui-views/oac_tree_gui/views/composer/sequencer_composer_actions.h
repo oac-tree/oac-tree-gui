@@ -28,6 +28,7 @@ class QWidget;
 
 namespace sup::gui
 {
+class ISettingsManager;
 class AppCommandContext;
 class IAppCommandService;
 }  // namespace sup::gui
@@ -46,7 +47,13 @@ class SequencerComposerActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerComposerActions(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the actions.
+   */
+  explicit SequencerComposerActions(sup::gui::ISettingsManager& settings_manager,
+                                    QWidget* parent_widget = nullptr);
   ~SequencerComposerActions() override;
 
   SequencerComposerActions(const SequencerComposerActions&) = delete;
@@ -75,6 +82,7 @@ private:
   QAction* m_redo_action{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};
+  sup::gui::ISettingsManager& m_settings_manager;
   SequencerModel* m_model{nullptr};
 };
 

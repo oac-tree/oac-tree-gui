@@ -20,11 +20,13 @@
 
 #include "oac_tree_gui/views/operation/server_settings_widget.h"
 
+#include <sup/gui/settings/in_memory_settings_storage.h>
+#include <sup/gui/settings/settings_archive.h>
+
 #include <gtest/gtest.h>
 
 #include <QComboBox>
 #include <QLineEdit>
-#include <QMap>
 #include <QPushButton>
 #include <QSignalSpy>
 
@@ -36,19 +38,6 @@ namespace oac_tree_gui::test
  */
 class ServerSettingsWidgetTest : public ::testing::Test
 {
-protected:
-  //! In-memory persistent storage emulating QSettings for ReadSettings/WriteSettings testing.
-  QMap<QString, QVariant> m_storage;
-
-  sup::gui::read_variant_func_t GetReadFunc()
-  {
-    return [this](const QString& key) { return m_storage.value(key); };
-  }
-
-  sup::gui::write_variant_func_t GetWriteFunc()
-  {
-    return [this](const QString& key, const QVariant& value) { m_storage.insert(key, value); };
-  }
 };
 
 TEST_F(ServerSettingsWidgetTest, InitialState)
@@ -93,8 +82,7 @@ TEST_F(ServerSettingsWidgetTest, GetServerInfoForEPICS)
   combo->setCurrentIndex(combo->findData(static_cast<int>(AutomationServerType::kEPICS)));
   EXPECT_EQ(widget.GetServerType(), AutomationServerType::kEPICS);
 
-  auto name_line_edit =
-      widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName);
+  auto name_line_edit = widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName);
   ASSERT_NE(name_line_edit, nullptr);
   name_line_edit->setText("MyEPICSServer");
 
@@ -107,8 +95,7 @@ TEST_F(ServerSettingsWidgetTest, SetServerType)
 {
   ServerSettingsWidget widget;
 
-  auto name_line_edit =
-      widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName);
+  auto name_line_edit = widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName);
   auto address_line_edit =
       widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerAddressLineEditName);
   ASSERT_NE(name_line_edit, nullptr);
@@ -138,9 +125,10 @@ TEST_F(ServerSettingsWidgetTest, ConnectButtonEmitsConnectRequest)
   EXPECT_EQ(spy.count(), 1);
 }
 
-//! Settings written by one widget are restored in another one.
-TEST_F(ServerSettingsWidgetTest, WriteAndReadSettings)
+//! Settings stored from one widget are restored in another one.
+TEST_F(ServerSettingsWidgetTest, ServerSettingsInfoRoundTrip)
 {
+  sup::gui::InMemorySettingsStorage storage;
   {
     ServerSettingsWidget widget;
     widget.SetServerType(AutomationServerType::kEPICS);
@@ -150,12 +138,13 @@ TEST_F(ServerSettingsWidgetTest, WriteAndReadSettings)
         ->setText("localhost");
     widget.findChild<QLineEdit*>(ServerSettingsWidget::kPortLineEditName)->setText("8080");
 
-    widget.WriteSettings(GetWriteFunc());
+    sup::gui::WriteToStorage(storage, "ServerSettingsWidget", widget.GetServerSettingsInfo());
   }
 
   // a fresh widget restores the previously stored state
   ServerSettingsWidget widget;
-  widget.ReadSettings(GetReadFunc());
+  widget.SetServerSettingsInfo(
+      sup::gui::ReadFromStorage<ServerSettingsInfo>(storage, "ServerSettingsWidget"));
 
   EXPECT_EQ(widget.GetServerType(), AutomationServerType::kEPICS);
   EXPECT_EQ(widget.findChild<QLineEdit*>(ServerSettingsWidget::kServerNameLineEditName)->text(),

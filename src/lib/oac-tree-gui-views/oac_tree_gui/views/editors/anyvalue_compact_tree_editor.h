@@ -28,8 +28,9 @@ class QTreeView;
 
 namespace sup::gui
 {
-class CustomHeaderView;
-}
+class ISettingsManager;
+class SettingsHeaderView;
+}  // namespace sup::gui
 
 namespace mvvm
 {
@@ -52,7 +53,13 @@ class AnyValueCompactTreeEditor : public sup::gui::AbstractAnyValueEditor
   Q_OBJECT
 
 public:
-  explicit AnyValueCompactTreeEditor(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the editor.
+   */
+  explicit AnyValueCompactTreeEditor(sup::gui::ISettingsManager& settings_manager,
+                                     QWidget* parent_widget = nullptr);
   ~AnyValueCompactTreeEditor() override;
 
   AnyValueCompactTreeEditor(const AnyValueCompactTreeEditor&) = delete;
@@ -71,7 +78,7 @@ private:
 
   QLabel* m_label{nullptr};
   QTreeView* m_tree_view{nullptr};
-  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::SettingsHeaderView* m_header{nullptr};
 
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };

@@ -29,6 +29,11 @@
 
 class QWidget;
 
+namespace sup::gui
+{
+class ISettingsManager;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
@@ -67,20 +72,24 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs& args, QWidget
  * @brief Summons AnyValueEditorDialog and reports result to the caller.
  *
  * @param args Input arguments to form the question.
+ * @param settings_manager The manager to store dialog settings.
  * @param parent Parent widget to center given dialog.
  *
  * @return Structure representing results of user input.
  */
-UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget* parent);
+UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args,
+                                              sup::gui::ISettingsManager& settings_manager,
+                                              QWidget* parent);
 
 /**
  * @brief Creates user context which is necessary for JobManager and JobHandler to function.
  *
  * This implementation contains modal dialogs to get user input and user choice.
  *
+ * @param settings_manager The manager to store dialog settings. Must outlive the context.
  * @param parent Parent widget to center given dialog.
  */
-UserContext CreateDefaultUserContext(QWidget* parent);
+UserContext CreateDefaultUserContext(sup::gui::ISettingsManager& settings_manager, QWidget* parent);
 
 }  // namespace oac_tree_gui
 

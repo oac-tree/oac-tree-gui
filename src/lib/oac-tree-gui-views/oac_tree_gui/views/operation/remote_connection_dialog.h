@@ -30,6 +30,11 @@
 class QTreeView;
 class QHBoxLayout;
 
+namespace sup::gui
+{
+class ISettingsManager;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
@@ -47,8 +52,15 @@ class RemoteConnectionDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit RemoteConnectionDialog(IRemoteConnectionService* connection_service,
-                                  QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * Dialog geometry and server settings are restored on construction and stored when the dialog
+   * is closed. The settings manager must outlive the dialog.
+   */
+  RemoteConnectionDialog(IRemoteConnectionService* connection_service,
+                         sup::gui::ISettingsManager& settings_manager,
+                         QWidget* parent_widget = nullptr);
   ~RemoteConnectionDialog() override;
 
   RemoteConnectionDialog(const RemoteConnectionDialog&) = delete;
@@ -60,6 +72,8 @@ public:
    * @brief Returns users choice with the server name to connect, and the list of remote jobs.
    */
   RemoteConnectionInfo GetResult() const;
+
+  void done(int result) override;
 
 protected:
   void keyPressEvent(QKeyEvent* event) override;
@@ -76,14 +90,9 @@ private:
   std::unique_ptr<QHBoxLayout> CreateConnectLayout();
 
   /**
-   * @brief Loads dialog persistence widget settings from disk.
+   * @brief Restores dialog geometry and server settings.
    */
   void ReadSettings();
-
-  /**
-   * @brief Writes persistence widget settings on disk.
-   */
-  void WriteSettings();
 
   /**
    * @brief Populates the model with information about remote jobs.
@@ -95,6 +104,7 @@ private:
   JobInfoViewModel* m_job_info_model{nullptr};
 
   IRemoteConnectionService* m_connection_service{nullptr};
+  sup::gui::ISettingsManager& m_settings_manager;
   AutomationServerInfo m_current_server_info;
 };
 
@@ -104,10 +114,13 @@ private:
  * The optional result can be empty, if dialog was canceled by the user.
  *
  * @param connection_service The main service to use fo connection.
+ * @param settings_manager The manager to store dialog settings.
+ * @param parent The parent widget.
  * @return Optional result of the user choice.
  */
 std::optional<RemoteConnectionInfo> GetDialogRemoteConnectionInfo(
-    IRemoteConnectionService& connection_service, QWidget* parent = nullptr);
+    IRemoteConnectionService& connection_service, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent = nullptr);
 
 }  // namespace oac_tree_gui
 

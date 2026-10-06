@@ -60,7 +60,7 @@ SequencerComposerView::SequencerComposerView(const sup::gui::AppViewContext& con
                                              QWidget* parent_widget)
     : QWidget(parent_widget)
     , m_context(context)
-    , m_composer_actions(new SequencerComposerActions(this))
+    , m_composer_actions(new SequencerComposerActions(context.settings_manager, this))
     , m_splitter(
           new sup::gui::SettingsSplitter(GetSplitterSettingsGroup(), context.settings_manager))
     , m_composer_tools_panel(new ComposerToolsPanel(context))

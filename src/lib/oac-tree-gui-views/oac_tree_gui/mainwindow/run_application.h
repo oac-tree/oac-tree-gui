@@ -33,7 +33,6 @@
 #include <mvvm/widgets/app_utils.h>
 
 #include <QApplication>
-#include <QSettings>
 
 namespace oac_tree_gui
 {

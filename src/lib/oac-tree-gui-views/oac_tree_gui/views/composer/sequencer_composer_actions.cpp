@@ -48,7 +48,9 @@ bool HasUndo(const mvvm::ISessionModel* model)
 
 }  // namespace
 
-SequencerComposerActions::SequencerComposerActions(QWidget* parent_widget) : QObject(parent_widget)
+SequencerComposerActions::SequencerComposerActions(sup::gui::ISettingsManager& settings_manager,
+                                                   QWidget* parent_widget)
+    : QObject(parent_widget), m_settings_manager(settings_manager)
 {
   SetupActions();
 }
@@ -91,7 +93,7 @@ void SequencerComposerActions::SetupActions()
   m_export_xml_action->setToolTip("Save currently selected procedure to oac-tree XML file");
   auto on_export = [this]()
   {
-    ProcedureActionHandler handler;
+    ProcedureActionHandler handler(m_settings_manager);
     handler.OnExportToXmlRequest(m_procedure_item);
   };
   connect(m_export_xml_action, &QAction::triggered, this, on_export);

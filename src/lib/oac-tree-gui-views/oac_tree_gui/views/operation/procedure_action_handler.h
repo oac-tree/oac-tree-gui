@@ -26,6 +26,11 @@
 
 class QWidget;
 
+namespace sup::gui
+{
+class ISettingsManager;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
@@ -43,7 +48,14 @@ class ProcedureActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureActionHandler(QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The working directory of file dialogs is stored in application settings. The settings manager
+   * must outlive the handler.
+   */
+  explicit ProcedureActionHandler(sup::gui::ISettingsManager& settings_manager,
+                                  QWidget* parent_widget = nullptr);
   ~ProcedureActionHandler() override;
 
   ProcedureActionHandler(const ProcedureActionHandler&) = delete;
@@ -67,11 +79,7 @@ public:
 private:
   std::unique_ptr<ProcedureItem> LoadProcedureFromFileIntern(const QString& file_name);
 
-  void ReadSettings();
-  void WriteSettings();
-  void UpdateCurrentWorkdir(const QString& file_name);
-
-  QString m_current_workdir;
+  sup::gui::ISettingsManager& m_settings_manager;
 };
 
 }  // namespace oac_tree_gui

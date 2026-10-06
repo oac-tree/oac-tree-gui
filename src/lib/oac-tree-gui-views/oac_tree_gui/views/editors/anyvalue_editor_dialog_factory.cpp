@@ -40,19 +40,23 @@ std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueExtendedEditorDial
 }
 
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
-    const sup::gui::AnyValueItem* item, QWidget* parent)
+    const sup::gui::AnyValueItem* item, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent)
 {
-  auto editor = std::make_unique<AnyValueCompactTreeEditor>();
+  auto editor = std::make_unique<AnyValueCompactTreeEditor>(settings_manager);
   editor->SetInitialValue(item);
-  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), parent);
+  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), settings_manager,
+                                                          parent);
 }
 
 std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactScalarEditorDialog(
-    const sup::gui::AnyValueItem* item, QWidget* parent)
+    const sup::gui::AnyValueItem* item, sup::gui::ISettingsManager& settings_manager,
+    QWidget* parent)
 {
   auto editor = std::make_unique<AnyValueCompactScalarEditor>();
   editor->SetInitialValue(item);
-  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), parent);
+  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), settings_manager,
+                                                          parent);
 }
 
 std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(

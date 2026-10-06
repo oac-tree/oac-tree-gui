@@ -259,10 +259,13 @@ void SequencerMainWindowActions::OnApplicationSettingsDialog()
   auto& settings_manager = m_context.GetSettingsManager();
   auto settings_model = CreateSettingsModel(settings_manager);
 
-  sup::gui::SettingsEditorDialog dialog(*settings_model);
-  dialog.RegisterWidget(
-      mvvm::GetTypeName<PluginSettingsItem>(), [this]()
-      { return std::make_unique<PluginSettingsEditor>(m_context.GetDomainPluginService()); });
+  sup::gui::SettingsEditorDialog dialog(*settings_model, settings_manager);
+  dialog.RegisterWidget(mvvm::GetTypeName<PluginSettingsItem>(),
+                        [this]()
+                        {
+                          return std::make_unique<PluginSettingsEditor>(
+                              m_context.GetDomainPluginService(), m_context.GetSettingsManager());
+                        });
   if (dialog.exec() == QDialog::Accepted)
   {
     dialog.PropagateSettingsToModel(*settings_model);

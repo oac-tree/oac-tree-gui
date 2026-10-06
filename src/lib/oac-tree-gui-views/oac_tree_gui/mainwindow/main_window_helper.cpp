@@ -20,8 +20,6 @@
 
 #include "main_window_helper.h"
 
-#include <sup/gui/widgets/settings_callbacks.h>
-
 #include <mvvm/utils/file_utils.h>
 
 #include <QDebug>
@@ -46,8 +44,7 @@ RunningJobsCloseAction ShouldStopRunningJobs()
       "jobs.\n");
 
   auto stop_all_button = msgBox.addButton("Stop all jobs and quit", QMessageBox::YesRole);
-  auto stop_local_button =
-      msgBox.addButton("Leave remote jobs running", QMessageBox::YesRole);
+  auto stop_local_button = msgBox.addButton("Leave remote jobs running", QMessageBox::YesRole);
   msgBox.addButton("Cancel", QMessageBox::NoRole);
 
   msgBox.exec();

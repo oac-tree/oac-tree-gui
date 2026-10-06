@@ -30,6 +30,11 @@ class QCheckBox;
 class QLayout;
 class QLabel;
 
+namespace sup::gui
+{
+class ISettingsManager;
+}  // namespace sup::gui
+
 namespace oac_tree_gui
 {
 
@@ -45,8 +50,14 @@ class PluginSettingsEditor : public sup::gui::SessionItemWidget
   Q_OBJECT
 
 public:
-  explicit PluginSettingsEditor(IDomainPluginService& plugin_service,
-                                QWidget* parent_widget = nullptr);
+  /**
+   * @brief Main c-tor.
+   *
+   * The settings manager must outlive the editor.
+   */
+  PluginSettingsEditor(IDomainPluginService& plugin_service,
+                       sup::gui::ISettingsManager& settings_manager,
+                       QWidget* parent_widget = nullptr);
   ~PluginSettingsEditor() override;
 
   PluginSettingsEditor(const PluginSettingsEditor&) = delete;
@@ -78,6 +89,7 @@ private:
   void SummonLoadedPluginDialog();
 
   IDomainPluginService& m_plugin_service;
+  sup::gui::ISettingsManager& m_settings_manager;
 
   QLabel* m_description{nullptr};
 
