@@ -23,8 +23,42 @@
 
 #include <mvvm/model/compound_item.h>
 
+#include <string>
+#include <vector>
+
 namespace oac_tree_gui
 {
+
+/**
+ * @brief The PluginSettingsInfo struct holds settings of plugin load.
+ */
+struct PluginSettingsInfo
+{
+  bool use_dir_list{false};              //! load plugins from directories
+  std::vector<std::string> dir_list;     //! directories with plugins
+  bool use_plugin_list{false};           //! load plugins from the list of names
+  std::vector<std::string> plugin_list;  //! plugin names or file names
+};
+
+template <typename Archive>
+void Visit(Archive& archive, PluginSettingsInfo& info)
+{
+  archive("use_dir_list", info.use_dir_list);
+  archive("dir_list", info.dir_list);
+  archive("use_plugin_list", info.use_plugin_list);
+  archive("plugin_list", info.plugin_list);
+}
+
+bool operator==(const PluginSettingsInfo& lhs, const PluginSettingsInfo& rhs);
+bool operator!=(const PluginSettingsInfo& lhs, const PluginSettingsInfo& rhs);
+
+/**
+ * @brief Creates plugin settings with defaults of the current platform.
+ *
+ * On CODAC, plugins are loaded from the CODAC plugin directory. Otherwise, from the default list
+ * of plugin names.
+ */
+PluginSettingsInfo CreateDefaultPluginSettingsInfo();
 
 /**
  * @brief The PluginSettingsItem class holds settings related to plugin load.
@@ -37,55 +71,22 @@ public:
   std::unique_ptr<SessionItem> Clone() const override;
 
   /**
-   * @brief Checks if settings requires to load plugins from the list with directories.
+   * @brief Returns plugin settings.
    */
-  bool UsePluginDirList() const;
+  PluginSettingsInfo GetPluginSettingsInfo() const;
 
   /**
-   * @brief Sets whether to take into account the list of directories while loading plugins.
+   * @brief Sets plugin settings.
    */
-  void SetUsePluginDirList(bool value);
-
-  /**
-   * @brief Returns the list of directories where plugins can be found.
-   */
-  std::vector<std::string> GetPluginDirList() const;
-
-  /**
-   * @brief Sets the list of directories where plugins can be found.
-   */
-  void SetPluginDirList(const std::vector<std::string>& dir_list);
-
-  /**
-   * @brief Checks if settings requires to load plugins using list of plugin names.
-   */
-  bool UsePluginList() const;
-
-  /**
-   * @brief Sets whether to use plugin list store on board while loading plugins.
-   */
-  void SetUsePluginList(bool value);
-
-  /**
-   * @brief Returns the list of plugin names.
-   *
-   * Plugin names can be given in mixed format:
-   * 1) The plugin name can have no prefix "lib" and no suffixes ".so" or ".dylib". In this case the
-   * necessary previx/suffix will be added.
-   * 2) The plugin name can be the absolute path to the plugin file.
-   */
-  std::vector<std::string> GetPluginList() const;
-
-  /**
-   * @brief Sets the list of plugin names.
-   */
-  void SetPluginList(const std::vector<std::string>& dir_list);
+  void SetPluginSettingsInfo(const PluginSettingsInfo& info);
 };
 
 /**
- * @brief Returns the list of plugin file names found in the directories specified in the item.
+ * @brief Returns the list of plugin file names to load.
+ *
+ * Contains shared libraries found in the directories and file names of listed plugins, if enabled.
  */
-std::vector<std::string> GetPluginFileNames(const PluginSettingsItem& item);
+std::vector<std::string> GetPluginFileNames(const PluginSettingsInfo& info);
 
 }  // namespace oac_tree_gui
 

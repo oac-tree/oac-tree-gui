@@ -67,23 +67,33 @@ std::vector<std::string> GetSharedLibrariesFromPluginNames(
 
 }  // namespace
 
+bool operator==(const PluginSettingsInfo& lhs, const PluginSettingsInfo& rhs)
+{
+  return (lhs.use_dir_list == rhs.use_dir_list) && (lhs.dir_list == rhs.dir_list)
+         && (lhs.use_plugin_list == rhs.use_plugin_list) && (lhs.plugin_list == rhs.plugin_list);
+}
+
+bool operator!=(const PluginSettingsInfo& lhs, const PluginSettingsInfo& rhs)
+{
+  return !(lhs == rhs);
+}
+
+PluginSettingsInfo CreateDefaultPluginSettingsInfo()
+{
+  PluginSettingsInfo result;
+  result.dir_list = GetDefaultPluginDirList();
+  result.use_dir_list = !result.dir_list.empty();
+  result.plugin_list = GetDefaultPluginList();
+  result.use_plugin_list = !result.plugin_list.empty();
+  return result;
+}
+
 PluginSettingsItem::PluginSettingsItem() : CompoundItem(mvvm::GetTypeName<PluginSettingsItem>())
 {
   (void)SetDisplayName("Plugin Settings");
-
-  {  // property to hold plugin directory list
-    auto& property = AddProperty<TextEditItem>(constants::kPluginDirListProperty);
-    const auto dir_list = GetDefaultPluginDirList();
-    property.SetText(dir_list);
-    property.SetEditorEnabled(!dir_list.empty());
-  }
-
-  {  // property to hold plugin name list
-    auto& property = AddProperty<TextEditItem>(constants::kPluginListProperty);
-    const auto dir_list = GetDefaultPluginList();
-    property.SetText(dir_list);
-    property.SetEditorEnabled(!dir_list.empty());
-  }
+  (void)AddProperty<TextEditItem>(constants::kPluginDirListProperty);
+  (void)AddProperty<TextEditItem>(constants::kPluginListProperty);
+  SetPluginSettingsInfo(CreateDefaultPluginSettingsInfo());
 }
 
 std::unique_ptr<mvvm::SessionItem> PluginSettingsItem::Clone() const
@@ -91,58 +101,37 @@ std::unique_ptr<mvvm::SessionItem> PluginSettingsItem::Clone() const
   return mvvm::MakeClone(*this);
 }
 
-bool PluginSettingsItem::UsePluginDirList() const
+PluginSettingsInfo PluginSettingsItem::GetPluginSettingsInfo() const
 {
-  return GetItem<TextEditItem>(constants::kPluginDirListProperty).IsEditorEnabled();
+  const auto& dir_list = GetItem<TextEditItem>(constants::kPluginDirListProperty);
+  const auto& plugin_list = GetItem<TextEditItem>(constants::kPluginListProperty);
+  return {dir_list.IsEditorEnabled(), dir_list.GetText(), plugin_list.IsEditorEnabled(),
+          plugin_list.GetText()};
 }
 
-void PluginSettingsItem::SetUsePluginDirList(bool value)
+void PluginSettingsItem::SetPluginSettingsInfo(const PluginSettingsInfo& info)
 {
-  GetItem<TextEditItem>(constants::kPluginDirListProperty).SetEditorEnabled(value);
+  auto& dir_list = GetItem<TextEditItem>(constants::kPluginDirListProperty);
+  dir_list.SetEditorEnabled(info.use_dir_list);
+  dir_list.SetText(info.dir_list);
+
+  auto& plugin_list = GetItem<TextEditItem>(constants::kPluginListProperty);
+  plugin_list.SetEditorEnabled(info.use_plugin_list);
+  plugin_list.SetText(info.plugin_list);
 }
 
-std::vector<std::string> PluginSettingsItem::GetPluginDirList() const
-{
-  return GetItem<TextEditItem>(constants::kPluginDirListProperty).GetText();
-}
-
-void PluginSettingsItem::SetPluginDirList(const std::vector<std::string>& dir_list)
-{
-  GetItem<TextEditItem>(constants::kPluginDirListProperty).SetText(dir_list);
-}
-
-bool PluginSettingsItem::UsePluginList() const
-{
-  return GetItem<TextEditItem>(constants::kPluginListProperty).IsEditorEnabled();
-}
-
-void PluginSettingsItem::SetUsePluginList(bool value)
-{
-  GetItem<TextEditItem>(constants::kPluginListProperty).SetEditorEnabled(value);
-}
-
-std::vector<std::string> PluginSettingsItem::GetPluginList() const
-{
-  return GetItem<TextEditItem>(constants::kPluginListProperty).GetText();
-}
-
-void PluginSettingsItem::SetPluginList(const std::vector<std::string>& dir_list)
-{
-  GetItem<TextEditItem>(constants::kPluginListProperty).SetText(dir_list);
-}
-
-std::vector<std::string> GetPluginFileNames(const PluginSettingsItem& item)
+std::vector<std::string> GetPluginFileNames(const PluginSettingsInfo& info)
 {
   std::vector<std::string> result;
-  if (item.UsePluginDirList())
+  if (info.use_dir_list)
   {
-    const auto libs = FindSharedLibrariesInDirList(item.GetPluginDirList());
+    const auto libs = FindSharedLibrariesInDirList(info.dir_list);
     (void)result.insert(result.end(), libs.begin(), libs.end());
   }
 
-  if (item.UsePluginList())
+  if (info.use_plugin_list)
   {
-    const auto libs = GetSharedLibrariesFromPluginNames(item.GetPluginList());
+    const auto libs = GetSharedLibrariesFromPluginNames(info.plugin_list);
     (void)result.insert(result.end(), libs.begin(), libs.end());
   }
 

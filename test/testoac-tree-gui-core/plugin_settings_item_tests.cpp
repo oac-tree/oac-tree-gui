@@ -22,11 +22,13 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-
-#include <sup/platform/environment.h>
+#include <oac_tree_gui/model/sequencer_settings_constants.h>
+#include <oac_tree_gui/model/text_edit_item.h>
 
 #include <mvvm/test/test_helper.h>
 #include <mvvm/utils/file_utils.h>
+
+#include <sup/platform/environment.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
@@ -43,67 +45,42 @@ public:
   PluginsSettingsItemTest() : FolderTest("PluginsSettingsItemTest") {}
 };
 
-TEST_F(PluginsSettingsItemTest, PluginSettingsItemInitialState)
+TEST_F(PluginsSettingsItemTest, CreateDefaultPluginSettingsInfo)
 {
-  const PluginSettingsItem item;
+  const auto info = CreateDefaultPluginSettingsInfo();
 
   if (sup::platform::IsOnCodac())
   {
-    EXPECT_EQ(item.GetPluginDirList(),
-              std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"}));
-    EXPECT_TRUE(item.UsePluginDirList());
-    EXPECT_FALSE(item.UsePluginList());
+    EXPECT_EQ(info.dir_list, std::vector<std::string>({"/opt/codac/lib/oac-tree/plugins"}));
+    EXPECT_TRUE(info.use_dir_list);
+    EXPECT_FALSE(info.use_plugin_list);
   }
   else
   {
-    EXPECT_TRUE(item.GetPluginDirList().empty());
-    EXPECT_FALSE(item.UsePluginDirList());
-    EXPECT_TRUE(item.UsePluginList());
+    EXPECT_TRUE(info.dir_list.empty());
+    EXPECT_FALSE(info.use_dir_list);
+    EXPECT_TRUE(info.use_plugin_list);
   }
+
+  EXPECT_EQ(PluginSettingsItem().GetPluginSettingsInfo(), info);
 }
 
-TEST_F(PluginsSettingsItemTest, UsePluginDirListProperty)
+TEST_F(PluginsSettingsItemTest, SetPluginSettingsInfo)
 {
   PluginSettingsItem item;
+  const PluginSettingsInfo info{true, {"abc", "def"}, false, {"ghi"}};
 
-  item.SetUsePluginDirList(false);
-  EXPECT_FALSE(item.UsePluginDirList());
+  item.SetPluginSettingsInfo(info);
 
-  item.SetUsePluginDirList(true);
-  EXPECT_TRUE(item.UsePluginDirList());
-}
+  const auto& dir_list = item.GetItem<TextEditItem>(constants::kPluginDirListProperty);
+  EXPECT_TRUE(dir_list.IsEditorEnabled());
+  EXPECT_EQ(dir_list.GetText(), std::vector<std::string>({"abc", "def"}));
 
-TEST_F(PluginsSettingsItemTest, PluginDirListProperty)
-{
-  PluginSettingsItem item;
+  const auto& plugin_list = item.GetItem<TextEditItem>(constants::kPluginListProperty);
+  EXPECT_FALSE(plugin_list.IsEditorEnabled());
+  EXPECT_EQ(plugin_list.GetText(), std::vector<std::string>({"ghi"}));
 
-  item.SetPluginDirList({"abc", "def"});
-  EXPECT_EQ(item.GetPluginDirList(), std::vector<std::string>({"abc", "def"}));
-
-  item.SetPluginDirList({});
-  EXPECT_TRUE(item.GetPluginDirList().empty());
-}
-
-TEST_F(PluginsSettingsItemTest, UsePluginListProperty)
-{
-  PluginSettingsItem item;
-
-  item.SetUsePluginList(false);
-  EXPECT_FALSE(item.UsePluginList());
-
-  item.SetUsePluginList(true);
-  EXPECT_TRUE(item.UsePluginList());
-}
-
-TEST_F(PluginsSettingsItemTest, PluginListProperty)
-{
-  PluginSettingsItem item;
-
-  item.SetPluginList({"abc", "def"});
-  EXPECT_EQ(item.GetPluginList(), std::vector<std::string>({"abc", "def"}));
-
-  item.SetPluginList({});
-  EXPECT_TRUE(item.GetPluginList().empty());
+  EXPECT_EQ(item.GetPluginSettingsInfo(), info);
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
@@ -118,81 +95,76 @@ TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyDirList)
   const std::string file_name_c = mvvm::utils::Join(test_dir2, "libC.so");
   mvvm::test::CreateTextFile(file_name_c, "file with content");
 
-  PluginSettingsItem item;
-  item.SetPluginDirList({test_dir1, test_dir2});
-  item.SetUsePluginDirList(true);
-  item.SetUsePluginList(false);
+  PluginSettingsInfo info{true, {test_dir1, test_dir2}, false, {}};
 
   EXPECT_TRUE(mvvm::utils::HaveSameElements(
-      GetPluginFileNames(item), std::vector<std::string>({file_name_a, file_name_b, file_name_c})));
+      GetPluginFileNames(info), std::vector<std::string>({file_name_a, file_name_b, file_name_c})));
 
-  item.SetUsePluginDirList(false);
-  EXPECT_TRUE(GetPluginFileNames(item).empty());
+  info.use_dir_list = false;
+  EXPECT_TRUE(GetPluginFileNames(info).empty());
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForNonEmptyList)
 {
-  PluginSettingsItem item;
-  item.SetUsePluginDirList(false);
-  item.SetPluginList({domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
+  PluginSettingsInfo info{
+      false,
+      {},
+      true,
+      {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName}};
 
-  item.SetUsePluginList(true);
   const std::vector<std::string> expected_file_names = {
       GetPluginFileName(domainconstants::kEpicsCAPluginName),
       GetPluginFileName(domainconstants::kEpicsPVXSPluginName)};
-  EXPECT_EQ(GetPluginFileNames(item), expected_file_names);
+  EXPECT_EQ(GetPluginFileNames(info), expected_file_names);
 
-  item.SetUsePluginList(false);
-  EXPECT_TRUE(GetPluginFileNames(item).empty());
+  info.use_plugin_list = false;
+  EXPECT_TRUE(GetPluginFileNames(info).empty());
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForListContainingPath)
 {
   const std::vector<std::string> expected_names({"/home/user/libA.so", "/home/user/libB.so"});
-  PluginSettingsItem item;
-  item.SetUsePluginDirList(false);
-  item.SetPluginList(expected_names);
+  PluginSettingsInfo info{false, {}, true, expected_names};
 
-  item.SetUsePluginList(true);
-  EXPECT_EQ(GetPluginFileNames(item), expected_names);
+  EXPECT_EQ(GetPluginFileNames(info), expected_names);
 
-  item.SetUsePluginList(false);
-  EXPECT_TRUE(GetPluginFileNames(item).empty());
+  info.use_plugin_list = false;
+  EXPECT_TRUE(GetPluginFileNames(info).empty());
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForListContainingMixtureOfPluginNamesAndFileNames)
 {
-  PluginSettingsItem item;
-  item.SetUsePluginDirList(false);
-  item.SetPluginList({domainconstants::kEpicsCAPluginName, "/home/user/libA.so",
-                      domainconstants::kEpicsPVXSPluginName});
+  PluginSettingsInfo info{false,
+                          {},
+                          true,
+                          {domainconstants::kEpicsCAPluginName, "/home/user/libA.so",
+                           domainconstants::kEpicsPVXSPluginName}};
 
-  item.SetUsePluginList(true);
   const std::vector<std::string> expected_file_names = {
       GetPluginFileName(domainconstants::kEpicsCAPluginName), "/home/user/libA.so",
       GetPluginFileName(domainconstants::kEpicsPVXSPluginName)};
-  EXPECT_EQ(GetPluginFileNames(item), expected_file_names);
+  EXPECT_EQ(GetPluginFileNames(info), expected_file_names);
 
-  item.SetUsePluginList(false);
-  EXPECT_TRUE(GetPluginFileNames(item).empty());
+  info.use_plugin_list = false;
+  EXPECT_TRUE(GetPluginFileNames(info).empty());
 }
 
 TEST_F(PluginsSettingsItemTest, GetPluginFileNamesForDirListAndFileList)
 {
-  PluginSettingsItem item;
-  item.SetUsePluginList(true);
-  item.SetPluginList({domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
-
   const auto test_dir = CreateEmptyDir("plugin_dir2");
   const std::string file_name_a = mvvm::utils::Join(test_dir, "libA.so");
   mvvm::test::CreateTextFile(file_name_a, "file with content");
-  item.SetUsePluginDirList(true);
-  item.SetPluginDirList({test_dir});
+
+  const PluginSettingsInfo info{
+      true,
+      {test_dir},
+      true,
+      {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName}};
 
   const std::vector<std::string> expected_file_names = {
       file_name_a, GetPluginFileName(domainconstants::kEpicsCAPluginName),
       GetPluginFileName(domainconstants::kEpicsPVXSPluginName)};
-  EXPECT_TRUE(mvvm::utils::HaveSameElements(GetPluginFileNames(item), expected_file_names));
+  EXPECT_TRUE(mvvm::utils::HaveSameElements(GetPluginFileNames(info), expected_file_names));
 }
 
 }  // namespace oac_tree_gui::test

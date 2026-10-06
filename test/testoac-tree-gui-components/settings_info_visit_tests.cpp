@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <oac_tree_gui/model/component_types.h>
+#include <oac_tree_gui/model/plugin_settings_item.h>
 #include <oac_tree_gui/model/undo_settings_item.h>
 #include <oac_tree_gui/settings/in_memory_settings_storage.h>
 #include <oac_tree_gui/settings/settings_archive.h>
@@ -115,6 +116,44 @@ TEST_F(SettingsInfoVisitTest, UndoInfoRoundTrip)
 
   EXPECT_FALSE(info.is_enabled);
   EXPECT_EQ(info.undo_limit, 42);
+}
+
+TEST_F(SettingsInfoVisitTest, PluginSettingsInfoReadFromEmptyStorage)
+{
+  const auto initial = CreateDefaultPluginSettingsInfo();
+
+  EXPECT_EQ(ReadFromStorage<PluginSettingsInfo>(m_storage, kGroup), PluginSettingsInfo{});
+  EXPECT_EQ(ReadFromStorage<PluginSettingsInfo>(m_storage, kGroup, initial), initial);
+}
+
+TEST_F(SettingsInfoVisitTest, PluginSettingsInfoWriteKeys)
+{
+  WriteToStorage(m_storage, kGroup, PluginSettingsInfo{true, {"dir"}, false, {"abc", "def"}});
+
+  const std::vector<std::string> expected_keys(
+      {"Group/dir_list/0", "Group/dir_list/size", "Group/plugin_list/0", "Group/plugin_list/1",
+       "Group/plugin_list/size", "Group/use_dir_list", "Group/use_plugin_list"});
+  EXPECT_EQ(m_storage.GetKeys(), expected_keys);
+  EXPECT_EQ(m_storage.Read("Group/plugin_list/1"), mvvm::variant_t{std::string("def")});
+}
+
+TEST_F(SettingsInfoVisitTest, PluginSettingsInfoRoundTrip)
+{
+  const PluginSettingsInfo info{true, {"dir1", "dir2"}, false, {"abc"}};
+
+  WriteToStorage(m_storage, kGroup, info);
+
+  EXPECT_EQ(ReadFromStorage<PluginSettingsInfo>(m_storage, kGroup), info);
+}
+
+TEST_F(SettingsInfoVisitTest, PluginSettingsInfoEmptyListOverridesInitial)
+{
+  WriteToStorage(m_storage, kGroup, PluginSettingsInfo{});
+
+  const auto info =
+      ReadFromStorage<PluginSettingsInfo>(m_storage, kGroup, CreateDefaultPluginSettingsInfo());
+
+  EXPECT_EQ(info, PluginSettingsInfo{});
 }
 
 }  // namespace oac_tree_gui::test

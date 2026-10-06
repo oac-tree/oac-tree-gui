@@ -47,7 +47,7 @@ void SequencerMainWindowContext::LoadPlugins()
 {
   auto plugin_settings = m_settings->Get<PluginSettingsItem>();
 
-  const auto plugin_file_names = GetPluginFileNames(*plugin_settings);
+  const auto plugin_file_names = GetPluginFileNames(plugin_settings->GetPluginSettingsInfo());
   m_domain_plugin_service->LoadPluginFiles(plugin_file_names);
 }
 
