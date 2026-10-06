@@ -66,6 +66,7 @@ target_sources(${test} PRIVATE
   settings_archive_tests.cpp
   settings_info_visit_tests.cpp
   settings_manager_tests.cpp
+  settings_model_helper_tests.cpp
   style_helper_tests.cpp
   workspace_editor_action_handler_copyandpaste_tests.cpp
   workspace_editor_action_handler_tests.cpp
