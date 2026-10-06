@@ -37,21 +37,20 @@
 #include <sup/gui/model/undo_settings_item.h>
 #include <sup/gui/settings/i_settings_manager.h>
 #include <sup/gui/settings/project_settings_storage.h>
+#include <sup/gui/widgets/window_info.h>
 
 #include <mvvm/widgets/app_restarter.h>
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 
 #include <QCloseEvent>
-#include <QSettings>
 
 namespace oac_tree_gui
 {
 
 namespace
 {
-const QString kGroupName = "MainWindow";
-const QString kWindowSizeSettingName = kGroupName + "/" + "size";
-const QString kWindowPosSettingName = kGroupName + "/" + "pos";
+//! Settings group of main window geometry.
+constexpr auto kWindowSettingsGroup = "MainWindow";
 
 }  // namespace
 
@@ -138,18 +137,20 @@ void SequencerMainWindow::InitComponents()
 
 void SequencerMainWindow::ReadSettings()
 {
-  const QSettings settings;
-  resize(settings.value(kWindowSizeSettingName, QSize(1024, 768)).toSize());
-
-  move(settings.value(kWindowPosSettingName, QPoint(200, 400)).toPoint());
+  auto& settings_manager = m_context.GetSettingsManager();
+  const auto window_info = settings_manager.Get<sup::gui::WindowInfo>(
+      kWindowSettingsGroup, sup::gui::SettingsScope::kApplication);
+  if (!restoreGeometry(window_info.geometry))
+  {
+    resize(QSize(1024, 768));
+  }
+  m_window_settings_connection =
+      settings_manager.RegisterProvider(kWindowSettingsGroup, sup::gui::SettingsScope::kApplication,
+                                        [this]() { return sup::gui::WindowInfo{saveGeometry()}; });
 }
 
 void SequencerMainWindow::WriteSettings()
 {
-  QSettings settings;
-  settings.setValue(kWindowSizeSettingName, size());
-  settings.setValue(kWindowPosSettingName, pos());
-
   m_context.GetSettingsManager().Collect(sup::gui::SettingsScope::kApplication);
 }
 

@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_
 #define OAC_TREE_GUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_
 
+#include <sup/gui/settings/scoped_callback.h>
+
 #include <mvvm/widgets/main_window_types.h>
 
 #include <QMainWindow>
@@ -72,6 +74,7 @@ private:
   OperationMainWindowActions* m_action_manager{nullptr};
 
   OperationMonitorView* m_operation_view{nullptr};
+  sup::gui::ScopedCallback m_window_settings_connection;
 };
 
 }  // namespace oac_tree_gui

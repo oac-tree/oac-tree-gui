@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_
 #define OAC_TREE_GUI_MAINWINDOW_PVMONITOR_MAIN_WINDOW_H_
 
+#include <sup/gui/settings/scoped_callback.h>
+
 #include <QMainWindow>
 #include <memory>
 
@@ -71,6 +73,7 @@ private:
   std::unique_ptr<PvMonitorProject> m_project;
   MonitorWidget* m_monitor_widget{nullptr};
   MonitorMainWindowActions* m_actions{nullptr};
+  sup::gui::ScopedCallback m_window_settings_connection;
 };
 
 }  // namespace oac_tree_gui

@@ -124,6 +124,7 @@ private:
   OperationMonitorView* m_operation_view{nullptr};
 
   sup::gui::ScopedCallback m_undo_settings_connection;
+  sup::gui::ScopedCallback m_window_settings_connection;
 };
 
 }  // namespace oac_tree_gui
