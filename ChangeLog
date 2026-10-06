@@ -1,5 +1,9 @@
 Changes for 2.4.0:
 
+- Projects saved with versions 2.2 to 2.3.1 can't be opened.
+- New machinery for settings storage with uniform read/write to different scopes
+- Adjust to sup-mvvm new Get/Find API with focus on constantness
+- Enable Valgrind analysis for CODAC builds
 - Build coverage with -O0 by selecting Debug over RelWithDebInfo
 
 Changes for 2.3.1:
