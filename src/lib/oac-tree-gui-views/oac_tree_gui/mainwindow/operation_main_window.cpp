@@ -127,10 +127,11 @@ bool OperationMainWindow::CanCloseApplication()
 
 void OperationMainWindow::OnExitRequest(mvvm::AppExitRequest exit_request)
 {
-  if (CanCloseApplication())
+  mvvm::AppRestarter::StoreExitRequest(exit_request);
+  if (!close())
   {
-    mvvm::AppRestarter::StoreExitRequest(exit_request);
-    close();
+    // close cancelled by the user
+    mvvm::AppRestarter::StoreExitRequest(mvvm::AppExitRequest::NormalExit);
   }
 }
 
