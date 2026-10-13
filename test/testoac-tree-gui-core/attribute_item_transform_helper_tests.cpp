@@ -295,6 +295,26 @@ TEST_F(AttributeItemTransformHelperTest, SetAttributeFromTypeName)
   EXPECT_FALSE(item.IsEnabled());
 }
 
+//! Testing SetAttribute and GetAttribute helper methods.
+
+TEST_F(AttributeItemTransformHelperTest, SetAndGetAttribute)
+{
+  const sup::oac_tree::AttributeDefinition attr(domainconstants::kTimeoutAttribute,
+                                                sup::dto::Float64Type);
+
+  mvvm::CompoundItem item;
+  auto property = AddPropertyFromDefinition(attr, item);
+  ASSERT_NE(property, nullptr);
+  EXPECT_FALSE(GetAttributeExposedFlag(*property));
+
+  // value of not exposed attribute is still available
+  EXPECT_EQ(GetAttribute<double>(item, domainconstants::kTimeoutAttribute), 0.0);
+
+  SetAttribute(item, domainconstants::kTimeoutAttribute, 42.0);
+  EXPECT_TRUE(GetAttributeExposedFlag(*property));
+  EXPECT_EQ(GetAttribute<double>(item, domainconstants::kTimeoutAttribute), 42.0);
+}
+
 TEST_F(AttributeItemTransformHelperTest, HasAttributeDefinition)
 {
   auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);

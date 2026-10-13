@@ -153,6 +153,22 @@ void SetAttribute(mvvm::CompoundItem& item, const std::string& name, const T& va
 }
 
 /**
+ * @brief Returns the value of the attribute.
+ *
+ * The exposed flag is not checked.
+ *
+ * @tparam T The type of the attribute value.
+ * @param item The item carrying the attribute.
+ * @param name The name of the attribute.
+ * @return The attribute value.
+ */
+template <typename T>
+T GetAttribute(const mvvm::CompoundItem& item, const std::string& name)
+{
+  return item.Property<T>(name);
+}
+
+/**
  * @brief Checks if given instruction or variable contains attribute definition with the given name.
  *
  * @tparam DomainT oac-tree domain type (instruction or variable).
