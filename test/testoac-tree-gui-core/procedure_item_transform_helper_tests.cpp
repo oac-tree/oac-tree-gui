@@ -24,9 +24,9 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -99,12 +99,12 @@ TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromDomainProcedureW
 
   ASSERT_EQ(container->GetInstructionCount(), 2);
 
-  auto* wait_item0 = container->FindItem<WaitItem>(mvvm::TagIndex::Default(0));
-  EXPECT_EQ(wait_item0->GetTimeout(), 42.0);
+  auto* wait_item0 = container->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
+  EXPECT_EQ(wait_item0->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
   EXPECT_FALSE(wait_item0->IsRoot());
 
-  auto* wait_item1 = container->FindItem<WaitItem>(mvvm::TagIndex::Default(1));
-  EXPECT_EQ(wait_item1->GetTimeout(), 43.0);
+  auto* wait_item1 = container->FindItem<InstructionItem>(mvvm::TagIndex::Default(1));
+  EXPECT_EQ(wait_item1->GetAttribute<double>(domainconstants::kTimeoutAttribute), 43.0);
   EXPECT_TRUE(wait_item1->IsRoot());
 }
 
@@ -126,10 +126,9 @@ TEST_F(ProcedureItemTransformHelperTest,
 
   auto procedure_item = CreateProcedureItem(procedure);
 
-  auto sequence_item =
-      procedure_item->GetInstructionContainer()->FindItem<oac_tree_gui::SequenceItem>("");
-  auto wait_item = sequence_item->FindItem<oac_tree_gui::WaitItem>("");
-  EXPECT_EQ(wait_item->GetTimeout(), 42.0);
+  auto sequence_item = procedure_item->GetInstructionContainer()->FindItem<InstructionItem>("");
+  auto wait_item = sequence_item->FindItem<InstructionItem>("");
+  EXPECT_EQ(wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 }
 
 TEST_F(ProcedureItemTransformHelperTest, CreateProcedureItemFromDomainProcedureWithLocalVariable)
@@ -185,12 +184,16 @@ TEST_F(ProcedureItemTransformHelperTest, LocalIncludeProcedure)
 
   EXPECT_EQ(procedure_item->GetInstructionContainer()->GetTotalItemCount(), 2);
 
-  auto* repeat_item = procedure_item->GetInstructionContainer()->FindItem<oac_tree_gui::RepeatItem>(
+  auto* repeat_item = procedure_item->GetInstructionContainer()->FindItem<InstructionItem>(
       mvvm::TagIndex::Default(1));
-  auto* include_item = repeat_item->FindItem<IncludeItem>(mvvm::TagIndex::Default(0));
-  auto* sequence_item =
-      procedure_item->GetInstructionContainer()->FindItem<SequenceItem>(mvvm::TagIndex::Default(0));
-  auto* wait_item = sequence_item->FindItem<oac_tree_gui::WaitItem>(mvvm::TagIndex::Default(0));
+  auto* include_item = repeat_item->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
+  auto* sequence_item = procedure_item->GetInstructionContainer()->FindItem<InstructionItem>(
+      mvvm::TagIndex::Default(0));
+  auto* wait_item = sequence_item->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
+  EXPECT_EQ(repeat_item->GetDomainType(), domainconstants::kRepeatInstructionType);
+  EXPECT_EQ(include_item->GetDomainType(), domainconstants::kIncludeInstructionType);
+  EXPECT_EQ(sequence_item->GetDomainType(), domainconstants::kSequenceInstructionType);
+  EXPECT_EQ(wait_item->GetDomainType(), domainconstants::kWaitInstructionType);
   // include instruction doesn't have children yet (since no Setup has been called)
   EXPECT_EQ(include_item->GetInstructions().size(), 0);
 }

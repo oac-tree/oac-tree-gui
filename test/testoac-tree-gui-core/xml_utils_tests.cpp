@@ -20,10 +20,12 @@
 
 #include "oac_tree_gui/model/xml_utils.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -64,8 +66,8 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
   EXPECT_EQ(procedure_item->GetDescription(), expected_description);
 
   auto container = procedure_item->GetInstructionContainer();
-  auto wait_item = container->FindItem<oac_tree_gui::WaitItem>("");
-  EXPECT_EQ(wait_item->GetTimeout(), 42.0);
+  auto wait_item = container->FindItem<InstructionItem>("");
+  EXPECT_EQ(wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 }
 
 TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
@@ -94,8 +96,8 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   oac_tree_gui::ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto wait0 = container->InsertItem<oac_tree_gui::WaitItem>(mvvm::TagIndex::Append());
-  wait0->SetTimeout(42.0);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, container);
+  wait0->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
 
   const std::string body{R"(
   <Wait timeout="42.0" blocking="false"/>

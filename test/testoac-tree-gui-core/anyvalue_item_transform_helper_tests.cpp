@@ -23,10 +23,11 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
@@ -157,30 +158,30 @@ TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalarWithTypeChange)
 TEST_F(AnyValueItemTransformHelperTest, SetInstructionAnyValueFromScalar)
 {
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-  WaitItem item;
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
 
-  // WaitItem is not intended for storing AnyValueItem
-  EXPECT_THROW(SetAnyValue(anyvalue, item), LogicErrorException);
+  // Wait instruction is not intended for storing AnyValueItem
+  EXPECT_THROW(SetAnyValue(anyvalue, *item), LogicErrorException);
 
   // Let's create a corresponding tag
-  item.RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+  item->RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 
-  EXPECT_EQ(GetAnyValueItem(item), nullptr);
-  SetAnyValue(anyvalue, item);
+  EXPECT_EQ(GetAnyValueItem(*item), nullptr);
+  SetAnyValue(anyvalue, *item);
 
   // checking constructed AnyValueItem and its visual properties
-  auto anyvalue_item = GetAnyValueItem(item);
+  auto anyvalue_item = GetAnyValueItem(*item);
   ASSERT_NE(anyvalue_item, nullptr);
   EXPECT_EQ(anyvalue_item->GetDisplayName(), sup::gui::constants::kScalarTypeName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
-  auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(item));
+  auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(*item));
   EXPECT_EQ(anyvalue, stored_anyvalue);
 
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
-  auto prev_anyvalue_item = GetAnyValueItem(item);
-  SetAnyValue(anyvalue, item);
-  EXPECT_NE(GetAnyValueItem(item), nullptr);
+  auto prev_anyvalue_item = GetAnyValueItem(*item);
+  SetAnyValue(anyvalue, *item);
+  EXPECT_NE(GetAnyValueItem(*item), nullptr);
 }
 
 //! Validate SetAnyValueFromDomainVariable helper method.
@@ -297,14 +298,14 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainInstruction)
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
 
-  WaitItem item;
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
   // registering tag to make possible adding AnyValueItem
-  item.RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+  item->RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 
-  SetAnyValueFromDomainInstruction(*instruction, item);
+  SetAnyValueFromDomainInstruction(*instruction, *item);
 
-  ASSERT_NE(GetAnyValueItem(item), nullptr);
-  auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(item));
+  ASSERT_NE(GetAnyValueItem(*item), nullptr);
+  auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(*item));
   EXPECT_EQ(expected_anyvalue, stored_anyvalue);
 }
 

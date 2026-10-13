@@ -21,8 +21,10 @@
 #include "oac_tree_gui/model/sequencer_model.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/domain/domain_constants.h>
@@ -77,7 +79,8 @@ TEST_F(SequencerModelTest, XmlDocumentSaveLoad)
 
   SequencerModel model;
   auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-  auto sequence0 = model.InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     procedure_item->GetInstructionContainer());
 
   mvvm::XmlDocument document({&model});
 

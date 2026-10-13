@@ -20,7 +20,9 @@
 
 #include "oac_tree_gui/model/instruction_container_item.h"
 
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <gtest/gtest.h>
 
@@ -41,8 +43,8 @@ TEST_F(InstructionContainerItemTest, InitialState)
 TEST_F(InstructionContainerItemTest, InsertItem)
 {
   InstructionContainerItem item;
-  auto wait = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  auto sequence = item.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, &item);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, &item);
 
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait, sequence}));
   EXPECT_EQ(item.GetInstructionCount(), 2);

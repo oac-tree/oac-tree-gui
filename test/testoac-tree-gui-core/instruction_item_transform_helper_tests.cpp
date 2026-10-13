@@ -25,7 +25,6 @@
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -59,9 +58,10 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemFromInfoObject)
 
   auto instruction_item = CreateInstructionItem(info);
 
-  auto wait_item = dynamic_cast<WaitItem*>(instruction_item.get());
+  auto wait_item = instruction_item.get();
   ASSERT_NE(wait_item, nullptr);
-  EXPECT_EQ(wait_item->GetTimeout(), 42.0);
+  EXPECT_EQ(wait_item->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 }
 
 //! Testing CreateInstructionInfoItem method.
@@ -92,10 +92,11 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
   auto item_tree = CreateInstructionItemTree(info);
   ASSERT_EQ(item_tree.indexes.size(), 1);
 
-  auto wait_item = dynamic_cast<WaitItem*>(item_tree.root.get());
+  auto wait_item = item_tree.root.get();
 
   ASSERT_NE(wait_item, nullptr);
-  EXPECT_EQ(wait_item->GetTimeout(), 42.0);
+  EXPECT_EQ(wait_item->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 
   EXPECT_EQ(item_tree.indexes[0], wait_item);
 }
@@ -126,13 +127,14 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemTreeForSequenceI
 
   ASSERT_EQ(item_tree.indexes.size(), 3);
 
-  auto sequence_item = dynamic_cast<SequenceItem*>(item_tree.root.get());
+  auto sequence_item = item_tree.root.get();
   ASSERT_NE(sequence_item, nullptr);
+  EXPECT_EQ(sequence_item->GetDomainType(), domainconstants::kSequenceInstructionType);
   ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
-  auto wait_items = sequence_item->FindItems<WaitItem>(mvvm::TagIndex::GetDefaultTag());
+  auto wait_items = sequence_item->FindItems<InstructionItem>(mvvm::TagIndex::GetDefaultTag());
   ASSERT_EQ(wait_items.size(), 2);
-  EXPECT_EQ(wait_items[0]->GetTimeout(), 42);
-  EXPECT_EQ(wait_items[1]->GetTimeout(), 43);
+  EXPECT_EQ(wait_items[0]->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42);
+  EXPECT_EQ(wait_items[1]->GetAttribute<double>(domainconstants::kTimeoutAttribute), 43);
 
   EXPECT_EQ(item_tree.indexes[0], sequence_item);
   EXPECT_EQ(item_tree.indexes[1], wait_items[0]);
@@ -192,18 +194,20 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionTreeFromRootInstruct
   auto item_tree = CreateInstructionItemTree(*procedure->RootInstruction());
   ASSERT_EQ(item_tree.indexes.size(), 4);
 
-  auto repeat_item = dynamic_cast<RepeatItem*>(item_tree.root.get());
+  auto repeat_item = item_tree.root.get();
   ASSERT_NE(repeat_item, nullptr);
+  EXPECT_EQ(repeat_item->GetDomainType(), domainconstants::kRepeatInstructionType);
   ASSERT_EQ(repeat_item->GetInstructions().size(), 1);
-  auto* sequence_item = repeat_item->FindItem<SequenceItem>(mvvm::TagIndex::GetDefaultTag());
+  auto* sequence_item = repeat_item->FindItem<InstructionItem>(mvvm::TagIndex::GetDefaultTag());
   ASSERT_NE(sequence_item, nullptr);
+  EXPECT_EQ(sequence_item->GetDomainType(), domainconstants::kSequenceInstructionType);
 
   ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
 
-  auto wait_items = sequence_item->FindItems<WaitItem>(mvvm::TagIndex::GetDefaultTag());
+  auto wait_items = sequence_item->FindItems<InstructionItem>(mvvm::TagIndex::GetDefaultTag());
   ASSERT_EQ(wait_items.size(), 2);
-  EXPECT_EQ(wait_items[0]->GetTimeout(), 42);
-  EXPECT_EQ(wait_items[1]->GetTimeout(), 43);
+  EXPECT_EQ(wait_items[0]->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42);
+  EXPECT_EQ(wait_items[1]->GetAttribute<double>(domainconstants::kTimeoutAttribute), 43);
 
   EXPECT_EQ(item_tree.indexes[0], repeat_item);
   EXPECT_EQ(item_tree.indexes[1], sequence_item);

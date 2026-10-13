@@ -101,7 +101,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
   static const auto catalogue = CreateInstructionItemCatalogue();
 
   // We are first trying to create item from catalogue, and only if it fails we create
-  // UniversalVariableItem with domain type as a property.
+  // UniversalInstructionItem with domain type as a property.
   if (!catalogue->IsRegistered(domain_type))
   {
     auto result = std::make_unique<UniversalInstructionItem>();

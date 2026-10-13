@@ -20,7 +20,10 @@
 
 #include "oac_tree_gui/model/iterate_helper.h"
 
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <gtest/gtest.h>
 
@@ -39,22 +42,22 @@ TEST_F(IterateHelperTest, IterateInstruction)
     std::vector<const InstructionItem*> items;
     auto func = [&items](const InstructionItem* item) { items.push_back(item); };
 
-    WaitItem wait_item;
-    IterateInstruction<const InstructionItem*>(&wait_item, func);
-    EXPECT_EQ(items, std::vector<const InstructionItem*>({&wait_item}));
+    auto wait_item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+    IterateInstruction<const InstructionItem*>(wait_item.get(), func);
+    EXPECT_EQ(items, std::vector<const InstructionItem*>({wait_item.get()}));
   }
 
   {
     std::vector<mvvm::SessionItem*> items;
     auto func = [&items](InstructionItem* item) { items.push_back(item); };
 
-    SequenceItem sequence;
-    auto wait_item = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
-    EXPECT_EQ(sequence.GetInstructions().size(), 1);
+    auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+    auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, sequence.get());
+    EXPECT_EQ(sequence->GetInstructions().size(), 1);
 
-    IterateInstruction<InstructionItem*>(&sequence, func);
+    IterateInstruction<InstructionItem*>(sequence.get(), func);
 
-    EXPECT_EQ(items, std::vector<mvvm::SessionItem*>({&sequence, wait_item}));
+    EXPECT_EQ(items, std::vector<mvvm::SessionItem*>({sequence.get(), wait_item}));
   }
 }
 

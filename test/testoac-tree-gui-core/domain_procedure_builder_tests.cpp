@@ -23,10 +23,10 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -116,7 +116,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence_item = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence_item = InsertInstruction(domainconstants::kSequenceInstructionType, container);
 
   auto procedure = CreateDomainProcedure(procedure_item);
 
@@ -133,10 +133,10 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto wait0 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  wait0->SetTimeout(0.1);
-  auto wait1 = container->InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  wait1->SetTimeout(0.2);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, container);
+  wait0->SetAttribute(domainconstants::kTimeoutAttribute, 0.1);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, container);
+  wait1->SetAttribute(domainconstants::kTimeoutAttribute, 0.2);
 
   auto procedure = CreateDomainProcedure(procedure_item);
 
@@ -156,8 +156,8 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto procedure = CreateDomainProcedure(procedure_item);
 
@@ -176,8 +176,8 @@ TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
@@ -203,9 +203,9 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
 
   auto inverter = InsertInstruction(domainconstants::kInverterInstructionType, container);
 
-  auto sequence = inverter->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  EXPECT_EQ(inverter->FindItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
-  auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, inverter);
+  EXPECT_EQ(inverter->FindItem<InstructionItem>(mvvm::TagIndex::Default(0)), sequence);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
@@ -236,9 +236,9 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto repeater = container->InsertItem<RepeatItem>(mvvm::TagIndex::Append());
-  auto sequence = repeater->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  EXPECT_EQ(repeater->FindItem<SequenceItem>(mvvm::TagIndex::Default(0)), sequence);
+  auto repeater = InsertInstruction(domainconstants::kRepeatInstructionType, container);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, repeater);
+  EXPECT_EQ(repeater->FindItem<InstructionItem>(mvvm::TagIndex::Default(0)), sequence);
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
@@ -291,9 +291,9 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence = container->InsertItem<ParallelSequenceItem>(mvvm::TagIndex::Append());
-  auto wait0 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  auto wait1 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kParallelInstructionType, container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto procedure = CreateDomainProcedure(procedure_item);
 
@@ -314,14 +314,14 @@ TEST_F(DomainProcedureBuilderTest, SequenceWIthFourChildrenAndAdjustedBehavior)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence = container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto wait0 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait0->SetBehavior(itemconstants::kFailBehavior);
-  auto wait1 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait1->SetBehavior(itemconstants::kSucceedBehavior);
-  auto wait2 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait2->SetBehavior(itemconstants::kHiddenBehavior);
-  auto wait3 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait3 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait3->SetBehavior(itemconstants::kNativeBehavior);
 
   auto procedure = std::make_unique<procedure_t>();

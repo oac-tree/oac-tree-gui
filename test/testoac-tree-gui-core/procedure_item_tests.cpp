@@ -22,11 +22,10 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <gtest/gtest.h>
@@ -94,7 +93,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForCoreObjects)
 
   {  // procedure with sequence
     ProcedureItem item;
-    item.GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+    InsertInstruction(domainconstants::kSequenceInstructionType, item.GetInstructionContainer());
 
     // no plugin names are necessary
     EXPECT_TRUE(CollectPluginNames(item).empty());
@@ -117,11 +116,11 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
     EXPECT_EQ(CollectPluginNames(item), expected);
   }
 
-  {  // procedure with ChannelAccessVariable and PvAccessWriteInstructionItem
+  {  // procedure with ChannelAccessVariable and PvAccessWrite instruction
     ProcedureItem item;
     item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
-    item.GetInstructionContainer()->InsertItem<PvAccessWriteInstructionItem>(
-        mvvm::TagIndex::Append());
+    InsertInstruction(domainconstants::kPvAccessWriteInstructionType,
+                      item.GetInstructionContainer());
 
     const std::vector<std::string> expected(
         {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
@@ -139,8 +138,7 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
 
   ProcedureItem item;
   item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
-  item.GetInstructionContainer()->InsertItem<PvAccessWriteInstructionItem>(
-      mvvm::TagIndex::Append());
+  InsertInstruction(domainconstants::kPvAccessWriteInstructionType, item.GetInstructionContainer());
 
   UpdatePluginNames(item);
 

@@ -24,8 +24,10 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/sequencer_item_includes.h>
 #include <oac_tree_gui/model/universal_instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 
 #include <mvvm/test/test_helper.h>
@@ -55,26 +57,26 @@ public:
 
 TEST_F(SequencerItemHelperTest, IsCompoundInstruction)
 {
-  SequenceItem sequence;
-  EXPECT_TRUE(IsCompoundInstruction(&sequence));
+  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_TRUE(IsCompoundInstruction(sequence.get()));
 
-  RepeatItem repeat;
-  EXPECT_TRUE(IsCompoundInstruction(&repeat));
+  auto repeat = CreateInstructionItem(domainconstants::kRepeatInstructionType);
+  EXPECT_TRUE(IsCompoundInstruction(repeat.get()));
 
-  WaitItem wait;
-  EXPECT_FALSE(IsCompoundInstruction(&wait));
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  EXPECT_FALSE(IsCompoundInstruction(wait.get()));
 }
 
 TEST_F(SequencerItemHelperTest, IsDecoratorInstruction)
 {
-  SequenceItem sequence;
-  EXPECT_FALSE(IsDecoratorInstruction(&sequence));
+  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_FALSE(IsDecoratorInstruction(sequence.get()));
 
-  RepeatItem repeat;
-  EXPECT_TRUE(IsDecoratorInstruction(&repeat));
+  auto repeat = CreateInstructionItem(domainconstants::kRepeatInstructionType);
+  EXPECT_TRUE(IsDecoratorInstruction(repeat.get()));
 
-  WaitItem wait;
-  EXPECT_FALSE(IsDecoratorInstruction(&wait));
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  EXPECT_FALSE(IsDecoratorInstruction(wait.get()));
 }
 
 TEST_F(SequencerItemHelperTest, Clone)
@@ -158,22 +160,22 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
 TEST_F(SequencerItemHelperTest, IsPotentialRootInstruction)
 {
   {  // instruction outside container
-    const SequenceItem sequence;
-    EXPECT_FALSE(IsPotentialRootInstruction(sequence));
+    const auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+    EXPECT_FALSE(IsPotentialRootInstruction(*sequence));
   }
 
   {  // two instructions in container
     InstructionContainerItem container;
-    auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-    auto sequence1 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
     EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
     EXPECT_TRUE(IsPotentialRootInstruction(*sequence1));
   }
 
   {  // instruction with child in container
     InstructionContainerItem container;
-    auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-    auto wait0 = sequence0->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+    auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
     EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
     EXPECT_FALSE(IsPotentialRootInstruction(*wait0));
   }

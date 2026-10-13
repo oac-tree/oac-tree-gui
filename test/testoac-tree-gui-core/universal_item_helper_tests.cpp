@@ -22,9 +22,11 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -49,7 +51,6 @@ TEST_F(UniversalItemHelperTest, AddKnownInstructionToSequencerModel)
   auto item = InsertInstruction(domainconstants::kWaitInstructionType,
                                 procedure->GetInstructionContainer());
 
-  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<WaitItem>());
   EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
@@ -73,39 +74,39 @@ TEST_F(UniversalItemHelperTest, AddUnknownDomainInstructionToTheGUI)
 
 TEST_F(UniversalItemHelperTest, IsCollapsed)
 {
-  SequenceItem item;
-  EXPECT_FALSE(IsCollapsed(item));
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_FALSE(IsCollapsed(*item));
 
-  SetCollapsed(true, item);
-  EXPECT_TRUE(IsCollapsed(item));
+  SetCollapsed(true, *item);
+  EXPECT_TRUE(IsCollapsed(*item));
 
-  SetCollapsed(false, item);
-  EXPECT_FALSE(IsCollapsed(item));
+  SetCollapsed(false, *item);
+  EXPECT_FALSE(IsCollapsed(*item));
 }
 
 TEST_F(UniversalItemHelperTest, ToggleCollapsed)
 {
-  SequenceItem item;
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
 
-  EXPECT_FALSE(IsCollapsed(item));
-  ToggleCollapsed(item);
-  EXPECT_TRUE(IsCollapsed(item));
-  ToggleCollapsed(item);
-  EXPECT_FALSE(IsCollapsed(item));
+  EXPECT_FALSE(IsCollapsed(*item));
+  ToggleCollapsed(*item);
+  EXPECT_TRUE(IsCollapsed(*item));
+  ToggleCollapsed(*item);
+  EXPECT_FALSE(IsCollapsed(*item));
 }
 
 TEST_F(UniversalItemHelperTest, IsCollapsible)
 {
-  EXPECT_TRUE(IsCollapsible(SequenceItem{}));
-  EXPECT_FALSE(IsCollapsible(WaitItem{}));
+  EXPECT_TRUE(IsCollapsible(*CreateInstructionItem(domainconstants::kSequenceInstructionType)));
+  EXPECT_FALSE(IsCollapsible(*CreateInstructionItem(domainconstants::kWaitInstructionType)));
 }
 
 TEST_F(UniversalItemHelperTest, GetCollapsedItems)
 {
   InstructionContainerItem container;
-  auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto wait0 = container.InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  auto sequence1 = sequence0->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, &container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
 
   auto collapsed = GetCollapsedItems(container);
   EXPECT_TRUE(collapsed.empty());
