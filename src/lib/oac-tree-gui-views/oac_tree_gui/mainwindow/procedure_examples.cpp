@@ -22,10 +22,10 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -40,16 +40,17 @@ namespace oac_tree_gui::Examples
 ProcedureItem* AddCopyProcedure(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto repeat = model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
-  repeat->SetRepeatCount(-1);
+  auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                  procedure_item->GetInstructionContainer());
+  repeat->SetAttribute(domainconstants::kMaxCountAttribute, mvvm::int32{-1});
   repeat->SetIsRootFlag(true);
-  auto sequence = model->InsertItem<SequenceItem>(repeat);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, repeat);
 
   auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
   SetInput("var_const42", *copy0);
   SetOutput("var0", *copy0);
 
-  model->InsertItem<WaitItem>(sequence);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
   SetText("Hello World", *message);
@@ -58,19 +59,19 @@ ProcedureItem* AddCopyProcedure(SequencerModel* model)
   SetInput("var_const0", *copy1);
   SetOutput("var1", *copy1);
 
-  model->InsertItem<WaitItem>(sequence);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto copy2 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
   SetInput("var_const42", *copy2);
   SetOutput("var1", *copy2);
 
-  model->InsertItem<WaitItem>(sequence);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto copy3 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
   SetInput("var_const0", *copy3);
   SetOutput("var0", *copy3);
 
-  model->InsertItem<WaitItem>(sequence);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var0->SetName("var0");
@@ -94,17 +95,22 @@ ProcedureItem* AddCopyProcedure(SequencerModel* model)
 ProcedureItem* AddLocalIncludeProcedure(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    procedure_item->GetInstructionContainer());
   sequence->SetName("MySequence");
-  model->InsertItem<WaitItem>(sequence)->SetTimeout(0.5);
-  model->InsertItem<WaitItem>(sequence)->SetTimeout(1.0);
-  model->InsertItem<WaitItem>(sequence)->SetTimeout(0.5);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence)
+      ->SetAttribute(domainconstants::kTimeoutAttribute, 0.5);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence)
+      ->SetAttribute(domainconstants::kTimeoutAttribute, 1.0);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence)
+      ->SetAttribute(domainconstants::kTimeoutAttribute, 0.5);
 
-  auto repeat = model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
-  repeat->SetRepeatCount(-1);
+  auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                  procedure_item->GetInstructionContainer());
+  repeat->SetAttribute(domainconstants::kMaxCountAttribute, mvvm::int32{-1});
   repeat->SetIsRootFlag(true);
-  auto include = model->InsertItem<IncludeItem>(repeat);
-  include->SetPath("MySequence");
+  auto include = InsertInstruction(domainconstants::kIncludeInstructionType, repeat);
+  include->SetAttribute(domainconstants::kPathAttribute, std::string("MySequence"));
 
   return procedure_item;
 }
@@ -112,14 +118,15 @@ ProcedureItem* AddLocalIncludeProcedure(SequencerModel* model)
 ProcedureItem* AddInputProcedure(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    procedure_item->GetInstructionContainer());
   sequence->SetName("MySequence");
 
   auto input0 = InsertInstruction(domainconstants::kInputInstructionType, sequence);
   SetOutput("var1", *input0);
   SetDescription("Your ID", *input0);
 
-  model->InsertItem<WaitItem>(sequence);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
@@ -134,8 +141,8 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto userchoice = InsertInstruction(domainconstants::kUserChoiceInstructionType,
                                       procedure_item->GetInstructionContainer());
-  model->InsertItem<WaitItem>(userchoice);
-  model->InsertItem<WaitItem>(userchoice);
+  InsertInstruction(domainconstants::kWaitInstructionType, userchoice);
+  InsertInstruction(domainconstants::kWaitInstructionType, userchoice);
 
   procedure_item->SetDisplayName("UserChoice");
   return procedure_item;
@@ -147,34 +154,35 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
 ProcedureItem* AddComplexAlignmentProcedure(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto sequence_O = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+  auto sequence_O = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                      procedure_item->GetInstructionContainer());
   sequence_O->SetDisplayName("O");
 
-  auto sequence_E = model->InsertItem<SequenceItem>(sequence_O);
+  auto sequence_E = InsertInstruction(domainconstants::kSequenceInstructionType, sequence_O);
   sequence_E->SetDisplayName("E");
-  auto wait_A = model->InsertItem<WaitItem>(sequence_E);
+  auto wait_A = InsertInstruction(domainconstants::kWaitInstructionType, sequence_E);
   wait_A->SetDisplayName("A");
-  auto sequence_D = model->InsertItem<SequenceItem>(sequence_E);
+  auto sequence_D = InsertInstruction(domainconstants::kSequenceInstructionType, sequence_E);
   sequence_D->SetDisplayName("D");
-  auto wait_B = model->InsertItem<WaitItem>(sequence_D);
+  auto wait_B = InsertInstruction(domainconstants::kWaitInstructionType, sequence_D);
   wait_B->SetDisplayName("B");
-  auto wait_C = model->InsertItem<WaitItem>(sequence_D);
+  auto wait_C = InsertInstruction(domainconstants::kWaitInstructionType, sequence_D);
   wait_C->SetDisplayName("C");
 
-  auto wait_F = model->InsertItem<WaitItem>(sequence_O);
+  auto wait_F = InsertInstruction(domainconstants::kWaitInstructionType, sequence_O);
   wait_F->SetDisplayName("F");
 
-  auto sequence_N = model->InsertItem<SequenceItem>(sequence_O);
+  auto sequence_N = InsertInstruction(domainconstants::kSequenceInstructionType, sequence_O);
   sequence_N->SetDisplayName("N");
-  auto wait_G = model->InsertItem<WaitItem>(sequence_N);
+  auto wait_G = InsertInstruction(domainconstants::kWaitInstructionType, sequence_N);
   wait_G->SetDisplayName("G");
-  auto sequence_M = model->InsertItem<SequenceItem>(sequence_N);
+  auto sequence_M = InsertInstruction(domainconstants::kSequenceInstructionType, sequence_N);
   wait_G->SetDisplayName("M");
-  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("H");
-  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("I");
-  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("J");
-  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("K");
-  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("L");
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence_M)->SetDisplayName("H");
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence_M)->SetDisplayName("I");
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence_M)->SetDisplayName("J");
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence_M)->SetDisplayName("K");
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence_M)->SetDisplayName("L");
 
   return procedure_item;
 }
@@ -183,30 +191,31 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
 
-  auto sequence0 = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     procedure_item->GetInstructionContainer());
   (void)InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 
   (void)InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 
   auto fallback0 = InsertInstruction(domainconstants::kFallbackInstructionType, sequence0);
 
-  auto listen0 = model->InsertItem<SequenceItem>(fallback0);
+  auto listen0 = InsertInstruction(domainconstants::kSequenceInstructionType, fallback0);
   listen0->SetDisplayName("Listen");
 
   auto inverter0 = InsertInstruction(domainconstants::kInverterInstructionType, listen0);
 
   auto fallback1 = InsertInstruction(domainconstants::kFallbackInstructionType, inverter0);
-  (void)model->InsertItem<WaitItem>(fallback1);
-  (void)model->InsertItem<WaitItem>(fallback1);
+  (void)InsertInstruction(domainconstants::kWaitInstructionType, fallback1);
+  (void)InsertInstruction(domainconstants::kWaitInstructionType, fallback1);
 
-  auto sequence1 = model->InsertItem<SequenceItem>(fallback0);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, fallback0);
   auto force0 = InsertInstruction(domainconstants::kForceSuccessInstructionType, sequence1);
   (void)InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
   (void)InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 
-  auto sequence2 = model->InsertItem<SequenceItem>(force0);
-  (void)model->InsertItem<WaitItem>(sequence2);
-  (void)model->InsertItem<WaitItem>(sequence2);
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, force0);
+  (void)InsertInstruction(domainconstants::kWaitInstructionType, sequence2);
+  (void)InsertInstruction(domainconstants::kWaitInstructionType, sequence2);
 
   return procedure_item;
 }

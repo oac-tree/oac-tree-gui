@@ -21,7 +21,8 @@
 #include "aggregate_examples.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 namespace oac_tree_gui::Examples
 {
@@ -33,15 +34,16 @@ std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
 
   auto sequence0 = result->InsertItem<UniversalInstructionItem>(::mvvm::TagIndex::Append());
   sequence0->SetDomainType(domainconstants::kSequenceInstructionType);
-  (void)sequence0->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("A");
+  (void)InsertInstruction(domainconstants::kIncludeInstructionType, sequence0)->SetDisplayName("A");
 
   auto force_success_item =
       sequence0->InsertItem<UniversalInstructionItem>(::mvvm::TagIndex::Append());
   force_success_item->SetDomainType(domainconstants::kForceSuccessInstructionType);
-  (void)force_success_item->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())
+  (void)InsertInstruction(domainconstants::kIncludeInstructionType, force_success_item)
       ->SetDisplayName("B");
 
-  (void)result->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("C");
+  (void)InsertInstruction(domainconstants::kIncludeInstructionType, result.get())
+      ->SetDisplayName("C");
 
   return result;
 }
