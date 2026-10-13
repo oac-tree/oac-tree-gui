@@ -113,7 +113,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
 
   const std::string expected_xml2(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure>
-  <PvAccessRead timeout="1.0"/>
+  <PvAccessRead/>
   <Workspace/>
 </Procedure>
 )RAW");
@@ -121,7 +121,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
   const std::string expected_xml3(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure>
   <Plugin>oac-tree-pvxs</Plugin>
-  <PvAccessRead timeout="1.0"/>
+  <PvAccessRead/>
   <Workspace/>
 </Procedure>
 )RAW");
@@ -148,7 +148,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
 
   const std::string expected_xml4(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure>
-  <PvAccessRead timeout="1.0"/>
+  <PvAccessRead/>
   <Workspace/>
 </Procedure>
 )RAW");

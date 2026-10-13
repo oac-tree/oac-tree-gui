@@ -121,12 +121,12 @@ TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlagForTimeoutAttribute)
 
   auto handler = CreateActionHandler(timeout_attribute);
 
-  EXPECT_TRUE(handler->GetExposedFlag());
-  EXPECT_TRUE(GetAttributeExposedFlag(*timeout_attribute));
-
-  handler->OnToggleExposedFlag();
   EXPECT_FALSE(handler->GetExposedFlag());
   EXPECT_FALSE(GetAttributeExposedFlag(*timeout_attribute));
+
+  handler->OnToggleExposedFlag();
+  EXPECT_TRUE(handler->GetExposedFlag());
+  EXPECT_TRUE(GetAttributeExposedFlag(*timeout_attribute));
 }
 
 TEST_F(AttributeEditorActionHandlerTest, TuringScalarAttributeIntoPlaceholder)

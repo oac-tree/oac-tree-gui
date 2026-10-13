@@ -20,11 +20,10 @@
 
 #include "oac_tree_gui/model/item_factory.h"
 
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/model/epics_instruction_items.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/universal_items.h>
@@ -47,20 +46,13 @@ public:
     return dynamic_cast<const T*>(item) != nullptr;
   }
 
-  /**
-   * @brief Checks if CreateInstructionItem factory function creates item of proper type for string
-   * representing "Type" of sup::oac_tree::Instruction.
-   */
-  template <typename T>
-  bool CanCreateCustomInstruction(const std::string& domain_type)
+  //! Checks if CreateInstructionItem creates UniversalInstructionItem with the given domain type.
+  bool CanCreateUniversalInstruction(const std::string& domain_type)
   {
     auto created = oac_tree_gui::CreateInstructionItem(domain_type);
-    const bool is_correct_type = IsCorrectType<T>(created.get());
-
-    // for custom item (not universal item) model type coincides with domain type
-    const bool are_types_coincide = created->GetType() == domain_type;
-
-    return is_correct_type && are_types_coincide;
+    return IsCorrectType<UniversalInstructionItem>(created.get())
+           && created->GetType() == mvvm::GetTypeName<UniversalInstructionItem>()
+           && created->GetDomainType() == domain_type;
   }
 
   /**
@@ -105,20 +97,18 @@ TEST_F(ItemFactoryTest, CreateCustomEpicsVariableItem)
       kPvAccessServerVariableType));
 }
 
-TEST_F(ItemFactoryTest, CreateCustomInstructionItem)
+TEST_F(ItemFactoryTest, CreateStandardInstructionItem)
 {
   using namespace oac_tree_gui::domainconstants;
 
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::IncludeItem>(kIncludeInstructionType));
-
-  EXPECT_TRUE(
-      CanCreateCustomInstruction<oac_tree_gui::ParallelSequenceItem>(kParallelInstructionType));
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::RepeatItem>(kRepeatInstructionType));
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::SequenceItem>(kSequenceInstructionType));
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::WaitItem>(kWaitInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kIncludeInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kParallelInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kRepeatInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kSequenceInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kWaitInstructionType));
 }
 
-TEST_F(ItemFactoryTest, CreateCustomEpicsInstructionItem)
+TEST_F(ItemFactoryTest, CreateEpicsInstructionItem)
 {
   using namespace oac_tree_gui::domainconstants;
 
@@ -127,16 +117,11 @@ TEST_F(ItemFactoryTest, CreateCustomEpicsInstructionItem)
     GTEST_SKIP();
   }
 
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::ChannelAccessReadInstructionItem>(
-      kChannelAccessReadInstructionType));
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::ChannelAccessWriteInstructionItem>(
-      kChannelAccessWriteInstructionType));
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::PvAccessReadInstructionItem>(
-      kPvAccessReadInstructionType));
-  EXPECT_TRUE(CanCreateCustomInstruction<oac_tree_gui::PvAccessWriteInstructionItem>(
-      kPvAccessWriteInstructionType));
-  EXPECT_TRUE(
-      CanCreateCustomInstruction<oac_tree_gui::RPCClientInstruction>(kRPCClientInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kChannelAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kChannelAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kPvAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kPvAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(kRPCClientInstructionType));
 }
 
 TEST_F(ItemFactoryTest, CreateUniversalInstruction)

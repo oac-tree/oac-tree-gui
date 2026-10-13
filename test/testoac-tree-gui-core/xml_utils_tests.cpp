@@ -100,7 +100,7 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   wait0->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
 
   const std::string body{R"(
-  <Wait timeout="42.0" blocking="false"/>
+  <Wait timeout="42.0"/>
   <Workspace/>
 )"};
 

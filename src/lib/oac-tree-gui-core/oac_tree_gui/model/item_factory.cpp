@@ -48,36 +48,6 @@ std::unique_ptr<mvvm::ItemCatalogue<VariableItem>> CreateVariableItemCatalogue()
   return result;
 }
 
-/**
- * @brief Creates catalogue where InstructionItem factory functions are registered against "Type"
- * name strings known by the sequencer.
- *
- * These are custom classes representing domain types, which were created for convenience of GUI
- * implementation. If there is no custom class for some domain instruction type, then
- * CreateInstructionItem factory function creates UniversalInstructionItem with domain instruction
- * type.
- */
-std::unique_ptr<mvvm::ItemCatalogue<InstructionItem>> CreateInstructionItemCatalogue()
-{
-  auto result = std::make_unique<mvvm::ItemCatalogue<InstructionItem>>();
-
-  result->RegisterItem<IncludeItem>();
-  result->RegisterItem<ParallelSequenceItem>();
-  result->RegisterItem<RepeatItem>();
-  result->RegisterItem<SequenceItem>();
-  result->RegisterItem<WaitItem>();
-
-  // instructions from sequencer-plugin-epics
-  result->RegisterItem<ChannelAccessReadInstructionItem>();
-  result->RegisterItem<ChannelAccessWriteInstructionItem>();
-  result->RegisterItem<PvAccessReadInstructionItem>();
-  result->RegisterItem<PvAccessWriteInstructionItem>();
-  result->RegisterItem<RPCClientInstruction>();
-  result->RegisterItem<LogInstructionItem>();
-
-  return result;
-}
-
 }  // namespace
 
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
@@ -98,18 +68,9 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 
 std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type)
 {
-  static const auto catalogue = CreateInstructionItemCatalogue();
-
-  // We are first trying to create item from catalogue, and only if it fails we create
-  // UniversalInstructionItem with domain type as a property.
-  if (!catalogue->IsRegistered(domain_type))
-  {
-    auto result = std::make_unique<UniversalInstructionItem>();
-    result->SetDomainType(domain_type);
-    return result;
-  }
-
-  return catalogue->Create(domain_type);
+  auto result = std::make_unique<UniversalInstructionItem>();
+  result->SetDomainType(domain_type);
+  return result;
 }
 
 }  // namespace oac_tree_gui
