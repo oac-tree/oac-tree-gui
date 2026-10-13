@@ -25,14 +25,23 @@
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item_container.h>
 #include <mvvm/model/tagged_items.h>
 
+#include <sup/oac-tree/exceptions.h>
+#include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>
+#include <sup/oac-tree/procedure.h>
 #include <sup/oac-tree/sequence_parser.h>
 
 #include <gtest/gtest.h>
@@ -45,6 +54,8 @@ namespace oac_tree_gui::test
  */
 class InstructionItemTransformHelperTest : public ::testing::Test
 {
+public:
+  sup::oac_tree::Procedure m_procedure;
 };
 
 //! Testing CreateInstructionItem helper method.
@@ -304,6 +315,230 @@ TEST_F(InstructionItemTransformHelperTest, RegisterShowCollapsedProperty)
     mvvm::CompoundItem item;
     RegisterShowCollapsedProperty(Category::kAction, domainconstants::kWaitInstructionType, item);
     EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
+  }
+}
+
+//! Include with a custom attribute, domain to item.
+TEST_F(InstructionItemTransformHelperTest, IncludeFromDomainWithCustomAttribute)
+{
+  const std::string custom_name("par1");
+  const std::string custom_value("1.0");
+
+  auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+  input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+  input->AddAttribute(domainconstants::kPathAttribute, "def");
+  input->AddAttribute(custom_name, custom_value);
+
+  auto item_tree = CreateInstructionItemTree(*input);
+  auto item = item_tree.root.get();
+  EXPECT_EQ(item->GetDomainType(), domainconstants::kIncludeInstructionType);
+  EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kFileNameAttribute), "abc");
+  EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kPathAttribute), "def");
+
+  auto property = item->FindItem<sup::gui::AnyValueScalarItem>(custom_name);
+  ASSERT_NE(property, nullptr);
+  EXPECT_EQ(property->GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_EQ(property->Data<std::string>(), custom_value);
+}
+
+//! Include with a custom attribute, item to domain. Include is collapsed by default.
+TEST_F(InstructionItemTransformHelperTest, IncludeToDomainWithCustomAttribute)
+{
+  const std::string custom_name("par1");
+  const std::string custom_value("1.0");
+
+  auto item = CreateInstructionItem(domainconstants::kIncludeInstructionType);
+  item->SetAttribute(domainconstants::kPathAttribute, std::string("def"));
+  auto& property = item->AddProperty<sup::gui::AnyValueScalarItem>(custom_name);
+  property.SetAnyTypeName(sup::dto::kStringTypeName);
+  (void)property.SetData(custom_value);
+  EXPECT_TRUE(IsCollapsed(*item));
+
+  auto domain_item = item->CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
+  EXPECT_EQ(domain_item->GetAttributeString(custom_name), custom_value);
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kShowCollapsedAttribute), "true");
+
+  // Setup of Include requires the instruction to include
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait->SetName("def");
+  m_procedure.InsertInstruction(std::move(wait), 0);
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
+//! Zero success threshold of ParallelSequence goes to the domain.
+TEST_F(InstructionItemTransformHelperTest, ParallelSequenceToDomainWithZeroSuccessThreshold)
+{
+  auto item = CreateInstructionItem(domainconstants::kParallelInstructionType);
+  item->SetAttribute(domainconstants::kSuccessThresholdAttribute, mvvm::uint32{0});
+  item->SetAttribute(domainconstants::kFailureThresholdAttribute, mvvm::uint32{43});
+
+  auto domain_item = item->CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kParallelInstructionType);
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kSuccessThresholdAttribute), "0");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFailureThresholdAttribute), "43");
+
+  // no children
+  EXPECT_THROW(domain_item->Setup(m_procedure), sup::oac_tree::InstructionSetupException);
+}
+
+//! Repeat maxCount in both directions. Repeat accepts one child.
+TEST_F(InstructionItemTransformHelperTest, RepeatRoundTrip)
+{
+  auto input = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  input->AddAttribute(domainconstants::kMaxCountAttribute, "42");
+  auto item_tree = CreateInstructionItemTree(*input);
+  EXPECT_EQ(item_tree.root->GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), 42);
+
+  auto item = CreateInstructionItem(domainconstants::kRepeatInstructionType);
+  item->SetAttribute(domainconstants::kMaxCountAttribute, mvvm::int32{42});
+  auto domain_item = item->CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kMaxCountAttribute), "42");
+
+  // no child
+  EXPECT_THROW(domain_item->Setup(m_procedure), sup::oac_tree::InstructionSetupException);
+
+  (void)InsertInstruction(domainconstants::kWaitInstructionType, item.get());
+  EXPECT_THROW(InsertInstruction(domainconstants::kWaitInstructionType, item.get()),
+               mvvm::InvalidOperationException);
+}
+
+//! Wait with name, timeout and blocking, domain to item.
+TEST_F(InstructionItemTransformHelperTest, WaitFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  input->AddAttribute(domainconstants::kNameAttribute, "First");
+  input->AddAttribute(domainconstants::kTimeoutAttribute, "42");
+  input->AddAttribute(domainconstants::kBlockingAttribute, "true");
+
+  auto item_tree = CreateInstructionItemTree(*input);
+  auto item = item_tree.root.get();
+  EXPECT_EQ(item->GetDisplayName(), "First");
+  EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
+  EXPECT_TRUE(item->GetAttribute<bool>(domainconstants::kBlockingAttribute));
+}
+
+//! Wait timeout defined as a placeholder goes to the domain as is.
+TEST_F(InstructionItemTransformHelperTest, WaitToDomainVaryingTimeout)
+{
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  auto property = item->FindItem<sup::gui::AnyValueScalarItem>(domainconstants::kTimeoutAttribute);
+  ASSERT_NE(property, nullptr);
+  SetAttributeExposedFlag(true, *property);
+  SetAttributeAsString("$par1", *property);
+
+  auto domain_item = item->CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
+}
+
+//! Root flag goes to the domain only when set.
+TEST_F(InstructionItemTransformHelperTest, WaitToDomainIsRootAttribute)
+{
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+
+  item->SetIsRootFlag(true);
+  auto domain_item = item->CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
+
+  item->SetIsRootFlag(false);
+  domain_item = item->CreateDomainInstruction();
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kIsRootAttribute));
+}
+
+//! PvAccessWrite with JSON type and value in both directions.
+TEST_F(InstructionItemTransformHelperTest, PvAccessWriteRoundTrip)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+  const std::string expected_type(R"RAW({"type":"int32"})RAW");
+  const std::string expected_value("42");
+
+  {  // domain to item
+    auto input = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
+    input->AddAttribute(domainconstants::kGenericVariableNameAttribute, "abc");
+    input->AddAttribute(domainconstants::kChannelAttribute, "def");
+    input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
+    input->AddAttribute(domainconstants::kTypeAttribute, expected_type);
+    input->AddAttribute(domainconstants::kValueAttribute, expected_value);
+
+    auto item_tree = CreateInstructionItemTree(*input);
+    auto item = item_tree.root.get();
+    auto anyvalue_item = GetAnyValueItem(*item);
+    ASSERT_NE(anyvalue_item, nullptr);
+    EXPECT_EQ(CreateAnyValue(*anyvalue_item), expected_anyvalue);
+    EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kGenericVariableNameAttribute),
+              "abc");
+    EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kChannelAttribute), "def");
+    EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
+  }
+
+  {  // item to domain
+    auto item = CreateInstructionItem(domainconstants::kPvAccessWriteInstructionType);
+    item->SetAttribute(domainconstants::kChannelAttribute, std::string("def"));
+    SetAnyValue(expected_anyvalue, *item);
+
+    auto domain_item = item->CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "def");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+
+    // not exposed AnyValueItem does not go to the domain
+    item->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("var"));
+    SetAttributeExposedFlag(false, *GetAnyValueItem(*item));
+    domain_item = item->CreateDomainInstruction();
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  }
+}
+
+//! RPCClient with JSON type and value in both directions.
+TEST_F(InstructionItemTransformHelperTest, RPCClientRoundTrip)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+  const std::string expected_type(R"RAW({"type":"int32"})RAW");
+  const std::string expected_value("42");
+
+  {  // domain to item
+    auto input = CreateDomainInstruction(domainconstants::kRPCClientInstructionType);
+    input->AddAttribute(domainconstants::kServiceAttribute, "service");
+    input->AddAttribute(domainconstants::kTypeAttribute, expected_type);
+    input->AddAttribute(domainconstants::kValueAttribute, expected_value);
+    input->AddAttribute(domainconstants::kOutputVariableNameAttribute, "output");
+
+    auto item_tree = CreateInstructionItemTree(*input);
+    auto item = item_tree.root.get();
+    auto anyvalue_item = GetAnyValueItem(*item);
+    ASSERT_NE(anyvalue_item, nullptr);
+    EXPECT_EQ(CreateAnyValue(*anyvalue_item), expected_anyvalue);
+    EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kServiceAttribute), "service");
+    EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kOutputVariableNameAttribute),
+              "output");
+  }
+
+  {  // item to domain
+    auto item = CreateInstructionItem(domainconstants::kRPCClientInstructionType);
+    item->SetAttribute(domainconstants::kServiceAttribute, std::string("service"));
+    item->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("output"));
+    SetAnyValue(expected_anyvalue, *item);
+
+    auto domain_item = item->CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kServiceAttribute), "service");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
   }
 }
 
