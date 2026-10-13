@@ -22,7 +22,8 @@
 
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 
 #include <mvvm/nodeeditor/connectable_shape.h>
@@ -80,11 +81,11 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstruction)
 
   NodeGraphicsScene scene;
 
-  SequenceItem item;
-  item.SetX(1.0);
-  item.SetY(2.0);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  item->SetX(1.0);
+  item->SetY(2.0);
 
-  auto shape = factory.CreateShape(&item);
+  auto shape = factory.CreateShape(item.get());
   scene.addItem(shape.release());
 
   QGraphicsSceneMouseEvent event(QEvent::GraphicsSceneMouseDoubleClick);
@@ -99,7 +100,7 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstruction)
   EXPECT_EQ(spy_shape_clicks.count(), 1);
   EXPECT_EQ(spy_port_clicks.count(), 0);
 
-  EXPECT_EQ(mvvm::test::TakeValue<const InstructionItem*>(spy_shape_clicks), &item);
+  EXPECT_EQ(mvvm::test::TakeValue<const InstructionItem*>(spy_shape_clicks), item.get());
 }
 
 TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstructionPort)
@@ -108,11 +109,11 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstructionPort)
 
   NodeGraphicsScene scene;
 
-  SequenceItem item;
-  item.SetX(1.0);
-  item.SetY(2.0);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  item->SetX(1.0);
+  item->SetY(2.0);
 
-  auto shape = factory.CreateShape(&item);
+  auto shape = factory.CreateShape(item.get());
   auto shape_ptr = shape.get();
   scene.addItem(shape.release());
 

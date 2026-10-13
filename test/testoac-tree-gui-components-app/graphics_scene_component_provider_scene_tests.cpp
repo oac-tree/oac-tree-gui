@@ -20,17 +20,18 @@
 
 #include "oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/aggregate_examples.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
-#include <mvvm/nodeeditor/node_connection_shape.h>
 #include <mvvm/nodeeditor/i_node_port.h>
+#include <mvvm/nodeeditor/node_connection_shape.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -101,10 +102,11 @@ public:
 
 TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromSequenceToWait)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
   sequence->SetX(10.0);
   sequence->SetY(20.0);
-  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
   wait->SetX(100.0);
   wait->SetY(200.0);
 
@@ -145,10 +147,11 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromSequenceT
 
 TEST_F(GraphicsSceneComponentProviderSceneTest, EstablishConnectionFromWaitToSequence)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
   sequence->SetX(10.0);
   sequence->SetY(20.0);
-  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
   wait->SetX(100.0);
   wait->SetY(200.0);
 
@@ -186,7 +189,7 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DropInstruction)
 
   auto provider = CreateProvider();
 
-  provider->DropInstruction(mvvm::GetTypeName<SequenceItem>(), {expected_x, expected_y});
+  provider->DropInstruction(domainconstants::kSequenceInstructionType, {expected_x, expected_y});
   ASSERT_EQ(m_instruction_container->GetInstructionCount(), 1);
   auto inserted_sequence = m_instruction_container->GetInstructions().at(0);
   EXPECT_EQ(inserted_sequence->GetX(), expected_x);
@@ -198,7 +201,8 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DropInstruction)
 
 TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedInstruction)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
 
   auto provider = CreateProvider();
   auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
@@ -216,8 +220,9 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedConnection)
 {
   auto provider = CreateProvider();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
   ASSERT_EQ(shapes.size(), 2);
@@ -247,8 +252,9 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedChild)
 {
   auto provider = CreateProvider();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   provider->SetSelectedInstructions({wait});
 
@@ -267,8 +273,9 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedParent)
 {
   auto provider = CreateProvider();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   provider->SetSelectedInstructions({sequence});
 
@@ -313,10 +320,11 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, ComplexAggregateRemoval)
 
 TEST_F(GraphicsSceneComponentProviderSceneTest, CollapseWhenDoubleClickOnInputPort)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
   sequence->SetX(10.0);
   sequence->SetY(20.0);
-  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
   wait->SetX(100.0);
   wait->SetY(200.0);
 
@@ -347,10 +355,11 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, CollapseWhenDoubleClickOnInputPo
 
 TEST_F(GraphicsSceneComponentProviderSceneTest, CollapseExpandWhenDoubleClickOnInputPort)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
   sequence->SetX(10.0);
   sequence->SetY(20.0);
-  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
   wait->SetX(100.0);
   wait->SetY(200.0);
 

@@ -23,7 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/viewmodel/instruction_operation_viewmodel.h>
 
@@ -54,9 +54,10 @@ public:
 
 TEST_F(InstructionTreeExpandControllerTest, SelectWaitInFullyExpandedTree)
 {
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
-  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
+  auto wait = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 4);
@@ -81,9 +82,10 @@ TEST_F(InstructionTreeExpandControllerTest, SelectWaitInFullyExpandedTree)
 
 TEST_F(InstructionTreeExpandControllerTest, SelectWaitInCollapsedBranch)
 {
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
-  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
+  auto wait = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 4);
@@ -109,10 +111,10 @@ TEST_F(InstructionTreeExpandControllerTest, SelectWaitInCollapsedBranch)
 TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandState)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
   (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
-  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+  auto wait = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 4);
@@ -143,10 +145,10 @@ TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandState)
 TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstructions)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
   (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
-  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+  auto wait = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
   EXPECT_EQ(m_viewmodel.columnCount(QModelIndex()), 4);
@@ -186,10 +188,10 @@ TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstruction
 TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandStateDoesNotFeedBack)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
   (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
-  (void)m_model.InsertItem<SequenceItem>(sequence1);  // wait
+  (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);  // wait
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);
@@ -214,8 +216,8 @@ TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandStateD
 TEST_F(InstructionTreeExpandControllerTest, NotConnectedBeforeContainerIsSet)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  (void)m_model.InsertItem<SequenceItem>(sequence0);  // sequence1
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);  // sequence1
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);
@@ -234,8 +236,8 @@ TEST_F(InstructionTreeExpandControllerTest, NotConnectedBeforeContainerIsSet)
 TEST_F(InstructionTreeExpandControllerTest, SetInstructionContainerNullptrDisconnects)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  (void)m_model.InsertItem<SequenceItem>(sequence0);  // sequence1
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);  // sequence1
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);
@@ -257,10 +259,10 @@ TEST_F(InstructionTreeExpandControllerTest, SetInstructionContainerNullptrDiscon
 TEST_F(InstructionTreeExpandControllerTest, ConnectionsRestoredAfterApply)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
   (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
-  (void)m_model.InsertItem<SequenceItem>(sequence1);  // wait
+  (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);  // wait
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);
@@ -283,8 +285,8 @@ TEST_F(InstructionTreeExpandControllerTest, ConnectionsRestoredAfterApply)
 TEST_F(InstructionTreeExpandControllerTest, RepeatedSetInstructionContainerDoesNotDuplicate)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  (void)m_model.InsertItem<SequenceItem>(sequence0);  // sequence1
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);  // sequence1
 
   QTreeView tree;
   tree.setModel(&m_viewmodel);

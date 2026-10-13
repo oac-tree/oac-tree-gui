@@ -20,10 +20,13 @@
 
 #include "oac_tree_gui/nodeeditor/sequencer_align_utils.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/align_node.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
@@ -59,10 +62,11 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeFromContainerSequenceWithChildren
   // creating test instruction tree
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-  auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
-  auto wait2 = model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    procedure->GetInstructionContainer());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   // creating corresponding AlignTree
   auto node = algorithm::CreateAlignTree(procedure->GetInstructionContainer()->GetInstructions());
@@ -95,10 +99,10 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
 {
   // creating test instruction tree
   SequencerModel model;
-  auto sequence = model.InsertItem<SequenceItem>();
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
-  auto wait2 = model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   // creating corresponding AlignTree
   auto sequence_node = algorithm::CreateAlignTree(sequence);
@@ -125,10 +129,11 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositionsInTheContainer)
   // creating test instruction tree
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-  auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
-  auto wait2 = model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    procedure->GetInstructionContainer());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   // creating corresponding AlignTree
   auto instructions = procedure->GetInstructionContainer()->GetInstructions();
@@ -162,10 +167,10 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositionsOfInstructionTree)
 {
   // creating test instruction tree
   SequencerModel model;
-  auto sequence = model.InsertItem<SequenceItem>();
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
-  auto wait2 = model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   // creating corresponding AlignTree
   auto sequence_node = algorithm::CreateAlignTree(sequence);
@@ -196,7 +201,8 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositionsOfInstructionTree)
 TEST_F(SequencerAlignUtilsTest, AlignTreeWithSingleInstruction)
 {
   SequencerModel model;
-  auto instruction = model.InsertItem<SequenceItem>();
+  auto instruction =
+      InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   algorithm::AlignInstructionTreeWalker(QPointF(1, 2), instruction);
   EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
   EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
@@ -205,10 +211,10 @@ TEST_F(SequencerAlignUtilsTest, AlignTreeWithSingleInstruction)
 TEST_F(SequencerAlignUtilsTest, AlignTreeWithTwoInstructions)
 {
   SequencerModel model;
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
 
-  auto instruction0 = sequence->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto instruction1 = sequence->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto instruction0 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence);
+  auto instruction1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence);
 
   // number used in scenutils.cpp
   const double step_width = GetAlignmentGridWidth();
@@ -227,14 +233,14 @@ TEST_F(SequencerAlignUtilsTest, AlignTreeWithTwoInstructions)
 
 TEST_F(SequencerAlignUtilsTest, RequiresInitialAlignment)
 {
-  SequenceItem item;
-  EXPECT_TRUE(algorithm::RequiresInitialAlignment(item));
-  EXPECT_TRUE(algorithm::RequiresInitialAlignment({&item}));
-  EXPECT_TRUE(algorithm::RequiresInitialAlignment({&item, &item}));
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_TRUE(algorithm::RequiresInitialAlignment(*item));
+  EXPECT_TRUE(algorithm::RequiresInitialAlignment({item.get()}));
+  EXPECT_TRUE(algorithm::RequiresInitialAlignment({item.get(), item.get()}));
 
-  item.SetX(42.0);
-  EXPECT_FALSE(algorithm::RequiresInitialAlignment(item));
-  EXPECT_FALSE(algorithm::RequiresInitialAlignment({&item, &item}));
+  item->SetX(42.0);
+  EXPECT_FALSE(algorithm::RequiresInitialAlignment(*item));
+  EXPECT_FALSE(algorithm::RequiresInitialAlignment({item.get(), item.get()}));
 }
 
 }  // namespace oac_tree_gui::test

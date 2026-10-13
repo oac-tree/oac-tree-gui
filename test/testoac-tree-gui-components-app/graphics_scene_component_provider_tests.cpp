@@ -20,11 +20,11 @@
 
 #include "oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -107,7 +107,7 @@ TEST_F(GraphicsSceneComponentProviderTest, InitialState)
 
 TEST_F(GraphicsSceneComponentProviderTest, SingleInstructionBeforeInit)
 {
-  auto wait = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
   auto provider = CreateProvider();
 
   EXPECT_TRUE(provider->GetSelectedInstructions().empty());
@@ -119,8 +119,9 @@ TEST_F(GraphicsSceneComponentProviderTest, SingleInstructionBeforeInit)
 
 TEST_F(GraphicsSceneComponentProviderTest, SequenceWithChildBeforeInit)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto provider = CreateProvider();
 
@@ -138,9 +139,10 @@ TEST_F(GraphicsSceneComponentProviderTest, SequenceWithChildBeforeInit)
 
 TEST_F(GraphicsSceneComponentProviderTest, SetSingleSelectedViaProvider)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
 
@@ -161,9 +163,10 @@ TEST_F(GraphicsSceneComponentProviderTest, SetSingleSelectedViaProvider)
 
 TEST_F(GraphicsSceneComponentProviderTest, SetTwoSelectedViaProvider)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
 
@@ -184,9 +187,10 @@ TEST_F(GraphicsSceneComponentProviderTest, SetTwoSelectedViaProvider)
 
 TEST_F(GraphicsSceneComponentProviderTest, SetSelectedViaScene)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
 
@@ -213,8 +217,9 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertSequenceAndWait)
 {
   auto provider = CreateProvider();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto instructions = FindSceneInstructions();
   EXPECT_EQ(instructions, std::vector<InstructionItem*>({sequence, wait}));
@@ -228,7 +233,8 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertSequenceAndWait)
 
 TEST_F(GraphicsSceneComponentProviderTest, RemoveInstruction)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
 
   auto provider = CreateProvider();
 
@@ -243,8 +249,9 @@ TEST_F(GraphicsSceneComponentProviderTest, RemoveInstruction)
 
 TEST_F(GraphicsSceneComponentProviderTest, RemoveInstructionWithChid)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto provider = CreateProvider();
 
@@ -258,7 +265,8 @@ TEST_F(GraphicsSceneComponentProviderTest, RemoveInstructionWithChid)
 
 TEST_F(GraphicsSceneComponentProviderTest, MoveItem)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
   sequence->SetX(42.0);
   EXPECT_DOUBLE_EQ(sequence->GetX(), 42.0);
   EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
@@ -285,7 +293,8 @@ TEST_F(GraphicsSceneComponentProviderTest, MoveItem)
 
 TEST_F(GraphicsSceneComponentProviderTest, MoveShape)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
 
   auto provider = CreateProvider();
 
@@ -307,7 +316,8 @@ TEST_F(GraphicsSceneComponentProviderTest, MoveShape)
 
 TEST_F(GraphicsSceneComponentProviderTest, MoveShapeAndUndo)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
   sequence->SetX(42.0);
   EXPECT_DOUBLE_EQ(sequence->GetX(), 42.0);
   EXPECT_DOUBLE_EQ(sequence->GetY(), 0.0);
@@ -341,10 +351,11 @@ TEST_F(GraphicsSceneComponentProviderTest, MoveShapeAndUndo)
 
 TEST_F(GraphicsSceneComponentProviderTest, SelectionAfterRemoval)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
 
@@ -368,11 +379,11 @@ TEST_F(GraphicsSceneComponentProviderTest, SelectionAfterRemoval)
 TEST_F(GraphicsSceneComponentProviderTest, InsertAnotherContainer)
 {
   auto provider = CreateProvider();
-  auto wait0 = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
 
   auto another_container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence = m_model.InsertItem<SequenceItem>(another_container);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, another_container);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto instructions = FindSceneInstructions();
   ASSERT_EQ(instructions.size(), 1);
@@ -384,7 +395,7 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertAnotherContainer)
 TEST_F(GraphicsSceneComponentProviderTest, RemoveContainer)
 {
   auto provider = CreateProvider();
-  auto wait0 = m_model.InsertItem<WaitItem>(m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
 
   auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
   EXPECT_EQ(shapes.size(), 1);
@@ -395,11 +406,11 @@ TEST_F(GraphicsSceneComponentProviderTest, RemoveContainer)
 
   // any activity after is ignored
   auto new_container = m_model.InsertItem<InstructionContainerItem>();
-  auto wait1 = m_model.InsertItem<WaitItem>(new_container);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, new_container);
   EXPECT_EQ(m_graphics_scene.items().size(), 0);
 }
 
-//! Testing the case when AnyValue is replaced on board of PvAccessWriteInstructionItem. The
+//! Testing the case when AnyValue is replaced on board of PvAccessWrite instruction. The
 //! graphics controller should be happy with that and shouldn't try to create/remove instructions
 //! related views.
 TEST_F(GraphicsSceneComponentProviderTest, InsertAnyValueItem)
@@ -411,7 +422,8 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertAnyValueItem)
 
   auto provider = CreateProvider();
 
-  auto instruction_item = m_model.InsertItem<PvAccessWriteInstructionItem>(m_instruction_container);
+  auto instruction_item =
+      InsertInstruction(domainconstants::kPvAccessWriteInstructionType, m_instruction_container);
 
   auto instructions = FindSceneInstructions();
   ASSERT_EQ(instructions.size(), 1);
@@ -427,8 +439,9 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertAnyValueItem)
 
 TEST_F(GraphicsSceneComponentProviderTest, SequenceAndWaitWhenSequenceCollapsed)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   SetCollapsed(true, *sequence);
 
@@ -453,9 +466,10 @@ TEST_F(GraphicsSceneComponentProviderTest, InsertSequenceAndWaitWhenSequenceColl
   // controller created before the insert event
   auto provider = CreateProvider();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
   SetCollapsed(true, *sequence);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto instructions = FindSceneInstructions();
   EXPECT_EQ(instructions, std::vector<InstructionItem*>({sequence}));
@@ -475,8 +489,9 @@ TEST_F(GraphicsSceneComponentProviderTest, ValidateUpdateOnSequenceCollapsePrope
 {
   auto provider = CreateProvider();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence, wait}));
   auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
@@ -495,10 +510,11 @@ TEST_F(GraphicsSceneComponentProviderTest, ValidateUpdateOnSequenceCollapsePrope
 
 TEST_F(GraphicsSceneComponentProviderTest, SelectInstructionBranch)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_instruction_container);
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   const QSignalSpy spy_scene_selected(&m_graphics_scene, &QGraphicsScene::selectionChanged);
 
