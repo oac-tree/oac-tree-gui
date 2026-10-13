@@ -45,7 +45,7 @@ std::string IncludeItem::GetFileName() const
 
 void IncludeItem::SetFileName(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kFileNameAttribute, value);
+  SetAttribute(domainconstants::kFileNameAttribute, value);
 }
 
 std::string IncludeItem::GetPath() const
@@ -55,7 +55,7 @@ std::string IncludeItem::GetPath() const
 
 void IncludeItem::SetPath(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kPathAttribute, value);
+  SetAttribute(domainconstants::kPathAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ mvvm::uint32 ParallelSequenceItem::GetSuccessThreshold() const
 
 void ParallelSequenceItem::SetSuccessThreshold(mvvm::uint32 value)
 {
-  SetAttribute(*this, domainconstants::kSuccessThresholdAttribute, value);
+  SetAttribute(domainconstants::kSuccessThresholdAttribute, value);
 }
 
 mvvm::uint32 ParallelSequenceItem::GetFailureThreshold() const
@@ -89,7 +89,7 @@ mvvm::uint32 ParallelSequenceItem::GetFailureThreshold() const
 
 void ParallelSequenceItem::SetFailureThreshold(mvvm::uint32 value)
 {
-  SetAttribute(*this, domainconstants::kFailureThresholdAttribute, value);
+  SetAttribute(domainconstants::kFailureThresholdAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ mvvm::int32 RepeatItem::GetRepeatCount() const
 
 void RepeatItem::SetRepeatCount(mvvm::int32 value)
 {
-  SetAttribute(*this, domainconstants::kMaxCountAttribute, value);
+  SetAttribute(domainconstants::kMaxCountAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -143,7 +143,7 @@ std::unique_ptr<mvvm::SessionItem> WaitItem::Clone() const
 
 void WaitItem::SetTimeout(double value)
 {
-  SetAttribute(*this, domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 double WaitItem::GetTimeout() const
@@ -158,7 +158,7 @@ bool WaitItem::IsBlocking() const
 
 void WaitItem::SetBlocking(bool value)
 {
-  SetAttribute(*this, domainconstants::kBlockingAttribute, value);
+  SetAttribute(domainconstants::kBlockingAttribute, value);
 }
 
 }  // namespace oac_tree_gui

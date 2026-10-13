@@ -21,8 +21,13 @@
 #include "oac_tree_gui/model/instruction_item.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
+#include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/item_utils.h>
+
+#include <sup/dto/anytype.h>
+#include <sup/oac-tree/attribute_definition.h>
 
 #include <gtest/gtest.h>
 
@@ -72,6 +77,28 @@ TEST_F(InstructionItemTest, TestItem)
 
   EXPECT_EQ(item.GetStatus(), InstructionStatus::kUndefined);
   EXPECT_TRUE(item.GetInstructions().empty());
+}
+
+//! Testing SetAttribute and GetAttribute members.
+
+TEST_F(InstructionItemTest, SetAndGetAttribute)
+{
+  TestItem item;
+  const sup::oac_tree::AttributeDefinition attr(domainconstants::kTimeoutAttribute,
+                                                sup::dto::Float64Type);
+  auto property = AddPropertyFromDefinition(attr, item);
+  ASSERT_NE(property, nullptr);
+  EXPECT_FALSE(GetAttributeExposedFlag(*property));
+
+  // value of not exposed attribute is still available
+  EXPECT_EQ(item.GetAttribute<double>(domainconstants::kTimeoutAttribute), 0.0);
+
+  item.SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
+  EXPECT_TRUE(GetAttributeExposedFlag(*property));
+  EXPECT_EQ(item.GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
+
+  // value type must match the attribute type
+  EXPECT_THROW(item.SetAttribute(domainconstants::kTimeoutAttribute, 1), mvvm::RuntimeException);
 }
 
 }  // namespace oac_tree_gui::test

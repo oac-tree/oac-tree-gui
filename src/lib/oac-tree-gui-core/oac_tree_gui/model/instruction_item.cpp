@@ -100,9 +100,14 @@ bool InstructionItem::IsRoot() const
   return Property<bool>(domainconstants::kIsRootAttribute);
 }
 
+void InstructionItem::SetAttribute(const std::string& name, const mvvm::variant_t& value)
+{
+  ::oac_tree_gui::SetAttribute(*this, name, value);
+}
+
 void InstructionItem::SetIsRootFlag(bool value)
 {
-  SetAttribute(*this, domainconstants::kIsRootAttribute, value);
+  SetAttribute(domainconstants::kIsRootAttribute, value);
 }
 
 std::string InstructionItem::GetName() const

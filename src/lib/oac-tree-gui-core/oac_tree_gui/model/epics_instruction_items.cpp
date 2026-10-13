@@ -66,7 +66,7 @@ std::string EpicsReadInstructionItem::GetChannel() const
 
 void EpicsReadInstructionItem::SetChannel(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kChannelAttribute, value);
+  SetAttribute(domainconstants::kChannelAttribute, value);
 }
 
 std::string EpicsReadInstructionItem::GetOutput() const
@@ -76,7 +76,7 @@ std::string EpicsReadInstructionItem::GetOutput() const
 
 void EpicsReadInstructionItem::SetOutput(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kOutputVariableNameAttribute, value);
+  SetAttribute(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 double EpicsReadInstructionItem::GetTimeout() const
@@ -86,7 +86,7 @@ double EpicsReadInstructionItem::GetTimeout() const
 
 void EpicsReadInstructionItem::SetTimeout(double value)
 {
-  SetAttribute(*this, domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -112,7 +112,7 @@ std::string EpicsWriteInstructionItem::GetVariableName() const
 
 void EpicsWriteInstructionItem::SetVariableName(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kGenericVariableNameAttribute, value);
+  SetAttribute(domainconstants::kGenericVariableNameAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetChannel() const
@@ -122,7 +122,7 @@ std::string EpicsWriteInstructionItem::GetChannel() const
 
 void EpicsWriteInstructionItem::SetChannel(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kChannelAttribute, value);
+  SetAttribute(domainconstants::kChannelAttribute, value);
 }
 
 double EpicsWriteInstructionItem::GetTimeout() const
@@ -132,7 +132,7 @@ double EpicsWriteInstructionItem::GetTimeout() const
 
 void EpicsWriteInstructionItem::SetTimeout(double value)
 {
-  SetAttribute(*this, domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -213,7 +213,7 @@ std::string RPCClientInstruction::GetService() const
 
 void RPCClientInstruction::SetService(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kServiceAttribute, value);
+  SetAttribute(domainconstants::kServiceAttribute, value);
 }
 
 std::string RPCClientInstruction::GetRequestVar() const
@@ -223,7 +223,7 @@ std::string RPCClientInstruction::GetRequestVar() const
 
 void RPCClientInstruction::SetRequestVar(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kRequestAttribute, value);
+  SetAttribute(domainconstants::kRequestAttribute, value);
 }
 
 double RPCClientInstruction::GetTimeout() const
@@ -233,7 +233,7 @@ double RPCClientInstruction::GetTimeout() const
 
 void RPCClientInstruction::SetTimeout(double value)
 {
-  SetAttribute(*this, domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 std::string RPCClientInstruction::GetOutput() const
@@ -243,7 +243,7 @@ std::string RPCClientInstruction::GetOutput() const
 
 void RPCClientInstruction::SetOutput(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kOutputVariableNameAttribute, value);
+  SetAttribute(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -267,7 +267,7 @@ std::string LogInstructionItem::GetMessage() const
 
 void LogInstructionItem::SetMessage(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kMessageAttribute, value);
+  SetAttribute(domainconstants::kMessageAttribute, value);
 }
 
 std::string LogInstructionItem::GetInput() const
@@ -277,7 +277,7 @@ std::string LogInstructionItem::GetInput() const
 
 void LogInstructionItem::SetInput(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kInputVariableNameAttribute, value);
+  SetAttribute(domainconstants::kInputVariableNameAttribute, value);
 }
 
 std::string LogInstructionItem::GetSeverity() const
@@ -287,7 +287,7 @@ std::string LogInstructionItem::GetSeverity() const
 
 void LogInstructionItem::SetSeverity(const std::string& value)
 {
-  SetAttribute(*this, domainconstants::kSeverityAttribute, value);
+  SetAttribute(domainconstants::kSeverityAttribute, value);
 }
 
 }  // namespace oac_tree_gui

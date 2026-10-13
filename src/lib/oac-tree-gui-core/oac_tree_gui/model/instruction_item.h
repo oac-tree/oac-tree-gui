@@ -74,6 +74,27 @@ public:
   std::vector<InstructionItem*> GetInstructions();
 
   /**
+   * @brief Sets the domain attribute to a given value and marks it as exposed.
+   *
+   * @param name The name of the attribute.
+   * @param value The attribute value. Its type must match the attribute type.
+   * @throw mvvm::RuntimeException if the value type does not match.
+   */
+  void SetAttribute(const std::string& name, const mvvm::variant_t& value);
+
+  /**
+   * @brief Returns the value of the domain attribute.
+   *
+   * The exposed flag is not checked.
+   *
+   * @tparam T The type of the attribute value.
+   * @param name The name of the attribute.
+   * @return The attribute value.
+   */
+  template <typename T>
+  T GetAttribute(const std::string& name) const;
+
+  /**
    * @brief Checks if this instruction has root flag set.
    */
   bool IsRoot() const;
@@ -163,6 +184,12 @@ private:
    */
   virtual void SetupDomainImpl(instruction_t* instruction) const = 0;
 };
+
+template <typename T>
+T InstructionItem::GetAttribute(const std::string& name) const
+{
+  return Property<T>(name);
+}
 
 }  // namespace oac_tree_gui
 
