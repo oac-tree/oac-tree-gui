@@ -9,8 +9,6 @@ target_sources(${library_name} PRIVATE
   application_models.h
   component_types.cpp
   component_types.h
-  epics_instruction_items.cpp
-  epics_instruction_items.h
   instruction_container_item.cpp
   instruction_container_item.h
   instruction_info_item.cpp
@@ -53,8 +51,6 @@ target_sources(${library_name} PRIVATE
   sequencer_settings_model.h
   server_info_items.cpp
   server_info_items.h
-  standard_instruction_items.cpp
-  standard_instruction_items.h
   standard_job_items.cpp
   standard_job_items.h
   standard_variable_items.cpp

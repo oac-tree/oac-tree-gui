@@ -1,5 +1,7 @@
 Changes for 2.4.0:
 
+- Represent all instructions with one generic item; Wait and EPICS instructions no longer preset
+  timeout attributes
 - Projects saved with versions 2.2 to 2.3.1 can't be opened.
 - New machinery for settings storage with uniform read/write to different scopes
 - Adjust to sup-mvvm new Get/Find API with focus on constantness

@@ -30,21 +30,8 @@ namespace oac_tree_gui
 void RegisterSessionItems()
 {
   // instructions
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::IncludeItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ParallelSequenceItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::RepeatItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::SequenceItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::WaitItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::UniversalInstructionItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::InstructionInfoItem>();
-
-  // sequencer-plugin-epics instructions
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessReadInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessWriteInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessReadInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessWriteInstructionItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::RPCClientInstruction>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::LogInstructionItem>();
 
   // variables
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::FileVariableItem>();

@@ -87,12 +87,6 @@ UniversalInstructionItem::UniversalInstructionItem()
 {
 }
 
-UniversalInstructionItem::UniversalInstructionItem(const std::string& item_type)
-    : InstructionItem(item_type)
-{
-  SetDomainTypeImpl(item_type);
-}
-
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
 {
   return mvvm::MakeClone(*this);

@@ -84,11 +84,6 @@ TEST_F(SequencerItemHelperTest, Clone)
   using mvvm::test::IsCloneImplemented;
 
   // instructions
-  EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
-  EXPECT_TRUE(IsCloneImplemented<ParallelSequenceItem>());
-  EXPECT_TRUE(IsCloneImplemented<RepeatItem>());
-  EXPECT_TRUE(IsCloneImplemented<SequenceItem>());
-  EXPECT_TRUE(IsCloneImplemented<WaitItem>());
   EXPECT_TRUE(IsCloneImplemented<UniversalInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<InstructionInfoItem>());
 
@@ -125,14 +120,6 @@ TEST_F(SequencerItemHelperTest, ClonePlugin)
   {
     GTEST_SKIP();
   }
-
-  // instructions from sup-sequencer-plugin-epics
-  EXPECT_TRUE(IsCloneImplemented<ChannelAccessReadInstructionItem>());
-  EXPECT_TRUE(IsCloneImplemented<ChannelAccessWriteInstructionItem>());
-  EXPECT_TRUE(IsCloneImplemented<PvAccessReadInstructionItem>());
-  EXPECT_TRUE(IsCloneImplemented<PvAccessWriteInstructionItem>());
-  EXPECT_TRUE(IsCloneImplemented<RPCClientInstruction>());
-  EXPECT_TRUE(IsCloneImplemented<LogInstructionItem>());
 
   // variables
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());

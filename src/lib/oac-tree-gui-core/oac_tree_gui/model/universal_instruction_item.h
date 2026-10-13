@@ -46,16 +46,6 @@ public:
    * Constructed item can be used either after SetDomainType call or after InitFromDomain call.
    */
   UniversalInstructionItem();
-
-  /**
-   * @brief The parameterized c-tor for UniversalInstructionItem.
-   *
-   * @param item_type The item type.
-   *
-   * It is expected, that item_type coincides with the name of the registered domain instruction.
-   * Temporary domain instruction is created to initialize item properties.
-   */
-  explicit UniversalInstructionItem(const std::string& item_type);
   ~UniversalInstructionItem() override = default;
 
   UniversalInstructionItem(const UniversalInstructionItem&) = delete;

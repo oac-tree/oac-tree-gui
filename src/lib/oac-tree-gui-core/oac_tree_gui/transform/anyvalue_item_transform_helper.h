@@ -48,8 +48,8 @@ void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
  * @param anyvalue Domain AnyValue.
  * @param item Instruction item capable of storing AnyValueItem.
  *
- * @details Works for ChannelAccessWriteInstructionItem, PvAccessWriteInstructionItem and
- * RPCClientInstructi. If AnyValueItem already exist, it will be replaced.
+ * @details Works for instructions with JSON type and value attributes: ChannelAccessWrite,
+ * PvAccessWrite and RPCClient. If AnyValueItem already exists, it will be replaced.
  */
 void SetAnyValue(const anyvalue_t& anyvalue, InstructionItem& item);
 

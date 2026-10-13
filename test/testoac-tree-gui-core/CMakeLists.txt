@@ -16,7 +16,6 @@ target_sources(${test} PRIVATE
   domain_object_group_helper_tests.cpp
   domain_procedure_builder_tests.cpp
   domain_workspace_builder_tests.cpp
-  epics_instruction_items_tests.cpp
   exceptions_tests.cpp
   factory_tests.cpp
   instruction_attribute_presets_tests.cpp
@@ -43,7 +42,6 @@ target_sources(${test} PRIVATE
   sequencer_settings_helper_tests.cpp
   sequencer_settings_model_tests.cpp
   server_info_items_tests.cpp
-  standard_instruction_items_tests.cpp
   standard_job_items_tests.cpp
   standard_variable_items_tests.cpp
   text_edit_item_tests.cpp

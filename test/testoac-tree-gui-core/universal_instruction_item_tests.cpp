@@ -93,31 +93,8 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
   EXPECT_EQ(item.Property<double>(domainconstants::kTimeoutAttribute), 0);
 }
 
-//! Creating instruction using existing domain name.
-//! Please note, that the resulting object will report same name for GetType() and GetDomainType().
-
-TEST_F(UniversalInstructionItemTest, CreateUsingDomainName)
-{
-  UniversalInstructionItem item(domainconstants::kWaitInstructionType);
-
-  // different wrt test below
-  EXPECT_EQ(item.GetType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(item.GetDisplayName(), domainconstants::kWaitInstructionType);
-
-  item.SetName("abc");
-  EXPECT_EQ(item.GetDisplayName(), "abc");
-
-  auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kNameAttribute), "abc");
-
-  // more tests in standard_instruction_item_tests.cpp
-}
-
 //! Creating instruction using default constructor followed by SetDomainName.
-//! Please note, that the resulting object will report different names for GetType() and
-//! GetDomainType().
+//! The resulting object reports different names for GetType() and GetDomainType().
 
 TEST_F(UniversalInstructionItemTest, SetDomainName)
 {
@@ -125,7 +102,6 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
 
   item.SetDomainType(domainconstants::kWaitInstructionType);
 
-  // different wrt test above
   EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
@@ -135,13 +111,13 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kNameAttribute), "abc");
 
-  // more tests in standard_instruction_item_tests.cpp
+  // more tests in instruction_item_transform_helper_tests.cpp
 }
 
 TEST_F(UniversalInstructionItemTest, Behavior)
 {
-  UniversalInstructionItem item(domainconstants::kWaitInstructionType);
-  ;
+  UniversalInstructionItem item;
+  item.SetDomainType(domainconstants::kWaitInstructionType);
 
   EXPECT_EQ(item.GetBehavior(), itemconstants::kNativeBehavior);
   item.SetBehavior(itemconstants::kHiddenBehavior);
@@ -154,7 +130,9 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
     auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
     domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
 
-    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    UniversalInstructionItem item;
+
+    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
     item.InitFromDomain(domain.get());
 
     // by default item is collapsed
@@ -166,7 +144,9 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
     domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
     domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "false");
 
-    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    UniversalInstructionItem item;
+
+    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
     item.InitFromDomain(domain.get());
 
     // item got the value from the domain
@@ -178,7 +158,9 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
     domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
     domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "true");
 
-    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    UniversalInstructionItem item;
+
+    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
     item.InitFromDomain(domain.get());
 
     // item got the value from the domain
@@ -186,7 +168,8 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
   }
 
   {  // creating domain, when GUI has ShowCollapsed set to true
-    const UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    UniversalInstructionItem item;
+    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
     EXPECT_TRUE(IsCollapsed(item));
 
     auto domain = item.CreateDomainInstruction();
@@ -196,7 +179,8 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
   }
 
   {  // creating domain, when GUI has ShowCollapsed set to false
-    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    UniversalInstructionItem item;
+    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
     (void)item.SetProperty(domainconstants::kShowCollapsedAttribute, false);
     EXPECT_FALSE(IsCollapsed(item));
 
