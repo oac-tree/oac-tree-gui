@@ -21,7 +21,9 @@
 #include "oac_tree_gui/components/copy_and_paste_helper.h"
 
 #include <oac_tree_gui/components/mime_constants.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
@@ -60,10 +62,10 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionCopyMimeData)
 {
   mvvm::ApplicationModel model;
 
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   sequence->SetDisplayName("abc");
   sequence->SetX(42);
-  auto wait = model.InsertItem<WaitItem>(sequence);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto mime_data = CreateInstructionCopyMimeData(*sequence);
 
@@ -84,16 +86,16 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionCopyMimeData)
 
   // item type block
   auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
-  EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
+  EXPECT_EQ(item_types, std::vector<std::string>({sequence->GetType()}));
 }
 
 TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeData)
 {
   mvvm::ApplicationModel model;
 
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   sequence->SetDisplayName("abc");
-  auto wait = model.InsertItem<WaitItem>(sequence);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait->SetDisplayName("def");
 
   auto mime_data = CreateInstructionTreeCopyMimeData({sequence});
@@ -114,18 +116,20 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeData)
 
   // item type block
   auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
-  EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
+  EXPECT_EQ(item_types, std::vector<std::string>({sequence->GetType()}));
 }
 
 TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeDataWhenTwoSequencesAreSelected)
 {
   mvvm::ApplicationModel model;
 
-  auto sequence0 = model.InsertItem<SequenceItem>();
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   sequence0->SetDisplayName("abc");
-  auto wait0 = model.InsertItem<WaitItem>(sequence0);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
   wait0->SetDisplayName("def");
-  auto sequence1 = model.InsertItem<SequenceItem>();
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   sequence1->SetDisplayName("jkl");
 
   // selecting two sequences and one wait instruction in between
@@ -151,8 +155,7 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionTreeCopyMimeDataWhenTwoSequences
 
   // item type block
   auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
-  EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>(),
-                                                  mvvm::GetTypeName<SequenceItem>()}));
+  EXPECT_EQ(item_types, std::vector<std::string>({sequence0->GetType(), sequence1->GetType()}));
 }
 
 TEST_F(CopyAndPasteHelperTest, CreateInstructionSelectionCopyMimeData)
@@ -160,18 +163,19 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionSelectionCopyMimeData)
   mvvm::ApplicationModel model;
 
   // parent and two children
-  auto sequence0 = model.InsertItem<SequenceItem>();
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   sequence0->SetDisplayName("sequence0");
   sequence0->SetX(42);
-  auto wait0 = model.InsertItem<WaitItem>(sequence0);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
   wait0->SetDisplayName("wait0");
   wait0->SetX(43);
-  auto sequence1 = model.InsertItem<SequenceItem>(sequence0);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
   sequence1->SetDisplayName("sequence1");
   sequence1->SetX(44);
 
   // grandchildren
-  auto wait1 = model.InsertItem<WaitItem>(sequence1);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
   wait1->SetDisplayName("wait1");
   wait1->SetX(45);
 
@@ -191,8 +195,7 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionSelectionCopyMimeData)
 
     // item type block
     auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
-    EXPECT_EQ(item_types, std::vector<std::string>(
-                              {mvvm::GetTypeName<WaitItem>(), mvvm::GetTypeName<SequenceItem>()}));
+    EXPECT_EQ(item_types, std::vector<std::string>({wait0->GetType(), sequence1->GetType()}));
 
     // sequence doesn't contain any childre
     EXPECT_TRUE(reconstructed_instructions.at(1)->GetInstructions().empty());
@@ -215,7 +218,7 @@ TEST_F(CopyAndPasteHelperTest, CreateInstructionSelectionCopyMimeData)
 
     // item type block
     auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
-    EXPECT_EQ(item_types, std::vector<std::string>({mvvm::GetTypeName<SequenceItem>()}));
+    EXPECT_EQ(item_types, std::vector<std::string>({sequence0->GetType()}));
 
     // checking child
     ASSERT_EQ(reconstructed_parent->GetInstructions().size(), 1);

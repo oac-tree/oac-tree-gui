@@ -22,8 +22,10 @@
 
 #include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
@@ -82,7 +84,8 @@ TEST_F(DragAndDropHelperTest, CreateItemIdentifierMimeData)
 
   {  // single instruction
     const mvvm::AllItemsViewModel view_model(&m_model);
-    auto sequence = m_model.InsertItem<SequenceItem>();
+    auto sequence =
+        InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
     auto sequence_displayname_index = view_model.index(0, 0, QModelIndex());
 
     auto mime_data = CreateItemIdentifierMimeData({sequence_displayname_index}, mime_type);
@@ -131,9 +134,10 @@ TEST_F(DragAndDropHelperTest, CreateNewInstructionMimeData)
 TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
 {
   const mvvm::AllItemsViewModel view_model(&m_model);
-  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
   sequence->SetDisplayName("abc");
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait->SetDisplayName("def");
   auto sequence_displayname_index = view_model.index(0, 0, QModelIndex());
 
@@ -149,15 +153,15 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
   EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
   auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
   EXPECT_EQ(item_types.size(), 1);
-  EXPECT_EQ(item_types.at(0), sequence->GetDomainType());
+  EXPECT_EQ(item_types.at(0), sequence->GetType());
 
   // full copy of instruction
   EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
   auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   ASSERT_EQ(copied_items.size(), 1);
-  auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
+  auto copied_sequence = dynamic_cast<InstructionItem*>(copied_items.at(0).get());
   ASSERT_NE(copied_sequence, nullptr);
-  EXPECT_EQ(copied_sequence->GetType(), sequence->GetDomainType());
+  EXPECT_EQ(copied_sequence->GetDomainType(), sequence->GetDomainType());
   EXPECT_EQ(copied_sequence->GetDisplayName(), std::string("abc"));
   ASSERT_EQ(copied_sequence->GetInstructions().size(), 1);
   auto copied_waits = copied_sequence->GetInstructions().at(0);
@@ -167,9 +171,10 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeData)
 TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelection)
 {
   const mvvm::AllItemsViewModel view_model(&m_model);
-  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
   sequence->SetDisplayName("abc");
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait->SetDisplayName("def");
   auto sequence_displayname_index = view_model.index(0, 0, QModelIndex());
   auto wait_displayname_index = view_model.index(0, 0, sequence_displayname_index);
@@ -187,15 +192,15 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelectio
   EXPECT_TRUE(mime_data->hasFormat(kTopSelectedItemTypesMimeType));
   auto item_types = sup::gui::GetItemTypesFromMime(*mime_data, kTopSelectedItemTypesMimeType);
   EXPECT_EQ(item_types.size(), 1);
-  EXPECT_EQ(item_types.at(0), sequence->GetDomainType());
+  EXPECT_EQ(item_types.at(0), sequence->GetType());
 
   // full copy of instruction
   EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
   auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   ASSERT_EQ(copied_items.size(), 1);
-  auto copied_sequence = dynamic_cast<SequenceItem*>(copied_items.at(0).get());
+  auto copied_sequence = dynamic_cast<InstructionItem*>(copied_items.at(0).get());
   ASSERT_NE(copied_sequence, nullptr);
-  EXPECT_EQ(copied_sequence->GetType(), sequence->GetDomainType());
+  EXPECT_EQ(copied_sequence->GetDomainType(), sequence->GetDomainType());
   EXPECT_EQ(copied_sequence->GetDisplayName(), std::string("abc"));
   ASSERT_EQ(copied_sequence->GetInstructions().size(), 1);
   auto copied_waits = copied_sequence->GetInstructions().at(0);
@@ -204,12 +209,14 @@ TEST_F(DragAndDropHelperTest, CreateInstructionEditorMimeDataForMultipleSelectio
 
 TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexLastWaitToVariousPlaces)
 {
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait3 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
   // Positions of drop indicator and reported parameters of canDropMimeData:
   //
@@ -308,12 +315,14 @@ TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexLastWaitToVariousPlaces)
 
 TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndexFirstWaitToVariousPlaces)
 {
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait3 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
   // Positions of drop indicator and reported parameters of canDropMimeData:
   //
@@ -376,8 +385,9 @@ TEST_F(DragAndDropHelperTest, GetDropTagIndex)
 
 TEST_F(DragAndDropHelperTest, CanInsertType)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   EXPECT_FALSE(mvvm::utils::GetInsertTypeErrorCode(domainconstants::kWaitInstructionType, *sequence,
                                                    mvvm::TagIndex::Default(0)));
@@ -390,16 +400,18 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
   const QString mime_type = kInstructionCopyMimeType;
 
   const std::string expected_name("abc");
-  WaitItem item;
-  item.SetDisplayName(expected_name);
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  item->SetDisplayName(expected_name);
 
-  auto data = sup::gui::CreateCopyMimeData({&item}, mime_type);
+  auto data = sup::gui::CreateCopyMimeData({item.get()}, mime_type);
   EXPECT_TRUE(data->hasFormat(mime_type));
 
   auto reconstructed_items = sup::gui::CreateSessionItemsFromMimeData(*data, mime_type);
   ASSERT_EQ(reconstructed_items.size(), 1);
   EXPECT_EQ(reconstructed_items.at(0)->GetDisplayName(), expected_name);
-  EXPECT_NE(dynamic_cast<WaitItem*>(reconstructed_items.at(0).get()), nullptr);
+  auto reconstructed_wait = dynamic_cast<InstructionItem*>(reconstructed_items.at(0).get());
+  ASSERT_NE(reconstructed_wait, nullptr);
+  EXPECT_EQ(reconstructed_wait->GetDomainType(), domainconstants::kWaitInstructionType);
 }
 
 TEST_F(DragAndDropHelperTest, CanInsertNewType)
@@ -412,8 +424,9 @@ TEST_F(DragAndDropHelperTest, CanInsertNewType)
   // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
 
   auto mime_data = CreateNewInstructionMimeData(domainconstants::kWaitInstructionType);
 
@@ -446,8 +459,9 @@ TEST_F(DragAndDropHelperTest, HandleInsertNewType)
   // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
 
   auto mime_data = CreateNewInstructionMimeData(domainconstants::kWaitInstructionType);
 
@@ -495,12 +509,14 @@ TEST_F(DragAndDropHelperTest, DropInstructionIdentifierMimeDataBetweenItems)
   // [15]     -----------   row_col=( 1,  0)    QModelIndex(1, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait3 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
   {  // move wait 3 to position [7]
     auto mime_data = std::make_unique<QMimeData>();
@@ -530,8 +546,9 @@ TEST_F(DragAndDropHelperTest, DropInstructionCopyMimeDataBetweenItems)
   // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
 
   // making copy of wait0
   auto mime_data = sup::gui::CreateCopyMimeData({wait0}, kInstructionCopyMimeType);
@@ -567,8 +584,9 @@ TEST_F(DragAndDropHelperTest, AttemptToDropInstructionVCopyViaMove)
   // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
   // making copy of wait0
   auto mime_data = sup::gui::CreateCopyMimeData({wait0}, kInstructionCopyMimeType);
 

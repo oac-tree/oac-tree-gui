@@ -20,12 +20,14 @@
 
 #include "oac_tree_gui/viewmodel/favorite_instructions_viewmodel.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/project_model.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -63,7 +65,8 @@ TEST_F(FavoriteInstructionsViewModelExtendedTest, DragFromInstructionEditorViewM
   auto sequencer_model = m_models.GetSequencerModel();
   auto procedure =
       sequencer_model->InsertItem<ProcedureItem>(sequencer_model->GetProcedureContainer());
-  auto wait = sequencer_model->InsertItem<WaitItem>(procedure->GetInstructionContainer());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType,
+                                procedure->GetInstructionContainer());
   wait->SetDisplayName("abc");
 
   // we are going to drag this instruction from InstructionEditorViewModel
@@ -74,10 +77,10 @@ TEST_F(FavoriteInstructionsViewModelExtendedTest, DragFromInstructionEditorViewM
 
   // project model contains two instructions in favorite container
   auto project_model = m_models.GetProjectModel();
-  auto sequence0 =
-      project_model->InsertItem<SequenceItem>(project_model->GetFavoriteInstructionContainer());
-  auto sequence1 =
-      project_model->InsertItem<SequenceItem>(project_model->GetFavoriteInstructionContainer());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     project_model->GetFavoriteInstructionContainer());
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     project_model->GetFavoriteInstructionContainer());
   EXPECT_EQ(project_model->GetFavoriteInstructionContainer()->GetAllItems().size(), 2);
 
   // we are going to drop it into FavoriteInstructionsViewModel, between sequence0 and sequence1
@@ -110,9 +113,9 @@ TEST_F(FavoriteInstructionsViewModelExtendedTest,
 {
   // ProjectModel contains instruction with a child
   auto project_model = m_models.GetProjectModel();
-  auto sequence =
-      project_model->InsertItem<SequenceItem>(project_model->GetFavoriteInstructionContainer());
-  auto wait = project_model->InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    project_model->GetFavoriteInstructionContainer());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   wait->SetDisplayName("abc");
 
   // we are going to drag this instruction from FavoriteInstructionsViewModel
@@ -138,10 +141,10 @@ TEST_F(FavoriteInstructionsViewModelExtendedTest,
   // procedure should contain one instruction with one child now
   EXPECT_EQ(procedure->GetInstructionContainer()->GetInstructionCount(), 1);
   auto inserted_sequence = procedure->GetInstructionContainer()->GetInstructions().at(0);
-  EXPECT_EQ(inserted_sequence->GetType(), mvvm::GetTypeName<SequenceItem>());
+  EXPECT_EQ(inserted_sequence->GetDomainType(), domainconstants::kSequenceInstructionType);
   EXPECT_EQ(inserted_sequence->GetInstructions().size(), 1);
   auto inserted_wait = inserted_sequence->GetInstructions().at(0);
-  EXPECT_EQ(inserted_wait->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(inserted_wait->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(inserted_wait->GetDisplayName(), "abc");
 }
 

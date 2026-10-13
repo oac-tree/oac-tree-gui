@@ -21,12 +21,12 @@
 #include "oac_tree_gui/components/xml_panel_controller.h"
 
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -94,7 +94,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForSequence)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);
-  handler->InsertInstructionAfter(mvvm::GetTypeName<SequenceItem>());
+  handler->InsertInstructionAfter(domainconstants::kSequenceInstructionType);
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 
   EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);
@@ -142,7 +142,7 @@ TEST_F(XmlPanelControllerExtendedTest, XmlGenerationForEpicsInstruction)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml2)).Times(1);
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml3)).Times(1);
-  handler->InsertInstructionAfter(mvvm::GetTypeName<PvAccessReadInstructionItem>());
+  handler->InsertInstructionAfter(domainconstants::kPvAccessReadInstructionType);
 
   ASSERT_EQ(GetInstructionContainer()->GetInstructionCount(), 1);
 

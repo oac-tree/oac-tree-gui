@@ -20,11 +20,13 @@
 
 #include "oac_tree_gui/viewmodel/flatlist_viewmodel.h"
 
-#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
@@ -87,9 +89,10 @@ TEST_F(FlatListViewModelTest, InstructionWithChildren)
 {
   const TestViewModel view_model(&m_model);
 
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait = m_model.InsertItem<WaitItem>(sequence0);
-  auto message0 = m_model.InsertItem<RepeatItem>();
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto message0 = InsertInstruction(domainconstants::kRepeatInstructionType, m_model.GetRootItem());
 
   // two children, sequence0 and message0, at top level
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
@@ -97,7 +100,7 @@ TEST_F(FlatListViewModelTest, InstructionWithChildren)
 
   auto sequence_index = view_model.index(0, 0, QModelIndex());
   EXPECT_EQ(view_model.data(sequence_index, Qt::DisplayRole).toString().toStdString(),
-            mvvm::GetTypeName<SequenceItem>());
+            domainconstants::kSequenceInstructionType);
 
   // children of sequence are hidden
   EXPECT_EQ(view_model.rowCount(sequence_index), 0);
@@ -108,8 +111,9 @@ TEST_F(FlatListViewModelTest, MixtureOfItemsOfVeryDifferentType)
 {
   const TestViewModel view_model(&m_model);
 
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
   auto procedure = m_model.InsertItem<ProcedureItem>();
   auto job = m_model.InsertItem<LocalJobItem>();
 
@@ -123,9 +127,9 @@ TEST_F(FlatListViewModelTest, ContainerChange)
   auto job0 = m_model.InsertItem<LocalJobItem>(container0);
   auto job1 = m_model.InsertItem<LocalJobItem>(container0);
   auto container1 = m_model.InsertItem<mvvm::ContainerItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(container1);
-  auto wait1 = m_model.InsertItem<WaitItem>(container1);
-  auto wait2 = m_model.InsertItem<WaitItem>(container1);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, container1);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, container1);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, container1);
 
   TestViewModel view_model(nullptr);
   view_model.SetRootSessionItem(container0);
@@ -136,7 +140,7 @@ TEST_F(FlatListViewModelTest, ContainerChange)
 
 TEST_F(FlatListViewModelTest, FlagsForDragAndDrop)
 {
-  auto wait0 = m_model.InsertItem<WaitItem>();
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
   const TestViewModel model(&m_model);
 
   // Valid index should have drag and drop enabled

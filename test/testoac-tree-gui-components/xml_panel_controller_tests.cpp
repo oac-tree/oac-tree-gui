@@ -20,11 +20,12 @@
 
 #include "oac_tree_gui/components/xml_panel_controller.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/gui/core/sup_gui_core_exceptions.h>
@@ -101,8 +102,8 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnItemInsert)
   auto controller = CreateController();
 
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml)).Times(1);
-  m_model.InsertItem<SequenceItem>(m_procedure_item->GetInstructionContainer(),
-                                   mvvm::TagIndex::Append());
+  InsertInstruction(domainconstants::kSequenceInstructionType,
+                    m_procedure_item->GetInstructionContainer());
 }
 
 TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)

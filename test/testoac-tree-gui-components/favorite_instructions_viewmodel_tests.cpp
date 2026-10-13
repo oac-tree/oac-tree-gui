@@ -20,13 +20,14 @@
 
 #include "oac_tree_gui/viewmodel/favorite_instructions_viewmodel.h"
 
+#include <oac_tree_gui/components/copy_and_paste_helper.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/components/mime_constants.h>
-#include <oac_tree_gui/components/copy_and_paste_helper.h>
-#include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
-#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
@@ -72,8 +73,8 @@ TEST_F(FavoriteInstructionsViewModelTest, InitialState)
 
 TEST_F(FavoriteInstructionsViewModelTest, ViewmodelWithItems)
 {
-  m_model.InsertItem<SequenceItem>();
-  m_model.InsertItem<WaitItem>();
+  InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   const FavoriteInstructionsViewModel view_model(&m_model);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
@@ -82,7 +83,7 @@ TEST_F(FavoriteInstructionsViewModelTest, ViewmodelWithItems)
 
 TEST_F(FavoriteInstructionsViewModelTest, FlagsForDragAndDrop)
 {
-  auto wait0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
   const FavoriteInstructionsViewModel model(&m_model);
 
   // Valid index should have drag and drop enabled
@@ -121,7 +122,8 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
 {
   const FavoriteInstructionsViewModel model(&m_model);
 
-  auto sequence_item = m_model.InsertItem<SequenceItem>();
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
   auto display_index = model.index(0, 0, QModelIndex());
   auto data_index = model.index(0, 1, QModelIndex());
 
@@ -152,8 +154,10 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
 */
 TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
 {
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
 
   const FavoriteInstructionsViewModel view_model(&m_model);
 
@@ -215,9 +219,12 @@ TEST_F(FavoriteInstructionsViewModelTest, CanDropMimeData)
 
 TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionToLast)
 {
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto sequence2 = m_model.InsertItem<SequenceItem>();
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto sequence2 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
 
   FavoriteInstructionsViewModel view_model(&m_model);
 
@@ -240,9 +247,12 @@ TEST_F(FavoriteInstructionsViewModelTest, DragSequenceFromFirstPositionOnTopOfLa
   // Droping on top for FavoriteInstructionsViewModel doesn't lead to insert into, as in
   // InstructionEditorViewModel. It leads to insert before, as in previous test
 
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto sequence2 = m_model.InsertItem<SequenceItem>();
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto sequence2 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
 
   FavoriteInstructionsViewModel view_model(&m_model);
 
@@ -277,8 +287,10 @@ TEST_F(FavoriteInstructionsViewModelTest, DropNewType)
                                         parent_index));
 
     EXPECT_EQ(m_model.GetRootItem()->GetAllItems().size(), 1);
-    auto inserted_item = m_model.GetRootItem()->GetAllItems().front();
-    EXPECT_EQ(inserted_item->GetType(), mvvm::GetTypeName<WaitItem>());
+    auto inserted_item =
+        dynamic_cast<InstructionItem*>(m_model.GetRootItem()->GetAllItems().front());
+    ASSERT_NE(inserted_item, nullptr);
+    EXPECT_EQ(inserted_item->GetDomainType(), domainconstants::kWaitInstructionType);
   }
 
   {  // drop after the last item
@@ -293,8 +305,10 @@ TEST_F(FavoriteInstructionsViewModelTest, DropNewType)
                                         parent_index));
 
     EXPECT_EQ(m_model.GetRootItem()->GetAllItems().size(), 2);
-    auto inserted_item = m_model.GetRootItem()->GetAllItems().back();
-    EXPECT_EQ(inserted_item->GetType(), mvvm::GetTypeName<SequenceItem>());
+    auto inserted_item =
+        dynamic_cast<InstructionItem*>(m_model.GetRootItem()->GetAllItems().back());
+    ASSERT_NE(inserted_item, nullptr);
+    EXPECT_EQ(inserted_item->GetDomainType(), domainconstants::kSequenceInstructionType);
   }
 
   {  // drop on top of sequence should add item before (instead of insert)
@@ -309,9 +323,10 @@ TEST_F(FavoriteInstructionsViewModelTest, DropNewType)
                                         parent_index));
 
     EXPECT_EQ(m_model.GetRootItem()->GetAllItems().size(), 3);
-    auto inserted_item =
-        m_model.GetRootItem()->GetAllItems().at(1);  // inserted before the sequence
-    EXPECT_EQ(inserted_item->GetType(), mvvm::GetTypeName<IncludeItem>());
+    // inserted before the sequence
+    auto inserted_item = dynamic_cast<InstructionItem*>(m_model.GetRootItem()->GetAllItems().at(1));
+    ASSERT_NE(inserted_item, nullptr);
+    EXPECT_EQ(inserted_item->GetDomainType(), domainconstants::kIncludeInstructionType);
   }
 }
 
@@ -321,9 +336,9 @@ TEST_F(FavoriteInstructionsViewModelTest, DropCopyOnTopOfMiddleItem)
   auto mime_data = CreateInstructionSelectionCopyMimeData({message_instruction.get()});
 
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
-  auto sequence1 = m_model.InsertItem<SequenceItem>(container);
-  auto sequence2 = m_model.InsertItem<SequenceItem>(container);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
   FavoriteInstructionsViewModel view_model(&m_model);
   view_model.SetRootSessionItem(container);
 

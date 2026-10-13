@@ -25,10 +25,12 @@
 #include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 
@@ -59,7 +61,8 @@ public:
 
 TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
   sequence->SetStatus(InstructionStatus::kRunning);
 
   EXPECT_EQ(m_view_model.rowCount(QModelIndex()), 1);
@@ -90,9 +93,10 @@ TEST_F(InstructionEditorViewModelTest, SingleUniversalInstruction)
 
 TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   EXPECT_EQ(m_view_model.rowCount(sequence_index), 2);
@@ -112,7 +116,7 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnNameChange)
 {
   mvvm::ApplicationModel model;
 
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
 
   InstructionEditorViewModel view_model(&model);
 
@@ -138,7 +142,7 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnNameChange)
 
 TEST_F(InstructionEditorViewModelTest, FlagsForDragAndDrop)
 {
-  auto wait0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
 
   // Valid index should have drag and drop enabled
   const Qt::ItemFlags valid_flags = m_view_model.flags(m_view_model.index(0, 0, QModelIndex()));
@@ -170,7 +174,8 @@ TEST_F(InstructionEditorViewModelTest, MimeTypes)
 
 TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
 
   auto display_index = m_view_model.index(0, 0, QModelIndex());
   auto data_index = m_view_model.index(0, 1, QModelIndex());
@@ -203,11 +208,12 @@ TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
   //    Wait1
   // Wait2
 
-  auto incl = m_model.InsertItem<IncludeItem>();
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>();
+  auto incl = InsertInstruction(domainconstants::kIncludeInstructionType, m_model.GetRootItem());
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   auto incl_index_col0 = m_view_model.index(0, 0, QModelIndex());  // name
   auto incl_index_col1 = m_view_model.index(0, 1, QModelIndex());  // custom name
@@ -245,10 +251,11 @@ TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
   //    Wait1
   // Wait2
 
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>();
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
@@ -276,11 +283,12 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
   //    Wait1
   // Wait2
 
-  auto incl = m_model.InsertItem<IncludeItem>();
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>();
+  auto incl = InsertInstruction(domainconstants::kIncludeInstructionType, m_model.GetRootItem());
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   auto incl_index_col0 = m_view_model.index(0, 0, QModelIndex());  // name
   auto incl_index_col1 = m_view_model.index(0, 1, QModelIndex());  // custom name
@@ -308,10 +316,11 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
   //    Wait1
   //    Wait2
 
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   auto wait0_index_name = m_view_model.index(0, 0, sequence_index);
@@ -335,10 +344,11 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
   //    Wait1
   //    Wait2
 
-  auto sequence = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto sequence_index = m_view_model.index(0, 0, QModelIndex());
   auto wait2_index_name = m_view_model.index(2, 0, sequence_index);
@@ -362,9 +372,9 @@ TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
   //    Wait1
 
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence = m_model.InsertItem<SequenceItem>(container);
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto container_index = m_view_model.index(0, 0, QModelIndex());
   auto sequence_index = m_view_model.index(0, 0, container_index);
@@ -391,9 +401,9 @@ TEST_F(InstructionEditorViewModelTest, DropInstructionCopyBetweenTwoChildren)
   //    Wait1
 
   auto container = m_model.InsertItem<InstructionContainerItem>();
-  auto sequence = m_model.InsertItem<SequenceItem>(container);
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto container_index = m_view_model.index(0, 0, QModelIndex());
   auto sequence_index = m_view_model.index(0, 0, container_index);
@@ -417,7 +427,8 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   SequencerModel model;
   auto procedure =
       model.InsertItem<ProcedureItem>(model.GetProcedureContainer(), mvvm::TagIndex::Append());
-  auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    procedure->GetInstructionContainer());
 
   InstructionEditorViewModel view_model(nullptr, {});
   view_model.SetRootSessionItem(procedure->GetInstructionContainer());
@@ -442,9 +453,10 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChildInContainerCheckBoxes)
   SequencerModel model;
   auto procedure =
       model.InsertItem<ProcedureItem>(model.GetProcedureContainer(), mvvm::TagIndex::Append());
-  auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    procedure->GetInstructionContainer());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   InstructionEditorViewModel view_model(nullptr, {});
   view_model.SetRootSessionItem(procedure->GetInstructionContainer());
