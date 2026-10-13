@@ -20,9 +20,11 @@
 
 #include "oac_tree_gui/views/nodeeditor/node_editor_widget.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 
 #include <mvvm/model/application_model.h>
@@ -44,8 +46,8 @@ public:
   {
     auto procedure = m_model.InsertItem<ProcedureItem>();
     auto container = procedure->GetInstructionContainer();
-    auto sequence = m_model.InsertItem<SequenceItem>(container);
-    (void)m_model.InsertItem<SequenceItem>(sequence);
+    auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence);
     return procedure;
   }
 
@@ -98,7 +100,7 @@ TEST_F(NodeEditorWidgetTest, SetProcedureFromInsideCommandDoesNotThrow)
       [&widget, procedure](const mvvm::ItemInsertedEvent&) { widget.SetProcedure(procedure); });
 
   // this insertion is a command; the listener reacts to it from inside the command
-  EXPECT_NO_THROW((void)m_model.InsertItem<SequenceItem>(container));
+  EXPECT_NO_THROW((void)InsertInstruction(domainconstants::kSequenceInstructionType, container));
 
   // the deferred alignment runs cleanly once the command has finished
   EXPECT_NO_THROW(QApplication::processEvents());

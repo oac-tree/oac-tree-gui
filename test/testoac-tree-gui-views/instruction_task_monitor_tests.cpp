@@ -20,8 +20,10 @@
 
 #include "oac_tree_gui/views/operation/instruction_task_monitor.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/views/operation/instruction_task_widget_builder.h>
 #include <oac_tree_gui/views/operation/task_widget.h>
 
@@ -64,7 +66,7 @@ TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToNullCont
 {
   mvvm::ApplicationModel model;
   auto container0 = model.InsertItem<InstructionContainerItem>();
-  auto sequence = model.InsertItem<SequenceItem>(container0);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container0);
   auto container1 = model.InsertItem<InstructionContainerItem>();
 
   InstructionTaskMonitor task_monitor;
@@ -87,7 +89,7 @@ TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerHideAndThenChangeItToNull
 {
   mvvm::ApplicationModel model;
   auto container0 = model.InsertItem<InstructionContainerItem>();
-  auto sequence = model.InsertItem<SequenceItem>(container0);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container0);
   auto container1 = model.InsertItem<InstructionContainerItem>();
 
   InstructionTaskMonitor task_monitor;
@@ -112,7 +114,7 @@ TEST_F(InstructionTaskMonitorTest, SetNonEmptyContainerAndThenChangeItToEmpty)
 {
   mvvm::ApplicationModel model;
   auto container0 = model.InsertItem<InstructionContainerItem>();
-  auto sequence = model.InsertItem<SequenceItem>(container0);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container0);
   auto container1 = model.InsertItem<InstructionContainerItem>();
 
   InstructionTaskMonitor task_monitor;
@@ -135,7 +137,7 @@ TEST_F(InstructionTaskMonitorTest, UpdateInstructionStatus)
 {
   mvvm::ApplicationModel model;
   auto container0 = model.InsertItem<InstructionContainerItem>();
-  auto sequence = model.InsertItem<SequenceItem>(container0);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container0);
 
   InstructionTaskMonitor task_monitor;
   task_monitor.show();

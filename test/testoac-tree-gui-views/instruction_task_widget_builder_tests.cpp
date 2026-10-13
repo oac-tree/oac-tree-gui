@@ -20,7 +20,10 @@
 
 #include "oac_tree_gui/views/operation/instruction_task_widget_builder.h"
 
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/views/operation/task_widget.h>
 
 #include <gtest/gtest.h>
@@ -37,37 +40,37 @@ class InstructionTaskWidgetBuilderTest : public ::testing::Test
 
 TEST_F(InstructionTaskWidgetBuilderTest, SingleSequenceInstruction)
 {
-  SequenceItem item;
-  item.SetDisplayName("abc");
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  item->SetDisplayName("abc");
 
   InstructionTaskWidgetBuilder builder;
   EXPECT_EQ(builder.GetInstructionCount(), 0U);
 
-  auto task_widget = builder.CreateTaskWidget(item);
-  EXPECT_EQ(task_widget->GetInstructionStatus(), item.GetStatus());
+  auto task_widget = builder.CreateTaskWidget(*item);
+  EXPECT_EQ(task_widget->GetInstructionStatus(), item->GetStatus());
   EXPECT_EQ(task_widget->GetLabelText(), "abc");
   EXPECT_EQ(builder.GetInstructionCount(), 1U);
 
-  EXPECT_EQ(builder.FindWidgetForInstruction(&item), task_widget.get());
+  EXPECT_EQ(builder.FindWidgetForInstruction(item.get()), task_widget.get());
   EXPECT_EQ(builder.FindWidgetForInstruction(nullptr), nullptr);
 }
 
 TEST_F(InstructionTaskWidgetBuilderTest, SequenceWithTwoChildren)
 {
-  SequenceItem sequence;
-  sequence.SetDisplayName("seq");
-  sequence.SetStatus(InstructionStatus::kRunning);
-  auto wait0 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  sequence->SetDisplayName("seq");
+  sequence->SetStatus(InstructionStatus::kRunning);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence.get());
   wait0->SetDisplayName("wait0");
-  auto wait1 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence.get());
   wait1->SetDisplayName("wait1");
   wait1->SetStatus(InstructionStatus::kRunning);
 
   InstructionTaskWidgetBuilder builder;
-  auto root_task_widget = builder.CreateTaskWidget(sequence);
-  EXPECT_EQ(builder.FindWidgetForInstruction(&sequence), root_task_widget.get());
+  auto root_task_widget = builder.CreateTaskWidget(*sequence);
+  EXPECT_EQ(builder.FindWidgetForInstruction(sequence.get()), root_task_widget.get());
 
-  EXPECT_EQ(root_task_widget->GetInstructionStatus(), sequence.GetStatus());
+  EXPECT_EQ(root_task_widget->GetInstructionStatus(), sequence->GetStatus());
   EXPECT_EQ(root_task_widget->GetLabelText(), "seq");
 
   auto child_widgets = root_task_widget->GetChildWidgets();
@@ -83,20 +86,20 @@ TEST_F(InstructionTaskWidgetBuilderTest, SequenceWithTwoChildren)
 
 TEST_F(InstructionTaskWidgetBuilderTest, SequenceWithChildrenAndGrandchildren)
 {
-  SequenceItem sequence;
-  sequence.SetDisplayName("sequence");
-  auto child0 = sequence.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  sequence->SetDisplayName("sequence");
+  auto child0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence.get());
   child0->SetDisplayName("child0");
-  auto child1 = sequence.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto child1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence.get());
   child1->SetDisplayName("child1");
-  auto grandchild0 = child1->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto grandchild0 = InsertInstruction(domainconstants::kWaitInstructionType, child1);
   grandchild0->SetDisplayName("grandchild0");
 
   InstructionTaskWidgetBuilder builder;
-  auto root_task_widget = builder.CreateTaskWidget(sequence);
-  EXPECT_EQ(builder.FindWidgetForInstruction(&sequence), root_task_widget.get());
+  auto root_task_widget = builder.CreateTaskWidget(*sequence);
+  EXPECT_EQ(builder.FindWidgetForInstruction(sequence.get()), root_task_widget.get());
 
-  EXPECT_EQ(root_task_widget->GetInstructionStatus(), sequence.GetStatus());
+  EXPECT_EQ(root_task_widget->GetInstructionStatus(), sequence->GetStatus());
   EXPECT_EQ(root_task_widget->GetLabelText(), "sequence");
 
   auto child_widgets = root_task_widget->GetChildWidgets();
