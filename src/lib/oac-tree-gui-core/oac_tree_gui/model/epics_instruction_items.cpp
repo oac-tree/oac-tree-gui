@@ -21,25 +21,9 @@
 #include "epics_instruction_items.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/anyvalue_item_utils.h>
 #include <mvvm/model/make_clone.h>
-
-namespace
-{
-void InitDefaultAnyValue(mvvm::CompoundItem& item)
-{
-  item.RegisterTag(sup::gui::CreateAnyValueTag(oac_tree_gui::itemconstants::kAnyValueTag), true);
-  auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
-  (void)anyvalue_item->SetDisplayName(oac_tree_gui::itemconstants::kAnyValueDefaultDisplayName);
-  oac_tree_gui::SetAttributeExposedFlag(false, *anyvalue_item);
-}
-
-}  // namespace
 
 namespace oac_tree_gui
 {
@@ -97,7 +81,6 @@ EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string& instruct
     : UniversalInstructionItem(instruction_type)
 {
   SetTimeout(1.0);
-  InitDefaultAnyValue(*this);
 }
 
 std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone() const
@@ -199,7 +182,6 @@ RPCClientInstruction::RPCClientInstruction()
     : UniversalInstructionItem(mvvm::GetTypeName<RPCClientInstruction>())
 {
   SetTimeout(1.0);
-  InitDefaultAnyValue(*this);
 }
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone() const

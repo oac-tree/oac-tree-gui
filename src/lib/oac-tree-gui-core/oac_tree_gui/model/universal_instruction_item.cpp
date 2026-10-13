@@ -31,6 +31,7 @@
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_utils.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/make_clone.h>
@@ -68,6 +69,15 @@ const std::vector<std::string>& GetSkipItemTagList()
 {
   static const std::vector<std::string> kSkipItemTagList = {itemconstants::kAnyValueTag};
   return kSkipItemTagList;
+}
+
+//! Registers the tag for the JSON type and value pair, with an empty AnyValueItem.
+void InitDefaultAnyValue(mvvm::CompoundItem& item)
+{
+  item.RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+  auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
+  (void)anyvalue_item->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
+  SetAttributeExposedFlag(false, *anyvalue_item);
 }
 
 }  // namespace
@@ -213,6 +223,12 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
   UpdateShowCollapsedPropertyAppearance(*this);
 
   UpdateIsRootPropertyAppearance(*this);
+
+  if (HasAttributeDefinition(*instruction, domainconstants::kTypeAttribute)
+      && HasAttributeDefinition(*instruction, domainconstants::kValueAttribute))
+  {
+    InitDefaultAnyValue(*this);
+  }
 }
 
 }  // namespace oac_tree_gui

@@ -223,4 +223,33 @@ TEST_F(UniversalInstructionItemTest, RepeatPreset)
   EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kMaxCountAttribute), "-1");
 }
 
+//! Instructions with JSON type and value attributes get the AnyValue tag.
+TEST_F(UniversalInstructionItemTest, AnyValueTag)
+{
+  {
+    UniversalInstructionItem item;
+    item.SetDomainType(domainconstants::kWaitInstructionType);
+    EXPECT_FALSE(mvvm::utils::HasTag(item, itemconstants::kAnyValueTag));
+    EXPECT_EQ(GetAnyValueItem(item), nullptr);
+  }
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  for (const auto* domain_type :
+       {domainconstants::kChannelAccessWriteInstructionType,
+        domainconstants::kPvAccessWriteInstructionType, domainconstants::kRPCClientInstructionType})
+  {
+    UniversalInstructionItem item;
+    item.SetDomainType(domain_type);
+    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kAnyValueTag)) << domain_type;
+    auto anyvalue_item = GetAnyValueItem(item);
+    ASSERT_NE(anyvalue_item, nullptr) << domain_type;
+    EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
+    EXPECT_FALSE(GetAttributeExposedFlag(*anyvalue_item));
+  }
+}
+
 }  // namespace oac_tree_gui::test
