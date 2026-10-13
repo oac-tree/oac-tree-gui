@@ -27,6 +27,7 @@
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_attribute_presets.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
@@ -196,7 +197,12 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t* instruction)
   {
     if (IsDomainAttributeToExpose(definition.GetName()))
     {
-      (void)AddPropertyFromDefinition(definition, *this);
+      auto property = AddPropertyFromDefinition(definition, *this);
+      if (auto preset = FindAttributePreset(instruction->GetType(), definition.GetName()); preset)
+      {
+        (void)property->SetData(preset->value);
+        SetAttributeExposedFlag(preset->exposed, *property);
+      }
     }
   }
 

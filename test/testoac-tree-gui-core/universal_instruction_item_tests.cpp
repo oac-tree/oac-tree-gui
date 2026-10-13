@@ -24,6 +24,7 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -205,6 +206,21 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
     EXPECT_EQ(domain->GetAttributeString(domainconstants::kShowCollapsedAttribute),
               std::string("false"));
   }
+}
+
+//! Repeat gets maxCount from the attribute presets. The preset goes to the domain.
+TEST_F(UniversalInstructionItemTest, RepeatPreset)
+{
+  UniversalInstructionItem item;
+  item.SetDomainType(domainconstants::kRepeatInstructionType);
+
+  EXPECT_EQ(item.GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), -1);
+  auto property = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kMaxCountAttribute);
+  ASSERT_NE(property, nullptr);
+  EXPECT_TRUE(GetAttributeExposedFlag(*property));
+
+  auto domain_instruction = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kMaxCountAttribute), "-1");
 }
 
 }  // namespace oac_tree_gui::test
