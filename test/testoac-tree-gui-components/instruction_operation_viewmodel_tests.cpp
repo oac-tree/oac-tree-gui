@@ -24,8 +24,9 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 
 #include <mvvm/model/application_model.h>
@@ -66,7 +67,7 @@ TEST_F(InstructionOperationViewModelTest, SingleInstruction)
 {
   TestModel model;
 
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   sequence->SetStatus(InstructionStatus::kRunning);
 
   SetBreakpointStatus(*sequence, BreakpointStatus::kSet);
@@ -100,9 +101,9 @@ TEST_F(InstructionOperationViewModelTest, SequenceWithChild)
 {
   TestModel model;
 
-  auto sequence = model.InsertItem<SequenceItem>();
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   InstructionOperationViewModel viewmodel(&model);
   auto sequence_ndex = viewmodel.index(0, 0, QModelIndex());
@@ -125,7 +126,7 @@ TEST_F(InstructionOperationViewModelTest, NotificationOnStatusChange)
 {
   TestModel model;
 
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
 
   InstructionOperationViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);

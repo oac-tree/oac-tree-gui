@@ -21,11 +21,13 @@
 #include "oac_tree_gui/nodeeditor/graphics_scene_action_handler.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
 #include <mvvm/nodeeditor/node_connection.h>
@@ -69,8 +71,9 @@ TEST_F(GraphicsSceneActionHandlerTest, ConnectSequenceToWaitStartingFromSequence
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
-  auto sequence_item = m_model.InsertItem<SequenceItem>();
-  auto wait_item = m_model.InsertItem<WaitItem>();
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
   auto wait_shape = m_shape_factory.CreateShape(wait_item);
@@ -89,8 +92,9 @@ TEST_F(GraphicsSceneActionHandlerTest, ConnectSequenceToWaitStartingFromWait)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
-  auto sequence_item = m_model.InsertItem<SequenceItem>();
-  auto wait_item = m_model.InsertItem<WaitItem>();
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
   auto wait_shape = m_shape_factory.CreateShape(wait_item);
@@ -109,8 +113,9 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToConnectUnconnectablePorts)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
-  auto sequence_item = m_model.InsertItem<SequenceItem>();
-  auto wait_item = m_model.InsertItem<WaitItem>();
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
   auto wait_shape = m_shape_factory.CreateShape(wait_item);
@@ -131,9 +136,10 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToAddSecondChildToRepeat)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
-  auto repeat_item = m_model.InsertItem<RepeatItem>();
-  auto sequence_item = m_model.InsertItem<SequenceItem>(repeat_item);
-  auto wait_item = m_model.InsertItem<WaitItem>();
+  auto repeat_item =
+      InsertInstruction(domainconstants::kRepeatInstructionType, m_model.GetRootItem());
+  auto sequence_item = InsertInstruction(domainconstants::kSequenceInstructionType, repeat_item);
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
 
   auto repeat_shape = m_shape_factory.CreateShape(repeat_item);
   auto wait_shape = m_shape_factory.CreateShape(wait_item);
@@ -153,8 +159,9 @@ TEST_F(GraphicsSceneActionHandlerTest, DisconnectWaitFromSequence)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
-  auto sequence_item = m_model.InsertItem<SequenceItem>();
-  auto wait_item = m_model.InsertItem<WaitItem>(sequence_item);
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, sequence_item);
 
   auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
   auto wait_shape = m_shape_factory.CreateShape(wait_item);
@@ -174,8 +181,10 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToDisconnectWaitFromSequence)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
-  auto sequence_item = m_model.InsertItem<SequenceItem>();
-  auto wait_item = m_model.InsertItem<WaitItem>();  // wait is not a child of a sequence
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType,
+                                     m_model.GetRootItem());  // wait is not a child of a sequence
 
   auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
   auto wait_shape = m_shape_factory.CreateShape(wait_item);
@@ -197,8 +206,10 @@ TEST_F(GraphicsSceneActionHandlerTest, DoubleClickPort)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
 
-  auto sequence_item = m_model.InsertItem<SequenceItem>();
-  auto wait_item = m_model.InsertItem<WaitItem>();  // wait is not a child of a sequence
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType,
+                                     m_model.GetRootItem());  // wait is not a child of a sequence
 
   auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
   auto wait_shape = m_shape_factory.CreateShape(wait_item);

@@ -23,7 +23,8 @@
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -206,10 +207,10 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
 TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
 {
   {
-    SequenceItem item;
+    auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
     InstructionEditorRowStrategy strategy;
 
-    auto view_items = strategy.ConstructRow(&item);
+    auto view_items = strategy.ConstructRow(item.get());
 
     ASSERT_EQ(view_items.size(), 3);
     EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 3);
@@ -217,12 +218,12 @@ TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
     // first item contains editable display name
     auto view_item0 = view_items.at(0).get();
     EXPECT_EQ(view_item0->Data(Qt::DisplayRole).toString(), QString("Sequence"));
-    item.SetDisplayName("abc");
+    item->SetDisplayName("abc");
     EXPECT_EQ(view_item0->Data(Qt::DisplayRole).toString(), QString("abc"));
 
     // setting display name through view item
     EXPECT_TRUE(view_item0->SetData(QString("def"), Qt::EditRole));
-    EXPECT_EQ(item.GetDisplayName(), "def");
+    EXPECT_EQ(item->GetDisplayName(), "def");
 
     // second item contains model type
     auto view_item1 = view_items.at(1).get();

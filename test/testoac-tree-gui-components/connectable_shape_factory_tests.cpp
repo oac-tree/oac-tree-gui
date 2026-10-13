@@ -20,7 +20,9 @@
 
 #include "oac_tree_gui/nodeeditor/connectable_shape_factory.h"
 
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/standarditems/vector_item.h>
@@ -41,11 +43,11 @@ TEST_F(ConnectableShapeFactoryTest, InitialState)
 {
   const ConnectableShapeFactory factory;
 
-  SequenceItem item;
-  item.SetX(1.0);
-  item.SetY(2.0);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  item->SetX(1.0);
+  item->SetY(2.0);
 
-  auto shape = factory.CreateShape(&item);
+  auto shape = factory.CreateShape(item.get());
   EXPECT_EQ(shape->x(), 1.0);
   EXPECT_EQ(shape->y(), 2.0);
 }

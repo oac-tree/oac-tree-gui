@@ -20,10 +20,12 @@
 
 #include "oac_tree_gui/operation/breakpoint_controller.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -51,10 +53,10 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
     auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
     auto container = procedure->GetInstructionContainer();
-    auto sequence0 = model.InsertItem<SequenceItem>(container);
-    auto sequence1 = model.InsertItem<SequenceItem>(container);
-    auto wait0 = model.InsertItem<WaitItem>(sequence0);
-    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+    auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
     SetBreakpointStatus(*sequence0, BreakpointStatus::kSet);
     SetBreakpointStatus(*wait0, BreakpointStatus::kSet);
@@ -68,10 +70,10 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
     auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
     auto container = procedure->GetInstructionContainer();
-    auto sequence0 = model.InsertItem<SequenceItem>(container);
-    auto sequence1 = model.InsertItem<SequenceItem>(container);
-    auto wait0 = model.InsertItem<WaitItem>(sequence0);
-    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+    auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
     EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kNotSet);
     EXPECT_EQ(GetBreakpointStatus(*sequence1), BreakpointStatus::kNotSet);
@@ -97,10 +99,10 @@ TEST_F(BreakpointControllerTest, SetAsActiveBreakpoint)
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   auto container = procedure->GetInstructionContainer();
-  auto sequence0 = model.InsertItem<SequenceItem>(container);
-  auto sequence1 = model.InsertItem<SequenceItem>(container);
-  auto wait0 = model.InsertItem<WaitItem>(sequence0);
-  auto wait1 = model.InsertItem<WaitItem>(sequence1);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
   EXPECT_NO_THROW(controller.SetAsActiveBreakpoint(sequence0));
 

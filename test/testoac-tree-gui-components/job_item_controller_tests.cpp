@@ -21,10 +21,12 @@
 #include "oac_tree_gui/components/job_item_controller.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
@@ -187,7 +189,8 @@ TEST_F(JobItemControllerTest, JobWithExpandedProcedureNoCallbacksOnProcedureModi
 
   // modifying procedure shouldn't cause any notifications
   EXPECT_CALL(m_mock_procedure_call, Call(procedure_ptr)).Times(0);
-  auto sequence = m_model.InsertItem<SequenceItem>(procedure_ptr->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    procedure_ptr->GetInstructionContainer());
   mvvm::utils::RemoveItem(*sequence);
 
   // adding new job shouldn't cause any notifications

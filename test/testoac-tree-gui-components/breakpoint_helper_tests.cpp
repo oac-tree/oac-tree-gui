@@ -21,9 +21,12 @@
 #include "oac_tree_gui/operation/breakpoint_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/model/model_utils.h>
 
@@ -38,40 +41,40 @@ class BreakpointHelperTest : public ::testing::Test
 
 TEST_F(BreakpointHelperTest, GetBreakpointStatus)
 {
-  SequenceItem item;
-  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kNotSet);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_EQ(GetBreakpointStatus(*item), BreakpointStatus::kNotSet);
 
-  SetBreakpointStatus(item, BreakpointStatus::kSet);
-  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kSet);
+  SetBreakpointStatus(*item, BreakpointStatus::kSet);
+  EXPECT_EQ(GetBreakpointStatus(*item), BreakpointStatus::kSet);
 
-  SetBreakpointStatus(item, BreakpointStatus::kDisabled);
-  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kDisabled);
+  SetBreakpointStatus(*item, BreakpointStatus::kDisabled);
+  EXPECT_EQ(GetBreakpointStatus(*item), BreakpointStatus::kDisabled);
 }
 
 TEST_F(BreakpointHelperTest, ToggleBreakpointStatus)
 {
-  SequenceItem item;
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
 
-  ToggleBreakpointStatus(item);
-  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kSet);
+  ToggleBreakpointStatus(*item);
+  EXPECT_EQ(GetBreakpointStatus(*item), BreakpointStatus::kSet);
 
-  ToggleBreakpointStatus(item);
-  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kDisabled);
+  ToggleBreakpointStatus(*item);
+  EXPECT_EQ(GetBreakpointStatus(*item), BreakpointStatus::kDisabled);
 
-  ToggleBreakpointStatus(item);
-  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kNotSet);
+  ToggleBreakpointStatus(*item);
+  EXPECT_EQ(GetBreakpointStatus(*item), BreakpointStatus::kNotSet);
 }
 
 TEST_F(BreakpointHelperTest, CollectBreakpointInfo)
 {
   // item should be part of the model
-  SequenceItem item;
-  EXPECT_THROW(CollectBreakpointInfo(item), LogicErrorException);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_THROW(CollectBreakpointInfo(*item), LogicErrorException);
 
   SequencerModel model;
 
   // sequence without breakpoints
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, model.GetRootItem());
   EXPECT_TRUE(CollectBreakpointInfo(*sequence).empty());
 
   // breakpoint set to sequence
@@ -82,8 +85,8 @@ TEST_F(BreakpointHelperTest, CollectBreakpointInfo)
   EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(0).path), sequence);
 
   // adding a child with breakpoint
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   SetBreakpointStatus(*wait1, BreakpointStatus::kDisabled);
   info = CollectBreakpointInfo(*sequence);
   ASSERT_EQ(info.size(), 2);
@@ -100,10 +103,10 @@ TEST_F(BreakpointHelperTest, CollectBreakpointInfoFromContainer)
   auto container = model.InsertItem<InstructionContainerItem>();
 
   // sequence without breakpoints
-  auto sequence0 = model.InsertItem<SequenceItem>(container);
-  auto sequence1 = model.InsertItem<SequenceItem>(container);
-  auto wait0 = model.InsertItem<WaitItem>(sequence0);
-  auto wait1 = model.InsertItem<WaitItem>(sequence1);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
   SetBreakpointStatus(*sequence0, BreakpointStatus::kSet);
   SetBreakpointStatus(*wait0, BreakpointStatus::kSet);
@@ -130,10 +133,10 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     auto container = model.InsertItem<InstructionContainerItem>();
 
     // sequence without breakpoints
-    auto sequence0 = model.InsertItem<SequenceItem>(container);
-    auto sequence1 = model.InsertItem<SequenceItem>(container);
-    auto wait0 = model.InsertItem<WaitItem>(sequence0);
-    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+    auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
     SetBreakpointStatus(*sequence0, BreakpointStatus::kSet);
     SetBreakpointStatus(*wait0, BreakpointStatus::kSet);
@@ -146,10 +149,10 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     SequencerModel model;
 
     auto container = model.InsertItem<InstructionContainerItem>();
-    auto sequence0 = model.InsertItem<SequenceItem>(container);
-    auto sequence1 = model.InsertItem<SequenceItem>(container);
-    auto wait0 = model.InsertItem<WaitItem>(sequence0);
-    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+    auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
     EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kNotSet);
     EXPECT_EQ(GetBreakpointStatus(*sequence1), BreakpointStatus::kNotSet);
@@ -170,7 +173,7 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     InstructionContainerItem container;
 
     // sequence without breakpoints
-    auto sequence0 = container.InsertItem<SequenceItem>({});
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container, {});
 
     EXPECT_THROW(SetBreakpointsFromInfo(info, container), LogicErrorException);
   }
@@ -179,8 +182,8 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     SequencerModel model;
 
     auto container = model.InsertItem<InstructionContainerItem>();
-    auto sequence0 = model.InsertItem<SequenceItem>(container);
-    model.InsertItem<WaitItem>(sequence0);
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
+    InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
 
     // our structure doesn't coincide with the original structure from where breakpoints have been
     // taken

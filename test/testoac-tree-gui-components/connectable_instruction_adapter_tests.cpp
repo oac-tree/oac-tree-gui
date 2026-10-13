@@ -21,7 +21,9 @@
 #include "oac_tree_gui/nodeeditor/connectable_instruction_adapter.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
@@ -41,10 +43,10 @@ TEST_F(ConnectableInstructionAdapterTest, AdapterInitialState)
 {
   EXPECT_THROW(ConnectableInstructionAdapter(nullptr), RuntimeException);
 
-  SequenceItem sequence_item;
-  const ConnectableInstructionAdapter sequence_adapter(&sequence_item);
-  EXPECT_EQ(sequence_adapter.GetItem(), &sequence_item);
-  EXPECT_EQ(sequence_adapter.GetDisplayName().toStdString(), sequence_item.GetDisplayName());
+  auto sequence_item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  const ConnectableInstructionAdapter sequence_adapter(sequence_item.get());
+  EXPECT_EQ(sequence_adapter.GetItem(), sequence_item.get());
+  EXPECT_EQ(sequence_adapter.GetDisplayName().toStdString(), sequence_item->GetDisplayName());
   EXPECT_EQ(sequence_adapter.GetX(), 0.0);
   EXPECT_EQ(sequence_adapter.GetY(), 0.0);
 
@@ -53,10 +55,10 @@ TEST_F(ConnectableInstructionAdapterTest, AdapterInitialState)
   EXPECT_EQ(sequence_adapter.GetPortInfos().at(1).GetPortDirection(), mvvm::PortDirection::kOutput);
 
   auto style = sequence_adapter.GetStyle();
-  EXPECT_EQ(style.base_color, GetBaseColor(&sequence_item));
+  EXPECT_EQ(style.base_color, GetBaseColor(sequence_item.get()));
 
-  WaitItem wait_item;
-  const ConnectableInstructionAdapter wait_adapter(&wait_item);
+  auto wait_item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  const ConnectableInstructionAdapter wait_adapter(wait_item.get());
 
   ASSERT_EQ(wait_adapter.GetPortInfos().size(), 1U);
   EXPECT_EQ(wait_adapter.GetPortInfos().at(0).GetPortDirection(), mvvm::PortDirection::kOutput);
@@ -65,11 +67,11 @@ TEST_F(ConnectableInstructionAdapterTest, AdapterInitialState)
 
 TEST_F(ConnectableInstructionAdapterTest, SetCoordinates)
 {
-  SequenceItem item;
-  item.SetX(1.0);
-  item.SetY(2.0);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  item->SetX(1.0);
+  item->SetY(2.0);
 
-  ConnectableInstructionAdapter adapter(&item);
+  ConnectableInstructionAdapter adapter(item.get());
 
   EXPECT_EQ(adapter.GetX(), 1.0);
   EXPECT_EQ(adapter.GetY(), 2.0);
@@ -77,38 +79,38 @@ TEST_F(ConnectableInstructionAdapterTest, SetCoordinates)
   // adapter setters
   adapter.SetX(3.0);
   adapter.SetY(4.0);
-  EXPECT_EQ(item.GetX(), 3.0);
-  EXPECT_EQ(item.GetY(), 4.0);
+  EXPECT_EQ(item->GetX(), 3.0);
+  EXPECT_EQ(item->GetY(), 4.0);
 }
 
 TEST_F(ConnectableInstructionAdapterTest, OperationStatesForInstructionStatus)
 {
-  WaitItem item;
-  const ConnectableInstructionAdapter adapter(&item);
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  const ConnectableInstructionAdapter adapter(item.get());
 
   mvvm::NodeOperationStates expected_states;
   EXPECT_EQ(adapter.GetOperationStates(), expected_states);
 
-  item.SetStatus(InstructionStatus::kRunning);
+  item->SetStatus(InstructionStatus::kRunning);
   expected_states.Set(mvvm::NodeOperationState::kRunning);
   EXPECT_EQ(adapter.GetOperationStates(), expected_states);
 }
 
 TEST_F(ConnectableInstructionAdapterTest, OperationStatesForSequenceInstruction)
 {
-  SequenceItem item;
-  item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  InsertInstruction(domainconstants::kWaitInstructionType, item.get());
 
-  const ConnectableInstructionAdapter adapter(&item);
+  const ConnectableInstructionAdapter adapter(item.get());
 
   mvvm::NodeOperationStates expected_states;
   EXPECT_EQ(adapter.GetOperationStates(), expected_states);
 
   expected_states.Set(mvvm::NodeOperationState::kCollapsedChildren);
-  SetCollapsed(true, item);
+  SetCollapsed(true, *item);
   EXPECT_EQ(adapter.GetOperationStates(), expected_states);
 
-  item.SetStatus(InstructionStatus::kRunning);
+  item->SetStatus(InstructionStatus::kRunning);
   expected_states.Set(mvvm::NodeOperationState::kRunning);
   EXPECT_EQ(adapter.GetOperationStates(), expected_states);
 }

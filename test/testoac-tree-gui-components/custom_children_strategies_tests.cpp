@@ -20,14 +20,14 @@
 
 #include "oac_tree_gui/components/custom_children_strategies.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/model/item_constants.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -95,8 +95,8 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
 TEST_F(CustomChildrenStrategiesTest, InstructionNodeChildrenStrategy)
 {
   InstructionContainerItem container;
-  auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto wait0 = sequence0->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
 
   SetCollapsed(false, *sequence0);
 
@@ -112,7 +112,7 @@ TEST_F(CustomChildrenStrategiesTest, InstructionNodeChildrenStrategy)
 TEST_F(CustomChildrenStrategiesTest, InstructionAttributeChildrenStrategy)
 {
   InstructionContainerItem container;
-  auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
 
   const InstructionAttributeChildrenStrategy strategy;
 

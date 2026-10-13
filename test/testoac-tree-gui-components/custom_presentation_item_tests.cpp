@@ -21,12 +21,13 @@
 #include "oac_tree_gui/components/custom_presentation_items.h"
 
 #include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/compound_item.h>
@@ -77,9 +78,9 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
 TEST_F(CustomPresentationItemTest, ExclusiveCheckStatePresentationItem)
 {
   InstructionContainerItem container;
-  auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto sequence1 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto sequence2 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
 
   // all three unchecked
   EXPECT_FALSE(sequence0->IsRoot());
@@ -144,9 +145,12 @@ TEST_F(CustomPresentationItemTest, ExclusiveCheckStateInUndoScenario)
 
   auto instruction_container = procedure->GetInstructionContainer();
 
-  auto sequence0 = instruction_container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto sequence1 = instruction_container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-  auto sequence2 = instruction_container->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, instruction_container);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, instruction_container);
+  auto sequence2 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, instruction_container);
 
   sequence1->SetIsRootFlag(true);
 

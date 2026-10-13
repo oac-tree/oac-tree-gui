@@ -21,8 +21,10 @@
 #include "oac_tree_gui/components/custom_viewitem_factory.h"
 
 #include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <mvvm/providers/viewitem.h>
@@ -84,8 +86,8 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
 
 TEST_F(CustomViewItemFactoryTest, CreateInstructionTypeViewItem)
 {
-  SequenceItem item;
-  auto viewitem = CreateInstructionTypeViewItem(item);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  auto viewitem = CreateInstructionTypeViewItem(*item);
 
   // it should be just empty non-editable placeholder.
   EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
@@ -102,10 +104,10 @@ TEST_F(CustomViewItemFactoryTest, CreateInstructionTypeViewItem)
 
 TEST_F(CustomViewItemFactoryTest, CreateRootCheckboxViewItem)
 {
-  SequenceItem item;
-  item.SetIsRootFlag(true);
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  item->SetIsRootFlag(true);
 
-  auto viewitem = CreateRootCheckboxViewItem(item);
+  auto viewitem = CreateRootCheckboxViewItem(*item);
 
   EXPECT_FALSE(viewitem->Data(Qt::DisplayRole).isValid());  // no text
   EXPECT_TRUE(viewitem->Data(Qt::CheckStateRole).isValid());
