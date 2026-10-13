@@ -23,10 +23,10 @@
 #include "test_utils.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
@@ -91,9 +91,10 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateSingleWaitProcedureItem(
     std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<ProcedureItem>();
-  auto wait = result->GetInstructionContainer()->InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  wait->SetTimeout(GetTimeoutInSec(timeout));
-  wait->SetBlocking(true);
+  auto wait =
+      InsertInstruction(domainconstants::kWaitInstructionType, result->GetInstructionContainer());
+  wait->SetAttribute(domainconstants::kTimeoutAttribute, GetTimeoutInSec(timeout));
+  wait->SetAttribute(domainconstants::kBlockingAttribute, true);
   return result;
 }
 
@@ -130,16 +131,17 @@ ProcedureItem* CreateCopyProcedureItem(SequencerModel* model)
 std::unique_ptr<oac_tree_gui::ProcedureItem> CreateIncludeProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
-  auto sequence =
-      result->GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    result->GetInstructionContainer());
   sequence->SetName("MySequence");
-  sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
-  auto repeat = result->GetInstructionContainer()->InsertItem<RepeatItem>(mvvm::TagIndex::Append());
-  repeat->SetRepeatCount(1);
+  auto repeat =
+      InsertInstruction(domainconstants::kRepeatInstructionType, result->GetInstructionContainer());
+  repeat->SetAttribute(domainconstants::kMaxCountAttribute, mvvm::int32{1});
   repeat->SetIsRootFlag(true);
-  auto include = repeat->InsertItem<IncludeItem>(mvvm::TagIndex::Append());
-  include->SetPath("MySequence");
+  auto include = InsertInstruction(domainconstants::kIncludeInstructionType, repeat);
+  include->SetAttribute(domainconstants::kPathAttribute, std::string("MySequence"));
 
   return result;
 }
@@ -153,15 +155,15 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem(
     const sup::dto::AnyValue& initial_value)
 {
   auto result = std::make_unique<ProcedureItem>();
-  auto sequence =
-      result->GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    result->GetInstructionContainer());
   sequence->SetName("MySequence");
 
   auto input0 = InsertInstruction(domainconstants::kInputInstructionType, sequence);
   SetOutput("var1", *input0);
   SetDescription("Your ID", *input0);
 
-  sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var1->SetName("var1");
@@ -184,8 +186,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateUserChoiceProcedureItem()
   auto result = std::make_unique<ProcedureItem>();
   auto userchoice = InsertInstruction(domainconstants::kUserChoiceInstructionType,
                                       result->GetInstructionContainer());
-  auto wait0 = userchoice->InsertItem<WaitItem>(mvvm::TagIndex::Append());
-  wait0->SetTimeout(10.0);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, userchoice);
+  wait0->SetAttribute(domainconstants::kTimeoutAttribute, 10.0);
 
   auto copy = InsertInstruction(domainconstants::kCopyInstructionType, userchoice);
   SetInput("var0", *copy);
@@ -226,8 +228,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateVariableResetProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
 
-  auto sequence =
-      result->GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    result->GetInstructionContainer());
 
   auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
   SetInput("a", *copy0);
@@ -263,8 +265,8 @@ std::unique_ptr<ProcedureItem> CreateIncrementProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
 
-  auto sequence =
-      result->GetInstructionContainer()->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    result->GetInstructionContainer());
 
   auto increment0 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
   SetVariableName("var0", *increment0);
