@@ -24,9 +24,10 @@
 #include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
@@ -92,7 +93,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyPasteWhenNothingIsSelect
 //! Copy operation when item is selected.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
   sequence->SetName("abc");
 
   EXPECT_EQ(m_mock_context.GetClipboardContent(), nullptr);
@@ -129,8 +131,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
   }
 
   {  // nothing is selected, correct mime data
-    const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
+    const auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+    auto mime_data = CreateInstructionTreeCopyMimeData({item_to_paste.get()});
     auto handler = CreateActionHandler({}, std::move(mime_data));
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
@@ -143,23 +145,25 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
   }
 
   {  // selected item in the container, correct mime data
-    const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
+    const auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+    auto mime_data = CreateInstructionTreeCopyMimeData({item_to_paste.get()});
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
-    auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+    auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                      m_procedure->GetInstructionContainer());
     auto handler = CreateActionHandler({sequence}, std::move(mime_data));
     EXPECT_TRUE(handler->CanPasteAfter());
     EXPECT_TRUE(handler->CanPasteInto());
   }
 
   {  // repeat instruction with Sequence
-    const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
+    const auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+    auto mime_data = CreateInstructionTreeCopyMimeData({item_to_paste.get()});
 
-    auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
-    auto sequence = m_model.InsertItem<SequenceItem>(repeat);
+    auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                    m_procedure->GetInstructionContainer());
+    auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, repeat);
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -174,11 +178,12 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
   }
 
   {  // sequence instruction inside Sequence
-    const WaitItem item_to_paste;
-    auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
+    const auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+    auto mime_data = CreateInstructionTreeCopyMimeData({item_to_paste.get()});
 
-    auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-    auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                       m_procedure->GetInstructionContainer());
+    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
 
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
 
@@ -197,9 +202,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer)
 {
   // creating mime data representing clipboard content
-  WaitItem item_to_paste;
-  item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateInstructionTreeCopyMimeData({&item_to_paste});
+  auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  item_to_paste->SetDisplayName("abc");
+  auto mime_data = CreateInstructionTreeCopyMimeData({item_to_paste.get()});
 
   EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(3);
 
@@ -215,7 +220,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // validating request to select just inserted item
@@ -227,16 +232,17 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
   const double sequence_x = 10;
   const double sequence_y = 20;
   sequence->SetX(sequence_x);
   sequence->SetY(sequence_y);
 
   // creating mime data representing clipboard content
-  WaitItem item_to_paste;
-  item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateInstructionCopyMimeData(item_to_paste);
+  auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  item_to_paste->SetDisplayName("abc");
+  auto mime_data = CreateInstructionCopyMimeData(*item_to_paste);
 
   const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
@@ -252,8 +258,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 
   // Wait instruction should be after Sequence instruction
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<SequenceItem>());
-  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kSequenceInstructionType);
+  EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kWaitInstructionType);
 
   // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
@@ -269,18 +275,19 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequenceAfterSelectedItem)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait0 = m_model.InsertItem<SequenceItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+  auto wait0 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence);
   const double wait0_x = 10;
   const double wait0_y = 20;
   wait0->SetX(wait0_x);
   wait0->SetY(wait0_y);
-  auto wait1 = m_model.InsertItem<SequenceItem>(sequence);
+  auto wait1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence);
 
   // creating mime data representing clipboard content
-  WaitItem item_to_paste;
-  item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateInstructionCopyMimeData(item_to_paste);
+  auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  item_to_paste->SetDisplayName("abc");
+  auto mime_data = CreateInstructionCopyMimeData(*item_to_paste);
 
   const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
@@ -296,7 +303,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
 
   // Wait instruction should be after Sequence instruction
   auto inserted_wait = sequence->GetInstructions().at(1);
-  EXPECT_EQ(inserted_wait->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(inserted_wait->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(inserted_wait->GetDisplayName(), std::string("abc"));
 
   // coordinates of the inserted instruction should be near the original one
@@ -309,16 +316,17 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
   const double sequence_x = 10;
   const double sequence_y = 20;
   sequence->SetX(sequence_x);
   sequence->SetY(sequence_y);
 
   // creating mime data representing clipboard content
-  WaitItem item_to_paste;
-  item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateInstructionCopyMimeData(item_to_paste);
+  auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  item_to_paste->SetDisplayName("abc");
+  auto mime_data = CreateInstructionCopyMimeData(*item_to_paste);
 
   const mvvm::SessionItem* reported_item{nullptr};
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_))
@@ -334,7 +342,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
   ASSERT_EQ(instructions.size(), 1);
 
   // Wait instruction should be after Sequence instruction
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // coordinates of the inserted instruction should be near the original one
@@ -348,8 +356,10 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteIntoSelectedInstruction
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
 {
   // inserting instruction in the container
-  auto wait0 = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
-  auto wait1 = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType,
+                                 m_procedure->GetInstructionContainer());
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType,
+                                 m_procedure->GetInstructionContainer());
 
   // wait0 is selected
   auto handler = CreateActionHandler({wait0}, nullptr);
@@ -375,7 +385,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
   const double sequence_x = 10;
   const double sequence_y = 20;
   sequence->SetX(sequence_x);
@@ -397,8 +408,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
 
   // Wait instruction should be after Sequence instruction
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<SequenceItem>());
-  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<SequenceItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kSequenceInstructionType);
+  EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kSequenceInstructionType);
 
   // coordinates of the inserted instruction should be near the original one
   const double offset = GetInstructionDropOffset();
@@ -413,10 +424,12 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPaste)
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTreeIntoRepeat)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
-  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+  auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                  m_procedure->GetInstructionContainer());
 
   // even if we do not copy child explicitely, it will be copied
   auto handler = CreateActionHandler({sequence, message});
@@ -446,10 +459,12 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyAndPastePartOfSequenceTr
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutAndPastePartOfSequenceTreeIntoRepeat)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
-  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+  auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                  m_procedure->GetInstructionContainer());
 
   auto handler = CreateActionHandler({sequence, message});
 
@@ -482,10 +497,12 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest,
        SmartCopyAndPastePartOfSequenceTreeIntoRepeat)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
   auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
-  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+  auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                  m_procedure->GetInstructionContainer());
 
   auto handler = CreateActionHandler({sequence, message});
 

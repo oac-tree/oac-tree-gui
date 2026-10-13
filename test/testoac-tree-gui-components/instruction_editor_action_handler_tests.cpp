@@ -23,11 +23,11 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/epics_instruction_items.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
@@ -117,8 +117,10 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitial
 TEST_F(InstructionEditorActionHandlerTest, GetSelectedInstructions)
 {
   // inserting instruction in the container
-  auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto sequence1 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     m_procedure->GetInstructionContainer());
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     m_procedure->GetInstructionContainer());
 
   {
     auto handler = CreateActionHandler({});
@@ -142,7 +144,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // it is not possible to add instruction when no procedure is selected, expecting callback
-  EXPECT_NO_THROW(handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>()));
+  EXPECT_NO_THROW(handler->InsertInstructionAfter(domainconstants::kWaitInstructionType));
 }
 
 TEST_F(InstructionEditorActionHandlerTest, AddWait)
@@ -154,11 +156,11 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>());
+  handler->InsertInstructionAfter(domainconstants::kWaitInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kWaitInstructionType);
 
   EXPECT_EQ(reported_item, instructions.at(0));
 }
@@ -175,8 +177,8 @@ TEST_F(InstructionEditorActionHandlerTest, AddToWrongPlaceWhenNoMessageCallbackD
   InstructionEditorActionHandler handler{context};
 
   EXPECT_THROW(
-      handler.InsertItem(mvvm::GetTypeName<SequenceItem>(), m_procedure->GetInstructionContainer(),
-                         mvvm::TagIndex{"no-such-tag", 0}),
+      handler.InsertItem(domainconstants::kSequenceInstructionType,
+                         m_procedure->GetInstructionContainer(), mvvm::TagIndex{"no-such-tag", 0}),
       RuntimeException);
 }
 
@@ -192,13 +194,13 @@ TEST_F(InstructionEditorActionHandlerTest, DropInstruction)
       .WillOnce(::testing::SaveArg<0>(&reported_item));
 
   // appending instruction to the container
-  handler->DropInstruction(mvvm::GetTypeName<WaitItem>(), {expected_x, expected_y});
+  handler->DropInstruction(domainconstants::kWaitInstructionType, {expected_x, expected_y});
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
   ASSERT_EQ(instructions.size(), 1);
   auto inserted_instruction = instructions.at(0);
-  EXPECT_EQ(inserted_instruction->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(inserted_instruction->GetDomainType(), domainconstants::kWaitInstructionType);
 
   EXPECT_EQ(reported_item, inserted_instruction);
   EXPECT_EQ(inserted_instruction->GetX(), expected_x);
@@ -222,7 +224,8 @@ TEST_F(InstructionEditorActionHandlerTest, AddUniversalInstruction)
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterSelection)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
   const double sequence_x = 10;
   const double sequence_y = 20;
   sequence->SetX(sequence_x);
@@ -234,13 +237,13 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterSelection)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>());
+  handler->InsertInstructionAfter(domainconstants::kWaitInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   // Wait instruction should be after Sequence instruction
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<SequenceItem>());
-  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kSequenceInstructionType);
+  EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kWaitInstructionType);
 
   // Check coordinates of Wait instruction. It should be placed nearby to the original
   // instruction.
@@ -258,23 +261,24 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_)).Times(2);
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>());
+  handler->InsertInstructionAfter(domainconstants::kWaitInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   // appending instruction to the container
-  handler->InsertInstructionAfter(mvvm::GetTypeName<SequenceItem>());
+  handler->InsertInstructionAfter(domainconstants::kSequenceInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
-  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<SequenceItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kSequenceInstructionType);
 }
 
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
 {
   // inserting instruction in the container
-  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
-  auto sequence = m_model.InsertItem<SequenceItem>(repeat);
+  auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                  m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, repeat);
 
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler({sequence});
@@ -285,7 +289,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // It is not possible to add second instruction to repeat instruction, expecting warning
-  EXPECT_NO_THROW(handler->InsertInstructionAfter(mvvm::GetTypeName<WaitItem>()));
+  EXPECT_NO_THROW(handler->InsertInstructionAfter(domainconstants::kWaitInstructionType));
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
@@ -293,7 +297,8 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionIntoSelection)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
   const double sequence_x = 10;
   const double sequence_y = 20;
   sequence->SetX(sequence_x);
@@ -308,7 +313,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionIntoSelection)
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
   // inserting instruction into selected instruction
-  handler->InsertInstructionInto(mvvm::GetTypeName<WaitItem>());
+  handler->InsertInstructionInto(domainconstants::kWaitInstructionType);
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
@@ -319,7 +324,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionIntoSelection)
 
   // Wait instruction should be after Sequence instruction
   auto instructions = sequence->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<WaitItem>());
+  EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   auto universal = dynamic_cast<UniversalInstructionItem*>(instructions.at(1));
   ASSERT_NE(universal, nullptr);
@@ -335,7 +340,8 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionIntoSelection)
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionIntoWait)
 {
   // inserting instruction in the container
-  auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType,
+                                m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking `wait` instruction selected
   auto handler = CreateActionHandler({wait});
@@ -343,7 +349,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionIntoWait)
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
   // attempt to insert instruction into selected instruction, expecting callback
-  EXPECT_NO_THROW(handler->InsertInstructionInto(mvvm::GetTypeName<WaitItem>()));
+  EXPECT_NO_THROW(handler->InsertInstructionInto(domainconstants::kWaitInstructionType));
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 }
 
@@ -354,13 +360,14 @@ TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
 
-  handler->InsertInstructionInto(mvvm::GetTypeName<WaitItem>());
+  handler->InsertInstructionInto(domainconstants::kWaitInstructionType);
 }
 
 TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelected)
 {
   // inserting instruction in the container
-  m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  InsertInstruction(domainconstants::kSequenceInstructionType,
+                    m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking no instruction selected
   auto handler = CreateActionHandler({});
@@ -377,8 +384,10 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelecte
 TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
 {
   // inserting instruction in the container
-  auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto sequence1 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     m_procedure->GetInstructionContainer());
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking sequence0 is selected
   auto handler = CreateActionHandler({sequence0});
@@ -399,9 +408,12 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
 TEST_F(InstructionEditorActionHandlerTest, RemoveTwoInstructions)
 {
   // inserting instruction in the container
-  auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto sequence1 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto sequence2 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     m_procedure->GetInstructionContainer());
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     m_procedure->GetInstructionContainer());
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                     m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking sequence0 is selected
   auto handler = CreateActionHandler({sequence0, sequence1});
@@ -420,8 +432,9 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveTwoInstructions)
 TEST_F(InstructionEditorActionHandlerTest, RemoveParentAndChild)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait = m_model.InsertItem<SequenceItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+  auto wait = InsertInstruction(domainconstants::kSequenceInstructionType, sequence);
 
   // creating action handler mimicking sequence0 is selected
   auto handler = CreateActionHandler({sequence, wait});
@@ -438,10 +451,11 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveParentAndChild)
 TEST_F(InstructionEditorActionHandlerTest, MoveSelectedUp)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   // creating action handler mimicking wait2 is selected
   auto handler = CreateActionHandler({wait2});
@@ -464,10 +478,11 @@ TEST_F(InstructionEditorActionHandlerTest, MoveSelectedUp)
 TEST_F(InstructionEditorActionHandlerTest, MoveSelectedDown)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
   // creating action handler mimicking wait0 is selected
   auto handler = CreateActionHandler({wait0});
@@ -489,7 +504,8 @@ TEST_F(InstructionEditorActionHandlerTest, MoveSelectedDown)
 
 TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
 
   // pretending that sequence is selected
   auto handler = CreateActionHandler({sequence});
@@ -508,8 +524,8 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
   }
   const bool dialog_was_acccepted = true;
 
-  auto item =
-      m_model.InsertItem<PvAccessWriteInstructionItem>(m_procedure->GetInstructionContainer());
+  auto item = InsertInstruction(domainconstants::kPvAccessWriteInstructionType,
+                                m_procedure->GetInstructionContainer());
 
   auto previous_anyvalue = GetAnyValueItem(*item);
   ASSERT_NE(previous_anyvalue, nullptr);
@@ -541,8 +557,8 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveAnyValueItemAndAcceptD
   }
   const bool dialog_was_acccepted = true;
 
-  auto item =
-      m_model.InsertItem<PvAccessWriteInstructionItem>(m_procedure->GetInstructionContainer());
+  auto item = InsertInstruction(domainconstants::kPvAccessWriteInstructionType,
+                                m_procedure->GetInstructionContainer());
 
   auto previous_anyvalue = GetAnyValueItem(*item);
   ASSERT_NE(previous_anyvalue, nullptr);

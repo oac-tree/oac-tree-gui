@@ -21,9 +21,10 @@
 #include "oac_tree_gui/composer/attribute_editor_action_handler.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
@@ -82,8 +83,8 @@ TEST_F(AttributeEditorActionHandlerTest, WhenNothingIsSelectedHandlerCanNotPerfo
 
 TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelectedCallingEditorIsNotPossible)
 {
-  WaitItem item;
-  auto timeout_attribute = GetPropertyItem(item, domainconstants::kTimeoutAttribute);
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  auto timeout_attribute = GetPropertyItem(*item, domainconstants::kTimeoutAttribute);
 
   auto handler = CreateActionHandler(timeout_attribute);
 
@@ -114,9 +115,9 @@ TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 
 TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlagForTimeoutAttribute)
 {
-  WaitItem item;
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
   auto timeout_attribute = dynamic_cast<sup::gui::AnyValueItem*>(
-      GetPropertyItem(item, domainconstants::kTimeoutAttribute));
+      GetPropertyItem(*item, domainconstants::kTimeoutAttribute));
 
   auto handler = CreateActionHandler(timeout_attribute);
 

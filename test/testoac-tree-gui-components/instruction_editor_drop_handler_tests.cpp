@@ -20,12 +20,13 @@
 
 #include "oac_tree_gui/composer/instruction_editor_drop_handler.h"
 
-#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
+#include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_factory.h>
-#include <oac_tree_gui/model/standard_instruction_items.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/viewmodel/instruction_editor_viewmodel.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
@@ -77,8 +78,9 @@ TEST_F(InstructionEditorDropHandlerTest, InsertNewType)
   // [5 ]      -----------  row_col=( 1,  0)    QModelIndex(0, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
 
   auto container_index = QModelIndex();
   auto sequence_index = m_view_model.index(0, 0, QModelIndex());
@@ -140,12 +142,14 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionIdentifierMimeDataBetwee
   // [15]     -----------   row_col=( 1,  0)    QModelIndex(1, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
-  auto sequence1 = m_model.InsertItem<SequenceItem>();
-  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait3 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
 
   auto sequence0_index = m_view_model.index(0, 0, QModelIndex());
   auto wait2_index = m_view_model.index(2, 0, sequence0_index);
@@ -179,10 +183,11 @@ TEST_F(InstructionEditorDropHandlerTest, DropInstructionCopyMimeDataBetweenItems
   // [9 ]      -----------  row_col=( 3,  0)    QModelIndex(0, 0)     Sequence
 
   auto container = m_model.GetRootItem();
-  auto sequence0 = m_model.InsertItem<SequenceItem>();
-  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
-  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
 
   auto message_instruction = CreateInstructionItem(domainconstants::kMessageInstructionType);
   auto mime_data = std::make_unique<QMimeData>();
