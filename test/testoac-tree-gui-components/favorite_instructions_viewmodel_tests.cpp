@@ -140,7 +140,9 @@ TEST_F(FavoriteInstructionsViewModelTest, MimeDataEncoding)
   EXPECT_TRUE(mime_data->hasFormat(kInstructionCopyMimeType));
   auto copied_items = sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   EXPECT_EQ(copied_items.size(), 1);
-  EXPECT_EQ(copied_items.at(0)->GetType(), sequence_item->GetDomainType());
+  auto copied_sequence = dynamic_cast<InstructionItem*>(copied_items.at(0).get());
+  ASSERT_NE(copied_sequence, nullptr);
+  EXPECT_EQ(copied_sequence->GetDomainType(), sequence_item->GetDomainType());
 }
 
 /*

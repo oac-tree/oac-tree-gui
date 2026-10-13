@@ -197,7 +197,9 @@ TEST_F(InstructionEditorViewModelTest, MimeDataEncoding)
   auto copied_items =
       sup::gui::CreateSessionItemsFromMimeData(*mime_data, kInstructionCopyMimeType);
   EXPECT_EQ(copied_items.size(), 1);
-  EXPECT_EQ(copied_items.at(0)->GetType(), sequence->GetDomainType());
+  auto copied_sequence = dynamic_cast<InstructionItem*>(copied_items.at(0).get());
+  ASSERT_NE(copied_sequence, nullptr);
+  EXPECT_EQ(copied_sequence->GetDomainType(), sequence->GetDomainType());
 }
 
 TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
