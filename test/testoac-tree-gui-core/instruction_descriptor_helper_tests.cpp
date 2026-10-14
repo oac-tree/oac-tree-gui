@@ -25,6 +25,7 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 
 #include <sup/dto/anytype.h>
+#include <sup/oac-tree/exceptions.h>
 #include <sup/oac-tree/execution_status.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>
@@ -281,6 +282,117 @@ TEST_F(InstructionDescriptorHelperTest, InfoMatchesTypedBaseAttributes)
       EXPECT_EQ(attribute.category, expected->category) << domain_type << "/" << attribute.name;
     }
   }
+}
+
+TEST_F(InstructionDescriptorHelperTest, NodeFromDomainType)
+{
+  const auto node = CreateInstructionNode(domainconstants::kWaitInstructionType);
+
+  EXPECT_EQ(node.descriptor.domain_type, domainconstants::kWaitInstructionType);
+  EXPECT_EQ(GetAttributeNames(node.descriptor),
+            GetAttributeNames(CreateTypedDescriptor(domainconstants::kWaitInstructionType)));
+  EXPECT_TRUE(node.attributes.empty());
+  EXPECT_EQ(node.index, 0);
+  EXPECT_TRUE(node.children.empty());
+}
+
+TEST_F(InstructionDescriptorHelperTest, NodeFromUnknownDomainTypeThrows)
+{
+  EXPECT_THROW(CreateInstructionNode("UnknownInstruction"),
+               sup::oac_tree::InvalidOperationException);
+}
+
+//! Node tree from a domain instruction: typed descriptors, values, depth-first indexes.
+TEST_F(InstructionDescriptorHelperTest, NodeTreeFromDomainInstruction)
+{
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  (void)sequence->AddAttribute(domainconstants::kNameAttribute, "main");
+  auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  (void)repeat->AddAttribute(domainconstants::kMaxCountAttribute, "3");
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  (void)wait0->AddAttribute(domainconstants::kTimeoutAttribute, "42");
+  (void)repeat->InsertInstruction(std::move(wait0), 0);
+  (void)sequence->InsertInstruction(std::move(repeat), 0);
+  auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  (void)wait1->AddAttribute(domainconstants::kTimeoutAttribute, "$par");
+  (void)sequence->InsertInstruction(std::move(wait1), 1);
+
+  const auto node = CreateInstructionNodeTree(*sequence);
+
+  EXPECT_EQ(node.descriptor.domain_type, domainconstants::kSequenceInstructionType);
+  const std::vector<sup::oac_tree::AttributeInfo> expected_sequence_attributes{
+      {domainconstants::kNameAttribute, "main"}};
+  EXPECT_EQ(node.attributes, expected_sequence_attributes);
+  EXPECT_EQ(node.index, 0);
+  ASSERT_EQ(node.children.size(), 2);
+
+  const auto& repeat_node = node.children.at(0);
+  EXPECT_EQ(repeat_node.descriptor.domain_type, domainconstants::kRepeatInstructionType);
+  const std::vector<sup::oac_tree::AttributeInfo> expected_repeat_attributes{
+      {domainconstants::kMaxCountAttribute, "3"}};
+  EXPECT_EQ(repeat_node.attributes, expected_repeat_attributes);
+  EXPECT_EQ(repeat_node.index, 1);
+  ASSERT_EQ(repeat_node.children.size(), 1);
+
+  const auto& wait0_node = repeat_node.children.at(0);
+  EXPECT_EQ(wait0_node.descriptor.domain_type, domainconstants::kWaitInstructionType);
+  const std::vector<sup::oac_tree::AttributeInfo> expected_wait0_attributes{
+      {domainconstants::kTimeoutAttribute, "42"}};
+  EXPECT_EQ(wait0_node.attributes, expected_wait0_attributes);
+  EXPECT_EQ(wait0_node.index, 2);
+  EXPECT_TRUE(wait0_node.children.empty());
+
+  const auto& wait1_node = node.children.at(1);
+  const std::vector<sup::oac_tree::AttributeInfo> expected_wait1_attributes{
+      {domainconstants::kTimeoutAttribute, "$par"}};
+  EXPECT_EQ(wait1_node.attributes, expected_wait1_attributes);
+  EXPECT_EQ(wait1_node.index, 3);
+
+  // typed descriptor
+  const auto* timeout = FindAttribute(wait1_node.descriptor, domainconstants::kTimeoutAttribute);
+  ASSERT_NE(timeout, nullptr);
+  EXPECT_EQ(timeout->default_value, mvvm::variant_t{0.0});
+}
+
+//! Node tree from instruction info: info descriptors, values and indexes as given. No plugin.
+TEST_F(InstructionDescriptorHelperTest, NodeTreeFromInstructionInfo)
+{
+  sup::oac_tree::InstructionInfo sequence_info(domainconstants::kSequenceInstructionType,
+                                               sup::oac_tree::Instruction::kCompound, 2,
+                                               {{domainconstants::kNameAttribute, "main"}});
+  (void)sequence_info.AppendChild(std::make_unique<sup::oac_tree::InstructionInfo>(
+      "UnknownInstruction", sup::oac_tree::Instruction::kAction, 0,
+      std::vector<sup::oac_tree::AttributeInfo>{{"custom", "1"}}));
+  (void)sequence_info.AppendChild(std::make_unique<sup::oac_tree::InstructionInfo>(
+      domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::kAction, 1,
+      std::vector<sup::oac_tree::AttributeInfo>{{domainconstants::kTimeoutAttribute, "42"}}));
+
+  const auto node = CreateInstructionNodeTree(sequence_info);
+
+  EXPECT_EQ(node.descriptor.domain_type, domainconstants::kSequenceInstructionType);
+  EXPECT_EQ(node.descriptor.category, sup::oac_tree::Instruction::kCompound);
+  const std::vector<sup::oac_tree::AttributeInfo> expected_sequence_attributes{
+      {domainconstants::kNameAttribute, "main"}};
+  EXPECT_EQ(node.attributes, expected_sequence_attributes);
+  EXPECT_EQ(node.index, 2);
+  ASSERT_EQ(node.children.size(), 2);
+
+  const auto& unknown_node = node.children.at(0);
+  EXPECT_EQ(unknown_node.descriptor.domain_type, "UnknownInstruction");
+  const std::vector<std::string> expected_names{domainconstants::kNameAttribute,
+                                                domainconstants::kIsRootAttribute};
+  EXPECT_EQ(GetAttributeNames(unknown_node.descriptor), expected_names);
+  const std::vector<sup::oac_tree::AttributeInfo> expected_unknown_attributes{{"custom", "1"}};
+  EXPECT_EQ(unknown_node.attributes, expected_unknown_attributes);
+  EXPECT_EQ(unknown_node.index, 0);
+
+  const auto& wait_node = node.children.at(1);
+  EXPECT_EQ(wait_node.descriptor.domain_type, domainconstants::kWaitInstructionType);
+  EXPECT_EQ(GetAttributeNames(wait_node.descriptor), expected_names);
+  const std::vector<sup::oac_tree::AttributeInfo> expected_wait_attributes{
+      {domainconstants::kTimeoutAttribute, "42"}};
+  EXPECT_EQ(wait_node.attributes, expected_wait_attributes);
+  EXPECT_EQ(wait_node.index, 1);
 }
 
 }  // namespace oac_tree_gui::test

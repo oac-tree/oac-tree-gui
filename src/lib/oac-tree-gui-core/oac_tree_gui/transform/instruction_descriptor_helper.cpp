@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/transform/instruction_attribute_presets.h>
 
 #include <sup/gui/model/scalar_conversion_utils.h>
@@ -67,6 +68,20 @@ mvvm::variant_t GetDefaultValue(const std::string& domain_type,
   return sup::gui::GetVariantFromScalarTypeName(anytype.GetTypeName());
 }
 
+//! Creates a node tree from the given domain instruction. Increments next_index per node.
+InstructionNode CreateNodeTree(const instruction_t& instruction, std::uint32_t& next_index)
+{
+  InstructionNode result{CreateInstructionDescriptor(instruction),
+                         instruction.GetStringAttributes(),
+                         next_index++,
+                         {}};
+  for (const auto* child : instruction.ChildInstructions())
+  {
+    result.children.push_back(CreateNodeTree(*child, next_index));
+  }
+  return result;
+}
+
 }  // namespace
 
 InstructionDescriptor CreateInstructionDescriptor(const instruction_t& instruction)
@@ -97,6 +112,28 @@ InstructionDescriptor CreateInstructionDescriptor(const sup::oac_tree::Instructi
     result.attributes.push_back(
         CreateAttributeDescriptor(domain_type, domainconstants::kShowCollapsedAttribute, false,
                                   false, sup::oac_tree::AttributeCategory::kLiteral));
+  }
+  return result;
+}
+
+InstructionNode CreateInstructionNode(const std::string& domain_type)
+{
+  return {CreateInstructionDescriptor(*CreateDomainInstruction(domain_type)), {}, 0, {}};
+}
+
+InstructionNode CreateInstructionNodeTree(const instruction_t& instruction)
+{
+  std::uint32_t next_index{0};
+  return CreateNodeTree(instruction, next_index);
+}
+
+InstructionNode CreateInstructionNodeTree(const sup::oac_tree::InstructionInfo& info)
+{
+  InstructionNode result{
+      CreateInstructionDescriptor(info), info.GetAttributes(), info.GetIndex(), {}};
+  for (const auto* child : info.Children())
+  {
+    result.children.push_back(CreateInstructionNodeTree(*child));
   }
   return result;
 }
