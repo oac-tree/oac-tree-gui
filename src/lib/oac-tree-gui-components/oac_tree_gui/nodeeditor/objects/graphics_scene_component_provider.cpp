@@ -24,16 +24,16 @@
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/iterate_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_action_handler.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/model/model_utils.h>
-#include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/connectable_view_model_controller.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
+#include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/node_connection_guide.h>
 #include <mvvm/nodeeditor/node_connection_shape.h>
 #include <mvvm/signals/model_listener.h>

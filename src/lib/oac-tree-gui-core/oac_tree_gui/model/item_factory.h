@@ -22,7 +22,7 @@
 #define OAC_TREE_GUI_MODEL_ITEM_FACTORY_H_
 
 //! @file
-//! Collection of helper factory function to build single InstructionItem's and VariableItem's.
+//! Collection of helper factory function to build single VariableItem's.
 
 #include <memory>
 #include <string>
@@ -30,18 +30,12 @@
 namespace oac_tree_gui
 {
 
-class InstructionItem;
 class VariableItem;
 
 /**
  * @brief Creates VariableItem from string representing the type of sup::oac_tree::Variable.
  */
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
-
-/**
- * @brief Creates InstructionItem from string representing Type of sup::oac_tree::Instruction.
- */
-std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type);
 
 }  // namespace oac_tree_gui
 

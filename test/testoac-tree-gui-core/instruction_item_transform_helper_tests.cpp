@@ -26,7 +26,6 @@
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -49,6 +48,7 @@
 #include <sup/oac-tree/sequence_parser.h>
 
 #include <gtest/gtest.h>
+#include <testutils/universal_items.h>
 
 #include <algorithm>
 
@@ -99,6 +99,16 @@ void ExpectSameItems(const mvvm::SessionItem& lhs, const mvvm::SessionItem& rhs,
   }
 }
 
+//! Returns true if CreateInstructionItem builds UniversalInstructionItem with the given domain
+//! type.
+bool CanCreateUniversalInstruction(const std::string& domain_type)
+{
+  auto created = CreateInstructionItem(domain_type);
+  return dynamic_cast<const UniversalInstructionItem*>(created.get()) != nullptr
+         && created->GetType() == mvvm::GetTypeName<UniversalInstructionItem>()
+         && created->GetDomainType() == domain_type;
+}
+
 //! Builds an item tree from the domain instruction with the item builder.
 InstructionTree CreateItemTreeFromDomain(const sup::oac_tree::Instruction& instruction)
 {
@@ -115,6 +125,42 @@ class InstructionItemTransformHelperTest : public ::testing::Test
 public:
   sup::oac_tree::Procedure m_procedure;
 };
+
+TEST_F(InstructionItemTransformHelperTest, CreateStandardInstructionItem)
+{
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kIncludeInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kParallelInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kRepeatInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kSequenceInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kWaitInstructionType));
+}
+
+TEST_F(InstructionItemTransformHelperTest, CreateEpicsInstructionItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kChannelAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kChannelAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kPvAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kPvAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kRPCClientInstructionType));
+}
+
+//! An instruction registered at runtime, unknown to the GUI.
+TEST_F(InstructionItemTransformHelperTest, CreateUnknownDomainInstructionItem)
+{
+  test::UnknownDomainInstruction::RegisterUnknownDomainInstruction();
+  EXPECT_TRUE(CanCreateUniversalInstruction(test::UnknownDomainInstruction::Type));
+}
+
+TEST_F(InstructionItemTransformHelperTest, CreateUnregisteredInstructionItemThrows)
+{
+  EXPECT_THROW(CreateInstructionItem("UnregisteredInstruction"),
+               sup::oac_tree::InvalidOperationException);
+}
 
 //! Item tree from a single Wait info. Attributes are strings, as reported by the server.
 TEST_F(InstructionItemTransformHelperTest, ItemTreeFromWaitInfo)

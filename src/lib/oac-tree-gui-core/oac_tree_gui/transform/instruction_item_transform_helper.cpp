@@ -28,6 +28,7 @@
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_descriptor_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
@@ -238,6 +239,11 @@ InstructionTree CreateInstructionItemTree(const InstructionNode& node)
     indexes[index] = item;
   }
   return {std::move(root), std::move(indexes)};
+}
+
+std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type)
+{
+  return CreateInstructionItemTree(CreateInstructionNode(domain_type)).root;
 }
 
 std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& item)

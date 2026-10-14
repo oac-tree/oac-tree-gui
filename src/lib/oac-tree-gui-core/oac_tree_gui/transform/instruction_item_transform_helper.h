@@ -30,6 +30,7 @@
 #include <sup/oac-tree/instruction.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace mvvm
@@ -66,6 +67,17 @@ struct InstructionTree
  * @throw RuntimeException if a node index is out of range.
  */
 InstructionTree CreateInstructionItemTree(const InstructionNode& node);
+
+/**
+ * @brief Creates an instruction item for the given domain type.
+ *
+ * A temporary domain instruction provides the attribute definitions.
+ *
+ * @param domain_type The domain type of the instruction.
+ * @return The instruction item.
+ * @throw sup::oac_tree::InvalidOperationException if the type is not registered.
+ */
+std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type);
 
 /**
  * @brief Creates a domain instruction from the given item, without children.

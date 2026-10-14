@@ -66,11 +66,4 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
   return catalogue->Create(domain_type);
 }
 
-std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type)
-{
-  auto result = std::make_unique<UniversalInstructionItem>();
-  result->SetDomainType(domain_type);
-  return result;
-}
-
 }  // namespace oac_tree_gui

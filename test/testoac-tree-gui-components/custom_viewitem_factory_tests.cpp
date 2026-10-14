@@ -24,8 +24,8 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/providers/viewitem.h>
 
