@@ -24,6 +24,9 @@ add_subdirectory(testoac-tree-gui-views)
 if (COA_BUILD_INTEGRATION_TESTS)
   add_subdirectory(testoac-tree-gui-integration)
 endif()
+if (COA_BUILD_SOFTIOC_TESTS)
+  add_subdirectory(testoac-tree-gui-softioc)
+endif()
 add_subdirectory(parasoft)
 
 # -----------------------------------------------------------------------------
@@ -48,6 +51,12 @@ if (COA_BUILD_INTEGRATION_TESTS)
   )
 endif()
 
+if (COA_BUILD_SOFTIOC_TESTS)
+  add_custom_command(OUTPUT oac-tree-gui-testall-cmd APPEND
+    COMMAND ${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-softioc
+  )
+endif()
+
 # -----------------------------------------------------------------------------
 # Generate test.sh for Maven
 # -----------------------------------------------------------------------------
@@ -61,6 +70,10 @@ fail=0
 ")
 if (COA_BUILD_INTEGRATION_TESTS)
   file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-integration || fail=1
+")
+endif()
+if (COA_BUILD_SOFTIOC_TESTS)
+  file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "${TEST_OUTPUT_DIRECTORY}/testoac-tree-gui-softioc || fail=1
 ")
 endif()
 file(APPEND ${TEST_OUTPUT_DIRECTORY}/test.sh "exit $fail")

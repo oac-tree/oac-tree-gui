@@ -1,13 +1,10 @@
-# Complex integration tests for oac-tree-gui-components library (require QApplication,
-# might require SoftIoc setup in global environment).
+# Complex integration tests for oac-tree-gui-components library (require QApplication).
 
 set(test testoac-tree-gui-integration)
 
 add_executable(${test})
 
 target_sources(${test} PRIVATE
-  domain_workspace_listener_softioc_tests.cpp
-  global_ioc_environment.cpp
   job_manager_remote_scenario_tests.cpp
   main.cpp
   operation_action_handler_remote_scenario_tests.cpp
@@ -15,10 +12,9 @@ target_sources(${test} PRIVATE
   test_automation_server.cpp
   test_automation_server.h
   workspace_synchronizer_pvaccess_tests.cpp
-  workspace_synchronizer_softioc_tests.cpp
 )
 
-target_link_libraries(${test} PRIVATE oac-tree-gui-components oac-tree-gui-test-utils sup-epics::sup-epics-test)
+target_link_libraries(${test} PRIVATE oac-tree-gui-components oac-tree-gui-test-utils)
 
 set_target_properties(${test} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TEST_OUTPUT_DIRECTORY})
 

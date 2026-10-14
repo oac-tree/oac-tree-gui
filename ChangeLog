@@ -6,6 +6,7 @@ Changes for 2.4.0:
 - New machinery for settings storage with uniform read/write to different scopes
 - Adjust to sup-mvvm new Get/Find API with focus on constantness
 - Enable Valgrind analysis for CODAC builds
+- Move softIoc tests to a separate executable, enabled by COA_BUILD_SOFTIOC_TESTS
 - Build coverage with -O0 by selecting Debug over RelWithDebInfo
 
 Changes for 2.3.1:
