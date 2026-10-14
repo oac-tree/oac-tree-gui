@@ -55,8 +55,6 @@ target_sources(${library_name} PRIVATE
   standard_variable_items.h
   text_edit_item.cpp
   text_edit_item.h
-  universal_instruction_item.cpp
-  universal_instruction_item.h
   universal_item_helper.cpp
   universal_item_helper.h
   universal_variable_item.cpp

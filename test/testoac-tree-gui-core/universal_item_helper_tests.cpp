@@ -25,7 +25,6 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -67,7 +66,7 @@ TEST_F(UniversalItemHelperTest, AddUnknownDomainInstructionToTheGUI)
   auto item =
       InsertInstruction(UnknownDomainInstruction::Type, procedure->GetInstructionContainer());
 
-  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
+  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<InstructionItem>());
   EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }

@@ -23,8 +23,8 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
@@ -217,7 +217,7 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
 //! Creates an item for the given node, without children.
 std::unique_ptr<InstructionItem> CreateItem(const InstructionNode& node)
 {
-  std::unique_ptr<InstructionItem> result = std::make_unique<UniversalInstructionItem>();
+  auto result = std::make_unique<InstructionItem>();
   PopulateInstructionItem(node.descriptor, *result);
   SetAttributeValues(node, *result);
   return result;

@@ -22,7 +22,7 @@
 #define OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_
 
 //! @file
-//! Helper functions to simplify UniversalInstructionItem and UniversalVariableItem handling.
+//! Helper functions to simplify InstructionItem and UniversalVariableItem handling.
 
 #include <mvvm/model/tagindex.h>
 

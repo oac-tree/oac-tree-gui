@@ -23,9 +23,9 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_includes.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
@@ -84,7 +84,7 @@ TEST_F(SequencerItemHelperTest, Clone)
   using mvvm::test::IsCloneImplemented;
 
   // instructions
-  EXPECT_TRUE(IsCloneImplemented<UniversalInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<InstructionItem>());
 
   // variables
   EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());

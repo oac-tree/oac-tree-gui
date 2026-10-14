@@ -77,7 +77,7 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
   EXPECT_EQ(m_view_model.data(sequence_type_index, Qt::DisplayRole).toString(), "Sequence");
 }
 
-TEST_F(InstructionEditorViewModelTest, SingleUniversalInstruction)
+TEST_F(InstructionEditorViewModelTest, SingleFallbackInstruction)
 {
   (void)InsertInstruction(domainconstants::kFallbackInstructionType, m_model.GetRootItem());
 

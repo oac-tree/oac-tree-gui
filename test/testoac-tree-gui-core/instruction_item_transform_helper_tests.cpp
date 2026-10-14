@@ -25,7 +25,6 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
@@ -98,13 +97,12 @@ void ExpectSameItems(const mvvm::SessionItem& lhs, const mvvm::SessionItem& rhs,
   }
 }
 
-//! Returns true if CreateInstructionItem builds UniversalInstructionItem with the given domain
+//! Returns true if CreateInstructionItem builds InstructionItem with the given domain
 //! type.
-bool CanCreateUniversalInstruction(const std::string& domain_type)
+bool CanCreateInstruction(const std::string& domain_type)
 {
   auto created = CreateInstructionItem(domain_type);
-  return dynamic_cast<const UniversalInstructionItem*>(created.get()) != nullptr
-         && created->GetType() == mvvm::GetTypeName<UniversalInstructionItem>()
+  return created->GetType() == mvvm::GetTypeName<InstructionItem>()
          && created->GetDomainType() == domain_type;
 }
 
@@ -127,11 +125,11 @@ public:
 
 TEST_F(InstructionItemTransformHelperTest, CreateStandardInstructionItem)
 {
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kIncludeInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kParallelInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kRepeatInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kSequenceInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kWaitInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kIncludeInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kParallelInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kRepeatInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kSequenceInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kWaitInstructionType));
 }
 
 TEST_F(InstructionItemTransformHelperTest, CreateEpicsInstructionItem)
@@ -141,18 +139,18 @@ TEST_F(InstructionItemTransformHelperTest, CreateEpicsInstructionItem)
     GTEST_SKIP();
   }
 
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kChannelAccessReadInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kChannelAccessWriteInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kPvAccessReadInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kPvAccessWriteInstructionType));
-  EXPECT_TRUE(CanCreateUniversalInstruction(domainconstants::kRPCClientInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kChannelAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kChannelAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kPvAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kPvAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateInstruction(domainconstants::kRPCClientInstructionType));
 }
 
 //! An instruction registered at runtime, unknown to the GUI.
 TEST_F(InstructionItemTransformHelperTest, CreateUnknownDomainInstructionItem)
 {
   test::UnknownDomainInstruction::RegisterUnknownDomainInstruction();
-  EXPECT_TRUE(CanCreateUniversalInstruction(test::UnknownDomainInstruction::Type));
+  EXPECT_TRUE(CanCreateInstruction(test::UnknownDomainInstruction::Type));
 }
 
 TEST_F(InstructionItemTransformHelperTest, CreateUnregisteredInstructionItemThrows)
@@ -529,7 +527,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
   auto tree = CreateInstructionItemTree(node);
   auto* item = tree.root.get();
 
-  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
+  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<InstructionItem>());
   EXPECT_EQ(item->GetDomainType(), "UnknownCompound");
   EXPECT_EQ(item->GetDisplayName(), "main");
 

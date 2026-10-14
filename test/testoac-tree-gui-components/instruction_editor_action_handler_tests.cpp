@@ -27,7 +27,6 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 
@@ -207,7 +206,7 @@ TEST_F(InstructionEditorActionHandlerTest, DropInstruction)
   EXPECT_EQ(inserted_instruction->GetY(), expected_y);
 }
 
-TEST_F(InstructionEditorActionHandlerTest, AddUniversalInstruction)
+TEST_F(InstructionEditorActionHandlerTest, AddInstruction)
 {
   auto handler = CreateActionHandler({});
 
@@ -218,7 +217,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddUniversalInstruction)
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
+  EXPECT_EQ(instructions.at(0)->GetType(), mvvm::GetTypeName<InstructionItem>());
 }
 
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterSelection)
@@ -325,10 +324,8 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionIntoSelection)
   // Wait instruction should be after Sequence instruction
   auto instructions = sequence->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
-  auto universal = dynamic_cast<UniversalInstructionItem*>(instructions.at(1));
-  ASSERT_NE(universal, nullptr);
-  EXPECT_EQ(universal->GetDomainType(), domainconstants::kMessageInstructionType);
+  EXPECT_EQ(instructions.at(1)->GetType(), mvvm::GetTypeName<InstructionItem>());
+  EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kMessageInstructionType);
 
   // Check coordinates of the instruction. It should be placed nearby to the original instruction.
   const double offset = GetInstructionDropOffset();

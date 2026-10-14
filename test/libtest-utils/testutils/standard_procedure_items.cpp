@@ -28,7 +28,6 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -77,8 +76,8 @@ namespace test
 std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInvalidProcedureItem()
 {
   auto result = std::make_unique<ProcedureItem>();
-  auto instruction = result->GetInstructionContainer()->InsertItem<UniversalInstructionItem>(
-      mvvm::TagIndex::Append());
+  auto instruction =
+      result->GetInstructionContainer()->InsertItem<InstructionItem>(mvvm::TagIndex::Append());
   return result;
 }
 

@@ -56,9 +56,11 @@ class InstructionItemTest : public ::testing::Test
 
 TEST_F(InstructionItemTest, InitialState)
 {
-  InstructionItem item("test");
+  InstructionItem item;
 
-  EXPECT_EQ(item.GetType(), "test");
+  EXPECT_EQ(item.GetType(), "Instruction");
+  EXPECT_EQ(item.GetType(), mvvm::GetTypeName<InstructionItem>());
+  EXPECT_EQ(item.GetDisplayName(), "Instruction");
   EXPECT_TRUE(item.GetDomainType().empty());
   EXPECT_TRUE(item.GetInstructions().empty());
   EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
@@ -113,6 +115,27 @@ TEST_F(InstructionItemTest, SetAndGetAttribute)
 
   // value type must match the attribute type
   EXPECT_THROW(item->SetAttribute(domainconstants::kTimeoutAttribute, 1), mvvm::RuntimeException);
+}
+
+//! Clone keeps domain type, attributes and GUI properties.
+TEST_F(InstructionItemTest, Clone)
+{
+  auto item = CreateTestItem({{domainconstants::kTimeoutAttribute,
+                               0.0,
+                               {},
+                               false,
+                               false,
+                               sup::oac_tree::AttributeCategory::kLiteral}});
+  item->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
+  item->SetX(1.1);
+
+  auto clone = item->Clone();
+  auto* instruction = dynamic_cast<InstructionItem*>(clone.get());
+  ASSERT_NE(instruction, nullptr);
+  EXPECT_EQ(instruction->GetType(), mvvm::GetTypeName<InstructionItem>());
+  EXPECT_EQ(instruction->GetDomainType(), "SomeDomainInstruction");
+  EXPECT_EQ(instruction->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
+  EXPECT_EQ(instruction->GetX(), 1.1);
 }
 
 }  // namespace oac_tree_gui::test

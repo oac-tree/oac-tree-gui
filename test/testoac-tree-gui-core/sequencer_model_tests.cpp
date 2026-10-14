@@ -96,11 +96,10 @@ TEST_F(SequencerModelTest, XmlDocumentSaveLoad)
   EXPECT_EQ(model.GetProcedures().at(0)->GetInstructionContainer()->GetInstructions().size(), 1);
 }
 
-//! Checking that domain name of universal instruction item outsurvive serialization (real-life
-//! bug).
-TEST_F(SequencerModelTest, UniversalInstructionSerialization)
+//! Checking that domain name of instruction item outsurvive serialization (real-life bug).
+TEST_F(SequencerModelTest, InstructionSerialization)
 {
-  const auto file_path = GetFilePath("UniversalInstructionSaveLoad.xml");
+  const auto file_path = GetFilePath("InstructionSaveLoad.xml");
 
   SequencerModel model;
   auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());

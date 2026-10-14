@@ -20,17 +20,17 @@
 
 #include "instruction_item.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
 
-InstructionItem::InstructionItem(const std::string& item_type) : CompoundItem(item_type)
+InstructionItem::InstructionItem() : CompoundItem(mvvm::GetTypeName<InstructionItem>())
 {
   (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
 }
@@ -49,7 +49,7 @@ void InstructionItem::SetDomainType(const std::string& domain_type)
 
 std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone() const
 {
-  throw NotImplementedException("InstructionItem::clone() should not be used");
+  return mvvm::MakeClone(*this);
 }
 
 std::vector<const InstructionItem*> InstructionItem::GetInstructions() const

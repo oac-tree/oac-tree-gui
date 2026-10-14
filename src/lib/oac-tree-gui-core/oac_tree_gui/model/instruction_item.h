@@ -29,13 +29,14 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The InstructionItem class is a base for all GUI items representing Sequencer domain
- * instructions.
+ * @brief The InstructionItem class represents a domain instruction of any type.
+ *
+ * The item is set up by CreateInstructionItemTree.
  */
 class InstructionItem : public mvvm::CompoundItem
 {
 public:
-  explicit InstructionItem(const std::string& item_type);
+  InstructionItem();
   ~InstructionItem() override = default;
 
   InstructionItem(const InstructionItem&) = delete;
@@ -155,5 +156,16 @@ T InstructionItem::GetAttribute(const std::string& name) const
 }
 
 }  // namespace oac_tree_gui
+
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::InstructionItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Instruction"; }
+};
+
+}  // namespace mvvm
 
 #endif  // OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_H_
