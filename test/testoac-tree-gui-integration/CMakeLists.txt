@@ -22,4 +22,6 @@ target_link_libraries(${test} PRIVATE oac-tree-gui-components oac-tree-gui-test-
 
 set_target_properties(${test} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TEST_OUTPUT_DIRECTORY})
 
-gtest_discover_tests(${test} DISCOVERY_TIMEOUT 10 DISCOVERY_MODE PRE_TEST TEST_PREFIX Integration.)
+# Integration tests run one at a time.
+gtest_discover_tests(${test} DISCOVERY_TIMEOUT 10 DISCOVERY_MODE PRE_TEST TEST_PREFIX Integration.
+  PROPERTIES RESOURCE_LOCK oac-tree-gui-integration)

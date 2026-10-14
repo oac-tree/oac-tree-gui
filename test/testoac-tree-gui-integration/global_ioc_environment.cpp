@@ -26,8 +26,10 @@
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
+#include <unistd.h>
 
 #include <chrono>
+#include <string>
 #include <thread>
 
 class IOCEnvironment : public ::testing::Environment
@@ -45,7 +47,10 @@ public:
 ::testing::Environment* const ioc_environment =
     ::testing::AddGlobalTestEnvironment(new IOCEnvironment);
 
-IOCEnvironment::IOCEnvironment() : m_softioc_service{"SequencerGUIChannelAccessTests"} {}
+IOCEnvironment::IOCEnvironment()
+    : m_softioc_service{"SequencerGUIChannelAccessTests-" + std::to_string(getpid())}
+{
+}
 
 IOCEnvironment::~IOCEnvironment() = default;
 
