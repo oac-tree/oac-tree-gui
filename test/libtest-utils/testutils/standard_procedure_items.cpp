@@ -108,8 +108,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateCopyProcedureItem()
   auto result = std::make_unique<ProcedureItem>();
   auto copy =
       InsertInstruction(domainconstants::kCopyInstructionType, result->GetInstructionContainer());
-  SetInput("var0", *copy);
-  SetOutput("var1", *copy);
+  copy->SetAttribute(domainconstants::kInputVariableNameAttribute, std::string("var0"));
+  copy->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("var1"));
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("var0");
@@ -159,8 +159,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem(
   sequence->SetName("MySequence");
 
   auto input0 = InsertInstruction(domainconstants::kInputInstructionType, sequence);
-  SetOutput("var1", *input0);
-  SetDescription("Your ID", *input0);
+  input0->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("var1"));
+  input0->SetAttribute(domainconstants::kDescriptionAttribute, std::string("Your ID"));
 
   InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
@@ -189,8 +189,8 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateUserChoiceProcedureItem()
   wait0->SetAttribute(domainconstants::kTimeoutAttribute, 10.0);
 
   auto copy = InsertInstruction(domainconstants::kCopyInstructionType, userchoice);
-  SetInput("var0", *copy);
-  SetOutput("var1", *copy);
+  copy->SetAttribute(domainconstants::kInputVariableNameAttribute, std::string("var0"));
+  copy->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("var1"));
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("var0");
@@ -213,7 +213,7 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateMessageProcedureItem(const st
   auto result = std::make_unique<ProcedureItem>();
   auto message = InsertInstruction(domainconstants::kMessageInstructionType,
                                    result->GetInstructionContainer());
-  SetText(text, *message);
+  message->SetAttribute(domainconstants::kTextAttribute, text);
   return result;
 }
 
@@ -231,15 +231,15 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateVariableResetProcedureItem()
                                     result->GetInstructionContainer());
 
   auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("a", *copy0);
-  SetOutput("target", *copy0);
+  copy0->SetAttribute(domainconstants::kInputVariableNameAttribute, std::string("a"));
+  copy0->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("target"));
 
   auto reset = InsertInstruction(domainconstants::kVariableResetInstructionType, sequence);
-  SetVariableName("target", *reset);
+  reset->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("target"));
 
   auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
-  SetInput("b", *copy1);
-  SetOutput("target", *copy1);
+  copy1->SetAttribute(domainconstants::kInputVariableNameAttribute, std::string("b"));
+  copy1->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("target"));
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("a");
@@ -268,14 +268,14 @@ std::unique_ptr<ProcedureItem> CreateIncrementProcedureItem()
                                     result->GetInstructionContainer());
 
   auto increment0 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
-  SetVariableName("var0", *increment0);
+  increment0->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("var0"));
 
   auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var0->SetName("var0");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
 
   auto increment1 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
-  SetVariableName("var1", *increment1);
+  increment1->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("var1"));
 
   auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var1->SetName("var1");
