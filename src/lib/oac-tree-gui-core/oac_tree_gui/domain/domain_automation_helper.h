@@ -45,14 +45,6 @@ sup::oac_tree::VariableInfo CreateVariableInfo(const sup::oac_tree::Variable& va
                                                sup::dto::uint32 index = 0);
 
 /**
- * @brief Creates domain instruction from automation InstructionInfo presentation.
- *
- * This method ignores all possible children instructions.
- */
-std::unique_ptr<sup::oac_tree::Instruction> CreateDomainInstruction(
-    const sup::oac_tree::InstructionInfo& info);
-
-/**
  * @brief Creates domain variable from automation VariableInfo presentation.
  */
 std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(

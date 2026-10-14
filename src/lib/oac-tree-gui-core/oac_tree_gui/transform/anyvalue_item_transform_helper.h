@@ -77,14 +77,6 @@ void SetAnyValueFromJsonString(const std::string& type_json, const std::string& 
                                InstructionItem& item);
 
 /**
- * @brief Sets AnyValueItem on board of instruction item using domain instruction.
- *
- * @param instruction Domain instruction with JSON type and value attribute defined.
- * @param item Instruction item with tag intended for AnyValueItem.
- */
-void SetAnyValueFromDomainInstruction(const instruction_t& instruction, InstructionItem& item);
-
-/**
  * @brief Updates existing AnyValueItem on board of variable_item using given anyvalue.
  *
  * @details It is expected that the layout of existing AnyValueItem matches the layout of anyvalue.

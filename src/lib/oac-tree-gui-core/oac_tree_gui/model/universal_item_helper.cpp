@@ -72,24 +72,6 @@ bool IsCollapsible(const InstructionItem& item)
   return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute);
 }
 
-// FIXME merge with RegisterShowCollapsedProperty
-void UpdateShowCollapsedPropertyAppearance(InstructionItem& item)
-{
-  static const std::vector<std::string> collapsed_by_default{
-      domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
-
-  if (mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute))
-  {
-    auto property = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
-    (void)property->SetDisplayName("Show collapsed");
-    (void)property->SetToolTip("Show child branch collapsed during procedure execution");
-    const auto is_collapsed_value =
-        mvvm::utils::Contains(collapsed_by_default, item.GetDomainType());
-    (void)property->SetData(is_collapsed_value);
-    SetAttributeExposedFlag(is_collapsed_value, *property);
-  }
-}
-
 bool IsCollapsed(const InstructionItem& item)
 {
   return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute)
@@ -140,15 +122,6 @@ const sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
 sup::gui::AnyValueItem* GetAnyValueItem(InstructionItem& item)
 {
   return item.FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag);
-}
-
-void UpdateIsRootPropertyAppearance(InstructionItem& item)
-{
-  if (mvvm::utils::HasTag(item, domainconstants::kIsRootAttribute))
-  {
-    auto property = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kIsRootAttribute);
-    SetAttributeExposedFlag(true, *property);
-  }
 }
 
 }  // namespace oac_tree_gui

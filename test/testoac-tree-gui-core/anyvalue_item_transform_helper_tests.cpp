@@ -288,21 +288,15 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableWithRegistr
   EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
 }
 
-TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainInstruction)
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromJsonString)
 {
-  // We use Wait instruction for test event if it is not intended for storing json type and value
-  // attributes.
-  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  instruction->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
-  instruction->AddAttribute(domainconstants::kValueAttribute, "42");
-
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
 
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
   // registering tag to make possible adding AnyValueItem
   item->RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 
-  SetAnyValueFromDomainInstruction(*instruction, *item);
+  SetAnyValueFromJsonString(R"RAW({"type":"int32"})RAW", "42", *item);
 
   ASSERT_NE(GetAnyValueItem(*item), nullptr);
   auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(*item));

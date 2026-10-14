@@ -21,84 +21,98 @@
 #include "oac_tree_gui/model/instruction_item.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/instruction_descriptor.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/item_utils.h>
-
-#include <sup/dto/anytype.h>
-#include <sup/oac-tree/attribute_definition.h>
 
 #include <gtest/gtest.h>
 
 namespace oac_tree_gui::test
 {
 
+namespace
+{
+
+//! Creates an item from a hand-written node with the given attributes. No plugin needed.
+std::unique_ptr<InstructionItem> CreateTestItem(const std::vector<AttributeDescriptor>& attributes)
+{
+  const InstructionNode node{
+      {"SomeDomainInstruction", sup::oac_tree::Instruction::kAction, attributes}, {}, 0, {}};
+  return CreateInstructionItemTree(node).root;
+}
+
+}  // namespace
+
 /**
- * @brief Tests for InstructionItem base class.
+ * @brief Tests for InstructionItem class.
  */
 class InstructionItemTest : public ::testing::Test
 {
-public:
-  class TestItem : public InstructionItem
-  {
-  public:
-    TestItem() : InstructionItem("test") { RegisterCommonProperties(); }
-
-  private:
-    void InitFromDomainImpl(const instruction_t* instruction) override {};
-    void SetupDomainImpl(instruction_t* instruction) const override {};
-  };
 };
 
-TEST_F(InstructionItemTest, TestItem)
+TEST_F(InstructionItemTest, InitialState)
 {
-  // Correctly initialised item
-  TestItem item;
+  InstructionItem item("test");
 
   EXPECT_EQ(item.GetType(), "test");
-
   EXPECT_TRUE(item.GetDomainType().empty());
+  EXPECT_TRUE(item.GetInstructions().empty());
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
+
   const std::string expected_domain_type = "SomeDomainInstruction";
   item.SetDomainType(expected_domain_type);
   EXPECT_EQ(item.GetDomainType(), expected_domain_type);
+}
+
+TEST_F(InstructionItemTest, GuiProperties)
+{
+  auto item = CreateTestItem({});
+
+  EXPECT_EQ(item->GetDomainType(), "SomeDomainInstruction");
 
   // these attributes are coming from the sequencer domain
-  EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kNameAttribute));
-  EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kIsRootAttribute));
+  EXPECT_FALSE(mvvm::utils::HasTag(*item, domainconstants::kNameAttribute));
+  EXPECT_FALSE(mvvm::utils::HasTag(*item, domainconstants::kIsRootAttribute));
 
-  EXPECT_EQ(item.GetX(), 0);
-  EXPECT_EQ(item.GetY(), 0);
+  EXPECT_EQ(item->GetX(), 0);
+  EXPECT_EQ(item->GetY(), 0);
 
-  item.SetX(1.1);
-  item.SetY(1.2);
-  EXPECT_EQ(item.GetX(), 1.1);
-  EXPECT_EQ(item.GetY(), 1.2);
+  item->SetX(1.1);
+  item->SetY(1.2);
+  EXPECT_EQ(item->GetX(), 1.1);
+  EXPECT_EQ(item->GetY(), 1.2);
 
-  EXPECT_EQ(item.GetStatus(), InstructionStatus::kUndefined);
-  EXPECT_TRUE(item.GetInstructions().empty());
+  EXPECT_EQ(item->GetStatus(), InstructionStatus::kUndefined);
+  EXPECT_EQ(item->GetBehavior(), itemconstants::kNativeBehavior);
+  EXPECT_TRUE(item->GetInstructions().empty());
 }
 
 //! Testing SetAttribute and GetAttribute members.
-
 TEST_F(InstructionItemTest, SetAndGetAttribute)
 {
-  TestItem item;
-  const sup::oac_tree::AttributeDefinition attr(domainconstants::kTimeoutAttribute,
-                                                sup::dto::Float64Type);
-  auto property = AddPropertyFromDefinition(attr, item);
+  auto item = CreateTestItem({{domainconstants::kTimeoutAttribute,
+                               0.0,
+                               {},
+                               false,
+                               false,
+                               sup::oac_tree::AttributeCategory::kLiteral}});
+  auto* property = item->FindItem<sup::gui::AnyValueItem>(domainconstants::kTimeoutAttribute);
   ASSERT_NE(property, nullptr);
   EXPECT_FALSE(GetAttributeExposedFlag(*property));
 
   // value of not exposed attribute is still available
-  EXPECT_EQ(item.GetAttribute<double>(domainconstants::kTimeoutAttribute), 0.0);
+  EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 0.0);
 
-  item.SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
+  item->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
   EXPECT_TRUE(GetAttributeExposedFlag(*property));
-  EXPECT_EQ(item.GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
+  EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 
   // value type must match the attribute type
-  EXPECT_THROW(item.SetAttribute(domainconstants::kTimeoutAttribute, 1), mvvm::RuntimeException);
+  EXPECT_THROW(item->SetAttribute(domainconstants::kTimeoutAttribute, 1), mvvm::RuntimeException);
 }
 
 }  // namespace oac_tree_gui::test

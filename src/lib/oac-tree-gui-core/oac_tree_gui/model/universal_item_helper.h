@@ -87,15 +87,6 @@ void SetVariableName(const std::string& value, InstructionItem& item);
 bool IsCollapsible(const InstructionItem& item);
 
 /**
- * @brief Updates appearance of the property responsible to show children as collapsed branch.
- *
- * The method is used in the context, when we create the property from the domain attribute list
- * and need to setup its appearance according to the instruction type. For example, for
- * IncludeProcedure and Include instructions we want to show children as collapsed by default.
- */
-void UpdateShowCollapsedPropertyAppearance(InstructionItem& item);
-
-/**
  * @brief Returns true if item has is_collapsed property and it is set to true.
  *
  * This will be taken into account during operation to show instruction tree with certain children
@@ -130,15 +121,6 @@ std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainer
 const sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
 
 sup::gui::AnyValueItem* GetAnyValueItem(InstructionItem& item);
-
-/**
- * @brief Updates appearance of the property responsible to show instruction as root item.
- *
- * The method is used in the context, when we create a property from domain attribute.
- * We have to make it invisible, to exclude them from property editors. They will be shown as
- * checkbox in dedicated editor.
- */
-void UpdateIsRootPropertyAppearance(InstructionItem& item);
 
 }  // namespace oac_tree_gui
 

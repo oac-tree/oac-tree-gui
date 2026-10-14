@@ -22,33 +22,13 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
-#include <sup/oac-tree/instruction.h>
-
 namespace oac_tree_gui
 {
-
-namespace
-{
-
-mvvm::ComboProperty CreateBehaviorProperty()
-{
-  mvvm::ComboProperty result({itemconstants::kNativeBehavior, itemconstants::kHiddenBehavior,
-                              itemconstants::kSucceedBehavior, itemconstants::kFailBehavior});
-
-  result.SetToolTips({"Instruction behaves according to the implementation",
-                      "Instruction will be invisible and will not be executed",
-                      "Instruction will always succeed", "Instruction will always fail"});
-
-  return result;
-}
-
-}  // namespace
 
 InstructionItem::InstructionItem(const std::string& item_type) : CompoundItem(item_type)
 {
@@ -70,18 +50,6 @@ void InstructionItem::SetDomainType(const std::string& domain_type)
 std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone() const
 {
   throw NotImplementedException("InstructionItem::clone() should not be used");
-}
-
-void InstructionItem::InitFromDomain(const instruction_t* instruction)
-{
-  InitFromDomainImpl(instruction);
-}
-
-std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
-{
-  auto result = ::oac_tree_gui::CreateDomainInstruction(GetDomainType());
-  SetupDomainImpl(result.get());
-  return result;
 }
 
 std::vector<const InstructionItem*> InstructionItem::GetInstructions() const
@@ -166,27 +134,6 @@ std::string InstructionItem::GetBehavior() const
   }
 
   return {};
-}
-
-void InstructionItem::RegisterCommonProperties()
-{
-  (void)AddProperty(itemconstants::kBehaviorTag, CreateBehaviorProperty())
-      .SetToolTip("Modifier that allows to change the behavior");
-  (void)AddProperty(itemconstants::kStatus, std::string())
-      .SetDisplayName("Status")
-      .SetVisible(false)
-      .SetEditable(false);
-  (void)AddProperty(itemconstants::kXpos, 0.0).SetDisplayName("X").SetVisible(false);
-  (void)AddProperty(itemconstants::kYpos, 0.0).SetDisplayName("Y").SetVisible(false);
-  (void)AddProperty(itemconstants::kBreakpoint, 0)
-      .SetDisplayName("breakpoint")
-      .SetEditable(false)
-      .SetVisible(false);
-}
-
-void InstructionItem::SetDomainTypeRole(const std::string& domain_type)
-{
-  (void)SetData(domain_type, itemconstants::kDomainTypeNameRole);
 }
 
 }  // namespace oac_tree_gui

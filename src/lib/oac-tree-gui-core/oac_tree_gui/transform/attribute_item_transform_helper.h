@@ -124,8 +124,6 @@ void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribut
 extern template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
                                                                 const std::string& attribute_name,
                                                                 sup::gui::AnyValueItem& item);
-extern template void SetPropertyFromDomainAttribute<instruction_t>(
-    const instruction_t& domain, const std::string& attribute_name, sup::gui::AnyValueItem& item);
 
 /**
  * @brief Set an attribute for domain variable from AnyValueScalarItem property.
@@ -192,8 +190,6 @@ bool HasAttributeDefinition(const DomainT& domain, const std::string& definition
 
 extern template bool HasAttributeDefinition<variable_t>(const variable_t& domain,
                                                         const std::string& definition_name);
-extern template bool HasAttributeDefinition<instruction_t>(const instruction_t& domain,
-                                                           const std::string& definition_name);
 
 /**
  * @brief Sets domain JSON type and value attributes, if necessary, for given domain instruction or

@@ -144,9 +144,6 @@ void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribut
 template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
                                                          const std::string& attribute_name,
                                                          sup::gui::AnyValueItem& item);
-template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t& domain,
-                                                            const std::string& attribute_name,
-                                                            sup::gui::AnyValueItem& item);
 
 template <typename T>
 void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& attribute_name,
@@ -186,8 +183,6 @@ bool HasAttributeDefinition(const DomainT& domain, const std::string& definition
 
 template bool HasAttributeDefinition<variable_t>(const variable_t& domain,
                                                  const std::string& definition_name);
-template bool HasAttributeDefinition<instruction_t>(const instruction_t& domain,
-                                                    const std::string& definition_name);
 
 template <typename DomainT>
 void SetJsonAttributesFromItem(const sup::gui::AnyValueItem& item, DomainT& domain)

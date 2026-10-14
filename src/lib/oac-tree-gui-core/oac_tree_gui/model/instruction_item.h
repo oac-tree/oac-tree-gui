@@ -21,7 +21,6 @@
 #ifndef OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_H_
 #define OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_H_
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/instruction_status.h>
 
 #include <mvvm/model/compound_item.h>
@@ -55,16 +54,6 @@ public:
    * @brief Sets the domain type. No attribute setup.
    */
   void SetDomainType(const std::string& domain_type);
-
-  /**
-   * @brief Inits given item from the domain instruction.
-   */
-  void InitFromDomain(const instruction_t* instruction);
-
-  /**
-   * @brief Creates domain counterpart.
-   */
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const;
 
   /**
    * @brief Returns all child instructions.
@@ -157,32 +146,6 @@ public:
    * @brief Returns the vlue of behavior property.
    */
   std::string GetBehavior() const;
-
-protected:
-  /**
-   * @brief Creates item properties common for all instructions.
-   *
-   * These are execution status, (x,y) coordinates and breakpoint information.
-   */
-  void RegisterCommonProperties();
-
-  /**
-   * @brief Sets the value of domain type role.
-   *
-   * No attribute initialization.
-   */
-  void SetDomainTypeRole(const std::string& domain_type);
-
-private:
-  /**
-   * @brief Init this item from domain information.
-   */
-  virtual void InitFromDomainImpl(const instruction_t* instruction) = 0;
-
-  /**
-   * @brief Setup domain instruction using current property values.
-   */
-  virtual void SetupDomainImpl(instruction_t* instruction) const = 0;
 };
 
 template <typename T>

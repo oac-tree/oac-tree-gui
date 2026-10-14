@@ -25,11 +25,6 @@
 
 #include <oac_tree_gui/model/instruction_item.h>
 
-namespace sup::gui
-{
-class AnyValueItem;
-}
-
 namespace oac_tree_gui
 {
 
@@ -43,8 +38,7 @@ public:
   /**
    * @brief Main c-tor.
    *
-   * Constructed item can be used after InitFromDomain call, or after the setup by
-   * CreateInstructionItemTree.
+   * The item is set up by CreateInstructionItemTree.
    */
   UniversalInstructionItem();
   ~UniversalInstructionItem() override = default;
@@ -55,23 +49,6 @@ public:
   UniversalInstructionItem& operator=(UniversalInstructionItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
-
-  struct Attribute
-  {
-    std::string domain_name;                //! domain attribute name
-    sup::gui::AnyValueItem* item{nullptr};  //! item representing domain attribute
-  };
-
-  /**
-   * @brief Returns items representing domain attributes.
-   */
-  std::vector<Attribute> GetAttributeItems() const;
-
-  void SetupFromDomain(const instruction_t* instruction);
 };
 
 }  // namespace oac_tree_gui

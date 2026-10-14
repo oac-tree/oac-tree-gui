@@ -39,21 +39,6 @@ class DomainAutomationHelperTest : public ::testing::Test
 {
 };
 
-TEST_F(DomainAutomationHelperTest, CreateDomainInstruction)
-{
-  const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
-                                            sup::oac_tree::Instruction::Category::kAction,
-                                            instruction_id,
-                                            {{domainconstants::kTimeoutAttribute, "42"}});
-
-  auto instruction = CreateDomainInstruction(info);
-
-  EXPECT_EQ(instruction->GetType(), domainconstants::kWaitInstructionType);
-  EXPECT_TRUE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
-  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "42");
-}
-
 TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
 {
   const std::size_t variable_id{0};

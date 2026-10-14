@@ -124,17 +124,6 @@ void SetAnyValueFromJsonString(const std::string& type_json, const std::string& 
   SetAnyValue(sup::gui::AnyValueFromJSONString(anytype, value_json), item);
 }
 
-void SetAnyValueFromDomainInstruction(const instruction_t& instruction, InstructionItem& item)
-{
-  if (instruction.HasAttribute(domainconstants::kTypeAttribute)
-      && instruction.HasAttribute(domainconstants::kValueAttribute))
-  {
-    SetAnyValueFromJsonString(instruction.GetAttributeString(domainconstants::kTypeAttribute),
-                              instruction.GetAttributeString(domainconstants::kValueAttribute),
-                              item);
-  }
-}
-
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item)
 {
   if (auto existing_anyvalue_item = variable_item.GetAnyValueItem(); existing_anyvalue_item)

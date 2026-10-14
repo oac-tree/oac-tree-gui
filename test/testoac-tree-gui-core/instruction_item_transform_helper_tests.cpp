@@ -246,96 +246,28 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionTreeFromRootInstruct
   EXPECT_EQ(item_tree.indexes[3], wait_items[1]);
 }
 
-TEST_F(InstructionItemTransformHelperTest, RegisterChildrenTag)
+//! Children tag follows the category: none for action, one child for decorator, any for compound.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeChildrenTag)
 {
-  {
-    auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(*instruction, item);
-    EXPECT_FALSE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-  }
+  auto create_item = [](sup::oac_tree::Instruction::Category category)
+  { return CreateInstructionItemTree({{"UnknownInstruction", category, {}}, {}, 0, {}}).root; };
 
-  {
-    auto instruction = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(*instruction, item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
+  EXPECT_FALSE(mvvm::utils::HasTag(*create_item(sup::oac_tree::Instruction::kAction),
+                                   itemconstants::kChildInstructions));
 
-    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
-    EXPECT_EQ(taginfo.GetMax(), -1);
-    EXPECT_EQ(taginfo.GetMin(), 0);
-  }
+  auto compound = create_item(sup::oac_tree::Instruction::kCompound);
+  ASSERT_TRUE(mvvm::utils::HasTag(*compound, itemconstants::kChildInstructions));
+  auto compound_taginfo = compound->GetTaggedItems()->ContainerAt(0).GetTagInfo();
+  EXPECT_EQ(compound_taginfo.GetName(), itemconstants::kChildInstructions);
+  EXPECT_EQ(compound_taginfo.GetMin(), 0);
+  EXPECT_EQ(compound_taginfo.GetMax(), -1);
 
-  {
-    auto instruction = CreateDomainInstruction(domainconstants::kInverterInstructionType);
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(*instruction, item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-
-    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
-    EXPECT_EQ(taginfo.GetMax(), 1);
-    EXPECT_EQ(taginfo.GetMin(), 0);
-  }
-}
-
-TEST_F(InstructionItemTransformHelperTest, RegisterChildrenTagUsingCategory)
-{
-  using Category = sup::oac_tree::Instruction::Category;
-
-  {
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(Category::kAction, item);
-    EXPECT_FALSE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-  }
-
-  {
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(Category::kCompound, item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-
-    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
-    EXPECT_EQ(taginfo.GetMax(), -1);
-    EXPECT_EQ(taginfo.GetMin(), 0);
-  }
-
-  {
-    mvvm::CompoundItem item;
-    RegisterChildrenTag(Category::kDecorator, item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
-
-    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
-    EXPECT_EQ(taginfo.GetMax(), 1);
-    EXPECT_EQ(taginfo.GetMin(), 0);
-  }
-}
-
-TEST_F(InstructionItemTransformHelperTest, RegisterShowCollapsedProperty)
-{
-  using Category = sup::oac_tree::Instruction::Category;
-
-  {
-    mvvm::CompoundItem item;
-    RegisterShowCollapsedProperty(Category::kCompound, domainconstants::kSequenceInstructionType,
-                                  item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
-    auto property = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
-    EXPECT_FALSE(property->Data<bool>());  // expanded by default
-  }
-
-  {
-    mvvm::CompoundItem item;
-    RegisterShowCollapsedProperty(Category::kDecorator, domainconstants::kIncludeInstructionType,
-                                  item);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
-    auto property = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
-    EXPECT_TRUE(property->Data<bool>());  // collapsed by default
-  }
-
-  {
-    mvvm::CompoundItem item;
-    RegisterShowCollapsedProperty(Category::kAction, domainconstants::kWaitInstructionType, item);
-    EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
-  }
+  auto decorator = create_item(sup::oac_tree::Instruction::kDecorator);
+  ASSERT_TRUE(mvvm::utils::HasTag(*decorator, itemconstants::kChildInstructions));
+  auto decorator_taginfo = decorator->GetTaggedItems()->ContainerAt(0).GetTagInfo();
+  EXPECT_EQ(decorator_taginfo.GetName(), itemconstants::kChildInstructions);
+  EXPECT_EQ(decorator_taginfo.GetMin(), 0);
+  EXPECT_EQ(decorator_taginfo.GetMax(), 1);
 }
 
 //! Include with a custom attribute, domain to item.

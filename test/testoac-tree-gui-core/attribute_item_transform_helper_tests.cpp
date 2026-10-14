@@ -150,23 +150,14 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
   }
 }
 
-//! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
-//! contains $par attribute.
-
-TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlaceholderCase)
+//! SetPropertyFromAttributeString stores a value with `$` prefix as a string.
+TEST_F(AttributeItemTransformHelperTest, SetPropertyFromAttributeStringPlaceholderCase)
 {
-  // domain Wait instruction constructed by the factory doesn't have attributes
-  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  EXPECT_TRUE(instruction->GetStringAttributes().empty());
-
   sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<mvvm::int32>(item.Data()));
 
-  // Seting property from the domain containing `$` sign
-  instruction->AddAttribute(domainconstants::kTimeoutAttribute, "$par1");
-  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
-  SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, item);
+  SetPropertyFromAttributeString("$par1", item);
 
   // current convention in AttributeItem::SetAttributeAsString is to keep original
   // AnyTypeName after setting attribute as a string
@@ -177,23 +168,14 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlacehold
   EXPECT_TRUE(GetAttributeExposedFlag(item));
 }
 
-//! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
-//! contains @par attribute.
-
-TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributeReferenceCase)
+//! SetPropertyFromAttributeString stores a value with `@` prefix as a string.
+TEST_F(AttributeItemTransformHelperTest, SetPropertyFromAttributeStringReferenceCase)
 {
-  // domain Wait instruction constructed by the factory doesn't have attributes
-  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  EXPECT_TRUE(instruction->GetStringAttributes().empty());
-
   sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<mvvm::int32>(item.Data()));
 
-  // Seting property from the domain containing `@` sign
-  instruction->AddAttribute(domainconstants::kTimeoutAttribute, "@par1");
-  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "@par1");
-  SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, item);
+  SetPropertyFromAttributeString("@par1", item);
 
   // current convention in AttributeItem::SetAttributeAsString is to keep original
   // AnyTypeName after setting attribute as a string

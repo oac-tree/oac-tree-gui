@@ -105,6 +105,25 @@ void AddAnyValueTag(InstructionItem& item)
   SetAttributeExposedFlag(false, *anyvalue_item);
 }
 
+//! Registers the tag for child instructions, according to the category.
+void RegisterChildrenTag(instruction_t::Category category, InstructionItem& item)
+{
+  if (category == sup::oac_tree::Instruction::kCompound)
+  {
+    item.RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
+                     /*as_default*/ true);
+  }
+  else if (category == sup::oac_tree::Instruction::kDecorator)
+  {
+    item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
+                     /*as_default*/ true);
+  }
+  else
+  {
+    // leaf instructions do not have children
+  }
+}
+
 //! Adds a string property for an attribute unknown to the descriptor.
 void AddStringAttribute(const std::string& name, const std::string& value, InstructionItem& item)
 {
@@ -269,46 +288,6 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& it
     SetJsonAttributesFromItem(*anyvalue_item, *result);
   }
   return result;
-}
-
-void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item)
-{
-  RegisterChildrenTag(instruction.GetCategory(), item);
-}
-
-void RegisterChildrenTag(instruction_t::Category category, mvvm::CompoundItem& item)
-{
-  if (category == sup::oac_tree::Instruction::kCompound)
-  {
-    item.RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-                     /*as_default*/ true);
-  }
-  else if (category == sup::oac_tree::Instruction::kDecorator)
-  {
-    item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
-                     /*as_default*/ true);
-  }
-  else
-  {
-    // leaf instructions do not have children
-  }
-}
-
-void RegisterShowCollapsedProperty(instruction_t::Category category, const std::string& domain_type,
-                                   mvvm::CompoundItem& item)
-{
-  static const std::vector<std::string> kCollapsedByDefault{
-      domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
-
-  if (category != sup::oac_tree::Instruction::kAction)
-  {
-    auto& property =
-        item.AddProperty<sup::gui::AnyValueScalarItem>(domainconstants::kShowCollapsedAttribute);
-    property.SetAnyTypeName(sup::dto::kBooleanTypeName);
-    (void)property.SetDisplayName("Show collapsed");
-    (void)property.SetToolTip("Show child branch collapsed during procedure execution");
-    (void)property.SetData(mvvm::utils::Contains(kCollapsedByDefault, domain_type));
-  }
 }
 
 }  // namespace oac_tree_gui

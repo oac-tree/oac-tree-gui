@@ -91,35 +91,6 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
  */
 std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& item);
 
-/**
- * @brief Register tag in instruction item to be able to add other instructions as children.
- *
- * @param instruction The domain instruction is used to deduce category (compound, decorator).
- * @param item An item where tag will be registered.
- */
-void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item);
-
-/**
- * @brief Register tag in instruction item to be able to add other instructions as children.
- *
- * @param category The category of the domain instruction.
- * @param item An item where tag will be registered.
- */
-void RegisterChildrenTag(instruction_t::Category category, mvvm::CompoundItem& item);
-
-/**
- * @brief Registers show collapsed property.
- *
- * Domain category is used to decide if show_collapsed property is necessary. Domain type is used to
- * guess what can be the default value.
- *
- * @param category Domain instruction category.
- * @param domain_type The type of the domain instruction
- * @param item An item where to register property.
- */
-void RegisterShowCollapsedProperty(instruction_t::Category category, const std::string& domain_type,
-                                   mvvm::CompoundItem& item);
-
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_TRANSFORM_INSTRUCTION_ITEM_TRANSFORM_HELPER_H_
