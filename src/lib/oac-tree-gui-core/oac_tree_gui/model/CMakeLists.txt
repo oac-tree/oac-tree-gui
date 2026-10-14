@@ -11,8 +11,6 @@ target_sources(${library_name} PRIVATE
   component_types.h
   instruction_container_item.cpp
   instruction_container_item.h
-  instruction_info_item.cpp
-  instruction_info_item.h
   instruction_item.cpp
   instruction_item.h
   instruction_status.cpp

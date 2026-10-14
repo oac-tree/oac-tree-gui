@@ -20,14 +20,13 @@
 
 #include "oac_tree_gui/viewmodel/instruction_operation_viewmodel.h"
 
-#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
+#include <oac_tree_gui/transform/instruction_descriptor_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -46,16 +45,6 @@ namespace oac_tree_gui::test
 class InstructionOperationViewModelTest : public ::testing::Test
 {
 public:
-  /**
-   * @brief Test helper which initializes given InstructionInfoItem with all content for given
-   * domain type.
-   */
-  static void InitFromDomainType(const std::string& domain_type, InstructionInfoItem& info_item)
-  {
-    auto instruction = CreateDomainInstruction(domain_type);
-    info_item.InitFromDomainInfo(CreateInstructionInfo(*instruction));
-  }
-
   class TestModel : public mvvm::ApplicationModel
   {
   public:
@@ -138,42 +127,41 @@ TEST_F(InstructionOperationViewModelTest, NotificationOnStatusChange)
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
 
-//! Validating how view model depicts simplified tree made of InstructionInfoItem.
-TEST_F(InstructionOperationViewModelTest, InfoItemWithChildren)
+//! Validating how view model depicts a tree built from instruction info, as for jobs.
+TEST_F(InstructionOperationViewModelTest, ItemTreeFromInfo)
 {
   TestModel model;
 
-  auto sequence = model.InsertItem<InstructionInfoItem>();
-  InitFromDomainType(domainconstants::kSequenceInstructionType,
-                     *sequence);  // to get children tag initialized
+  sup::oac_tree::InstructionInfo sequence_info(domainconstants::kSequenceInstructionType,
+                                               sup::oac_tree::Instruction::kCompound, 0, {});
+  (void)sequence_info.AppendChild(std::make_unique<sup::oac_tree::InstructionInfo>(
+      domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::kAction, 1,
+      std::vector<sup::oac_tree::AttributeInfo>{{domainconstants::kNameAttribute, "First"}}));
+  (void)sequence_info.AppendChild(std::make_unique<sup::oac_tree::InstructionInfo>(
+      domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::kAction, 2,
+      std::vector<sup::oac_tree::AttributeInfo>{}));
 
-  auto wait0 = model.InsertItem<InstructionInfoItem>(sequence);
-  InitFromDomainType(domainconstants::kWaitInstructionType,
-                     *wait0);  // to get children tag initialized
-  wait0->SetDisplayName("Wait");
-  auto wait1 = model.InsertItem<InstructionInfoItem>(sequence);
-  InitFromDomainType(domainconstants::kWaitInstructionType,
-                     *wait1);  // to get children tag initialized
-
-  // deliberately not setting custom display name for wait1 to check if view model will show
-  // display name correesponding to domain type
+  auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(sequence_info));
+  auto* wait0 = tree.indexes.at(1);
+  auto* wait1 = tree.indexes.at(2);
+  (void)model.InsertItem(std::move(tree.root), model.GetRootItem(), mvvm::TagIndex::Append());
 
   InstructionOperationViewModel viewmodel(&model);
-  auto sequence_ndex = viewmodel.index(0, 0, QModelIndex());
-  EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
-  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 4);
+  auto sequence_index = viewmodel.index(0, 0, QModelIndex());
+  EXPECT_EQ(viewmodel.rowCount(sequence_index), 2);
+  EXPECT_EQ(viewmodel.columnCount(sequence_index), 4);
 
-  auto wait0_displayname_index = viewmodel.index(0, 0, sequence_ndex);
-  auto wait1_displayname_index = viewmodel.index(1, 0, sequence_ndex);
+  auto wait0_displayname_index = viewmodel.index(0, 0, sequence_index);
+  auto wait1_displayname_index = viewmodel.index(1, 0, sequence_index);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(wait0_displayname_index), wait0);
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(wait1_displayname_index), wait1);
 
   EXPECT_EQ(viewmodel.data(wait0_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Wait"));
+            std::string("First"));
+  // without a name, the domain type is shown
   EXPECT_EQ(viewmodel.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Wait"));  // InstructionInfoItem correctly shows domain type in the absence
-                                   // of custom name
+            std::string("Wait"));
 }
 
 }  // namespace oac_tree_gui::test

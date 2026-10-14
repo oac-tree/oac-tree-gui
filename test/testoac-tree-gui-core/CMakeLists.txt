@@ -21,7 +21,6 @@ target_sources(${test} PRIVATE
   instruction_attribute_presets_tests.cpp
   instruction_container_item_tests.cpp
   instruction_descriptor_helper_tests.cpp
-  instruction_info_item_tests.cpp
   instruction_item_tests.cpp
   instruction_item_transform_helper_tests.cpp
   instruction_status_tests.cpp

@@ -21,7 +21,9 @@
 #include "oac_tree_gui/operation/tooltip_helper.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/model/instruction_info_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/transform/instruction_descriptor_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>
@@ -45,10 +47,9 @@ TEST_F(ToolTipHelperTest, CollectToolTipAttributes)
                                             {{domainconstants::kTimeoutAttribute, "42"},
                                              {domainconstants::kNameAttribute, expected_name}});
 
-  InstructionInfoItem item;
-  item.InitFromDomainInfo(info);
+  auto item = CreateInstructionItemTree(CreateInstructionNodeTree(info)).root;
 
-  auto tooltip_attributes = CollectToolTipAttributes(&item);
+  auto tooltip_attributes = CollectToolTipAttributes(item.get());
 
   ASSERT_EQ(tooltip_attributes.size(), 1);
   EXPECT_EQ(tooltip_attributes.at(0).first, domainconstants::kTimeoutAttribute);
@@ -72,7 +73,6 @@ TEST_F(ToolTipHelperTest, GetAttributeHtml)
 
 TEST_F(ToolTipHelperTest, GetInstructionToolTipText)
 {
-  InstructionInfoItem item;
   const std::string expected_name("MySpecialWait");
   const std::size_t instruction_id{0};
   const sup::oac_tree::InstructionInfo info(domainconstants::kWaitInstructionType,
@@ -81,9 +81,9 @@ TEST_F(ToolTipHelperTest, GetInstructionToolTipText)
                                             {{domainconstants::kTimeoutAttribute, "42"},
                                              {domainconstants::kNameAttribute, expected_name}});
 
-  item.InitFromDomainInfo(info);
+  auto item = CreateInstructionItemTree(CreateInstructionNodeTree(info)).root;
 
-  auto tooltip = GetInstructionToolTipText(&item);
+  auto tooltip = GetInstructionToolTipText(item.get());
   EXPECT_FALSE(tooltip.isEmpty());
   EXPECT_TRUE(tooltip.contains(QString::fromStdString(expected_name)));
   EXPECT_TRUE(tooltip.contains(QString::fromStdString(domainconstants::kWaitInstructionType)));
