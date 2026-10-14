@@ -293,6 +293,43 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
 
+//! A decorator with a child refuses a second child.
+TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionIntoFullDecorator)
+{
+  auto repeat = InsertInstruction(domainconstants::kRepeatInstructionType,
+                                  m_procedure->GetInstructionContainer());
+  (void)InsertInstruction(domainconstants::kSequenceInstructionType, repeat);
+
+  // creating action handler mimicking `repeat` instruction selected
+  auto handler = CreateActionHandler({repeat});
+
+  EXPECT_FALSE(handler->CanInsertInstructionInto(domainconstants::kWaitInstructionType));
+  EXPECT_TRUE(handler->CanInsertInstructionAfter(domainconstants::kWaitInstructionType));
+
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+  EXPECT_NO_THROW(handler->InsertInstructionInto(domainconstants::kWaitInstructionType));
+  ASSERT_EQ(repeat->GetInstructions().size(), 1);
+}
+
+//! An empty domain type can't be inserted.
+TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertEmptyDomainType)
+{
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
+                                    m_procedure->GetInstructionContainer());
+
+  // creating action handler mimicking `sequence` instruction selected
+  auto handler = CreateActionHandler({sequence});
+
+  EXPECT_FALSE(handler->CanInsertInstructionAfter(std::string()));
+  EXPECT_FALSE(handler->CanInsertInstructionInto(std::string()));
+
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(2);
+  EXPECT_NO_THROW(handler->InsertInstructionAfter(std::string()));
+  EXPECT_NO_THROW(handler->InsertInstructionInto(std::string()));
+  EXPECT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+  EXPECT_TRUE(sequence->GetInstructions().empty());
+}
+
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionIntoSelection)
 {
   // inserting instruction in the container

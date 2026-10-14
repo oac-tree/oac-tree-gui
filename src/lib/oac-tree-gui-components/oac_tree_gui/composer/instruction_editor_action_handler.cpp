@@ -82,6 +82,13 @@ void AlignInstructionTree(const IInstructionEditorActionHandler::position_t& ref
 
 constexpr auto kFailedActionTitle = "Invalid Operation";
 
+//! Returns the item type of an instruction with the given domain type, empty for an empty domain
+//! type.
+std::string GetInstructionItemType(const std::string& domain_type)
+{
+  return domain_type.empty() ? std::string() : mvvm::GetTypeName<InstructionItem>();
+}
+
 }  // namespace
 
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context)
@@ -121,12 +128,12 @@ void InstructionEditorActionHandler::DropInstruction(const std::string& domain_t
 
 bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string& domain_type) const
 {
-  return CanInsertTypeAfterCurrentSelection(domain_type).IsSuccess();
+  return CanInsertTypeAfterCurrentSelection(GetInstructionItemType(domain_type)).IsSuccess();
 }
 
 void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& domain_type)
 {
-  auto query = CanInsertTypeAfterCurrentSelection(domain_type);
+  auto query = CanInsertTypeAfterCurrentSelection(GetInstructionItemType(domain_type));
   if (!query.IsSuccess())
   {
     SendMessage(query.GetMessage());
@@ -141,12 +148,12 @@ void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& d
 
 bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string& domain_type) const
 {
-  return CanInsertTypeIntoCurrentSelection(domain_type).IsSuccess();
+  return CanInsertTypeIntoCurrentSelection(GetInstructionItemType(domain_type)).IsSuccess();
 }
 
 void InstructionEditorActionHandler::InsertInstructionInto(const std::string& domain_type)
 {
-  auto query = CanInsertTypeIntoCurrentSelection(domain_type);
+  auto query = CanInsertTypeIntoCurrentSelection(GetInstructionItemType(domain_type));
   if (!query.IsSuccess())
   {
     SendMessage(query.GetMessage());
