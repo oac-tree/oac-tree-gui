@@ -116,130 +116,47 @@ public:
   sup::oac_tree::Procedure m_procedure;
 };
 
-//! Testing CreateInstructionItem helper method.
-TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemFromInfoObject)
+//! Item tree from a single Wait info. Attributes are strings, as reported by the server.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeFromWaitInfo)
 {
-  const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
-                                            sup::oac_tree::Instruction::Category::kAction,
-                                            instruction_id,
+  const sup::oac_tree::InstructionInfo info(domainconstants::kWaitInstructionType,
+                                            sup::oac_tree::Instruction::Category::kAction, 0,
                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
-  auto instruction_item = CreateInstructionItem(info);
-
-  auto wait_item = instruction_item.get();
-  ASSERT_NE(wait_item, nullptr);
-  EXPECT_EQ(wait_item->GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
-}
-
-//! Testing CreateInstructionInfoItem method.
-TEST_F(InstructionItemTransformHelperTest, CreateInstructionInfoItemFromInfoObject)
-{
-  const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
-                                            sup::oac_tree::Instruction::Category::kAction,
-                                            instruction_id,
-                                            {{domainconstants::kTimeoutAttribute, "42"}});
-
-  auto instruction_item = CreateInstructionInfoItem(info);
-
-  auto wait_item = dynamic_cast<InstructionInfoItem*>(instruction_item.get());
-  ASSERT_NE(wait_item, nullptr);
-}
-
-//! Testing CreateInstructionItemTree for automation InstructionInfo containing a single
-//! instruction.
-TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemTreeForWaitInfo)
-{
-  const std::size_t instruction_id{0};
-  const sup::oac_tree::InstructionInfo info(oac_tree_gui::domainconstants::kWaitInstructionType,
-                                            sup::oac_tree::Instruction::Category::kAction,
-                                            instruction_id,
-                                            {{domainconstants::kTimeoutAttribute, "42"}});
-
-  auto item_tree = CreateInstructionItemTree(info);
+  auto item_tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
   ASSERT_EQ(item_tree.indexes.size(), 1);
 
-  auto wait_item = item_tree.root.get();
-
+  auto* wait_item = item_tree.root.get();
   ASSERT_NE(wait_item, nullptr);
   EXPECT_EQ(wait_item->GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
-
+  EXPECT_EQ(wait_item->GetAttribute<std::string>(domainconstants::kTimeoutAttribute), "42");
   EXPECT_EQ(item_tree.indexes[0], wait_item);
 }
 
-//! Testing CreateInstructionItemTree for automation InstructionInfo containing a sequence with two
-//! children.
-TEST_F(InstructionItemTransformHelperTest, CreateInstructionItemTreeForSequenceInfo)
+//! Item tree from a Sequence info with two Waits. Indexes follow the info.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeFromSequenceInfo)
 {
-  using namespace oac_tree_gui::domainconstants;
-  using sup::oac_tree::AttributeInfo;
-  using sup::oac_tree::InstructionInfo;
+  sup::oac_tree::InstructionInfo sequence_info(domainconstants::kSequenceInstructionType,
+                                               sup::oac_tree::Instruction::Category::kCompound, 0,
+                                               {});
+  (void)sequence_info.AppendChild(std::make_unique<sup::oac_tree::InstructionInfo>(
+      domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 1,
+      std::vector<sup::oac_tree::AttributeInfo>({{domainconstants::kTimeoutAttribute, "42"}})));
+  (void)sequence_info.AppendChild(std::make_unique<sup::oac_tree::InstructionInfo>(
+      domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 2,
+      std::vector<sup::oac_tree::AttributeInfo>({{domainconstants::kTimeoutAttribute, "43"}})));
 
-  InstructionInfo sequence_info(kSequenceInstructionType,
-                                sup::oac_tree::Instruction::Category::kCompound, 0, {});
-  auto child0 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 1,
-      std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
-  auto child0_ptr = child0.get();
-  auto child1 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 2,
-      std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
-  auto child1_ptr = child0.get();
-
-  sequence_info.AppendChild(std::move(child0));
-  sequence_info.AppendChild(std::move(child1));
-
-  auto item_tree = CreateInstructionItemTree(sequence_info);
-
+  auto item_tree = CreateInstructionItemTree(CreateInstructionNodeTree(sequence_info));
   ASSERT_EQ(item_tree.indexes.size(), 3);
 
-  auto sequence_item = item_tree.root.get();
+  auto* sequence_item = item_tree.root.get();
   ASSERT_NE(sequence_item, nullptr);
   EXPECT_EQ(sequence_item->GetDomainType(), domainconstants::kSequenceInstructionType);
-  ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
-  auto wait_items = sequence_item->FindItems<InstructionItem>(mvvm::TagIndex::GetDefaultTag());
+  EXPECT_FALSE(IsCollapsed(*sequence_item));
+  auto wait_items = sequence_item->GetInstructions();
   ASSERT_EQ(wait_items.size(), 2);
-  EXPECT_EQ(wait_items[0]->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42);
-  EXPECT_EQ(wait_items[1]->GetAttribute<double>(domainconstants::kTimeoutAttribute), 43);
-
-  EXPECT_EQ(item_tree.indexes[0], sequence_item);
-  EXPECT_EQ(item_tree.indexes[1], wait_items[0]);
-  EXPECT_EQ(item_tree.indexes[2], wait_items[1]);
-}
-
-//! Creates simplified InstructionInfoItem tree.
-TEST_F(InstructionItemTransformHelperTest, CreateInstructionInfoItemTreeForSequenceInfo)
-{
-  using namespace oac_tree_gui::domainconstants;
-  using sup::oac_tree::AttributeInfo;
-  using sup::oac_tree::InstructionInfo;
-
-  InstructionInfo sequence_info(kSequenceInstructionType,
-                                sup::oac_tree::Instruction::Category::kCompound, 0, {});
-  auto child0 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 1,
-      std::vector<AttributeInfo>({{kTimeoutAttribute, "42"}}));
-  auto child0_ptr = child0.get();
-  auto child1 = std::make_unique<InstructionInfo>(
-      kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 2,
-      std::vector<AttributeInfo>({{kTimeoutAttribute, "43"}}));
-  auto child1_ptr = child0.get();
-
-  sequence_info.AppendChild(std::move(child0));
-  sequence_info.AppendChild(std::move(child1));
-
-  auto item_tree = CreateInstructionInfoItemTree(sequence_info);
-
-  ASSERT_EQ(item_tree.indexes.size(), 3);
-
-  auto sequence_item = dynamic_cast<InstructionInfoItem*>(item_tree.root.get());
-  ASSERT_NE(sequence_item, nullptr);
-  ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
-  auto wait_items = sequence_item->FindItems<InstructionInfoItem>(mvvm::TagIndex::GetDefaultTag());
-  ASSERT_EQ(wait_items.size(), 2);
+  EXPECT_EQ(wait_items[0]->GetAttribute<std::string>(domainconstants::kTimeoutAttribute), "42");
+  EXPECT_EQ(wait_items[1]->GetAttribute<std::string>(domainconstants::kTimeoutAttribute), "43");
 
   EXPECT_EQ(item_tree.indexes[0], sequence_item);
   EXPECT_EQ(item_tree.indexes[1], wait_items[0]);

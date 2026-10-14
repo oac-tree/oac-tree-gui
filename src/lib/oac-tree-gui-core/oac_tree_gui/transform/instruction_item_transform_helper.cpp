@@ -21,12 +21,9 @@
 #include "instruction_item_transform_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -41,72 +38,12 @@
 
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/instruction.h>
-#include <sup/oac-tree/instruction_info.h>
-
-#include <stack>
 
 namespace oac_tree_gui
 {
 
 namespace
 {
-
-/**
- * @brief The InstructionInfoStackNode structs stores stack information during traversing of
- * InstructionInfo object.
- */
-struct InstructionInfoStackNode
-{
-  const sup::oac_tree::InstructionInfo& info;
-  oac_tree_gui::InstructionItem& item;
-};
-
-/**
- * @brief Creates instruction tree from provided domain information.
- *
- * Depending on light_tree flag, the resulting tree can be either InstructionInfoItem based, or will
- * contain a proper InstructionItem hierarchy.
- *
- * @param info Instruction info from the domain
- * @param light_tree Output tree will be based of InstructionInfoItem if true
- * @return Instruction tree.
- */
-InstructionTree CreateInstructionItemTreeIntern(const sup::oac_tree::InstructionInfo& info,
-                                                bool light_tree)
-{
-  std::stack<InstructionInfoStackNode> stack;
-
-  std::unique_ptr<InstructionItem> result =
-      light_tree ? CreateInstructionInfoItem(info) : CreateInstructionItem(info);
-  std::map<InstructionItem*, std::uint32_t> item_to_index;
-
-  stack.push({info, *result});
-  item_to_index[result.get()] = info.GetIndex();
-
-  while (!stack.empty())
-  {
-    auto node = stack.top();
-    stack.pop();
-
-    for (auto child_info : node.info.Children())
-    {
-      auto child_item =
-          light_tree ? CreateInstructionInfoItem(*child_info) : CreateInstructionItem(*child_info);
-      auto child_item_ptr = child_item.get();
-      item_to_index[child_item_ptr] = child_info->GetIndex();
-
-      (void)node.item.InsertItem(std::move(child_item), mvvm::TagIndex::Append());
-
-      stack.push({*child_info, *child_item_ptr});
-    }
-  }
-
-  std::vector<InstructionItem*> index_list(item_to_index.size());
-  (void)std::for_each(item_to_index.begin(), item_to_index.end(),
-                      [&index_list](auto it) { index_list[it.second] = it.first; });
-
-  return {std::move(result), std::move(index_list)};
-}
 
 //! Returns true if the domain attribute is represented by an attribute property.
 bool IsAttributeProperty(const std::string& name)
@@ -315,37 +252,6 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& it
     SetJsonAttributesFromItem(*anyvalue_item, *result);
   }
   return result;
-}
-
-std::unique_ptr<InstructionItem> CreateInstructionItem(const sup::oac_tree::InstructionInfo& info)
-{
-  auto result = oac_tree_gui::CreateInstructionItem(info.GetType());
-
-  // We create domain instruction only to be able to use InitFromDomain mechanism for attribute
-  // propagation.
-  auto domain = CreateDomainInstruction(info);
-  result->InitFromDomain(domain.get());
-
-  return result;
-}
-
-std::unique_ptr<InstructionItem> CreateInstructionInfoItem(
-    const sup::oac_tree::InstructionInfo& info)
-{
-  auto result = std::make_unique<InstructionInfoItem>();
-  result->InitFromDomainInfo(info);
-
-  return result;
-}
-
-InstructionTree CreateInstructionItemTree(const sup::oac_tree::InstructionInfo& info)
-{
-  return CreateInstructionItemTreeIntern(info, /*light_tree*/ false);
-}
-
-InstructionTree CreateInstructionInfoItemTree(const sup::oac_tree::InstructionInfo& info)
-{
-  return CreateInstructionItemTreeIntern(info, /*light_tree*/ true);
 }
 
 void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item)

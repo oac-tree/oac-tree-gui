@@ -21,9 +21,11 @@
 #include "oac_tree_gui/transform/procedure_item_job_info_builder.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
-#include <oac_tree_gui/model/instruction_info_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
@@ -63,14 +65,18 @@ TEST_F(ProcedureItemJobInfoBuilderTest, GetInstruction)
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto* sequence = procedure_item->GetInstructionContainer()->FindItem<InstructionInfoItem>(
+  auto* sequence = procedure_item->GetInstructionContainer()->FindItem<InstructionItem>(
       mvvm::TagIndex::Default(0));
   ASSERT_NE(sequence, nullptr);
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
-  auto* wait0 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(0));
+  EXPECT_EQ(sequence->GetDomainType(), domainconstants::kSequenceInstructionType);
+
+  auto* wait0 = sequence->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
   ASSERT_NE(wait0, nullptr);
-  auto* wait1 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(1));
+  EXPECT_EQ(wait0->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(wait0->GetAttribute<std::string>(domainconstants::kTimeoutAttribute), "42");
+  auto* wait1 = sequence->FindItem<InstructionItem>(mvvm::TagIndex::Default(1));
   ASSERT_NE(wait1, nullptr);
 
   EXPECT_EQ(builder.GetInstruction(0), sequence);
@@ -104,13 +110,13 @@ TEST_F(ProcedureItemJobInfoBuilderTest, GetInstructionIndex)
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto* sequence = procedure_item->GetInstructionContainer()->FindItem<InstructionInfoItem>(
+  auto* sequence = procedure_item->GetInstructionContainer()->FindItem<InstructionItem>(
       mvvm::TagIndex::Default(0));
   ASSERT_NE(sequence, nullptr);
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
-  auto* wait0 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(0));
-  auto* wait1 = sequence->FindItem<InstructionInfoItem>(mvvm::TagIndex::Default(1));
+  auto* wait0 = sequence->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
+  auto* wait1 = sequence->FindItem<InstructionItem>(mvvm::TagIndex::Default(1));
 
   EXPECT_EQ(builder.GetIndex(sequence), 0);
   EXPECT_EQ(builder.GetIndex(wait0), 1);
@@ -138,16 +144,22 @@ TEST_F(ProcedureItemJobInfoBuilderTest, BuildFromIncludeAfterSteup)
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
-  auto* repeat_item =
-      procedure_item->GetInstructionContainer()->FindItem<oac_tree_gui::InstructionInfoItem>(
-          mvvm::TagIndex::Default(0));
+  auto* repeat_item = procedure_item->GetInstructionContainer()->FindItem<InstructionItem>(
+      mvvm::TagIndex::Default(0));
+  ASSERT_NE(repeat_item, nullptr);
+  EXPECT_EQ(repeat_item->GetDomainType(), domainconstants::kRepeatInstructionType);
+  EXPECT_TRUE(repeat_item->IsRoot());
 
-  auto* include_item =
-      repeat_item->FindItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
-  auto* sequence_item =
-      include_item->FindItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
-  auto* wait_item =
-      sequence_item->FindItem<oac_tree_gui::InstructionInfoItem>(mvvm::TagIndex::Default(0));
+  auto* include_item = repeat_item->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
+  ASSERT_NE(include_item, nullptr);
+  EXPECT_EQ(include_item->GetDomainType(), domainconstants::kIncludeInstructionType);
+  EXPECT_EQ(include_item->GetName(), "Counts");
+  EXPECT_TRUE(IsCollapsed(*include_item));  // Include is collapsed without showCollapsed
+
+  auto* sequence_item = include_item->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
+  ASSERT_NE(sequence_item, nullptr);
+  auto* wait_item = sequence_item->FindItem<InstructionItem>(mvvm::TagIndex::Default(0));
+  ASSERT_NE(wait_item, nullptr);
 
   EXPECT_EQ(builder.GetInstruction(0), repeat_item);
   EXPECT_EQ(builder.GetInstruction(1), include_item);
