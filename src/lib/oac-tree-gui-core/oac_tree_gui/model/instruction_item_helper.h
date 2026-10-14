@@ -18,11 +18,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_
-#define OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_
+#ifndef OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_HELPER_H_
+#define OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_HELPER_H_
 
 //! @file
-//! Helper functions to simplify InstructionItem and UniversalVariableItem handling.
+//! Helper functions for InstructionItem.
 
 #include <mvvm/model/tagindex.h>
 
@@ -97,6 +97,31 @@ const sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
 
 sup::gui::AnyValueItem* GetAnyValueItem(InstructionItem& item);
 
+/**
+ * @brief Checks if the given instruction represents a compound with multiple children.
+ */
+bool IsCompoundInstruction(const InstructionItem* instruction);
+
+/**
+ * @brief Checks if the given instruction represents a decorator instruction.
+ */
+bool IsDecoratorInstruction(const InstructionItem* instruction);
+
+/**
+ * @brief Returns an item representing is_root property, or nullptr if the given parent doesn't
+ * have such property registered.
+ */
+const mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent);
+
+mvvm::SessionItem* GetIsRootItem(mvvm::SessionItem& parent);
+
+/**
+ * @brief Checks if the instruction can be considered as potential root of the procedure.
+ *
+ * The instruction is considered as potential root it is a top instruction in instruction container.
+ */
+bool IsPotentialRootInstruction(const InstructionItem& instruction);
+
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_MODEL_UNIVERSAL_ITEM_HELPER_H_
+#endif  // OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_HELPER_H_

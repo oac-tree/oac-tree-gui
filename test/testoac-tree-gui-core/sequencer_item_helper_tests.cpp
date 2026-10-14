@@ -24,9 +24,9 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_includes.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
@@ -37,7 +37,7 @@
 namespace oac_tree_gui::test
 {
 
-//! Tests for utility functions from sequencer_utils.h
+//! Tests for utility functions from sequencer_item_helper.h
 
 class SequencerItemHelperTest : public ::testing::Test
 {
@@ -50,34 +50,9 @@ public:
       AddProperty(itemconstants::kStatus, "");
       AddProperty(itemconstants::kBreakpoint, "");
       AddProperty(itemconstants::kIsAvailable, "");
-      AddProperty(domainconstants::kIsRootAttribute, "");
     }
   };
 };
-
-TEST_F(SequencerItemHelperTest, IsCompoundInstruction)
-{
-  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
-  EXPECT_TRUE(IsCompoundInstruction(sequence.get()));
-
-  auto repeat = CreateInstructionItem(domainconstants::kRepeatInstructionType);
-  EXPECT_TRUE(IsCompoundInstruction(repeat.get()));
-
-  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  EXPECT_FALSE(IsCompoundInstruction(wait.get()));
-}
-
-TEST_F(SequencerItemHelperTest, IsDecoratorInstruction)
-{
-  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
-  EXPECT_FALSE(IsDecoratorInstruction(sequence.get()));
-
-  auto repeat = CreateInstructionItem(domainconstants::kRepeatInstructionType);
-  EXPECT_TRUE(IsDecoratorInstruction(repeat.get()));
-
-  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  EXPECT_FALSE(IsDecoratorInstruction(wait.get()));
-}
 
 TEST_F(SequencerItemHelperTest, Clone)
 {
@@ -133,38 +108,12 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
   EXPECT_EQ(GetStatusItem(item), nullptr);
   EXPECT_EQ(GetBreakpointItem(item), nullptr);
   EXPECT_EQ(GetIsAvailableItem(item), nullptr);
-  EXPECT_EQ(GetIsRootItem(item), nullptr);
 
   // test item has property items
   const TestItem test_item;
   EXPECT_NE(GetStatusItem(test_item), nullptr);
   EXPECT_NE(GetBreakpointItem(test_item), nullptr);
   EXPECT_NE(GetIsAvailableItem(test_item), nullptr);
-  EXPECT_NE(GetIsRootItem(test_item), nullptr);
-}
-
-TEST_F(SequencerItemHelperTest, IsPotentialRootInstruction)
-{
-  {  // instruction outside container
-    const auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
-    EXPECT_FALSE(IsPotentialRootInstruction(*sequence));
-  }
-
-  {  // two instructions in container
-    InstructionContainerItem container;
-    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
-    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
-    EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
-    EXPECT_TRUE(IsPotentialRootInstruction(*sequence1));
-  }
-
-  {  // instruction with child in container
-    InstructionContainerItem container;
-    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
-    auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
-    EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
-    EXPECT_FALSE(IsPotentialRootInstruction(*wait0));
-  }
 }
 
 }  // namespace oac_tree_gui::test

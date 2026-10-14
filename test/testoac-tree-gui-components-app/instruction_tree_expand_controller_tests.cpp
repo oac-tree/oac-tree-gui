@@ -24,7 +24,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/viewmodel/instruction_operation_viewmodel.h>
 
 #include <mvvm/model/application_model.h>

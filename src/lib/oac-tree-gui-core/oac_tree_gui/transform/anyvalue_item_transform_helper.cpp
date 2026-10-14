@@ -24,9 +24,9 @@
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>

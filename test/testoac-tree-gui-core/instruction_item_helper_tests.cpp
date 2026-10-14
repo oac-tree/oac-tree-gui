@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/model/universal_item_helper.h"
+#include "oac_tree_gui/model/instruction_item_helper.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -36,13 +36,13 @@ namespace oac_tree_gui::test
 {
 
 /**
- * @brief Tests for helper methods from universal_item_helper.h
+ * @brief Tests for helper methods from instruction_item_helper.h
  */
-class UniversalItemHelperTest : public ::testing::Test
+class InstructionItemHelperTest : public ::testing::Test
 {
 };
 
-TEST_F(UniversalItemHelperTest, AddKnownInstructionToSequencerModel)
+TEST_F(InstructionItemHelperTest, AddKnownInstructionToSequencerModel)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -54,7 +54,7 @@ TEST_F(UniversalItemHelperTest, AddKnownInstructionToSequencerModel)
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
 
-TEST_F(UniversalItemHelperTest, AddUnknownDomainInstructionToTheGUI)
+TEST_F(InstructionItemHelperTest, AddUnknownDomainInstructionToTheGUI)
 {
   using test::UnknownDomainInstruction;
 
@@ -71,7 +71,7 @@ TEST_F(UniversalItemHelperTest, AddUnknownDomainInstructionToTheGUI)
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
 
-TEST_F(UniversalItemHelperTest, IsCollapsed)
+TEST_F(InstructionItemHelperTest, IsCollapsed)
 {
   auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
   EXPECT_FALSE(IsCollapsed(*item));
@@ -83,7 +83,7 @@ TEST_F(UniversalItemHelperTest, IsCollapsed)
   EXPECT_FALSE(IsCollapsed(*item));
 }
 
-TEST_F(UniversalItemHelperTest, ToggleCollapsed)
+TEST_F(InstructionItemHelperTest, ToggleCollapsed)
 {
   auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
 
@@ -94,13 +94,13 @@ TEST_F(UniversalItemHelperTest, ToggleCollapsed)
   EXPECT_FALSE(IsCollapsed(*item));
 }
 
-TEST_F(UniversalItemHelperTest, IsCollapsible)
+TEST_F(InstructionItemHelperTest, IsCollapsible)
 {
   EXPECT_TRUE(IsCollapsible(*CreateInstructionItem(domainconstants::kSequenceInstructionType)));
   EXPECT_FALSE(IsCollapsible(*CreateInstructionItem(domainconstants::kWaitInstructionType)));
 }
 
-TEST_F(UniversalItemHelperTest, GetCollapsedItems)
+TEST_F(InstructionItemHelperTest, GetCollapsedItems)
 {
   InstructionContainerItem container;
   auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
@@ -115,6 +115,63 @@ TEST_F(UniversalItemHelperTest, GetCollapsedItems)
 
   collapsed = GetCollapsedItems(container);
   EXPECT_EQ(collapsed, std::vector<const InstructionItem*>({sequence0, sequence1}));
+}
+
+TEST_F(InstructionItemHelperTest, IsCompoundInstruction)
+{
+  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_TRUE(IsCompoundInstruction(sequence.get()));
+
+  auto repeat = CreateInstructionItem(domainconstants::kRepeatInstructionType);
+  EXPECT_TRUE(IsCompoundInstruction(repeat.get()));
+
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  EXPECT_FALSE(IsCompoundInstruction(wait.get()));
+}
+
+TEST_F(InstructionItemHelperTest, IsDecoratorInstruction)
+{
+  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_FALSE(IsDecoratorInstruction(sequence.get()));
+
+  auto repeat = CreateInstructionItem(domainconstants::kRepeatInstructionType);
+  EXPECT_TRUE(IsDecoratorInstruction(repeat.get()));
+
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  EXPECT_FALSE(IsDecoratorInstruction(wait.get()));
+}
+
+TEST_F(InstructionItemHelperTest, IsPotentialRootInstruction)
+{
+  {  // instruction outside container
+    const auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+    EXPECT_FALSE(IsPotentialRootInstruction(*sequence));
+  }
+
+  {  // two instructions in container
+    InstructionContainerItem container;
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+    auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+    EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
+    EXPECT_TRUE(IsPotentialRootInstruction(*sequence1));
+  }
+
+  {  // instruction with child in container
+    InstructionContainerItem container;
+    auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+    auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+    EXPECT_TRUE(IsPotentialRootInstruction(*sequence0));
+    EXPECT_FALSE(IsPotentialRootInstruction(*wait0));
+  }
+}
+
+TEST_F(InstructionItemHelperTest, GetIsRootItem)
+{
+  const mvvm::SessionItem item;
+  EXPECT_EQ(GetIsRootItem(item), nullptr);
+
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  EXPECT_NE(GetIsRootItem(*wait), nullptr);
 }
 
 }  // namespace oac_tree_gui::test

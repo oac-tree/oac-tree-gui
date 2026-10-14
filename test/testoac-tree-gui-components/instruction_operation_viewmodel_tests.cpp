@@ -22,8 +22,8 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
 #include <oac_tree_gui/transform/instruction_descriptor_helper.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>

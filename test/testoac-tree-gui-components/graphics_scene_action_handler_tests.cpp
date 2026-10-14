@@ -23,7 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 
 #include <mvvm/model/application_model.h>

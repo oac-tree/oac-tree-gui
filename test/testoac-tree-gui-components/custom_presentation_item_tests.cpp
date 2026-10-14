@@ -24,10 +24,9 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/compound_item.h>

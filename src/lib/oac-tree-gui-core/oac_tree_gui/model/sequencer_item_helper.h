@@ -22,7 +22,7 @@
 #define OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_HELPER_H_
 
 //! @file
-//! Various auxiliary functions for sequencer items.
+//! Functions to find property items of sequencer items.
 
 #include <string>
 
@@ -33,18 +33,6 @@ class SessionItem;
 
 namespace oac_tree_gui
 {
-
-class InstructionItem;
-
-/**
- * @brief Checks if the given instruction represents a compound with multiple children.
- */
-bool IsCompoundInstruction(const InstructionItem* instruction);
-
-/**
- * @brief Checks if the given instruction represents a decorator instruction.
- */
-bool IsDecoratorInstruction(const InstructionItem* instruction);
 
 /**
  * @brief Returns an item representing a property with a given tag, or nullptr if the given parent
@@ -85,21 +73,6 @@ mvvm::SessionItem* GetIsAvailableItem(mvvm::SessionItem& parent);
 const mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
 
 mvvm::SessionItem* GetChannelItem(mvvm::SessionItem& parent);
-
-/**
- * @brief Returns an item representing is_root property, or nullptr if the given parent doesn't
- * have such property registered.
- */
-const mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent);
-
-mvvm::SessionItem* GetIsRootItem(mvvm::SessionItem& parent);
-
-/**
- * @brief Checks if the instruction can be considered as potential root of the procedure.
- *
- * The instruction is considered as potential root it is a top instruction in instruction container.
- */
-bool IsPotentialRootInstruction(const InstructionItem& instruction);
 
 }  // namespace oac_tree_gui
 

@@ -23,7 +23,7 @@
 #include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 

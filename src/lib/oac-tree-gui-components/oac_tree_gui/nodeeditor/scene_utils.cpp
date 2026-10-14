@@ -22,7 +22,7 @@
 
 #include "scene_constants.h"
 
-#include <oac_tree_gui/model/sequencer_item_helper.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/style/graphics_scene_style.h>
 #include <oac_tree_gui/style/style_helper.h>
 

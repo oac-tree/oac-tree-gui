@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "universal_item_helper.h"
+#include "instruction_item_helper.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -31,9 +31,25 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/model/tagged_items.h>
+#include <mvvm/utils/container_utils.h>
 
 namespace oac_tree_gui
 {
+
+namespace
+{
+
+std::vector<std::string> GetDomainDecoratorNames()
+{
+  std::vector<std::string> result{
+      domainconstants::kForceSuccessInstructionType, domainconstants::kIncludeInstructionType,
+      domainconstants::kListenInstructionType, domainconstants::kRepeatInstructionType,
+      domainconstants::kInverterInstructionType};
+  return result;
+}
+
+}  // namespace
 
 InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index)
@@ -97,6 +113,40 @@ const sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
 sup::gui::AnyValueItem* GetAnyValueItem(InstructionItem& item)
 {
   return item.FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag);
+}
+
+bool IsCompoundInstruction(const InstructionItem* instruction)
+{
+  return instruction->GetTaggedItems()->HasTag(itemconstants::kChildInstructions);
+}
+
+bool IsDecoratorInstruction(const InstructionItem* instruction)
+{
+  static const std::vector<std::string> domain_names = GetDomainDecoratorNames();
+  return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
+}
+
+const mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent)
+{
+  // FindItem is total, it returns nullptr when the tag is not registered
+  return parent.FindItem(domainconstants::kIsRootAttribute);
+}
+
+mvvm::SessionItem* GetIsRootItem(mvvm::SessionItem& parent)
+{
+  return parent.FindItem(domainconstants::kIsRootAttribute);
+}
+
+bool IsPotentialRootInstruction(const InstructionItem& instruction)
+{
+  if (auto parent = instruction.GetParent(); parent != nullptr)
+  {
+    if (parent->GetType() == mvvm::GetTypeName<InstructionContainerItem>())
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 }  // namespace oac_tree_gui

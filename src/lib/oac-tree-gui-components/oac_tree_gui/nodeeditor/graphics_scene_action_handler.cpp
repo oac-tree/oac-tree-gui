@@ -22,7 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 
 #include <mvvm/nodeeditor/i_node_connection.h>
 #include <mvvm/nodeeditor/i_node_port.h>

@@ -22,8 +22,8 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
 
 #include <mvvm/editors/string_completer_combo_editor.h>
 #include <mvvm/model/application_model.h>

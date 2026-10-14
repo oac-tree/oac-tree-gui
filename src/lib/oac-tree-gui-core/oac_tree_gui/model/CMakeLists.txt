@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   instruction_container_item.h
   instruction_item.cpp
   instruction_item.h
+  instruction_item_helper.cpp
+  instruction_item_helper.h
   instruction_status.cpp
   instruction_status.h
   item_constants.h
@@ -55,8 +57,6 @@ target_sources(${library_name} PRIVATE
   standard_variable_items.h
   text_edit_item.cpp
   text_edit_item.h
-  universal_item_helper.cpp
-  universal_item_helper.h
   universal_variable_item.cpp
   universal_variable_item.h
   variable_info_item.cpp

@@ -21,6 +21,7 @@ target_sources(${test} PRIVATE
   instruction_attribute_presets_tests.cpp
   instruction_container_item_tests.cpp
   instruction_descriptor_helper_tests.cpp
+  instruction_item_helper_tests.cpp
   instruction_item_tests.cpp
   instruction_item_transform_helper_tests.cpp
   instruction_status_tests.cpp
@@ -46,7 +47,6 @@ target_sources(${test} PRIVATE
   standard_variable_items_tests.cpp
   text_edit_item_tests.cpp
   transform_from_domain_tests.cpp
-  universal_item_helper_tests.cpp
   universal_variable_item_tests.cpp
   variable_info_item_tests.cpp
   variable_item_tests.cpp
