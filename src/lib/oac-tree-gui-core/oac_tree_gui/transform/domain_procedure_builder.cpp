@@ -30,6 +30,7 @@
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/domain_workspace_builder.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/utils/numeric_utils.h>
 #include <mvvm/utils/string_utils.h>
@@ -68,7 +69,7 @@ std::unique_ptr<instruction_t> CreateAdjustedDomainInstruction(const Instruction
 
   if (behavior == itemconstants::kNativeBehavior)
   {
-    return item.CreateDomainInstruction();
+    return CreateDomainInstruction(item);
   }
 
   if (behavior == itemconstants::kSucceedBehavior)

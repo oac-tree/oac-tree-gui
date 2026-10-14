@@ -414,7 +414,7 @@ TEST_F(InstructionItemTransformHelperTest, IncludeToDomainWithCustomAttribute)
   (void)property.SetData(custom_value);
   EXPECT_TRUE(IsCollapsed(*item));
 
-  auto domain_item = item->CreateDomainInstruction();
+  auto domain_item = CreateDomainInstruction(*item);
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
   EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
@@ -435,7 +435,7 @@ TEST_F(InstructionItemTransformHelperTest, ParallelSequenceToDomainWithZeroSucce
   item->SetAttribute(domainconstants::kSuccessThresholdAttribute, mvvm::uint32{0});
   item->SetAttribute(domainconstants::kFailureThresholdAttribute, mvvm::uint32{43});
 
-  auto domain_item = item->CreateDomainInstruction();
+  auto domain_item = CreateDomainInstruction(*item);
   EXPECT_EQ(domain_item->GetType(), domainconstants::kParallelInstructionType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kSuccessThresholdAttribute), "0");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFailureThresholdAttribute), "43");
@@ -454,7 +454,7 @@ TEST_F(InstructionItemTransformHelperTest, RepeatRoundTrip)
 
   auto item = CreateInstructionItem(domainconstants::kRepeatInstructionType);
   item->SetAttribute(domainconstants::kMaxCountAttribute, mvvm::int32{42});
-  auto domain_item = item->CreateDomainInstruction();
+  auto domain_item = CreateDomainInstruction(*item);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kMaxCountAttribute), "42");
 
   // no child
@@ -489,7 +489,7 @@ TEST_F(InstructionItemTransformHelperTest, WaitToDomainVaryingTimeout)
   SetAttributeExposedFlag(true, *property);
   SetAttributeAsString("$par1", *property);
 
-  auto domain_item = item->CreateDomainInstruction();
+  auto domain_item = CreateDomainInstruction(*item);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
 }
 
@@ -499,11 +499,11 @@ TEST_F(InstructionItemTransformHelperTest, WaitToDomainIsRootAttribute)
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
 
   item->SetIsRootFlag(true);
-  auto domain_item = item->CreateDomainInstruction();
+  auto domain_item = CreateDomainInstruction(*item);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
 
   item->SetIsRootFlag(false);
-  domain_item = item->CreateDomainInstruction();
+  domain_item = CreateDomainInstruction(*item);
   EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kIsRootAttribute));
 }
 
@@ -543,7 +543,7 @@ TEST_F(InstructionItemTransformHelperTest, PvAccessWriteRoundTrip)
     item->SetAttribute(domainconstants::kChannelAttribute, std::string("def"));
     SetAnyValue(expected_anyvalue, *item);
 
-    auto domain_item = item->CreateDomainInstruction();
+    auto domain_item = CreateDomainInstruction(*item);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "def");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
@@ -552,7 +552,7 @@ TEST_F(InstructionItemTransformHelperTest, PvAccessWriteRoundTrip)
     // not exposed AnyValueItem does not go to the domain
     item->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("var"));
     SetAttributeExposedFlag(false, *GetAnyValueItem(*item));
-    domain_item = item->CreateDomainInstruction();
+    domain_item = CreateDomainInstruction(*item);
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
     EXPECT_NO_THROW(domain_item->Setup(m_procedure));
@@ -594,7 +594,7 @@ TEST_F(InstructionItemTransformHelperTest, RPCClientRoundTrip)
     item->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("output"));
     SetAnyValue(expected_anyvalue, *item);
 
-    auto domain_item = item->CreateDomainInstruction();
+    auto domain_item = CreateDomainInstruction(*item);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kServiceAttribute), "service");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
