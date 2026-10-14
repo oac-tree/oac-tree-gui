@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/core/variant.h>
 #include <mvvm/model/item_utils.h>
@@ -39,7 +38,7 @@ namespace
 const std::vector<std::string>& GetSkipAttributeList()
 {
   static const std::vector<std::string> kSkipAttributeList = {
-      oac_tree_gui::domainconstants::kIsRootAttribute, oac_tree_gui::itemconstants::kBehaviorTag};
+      oac_tree_gui::domainconstants::kIsRootAttribute};
   return kSkipAttributeList;
 }
 
@@ -80,7 +79,13 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
     const mvvm::SessionItem* item)
 {
   std::vector<std::pair<std::string, std::string>> result;
-  for (auto property : mvvm::utils::SinglePropertyItems(*item))
+  const auto* instruction = dynamic_cast<const InstructionItem*>(item);
+  if ((instruction == nullptr) || (instruction->GetAttributes() == nullptr))
+  {
+    return result;
+  }
+
+  for (auto property : mvvm::utils::SinglePropertyItems(*instruction->GetAttributes()))
   {
     if (IsPropertyToShow(property->GetTagIndex().GetTag()))
     {

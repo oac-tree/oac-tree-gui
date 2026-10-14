@@ -23,8 +23,8 @@
 #include "component_helper.h"
 #include "custom_presentation_items.h"
 
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 
 #include <mvvm/model/session_item.h>
@@ -64,7 +64,7 @@ std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& i
 
 std::unique_ptr<mvvm::ViewItem> CreateRootCheckboxViewItem(InstructionItem& item)
 {
-  auto property_bool_item = GetPropertyItem(item, domainconstants::kIsRootAttribute);
+  auto property_bool_item = GetIsRootItem(item);
   auto presentation = std::make_unique<ExclusiveCheckStatePresentationItem>(property_bool_item);
   return std::make_unique<mvvm::ViewItem>(std::move(presentation));
 }

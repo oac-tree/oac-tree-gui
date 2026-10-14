@@ -24,6 +24,8 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
+#include <sup/gui/model/anyvalue_item.h>
+
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/make_clone.h>
 
@@ -63,14 +65,26 @@ std::vector<InstructionItem*> InstructionItem::GetInstructions()
   return FindItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
+const mvvm::CompoundItem* InstructionItem::GetAttributes() const
+{
+  return FindItem<mvvm::CompoundItem>(itemconstants::kAttributes);
+}
+
+mvvm::CompoundItem* InstructionItem::GetAttributes()
+{
+  return FindItem<mvvm::CompoundItem>(itemconstants::kAttributes);
+}
+
 bool InstructionItem::IsRoot() const
 {
-  return Property<bool>(domainconstants::kIsRootAttribute);
+  return GetAttribute<bool>(domainconstants::kIsRootAttribute);
 }
 
 void InstructionItem::SetAttribute(const std::string& name, const mvvm::variant_t& value)
 {
-  ::oac_tree_gui::SetAttribute(*this, name, value);
+  auto* attribute = GetAttributes()->FindItem<sup::gui::AnyValueItem>(name);
+  SetAttributeExposedFlag(true, *attribute);
+  (void)attribute->SetData(value);
 }
 
 void InstructionItem::SetIsRootFlag(bool value)

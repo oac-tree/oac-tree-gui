@@ -232,7 +232,8 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
   auto instruction_item = GetSelectedInstruction();
 
   if ((model == nullptr) || (instruction_item == nullptr)
-      || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
+      || (instruction_item->GetAttributes() == nullptr)
+      || !mvvm::utils::HasTag(*instruction_item->GetAttributes(), itemconstants::kAnyValueTag))
   {
     SendMessage("Please select an instruction which is intended for AnyValue storing");
     return;
@@ -259,7 +260,8 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
       model->RemoveItem(selected_anyvalue);
     }
 
-    (void)model->InsertItem(std::move(dialog_result.result), instruction_item, {});
+    (void)model->InsertItem(std::move(dialog_result.result), instruction_item->GetAttributes(),
+                            {itemconstants::kAnyValueTag, 0});
   }
 }
 

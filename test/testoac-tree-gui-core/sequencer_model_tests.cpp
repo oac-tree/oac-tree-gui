@@ -96,15 +96,16 @@ TEST_F(SequencerModelTest, XmlDocumentSaveLoad)
   EXPECT_EQ(model.GetProcedures().at(0)->GetInstructionContainer()->GetInstructions().size(), 1);
 }
 
-//! Checking that domain name of instruction item outsurvive serialization (real-life bug).
+//! Checking that domain name and attributes of instruction item outsurvive serialization.
 TEST_F(SequencerModelTest, InstructionSerialization)
 {
   const auto file_path = GetFilePath("InstructionSaveLoad.xml");
 
   SequencerModel model;
   auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-  (void)InsertInstruction(domainconstants::kWaitInstructionType,
-                          procedure_item->GetInstructionContainer());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType,
+                                     procedure_item->GetInstructionContainer());
+  wait_item->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
 
   mvvm::XmlDocument document({&model});
 
@@ -123,6 +124,7 @@ TEST_F(SequencerModelTest, InstructionSerialization)
       model.GetProcedures().at(0)->GetInstructionContainer()->GetInstructions().at(0);
 
   EXPECT_EQ(new_wait_item->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(new_wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 }
 
 //! Checking that domain name of universal variable item outsurvive serialization (real-life bug).

@@ -97,7 +97,7 @@ void AddGuiProperties(InstructionItem& item)
 }
 
 //! Registers the tag for the JSON type and value pair, with an empty AnyValueItem.
-void AddAnyValueTag(InstructionItem& item)
+void AddAnyValueTag(mvvm::CompoundItem& item)
 {
   item.RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
@@ -125,7 +125,7 @@ void RegisterChildrenTag(instruction_t::Category category, InstructionItem& item
 }
 
 //! Adds a string property for an attribute unknown to the descriptor.
-void AddStringAttribute(const std::string& name, const std::string& value, InstructionItem& item)
+void AddStringAttribute(const std::string& name, const std::string& value, mvvm::CompoundItem& item)
 {
   auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(name);
   property.SetAnyTypeName(sup::dto::kStringTypeName);
@@ -139,13 +139,15 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
   item.SetDomainType(descriptor.domain_type);
   (void)item.SetDisplayName(descriptor.domain_type);
 
+  auto& attributes = item.AddProperty<mvvm::CompoundItem>(itemconstants::kAttributes);
+  (void)attributes.SetDisplayName("Attributes");
   for (const auto& attribute : descriptor.attributes)
   {
     if (!IsAttributeProperty(attribute.name))
     {
       continue;
     }
-    auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(attribute.name);
+    auto& property = attributes.AddProperty<sup::gui::AnyValueScalarItem>(attribute.name);
     property.SetAnyTypeName(sup::gui::GetAnyValueFromScalar(attribute.default_value).GetTypeName());
     (void)property.SetData(attribute.default_value);
     (void)property.SetDisplayName(attribute.name);
@@ -160,7 +162,7 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
   AddGuiProperties(item);
 
   if (auto property =
-          item.FindItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
+          attributes.FindItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
       property)
   {
     (void)property->SetDisplayName("Show collapsed");
@@ -170,14 +172,15 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
   if (FindAttributeDescriptor(descriptor, domainconstants::kTypeAttribute)
       && FindAttributeDescriptor(descriptor, domainconstants::kValueAttribute))
   {
-    AddAnyValueTag(item);
+    AddAnyValueTag(attributes);
   }
 }
 
 //! Sets attribute values of the node to the item.
 void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
 {
-  const bool has_anyvalue_tag = mvvm::utils::HasTag(item, itemconstants::kAnyValueTag);
+  auto& attributes = *item.GetAttributes();
+  const bool has_anyvalue_tag = mvvm::utils::HasTag(attributes, itemconstants::kAnyValueTag);
   std::string type_json;
   std::string value_json;
 
@@ -185,7 +188,7 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
   {
     if (IsAttributeProperty(name) && FindAttributeDescriptor(node.descriptor, name))
     {
-      SetPropertyFromAttributeString(value, *item.FindItem<sup::gui::AnyValueItem>(name));
+      SetPropertyFromAttributeString(value, *attributes.FindItem<sup::gui::AnyValueItem>(name));
     }
     else if (name == domainconstants::kNameAttribute)
     {
@@ -204,7 +207,7 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
     }
     else
     {
-      AddStringAttribute(name, value, item);
+      AddStringAttribute(name, value, attributes);
     }
   }
 
@@ -268,7 +271,7 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& it
 {
   auto result = CreateDomainInstruction(item.GetDomainType());
 
-  const auto properties = mvvm::utils::SinglePropertyItems(item);
+  const auto properties = mvvm::utils::SinglePropertyItems(*item.GetAttributes());
   for (const auto* property : mvvm::utils::CastItems<const sup::gui::AnyValueItem>(properties))
   {
     if (const auto tag = property->GetTagIndex().GetTag(); tag != itemconstants::kAnyValueTag)

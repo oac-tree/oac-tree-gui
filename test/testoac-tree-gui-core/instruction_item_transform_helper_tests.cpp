@@ -250,19 +250,32 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeChildrenTag)
   auto create_item = [](sup::oac_tree::Instruction::Category category)
   { return CreateInstructionItemTree({{"UnknownInstruction", category, {}}, {}, 0, {}}).root; };
 
+  auto get_children_taginfo = [](const InstructionItem& item)
+  {
+    const auto* tagged_items = item.GetTaggedItems();
+    for (std::size_t index = 0; index < tagged_items->GetTagCount(); ++index)
+    {
+      if (tagged_items->ContainerAt(index).GetName() == itemconstants::kChildInstructions)
+      {
+        return tagged_items->ContainerAt(index).GetTagInfo();
+      }
+    }
+    return mvvm::TagInfo(std::string(), 0, 0, {});
+  };
+
   EXPECT_FALSE(mvvm::utils::HasTag(*create_item(sup::oac_tree::Instruction::kAction),
                                    itemconstants::kChildInstructions));
 
   auto compound = create_item(sup::oac_tree::Instruction::kCompound);
   ASSERT_TRUE(mvvm::utils::HasTag(*compound, itemconstants::kChildInstructions));
-  auto compound_taginfo = compound->GetTaggedItems()->ContainerAt(0).GetTagInfo();
+  auto compound_taginfo = get_children_taginfo(*compound);
   EXPECT_EQ(compound_taginfo.GetName(), itemconstants::kChildInstructions);
   EXPECT_EQ(compound_taginfo.GetMin(), 0);
   EXPECT_EQ(compound_taginfo.GetMax(), -1);
 
   auto decorator = create_item(sup::oac_tree::Instruction::kDecorator);
   ASSERT_TRUE(mvvm::utils::HasTag(*decorator, itemconstants::kChildInstructions));
-  auto decorator_taginfo = decorator->GetTaggedItems()->ContainerAt(0).GetTagInfo();
+  auto decorator_taginfo = get_children_taginfo(*decorator);
   EXPECT_EQ(decorator_taginfo.GetName(), itemconstants::kChildInstructions);
   EXPECT_EQ(decorator_taginfo.GetMin(), 0);
   EXPECT_EQ(decorator_taginfo.GetMax(), 1);
@@ -285,7 +298,7 @@ TEST_F(InstructionItemTransformHelperTest, IncludeFromDomainWithCustomAttribute)
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kFileNameAttribute), "abc");
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kPathAttribute), "def");
 
-  auto property = item->FindItem<sup::gui::AnyValueScalarItem>(custom_name);
+  auto property = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>(custom_name);
   ASSERT_NE(property, nullptr);
   EXPECT_EQ(property->GetAnyTypeName(), sup::dto::kStringTypeName);
   EXPECT_EQ(property->Data<std::string>(), custom_value);
@@ -299,7 +312,7 @@ TEST_F(InstructionItemTransformHelperTest, IncludeToDomainWithCustomAttribute)
 
   auto item = CreateInstructionItem(domainconstants::kIncludeInstructionType);
   item->SetAttribute(domainconstants::kPathAttribute, std::string("def"));
-  auto& property = item->AddProperty<sup::gui::AnyValueScalarItem>(custom_name);
+  auto& property = item->GetAttributes()->AddProperty<sup::gui::AnyValueScalarItem>(custom_name);
   property.SetAnyTypeName(sup::dto::kStringTypeName);
   (void)property.SetData(custom_value);
   EXPECT_TRUE(IsCollapsed(*item));
@@ -374,7 +387,8 @@ TEST_F(InstructionItemTransformHelperTest, WaitFromDomain)
 TEST_F(InstructionItemTransformHelperTest, WaitToDomainVaryingTimeout)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  auto property = item->FindItem<sup::gui::AnyValueScalarItem>(domainconstants::kTimeoutAttribute);
+  auto property = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>(
+      domainconstants::kTimeoutAttribute);
   ASSERT_NE(property, nullptr);
   SetAttributeExposedFlag(true, *property);
   SetAttributeAsString("$par1", *property);
@@ -531,20 +545,20 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
   EXPECT_EQ(item->GetDomainType(), "UnknownCompound");
   EXPECT_EQ(item->GetDisplayName(), "main");
 
-  auto* threshold = item->FindItem<sup::gui::AnyValueScalarItem>("threshold");
+  auto* threshold = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>("threshold");
   ASSERT_NE(threshold, nullptr);
   EXPECT_EQ(threshold->GetAnyTypeName(), sup::dto::kUInt32TypeName);
   EXPECT_EQ(threshold->Data<mvvm::uint32>(), 3);
   EXPECT_EQ(threshold->GetToolTip(), "Threshold tooltip");
   EXPECT_TRUE(GetAttributeExposedFlag(*threshold));
 
-  auto* path = item->FindItem<sup::gui::AnyValueScalarItem>("path");
+  auto* path = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>("path");
   ASSERT_NE(path, nullptr);
   EXPECT_EQ(path->Data<std::string>(), "default");
   EXPECT_TRUE(GetAttributeExposedFlag(*path));
   EXPECT_FALSE(item->IsRoot());
 
-  auto* custom = item->FindItem<sup::gui::AnyValueScalarItem>("custom");
+  auto* custom = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>("custom");
   ASSERT_NE(custom, nullptr);
   EXPECT_EQ(custom->GetAnyTypeName(), sup::dto::kStringTypeName);
   EXPECT_EQ(custom->Data<std::string>(), "abc");
@@ -581,10 +595,12 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeWithPlaceholderAndReference)
                      {domainconstants::kBlockingAttribute, "@var"}};
 
   auto tree = CreateInstructionItemTree(node);
-  auto* timeout = tree.root->FindItem<sup::gui::AnyValueItem>(domainconstants::kTimeoutAttribute);
+  auto* timeout = tree.root->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
+      domainconstants::kTimeoutAttribute);
   EXPECT_EQ(timeout->Data<std::string>(), "$par");
   EXPECT_TRUE(GetAttributeExposedFlag(*timeout));
-  auto* blocking = tree.root->FindItem<sup::gui::AnyValueItem>(domainconstants::kBlockingAttribute);
+  auto* blocking = tree.root->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
+      domainconstants::kBlockingAttribute);
   EXPECT_EQ(blocking->Data<std::string>(), "@var");
   EXPECT_TRUE(GetAttributeExposedFlag(*blocking));
 
@@ -602,7 +618,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromInfoNode)
                                               {{domainconstants::kPathAttribute, "abc"}});
     auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
     EXPECT_TRUE(IsCollapsed(*tree.root));
-    auto* path = tree.root->FindItem<sup::gui::AnyValueScalarItem>(domainconstants::kPathAttribute);
+    auto* path = tree.root->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>(
+        domainconstants::kPathAttribute);
     ASSERT_NE(path, nullptr);
     EXPECT_EQ(path->GetAnyTypeName(), sup::dto::kStringTypeName);
     EXPECT_EQ(path->Data<std::string>(), "abc");
@@ -625,9 +642,34 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromInfoNode)
         {{domainconstants::kTypeAttribute, type_json}, {domainconstants::kValueAttribute, "42"}});
     auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
     EXPECT_FALSE(mvvm::utils::HasTag(*tree.root, itemconstants::kAnyValueTag));
-    EXPECT_EQ(tree.root->Property<std::string>(domainconstants::kTypeAttribute), type_json);
-    EXPECT_EQ(tree.root->Property<std::string>(domainconstants::kValueAttribute), "42");
+    EXPECT_EQ(tree.root->GetAttributes()->Property<std::string>(domainconstants::kTypeAttribute),
+              type_json);
+    EXPECT_EQ(tree.root->GetAttributes()->Property<std::string>(domainconstants::kValueAttribute),
+              "42");
   }
+}
+
+//! Domain attributes are in the attribute container, GUI properties are direct children.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeAttributeContainer)
+{
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  ASSERT_NE(wait->GetAttributes(), nullptr);
+
+  const std::vector<std::string> expected_tags{
+      itemconstants::kAttributes, itemconstants::kBehaviorTag, itemconstants::kStatus,
+      itemconstants::kXpos,       itemconstants::kYpos,        itemconstants::kBreakpoint};
+  EXPECT_EQ(mvvm::utils::RegisteredTags(*wait), expected_tags);
+
+  const std::vector<std::string> expected_attribute_tags{domainconstants::kIsRootAttribute,
+                                                         domainconstants::kTimeoutAttribute,
+                                                         domainconstants::kBlockingAttribute};
+  EXPECT_EQ(mvvm::utils::RegisteredTags(*wait->GetAttributes()), expected_attribute_tags);
+
+  auto include = CreateInstructionItem(domainconstants::kIncludeInstructionType);
+  EXPECT_TRUE(
+      mvvm::utils::HasTag(*include->GetAttributes(), domainconstants::kShowCollapsedAttribute));
+  EXPECT_TRUE(mvvm::utils::HasTag(*include, itemconstants::kChildInstructions));
+  EXPECT_FALSE(mvvm::utils::HasTag(*include, domainconstants::kShowCollapsedAttribute));
 }
 
 //! Repeat gets maxCount from the attribute presets. The preset goes to the domain.
@@ -638,7 +680,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeRepeatPreset)
   auto* item = tree.root.get();
 
   EXPECT_EQ(item->GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), -1);
-  auto* property = item->FindItem<sup::gui::AnyValueItem>(domainconstants::kMaxCountAttribute);
+  auto* property =
+      item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(domainconstants::kMaxCountAttribute);
   ASSERT_NE(property, nullptr);
   EXPECT_TRUE(GetAttributeExposedFlag(*property));
 
@@ -652,7 +695,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
   {
     auto tree =
         CreateInstructionItemTree(CreateInstructionNode(domainconstants::kWaitInstructionType));
-    EXPECT_FALSE(mvvm::utils::HasTag(*tree.root, itemconstants::kAnyValueTag));
+    EXPECT_FALSE(mvvm::utils::HasTag(*tree.root->GetAttributes(), itemconstants::kAnyValueTag));
     EXPECT_EQ(GetAnyValueItem(*tree.root), nullptr);
   }
 
@@ -666,7 +709,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
         domainconstants::kPvAccessWriteInstructionType, domainconstants::kRPCClientInstructionType})
   {
     auto tree = CreateInstructionItemTree(CreateInstructionNode(domain_type));
-    EXPECT_TRUE(mvvm::utils::HasTag(*tree.root, itemconstants::kAnyValueTag)) << domain_type;
+    EXPECT_TRUE(mvvm::utils::HasTag(*tree.root->GetAttributes(), itemconstants::kAnyValueTag))
+        << domain_type;
     auto* anyvalue_item = GetAnyValueItem(*tree.root);
     ASSERT_NE(anyvalue_item, nullptr) << domain_type;
     EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);

@@ -58,7 +58,9 @@ void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item)
 
 void SetAnyValue(const anyvalue_t& anyvalue, InstructionItem& item)
 {
-  if (!mvvm::utils::HasTag(item, oac_tree_gui::itemconstants::kAnyValueTag))
+  auto* attributes = item.GetAttributes();
+  if ((attributes == nullptr)
+      || !mvvm::utils::HasTag(*attributes, oac_tree_gui::itemconstants::kAnyValueTag))
   {
     throw LogicErrorException("This instruction is not inteded for storing AnyValueItem");
   }
@@ -68,7 +70,8 @@ void SetAnyValue(const anyvalue_t& anyvalue, InstructionItem& item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  (void)item.InsertItem(sup::gui::CreateAnyValueItem(anyvalue), mvvm::TagIndex::First());
+  (void)attributes->InsertItem(sup::gui::CreateAnyValueItem(anyvalue),
+                               {itemconstants::kAnyValueTag, 0});
 }
 
 void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& variable_item,

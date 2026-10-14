@@ -113,7 +113,7 @@ TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandState)
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
   auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
-  (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  SetCollapsed(true, *sequence1);
   auto wait = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
@@ -147,7 +147,7 @@ TEST_F(InstructionTreeExpandControllerTest, ExpandStateFromTreeViewToInstruction
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
   auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
-  (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  SetCollapsed(true, *sequence1);
   auto wait = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(QModelIndex()), 1);
@@ -190,7 +190,7 @@ TEST_F(InstructionTreeExpandControllerTest, SetTreeViewToInstructionExpandStateD
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
   auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
-  (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  SetCollapsed(true, *sequence1);
   (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);  // wait
 
   QTreeView tree;
@@ -261,7 +261,7 @@ TEST_F(InstructionTreeExpandControllerTest, ConnectionsRestoredAfterApply)
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, container);
   auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
-  (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  SetCollapsed(true, *sequence1);
   (void)InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);  // wait
 
   QTreeView tree;

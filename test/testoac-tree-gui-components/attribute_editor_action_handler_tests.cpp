@@ -84,7 +84,8 @@ TEST_F(AttributeEditorActionHandlerTest, WhenNothingIsSelectedHandlerCanNotPerfo
 TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelectedCallingEditorIsNotPossible)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  auto timeout_attribute = GetPropertyItem(*item, domainconstants::kTimeoutAttribute);
+  auto timeout_attribute =
+      GetPropertyItem(*item->GetAttributes(), domainconstants::kTimeoutAttribute);
 
   auto handler = CreateActionHandler(timeout_attribute);
 
@@ -117,7 +118,7 @@ TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlagForTimeoutAttribute)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
   auto timeout_attribute = dynamic_cast<sup::gui::AnyValueItem*>(
-      GetPropertyItem(*item, domainconstants::kTimeoutAttribute));
+      GetPropertyItem(*item->GetAttributes(), domainconstants::kTimeoutAttribute));
 
   auto handler = CreateActionHandler(timeout_attribute);
 

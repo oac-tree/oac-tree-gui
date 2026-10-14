@@ -60,13 +60,15 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
 
 bool IsCollapsible(const InstructionItem& item)
 {
-  return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute);
+  const auto* attributes = item.GetAttributes();
+  return (attributes != nullptr)
+         && mvvm::utils::HasTag(*attributes, domainconstants::kShowCollapsedAttribute);
 }
 
 bool IsCollapsed(const InstructionItem& item)
 {
-  return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute)
-             ? item.Property<bool>(domainconstants::kShowCollapsedAttribute)
+  return IsCollapsible(item)
+             ? item.GetAttributes()->Property<bool>(domainconstants::kShowCollapsedAttribute)
              : false;
 }
 
@@ -74,7 +76,7 @@ void SetCollapsed(bool value, InstructionItem& item)
 {
   if (IsCollapsible(item))
   {
-    (void)item.SetProperty(domainconstants::kShowCollapsedAttribute, value);
+    (void)item.GetAttributes()->SetProperty(domainconstants::kShowCollapsedAttribute, value);
   }
 }
 
@@ -82,8 +84,7 @@ void ToggleCollapsed(InstructionItem& item)
 {
   if (IsCollapsible(item))
   {
-    const bool current_value = item.Property<bool>(domainconstants::kShowCollapsedAttribute);
-    (void)item.SetProperty(domainconstants::kShowCollapsedAttribute, !current_value);
+    SetCollapsed(!IsCollapsed(item), item);
   }
 }
 
@@ -107,12 +108,18 @@ std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainer
 const sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item)
 {
   // FindItem is total, it returns nullptr when the tag is not registered
-  return item.FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag);
+  const auto* attributes = item.GetAttributes();
+  return (attributes != nullptr)
+             ? attributes->FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
+             : nullptr;
 }
 
 sup::gui::AnyValueItem* GetAnyValueItem(InstructionItem& item)
 {
-  return item.FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag);
+  auto* attributes = item.GetAttributes();
+  return (attributes != nullptr)
+             ? attributes->FindItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
+             : nullptr;
 }
 
 bool IsCompoundInstruction(const InstructionItem* instruction)
@@ -126,15 +133,29 @@ bool IsDecoratorInstruction(const InstructionItem* instruction)
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
 }
 
-const mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent)
+const mvvm::SessionItem* GetIsRootItem(const InstructionItem& item)
 {
   // FindItem is total, it returns nullptr when the tag is not registered
-  return parent.FindItem(domainconstants::kIsRootAttribute);
+  const auto* attributes = item.GetAttributes();
+  return (attributes != nullptr) ? attributes->FindItem(domainconstants::kIsRootAttribute)
+                                 : nullptr;
 }
 
-mvvm::SessionItem* GetIsRootItem(mvvm::SessionItem& parent)
+mvvm::SessionItem* GetIsRootItem(InstructionItem& item)
 {
-  return parent.FindItem(domainconstants::kIsRootAttribute);
+  auto* attributes = item.GetAttributes();
+  return (attributes != nullptr) ? attributes->FindItem(domainconstants::kIsRootAttribute)
+                                 : nullptr;
+}
+
+const InstructionItem* GetInstructionFromProperty(const mvvm::SessionItem& property)
+{
+  return mvvm::utils::FindItemUp<InstructionItem>(property.GetParent());
+}
+
+InstructionItem* GetInstructionFromProperty(mvvm::SessionItem& property)
+{
+  return mvvm::utils::FindItemUp<InstructionItem>(property.GetParent());
 }
 
 bool IsPotentialRootInstruction(const InstructionItem& instruction)

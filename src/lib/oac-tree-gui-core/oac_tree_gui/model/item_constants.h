@@ -35,6 +35,7 @@ constexpr auto kXpos = "kXpos";
 constexpr auto kYpos = "kYpos";
 constexpr auto kChildInstructions = "kChildInstructions";
 constexpr auto kAnyValueTag = "kAnyValueTag";
+constexpr auto kAttributes = "kAttributes";
 constexpr auto kIsAvailable = "connected";
 constexpr auto kBreakpoint = "breakpoint";
 constexpr auto kJobType = "kJobType";

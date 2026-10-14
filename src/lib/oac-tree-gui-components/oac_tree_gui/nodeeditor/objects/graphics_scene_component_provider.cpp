@@ -24,6 +24,7 @@
 #include <oac_tree_gui/composer/instruction_editor_action_handler.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/iterate_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 #include <oac_tree_gui/nodeeditor/graphics_scene_action_handler.h>
@@ -151,7 +152,7 @@ void GraphicsSceneComponentProvider::OnDataChanged(const mvvm::DataChangedEvent&
   // On every change of isCollapsed attribute, we regenerate the whole shape branch of parent above.
   if (event.item->GetTagIndex().GetTag() == domainconstants::kShowCollapsedAttribute)
   {
-    m_viewmodel_controller->UpdateBranch(event.item->GetParent());
+    m_viewmodel_controller->UpdateBranch(GetInstructionFromProperty(*event.item));
   }
 }
 

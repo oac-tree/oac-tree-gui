@@ -64,6 +64,13 @@ public:
   std::vector<InstructionItem*> GetInstructions();
 
   /**
+   * @brief Returns the container with domain attributes, or nullptr if the item is not set up.
+   */
+  const mvvm::CompoundItem* GetAttributes() const;
+
+  mvvm::CompoundItem* GetAttributes();
+
+  /**
    * @brief Sets the domain attribute to a given value and marks it as exposed.
    *
    * @param name The name of the attribute.
@@ -152,7 +159,7 @@ public:
 template <typename T>
 T InstructionItem::GetAttribute(const std::string& name) const
 {
-  return Property<T>(name);
+  return GetAttributes()->Property<T>(name);
 }
 
 }  // namespace oac_tree_gui

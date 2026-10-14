@@ -108,12 +108,22 @@ bool IsCompoundInstruction(const InstructionItem* instruction);
 bool IsDecoratorInstruction(const InstructionItem* instruction);
 
 /**
- * @brief Returns an item representing is_root property, or nullptr if the given parent doesn't
+ * @brief Returns an item representing is_root property, or nullptr if the given instruction doesn't
  * have such property registered.
  */
-const mvvm::SessionItem* GetIsRootItem(const mvvm::SessionItem& parent);
+const mvvm::SessionItem* GetIsRootItem(const InstructionItem& item);
 
-mvvm::SessionItem* GetIsRootItem(mvvm::SessionItem& parent);
+mvvm::SessionItem* GetIsRootItem(InstructionItem& item);
+
+/**
+ * @brief Returns the instruction owning the given property item, or nullptr.
+ *
+ * @param property A property item of the instruction, or an item inside its attribute container.
+ * @return The instruction above the property.
+ */
+const InstructionItem* GetInstructionFromProperty(const mvvm::SessionItem& property);
+
+InstructionItem* GetInstructionFromProperty(mvvm::SessionItem& property);
 
 /**
  * @brief Checks if the instruction can be considered as potential root of the procedure.

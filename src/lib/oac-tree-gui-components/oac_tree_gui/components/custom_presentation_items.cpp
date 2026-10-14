@@ -23,6 +23,7 @@
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/session_item.h>
@@ -127,7 +128,7 @@ InstructionItem* ExclusiveCheckStatePresentationItem::GetInstructionItem()
 {
   // Our GetItem() is PropertyItem carrying a boolean property, so we need to get its parent to get
   // InstructionItem
-  return (GetItem() == nullptr) ? nullptr : dynamic_cast<InstructionItem*>(GetItem()->GetParent());
+  return (GetItem() == nullptr) ? nullptr : GetInstructionFromProperty(*GetItem());
 }
 
 mvvm::ISessionModel* ExclusiveCheckStatePresentationItem::GetModel()

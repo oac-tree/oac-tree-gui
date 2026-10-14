@@ -102,7 +102,8 @@ TEST_F(InstructionItemTest, SetAndGetAttribute)
                                false,
                                false,
                                sup::oac_tree::AttributeCategory::kLiteral}});
-  auto* property = item->FindItem<sup::gui::AnyValueItem>(domainconstants::kTimeoutAttribute);
+  auto* property =
+      item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(domainconstants::kTimeoutAttribute);
   ASSERT_NE(property, nullptr);
   EXPECT_FALSE(GetAttributeExposedFlag(*property));
 

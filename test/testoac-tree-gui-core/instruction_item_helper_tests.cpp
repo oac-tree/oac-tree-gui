@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
@@ -110,8 +111,8 @@ TEST_F(InstructionItemHelperTest, GetCollapsedItems)
   auto collapsed = GetCollapsedItems(container);
   EXPECT_TRUE(collapsed.empty());
 
-  (void)sequence0->SetProperty(domainconstants::kShowCollapsedAttribute, true);
-  (void)sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  SetCollapsed(true, *sequence0);
+  SetCollapsed(true, *sequence1);
 
   collapsed = GetCollapsedItems(container);
   EXPECT_EQ(collapsed, std::vector<const InstructionItem*>({sequence0, sequence1}));
@@ -167,11 +168,27 @@ TEST_F(InstructionItemHelperTest, IsPotentialRootInstruction)
 
 TEST_F(InstructionItemHelperTest, GetIsRootItem)
 {
-  const mvvm::SessionItem item;
+  const InstructionItem item;
   EXPECT_EQ(GetIsRootItem(item), nullptr);
 
   auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
   EXPECT_NE(GetIsRootItem(*wait), nullptr);
+}
+
+TEST_F(InstructionItemHelperTest, GetInstructionFromProperty)
+{
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+
+  auto* timeout = wait->GetAttributes()->FindItem(domainconstants::kTimeoutAttribute);
+  ASSERT_NE(timeout, nullptr);
+  EXPECT_EQ(GetInstructionFromProperty(*timeout), wait.get());
+
+  auto* status = wait->FindItem(itemconstants::kStatus);
+  ASSERT_NE(status, nullptr);
+  EXPECT_EQ(GetInstructionFromProperty(*status), wait.get());
+
+  const mvvm::SessionItem item;
+  EXPECT_EQ(GetInstructionFromProperty(item), nullptr);
 }
 
 }  // namespace oac_tree_gui::test

@@ -23,6 +23,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
@@ -93,22 +94,36 @@ std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
 std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildren(
     mvvm::SessionItem* item) const
 {
-  // FIXME this strategy is invented solely to get rid of kIsRooAttribute in
-  // AttributeEditorViewModel. Remove after refactoring of attribute system.
-
   if (item == nullptr)
   {
     return {};
   }
-  std::vector<mvvm::SessionItem*> result;
-  for (auto* child : item->GetAllItems())
+
+  auto visible_properties = [](mvvm::SessionItem& parent)
   {
-    if (child->IsVisible() && child->HasFlag(mvvm::kProperty)
-        && child->GetTagIndex().GetTag() != domainconstants::kIsRootAttribute)
+    std::vector<mvvm::SessionItem*> result;
+    for (auto* child : parent.GetAllItems())
     {
-      result.push_back(child);
+      if (child->IsVisible() && child->HasFlag(mvvm::kProperty)
+          && child->GetTagIndex().GetTag() != domainconstants::kIsRootAttribute
+          && child->GetTagIndex().GetTag() != itemconstants::kAttributes)
+      {
+        result.push_back(child);
+      }
     }
+    return result;
+  };
+
+  auto* instruction = dynamic_cast<InstructionItem*>(item);
+  if ((instruction == nullptr) || (instruction->GetAttributes() == nullptr))
+  {
+    return visible_properties(*item);
   }
+
+  // domain attributes, followed by GUI properties
+  auto result = visible_properties(*instruction->GetAttributes());
+  auto gui_properties = visible_properties(*instruction);
+  (void)result.insert(result.end(), gui_properties.begin(), gui_properties.end());
   return result;
 }
 

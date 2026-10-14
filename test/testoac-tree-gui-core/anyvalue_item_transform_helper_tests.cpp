@@ -164,7 +164,8 @@ TEST_F(AnyValueItemTransformHelperTest, SetInstructionAnyValueFromScalar)
   EXPECT_THROW(SetAnyValue(anyvalue, *item), LogicErrorException);
 
   // Let's create a corresponding tag
-  item->RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+  item->GetAttributes()->RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag),
+                                     true);
 
   EXPECT_EQ(GetAnyValueItem(*item), nullptr);
   SetAnyValue(anyvalue, *item);
@@ -294,7 +295,8 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromJsonString)
 
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
   // registering tag to make possible adding AnyValueItem
-  item->RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+  item->GetAttributes()->RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag),
+                                     true);
 
   SetAnyValueFromJsonString(R"RAW({"type":"int32"})RAW", "42", *item);
 
