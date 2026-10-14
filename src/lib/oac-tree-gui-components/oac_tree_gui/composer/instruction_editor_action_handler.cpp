@@ -82,13 +82,6 @@ void AlignInstructionTree(const IInstructionEditorActionHandler::position_t& ref
 
 constexpr auto kFailedActionTitle = "Invalid Operation";
 
-//! Returns the item type of an instruction with the given domain type, empty for an empty domain
-//! type.
-std::string GetInstructionItemType(const std::string& domain_type)
-{
-  return domain_type.empty() ? std::string() : mvvm::GetTypeName<InstructionItem>();
-}
-
 }  // namespace
 
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context)
@@ -128,12 +121,12 @@ void InstructionEditorActionHandler::DropInstruction(const std::string& domain_t
 
 bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string& domain_type) const
 {
-  return CanInsertTypeAfterCurrentSelection(GetInstructionItemType(domain_type)).IsSuccess();
+  return CanInsertDomainTypeAfterCurrentSelection(domain_type).IsSuccess();
 }
 
 void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& domain_type)
 {
-  auto query = CanInsertTypeAfterCurrentSelection(GetInstructionItemType(domain_type));
+  auto query = CanInsertDomainTypeAfterCurrentSelection(domain_type);
   if (!query.IsSuccess())
   {
     SendMessage(query.GetMessage());
@@ -148,12 +141,12 @@ void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& d
 
 bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string& domain_type) const
 {
-  return CanInsertTypeIntoCurrentSelection(GetInstructionItemType(domain_type)).IsSuccess();
+  return CanInsertDomainTypeIntoCurrentSelection(domain_type).IsSuccess();
 }
 
 void InstructionEditorActionHandler::InsertInstructionInto(const std::string& domain_type)
 {
-  auto query = CanInsertTypeIntoCurrentSelection(GetInstructionItemType(domain_type));
+  auto query = CanInsertDomainTypeIntoCurrentSelection(domain_type);
   if (!query.IsSuccess())
   {
     SendMessage(query.GetMessage());
@@ -320,8 +313,8 @@ bool InstructionEditorActionHandler::CanPasteAfter() const
   }
 
   auto item_types = sup::gui::GetItemTypesFromMime(*mime, kTopSelectedItemTypesMimeType);
-  auto query =
-      CanInsertTypeAfterCurrentSelection(item_types.empty() ? std::string() : item_types.front());
+  auto query = CanInsertDomainTypeAfterCurrentSelection(item_types.empty() ? std::string()
+                                                                           : item_types.front());
   return query.IsSuccess();
 }
 
@@ -345,8 +338,8 @@ bool InstructionEditorActionHandler::CanPasteInto() const
 
   auto item_types = sup::gui::GetItemTypesFromMime(*mime, kTopSelectedItemTypesMimeType);
 
-  auto query =
-      CanInsertTypeIntoCurrentSelection(item_types.empty() ? std::string() : item_types.front());
+  auto query = CanInsertDomainTypeIntoCurrentSelection(item_types.empty() ? std::string()
+                                                                          : item_types.front());
   return query.IsSuccess();
 }
 
@@ -444,16 +437,19 @@ void InstructionEditorActionHandler::UpdateProcedurePreamble()
   }
 }
 
-sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
-    const std::string& item_type) const
+sup::gui::QueryResult InstructionEditorActionHandler::CanInsertDomainTypeAfterCurrentSelection(
+    const std::string& domain_type) const
 {
   static const std::string kFailedActionText("Can't insert type after current selection");
 
-  if (item_type.empty())
+  if (domain_type.empty())
   {
     return sup::gui::QueryResult::Failure(
-        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]", ""});
+        {kFailedActionTitle, kFailedActionText, "Wrong domain type [" + domain_type + "]", ""});
   }
+
+  // all domain types are represented by InstructionItem
+  const auto item_type = mvvm::GetTypeName<InstructionItem>();
 
   auto instruction_container = GetInstructionContainer();
   if (instruction_container == nullptr)
@@ -478,16 +474,19 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
   return sup::gui::QueryResult::Success();
 }
 
-sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
-    const std::string& item_type) const
+sup::gui::QueryResult InstructionEditorActionHandler::CanInsertDomainTypeIntoCurrentSelection(
+    const std::string& domain_type) const
 {
   static const std::string kFailedActionText("Can't insert type into current selection");
 
-  if (item_type.empty())
+  if (domain_type.empty())
   {
     return sup::gui::QueryResult::Failure(
-        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]", ""});
+        {kFailedActionTitle, kFailedActionText, "Wrong domain type [" + domain_type + "]", ""});
   }
+
+  // all domain types are represented by InstructionItem
+  const auto item_type = mvvm::GetTypeName<InstructionItem>();
 
   auto selected_instruction = GetSelectedInstruction();
   if (selected_instruction == nullptr)
@@ -526,8 +525,8 @@ void InstructionEditorActionHandler::InsertIntoCurrentSelection(
     std::vector<std::unique_ptr<mvvm::SessionItem>> items)
 {
   auto selected_item = GetSelectedInstruction();
-  InsertItem(std::move(items), selected_item,
-             mvvm::TagIndex::Append(), GetCoordinateNearby(selected_item));
+  InsertItem(std::move(items), selected_item, mvvm::TagIndex::Append(),
+             GetCoordinateNearby(selected_item));
 }
 
 void InstructionEditorActionHandler::InsertItem(

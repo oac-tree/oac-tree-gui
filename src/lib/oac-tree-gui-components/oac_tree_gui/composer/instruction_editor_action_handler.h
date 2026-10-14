@@ -128,20 +128,20 @@ private:
   void UpdateProcedurePreamble();
 
   /**
-   * @brief Checks if SessionItem of the given type can be inserted after the current selection.
+   * @brief Checks if domain_type can be inserted after the current selection.
    *
-   * @param item_type Type of the SessionItem to insert.
+   * @param item_type Type of the domain instruction to insert.
    * @return A result of the query with an error flag and message.
    */
-  sup::gui::QueryResult CanInsertTypeAfterCurrentSelection(const std::string& item_type) const;
+  sup::gui::QueryResult CanInsertDomainTypeAfterCurrentSelection(const std::string& domain_type) const;
 
   /**
-   * @brief Checks if SessionItem of the given type can be inserted into the current selection.
+   * @brief Checks if domain_type can be inserted into current selection.
    *
-   * @param item_type Type of the SessionItem to insert.
+   * @param domain_type Type of the domain instruction to insert.
    * @return A result of the query with error flag and message.
    */
-  sup::gui::QueryResult CanInsertTypeIntoCurrentSelection(const std::string& item_type) const;
+  sup::gui::QueryResult CanInsertDomainTypeIntoCurrentSelection(const std::string& domain_type) const;
 
   /**
    * @brief Inserts given item after current selection.
