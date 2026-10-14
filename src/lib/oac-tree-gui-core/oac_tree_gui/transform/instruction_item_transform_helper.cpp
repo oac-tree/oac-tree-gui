@@ -39,6 +39,8 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/instruction.h>
 
+#include <stack>
+
 namespace oac_tree_gui
 {
 
@@ -193,19 +195,12 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
   }
 }
 
-//! Creates an item tree for the given node. Collects items with their automation indexes.
-std::unique_ptr<InstructionItem> CreateItemTree(
-    const InstructionNode& node, std::vector<std::pair<std::uint32_t, InstructionItem*>>& items)
+//! Creates an item for the given node, without children.
+std::unique_ptr<InstructionItem> CreateItem(const InstructionNode& node)
 {
   std::unique_ptr<InstructionItem> result = std::make_unique<UniversalInstructionItem>();
   PopulateInstructionItem(node.descriptor, *result);
   SetAttributeValues(node, *result);
-  items.emplace_back(node.index, result.get());
-
-  for (const auto& child : node.children)
-  {
-    (void)result->InsertItem(CreateItemTree(child, items), mvvm::TagIndex::Append());
-  }
   return result;
 }
 
@@ -213,8 +208,25 @@ std::unique_ptr<InstructionItem> CreateItemTree(
 
 InstructionTree CreateInstructionItemTree(const InstructionNode& node)
 {
+  auto root = CreateItem(node);
   std::vector<std::pair<std::uint32_t, InstructionItem*>> items;
-  auto root = CreateItemTree(node, items);
+  std::stack<std::pair<const InstructionNode*, InstructionItem*>> stack;
+  stack.push({&node, root.get()});
+
+  while (!stack.empty())
+  {
+    auto [current, item] = stack.top();
+    stack.pop();
+    items.emplace_back(current->index, item);
+
+    for (const auto& child : current->children)
+    {
+      auto child_item = CreateItem(child);
+      auto* child_item_ptr = child_item.get();
+      (void)item->InsertItem(std::move(child_item), mvvm::TagIndex::Append());
+      stack.push({&child, child_item_ptr});
+    }
+  }
 
   std::vector<InstructionItem*> indexes(items.size(), nullptr);
   for (const auto& [index, item] : items)

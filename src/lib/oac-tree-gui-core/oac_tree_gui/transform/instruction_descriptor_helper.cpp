@@ -30,6 +30,8 @@
 #include <sup/dto/anytype_helper.h>
 #include <sup/oac-tree/instruction_info.h>
 
+#include <stack>
+
 namespace oac_tree_gui
 {
 
@@ -66,20 +68,6 @@ mvvm::variant_t GetDefaultValue(const std::string& domain_type,
                            + "] has non-scalar type [" + anytype.GetTypeName() + "]");
   }
   return sup::gui::GetVariantFromScalarTypeName(anytype.GetTypeName());
-}
-
-//! Creates a node tree from the given domain instruction. Increments next_index per node.
-InstructionNode CreateNodeTree(const instruction_t& instruction, std::uint32_t& next_index)
-{
-  InstructionNode result{CreateInstructionDescriptor(instruction),
-                         instruction.GetStringAttributes(),
-                         next_index++,
-                         {}};
-  for (const auto* child : instruction.ChildInstructions())
-  {
-    result.children.push_back(CreateNodeTree(*child, next_index));
-  }
-  return result;
 }
 
 }  // namespace
@@ -123,17 +111,54 @@ InstructionNode CreateInstructionNode(const std::string& domain_type)
 
 InstructionNode CreateInstructionNodeTree(const instruction_t& instruction)
 {
+  InstructionNode result;
   std::uint32_t next_index{0};
-  return CreateNodeTree(instruction, next_index);
+  std::stack<std::pair<const instruction_t*, InstructionNode*>> stack;
+  stack.push({&instruction, &result});
+
+  while (!stack.empty())
+  {
+    auto [domain, node] = stack.top();
+    stack.pop();
+
+    node->descriptor = CreateInstructionDescriptor(*domain);
+    node->attributes = domain->GetStringAttributes();
+    node->index = next_index++;
+
+    // the vector is not resized later, so node pointers stay valid
+    const auto children = domain->ChildInstructions();
+    node->children.resize(children.size());
+    for (auto index = children.size(); index > 0; --index)
+    {
+      // reverse order, so the first child gets the next index
+      stack.push({children[index - 1], &node->children[index - 1]});
+    }
+  }
+  return result;
 }
 
 InstructionNode CreateInstructionNodeTree(const sup::oac_tree::InstructionInfo& info)
 {
-  InstructionNode result{
-      CreateInstructionDescriptor(info), info.GetAttributes(), info.GetIndex(), {}};
-  for (const auto* child : info.Children())
+  InstructionNode result;
+  std::stack<std::pair<const sup::oac_tree::InstructionInfo*, InstructionNode*>> stack;
+  stack.push({&info, &result});
+
+  while (!stack.empty())
   {
-    result.children.push_back(CreateInstructionNodeTree(*child));
+    auto [current, node] = stack.top();
+    stack.pop();
+
+    node->descriptor = CreateInstructionDescriptor(*current);
+    node->attributes = current->GetAttributes();
+    node->index = current->GetIndex();
+
+    // the vector is not resized later, so node pointers stay valid
+    const auto children = current->Children();
+    node->children.resize(children.size());
+    for (std::size_t index = 0; index < children.size(); ++index)
+    {
+      stack.push({children[index], &node->children[index]});
+    }
   }
   return result;
 }
