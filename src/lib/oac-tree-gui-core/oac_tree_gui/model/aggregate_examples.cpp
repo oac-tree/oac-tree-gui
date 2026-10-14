@@ -21,24 +21,22 @@
 #include "aggregate_examples.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 namespace oac_tree_gui::Examples
 {
 
 std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
 {
-  auto result = std::make_unique<UniversalInstructionItem>();
-  result->SetDomainType(domainconstants::kFallbackInstructionType);
+  auto result = CreateInstructionItem(domainconstants::kFallbackInstructionType);
 
-  auto sequence0 = result->InsertItem<UniversalInstructionItem>(::mvvm::TagIndex::Append());
-  sequence0->SetDomainType(domainconstants::kSequenceInstructionType);
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, result.get());
   (void)InsertInstruction(domainconstants::kIncludeInstructionType, sequence0)->SetDisplayName("A");
 
   auto force_success_item =
-      sequence0->InsertItem<UniversalInstructionItem>(::mvvm::TagIndex::Append());
-  force_success_item->SetDomainType(domainconstants::kForceSuccessInstructionType);
+      InsertInstruction(domainconstants::kForceSuccessInstructionType, sequence0);
   (void)InsertInstruction(domainconstants::kIncludeInstructionType, force_success_item)
       ->SetDisplayName("B");
 

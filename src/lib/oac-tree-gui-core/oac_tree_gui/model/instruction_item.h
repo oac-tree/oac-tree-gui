@@ -52,9 +52,9 @@ public:
   std::string GetDomainType() const;
 
   /**
-   * @brief Set the domain type.
+   * @brief Sets the domain type. No attribute setup.
    */
-  virtual void SetDomainType(const std::string& domain_type);
+  void SetDomainType(const std::string& domain_type);
 
   /**
    * @brief Inits given item from the domain instruction.

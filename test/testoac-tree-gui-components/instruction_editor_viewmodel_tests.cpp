@@ -28,7 +28,6 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
@@ -80,9 +79,7 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 
 TEST_F(InstructionEditorViewModelTest, SingleUniversalInstruction)
 {
-  auto fallback = std::make_unique<UniversalInstructionItem>();
-  fallback->SetDomainType(domainconstants::kFallbackInstructionType);
-  m_model.InsertItem(std::move(fallback), m_model.GetRootItem(), mvvm::TagIndex::Append());
+  (void)InsertInstruction(domainconstants::kFallbackInstructionType, m_model.GetRootItem());
 
   auto displayname_index = m_view_model.index(0, 0, QModelIndex());
   auto type_index = m_view_model.index(0, 1, QModelIndex());

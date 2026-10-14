@@ -23,8 +23,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/universal_item_helper.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -93,10 +92,8 @@ TEST_F(UniversalInstructionItemTest, InitFromDomain)
   EXPECT_EQ(item.Property<double>(domainconstants::kTimeoutAttribute), 0);
 }
 
-//! Creating instruction using default constructor followed by SetDomainName.
-//! The resulting object reports different names for GetType() and GetDomainType().
-
-TEST_F(UniversalInstructionItemTest, SetDomainName)
+//! SetDomainType sets the domain type only. GetType() and GetDomainType() differ.
+TEST_F(UniversalInstructionItemTest, SetDomainType)
 {
   UniversalInstructionItem item;
 
@@ -104,136 +101,16 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
 
   EXPECT_EQ(item.GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
-
-  item.SetName("abc");
-
-  auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kNameAttribute), "abc");
-
-  // more tests in instruction_item_transform_helper_tests.cpp
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
 }
 
 TEST_F(UniversalInstructionItemTest, Behavior)
 {
-  UniversalInstructionItem item;
-  item.SetDomainType(domainconstants::kWaitInstructionType);
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
 
-  EXPECT_EQ(item.GetBehavior(), itemconstants::kNativeBehavior);
-  item.SetBehavior(itemconstants::kHiddenBehavior);
-  EXPECT_EQ(item.GetBehavior(), itemconstants::kHiddenBehavior);
-}
-
-TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
-{
-  {  // domain doesn't have ShowCollapsed defined
-    auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
-    domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
-
-    UniversalInstructionItem item;
-
-    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
-    item.InitFromDomain(domain.get());
-
-    // by default item is collapsed
-    EXPECT_TRUE(IsCollapsed(item));
-  }
-
-  {  // domain has ShowCollapsed set to false
-    auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
-    domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
-    domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "false");
-
-    UniversalInstructionItem item;
-
-    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
-    item.InitFromDomain(domain.get());
-
-    // item got the value from the domain
-    EXPECT_FALSE(IsCollapsed(item));
-  }
-
-  {  // domain has ShowCollapsed set to true
-    auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
-    domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
-    domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "true");
-
-    UniversalInstructionItem item;
-
-    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
-    item.InitFromDomain(domain.get());
-
-    // item got the value from the domain
-    EXPECT_TRUE(IsCollapsed(item));
-  }
-
-  {  // creating domain, when GUI has ShowCollapsed set to true
-    UniversalInstructionItem item;
-    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
-    EXPECT_TRUE(IsCollapsed(item));
-
-    auto domain = item.CreateDomainInstruction();
-    EXPECT_TRUE(domain->HasAttribute(domainconstants::kShowCollapsedAttribute));
-    EXPECT_EQ(domain->GetAttributeString(domainconstants::kShowCollapsedAttribute),
-              std::string("true"));
-  }
-
-  {  // creating domain, when GUI has ShowCollapsed set to false
-    UniversalInstructionItem item;
-    item.SetDomainType(domainconstants::kIncludeProcedureInstructionType);
-    (void)item.SetProperty(domainconstants::kShowCollapsedAttribute, false);
-    EXPECT_FALSE(IsCollapsed(item));
-
-    auto domain = item.CreateDomainInstruction();
-    // we propagate false attributes too
-    EXPECT_TRUE(domain->HasAttribute(domainconstants::kShowCollapsedAttribute));
-    EXPECT_EQ(domain->GetAttributeString(domainconstants::kShowCollapsedAttribute),
-              std::string("false"));
-  }
-}
-
-//! Repeat gets maxCount from the attribute presets. The preset goes to the domain.
-TEST_F(UniversalInstructionItemTest, RepeatPreset)
-{
-  UniversalInstructionItem item;
-  item.SetDomainType(domainconstants::kRepeatInstructionType);
-
-  EXPECT_EQ(item.GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), -1);
-  auto property = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kMaxCountAttribute);
-  ASSERT_NE(property, nullptr);
-  EXPECT_TRUE(GetAttributeExposedFlag(*property));
-
-  auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kMaxCountAttribute), "-1");
-}
-
-//! Instructions with JSON type and value attributes get the AnyValue tag.
-TEST_F(UniversalInstructionItemTest, AnyValueTag)
-{
-  {
-    UniversalInstructionItem item;
-    item.SetDomainType(domainconstants::kWaitInstructionType);
-    EXPECT_FALSE(mvvm::utils::HasTag(item, itemconstants::kAnyValueTag));
-    EXPECT_EQ(GetAnyValueItem(item), nullptr);
-  }
-
-  if (!IsSequencerPluginEpicsAvailable())
-  {
-    GTEST_SKIP();
-  }
-
-  for (const auto* domain_type :
-       {domainconstants::kChannelAccessWriteInstructionType,
-        domainconstants::kPvAccessWriteInstructionType, domainconstants::kRPCClientInstructionType})
-  {
-    UniversalInstructionItem item;
-    item.SetDomainType(domain_type);
-    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kAnyValueTag)) << domain_type;
-    auto anyvalue_item = GetAnyValueItem(item);
-    ASSERT_NE(anyvalue_item, nullptr) << domain_type;
-    EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
-    EXPECT_FALSE(GetAttributeExposedFlag(*anyvalue_item));
-  }
+  EXPECT_EQ(item->GetBehavior(), itemconstants::kNativeBehavior);
+  item->SetBehavior(itemconstants::kHiddenBehavior);
+  EXPECT_EQ(item->GetBehavior(), itemconstants::kHiddenBehavior);
 }
 
 }  // namespace oac_tree_gui::test

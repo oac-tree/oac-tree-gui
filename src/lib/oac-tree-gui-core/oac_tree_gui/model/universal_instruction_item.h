@@ -43,7 +43,8 @@ public:
   /**
    * @brief Main c-tor.
    *
-   * Constructed item can be used either after SetDomainType call or after InitFromDomain call.
+   * Constructed item can be used after InitFromDomain call, or after the setup by
+   * CreateInstructionItemTree.
    */
   UniversalInstructionItem();
   ~UniversalInstructionItem() override = default;
@@ -55,17 +56,9 @@ public:
 
   std::unique_ptr<SessionItem> Clone() const override;
 
-  /**
-   * @brief Set the domain type and performs attribute initialization.
-   *
-   * @details This function can be called only once.
-   */
-  void SetDomainType(const std::string& domain_type) override;
-
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
-  void SetDomainTypeImpl(const std::string& domain_type);
 
   struct Attribute
   {

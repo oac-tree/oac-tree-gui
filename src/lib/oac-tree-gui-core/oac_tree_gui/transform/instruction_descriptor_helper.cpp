@@ -114,7 +114,7 @@ InstructionNode CreateInstructionNodeTree(const instruction_t& instruction)
   InstructionNode result;
   std::uint32_t next_index{0};
   std::stack<std::pair<const instruction_t*, InstructionNode*>> stack;
-  stack.push({&instruction, &result});
+  stack.emplace(&instruction, &result);
 
   while (!stack.empty())
   {
@@ -131,7 +131,7 @@ InstructionNode CreateInstructionNodeTree(const instruction_t& instruction)
     for (auto index = children.size(); index > 0; --index)
     {
       // reverse order, so the first child gets the next index
-      stack.push({children[index - 1], &node->children[index - 1]});
+      stack.emplace(children[index - 1], &node->children[index - 1]);
     }
   }
   return result;

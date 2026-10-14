@@ -23,7 +23,6 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -105,9 +104,8 @@ TEST_F(SequencerModelTest, UniversalInstructionSerialization)
 
   SequencerModel model;
   auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-  auto wait_item =
-      model.InsertItem<UniversalInstructionItem>(procedure_item->GetInstructionContainer());
-  wait_item->SetDomainType(domainconstants::kWaitInstructionType);
+  (void)InsertInstruction(domainconstants::kWaitInstructionType,
+                          procedure_item->GetInstructionContainer());
 
   mvvm::XmlDocument document({&model});
 

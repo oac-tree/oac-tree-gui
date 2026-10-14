@@ -117,8 +117,7 @@ void AddStringAttribute(const std::string& name, const std::string& value, Instr
 //! Sets up the item for the given descriptor: domain type, attributes, tags, GUI properties.
 void PopulateInstructionItem(const InstructionDescriptor& descriptor, InstructionItem& item)
 {
-  // the override in UniversalInstructionItem runs the domain setup
-  item.InstructionItem::SetDomainType(descriptor.domain_type);
+  item.SetDomainType(descriptor.domain_type);
   (void)item.SetDisplayName(descriptor.domain_type);
 
   for (const auto& attribute : descriptor.attributes)

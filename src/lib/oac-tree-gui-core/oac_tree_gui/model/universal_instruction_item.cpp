@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
-#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -92,11 +91,6 @@ std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone() const
   return mvvm::MakeClone(*this);
 }
 
-void UniversalInstructionItem::SetDomainType(const std::string& domain_type)
-{
-  SetDomainTypeImpl(domain_type);
-}
-
 void UniversalInstructionItem::InitFromDomainImpl(const instruction_t* instruction)
 {
   if (GetDomainType().empty())
@@ -150,13 +144,6 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t* instruction) const
   {
     SetJsonAttributesFromItem(*anyvalue_item, *instruction);
   }
-}
-
-void UniversalInstructionItem::SetDomainTypeImpl(const std::string& domain_type)
-{
-  // temporary domain instruction is used to create default properties
-  auto domain_instruction = ::oac_tree_gui::CreateDomainInstruction(domain_type);
-  SetupFromDomain(domain_instruction.get());
 }
 
 std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAttributeItems() const

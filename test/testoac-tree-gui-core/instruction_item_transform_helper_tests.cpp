@@ -765,6 +765,11 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeIncludeProcedureCollapsed)
   EXPECT_EQ(CreateDomainInstruction(*item_tree.root)
                 ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
             "true");
+
+  SetCollapsed(false, *item_tree.root);
+  EXPECT_EQ(CreateDomainInstruction(*item_tree.root)
+                ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
+            "false");
 }
 
 //! Wait with name and attributes: item to domain to item.
@@ -813,18 +818,6 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreePvAccessWriteRoundTrip)
   ASSERT_NE(anyvalue_item, nullptr);
   EXPECT_EQ(CreateAnyValue(*anyvalue_item), expected_anyvalue);
   EXPECT_EQ(restored.root->GetAttribute<std::string>(domainconstants::kChannelAttribute), "def");
-}
-
-//! Temporary: the item builder reproduces UniversalInstructionItem::SetDomainType.
-TEST_F(InstructionItemTransformHelperTest, ItemTreeMatchesDomainTypeSetup)
-{
-  for (const auto& domain_type : GetDomainInstructionNames())
-  {
-    UniversalInstructionItem expected;
-    expected.SetDomainType(domain_type);
-    auto tree = CreateInstructionItemTree(CreateInstructionNode(domain_type));
-    ExpectSameItems(expected, *tree.root, domain_type);
-  }
 }
 
 }  // namespace oac_tree_gui::test
