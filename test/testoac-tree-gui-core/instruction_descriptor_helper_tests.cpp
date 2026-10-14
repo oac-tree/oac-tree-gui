@@ -112,6 +112,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   EXPECT_EQ(is_root->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(is_root->mandatory);
   EXPECT_TRUE(is_root->is_set);
+  EXPECT_FALSE(is_root->visible);
 
   const auto* timeout = FindAttribute(descriptor, domainconstants::kTimeoutAttribute);
   EXPECT_EQ(timeout->default_value, mvvm::variant_t{0.0});
@@ -119,6 +120,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   EXPECT_FALSE(timeout->mandatory);
   EXPECT_FALSE(timeout->is_set);
   EXPECT_EQ(timeout->category, sup::oac_tree::AttributeCategory::kBoth);
+  EXPECT_TRUE(timeout->visible);
 
   const auto* blocking = FindAttribute(descriptor, domainconstants::kBlockingAttribute);
   EXPECT_EQ(blocking->default_value, mvvm::variant_t{false});
@@ -280,6 +282,7 @@ TEST_F(InstructionDescriptorHelperTest, InfoMatchesTypedBaseAttributes)
       EXPECT_EQ(attribute.mandatory, expected->mandatory) << domain_type << "/" << attribute.name;
       EXPECT_EQ(attribute.is_set, expected->is_set) << domain_type << "/" << attribute.name;
       EXPECT_EQ(attribute.category, expected->category) << domain_type << "/" << attribute.name;
+      EXPECT_EQ(attribute.visible, expected->visible) << domain_type << "/" << attribute.name;
     }
   }
 }

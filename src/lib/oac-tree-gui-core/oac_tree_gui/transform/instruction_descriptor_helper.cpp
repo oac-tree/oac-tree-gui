@@ -48,6 +48,7 @@ AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
   if (name == domainconstants::kIsRootAttribute)
   {
     result.is_set = true;
+    result.visible = false;
   }
   if (auto preset = FindAttributePreset(domain_type, name); preset)
   {

@@ -20,13 +20,11 @@
 
 #include "tooltip_helper.h"
 
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
 
 #include <mvvm/core/variant.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
-#include <mvvm/utils/container_utils.h>
 #include <mvvm/utils/string_format.h>
 
 #include <QFont>
@@ -34,18 +32,6 @@
 
 namespace
 {
-
-const std::vector<std::string>& GetSkipAttributeList()
-{
-  static const std::vector<std::string> kSkipAttributeList = {
-      oac_tree_gui::domainconstants::kIsRootAttribute};
-  return kSkipAttributeList;
-}
-
-bool IsPropertyToShow(const std::string& tag_name)
-{
-  return !mvvm::utils::Contains(GetSkipAttributeList(), tag_name);
-}
 
 void AppendTitle(const std::string& text, QTextEdit& text_edit)
 {
@@ -87,11 +73,8 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
 
   for (auto property : mvvm::utils::SinglePropertyItems(*instruction->GetAttributes()))
   {
-    if (IsPropertyToShow(property->GetTagIndex().GetTag()))
-    {
-      (void)result.emplace_back(property->GetDisplayName(),
-                                mvvm::utils::ValueToString(property->Data()));
-    }
+    (void)result.emplace_back(property->GetDisplayName(),
+                              mvvm::utils::ValueToString(property->Data()));
   }
   return result;
 }

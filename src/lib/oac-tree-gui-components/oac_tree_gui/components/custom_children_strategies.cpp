@@ -20,7 +20,6 @@
 
 #include "custom_children_strategies.h"
 
-#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -105,7 +104,6 @@ std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildre
     for (auto* child : parent.GetAllItems())
     {
       if (child->IsVisible() && child->HasFlag(mvvm::kProperty)
-          && child->GetTagIndex().GetTag() != domainconstants::kIsRootAttribute
           && child->GetTagIndex().GetTag() != itemconstants::kAttributes)
       {
         result.push_back(child);

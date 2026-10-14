@@ -48,6 +48,7 @@ struct AttributeDescriptor
   bool mandatory{false};
   bool is_set{false};  //!< has an initial value; true for mandatory, preset or isRoot
   sup::oac_tree::AttributeCategory category{sup::oac_tree::AttributeCategory::kLiteral};
+  bool visible{true};  //!< shown in attribute editor and tooltips
 };
 
 /**

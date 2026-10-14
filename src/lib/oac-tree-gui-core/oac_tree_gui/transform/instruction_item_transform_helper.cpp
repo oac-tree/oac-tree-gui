@@ -155,6 +155,10 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
     {
       (void)property.SetToolTip(attribute.tooltip);
     }
+    if (!attribute.visible)
+    {
+      (void)property.SetVisible(false);
+    }
     SetAttributeExposedFlag(attribute.is_set, property);
   }
 
@@ -271,7 +275,8 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& it
 {
   auto result = CreateDomainInstruction(item.GetDomainType());
 
-  const auto properties = mvvm::utils::SinglePropertyItems(*item.GetAttributes());
+  // all attributes, visible or not
+  const auto properties = item.GetAttributes()->GetAllItems();
   for (const auto* property : mvvm::utils::CastItems<const sup::gui::AnyValueItem>(properties))
   {
     if (const auto tag = property->GetTagIndex().GetTag(); tag != itemconstants::kAnyValueTag)

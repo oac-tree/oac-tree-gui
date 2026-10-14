@@ -664,6 +664,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAttributeContainer)
                                                          domainconstants::kTimeoutAttribute,
                                                          domainconstants::kBlockingAttribute};
   EXPECT_EQ(mvvm::utils::RegisteredTags(*wait->GetAttributes()), expected_attribute_tags);
+  EXPECT_FALSE(GetIsRootItem(*wait)->IsVisible());
+  EXPECT_TRUE(wait->GetAttributes()->FindItem(domainconstants::kTimeoutAttribute)->IsVisible());
 
   auto include = CreateInstructionItem(domainconstants::kIncludeInstructionType);
   EXPECT_TRUE(
