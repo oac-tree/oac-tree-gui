@@ -92,13 +92,6 @@ InstructionTree CreateInstructionItemTree(const sup::oac_tree::InstructionInfo& 
 InstructionTree CreateInstructionInfoItemTree(const sup::oac_tree::InstructionInfo& info);
 
 /**
- * @brief Creates InstructionItem with all its children from domain instruction.
- *
- * Method requires that all plugins are loaded.
- */
-InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction);
-
-/**
  * @brief Creates an instruction item tree from the given node tree.
  *
  * No domain objects are created and no plugin is needed.

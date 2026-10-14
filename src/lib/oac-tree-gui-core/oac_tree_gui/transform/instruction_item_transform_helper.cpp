@@ -42,8 +42,6 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/instruction_info.h>
-#include <sup/oac-tree/instruction_info_utils.h>
-#include <sup/oac-tree/instruction_map.h>
 
 #include <stack>
 
@@ -348,13 +346,6 @@ InstructionTree CreateInstructionItemTree(const sup::oac_tree::InstructionInfo& 
 InstructionTree CreateInstructionInfoItemTree(const sup::oac_tree::InstructionInfo& info)
 {
   return CreateInstructionItemTreeIntern(info, /*light_tree*/ true);
-}
-
-InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction)
-{
-  const sup::oac_tree::InstructionMap instr_map{&instruction};
-  auto instr_info = sup::oac_tree::utils::CreateInstructionInfoTree(instruction, instr_map);
-  return CreateInstructionItemTree(*instr_info);
 }
 
 void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item)

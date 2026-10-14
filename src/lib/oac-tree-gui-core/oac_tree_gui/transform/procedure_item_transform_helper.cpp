@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
+#include <oac_tree_gui/transform/instruction_descriptor_helper.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
@@ -70,7 +71,7 @@ void PopulateInstructionContainerItem(const procedure_t& procedure,
 {
   for (auto instruction : procedure.GetTopInstructions())
   {
-    auto instruction_tree = CreateInstructionItemTree(*instruction);
+    auto instruction_tree = CreateInstructionItemTree(CreateInstructionNodeTree(*instruction));
     (void)container.InsertItem(std::move(instruction_tree.root), mvvm::TagIndex::Append());
   }
 }

@@ -49,10 +49,8 @@
 #include <sup/oac-tree/sequence_parser.h>
 
 #include <gtest/gtest.h>
-#include <testutils/cmake_info.h>
 
 #include <algorithm>
-#include <filesystem>
 
 namespace oac_tree_gui::test
 {
@@ -102,7 +100,7 @@ void ExpectSameItems(const mvvm::SessionItem& lhs, const mvvm::SessionItem& rhs,
 }
 
 //! Builds an item tree from the domain instruction with the item builder.
-InstructionTree CreateItemTreeFromNodes(const sup::oac_tree::Instruction& instruction)
+InstructionTree CreateItemTreeFromDomain(const sup::oac_tree::Instruction& instruction)
 {
   return CreateInstructionItemTree(CreateInstructionNodeTree(instruction));
 }
@@ -262,7 +260,7 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionTreeFromRootInstruct
 )RAW";
   auto procedure = sup::oac_tree::ParseProcedureString(procedure_xml);
 
-  auto item_tree = CreateInstructionItemTree(*procedure->RootInstruction());
+  auto item_tree = CreateItemTreeFromDomain(*procedure->RootInstruction());
   ASSERT_EQ(item_tree.indexes.size(), 4);
 
   auto repeat_item = item_tree.root.get();
@@ -389,7 +387,7 @@ TEST_F(InstructionItemTransformHelperTest, IncludeFromDomainWithCustomAttribute)
   input->AddAttribute(domainconstants::kPathAttribute, "def");
   input->AddAttribute(custom_name, custom_value);
 
-  auto item_tree = CreateInstructionItemTree(*input);
+  auto item_tree = CreateItemTreeFromDomain(*input);
   auto item = item_tree.root.get();
   EXPECT_EQ(item->GetDomainType(), domainconstants::kIncludeInstructionType);
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kFileNameAttribute), "abc");
@@ -449,7 +447,7 @@ TEST_F(InstructionItemTransformHelperTest, RepeatRoundTrip)
 {
   auto input = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
   input->AddAttribute(domainconstants::kMaxCountAttribute, "42");
-  auto item_tree = CreateInstructionItemTree(*input);
+  auto item_tree = CreateItemTreeFromDomain(*input);
   EXPECT_EQ(item_tree.root->GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), 42);
 
   auto item = CreateInstructionItem(domainconstants::kRepeatInstructionType);
@@ -473,7 +471,7 @@ TEST_F(InstructionItemTransformHelperTest, WaitFromDomain)
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42");
   input->AddAttribute(domainconstants::kBlockingAttribute, "true");
 
-  auto item_tree = CreateInstructionItemTree(*input);
+  auto item_tree = CreateItemTreeFromDomain(*input);
   auto item = item_tree.root.get();
   EXPECT_EQ(item->GetDisplayName(), "First");
   EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
@@ -527,7 +525,7 @@ TEST_F(InstructionItemTransformHelperTest, PvAccessWriteRoundTrip)
     input->AddAttribute(domainconstants::kTypeAttribute, expected_type);
     input->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
-    auto item_tree = CreateInstructionItemTree(*input);
+    auto item_tree = CreateItemTreeFromDomain(*input);
     auto item = item_tree.root.get();
     auto anyvalue_item = GetAnyValueItem(*item);
     ASSERT_NE(anyvalue_item, nullptr);
@@ -578,7 +576,7 @@ TEST_F(InstructionItemTransformHelperTest, RPCClientRoundTrip)
     input->AddAttribute(domainconstants::kValueAttribute, expected_value);
     input->AddAttribute(domainconstants::kOutputVariableNameAttribute, "output");
 
-    auto item_tree = CreateInstructionItemTree(*input);
+    auto item_tree = CreateItemTreeFromDomain(*input);
     auto item = item_tree.root.get();
     auto anyvalue_item = GetAnyValueItem(*item);
     ASSERT_NE(anyvalue_item, nullptr);
@@ -789,10 +787,10 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeIncludeProcedureCollapsed)
 {
   auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
   (void)domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
-  EXPECT_TRUE(IsCollapsed(*CreateItemTreeFromNodes(*domain).root));
+  EXPECT_TRUE(IsCollapsed(*CreateItemTreeFromDomain(*domain).root));
 
   (void)domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "false");
-  auto tree = CreateItemTreeFromNodes(*domain);
+  auto tree = CreateItemTreeFromDomain(*domain);
   EXPECT_FALSE(IsCollapsed(*tree.root));
   EXPECT_EQ(CreateDomainInstruction(*tree.root)
                 ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
@@ -822,7 +820,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeWaitRoundTrip)
   EXPECT_EQ(domain->GetAttributeString(domainconstants::kIsRootAttribute), "true");
   EXPECT_FALSE(domain->HasAttribute(domainconstants::kBlockingAttribute));
 
-  auto restored = CreateItemTreeFromNodes(*domain);
+  auto restored = CreateItemTreeFromDomain(*domain);
   ExpectSameItems(*item, *restored.root, "Wait");
 }
 
@@ -847,7 +845,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreePvAccessWriteRoundTrip)
   EXPECT_EQ(domain->GetAttributeString(domainconstants::kValueAttribute), "42");
   EXPECT_NO_THROW(domain->Setup(m_procedure));
 
-  auto restored = CreateItemTreeFromNodes(*domain);
+  auto restored = CreateItemTreeFromDomain(*domain);
   auto* anyvalue_item = GetAnyValueItem(*restored.root);
   ASSERT_NE(anyvalue_item, nullptr);
   EXPECT_EQ(CreateAnyValue(*anyvalue_item), expected_anyvalue);
@@ -864,49 +862,6 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeMatchesDomainTypeSetup)
     auto tree = CreateInstructionItemTree(CreateInstructionNode(domain_type));
     ExpectSameItems(expected, *tree.root, domain_type);
   }
-}
-
-//! Temporary: the item builder reproduces CreateInstructionItemTree(Instruction) for XML files.
-TEST_F(InstructionItemTransformHelperTest, ItemTreeMatchesXmlLoad)
-{
-  std::size_t compared_count{0};
-  const auto resource_dir = std::filesystem::path(ProjectSourceDir()) / "test" / "resources";
-  for (const auto& entry : std::filesystem::recursive_directory_iterator(resource_dir))
-  {
-    if (entry.path().extension() != ".xml")
-    {
-      continue;
-    }
-    std::unique_ptr<sup::oac_tree::Procedure> procedure;
-    try
-    {
-      procedure = sup::oac_tree::ParseProcedureFile(entry.path().string());
-    }
-    catch (const std::exception&)
-    {
-      continue;  // not a procedure, or plugin not available
-    }
-
-    for (const auto* instruction : procedure->GetTopInstructions())
-    {
-      const auto path = entry.path().filename().string() + ":" + instruction->GetType();
-      std::unique_ptr<InstructionTree> expected;
-      try
-      {
-        expected = std::make_unique<InstructionTree>(CreateInstructionItemTree(*instruction));
-      }
-      catch (const std::exception&)
-      {
-        EXPECT_ANY_THROW(CreateItemTreeFromNodes(*instruction)) << path;
-        continue;
-      }
-      auto tree = CreateItemTreeFromNodes(*instruction);
-      ExpectSameItems(*expected->root, *tree.root, path);
-      EXPECT_EQ(expected->indexes.size(), tree.indexes.size()) << path;
-      ++compared_count;
-    }
-  }
-  EXPECT_GT(compared_count, 20);
 }
 
 }  // namespace oac_tree_gui::test
