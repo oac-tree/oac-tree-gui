@@ -12,6 +12,8 @@ target_sources(${library_name} PRIVATE
   i_procedure_item_builder.h
   instruction_attribute_presets.cpp
   instruction_attribute_presets.h
+  instruction_descriptor_helper.cpp
+  instruction_descriptor_helper.h
   instruction_item_transform_helper.cpp
   instruction_item_transform_helper.h
   procedure_item_job_info_builder.cpp

@@ -40,7 +40,13 @@ const std::map<std::string, AttributePreset>& GetAttributePresets()
 {
   static const std::map<std::string, AttributePreset> kPresets = {
       {GetPresetKey(domainconstants::kRepeatInstructionType, domainconstants::kMaxCountAttribute),
-       {mvvm::int32{-1}, true}}};
+       {mvvm::int32{-1}, true}},
+      {GetPresetKey(domainconstants::kIncludeInstructionType,
+                    domainconstants::kShowCollapsedAttribute),
+       {true, true}},
+      {GetPresetKey(domainconstants::kIncludeProcedureInstructionType,
+                    domainconstants::kShowCollapsedAttribute),
+       {true, true}}};
   return kPresets;
 }
 

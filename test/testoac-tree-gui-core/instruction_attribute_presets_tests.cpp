@@ -50,6 +50,15 @@ TEST_F(InstructionAttributePresetsTest, FindAttributePreset)
   EXPECT_EQ(preset->value, mvvm::variant_t{mvvm::int32{-1}});
   EXPECT_TRUE(preset->exposed);
 
+  preset = FindAttributePreset(domainconstants::kIncludeInstructionType,
+                               domainconstants::kShowCollapsedAttribute);
+  ASSERT_TRUE(preset.has_value());
+  EXPECT_EQ(preset->value, mvvm::variant_t{true});
+  EXPECT_TRUE(preset->exposed);
+
+  EXPECT_FALSE(FindAttributePreset(domainconstants::kSequenceInstructionType,
+                                   domainconstants::kShowCollapsedAttribute)
+                   .has_value());
   EXPECT_FALSE(
       FindAttributePreset(domainconstants::kWaitInstructionType, domainconstants::kTimeoutAttribute)
           .has_value());

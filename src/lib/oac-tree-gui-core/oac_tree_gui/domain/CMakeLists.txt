@@ -11,6 +11,7 @@ target_sources(${library_name} PRIVATE
   domain_object_group_helper.cpp
   domain_object_group_helper.h
   i_domain_plugin_service.h
+  instruction_descriptor.h
   sequencer_types_fwd.h
 )
 
