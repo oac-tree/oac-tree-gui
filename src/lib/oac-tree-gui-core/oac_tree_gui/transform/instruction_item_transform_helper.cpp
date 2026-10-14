@@ -173,8 +173,8 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
     (void)property->SetToolTip("Show child branch collapsed during procedure execution");
   }
 
-  if (FindAttributeDescriptor(descriptor, domainconstants::kTypeAttribute)
-      && FindAttributeDescriptor(descriptor, domainconstants::kValueAttribute))
+  if ((FindAttributeDescriptor(descriptor, domainconstants::kTypeAttribute) != nullptr)
+      && (FindAttributeDescriptor(descriptor, domainconstants::kValueAttribute) != nullptr))
   {
     AddAnyValueTag(attributes);
   }
@@ -237,7 +237,7 @@ InstructionTree CreateInstructionItemTree(const InstructionNode& node)
   auto root = CreateItem(node);
   std::vector<std::pair<std::uint32_t, InstructionItem*>> items;
   std::stack<std::pair<const InstructionNode*, InstructionItem*>> stack;
-  stack.push({&node, root.get()});
+  stack.emplace(&node, root.get());
 
   while (!stack.empty())
   {
@@ -250,7 +250,7 @@ InstructionTree CreateInstructionItemTree(const InstructionNode& node)
       auto child_item = CreateItem(child);
       auto* child_item_ptr = child_item.get();
       (void)item->InsertItem(std::move(child_item), mvvm::TagIndex::Append());
-      stack.push({&child, child_item_ptr});
+      stack.emplace(&child, child_item_ptr);
     }
   }
 
