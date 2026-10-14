@@ -57,15 +57,15 @@ public:
   InstructionEditorActionHandler(InstructionEditorActionHandler&&) = delete;
   InstructionEditorActionHandler& operator=(InstructionEditorActionHandler&&) = delete;
 
-  void DropInstruction(const std::string& item_type, const position_t& pos) override;
+  void DropInstruction(const std::string& domain_type, const position_t& pos) override;
 
-  bool CanInsertInstructionAfter(const std::string& item_type) const override;
+  bool CanInsertInstructionAfter(const std::string& domain_type) const override;
 
-  void InsertInstructionAfter(const std::string& item_type) override;
+  void InsertInstructionAfter(const std::string& domain_type) override;
 
-  bool CanInsertInstructionInto(const std::string& item_type) const override;
+  bool CanInsertInstructionInto(const std::string& domain_type) const override;
 
-  void InsertInstructionInto(const std::string& item_type) override;
+  void InsertInstructionInto(const std::string& domain_type) override;
 
   bool CanRemoveInstruction() const override;
 
@@ -95,7 +95,7 @@ public:
 
   void PasteInto() override;
 
-  void InsertItem(const std::string& item_type, mvvm::SessionItem* parent,
+  void InsertItem(const std::string& domain_type, mvvm::SessionItem* parent,
                   const mvvm::TagIndex& index) override;
 
   InstructionItem* GetSelectedInstruction() const;
@@ -112,9 +112,9 @@ private:
   void SelectNotify(const mvvm::SessionItem *item) const;
 
   /**
-   * @brief Creates a single instruction or complex instruction aggregate.
+   * @brief Creates an instruction of the given domain type.
    */
-  std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& item_type) const;
+  std::unique_ptr<InstructionItem> CreateInstructionTree(const std::string& domain_type) const;
 
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {}) const;

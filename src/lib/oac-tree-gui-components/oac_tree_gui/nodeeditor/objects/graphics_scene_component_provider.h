@@ -101,9 +101,9 @@ public:
   void SetSelectedInstructions(const std::vector<const InstructionItem*>& to_select);
 
   /**
-   * @brief Drops instruction on the canvas.
+   * @brief Drops instruction of the given domain type on the canvas.
    */
-  void DropInstruction(const std::string& item_type, const position_t& pos);
+  void DropInstruction(const std::string& domain_type, const position_t& pos);
 
   /**
    * @brief Selects instruction and all its children.

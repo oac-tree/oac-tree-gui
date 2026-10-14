@@ -57,36 +57,36 @@ public:
    * The method ignores existing selection and simply appends an instruction to the instruction
    * container.
    *
-   * @param item_type The type name of a single instruction or the name of a registered sub-tree.
+   * @param domain_type The domain type of the instruction.
    * @param pos The position of instruction on graphics canvas.
    */
-  virtual void DropInstruction(const std::string& item_type, const position_t& pos) = 0;
+  virtual void DropInstruction(const std::string& domain_type, const position_t& pos) = 0;
 
   /**
-   * @brief Checks if instruction of the given type can be inserted after currently selected
-   * instruction.
+   * @brief Checks if instruction of the given domain type can be inserted after currently
+   * selected instruction.
    */
-  virtual bool CanInsertInstructionAfter(const std::string& item_type) const = 0;
+  virtual bool CanInsertInstructionAfter(const std::string& domain_type) const = 0;
 
   /**
    * @brief Inserts new instruction of given type after the current selection.
    *
-   * @param item_type The type name of a single instruction or the name of a registered sub-tree.
+   * @param domain_type The domain type of the instruction.
    */
-  virtual void InsertInstructionAfter(const std::string& item_type) = 0;
+  virtual void InsertInstructionAfter(const std::string& domain_type) = 0;
 
   /**
-   * @brief Checks if SessionItem of the given type can be inserted into currently selected
-   * instruction.
+   * @brief Checks if instruction of the given domain type can be inserted into currently
+   * selected instruction.
    */
-  virtual bool CanInsertInstructionInto(const std::string& item_type) const = 0;
+  virtual bool CanInsertInstructionInto(const std::string& domain_type) const = 0;
 
   /**
    * @brief Inserts new instruction of given type into the current selection.
    *
-   * @param item_type The type name of a single instruction or the name of a registered sub-tree.
+   * @param domain_type The domain type of the instruction.
    */
-  virtual void InsertInstructionInto(const std::string& item_type) = 0;
+  virtual void InsertInstructionInto(const std::string& domain_type) = 0;
 
   /**
    * @brief Checks if currently selected instruction can be removed.
@@ -176,9 +176,9 @@ public:
   virtual void PasteInto() = 0;
 
   /**
-   * @brief Inserts given item type in the given parent.
+   * @brief Inserts instruction of the given domain type in the given parent.
    */
-  virtual void InsertItem(const std::string& item_type, mvvm::SessionItem* parent,
+  virtual void InsertItem(const std::string& domain_type, mvvm::SessionItem* parent,
                           const mvvm::TagIndex& index) = 0;
 };
 

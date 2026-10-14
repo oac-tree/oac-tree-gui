@@ -110,23 +110,23 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
 
 InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
-void InstructionEditorActionHandler::DropInstruction(const std::string& item_type,
+void InstructionEditorActionHandler::DropInstruction(const std::string& domain_type,
                                                      const position_t& pos)
 {
   std::vector<std::unique_ptr<mvvm::SessionItem>> items;
-  items.push_back(CreateInstructionTree(item_type));
+  items.push_back(CreateInstructionTree(domain_type));
 
   InsertItem(std::move(items), GetInstructionContainer(), mvvm::TagIndex::Append(), pos);
 }
 
-bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string& item_type) const
+bool InstructionEditorActionHandler::CanInsertInstructionAfter(const std::string& domain_type) const
 {
-  return CanInsertTypeAfterCurrentSelection(item_type).IsSuccess();
+  return CanInsertTypeAfterCurrentSelection(domain_type).IsSuccess();
 }
 
-void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& item_type)
+void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& domain_type)
 {
-  auto query = CanInsertTypeAfterCurrentSelection(item_type);
+  auto query = CanInsertTypeAfterCurrentSelection(domain_type);
   if (!query.IsSuccess())
   {
     SendMessage(query.GetMessage());
@@ -134,19 +134,19 @@ void InstructionEditorActionHandler::InsertInstructionAfter(const std::string& i
   }
 
   std::vector<std::unique_ptr<mvvm::SessionItem>> items;
-  items.push_back(CreateInstructionTree(item_type));
+  items.push_back(CreateInstructionTree(domain_type));
 
   InsertAfterCurrentSelection(std::move(items));
 }
 
-bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string& item_type) const
+bool InstructionEditorActionHandler::CanInsertInstructionInto(const std::string& domain_type) const
 {
-  return CanInsertTypeIntoCurrentSelection(item_type).IsSuccess();
+  return CanInsertTypeIntoCurrentSelection(domain_type).IsSuccess();
 }
 
-void InstructionEditorActionHandler::InsertInstructionInto(const std::string& item_type)
+void InstructionEditorActionHandler::InsertInstructionInto(const std::string& domain_type)
 {
-  auto query = CanInsertTypeIntoCurrentSelection(item_type);
+  auto query = CanInsertTypeIntoCurrentSelection(domain_type);
   if (!query.IsSuccess())
   {
     SendMessage(query.GetMessage());
@@ -154,7 +154,7 @@ void InstructionEditorActionHandler::InsertInstructionInto(const std::string& it
   }
 
   std::vector<std::unique_ptr<mvvm::SessionItem>> items;
-  items.push_back(CreateInstructionTree(item_type));
+  items.push_back(CreateInstructionTree(domain_type));
 
   InsertIntoCurrentSelection(std::move(items));
 }
@@ -351,12 +351,12 @@ void InstructionEditorActionHandler::PasteInto()
   InsertIntoCurrentSelection(CreateInstructions(GetMimeData()));
 }
 
-void InstructionEditorActionHandler::InsertItem(const std::string& item_type,
+void InstructionEditorActionHandler::InsertItem(const std::string& domain_type,
                                                 mvvm::SessionItem* parent,
                                                 const mvvm::TagIndex& index)
 {
   std::vector<std::unique_ptr<mvvm::SessionItem>> items;
-  items.push_back(CreateInstructionTree(item_type));
+  items.push_back(CreateInstructionTree(domain_type));
   InsertItem(std::move(items), parent, index, GetCoordinateNearby(nullptr));
 }
 
@@ -397,9 +397,9 @@ void InstructionEditorActionHandler::SelectNotify(const mvvm::SessionItem* item)
 }
 
 std::unique_ptr<InstructionItem> InstructionEditorActionHandler::CreateInstructionTree(
-    const std::string& item_type) const
+    const std::string& domain_type) const
 {
-  return m_context.create_instruction(item_type);
+  return m_context.create_instruction(domain_type);
 }
 
 void InstructionEditorActionHandler::SendMessage(const std::string& text,

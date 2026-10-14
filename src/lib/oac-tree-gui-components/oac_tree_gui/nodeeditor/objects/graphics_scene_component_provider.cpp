@@ -102,10 +102,10 @@ void GraphicsSceneComponentProvider::SetSelectedInstructions(
   }
 }
 
-void GraphicsSceneComponentProvider::DropInstruction(const std::string& item_type,
+void GraphicsSceneComponentProvider::DropInstruction(const std::string& domain_type,
                                                      const position_t& pos)
 {
-  m_instruction_editor_action_handler->DropInstruction(item_type, pos);
+  m_instruction_editor_action_handler->DropInstruction(domain_type, pos);
 }
 
 void GraphicsSceneComponentProvider::SelectInstructionBranch(const InstructionItem* instruction)

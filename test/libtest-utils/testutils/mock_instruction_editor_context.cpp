@@ -63,8 +63,8 @@ InstructionEditorContext MockInstructionEditorContext::CreateContext(
     OnSetMimeData();
   };
 
-  result.create_instruction = [this](const std::string& item_type)
-  { return CreateInstructionItem(item_type); };
+  result.create_instruction = [this](const std::string& domain_type)
+  { return CreateInstructionItem(domain_type); };
   return result;
 }
 
