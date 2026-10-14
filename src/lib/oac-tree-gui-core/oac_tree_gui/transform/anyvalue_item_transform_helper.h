@@ -67,6 +67,16 @@ void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo& variab
                                        const anytype_registry_t* registry = nullptr);
 
 /**
+ * @brief Sets AnyValueItem on board of instruction item using JSON type and value strings.
+ *
+ * @param type_json The JSON type attribute.
+ * @param value_json The JSON value attribute.
+ * @param item Instruction item with tag intended for AnyValueItem.
+ */
+void SetAnyValueFromJsonString(const std::string& type_json, const std::string& value_json,
+                               InstructionItem& item);
+
+/**
  * @brief Sets AnyValueItem on board of instruction item using domain instruction.
  *
  * @param instruction Domain instruction with JSON type and value attribute defined.

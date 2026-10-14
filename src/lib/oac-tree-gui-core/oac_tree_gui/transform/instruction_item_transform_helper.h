@@ -24,6 +24,7 @@
 //! @file
 //! Collection of helper functions to transform InstructionItem from/to domain instructions.
 
+#include <oac_tree_gui/domain/instruction_descriptor.h>
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <sup/oac-tree/instruction.h>
@@ -96,6 +97,29 @@ InstructionTree CreateInstructionInfoItemTree(const sup::oac_tree::InstructionIn
  * Method requires that all plugins are loaded.
  */
 InstructionTree CreateInstructionItemTree(const sup::oac_tree::Instruction& instruction);
+
+/**
+ * @brief Creates an instruction item tree from the given node tree.
+ *
+ * No domain objects are created and no plugin is needed.
+ *
+ * @param node The root node.
+ * @return The root item and the items by automation index.
+ * @throw RuntimeException if a node index is out of range.
+ */
+InstructionTree CreateInstructionItemTree(const InstructionNode& node);
+
+/**
+ * @brief Creates a domain instruction from the given item, without children.
+ *
+ * Exposed attributes go to the domain. The display name becomes the domain name, unless it is the
+ * domain type.
+ *
+ * @param item The instruction item.
+ * @return The domain instruction.
+ * @throw sup::oac_tree::InvalidOperationException if the domain type is not registered.
+ */
+std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& item);
 
 /**
  * @brief Register tag in instruction item to be able to add other instructions as children.

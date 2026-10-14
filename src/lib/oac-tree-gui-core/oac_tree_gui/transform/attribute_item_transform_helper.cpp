@@ -111,17 +111,11 @@ sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& 
   return &property;
 }
 
-template <typename T>
-void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
+void SetPropertyFromAttributeString(const std::string& attribute_string,
                                     sup::gui::AnyValueItem& item)
 {
-  if (!domain.HasAttribute(attribute_name))
-  {
-    return;
-  }
   SetAttributeExposedFlag(true, item);
 
-  auto attribute_string = domain.GetAttributeString(attribute_name);
   if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
   {
     SetAttributeAsString(attribute_string, item);
@@ -134,6 +128,16 @@ void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribut
   if (result.first)
   {
     (void)item.SetData(sup::gui::GetVariantFromScalar(result.second));
+  }
+}
+
+template <typename T>
+void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
+                                    sup::gui::AnyValueItem& item)
+{
+  if (domain.HasAttribute(attribute_name))
+  {
+    SetPropertyFromAttributeString(domain.GetAttributeString(attribute_name), item);
   }
 }
 

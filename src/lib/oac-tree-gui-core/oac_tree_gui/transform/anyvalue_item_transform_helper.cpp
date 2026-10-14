@@ -117,18 +117,21 @@ void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo& variab
   }
 }
 
+void SetAnyValueFromJsonString(const std::string& type_json, const std::string& value_json,
+                               InstructionItem& item)
+{
+  auto anytype = sup::gui::AnyTypeFromJSONString(type_json);
+  SetAnyValue(sup::gui::AnyValueFromJSONString(anytype, value_json), item);
+}
+
 void SetAnyValueFromDomainInstruction(const instruction_t& instruction, InstructionItem& item)
 {
   if (instruction.HasAttribute(domainconstants::kTypeAttribute)
       && instruction.HasAttribute(domainconstants::kValueAttribute))
   {
-    auto anytype = sup::gui::AnyTypeFromJSONString(
-        instruction.GetAttributeString(domainconstants::kTypeAttribute));
-
-    auto anyvalue = sup::gui::AnyValueFromJSONString(
-        anytype, instruction.GetAttributeString(domainconstants::kValueAttribute));
-
-    SetAnyValue(anyvalue, item);
+    SetAnyValueFromJsonString(instruction.GetAttributeString(domainconstants::kTypeAttribute),
+                              instruction.GetAttributeString(domainconstants::kValueAttribute),
+                              item);
   }
 }
 

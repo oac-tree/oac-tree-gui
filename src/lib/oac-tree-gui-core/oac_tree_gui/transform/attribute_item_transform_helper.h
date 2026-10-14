@@ -96,6 +96,18 @@ sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& 
                                                   mvvm::CompoundItem& item);
 
 /**
+ * @brief Sets property item from the attribute string and marks it as exposed.
+ *
+ * Placeholders and references are stored as strings. Other values are parsed by the AnyType of
+ * the item; the item is left unchanged if parsing fails.
+ *
+ * @param attribute_string The attribute value.
+ * @param item An item representing an attribute.
+ */
+void SetPropertyFromAttributeString(const std::string& attribute_string,
+                                    sup::gui::AnyValueItem& item);
+
+/**
  * @brief Set property item from the domain attribute.
  *
  * @tparam Domain instruction or variable.

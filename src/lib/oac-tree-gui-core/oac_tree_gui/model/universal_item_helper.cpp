@@ -82,7 +82,7 @@ void UpdateShowCollapsedPropertyAppearance(InstructionItem& item)
   {
     auto property = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
     (void)property->SetDisplayName("Show collapsed");
-    (void)property->SetToolTip("Show child branch collapsed duing procedure execution");
+    (void)property->SetToolTip("Show child branch collapsed during procedure execution");
     const auto is_collapsed_value =
         mvvm::utils::Contains(collapsed_by_default, item.GetDomainType());
     (void)property->SetData(is_collapsed_value);

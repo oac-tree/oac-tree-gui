@@ -20,15 +20,18 @@
 
 #include "oac_tree_gui/transform/instruction_item_transform_helper.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_info_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/universal_instruction_item.h>
 #include <oac_tree_gui/model/universal_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_descriptor_helper.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -36,6 +39,7 @@
 #include <mvvm/core/mvvm_exceptions.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item_container.h>
+#include <mvvm/model/session_item_data.h>
 #include <mvvm/model/tagged_items.h>
 
 #include <sup/oac-tree/exceptions.h>
@@ -45,9 +49,65 @@
 #include <sup/oac-tree/sequence_parser.h>
 
 #include <gtest/gtest.h>
+#include <testutils/cmake_info.h>
+
+#include <algorithm>
+#include <filesystem>
 
 namespace oac_tree_gui::test
 {
+
+namespace
+{
+
+//! Returns data roles of the item, without the identifier, sorted.
+std::vector<mvvm::role_t> GetRoles(const mvvm::SessionItem& item)
+{
+  auto result = item.GetItemData()->GetRoles();
+  result.erase(std::remove(result.begin(), result.end(), mvvm::DataRole::kIdentifier),
+               result.end());
+  std::sort(result.begin(), result.end());
+  return result;
+}
+
+//! Expects equal item trees: types, data of all roles except identifier, tags and children.
+void ExpectSameItems(const mvvm::SessionItem& lhs, const mvvm::SessionItem& rhs,
+                     const std::string& path)
+{
+  EXPECT_EQ(lhs.GetType(), rhs.GetType()) << path;
+  const auto roles = GetRoles(lhs);
+  EXPECT_EQ(roles, GetRoles(rhs)) << path;
+  for (auto role : roles)
+  {
+    EXPECT_EQ(lhs.Data(role), rhs.Data(role)) << path << " role " << role;
+  }
+
+  const auto* lhs_tags = lhs.GetTaggedItems();
+  const auto* rhs_tags = rhs.GetTaggedItems();
+  EXPECT_EQ(lhs_tags->GetDefaultTag(), rhs_tags->GetDefaultTag()) << path;
+  ASSERT_EQ(lhs_tags->GetTagCount(), rhs_tags->GetTagCount()) << path;
+  for (std::size_t tag_index = 0; tag_index < lhs_tags->GetTagCount(); ++tag_index)
+  {
+    const auto& lhs_container = lhs_tags->ContainerAt(tag_index);
+    const auto& rhs_container = rhs_tags->ContainerAt(tag_index);
+    EXPECT_EQ(lhs_container.GetTagInfo(), rhs_container.GetTagInfo()) << path;
+    ASSERT_EQ(lhs_container.GetItemCount(), rhs_container.GetItemCount())
+        << path << "/" << lhs_container.GetName();
+    for (std::size_t index = 0; index < lhs_container.GetItemCount(); ++index)
+    {
+      ExpectSameItems(*lhs_container.ItemAt(index), *rhs_container.ItemAt(index),
+                      path + "/" + lhs_container.GetName() + "[" + std::to_string(index) + "]");
+    }
+  }
+}
+
+//! Builds an item tree from the domain instruction with the item builder.
+InstructionTree CreateItemTreeFromNodes(const sup::oac_tree::Instruction& instruction)
+{
+  return CreateInstructionItemTree(CreateInstructionNodeTree(instruction));
+}
+
+}  // namespace
 
 /**
  * @brief Tests of helper methods in instruction_item_transform_helper.h
@@ -540,6 +600,313 @@ TEST_F(InstructionItemTransformHelperTest, RPCClientRoundTrip)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
     EXPECT_NO_THROW(domain_item->Setup(m_procedure));
   }
+}
+
+//! Item tree from a hand-written node, no plugin needed.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
+{
+  const AttributeDescriptor name_attribute = {
+      domainconstants::kNameAttribute,           std::string{}, {}, false, false,
+      sup::oac_tree::AttributeCategory::kLiteral};
+
+  const AttributeDescriptor is_root_attribute = {
+      domainconstants::kIsRootAttribute,         false, {}, false, true,
+      sup::oac_tree::AttributeCategory::kLiteral};
+
+  const AttributeDescriptor threshold_attribute = {
+      "threshold", mvvm::uint32{0}, "Threshold tooltip",
+      false,       false,           sup::oac_tree::AttributeCategory::kBoth};
+
+  const AttributeDescriptor path_attribute{
+      "path", std::string{"default"}, {}, true, true, sup::oac_tree::AttributeCategory::kLiteral};
+
+  const std::vector<AttributeDescriptor> attributes = {name_attribute, is_root_attribute,
+                                                       threshold_attribute, path_attribute};
+
+  const InstructionDescriptor descriptor{"UnknownCompound", sup::oac_tree::Instruction::kCompound,
+                                         attributes};
+
+  const InstructionDescriptor child_descriptor{
+      "UnknownAction", sup::oac_tree::Instruction::kAction, {}};
+
+  std::vector<sup::oac_tree::AttributeInfo> attribute_info = {
+      {domainconstants::kNameAttribute, "main"}, {"threshold", "3"}, {"custom", "abc"}};
+
+  const InstructionNode node{descriptor, attribute_info, 1, {{child_descriptor, {}, 0, {}}}};
+
+  auto tree = CreateInstructionItemTree(node);
+  auto* item = tree.root.get();
+
+  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<UniversalInstructionItem>());
+  EXPECT_EQ(item->GetDomainType(), "UnknownCompound");
+  EXPECT_EQ(item->GetDisplayName(), "main");
+
+  auto* threshold = item->FindItem<sup::gui::AnyValueScalarItem>("threshold");
+  ASSERT_NE(threshold, nullptr);
+  EXPECT_EQ(threshold->GetAnyTypeName(), sup::dto::kUInt32TypeName);
+  EXPECT_EQ(threshold->Data<mvvm::uint32>(), 3);
+  EXPECT_EQ(threshold->GetToolTip(), "Threshold tooltip");
+  EXPECT_TRUE(GetAttributeExposedFlag(*threshold));
+
+  auto* path = item->FindItem<sup::gui::AnyValueScalarItem>("path");
+  ASSERT_NE(path, nullptr);
+  EXPECT_EQ(path->Data<std::string>(), "default");
+  EXPECT_TRUE(GetAttributeExposedFlag(*path));
+  EXPECT_FALSE(item->IsRoot());
+
+  auto* custom = item->FindItem<sup::gui::AnyValueScalarItem>("custom");
+  ASSERT_NE(custom, nullptr);
+  EXPECT_EQ(custom->GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_EQ(custom->Data<std::string>(), "abc");
+
+  EXPECT_FALSE(mvvm::utils::HasTag(*item, domainconstants::kNameAttribute));
+  EXPECT_FALSE(mvvm::utils::HasTag(*item, domainconstants::kShowCollapsedAttribute));
+  for (const auto* tag : {itemconstants::kBehaviorTag, itemconstants::kStatus, itemconstants::kXpos,
+                          itemconstants::kYpos, itemconstants::kBreakpoint})
+  {
+    EXPECT_TRUE(mvvm::utils::HasTag(*item, tag)) << tag;
+  }
+  EXPECT_EQ(item->GetBehavior(), itemconstants::kNativeBehavior);
+
+  ASSERT_EQ(item->GetInstructions().size(), 1);
+  auto* child = item->GetInstructions().at(0);
+  EXPECT_EQ(child->GetDomainType(), "UnknownAction");
+  EXPECT_EQ(child->GetDisplayName(), "UnknownAction");
+
+  const std::vector<InstructionItem*> expected_indexes{child, item};
+  EXPECT_EQ(tree.indexes, expected_indexes);
+}
+
+TEST_F(InstructionItemTransformHelperTest, ItemTreeIndexOutOfRange)
+{
+  const InstructionNode node{{"UnknownAction", sup::oac_tree::Instruction::kAction, {}}, {}, 1, {}};
+  EXPECT_THROW(CreateInstructionItemTree(node), RuntimeException);
+}
+
+//! Placeholders and references are stored as strings and exposed.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeWithPlaceholderAndReference)
+{
+  auto node = CreateInstructionNode(domainconstants::kWaitInstructionType);
+  node.attributes = {{domainconstants::kTimeoutAttribute, "$par"},
+                     {domainconstants::kBlockingAttribute, "@var"}};
+
+  auto tree = CreateInstructionItemTree(node);
+  auto* timeout = tree.root->FindItem<sup::gui::AnyValueItem>(domainconstants::kTimeoutAttribute);
+  EXPECT_EQ(timeout->Data<std::string>(), "$par");
+  EXPECT_TRUE(GetAttributeExposedFlag(*timeout));
+  auto* blocking = tree.root->FindItem<sup::gui::AnyValueItem>(domainconstants::kBlockingAttribute);
+  EXPECT_EQ(blocking->Data<std::string>(), "@var");
+  EXPECT_TRUE(GetAttributeExposedFlag(*blocking));
+
+  auto domain = CreateDomainInstruction(*tree.root);
+  EXPECT_EQ(domain->GetAttributeString(domainconstants::kTimeoutAttribute), "$par");
+  EXPECT_EQ(domain->GetAttributeString(domainconstants::kBlockingAttribute), "@var");
+}
+
+//! Item from info: typed base attributes, other attributes as strings, no AnyValue tag.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeFromInfoNode)
+{
+  {  // Include is collapsed without showCollapsed
+    const sup::oac_tree::InstructionInfo info(domainconstants::kIncludeInstructionType,
+                                              sup::oac_tree::Instruction::kDecorator, 0,
+                                              {{domainconstants::kPathAttribute, "abc"}});
+    auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
+    EXPECT_TRUE(IsCollapsed(*tree.root));
+    auto* path = tree.root->FindItem<sup::gui::AnyValueScalarItem>(domainconstants::kPathAttribute);
+    ASSERT_NE(path, nullptr);
+    EXPECT_EQ(path->GetAnyTypeName(), sup::dto::kStringTypeName);
+    EXPECT_EQ(path->Data<std::string>(), "abc");
+  }
+
+  {  // showCollapsed string is parsed as bool
+    const sup::oac_tree::InstructionInfo info(domainconstants::kIncludeInstructionType,
+                                              sup::oac_tree::Instruction::kDecorator, 0,
+                                              {{domainconstants::kShowCollapsedAttribute, "false"},
+                                               {domainconstants::kIsRootAttribute, "true"}});
+    auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
+    EXPECT_FALSE(IsCollapsed(*tree.root));
+    EXPECT_TRUE(tree.root->IsRoot());
+  }
+
+  {  // JSON pair stays as strings
+    const std::string type_json(R"RAW({"type":"int32"})RAW");
+    const sup::oac_tree::InstructionInfo info(
+        domainconstants::kPvAccessWriteInstructionType, sup::oac_tree::Instruction::kAction, 0,
+        {{domainconstants::kTypeAttribute, type_json}, {domainconstants::kValueAttribute, "42"}});
+    auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
+    EXPECT_FALSE(mvvm::utils::HasTag(*tree.root, itemconstants::kAnyValueTag));
+    EXPECT_EQ(tree.root->Property<std::string>(domainconstants::kTypeAttribute), type_json);
+    EXPECT_EQ(tree.root->Property<std::string>(domainconstants::kValueAttribute), "42");
+  }
+}
+
+//! Repeat gets maxCount from the attribute presets. The preset goes to the domain.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeRepeatPreset)
+{
+  auto tree =
+      CreateInstructionItemTree(CreateInstructionNode(domainconstants::kRepeatInstructionType));
+  auto* item = tree.root.get();
+
+  EXPECT_EQ(item->GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), -1);
+  auto* property = item->FindItem<sup::gui::AnyValueItem>(domainconstants::kMaxCountAttribute);
+  ASSERT_NE(property, nullptr);
+  EXPECT_TRUE(GetAttributeExposedFlag(*property));
+
+  auto domain = CreateDomainInstruction(*item);
+  EXPECT_EQ(domain->GetAttributeString(domainconstants::kMaxCountAttribute), "-1");
+}
+
+//! Instructions with JSON type and value attributes get the AnyValue tag.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
+{
+  {
+    auto tree =
+        CreateInstructionItemTree(CreateInstructionNode(domainconstants::kWaitInstructionType));
+    EXPECT_FALSE(mvvm::utils::HasTag(*tree.root, itemconstants::kAnyValueTag));
+    EXPECT_EQ(GetAnyValueItem(*tree.root), nullptr);
+  }
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  for (const auto* domain_type :
+       {domainconstants::kChannelAccessWriteInstructionType,
+        domainconstants::kPvAccessWriteInstructionType, domainconstants::kRPCClientInstructionType})
+  {
+    auto tree = CreateInstructionItemTree(CreateInstructionNode(domain_type));
+    EXPECT_TRUE(mvvm::utils::HasTag(*tree.root, itemconstants::kAnyValueTag)) << domain_type;
+    auto* anyvalue_item = GetAnyValueItem(*tree.root);
+    ASSERT_NE(anyvalue_item, nullptr) << domain_type;
+    EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
+    EXPECT_FALSE(GetAttributeExposedFlag(*anyvalue_item));
+  }
+}
+
+//! IncludeProcedure is collapsed by default; showCollapsed goes to the domain both ways.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeIncludeProcedureCollapsed)
+{
+  auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
+  (void)domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+  EXPECT_TRUE(IsCollapsed(*CreateItemTreeFromNodes(*domain).root));
+
+  (void)domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "false");
+  auto tree = CreateItemTreeFromNodes(*domain);
+  EXPECT_FALSE(IsCollapsed(*tree.root));
+  EXPECT_EQ(CreateDomainInstruction(*tree.root)
+                ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
+            "false");
+
+  auto item_tree = CreateInstructionItemTree(
+      CreateInstructionNode(domainconstants::kIncludeProcedureInstructionType));
+  EXPECT_TRUE(IsCollapsed(*item_tree.root));
+  EXPECT_EQ(CreateDomainInstruction(*item_tree.root)
+                ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
+            "true");
+}
+
+//! Wait with name and attributes: item to domain to item.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeWaitRoundTrip)
+{
+  auto tree =
+      CreateInstructionItemTree(CreateInstructionNode(domainconstants::kWaitInstructionType));
+  auto* item = tree.root.get();
+  item->SetName("First");
+  item->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
+  item->SetIsRootFlag(true);
+
+  auto domain = CreateDomainInstruction(*item);
+  EXPECT_EQ(domain->GetName(), "First");
+  EXPECT_EQ(domain->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
+  EXPECT_EQ(domain->GetAttributeString(domainconstants::kIsRootAttribute), "true");
+  EXPECT_FALSE(domain->HasAttribute(domainconstants::kBlockingAttribute));
+
+  auto restored = CreateItemTreeFromNodes(*domain);
+  ExpectSameItems(*item, *restored.root, "Wait");
+}
+
+//! PvAccessWrite with JSON type and value: item to domain to item.
+TEST_F(InstructionItemTransformHelperTest, ItemTreePvAccessWriteRoundTrip)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+  auto tree = CreateInstructionItemTree(
+      CreateInstructionNode(domainconstants::kPvAccessWriteInstructionType));
+  auto* item = tree.root.get();
+  item->SetAttribute(domainconstants::kChannelAttribute, std::string("def"));
+  SetAnyValue(expected_anyvalue, *item);
+
+  auto domain = CreateDomainInstruction(*item);
+  EXPECT_EQ(domain->GetAttributeString(domainconstants::kTypeAttribute),
+            R"RAW({"type":"int32"})RAW");
+  EXPECT_EQ(domain->GetAttributeString(domainconstants::kValueAttribute), "42");
+  EXPECT_NO_THROW(domain->Setup(m_procedure));
+
+  auto restored = CreateItemTreeFromNodes(*domain);
+  auto* anyvalue_item = GetAnyValueItem(*restored.root);
+  ASSERT_NE(anyvalue_item, nullptr);
+  EXPECT_EQ(CreateAnyValue(*anyvalue_item), expected_anyvalue);
+  EXPECT_EQ(restored.root->GetAttribute<std::string>(domainconstants::kChannelAttribute), "def");
+}
+
+//! Temporary: the item builder reproduces UniversalInstructionItem::SetDomainType.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeMatchesDomainTypeSetup)
+{
+  for (const auto& domain_type : GetDomainInstructionNames())
+  {
+    UniversalInstructionItem expected;
+    expected.SetDomainType(domain_type);
+    auto tree = CreateInstructionItemTree(CreateInstructionNode(domain_type));
+    ExpectSameItems(expected, *tree.root, domain_type);
+  }
+}
+
+//! Temporary: the item builder reproduces CreateInstructionItemTree(Instruction) for XML files.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeMatchesXmlLoad)
+{
+  std::size_t compared_count{0};
+  const auto resource_dir = std::filesystem::path(ProjectSourceDir()) / "test" / "resources";
+  for (const auto& entry : std::filesystem::recursive_directory_iterator(resource_dir))
+  {
+    if (entry.path().extension() != ".xml")
+    {
+      continue;
+    }
+    std::unique_ptr<sup::oac_tree::Procedure> procedure;
+    try
+    {
+      procedure = sup::oac_tree::ParseProcedureFile(entry.path().string());
+    }
+    catch (const std::exception&)
+    {
+      continue;  // not a procedure, or plugin not available
+    }
+
+    for (const auto* instruction : procedure->GetTopInstructions())
+    {
+      const auto path = entry.path().filename().string() + ":" + instruction->GetType();
+      std::unique_ptr<InstructionTree> expected;
+      try
+      {
+        expected = std::make_unique<InstructionTree>(CreateInstructionItemTree(*instruction));
+      }
+      catch (const std::exception&)
+      {
+        EXPECT_ANY_THROW(CreateItemTreeFromNodes(*instruction)) << path;
+        continue;
+      }
+      auto tree = CreateItemTreeFromNodes(*instruction);
+      ExpectSameItems(*expected->root, *tree.root, path);
+      EXPECT_EQ(expected->indexes.size(), tree.indexes.size()) << path;
+      ++compared_count;
+    }
+  }
+  EXPECT_GT(compared_count, 20);
 }
 
 }  // namespace oac_tree_gui::test
