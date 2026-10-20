@@ -44,6 +44,7 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessServerVariableItem>();
 
   // other items
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::AttributeItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::InstructionContainerItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::ProcedureItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::WorkspaceItem>();

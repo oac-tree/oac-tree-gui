@@ -7,6 +7,8 @@ target_sources(${library_name} PRIVATE
   aggregate_factory.h
   application_models.cpp
   application_models.h
+  attribute_item.cpp
+  attribute_item.h
   component_types.cpp
   component_types.h
   instruction_container_item.cpp

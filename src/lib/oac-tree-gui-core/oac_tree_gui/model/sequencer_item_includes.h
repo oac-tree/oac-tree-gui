@@ -24,6 +24,7 @@
 //! @file
 //! Includes for all sequencer related items.
 
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/job_item.h>

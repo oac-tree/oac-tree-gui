@@ -7,6 +7,7 @@ add_executable(${test})
 target_sources(${test} PRIVATE
   anyvalue_item_transform_helper_tests.cpp
   application_models_tests.cpp
+  attribute_item_tests.cpp
   attribute_item_transform_helper_tests.cpp
   component_types_tests.cpp
   domain_automation_helper_tests.cpp
