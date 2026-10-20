@@ -84,6 +84,23 @@ TEST_F(InstructionItemHelperTest, IsCollapsed)
   EXPECT_FALSE(IsCollapsed(*item));
 }
 
+//! Without showCollapsed, Include is collapsed and Sequence is expanded.
+TEST_F(InstructionItemHelperTest, IsCollapsedByDefault)
+{
+  auto include = CreateInstructionItem(domainconstants::kIncludeInstructionType);
+  EXPECT_FALSE(
+      include->GetAttributes()->FindItem(domainconstants::kShowCollapsedAttribute)->HasData());
+  EXPECT_TRUE(IsCollapsed(*include));
+
+  SetCollapsed(false, *include);
+  EXPECT_FALSE(IsCollapsed(*include));
+
+  auto sequence = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  EXPECT_FALSE(
+      sequence->GetAttributes()->FindItem(domainconstants::kShowCollapsedAttribute)->HasData());
+  EXPECT_FALSE(IsCollapsed(*sequence));
+}
+
 TEST_F(InstructionItemHelperTest, ToggleCollapsed)
 {
   auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);

@@ -62,10 +62,10 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
 bool IsCollapsible(const InstructionItem& item);
 
 /**
- * @brief Returns true if item has is_collapsed property and it is set to true.
+ * @brief Returns true if the children branch of the instruction is shown collapsed.
  *
- * This will be taken into account during operation to show instruction tree with certain children
- * branches collapsed.
+ * @details Takes showCollapsed. If it is not set, Include and IncludeProcedure are collapsed, other
+ * instructions are expanded.
  */
 bool IsCollapsed(const InstructionItem& item);
 

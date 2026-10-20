@@ -159,8 +159,8 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromInclude)
     const auto* show_collapsed =
         FindAttribute(descriptor, domainconstants::kShowCollapsedAttribute);
     ASSERT_NE(show_collapsed, nullptr) << domain_type;
-    EXPECT_EQ(show_collapsed->default_value, mvvm::variant_t{true}) << domain_type;
-    EXPECT_TRUE(show_collapsed->is_set) << domain_type;
+    EXPECT_EQ(show_collapsed->default_value, mvvm::variant_t{false}) << domain_type;
+    EXPECT_FALSE(show_collapsed->is_set) << domain_type;
   }
 
   const auto descriptor = CreateTypedDescriptor(domainconstants::kIncludeInstructionType);
@@ -244,8 +244,8 @@ TEST_F(InstructionDescriptorHelperTest, InfoSequenceAndInclude)
   const auto include = CreateInstructionDescriptor(include_info);
   const auto* include_collapsed = FindAttribute(include, domainconstants::kShowCollapsedAttribute);
   ASSERT_NE(include_collapsed, nullptr);
-  EXPECT_EQ(include_collapsed->default_value, mvvm::variant_t{true});
-  EXPECT_TRUE(include_collapsed->is_set);
+  EXPECT_EQ(include_collapsed->default_value, mvvm::variant_t{false});
+  EXPECT_FALSE(include_collapsed->is_set);
 }
 
 //! Info descriptor needs no plugin.

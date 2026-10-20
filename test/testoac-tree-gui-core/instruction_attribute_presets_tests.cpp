@@ -49,11 +49,10 @@ TEST_F(InstructionAttributePresetsTest, FindAttributePreset)
   ASSERT_TRUE(preset.has_value());
   EXPECT_EQ(preset->value, mvvm::variant_t{mvvm::int32{-1}});
 
-  preset = FindAttributePreset(domainconstants::kIncludeInstructionType,
-                               domainconstants::kShowCollapsedAttribute);
-  ASSERT_TRUE(preset.has_value());
-  EXPECT_EQ(preset->value, mvvm::variant_t{true});
-
+  // collapsed Include is the default of IsCollapsed, not a preset
+  EXPECT_FALSE(FindAttributePreset(domainconstants::kIncludeInstructionType,
+                                   domainconstants::kShowCollapsedAttribute)
+                   .has_value());
   EXPECT_FALSE(FindAttributePreset(domainconstants::kSequenceInstructionType,
                                    domainconstants::kShowCollapsedAttribute)
                    .has_value());

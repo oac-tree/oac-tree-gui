@@ -72,7 +72,15 @@ bool IsCollapsed(const InstructionItem& item)
     return false;
   }
   const auto* property = item.GetAttributes()->FindItem(domainconstants::kShowCollapsedAttribute);
-  return property->HasData() && property->Data<bool>();
+  if (property->HasData())
+  {
+    return property->Data<bool>();
+  }
+
+  // not set: include instructions are collapsed
+  static const std::vector<std::string> kCollapsedByDefault = {
+      domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
+  return mvvm::utils::Contains(kCollapsedByDefault, item.GetDomainType());
 }
 
 void SetCollapsed(bool value, InstructionItem& item)

@@ -323,7 +323,7 @@ TEST_F(InstructionItemTransformHelperTest, IncludeToDomainWithCustomAttribute)
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
   EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
   EXPECT_EQ(domain_item->GetAttributeString(custom_name), custom_value);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kShowCollapsedAttribute), "true");
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kShowCollapsedAttribute));
 
   // Setup of Include requires the instruction to include
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
@@ -726,6 +726,32 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
   }
 }
 
+//! XML without showCollapsed round-trips exactly; an explicit value is kept.
+TEST_F(InstructionItemTransformHelperTest, ShowCollapsedRoundTrip)
+{
+  for (const auto* domain_type :
+       {domainconstants::kIncludeInstructionType, domainconstants::kSequenceInstructionType})
+  {
+    auto domain = CreateDomainInstruction(domain_type);
+    auto tree = CreateItemTreeFromDomain(*domain);
+    EXPECT_EQ(IsCollapsed(*tree.root), domain_type == domainconstants::kIncludeInstructionType);
+    EXPECT_FALSE(
+        CreateDomainInstruction(*tree.root)->HasAttribute(domainconstants::kShowCollapsedAttribute))
+        << domain_type;
+
+    for (const auto* value : {"true", "false"})
+    {
+      auto domain_with_value = CreateDomainInstruction(domain_type);
+      (void)domain_with_value->AddAttribute(domainconstants::kShowCollapsedAttribute, value);
+      auto tree_with_value = CreateItemTreeFromDomain(*domain_with_value);
+      EXPECT_EQ(CreateDomainInstruction(*tree_with_value.root)
+                    ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
+                value)
+          << domain_type;
+    }
+  }
+}
+
 //! IncludeProcedure is collapsed by default; showCollapsed goes to the domain both ways.
 TEST_F(InstructionItemTransformHelperTest, ItemTreeIncludeProcedureCollapsed)
 {
@@ -740,12 +766,12 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeIncludeProcedureCollapsed)
                 ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
             "false");
 
+  // collapsed without showCollapsed, nothing is written
   auto item_tree = CreateInstructionItemTree(
       CreateInstructionNode(domainconstants::kIncludeProcedureInstructionType));
   EXPECT_TRUE(IsCollapsed(*item_tree.root));
-  EXPECT_EQ(CreateDomainInstruction(*item_tree.root)
-                ->GetAttributeString(domainconstants::kShowCollapsedAttribute),
-            "true");
+  EXPECT_FALSE(CreateDomainInstruction(*item_tree.root)
+                   ->HasAttribute(domainconstants::kShowCollapsedAttribute));
 
   SetCollapsed(false, *item_tree.root);
   EXPECT_EQ(CreateDomainInstruction(*item_tree.root)
