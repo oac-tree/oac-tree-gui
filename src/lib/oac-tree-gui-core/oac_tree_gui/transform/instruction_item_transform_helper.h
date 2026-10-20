@@ -82,8 +82,8 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 /**
  * @brief Creates a domain instruction from the given item, without children.
  *
- * Exposed attributes go to the domain. The display name becomes the domain name, unless it is the
- * domain type.
+ * Attributes with data go to the domain, except empty strings and `isRoot = false`. The display
+ * name becomes the domain name, unless it is the domain type.
  *
  * @param item The instruction item.
  * @return The domain instruction.

@@ -206,9 +206,6 @@ void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& a
 
 template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem& item,
                                              const std::string& attribute_name, variable_t& domain);
-template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem& item,
-                                                const std::string& attribute_name,
-                                                instruction_t& domain);
 
 template <typename T>
 void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_name, T& domain)

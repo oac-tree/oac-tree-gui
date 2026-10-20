@@ -206,15 +206,15 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttribute)
 
 TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeWhenUnset)
 {
-  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
   sup::gui::AnyValueScalarItem item;
-  item.SetAnyTypeName(sup::dto::kFloat64TypeName);
-  item.SetData(5.0);
+  item.SetAnyTypeName(sup::dto::kStringTypeName);
+  item.SetData("abc");
   SetAttributeExposedFlag(false, item);
 
-  SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
-  EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
+  SetDomainAttribute(item, domainconstants::kNameAttribute, *domain_variable);
+  EXPECT_FALSE(domain_variable->HasAttribute(domainconstants::kNameAttribute));
 }
 
 TEST_F(AttributeItemTransformHelperTest, SetAttributeAsString)

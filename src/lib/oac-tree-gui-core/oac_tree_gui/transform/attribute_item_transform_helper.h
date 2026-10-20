@@ -23,7 +23,8 @@
 
 //! @file
 //! Collection of helper functions to transform VariableItem and InstructionItem properties
-//! from/to domain attributes.
+//! from/to domain attributes. Instruction attributes are AttributeItem. The functions on
+//! AnyValueItem and the exposed flag serve variable attributes and the JSON type/value pair.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
@@ -166,9 +167,6 @@ void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& a
 extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem& item,
                                                     const std::string& attribute_name,
                                                     variable_t& domain);
-extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem& item,
-                                                       const std::string& attribute_name,
-                                                       instruction_t& domain);
 
 /**
  * @brief Sets an attribute of the domain object from the attribute item.
