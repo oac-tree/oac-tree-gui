@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -32,12 +33,10 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/container_utils.h>
 
-#include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/instruction.h>
 
 #include <stack>
@@ -124,11 +123,11 @@ void RegisterChildrenTag(instruction_t::Category category, InstructionItem& item
   }
 }
 
-//! Adds a string property for an attribute unknown to the descriptor.
+//! Adds a string attribute for an attribute unknown to the descriptor.
 void AddStringAttribute(const std::string& name, const std::string& value, mvvm::CompoundItem& item)
 {
-  auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(name);
-  property.SetAnyTypeName(sup::dto::kStringTypeName);
+  auto& property = item.AddProperty<AttributeItem>(name);
+  property.SetAttributeType(std::string(), /*is_nullable*/ false);
   (void)property.SetDisplayName(name);
   (void)property.SetData(value);
 }
@@ -147,9 +146,14 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
     {
       continue;
     }
-    auto& property = attributes.AddProperty<sup::gui::AnyValueScalarItem>(attribute.name);
-    property.SetAnyTypeName(sup::gui::GetAnyValueFromScalar(attribute.default_value).GetTypeName());
-    (void)property.SetData(attribute.default_value);
+    auto& property = attributes.AddProperty<AttributeItem>(attribute.name);
+    const bool is_nullable =
+        !attribute.mandatory && (attribute.name != domainconstants::kIsRootAttribute);
+    property.SetAttributeType(attribute.default_value, is_nullable);
+    if (attribute.is_set)
+    {
+      (void)property.SetData(attribute.default_value);
+    }
     (void)property.SetDisplayName(attribute.name);
     if (!attribute.tooltip.empty())
     {
@@ -159,15 +163,12 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
     {
       (void)property.SetVisible(false);
     }
-    SetAttributeExposedFlag(attribute.is_set, property);
   }
 
   RegisterChildrenTag(descriptor.category, item);
   AddGuiProperties(item);
 
-  if (auto property =
-          attributes.FindItem<sup::gui::AnyValueItem>(domainconstants::kShowCollapsedAttribute);
-      property)
+  if (auto property = attributes.FindItem(domainconstants::kShowCollapsedAttribute); property)
   {
     (void)property->SetDisplayName("Show collapsed");
     (void)property->SetToolTip("Show child branch collapsed during procedure execution");
@@ -192,7 +193,7 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
   {
     if (IsAttributeProperty(name) && FindAttributeDescriptor(node.descriptor, name))
     {
-      SetPropertyFromAttributeString(value, *attributes.FindItem<sup::gui::AnyValueItem>(name));
+      SetAttributeFromString(value, *attributes.FindItem<AttributeItem>(name));
     }
     else if (name == domainconstants::kNameAttribute)
     {
@@ -277,12 +278,9 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& it
 
   // all attributes, visible or not
   const auto properties = item.GetAttributes()->GetAllItems();
-  for (const auto* property : mvvm::utils::CastItems<const sup::gui::AnyValueItem>(properties))
+  for (const auto* attribute : mvvm::utils::CastItems<const AttributeItem>(properties))
   {
-    if (const auto tag = property->GetTagIndex().GetTag(); tag != itemconstants::kAnyValueTag)
-    {
-      SetDomainAttribute(*property, tag, *result);
-    }
+    SetDomainAttribute(*attribute, attribute->GetTagIndex().GetTag(), *result);
   }
 
   if (item.GetDisplayName() != item.GetDomainType())

@@ -36,6 +36,8 @@
 namespace oac_tree_gui
 {
 
+class AttributeItem;
+
 /**
  * @brief Returns true if given attribute value is referring to `$placeholder`.
  */
@@ -108,6 +110,28 @@ void SetPropertyFromAttributeString(const std::string& attribute_string,
                                     sup::gui::AnyValueItem& item);
 
 /**
+ * @brief Sets the attribute item from the domain attribute string.
+ *
+ * Placeholders and references are stored as text. Other values are parsed by the attribute type;
+ * the item is left unchanged if parsing fails.
+ *
+ * @param attribute_string The attribute value.
+ * @param item The attribute item.
+ */
+void SetAttributeFromString(const std::string& attribute_string, AttributeItem& item);
+
+/**
+ * @brief Returns the domain attribute string of the attribute item.
+ *
+ * Text is returned as is. A value is converted by the oac-tree attribute system.
+ *
+ * @param item The attribute item.
+ * @return The attribute string, empty if the attribute is not set.
+ * @throw LogicErrorException if the value can't be converted.
+ */
+std::string GetAttributeString(const AttributeItem& item);
+
+/**
  * @brief Set property item from the domain attribute.
  *
  * @tparam Domain instruction or variable.
@@ -143,6 +167,23 @@ extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem
                                                     const std::string& attribute_name,
                                                     variable_t& domain);
 extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem& item,
+                                                       const std::string& attribute_name,
+                                                       instruction_t& domain);
+
+/**
+ * @brief Sets an attribute of the domain object from the attribute item.
+ *
+ * A not set attribute, an empty string and `isRoot = false` are skipped.
+ *
+ * @tparam T Domain instruction or variable.
+ * @param item The attribute item.
+ * @param attribute_name The name of the domain attribute to set.
+ * @param domain The domain object.
+ */
+template <typename T>
+void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_name, T& domain);
+
+extern template void SetDomainAttribute<instruction_t>(const AttributeItem& item,
                                                        const std::string& attribute_name,
                                                        instruction_t& domain);
 

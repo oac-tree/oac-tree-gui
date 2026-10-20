@@ -20,8 +20,10 @@
 
 #include "oac_tree_gui/model/instruction_item.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/instruction_descriptor.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
@@ -103,19 +105,46 @@ TEST_F(InstructionItemTest, SetAndGetAttribute)
                                false,
                                sup::oac_tree::AttributeCategory::kLiteral}});
   auto* property =
-      item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(domainconstants::kTimeoutAttribute);
+      item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
   ASSERT_NE(property, nullptr);
-  EXPECT_FALSE(GetAttributeExposedFlag(*property));
 
-  // value of not exposed attribute is still available
-  EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 0.0);
+  // not mandatory, not set: no data
+  EXPECT_TRUE(property->HasFlag(mvvm::Appearance::kNullable));
+  EXPECT_FALSE(property->HasData());
 
   item->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
-  EXPECT_TRUE(GetAttributeExposedFlag(*property));
   EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 
   // value type must match the attribute type
-  EXPECT_THROW(item->SetAttribute(domainconstants::kTimeoutAttribute, 1), mvvm::RuntimeException);
+  EXPECT_THROW(item->SetAttribute(domainconstants::kTimeoutAttribute, 1), RuntimeException);
+
+  item->SetAttributeText(domainconstants::kTimeoutAttribute, "$par");
+  EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kTimeoutAttribute), "$par");
+  EXPECT_TRUE(property->HasText());
+
+  item->UnsetAttribute(domainconstants::kTimeoutAttribute);
+  EXPECT_FALSE(property->HasData());
+
+  // unknown attribute
+  EXPECT_THROW(item->SetAttribute("unknown", 42.0), RuntimeException);
+}
+
+//! Mandatory attribute always has data and can't be unset.
+TEST_F(InstructionItemTest, MandatoryAttribute)
+{
+  auto item = CreateTestItem({{domainconstants::kTimeoutAttribute,
+                               0.0,
+                               {},
+                               true,
+                               true,
+                               sup::oac_tree::AttributeCategory::kLiteral}});
+  auto* property =
+      item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
+  ASSERT_NE(property, nullptr);
+  EXPECT_FALSE(property->HasFlag(mvvm::Appearance::kNullable));
+  EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 0.0);
+
+  EXPECT_THROW(item->UnsetAttribute(domainconstants::kTimeoutAttribute), RuntimeException);
 }
 
 //! Clone keeps domain type, attributes and GUI properties.

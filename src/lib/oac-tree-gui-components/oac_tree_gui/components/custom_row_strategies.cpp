@@ -22,6 +22,7 @@
 
 #include "custom_viewitem_factory.h"
 
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -29,9 +30,12 @@
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/providers/viewitem.h>
 #include <mvvm/providers/viewitem_factory.h>
+
+#include <sup/dto/anyvalue.h>
 
 #include <QIcon>
 #include <map>
@@ -89,6 +93,11 @@ std::string GetTypeStringForVariableTree(const mvvm::SessionItem& item)
   if (auto anyvalue_item = dynamic_cast<const sup::gui::AnyValueItem*>(&item); anyvalue_item)
   {
     return anyvalue_item->GetAnyTypeName();
+  }
+
+  if (auto attribute_item = dynamic_cast<const AttributeItem*>(&item); attribute_item)
+  {
+    return sup::gui::GetAnyValueFromScalar(attribute_item->GetDefaultValue()).GetTypeName();
   }
 
   return item.GetType();

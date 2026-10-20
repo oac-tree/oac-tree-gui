@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/attribute_item.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -131,6 +132,43 @@ void SetPropertyFromAttributeString(const std::string& attribute_string,
   }
 }
 
+void SetAttributeFromString(const std::string& attribute_string, AttributeItem& item)
+{
+  if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
+  {
+    (void)item.SetData(attribute_string);
+    return;
+  }
+
+  const auto any_type = sup::gui::GetAnyValueFromScalar(item.GetDefaultValue()).GetType();
+  auto [success, value] = sup::oac_tree::utils::ParseAttributeString(any_type, attribute_string);
+  if (success)
+  {
+    (void)item.SetData(sup::gui::GetVariantFromScalar(value));
+  }
+}
+
+std::string GetAttributeString(const AttributeItem& item)
+{
+  if (!item.HasData())
+  {
+    return {};
+  }
+
+  if (item.HasText())
+  {
+    return item.Data<std::string>();
+  }
+
+  auto [success, result] =
+      sup::oac_tree::utils::CreateAttributeString(sup::gui::GetAnyValueFromScalar(item.Data()));
+  if (!success)
+  {
+    throw LogicErrorException("Can't create an attribute string from attribute item");
+  }
+  return result;
+}
+
 template <typename T>
 void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
                                     sup::gui::AnyValueItem& item)
@@ -169,6 +207,20 @@ void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& a
 template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem& item,
                                              const std::string& attribute_name, variable_t& domain);
 template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem& item,
+                                                const std::string& attribute_name,
+                                                instruction_t& domain);
+
+template <typename T>
+void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_name, T& domain)
+{
+  if (const auto attribute_string = GetAttributeString(item);
+      IsSuitableForDomainAttribute(attribute_name, attribute_string))
+  {
+    (void)domain.AddAttribute(attribute_name, attribute_string);
+  }
+}
+
+template void SetDomainAttribute<instruction_t>(const AttributeItem& item,
                                                 const std::string& attribute_name,
                                                 instruction_t& domain);
 

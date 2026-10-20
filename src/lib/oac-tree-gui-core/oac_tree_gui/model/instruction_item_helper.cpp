@@ -67,9 +67,12 @@ bool IsCollapsible(const InstructionItem& item)
 
 bool IsCollapsed(const InstructionItem& item)
 {
-  return IsCollapsible(item)
-             ? item.GetAttributes()->Property<bool>(domainconstants::kShowCollapsedAttribute)
-             : false;
+  if (!IsCollapsible(item))
+  {
+    return false;
+  }
+  const auto* property = item.GetAttributes()->FindItem(domainconstants::kShowCollapsedAttribute);
+  return property->HasData() && property->Data<bool>();
 }
 
 void SetCollapsed(bool value, InstructionItem& item)

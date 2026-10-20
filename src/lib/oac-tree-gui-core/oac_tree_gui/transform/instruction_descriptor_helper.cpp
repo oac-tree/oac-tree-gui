@@ -53,7 +53,7 @@ AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
   if (auto preset = FindAttributePreset(domain_type, name); preset)
   {
     result.default_value = preset->value;
-    result.is_set = result.is_set || preset->exposed;
+    result.is_set = true;
   }
   return result;
 }

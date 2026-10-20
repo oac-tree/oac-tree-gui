@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
@@ -363,6 +364,72 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromEmptyIt
 
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kTypeAttribute));
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kValueAttribute));
+}
+
+//! Attribute item from the domain attribute string.
+TEST_F(AttributeItemTransformHelperTest, SetAttributeFromString)
+{
+  AttributeItem item;
+  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true);
+
+  SetAttributeFromString("42", item);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+
+  SetAttributeFromString("$par", item);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("$par")});
+
+  SetAttributeFromString("@var", item);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("@var")});
+
+  // parsing fails, the item is left unchanged
+  SetAttributeFromString("abc", item);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("@var")});
+
+  AttributeItem string_item;
+  string_item.SetAttributeType(std::string(), /*is_nullable*/ false);
+  SetAttributeFromString("abc", string_item);
+  EXPECT_EQ(string_item.Data(), mvvm::variant_t{std::string("abc")});
+}
+
+//! Domain attribute string from the attribute item.
+TEST_F(AttributeItemTransformHelperTest, GetAttributeString)
+{
+  AttributeItem item;
+  item.SetAttributeType(1.0, /*is_nullable*/ true);
+
+  // not set
+  EXPECT_TRUE(GetAttributeString(item).empty());
+
+  EXPECT_TRUE(item.SetData(42.5));
+  EXPECT_EQ(GetAttributeString(item), "42.5");
+
+  EXPECT_TRUE(item.SetData(std::string("$par")));
+  EXPECT_EQ(GetAttributeString(item), "$par");
+}
+
+//! Domain attribute from the attribute item: not set, empty string and isRoot=false are skipped.
+TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeFromAttributeItem)
+{
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+
+  AttributeItem timeout;
+  timeout.SetAttributeType(0.0, /*is_nullable*/ true);
+  SetDomainAttribute(timeout, domainconstants::kTimeoutAttribute, *instruction);
+  EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
+
+  EXPECT_TRUE(timeout.SetData(2.0));
+  SetDomainAttribute(timeout, domainconstants::kTimeoutAttribute, *instruction);
+  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "2.0");
+
+  AttributeItem is_root;
+  is_root.SetAttributeType(false, /*is_nullable*/ false);
+  SetDomainAttribute(is_root, domainconstants::kIsRootAttribute, *instruction);
+  EXPECT_FALSE(instruction->HasAttribute(domainconstants::kIsRootAttribute));
+
+  AttributeItem name;
+  name.SetAttributeType(std::string(), /*is_nullable*/ false);
+  SetDomainAttribute(name, "custom", *instruction);
+  EXPECT_FALSE(instruction->HasAttribute("custom"));
 }
 
 }  // namespace oac_tree_gui::test

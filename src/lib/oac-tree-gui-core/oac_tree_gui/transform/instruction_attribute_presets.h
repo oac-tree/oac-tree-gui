@@ -39,7 +39,6 @@ namespace oac_tree_gui
 struct AttributePreset
 {
   mvvm::variant_t value;
-  bool exposed{true};  //!< the attribute goes to the domain
 };
 
 /**

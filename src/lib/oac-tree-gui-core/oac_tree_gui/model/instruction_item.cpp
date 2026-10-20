@@ -20,11 +20,10 @@
 
 #include "instruction_item.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
-
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/make_clone.h>
@@ -82,9 +81,41 @@ bool InstructionItem::IsRoot() const
 
 void InstructionItem::SetAttribute(const std::string& name, const mvvm::variant_t& value)
 {
-  auto* attribute = GetAttributes()->FindItem<sup::gui::AnyValueItem>(name);
-  SetAttributeExposedFlag(true, *attribute);
-  (void)attribute->SetData(value);
+  auto& attribute = GetAttributeItem(name);
+  if (value.index() != attribute.GetDefaultValue().index())
+  {
+    throw RuntimeException("Attribute [" + name + "] has type ["
+                           + mvvm::utils::TypeName(attribute.GetDefaultValue()) + "], value type ["
+                           + mvvm::utils::TypeName(value) + "]");
+  }
+  (void)attribute.SetData(value);
+}
+
+void InstructionItem::SetAttributeText(const std::string& name, const std::string& text)
+{
+  (void)GetAttributeItem(name).SetData(text);
+}
+
+void InstructionItem::UnsetAttribute(const std::string& name)
+{
+  auto& attribute = GetAttributeItem(name);
+  if (!attribute.HasFlag(mvvm::Appearance::kNullable))
+  {
+    throw RuntimeException("Attribute [" + name + "] can't be unset");
+  }
+  (void)attribute.SetData(mvvm::variant_t{});
+}
+
+AttributeItem& InstructionItem::GetAttributeItem(const std::string& name)
+{
+  auto* attributes = GetAttributes();
+  auto* attribute = (attributes != nullptr) ? attributes->FindItem<AttributeItem>(name) : nullptr;
+  if (attribute == nullptr)
+  {
+    throw RuntimeException("Attribute [" + name + "] doesn't exist in instruction ["
+                           + GetDomainType() + "]");
+  }
+  return *attribute;
 }
 
 void InstructionItem::SetIsRootFlag(bool value)

@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -298,9 +299,9 @@ TEST_F(InstructionItemTransformHelperTest, IncludeFromDomainWithCustomAttribute)
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kFileNameAttribute), "abc");
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kPathAttribute), "def");
 
-  auto property = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>(custom_name);
+  auto property = item->GetAttributes()->FindItem<AttributeItem>(custom_name);
   ASSERT_NE(property, nullptr);
-  EXPECT_EQ(property->GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_EQ(property->GetDefaultValue(), mvvm::variant_t{std::string()});
   EXPECT_EQ(property->Data<std::string>(), custom_value);
 }
 
@@ -312,8 +313,8 @@ TEST_F(InstructionItemTransformHelperTest, IncludeToDomainWithCustomAttribute)
 
   auto item = CreateInstructionItem(domainconstants::kIncludeInstructionType);
   item->SetAttribute(domainconstants::kPathAttribute, std::string("def"));
-  auto& property = item->GetAttributes()->AddProperty<sup::gui::AnyValueScalarItem>(custom_name);
-  property.SetAnyTypeName(sup::dto::kStringTypeName);
+  auto& property = item->GetAttributes()->AddProperty<AttributeItem>(custom_name);
+  property.SetAttributeType(std::string(), /*is_nullable*/ false);
   (void)property.SetData(custom_value);
   EXPECT_TRUE(IsCollapsed(*item));
 
@@ -387,11 +388,7 @@ TEST_F(InstructionItemTransformHelperTest, WaitFromDomain)
 TEST_F(InstructionItemTransformHelperTest, WaitToDomainVaryingTimeout)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  auto property = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>(
-      domainconstants::kTimeoutAttribute);
-  ASSERT_NE(property, nullptr);
-  SetAttributeExposedFlag(true, *property);
-  SetAttributeAsString("$par1", *property);
+  item->SetAttributeText(domainconstants::kTimeoutAttribute, "$par1");
 
   auto domain_item = CreateDomainInstruction(*item);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
@@ -545,22 +542,29 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
   EXPECT_EQ(item->GetDomainType(), "UnknownCompound");
   EXPECT_EQ(item->GetDisplayName(), "main");
 
-  auto* threshold = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>("threshold");
+  auto* threshold = item->GetAttributes()->FindItem<AttributeItem>("threshold");
   ASSERT_NE(threshold, nullptr);
-  EXPECT_EQ(threshold->GetAnyTypeName(), sup::dto::kUInt32TypeName);
+  EXPECT_EQ(threshold->GetDefaultValue(), mvvm::variant_t{mvvm::uint32{0}});
+  EXPECT_TRUE(threshold->HasFlag(mvvm::Appearance::kNullable));
   EXPECT_EQ(threshold->Data<mvvm::uint32>(), 3);
   EXPECT_EQ(threshold->GetToolTip(), "Threshold tooltip");
-  EXPECT_TRUE(GetAttributeExposedFlag(*threshold));
 
-  auto* path = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>("path");
+  // mandatory attribute
+  auto* path = item->GetAttributes()->FindItem<AttributeItem>("path");
   ASSERT_NE(path, nullptr);
+  EXPECT_FALSE(path->HasFlag(mvvm::Appearance::kNullable));
   EXPECT_EQ(path->Data<std::string>(), "default");
-  EXPECT_TRUE(GetAttributeExposedFlag(*path));
+
+  // isRoot is not nullable, false by default
+  auto* is_root = item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kIsRootAttribute);
+  ASSERT_NE(is_root, nullptr);
+  EXPECT_FALSE(is_root->HasFlag(mvvm::Appearance::kNullable));
   EXPECT_FALSE(item->IsRoot());
 
-  auto* custom = item->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>("custom");
+  // attribute unknown to the descriptor is a string attribute
+  auto* custom = item->GetAttributes()->FindItem<AttributeItem>("custom");
   ASSERT_NE(custom, nullptr);
-  EXPECT_EQ(custom->GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_EQ(custom->GetDefaultValue(), mvvm::variant_t{std::string()});
   EXPECT_EQ(custom->Data<std::string>(), "abc");
 
   EXPECT_FALSE(mvvm::utils::HasTag(*item, domainconstants::kNameAttribute));
@@ -587,7 +591,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeIndexOutOfRange)
   EXPECT_THROW(CreateInstructionItemTree(node), RuntimeException);
 }
 
-//! Placeholders and references are stored as strings and exposed.
+//! Placeholders and references are stored as text.
 TEST_F(InstructionItemTransformHelperTest, ItemTreeWithPlaceholderAndReference)
 {
   auto node = CreateInstructionNode(domainconstants::kWaitInstructionType);
@@ -595,14 +599,16 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeWithPlaceholderAndReference)
                      {domainconstants::kBlockingAttribute, "@var"}};
 
   auto tree = CreateInstructionItemTree(node);
-  auto* timeout = tree.root->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
-      domainconstants::kTimeoutAttribute);
+  auto* timeout =
+      tree.root->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
+  ASSERT_NE(timeout, nullptr);
   EXPECT_EQ(timeout->Data<std::string>(), "$par");
-  EXPECT_TRUE(GetAttributeExposedFlag(*timeout));
-  auto* blocking = tree.root->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
-      domainconstants::kBlockingAttribute);
+  EXPECT_TRUE(timeout->HasText());
+  auto* blocking =
+      tree.root->GetAttributes()->FindItem<AttributeItem>(domainconstants::kBlockingAttribute);
+  ASSERT_NE(blocking, nullptr);
   EXPECT_EQ(blocking->Data<std::string>(), "@var");
-  EXPECT_TRUE(GetAttributeExposedFlag(*blocking));
+  EXPECT_TRUE(blocking->HasText());
 
   auto domain = CreateDomainInstruction(*tree.root);
   EXPECT_EQ(domain->GetAttributeString(domainconstants::kTimeoutAttribute), "$par");
@@ -618,10 +624,10 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromInfoNode)
                                               {{domainconstants::kPathAttribute, "abc"}});
     auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
     EXPECT_TRUE(IsCollapsed(*tree.root));
-    auto* path = tree.root->GetAttributes()->FindItem<sup::gui::AnyValueScalarItem>(
-        domainconstants::kPathAttribute);
+    auto* path =
+        tree.root->GetAttributes()->FindItem<AttributeItem>(domainconstants::kPathAttribute);
     ASSERT_NE(path, nullptr);
-    EXPECT_EQ(path->GetAnyTypeName(), sup::dto::kStringTypeName);
+    EXPECT_EQ(path->GetDefaultValue(), mvvm::variant_t{std::string()});
     EXPECT_EQ(path->Data<std::string>(), "abc");
   }
 
@@ -683,9 +689,9 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeRepeatPreset)
 
   EXPECT_EQ(item->GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), -1);
   auto* property =
-      item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(domainconstants::kMaxCountAttribute);
+      item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kMaxCountAttribute);
   ASSERT_NE(property, nullptr);
-  EXPECT_TRUE(GetAttributeExposedFlag(*property));
+  EXPECT_EQ(property->GetDefaultValue(), mvvm::variant_t{mvvm::int32{-1}});
 
   auto domain = CreateDomainInstruction(*item);
   EXPECT_EQ(domain->GetAttributeString(domainconstants::kMaxCountAttribute), "-1");

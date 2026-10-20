@@ -20,6 +20,7 @@
 
 #include "attribute_editor_action_handler.h"
 
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
@@ -37,13 +38,21 @@ AttributeEditorActionHandler::~AttributeEditorActionHandler() = default;
 
 bool AttributeEditorActionHandler::CanToggleExposedFlag() const
 {
-  return GetSelectedAttributeItem() != nullptr;
+  if (const auto* attribute = GetSelectedAttribute(); attribute != nullptr)
+  {
+    return attribute->HasFlag(mvvm::Appearance::kNullable);
+  }
+  return GetSelectedAnyValueItem() != nullptr;
 }
 
 bool AttributeEditorActionHandler::GetExposedFlag() const
 {
-  return (GetSelectedAttributeItem() != nullptr)
-         && GetAttributeExposedFlag(*GetSelectedAttributeItem());
+  if (const auto* attribute = GetSelectedAttribute(); attribute != nullptr)
+  {
+    return attribute->HasData();
+  }
+  return (GetSelectedAnyValueItem() != nullptr)
+         && GetAttributeExposedFlag(*GetSelectedAnyValueItem());
 }
 
 void AttributeEditorActionHandler::OnToggleExposedFlag()
@@ -53,14 +62,21 @@ void AttributeEditorActionHandler::OnToggleExposedFlag()
     return;
   }
 
-  auto attribute_item = GetSelectedAttributeItem();
-  SetAttributeExposedFlag(!GetAttributeExposedFlag(*attribute_item),
-                          *attribute_item);
+  if (auto* attribute = GetSelectedAttribute(); attribute != nullptr)
+  {
+    (void)attribute->SetData(attribute->HasData() ? mvvm::variant_t{}
+                                                  : attribute->GetDefaultValue());
+    return;
+  }
+
+  auto* anyvalue_item = GetSelectedAnyValueItem();
+  SetAttributeExposedFlag(!GetAttributeExposedFlag(*anyvalue_item), *anyvalue_item);
 }
 
 bool AttributeEditorActionHandler::CanSetDefaultType() const
 {
-  return (GetSelectedAttributeItem() != nullptr) && !IsAnyValue();
+  return (GetSelectedAttribute() != nullptr)
+         || ((GetSelectedAnyValueItem() != nullptr) && !IsAnyValue());
 }
 
 void AttributeEditorActionHandler::OnSetAsDefaultType()
@@ -70,13 +86,18 @@ void AttributeEditorActionHandler::OnSetAsDefaultType()
     return;
   }
 
-  auto* selected = GetSelectedAttributeItem();
-  SetAttributeFromTypeName(*selected);
+  if (auto* attribute = GetSelectedAttribute(); attribute != nullptr)
+  {
+    (void)attribute->SetData(attribute->GetDefaultValue());
+    return;
+  }
+
+  SetAttributeFromTypeName(*GetSelectedAnyValueItem());
 }
 
 bool AttributeEditorActionHandler::CanSetPlaceholderType() const
 {
-  return (GetSelectedAttributeItem() != nullptr) && !IsAnyValue();
+  return CanSetDefaultType();
 }
 
 void AttributeEditorActionHandler::OnSetPlaceholderType()
@@ -86,9 +107,14 @@ void AttributeEditorActionHandler::OnSetPlaceholderType()
     return;
   }
 
-  auto* selected = GetSelectedAttributeItem();
+  if (auto* attribute = GetSelectedAttribute(); attribute != nullptr)
+  {
+    (void)attribute->SetData(std::string(itemconstants::kDefaultPlaceholderAttributeValue));
+    return;
+  }
+
   SetAttributeAsString(itemconstants::kDefaultPlaceholderAttributeValue,
-                       *selected);
+                       *GetSelectedAnyValueItem());
 }
 
 bool AttributeEditorActionHandler::CanEditAnyValue() const
@@ -96,23 +122,31 @@ bool AttributeEditorActionHandler::CanEditAnyValue() const
   return IsAnyValue();
 }
 
-sup::gui::AnyValueItem* AttributeEditorActionHandler::GetSelectedAttributeItem() const
+mvvm::SessionItem* AttributeEditorActionHandler::GetSelectedItem() const
 {
   if (m_context.selected_items_callback)
   {
     auto selected_items = m_context.selected_items_callback();
-    return selected_items.empty()
-               ? nullptr
-               : dynamic_cast<sup::gui::AnyValueItem*>(selected_items.front());
+    return selected_items.empty() ? nullptr : selected_items.front();
   }
 
   return nullptr;
 }
 
+AttributeItem* AttributeEditorActionHandler::GetSelectedAttribute() const
+{
+  return dynamic_cast<AttributeItem*>(GetSelectedItem());
+}
+
+sup::gui::AnyValueItem* AttributeEditorActionHandler::GetSelectedAnyValueItem() const
+{
+  return dynamic_cast<sup::gui::AnyValueItem*>(GetSelectedItem());
+}
+
 bool AttributeEditorActionHandler::IsAnyValue() const
 {
-  return (GetSelectedAttributeItem() != nullptr)
-         && GetSelectedAttributeItem()->GetTagIndex().GetTag() == itemconstants::kAnyValueTag;
+  return (GetSelectedAnyValueItem() != nullptr)
+         && GetSelectedAnyValueItem()->GetTagIndex().GetTag() == itemconstants::kAnyValueTag;
 }
 
 }  // namespace oac_tree_gui

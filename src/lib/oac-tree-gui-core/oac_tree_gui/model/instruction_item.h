@@ -28,6 +28,8 @@
 namespace oac_tree_gui
 {
 
+class AttributeItem;
+
 /**
  * @brief The InstructionItem class represents a domain instruction of any type.
  *
@@ -71,22 +73,35 @@ public:
   mvvm::CompoundItem* GetAttributes();
 
   /**
-   * @brief Sets the domain attribute to a given value and marks it as exposed.
+   * @brief Sets the domain attribute to a given value.
    *
    * @param name The name of the attribute.
    * @param value The attribute value. Its type must match the attribute type.
-   * @throw mvvm::RuntimeException if the value type does not match.
+   * @throw RuntimeException if the attribute doesn't exist or the value type does not match.
    */
   void SetAttribute(const std::string& name, const mvvm::variant_t& value);
 
   /**
-   * @brief Returns the value of the domain attribute.
+   * @brief Sets the domain attribute to text, i.e. `$par` or `@var`.
    *
-   * The exposed flag is not checked.
+   * @throw RuntimeException if the attribute doesn't exist.
+   */
+  void SetAttributeText(const std::string& name, const std::string& text);
+
+  /**
+   * @brief Removes the value of the domain attribute, the domain default applies.
+   *
+   * @throw RuntimeException if the attribute doesn't exist or is not nullable.
+   */
+  void UnsetAttribute(const std::string& name);
+
+  /**
+   * @brief Returns the value of the domain attribute.
    *
    * @tparam T The type of the attribute value.
    * @param name The name of the attribute.
    * @return The attribute value.
+   * @details The attribute must have data of the given type.
    */
   template <typename T>
   T GetAttribute(const std::string& name) const;
@@ -154,6 +169,10 @@ public:
    * @brief Returns the vlue of behavior property.
    */
   std::string GetBehavior() const;
+
+private:
+  //! Returns the attribute item with the given name, throws if it doesn't exist.
+  AttributeItem& GetAttributeItem(const std::string& name);
 };
 
 template <typename T>

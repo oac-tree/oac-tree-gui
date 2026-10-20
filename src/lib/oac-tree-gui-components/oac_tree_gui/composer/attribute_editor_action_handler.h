@@ -28,8 +28,15 @@ namespace sup::gui
 class AnyValueItem;
 }  // namespace sup::gui
 
+namespace mvvm
+{
+class SessionItem;
+}  // namespace mvvm
+
 namespace oac_tree_gui
 {
+
+class AttributeItem;
 
 /**
  * @brief The AttributeEditorActionHandler class implements the logic to handle actions related to
@@ -104,9 +111,19 @@ public:
 
 private:
   /**
-   * @brief Returns currently seleced attribute item.
+   * @brief Returns currently selected item.
    */
-  sup::gui::AnyValueItem* GetSelectedAttributeItem() const;
+  mvvm::SessionItem* GetSelectedItem() const;
+
+  /**
+   * @brief Returns currently selected instruction attribute, or nullptr.
+   */
+  AttributeItem* GetSelectedAttribute() const;
+
+  /**
+   * @brief Returns currently selected AnyValueItem (variable attribute or AnyValue), or nullptr.
+   */
+  sup::gui::AnyValueItem* GetSelectedAnyValueItem() const;
 
   /**
    * @brief Checks if the currently selected attribute represents a full-fledged AnyValue.

@@ -21,6 +21,7 @@
 #include "oac_tree_gui/composer/attribute_editor_action_handler.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
@@ -117,17 +118,40 @@ TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlagForTimeoutAttribute)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  auto timeout_attribute = dynamic_cast<sup::gui::AnyValueItem*>(
+  auto timeout_attribute = dynamic_cast<AttributeItem*>(
       GetPropertyItem(*item->GetAttributes(), domainconstants::kTimeoutAttribute));
+  ASSERT_NE(timeout_attribute, nullptr);
 
   auto handler = CreateActionHandler(timeout_attribute);
 
+  // exposed means the attribute has data
   EXPECT_FALSE(handler->GetExposedFlag());
-  EXPECT_FALSE(GetAttributeExposedFlag(*timeout_attribute));
+  EXPECT_FALSE(timeout_attribute->HasData());
 
   handler->OnToggleExposedFlag();
   EXPECT_TRUE(handler->GetExposedFlag());
-  EXPECT_TRUE(GetAttributeExposedFlag(*timeout_attribute));
+  EXPECT_EQ(timeout_attribute->Data(), timeout_attribute->GetDefaultValue());
+
+  handler->OnToggleExposedFlag();
+  EXPECT_FALSE(timeout_attribute->HasData());
+}
+
+TEST_F(AttributeEditorActionHandlerTest, TurningInstructionAttributeIntoPlaceholder)
+{
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  auto timeout_attribute = dynamic_cast<AttributeItem*>(
+      GetPropertyItem(*item->GetAttributes(), domainconstants::kTimeoutAttribute));
+  ASSERT_NE(timeout_attribute, nullptr);
+
+  auto handler = CreateActionHandler(timeout_attribute);
+
+  handler->OnSetPlaceholderType();
+  EXPECT_EQ(timeout_attribute->Data<std::string>(),
+            itemconstants::kDefaultPlaceholderAttributeValue);
+  EXPECT_TRUE(timeout_attribute->HasText());
+
+  handler->OnSetAsDefaultType();
+  EXPECT_EQ(timeout_attribute->Data(), timeout_attribute->GetDefaultValue());
 }
 
 TEST_F(AttributeEditorActionHandlerTest, TuringScalarAttributeIntoPlaceholder)
