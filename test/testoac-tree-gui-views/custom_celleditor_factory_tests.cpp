@@ -26,8 +26,11 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/viewmodel/attribute_editor_viewmodel.h>
 
+#include <mvvm/editors/nullable_bool_editor.h>
+#include <mvvm/editors/scientific_spinbox.h>
 #include <mvvm/editors/string_completer_combo_editor.h>
 #include <mvvm/model/application_model.h>
+#include <mvvm/utils/i_limited_float.h>
 
 #include <gtest/gtest.h>
 
@@ -118,6 +121,35 @@ TEST_F(CustomCellEditorFactoryTest, CreateEditor)
 
     ASSERT_NE(string_completer_editor, nullptr);
     EXPECT_EQ(string_completer_editor->GetStringList(), completer_list);
+  }
+}
+
+//! Instruction attributes without data get the nullable editors of sup-mvvm.
+TEST_F(CustomCellEditorFactoryTest, CreateEditorForNullableAttributes)
+{
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
+  m_view_model.SetRootSessionItem(wait_item);
+  const CustomCellEditorFactory factory([]() { return QStringList(); });
+
+  auto create_editor = [this, &factory, wait_item](const std::string& name)
+  {
+    auto property = wait_item->GetAttributes()->FindItem(name);
+    EXPECT_FALSE(property->HasData());
+    auto indexes = m_view_model.GetIndexOfSessionItem(property);
+    return factory.CreateEditor(indexes.at(1));
+  };
+
+  {  // float64
+    auto editor = create_editor(domainconstants::kTimeoutAttribute);
+    auto float_editor = dynamic_cast<mvvm::ScientificSpinBox*>(editor.get());
+    ASSERT_NE(float_editor, nullptr);
+    EXPECT_TRUE(float_editor->GetLimitedFloat()->IsNullable());
+    EXPECT_EQ(float_editor->GetPlaceholderText(), QString("default"));
+  }
+
+  {  // bool
+    auto editor = create_editor(domainconstants::kBlockingAttribute);
+    EXPECT_NE(dynamic_cast<mvvm::NullableBoolEditor*>(editor.get()), nullptr);
   }
 }
 

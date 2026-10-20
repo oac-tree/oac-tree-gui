@@ -82,7 +82,7 @@ TEST_F(AttributeEditorActionHandlerTest, WhenNothingIsSelectedHandlerCanNotPerfo
   EXPECT_FALSE(handler->CanEditAnyValue());
 }
 
-TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelectedCallingEditorIsNotPossible)
+TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelected)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
   auto timeout_attribute =
@@ -90,12 +90,25 @@ TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelectedCallingEditorIs
 
   auto handler = CreateActionHandler(timeout_attribute);
 
-  EXPECT_TRUE(handler->CanToggleExposedFlag());
-  EXPECT_TRUE(handler->CanSetDefaultType());
+  // instruction attribute: no exposed flag, no default type action
+  EXPECT_FALSE(handler->CanToggleExposedFlag());
+  EXPECT_FALSE(handler->GetExposedFlag());
+  EXPECT_FALSE(handler->CanSetDefaultType());
   EXPECT_TRUE(handler->CanSetPlaceholderType());
 
   // it is not possible to call external editor
   EXPECT_FALSE(handler->CanEditAnyValue());
+}
+
+TEST_F(AttributeEditorActionHandlerTest, StringAttributeSelected)
+{
+  auto item = CreateInstructionItem(domainconstants::kIncludeInstructionType);
+  auto path_attribute = GetPropertyItem(*item->GetAttributes(), domainconstants::kPathAttribute);
+
+  auto handler = CreateActionHandler(path_attribute);
+
+  // a string attribute takes `$par` as its value
+  EXPECT_FALSE(handler->CanSetPlaceholderType());
 }
 
 TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
@@ -115,27 +128,6 @@ TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
   EXPECT_TRUE(handler->CanEditAnyValue());
 }
 
-TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlagForTimeoutAttribute)
-{
-  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  auto timeout_attribute = dynamic_cast<AttributeItem*>(
-      GetPropertyItem(*item->GetAttributes(), domainconstants::kTimeoutAttribute));
-  ASSERT_NE(timeout_attribute, nullptr);
-
-  auto handler = CreateActionHandler(timeout_attribute);
-
-  // exposed means the attribute has data
-  EXPECT_FALSE(handler->GetExposedFlag());
-  EXPECT_FALSE(timeout_attribute->HasData());
-
-  handler->OnToggleExposedFlag();
-  EXPECT_TRUE(handler->GetExposedFlag());
-  EXPECT_EQ(timeout_attribute->Data(), timeout_attribute->GetDefaultValue());
-
-  handler->OnToggleExposedFlag();
-  EXPECT_FALSE(timeout_attribute->HasData());
-}
-
 TEST_F(AttributeEditorActionHandlerTest, TurningInstructionAttributeIntoPlaceholder)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
@@ -150,8 +142,9 @@ TEST_F(AttributeEditorActionHandlerTest, TurningInstructionAttributeIntoPlacehol
             itemconstants::kDefaultPlaceholderAttributeValue);
   EXPECT_TRUE(timeout_attribute->HasText());
 
-  handler->OnSetAsDefaultType();
-  EXPECT_EQ(timeout_attribute->Data(), timeout_attribute->GetDefaultValue());
+  // clearing the text returns to not set
+  EXPECT_TRUE(timeout_attribute->SetData(std::string()));
+  EXPECT_FALSE(timeout_attribute->HasData());
 }
 
 TEST_F(AttributeEditorActionHandlerTest, TuringScalarAttributeIntoPlaceholder)

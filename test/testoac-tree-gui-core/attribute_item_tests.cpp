@@ -116,6 +116,33 @@ TEST_F(AttributeItemTest, NonNullableRefusesNoData)
   EXPECT_TRUE(item.HasText());
 }
 
+TEST_F(AttributeItemTest, EmptyText)
+{
+  {  // nullable attribute: empty text removes the data
+    AttributeItem item;
+    item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true);
+    EXPECT_TRUE(item.SetData(std::string("$par")));
+    EXPECT_TRUE(item.SetData(std::string()));
+    EXPECT_FALSE(item.HasData());
+  }
+
+  {  // non-nullable attribute: empty text sets the default value
+    AttributeItem item;
+    item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ false);
+    EXPECT_TRUE(item.SetData(std::string("$par")));
+    EXPECT_TRUE(item.SetData(std::string()));
+    EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+  }
+
+  {  // string attribute keeps empty string
+    AttributeItem item;
+    item.SetAttributeType(std::string(), /*is_nullable*/ false);
+    EXPECT_TRUE(item.SetData(std::string("abc")));
+    EXPECT_TRUE(item.SetData(std::string()));
+    EXPECT_EQ(item.Data(), mvvm::variant_t{std::string()});
+  }
+}
+
 TEST_F(AttributeItemTest, StringAttribute)
 {
   AttributeItem item;

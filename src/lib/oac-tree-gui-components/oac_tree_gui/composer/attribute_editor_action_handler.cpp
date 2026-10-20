@@ -38,19 +38,11 @@ AttributeEditorActionHandler::~AttributeEditorActionHandler() = default;
 
 bool AttributeEditorActionHandler::CanToggleExposedFlag() const
 {
-  if (const auto* attribute = GetSelectedAttribute(); attribute != nullptr)
-  {
-    return attribute->HasFlag(mvvm::Appearance::kNullable);
-  }
   return GetSelectedAnyValueItem() != nullptr;
 }
 
 bool AttributeEditorActionHandler::GetExposedFlag() const
 {
-  if (const auto* attribute = GetSelectedAttribute(); attribute != nullptr)
-  {
-    return attribute->HasData();
-  }
   return (GetSelectedAnyValueItem() != nullptr)
          && GetAttributeExposedFlag(*GetSelectedAnyValueItem());
 }
@@ -62,21 +54,13 @@ void AttributeEditorActionHandler::OnToggleExposedFlag()
     return;
   }
 
-  if (auto* attribute = GetSelectedAttribute(); attribute != nullptr)
-  {
-    (void)attribute->SetData(attribute->HasData() ? mvvm::variant_t{}
-                                                  : attribute->GetDefaultValue());
-    return;
-  }
-
   auto* anyvalue_item = GetSelectedAnyValueItem();
   SetAttributeExposedFlag(!GetAttributeExposedFlag(*anyvalue_item), *anyvalue_item);
 }
 
 bool AttributeEditorActionHandler::CanSetDefaultType() const
 {
-  return (GetSelectedAttribute() != nullptr)
-         || ((GetSelectedAnyValueItem() != nullptr) && !IsAnyValue());
+  return (GetSelectedAnyValueItem() != nullptr) && !IsAnyValue();
 }
 
 void AttributeEditorActionHandler::OnSetAsDefaultType()
@@ -86,17 +70,16 @@ void AttributeEditorActionHandler::OnSetAsDefaultType()
     return;
   }
 
-  if (auto* attribute = GetSelectedAttribute(); attribute != nullptr)
-  {
-    (void)attribute->SetData(attribute->GetDefaultValue());
-    return;
-  }
-
   SetAttributeFromTypeName(*GetSelectedAnyValueItem());
 }
 
 bool AttributeEditorActionHandler::CanSetPlaceholderType() const
 {
+  if (const auto* attribute = GetSelectedAttribute(); attribute != nullptr)
+  {
+    // a string attribute takes `$par` as its value
+    return !std::holds_alternative<std::string>(attribute->GetDefaultValue());
+  }
   return CanSetDefaultType();
 }
 

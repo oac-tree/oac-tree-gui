@@ -88,26 +88,34 @@ bool AttributeItem::OnSetData(mvvm::SessionItem* item, const mvvm::variant_t& va
     return mvvm::utils::SetData(*item, value, role);
   }
 
-  const bool is_no_data = !mvvm::utils::IsValid(value);
+  auto new_value = value;
+  if (IsString(value) && std::get<std::string>(value).empty() && !IsString(GetDefaultValue()))
+  {
+    // empty text: not set, or the default value of a non-nullable attribute
+    new_value = HasFlag(mvvm::Appearance::kNullable) ? mvvm::variant_t{} : GetDefaultValue();
+  }
+
+  const bool is_no_data = !mvvm::utils::IsValid(new_value);
 
   // Setting empty variant is allowed only for nullable data.
   // Settings any other variant is allowed in 1) if types coincide 2) New data is string ($par)
-  const bool is_accepted = is_no_data ? HasFlag(mvvm::Appearance::kNullable)
-                                      : (HasSameType(value, GetDefaultValue()) || IsString(value));
+  const bool is_accepted = is_no_data
+                               ? HasFlag(mvvm::Appearance::kNullable)
+                               : (HasSameType(new_value, GetDefaultValue()) || IsString(new_value));
   if (!is_accepted)
   {
     return false;
   }
 
-  if (is_no_data || !HasData(role) || HasSameType(value, Data(role)))
+  if (is_no_data || !HasData(role) || HasSameType(new_value, Data(role)))
   {
-    return mvvm::utils::SetData(*item, value, role);
+    return mvvm::utils::SetData(*item, new_value, role);
   }
 
   // value and text have different types: remove the data, then set the new one
   mvvm::utils::BeginMacro(*this, "Change attribute");
   (void)mvvm::utils::SetData(*item, mvvm::variant_t{}, role);
-  const bool result = mvvm::utils::SetData(*item, value, role);
+  const bool result = mvvm::utils::SetData(*item, new_value, role);
   mvvm::utils::EndMacro(*this);
   return result;
 }

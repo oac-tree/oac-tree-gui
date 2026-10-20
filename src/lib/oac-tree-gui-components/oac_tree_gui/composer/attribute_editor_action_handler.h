@@ -59,7 +59,8 @@ public:
   /**
    * @brief Checks if one can manipulate exposed flag for the currently selected attribute.
    *
-   * Exposed attribute will be propagated to the sequencer domain.
+   * Exposed attribute will be propagated to the sequencer domain. Variable attributes only, an
+   * instruction attribute without data is not set.
    */
   bool CanToggleExposedFlag() const;
 
@@ -78,7 +79,8 @@ public:
    *
    * The default attribute type is what the oac-tree attribute system reports (string, integer,
    * float, etc). The alternative is the so-called placeholder string-like $par attribute which is
-   * used in certain Include instruction scenario.
+   * used in certain Include instruction scenario. Variable attributes only, an instruction
+   * attribute returns from text to a value by clearing the text.
    */
   bool CanSetDefaultType() const;
 
@@ -90,7 +92,8 @@ public:
 
   /**
    * @brief Checks if currently selected attribute can be switched to placeholder type.
-   * @see AttributeEditorActionHandler::CanSetDefaultType.
+   *
+   * Instruction attributes of non-string type, and variable attributes.
    */
   bool CanSetPlaceholderType() const;
 

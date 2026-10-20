@@ -34,7 +34,8 @@ namespace oac_tree_gui
  * - a scalar of the attribute type: the value;
  * - a string: text, i.e. `$par` or `@var`.
  *
- * A string attribute holds a string. Other data is refused.
+ * A string attribute holds a string. Other data is refused. Empty text of a non-string attribute
+ * removes the data, or sets the default value if the attribute is not nullable.
  */
 class AttributeItem : public mvvm::SessionItem
 {
