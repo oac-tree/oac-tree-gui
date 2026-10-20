@@ -56,6 +56,29 @@ TEST_F(ToolTipHelperTest, CollectToolTipAttributes)
   EXPECT_EQ(tooltip_attributes.at(0).second, "42");
 }
 
+//! Value or text of each attribute; not set attributes and empty strings are skipped.
+TEST_F(ToolTipHelperTest, CollectToolTipAttributesSkipsNotSet)
+{
+  auto wait = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  EXPECT_TRUE(CollectToolTipAttributes(wait.get()).empty());
+
+  wait->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
+  auto tooltip_attributes = CollectToolTipAttributes(wait.get());
+  ASSERT_EQ(tooltip_attributes.size(), 1);
+  EXPECT_EQ(tooltip_attributes.at(0).first, domainconstants::kTimeoutAttribute);
+  EXPECT_EQ(tooltip_attributes.at(0).second, "42.0");
+
+  wait->SetAttributeText(domainconstants::kTimeoutAttribute, "$par");
+  tooltip_attributes = CollectToolTipAttributes(wait.get());
+  ASSERT_EQ(tooltip_attributes.size(), 1);
+  EXPECT_EQ(tooltip_attributes.at(0).second, "$par");
+
+  // mandatory string attribute without value
+  auto include = CreateInstructionItem(domainconstants::kIncludeInstructionType);
+  EXPECT_EQ(include->GetAttribute<std::string>(domainconstants::kPathAttribute), "");
+  EXPECT_TRUE(CollectToolTipAttributes(include.get()).empty());
+}
+
 TEST_F(ToolTipHelperTest, GetAttributeHtml)
 {
   const std::vector<std::pair<std::string, std::string>> attributes = {{"timeout", "42"}};

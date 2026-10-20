@@ -37,6 +37,9 @@ namespace oac_tree_gui
 
 /**
  * @brief Extracts item attributes that should go into tooltips of real-time instruction tree.
+ *
+ * @details Each attribute gives its value or text. Not set attributes and empty strings are
+ * skipped.
  */
 std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
     const mvvm::SessionItem* item);

@@ -73,8 +73,11 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
 
   for (auto property : mvvm::utils::SinglePropertyItems(*instruction->GetAttributes()))
   {
-    (void)result.emplace_back(property->GetDisplayName(),
-                              mvvm::utils::ValueToString(property->Data()));
+    // not set attributes and empty strings don't go to the domain
+    if (auto value = mvvm::utils::ValueToString(property->Data()); !value.empty())
+    {
+      (void)result.emplace_back(property->GetDisplayName(), value);
+    }
   }
   return result;
 }
