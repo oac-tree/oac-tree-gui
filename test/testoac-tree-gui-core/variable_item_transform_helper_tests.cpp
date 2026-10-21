@@ -23,7 +23,6 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -82,7 +81,7 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
 {
   {  // attempt to populate non-empty workspace
     WorkspaceItem workspace_item;
-    workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+    InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
 
     const sup::oac_tree::WorkspaceInfo info;
     EXPECT_THROW(PopulateWorkspaceItem(info, &workspace_item), RuntimeException);

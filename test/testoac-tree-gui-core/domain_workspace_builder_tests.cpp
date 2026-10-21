@@ -23,13 +23,14 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -74,15 +75,15 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
   sup::oac_tree::Workspace workspace;
   WorkspaceItem workspace_item;
 
-  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   var_item0->SetName("var0");
 
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   SetAnyValue(value, *var_item0);
-  auto var_item1 = workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
+  auto var_item1 = InsertVariable(domainconstants::kFileVariableType, &workspace_item);
   var_item1->SetName("var1");
-  var_item1->SetFileName("aaa.txt");
+  var_item1->SetAttribute(domainconstants::kFileNameAttribute, std::string("aaa.txt"));
 
   DomainWorkspaceBuilder builder;
   builder.PopulateDomainWorkspace(&workspace_item, &workspace);

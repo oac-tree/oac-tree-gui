@@ -18,10 +18,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -39,8 +41,8 @@ TEST_F(WorkspaceItemTest, WorkspaceItem)
   EXPECT_TRUE(item.GetVariables().empty());
   EXPECT_EQ(item.GetVariableCount(), 0);
 
-  auto var0 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, &item);
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, &item);
   EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
   EXPECT_EQ(item.GetVariableCount(), 2);
 }
@@ -50,9 +52,9 @@ TEST_F(WorkspaceItemTest, GetVariableNames)
   WorkspaceItem item;
   EXPECT_TRUE(item.GetVariableNames().empty());
 
-  auto var0 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, &item);
   var0->SetName("var0");
-  auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, &item);
   var1->SetName("var1");
 
   EXPECT_EQ(item.GetVariableNames(), std::vector<std::string>({"var0", "var1"}));

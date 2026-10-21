@@ -27,9 +27,10 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
@@ -71,36 +72,36 @@ TEST_F(AnyValueItemTransformHelperTest, CreateEmptyAnyValueItem)
 
 TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromScalar)
 {
-  // LocalVariableItem doesn't have AnyValuteItem at the beginning
-  LocalVariableItem item;
+  // a Local variable doesn't have AnyValueItem at the beginning
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
 
-  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  EXPECT_EQ(item->GetAnyValueItem(), nullptr);
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 
   // After update it receives AnyValueItem representing anyvalue
-  SetAnyValue(anyvalue, item);
+  SetAnyValue(anyvalue, *item);
 
   // checking constructed AnyValueItem and its visual properties
-  auto anyvalue_item = item.GetAnyValueItem();
+  auto anyvalue_item = item->GetAnyValueItem();
   EXPECT_NE(anyvalue_item, nullptr);
   EXPECT_EQ(anyvalue_item->GetDisplayName(), sup::gui::constants::kScalarTypeName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
-  EXPECT_EQ(anyvalue, GetAnyValue(item));
+  EXPECT_EQ(anyvalue, GetAnyValue(*item));
 
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
-  auto prev_anyvalue_item = item.GetAnyValueItem();
-  SetAnyValue(anyvalue, item);
-  EXPECT_NE(item.GetAnyValueItem(), nullptr);
+  auto prev_anyvalue_item = item->GetAnyValueItem();
+  SetAnyValue(anyvalue, *item);
+  EXPECT_NE(item->GetAnyValueItem(), nullptr);
 }
 
-//! Same as above, except that LocalVariableItem is a part of the model.
+//! Same as above, except that the variable is a part of the model.
 
 TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueSignaling)
 {
   SequencerModel model;
-  auto item = model.InsertItem<LocalVariableItem>();
+  auto item = InsertVariable(domainconstants::kLocalVariableType, model.GetRootItem());
 
   mvvm::test::MockModelListener listener(&model);
 
@@ -123,20 +124,20 @@ TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueSignaling)
 
 TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalar)
 {
-  // LocalVariableItem doesn't have AnyValuteItem at the beginning
-  LocalVariableItem item;
-  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  // a Local variable doesn't have AnyValueItem at the beginning
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+  EXPECT_EQ(item->GetAnyValueItem(), nullptr);
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 0);
 
   // Create and set AnyValueItem representing anyvalue
-  SetAnyValue(anyvalue, item);
-  EXPECT_EQ(anyvalue, GetAnyValue(item));
+  SetAnyValue(anyvalue, *item);
+  EXPECT_EQ(anyvalue, GetAnyValue(*item));
 
   const sup::dto::AnyValue new_anyvalue(sup::dto::SignedInteger32Type, 42);
-  UpdateAnyValue(new_anyvalue, item);
+  UpdateAnyValue(new_anyvalue, *item);
 
-  EXPECT_EQ(new_anyvalue, GetAnyValue(item));
+  EXPECT_EQ(new_anyvalue, GetAnyValue(*item));
 }
 
 //! Checking UpdateAnyValue function on changing type of AnyValue.
@@ -144,21 +145,21 @@ TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalar)
 
 TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalarWithTypeChange)
 {
-  // LocalVariableItem doesn't have AnyValuteItem at the beginning
-  LocalVariableItem item;
-  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  // a Local variable doesn't have AnyValueItem at the beginning
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+  EXPECT_EQ(item->GetAnyValueItem(), nullptr);
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 0);
 
   // Create and set AnyValueItem representing anyvalue
-  SetAnyValue(anyvalue, item);
-  EXPECT_EQ(anyvalue, GetAnyValue(item));
+  SetAnyValue(anyvalue, *item);
+  EXPECT_EQ(anyvalue, GetAnyValue(*item));
 
   const sup::dto::AnyValue new_anyvalue(sup::dto::StringType, "abc");
 
-  EXPECT_NO_THROW(UpdateAnyValue(new_anyvalue, item));
+  EXPECT_NO_THROW(UpdateAnyValue(new_anyvalue, *item));
 
-  EXPECT_EQ(new_anyvalue, GetAnyValue(item));
+  EXPECT_EQ(new_anyvalue, GetAnyValue(*item));
 }
 
 //! Setting AnyValue to instruction.
@@ -205,9 +206,9 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariable)
 
     const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
 
-    LocalVariableItem item;
-    SetAnyValueFromDomainVariable(*variable, item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+    SetAnyValueFromDomainVariable(*variable, *item);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
   }
 
   {  // when domain variable has type and value attribute
@@ -218,19 +219,19 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariable)
     const sup::dto::AnyValue expected_anyvalue(
         sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-    LocalVariableItem item;
-    SetAnyValueFromDomainVariable(*variable, item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+    SetAnyValueFromDomainVariable(*variable, *item);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
   }
 
   {  // when domain variable has only value attribute
     auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
     variable->AddAttribute(domainconstants::kValueAttribute, "42");
 
-    LocalVariableItem item;
-    SetAnyValueFromDomainVariable(*variable, item);
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+    SetAnyValueFromDomainVariable(*variable, *item);
 
-    EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+    EXPECT_EQ(item->GetAnyValueItem(), nullptr);
   }
 }
 
@@ -243,10 +244,10 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableInfo)
 
     const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
 
-    LocalVariableItem item;
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
 
-    SetAnyValueFromDomainVariableInfo(info, item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
+    SetAnyValueFromDomainVariableInfo(info, *item);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
   }
 
   {  // when domain variable has type and value attribute
@@ -258,9 +259,9 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableInfo)
     const sup::dto::AnyValue expected_anyvalue(
         sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-    LocalVariableItem item;
-    SetAnyValueFromDomainVariableInfo(info, item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+    SetAnyValueFromDomainVariableInfo(info, *item);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
   }
 
   {  // when domain variable has only value attribute
@@ -268,10 +269,10 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableInfo)
     variable->AddAttribute(domainconstants::kValueAttribute, "42");
     auto info = CreateVariableInfo(*variable, 42U);
 
-    LocalVariableItem item;
-    SetAnyValueFromDomainVariableInfo(info, item);
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+    SetAnyValueFromDomainVariableInfo(info, *item);
 
-    EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+    EXPECT_EQ(item->GetAnyValueItem(), nullptr);
   }
 }
 
@@ -288,13 +289,13 @@ TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableWithRegistr
   variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"OneScalar"})RAW");
   variable->AddAttribute(domainconstants::kValueAttribute, R"RAW({"value":42})RAW");
 
-  LocalVariableItem item;
-  SetAnyValueFromDomainVariable(*variable, item, &registry);
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+  SetAnyValueFromDomainVariable(*variable, *item, &registry);
 
   const sup::dto::AnyValue expected_anyvalue = {{{"value", {sup::dto::SignedInteger32Type, 42}}},
                                                 one_scalar_name};
 
-  EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
+  EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
 }
 
 TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromJsonString)
@@ -357,15 +358,15 @@ TEST_F(AnyValueItemTransformHelperTest, PopulateProcedurePreambleFromItem)
 //! Validating GetAnyValue helper method.
 TEST_F(AnyValueItemTransformHelperTest, GetStoredAnyValue)
 {
-  // LocalVariableItem doesn't have AnyValuteItem at the beginning: empty AnyValue
-  LocalVariableItem item;
+  // a Local variable doesn't have AnyValueItem at the beginning: empty AnyValue
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
 
-  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(item)));
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*item)));
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-  SetAnyValue(anyvalue, item);
+  SetAnyValue(anyvalue, *item);
 
-  EXPECT_EQ(GetAnyValue(item), anyvalue);
+  EXPECT_EQ(GetAnyValue(*item), anyvalue);
 }
 
 //! Validating GetAnyValue method for domain worskpaces.

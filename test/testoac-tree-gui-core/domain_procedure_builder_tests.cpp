@@ -28,7 +28,7 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/domain_workspace_builder.h>
@@ -39,6 +39,7 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -265,11 +266,11 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
   ProcedureItem procedure_item;
   auto workspace = procedure_item.GetWorkspace();
 
-  auto var_item0 = workspace->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, workspace);
   var_item0->SetName("var0");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
 
-  auto var_item1 = workspace->InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
+  auto var_item1 = InsertVariable(domainconstants::kFileVariableType, workspace);
   var_item1->SetName("var1");
 
   auto procedure = std::make_unique<procedure_t>();

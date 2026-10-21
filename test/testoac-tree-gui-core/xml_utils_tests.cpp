@@ -25,7 +25,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -84,8 +84,9 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
   auto procedure_item = oac_tree_gui::ImportFromFile(file_name);
 
-  auto variable_item =
-      procedure_item->GetWorkspace()->FindItem<oac_tree_gui::LocalVariableItem>("");
+  auto variable_item = procedure_item->GetWorkspace()->FindItem<oac_tree_gui::VariableItem>("");
+  ASSERT_NE(variable_item, nullptr);
+  EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::UnsignedInteger32Type, 7);
   EXPECT_EQ(expected_anyvalue, GetAnyValue(*variable_item));
