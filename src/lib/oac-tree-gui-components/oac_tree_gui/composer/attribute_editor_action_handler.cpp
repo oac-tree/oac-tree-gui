@@ -91,7 +91,7 @@ void AttributeEditorActionHandler::OnSetPlaceholderType()
 
   if (auto* attribute = GetSelectedAttribute(); attribute != nullptr)
   {
-    (void)attribute->SetData(std::string(itemconstants::kDefaultPlaceholderAttributeValue));
+    (void)attribute->SetText(itemconstants::kDefaultPlaceholderAttributeValue);
     return;
   }
 

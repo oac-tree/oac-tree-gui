@@ -375,15 +375,22 @@ TEST_F(AttributeItemTransformHelperTest, SetAttributeFromString)
   SetAttributeFromString("42", item);
   EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
 
+  // text over the value
   SetAttributeFromString("$par", item);
-  EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("$par")});
+  EXPECT_EQ(item.GetText(), std::string("$par"));
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
 
   SetAttributeFromString("@var", item);
-  EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("@var")});
+  EXPECT_EQ(item.GetText(), std::string("@var"));
 
   // parsing fails, the item is left unchanged
   SetAttributeFromString("abc", item);
-  EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("@var")});
+  EXPECT_EQ(item.GetText(), std::string("@var"));
+
+  // a value removes the text
+  SetAttributeFromString("43", item);
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{43}});
 
   AttributeItem string_item;
   string_item.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
@@ -393,7 +400,7 @@ TEST_F(AttributeItemTransformHelperTest, SetAttributeFromString)
   // a string attribute holds the placeholder as its value
   SetAttributeFromString("$par", string_item);
   EXPECT_EQ(string_item.Data(), mvvm::variant_t{std::string("$par")});
-  EXPECT_FALSE(string_item.HasText());
+  EXPECT_EQ(string_item.GetState(), AttributeState::kValue);
 }
 
 //! Attribute item without text: a placeholder fails to parse, the item is left unchanged.
@@ -424,8 +431,13 @@ TEST_F(AttributeItemTransformHelperTest, GetAttributeString)
   EXPECT_TRUE(item.SetData(42.5));
   EXPECT_EQ(GetAttributeString(item), "42.5");
 
-  EXPECT_TRUE(item.SetData(std::string("$par")));
+  EXPECT_TRUE(item.SetText("$par"));
   EXPECT_EQ(GetAttributeString(item), "$par");
+
+  // text without value
+  EXPECT_TRUE(item.Unset());
+  EXPECT_TRUE(item.SetText("@var"));
+  EXPECT_EQ(GetAttributeString(item), "@var");
 }
 
 //! Domain attribute from the attribute item: not set, empty string and isRoot=false are skipped.

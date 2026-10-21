@@ -168,7 +168,7 @@ TEST_F(CustomCellEditorFactoryTest, CreateEditorForAttributeText)
   ASSERT_EQ(indexes.size(), 3);
 
   const QSignalSpy spy_data_changed(&m_view_model, &AttributeEditorViewModel::dataChanged);
-  EXPECT_TRUE(property->SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+  wait_item->SetAttributeText(domainconstants::kTimeoutAttribute, "$par");
 
   auto is_value_cell = [&indexes](const QList<QVariant>& arguments)
   { return arguments.at(0).value<QModelIndex>() == indexes.at(1); };

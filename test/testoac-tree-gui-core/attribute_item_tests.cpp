@@ -20,6 +20,8 @@
 
 #include "oac_tree_gui/model/attribute_item.h"
 
+#include <oac_tree_gui/model/item_constants.h>
+
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/item_factory.h>
@@ -44,8 +46,9 @@ TEST_F(AttributeItemTest, InitialState)
   EXPECT_FALSE(item.HasData());
   EXPECT_FALSE(mvvm::utils::IsValid(item.GetDefaultValue()));
   EXPECT_FALSE(item.HasFlag(mvvm::Appearance::kNullable));
-  EXPECT_FALSE(item.HasText());
   EXPECT_FALSE(item.IsTextAllowed());
+  EXPECT_EQ(item.GetState(), AttributeState::kNotSet);
+  EXPECT_TRUE(item.GetText().empty());
 }
 
 TEST_F(AttributeItemTest, SetAttributeType)
@@ -55,7 +58,7 @@ TEST_F(AttributeItemTest, SetAttributeType)
     item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ true, /*allow_text*/ true);
     EXPECT_TRUE(item.HasFlag(mvvm::Appearance::kNullable));
     EXPECT_EQ(item.GetDefaultValue(), mvvm::variant_t{mvvm::uint32{42}});
-    EXPECT_FALSE(item.HasData());
+    EXPECT_EQ(item.GetState(), AttributeState::kNotSet);
     EXPECT_TRUE(item.IsTextAllowed());
   }
 
@@ -63,6 +66,7 @@ TEST_F(AttributeItemTest, SetAttributeType)
     AttributeItem item;
     item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ false, /*allow_text*/ true);
     EXPECT_FALSE(item.HasFlag(mvvm::Appearance::kNullable));
+    EXPECT_EQ(item.GetState(), AttributeState::kValue);
     EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
   }
 
@@ -75,35 +79,30 @@ TEST_F(AttributeItemTest, SetAttributeType)
   }
 }
 
-TEST_F(AttributeItemTest, SetValueAndText)
+TEST_F(AttributeItemTest, SetValue)
 {
   AttributeItem item;
   item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
 
-  // value of the attribute type
   EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
   EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
-  EXPECT_FALSE(item.HasText());
 
-  // values of other types are refused
+  // values of other types and strings are refused
   EXPECT_FALSE(item.SetData(mvvm::int32{42}));
   EXPECT_FALSE(item.SetData(42.0));
   EXPECT_FALSE(item.SetData(true));
+  EXPECT_FALSE(item.SetData(std::string("$par")));
+  EXPECT_FALSE(item.SetValue(mvvm::int32{42}));
+  EXPECT_FALSE(item.SetValue(mvvm::variant_t{}));
   EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
 
-  // text
-  EXPECT_TRUE(item.SetData(std::string("$par")));
-  EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("$par")});
-  EXPECT_TRUE(item.HasText());
-
-  // back to value
-  EXPECT_TRUE(item.SetData(mvvm::uint32{43}));
-  EXPECT_FALSE(item.HasText());
+  EXPECT_TRUE(item.SetValue(mvvm::uint32{43}));
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{43}});
 
   // no data
   EXPECT_TRUE(item.SetData(mvvm::variant_t{}));
-  EXPECT_FALSE(item.HasData());
-  EXPECT_FALSE(item.HasText());
+  EXPECT_EQ(item.GetState(), AttributeState::kNotSet);
 }
 
 TEST_F(AttributeItemTest, NonNullableRefusesNoData)
@@ -112,11 +111,51 @@ TEST_F(AttributeItemTest, NonNullableRefusesNoData)
   item.SetAttributeType(1.0, /*is_nullable*/ false, /*allow_text*/ true);
 
   EXPECT_FALSE(item.SetData(mvvm::variant_t{}));
+  EXPECT_FALSE(item.Unset());
   EXPECT_EQ(item.Data(), mvvm::variant_t{1.0});
+}
 
-  // text is accepted
-  EXPECT_TRUE(item.SetData(std::string("@var")));
-  EXPECT_TRUE(item.HasText());
+//! Text sits on top of the value; the value comes back when the text is removed.
+TEST_F(AttributeItemTest, TextOverValue)
+{
+  AttributeItem item;
+  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
+  EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
+
+  EXPECT_TRUE(item.SetText("$par"));
+  EXPECT_EQ(item.GetState(), AttributeState::kText);
+  EXPECT_EQ(item.GetText(), std::string("$par"));
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+
+  EXPECT_TRUE(item.SetText("@var"));
+  EXPECT_EQ(item.GetText(), std::string("@var"));
+
+  // empty text removes the text
+  EXPECT_TRUE(item.SetText(""));
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
+  EXPECT_TRUE(item.GetText().empty());
+  EXPECT_FALSE(item.HasData(itemconstants::kAttributeTextRole));
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+}
+
+TEST_F(AttributeItemTest, TextWithoutValue)
+{
+  {  // nullable attribute returns to not set
+    AttributeItem item;
+    item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
+    EXPECT_TRUE(item.SetText("$par"));
+    EXPECT_EQ(item.GetState(), AttributeState::kText);
+    EXPECT_TRUE(item.SetText(""));
+    EXPECT_EQ(item.GetState(), AttributeState::kNotSet);
+  }
+
+  {  // non-nullable attribute returns to its value
+    AttributeItem item;
+    item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ false, /*allow_text*/ true);
+    EXPECT_TRUE(item.SetText("$par"));
+    EXPECT_TRUE(item.SetText(""));
+    EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+  }
 }
 
 TEST_F(AttributeItemTest, TextNotAllowed)
@@ -125,43 +164,14 @@ TEST_F(AttributeItemTest, TextNotAllowed)
   item.SetAttributeType(false, /*is_nullable*/ true, /*allow_text*/ false);
   EXPECT_FALSE(item.IsTextAllowed());
 
+  EXPECT_FALSE(item.SetText("$par"));
+  EXPECT_FALSE(item.SetData(std::string("$par"), itemconstants::kAttributeTextRole));
   EXPECT_FALSE(item.SetData(std::string("$par")));
-  EXPECT_FALSE(item.SetData(std::string()));
-  EXPECT_FALSE(item.HasData());
+  EXPECT_EQ(item.GetState(), AttributeState::kNotSet);
 
   EXPECT_TRUE(item.SetData(true));
-  EXPECT_FALSE(item.SetData(std::string("@var")));
-  EXPECT_EQ(item.Data(), mvvm::variant_t{true});
-
-  EXPECT_TRUE(item.SetData(mvvm::variant_t{}));
-  EXPECT_FALSE(item.HasData());
-}
-
-TEST_F(AttributeItemTest, EmptyText)
-{
-  {  // nullable attribute: empty text removes the data
-    AttributeItem item;
-    item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
-    EXPECT_TRUE(item.SetData(std::string("$par")));
-    EXPECT_TRUE(item.SetData(std::string()));
-    EXPECT_FALSE(item.HasData());
-  }
-
-  {  // non-nullable attribute: empty text sets the default value
-    AttributeItem item;
-    item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ false, /*allow_text*/ true);
-    EXPECT_TRUE(item.SetData(std::string("$par")));
-    EXPECT_TRUE(item.SetData(std::string()));
-    EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
-  }
-
-  {  // string attribute keeps empty string
-    AttributeItem item;
-    item.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
-    EXPECT_TRUE(item.SetData(std::string("abc")));
-    EXPECT_TRUE(item.SetData(std::string()));
-    EXPECT_EQ(item.Data(), mvvm::variant_t{std::string()});
-  }
+  EXPECT_FALSE(item.SetText("@var"));
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
 }
 
 TEST_F(AttributeItemTest, StringAttribute)
@@ -169,12 +179,39 @@ TEST_F(AttributeItemTest, StringAttribute)
   AttributeItem item;
   item.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
 
+  // a string attribute holds the placeholder as its value
   EXPECT_TRUE(item.SetData(std::string("$par")));
-  EXPECT_FALSE(item.HasText());
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
+  EXPECT_FALSE(item.SetText("$abc"));
 
   EXPECT_FALSE(item.SetData(42));
   EXPECT_FALSE(item.SetData(mvvm::variant_t{}));
   EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("$par")});
+
+  // empty string is a value
+  EXPECT_TRUE(item.SetData(std::string()));
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
+}
+
+TEST_F(AttributeItemTest, SetValueAndUnsetRemoveText)
+{
+  AttributeItem item;
+  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
+  EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
+  EXPECT_TRUE(item.SetText("$par"));
+
+  // refused value changes nothing
+  EXPECT_FALSE(item.SetValue(42.0));
+  EXPECT_EQ(item.GetState(), AttributeState::kText);
+
+  EXPECT_TRUE(item.SetValue(mvvm::uint32{42}));
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+
+  EXPECT_TRUE(item.SetText("$par"));
+  EXPECT_TRUE(item.Unset());
+  EXPECT_EQ(item.GetState(), AttributeState::kNotSet);
+  EXPECT_FALSE(item.HasData(itemconstants::kAttributeTextRole));
 }
 
 TEST_F(AttributeItemTest, OtherRoles)
@@ -186,7 +223,8 @@ TEST_F(AttributeItemTest, OtherRoles)
   EXPECT_EQ(item.GetToolTip(), std::string("tooltip"));
 }
 
-TEST_F(AttributeItemTest, UndoSwitchBetweenValueAndText)
+//! Each operation is one undo step.
+TEST_F(AttributeItemTest, Undo)
 {
   mvvm::ApplicationModel model;
   auto item = model.InsertItem<AttributeItem>();
@@ -196,62 +234,90 @@ TEST_F(AttributeItemTest, UndoSwitchBetweenValueAndText)
   model.SetUndoEnabled(true);
   auto commands = model.GetCommandStack();
 
-  // value to text is one undo step
-  EXPECT_TRUE(item->SetData(std::string("$par")));
+  EXPECT_TRUE(item->SetText("$par"));
   EXPECT_EQ(commands->GetCommandCount(), 1);
 
   commands->Undo();
-  EXPECT_EQ(item->Data(), mvvm::variant_t{mvvm::uint32{42}});
-
+  EXPECT_EQ(item->GetState(), AttributeState::kValue);
   commands->Redo();
-  EXPECT_EQ(item->Data(), mvvm::variant_t{std::string("$par")});
+  EXPECT_EQ(item->GetText(), std::string("$par"));
 
-  // no data is one undo step
-  EXPECT_TRUE(item->SetData(mvvm::variant_t{}));
+  // value over text
+  EXPECT_TRUE(item->SetValue(mvvm::uint32{43}));
   EXPECT_EQ(commands->GetCommandCount(), 2);
 
   commands->Undo();
-  EXPECT_EQ(item->Data(), mvvm::variant_t{std::string("$par")});
+  EXPECT_EQ(item->GetText(), std::string("$par"));
+  EXPECT_EQ(item->Data(), mvvm::variant_t{mvvm::uint32{42}});
+
+  // unset over text
+  EXPECT_TRUE(item->Unset());
+  EXPECT_EQ(commands->GetCommandCount(), 2);
+  EXPECT_EQ(item->GetState(), AttributeState::kNotSet);
+
+  commands->Undo();
+  EXPECT_EQ(item->GetText(), std::string("$par"));
+  EXPECT_EQ(item->Data(), mvvm::variant_t{mvvm::uint32{42}});
 }
 
 TEST_F(AttributeItemTest, Clone)
 {
   AttributeItem item;
   item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
-  EXPECT_TRUE(item.SetData(std::string("$par")));
+  EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
+  EXPECT_TRUE(item.SetText("$par"));
 
   auto clone = item.Clone();
   auto attribute_clone = dynamic_cast<AttributeItem*>(clone.get());
   ASSERT_NE(attribute_clone, nullptr);
-  EXPECT_EQ(attribute_clone->Data(), mvvm::variant_t{std::string("$par")});
+  EXPECT_EQ(attribute_clone->GetText(), std::string("$par"));
+  EXPECT_EQ(attribute_clone->Data(), mvvm::variant_t{mvvm::uint32{42}});
   EXPECT_EQ(attribute_clone->GetDefaultValue(), mvvm::variant_t{mvvm::uint32{0}});
   EXPECT_TRUE(attribute_clone->HasFlag(mvvm::Appearance::kNullable));
   EXPECT_TRUE(attribute_clone->IsTextAllowed());
 
   // the clone has the data strategy
   EXPECT_FALSE(attribute_clone->SetData(42.0));
-  EXPECT_TRUE(attribute_clone->SetData(mvvm::uint32{42}));
+  EXPECT_TRUE(attribute_clone->SetText(""));
+  EXPECT_EQ(attribute_clone->GetState(), AttributeState::kValue);
 }
 
 TEST_F(AttributeItemTest, XmlRoundTrip)
 {
   (void)mvvm::RegisterGlobalItem<AttributeItem>();
 
-  AttributeItem item;
-  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ false);
+  {  // text over value
+    AttributeItem item;
+    item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
+    EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
+    EXPECT_TRUE(item.SetText("$par"));
 
-  auto reco = mvvm::utils::SessionItemFromXMLString(mvvm::utils::ToXMLString(item));
-  auto attribute_reco = dynamic_cast<AttributeItem*>(reco.get());
-  ASSERT_NE(attribute_reco, nullptr);
-  EXPECT_FALSE(attribute_reco->HasData());
-  EXPECT_EQ(attribute_reco->GetDefaultValue(), mvvm::variant_t{mvvm::uint32{0}});
-  EXPECT_TRUE(attribute_reco->HasFlag(mvvm::Appearance::kNullable));
-  EXPECT_FALSE(attribute_reco->IsTextAllowed());
+    auto reco = mvvm::utils::SessionItemFromXMLString(mvvm::utils::ToXMLString(item));
+    auto attribute_reco = dynamic_cast<AttributeItem*>(reco.get());
+    ASSERT_NE(attribute_reco, nullptr);
+    EXPECT_EQ(attribute_reco->GetText(), std::string("$par"));
+    EXPECT_EQ(attribute_reco->Data(), mvvm::variant_t{mvvm::uint32{42}});
+    EXPECT_TRUE(attribute_reco->IsTextAllowed());
 
-  // the reconstructed item has the data strategy
-  EXPECT_FALSE(attribute_reco->SetData(42.0));
-  EXPECT_FALSE(attribute_reco->SetData(std::string("$par")));
-  EXPECT_TRUE(attribute_reco->SetData(mvvm::uint32{42}));
+    // the reconstructed item has the data strategy
+    EXPECT_FALSE(attribute_reco->SetData(42.0));
+    EXPECT_TRUE(attribute_reco->SetText(""));
+    EXPECT_EQ(attribute_reco->GetState(), AttributeState::kValue);
+  }
+
+  {  // not set, no text
+    AttributeItem item;
+    item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ false);
+
+    auto reco = mvvm::utils::SessionItemFromXMLString(mvvm::utils::ToXMLString(item));
+    auto attribute_reco = dynamic_cast<AttributeItem*>(reco.get());
+    ASSERT_NE(attribute_reco, nullptr);
+    EXPECT_EQ(attribute_reco->GetState(), AttributeState::kNotSet);
+    EXPECT_EQ(attribute_reco->GetDefaultValue(), mvvm::variant_t{mvvm::uint32{0}});
+    EXPECT_TRUE(attribute_reco->HasFlag(mvvm::Appearance::kNullable));
+    EXPECT_FALSE(attribute_reco->IsTextAllowed());
+    EXPECT_FALSE(attribute_reco->SetText("$par"));
+  }
 }
 
 }  // namespace oac_tree_gui::test

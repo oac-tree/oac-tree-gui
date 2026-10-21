@@ -53,7 +53,9 @@ std::unique_ptr<mvvm::AbstractPresentationItem> CreateValuePresentation(Attribut
 }  // namespace
 
 AttributePresentationItem::AttributePresentationItem(AttributeItem* item)
-    : mvvm::AbstractPresentationItem(item), m_value_presentation(CreateValuePresentation(item))
+    : mvvm::AbstractPresentationItem(item)
+    , m_attribute(item)
+    , m_value_presentation(CreateValuePresentation(item))
 {
 }
 
@@ -68,7 +70,7 @@ QVariant AttributePresentationItem::Data(mvvm::role_t qt_role) const
 
   if ((qt_role == mvvm::GetQtRole(Qt::DisplayRole)) || (qt_role == mvvm::GetQtRole(Qt::EditRole)))
   {
-    return QString::fromStdString(GetItem()->Data<std::string>(itemconstants::kAttributeTextRole));
+    return QString::fromStdString(m_attribute->GetText());
   }
 
   if (qt_role == mvvm::GetQtRole(Qt::ForegroundRole))
@@ -94,9 +96,7 @@ bool AttributePresentationItem::SetData(const QVariant& data, mvvm::role_t qt_ro
   if (qt_role == mvvm::GetQtRole(Qt::EditRole))
   {
     // empty text leaves the text state
-    const auto text = data.toString().toStdString();
-    return GetItem()->SetData(text.empty() ? mvvm::variant_t{} : mvvm::variant_t{text},
-                              itemconstants::kAttributeTextRole);
+    return m_attribute->SetText(data.toString().toStdString());
   }
 
   return IsPresentationOnlyRole(qt_role) && m_value_presentation->SetData(data, qt_role);
@@ -129,7 +129,7 @@ QVector<mvvm::role_t> AttributePresentationItem::GetQtRolesToEmit(mvvm::role_t d
 
 bool AttributePresentationItem::HasText() const
 {
-  return (GetItem() != nullptr) && GetItem()->HasData(itemconstants::kAttributeTextRole);
+  return (m_attribute != nullptr) && (m_attribute->GetState() == AttributeState::kText);
 }
 
 ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem* item,

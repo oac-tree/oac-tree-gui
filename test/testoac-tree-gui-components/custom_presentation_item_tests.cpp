@@ -109,18 +109,18 @@ TEST_F(CustomPresentationItemTest, AttributePresentationItemText)
   EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
   AttributePresentationItem presentation(&item);
 
-  EXPECT_TRUE(item.SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+  EXPECT_TRUE(item.SetText("$par"));
   EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("$par"));
   EXPECT_EQ(presentation.Data(Qt::EditRole).toString(), QString("$par"));
   EXPECT_TRUE(presentation.IsEditable());
 
   EXPECT_TRUE(presentation.SetData(QString("$abc"), Qt::EditRole));
-  EXPECT_EQ(item.Data<std::string>(itemconstants::kAttributeTextRole), std::string("$abc"));
+  EXPECT_EQ(item.GetText(), std::string("$abc"));
   EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
 
   // empty text leaves the text state
   EXPECT_TRUE(presentation.SetData(QString(), Qt::EditRole));
-  EXPECT_FALSE(item.HasData(itemconstants::kAttributeTextRole));
+  EXPECT_EQ(item.GetState(), AttributeState::kValue);
   EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("42"));
 }
 
@@ -131,7 +131,7 @@ TEST_F(CustomPresentationItemTest, AttributePresentationItemTextWithoutValue)
   item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
   const AttributePresentationItem presentation(&item);
 
-  EXPECT_TRUE(item.SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+  EXPECT_TRUE(item.SetText("$par"));
   EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("$par"));
   EXPECT_NE(presentation.Data(Qt::ForegroundRole).value<QColor>(), QColor(Qt::gray));
 }
@@ -147,7 +147,7 @@ TEST_F(CustomPresentationItemTest, AttributePresentationItemNonNullableBool)
   EXPECT_FALSE(presentation.IsEditable());
   EXPECT_EQ(presentation.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
 
-  EXPECT_TRUE(item.SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+  EXPECT_TRUE(item.SetText("$par"));
   EXPECT_FALSE(presentation.IsCheckable());
   EXPECT_TRUE(presentation.IsEditable());
   EXPECT_FALSE(presentation.Data(Qt::CheckStateRole).isValid());

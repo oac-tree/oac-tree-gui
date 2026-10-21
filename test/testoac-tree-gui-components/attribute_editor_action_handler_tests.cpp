@@ -152,13 +152,12 @@ TEST_F(AttributeEditorActionHandlerTest, TurningInstructionAttributeIntoPlacehol
   auto handler = CreateActionHandler(timeout_attribute);
 
   handler->OnSetPlaceholderType();
-  EXPECT_EQ(timeout_attribute->Data<std::string>(),
-            itemconstants::kDefaultPlaceholderAttributeValue);
-  EXPECT_TRUE(timeout_attribute->HasText());
+  EXPECT_EQ(timeout_attribute->GetState(), AttributeState::kText);
+  EXPECT_EQ(timeout_attribute->GetText(), itemconstants::kDefaultPlaceholderAttributeValue);
 
   // clearing the text returns to not set
-  EXPECT_TRUE(timeout_attribute->SetData(std::string()));
-  EXPECT_FALSE(timeout_attribute->HasData());
+  EXPECT_TRUE(timeout_attribute->SetText(""));
+  EXPECT_EQ(timeout_attribute->GetState(), AttributeState::kNotSet);
 }
 
 TEST_F(AttributeEditorActionHandlerTest, TuringScalarAttributeIntoPlaceholder)

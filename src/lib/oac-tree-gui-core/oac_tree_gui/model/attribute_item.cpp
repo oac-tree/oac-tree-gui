@@ -80,9 +80,43 @@ bool AttributeItem::IsTextAllowed() const
   return HasData(itemconstants::kAllowTextRole) && Data<bool>(itemconstants::kAllowTextRole);
 }
 
-bool AttributeItem::HasText() const
+AttributeState AttributeItem::GetState() const
 {
-  return IsString(Data()) && !IsString(GetDefaultValue());
+  if (HasData(itemconstants::kAttributeTextRole))
+  {
+    return AttributeState::kText;
+  }
+  return HasData() ? AttributeState::kValue : AttributeState::kNotSet;
+}
+
+std::string AttributeItem::GetText() const
+{
+  return HasData(itemconstants::kAttributeTextRole)
+             ? Data<std::string>(itemconstants::kAttributeTextRole)
+             : std::string{};
+}
+
+bool AttributeItem::SetText(const std::string& text)
+{
+  return SetData(text, itemconstants::kAttributeTextRole);
+}
+
+bool AttributeItem::SetValue(const mvvm::variant_t& value)
+{
+  if (!mvvm::utils::IsValid(value) || !HasSameType(value, GetDefaultValue()))
+  {
+    return false;
+  }
+  return ReplaceTextWithData(value);
+}
+
+bool AttributeItem::Unset()
+{
+  if (!HasFlag(mvvm::Appearance::kNullable))
+  {
+    return false;
+  }
+  return ReplaceTextWithData(mvvm::variant_t{});
 }
 
 void AttributeItem::ActivateStrategies()
@@ -93,48 +127,38 @@ void AttributeItem::ActivateStrategies()
 bool AttributeItem::OnSetData(mvvm::SessionItem* item, const mvvm::variant_t& value,
                               mvvm::role_t role)
 {
-  if (role != mvvm::DataRole::kData)
+  if (role == mvvm::DataRole::kData)
   {
-    return mvvm::utils::SetData(*item, value, role);
+    const bool is_accepted = mvvm::utils::IsValid(value) ? HasSameType(value, GetDefaultValue())
+                                                         : HasFlag(mvvm::Appearance::kNullable);
+    return is_accepted && mvvm::utils::SetData(*item, value, role);
   }
 
-  auto new_value = value;
-  if (IsString(value) && !IsString(GetDefaultValue()))
+  if (role == itemconstants::kAttributeTextRole)
   {
-    if (!IsTextAllowed())
+    if (!IsTextAllowed() || (mvvm::utils::IsValid(value) && !IsString(value)))
     {
       return false;
     }
-    if (std::get<std::string>(value).empty())
-    {
-      // empty text: not set, or the default value of a non-nullable attribute
-      new_value = HasFlag(mvvm::Appearance::kNullable) ? mvvm::variant_t{} : GetDefaultValue();
-    }
+    const bool is_empty = !mvvm::utils::IsValid(value) || std::get<std::string>(value).empty();
+    return mvvm::utils::SetData(*item, is_empty ? mvvm::variant_t{} : value, role);
   }
 
-  const bool is_no_data = !mvvm::utils::IsValid(new_value);
+  return mvvm::utils::SetData(*item, value, role);
+}
 
-  // Setting empty variant is allowed only for nullable data.
-  // Settings any other variant is allowed in 1) if types coincide 2) New data is string ($par)
-  const bool is_accepted = is_no_data
-                               ? HasFlag(mvvm::Appearance::kNullable)
-                               : (HasSameType(new_value, GetDefaultValue()) || IsString(new_value));
-  if (!is_accepted)
+bool AttributeItem::ReplaceTextWithData(const mvvm::variant_t& value)
+{
+  if (GetState() != AttributeState::kText)
   {
-    return false;
+    return SetData(value);
   }
 
-  if (is_no_data || !HasData(role) || HasSameType(new_value, Data(role)))
-  {
-    return mvvm::utils::SetData(*item, new_value, role);
-  }
-
-  // value and text have different types: remove the data, then set the new one
   mvvm::utils::BeginMacro(*this, "Change attribute");
-  (void)mvvm::utils::SetData(*item, mvvm::variant_t{}, role);
-  const bool result = mvvm::utils::SetData(*item, new_value, role);
+  (void)SetText({});
+  (void)SetData(value);
   mvvm::utils::EndMacro(*this);
-  return result;
+  return true;
 }
 
 }  // namespace oac_tree_gui

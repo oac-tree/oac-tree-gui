@@ -602,13 +602,13 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeWithPlaceholderAndReference)
   auto* timeout =
       tree.root->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
   ASSERT_NE(timeout, nullptr);
-  EXPECT_EQ(timeout->Data<std::string>(), "$par");
-  EXPECT_TRUE(timeout->HasText());
+  EXPECT_EQ(timeout->GetState(), AttributeState::kText);
+  EXPECT_EQ(timeout->GetText(), "$par");
   auto* blocking =
       tree.root->GetAttributes()->FindItem<AttributeItem>(domainconstants::kBlockingAttribute);
   ASSERT_NE(blocking, nullptr);
-  EXPECT_EQ(blocking->Data<std::string>(), "@var");
-  EXPECT_TRUE(blocking->HasText());
+  EXPECT_EQ(blocking->GetState(), AttributeState::kText);
+  EXPECT_EQ(blocking->GetText(), "@var");
 
   auto domain = CreateDomainInstruction(*tree.root);
   EXPECT_EQ(domain->GetAttributeString(domainconstants::kTimeoutAttribute), "$par");

@@ -73,7 +73,7 @@ public:
   mvvm::CompoundItem* GetAttributes();
 
   /**
-   * @brief Sets the domain attribute to a given value.
+   * @brief Sets the domain attribute to a given value and removes its text.
    *
    * @param name The name of the attribute.
    * @param value The attribute value. Its type must match the attribute type.
@@ -89,7 +89,14 @@ public:
   void SetAttributeText(const std::string& name, const std::string& text);
 
   /**
-   * @brief Removes the value of the domain attribute, the domain default applies.
+   * @brief Returns the text of the domain attribute, empty if the attribute has no text.
+   *
+   * @throw RuntimeException if the attribute doesn't exist.
+   */
+  std::string GetAttributeText(const std::string& name) const;
+
+  /**
+   * @brief Removes the value and the text of the domain attribute, the domain default applies.
    *
    * @throw RuntimeException if the attribute doesn't exist or is not nullable.
    */
@@ -101,7 +108,7 @@ public:
    * @tparam T The type of the attribute value.
    * @param name The name of the attribute.
    * @return The attribute value.
-   * @details The attribute must have data of the given type.
+   * @throw RuntimeException if the attribute doesn't exist or has no value (not set or text).
    */
   template <typename T>
   T GetAttribute(const std::string& name) const;
@@ -172,13 +179,18 @@ public:
 
 private:
   //! Returns the attribute item with the given name, throws if it doesn't exist.
+  const AttributeItem& GetAttributeItem(const std::string& name) const;
+
   AttributeItem& GetAttributeItem(const std::string& name);
+
+  //! Returns the value of the attribute, throws if the attribute has no value.
+  mvvm::variant_t GetAttributeValue(const std::string& name) const;
 };
 
 template <typename T>
 T InstructionItem::GetAttribute(const std::string& name) const
 {
-  return GetAttributes()->Property<T>(name);
+  return std::get<T>(GetAttributeValue(name));
 }
 
 }  // namespace oac_tree_gui

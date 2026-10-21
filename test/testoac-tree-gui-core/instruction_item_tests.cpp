@@ -117,12 +117,22 @@ TEST_F(InstructionItemTest, SetAndGetAttribute)
   // value type must match the attribute type
   EXPECT_THROW(item->SetAttribute(domainconstants::kTimeoutAttribute, 1), RuntimeException);
 
+  // text over the value: no value to get
   item->SetAttributeText(domainconstants::kTimeoutAttribute, "$par");
-  EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kTimeoutAttribute), "$par");
-  EXPECT_TRUE(property->HasText());
+  EXPECT_EQ(item->GetAttributeText(domainconstants::kTimeoutAttribute), "$par");
+  EXPECT_EQ(property->GetState(), AttributeState::kText);
+  EXPECT_THROW(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), RuntimeException);
 
+  // a value removes the text
+  item->SetAttribute(domainconstants::kTimeoutAttribute, 43.0);
+  EXPECT_TRUE(item->GetAttributeText(domainconstants::kTimeoutAttribute).empty());
+  EXPECT_EQ(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 43.0);
+
+  // unset removes the value and the text
+  item->SetAttributeText(domainconstants::kTimeoutAttribute, "$par");
   item->UnsetAttribute(domainconstants::kTimeoutAttribute);
-  EXPECT_FALSE(property->HasData());
+  EXPECT_EQ(property->GetState(), AttributeState::kNotSet);
+  EXPECT_THROW(item->GetAttribute<double>(domainconstants::kTimeoutAttribute), RuntimeException);
 
   // unknown attribute
   EXPECT_THROW(item->SetAttribute("unknown", 42.0), RuntimeException);

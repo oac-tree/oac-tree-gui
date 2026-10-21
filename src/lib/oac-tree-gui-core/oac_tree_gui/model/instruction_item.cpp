@@ -31,6 +31,26 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+//! Returns the attribute item with the given name from the container, throws if it doesn't exist.
+template <typename ContainerT>
+auto& FindAttributeItem(ContainerT* attributes, const std::string& name,
+                        const std::string& domain_type)
+{
+  auto* attribute =
+      (attributes != nullptr) ? attributes->template FindItem<AttributeItem>(name) : nullptr;
+  if (attribute == nullptr)
+  {
+    throw RuntimeException("Attribute [" + name + "] doesn't exist in instruction [" + domain_type
+                           + "]");
+  }
+  return *attribute;
+}
+
+}  // namespace
+
 InstructionItem::InstructionItem() : CompoundItem(mvvm::GetTypeName<InstructionItem>())
 {
   (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
@@ -88,7 +108,7 @@ void InstructionItem::SetAttribute(const std::string& name, const mvvm::variant_
                            + mvvm::utils::TypeName(attribute.GetDefaultValue()) + "], value type ["
                            + mvvm::utils::TypeName(value) + "]");
   }
-  (void)attribute.SetData(value);
+  (void)attribute.SetValue(value);
 }
 
 void InstructionItem::SetAttributeText(const std::string& name, const std::string& text)
@@ -98,7 +118,12 @@ void InstructionItem::SetAttributeText(const std::string& name, const std::strin
   {
     throw RuntimeException("Attribute [" + name + "] takes no text");
   }
-  (void)attribute.SetData(text);
+  (void)attribute.SetText(text);
+}
+
+std::string InstructionItem::GetAttributeText(const std::string& name) const
+{
+  return GetAttributeItem(name).GetText();
 }
 
 void InstructionItem::UnsetAttribute(const std::string& name)
@@ -108,19 +133,27 @@ void InstructionItem::UnsetAttribute(const std::string& name)
   {
     throw RuntimeException("Attribute [" + name + "] can't be unset");
   }
-  (void)attribute.SetData(mvvm::variant_t{});
+  (void)attribute.Unset();
+}
+
+const AttributeItem& InstructionItem::GetAttributeItem(const std::string& name) const
+{
+  return FindAttributeItem(GetAttributes(), name, GetDomainType());
 }
 
 AttributeItem& InstructionItem::GetAttributeItem(const std::string& name)
 {
-  auto* attributes = GetAttributes();
-  auto* attribute = (attributes != nullptr) ? attributes->FindItem<AttributeItem>(name) : nullptr;
-  if (attribute == nullptr)
+  return FindAttributeItem(GetAttributes(), name, GetDomainType());
+}
+
+mvvm::variant_t InstructionItem::GetAttributeValue(const std::string& name) const
+{
+  const auto& attribute = GetAttributeItem(name);
+  if (attribute.GetState() != AttributeState::kValue)
   {
-    throw RuntimeException("Attribute [" + name + "] doesn't exist in instruction ["
-                           + GetDomainType() + "]");
+    throw RuntimeException("Attribute [" + name + "] has no value");
   }
-  return *attribute;
+  return attribute.Data();
 }
 
 void InstructionItem::SetIsRootFlag(bool value)

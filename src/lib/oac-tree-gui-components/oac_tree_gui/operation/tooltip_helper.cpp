@@ -20,6 +20,7 @@
 
 #include "tooltip_helper.h"
 
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 
 #include <mvvm/core/variant.h>
@@ -74,7 +75,11 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
   for (auto property : mvvm::utils::SinglePropertyItems(*instruction->GetAttributes()))
   {
     // not set attributes and empty strings don't go to the domain
-    if (auto value = mvvm::utils::ValueToString(property->Data()); !value.empty())
+    const auto* attribute = dynamic_cast<const AttributeItem*>(property);
+    const bool has_text =
+        (attribute != nullptr) && (attribute->GetState() == AttributeState::kText);
+    if (auto value = has_text ? attribute->GetText() : mvvm::utils::ValueToString(property->Data());
+        !value.empty())
     {
       (void)result.emplace_back(property->GetDisplayName(), value);
     }

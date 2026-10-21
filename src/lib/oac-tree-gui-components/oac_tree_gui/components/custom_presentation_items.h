@@ -71,6 +71,7 @@ private:
   //! Returns true if the attribute holds text.
   bool HasText() const;
 
+  AttributeItem* m_attribute{nullptr};
   std::unique_ptr<mvvm::AbstractPresentationItem> m_value_presentation;
 };
 

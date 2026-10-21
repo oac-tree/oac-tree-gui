@@ -137,7 +137,7 @@ void SetAttributeFromString(const std::string& attribute_string, AttributeItem& 
   if (item.IsTextAllowed()
       && (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string)))
   {
-    (void)item.SetData(attribute_string);
+    (void)item.SetText(attribute_string);
     return;
   }
 
@@ -145,20 +145,20 @@ void SetAttributeFromString(const std::string& attribute_string, AttributeItem& 
   auto [success, value] = sup::oac_tree::utils::ParseAttributeString(any_type, attribute_string);
   if (success)
   {
-    (void)item.SetData(sup::gui::GetVariantFromScalar(value));
+    (void)item.SetValue(sup::gui::GetVariantFromScalar(value));
   }
 }
 
 std::string GetAttributeString(const AttributeItem& item)
 {
-  if (!item.HasData())
+  if (item.GetState() == AttributeState::kText)
   {
-    return {};
+    return item.GetText();
   }
 
-  if (item.HasText())
+  if (item.GetState() == AttributeState::kNotSet)
   {
-    return item.Data<std::string>();
+    return {};
   }
 
   auto [success, result] =
