@@ -23,7 +23,6 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/attribute_item.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/scalar_conversion_utils.h>

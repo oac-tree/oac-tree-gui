@@ -25,8 +25,8 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/item_factory.h>
-#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
+#include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
@@ -206,9 +206,9 @@ std::vector<InstructionItem*> FindInstructions(mvvm::ISessionModel& model,
   return FindInstructionsImpl(model, domain_type);
 }
 
-std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& domain_type,
-                                                         sup::dto::uint32 index,
-                                                         const attribute_list_t& attributes)
+std::unique_ptr<VariableItem> CreateVariableInfoItem(const std::string& domain_type,
+                                                     sup::dto::uint32 index,
+                                                     const attribute_list_t& attributes)
 {
   auto domain = CreateDomainVariable(domain_type);
 
@@ -216,10 +216,7 @@ std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& doma
 
   auto info = ::oac_tree_gui::CreateVariableInfo(*domain, index);
 
-  auto result = std::make_unique<VariableInfoItem>();
-  result->InitFromDomainInfo(info);
-
-  return result;
+  return ::oac_tree_gui::CreateVariableInfoItem(info);
 }
 
 }  // namespace oac_tree_gui::test

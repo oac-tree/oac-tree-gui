@@ -24,7 +24,6 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -258,7 +257,7 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatusInfoItemCa
     GTEST_SKIP();
   }
 
-  // Creating domain Variable, then VariableInfo, then VariableInfoItem
+  // Creating domain Variable, then VariableInfo, then VariableItem
   const std::string expected_name("abc");
   const std::string expected_channel("CHANNEL");
   const std::string expected_datatype(R"RAW({"type":"int32"})RAW");

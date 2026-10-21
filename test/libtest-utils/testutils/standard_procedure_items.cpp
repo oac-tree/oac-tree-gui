@@ -20,6 +20,7 @@
 
 #include "standard_procedure_items.h"
 
+#include "sequencer_test_utils.h"
 #include "test_utils.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
@@ -28,7 +29,7 @@
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -111,11 +112,11 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateCopyProcedureItem()
   copy->SetAttribute(domainconstants::kInputVariableNameAttribute, std::string("var0"));
   copy->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("var1"));
 
-  auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var0->SetName("var0");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var0);
 
-  auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var1->SetName("var1");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}, *var1);
 
@@ -164,7 +165,7 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem(
 
   InsertInstruction(domainconstants::kWaitInstructionType, sequence);
 
-  auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var1->SetName("var1");
   SetAnyValue(initial_value, *var1);
 
@@ -192,11 +193,11 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateUserChoiceProcedureItem()
   copy->SetAttribute(domainconstants::kInputVariableNameAttribute, std::string("var0"));
   copy->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("var1"));
 
-  auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var0->SetName("var0");
   SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42}, *var0);
 
-  auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var1->SetName("var1");
   SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 0}, *var1);
 
@@ -241,15 +242,15 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateVariableResetProcedureItem()
   copy1->SetAttribute(domainconstants::kInputVariableNameAttribute, std::string("b"));
   copy1->SetAttribute(domainconstants::kOutputVariableNameAttribute, std::string("target"));
 
-  auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var0->SetName("a");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var0);
 
-  auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var1->SetName("b");
   SetAnyValue(sup::dto::AnyValue{sup::dto::StringType, "abc"}, *var1);
 
-  auto var2 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var2 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var2->SetName("target");
 
   return result;
@@ -270,14 +271,14 @@ std::unique_ptr<ProcedureItem> CreateIncrementProcedureItem()
   auto increment0 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
   increment0->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("var0"));
 
-  auto var0 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var0->SetName("var0");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
 
   auto increment1 = InsertInstruction(domainconstants::kIncrementInstructionType, sequence);
   increment1->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("var1"));
 
-  auto var1 = result->GetWorkspace()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, result->GetWorkspace());
   var1->SetName("var1");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 10}, *var1);
 

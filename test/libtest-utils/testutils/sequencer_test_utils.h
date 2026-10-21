@@ -42,7 +42,6 @@ namespace oac_tree_gui
 {
 
 class VariableItem;
-class VariableInfoItem;
 class InstructionItem;
 
 namespace test
@@ -117,9 +116,9 @@ std::vector<InstructionItem*> FindInstructions(mvvm::ISessionModel& model,
 /**
  * @brief Creates VariableItem from string representing the type of sup::oac_tree::Variable.
  */
-std::unique_ptr<VariableInfoItem> CreateVariableInfoItem(const std::string& domain_type,
-                                                         sup::dto::uint32 index = 0U,
-                                                         const attribute_list_t& attributes = {});
+std::unique_ptr<VariableItem> CreateVariableInfoItem(const std::string& domain_type,
+                                                     sup::dto::uint32 index = 0U,
+                                                     const attribute_list_t& attributes = {});
 
 }  // namespace test
 
