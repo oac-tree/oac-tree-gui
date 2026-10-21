@@ -59,8 +59,8 @@ public:
   /**
    * @brief Checks if one can manipulate exposed flag for the currently selected attribute.
    *
-   * Exposed attribute will be propagated to the sequencer domain. Variable attributes only, an
-   * instruction attribute without data is not set.
+   * Exposed attribute will be propagated to the sequencer domain. Variable attributes only. An
+   * instruction attribute without data and an empty AnyValue are not set.
    */
   bool CanToggleExposedFlag() const;
 

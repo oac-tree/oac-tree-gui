@@ -38,13 +38,12 @@ AttributeEditorActionHandler::~AttributeEditorActionHandler() = default;
 
 bool AttributeEditorActionHandler::CanToggleExposedFlag() const
 {
-  return GetSelectedAnyValueItem() != nullptr;
+  return (GetSelectedAnyValueItem() != nullptr) && !IsAnyValue();
 }
 
 bool AttributeEditorActionHandler::GetExposedFlag() const
 {
-  return (GetSelectedAnyValueItem() != nullptr)
-         && GetAttributeExposedFlag(*GetSelectedAnyValueItem());
+  return CanToggleExposedFlag() && GetAttributeExposedFlag(*GetSelectedAnyValueItem());
 }
 
 void AttributeEditorActionHandler::OnToggleExposedFlag()

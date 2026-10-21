@@ -21,8 +21,10 @@
 #include "oac_tree_gui/composer/attribute_editor_action_handler.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
@@ -132,13 +134,39 @@ TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 
   auto handler = CreateActionHandler(item.GetAnyValueItem());
 
-  EXPECT_TRUE(handler->CanToggleExposedFlag());
+  // AnyValue items have no exposed flag
+  EXPECT_FALSE(handler->CanToggleExposedFlag());
+  EXPECT_FALSE(handler->GetExposedFlag());
 
   // it is not possible to replace types with placeholders
   EXPECT_FALSE(handler->CanSetDefaultType());
   EXPECT_FALSE(handler->CanSetPlaceholderType());
 
   // it is possible to call external editor
+  EXPECT_TRUE(handler->CanEditAnyValue());
+}
+
+TEST_F(AttributeEditorActionHandlerTest, InstructionAnyValueSelected)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  auto item = CreateInstructionItem(domainconstants::kPvAccessWriteInstructionType);
+  auto anyvalue_item = GetAnyValueItem(*item);
+  ASSERT_NE(anyvalue_item, nullptr);
+
+  auto handler = CreateActionHandler(anyvalue_item);
+
+  EXPECT_FALSE(handler->CanToggleExposedFlag());
+  EXPECT_FALSE(handler->GetExposedFlag());
+
+  // toggling does nothing
+  handler->OnToggleExposedFlag();
+  EXPECT_TRUE(anyvalue_item->IsEnabled());
+  EXPECT_TRUE(anyvalue_item->IsEditable());
+
   EXPECT_TRUE(handler->CanEditAnyValue());
 }
 
@@ -168,6 +196,9 @@ TEST_F(AttributeEditorActionHandlerTest, TuringScalarAttributeIntoPlaceholder)
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
   auto handler = CreateActionHandler(&item);
+
+  // a scalar attribute keeps the exposed flag
+  EXPECT_TRUE(handler->CanToggleExposedFlag());
 
   handler->OnSetPlaceholderType();
   EXPECT_EQ(item.Data<std::string>(), itemconstants::kDefaultPlaceholderAttributeValue);
