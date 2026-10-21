@@ -25,7 +25,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/procedure_preamble_items.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/gui/model/anyvalue_item.h>
@@ -35,6 +35,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_workspace_editor_context.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QMimeData>
 
@@ -85,7 +86,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertLocalVariabledUndoRedo)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
-  handler->AddVariable(mvvm::GetTypeName<LocalVariableItem>());
+  handler->AddVariable(domainconstants::kLocalVariableType);
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   m_model.GetCommandStack()->Undo();
@@ -109,7 +110,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabled)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
-  handler->AddVariable(mvvm::GetTypeName<PvAccessServerVariableItem>());
+  handler->AddVariable(domainconstants::kPvAccessServerVariableType);
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   // we get plugin file name in preamble
@@ -138,7 +139,7 @@ TEST_F(WorkspaceEditorActionHandlerUndoTest, InsertEpicsVariabledUndoRedo)
 
   EXPECT_CALL(m_mock_context, NotifyRequest(testing::_));
 
-  handler->AddVariable(mvvm::GetTypeName<PvAccessServerVariableItem>());
+  handler->AddVariable(domainconstants::kPvAccessServerVariableType);
   ASSERT_EQ(GetWorkspaceItem()->GetVariableCount(), 1);
 
   EXPECT_EQ(GetPluginPaths(), std::vector<std::string>({domainconstants::kEpicsPVXSPluginName}));

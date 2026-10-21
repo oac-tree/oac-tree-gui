@@ -21,7 +21,9 @@
 #include "oac_tree_gui/composer/workspace_editor_action_handler.h"
 
 #include <oac_tree_gui/components/mime_constants.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 
@@ -30,6 +32,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_workspace_editor_context.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QMimeData>
 
@@ -77,7 +80,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, InitialState)
 //! Copy operation when item is selected.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyOperation)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
   var0->SetName("abc");
 
   EXPECT_EQ(m_mock_context.GetClipboardContent(), nullptr);
@@ -112,17 +115,17 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
   }
 
   {  // nothing is selected, correct mime data
-    LocalVariableItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
+    auto item_to_paste = CreateVariableItem(domainconstants::kLocalVariableType);
+    auto mime_data = sup::gui::CreateCopyMimeData({item_to_paste.get()}, kVariableCopyMimeType);
     auto handler = CreateActionHandler({}, std::move(mime_data));
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
   }
 
   {  // selected item in the container, correct mime data
-    LocalVariableItem item_to_paste;
-    auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
-    auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+    auto item_to_paste = CreateVariableItem(domainconstants::kLocalVariableType);
+    auto mime_data = sup::gui::CreateCopyMimeData({item_to_paste.get()}, kVariableCopyMimeType);
+    auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
     auto handler = CreateActionHandler({var0}, std::move(mime_data));
     EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(1);
     EXPECT_TRUE(handler->CanPaste());
@@ -134,9 +137,9 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContainer)
 {
   // creating mime data representing clipboard content
-  LocalVariableItem item_to_paste;
-  item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
+  auto item_to_paste = CreateVariableItem(domainconstants::kLocalVariableType);
+  item_to_paste->SetDisplayName("abc");
+  auto mime_data = sup::gui::CreateCopyMimeData({item_to_paste.get()}, kVariableCopyMimeType);
 
   // nothing is selected, copied item in a buffer
   auto handler = CreateActionHandler({}, std::move(mime_data));
@@ -162,12 +165,12 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 //! pasting new variable right after it.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
 
-  LocalVariableItem item_to_paste;
-  item_to_paste.SetDisplayName("abc");
-  auto mime_data = sup::gui::CreateCopyMimeData({&item_to_paste}, kVariableCopyMimeType);
+  auto item_to_paste = CreateVariableItem(domainconstants::kLocalVariableType);
+  item_to_paste->SetDisplayName("abc");
+  auto mime_data = sup::gui::CreateCopyMimeData({item_to_paste.get()}, kVariableCopyMimeType);
 
   // creating action handler mimicking `var0` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler({var0}, std::move(mime_data));
@@ -193,8 +196,8 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 //! Cut selected variable.
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
 
   // creating action handler mimicking `var0` instruction selected
   auto handler = CreateActionHandler({var0}, nullptr);
@@ -217,9 +220,9 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
 
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, RemoveTwoVariables)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
-  auto var2 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
+  auto var2 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
 
   // both iveriables are selected
   auto handler = CreateActionHandler({var0, var1});
@@ -237,9 +240,9 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, RemoveTwoVariables)
 
 TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyAndPasteTwoItems)
 {
-  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
   var0->SetDisplayName("var0");
-  auto var1 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
+  auto var1 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
   var1->SetDisplayName("var1");
 
   auto handler = CreateActionHandler({var0, var1});
