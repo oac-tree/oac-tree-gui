@@ -24,8 +24,8 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -53,7 +53,7 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithoutAnyValue)
 
   auto workspace_item = model.InsertItem<WorkspaceItem>();
 
-  auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
   variable_item->SetName("abc");
 
   WorkspaceOperationViewModel viewmodel(&model);
@@ -87,7 +87,7 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValue)
 
   auto workspace_item = model.InsertItem<WorkspaceItem>();
 
-  auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
   variable_item->SetName("abc");
@@ -161,7 +161,7 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 
   auto workspace_item = model.InsertItem<WorkspaceItem>();
 
-  auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
   variable_item->SetName("abc");
 
   WorkspaceOperationViewModel viewmodel(&model);
@@ -208,9 +208,9 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatus)
 
   auto workspace_item = model.InsertItem<WorkspaceItem>();
 
-  auto variable_item = model.InsertItem<ChannelAccessVariableItem>(workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kChannelAccessVariableType, workspace_item);
   variable_item->SetName("abc");
-  variable_item->SetChannel(channel_name);
+  variable_item->SetAttribute(domainconstants::kChannelAttribute, channel_name);
   variable_item->SetIsAvailable(true);
 
   WorkspaceOperationViewModel viewmodel(&model);

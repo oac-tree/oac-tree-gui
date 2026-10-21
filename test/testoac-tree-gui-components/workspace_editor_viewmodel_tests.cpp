@@ -22,7 +22,7 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -33,6 +33,7 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 //! Tests for WorkspaceEditorViewModel class.
 
@@ -59,7 +60,7 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   // adding single variable and populating with values
-  auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
   variable_item->SetName("abc");
@@ -133,7 +134,7 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   EXPECT_EQ(viewmodel.columnCount(QModelIndex()), 3);
 
   // adding single variable and populating with values
-  auto variable_item = model.InsertItem<ChannelAccessVariableItem>(workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kChannelAccessVariableType, workspace_item);
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
   variable_item->SetName("abc");

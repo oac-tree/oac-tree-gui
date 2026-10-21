@@ -25,8 +25,9 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -38,6 +39,7 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -71,13 +73,13 @@ TEST_F(WorkspaceMonitorHelperTest, PopulateDomainWorkspaceSingleVariables)
   WorkspaceItem workspace_item;
   sup::oac_tree::Workspace workspace;
 
-  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   var_item0->SetName("var0");
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
 
-  auto var_item1 = workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
+  auto var_item1 = InsertVariable(domainconstants::kFileVariableType, &workspace_item);
   var_item1->SetName("var1");
-  var_item1->SetFileName("filename");
+  var_item1->SetAttribute(domainconstants::kFileNameAttribute, std::string("filename"));
 
   PopulateDomainWorkspace(workspace_item, workspace);
   EXPECT_EQ(workspace.VariableNames(), std::vector<std::string>({"var0", "var1"}));
@@ -91,12 +93,12 @@ TEST_F(WorkspaceMonitorHelperTest, PopulateDomainWorkspaceSingleVariables)
 TEST_F(WorkspaceMonitorHelperTest, FindItemUp)
 {
   WorkspaceItem workspace_item;
-  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
 
   EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(nullptr), nullptr);
   EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(var_item0), &workspace_item);
-  EXPECT_EQ(mvvm::utils::FindItemUp<LocalVariableItem>(var_item0->GetAnyValueItem()), var_item0);
+  EXPECT_EQ(mvvm::utils::FindItemUp<VariableItem>(var_item0->GetAnyValueItem()), var_item0);
   EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(var_item0->GetAnyValueItem()), &workspace_item);
 }
 
@@ -110,8 +112,8 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
   WorkspaceItem workspace_item;
   const sup::oac_tree::Workspace workspace;
 
-  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  auto var_item1 = workspace_item.InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
+  auto var_item1 = InsertVariable(domainconstants::kPvAccessServerVariableType, &workspace_item);
 
   EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute).IsEditable());
 
@@ -126,13 +128,13 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
 TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
 {
   WorkspaceItem workspace_item;
-  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   SetupNewVariable(var_item0, workspace_item.GetVariableCount());
 
   EXPECT_EQ(var_item0->GetAnyValueItem()->GetDisplayName(),
             itemconstants::kAnyValueDefaultDisplayName);
 
-  auto var_item1 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item1 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   SetupNewVariable(var_item1, workspace_item.GetVariableCount());
 
   EXPECT_EQ(var_item0->GetName(), "var1");
@@ -151,7 +153,7 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
     GTEST_SKIP();
   }
 
-  auto var_item2 = workspace_item.InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
+  auto var_item2 = InsertVariable(domainconstants::kPvAccessClientVariableType, &workspace_item);
   EXPECT_FALSE(GetIsAvailableItem(*var_item2)->IsVisible());
   SetupNewVariable(var_item2, workspace_item.GetVariableCount());
 
@@ -173,9 +175,9 @@ TEST_F(WorkspaceMonitorHelperTest, AreMatchingWorkspaces)
 
   EXPECT_TRUE(AreMatchingWorkspaces(workspace_item, workspace));
 
-  auto item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   item0->SetDisplayName("abc");
-  auto item1 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto item1 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   item1->SetDisplayName("def");
 
   PopulateDomainWorkspace(workspace_item, workspace);
@@ -189,16 +191,16 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
 {
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
-  LocalVariableItem variable_item;
+  auto variable_item = CreateVariableItem(domainconstants::kLocalVariableType);
 
   // initially VariableItem doesn't have AnyValueItem
-  EXPECT_EQ(variable_item.GetAnyValueItem(), nullptr);
+  EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
 
   const std::size_t unused_variable_index{0};
-  UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, variable_item);
+  UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, *variable_item);
 
-  EXPECT_TRUE(variable_item.IsAvailable());
-  EXPECT_EQ(value, GetAnyValue(variable_item));
+  EXPECT_TRUE(variable_item->IsAvailable());
+  EXPECT_EQ(value, GetAnyValue(*variable_item));
 }
 
 }  // namespace oac_tree_gui::test

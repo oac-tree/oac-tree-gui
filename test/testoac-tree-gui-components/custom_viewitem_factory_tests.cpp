@@ -26,7 +26,8 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/providers/viewitem.h>
@@ -46,9 +47,9 @@ class CustomViewItemFactoryTest : public ::testing::Test
 
 TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForLocalVariable)
 {
-  LocalVariableItem item;
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
 
-  auto viewitem = CreateChannelPresentationViewItem(item);
+  auto viewitem = CreateChannelPresentationViewItem(*item);
 
   // it should be just empty non-editable placeholder.
   EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
@@ -69,11 +70,11 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
   }
 
   const std::string channel_name("CHANNEL");
-  PvAccessClientVariableItem item;
-  item.SetChannel(channel_name);
-  item.SetIsAvailable(true);
+  auto item = CreateVariableItem(domainconstants::kPvAccessClientVariableType);
+  item->SetAttribute(domainconstants::kChannelAttribute, channel_name);
+  item->SetIsAvailable(true);
 
-  auto viewitem = CreateChannelPresentationViewItem(item);
+  auto viewitem = CreateChannelPresentationViewItem(*item);
 
   // it should be just empty non-editable placeholder.
   EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());

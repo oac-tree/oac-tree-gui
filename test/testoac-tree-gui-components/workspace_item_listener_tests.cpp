@@ -21,7 +21,8 @@
 #include "oac_tree_gui/pvmonitor/workspace_item_listener.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -35,6 +36,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -59,7 +61,7 @@ TEST_F(WorkspaceItemListenerTest, AttemptToInitialize)
   EXPECT_NO_THROW(WorkspaceItemListener(m_workspace_item, &m_workspace));
 
   // number of variables doesn't match
-  auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, m_workspace_item);
   EXPECT_THROW(WorkspaceItemListener(m_workspace_item, &m_workspace), RuntimeException);
 }
 
@@ -70,7 +72,7 @@ TEST_F(WorkspaceItemListenerTest, SetScalarData)
   const std::string var_name("abc");
 
   // creating VariableItem and populating domain workspace
-  auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, m_workspace_item);
   variable_item->SetName(var_name);
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(value, *variable_item);
@@ -97,7 +99,7 @@ TEST_F(WorkspaceItemListenerTest, ProcessEventFromDomain)
   const std::string var_name("abc");
 
   // creating VariableItem and populating domain workspace
-  auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, m_workspace_item);
   variable_item->SetName(var_name);
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(value, *variable_item);
@@ -128,7 +130,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyAnyValueFromModelViaInsert)
   const std::string var_name("abc");
 
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
-  auto variable_item = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, m_workspace_item);
   variable_item->SetName("abc");
   SetAnyValue(value, *variable_item);
 
@@ -161,11 +163,11 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
   const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 44);
 
-  auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = InsertVariable(domainconstants::kLocalVariableType, m_workspace_item);
   SetAnyValue(value0, *variable_item0);
   variable_item0->SetName(var_name0);
 
-  auto variable_item1 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item1 = InsertVariable(domainconstants::kLocalVariableType, m_workspace_item);
   SetAnyValue(value1, *variable_item1);
   variable_item1->SetName(var_name1);
 
@@ -206,7 +208,7 @@ TEST_F(WorkspaceItemListenerTest, TwoWorkspaceScenario)
   auto workspace_item0 = m_model.InsertItem<WorkspaceItem>();
   auto workspace_item1 = m_model.InsertItem<WorkspaceItem>();
 
-  auto variable_item0 = workspace_item0->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = InsertVariable(domainconstants::kLocalVariableType, workspace_item0);
 
   PopulateDomainWorkspace(*workspace_item0, domain_workspace0);
   PopulateDomainWorkspace(*workspace_item1, domain_workspace1);
@@ -233,7 +235,7 @@ TEST_F(WorkspaceItemListenerTest, WorkspaceItemChangeLayoutAfterSetup)
 
   domain_workspace0.Setup();
 
-  auto variable_item0 = workspace_item0->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = InsertVariable(domainconstants::kLocalVariableType, workspace_item0);
   const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
   EXPECT_THROW(SetAnyValue(value0, *variable_item0), mvvm::InvalidOperationException);
 }

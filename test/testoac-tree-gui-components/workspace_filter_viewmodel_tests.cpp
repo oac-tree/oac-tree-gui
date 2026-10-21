@@ -23,8 +23,8 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <mvvm/model/application_model.h>
@@ -58,8 +58,8 @@ TEST_F(WorkspaceFilterViewModelTest, IsValidName)
 TEST_F(WorkspaceFilterViewModelTest, IsItemAccepted)
 {
   WorkspaceItem workspace;
-  auto local_item0 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  auto local_item1 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto local_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace);
+  auto local_item1 = InsertVariable(domainconstants::kLocalVariableType, &workspace);
 
   local_item0->SetDisplayName("ABC");
   local_item1->SetDisplayName("AB");
@@ -100,11 +100,11 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelName)
   }
 
   WorkspaceItem workspace;
-  auto local_item = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  auto pv_access_item = workspace.InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
+  auto local_item = InsertVariable(domainconstants::kLocalVariableType, &workspace);
+  auto pv_access_item = InsertVariable(domainconstants::kPvAccessClientVariableType, &workspace);
 
   local_item->SetDisplayName("A");
-  pv_access_item->SetChannel("ABC");
+  pv_access_item->SetAttribute(domainconstants::kChannelAttribute, std::string("ABC"));
 
   WorkspaceFilterViewModel viewmodel;
   viewmodel.SetPattern("ABC");
@@ -113,7 +113,7 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelName)
   EXPECT_FALSE(viewmodel.IsItemAccepted(local_item));
   EXPECT_TRUE(viewmodel.IsItemAccepted(pv_access_item));  // channel name matches
 
-  pv_access_item->SetChannel("AB");
+  pv_access_item->SetAttribute(domainconstants::kChannelAttribute, std::string("AB"));
   pv_access_item->SetDisplayName("ABC");
   EXPECT_TRUE(viewmodel.IsItemAccepted(pv_access_item));  // name matches
 }
@@ -159,8 +159,8 @@ TEST_F(WorkspaceFilterViewModelTest, FilterViewmodel)
   // workspace with two variables
   mvvm::ApplicationModel model;
   auto workspace_item = model.InsertItem<WorkspaceItem>();
-  auto local_item0 = model.InsertItem<LocalVariableItem>(workspace_item, mvvm::TagIndex::Append());
-  auto local_item1 = model.InsertItem<LocalVariableItem>(workspace_item, mvvm::TagIndex::Append());
+  auto local_item0 = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  auto local_item1 = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
   local_item0->SetDisplayName("ABC");
   local_item1->SetDisplayName("AB");
 

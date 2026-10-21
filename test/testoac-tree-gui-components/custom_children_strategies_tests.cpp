@@ -25,7 +25,8 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/item_factory.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
@@ -34,6 +35,7 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -50,8 +52,8 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
 {
   {  // workspace with single variable
     WorkspaceItem workspace;
-    auto variable0 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-    auto variable1 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+    auto variable0 = InsertVariable(domainconstants::kLocalVariableType, &workspace);
+    auto variable1 = InsertVariable(domainconstants::kLocalVariableType, &workspace);
 
     const VariableTableChildrenStrategy strategy;
     auto children = strategy.GetChildren(&workspace);
@@ -59,35 +61,35 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
   }
 
   {  // single local variable
-    LocalVariableItem item;
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
 
     const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-    SetAnyValue(anyvalue, item);
-    item.SetName("abc");
+    SetAnyValue(anyvalue, *item);
+    item->SetName("abc");
 
     const VariableTableChildrenStrategy strategy;
-    auto children = strategy.GetChildren(&item);
+    auto children = strategy.GetChildren(item.get());
 
     // row of children is empty
     ASSERT_TRUE(children.empty());
   }
 
   {  // single local variable with structure
-    LocalVariableItem item;
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
 
     const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
-    SetAnyValue(anyvalue, item);
-    item.SetName("abc");
+    SetAnyValue(anyvalue, *item);
+    item->SetName("abc");
 
     const VariableTableChildrenStrategy strategy;
-    auto children = strategy.GetChildren(&item);
+    auto children = strategy.GetChildren(item.get());
 
     // row of should contain our struct item
     ASSERT_EQ(children.size(), 1);
     EXPECT_EQ(children.at(0)->GetType(), mvvm::GetTypeName<sup::gui::AnyValueStructItem>());
 
     // struct has to contain only one child (no additional items representing a type
-    children = strategy.GetChildren(item.GetAnyValueItem());
+    children = strategy.GetChildren(item->GetAnyValueItem());
     ASSERT_EQ(children.size(), 1);
   }
 }

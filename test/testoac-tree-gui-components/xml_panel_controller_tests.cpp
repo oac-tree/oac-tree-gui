@@ -23,9 +23,10 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/gui/core/sup_gui_core_exceptions.h>
@@ -34,6 +35,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -120,8 +122,8 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)
   auto controller = CreateController();
 
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml1)).Times(1);
-  auto var0 = m_model.InsertItem<FileVariableItem>(m_procedure_item->GetWorkspace(),
-                                                   mvvm::TagIndex::Append());
+  auto var0 = InsertVariable(domainconstants::kFileVariableType, m_procedure_item->GetWorkspace(),
+                             mvvm::TagIndex::Append());
 
   const std::string expected_xml2(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure>
@@ -134,7 +136,7 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)
 
   // adding second variable
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml2)).Times(1);
-  auto new_var = std::make_unique<FileVariableItem>();
+  auto new_var = CreateVariableItem(domainconstants::kFileVariableType);
   new_var->SetName("AnotherVarName");
   auto var1 = m_model.InsertItem(std::move(new_var), m_procedure_item->GetWorkspace(),
                                  mvvm::TagIndex::Append());
