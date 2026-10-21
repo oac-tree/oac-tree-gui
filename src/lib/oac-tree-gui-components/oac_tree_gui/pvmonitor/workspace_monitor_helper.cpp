@@ -83,7 +83,7 @@ void SetupNewVariable(VariableItem* item, std::size_t total_variable_count)
   // Normally, we set scalar AnyValue to any VariableItem added to the WorkspaceItem. If user wants
   // something else, he has to start AnyValueEditor.
 
-  if (item->GetType() == domainconstants::kPvAccessClientVariableType)
+  if (item->GetDomainType() == domainconstants::kPvAccessClientVariableType)
   {
     // PvAccessClient gets it's value from the network. Nethertheless, we
     // set empty AnyValue to make it look the same in the editor, as others.

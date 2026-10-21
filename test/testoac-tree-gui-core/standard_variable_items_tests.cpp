@@ -57,14 +57,14 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
 
   ChannelAccessVariableItem item;
   EXPECT_FALSE(item.GetName().empty());
-  EXPECT_TRUE(item.GetChannel().empty());
+  EXPECT_TRUE(item.GetAttribute<std::string>(domainconstants::kChannelAttribute).empty());
   EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
 
-  item.SetChannel("def");
-  EXPECT_EQ(item.GetChannel(), std::string("def"));
+  item.SetAttribute(domainconstants::kChannelAttribute, std::string("def"));
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kChannelAttribute), std::string("def"));
 
   item.SetIsAvailable(true);
   EXPECT_TRUE(item.IsAvailable());
@@ -114,7 +114,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   item.InitFromDomain(ca_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
-  EXPECT_EQ(item.GetChannel(), expected_channel);
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kChannelAttribute), expected_channel);
   EXPECT_FALSE(item.IsAvailable());
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
@@ -135,7 +135,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
   {  // when AnyValueItem is set
     ChannelAccessVariableItem item;
     item.SetName(expected_name);
-    item.SetChannel(expected_channel);
+    item.SetAttribute(domainconstants::kChannelAttribute, expected_channel);
 
     const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
@@ -156,14 +156,15 @@ TEST_F(StandardVariableItemsTest, FileVariableItem)
 {
   FileVariableItem item;
   EXPECT_FALSE(item.GetName().empty());
-  EXPECT_TRUE(item.GetFileName().empty());
+  EXPECT_TRUE(item.GetAttribute<std::string>(domainconstants::kFileNameAttribute).empty());
   EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
 
-  item.SetFileName("edf");
-  EXPECT_EQ(item.GetFileName(), std::string("edf"));
+  item.SetAttribute(domainconstants::kFileNameAttribute, std::string("edf"));
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kFileNameAttribute),
+            std::string("edf"));
 }
 
 TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
@@ -201,7 +202,8 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
-  EXPECT_EQ(item.GetFileName(), expected_file_name);
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kFileNameAttribute),
+            expected_file_name);
 }
 
 TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
@@ -211,7 +213,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
 
   oac_tree_gui::FileVariableItem item;
   item.SetName(expected_name);
-  item.SetFileName(expected_file_name);
+  item.SetAttribute(domainconstants::kFileNameAttribute, expected_file_name);
 
   auto domain_item = item.CreateDomainVariable();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kFileVariableType);
@@ -333,14 +335,14 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItem)
 
   PvAccessClientVariableItem item;
   EXPECT_FALSE(item.GetName().empty());
-  EXPECT_TRUE(item.GetChannel().empty());
+  EXPECT_TRUE(item.GetAttribute<std::string>(domainconstants::kChannelAttribute).empty());
   EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
 
-  item.SetChannel("def");
-  EXPECT_EQ(item.GetChannel(), std::string("def"));
+  item.SetAttribute(domainconstants::kChannelAttribute, std::string("def"));
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kChannelAttribute), std::string("def"));
 }
 
 TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
@@ -366,7 +368,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
   item.InitFromDomain(pv_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
-  EXPECT_EQ(item.GetChannel(), expected_channel);
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kChannelAttribute), expected_channel);
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
   EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
@@ -386,7 +388,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
   {  // case when AnyValueItem is set
     PvAccessClientVariableItem item;
     item.SetName(expected_name);
-    item.SetChannel(expected_channel);
+    item.SetAttribute(domainconstants::kChannelAttribute, expected_channel);
 
     const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
@@ -409,14 +411,14 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItem)
 
   PvAccessServerVariableItem item;
   EXPECT_FALSE(item.GetName().empty());
-  EXPECT_TRUE(item.GetChannel().empty());
+  EXPECT_TRUE(item.GetAttribute<std::string>(domainconstants::kChannelAttribute).empty());
   EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
 
-  item.SetChannel("def");
-  EXPECT_EQ(item.GetChannel(), std::string("def"));
+  item.SetAttribute(domainconstants::kChannelAttribute, std::string("def"));
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kChannelAttribute), std::string("def"));
 }
 
 TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
@@ -444,7 +446,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
   item.InitFromDomain(pvxs_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
-  EXPECT_EQ(item.GetChannel(), expected_channel);
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kChannelAttribute), expected_channel);
   EXPECT_FALSE(item.IsAvailable());
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
@@ -465,7 +467,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
 
   {  // case when AnyValueItem is set
     PvAccessServerVariableItem item;
-    item.SetChannel(expected_channel);
+    item.SetAttribute(domainconstants::kChannelAttribute, expected_channel);
     item.SetName(expected_name);
 
     const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
@@ -494,7 +496,6 @@ TEST_F(StandardVariableItemsTest, SetAndGetAttribute)
 
   item.SetAttribute(domainconstants::kFileNameAttribute, std::string("abc"));
   EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kFileNameAttribute), "abc");
-  EXPECT_EQ(item.GetFileName(), "abc");
 
   // setting a value marks the attribute as exposed
   item.SetAttribute(domainconstants::kPrettyJsonAttribute, true);

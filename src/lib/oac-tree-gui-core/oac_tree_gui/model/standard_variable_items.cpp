@@ -42,16 +42,6 @@ std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone() const
   throw NotImplementedException("Clone for ConnectableVariableItem is not implemented");
 }
 
-std::string ConnectableVariableItem::GetChannel() const
-{
-  return Property<std::string>(domainconstants::kChannelAttribute);
-}
-
-void ConnectableVariableItem::SetChannel(const std::string& value)
-{
-  (void)SetProperty(domainconstants::kChannelAttribute, value);
-}
-
 // ----------------------------------------------------------------------------
 // ChannelAccessVariableItem
 // ----------------------------------------------------------------------------
@@ -77,16 +67,6 @@ FileVariableItem::FileVariableItem()
 std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone() const
 {
   return mvvm::MakeClone(*this);
-}
-
-std::string FileVariableItem::GetFileName() const
-{
-  return Property<std::string>(oac_tree_gui::domainconstants::kFileNameAttribute);
-}
-
-void FileVariableItem::SetFileName(const std::string& name)
-{
-  (void)SetProperty(oac_tree_gui::domainconstants::kFileNameAttribute, name);
 }
 
 // ----------------------------------------------------------------------------

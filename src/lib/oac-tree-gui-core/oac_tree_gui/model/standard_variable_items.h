@@ -41,10 +41,6 @@ public:
   ConnectableVariableItem& operator=(ConnectableVariableItem&&) = delete;
 
   std::unique_ptr<SessionItem> Clone() const override;
-
-  std::string GetChannel() const;
-
-  void SetChannel(const std::string& value);
 };
 
 //! Represent ChannelAccessVariable.
@@ -63,10 +59,6 @@ public:
   FileVariableItem();
 
   std::unique_ptr<SessionItem> Clone() const override;
-
-  std::string GetFileName() const;
-
-  void SetFileName(const std::string& name);
 };
 
 //! Represent LocalVariable.

@@ -223,6 +223,29 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
   }
 }
 
+//! Type column of the variable table: short names of EPICS variables.
+TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyTypeColumn)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  const std::vector<std::pair<std::string, QString>> expected = {
+      {domainconstants::kChannelAccessVariableType, QString("CA")},
+      {domainconstants::kPvAccessClientVariableType, QString("PVA-C")},
+      {domainconstants::kPvAccessServerVariableType, QString("PVA-S")}};
+
+  for (const auto& [domain_type, type_string] : expected)
+  {
+    auto item = CreateVariableItem(domain_type);
+    VariableTableRowStrategy strategy;
+    auto view_items = strategy.ConstructRow(item.get());
+    ASSERT_EQ(view_items.size(), 4);
+    EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), type_string) << domain_type;
+  }
+}
+
 TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
 {
   {
