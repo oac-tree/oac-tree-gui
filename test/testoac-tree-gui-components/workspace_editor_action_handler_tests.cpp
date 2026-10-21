@@ -348,8 +348,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem. Pretending that the user has
-//! removed initial AnyValueItem and has pushed OK button. This should be allowed, and AnyValueItem
-//! removed.
+//! removed initial AnyValueItem and has pushed OK button. The variable gets an empty AnyValueItem,
+//! i.e. not set.
 TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
 {
   const bool dialog_was_acccepted = true;
@@ -377,8 +377,38 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   // editing request
   handler->EditAnyValue();
 
-  // checking that previous AnyValueItem has been removed
+  // checking that previous AnyValueItem has been replaced by an empty one
+  auto anyvalue_item = var0->GetAnyValueItem();
+  ASSERT_NE(anyvalue_item, nullptr);
+  EXPECT_NE(anyvalue_item, initial_anyvalue_item);
+  EXPECT_EQ(anyvalue_item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var0)));
+}
+
+//! Variable without AnyValueItem, the dialog returns no item: the variable gets an empty one.
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsAbsentAndNotCreated)
+{
+  const bool dialog_was_acccepted = true;
+
+  auto var0 = m_model.InsertItem<LocalVariableItem>(GetWorkspaceItem());
   EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
+
+  std::unique_ptr<sup::gui::AnyValueItem> editing_result;
+  AnyValueDialogResult dialog_result{dialog_was_acccepted, std::move(editing_result)};
+  ON_CALL(m_mock_context, OnEditAnyvalue(nullptr))
+      .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
+
+  auto handler = CreateActionHandler({var0});
+
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(0);
+  EXPECT_CALL(m_mock_context, OnEditAnyvalue(nullptr)).Times(1);
+
+  handler->EditAnyValue();
+
+  auto anyvalue_item = var0->GetAnyValueItem();
+  ASSERT_NE(anyvalue_item, nullptr);
+  EXPECT_EQ(anyvalue_item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem. Pretending that the user has

@@ -100,7 +100,7 @@ void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& preamble);
 
 /**
- * @brief Returns domain AnyValue stored in given variable item.
+ * @brief Returns domain AnyValue stored in given variable item, empty if it has no AnyValueItem.
  */
 sup::dto::AnyValue GetAnyValue(const VariableItem& item);
 

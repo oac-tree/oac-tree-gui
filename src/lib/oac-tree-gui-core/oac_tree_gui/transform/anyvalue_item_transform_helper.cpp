@@ -186,12 +186,8 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& pr
 
 sup::dto::AnyValue GetAnyValue(const VariableItem& item)
 {
-  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
-  {
-    return CreateAnyValue(*item.GetAnyValueItem());
-  }
-
-  throw RuntimeException("Given VariableItem doesn't contain AnyValueItem on board");
+  const auto* anyvalue_item = item.GetAnyValueItem();
+  return (anyvalue_item != nullptr) ? CreateAnyValue(*anyvalue_item) : sup::dto::AnyValue{};
 }
 
 sup::dto::AnyValue GetAnyValue(const std::string& var_name,

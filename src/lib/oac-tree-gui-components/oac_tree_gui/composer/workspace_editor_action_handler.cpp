@@ -29,6 +29,7 @@
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -152,17 +153,17 @@ void WorkspaceEditorActionHandler::EditAnyValue()
       return;
     }
 
+    // removed AnyValue: not set
+    auto new_anyvalue =
+        edited_anyvalue.result ? std::move(edited_anyvalue.result) : CreateEmptyAnyValueItem();
+
     // remove previous AnyValueItem
     if (selected_anyvalue != nullptr)
     {
       model->RemoveItem(selected_anyvalue);
     }
 
-    if (edited_anyvalue.result)
-    {
-      (void)model->InsertItem(std::move(edited_anyvalue.result),
-                              selected_variable, {});
-    }
+    (void)model->InsertItem(std::move(new_anyvalue), selected_variable, {});
   }
 }
 

@@ -357,10 +357,10 @@ TEST_F(AnyValueItemTransformHelperTest, PopulateProcedurePreambleFromItem)
 //! Validating GetAnyValue helper method.
 TEST_F(AnyValueItemTransformHelperTest, GetStoredAnyValue)
 {
-  // LocalVariableItem doesn't have AnyValuteItem at the beginning
+  // LocalVariableItem doesn't have AnyValuteItem at the beginning: empty AnyValue
   LocalVariableItem item;
 
-  EXPECT_THROW(GetAnyValue(item), RuntimeException);
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(item)));
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, item);
