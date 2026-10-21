@@ -54,7 +54,7 @@ struct AttributeDescriptor
   mvvm::variant_t default_value;  //!< scalar; its type defines the attribute type
   std::string tooltip;
   bool mandatory{false};
-  bool is_set{false};  //!< has an initial value; true for non-nullable and preset attributes
+  bool has_preset{false};  //!< nullable attribute that starts with the default value
   sup::oac_tree::AttributeCategory category{sup::oac_tree::AttributeCategory::kLiteral};
   bool visible{true};     //!< shown in attribute editor and tooltips
   bool allow_text{true};  //!< text (`$par`, `@var`) accepted instead of a value

@@ -141,7 +141,6 @@ TEST_F(CustomPresentationItemTest, AttributePresentationItemNonNullableBool)
 {
   AttributeItem item;
   item.SetAttributeType(false, /*is_nullable*/ false, /*allow_text*/ true);
-  EXPECT_TRUE(item.SetData(false));
   AttributePresentationItem presentation(&item);
 
   EXPECT_TRUE(presentation.IsCheckable());

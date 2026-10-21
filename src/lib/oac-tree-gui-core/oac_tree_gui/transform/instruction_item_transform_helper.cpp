@@ -148,7 +148,7 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
     }
     auto& property = attributes.AddProperty<AttributeItem>(attribute.name);
     property.SetAttributeType(attribute.default_value, attribute.nullable, attribute.allow_text);
-    if (attribute.is_set)
+    if (attribute.has_preset)
     {
       (void)property.SetData(attribute.default_value);
     }

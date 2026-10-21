@@ -156,7 +156,7 @@ TEST_F(InstructionItemTest, MandatoryAttribute)
                                0.0,
                                {},
                                true,
-                               true,
+                               false,
                                sup::oac_tree::AttributeCategory::kLiteral,
                                true,
                                true,

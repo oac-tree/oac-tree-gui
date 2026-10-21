@@ -61,7 +61,6 @@ AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
   AttributeDescriptor result{name, default_value, {}, mandatory, false, category};
   result.allow_text = IsTextAllowed(name, default_value);
   result.nullable = IsNullable(name, default_value, mandatory);
-  result.is_set = !result.nullable;
   if (name == domainconstants::kIsRootAttribute)
   {
     result.visible = false;
@@ -69,7 +68,7 @@ AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
   if (auto preset = FindAttributePreset(domain_type, name); preset)
   {
     result.default_value = preset->value;
-    result.is_set = true;
+    result.has_preset = true;
   }
   return result;
 }

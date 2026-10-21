@@ -63,6 +63,10 @@ void AttributeItem::SetAttributeType(const mvvm::variant_t& default_value, bool 
   (void)SetData(default_value, mvvm::DataRole::kDefaultValue);
   (void)SetFlag(mvvm::Appearance::kNullable, is_nullable);
   (void)SetData(allow_text, itemconstants::kAllowTextRole);
+  if (!is_nullable && !HasData())
+  {
+    (void)SetData(default_value);
+  }
 }
 
 mvvm::variant_t AttributeItem::GetDefaultValue() const
