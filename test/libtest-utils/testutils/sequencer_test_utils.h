@@ -26,6 +26,8 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
+#include <mvvm/model/tagindex.h>
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -33,6 +35,7 @@
 namespace mvvm
 {
 class ISessionModel;
+class SessionItem;
 }
 
 namespace oac_tree_gui
@@ -91,6 +94,17 @@ sup::oac_tree::JobInfo CreateJobInfo(const std::string& procedure_text);
  * @brief Checks if the value caried inside VariableItem is equal to a given AnyValue.
  */
 bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValue& value);
+
+/**
+ * @brief Creates a variable item of the given domain type and inserts it into the parent.
+ *
+ * @param domain_type The domain variable type.
+ * @param parent The parent to get a new child.
+ * @param tag_index Child position.
+ * @return Inserted item.
+ */
+VariableItem* InsertVariable(const std::string& domain_type, mvvm::SessionItem* parent,
+                             const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**
  * @brief Finds InstructionItem representing given domain type.

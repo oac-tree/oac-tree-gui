@@ -83,6 +83,24 @@ public:
   void SetName(const std::string& value);
 
   /**
+   * @brief Sets the domain attribute to a given value and marks it as exposed.
+   *
+   * @param name The name of the attribute.
+   * @param value The attribute value. Its type must match the attribute type.
+   * @throw RuntimeException if the attribute doesn't exist or the value type does not match.
+   */
+  void SetAttribute(const std::string& name, const mvvm::variant_t& value);
+
+  /**
+   * @brief Returns the value of the domain attribute.
+   *
+   * @tparam T The type of the attribute value.
+   * @param name The name of the attribute.
+   */
+  template <typename T>
+  T GetAttribute(const std::string& name) const;
+
+  /**
    * @brief Returns underlying AnyValueItem if exists, or nullptr if no item has been set.
    */
   const sup::gui::AnyValueItem* GetAnyValueItem() const;
@@ -130,6 +148,12 @@ private:
    */
   virtual void SetupDomainImpl(variable_t* variable) const = 0;
 };
+
+template <typename T>
+T VariableItem::GetAttribute(const std::string& name) const
+{
+  return Property<T>(name);
+}
 
 }  // namespace oac_tree_gui
 

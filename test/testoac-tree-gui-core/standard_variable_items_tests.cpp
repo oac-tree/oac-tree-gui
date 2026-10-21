@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/model/standard_variable_items.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -28,12 +29,14 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/model/application_model.h>
 #include <mvvm/model/property_item.h>
 
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -479,6 +482,42 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     const workspace_t workspace;
     EXPECT_NO_THROW(domain_item->Setup(workspace));
   }
+}
+
+//! SetAttribute and GetAttribute members of VariableItem.
+TEST_F(StandardVariableItemsTest, SetAndGetAttribute)
+{
+  FileVariableItem item;
+  auto* pretty = item.FindItem<sup::gui::AnyValueItem>(domainconstants::kPrettyJsonAttribute);
+  ASSERT_NE(pretty, nullptr);
+  EXPECT_FALSE(GetAttributeExposedFlag(*pretty));
+
+  item.SetAttribute(domainconstants::kFileNameAttribute, std::string("abc"));
+  EXPECT_EQ(item.GetAttribute<std::string>(domainconstants::kFileNameAttribute), "abc");
+  EXPECT_EQ(item.GetFileName(), "abc");
+
+  // setting a value marks the attribute as exposed
+  item.SetAttribute(domainconstants::kPrettyJsonAttribute, true);
+  EXPECT_TRUE(item.GetAttribute<bool>(domainconstants::kPrettyJsonAttribute));
+  EXPECT_TRUE(GetAttributeExposedFlag(*pretty));
+
+  // value type must match the attribute type
+  EXPECT_THROW(item.SetAttribute(domainconstants::kPrettyJsonAttribute, 1), RuntimeException);
+
+  // unknown attribute
+  EXPECT_THROW(item.SetAttribute("unknown", true), RuntimeException);
+}
+
+//! Test helper InsertVariable.
+TEST_F(StandardVariableItemsTest, InsertVariable)
+{
+  mvvm::ApplicationModel model;
+
+  auto* item = InsertVariable(domainconstants::kLocalVariableType, model.GetRootItem());
+  ASSERT_NE(item, nullptr);
+  EXPECT_EQ(item->GetDomainType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(item->GetModel(), &model);
+  EXPECT_EQ(model.GetRootItem()->GetTotalItemCount(), 1);
 }
 
 }  // namespace oac_tree_gui::test

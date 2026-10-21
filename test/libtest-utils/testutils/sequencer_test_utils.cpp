@@ -24,6 +24,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 
@@ -184,6 +185,13 @@ bool IsEqual(const oac_tree_gui::VariableItem& variable, const sup::dto::AnyValu
     return sup::gui::CreateAnyValue(*anyvalue_item) == value;
   }
   return false;
+}
+
+VariableItem* InsertVariable(const std::string& domain_type, mvvm::SessionItem* parent,
+                             const mvvm::TagIndex& tag_index)
+{
+  return dynamic_cast<VariableItem*>(
+      parent->InsertItem(CreateVariableItem(domain_type), tag_index));
 }
 
 std::vector<const InstructionItem*> FindInstructions(const mvvm::ISessionModel& model,

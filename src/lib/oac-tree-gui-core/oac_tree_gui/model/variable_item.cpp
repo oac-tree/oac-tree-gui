@@ -20,8 +20,10 @@
 
 #include "variable_item.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
@@ -74,6 +76,24 @@ std::string VariableItem::GetName() const
 void VariableItem::SetName(const std::string& value)
 {
   (void)SetDisplayName(value);
+}
+
+void VariableItem::SetAttribute(const std::string& name, const mvvm::variant_t& value)
+{
+  auto* attribute = FindItem<sup::gui::AnyValueItem>(name);
+  if (attribute == nullptr)
+  {
+    throw RuntimeException("Attribute [" + name + "] doesn't exist in variable [" + GetDomainType()
+                           + "]");
+  }
+  if (value.index() != attribute->Data().index())
+  {
+    throw RuntimeException("Attribute [" + name + "] has type ["
+                           + mvvm::utils::TypeName(attribute->Data()) + "], value type ["
+                           + mvvm::utils::TypeName(value) + "]");
+  }
+  (void)attribute->SetData(value);
+  SetAttributeExposedFlag(true, *attribute);
 }
 
 const sup::gui::AnyValueItem* VariableItem::GetAnyValueItem() const
