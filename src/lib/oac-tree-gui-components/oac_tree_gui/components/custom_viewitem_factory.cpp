@@ -69,4 +69,9 @@ std::unique_ptr<mvvm::ViewItem> CreateRootCheckboxViewItem(InstructionItem& item
   return std::make_unique<mvvm::ViewItem>(std::move(presentation));
 }
 
+std::unique_ptr<mvvm::ViewItem> CreateAttributeViewItem(AttributeItem& item)
+{
+  return std::make_unique<mvvm::ViewItem>(std::make_unique<AttributePresentationItem>(&item));
+}
+
 }  // namespace oac_tree_gui

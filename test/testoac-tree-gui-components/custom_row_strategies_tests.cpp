@@ -21,8 +21,10 @@
 #include "oac_tree_gui/components/custom_row_strategies.h"
 
 #include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/components/custom_presentation_items.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/variable_info_item.h>
@@ -61,6 +63,24 @@ TEST_F(CustomRowStrategiesTest, VariableRowStrategyForLocalVariable)
   EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString(""));
   EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("Local"));
   EXPECT_EQ(strategy.GetHorizontalHeaderLabels().size(), 3);
+}
+
+//! Instruction attribute: name, value or text, type.
+TEST_F(CustomRowStrategiesTest, VariableRowStrategyForAttribute)
+{
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  auto* timeout =
+      item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
+  ASSERT_NE(timeout, nullptr);
+
+  VariableRowStrategy strategy;
+  auto view_items = strategy.ConstructRow(timeout);
+
+  ASSERT_EQ(view_items.size(), 3);
+  EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(),
+            QString::fromStdString(domainconstants::kTimeoutAttribute));
+  EXPECT_NE(dynamic_cast<AttributePresentationItem*>(view_items.at(1)->GetItemData()), nullptr);
+  EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("float64"));
 }
 
 TEST_F(CustomRowStrategiesTest, VariableRowStrategyForUniversalItem)

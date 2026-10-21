@@ -35,6 +35,7 @@ class SessionItem;
 namespace oac_tree_gui
 {
 
+class AttributeItem;
 class InstructionItem;
 
 /**
@@ -57,6 +58,11 @@ std::unique_ptr<mvvm::ViewItem> CreateInstructionTypeViewItem(InstructionItem& i
  * @brief Returns ViewItem representing checkbox to mark instruction as root.
  */
 std::unique_ptr<mvvm::ViewItem> CreateRootCheckboxViewItem(InstructionItem& item);
+
+/**
+ * @brief Returns ViewItem representing the value or the text of the attribute.
+ */
+std::unique_ptr<mvvm::ViewItem> CreateAttributeViewItem(AttributeItem& item);
 
 }  // namespace oac_tree_gui
 

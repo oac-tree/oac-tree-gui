@@ -22,9 +22,11 @@
 
 #include <oac_tree_gui/components/component_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
@@ -33,6 +35,8 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
+
+#include <QColor>
 
 namespace oac_tree_gui::test
 {
@@ -72,6 +76,88 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
 
   EXPECT_EQ(presentation.GetQtRolesToEmit(mvvm::DataRole::kData),
             QVector<int>({Qt::DecorationRole}));
+}
+
+//! Attribute without text: the value presentation.
+TEST_F(CustomPresentationItemTest, AttributePresentationItemValue)
+{
+  AttributeItem item;
+  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
+  const AttributePresentationItem presentation(&item);
+
+  // not set: gray placeholder
+  EXPECT_FALSE(presentation.Data(Qt::EditRole).isValid());
+  EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("default"));
+  EXPECT_EQ(presentation.Data(Qt::ForegroundRole).value<QColor>(), QColor(Qt::gray));
+  EXPECT_TRUE(presentation.IsEditable());
+  EXPECT_FALSE(presentation.IsCheckable());
+
+  EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
+  EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("42"));
+
+  EXPECT_EQ(presentation.GetQtRolesToEmit(mvvm::DataRole::kData),
+            QVector<int>({Qt::DisplayRole, Qt::EditRole}));
+  EXPECT_EQ(presentation.GetQtRolesToEmit(itemconstants::kAttributeTextRole),
+            QVector<int>({Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole, Qt::CheckStateRole}));
+}
+
+//! Attribute with text: the cell shows and edits the text, the value stays.
+TEST_F(CustomPresentationItemTest, AttributePresentationItemText)
+{
+  AttributeItem item;
+  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
+  EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
+  AttributePresentationItem presentation(&item);
+
+  EXPECT_TRUE(item.SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+  EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("$par"));
+  EXPECT_EQ(presentation.Data(Qt::EditRole).toString(), QString("$par"));
+  EXPECT_TRUE(presentation.IsEditable());
+
+  EXPECT_TRUE(presentation.SetData(QString("$abc"), Qt::EditRole));
+  EXPECT_EQ(item.Data<std::string>(itemconstants::kAttributeTextRole), std::string("$abc"));
+  EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+
+  // empty text leaves the text state
+  EXPECT_TRUE(presentation.SetData(QString(), Qt::EditRole));
+  EXPECT_FALSE(item.HasData(itemconstants::kAttributeTextRole));
+  EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("42"));
+}
+
+//! Attribute with text and without value: no gray placeholder.
+TEST_F(CustomPresentationItemTest, AttributePresentationItemTextWithoutValue)
+{
+  AttributeItem item;
+  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
+  const AttributePresentationItem presentation(&item);
+
+  EXPECT_TRUE(item.SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+  EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("$par"));
+  EXPECT_NE(presentation.Data(Qt::ForegroundRole).value<QColor>(), QColor(Qt::gray));
+}
+
+//! Non-nullable bool: the checkbox goes away with text and comes back without it.
+TEST_F(CustomPresentationItemTest, AttributePresentationItemNonNullableBool)
+{
+  AttributeItem item;
+  item.SetAttributeType(false, /*is_nullable*/ false, /*allow_text*/ true);
+  AttributePresentationItem presentation(&item);
+
+  EXPECT_TRUE(presentation.IsCheckable());
+  EXPECT_FALSE(presentation.IsEditable());
+  EXPECT_EQ(presentation.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+  EXPECT_TRUE(item.SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+  EXPECT_FALSE(presentation.IsCheckable());
+  EXPECT_TRUE(presentation.IsEditable());
+  EXPECT_FALSE(presentation.Data(Qt::CheckStateRole).isValid());
+  EXPECT_FALSE(presentation.SetData(Qt::Checked, Qt::CheckStateRole));
+  EXPECT_EQ(item.Data(), mvvm::variant_t{false});
+
+  EXPECT_TRUE(presentation.SetData(QString(), Qt::EditRole));
+  EXPECT_TRUE(presentation.IsCheckable());
+  EXPECT_TRUE(presentation.SetData(Qt::Checked, Qt::CheckStateRole));
+  EXPECT_EQ(item.Data(), mvvm::variant_t{true});
 }
 
 TEST_F(CustomPresentationItemTest, ExclusiveCheckStatePresentationItem)

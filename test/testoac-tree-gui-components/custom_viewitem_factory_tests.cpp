@@ -21,13 +21,16 @@
 #include "oac_tree_gui/components/custom_viewitem_factory.h"
 
 #include <oac_tree_gui/components/component_helper.h>
+#include <oac_tree_gui/components/custom_presentation_items.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/providers/viewitem.h>
+#include <mvvm/providers/viewmodel_utils.h>
 
 #include <gtest/gtest.h>
 
@@ -112,6 +115,21 @@ TEST_F(CustomViewItemFactoryTest, CreateRootCheckboxViewItem)
   EXPECT_FALSE(viewitem->Data(Qt::DisplayRole).isValid());  // no text
   EXPECT_TRUE(viewitem->Data(Qt::CheckStateRole).isValid());
   EXPECT_EQ(viewitem->Data(Qt::CheckStateRole).toInt(), Qt::Checked);
+}
+
+TEST_F(CustomViewItemFactoryTest, CreateAttributeViewItem)
+{
+  auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
+  auto* timeout =
+      item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
+  ASSERT_NE(timeout, nullptr);
+
+  auto viewitem = CreateAttributeViewItem(*timeout);
+  EXPECT_NE(dynamic_cast<AttributePresentationItem*>(viewitem->GetItemData()), nullptr);
+  EXPECT_EQ(mvvm::utils::GetItemFromView<AttributeItem>(viewitem.get()), timeout);
+
+  item->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
+  EXPECT_EQ(viewitem->Data(Qt::EditRole).toDouble(), 42.0);
 }
 
 }  // namespace oac_tree_gui::test

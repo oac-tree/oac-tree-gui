@@ -158,7 +158,14 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm
   {
     (void)result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
   }
-  (void)result.emplace_back(mvvm::CreateDataViewItem(&item));
+  if (auto attribute_item = dynamic_cast<AttributeItem*>(&item); attribute_item)
+  {
+    (void)result.emplace_back(CreateAttributeViewItem(*attribute_item));
+  }
+  else
+  {
+    (void)result.emplace_back(mvvm::CreateDataViewItem(&item));
+  }
   (void)result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeStringForVariableTree(item)));
 
   return result;

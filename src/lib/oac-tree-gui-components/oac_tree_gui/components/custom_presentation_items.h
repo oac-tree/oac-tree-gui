@@ -24,6 +24,8 @@
 #include <mvvm/providers/boolean_data_presentation_item.h>
 #include <mvvm/providers/default_data_presentation_item.h>
 
+#include <memory>
+
 namespace mvvm
 {
 class ISessionModel;
@@ -32,8 +34,45 @@ class ISessionModel;
 namespace oac_tree_gui
 {
 
+class AttributeItem;
 class InstructionItem;
 class InstructionContainerItem;
+
+/**
+ * @brief The AttributePresentationItem class presents the value or the text of AttributeItem.
+ *
+ * @details Without text, all calls go to the presentation of the value, chosen as in
+ * mvvm::CreateDataViewItem. With text, the cell shows and edits the text. Empty text removes it.
+ */
+class AttributePresentationItem : public mvvm::AbstractPresentationItem
+{
+public:
+  explicit AttributePresentationItem(AttributeItem* item);
+  ~AttributePresentationItem() override;
+
+  AttributePresentationItem(const AttributePresentationItem&) = delete;
+  AttributePresentationItem& operator=(const AttributePresentationItem&) = delete;
+  AttributePresentationItem(AttributePresentationItem&&) = delete;
+  AttributePresentationItem& operator=(AttributePresentationItem&&) = delete;
+
+  QVariant Data(mvvm::role_t qt_role) const override;
+
+  bool SetData(const QVariant& data, mvvm::role_t qt_role) override;
+
+  bool IsEditable() const override;
+
+  bool IsCheckable() const override;
+
+  bool IsPresentationOnlyRole(mvvm::role_t qt_role) const override;
+
+  QVector<mvvm::role_t> GetQtRolesToEmit(mvvm::role_t data_role) const override;
+
+private:
+  //! Returns true if the attribute holds text.
+  bool HasText() const;
+
+  std::unique_ptr<mvvm::AbstractPresentationItem> m_value_presentation;
+};
 
 /**
  * @brief The ChannelPresentationItem class is used to show IsAvailable status of InstructionItem

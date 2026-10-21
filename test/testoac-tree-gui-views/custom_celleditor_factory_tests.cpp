@@ -34,6 +34,9 @@
 
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
+#include <algorithm>
+
 namespace oac_tree_gui
 {
 
@@ -151,6 +154,27 @@ TEST_F(CustomCellEditorFactoryTest, CreateEditorForNullableAttributes)
     auto editor = create_editor(domainconstants::kBlockingAttribute);
     EXPECT_NE(dynamic_cast<mvvm::NullableBoolEditor*>(editor.get()), nullptr);
   }
+}
+
+//! Instruction attribute with text: the cell shows the text, no sup-mvvm editor (Qt line edit).
+TEST_F(CustomCellEditorFactoryTest, CreateEditorForAttributeText)
+{
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
+  m_view_model.SetRootSessionItem(wait_item);
+  const CustomCellEditorFactory factory([]() { return QStringList(); });
+
+  auto property = wait_item->GetAttributes()->FindItem(domainconstants::kTimeoutAttribute);
+  auto indexes = m_view_model.GetIndexOfSessionItem(property);
+  ASSERT_EQ(indexes.size(), 3);
+
+  const QSignalSpy spy_data_changed(&m_view_model, &AttributeEditorViewModel::dataChanged);
+  EXPECT_TRUE(property->SetData(std::string("$par"), itemconstants::kAttributeTextRole));
+
+  auto is_value_cell = [&indexes](const QList<QVariant>& arguments)
+  { return arguments.at(0).value<QModelIndex>() == indexes.at(1); };
+  EXPECT_TRUE(std::any_of(spy_data_changed.begin(), spy_data_changed.end(), is_value_cell));
+  EXPECT_EQ(indexes.at(1).data(Qt::DisplayRole).toString(), QString("$par"));
+  EXPECT_EQ(factory.CreateEditor(indexes.at(1)), nullptr);
 }
 
 }  // namespace oac_tree_gui

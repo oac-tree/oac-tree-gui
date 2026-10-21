@@ -47,6 +47,9 @@ constexpr std::int32_t kDomainTypeNameRole = 10;  // role to store domain type n
 //! Role of AttributeItem: the attribute accepts text (`$par`, `@var`) instead of a value.
 constexpr mvvm::role_t kAllowTextRole = mvvm::DataRole::kUser;
 
+//! Role of AttributeItem: the text (`$par`, `@var`) used instead of the value.
+constexpr mvvm::role_t kAttributeTextRole = mvvm::DataRole::kUser + 1;
+
 constexpr auto kAnyValueDefaultDisplayName = "value";
 
 constexpr auto kDefaultPlaceholderAttributeValue = "$par";
