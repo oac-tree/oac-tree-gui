@@ -20,8 +20,10 @@
 
 #include "oac_tree_gui/pvmonitor/workspace_synchronizer.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
@@ -51,11 +53,11 @@ public:
 
   WorkspaceSynchronizerTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
-  //! Helper function to create LocalVariableItem with given name and initial AnyValue.
-  static std::unique_ptr<LocalVariableItem> CreateLocalVariableItem(
-      const std::string& name, const sup::dto::AnyValue& initial_value)
+  //! Helper function to create a Local variable with given name and initial AnyValue.
+  static std::unique_ptr<VariableItem> CreateLocalItem(const std::string& name,
+                                                       const sup::dto::AnyValue& initial_value)
   {
-    auto result = std::make_unique<LocalVariableItem>();
+    auto result = CreateVariableItem(domainconstants::kLocalVariableType);
     result->SetName(name);
     SetAnyValue(initial_value, *result);
     return result;
@@ -74,14 +76,14 @@ public:
   sup::oac_tree::Workspace m_workspace;
 };
 
-//! Creating WorkspaceItem with one LocalVariableItem. Validating initial values after
+//! Creating WorkspaceItem with one Local variable. Validating initial values after
 //! synchronization was started.
 TEST_F(WorkspaceSynchronizerTest, InitialState)
 {
   const std::string var_name("var");
   const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
 
-  auto variable_item = CreateLocalVariableItem(var_name, initial_value);
+  auto variable_item = CreateLocalItem(var_name, initial_value);
   auto variable_item_ptr = variable_item.get();
   m_model.InsertItem(std::move(variable_item), m_workspace_item, mvvm::TagIndex::Append());
 
@@ -105,14 +107,14 @@ TEST_F(WorkspaceSynchronizerTest, InitialState)
   synchronizer.reset();
 }
 
-//! Creating WorkspaceItem with one LocalVariableItem.
+//! Creating WorkspaceItem with one Local variable.
 //! Changing domain variable and checking that WorkspaceItem was properly updated.
 TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
 {
   const std::string var_name("var");
   const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
 
-  auto variable_item = CreateLocalVariableItem(var_name, initial_value);
+  auto variable_item = CreateLocalItem(var_name, initial_value);
   auto variable_item_ptr = variable_item.get();
   m_model.InsertItem(std::move(variable_item), m_workspace_item, mvvm::TagIndex::Append());
 
@@ -154,7 +156,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
   synchronizer.reset();
 }
 
-//! Creating WorkspaceItem with one LocalVariableItem.
+//! Creating WorkspaceItem with one Local variable.
 //! Changing GUI variable and checking that domain was properly updated.
 TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 {
@@ -163,7 +165,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
   const std::string var_name("var");
   const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
 
-  auto variable_item = CreateLocalVariableItem(var_name, initial_value);
+  auto variable_item = CreateLocalItem(var_name, initial_value);
   auto variable_item_ptr = variable_item.get();
   m_model.InsertItem(std::move(variable_item), m_workspace_item, mvvm::TagIndex::Append());
 
@@ -193,7 +195,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), new_value);
 }
 
-//! Creating WorkspaceItem with one LocalVariableItem. Validating initial values and editable
+//! Creating WorkspaceItem with one Local variable. Validating initial values and editable
 //! properties after start and after shutdown.
 
 // FIXME restore text. NameItem has been removed.
@@ -202,7 +204,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 // {
 //   const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
-//   auto var_item = m_model.GetWorkspaceItem()->InsertItem(CreateLocalVariableItem("abc", value0),
+//   auto var_item = m_model.GetWorkspaceItem()->InsertItem(CreateLocalItem("abc", value0),
 //                                                          mvvm::TagIndex::Append());
 
 //   auto synchronizer = CreateSynchronizer();

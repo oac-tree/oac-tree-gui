@@ -20,9 +20,10 @@
 
 #include "oac_tree_gui/pvmonitor/workspace_synchronizer.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
@@ -37,6 +38,7 @@
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QTest>
 
@@ -95,10 +97,10 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   sup::epics::test::SoftIocRunner m_softioc_service;
   m_softioc_service.Start(kDbContent);
 
-  // creating ChannelAccessVariableItem
+  // creating ChannelAccessClient variable
   auto variable_item =
-      m_model.InsertItem<ChannelAccessVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  variable_item->SetChannel(kChannelName);
+      InsertVariable(domainconstants::kChannelAccessVariableType, m_workspace_item);
+  variable_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   variable_item->SetName(var_name);
   const sup::dto::AnyValue initial_value({{"value", {sup::dto::UnsignedInteger32Type, 0}},
                                           {"connected", {sup::dto::BooleanType, false}}});

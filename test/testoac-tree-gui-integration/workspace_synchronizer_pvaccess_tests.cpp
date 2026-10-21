@@ -20,10 +20,11 @@
 
 #include "oac_tree_gui/pvmonitor/workspace_synchronizer.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
@@ -92,8 +93,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
 
   // creating PVServerVariableItem in the model
   auto variable_item =
-      m_model.InsertItem<PvAccessServerVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  variable_item->SetChannel(kChannelName);
+      InsertVariable(domainconstants::kPvAccessServerVariableType, m_workspace_item);
+  variable_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   variable_item->SetName(var_name);
   SetAnyValue(initial_value, *variable_item);
 
@@ -133,8 +134,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromGUI)
 
   // creating PVServerVariableItem in the model
   auto variable_item =
-      m_model.InsertItem<PvAccessServerVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  variable_item->SetChannel(kChannelName);
+      InsertVariable(domainconstants::kPvAccessServerVariableType, m_workspace_item);
+  variable_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   variable_item->SetName(var_name);
   SetAnyValue(initial_value, *variable_item);
 
@@ -173,8 +174,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
 
   // creating PVServerVariableItem in the model
   auto variable_item =
-      m_model.InsertItem<PvAccessServerVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  variable_item->SetChannel(kChannelName);
+      InsertVariable(domainconstants::kPvAccessServerVariableType, m_workspace_item);
+  variable_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   variable_item->SetName(var_name);
   SetAnyValue(initial_value, *variable_item);
 
@@ -222,16 +223,14 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
-  auto server_item =
-      m_model.InsertItem<PvAccessServerVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  server_item->SetChannel(kChannelName);
+  auto server_item = InsertVariable(domainconstants::kPvAccessServerVariableType, m_workspace_item);
+  server_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   server_item->SetName(server_var_name);
   SetAnyValue(initial_value, *server_item);
 
   // creating PVServerClientItem in the model
-  auto client_item =
-      m_model.InsertItem<PvAccessClientVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  client_item->SetChannel(kChannelName);
+  auto client_item = InsertVariable(domainconstants::kPvAccessClientVariableType, m_workspace_item);
+  client_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   client_item->SetName(client_var_name);
   SetAnyValue(initial_value, *client_item);
 
@@ -295,16 +294,14 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
-  auto server_item =
-      m_model.InsertItem<PvAccessServerVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  server_item->SetChannel(kChannelName);
+  auto server_item = InsertVariable(domainconstants::kPvAccessServerVariableType, m_workspace_item);
+  server_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   server_item->SetName(server_var_name);
   SetAnyValue(initial_value, *server_item);
 
   // creating PVServerClientItem in the model
-  auto client_item =
-      m_model.InsertItem<PvAccessClientVariableItem>(m_workspace_item, mvvm::TagIndex::Append());
-  client_item->SetChannel(kChannelName);
+  auto client_item = InsertVariable(domainconstants::kPvAccessClientVariableType, m_workspace_item);
+  client_item->SetAttribute(domainconstants::kChannelAttribute, kChannelName);
   client_item->SetName(client_var_name);
   // we do not set AnyValue to client
 

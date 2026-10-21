@@ -20,13 +20,15 @@
 
 #include "oac_tree_gui/operation/objects/workspace_view_component_provider.h"
 
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QTreeView>
 
@@ -46,8 +48,8 @@ TEST_F(WorkspaceViewComponentProviderTest, FilterViewmodel)
   // workspace with two variables
   mvvm::ApplicationModel model;
   auto workspace_item = model.InsertItem<WorkspaceItem>();
-  auto local_item0 = model.InsertItem<LocalVariableItem>(workspace_item, mvvm::TagIndex::Append());
-  auto local_item1 = model.InsertItem<LocalVariableItem>(workspace_item, mvvm::TagIndex::Append());
+  auto local_item0 = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  auto local_item1 = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
   local_item0->SetDisplayName("ABC");
   local_item1->SetDisplayName("AB");
 

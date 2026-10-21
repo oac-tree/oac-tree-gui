@@ -20,7 +20,8 @@
 
 #include "oac_tree_gui/views/pvmonitor/monitor_widget.h"
 
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -31,6 +32,7 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 #include <testutils/test_settings_manager.h>
 
 namespace oac_tree_gui
@@ -53,7 +55,7 @@ TEST_F(MonitorWidgetTest, StartStopStart)
   const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item0 =
-      model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+      test::InsertVariable(domainconstants::kLocalVariableType, model.GetWorkspaceItem());
   variable_item0->SetName("abc");
   SetAnyValue(value0, *variable_item0);
 

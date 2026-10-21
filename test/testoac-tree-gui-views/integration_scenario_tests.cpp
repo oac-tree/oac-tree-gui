@@ -18,6 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/jobsystem/objects/job_manager.h>
 #include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
@@ -27,11 +28,10 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/model/standard_job_items.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/model/xml_utils.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
-#include <oac_tree_gui/domain/domain_constants.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>
@@ -143,7 +143,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));
 
   // variables at original model remained unchanged
-  auto vars = mvvm::utils::FindItems<LocalVariableItem>(*GetSequencerModel());
+  auto vars = mvvm::utils::FindItems<VariableItem>(*GetSequencerModel());
   auto var0 = vars.at(0);
   auto var1 = vars.at(1);
 
