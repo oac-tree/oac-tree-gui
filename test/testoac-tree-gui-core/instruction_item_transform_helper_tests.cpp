@@ -314,7 +314,7 @@ TEST_F(InstructionItemTransformHelperTest, IncludeToDomainWithCustomAttribute)
   auto item = CreateInstructionItem(domainconstants::kIncludeInstructionType);
   item->SetAttribute(domainconstants::kPathAttribute, std::string("def"));
   auto& property = item->GetAttributes()->AddProperty<AttributeItem>(custom_name);
-  property.SetAttributeType(std::string(), /*is_nullable*/ false);
+  property.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
   (void)property.SetData(custom_value);
   EXPECT_TRUE(IsCollapsed(*item));
 
@@ -613,6 +613,27 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeWithPlaceholderAndReference)
   auto domain = CreateDomainInstruction(*tree.root);
   EXPECT_EQ(domain->GetAttributeString(domainconstants::kTimeoutAttribute), "$par");
   EXPECT_EQ(domain->GetAttributeString(domainconstants::kBlockingAttribute), "@var");
+}
+
+//! isRoot and showCollapsed take no text: the attributes keep their initial state.
+TEST_F(InstructionItemTransformHelperTest, ItemTreeWithTextInRootAndCollapsed)
+{
+  for (const auto* domain_type :
+       {domainconstants::kIncludeInstructionType, domainconstants::kSequenceInstructionType})
+  {
+    auto node = CreateInstructionNode(domain_type);
+    node.attributes = {{domainconstants::kIsRootAttribute, "$par"},
+                       {domainconstants::kShowCollapsedAttribute, "@var"}};
+
+    auto tree = CreateInstructionItemTree(node);
+    EXPECT_FALSE(tree.root->IsRoot()) << domain_type;
+    EXPECT_EQ(IsCollapsed(*tree.root), domain_type == domainconstants::kIncludeInstructionType)
+        << domain_type;
+
+    auto domain = CreateDomainInstruction(*tree.root);
+    EXPECT_FALSE(domain->HasAttribute(domainconstants::kIsRootAttribute)) << domain_type;
+    EXPECT_FALSE(domain->HasAttribute(domainconstants::kShowCollapsedAttribute)) << domain_type;
+  }
 }
 
 //! Item from info: typed base attributes, other attributes as strings, no AnyValue tag.

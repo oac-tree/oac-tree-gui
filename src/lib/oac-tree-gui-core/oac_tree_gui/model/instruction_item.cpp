@@ -93,7 +93,12 @@ void InstructionItem::SetAttribute(const std::string& name, const mvvm::variant_
 
 void InstructionItem::SetAttributeText(const std::string& name, const std::string& text)
 {
-  (void)GetAttributeItem(name).SetData(text);
+  auto& attribute = GetAttributeItem(name);
+  if (!attribute.IsTextAllowed())
+  {
+    throw RuntimeException("Attribute [" + name + "] takes no text");
+  }
+  (void)attribute.SetData(text);
 }
 
 void InstructionItem::UnsetAttribute(const std::string& name)

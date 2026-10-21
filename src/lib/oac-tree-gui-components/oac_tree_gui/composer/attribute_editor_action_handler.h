@@ -93,7 +93,7 @@ public:
   /**
    * @brief Checks if currently selected attribute can be switched to placeholder type.
    *
-   * Instruction attributes of non-string type, and variable attributes.
+   * Instruction attributes that accept text, and variable attributes.
    */
   bool CanSetPlaceholderType() const;
 

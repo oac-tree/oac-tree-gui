@@ -32,7 +32,7 @@ namespace oac_tree_gui
  * @details The type of the attribute is fixed and given by the default value. The data is one of:
  * - absent: the attribute is not set, the domain applies its default (nullable attributes only);
  * - a scalar of the attribute type: the value;
- * - a string: text, i.e. `$par` or `@var`.
+ * - a string: text, i.e. `$par` or `@var`, if the attribute allows text.
  *
  * A string attribute holds a string. Other data is refused. Empty text of a non-string attribute
  * removes the data, or sets the default value if the attribute is not nullable.
@@ -49,16 +49,22 @@ public:
    *
    * @param default_value The scalar defining the type and the start value of the editor.
    * @param is_nullable The attribute can have no data.
+   * @param allow_text The attribute accepts text instead of a value.
    *
    * @details A non-nullable attribute without data gets the default value. A string attribute is
-   * never nullable.
+   * never nullable and takes no text: a string is its value.
    */
-  void SetAttributeType(const mvvm::variant_t& default_value, bool is_nullable);
+  void SetAttributeType(const mvvm::variant_t& default_value, bool is_nullable, bool allow_text);
 
   /**
    * @brief Returns the default value, which defines the attribute type.
    */
   mvvm::variant_t GetDefaultValue() const;
+
+  /**
+   * @brief Returns true if the attribute accepts text instead of a value.
+   */
+  bool IsTextAllowed() const;
 
   /**
    * @brief Returns true if the attribute holds text instead of a value of its type.
@@ -69,8 +75,8 @@ protected:
   void ActivateStrategies() override;
 
 private:
-  //! Accepts the data of the attribute type, text, or no data for a nullable attribute. A switch
-  //! between value and text is one undo step.
+  //! Accepts the data of the attribute type, text if allowed, or no data for a nullable attribute.
+  //! A switch between value and text is one undo step.
   bool OnSetData(mvvm::SessionItem* item, const mvvm::variant_t& value, mvvm::role_t role);
 };
 

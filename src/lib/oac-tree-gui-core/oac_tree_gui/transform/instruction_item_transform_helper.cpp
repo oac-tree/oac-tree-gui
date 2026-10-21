@@ -127,7 +127,7 @@ void RegisterChildrenTag(instruction_t::Category category, InstructionItem& item
 void AddStringAttribute(const std::string& name, const std::string& value, mvvm::CompoundItem& item)
 {
   auto& property = item.AddProperty<AttributeItem>(name);
-  property.SetAttributeType(std::string(), /*is_nullable*/ false);
+  property.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
   (void)property.SetDisplayName(name);
   (void)property.SetData(value);
 }
@@ -149,7 +149,7 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
     auto& property = attributes.AddProperty<AttributeItem>(attribute.name);
     const bool is_nullable =
         !attribute.mandatory && (attribute.name != domainconstants::kIsRootAttribute);
-    property.SetAttributeType(attribute.default_value, is_nullable);
+    property.SetAttributeType(attribute.default_value, is_nullable, attribute.allow_text);
     if (attribute.is_set)
     {
       (void)property.SetData(attribute.default_value);

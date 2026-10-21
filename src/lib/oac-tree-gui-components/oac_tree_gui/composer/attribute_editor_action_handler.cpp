@@ -77,8 +77,7 @@ bool AttributeEditorActionHandler::CanSetPlaceholderType() const
 {
   if (const auto* attribute = GetSelectedAttribute(); attribute != nullptr)
   {
-    // a string attribute takes `$par` as its value
-    return !std::holds_alternative<std::string>(attribute->GetDefaultValue());
+    return attribute->IsTextAllowed();
   }
   return CanSetDefaultType();
 }

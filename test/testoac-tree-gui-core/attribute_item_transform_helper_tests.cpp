@@ -370,7 +370,7 @@ TEST_F(AttributeItemTransformHelperTest, SetInstructionJsonAttributesFromEmptyIt
 TEST_F(AttributeItemTransformHelperTest, SetAttributeFromString)
 {
   AttributeItem item;
-  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true);
+  item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ true, /*allow_text*/ true);
 
   SetAttributeFromString("42", item);
   EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
@@ -386,16 +386,37 @@ TEST_F(AttributeItemTransformHelperTest, SetAttributeFromString)
   EXPECT_EQ(item.Data(), mvvm::variant_t{std::string("@var")});
 
   AttributeItem string_item;
-  string_item.SetAttributeType(std::string(), /*is_nullable*/ false);
+  string_item.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
   SetAttributeFromString("abc", string_item);
   EXPECT_EQ(string_item.Data(), mvvm::variant_t{std::string("abc")});
+
+  // a string attribute holds the placeholder as its value
+  SetAttributeFromString("$par", string_item);
+  EXPECT_EQ(string_item.Data(), mvvm::variant_t{std::string("$par")});
+  EXPECT_FALSE(string_item.HasText());
+}
+
+//! Attribute item without text: a placeholder fails to parse, the item is left unchanged.
+TEST_F(AttributeItemTransformHelperTest, SetAttributeFromStringWhenTextNotAllowed)
+{
+  AttributeItem item;
+  item.SetAttributeType(false, /*is_nullable*/ true, /*allow_text*/ false);
+
+  SetAttributeFromString("$par", item);
+  EXPECT_FALSE(item.HasData());
+
+  SetAttributeFromString("true", item);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{true});
+
+  SetAttributeFromString("@var", item);
+  EXPECT_EQ(item.Data(), mvvm::variant_t{true});
 }
 
 //! Domain attribute string from the attribute item.
 TEST_F(AttributeItemTransformHelperTest, GetAttributeString)
 {
   AttributeItem item;
-  item.SetAttributeType(1.0, /*is_nullable*/ true);
+  item.SetAttributeType(1.0, /*is_nullable*/ true, /*allow_text*/ true);
 
   // not set
   EXPECT_TRUE(GetAttributeString(item).empty());
@@ -413,7 +434,7 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeFromAttributeItem)
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
   AttributeItem timeout;
-  timeout.SetAttributeType(0.0, /*is_nullable*/ true);
+  timeout.SetAttributeType(0.0, /*is_nullable*/ true, /*allow_text*/ true);
   SetDomainAttribute(timeout, domainconstants::kTimeoutAttribute, *instruction);
   EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
 
@@ -422,12 +443,12 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeFromAttributeItem)
   EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "2.0");
 
   AttributeItem is_root;
-  is_root.SetAttributeType(false, /*is_nullable*/ false);
+  is_root.SetAttributeType(false, /*is_nullable*/ false, /*allow_text*/ false);
   SetDomainAttribute(is_root, domainconstants::kIsRootAttribute, *instruction);
   EXPECT_FALSE(instruction->HasAttribute(domainconstants::kIsRootAttribute));
 
   AttributeItem name;
-  name.SetAttributeType(std::string(), /*is_nullable*/ false);
+  name.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
   SetDomainAttribute(name, "custom", *instruction);
   EXPECT_FALSE(instruction->HasAttribute("custom"));
 }

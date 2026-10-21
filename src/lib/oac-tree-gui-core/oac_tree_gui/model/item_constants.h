@@ -23,6 +23,8 @@
 
 //! Collection of constants for sequencer items.
 
+#include <mvvm/core/mvvm_types.h>
+
 #include <cstdint>
 
 namespace oac_tree_gui::itemconstants
@@ -41,6 +43,9 @@ constexpr auto kBreakpoint = "breakpoint";
 constexpr auto kJobType = "kJobType";
 
 constexpr std::int32_t kDomainTypeNameRole = 10;  // role to store domain type name
+
+//! Role of AttributeItem: the attribute accepts text (`$par`, `@var`) instead of a value.
+constexpr mvvm::role_t kAllowTextRole = mvvm::DataRole::kUser;
 
 constexpr auto kAnyValueDefaultDisplayName = "value";
 

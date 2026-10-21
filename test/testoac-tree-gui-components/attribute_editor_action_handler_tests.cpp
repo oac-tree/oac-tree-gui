@@ -111,6 +111,20 @@ TEST_F(AttributeEditorActionHandlerTest, StringAttributeSelected)
   EXPECT_FALSE(handler->CanSetPlaceholderType());
 }
 
+TEST_F(AttributeEditorActionHandlerTest, ShowCollapsedAttributeSelected)
+{
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  auto show_collapsed_attribute =
+      GetPropertyItem(*item->GetAttributes(), domainconstants::kShowCollapsedAttribute);
+
+  auto handler = CreateActionHandler(show_collapsed_attribute);
+
+  // GUI attribute takes no text
+  EXPECT_FALSE(handler->CanSetPlaceholderType());
+  handler->OnSetPlaceholderType();
+  EXPECT_FALSE(show_collapsed_attribute->HasData());
+}
+
 TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 {
   LocalVariableItem item;

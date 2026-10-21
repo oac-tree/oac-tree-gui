@@ -20,6 +20,8 @@
 
 #include "attribute_item.h"
 
+#include <oac_tree_gui/model/item_constants.h>
+
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/make_clone.h>
 
@@ -55,10 +57,13 @@ std::unique_ptr<mvvm::SessionItem> AttributeItem::Clone() const
   return result;
 }
 
-void AttributeItem::SetAttributeType(const mvvm::variant_t& default_value, bool is_nullable)
+void AttributeItem::SetAttributeType(const mvvm::variant_t& default_value, bool is_nullable,
+                                     bool allow_text)
 {
+  const bool is_string = IsString(default_value);
   (void)SetData(default_value, mvvm::DataRole::kDefaultValue);
-  (void)SetFlag(mvvm::Appearance::kNullable, is_nullable && !IsString(default_value));
+  (void)SetFlag(mvvm::Appearance::kNullable, is_nullable && !is_string);
+  (void)SetData(allow_text && !is_string, itemconstants::kAllowTextRole);
   if (!HasFlag(mvvm::Appearance::kNullable) && !HasData(mvvm::DataRole::kData))
   {
     (void)SetData(default_value);
@@ -68,6 +73,11 @@ void AttributeItem::SetAttributeType(const mvvm::variant_t& default_value, bool 
 mvvm::variant_t AttributeItem::GetDefaultValue() const
 {
   return Data(mvvm::DataRole::kDefaultValue);
+}
+
+bool AttributeItem::IsTextAllowed() const
+{
+  return HasData(itemconstants::kAllowTextRole) && Data<bool>(itemconstants::kAllowTextRole);
 }
 
 bool AttributeItem::HasText() const
@@ -89,10 +99,17 @@ bool AttributeItem::OnSetData(mvvm::SessionItem* item, const mvvm::variant_t& va
   }
 
   auto new_value = value;
-  if (IsString(value) && std::get<std::string>(value).empty() && !IsString(GetDefaultValue()))
+  if (IsString(value) && !IsString(GetDefaultValue()))
   {
-    // empty text: not set, or the default value of a non-nullable attribute
-    new_value = HasFlag(mvvm::Appearance::kNullable) ? mvvm::variant_t{} : GetDefaultValue();
+    if (!IsTextAllowed())
+    {
+      return false;
+    }
+    if (std::get<std::string>(value).empty())
+    {
+      // empty text: not set, or the default value of a non-nullable attribute
+      new_value = HasFlag(mvvm::Appearance::kNullable) ? mvvm::variant_t{} : GetDefaultValue();
+    }
   }
 
   const bool is_no_data = !mvvm::utils::IsValid(new_value);

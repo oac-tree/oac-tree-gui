@@ -84,7 +84,7 @@ public:
   /**
    * @brief Sets the domain attribute to text, i.e. `$par` or `@var`.
    *
-   * @throw RuntimeException if the attribute doesn't exist.
+   * @throw RuntimeException if the attribute doesn't exist or takes no text.
    */
   void SetAttributeText(const std::string& name, const std::string& text);
 

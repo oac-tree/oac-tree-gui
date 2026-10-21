@@ -107,12 +107,14 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   const auto* name = FindAttribute(descriptor, domainconstants::kNameAttribute);
   EXPECT_EQ(name->default_value, mvvm::variant_t{std::string{}});
   EXPECT_FALSE(name->is_set);
+  EXPECT_FALSE(name->allow_text);
 
   const auto* is_root = FindAttribute(descriptor, domainconstants::kIsRootAttribute);
   EXPECT_EQ(is_root->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(is_root->mandatory);
   EXPECT_TRUE(is_root->is_set);
   EXPECT_FALSE(is_root->visible);
+  EXPECT_FALSE(is_root->allow_text);
 
   const auto* timeout = FindAttribute(descriptor, domainconstants::kTimeoutAttribute);
   EXPECT_EQ(timeout->default_value, mvvm::variant_t{0.0});
@@ -121,10 +123,12 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   EXPECT_FALSE(timeout->is_set);
   EXPECT_EQ(timeout->category, sup::oac_tree::AttributeCategory::kBoth);
   EXPECT_TRUE(timeout->visible);
+  EXPECT_TRUE(timeout->allow_text);
 
   const auto* blocking = FindAttribute(descriptor, domainconstants::kBlockingAttribute);
   EXPECT_EQ(blocking->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(blocking->is_set);
+  EXPECT_TRUE(blocking->allow_text);
 }
 
 TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromSequence)
@@ -136,6 +140,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromSequence)
   ASSERT_NE(show_collapsed, nullptr);
   EXPECT_EQ(show_collapsed->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(show_collapsed->is_set);
+  EXPECT_FALSE(show_collapsed->allow_text);
 }
 
 TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromRepeat)
@@ -161,6 +166,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromInclude)
     ASSERT_NE(show_collapsed, nullptr) << domain_type;
     EXPECT_EQ(show_collapsed->default_value, mvvm::variant_t{false}) << domain_type;
     EXPECT_FALSE(show_collapsed->is_set) << domain_type;
+    EXPECT_FALSE(show_collapsed->allow_text) << domain_type;
   }
 
   const auto descriptor = CreateTypedDescriptor(domainconstants::kIncludeInstructionType);
@@ -226,6 +232,7 @@ TEST_F(InstructionDescriptorHelperTest, InfoWait)
                                                 domainconstants::kIsRootAttribute};
   EXPECT_EQ(GetAttributeNames(descriptor), expected_names);
   EXPECT_TRUE(FindAttribute(descriptor, domainconstants::kIsRootAttribute)->is_set);
+  EXPECT_FALSE(FindAttribute(descriptor, domainconstants::kIsRootAttribute)->allow_text);
 }
 
 TEST_F(InstructionDescriptorHelperTest, InfoSequenceAndInclude)
@@ -238,6 +245,7 @@ TEST_F(InstructionDescriptorHelperTest, InfoSequenceAndInclude)
   ASSERT_NE(sequence_collapsed, nullptr);
   EXPECT_EQ(sequence_collapsed->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(sequence_collapsed->is_set);
+  EXPECT_FALSE(sequence_collapsed->allow_text);
 
   const sup::oac_tree::InstructionInfo include_info(domainconstants::kIncludeInstructionType,
                                                     sup::oac_tree::Instruction::kDecorator, 0, {});

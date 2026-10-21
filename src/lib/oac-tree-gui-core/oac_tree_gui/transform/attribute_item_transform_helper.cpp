@@ -134,7 +134,8 @@ void SetPropertyFromAttributeString(const std::string& attribute_string,
 
 void SetAttributeFromString(const std::string& attribute_string, AttributeItem& item)
 {
-  if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
+  if (item.IsTextAllowed()
+      && (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string)))
   {
     (void)item.SetData(attribute_string);
     return;

@@ -128,6 +128,17 @@ TEST_F(InstructionItemTest, SetAndGetAttribute)
   EXPECT_THROW(item->SetAttribute("unknown", 42.0), RuntimeException);
 }
 
+//! isRoot and showCollapsed take no text.
+TEST_F(InstructionItemTest, SetAttributeTextWhenTextNotAllowed)
+{
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+
+  EXPECT_THROW(item->SetAttributeText(domainconstants::kIsRootAttribute, "$par"), RuntimeException);
+  EXPECT_THROW(item->SetAttributeText(domainconstants::kShowCollapsedAttribute, "$par"),
+               RuntimeException);
+  EXPECT_FALSE(item->IsRoot());
+}
+
 //! Mandatory attribute always has data and can't be unset.
 TEST_F(InstructionItemTest, MandatoryAttribute)
 {

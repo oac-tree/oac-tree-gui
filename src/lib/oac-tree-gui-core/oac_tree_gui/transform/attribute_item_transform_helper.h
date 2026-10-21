@@ -113,8 +113,8 @@ void SetPropertyFromAttributeString(const std::string& attribute_string,
 /**
  * @brief Sets the attribute item from the domain attribute string.
  *
- * Placeholders and references are stored as text. Other values are parsed by the attribute type;
- * the item is left unchanged if parsing fails.
+ * Placeholders and references are stored as text if the attribute allows text. Other values are
+ * parsed by the attribute type; the item is left unchanged if parsing fails.
  *
  * @param attribute_string The attribute value.
  * @param item The attribute item.
