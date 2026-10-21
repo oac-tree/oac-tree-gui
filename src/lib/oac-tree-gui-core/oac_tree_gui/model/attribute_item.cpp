@@ -21,6 +21,7 @@
 #include "attribute_item.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/domain/instruction_descriptor.h>
 #include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>
@@ -31,12 +32,6 @@ namespace oac_tree_gui
 
 namespace
 {
-
-//! Returns true if the given variant holds a string.
-bool IsString(const mvvm::variant_t& value)
-{
-  return std::holds_alternative<std::string>(value);
-}
 
 //! Returns true if both variants hold the same type.
 bool HasSameType(const mvvm::variant_t& lhs, const mvvm::variant_t& rhs)

@@ -38,6 +38,14 @@ namespace oac_tree_gui
 {
 
 /**
+ * @brief Returns true if the given variant holds a string.
+ */
+inline bool IsString(const mvvm::variant_t& value)
+{
+  return std::holds_alternative<std::string>(value);
+}
+
+/**
  * @brief The AttributeDescriptor struct describes a domain attribute of an instruction type.
  */
 struct AttributeDescriptor

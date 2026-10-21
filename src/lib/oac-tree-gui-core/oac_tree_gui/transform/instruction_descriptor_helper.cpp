@@ -38,12 +38,6 @@ namespace oac_tree_gui
 namespace
 {
 
-//! Returns true if the variant holds a string.
-bool IsString(const mvvm::variant_t& value)
-{
-  return std::holds_alternative<std::string>(value);
-}
-
 //! Returns true if the attribute accepts text. GUI attributes and strings take no text.
 bool IsTextAllowed(const std::string& name, const mvvm::variant_t& default_value)
 {
