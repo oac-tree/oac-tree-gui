@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/model/attribute_item.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/commands/i_command_stack.h>
@@ -62,20 +63,23 @@ TEST_F(AttributeItemTest, SetAttributeType)
     EXPECT_TRUE(item.IsTextAllowed());
   }
 
-  {  // non-nullable attribute gets the default value
+  {  // non-nullable attribute: no value set
     AttributeItem item;
-    item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ false, /*allow_text*/ true);
+    item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ false, /*allow_text*/ false);
     EXPECT_FALSE(item.HasFlag(mvvm::Appearance::kNullable));
-    EXPECT_EQ(item.GetState(), AttributeState::kValue);
-    EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});
+    EXPECT_FALSE(item.IsTextAllowed());
+    EXPECT_EQ(item.GetState(), AttributeState::kNotSet);
   }
 
   {  // string attribute is never nullable and takes no text
     AttributeItem item;
-    item.SetAttributeType(std::string(), /*is_nullable*/ true, /*allow_text*/ true);
+    EXPECT_THROW(item.SetAttributeType(std::string(), /*is_nullable*/ true, /*allow_text*/ false),
+                 LogicErrorException);
+    EXPECT_THROW(item.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ true),
+                 LogicErrorException);
+    item.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
     EXPECT_FALSE(item.HasFlag(mvvm::Appearance::kNullable));
     EXPECT_FALSE(item.IsTextAllowed());
-    EXPECT_EQ(item.Data(), mvvm::variant_t{std::string()});
   }
 }
 
@@ -109,6 +113,7 @@ TEST_F(AttributeItemTest, NonNullableRefusesNoData)
 {
   AttributeItem item;
   item.SetAttributeType(1.0, /*is_nullable*/ false, /*allow_text*/ true);
+  EXPECT_TRUE(item.SetData(1.0));
 
   EXPECT_FALSE(item.SetData(mvvm::variant_t{}));
   EXPECT_FALSE(item.Unset());
@@ -151,7 +156,8 @@ TEST_F(AttributeItemTest, TextWithoutValue)
 
   {  // non-nullable attribute returns to its value
     AttributeItem item;
-    item.SetAttributeType(mvvm::uint32{42}, /*is_nullable*/ false, /*allow_text*/ true);
+    item.SetAttributeType(mvvm::uint32{0}, /*is_nullable*/ false, /*allow_text*/ true);
+    EXPECT_TRUE(item.SetData(mvvm::uint32{42}));
     EXPECT_TRUE(item.SetText("$par"));
     EXPECT_TRUE(item.SetText(""));
     EXPECT_EQ(item.Data(), mvvm::variant_t{mvvm::uint32{42}});

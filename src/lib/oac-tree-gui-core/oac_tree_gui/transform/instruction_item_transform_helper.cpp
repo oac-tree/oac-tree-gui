@@ -147,9 +147,7 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
       continue;
     }
     auto& property = attributes.AddProperty<AttributeItem>(attribute.name);
-    const bool is_nullable =
-        !attribute.mandatory && (attribute.name != domainconstants::kIsRootAttribute);
-    property.SetAttributeType(attribute.default_value, is_nullable, attribute.allow_text);
+    property.SetAttributeType(attribute.default_value, attribute.nullable, attribute.allow_text);
     if (attribute.is_set)
     {
       (void)property.SetData(attribute.default_value);

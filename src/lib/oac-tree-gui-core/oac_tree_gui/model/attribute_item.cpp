@@ -20,6 +20,7 @@
 
 #include "attribute_item.h"
 
+#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>
@@ -60,14 +61,13 @@ std::unique_ptr<mvvm::SessionItem> AttributeItem::Clone() const
 void AttributeItem::SetAttributeType(const mvvm::variant_t& default_value, bool is_nullable,
                                      bool allow_text)
 {
-  const bool is_string = IsString(default_value);
-  (void)SetData(default_value, mvvm::DataRole::kDefaultValue);
-  (void)SetFlag(mvvm::Appearance::kNullable, is_nullable && !is_string);
-  (void)SetData(allow_text && !is_string, itemconstants::kAllowTextRole);
-  if (!HasFlag(mvvm::Appearance::kNullable) && !HasData(mvvm::DataRole::kData))
+  if (IsString(default_value) && (is_nullable || allow_text))
   {
-    (void)SetData(default_value);
+    throw LogicErrorException("A string attribute can't be nullable or take text");
   }
+  (void)SetData(default_value, mvvm::DataRole::kDefaultValue);
+  (void)SetFlag(mvvm::Appearance::kNullable, is_nullable);
+  (void)SetData(allow_text, itemconstants::kAllowTextRole);
 }
 
 mvvm::variant_t AttributeItem::GetDefaultValue() const

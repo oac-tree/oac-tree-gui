@@ -62,8 +62,9 @@ public:
    * @param is_nullable The attribute can have no value.
    * @param allow_text The attribute accepts text instead of a value.
    *
-   * @details A non-nullable attribute without value gets the default value. A string attribute is
-   * never nullable and takes no text.
+   * @details Sets no value. A string attribute is never nullable and takes no text.
+   *
+   * @throw LogicErrorException for a nullable string attribute or one that allows text.
    */
   void SetAttributeType(const mvvm::variant_t& default_value, bool is_nullable, bool allow_text);
 

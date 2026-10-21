@@ -106,13 +106,15 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
 
   const auto* name = FindAttribute(descriptor, domainconstants::kNameAttribute);
   EXPECT_EQ(name->default_value, mvvm::variant_t{std::string{}});
-  EXPECT_FALSE(name->is_set);
+  EXPECT_TRUE(name->is_set);
   EXPECT_FALSE(name->allow_text);
+  EXPECT_FALSE(name->nullable);
 
   const auto* is_root = FindAttribute(descriptor, domainconstants::kIsRootAttribute);
   EXPECT_EQ(is_root->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(is_root->mandatory);
   EXPECT_TRUE(is_root->is_set);
+  EXPECT_FALSE(is_root->nullable);
   EXPECT_FALSE(is_root->visible);
   EXPECT_FALSE(is_root->allow_text);
 
@@ -121,6 +123,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   EXPECT_TRUE(timeout->tooltip.empty());
   EXPECT_FALSE(timeout->mandatory);
   EXPECT_FALSE(timeout->is_set);
+  EXPECT_TRUE(timeout->nullable);
   EXPECT_EQ(timeout->category, sup::oac_tree::AttributeCategory::kBoth);
   EXPECT_TRUE(timeout->visible);
   EXPECT_TRUE(timeout->allow_text);
@@ -128,6 +131,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   const auto* blocking = FindAttribute(descriptor, domainconstants::kBlockingAttribute);
   EXPECT_EQ(blocking->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(blocking->is_set);
+  EXPECT_TRUE(blocking->nullable);
   EXPECT_TRUE(blocking->allow_text);
 }
 
@@ -166,6 +170,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromInclude)
     ASSERT_NE(show_collapsed, nullptr) << domain_type;
     EXPECT_EQ(show_collapsed->default_value, mvvm::variant_t{false}) << domain_type;
     EXPECT_FALSE(show_collapsed->is_set) << domain_type;
+    EXPECT_TRUE(show_collapsed->nullable) << domain_type;
     EXPECT_FALSE(show_collapsed->allow_text) << domain_type;
   }
 
@@ -174,10 +179,12 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromInclude)
   ASSERT_NE(path, nullptr);
   EXPECT_TRUE(path->mandatory);
   EXPECT_TRUE(path->is_set);
+  EXPECT_FALSE(path->nullable);
   const auto* file = FindAttribute(descriptor, domainconstants::kFileNameAttribute);
   ASSERT_NE(file, nullptr);
   EXPECT_FALSE(file->mandatory);
-  EXPECT_FALSE(file->is_set);
+  EXPECT_TRUE(file->is_set);
+  EXPECT_FALSE(file->nullable);
 }
 
 TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorWhenTypeAndValue)

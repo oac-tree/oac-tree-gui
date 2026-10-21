@@ -157,7 +157,10 @@ TEST_F(InstructionItemTest, MandatoryAttribute)
                                {},
                                true,
                                true,
-                               sup::oac_tree::AttributeCategory::kLiteral}});
+                               sup::oac_tree::AttributeCategory::kLiteral,
+                               true,
+                               true,
+                               /*nullable*/ false}});
   auto* property =
       item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
   ASSERT_NE(property, nullptr);

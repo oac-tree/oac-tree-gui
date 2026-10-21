@@ -38,12 +38,24 @@ namespace oac_tree_gui
 namespace
 {
 
+//! Returns true if the variant holds a string.
+bool IsString(const mvvm::variant_t& value)
+{
+  return std::holds_alternative<std::string>(value);
+}
+
 //! Returns true if the attribute accepts text. GUI attributes and strings take no text.
 bool IsTextAllowed(const std::string& name, const mvvm::variant_t& default_value)
 {
   return name != domainconstants::kIsRootAttribute
-         && name != domainconstants::kShowCollapsedAttribute
-         && !std::holds_alternative<std::string>(default_value);
+         && name != domainconstants::kShowCollapsedAttribute && !IsString(default_value);
+}
+
+//! Returns true if the attribute can have no value. Mandatory attributes, isRoot and strings
+//! always have one.
+bool IsNullable(const std::string& name, const mvvm::variant_t& default_value, bool mandatory)
+{
+  return !mandatory && name != domainconstants::kIsRootAttribute && !IsString(default_value);
 }
 
 //! Creates an attribute descriptor and applies the preset.
@@ -52,11 +64,12 @@ AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
                                               const mvvm::variant_t& default_value, bool mandatory,
                                               sup::oac_tree::AttributeCategory category)
 {
-  AttributeDescriptor result{name, default_value, {}, mandatory, mandatory, category};
+  AttributeDescriptor result{name, default_value, {}, mandatory, false, category};
   result.allow_text = IsTextAllowed(name, default_value);
+  result.nullable = IsNullable(name, default_value, mandatory);
+  result.is_set = !result.nullable;
   if (name == domainconstants::kIsRootAttribute)
   {
-    result.is_set = true;
     result.visible = false;
   }
   if (auto preset = FindAttributePreset(domain_type, name); preset)

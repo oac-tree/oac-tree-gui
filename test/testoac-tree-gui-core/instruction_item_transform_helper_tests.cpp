@@ -506,20 +506,39 @@ TEST_F(InstructionItemTransformHelperTest, RPCClientRoundTrip)
 //! Item tree from a hand-written node, no plugin needed.
 TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
 {
-  const AttributeDescriptor name_attribute = {
-      domainconstants::kNameAttribute,           std::string{}, {}, false, false,
-      sup::oac_tree::AttributeCategory::kLiteral};
+  const AttributeDescriptor name_attribute = {domainconstants::kNameAttribute,
+                                              std::string{},
+                                              {},
+                                              false,
+                                              true,
+                                              sup::oac_tree::AttributeCategory::kLiteral,
+                                              true,
+                                              /*allow_text*/ false,
+                                              /*nullable*/ false};
 
-  const AttributeDescriptor is_root_attribute = {
-      domainconstants::kIsRootAttribute,         false, {}, false, true,
-      sup::oac_tree::AttributeCategory::kLiteral};
+  const AttributeDescriptor is_root_attribute = {domainconstants::kIsRootAttribute,
+                                                 false,
+                                                 {},
+                                                 false,
+                                                 true,
+                                                 sup::oac_tree::AttributeCategory::kLiteral,
+                                                 true,
+                                                 /*allow_text*/ false,
+                                                 /*nullable*/ false};
 
   const AttributeDescriptor threshold_attribute = {
       "threshold", mvvm::uint32{0}, "Threshold tooltip",
       false,       false,           sup::oac_tree::AttributeCategory::kBoth};
 
-  const AttributeDescriptor path_attribute{
-      "path", std::string{"default"}, {}, true, true, sup::oac_tree::AttributeCategory::kLiteral};
+  const AttributeDescriptor path_attribute{"path",
+                                           std::string{"default"},
+                                           {},
+                                           true,
+                                           true,
+                                           sup::oac_tree::AttributeCategory::kLiteral,
+                                           true,
+                                           /*allow_text*/ false,
+                                           /*nullable*/ false};
 
   const std::vector<AttributeDescriptor> attributes = {name_attribute, is_root_attribute,
                                                        threshold_attribute, path_attribute};
