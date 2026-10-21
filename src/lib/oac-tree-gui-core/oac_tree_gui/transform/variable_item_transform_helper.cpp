@@ -24,7 +24,6 @@
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/model/item_factory.h>
 
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_info.h>
@@ -39,6 +38,13 @@ std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::Variab
   auto result = std::make_unique<VariableInfoItem>();
   result->InitFromDomainInfo(info);
 
+  return result;
+}
+
+std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
+{
+  auto result = std::make_unique<VariableItem>();
+  result->SetDomainType(domain_type);
   return result;
 }
 

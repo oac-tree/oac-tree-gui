@@ -42,7 +42,7 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
     SetupFromDomain(info);
   }
 
-  SetDomainType(info.GetType());
+  SetDomainTypeRole(info.GetType());
 
   for (auto& [attr_name, attr_value] : info.GetAttributes())
   {

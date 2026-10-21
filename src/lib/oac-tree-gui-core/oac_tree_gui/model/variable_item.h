@@ -34,12 +34,15 @@ namespace oac_tree_gui
 {
 
 /**
- * @brief The VariableItem class is a base for all GUI items representing domain variables.
+ * @brief The VariableItem class represents a domain variable of any type.
+ *
+ * @details The item is set up by SetDomainType or InitFromDomain. Domain attributes are
+ * properties, the JSON type and value pair is an AnyValueItem.
  */
 class VariableItem : public mvvm::CompoundItem
 {
 public:
-  explicit VariableItem(const std::string& item_type);
+  VariableItem();
   ~VariableItem() override = default;
 
   VariableItem(const VariableItem&) = delete;
@@ -47,17 +50,19 @@ public:
   VariableItem(VariableItem&&) = delete;
   VariableItem& operator=(VariableItem&&) = delete;
 
+  std::unique_ptr<SessionItem> Clone() const override;
+
   /**
    * @brief Returns domain type.
    */
   std::string GetDomainType() const;
 
   /**
-   * @brief Set the domain type and performs attribute initialization.
+   * @brief Sets the domain type, the display name and the attributes of the domain type.
    *
-   * @details This function can be called only once.
+   * @throw LogicErrorException if the item is already set up.
    */
-  virtual void SetDomainType(const std::string& domain_type);
+  void SetDomainType(const std::string& domain_type);
 
   /**
    * @brief Inits given item from the domain variable.
@@ -113,19 +118,21 @@ public:
    * @details This method just returns the value of the corersponding flag. It is the job of
    * workspace syncronizer to update flag status on domain variable actual status change.
    */
-  virtual bool IsAvailable() const;
+  bool IsAvailable() const;
 
   /**
    * @brief Sets availability flag to a given value.
    */
-  virtual void SetIsAvailable(bool value);
+  void SetIsAvailable(bool value);
 
 protected:
   /**
+   * @brief Constructor for derived items with their own type name.
+   */
+  explicit VariableItem(const std::string& item_type);
+
+  /**
    * @brief Provides tag registration for AnyValueItem insertion.
-   *
-   * @details The method is protected to allow derived classes to call it along with other tag
-   * creation, and so manipulate the order of properties as they appear in editors.
    */
   void RegisterAnyValueItemTag();
 
@@ -140,13 +147,18 @@ private:
   /**
    * @brief Implementation to provide to init this VariableItem from the domain variable.
    */
-  virtual void InitFromDomainImpl(const variable_t* variable,
-                                  const anytype_registry_t* registry) = 0;
+  virtual void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry);
 
   /**
    * @brief Implementation to provide to setup domain variable from this VariableItem.
    */
-  virtual void SetupDomainImpl(variable_t* variable) const = 0;
+  virtual void SetupDomainImpl(variable_t* variable) const;
+
+  //! Sets the domain type, the display name and a property per domain attribute definition.
+  void SetupFromDomain(const variable_t* variable);
+
+  //! Returns property items representing domain attributes.
+  std::vector<sup::gui::AnyValueItem*> GetAttributeItems() const;
 };
 
 template <typename T>
@@ -156,5 +168,16 @@ T VariableItem::GetAttribute(const std::string& name) const
 }
 
 }  // namespace oac_tree_gui
+
+namespace mvvm
+{
+
+template <>
+struct item_traits<oac_tree_gui::VariableItem>
+{
+  static constexpr std::string_view type_name() noexcept { return "Variable"; }
+};
+
+}  // namespace mvvm
 
 #endif  // OAC_TREE_GUI_MODEL_VARIABLE_ITEM_H_

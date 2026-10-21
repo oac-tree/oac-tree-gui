@@ -33,15 +33,8 @@ void RegisterSessionItems()
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::InstructionItem>();
 
   // variables
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::FileVariableItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::LocalVariableItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::UniversalVariableItem>();
+  (void)mvvm::RegisterGlobalItem<oac_tree_gui::VariableItem>();
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::VariableInfoItem>();
-
-  // variables sequencer-plugin-epics
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::ChannelAccessVariableItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessClientVariableItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::PvAccessServerVariableItem>();
 
   // other items
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::AttributeItem>();

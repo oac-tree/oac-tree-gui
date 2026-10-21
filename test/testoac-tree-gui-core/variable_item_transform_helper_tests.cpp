@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
@@ -34,6 +35,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
+#include <testutils/universal_items.h>
 
 namespace oac_tree_gui::test
 {
@@ -75,6 +77,37 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
   {
     EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
   }
+}
+
+//! One item type for all domain variable types.
+TEST_F(VariableItemTransformHelperTest, CreateVariableItem)
+{
+  std::vector<std::string> domain_types = {domainconstants::kLocalVariableType,
+                                           domainconstants::kFileVariableType};
+  if (IsSequencerPluginEpicsAvailable())
+  {
+    domain_types.insert(domain_types.end(), {domainconstants::kChannelAccessVariableType,
+                                             domainconstants::kPvAccessClientVariableType,
+                                             domainconstants::kPvAccessServerVariableType});
+  }
+
+  for (const auto& domain_type : domain_types)
+  {
+    auto item = CreateVariableItem(domain_type);
+    EXPECT_EQ(item->GetType(), mvvm::GetTypeName<VariableItem>()) << domain_type;
+    EXPECT_EQ(item->GetDomainType(), domain_type);
+    EXPECT_EQ(item->GetDisplayName(), domain_type);
+  }
+}
+
+//! Domain variable unknown to the GUI.
+TEST_F(VariableItemTransformHelperTest, CreateVariableItemOfUnknownType)
+{
+  test::UnknownDomainVariable::RegisterUnknownDomainVariable();
+
+  auto item = CreateVariableItem(test::UnknownDomainVariable::Type);
+  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<VariableItem>());
+  EXPECT_EQ(item->GetDomainType(), test::UnknownDomainVariable::Type);
 }
 
 TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)

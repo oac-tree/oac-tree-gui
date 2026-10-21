@@ -26,10 +26,10 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/item_factory.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
+#include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 

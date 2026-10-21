@@ -27,7 +27,7 @@
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_includes.h>
-#include <oac_tree_gui/model/universal_variable_item.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <mvvm/test/test_helper.h>
@@ -62,9 +62,7 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<InstructionItem>());
 
   // variables
-  EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<LocalVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<UniversalVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<VariableItem>());
   EXPECT_TRUE(IsCloneImplemented<VariableInfoItem>());
 
   // other
@@ -86,20 +84,6 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<ServerGroupItem>());
 }
 
-TEST_F(SequencerItemHelperTest, ClonePlugin)
-{
-  using mvvm::test::IsCloneImplemented;
-
-  if (!IsSequencerPluginEpicsAvailable())
-  {
-    GTEST_SKIP();
-  }
-
-  // variables
-  EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<PvAccessClientVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<PvAccessServerVariableItem>());
-}
 
 TEST_F(SequencerItemHelperTest, GetPropertyItem)
 {

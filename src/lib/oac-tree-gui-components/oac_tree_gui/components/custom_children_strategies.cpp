@@ -23,7 +23,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <sup/gui/model/anyvalue_item.h>

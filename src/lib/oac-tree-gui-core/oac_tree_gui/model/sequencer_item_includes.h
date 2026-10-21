@@ -33,10 +33,9 @@
 #include <oac_tree_gui/model/procedure_preamble_items.h>
 #include <oac_tree_gui/model/server_info_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
-#include <oac_tree_gui/model/standard_variable_items.h>
 #include <oac_tree_gui/model/text_edit_item.h>
-#include <oac_tree_gui/model/universal_variable_item.h>
 #include <oac_tree_gui/model/variable_info_item.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #endif  // OAC_TREE_GUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_

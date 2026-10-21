@@ -20,8 +20,6 @@ target_sources(${library_name} PRIVATE
   instruction_status.cpp
   instruction_status.h
   item_constants.h
-  item_factory.cpp
-  item_factory.h
   iterate_helper.h
   job_item.cpp
   job_item.h
@@ -55,12 +53,8 @@ target_sources(${library_name} PRIVATE
   server_info_items.h
   standard_job_items.cpp
   standard_job_items.h
-  standard_variable_items.cpp
-  standard_variable_items.h
   text_edit_item.cpp
   text_edit_item.h
-  universal_variable_item.cpp
-  universal_variable_item.h
   variable_info_item.cpp
   variable_info_item.h
   variable_item.cpp

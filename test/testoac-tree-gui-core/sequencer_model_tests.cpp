@@ -25,7 +25,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
-#include <oac_tree_gui/model/universal_variable_item.h>
+#include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 
 #include <mvvm/commands/i_command_stack.h>
@@ -127,14 +127,14 @@ TEST_F(SequencerModelTest, InstructionSerialization)
   EXPECT_EQ(new_wait_item->GetAttribute<double>(domainconstants::kTimeoutAttribute), 42.0);
 }
 
-//! Checking that domain name of universal variable item outsurvive serialization (real-life bug).
-TEST_F(SequencerModelTest, UniversalVariableSerialization)
+//! Checking that domain name of variable item outsurvive serialization (real-life bug).
+TEST_F(SequencerModelTest, VariableSerialization)
 {
-  const auto file_path = GetFilePath("UniversalVariableSaveLoad.xml");
+  const auto file_path = GetFilePath("VariableSaveLoad.xml");
 
   SequencerModel model;
   auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-  auto variable_item = model.InsertItem<UniversalVariableItem>(procedure_item->GetWorkspace());
+  auto variable_item = model.InsertItem<VariableItem>(procedure_item->GetWorkspace());
   variable_item->SetDomainType(domainconstants::kLocalVariableType);
 
   mvvm::XmlDocument document({&model});

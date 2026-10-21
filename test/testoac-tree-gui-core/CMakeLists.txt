@@ -26,7 +26,6 @@ target_sources(${test} PRIVATE
   instruction_item_tests.cpp
   instruction_item_transform_helper_tests.cpp
   instruction_status_tests.cpp
-  item_factory_tests.cpp
   iterate_helper_tests.cpp
   job_item_tests.cpp
   job_model_tests.cpp
@@ -45,10 +44,8 @@ target_sources(${test} PRIVATE
   sequencer_settings_model_tests.cpp
   server_info_items_tests.cpp
   standard_job_items_tests.cpp
-  standard_variable_items_tests.cpp
   text_edit_item_tests.cpp
   transform_from_domain_tests.cpp
-  universal_variable_item_tests.cpp
   variable_info_item_tests.cpp
   variable_item_tests.cpp
   variable_item_transform_helper_tests.cpp

@@ -27,6 +27,7 @@
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace oac_tree_gui
@@ -41,6 +42,11 @@ class WorkspaceItem;
  * The underlying type will be VariableInfoItem.
  */
 std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info);
+
+/**
+ * @brief Creates a variable item for the given domain type, with the attributes of the type.
+ */
+std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
 
 /**
  * @brief Populates empty workspace workspace item with variables from the automation server
