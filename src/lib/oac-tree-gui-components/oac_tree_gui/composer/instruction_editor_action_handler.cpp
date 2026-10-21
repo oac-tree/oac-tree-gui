@@ -30,6 +30,7 @@
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/gui/components/item_filter_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
@@ -239,13 +240,9 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
   // existent value means that the user exited from the dialog with OK
   if (dialog_result.is_accepted)
   {
-    if (!dialog_result.result)
-    {
-      SendMessage(
-          "It is not possible to remove AnyValue from instruction, but you can mark is as "
-          "disabled.");
-      return;
-    }
+    // removed AnyValue: not set
+    auto new_anyvalue =
+        dialog_result.result ? std::move(dialog_result.result) : CreateEmptyAnyValueItem();
 
     // remove previous AnyValueItem
     if (selected_anyvalue != nullptr)
@@ -253,7 +250,7 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
       model->RemoveItem(selected_anyvalue);
     }
 
-    (void)model->InsertItem(std::move(dialog_result.result), instruction_item->GetAttributes(),
+    (void)model->InsertItem(std::move(new_anyvalue), instruction_item->GetAttributes(),
                             {itemconstants::kAnyValueTag, 0});
   }
 }

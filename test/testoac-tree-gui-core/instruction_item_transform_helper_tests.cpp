@@ -450,9 +450,9 @@ TEST_F(InstructionItemTransformHelperTest, PvAccessWriteRoundTrip)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
     EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 
-    // not exposed AnyValueItem does not go to the domain
+    // empty AnyValueItem does not go to the domain
     item->SetAttribute(domainconstants::kGenericVariableNameAttribute, std::string("var"));
-    SetAttributeExposedFlag(false, *GetAnyValueItem(*item));
+    SetAnyValue(sup::dto::AnyValue{}, *item);
     domain_item = CreateDomainInstruction(*item);
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
@@ -761,8 +761,10 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
         << domain_type;
     auto* anyvalue_item = GetAnyValueItem(*tree.root);
     ASSERT_NE(anyvalue_item, nullptr) << domain_type;
+    EXPECT_EQ(anyvalue_item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
     EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
-    EXPECT_FALSE(GetAttributeExposedFlag(*anyvalue_item));
+    EXPECT_TRUE(anyvalue_item->IsEnabled());
+    EXPECT_TRUE(anyvalue_item->IsEditable());
   }
 }
 

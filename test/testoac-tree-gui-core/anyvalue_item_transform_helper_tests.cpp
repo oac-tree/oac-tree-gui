@@ -61,6 +61,14 @@ class AnyValueItemTransformHelperTest : public ::testing::Test
 
 //! Checking SetAnyValue function.
 
+TEST_F(AnyValueItemTransformHelperTest, CreateEmptyAnyValueItem)
+{
+  auto item = CreateEmptyAnyValueItem();
+  EXPECT_EQ(item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
+  EXPECT_EQ(item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
+  EXPECT_TRUE(sup::dto::IsEmptyValue(sup::gui::CreateAnyValue(*item)));
+}
+
 TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning

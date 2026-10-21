@@ -26,7 +26,13 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
+#include <memory>
 #include <string>
+
+namespace sup::gui
+{
+class AnyValueItem;
+}  // namespace sup::gui
 
 namespace oac_tree_gui
 {
@@ -34,6 +40,11 @@ namespace oac_tree_gui
 class VariableItem;
 class InstructionItem;
 class ProcedurePreambleItem;
+
+/**
+ * @brief Creates an empty AnyValueItem with the default display name. It means not set.
+ */
+std::unique_ptr<sup::gui::AnyValueItem> CreateEmptyAnyValueItem();
 
 /**
  * @brief Sets AnyValueItem on board of variable_item using given anyvalue.

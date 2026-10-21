@@ -45,6 +45,13 @@
 namespace oac_tree_gui
 {
 
+std::unique_ptr<sup::gui::AnyValueItem> CreateEmptyAnyValueItem()
+{
+  auto result = std::make_unique<sup::gui::AnyValueEmptyItem>();
+  (void)result->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
+  return result;
+}
+
 void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item)
 {
   // in current implementation we remove old AnyValueItem, if it exists

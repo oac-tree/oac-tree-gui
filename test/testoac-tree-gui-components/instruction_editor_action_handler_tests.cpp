@@ -26,13 +26,19 @@
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
+
+#include <sup/dto/anyvalue.h>
+#include <sup/oac-tree/instruction.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -583,7 +589,8 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
   EXPECT_EQ(GetAnyValueItem(*item), editing_result_ptr);
 }
 
-TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveAnyValueItemAndAcceptDialog)
+//! Removed AnyValue in the dialog: the instruction gets an empty AnyValueItem, i.e. not set.
+TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -593,10 +600,11 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveAnyValueItemAndAcceptD
 
   auto item = InsertInstruction(domainconstants::kPvAccessWriteInstructionType,
                                 m_procedure->GetInstructionContainer());
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *item);
 
   auto previous_anyvalue = GetAnyValueItem(*item);
   ASSERT_NE(previous_anyvalue, nullptr);
-  EXPECT_EQ(previous_anyvalue->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
+  EXPECT_EQ(previous_anyvalue->GetType(), mvvm::GetTypeName<sup::gui::AnyValueScalarItem>());
 
   // item intentionally uninitialised to mimick item removal in the editor
   std::unique_ptr<sup::gui::AnyValueStructItem> editing_result;
@@ -608,15 +616,20 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveAnyValueItemAndAcceptD
 
   auto handler = CreateActionHandler({item});
 
-  // expecting error callback.
-  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
-  // expecting call to editing widget
+  EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(0);
   EXPECT_CALL(m_mock_context, OnEditAnyvalue(previous_anyvalue)).Times(1);
 
   handler->OnEditAnyvalueRequest();
 
-  // checking that instruction still has old AnyValye
-  EXPECT_EQ(GetAnyValueItem(*item), previous_anyvalue);
+  auto anyvalue_item = GetAnyValueItem(*item);
+  ASSERT_NE(anyvalue_item, nullptr);
+  EXPECT_EQ(anyvalue_item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
+
+  // no type and value go to the domain
+  auto domain_item = CreateDomainInstruction(*item);
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
 }
 
 }  // namespace oac_tree_gui::test

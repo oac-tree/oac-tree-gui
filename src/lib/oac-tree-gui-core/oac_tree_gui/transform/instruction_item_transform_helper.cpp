@@ -99,9 +99,7 @@ void AddGuiProperties(InstructionItem& item)
 void AddAnyValueTag(mvvm::CompoundItem& item)
 {
   item.RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
-  auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
-  (void)anyvalue_item->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
-  SetAttributeExposedFlag(false, *anyvalue_item);
+  (void)item.InsertItem(CreateEmptyAnyValueItem(), mvvm::TagIndex::Append());
 }
 
 //! Registers the tag for child instructions, according to the category.
@@ -286,8 +284,7 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& it
     result->SetName(item.GetDisplayName());
   }
 
-  if (auto anyvalue_item = GetAnyValueItem(item);
-      anyvalue_item != nullptr && GetAttributeExposedFlag(*anyvalue_item))
+  if (auto anyvalue_item = GetAnyValueItem(item); anyvalue_item != nullptr)
   {
     SetJsonAttributesFromItem(*anyvalue_item, *result);
   }
