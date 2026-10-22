@@ -47,6 +47,7 @@ target_sources(${test} PRIVATE
   standard_job_items_tests.cpp
   text_edit_item_tests.cpp
   transform_from_domain_tests.cpp
+  variable_descriptor_helper_tests.cpp
   variable_info_item_tests.cpp
   variable_item_tests.cpp
   variable_item_transform_helper_tests.cpp

@@ -14,5 +14,6 @@ target_sources(${library_name} PRIVATE
   i_domain_plugin_service.h
   instruction_descriptor.h
   sequencer_types_fwd.h
+  variable_descriptor.h
 )
 

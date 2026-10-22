@@ -24,6 +24,8 @@ target_sources(${library_name} PRIVATE
   procedure_item_transform_helper.h
   transform_from_domain.cpp
   transform_from_domain.h
+  variable_descriptor_helper.cpp
+  variable_descriptor_helper.h
   variable_item_transform_helper.cpp
   variable_item_transform_helper.h
 )
