@@ -34,8 +34,9 @@ namespace oac_tree_gui
 namespace
 {
 
-//! Returns true if the attribute accepts text. GUI attributes and strings take no text.
-bool IsTextAllowed(const std::string& name, const mvvm::variant_t& default_value)
+//! Returns true if the attribute accepts text placeholders `$par` and `@var`. GUI attributes and
+//! strings take no text placeholders.
+bool IsTextPlaceholderAllowed(const std::string& name, const mvvm::variant_t& default_value)
 {
   return name != domainconstants::kIsRootAttribute
          && name != domainconstants::kShowCollapsedAttribute && !IsString(default_value);
@@ -69,7 +70,7 @@ AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
                                               sup::oac_tree::AttributeCategory category)
 {
   AttributeDescriptor result{name, default_value, {}, mandatory, false, category};
-  result.allow_text = IsTextAllowed(name, default_value);
+  result.allow_text = IsTextPlaceholderAllowed(name, default_value);
   result.nullable = IsNullable(name, default_value, mandatory);
   if (name == domainconstants::kIsRootAttribute)
   {
