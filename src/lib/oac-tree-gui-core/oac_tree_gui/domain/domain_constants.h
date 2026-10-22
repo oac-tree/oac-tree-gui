@@ -21,9 +21,11 @@
 #ifndef OAC_TREE_GUI_DOMAIN_DOMAIN_CONSTANTS_H_
 #define OAC_TREE_GUI_DOMAIN_DOMAIN_CONSTANTS_H_
 
+//! @file
 //! Collection of constants used by domain objects. The existence of this file (and unavoidable data
-//! duplication) is dictated by the fact that many oac-tree's headers are not exposed, and many
-//! constants are literals in code.
+//! duplication) is dictated by the fact that many oac-tree's headers are not exposed.
+//! We also would like to limit appearance of domain headers across our code. Special
+//! DomainConstantsTest makes sure that constants remains the same with the domain.
 
 namespace oac_tree_gui::domainconstants
 {
@@ -31,7 +33,7 @@ namespace oac_tree_gui::domainconstants
 // plugins
 
 //!< fictional name when only sequencer core libs are loaded
-constexpr auto kCorePluginName = "CORE"; // as in sequencer
+constexpr auto kCorePluginName = "CORE";  // as in sequencer
 
 //!< Plugin names must coincide with shared plugin library names, with preffix "lib" and suffixes
 //! ".so" or ".dylib" stripped off. Windows is not yet supported.
@@ -132,10 +134,10 @@ constexpr auto kBlockingAttribute = "blocking";
 
 // procedure related
 constexpr auto kTickTimeoutAttributeName = "tickTimeout";
-constexpr double kDefaultTickTimeoutSec = 0.1; // DEFAULT_SLEEP_TIME_NS in sequencer
+constexpr double kDefaultTickTimeoutSec = 0.1;  // DEFAULT_SLEEP_TIME_NS in sequencer
 
 constexpr auto kTimingAccuracyAttributeName = "timingAccuracy";
-constexpr double kDefaultTimingAccuracySec = 0.05; // DEFAULT_TIMING_ACCURACY_NS in sequencer
+constexpr double kDefaultTimingAccuracySec = 0.05;  // DEFAULT_TIMING_ACCURACY_NS in sequencer
 
 }  // namespace oac_tree_gui::domainconstants
 

@@ -84,17 +84,9 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromInfo)
   // JSON type and value are not properties
   EXPECT_TRUE(mvvm::utils::RegisteredTags(*variable_item->GetAttributes()).empty());
 
-  if (itemconstants::kProvideVariableInfoInitialValue)
-  {
-    const sup::dto::AnyValue expected_anyvalue(sup::dto::UnsignedInteger32Type, 42);
-    EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
-  }
-  else
-  {
-    ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
-    EXPECT_EQ(variable_item->GetAnyValueItem()->GetType(),
-              mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
-  }
+  ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
+  EXPECT_EQ(variable_item->GetAnyValueItem()->GetType(),
+            mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 }
 
 //! Item from variable info: attributes are strings. No plugin is needed.
@@ -322,19 +314,8 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
   EXPECT_EQ(variable_items[0], index_to_variable_item[0]);
   EXPECT_EQ(variable_items[1], index_to_variable_item[1]);
 
-  if (itemconstants::kProvideVariableInfoInitialValue)
-  {
-    const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
-    EXPECT_EQ(GetAnyValue(*variable_items[0]), expected_anyvalue0);
-
-    const sup::dto::AnyValue expected_anyvalue1(sup::dto::SignedInteger32Type, 43);
-    EXPECT_EQ(GetAnyValue(*variable_items[1]), expected_anyvalue1);
-  }
-  else
-  {
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*variable_items[0])));
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*variable_items[1])));
-  }
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*variable_items[0])));
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*variable_items[1])));
 }
 
 TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItemFromDomain)

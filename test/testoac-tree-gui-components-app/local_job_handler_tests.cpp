@@ -296,16 +296,8 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
-  if (itemconstants::kProvideVariableInfoInitialValue)
-  {
-    EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
-    EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
-  }
-  else
-  {
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
-  }
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
 
   job_handler.Start();
   // We are testing here queued signals, need special waiting
@@ -555,16 +547,8 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::StringType, "abc"};
 
-  if (itemconstants::kProvideVariableInfoInitialValue)
-  {
-    EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
-    EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
-  }
-  else
-  {
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
-  }
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
 
   job_handler.Start();
   // We are testing here queued signals, need special waiting
@@ -599,18 +583,8 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   auto var_inside1 = vars_inside.at(1);
 
   // initial values in expanded procedure
-  if (itemconstants::kProvideVariableInfoInitialValue)
-  {
-    const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 0};
-    const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 10};
-    EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
-    EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
-  }
-  else
-  {
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
-    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
-  }
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
+  EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
 
   // breakpoint on second increment will make it stop just before
   job_handler.OnToggleBreakpointRequest(instructions_inside.at(2));
