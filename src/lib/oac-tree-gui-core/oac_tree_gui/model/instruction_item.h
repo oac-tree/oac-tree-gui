@@ -21,14 +21,13 @@
 #ifndef OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_H_
 #define OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_H_
 
+#include <oac_tree_gui/model/attribute_container_helper.h>
 #include <oac_tree_gui/model/instruction_status.h>
 
 #include <mvvm/model/compound_item.h>
 
 namespace oac_tree_gui
 {
-
-class AttributeItem;
 
 /**
  * @brief The InstructionItem class represents a domain instruction of any type.
@@ -176,21 +175,12 @@ public:
    * @brief Returns the vlue of behavior property.
    */
   std::string GetBehavior() const;
-
-private:
-  //! Returns the attribute item with the given name, throws if it doesn't exist.
-  const AttributeItem& GetAttributeItem(const std::string& name) const;
-
-  AttributeItem& GetAttributeItem(const std::string& name);
-
-  //! Returns the value of the attribute, throws if the attribute has no value.
-  mvvm::variant_t GetAttributeValue(const std::string& name) const;
 };
 
 template <typename T>
 T InstructionItem::GetAttribute(const std::string& name) const
 {
-  return std::get<T>(GetAttributeValue(name));
+  return std::get<T>(GetAttributeValue(*this, name));
 }
 
 }  // namespace oac_tree_gui
