@@ -23,14 +23,12 @@
 
 //! @file
 //! Collection of helper functions to transform VariableItem and InstructionItem properties
-//! from/to domain attributes. Instruction attributes are AttributeItem. The functions on
-//! AnyValueItem and the exposed flag serve variable attributes and the JSON type/value pair.
+//! from/to domain attributes. Instruction and variable attributes are AttributeItem. The functions
+//! on AnyValueItem serve the JSON type/value pair and the exposed flag of the attribute editor.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
 #include <sup/gui/model/anyvalue_item.h>
-
-#include <mvvm/model/compound_item.h>
 
 #include <string>
 
@@ -88,29 +86,6 @@ void SetAttributeAsString(const std::string& value, sup::gui::AnyValueItem& attr
 void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item);
 
 /**
- * @brief Add property to item using sequencer attribute definition.
- *
- * @param attr Attribute definition to use for property construction.
- * @param item Compound item which will get a property on board.
- *
- * @return Returns item representing a new property.
- */
-sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
-                                                  mvvm::CompoundItem& item);
-
-/**
- * @brief Sets property item from the attribute string and marks it as exposed.
- *
- * Placeholders and references are stored as strings. Other values are parsed by the AnyType of
- * the item; the item is left unchanged if parsing fails.
- *
- * @param attribute_string The attribute value.
- * @param item An item representing an attribute.
- */
-void SetPropertyFromAttributeString(const std::string& attribute_string,
-                                    sup::gui::AnyValueItem& item);
-
-/**
  * @brief Sets the attribute item from the domain attribute string.
  *
  * Placeholders and references are stored as text if the attribute allows text. Other values are
@@ -131,42 +106,6 @@ void SetAttributeFromString(const std::string& attribute_string, AttributeItem& 
  * @throw LogicErrorException if the value can't be converted.
  */
 std::string GetAttributeString(const AttributeItem& item);
-
-/**
- * @brief Set property item from the domain attribute.
- *
- * @tparam Domain instruction or variable.
- *
- * @param variable Domain object to set from.
- * @param attribute_name The attribute name of the domain object.
- * @param item An item representing an attribute.
- */
-
-template <typename T>
-void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
-                                    sup::gui::AnyValueItem& item);
-
-extern template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
-                                                                const std::string& attribute_name,
-                                                                sup::gui::AnyValueItem& item);
-
-/**
- * @brief Set an attribute for domain variable from AnyValueScalarItem property.
- *
- * @tparam Domain instruction or variable.
- *
- * @param item The AnyValueScalarItem representing domain attribute.
- * @param attribute_name The name of the domain attribute to set.
- * @param variable The domain sequencer variable.
- */
-
-template <typename T>
-void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& attribute_name,
-                        T& domain);
-
-extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem& item,
-                                                    const std::string& attribute_name,
-                                                    variable_t& domain);
 
 /**
  * @brief Sets an attribute of the domain object from the attribute item.

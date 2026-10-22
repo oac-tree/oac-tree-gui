@@ -55,16 +55,6 @@ bool IsSuitableForDomainAttribute(const std::string& attribute_string,
   return not_empty && not_isroot_false;
 }
 
-/**
- * @brief Returns is exposed flag for given attribute definition
- */
-bool GetIsExposedFlag(const attribute_definition_t& attr)
-{
-  // list of domain attributes that should be always marked as present
-  static const std::vector<std::string> kAlwaysExposedAttributeList = {
-      oac_tree_gui::domainconstants::kNameAttribute};
-  return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysExposedAttributeList, attr.GetName());
-}
 }  // namespace
 
 bool IsPlaceholderAttribute(const std::string& attribute_value)
@@ -99,37 +89,6 @@ void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item)
   (void)mvvm::utils::ReplaceData(
       attribute_item, sup::gui::GetVariantFromScalarTypeName(attribute_item.GetAnyTypeName()),
       mvvm::DataRole::kData);
-}
-
-sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
-                                                  mvvm::CompoundItem& item)
-{
-  // Use attribute name for display name and tag name of the new property item.
-  auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
-  property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
-  (void)property.SetDisplayName(attr.GetName());
-  SetAttributeExposedFlag(GetIsExposedFlag(attr), property);
-  return &property;
-}
-
-void SetPropertyFromAttributeString(const std::string& attribute_string,
-                                    sup::gui::AnyValueItem& item)
-{
-  SetAttributeExposedFlag(true, item);
-
-  if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
-  {
-    SetAttributeAsString(attribute_string, item);
-    return;
-  }
-
-  auto type_code = sup::gui::GetScalarTypeCode(item.GetAnyTypeName());
-  auto any_type = sup::dto::AnyType(type_code);
-  auto result = sup::oac_tree::utils::ParseAttributeString(any_type, attribute_string);
-  if (result.first)
-  {
-    (void)item.SetData(sup::gui::GetVariantFromScalar(result.second));
-  }
 }
 
 void SetAttributeFromString(const std::string& attribute_string, AttributeItem& item)
@@ -169,44 +128,6 @@ std::string GetAttributeString(const AttributeItem& item)
   }
   return result;
 }
-
-template <typename T>
-void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
-                                    sup::gui::AnyValueItem& item)
-{
-  if (domain.HasAttribute(attribute_name))
-  {
-    SetPropertyFromAttributeString(domain.GetAttributeString(attribute_name), item);
-  }
-}
-
-template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
-                                                         const std::string& attribute_name,
-                                                         sup::gui::AnyValueItem& item);
-
-template <typename T>
-void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& attribute_name,
-                        T& domain)
-{
-  if (!GetAttributeExposedFlag(item))
-  {
-    return;
-  }
-
-  auto anyvalue = sup::gui::GetAnyValueFromScalar(item.Data());
-  auto [success, attribute_string] = sup::oac_tree::utils::CreateAttributeString(anyvalue);
-  if (!success)
-  {
-    throw LogicErrorException("Can't create an attribute string from item property");
-  }
-  if (IsSuitableForDomainAttribute(attribute_name, attribute_string))
-  {
-    (void)domain.AddAttribute(attribute_name, attribute_string);
-  }
-}
-
-template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem& item,
-                                             const std::string& attribute_name, variable_t& domain);
 
 template <typename T>
 void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_name, T& domain)
