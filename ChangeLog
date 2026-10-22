@@ -1,5 +1,8 @@
 Changes for 2.4.0:
 
+- Represent all variables with one generic item; job variables show their value after the first update
+- Instruction and variable attributes can be "not set"; the "exposed" flag and "Set default value" are removed
+- Variable attributes no longer accept $par/@var placeholders
 - Represent all instructions with one generic item; Wait and EPICS instructions no longer preset
   timeout attributes
 - Projects saved with versions 2.2 to 2.3.1 can't be opened.

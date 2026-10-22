@@ -108,7 +108,7 @@ TEST_F(CustomRowStrategiesTest, VariableRowStrategyForUniversalItem)
 
 TEST_F(CustomRowStrategiesTest, VariableRowStrategyForVariableInfo)
 {
-  auto item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  auto item = CreateJobVariableItem(domainconstants::kLocalVariableType);
   item->SetName("abc");
 
   VariableRowStrategy strategy;
@@ -141,7 +141,7 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
   }
 
   {  // single local variable with a scalar (constructed as VariableInfo)
-    auto item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+    auto item = CreateJobVariableItem(domainconstants::kLocalVariableType);
     const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
     SetAnyValue(anyvalue, *item);
     item->SetName("abc");
@@ -206,7 +206,7 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
   }
 
   {  // single local variable with a struct (constructed as VariableInfo)
-    auto item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+    auto item = CreateJobVariableItem(domainconstants::kLocalVariableType);
 
     const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
     SetAnyValue(anyvalue, *item);

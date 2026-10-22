@@ -116,9 +116,9 @@ std::vector<InstructionItem*> FindInstructions(mvvm::ISessionModel& model,
 /**
  * @brief Creates VariableItem from the VariableInfo of a domain variable, as for jobs.
  */
-std::unique_ptr<VariableItem> CreateVariableInfoItem(const std::string& domain_type,
-                                                     sup::dto::uint32 index = 0U,
-                                                     const attribute_list_t& attributes = {});
+std::unique_ptr<VariableItem> CreateJobVariableItem(const std::string& domain_type,
+                                                    sup::dto::uint32 index = 0U,
+                                                    const attribute_list_t& attributes = {});
 
 }  // namespace test
 

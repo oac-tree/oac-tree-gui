@@ -75,9 +75,9 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForVariableInfoCase)
 {
   WorkspaceItem workspace;
 
-  auto local_item0 = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  auto local_item0 = CreateJobVariableItem(domainconstants::kLocalVariableType);
   local_item0->SetDisplayName("ABC");
-  auto local_item1 = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  auto local_item1 = CreateJobVariableItem(domainconstants::kLocalVariableType);
   local_item1->SetDisplayName("AB");
 
   auto local_item0_ptr = workspace.InsertItem(std::move(local_item0), mvvm::TagIndex::Append());
@@ -125,11 +125,11 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelNameInfoCase)
   }
 
   WorkspaceItem workspace;
-  auto local_item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  auto local_item = CreateJobVariableItem(domainconstants::kLocalVariableType);
 
   auto pv_access_item =
-      CreateVariableInfoItem(domainconstants::kPvAccessServerVariableType, 0,
-                             {{domainconstants::kChannelAttribute, std::string()}});
+      CreateJobVariableItem(domainconstants::kPvAccessServerVariableType, 0,
+                            {{domainconstants::kChannelAttribute, std::string()}});
 
   local_item->SetDisplayName("A");
   // info item doesn't have API to set a channel name

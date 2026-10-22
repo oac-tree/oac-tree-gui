@@ -121,7 +121,7 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValueConstruct
 
   auto workspace_item = model.InsertItem<WorkspaceItem>();
 
-  auto variable_item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
+  auto variable_item = CreateJobVariableItem(domainconstants::kLocalVariableType);
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
   variable_item->SetName("abc");
@@ -269,7 +269,7 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatusInfoItemCa
                                        {domainconstants::kValueAttribute, expected_value}};
 
   auto variable_item =
-      CreateVariableInfoItem(domainconstants::kPvAccessServerVariableType, 0, attributes);
+      CreateJobVariableItem(domainconstants::kPvAccessServerVariableType, 0, attributes);
   auto variable_item_ptr = variable_item.get();
 
   mvvm::ApplicationModel model;

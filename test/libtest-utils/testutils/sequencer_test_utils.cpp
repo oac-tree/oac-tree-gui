@@ -206,9 +206,9 @@ std::vector<InstructionItem*> FindInstructions(mvvm::ISessionModel& model,
   return FindInstructionsImpl(model, domain_type);
 }
 
-std::unique_ptr<VariableItem> CreateVariableInfoItem(const std::string& domain_type,
-                                                     sup::dto::uint32 index,
-                                                     const attribute_list_t& attributes)
+std::unique_ptr<VariableItem> CreateJobVariableItem(const std::string& domain_type,
+                                                    sup::dto::uint32 index,
+                                                    const attribute_list_t& attributes)
 {
   auto domain = CreateDomainVariable(domain_type);
 

@@ -23,10 +23,8 @@
 #include <oac_tree_gui/jobsystem/domain_event_dispatcher_context.h>  // IWYU pragma: keep
 #include <oac_tree_gui/jobsystem/remote_domain_runner.h>
 #include <oac_tree_gui/model/variable_item.h>
-#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/procedure_item_job_info_builder.h>
-
-#include <iostream>
 
 namespace oac_tree_gui
 {
@@ -46,18 +44,7 @@ void RemoteJobHandler::OnVariableUpdatedEvent(const VariableUpdatedEvent& event)
 {
   if (auto item = GetItemBuilder()->GetVariable(event.index); item)
   {
-    if (event.connected && sup::dto::IsEmptyValue(event.value) && !item->IsAvailable())
-    {
-      item->SetIsAvailable(event.connected);
-      return;
-    }
-
-    item->SetIsAvailable(event.connected);
-    UpdateAnyValue(event.value, *item);
-  }
-  else
-  {
-    std::cout << "Can't find variable \n";
+    UpdateVariableFromEvent(event, *item);
   }
 }
 
