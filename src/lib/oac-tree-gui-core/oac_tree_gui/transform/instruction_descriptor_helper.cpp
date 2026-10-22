@@ -20,14 +20,10 @@
 
 #include "instruction_descriptor_helper.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/transform/instruction_attribute_presets.h>
+#include <oac_tree_gui/transform/attribute_descriptor_helper.h>
 
-#include <sup/gui/model/scalar_conversion_utils.h>
-
-#include <sup/dto/anytype_helper.h>
 #include <sup/oac-tree/instruction_info.h>
 
 #include <stack>
@@ -35,68 +31,13 @@
 namespace oac_tree_gui
 {
 
-namespace
-{
-
-//! Returns true if the attribute accepts text. GUI attributes and strings take no text.
-bool IsTextAllowed(const std::string& name, const mvvm::variant_t& default_value)
-{
-  return name != domainconstants::kIsRootAttribute
-         && name != domainconstants::kShowCollapsedAttribute && !IsString(default_value);
-}
-
-//! Returns true if the attribute can have no value. Mandatory attributes, isRoot and strings
-//! always have one.
-bool IsNullable(const std::string& name, const mvvm::variant_t& default_value, bool mandatory)
-{
-  return !mandatory && name != domainconstants::kIsRootAttribute && !IsString(default_value);
-}
-
-//! Creates an attribute descriptor and applies the preset.
-AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
-                                              const std::string& name,
-                                              const mvvm::variant_t& default_value, bool mandatory,
-                                              sup::oac_tree::AttributeCategory category)
-{
-  AttributeDescriptor result{name, default_value, {}, mandatory, false, category};
-  result.allow_text = IsTextAllowed(name, default_value);
-  result.nullable = IsNullable(name, default_value, mandatory);
-  if (name == domainconstants::kIsRootAttribute)
-  {
-    result.visible = false;
-  }
-  if (auto preset = FindAttributePreset(domain_type, name); preset)
-  {
-    result.default_value = preset->value;
-    result.has_preset = true;
-  }
-  return result;
-}
-
-//! Returns the default-initialized scalar for the given attribute definition.
-mvvm::variant_t GetDefaultValue(const std::string& domain_type,
-                                const attribute_definition_t& definition)
-{
-  const auto anytype = definition.GetType();
-  if (!sup::dto::IsScalarType(anytype))
-  {
-    throw RuntimeException("Attribute [" + definition.GetName() + "] of instruction [" + domain_type
-                           + "] has non-scalar type [" + anytype.GetTypeName() + "]");
-  }
-  return sup::gui::GetVariantFromScalarTypeName(anytype.GetTypeName());
-}
-
-}  // namespace
-
 InstructionDescriptor CreateInstructionDescriptor(const instruction_t& instruction)
 {
   const auto domain_type = instruction.GetType();
   InstructionDescriptor result{domain_type, instruction.GetCategory(), {}};
   for (const auto& definition : instruction.GetAttributeDefinitions())
   {
-    result.attributes.push_back(CreateAttributeDescriptor(
-        domain_type, definition.GetName(), GetDefaultValue(domain_type, definition),
-        definition.IsMandatory(), definition.GetCategory()));
+    result.attributes.push_back(CreateAttributeDescriptor(domain_type, definition));
   }
   return result;
 }

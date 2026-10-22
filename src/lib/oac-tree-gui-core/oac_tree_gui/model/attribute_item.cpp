@@ -21,7 +21,7 @@
 #include "attribute_item.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/instruction_descriptor.h>
+#include <oac_tree_gui/domain/attribute_descriptor.h>
 #include <oac_tree_gui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>

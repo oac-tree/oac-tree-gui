@@ -24,9 +24,8 @@
 //! @file
 //! Descriptions of instruction types and instances, used to build instruction items.
 
-#include <mvvm/core/variant.h>
+#include <oac_tree_gui/domain/attribute_descriptor.h>
 
-#include <sup/oac-tree/attribute_definition.h>
 #include <sup/oac-tree/attribute_info.h>
 #include <sup/oac-tree/instruction.h>
 
@@ -36,30 +35,6 @@
 
 namespace oac_tree_gui
 {
-
-/**
- * @brief Returns true if the given variant holds a string.
- */
-inline bool IsString(const mvvm::variant_t& value)
-{
-  return std::holds_alternative<std::string>(value);
-}
-
-/**
- * @brief The AttributeDescriptor struct describes a domain attribute of an instruction type.
- */
-struct AttributeDescriptor
-{
-  std::string name;
-  mvvm::variant_t default_value;  //!< scalar; its type defines the attribute type
-  std::string tooltip;
-  bool mandatory{false};
-  bool has_preset{false};  //!< nullable attribute that starts with the default value
-  sup::oac_tree::AttributeCategory category{sup::oac_tree::AttributeCategory::kLiteral};
-  bool visible{true};     //!< shown in attribute editor and tooltips
-  bool allow_text{true};  //!< text (`$par`, `@var`) accepted instead of a value
-  bool nullable{true};    //!< can have no value; false for mandatory, isRoot and strings
-};
 
 /**
  * @brief The InstructionDescriptor struct describes an instruction type.
