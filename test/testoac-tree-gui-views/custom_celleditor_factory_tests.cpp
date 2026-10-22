@@ -24,8 +24,12 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
+#include <oac_tree_gui/model/variable_item.h>
+#include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/viewmodel/attribute_editor_viewmodel.h>
+#include <oac_tree_gui/viewmodel/workspace_editor_viewmodel.h>
 
+#include <mvvm/editors/default_editor_factory.h>
 #include <mvvm/editors/nullable_bool_editor.h>
 #include <mvvm/editors/scientific_spinbox.h>
 #include <mvvm/editors/string_completer_combo_editor.h>
@@ -33,6 +37,7 @@
 #include <mvvm/utils/i_limited_float.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QSignalSpy>
 #include <algorithm>
@@ -154,6 +159,25 @@ TEST_F(CustomCellEditorFactoryTest, CreateEditorForNullableAttributes)
     auto editor = create_editor(domainconstants::kBlockingAttribute);
     EXPECT_NE(dynamic_cast<mvvm::NullableBoolEditor*>(editor.get()), nullptr);
   }
+}
+
+//! Variable attributes in the workspace tree get the nullable editors of sup-mvvm. The tree uses
+//! the default editor factory, so no variable name completer.
+TEST_F(CustomCellEditorFactoryTest, CreateEditorForVariableAttributes)
+{
+  auto workspace_item = m_model.InsertItem<WorkspaceItem>();
+  WorkspaceEditorViewModel view_model(&m_model);
+  view_model.SetRootSessionItem(workspace_item);
+  const mvvm::DefaultEditorFactory factory;
+
+  auto local_item = test::InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  auto property = local_item->GetAttributes()->FindItem(domainconstants::kDynamicTypeAttribute);
+  EXPECT_FALSE(property->HasData());
+
+  auto indexes = view_model.GetIndexOfSessionItem(property);
+  ASSERT_EQ(indexes.size(), 3);
+  auto editor = factory.CreateEditor(indexes.at(1));
+  EXPECT_NE(dynamic_cast<mvvm::NullableBoolEditor*>(editor.get()), nullptr);
 }
 
 //! Instruction attribute with text: the cell shows the text, no sup-mvvm editor (Qt line edit).
