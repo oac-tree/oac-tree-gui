@@ -74,7 +74,7 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithoutAnyValue)
   EXPECT_EQ(viewmodel.data(variable_name_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
   // placeholder instead on AnyValue
-  EXPECT_EQ(viewmodel.data(variable_value_index, Qt::DisplayRole).toString(), QString());
+  EXPECT_EQ(viewmodel.data(variable_value_index, Qt::DisplayRole).toString(), QString("empty"));
   EXPECT_EQ(viewmodel.data(variable_type_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Local"));
 }

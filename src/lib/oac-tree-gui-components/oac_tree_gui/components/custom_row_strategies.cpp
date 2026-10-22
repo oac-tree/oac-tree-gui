@@ -53,13 +53,19 @@ namespace
 std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem& item)
 {
   const std::string kSeeBelowPlaceholder("---");
+  const std::string kEmptyPlaceholder("empty");
   auto anyvalue_item = item.GetAnyValueItem();
 
-  // if AnyValueItem is absent or empty create empty placeholder
-  if (anyvalue_item == nullptr
-      || anyvalue_item->GetType() == mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>())
+  // if AnyValueItem is absent create empty placeholder
+  if (anyvalue_item == nullptr)
   {
     return mvvm::CreateLabelViewItem(&item);
+  }
+
+  // if AnyValueItem is empty
+  if (anyvalue_item->GetType() == mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>())
+  {
+    return mvvm::CreateLabelViewItem(&item, kEmptyPlaceholder);
   }
 
   // if it is a scalar, create ViewItem looking at scalar's value

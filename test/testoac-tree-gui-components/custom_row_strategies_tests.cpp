@@ -188,6 +188,23 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
     EXPECT_EQ(scalar_view_items.at(3)->Data(Qt::DisplayRole).toString(), QString(""));
   }
 
+  {  // single local variable with empty value
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+    const sup::dto::AnyValue anyvalue;
+    SetAnyValue(anyvalue, *item);
+    item->SetName("abc");
+
+    // row corresponding to the variable itself
+    VariableTableRowStrategy strategy;
+    auto view_items = strategy.ConstructRow(item.get());
+    ASSERT_EQ(view_items.size(), 4);
+    EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
+    // value column should contain a placeholder
+    EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString("empty"));
+    EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("Local"));
+    EXPECT_EQ(view_items.at(3)->Data(Qt::DisplayRole).toString(), QString(""));
+  }
+
   {  // single local variable with a struct (constructed as VariableInfo)
     auto item = CreateVariableInfoItem(domainconstants::kLocalVariableType);
 
