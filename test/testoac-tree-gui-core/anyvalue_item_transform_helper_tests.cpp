@@ -21,7 +21,6 @@
 #include "oac_tree_gui/transform/anyvalue_item_transform_helper.h"
 
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -45,7 +44,6 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/instruction.h>
 #include <sup/oac-tree/procedure_preamble.h>
-#include <sup/oac-tree/variable_info.h>
 #include <sup/oac-tree/workspace.h>
 
 #include <gtest/gtest.h>
@@ -72,10 +70,9 @@ TEST_F(AnyValueItemTransformHelperTest, CreateEmptyAnyValueItem)
 
 TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromScalar)
 {
-  // a Local variable doesn't have AnyValueItem at the beginning
+  // a Local variable starts with an empty AnyValueItem
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-
-  EXPECT_EQ(item->GetAnyValueItem(), nullptr);
+  EXPECT_EQ(item->GetAnyValueItem()->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 
@@ -124,9 +121,9 @@ TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueSignaling)
 
 TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalar)
 {
-  // a Local variable doesn't have AnyValueItem at the beginning
+  // a Local variable starts with an empty AnyValueItem
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-  EXPECT_EQ(item->GetAnyValueItem(), nullptr);
+  EXPECT_EQ(item->GetAnyValueItem()->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 0);
 
@@ -145,9 +142,9 @@ TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalar)
 
 TEST_F(AnyValueItemTransformHelperTest, UpdateAnyValueFromScalarWithTypeChange)
 {
-  // a Local variable doesn't have AnyValueItem at the beginning
+  // a Local variable starts with an empty AnyValueItem
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-  EXPECT_EQ(item->GetAnyValueItem(), nullptr);
+  EXPECT_EQ(item->GetAnyValueItem()->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 0);
 
@@ -194,103 +191,54 @@ TEST_F(AnyValueItemTransformHelperTest, SetInstructionAnyValueFromScalar)
   EXPECT_NE(GetAnyValueItem(*item), nullptr);
 }
 
-//! Validate SetAnyValueFromDomainVariable helper method.
-//! Domain sequencer variable with json type and value attributes is used to set AnyValueItem on
-//! board of VariableItem.
-
-TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariable)
+//! Validate SetAnyValueFromAttributes helper method. JSON type and value attributes set the
+//! AnyValueItem of VariableItem.
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromAttributes)
 {
-  {  // when domain variable has type attribute
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
+  const std::string type_json(R"RAW({"type":"int32"})RAW");
 
-    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
+  {  // type attribute only
+    const std::vector<sup::oac_tree::AttributeInfo> attributes{
+        {domainconstants::kTypeAttribute, type_json}};
 
     auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-    SetAnyValueFromDomainVariable(*variable, *item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
+    SetAnyValueFromAttributes(attributes, *item);
+    EXPECT_EQ(GetAnyValue(*item), sup::dto::AnyValue(sup::dto::SignedInteger32Type, 0));
   }
 
-  {  // when domain variable has type and value attribute
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
-    variable->AddAttribute(domainconstants::kValueAttribute, "42");
-
-    const sup::dto::AnyValue expected_anyvalue(
-        sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  {  // type and value attributes
+    const std::vector<sup::oac_tree::AttributeInfo> attributes{
+        {domainconstants::kTypeAttribute, type_json}, {domainconstants::kValueAttribute, "42"}};
 
     auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-    SetAnyValueFromDomainVariable(*variable, *item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
+    SetAnyValueFromAttributes(attributes, *item);
+    EXPECT_EQ(GetAnyValue(*item), sup::dto::AnyValue(sup::dto::SignedInteger32Type, 42));
   }
 
-  {  // when domain variable has only value attribute
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    variable->AddAttribute(domainconstants::kValueAttribute, "42");
+  {  // value attribute only: AnyValueItem stays empty
+    const std::vector<sup::oac_tree::AttributeInfo> attributes{
+        {domainconstants::kValueAttribute, "42"}};
 
     auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-    SetAnyValueFromDomainVariable(*variable, *item);
-
-    EXPECT_EQ(item->GetAnyValueItem(), nullptr);
+    SetAnyValueFromAttributes(attributes, *item);
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*item)));
   }
 }
 
-TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableInfo)
-{
-  {  // when domain variable has type attribute
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
-    auto info = CreateVariableInfo(*variable, 42U);
-
-    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
-
-    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-
-    SetAnyValueFromDomainVariableInfo(info, *item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
-  }
-
-  {  // when domain variable has type and value attribute
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
-    variable->AddAttribute(domainconstants::kValueAttribute, "42");
-    auto info = CreateVariableInfo(*variable, 42U);
-
-    const sup::dto::AnyValue expected_anyvalue(
-        sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-
-    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-    SetAnyValueFromDomainVariableInfo(info, *item);
-    EXPECT_EQ(expected_anyvalue, GetAnyValue(*item));
-  }
-
-  {  // when domain variable has only value attribute
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    variable->AddAttribute(domainconstants::kValueAttribute, "42");
-    auto info = CreateVariableInfo(*variable, 42U);
-
-    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-    SetAnyValueFromDomainVariableInfo(info, *item);
-
-    EXPECT_EQ(item->GetAnyValueItem(), nullptr);
-  }
-}
-
-//! Validate SetAnyValueFromDomainVariable helper method. Json type is preregistered.
-
-TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromDomainVariableWithRegistry)
+//! Validate SetAnyValueFromAttributes helper method. JSON type is preregistered.
+TEST_F(AnyValueItemTransformHelperTest, SetAnyValueFromAttributesWithRegistry)
 {
   sup::dto::AnyTypeRegistry registry;
   const std::string one_scalar_name = "OneScalar";
   const sup::dto::AnyType one_scalar{{{"value", sup::dto::SignedInteger32Type}}, one_scalar_name};
   registry.RegisterType(one_scalar);
 
-  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"OneScalar"})RAW");
-  variable->AddAttribute(domainconstants::kValueAttribute, R"RAW({"value":42})RAW");
+  const std::vector<sup::oac_tree::AttributeInfo> attributes{
+      {domainconstants::kTypeAttribute, R"RAW({"type":"OneScalar"})RAW"},
+      {domainconstants::kValueAttribute, R"RAW({"value":42})RAW"}};
 
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-  SetAnyValueFromDomainVariable(*variable, *item, &registry);
+  SetAnyValueFromAttributes(attributes, *item, &registry);
 
   const sup::dto::AnyValue expected_anyvalue = {{{"value", {sup::dto::SignedInteger32Type, 42}}},
                                                 one_scalar_name};

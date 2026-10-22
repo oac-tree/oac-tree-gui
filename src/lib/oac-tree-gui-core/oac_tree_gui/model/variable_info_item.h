@@ -21,6 +21,7 @@
 #ifndef OAC_TREE_GUI_MODEL_VARIABLE_INFO_ITEM_H_
 #define OAC_TREE_GUI_MODEL_VARIABLE_INFO_ITEM_H_
 
+#include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/model/variable_item.h>
 
 namespace oac_tree_gui
@@ -41,9 +42,6 @@ public:
   void InitFromDomainInfo(const sup::oac_tree::VariableInfo& info);
 
 private:
-  void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry) override;
-  void SetupDomainImpl(variable_t* variable) const override;
-
   void SetupFromDomain(const sup::oac_tree::VariableInfo& info);
 };
 

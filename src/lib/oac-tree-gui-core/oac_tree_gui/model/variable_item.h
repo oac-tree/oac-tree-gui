@@ -21,8 +21,6 @@
 #ifndef OAC_TREE_GUI_MODEL_VARIABLE_ITEM_H_
 #define OAC_TREE_GUI_MODEL_VARIABLE_ITEM_H_
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
-
 #include <mvvm/model/compound_item.h>
 
 namespace sup::gui
@@ -36,8 +34,8 @@ namespace oac_tree_gui
 /**
  * @brief The VariableItem class represents a domain variable of any type.
  *
- * @details The item is set up by SetDomainType or InitFromDomain. Domain attributes are
- * properties, the JSON type and value pair is an AnyValueItem.
+ * @details The item is set up by CreateVariableItem. Domain attributes are properties, the JSON
+ * type and value pair is an AnyValueItem.
  */
 class VariableItem : public mvvm::CompoundItem
 {
@@ -58,24 +56,9 @@ public:
   std::string GetDomainType() const;
 
   /**
-   * @brief Sets the domain type, the display name and the attributes of the domain type.
-   *
-   * @throw LogicErrorException if the item is already set up.
+   * @brief Sets the domain type. No attribute initialization.
    */
   void SetDomainType(const std::string& domain_type);
-
-  /**
-   * @brief Inits given item from the domain variable.
-   *
-   * @param variable The domain variable.
-   * @param registry Optional type registry containing already existing domain types.
-   */
-  void InitFromDomain(const variable_t* variable, const anytype_registry_t* registry = nullptr);
-
-  /**
-   * @brief Creates domain variable corresponding to a given item.
-   */
-  std::unique_ptr<variable_t> CreateDomainVariable() const;
 
   /**
    * @brief Returns variable name.
@@ -135,30 +118,6 @@ protected:
    * @brief Provides tag registration for AnyValueItem insertion.
    */
   void RegisterAnyValueItemTag();
-
-  /**
-   * @brief Sets the value of domain type role.
-   *
-   * No attribute initialization.
-   */
-  void SetDomainTypeRole(const std::string& domain_type);
-
-private:
-  /**
-   * @brief Implementation to provide to init this VariableItem from the domain variable.
-   */
-  virtual void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry);
-
-  /**
-   * @brief Implementation to provide to setup domain variable from this VariableItem.
-   */
-  virtual void SetupDomainImpl(variable_t* variable) const;
-
-  //! Sets the domain type, the display name and a property per domain attribute definition.
-  void SetupFromDomain(const variable_t* variable);
-
-  //! Returns property items representing domain attributes.
-  std::vector<sup::gui::AnyValueItem*> GetAttributeItems() const;
 };
 
 template <typename T>

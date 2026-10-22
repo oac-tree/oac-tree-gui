@@ -33,23 +33,6 @@
 namespace oac_tree_gui
 {
 
-namespace
-{
-
-/**
- * @brief Returns optional value of the attribute with the given name.
- */
-std::optional<std::string> GetAttribute(const std::vector<sup::oac_tree::AttributeInfo>& attributes,
-                                        const std::string& attribute_name)
-{
-  auto pos =
-      std::find_if(attributes.begin(), attributes.end(), [&attribute_name](const auto& element)
-                   { return element.first == attribute_name; });
-  return pos == attributes.end() ? std::optional<std::string>{} : pos->second;
-}
-
-}  // namespace
-
 sup::oac_tree::InstructionInfo CreateInstructionInfo(const sup::oac_tree::Instruction& instruction,
                                                      sup::dto::uint32 index)
 {
@@ -69,6 +52,15 @@ std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
   auto result = CreateDomainVariable(info.GetType());
   (void)result->AddAttributes(info.GetAttributes());
   return result;
+}
+
+std::optional<std::string> GetAttribute(const std::vector<sup::oac_tree::AttributeInfo>& attributes,
+                                        const std::string& attribute_name)
+{
+  auto pos =
+      std::find_if(attributes.begin(), attributes.end(), [&attribute_name](const auto& element)
+                   { return element.first == attribute_name; });
+  return pos == attributes.end() ? std::optional<std::string>{} : pos->second;
 }
 
 std::optional<std::string> GetAttribute(const sup::oac_tree::InstructionInfo& info,

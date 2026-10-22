@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -50,7 +51,7 @@ TEST_F(VariableInfoItemTest, InitialState)
   EXPECT_TRUE(item.GetDomainType().empty());
   const std::vector<std::string> expected_tags({itemconstants::kIsAvailable});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
-  EXPECT_THROW(item.CreateDomainVariable(), sup::oac_tree::InvalidOperationException);
+  EXPECT_THROW(CreateDomainVariable(item), sup::oac_tree::InvalidOperationException);
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 }
 

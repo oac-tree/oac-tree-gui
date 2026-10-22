@@ -26,8 +26,11 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
+#include <sup/oac-tree/attribute_info.h>
+
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace sup::gui
 {
@@ -65,17 +68,18 @@ void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 void SetAnyValue(const anyvalue_t& anyvalue, InstructionItem& item);
 
 /**
- * @brief Sets AnyValueItem on board of variable item using domain variable.
+ * @brief Sets AnyValueItem on board of variable item from the JSON type and value attributes.
+ *
+ * Does nothing without the type attribute. Without the value attribute, the value is the default
+ * of the type.
+ *
+ * @param attributes The name/value strings of the domain variable.
+ * @param variable_item The variable item.
+ * @param registry Optional type registry containing already existing domain types.
  */
-void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& variable_item,
-                                   const anytype_registry_t* registry = nullptr);
-
-/**
- * @brief Sets AnyValueItem on board of variable item using domain variable info.
- */
-void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo& variable_info,
-                                       VariableItem& variable_item,
-                                       const anytype_registry_t* registry = nullptr);
+void SetAnyValueFromAttributes(const std::vector<sup::oac_tree::AttributeInfo>& attributes,
+                               VariableItem& variable_item,
+                               const anytype_registry_t* registry = nullptr);
 
 /**
  * @brief Sets AnyValueItem on board of instruction item using JSON type and value strings.

@@ -20,7 +20,6 @@
 
 #include "variable_info_item.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -42,7 +41,7 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
     SetupFromDomain(info);
   }
 
-  SetDomainTypeRole(info.GetType());
+  SetDomainType(info.GetType());
 
   for (auto& [attr_name, attr_value] : info.GetAttributes())
   {
@@ -71,28 +70,13 @@ void VariableInfoItem::InitFromDomainInfo(const sup::oac_tree::VariableInfo& inf
 
   if constexpr (itemconstants::kProvideVariableInfoInitialValue)
   {
-    SetAnyValueFromDomainVariableInfo(info, *this);
+    SetAnyValueFromAttributes(info.GetAttributes(), *this);
   }
 }
 
 std::unique_ptr<mvvm::SessionItem> VariableInfoItem::Clone() const
 {
   return mvvm::MakeClone(*this);
-}
-
-void VariableInfoItem::InitFromDomainImpl(const variable_t* variable,
-                                          const anytype_registry_t* registry)
-{
-  (void)variable;
-  (void)registry;
-
-  throw RuntimeException("This variable is not intended to represent domain variable");
-}
-
-void VariableInfoItem::SetupDomainImpl(variable_t* variable) const
-{
-  (void)variable;
-  throw RuntimeException("This variable is not intended to represent domain variable");
 }
 
 void VariableInfoItem::SetupFromDomain(const sup::oac_tree::VariableInfo& info)

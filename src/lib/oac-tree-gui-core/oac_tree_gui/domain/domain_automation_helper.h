@@ -26,8 +26,12 @@
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
+#include <sup/oac-tree/attribute_info.h>
+
 #include <memory>
 #include <optional>
+#include <string>
+#include <vector>
 
 namespace oac_tree_gui
 {
@@ -49,6 +53,14 @@ sup::oac_tree::VariableInfo CreateVariableInfo(const sup::oac_tree::Variable& va
  */
 std::unique_ptr<sup::oac_tree::Variable> CreateDomainVariable(
     const sup::oac_tree::VariableInfo& info);
+
+/**
+ * @brief Returns optional value of the attribute with the given name.
+ *
+ * The value will be empty, if attribute is not present.
+ */
+std::optional<std::string> GetAttribute(const std::vector<sup::oac_tree::AttributeInfo>& attributes,
+                                        const std::string& attribute_name);
 
 /**
  * @brief Returns optional value of the attribute with the given name.

@@ -81,40 +81,16 @@ void SetAnyValue(const anyvalue_t& anyvalue, InstructionItem& item)
                                {itemconstants::kAnyValueTag, 0});
 }
 
-void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& variable_item,
-                                   const anytype_registry_t* registry)
+void SetAnyValueFromAttributes(const std::vector<sup::oac_tree::AttributeInfo>& attributes,
+                               VariableItem& variable_item, const anytype_registry_t* registry)
 {
-  if (variable.HasAttribute(domainconstants::kTypeAttribute))
-  {
-    auto anytype = sup::gui::AnyTypeFromJSONString(
-        variable.GetAttributeString(domainconstants::kTypeAttribute), registry);
-
-    auto get_anyvalue = [&anytype, &variable]()
-    {
-      if (variable.HasAttribute(domainconstants::kValueAttribute))
-      {
-        return sup::gui::AnyValueFromJSONString(
-            anytype, variable.GetAttributeString(domainconstants::kValueAttribute));
-      }
-      return sup::dto::AnyValue(anytype);
-    };
-
-    const sup::dto::AnyValue anyvalue = get_anyvalue();  // executing lambda at initialisation
-    SetAnyValue(anyvalue, variable_item);
-  }
-}
-
-void SetAnyValueFromDomainVariableInfo(const sup::oac_tree::VariableInfo& variable_info,
-                                       VariableItem& variable_item,
-                                       const anytype_registry_t* registry)
-{
-  if (auto attr = GetAttribute(variable_info, domainconstants::kTypeAttribute); attr.has_value())
+  if (auto attr = GetAttribute(attributes, domainconstants::kTypeAttribute); attr.has_value())
   {
     auto anytype = sup::gui::AnyTypeFromJSONString(attr.value(), registry);
 
-    auto get_anyvalue = [&anytype, &variable_info]()
+    auto get_anyvalue = [&anytype, &attributes]()
     {
-      if (auto value_attr = GetAttribute(variable_info, domainconstants::kValueAttribute);
+      if (auto value_attr = GetAttribute(attributes, domainconstants::kValueAttribute);
           value_attr.has_value())
       {
         return sup::gui::AnyValueFromJSONString(anytype, value_attr.value());

@@ -193,8 +193,9 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
 
   auto variable_item = CreateVariableItem(domainconstants::kLocalVariableType);
 
-  // initially VariableItem doesn't have AnyValueItem
-  EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+  // initially VariableItem has an empty AnyValueItem
+  EXPECT_EQ(variable_item->GetAnyValueItem()->GetType(),
+            mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
   const std::size_t unused_variable_index{0};
   UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, *variable_item);

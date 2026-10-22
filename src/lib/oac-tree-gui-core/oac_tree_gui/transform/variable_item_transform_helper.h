@@ -25,6 +25,7 @@
 //! Collection of helper functions to transform VariableItem from/to domain variables.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+#include <oac_tree_gui/domain/variable_descriptor.h>
 
 #include <memory>
 #include <string>
@@ -44,9 +45,36 @@ class WorkspaceItem;
 std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info);
 
 /**
+ * @brief Creates a variable item for the given node.
+ *
+ * Attributes of the descriptor become properties; mandatory ones are exposed. Attribute values of
+ * the node are set and exposed; attributes unknown to the descriptor become string properties.
+ * The JSON type and value attributes give the AnyValueItem; without type it is empty.
+ *
+ * @param node The variable node.
+ * @param registry Optional type registry containing already existing domain types.
+ * @return The variable item.
+ */
+std::unique_ptr<VariableItem> CreateVariableItem(const VariableNode& node,
+                                                 const anytype_registry_t* registry = nullptr);
+
+/**
  * @brief Creates a variable item for the given domain type, with the attributes of the type.
+ *
+ * @throw sup::oac_tree::InvalidOperationException if the type is not registered.
  */
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
+
+/**
+ * @brief Creates a domain variable from the given item.
+ *
+ * Exposed attributes, the name, and the JSON type and value if the AnyValue is not empty.
+ *
+ * @param item The variable item.
+ * @return The domain variable.
+ * @throw sup::oac_tree::InvalidOperationException if the domain type is not registered.
+ */
+std::unique_ptr<variable_t> CreateDomainVariable(const VariableItem& item);
 
 /**
  * @brief Populates empty workspace workspace item with variables from the automation server

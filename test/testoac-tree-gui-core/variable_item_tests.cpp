@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
+#include <oac_tree_gui/transform/variable_descriptor_helper.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
@@ -35,7 +36,6 @@
 #include <mvvm/model/property_item.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/oac-tree/exceptions.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/workspace.h>
 
@@ -66,7 +66,7 @@ TEST_F(VariableItemTest, InitialState)
   EXPECT_FALSE(item.IsAvailable());
 }
 
-//! SetDomainType sets up attributes and the display name; the item type stays.
+//! SetDomainType sets the domain type role only.
 TEST_F(VariableItemTest, SetDomainType)
 {
   VariableItem item;
@@ -74,58 +74,10 @@ TEST_F(VariableItemTest, SetDomainType)
 
   EXPECT_EQ(item.GetType(), mvvm::GetTypeName<VariableItem>());
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(item.GetDisplayName(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(item.GetDisplayName(), mvvm::GetTypeName<VariableItem>());
 
-  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable,
-                                                domainconstants::kDynamicTypeAttribute,
-                                                itemconstants::kAnyValueTag});
+  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
-
-  item.SetDisplayName("abc");
-  auto domain_variable = item.CreateDomainVariable();
-  EXPECT_EQ(domain_variable->GetType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
-
-  // the item can be set up only once
-  EXPECT_THROW(item.SetDomainType(domainconstants::kFileVariableType), LogicErrorException);
-}
-
-//! Initialisation from default constructed domain variable.
-TEST_F(VariableItemTest, InitFromDomain)
-{
-  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-
-  VariableItem item;
-  item.InitFromDomain(domain_variable.get());
-
-  EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(item.GetDisplayName(), domainconstants::kLocalVariableType);
-
-  // registered tags: dynamicType attribute and AnyValueTag (json type and value are filtered out)
-  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable,
-                                                domainconstants::kDynamicTypeAttribute,
-                                                itemconstants::kAnyValueTag});
-  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
-
-  auto properties = mvvm::utils::SinglePropertyItems(item);
-  ASSERT_EQ(properties.size(), 1);
-  EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
-  EXPECT_EQ(item.Property<bool>(domainconstants::kDynamicTypeAttribute), false);
-
-  // setting up domain variable and repeat initialisation
-  domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
-  const workspace_t workspace;
-  domain_variable->Setup(workspace);
-  EXPECT_NO_THROW(item.InitFromDomain(domain_variable.get()));
-
-  EXPECT_EQ(item.GetDisplayName(), std::string("abc"));
-}
-
-//! Attempt to create domain variable using uninitialized item.
-TEST_F(VariableItemTest, AttemptToCreateDomainVariable)
-{
-  const VariableItem item;
-  EXPECT_THROW(item.CreateDomainVariable(), sup::oac_tree::InvalidOperationException);
 }
 
 //! Clone keeps the domain type, the attributes and the AnyValue.
@@ -176,7 +128,7 @@ TEST_F(VariableItemTest, ChannelAccessVariablePropertyAppearance)
   auto item = CreateVariableItem(domainconstants::kChannelAccessVariableType);
   auto children = item->GetAllItems();
 
-  ASSERT_EQ(children.size(), 2);
+  ASSERT_EQ(children.size(), 3);
 
   auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
   ASSERT_NE(available, nullptr);
@@ -206,8 +158,7 @@ TEST_F(VariableItemTest, ChannelAccessVariableFromDomain)
   const workspace_t workspace;
   ca_variable->Setup(workspace);
 
-  auto item = CreateVariableItem(domainconstants::kChannelAccessVariableType);
-  item->InitFromDomain(ca_variable.get());
+  auto item = CreateVariableItem(CreateVariableNode(*ca_variable));
 
   EXPECT_EQ(item->GetName(), expected_name);
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kChannelAttribute), expected_channel);
@@ -236,7 +187,7 @@ TEST_F(VariableItemTest, ChannelAccessVariableToDomain)
     const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, *item);
 
-    auto domain_item = item->CreateDomainVariable();
+    auto domain_item = CreateDomainVariable(*item);
     EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute),
@@ -268,7 +219,7 @@ TEST_F(VariableItemTest, FileVariablePropertyAppearance)
   auto item = CreateVariableItem(domainconstants::kFileVariableType);
   auto children = item->GetAllItems();
 
-  ASSERT_EQ(children.size(), 3);
+  ASSERT_EQ(children.size(), 4);
 
   auto available_name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
   ASSERT_NE(available_name, nullptr);
@@ -294,8 +245,7 @@ TEST_F(VariableItemTest, FileVariableFromDomain)
   const workspace_t workspace;
   local_variable->Setup(workspace);  // to propagate string attributes to AnyValues
 
-  auto item = CreateVariableItem(domainconstants::kFileVariableType);
-  item->InitFromDomain(local_variable.get());
+  auto item = CreateVariableItem(CreateVariableNode(*local_variable));
 
   EXPECT_EQ(item->GetName(), expected_name);
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kFileNameAttribute),
@@ -311,7 +261,7 @@ TEST_F(VariableItemTest, FileVariableToDomain)
   item->SetName(expected_name);
   item->SetAttribute(domainconstants::kFileNameAttribute, expected_file_name);
 
-  auto domain_item = item->CreateDomainVariable();
+  auto domain_item = CreateDomainVariable(*item);
   EXPECT_EQ(domain_item->GetType(), domainconstants::kFileVariableType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFileNameAttribute),
@@ -325,14 +275,12 @@ TEST_F(VariableItemTest, LocalVariable)
 {
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
   EXPECT_FALSE(item->GetName().empty());
-  EXPECT_EQ(item->GetAnyValueItem(), nullptr);
+  ASSERT_NE(item->GetAnyValueItem(), nullptr);
+  EXPECT_EQ(item->GetAnyValueItem()->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
   EXPECT_FALSE(item->IsAvailable());
 
   item->SetName("abc");
   EXPECT_EQ(item->GetName(), std::string("abc"));
-
-  auto anyvalue_item = item->InsertItem<sup::gui::AnyValueScalarItem>({});
-  EXPECT_EQ(item->GetAnyValueItem(), anyvalue_item);
 
   EXPECT_NO_THROW(item->SetIsAvailable(true));
   EXPECT_TRUE(item->IsAvailable());
@@ -343,7 +291,7 @@ TEST_F(VariableItemTest, LocalVariablePropertyAppearance)
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
   auto children = item->GetAllItems();
 
-  ASSERT_EQ(children.size(), 2);
+  ASSERT_EQ(children.size(), 3);
 
   auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(dynamic_type_item, nullptr);
@@ -365,8 +313,7 @@ TEST_F(VariableItemTest, LocalVariableFromDomain)
   const workspace_t workspace;
   local_variable->Setup(workspace);
 
-  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-  item->InitFromDomain(local_variable.get());
+  auto item = CreateVariableItem(CreateVariableNode(*local_variable));
 
   EXPECT_EQ(item->GetName(), expected_name);
 
@@ -387,7 +334,7 @@ TEST_F(VariableItemTest, LocalVariableToDomain)
     const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, *item);
 
-    auto domain_item = item->CreateDomainVariable();
+    auto domain_item = CreateDomainVariable(*item);
     EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
 
     EXPECT_EQ(domain_item->GetStringAttributes().size(), 3);
@@ -400,12 +347,12 @@ TEST_F(VariableItemTest, LocalVariableToDomain)
     EXPECT_NO_THROW(domain_item->Setup(workspace));
   }
 
-  {  // case when AnyValueItem is not set
+  {  // case when AnyValueItem is empty
     auto item = CreateVariableItem(domainconstants::kLocalVariableType);
     item->SetName(expected_name);
-    EXPECT_EQ(item->GetAnyValueItem(), nullptr);
+    EXPECT_EQ(item->GetAnyValueItem()->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
-    auto domain_item = item->CreateDomainVariable();
+    auto domain_item = CreateDomainVariable(*item);
     EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
 
     EXPECT_EQ(domain_item->GetStringAttributes().size(), 1);
@@ -461,8 +408,7 @@ TEST_F(VariableItemTest, PvAccessClientVariableFromDomain)
   const workspace_t workspace;
   pv_variable->Setup(workspace);
 
-  auto item = CreateVariableItem(domainconstants::kPvAccessClientVariableType);
-  item->InitFromDomain(pv_variable.get());
+  auto item = CreateVariableItem(CreateVariableNode(*pv_variable));
 
   EXPECT_EQ(item->GetName(), expected_name);
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kChannelAttribute), expected_channel);
@@ -490,7 +436,7 @@ TEST_F(VariableItemTest, PvAccessClientVariableToDomain)
     const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, *item);
 
-    auto domain_item = item->CreateDomainVariable();
+    auto domain_item = CreateDomainVariable(*item);
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessClientVariableType);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute),
@@ -540,8 +486,7 @@ TEST_F(VariableItemTest, PvAccessServerVariableFromDomain)
   const workspace_t workspace;
   pvxs_variable->Setup(workspace);
 
-  auto item = CreateVariableItem(domainconstants::kPvAccessServerVariableType);
-  item->InitFromDomain(pvxs_variable.get());
+  auto item = CreateVariableItem(CreateVariableNode(*pvxs_variable));
 
   EXPECT_EQ(item->GetName(), expected_name);
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kChannelAttribute), expected_channel);
@@ -571,7 +516,7 @@ TEST_F(VariableItemTest, PvAccessServerVariableToDomain)
     const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, *item);
 
-    auto domain_item = item->CreateDomainVariable();
+    auto domain_item = CreateDomainVariable(*item);
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessServerVariableType);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute),

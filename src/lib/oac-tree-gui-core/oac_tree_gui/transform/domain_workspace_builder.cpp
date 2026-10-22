@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
+#include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/workspace.h>
@@ -45,7 +46,7 @@ void DomainWorkspaceBuilder::PopulateDomainWorkspace(const WorkspaceItem* item,
 
   for (const auto variable_item : item->GetVariables())
   {
-    auto domain_variable = variable_item->CreateDomainVariable();
+    auto domain_variable = CreateDomainVariable(*variable_item);
 
     auto iter = m_domain_name_to_item.find(variable_item->GetName());
     if (iter != m_domain_name_to_item.end())

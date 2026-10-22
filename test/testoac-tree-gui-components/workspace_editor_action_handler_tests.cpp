@@ -284,14 +284,14 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
 }
 
-//! Variable initially doesn't have any value defined.
-TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelectedAndAnyValueIsAbsent)
+//! Variable initially has an empty AnyValueItem, i.e. not set.
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelectedAndAnyValueIsEmpty)
 {
   const bool dialog_was_acccepted = true;
 
-  // creating variable with AnyValue on board
   auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
-  const sup::gui::AnyValueItem* initial_anyvalue_item{nullptr};
+  const auto* initial_anyvalue_item = var0->GetAnyValueItem();
+  EXPECT_EQ(initial_anyvalue_item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 
   // item mimicking editing result
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
@@ -387,28 +387,30 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var0)));
 }
 
-//! Variable without AnyValueItem, the dialog returns no item: the variable gets an empty one.
-TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsAbsentAndNotCreated)
+//! Variable with an empty AnyValueItem, the dialog returns no item: the variable gets a new empty
+//! one.
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsEmptyAndNotCreated)
 {
   const bool dialog_was_acccepted = true;
 
   auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
-  EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
+  const auto* initial_anyvalue_item = var0->GetAnyValueItem();
 
   std::unique_ptr<sup::gui::AnyValueItem> editing_result;
   AnyValueDialogResult dialog_result{dialog_was_acccepted, std::move(editing_result)};
-  ON_CALL(m_mock_context, OnEditAnyvalue(nullptr))
+  ON_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item))
       .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
 
   auto handler = CreateActionHandler({var0});
 
   EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(0);
-  EXPECT_CALL(m_mock_context, OnEditAnyvalue(nullptr)).Times(1);
+  EXPECT_CALL(m_mock_context, OnEditAnyvalue(initial_anyvalue_item)).Times(1);
 
   handler->EditAnyValue();
 
   auto anyvalue_item = var0->GetAnyValueItem();
   ASSERT_NE(anyvalue_item, nullptr);
+  EXPECT_NE(anyvalue_item, initial_anyvalue_item);
   EXPECT_EQ(anyvalue_item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
 }
 
@@ -441,37 +443,6 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
 
   // checking that previous item remained the same
   EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
-}
-
-//! Full scenario: editing AnyValueItem on board of a Local variable that doesn't have any
-//! AnyValueItem yet.
-TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExists)
-{
-  const bool dialog_was_acccepted = true;
-
-  // creating variable with AnyValue on board
-  auto var0 = InsertVariable(domainconstants::kLocalVariableType, GetWorkspaceItem());
-  EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
-
-  // item mimicking editing result
-  auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
-  auto editing_result_ptr = editing_result.get();
-  AnyValueDialogResult dialog_result{dialog_was_acccepted, std::move(editing_result)};
-
-  ON_CALL(m_mock_context, OnEditAnyvalue(nullptr))
-      .WillByDefault(::testing::Return(::testing::ByMove(std::move(dialog_result))));
-
-  // preparing handler
-  auto handler = CreateActionHandler({var0});
-
-  // expecting call to editing widget
-  EXPECT_CALL(m_mock_context, OnEditAnyvalue(::testing::_)).Times(1);
-
-  // editing request
-  handler->EditAnyValue();
-
-  // checking that variable got new AnyValueItem
-  EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
 }
 
 //! Adding SystemClock variable to the model. It has no dedicated GUI variable class. We check that
