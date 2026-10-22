@@ -24,8 +24,6 @@
 //! @file
 //! Functions to find property items of sequencer items.
 
-#include <string>
-
 namespace mvvm
 {
 class SessionItem;
@@ -33,14 +31,6 @@ class SessionItem;
 
 namespace oac_tree_gui
 {
-
-/**
- * @brief Returns an item representing a property with a given tag, or nullptr if the given parent
- * doesn't have such property registered.
- */
-const mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag);
-
-mvvm::SessionItem* GetPropertyItem(mvvm::SessionItem& parent, const std::string& tag);
 
 /**
  * @brief Returns an item representing a status property, or nullptr if the given parent doesn't

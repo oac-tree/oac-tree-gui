@@ -28,58 +28,47 @@
 namespace oac_tree_gui
 {
 
-const mvvm::SessionItem* GetPropertyItem(const mvvm::SessionItem& parent, const std::string& tag)
-{
-  // FindItem is total, it returns nullptr when the tag is not registered
-  return parent.FindItem(tag);
-}
-
-mvvm::SessionItem* GetPropertyItem(mvvm::SessionItem& parent, const std::string& tag)
-{
-  return parent.FindItem(tag);
-}
-
 const mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, itemconstants::kStatus);
+  return parent.FindItem(itemconstants::kStatus);
 }
 
 mvvm::SessionItem* GetStatusItem(mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, itemconstants::kStatus);
+  return parent.FindItem(itemconstants::kStatus);
 }
 
 const mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, itemconstants::kBreakpoint);
+  return parent.FindItem(itemconstants::kBreakpoint);
 }
 
 mvvm::SessionItem* GetBreakpointItem(mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, itemconstants::kBreakpoint);
+  return parent.FindItem(itemconstants::kBreakpoint);
 }
 
 const mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, itemconstants::kIsAvailable);
+  return parent.FindItem(itemconstants::kIsAvailable);
 }
 
 mvvm::SessionItem* GetIsAvailableItem(mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, itemconstants::kIsAvailable);
+  return parent.FindItem(itemconstants::kIsAvailable);
 }
 
 const mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent)
 {
-  const auto* attributes = GetPropertyItem(parent, itemconstants::kAttributes);
-  return (attributes != nullptr) ? GetPropertyItem(*attributes, domainconstants::kChannelAttribute)
+  const auto* attributes = parent.FindItem(itemconstants::kAttributes);
+  return (attributes != nullptr) ? attributes->FindItem(domainconstants::kChannelAttribute)
                                  : nullptr;
 }
 
 mvvm::SessionItem* GetChannelItem(mvvm::SessionItem& parent)
 {
-  auto* attributes = GetPropertyItem(parent, itemconstants::kAttributes);
-  return (attributes != nullptr) ? GetPropertyItem(*attributes, domainconstants::kChannelAttribute)
+  auto* attributes = parent.FindItem(itemconstants::kAttributes);
+  return (attributes != nullptr) ? attributes->FindItem(domainconstants::kChannelAttribute)
                                  : nullptr;
 }
 

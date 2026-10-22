@@ -83,8 +83,7 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<ServerGroupItem>());
 }
 
-
-TEST_F(SequencerItemHelperTest, GetPropertyItem)
+TEST_F(SequencerItemHelperTest, PropertyItemGetters)
 {
   // item doesn't have property items
   const mvvm::SessionItem item;

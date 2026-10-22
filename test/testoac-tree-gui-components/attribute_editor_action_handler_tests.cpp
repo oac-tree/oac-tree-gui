@@ -26,7 +26,6 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
@@ -88,8 +87,7 @@ TEST_F(AttributeEditorActionHandlerTest, WhenNothingIsSelectedHandlerCanNotPerfo
 TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelected)
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
-  auto timeout_attribute =
-      GetPropertyItem(*item->GetAttributes(), domainconstants::kTimeoutAttribute);
+  auto timeout_attribute = item->GetAttributes()->FindItem(domainconstants::kTimeoutAttribute);
 
   auto handler = CreateActionHandler(timeout_attribute);
 
@@ -106,7 +104,7 @@ TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelected)
 TEST_F(AttributeEditorActionHandlerTest, StringAttributeSelected)
 {
   auto item = CreateInstructionItem(domainconstants::kIncludeInstructionType);
-  auto path_attribute = GetPropertyItem(*item->GetAttributes(), domainconstants::kPathAttribute);
+  auto path_attribute = item->GetAttributes()->FindItem(domainconstants::kPathAttribute);
 
   auto handler = CreateActionHandler(path_attribute);
 
@@ -118,7 +116,7 @@ TEST_F(AttributeEditorActionHandlerTest, ShowCollapsedAttributeSelected)
 {
   auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
   auto show_collapsed_attribute =
-      GetPropertyItem(*item->GetAttributes(), domainconstants::kShowCollapsedAttribute);
+      item->GetAttributes()->FindItem(domainconstants::kShowCollapsedAttribute);
 
   auto handler = CreateActionHandler(show_collapsed_attribute);
 
@@ -175,7 +173,7 @@ TEST_F(AttributeEditorActionHandlerTest, TurningInstructionAttributeIntoPlacehol
 {
   auto item = CreateInstructionItem(domainconstants::kWaitInstructionType);
   auto timeout_attribute = dynamic_cast<AttributeItem*>(
-      GetPropertyItem(*item->GetAttributes(), domainconstants::kTimeoutAttribute));
+      item->GetAttributes()->FindItem(domainconstants::kTimeoutAttribute));
   ASSERT_NE(timeout_attribute, nullptr);
 
   auto handler = CreateActionHandler(timeout_attribute);
