@@ -35,12 +35,14 @@
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/operation/breakpoint_helper.h>
+#include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/signals/event_types.h>
 #include <mvvm/test/mock_item_listener.h>
 #include <mvvm/test/mock_model_listener.h>
 
+#include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/exceptions.h>
 
 #include <gtest/gtest.h>
@@ -301,8 +303,8 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   }
   else
   {
-    EXPECT_EQ(var_inside0->GetAnyValueItem(), nullptr);
-    EXPECT_EQ(var_inside1->GetAnyValueItem(), nullptr);
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
   }
 
   job_handler.Start();
@@ -560,8 +562,8 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   }
   else
   {
-    EXPECT_EQ(var_inside0->GetAnyValueItem(), nullptr);
-    EXPECT_EQ(var_inside1->GetAnyValueItem(), nullptr);
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
   }
 
   job_handler.Start();
@@ -606,8 +608,8 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   }
   else
   {
-    EXPECT_EQ(var_inside0->GetAnyValueItem(), nullptr);
-    EXPECT_EQ(var_inside1->GetAnyValueItem(), nullptr);
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside0)));
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
   }
 
   // breakpoint on second increment will make it stop just before

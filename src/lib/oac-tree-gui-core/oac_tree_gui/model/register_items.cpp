@@ -34,7 +34,6 @@ void RegisterSessionItems()
 
   // variables
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::VariableItem>();
-  (void)mvvm::RegisterGlobalItem<oac_tree_gui::VariableInfoItem>();
 
   // other items
   (void)mvvm::RegisterGlobalItem<oac_tree_gui::AttributeItem>();

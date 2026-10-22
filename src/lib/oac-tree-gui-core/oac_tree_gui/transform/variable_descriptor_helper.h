@@ -76,8 +76,8 @@ VariableNode CreateVariableNode(const variable_t& variable);
 /**
  * @brief Creates a node from the automation server information.
  *
- * The node gets an info descriptor, the attributes and the index of the info. No plugin is
- * needed.
+ * The node gets an info descriptor, the attributes and the index of the info. The JSON type and
+ * value attributes are kept only if kProvideVariableInfoInitialValue is set. No plugin is needed.
  *
  * @param info The variable information.
  * @return The variable node.

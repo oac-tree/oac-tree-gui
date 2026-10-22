@@ -38,13 +38,6 @@ class VariableItem;
 class WorkspaceItem;
 
 /**
- * @brief Creates VariableInfoItem from the automation server information.
- *
- * The underlying type will be VariableInfoItem.
- */
-std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info);
-
-/**
  * @brief Creates a variable item for the given node.
  *
  * Attributes of the descriptor become properties; mandatory ones are exposed. Attribute values of

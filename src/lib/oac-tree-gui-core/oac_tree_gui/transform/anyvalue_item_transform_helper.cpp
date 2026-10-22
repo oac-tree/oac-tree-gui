@@ -112,7 +112,10 @@ void SetAnyValueFromJsonString(const std::string& type_json, const std::string& 
 
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item)
 {
-  if (auto existing_anyvalue_item = variable_item.GetAnyValueItem(); existing_anyvalue_item)
+  // an empty AnyValueItem has no layout to update
+  if (auto existing_anyvalue_item = variable_item.GetAnyValueItem();
+      existing_anyvalue_item != nullptr
+      && existing_anyvalue_item->GetType() != mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>())
   {
     // If AnyValueItem already exists, we assume that its layout coincide with AnyValue.
 

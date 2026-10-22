@@ -24,7 +24,6 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -152,14 +151,6 @@ std::vector<const sup::gui::AnyValueItem*> GetAttributeProperties(const Variable
 
 }  // namespace
 
-std::unique_ptr<VariableItem> CreateVariableInfoItem(const sup::oac_tree::VariableInfo& info)
-{
-  auto result = std::make_unique<VariableInfoItem>();
-  result->InitFromDomainInfo(info);
-
-  return result;
-}
-
 std::unique_ptr<VariableItem> CreateVariableItem(const VariableNode& node,
                                                  const anytype_registry_t* registry)
 {
@@ -206,7 +197,7 @@ std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::WorkspaceI
   for (const auto& name_and_info : info.GetVariableInfos())
   {
     const auto& variable_info = name_and_info.second;
-    auto variable_item = CreateVariableInfoItem(variable_info);
+    auto variable_item = CreateVariableItem(CreateVariableNode(variable_info));
     auto variable_item_ptr = variable_item.get();
     index_to_variable_item[static_cast<std::size_t>(variable_info.GetIndex())] = variable_item_ptr;
     (void)workspace_item->InsertItem(std::move(variable_item), mvvm::TagIndex::Append());

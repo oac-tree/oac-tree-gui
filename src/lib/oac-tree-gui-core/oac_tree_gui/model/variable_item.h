@@ -108,16 +108,6 @@ public:
    */
   void SetIsAvailable(bool value);
 
-protected:
-  /**
-   * @brief Constructor for derived items with their own type name.
-   */
-  explicit VariableItem(const std::string& item_type);
-
-  /**
-   * @brief Provides tag registration for AnyValueItem insertion.
-   */
-  void RegisterAnyValueItemTag();
 };
 
 template <typename T>

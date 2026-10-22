@@ -114,7 +114,7 @@ std::vector<InstructionItem*> FindInstructions(mvvm::ISessionModel& model,
                                                const std::string& domain_type);
 
 /**
- * @brief Creates VariableItem from string representing the type of sup::oac_tree::Variable.
+ * @brief Creates VariableItem from the VariableInfo of a domain variable, as for jobs.
  */
 std::unique_ptr<VariableItem> CreateVariableInfoItem(const std::string& domain_type,
                                                      sup::dto::uint32 index = 0U,

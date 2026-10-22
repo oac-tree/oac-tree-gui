@@ -55,8 +55,6 @@ target_sources(${library_name} PRIVATE
   standard_job_items.h
   text_edit_item.cpp
   text_edit_item.h
-  variable_info_item.cpp
-  variable_info_item.h
   variable_item.cpp
   variable_item.h
   workspace_item.cpp

@@ -20,11 +20,15 @@
 
 #include "variable_descriptor_helper.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_descriptor_helper.h>
 
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_info.h>
+
+#include <algorithm>
 
 namespace oac_tree_gui
 {
@@ -59,7 +63,19 @@ VariableNode CreateVariableNode(const variable_t& variable)
 
 VariableNode CreateVariableNode(const sup::oac_tree::VariableInfo& info)
 {
-  return {CreateVariableDescriptor(info), info.GetAttributes(), info.GetIndex()};
+  VariableNode result{CreateVariableDescriptor(info), info.GetAttributes(), info.GetIndex()};
+  if constexpr (!itemconstants::kProvideVariableInfoInitialValue)
+  {
+    auto is_anyvalue_attribute = [](const auto& attribute)
+    {
+      return attribute.first == domainconstants::kTypeAttribute
+             || attribute.first == domainconstants::kValueAttribute;
+    };
+    (void)result.attributes.erase(
+        std::remove_if(result.attributes.begin(), result.attributes.end(), is_anyvalue_attribute),
+        result.attributes.end());
+  }
+  return result;
 }
 
 }  // namespace oac_tree_gui

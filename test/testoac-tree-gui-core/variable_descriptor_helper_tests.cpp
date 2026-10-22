@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/attribute_descriptor_helper.h>
 
 #include <sup/oac-tree/exceptions.h>
@@ -184,6 +185,29 @@ TEST_F(VariableDescriptorHelperTest, NodeFromVariableInfo)
   EXPECT_TRUE(node.descriptor.attributes.empty());
   EXPECT_EQ(node.attributes, attributes);
   EXPECT_EQ(node.index, 3);
+}
+
+//! Node from variable info: JSON type and value are kept only if the initial value is provided.
+TEST_F(VariableDescriptorHelperTest, NodeFromVariableInfoWithTypeAndValue)
+{
+  const std::vector<sup::oac_tree::AttributeInfo> attributes{
+      {domainconstants::kNameAttribute, "var0"},
+      {domainconstants::kTypeAttribute, R"({"type":"uint32"})"},
+      {domainconstants::kValueAttribute, "42"}};
+  const sup::oac_tree::VariableInfo info(domainconstants::kLocalVariableType, 0, attributes);
+
+  const auto node = CreateVariableNode(info);
+
+  if (itemconstants::kProvideVariableInfoInitialValue)
+  {
+    EXPECT_EQ(node.attributes, attributes);
+  }
+  else
+  {
+    const std::vector<sup::oac_tree::AttributeInfo> expected_attributes{
+        {domainconstants::kNameAttribute, "var0"}};
+    EXPECT_EQ(node.attributes, expected_attributes);
+  }
 }
 
 }  // namespace oac_tree_gui::test

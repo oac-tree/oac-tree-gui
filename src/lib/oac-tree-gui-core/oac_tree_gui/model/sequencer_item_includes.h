@@ -34,7 +34,6 @@
 #include <oac_tree_gui/model/server_info_items.h>
 #include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/model/text_edit_item.h>
-#include <oac_tree_gui/model/variable_info_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 

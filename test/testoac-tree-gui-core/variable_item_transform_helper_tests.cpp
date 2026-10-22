@@ -24,7 +24,7 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/variable_info_item.h>
+#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
@@ -55,9 +55,10 @@ class VariableItemTransformHelperTest : public ::testing::Test
 {
 };
 
-TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
+//! Item from variable info, as for jobs.
+TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromInfo)
 {
-  const std::size_t variable_id{0};
+  const sup::dto::uint32 variable_id{0};
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
@@ -69,22 +70,55 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableInfoItem)
   const sup::oac_tree::VariableInfo info(domainconstants::kLocalVariableType, variable_id,
                                          attributes);
 
-  auto variable_item = ::oac_tree_gui::CreateVariableInfoItem(info);
+  auto variable_item = CreateVariableItem(CreateVariableNode(info));
 
-  EXPECT_EQ(variable_item->GetType(), mvvm::GetTypeName<VariableInfoItem>());
+  EXPECT_EQ(variable_item->GetType(), mvvm::GetTypeName<VariableItem>());
   EXPECT_EQ(variable_item->GetDomainType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
+  EXPECT_FALSE(variable_item->IsAvailable());
+
+  // JSON type and value are not properties
+  const std::vector<std::string> expected_tags(
+      {itemconstants::kIsAvailable, itemconstants::kAnyValueTag});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(*variable_item), expected_tags);
 
   if (itemconstants::kProvideVariableInfoInitialValue)
   {
-    EXPECT_NE(variable_item->GetAnyValueItem(), nullptr);
-    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+    const sup::dto::AnyValue expected_anyvalue(sup::dto::UnsignedInteger32Type, 42);
     EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
   }
   else
   {
-    EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+    ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
+    EXPECT_EQ(variable_item->GetAnyValueItem()->GetType(),
+              mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
   }
+}
+
+//! Item from variable info: attributes are strings. No plugin is needed.
+TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromInfoWithAttributes)
+{
+  const std::vector<sup::oac_tree::AttributeInfo> attributes(
+      {{domainconstants::kNameAttribute, "abc"},
+       {domainconstants::kChannelAttribute, "CHANNEL"},
+       {"custom", "42"}});
+  const sup::oac_tree::VariableInfo info("UnknownVariable", 0, attributes);
+
+  auto variable_item = CreateVariableItem(CreateVariableNode(info));
+
+  EXPECT_EQ(variable_item->GetDomainType(), "UnknownVariable");
+  EXPECT_EQ(variable_item->GetName(), "abc");
+
+  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable,
+                                                itemconstants::kAnyValueTag,
+                                                domainconstants::kChannelAttribute, "custom"});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(*variable_item), expected_tags);
+
+  auto* channel = GetChannelItem(*variable_item);
+  ASSERT_NE(channel, nullptr);
+  EXPECT_EQ(channel->Data<std::string>(), "CHANNEL");
+
+  EXPECT_EQ(variable_item->GetAttribute<std::string>("custom"), "42");
 }
 
 //! One item type for all domain variable types.
@@ -270,8 +304,8 @@ TEST_F(VariableItemTransformHelperTest, PopulateWorkspaceItem)
   }
   else
   {
-    EXPECT_EQ(variable_items[0]->GetAnyValueItem(), nullptr);
-    EXPECT_EQ(variable_items[1]->GetAnyValueItem(), nullptr);
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*variable_items[0])));
+    EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*variable_items[1])));
   }
 }
 

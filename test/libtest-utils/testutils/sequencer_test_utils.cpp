@@ -25,6 +25,7 @@
 #include <oac_tree_gui/domain/domain_helper.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/variable_item.h>
+#include <oac_tree_gui/transform/variable_descriptor_helper.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
@@ -215,7 +216,7 @@ std::unique_ptr<VariableItem> CreateVariableInfoItem(const std::string& domain_t
 
   auto info = ::oac_tree_gui::CreateVariableInfo(*domain, index);
 
-  return ::oac_tree_gui::CreateVariableInfoItem(info);
+  return CreateVariableItem(CreateVariableNode(info));
 }
 
 }  // namespace oac_tree_gui::test

@@ -25,16 +25,13 @@
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/anyvalue_item_utils.h>
 
 #include <mvvm/model/make_clone.h>
 
 namespace oac_tree_gui
 {
 
-VariableItem::VariableItem() : VariableItem(std::string(mvvm::GetTypeName<VariableItem>())) {}
-
-VariableItem::VariableItem(const std::string& item_type) : CompoundItem(item_type)
+VariableItem::VariableItem() : CompoundItem(mvvm::GetTypeName<VariableItem>())
 {
   (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
   (void)AddProperty(itemconstants::kIsAvailable, false)
@@ -106,11 +103,6 @@ bool VariableItem::IsAvailable() const
 void VariableItem::SetIsAvailable(bool value)
 {
   (void)SetProperty(itemconstants::kIsAvailable, value);
-}
-
-void VariableItem::RegisterAnyValueItemTag()
-{
-  RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 }
 
 }  // namespace oac_tree_gui
