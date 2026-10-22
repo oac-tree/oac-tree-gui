@@ -28,7 +28,6 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/instruction_item_transform_helper.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
@@ -78,8 +77,6 @@ TEST_F(AttributeEditorActionHandlerTest, WhenNothingIsSelectedHandlerCanNotPerfo
   // no items are selected in the property editor
   auto handler = CreateActionHandler(nullptr);
 
-  EXPECT_FALSE(handler->CanToggleExposedFlag());
-  EXPECT_FALSE(handler->CanSetDefaultType());
   EXPECT_FALSE(handler->CanSetPlaceholderType());
   EXPECT_FALSE(handler->CanEditAnyValue());
 }
@@ -91,10 +88,6 @@ TEST_F(AttributeEditorActionHandlerTest, TimeoutAttributeSelected)
 
   auto handler = CreateActionHandler(timeout_attribute);
 
-  // instruction attribute: no exposed flag, no default type action
-  EXPECT_FALSE(handler->CanToggleExposedFlag());
-  EXPECT_FALSE(handler->GetExposedFlag());
-  EXPECT_FALSE(handler->CanSetDefaultType());
   EXPECT_TRUE(handler->CanSetPlaceholderType());
 
   // it is not possible to call external editor
@@ -126,7 +119,7 @@ TEST_F(AttributeEditorActionHandlerTest, ShowCollapsedAttributeSelected)
   EXPECT_FALSE(show_collapsed_attribute->HasData());
 }
 
-//! Variable attribute takes no text and has no exposed flag.
+//! Variable attribute takes no text.
 TEST_F(AttributeEditorActionHandlerTest, VariableAttributeSelected)
 {
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
@@ -135,9 +128,6 @@ TEST_F(AttributeEditorActionHandlerTest, VariableAttributeSelected)
 
   auto handler = CreateActionHandler(dynamic_type_attribute);
 
-  EXPECT_FALSE(handler->CanToggleExposedFlag());
-  EXPECT_FALSE(handler->GetExposedFlag());
-  EXPECT_FALSE(handler->CanSetDefaultType());
   EXPECT_FALSE(handler->CanSetPlaceholderType());
   EXPECT_FALSE(handler->CanEditAnyValue());
 
@@ -152,12 +142,7 @@ TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 
   auto handler = CreateActionHandler(item->GetAnyValueItem());
 
-  // AnyValue items have no exposed flag
-  EXPECT_FALSE(handler->CanToggleExposedFlag());
-  EXPECT_FALSE(handler->GetExposedFlag());
-
-  // it is not possible to replace types with placeholders
-  EXPECT_FALSE(handler->CanSetDefaultType());
+  // it is not possible to replace AnyValue with a placeholder
   EXPECT_FALSE(handler->CanSetPlaceholderType());
 
   // it is possible to call external editor
@@ -177,13 +162,6 @@ TEST_F(AttributeEditorActionHandlerTest, InstructionAnyValueSelected)
 
   auto handler = CreateActionHandler(anyvalue_item);
 
-  EXPECT_FALSE(handler->CanToggleExposedFlag());
-  EXPECT_FALSE(handler->GetExposedFlag());
-
-  // toggling does nothing
-  handler->OnToggleExposedFlag();
-  EXPECT_TRUE(anyvalue_item->IsEnabled());
-  EXPECT_TRUE(anyvalue_item->IsEditable());
 
   EXPECT_TRUE(handler->CanEditAnyValue());
 }
@@ -206,23 +184,21 @@ TEST_F(AttributeEditorActionHandlerTest, TurningInstructionAttributeIntoPlacehol
   EXPECT_EQ(timeout_attribute->GetState(), AttributeState::kNotSet);
 }
 
-TEST_F(AttributeEditorActionHandlerTest, TuringScalarAttributeIntoPlaceholder)
+//! A field of a structured AnyValue is not an attribute: no actions.
+TEST_F(AttributeEditorActionHandlerTest, AnyValueFieldSelected)
 {
-  sup::gui::AnyValueScalarItem item;
-  item.SetAnyTypeName(sup::dto::kInt8TypeName);
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+  const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+  SetAnyValue(anyvalue, *item);
+  auto field = item->GetAnyValueItem()->GetChildren().at(0);
 
-  auto handler = CreateActionHandler(&item);
+  auto handler = CreateActionHandler(field);
 
-  // a scalar attribute keeps the exposed flag
-  EXPECT_TRUE(handler->CanToggleExposedFlag());
+  EXPECT_FALSE(handler->CanSetPlaceholderType());
+  EXPECT_FALSE(handler->CanEditAnyValue());
 
   handler->OnSetPlaceholderType();
-  EXPECT_EQ(item.Data<std::string>(), itemconstants::kDefaultPlaceholderAttributeValue);
-
-  handler->OnSetAsDefaultType();
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(field->Data<mvvm::int32>(), 42);
 }
 
 }  // namespace oac_tree_gui::test

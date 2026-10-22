@@ -74,10 +74,6 @@ void AttributeEditorActions::SetupMenu(QMenu& menu)
 {
   menu.setToolTipsVisible(true);
 
-  AddToggleExposedFlagAction(menu);
-
-  menu.addSeparator();
-  AddSetDefaultValueAction(menu);
   AddSetPlaceholderValueAction(menu);
 
   menu.addSeparator();
@@ -88,26 +84,6 @@ void AttributeEditorActions::OnAboutToShowMenu()
 {
   m_modify_attribute_menu->clear();
   SetupMenu(*m_modify_attribute_menu);
-}
-
-void AttributeEditorActions::AddToggleExposedFlagAction(QMenu& menu)
-{
-  auto result = menu.addAction("Attribute exposed flag");
-  result->setToolTip(
-      "Attribute with exposed flag set will be propagated to sequencer domain,\n"
-      "if flag is unchecked, the sequencer will not see it.");
-  result->setCheckable(true);
-  connect(result, &QAction::triggered, this, [this]() { m_handler->OnToggleExposedFlag(); });
-  result->setChecked(m_handler->GetExposedFlag());
-  result->setEnabled(m_handler->CanToggleExposedFlag());
-}
-
-void AttributeEditorActions::AddSetDefaultValueAction(QMenu& menu)
-{
-  auto action = menu.addAction("Set default value");
-  action->setToolTip("The attribute will be set to its default value");
-  connect(action, &QAction::triggered, this, [this]() { m_handler->OnSetAsDefaultType(); });
-  action->setEnabled(m_handler->CanSetDefaultType());
 }
 
 void AttributeEditorActions::AddSetPlaceholderValueAction(QMenu& menu)

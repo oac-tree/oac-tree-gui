@@ -23,11 +23,6 @@
 
 #include <oac_tree_gui/composer/attribute_editor_context.h>
 
-namespace sup::gui
-{
-class AnyValueItem;
-}  // namespace sup::gui
-
 namespace mvvm
 {
 class SessionItem;
@@ -57,49 +52,16 @@ public:
   AttributeEditorActionHandler& operator=(AttributeEditorActionHandler&&) = delete;
 
   /**
-   * @brief Checks if one can manipulate exposed flag for the currently selected attribute.
-   *
-   * Exposed attribute will be propagated to the sequencer domain. Variable attributes only. An
-   * instruction attribute without data and an empty AnyValue are not set.
-   */
-  bool CanToggleExposedFlag() const;
-
-  /**
-   * @brief Returns the value of the exposed flags for the currently selected attribute.
-   */
-  bool GetExposedFlag() const;
-
-  /**
-   * @brief Toggle currently selected attribute between expose/not expose.
-   */
-  void OnToggleExposedFlag();
-
-  /**
-   * @brief Checks if the currently selected attribute can be set to its default type.
-   *
-   * The default attribute type is what the oac-tree attribute system reports (string, integer,
-   * float, etc). The alternative is the so-called placeholder string-like $par attribute which is
-   * used in certain Include instruction scenario. Variable attributes only, an instruction
-   * attribute returns from text to a value by clearing the text.
-   */
-  bool CanSetDefaultType() const;
-
-  /**
-   * @brief Resets attribute to its default type.
-   * @see AttributeEditorActionHandler::CanSetDefaultType.
-   */
-  void OnSetAsDefaultType();
-
-  /**
    * @brief Checks if currently selected attribute can be switched to placeholder type.
    *
-   * Instruction attributes that accept text, and variable attributes.
+   * Attributes that accept text (`$par`, `@var`). The attribute returns to a value by clearing the
+   * text.
    */
   bool CanSetPlaceholderType() const;
 
   /**
-   * @brief Resets attribute to placeholder type.
-   * @see AttributeEditorActionHandler::CanSetDefaultType.
+   * @brief Sets the placeholder text to the currently selected attribute.
+   * @see AttributeEditorActionHandler::CanSetPlaceholderType.
    */
   void OnSetPlaceholderType();
 
@@ -119,17 +81,12 @@ private:
   mvvm::SessionItem* GetSelectedItem() const;
 
   /**
-   * @brief Returns currently selected instruction attribute, or nullptr.
+   * @brief Returns currently selected attribute, or nullptr.
    */
   AttributeItem* GetSelectedAttribute() const;
 
   /**
-   * @brief Returns currently selected AnyValueItem (variable attribute or AnyValue), or nullptr.
-   */
-  sup::gui::AnyValueItem* GetSelectedAnyValueItem() const;
-
-  /**
-   * @brief Checks if the currently selected attribute represents a full-fledged AnyValue.
+   * @brief Checks if the currently selected item is the AnyValue of an instruction or variable.
    */
   bool IsAnyValue() const;
 

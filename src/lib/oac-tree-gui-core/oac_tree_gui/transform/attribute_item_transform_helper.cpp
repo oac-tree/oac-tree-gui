@@ -29,7 +29,6 @@
 #include <sup/gui/model/anyvalue_utils.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
 
-#include <mvvm/model/item_utils.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/attribute_definition.h>
@@ -65,30 +64,6 @@ bool IsPlaceholderAttribute(const std::string& attribute_value)
 bool IsReferenceAttribute(const std::string& attribute_value)
 {
   return attribute_value.find_first_of('@') == 0;
-}
-
-bool GetAttributeExposedFlag(const mvvm::SessionItem &attribute_item)
-{
-  return attribute_item.IsEditable() && attribute_item.IsEnabled();
-}
-
-void SetAttributeExposedFlag(bool value, sup::gui::AnyValueItem& attribute_item)
-{
-  (void)attribute_item.SetEditable(value);
-  (void)attribute_item.SetEnabled(value);
-}
-
-void SetAttributeAsString(const std::string& value, sup::gui::AnyValueItem& attribute_item)
-{
-  // current convention is to keep original AnyTypeName after setting attribute as a string
-  (void)mvvm::utils::ReplaceData(attribute_item, mvvm::variant_t(value), mvvm::DataRole::kData);
-}
-
-void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item)
-{
-  (void)mvvm::utils::ReplaceData(
-      attribute_item, sup::gui::GetVariantFromScalarTypeName(attribute_item.GetAnyTypeName()),
-      mvvm::DataRole::kData);
 }
 
 void SetAttributeFromString(const std::string& attribute_string, AttributeItem& item)

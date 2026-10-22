@@ -93,16 +93,6 @@ private:
   void OnAboutToShowMenu();
 
   /**
-   * @brief Adds action to the menu which will toggle exposed flag.
-   */
-  void AddToggleExposedFlagAction(QMenu& menu);
-
-  /**
-   * @brief Adds action to set attribute default value.
-   */
-  void AddSetDefaultValueAction(QMenu& menu);
-
-  /**
    * @brief Adds action to set attribute placeholder value.
    */
   void AddSetPlaceholderValueAction(QMenu& menu);

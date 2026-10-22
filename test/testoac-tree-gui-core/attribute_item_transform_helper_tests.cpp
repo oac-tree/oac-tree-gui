@@ -25,7 +25,6 @@
 #include <oac_tree_gui/model/attribute_item.h>
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
@@ -57,67 +56,6 @@ TEST_F(AttributeItemTransformHelperTest, IsReferenceAttribute)
   EXPECT_TRUE(IsReferenceAttribute("@par"));
   EXPECT_FALSE(IsReferenceAttribute("par"));
   EXPECT_FALSE(IsReferenceAttribute(""));
-}
-
-TEST_F(AttributeItemTransformHelperTest, SetAttributeAsString)
-{
-  sup::gui::AnyValueScalarItem item;
-
-  item.SetAnyTypeName(sup::dto::kInt8TypeName);
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  SetAttributeAsString("abc", item);
-  EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
-  // current convention is to keep original AnyTypeName after setting attribute as a string
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  SetAttributeAsString("def", item);
-  // current convention is to keep original AnyTypeName after setting attribute as a string
-  EXPECT_EQ(item.Data<std::string>(), std::string("def"));
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-}
-
-TEST_F(AttributeItemTransformHelperTest, SetExposedFlag)
-{
-  sup::gui::AnyValueScalarItem item;
-
-  item.SetAnyTypeName(sup::dto::kInt8TypeName);
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  EXPECT_TRUE(GetAttributeExposedFlag(item));
-
-  SetAttributeExposedFlag(false, item);
-  EXPECT_FALSE(GetAttributeExposedFlag(item));
-  EXPECT_FALSE(item.IsEditable());
-  EXPECT_FALSE(item.IsEnabled());
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-}
-
-TEST_F(AttributeItemTransformHelperTest, SetAttributeFromTypeName)
-{
-  sup::gui::AnyValueScalarItem item;
-
-  item.SetAnyTypeName(sup::dto::kInt8TypeName);
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  SetAttributeExposedFlag(false, item);
-  EXPECT_FALSE(GetAttributeExposedFlag(item));
-  EXPECT_FALSE(item.IsEditable());
-  EXPECT_FALSE(item.IsEnabled());
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  SetAttributeFromTypeName(item);
-  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  // SetAttributeFromTypeName do not change present flags
-  EXPECT_FALSE(item.IsEditable());
-  EXPECT_FALSE(item.IsEnabled());
 }
 
 TEST_F(AttributeItemTransformHelperTest, HasAttributeDefinition)

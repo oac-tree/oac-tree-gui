@@ -23,8 +23,8 @@
 
 //! @file
 //! Collection of helper functions to transform VariableItem and InstructionItem properties
-//! from/to domain attributes. Instruction and variable attributes are AttributeItem. The functions
-//! on AnyValueItem serve the JSON type/value pair and the exposed flag of the attribute editor.
+//! from/to domain attributes. Instruction and variable attributes are AttributeItem; the JSON
+//! type/value pair is an AnyValueItem.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
@@ -46,44 +46,6 @@ bool IsPlaceholderAttribute(const std::string& attribute_value);
  * @brief Returns true if given attribute value is referring to `@variable`.
  */
 bool IsReferenceAttribute(const std::string& attribute_value);
-
-/**
- * @brief Returns true if this attribute item is marked as exposed.
- *
- * The flag determines whether the attribute should be propagated into the domain. The
- * item with exposed flag set to false appears disabled (in gray) and non-editable.
- *
- * @param attribute_item The item to set attribute.
- * @return Boolean representing the value of exposed flag.
- */
-bool GetAttributeExposedFlag(const mvvm::SessionItem& attribute_item);
-
-/**
- * @brief Sets attribute exposed flag to a given value.
- *
- * The flag determines whether the attribute should be propagated into the domain. The
- * item with exposedt flag set to false appears disabled (in gray) and non-editable.
- *
- * @param value The value of exposed flag.
- * @param attribute_item The item to set the flag.
- */
-void SetAttributeExposedFlag(bool value, sup::gui::AnyValueItem& attribute_item);
-
-/**
- * @brief Sets attribute value as string.
- *
- * Internal data will be replaced with a string. This can happen when corresponding
- * domain attribute contains is a placeholder or a reference to variable name.
- *
- * @param value The string wich will be used as new attribute value.
- * @param attribute_item The item to set attribute.
- */
-void SetAttributeAsString(const std::string& value, sup::gui::AnyValueItem& attribute_item);
-
-/**
- * @brief Sets default constructed attribute value from AnyType name.
- */
-void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item);
 
 /**
  * @brief Sets the attribute item from the domain attribute string.

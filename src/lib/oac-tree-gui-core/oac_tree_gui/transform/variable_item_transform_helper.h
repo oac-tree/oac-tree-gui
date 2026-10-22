@@ -40,8 +40,8 @@ class WorkspaceItem;
 /**
  * @brief Creates a variable item for the given node.
  *
- * Attributes of the descriptor become properties; mandatory ones are exposed. Attribute values of
- * the node are set and exposed; attributes unknown to the descriptor become string properties.
+ * Attributes of the descriptor become attribute items in the attribute container. Attribute
+ * values of the node are set; attributes unknown to the descriptor become string attribute items.
  * The JSON type and value attributes give the AnyValueItem; without type it is empty.
  *
  * @param node The variable node.
@@ -61,7 +61,7 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 /**
  * @brief Creates a domain variable from the given item.
  *
- * Exposed attributes, the name, and the JSON type and value if the AnyValue is not empty.
+ * Attributes with a value, the name, and the JSON type and value if the AnyValue is not empty.
  *
  * @param item The variable item.
  * @return The domain variable.

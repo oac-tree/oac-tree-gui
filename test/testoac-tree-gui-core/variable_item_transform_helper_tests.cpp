@@ -257,14 +257,14 @@ TEST_F(VariableItemTransformHelperTest, CreateDomainVariableFromBareItem)
   EXPECT_THROW(CreateDomainVariable(item), sup::oac_tree::InvalidOperationException);
 }
 
-//! Domain variable from an item: exposed attributes, name, JSON type and value.
+//! Domain variable from an item: attributes with a value, name, JSON type and value.
 TEST_F(VariableItemTransformHelperTest, CreateDomainVariable)
 {
   auto item = CreateVariableItem(domainconstants::kFileVariableType);
   item->SetName("abc");
   item->SetAttribute(domainconstants::kFileNameAttribute, std::string("file.json"));
 
-  {  // not exposed attributes and empty AnyValue are not sent
+  {  // not set attributes and empty AnyValue are not sent
     auto domain_variable = CreateDomainVariable(*item);
     EXPECT_EQ(domain_variable->GetType(), domainconstants::kFileVariableType);
     const std::vector<sup::oac_tree::AttributeInfo> expected_attributes{
@@ -275,7 +275,7 @@ TEST_F(VariableItemTransformHelperTest, CreateDomainVariable)
 
   item->SetAttribute(domainconstants::kPrettyJsonAttribute, true);
 
-  {  // exposed attribute is sent
+  {  // attribute with a value is sent
     auto domain_variable = CreateDomainVariable(*item);
     EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kPrettyJsonAttribute), "true");
   }

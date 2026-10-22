@@ -22,7 +22,6 @@
 
 #include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -36,49 +35,10 @@ AttributeEditorActionHandler::AttributeEditorActionHandler(AttributeEditorContex
 
 AttributeEditorActionHandler::~AttributeEditorActionHandler() = default;
 
-bool AttributeEditorActionHandler::CanToggleExposedFlag() const
-{
-  return (GetSelectedAnyValueItem() != nullptr) && !IsAnyValue();
-}
-
-bool AttributeEditorActionHandler::GetExposedFlag() const
-{
-  return CanToggleExposedFlag() && GetAttributeExposedFlag(*GetSelectedAnyValueItem());
-}
-
-void AttributeEditorActionHandler::OnToggleExposedFlag()
-{
-  if (!CanToggleExposedFlag())
-  {
-    return;
-  }
-
-  auto* anyvalue_item = GetSelectedAnyValueItem();
-  SetAttributeExposedFlag(!GetAttributeExposedFlag(*anyvalue_item), *anyvalue_item);
-}
-
-bool AttributeEditorActionHandler::CanSetDefaultType() const
-{
-  return (GetSelectedAnyValueItem() != nullptr) && !IsAnyValue();
-}
-
-void AttributeEditorActionHandler::OnSetAsDefaultType()
-{
-  if (!CanSetDefaultType())
-  {
-    return;
-  }
-
-  SetAttributeFromTypeName(*GetSelectedAnyValueItem());
-}
-
 bool AttributeEditorActionHandler::CanSetPlaceholderType() const
 {
-  if (const auto* attribute = GetSelectedAttribute(); attribute != nullptr)
-  {
-    return attribute->IsTextAllowed();
-  }
-  return CanSetDefaultType();
+  const auto* attribute = GetSelectedAttribute();
+  return (attribute != nullptr) && attribute->IsTextAllowed();
 }
 
 void AttributeEditorActionHandler::OnSetPlaceholderType()
@@ -88,14 +48,7 @@ void AttributeEditorActionHandler::OnSetPlaceholderType()
     return;
   }
 
-  if (auto* attribute = GetSelectedAttribute(); attribute != nullptr)
-  {
-    (void)attribute->SetText(itemconstants::kDefaultPlaceholderAttributeValue);
-    return;
-  }
-
-  SetAttributeAsString(itemconstants::kDefaultPlaceholderAttributeValue,
-                       *GetSelectedAnyValueItem());
+  (void)GetSelectedAttribute()->SetText(itemconstants::kDefaultPlaceholderAttributeValue);
 }
 
 bool AttributeEditorActionHandler::CanEditAnyValue() const
@@ -119,15 +72,10 @@ AttributeItem* AttributeEditorActionHandler::GetSelectedAttribute() const
   return dynamic_cast<AttributeItem*>(GetSelectedItem());
 }
 
-sup::gui::AnyValueItem* AttributeEditorActionHandler::GetSelectedAnyValueItem() const
-{
-  return dynamic_cast<sup::gui::AnyValueItem*>(GetSelectedItem());
-}
-
 bool AttributeEditorActionHandler::IsAnyValue() const
 {
-  return (GetSelectedAnyValueItem() != nullptr)
-         && GetSelectedAnyValueItem()->GetTagIndex().GetTag() == itemconstants::kAnyValueTag;
+  const auto* item = dynamic_cast<sup::gui::AnyValueItem*>(GetSelectedItem());
+  return (item != nullptr) && item->GetTagIndex().GetTag() == itemconstants::kAnyValueTag;
 }
 
 }  // namespace oac_tree_gui
