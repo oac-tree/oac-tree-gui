@@ -62,9 +62,9 @@ bool IsAttributeProperty(const std::string& name)
 }
 
 //! Adds a property for the attribute. Mandatory attributes are exposed.
-void AddAttributeProperty(const AttributeDescriptor& attribute, VariableItem& item)
+void AddAttributeProperty(const AttributeDescriptor& attribute, mvvm::CompoundItem& attributes)
 {
-  auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(attribute.name);
+  auto& property = attributes.AddProperty<sup::gui::AnyValueScalarItem>(attribute.name);
   property.SetAnyTypeName(
       sup::gui::GetAnyValueFromScalar(attribute.default_value).GetType().GetTypeName());
   if (attribute.has_preset)
@@ -77,26 +77,29 @@ void AddAttributeProperty(const AttributeDescriptor& attribute, VariableItem& it
 
 //! Adds an exposed string property for an attribute unknown to the descriptor.
 void AddStringAttributeProperty(const std::string& name, const std::string& value,
-                                VariableItem& item)
+                                mvvm::CompoundItem& attributes)
 {
-  auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(name);
+  auto& property = attributes.AddProperty<sup::gui::AnyValueScalarItem>(name);
   property.SetAnyTypeName(sup::dto::kStringTypeName);
   (void)property.SetDisplayName(name);
   (void)property.SetData(value);
   SetAttributeExposedFlag(true, property);
 }
 
-//! Sets up the item for the given descriptor: domain type, attributes, empty AnyValueItem.
+//! Sets up the item for the given descriptor: domain type, attribute container, empty
+//! AnyValueItem.
 void PopulateVariableItem(const VariableDescriptor& descriptor, VariableItem& item)
 {
   item.SetDomainType(descriptor.domain_type);
   item.SetName(descriptor.domain_type);
 
+  auto& attributes = item.AddProperty<mvvm::CompoundItem>(itemconstants::kAttributes);
+  (void)attributes.SetDisplayName("Attributes");
   for (const auto& attribute : descriptor.attributes)
   {
     if (IsAttributeProperty(attribute.name))
     {
-      AddAttributeProperty(attribute, item);
+      AddAttributeProperty(attribute, attributes);
     }
   }
 
@@ -108,6 +111,7 @@ void PopulateVariableItem(const VariableDescriptor& descriptor, VariableItem& it
 void SetAttributeValues(const VariableNode& node, const anytype_registry_t* registry,
                         VariableItem& item)
 {
+  auto& attributes = *item.GetAttributes();
   for (const auto& [name, value] : node.attributes)
   {
     if (name == domainconstants::kNameAttribute)
@@ -123,11 +127,11 @@ void SetAttributeValues(const VariableNode& node, const anytype_registry_t* regi
     }
     else if (FindAttributeDescriptor(node.descriptor, name) != nullptr)
     {
-      SetPropertyFromAttributeString(value, *item.FindItem<sup::gui::AnyValueItem>(name));
+      SetPropertyFromAttributeString(value, *attributes.FindItem<sup::gui::AnyValueItem>(name));
     }
     else
     {
-      AddStringAttributeProperty(name, value, item);
+      AddStringAttributeProperty(name, value, attributes);
     }
   }
 
@@ -137,16 +141,10 @@ void SetAttributeValues(const VariableNode& node, const anytype_registry_t* regi
 //! Returns property items representing domain attributes.
 std::vector<const sup::gui::AnyValueItem*> GetAttributeProperties(const VariableItem& item)
 {
-  std::vector<const sup::gui::AnyValueItem*> result;
-  for (const auto* property :
-       mvvm::utils::CastItems<const sup::gui::AnyValueItem>(mvvm::utils::SinglePropertyItems(item)))
-  {
-    if (property->GetTagIndex().GetTag() != itemconstants::kAnyValueTag)
-    {
-      result.push_back(property);
-    }
-  }
-  return result;
+  const auto* attributes = item.GetAttributes();
+  return (attributes != nullptr) ? mvvm::utils::CastItems<const sup::gui::AnyValueItem>(
+                                       mvvm::utils::SinglePropertyItems(*attributes))
+                                 : std::vector<const sup::gui::AnyValueItem*>{};
 }
 
 }  // namespace

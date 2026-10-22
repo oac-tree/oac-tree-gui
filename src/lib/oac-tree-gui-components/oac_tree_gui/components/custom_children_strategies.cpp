@@ -71,6 +71,38 @@ std::vector<mvvm::SessionItem*> VariableTableChildrenStrategy::GetChildren(
   return result;
 }
 
+std::vector<mvvm::SessionItem*> WorkspaceEditorChildrenStrategy::GetChildren(
+    mvvm::SessionItem* item) const
+{
+  if (item == nullptr)
+  {
+    return {};
+  }
+
+  auto is_visible = [](const auto* child) { return child->IsVisible(); };
+
+  std::vector<mvvm::SessionItem*> result;
+  for (auto* child : item->GetAllItems())
+  {
+    if (!child->IsVisible())
+    {
+      continue;
+    }
+
+    if (child->GetTagIndex().GetTag() == itemconstants::kAttributes)
+    {
+      auto attributes = child->GetAllItems();
+      (void)std::copy_if(attributes.begin(), attributes.end(), std::back_inserter(result),
+                         is_visible);
+    }
+    else
+    {
+      result.push_back(child);
+    }
+  }
+  return result;
+}
+
 std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
     mvvm::SessionItem* item) const
 {

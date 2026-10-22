@@ -20,9 +20,9 @@
 
 #include "workspace_editor_viewmodel.h"
 
+#include <oac_tree_gui/components/custom_children_strategies.h>
 #include <oac_tree_gui/components/custom_row_strategies.h>
 
-#include <mvvm/providers/standard_children_strategies.h>
 #include <mvvm/providers/viewmodel_controller_factory.h>
 
 namespace oac_tree_gui
@@ -32,8 +32,8 @@ WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel* model, Q
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::AllVisibleChildrenStrategy, VariableRowStrategy>(model,
-                                                                                             this));
+      mvvm::factory::CreateController<WorkspaceEditorChildrenStrategy, VariableRowStrategy>(model,
+                                                                                            this));
 }
 
 int WorkspaceEditorViewModel::columnCount(const QModelIndex& parent) const

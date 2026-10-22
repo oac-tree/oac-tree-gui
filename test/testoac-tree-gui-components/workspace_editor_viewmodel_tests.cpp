@@ -102,7 +102,7 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
   auto dynamictype_name_index = viewmodel.index(0, 0, variable_displayname_index);
   auto dynamictype_value_index = viewmodel.index(0, 1, variable_displayname_index);
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(dynamictype_name_index),
-            variable_item->FindItem(domainconstants::kDynamicTypeAttribute));
+            variable_item->GetAttributes()->FindItem(domainconstants::kDynamicTypeAttribute));
 
   // AnyValueItem
   auto anyvalue_name_index = viewmodel.index(1, 0, variable_displayname_index);

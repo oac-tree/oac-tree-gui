@@ -50,14 +50,10 @@ namespace oac_tree_gui
 void PopulateDomainWorkspace(const WorkspaceItem& item, workspace_t& workspace);
 
 /**
- * @brief Mark variable properties as enabled or disabled depending on if workspace is idle or
- * running.
+ * @brief Marks the channel attribute of variables as read-only while the workspace is running.
  *
  * @param is_running Flag denoting if workspace is running.
  * @param item Workspace item to update variables.
- *
- * @details When workspace is running (i.e. both domain and GUI workspaces are up and listen each
- * other), certain properties (i.e. name, channel) should be marked as readonly.
  */
 void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item);
 

@@ -115,13 +115,13 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
   auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
   auto var_item1 = InsertVariable(domainconstants::kPvAccessServerVariableType, &workspace_item);
 
-  EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute).IsEditable());
+  EXPECT_TRUE(GetChannelItem(*var_item1)->IsEditable());
 
   UpdateVariableEditableProperty(/*is_running*/ true, workspace_item);
-  EXPECT_FALSE(var_item1->GetItem(domainconstants::kChannelAttribute).IsEditable());
+  EXPECT_FALSE(GetChannelItem(*var_item1)->IsEditable());
 
   UpdateVariableEditableProperty(/*is_running*/ false, workspace_item);
-  EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute).IsEditable());
+  EXPECT_TRUE(GetChannelItem(*var_item1)->IsEditable());
 }
 
 //! Validating helper method SetupNewVariable.

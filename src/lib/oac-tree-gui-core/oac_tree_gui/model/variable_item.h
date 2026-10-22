@@ -34,8 +34,8 @@ namespace oac_tree_gui
 /**
  * @brief The VariableItem class represents a domain variable of any type.
  *
- * @details The item is set up by CreateVariableItem. Domain attributes are properties, the JSON
- * type and value pair is an AnyValueItem.
+ * @details The item is set up by CreateVariableItem. Domain attributes are properties of the
+ * attribute container, the JSON type and value pair is an AnyValueItem.
  */
 class VariableItem : public mvvm::CompoundItem
 {
@@ -71,6 +71,13 @@ public:
   void SetName(const std::string& value);
 
   /**
+   * @brief Returns the container with domain attributes, or nullptr for a bare item.
+   */
+  const mvvm::CompoundItem* GetAttributes() const;
+
+  mvvm::CompoundItem* GetAttributes();
+
+  /**
    * @brief Sets the domain attribute to a given value and marks it as exposed.
    *
    * @param name The name of the attribute.
@@ -84,6 +91,7 @@ public:
    *
    * @tparam T The type of the attribute value.
    * @param name The name of the attribute.
+   * @throw RuntimeException if the attribute doesn't exist.
    */
   template <typename T>
   T GetAttribute(const std::string& name) const;
@@ -108,12 +116,15 @@ public:
    */
   void SetIsAvailable(bool value);
 
+private:
+  //! Returns the attribute item with the given name. Throws if it doesn't exist.
+  const mvvm::SessionItem& GetAttributeItem(const std::string& name) const;
 };
 
 template <typename T>
 T VariableItem::GetAttribute(const std::string& name) const
 {
-  return Property<T>(name);
+  return GetAttributeItem(name).Data<T>();
 }
 
 }  // namespace oac_tree_gui

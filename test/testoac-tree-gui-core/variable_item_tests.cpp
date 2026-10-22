@@ -128,13 +128,18 @@ TEST_F(VariableItemTest, ChannelAccessVariablePropertyAppearance)
   auto item = CreateVariableItem(domainconstants::kChannelAccessVariableType);
   auto children = item->GetAllItems();
 
+  // connected flag, attribute container, AnyValueItem
   ASSERT_EQ(children.size(), 3);
 
   auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
   ASSERT_NE(available, nullptr);
   EXPECT_EQ(available->GetDisplayName(), itemconstants::kIsAvailable);
+  EXPECT_EQ(children.at(1), item->GetAttributes());
 
-  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  auto attributes = item->GetAttributes()->GetAllItems();
+  ASSERT_EQ(attributes.size(), 1);
+
+  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(0));
   ASSERT_NE(channel, nullptr);
   EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
 }
@@ -219,16 +224,21 @@ TEST_F(VariableItemTest, FileVariablePropertyAppearance)
   auto item = CreateVariableItem(domainconstants::kFileVariableType);
   auto children = item->GetAllItems();
 
-  ASSERT_EQ(children.size(), 4);
+  // connected flag, attribute container, AnyValueItem
+  ASSERT_EQ(children.size(), 3);
 
   auto available_name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
   ASSERT_NE(available_name, nullptr);
+  EXPECT_EQ(children.at(1), item->GetAttributes());
 
-  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  auto attributes = item->GetAttributes()->GetAllItems();
+  ASSERT_EQ(attributes.size(), 2);
+
+  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(0));
   ASSERT_NE(file_name, nullptr);
   EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileNameAttribute);
 
-  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(2));
+  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(1));
   ASSERT_NE(json_attr, nullptr);
   EXPECT_EQ(json_attr->GetDisplayName(), domainconstants::kPrettyJsonAttribute);
 }
@@ -291,9 +301,14 @@ TEST_F(VariableItemTest, LocalVariablePropertyAppearance)
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);
   auto children = item->GetAllItems();
 
+  // connected flag, attribute container, AnyValueItem
   ASSERT_EQ(children.size(), 3);
+  EXPECT_EQ(children.at(1), item->GetAttributes());
 
-  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  auto attributes = item->GetAttributes()->GetAllItems();
+  ASSERT_EQ(attributes.size(), 1);
+
+  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(0));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
   EXPECT_FALSE(GetAttributeExposedFlag(*dynamic_type_item));
@@ -533,7 +548,8 @@ TEST_F(VariableItemTest, PvAccessServerVariableToDomain)
 TEST_F(VariableItemTest, SetAndGetAttribute)
 {
   auto item = CreateVariableItem(domainconstants::kFileVariableType);
-  auto* pretty = item->FindItem<sup::gui::AnyValueItem>(domainconstants::kPrettyJsonAttribute);
+  auto* pretty = item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
+      domainconstants::kPrettyJsonAttribute);
   ASSERT_NE(pretty, nullptr);
   EXPECT_FALSE(GetAttributeExposedFlag(*pretty));
 

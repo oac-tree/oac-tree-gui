@@ -77,10 +77,12 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromInfo)
   EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
   EXPECT_FALSE(variable_item->IsAvailable());
 
-  // JSON type and value are not properties
   const std::vector<std::string> expected_tags(
-      {itemconstants::kIsAvailable, itemconstants::kAnyValueTag});
+      {itemconstants::kIsAvailable, itemconstants::kAttributes, itemconstants::kAnyValueTag});
   EXPECT_EQ(mvvm::utils::RegisteredTags(*variable_item), expected_tags);
+
+  // JSON type and value are not properties
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(*variable_item->GetAttributes()).empty());
 
   if (itemconstants::kProvideVariableInfoInitialValue)
   {
@@ -109,10 +111,8 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromInfoWithAttributes
   EXPECT_EQ(variable_item->GetDomainType(), "UnknownVariable");
   EXPECT_EQ(variable_item->GetName(), "abc");
 
-  const std::vector<std::string> expected_tags({itemconstants::kIsAvailable,
-                                                itemconstants::kAnyValueTag,
-                                                domainconstants::kChannelAttribute, "custom"});
-  EXPECT_EQ(mvvm::utils::RegisteredTags(*variable_item), expected_tags);
+  const std::vector<std::string> expected_tags({domainconstants::kChannelAttribute, "custom"});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(*variable_item->GetAttributes()), expected_tags);
 
   auto* channel = GetChannelItem(*variable_item);
   ASSERT_NE(channel, nullptr);
@@ -164,14 +164,17 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromNode)
     EXPECT_EQ(item->GetDomainType(), domainconstants::kLocalVariableType);
     EXPECT_EQ(item->GetDisplayName(), domainconstants::kLocalVariableType);
 
-    // JSON type and value are not properties
-    const std::vector<std::string> expected_tags({itemconstants::kIsAvailable,
-                                                  domainconstants::kDynamicTypeAttribute,
-                                                  itemconstants::kAnyValueTag});
+    const std::vector<std::string> expected_tags(
+        {itemconstants::kIsAvailable, itemconstants::kAttributes, itemconstants::kAnyValueTag});
     EXPECT_EQ(mvvm::utils::RegisteredTags(*item), expected_tags);
 
-    auto* dynamic_type =
-        item->FindItem<sup::gui::AnyValueItem>(domainconstants::kDynamicTypeAttribute);
+    // JSON type and value are not properties
+    const std::vector<std::string> expected_attribute_tags(
+        {domainconstants::kDynamicTypeAttribute});
+    EXPECT_EQ(mvvm::utils::RegisteredTags(*item->GetAttributes()), expected_attribute_tags);
+
+    auto* dynamic_type = item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
+        domainconstants::kDynamicTypeAttribute);
     ASSERT_NE(dynamic_type, nullptr);
     EXPECT_FALSE(item->GetAttribute<bool>(domainconstants::kDynamicTypeAttribute));
     EXPECT_FALSE(GetAttributeExposedFlag(*dynamic_type));
@@ -190,8 +193,8 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromNode)
 
     EXPECT_EQ(item->GetDisplayName(), "abc");
     EXPECT_TRUE(item->GetAttribute<bool>(domainconstants::kDynamicTypeAttribute));
-    EXPECT_TRUE(GetAttributeExposedFlag(
-        *item->FindItem<sup::gui::AnyValueItem>(domainconstants::kDynamicTypeAttribute)));
+    EXPECT_TRUE(GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
+        domainconstants::kDynamicTypeAttribute)));
     EXPECT_EQ(GetAnyValue(*item), sup::dto::AnyValue(sup::dto::SignedInteger32Type, 0));
   }
 }
@@ -201,10 +204,10 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemWithMandatoryAttribute
 {
   auto item = CreateVariableItem(domainconstants::kFileVariableType);
 
-  EXPECT_TRUE(GetAttributeExposedFlag(
-      *item->FindItem<sup::gui::AnyValueItem>(domainconstants::kFileNameAttribute)));
-  EXPECT_FALSE(GetAttributeExposedFlag(
-      *item->FindItem<sup::gui::AnyValueItem>(domainconstants::kPrettyJsonAttribute)));
+  EXPECT_TRUE(GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
+      domainconstants::kFileNameAttribute)));
+  EXPECT_FALSE(GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
+      domainconstants::kPrettyJsonAttribute)));
 }
 
 //! An attribute unknown to the descriptor becomes an exposed string property and goes back to the
@@ -216,7 +219,8 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemWithUnknownAttribute)
 
   auto item = CreateVariableItem(node);
   EXPECT_EQ(item->GetAttribute<std::string>("custom"), "abc");
-  EXPECT_TRUE(GetAttributeExposedFlag(*item->FindItem<sup::gui::AnyValueItem>("custom")));
+  EXPECT_TRUE(
+      GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>("custom")));
 
   auto domain_variable = CreateDomainVariable(*item);
   EXPECT_EQ(domain_variable->GetAttributeString("custom"), "abc");

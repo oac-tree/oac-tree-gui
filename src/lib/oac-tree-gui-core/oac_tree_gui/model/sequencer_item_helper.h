@@ -67,8 +67,8 @@ const mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
 mvvm::SessionItem* GetIsAvailableItem(mvvm::SessionItem& parent);
 
 /**
- * @brief Returns an item representing channel property, or nullptr if the given parent doesn't
- * have such property registered.
+ * @brief Returns the channel attribute from the attribute container of the given parent, or nullptr
+ * if there is no such attribute.
  */
 const mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
 

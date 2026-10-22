@@ -31,6 +31,27 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+//! Returns the attribute item with the given name. Throws if it doesn't exist.
+template <typename ContainerT>
+auto& FindAttributeItem(ContainerT* attributes, const std::string& name,
+                        const std::string& domain_type)
+{
+  auto* attribute = (attributes != nullptr)
+                        ? attributes->template FindItem<sup::gui::AnyValueItem>(name)
+                        : nullptr;
+  if (attribute == nullptr)
+  {
+    throw RuntimeException("Attribute [" + name + "] doesn't exist in variable [" + domain_type
+                           + "]");
+  }
+  return *attribute;
+}
+
+}  // namespace
+
 VariableItem::VariableItem() : CompoundItem(mvvm::GetTypeName<VariableItem>())
 {
   (void)SetFlag(mvvm::Appearance::kEditableDisplayName, true);
@@ -67,22 +88,27 @@ void VariableItem::SetName(const std::string& value)
   (void)SetDisplayName(value);
 }
 
+const mvvm::CompoundItem* VariableItem::GetAttributes() const
+{
+  return FindItem<mvvm::CompoundItem>(itemconstants::kAttributes);
+}
+
+mvvm::CompoundItem* VariableItem::GetAttributes()
+{
+  return FindItem<mvvm::CompoundItem>(itemconstants::kAttributes);
+}
+
 void VariableItem::SetAttribute(const std::string& name, const mvvm::variant_t& value)
 {
-  auto* attribute = FindItem<sup::gui::AnyValueItem>(name);
-  if (attribute == nullptr)
-  {
-    throw RuntimeException("Attribute [" + name + "] doesn't exist in variable [" + GetDomainType()
-                           + "]");
-  }
-  if (value.index() != attribute->Data().index())
+  auto& attribute = FindAttributeItem(GetAttributes(), name, GetDomainType());
+  if (value.index() != attribute.Data().index())
   {
     throw RuntimeException("Attribute [" + name + "] has type ["
-                           + mvvm::utils::TypeName(attribute->Data()) + "], value type ["
+                           + mvvm::utils::TypeName(attribute.Data()) + "], value type ["
                            + mvvm::utils::TypeName(value) + "]");
   }
-  (void)attribute->SetData(value);
-  SetAttributeExposedFlag(true, *attribute);
+  (void)attribute.SetData(value);
+  SetAttributeExposedFlag(true, attribute);
 }
 
 const sup::gui::AnyValueItem* VariableItem::GetAnyValueItem() const
@@ -103,6 +129,11 @@ bool VariableItem::IsAvailable() const
 void VariableItem::SetIsAvailable(bool value)
 {
   (void)SetProperty(itemconstants::kIsAvailable, value);
+}
+
+const mvvm::SessionItem& VariableItem::GetAttributeItem(const std::string& name) const
+{
+  return FindAttributeItem(GetAttributes(), name, GetDomainType());
 }
 
 }  // namespace oac_tree_gui

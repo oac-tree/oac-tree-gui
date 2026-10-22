@@ -55,6 +55,16 @@ public:
 };
 
 /**
+ * @brief The WorkspaceEditorChildrenStrategy class reports all visible children, with the
+ * visible attributes of a variable in place of their container.
+ */
+class WorkspaceEditorChildrenStrategy : public mvvm::IChildrenStrategy
+{
+public:
+  std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
+};
+
+/**
  * @brief The InstructionAttributeChildrenStrategy class reports specific attributes of
  * InstructionItem.
  *

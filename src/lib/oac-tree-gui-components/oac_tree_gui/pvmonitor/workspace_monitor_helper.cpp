@@ -31,20 +31,7 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/model/item_utils.h>
-
 #include <sup/oac-tree/workspace.h>
-
-namespace
-{
-//! Returns vector of attributes which should be marked as readonly when workspace is running.
-std::vector<std::string> GetVariableReadonlyAttributesWhenRunning()
-{
-  return {oac_tree_gui::domainconstants::kChannelAttribute,
-          oac_tree_gui::domainconstants::kNameAttribute};
-}
-
-}  // namespace
 
 namespace oac_tree_gui
 {
@@ -57,16 +44,11 @@ void PopulateDomainWorkspace(const WorkspaceItem& item, workspace_t& workspace)
 
 void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item)
 {
-  static const auto attributes = GetVariableReadonlyAttributesWhenRunning();
-
-  for (auto variable : item.GetVariables())
+  for (auto* variable : item.GetVariables())
   {
-    for (const auto& attr : attributes)
+    if (auto* channel = GetChannelItem(*variable); channel != nullptr)
     {
-      if (mvvm::utils::HasTag(*variable, attr))
-      {
-        (void)variable->GetItem(attr).SetEditable(!is_running);
-      }
+      (void)channel->SetEditable(!is_running);
     }
   }
 }

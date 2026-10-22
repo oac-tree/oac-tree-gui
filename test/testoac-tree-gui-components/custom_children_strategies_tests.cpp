@@ -94,6 +94,30 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
   }
 }
 
+//! Attributes of a variable are reported in place of their container.
+TEST_F(CustomChildrenStrategiesTest, WorkspaceEditorChildrenStrategy)
+{
+  const WorkspaceEditorChildrenStrategy strategy;
+  EXPECT_TRUE(strategy.GetChildren(nullptr).empty());
+
+  WorkspaceItem workspace;
+  auto variable0 = InsertVariable(domainconstants::kFileVariableType, &workspace);
+  auto variable1 = InsertVariable(domainconstants::kLocalVariableType, &workspace);
+  EXPECT_EQ(strategy.GetChildren(&workspace),
+            std::vector<mvvm::SessionItem*>({variable0, variable1}));
+
+  // attributes followed by AnyValueItem, the connected flag is not visible
+  auto* file = variable0->GetAttributes()->FindItem(domainconstants::kFileNameAttribute);
+  auto* pretty = variable0->GetAttributes()->FindItem(domainconstants::kPrettyJsonAttribute);
+  EXPECT_EQ(strategy.GetChildren(variable0),
+            std::vector<mvvm::SessionItem*>({file, pretty, variable0->GetAnyValueItem()}));
+
+  // invisible attribute is not reported
+  (void)pretty->SetVisible(false);
+  EXPECT_EQ(strategy.GetChildren(variable0),
+            std::vector<mvvm::SessionItem*>({file, variable0->GetAnyValueItem()}));
+}
+
 TEST_F(CustomChildrenStrategiesTest, InstructionNodeChildrenStrategy)
 {
   InstructionContainerItem container;

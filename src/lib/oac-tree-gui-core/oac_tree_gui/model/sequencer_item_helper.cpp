@@ -71,12 +71,16 @@ mvvm::SessionItem* GetIsAvailableItem(mvvm::SessionItem& parent)
 
 const mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, domainconstants::kChannelAttribute);
+  const auto* attributes = GetPropertyItem(parent, itemconstants::kAttributes);
+  return (attributes != nullptr) ? GetPropertyItem(*attributes, domainconstants::kChannelAttribute)
+                                 : nullptr;
 }
 
 mvvm::SessionItem* GetChannelItem(mvvm::SessionItem& parent)
 {
-  return GetPropertyItem(parent, domainconstants::kChannelAttribute);
+  auto* attributes = GetPropertyItem(parent, itemconstants::kAttributes);
+  return (attributes != nullptr) ? GetPropertyItem(*attributes, domainconstants::kChannelAttribute)
+                                 : nullptr;
 }
 
 }  // namespace oac_tree_gui
