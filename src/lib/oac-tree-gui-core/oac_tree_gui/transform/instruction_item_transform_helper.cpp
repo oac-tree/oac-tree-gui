@@ -28,6 +28,7 @@
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/transform/attribute_descriptor_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/instruction_descriptor_helper.h>
 
@@ -56,15 +57,6 @@ bool IsAttributeProperty(const std::string& name)
       domainconstants::kValueAttribute  // AnyValueItem
   };
   return !mvvm::utils::Contains(kNonPropertyAttributes, name);
-}
-
-//! Returns the attribute with the given name, or nullptr.
-const AttributeDescriptor* FindAttributeDescriptor(const InstructionDescriptor& descriptor,
-                                                   const std::string& name)
-{
-  auto iter = std::find_if(descriptor.attributes.begin(), descriptor.attributes.end(),
-                           [&name](const auto& attribute) { return attribute.name == name; });
-  return iter == descriptor.attributes.end() ? nullptr : &*iter;
 }
 
 //! Returns the combo property with instruction behaviors.

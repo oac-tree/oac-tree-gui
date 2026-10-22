@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/transform/attribute_descriptor_helper.h>
 
 #include <sup/dto/anytype.h>
 #include <sup/oac-tree/exceptions.h>
@@ -31,8 +32,6 @@
 #include <sup/oac-tree/instruction_info.h>
 
 #include <gtest/gtest.h>
-
-#include <algorithm>
 
 namespace oac_tree_gui::test
 {
@@ -60,26 +59,6 @@ private:
   }
 };
 
-//! Returns attribute names of the descriptor.
-std::vector<std::string> GetAttributeNames(const InstructionDescriptor& descriptor)
-{
-  std::vector<std::string> result;
-  for (const auto& attribute : descriptor.attributes)
-  {
-    result.push_back(attribute.name);
-  }
-  return result;
-}
-
-//! Returns the attribute with the given name, or nullptr.
-const AttributeDescriptor* FindAttribute(const InstructionDescriptor& descriptor,
-                                         const std::string& name)
-{
-  auto iter = std::find_if(descriptor.attributes.begin(), descriptor.attributes.end(),
-                           [&name](const auto& attribute) { return attribute.name == name; });
-  return iter == descriptor.attributes.end() ? nullptr : &*iter;
-}
-
 //! Creates a typed descriptor for the given domain type.
 InstructionDescriptor CreateTypedDescriptor(const std::string& domain_type)
 {
@@ -104,13 +83,13 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
       domainconstants::kTimeoutAttribute, domainconstants::kBlockingAttribute};
   EXPECT_EQ(GetAttributeNames(descriptor), expected_names);
 
-  const auto* name = FindAttribute(descriptor, domainconstants::kNameAttribute);
+  const auto* name = FindAttributeDescriptor(descriptor, domainconstants::kNameAttribute);
   EXPECT_EQ(name->default_value, mvvm::variant_t{std::string{}});
   EXPECT_FALSE(name->has_preset);
   EXPECT_FALSE(name->allow_text);
   EXPECT_FALSE(name->nullable);
 
-  const auto* is_root = FindAttribute(descriptor, domainconstants::kIsRootAttribute);
+  const auto* is_root = FindAttributeDescriptor(descriptor, domainconstants::kIsRootAttribute);
   EXPECT_EQ(is_root->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(is_root->mandatory);
   EXPECT_FALSE(is_root->has_preset);
@@ -118,7 +97,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   EXPECT_FALSE(is_root->visible);
   EXPECT_FALSE(is_root->allow_text);
 
-  const auto* timeout = FindAttribute(descriptor, domainconstants::kTimeoutAttribute);
+  const auto* timeout = FindAttributeDescriptor(descriptor, domainconstants::kTimeoutAttribute);
   EXPECT_EQ(timeout->default_value, mvvm::variant_t{0.0});
   EXPECT_TRUE(timeout->tooltip.empty());
   EXPECT_FALSE(timeout->mandatory);
@@ -128,7 +107,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromWait)
   EXPECT_TRUE(timeout->visible);
   EXPECT_TRUE(timeout->allow_text);
 
-  const auto* blocking = FindAttribute(descriptor, domainconstants::kBlockingAttribute);
+  const auto* blocking = FindAttributeDescriptor(descriptor, domainconstants::kBlockingAttribute);
   EXPECT_EQ(blocking->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(blocking->has_preset);
   EXPECT_TRUE(blocking->nullable);
@@ -140,7 +119,8 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromSequence)
   const auto descriptor = CreateTypedDescriptor(domainconstants::kSequenceInstructionType);
 
   EXPECT_EQ(descriptor.category, sup::oac_tree::Instruction::kCompound);
-  const auto* show_collapsed = FindAttribute(descriptor, domainconstants::kShowCollapsedAttribute);
+  const auto* show_collapsed =
+      FindAttributeDescriptor(descriptor, domainconstants::kShowCollapsedAttribute);
   ASSERT_NE(show_collapsed, nullptr);
   EXPECT_EQ(show_collapsed->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(show_collapsed->has_preset);
@@ -152,7 +132,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromRepeat)
   const auto descriptor = CreateTypedDescriptor(domainconstants::kRepeatInstructionType);
 
   EXPECT_EQ(descriptor.category, sup::oac_tree::Instruction::kDecorator);
-  const auto* max_count = FindAttribute(descriptor, domainconstants::kMaxCountAttribute);
+  const auto* max_count = FindAttributeDescriptor(descriptor, domainconstants::kMaxCountAttribute);
   ASSERT_NE(max_count, nullptr);
   EXPECT_EQ(max_count->default_value, mvvm::variant_t{mvvm::int32{-1}});
   EXPECT_TRUE(max_count->has_preset);
@@ -166,7 +146,7 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromInclude)
     const auto descriptor = CreateTypedDescriptor(domain_type);
 
     const auto* show_collapsed =
-        FindAttribute(descriptor, domainconstants::kShowCollapsedAttribute);
+        FindAttributeDescriptor(descriptor, domainconstants::kShowCollapsedAttribute);
     ASSERT_NE(show_collapsed, nullptr) << domain_type;
     EXPECT_EQ(show_collapsed->default_value, mvvm::variant_t{false}) << domain_type;
     EXPECT_FALSE(show_collapsed->has_preset) << domain_type;
@@ -175,12 +155,12 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorFromInclude)
   }
 
   const auto descriptor = CreateTypedDescriptor(domainconstants::kIncludeInstructionType);
-  const auto* path = FindAttribute(descriptor, domainconstants::kPathAttribute);
+  const auto* path = FindAttributeDescriptor(descriptor, domainconstants::kPathAttribute);
   ASSERT_NE(path, nullptr);
   EXPECT_TRUE(path->mandatory);
   EXPECT_FALSE(path->has_preset);
   EXPECT_FALSE(path->nullable);
-  const auto* file = FindAttribute(descriptor, domainconstants::kFileNameAttribute);
+  const auto* file = FindAttributeDescriptor(descriptor, domainconstants::kFileNameAttribute);
   ASSERT_NE(file, nullptr);
   EXPECT_FALSE(file->mandatory);
   EXPECT_FALSE(file->has_preset);
@@ -200,10 +180,10 @@ TEST_F(InstructionDescriptorHelperTest, CreateInstructionDescriptorWhenTypeAndVa
   {
     const auto descriptor = CreateTypedDescriptor(domain_type);
 
-    const auto* type = FindAttribute(descriptor, domainconstants::kTypeAttribute);
+    const auto* type = FindAttributeDescriptor(descriptor, domainconstants::kTypeAttribute);
     ASSERT_NE(type, nullptr) << domain_type;
     EXPECT_EQ(type->default_value, mvvm::variant_t{std::string{}}) << domain_type;
-    const auto* value = FindAttribute(descriptor, domainconstants::kValueAttribute);
+    const auto* value = FindAttributeDescriptor(descriptor, domainconstants::kValueAttribute);
     ASSERT_NE(value, nullptr) << domain_type;
     EXPECT_EQ(value->default_value, mvvm::variant_t{std::string{}}) << domain_type;
   }
@@ -238,8 +218,8 @@ TEST_F(InstructionDescriptorHelperTest, InfoWait)
   const std::vector<std::string> expected_names{domainconstants::kNameAttribute,
                                                 domainconstants::kIsRootAttribute};
   EXPECT_EQ(GetAttributeNames(descriptor), expected_names);
-  EXPECT_FALSE(FindAttribute(descriptor, domainconstants::kIsRootAttribute)->has_preset);
-  EXPECT_FALSE(FindAttribute(descriptor, domainconstants::kIsRootAttribute)->allow_text);
+  EXPECT_FALSE(FindAttributeDescriptor(descriptor, domainconstants::kIsRootAttribute)->has_preset);
+  EXPECT_FALSE(FindAttributeDescriptor(descriptor, domainconstants::kIsRootAttribute)->allow_text);
 }
 
 TEST_F(InstructionDescriptorHelperTest, InfoSequenceAndInclude)
@@ -248,7 +228,7 @@ TEST_F(InstructionDescriptorHelperTest, InfoSequenceAndInclude)
                                                      sup::oac_tree::Instruction::kCompound, 0, {});
   const auto sequence = CreateInstructionDescriptor(sequence_info);
   const auto* sequence_collapsed =
-      FindAttribute(sequence, domainconstants::kShowCollapsedAttribute);
+      FindAttributeDescriptor(sequence, domainconstants::kShowCollapsedAttribute);
   ASSERT_NE(sequence_collapsed, nullptr);
   EXPECT_EQ(sequence_collapsed->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(sequence_collapsed->has_preset);
@@ -257,7 +237,8 @@ TEST_F(InstructionDescriptorHelperTest, InfoSequenceAndInclude)
   const sup::oac_tree::InstructionInfo include_info(domainconstants::kIncludeInstructionType,
                                                     sup::oac_tree::Instruction::kDecorator, 0, {});
   const auto include = CreateInstructionDescriptor(include_info);
-  const auto* include_collapsed = FindAttribute(include, domainconstants::kShowCollapsedAttribute);
+  const auto* include_collapsed =
+      FindAttributeDescriptor(include, domainconstants::kShowCollapsedAttribute);
   ASSERT_NE(include_collapsed, nullptr);
   EXPECT_EQ(include_collapsed->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(include_collapsed->has_preset);
@@ -290,7 +271,7 @@ TEST_F(InstructionDescriptorHelperTest, InfoMatchesTypedBaseAttributes)
 
     for (const auto& attribute : descriptor.attributes)
     {
-      const auto* expected = FindAttribute(typed, attribute.name);
+      const auto* expected = FindAttributeDescriptor(typed, attribute.name);
       ASSERT_NE(expected, nullptr) << domain_type << "/" << attribute.name;
       EXPECT_EQ(attribute.default_value, expected->default_value)
           << domain_type << "/" << attribute.name;
@@ -367,7 +348,8 @@ TEST_F(InstructionDescriptorHelperTest, NodeTreeFromDomainInstruction)
   EXPECT_EQ(wait1_node.index, 3);
 
   // typed descriptor
-  const auto* timeout = FindAttribute(wait1_node.descriptor, domainconstants::kTimeoutAttribute);
+  const auto* timeout =
+      FindAttributeDescriptor(wait1_node.descriptor, domainconstants::kTimeoutAttribute);
   ASSERT_NE(timeout, nullptr);
   EXPECT_EQ(timeout->default_value, mvvm::variant_t{0.0});
 }

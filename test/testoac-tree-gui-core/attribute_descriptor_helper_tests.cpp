@@ -22,6 +22,8 @@
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
+#include <oac_tree_gui/domain/instruction_descriptor.h>
+#include <oac_tree_gui/domain/variable_descriptor.h>
 
 #include <sup/dto/anytype.h>
 #include <sup/oac-tree/attribute_definition.h>
@@ -127,6 +129,36 @@ TEST_F(AttributeDescriptorHelperTest, FromNonScalarDefinitionThrows)
       "data", sup::dto::AnyType{{"field", sup::dto::SignedInteger32Type}});
 
   EXPECT_THROW(CreateAttributeDescriptor("UnknownType", definition), RuntimeException);
+}
+
+TEST_F(AttributeDescriptorHelperTest, FindAttributeDescriptor)
+{
+  InstructionDescriptor instruction_descriptor;
+  instruction_descriptor.attributes = {{"timeout", 0.0}, {"blocking", false}};
+  const auto* blocking = FindAttributeDescriptor(instruction_descriptor, "blocking");
+  ASSERT_NE(blocking, nullptr);
+  EXPECT_EQ(blocking, &instruction_descriptor.attributes.at(1));
+  EXPECT_EQ(FindAttributeDescriptor(instruction_descriptor, "unknown"), nullptr);
+
+  VariableDescriptor variable_descriptor;
+  EXPECT_EQ(FindAttributeDescriptor(variable_descriptor, "channel"), nullptr);
+  variable_descriptor.attributes = {{"channel", std::string{}}};
+  EXPECT_EQ(FindAttributeDescriptor(variable_descriptor, "channel"),
+            &variable_descriptor.attributes.at(0));
+}
+
+TEST_F(AttributeDescriptorHelperTest, GetAttributeNames)
+{
+  InstructionDescriptor instruction_descriptor;
+  EXPECT_TRUE(GetAttributeNames(instruction_descriptor).empty());
+  instruction_descriptor.attributes = {{"timeout", 0.0}, {"blocking", false}};
+  const std::vector<std::string> expected_instruction_names{"timeout", "blocking"};
+  EXPECT_EQ(GetAttributeNames(instruction_descriptor), expected_instruction_names);
+
+  VariableDescriptor variable_descriptor;
+  variable_descriptor.attributes = {{"channel", std::string{}}};
+  const std::vector<std::string> expected_variable_names{"channel"};
+  EXPECT_EQ(GetAttributeNames(variable_descriptor), expected_variable_names);
 }
 
 }  // namespace oac_tree_gui::test

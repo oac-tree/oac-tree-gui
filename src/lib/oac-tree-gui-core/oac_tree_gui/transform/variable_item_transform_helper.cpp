@@ -28,6 +28,7 @@
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/transform/attribute_descriptor_helper.h>
 #include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/variable_descriptor_helper.h>
 
@@ -44,8 +45,6 @@
 #include <sup/oac-tree/workspace.h>
 #include <sup/oac-tree/workspace_info.h>
 
-#include <algorithm>
-
 namespace oac_tree_gui
 {
 
@@ -61,15 +60,6 @@ bool IsAttributeProperty(const std::string& name)
       domainconstants::kValueAttribute  // AnyValueItem
   };
   return !mvvm::utils::Contains(kNonPropertyAttributes, name);
-}
-
-//! Returns the attribute with the given name, or nullptr.
-const AttributeDescriptor* FindAttributeDescriptor(const VariableDescriptor& descriptor,
-                                                   const std::string& name)
-{
-  auto iter = std::find_if(descriptor.attributes.begin(), descriptor.attributes.end(),
-                           [&name](const auto& attribute) { return attribute.name == name; });
-  return iter == descriptor.attributes.end() ? nullptr : &*iter;
 }
 
 //! Adds a property for the attribute. Mandatory attributes are exposed.

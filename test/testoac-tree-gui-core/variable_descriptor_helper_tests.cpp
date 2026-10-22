@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/transform/attribute_descriptor_helper.h>
 
 #include <sup/oac-tree/exceptions.h>
 #include <sup/oac-tree/variable.h>
@@ -30,33 +31,11 @@
 
 #include <gtest/gtest.h>
 
-#include <algorithm>
-
 namespace oac_tree_gui::test
 {
 
 namespace
 {
-
-//! Returns attribute names of the descriptor.
-std::vector<std::string> GetAttributeNames(const VariableDescriptor& descriptor)
-{
-  std::vector<std::string> result;
-  for (const auto& attribute : descriptor.attributes)
-  {
-    result.push_back(attribute.name);
-  }
-  return result;
-}
-
-//! Returns the attribute with the given name, or nullptr.
-const AttributeDescriptor* FindAttribute(const VariableDescriptor& descriptor,
-                                         const std::string& name)
-{
-  auto iter = std::find_if(descriptor.attributes.begin(), descriptor.attributes.end(),
-                           [&name](const auto& attribute) { return attribute.name == name; });
-  return iter == descriptor.attributes.end() ? nullptr : &*iter;
-}
 
 //! Creates a typed descriptor for the given domain type.
 VariableDescriptor CreateTypedDescriptor(const std::string& domain_type)
@@ -81,11 +60,12 @@ TEST_F(VariableDescriptorHelperTest, CreateVariableDescriptorFromLocal)
       domainconstants::kValueAttribute, domainconstants::kDynamicTypeAttribute};
   EXPECT_EQ(GetAttributeNames(descriptor), expected_names);
 
-  const auto* type = FindAttribute(descriptor, domainconstants::kTypeAttribute);
+  const auto* type = FindAttributeDescriptor(descriptor, domainconstants::kTypeAttribute);
   EXPECT_EQ(type->default_value, mvvm::variant_t{std::string{}});
   EXPECT_FALSE(type->nullable);
 
-  const auto* dynamic_type = FindAttribute(descriptor, domainconstants::kDynamicTypeAttribute);
+  const auto* dynamic_type =
+      FindAttributeDescriptor(descriptor, domainconstants::kDynamicTypeAttribute);
   EXPECT_EQ(dynamic_type->default_value, mvvm::variant_t{false});
   EXPECT_FALSE(dynamic_type->mandatory);
   EXPECT_FALSE(dynamic_type->has_preset);
@@ -98,14 +78,14 @@ TEST_F(VariableDescriptorHelperTest, CreateVariableDescriptorFromFile)
 {
   const auto descriptor = CreateTypedDescriptor(domainconstants::kFileVariableType);
 
-  const auto* file = FindAttribute(descriptor, domainconstants::kFileNameAttribute);
+  const auto* file = FindAttributeDescriptor(descriptor, domainconstants::kFileNameAttribute);
   ASSERT_NE(file, nullptr);
   EXPECT_EQ(file->default_value, mvvm::variant_t{std::string{}});
   EXPECT_TRUE(file->mandatory);
   EXPECT_FALSE(file->nullable);
   EXPECT_FALSE(file->allow_text);
 
-  const auto* pretty = FindAttribute(descriptor, domainconstants::kPrettyJsonAttribute);
+  const auto* pretty = FindAttributeDescriptor(descriptor, domainconstants::kPrettyJsonAttribute);
   ASSERT_NE(pretty, nullptr);
   EXPECT_EQ(pretty->default_value, mvvm::variant_t{false});
   EXPECT_TRUE(pretty->nullable);
@@ -121,7 +101,7 @@ TEST_F(VariableDescriptorHelperTest, CreateVariableDescriptorFromChannelAccess)
 
   const auto descriptor = CreateTypedDescriptor(domainconstants::kChannelAccessVariableType);
 
-  const auto* channel = FindAttribute(descriptor, domainconstants::kChannelAttribute);
+  const auto* channel = FindAttributeDescriptor(descriptor, domainconstants::kChannelAttribute);
   ASSERT_NE(channel, nullptr);
   EXPECT_EQ(channel->default_value, mvvm::variant_t{std::string{}});
   EXPECT_TRUE(channel->mandatory);

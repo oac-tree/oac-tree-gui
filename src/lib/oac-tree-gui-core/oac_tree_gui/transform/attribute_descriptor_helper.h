@@ -22,12 +22,15 @@
 #define OAC_TREE_GUI_TRANSFORM_ATTRIBUTE_DESCRIPTOR_HELPER_H_
 
 //! @file
-//! Collection of functions to create attribute descriptors of instructions and variables.
+//! Collection of functions to create and find attribute descriptors of instructions and
+//! variables.
 
 #include <oac_tree_gui/domain/attribute_descriptor.h>
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 
+#include <algorithm>
 #include <string>
+#include <vector>
 
 namespace oac_tree_gui
 {
@@ -62,6 +65,42 @@ AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
  */
 AttributeDescriptor CreateAttributeDescriptor(const std::string& domain_type,
                                               const attribute_definition_t& definition);
+
+/**
+ * @brief Finds the attribute descriptor with the given name.
+ *
+ * @tparam DescriptorT InstructionDescriptor or VariableDescriptor.
+ * @param descriptor The descriptor with the list of attributes.
+ * @param name The name of the attribute.
+ * @return The attribute descriptor, or nullptr if not found.
+ */
+template <typename DescriptorT>
+const AttributeDescriptor* FindAttributeDescriptor(const DescriptorT& descriptor,
+                                                   const std::string& name)
+{
+  auto iter = std::find_if(descriptor.attributes.begin(), descriptor.attributes.end(),
+                           [&name](const auto& attribute) { return attribute.name == name; });
+  return iter == descriptor.attributes.end() ? nullptr : &*iter;
+}
+
+/**
+ * @brief Returns the names of the attributes of the descriptor, in their order.
+ *
+ * @tparam DescriptorT InstructionDescriptor or VariableDescriptor.
+ * @param descriptor The descriptor with the list of attributes.
+ * @return The attribute names.
+ */
+template <typename DescriptorT>
+std::vector<std::string> GetAttributeNames(const DescriptorT& descriptor)
+{
+  std::vector<std::string> result;
+  result.reserve(descriptor.attributes.size());
+  for (const auto& attribute : descriptor.attributes)
+  {
+    result.push_back(attribute.name);
+  }
+  return result;
+}
 
 }  // namespace oac_tree_gui
 
