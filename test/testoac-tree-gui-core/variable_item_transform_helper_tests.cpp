@@ -23,12 +23,12 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/variable_descriptor_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
@@ -173,11 +173,13 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromNode)
         {domainconstants::kDynamicTypeAttribute});
     EXPECT_EQ(mvvm::utils::RegisteredTags(*item->GetAttributes()), expected_attribute_tags);
 
-    auto* dynamic_type = item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
-        domainconstants::kDynamicTypeAttribute);
+    // nullable attribute without text
+    auto* dynamic_type =
+        item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kDynamicTypeAttribute);
     ASSERT_NE(dynamic_type, nullptr);
-    EXPECT_FALSE(item->GetAttribute<bool>(domainconstants::kDynamicTypeAttribute));
-    EXPECT_FALSE(GetAttributeExposedFlag(*dynamic_type));
+    EXPECT_EQ(dynamic_type->GetState(), AttributeState::kNotSet);
+    EXPECT_EQ(dynamic_type->GetDefaultValue(), mvvm::variant_t(false));
+    EXPECT_FALSE(dynamic_type->IsTextAllowed());
 
     // no type attribute: empty AnyValueItem
     ASSERT_NE(item->GetAnyValueItem(), nullptr);
@@ -193,25 +195,48 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromNode)
 
     EXPECT_EQ(item->GetDisplayName(), "abc");
     EXPECT_TRUE(item->GetAttribute<bool>(domainconstants::kDynamicTypeAttribute));
-    EXPECT_TRUE(GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
-        domainconstants::kDynamicTypeAttribute)));
     EXPECT_EQ(GetAnyValue(*item), sup::dto::AnyValue(sup::dto::SignedInteger32Type, 0));
   }
 }
 
-//! Mandatory attributes are exposed from the start.
+//! Mandatory string attribute always has a value, optional attribute starts not set.
 TEST_F(VariableItemTransformHelperTest, CreateVariableItemWithMandatoryAttribute)
 {
   auto item = CreateVariableItem(domainconstants::kFileVariableType);
 
-  EXPECT_TRUE(GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
-      domainconstants::kFileNameAttribute)));
-  EXPECT_FALSE(GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
-      domainconstants::kPrettyJsonAttribute)));
+  auto* file = item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kFileNameAttribute);
+  EXPECT_EQ(file->GetState(), AttributeState::kValue);
+  EXPECT_FALSE(file->HasFlag(mvvm::Appearance::kNullable));
+
+  auto* pretty =
+      item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kPrettyJsonAttribute);
+  EXPECT_EQ(pretty->GetState(), AttributeState::kNotSet);
+  EXPECT_TRUE(pretty->HasFlag(mvvm::Appearance::kNullable));
+
+  // not set attribute and empty string are not sent to the domain
+  item->SetName("abc");
+  const std::vector<sup::oac_tree::AttributeInfo> expected_attributes{
+      {domainconstants::kNameAttribute, "abc"}};
+  EXPECT_EQ(CreateDomainVariable(*item)->GetStringAttributes(), expected_attributes);
 }
 
-//! An attribute unknown to the descriptor becomes an exposed string property and goes back to the
-//! domain.
+//! Variable attributes take no text: a placeholder in a non-string attribute is not parsed, in a
+//! string attribute it is the value.
+TEST_F(VariableItemTransformHelperTest, CreateVariableItemWithPlaceholder)
+{
+  auto domain_variable = CreateDomainVariable(domainconstants::kFileVariableType);
+  (void)domain_variable->AddAttribute(domainconstants::kFileNameAttribute, "$file");
+  (void)domain_variable->AddAttribute(domainconstants::kPrettyJsonAttribute, "$pretty");
+
+  auto item = CreateVariableItem(CreateVariableNode(*domain_variable));
+
+  EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kFileNameAttribute), "$file");
+  auto* pretty =
+      item->GetAttributes()->FindItem<AttributeItem>(domainconstants::kPrettyJsonAttribute);
+  EXPECT_EQ(pretty->GetState(), AttributeState::kNotSet);
+}
+
+//! An attribute unknown to the descriptor becomes a string attribute and goes back to the domain.
 TEST_F(VariableItemTransformHelperTest, CreateVariableItemWithUnknownAttribute)
 {
   auto node = CreateVariableNode(domainconstants::kLocalVariableType);
@@ -219,8 +244,7 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemWithUnknownAttribute)
 
   auto item = CreateVariableItem(node);
   EXPECT_EQ(item->GetAttribute<std::string>("custom"), "abc");
-  EXPECT_TRUE(
-      GetAttributeExposedFlag(*item->GetAttributes()->FindItem<sup::gui::AnyValueItem>("custom")));
+  EXPECT_FALSE(item->GetAttributes()->FindItem<AttributeItem>("custom")->IsTextAllowed());
 
   auto domain_variable = CreateDomainVariable(*item);
   EXPECT_EQ(domain_variable->GetAttributeString("custom"), "abc");

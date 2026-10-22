@@ -23,9 +23,9 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 #include <oac_tree_gui/transform/variable_descriptor_helper.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
@@ -139,7 +139,7 @@ TEST_F(VariableItemTest, ChannelAccessVariablePropertyAppearance)
   auto attributes = item->GetAttributes()->GetAllItems();
   ASSERT_EQ(attributes.size(), 1);
 
-  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(0));
+  auto channel = dynamic_cast<AttributeItem*>(attributes.at(0));
   ASSERT_NE(channel, nullptr);
   EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
 }
@@ -234,11 +234,11 @@ TEST_F(VariableItemTest, FileVariablePropertyAppearance)
   auto attributes = item->GetAttributes()->GetAllItems();
   ASSERT_EQ(attributes.size(), 2);
 
-  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(0));
+  auto file_name = dynamic_cast<AttributeItem*>(attributes.at(0));
   ASSERT_NE(file_name, nullptr);
   EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileNameAttribute);
 
-  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(1));
+  auto json_attr = dynamic_cast<AttributeItem*>(attributes.at(1));
   ASSERT_NE(json_attr, nullptr);
   EXPECT_EQ(json_attr->GetDisplayName(), domainconstants::kPrettyJsonAttribute);
 }
@@ -308,10 +308,10 @@ TEST_F(VariableItemTest, LocalVariablePropertyAppearance)
   auto attributes = item->GetAttributes()->GetAllItems();
   ASSERT_EQ(attributes.size(), 1);
 
-  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(attributes.at(0));
+  auto dynamic_type_item = dynamic_cast<AttributeItem*>(attributes.at(0));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
-  EXPECT_FALSE(GetAttributeExposedFlag(*dynamic_type_item));
+  EXPECT_EQ(dynamic_type_item->GetState(), AttributeState::kNotSet);
 }
 
 TEST_F(VariableItemTest, LocalVariableFromDomain)
@@ -548,24 +548,26 @@ TEST_F(VariableItemTest, PvAccessServerVariableToDomain)
 TEST_F(VariableItemTest, SetAndGetAttribute)
 {
   auto item = CreateVariableItem(domainconstants::kFileVariableType);
-  auto* pretty = item->GetAttributes()->FindItem<sup::gui::AnyValueItem>(
-      domainconstants::kPrettyJsonAttribute);
-  ASSERT_NE(pretty, nullptr);
-  EXPECT_FALSE(GetAttributeExposedFlag(*pretty));
+
+  // nullable attribute is not set at the beginning
+  EXPECT_THROW(item->GetAttribute<bool>(domainconstants::kPrettyJsonAttribute), RuntimeException);
 
   item->SetAttribute(domainconstants::kFileNameAttribute, std::string("abc"));
   EXPECT_EQ(item->GetAttribute<std::string>(domainconstants::kFileNameAttribute), "abc");
 
-  // setting a value marks the attribute as exposed
   item->SetAttribute(domainconstants::kPrettyJsonAttribute, true);
   EXPECT_TRUE(item->GetAttribute<bool>(domainconstants::kPrettyJsonAttribute));
-  EXPECT_TRUE(GetAttributeExposedFlag(*pretty));
 
   // value type must match the attribute type
   EXPECT_THROW(item->SetAttribute(domainconstants::kPrettyJsonAttribute, 1), RuntimeException);
 
   // unknown attribute
   EXPECT_THROW(item->SetAttribute("unknown", true), RuntimeException);
+
+  // unset: nullable attribute only
+  item->UnsetAttribute(domainconstants::kPrettyJsonAttribute);
+  EXPECT_THROW(item->GetAttribute<bool>(domainconstants::kPrettyJsonAttribute), RuntimeException);
+  EXPECT_THROW(item->UnsetAttribute(domainconstants::kFileNameAttribute), RuntimeException);
 }
 
 //! Test helper InsertVariable.

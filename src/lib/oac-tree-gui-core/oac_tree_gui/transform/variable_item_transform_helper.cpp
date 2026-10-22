@@ -23,6 +23,7 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/model/attribute_item.h>
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
@@ -33,12 +34,10 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/container_utils.h>
 
-#include <sup/dto/anytype.h>
 #include <sup/oac-tree/variable.h>
 #include <sup/oac-tree/variable_info.h>
 #include <sup/oac-tree/workspace.h>
@@ -61,29 +60,34 @@ bool IsAttributeProperty(const std::string& name)
   return !mvvm::utils::Contains(kNonPropertyAttributes, name);
 }
 
-//! Adds a property for the attribute. Mandatory attributes are exposed.
+//! Adds an attribute item for the attribute descriptor.
 void AddAttributeProperty(const AttributeDescriptor& attribute, mvvm::CompoundItem& attributes)
 {
-  auto& property = attributes.AddProperty<sup::gui::AnyValueScalarItem>(attribute.name);
-  property.SetAnyTypeName(
-      sup::gui::GetAnyValueFromScalar(attribute.default_value).GetType().GetTypeName());
+  auto& property = attributes.AddProperty<AttributeItem>(attribute.name);
+  property.SetAttributeType(attribute.default_value, attribute.nullable, attribute.allow_text);
   if (attribute.has_preset)
   {
     (void)property.SetData(attribute.default_value);
   }
   (void)property.SetDisplayName(attribute.name);
-  SetAttributeExposedFlag(attribute.mandatory, property);
+  if (!attribute.tooltip.empty())
+  {
+    (void)property.SetToolTip(attribute.tooltip);
+  }
+  if (!attribute.visible)
+  {
+    (void)property.SetVisible(false);
+  }
 }
 
-//! Adds an exposed string property for an attribute unknown to the descriptor.
+//! Adds a string attribute item for an attribute unknown to the descriptor.
 void AddStringAttributeProperty(const std::string& name, const std::string& value,
                                 mvvm::CompoundItem& attributes)
 {
-  auto& property = attributes.AddProperty<sup::gui::AnyValueScalarItem>(name);
-  property.SetAnyTypeName(sup::dto::kStringTypeName);
+  auto& property = attributes.AddProperty<AttributeItem>(name);
+  property.SetAttributeType(std::string(), /*is_nullable*/ false, /*allow_text*/ false);
   (void)property.SetDisplayName(name);
   (void)property.SetData(value);
-  SetAttributeExposedFlag(true, property);
 }
 
 //! Sets up the item for the given descriptor: domain type, attribute container, empty
@@ -127,7 +131,7 @@ void SetAttributeValues(const VariableNode& node, const anytype_registry_t* regi
     }
     else if (FindAttributeDescriptor(node.descriptor, name) != nullptr)
     {
-      SetPropertyFromAttributeString(value, *attributes.FindItem<sup::gui::AnyValueItem>(name));
+      SetAttributeFromString(value, *attributes.FindItem<AttributeItem>(name));
     }
     else
     {
@@ -138,13 +142,13 @@ void SetAttributeValues(const VariableNode& node, const anytype_registry_t* regi
   SetAnyValueFromAttributes(node.attributes, item, registry);
 }
 
-//! Returns property items representing domain attributes.
-std::vector<const sup::gui::AnyValueItem*> GetAttributeProperties(const VariableItem& item)
+//! Returns attribute items representing domain attributes.
+std::vector<const AttributeItem*> GetAttributeProperties(const VariableItem& item)
 {
   const auto* attributes = item.GetAttributes();
-  return (attributes != nullptr) ? mvvm::utils::CastItems<const sup::gui::AnyValueItem>(
+  return (attributes != nullptr) ? mvvm::utils::CastItems<const AttributeItem>(
                                        mvvm::utils::SinglePropertyItems(*attributes))
-                                 : std::vector<const sup::gui::AnyValueItem*>{};
+                                 : std::vector<const AttributeItem*>{};
 }
 
 }  // namespace

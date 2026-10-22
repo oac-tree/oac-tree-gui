@@ -20,9 +20,7 @@
 
 #include "variable_item.h"
 
-#include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/transform/attribute_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -30,27 +28,6 @@
 
 namespace oac_tree_gui
 {
-
-namespace
-{
-
-//! Returns the attribute item with the given name. Throws if it doesn't exist.
-template <typename ContainerT>
-auto& FindAttributeItem(ContainerT* attributes, const std::string& name,
-                        const std::string& domain_type)
-{
-  auto* attribute = (attributes != nullptr)
-                        ? attributes->template FindItem<sup::gui::AnyValueItem>(name)
-                        : nullptr;
-  if (attribute == nullptr)
-  {
-    throw RuntimeException("Attribute [" + name + "] doesn't exist in variable [" + domain_type
-                           + "]");
-  }
-  return *attribute;
-}
-
-}  // namespace
 
 VariableItem::VariableItem() : CompoundItem(mvvm::GetTypeName<VariableItem>())
 {
@@ -100,15 +77,12 @@ mvvm::CompoundItem* VariableItem::GetAttributes()
 
 void VariableItem::SetAttribute(const std::string& name, const mvvm::variant_t& value)
 {
-  auto& attribute = FindAttributeItem(GetAttributes(), name, GetDomainType());
-  if (value.index() != attribute.Data().index())
-  {
-    throw RuntimeException("Attribute [" + name + "] has type ["
-                           + mvvm::utils::TypeName(attribute.Data()) + "], value type ["
-                           + mvvm::utils::TypeName(value) + "]");
-  }
-  (void)attribute.SetData(value);
-  SetAttributeExposedFlag(true, attribute);
+  SetAttributeValue(*this, name, value);
+}
+
+void VariableItem::UnsetAttribute(const std::string& name)
+{
+  UnsetAttributeValue(*this, name);
 }
 
 const sup::gui::AnyValueItem* VariableItem::GetAnyValueItem() const
@@ -129,11 +103,6 @@ bool VariableItem::IsAvailable() const
 void VariableItem::SetIsAvailable(bool value)
 {
   (void)SetProperty(itemconstants::kIsAvailable, value);
-}
-
-const mvvm::SessionItem& VariableItem::GetAttributeItem(const std::string& name) const
-{
-  return FindAttributeItem(GetAttributes(), name, GetDomainType());
 }
 
 }  // namespace oac_tree_gui

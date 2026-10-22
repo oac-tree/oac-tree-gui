@@ -184,6 +184,9 @@ void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_
 extern template void SetDomainAttribute<instruction_t>(const AttributeItem& item,
                                                        const std::string& attribute_name,
                                                        instruction_t& domain);
+extern template void SetDomainAttribute<variable_t>(const AttributeItem& item,
+                                                    const std::string& attribute_name,
+                                                    variable_t& domain);
 
 /**
  * @brief Checks if given instruction or variable contains attribute definition with the given name.

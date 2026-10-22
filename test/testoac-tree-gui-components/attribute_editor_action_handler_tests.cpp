@@ -126,6 +126,25 @@ TEST_F(AttributeEditorActionHandlerTest, ShowCollapsedAttributeSelected)
   EXPECT_FALSE(show_collapsed_attribute->HasData());
 }
 
+//! Variable attribute takes no text and has no exposed flag.
+TEST_F(AttributeEditorActionHandlerTest, VariableAttributeSelected)
+{
+  auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+  auto dynamic_type_attribute =
+      item->GetAttributes()->FindItem(domainconstants::kDynamicTypeAttribute);
+
+  auto handler = CreateActionHandler(dynamic_type_attribute);
+
+  EXPECT_FALSE(handler->CanToggleExposedFlag());
+  EXPECT_FALSE(handler->GetExposedFlag());
+  EXPECT_FALSE(handler->CanSetDefaultType());
+  EXPECT_FALSE(handler->CanSetPlaceholderType());
+  EXPECT_FALSE(handler->CanEditAnyValue());
+
+  handler->OnSetPlaceholderType();
+  EXPECT_FALSE(dynamic_type_attribute->HasData());
+}
+
 TEST_F(AttributeEditorActionHandlerTest, CallingEditorWhenAnyValueSelected)
 {
   auto item = CreateVariableItem(domainconstants::kLocalVariableType);

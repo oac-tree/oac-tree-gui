@@ -21,6 +21,8 @@
 #ifndef OAC_TREE_GUI_MODEL_VARIABLE_ITEM_H_
 #define OAC_TREE_GUI_MODEL_VARIABLE_ITEM_H_
 
+#include <oac_tree_gui/model/attribute_container_helper.h>
+
 #include <mvvm/model/compound_item.h>
 
 namespace sup::gui
@@ -78,7 +80,7 @@ public:
   mvvm::CompoundItem* GetAttributes();
 
   /**
-   * @brief Sets the domain attribute to a given value and marks it as exposed.
+   * @brief Sets the domain attribute to a given value.
    *
    * @param name The name of the attribute.
    * @param value The attribute value. Its type must match the attribute type.
@@ -87,11 +89,19 @@ public:
   void SetAttribute(const std::string& name, const mvvm::variant_t& value);
 
   /**
+   * @brief Removes the value of the domain attribute, the domain default applies.
+   *
+   * @throw RuntimeException if the attribute doesn't exist or is not nullable.
+   */
+  void UnsetAttribute(const std::string& name);
+
+  /**
    * @brief Returns the value of the domain attribute.
    *
    * @tparam T The type of the attribute value.
    * @param name The name of the attribute.
-   * @throw RuntimeException if the attribute doesn't exist.
+   * @return The attribute value.
+   * @throw RuntimeException if the attribute doesn't exist or is not set.
    */
   template <typename T>
   T GetAttribute(const std::string& name) const;
@@ -115,16 +125,12 @@ public:
    * @brief Sets availability flag to a given value.
    */
   void SetIsAvailable(bool value);
-
-private:
-  //! Returns the attribute item with the given name. Throws if it doesn't exist.
-  const mvvm::SessionItem& GetAttributeItem(const std::string& name) const;
 };
 
 template <typename T>
 T VariableItem::GetAttribute(const std::string& name) const
 {
-  return GetAttributeItem(name).Data<T>();
+  return std::get<T>(GetAttributeValue(*this, name));
 }
 
 }  // namespace oac_tree_gui

@@ -221,6 +221,8 @@ void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_
 template void SetDomainAttribute<instruction_t>(const AttributeItem& item,
                                                 const std::string& attribute_name,
                                                 instruction_t& domain);
+template void SetDomainAttribute<variable_t>(const AttributeItem& item,
+                                             const std::string& attribute_name, variable_t& domain);
 
 template <typename DomainT>
 bool HasAttributeDefinition(const DomainT& domain, const std::string& definition_name)
