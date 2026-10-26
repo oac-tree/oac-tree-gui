@@ -54,7 +54,7 @@ namespace
 {
 constexpr auto kSplitterSettingsGroup = "InstructionEditorWidget/splitter";
 constexpr auto kHeaderSettingsGroup = "InstructionEditorWidget/tree_header";
-const std::vector<int> kDefaultColumnStretch({10, 10, 1});
+const std::vector<int> kDefaultColumnStretch({10, 10, 2});
 
 /**
  * @brief Returns action keys intended for a toolbar.
