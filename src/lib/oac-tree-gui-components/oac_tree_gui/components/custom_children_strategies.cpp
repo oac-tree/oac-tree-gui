@@ -37,6 +37,20 @@
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+//! Returns the parent of the item, or the parent of the attribute container holding the item.
+mvvm::SessionItem* GetParentSkippingAttributes(mvvm::SessionItem* item)
+{
+  auto* parent = item->GetParent();
+  return ((parent != nullptr) && (parent->GetTagIndex().GetTag() == itemconstants::kAttributes))
+             ? parent->GetParent()
+             : parent;
+}
+
+}  // namespace
+
 std::vector<mvvm::SessionItem*> VariableTableChildrenStrategy::GetChildren(
     mvvm::SessionItem* item) const
 {
@@ -103,6 +117,11 @@ std::vector<mvvm::SessionItem*> WorkspaceEditorChildrenStrategy::GetChildren(
   return result;
 }
 
+mvvm::SessionItem* WorkspaceEditorChildrenStrategy::GetViewParent(mvvm::SessionItem* item) const
+{
+  return GetParentSkippingAttributes(item);
+}
+
 std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
     mvvm::SessionItem* item) const
 {
@@ -155,6 +174,12 @@ std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildre
   auto gui_properties = visible_properties(*instruction);
   (void)result.insert(result.end(), gui_properties.begin(), gui_properties.end());
   return result;
+}
+
+mvvm::SessionItem* InstructionAttributeChildrenStrategy::GetViewParent(
+    mvvm::SessionItem* item) const
+{
+  return GetParentSkippingAttributes(item);
 }
 
 }  // namespace oac_tree_gui

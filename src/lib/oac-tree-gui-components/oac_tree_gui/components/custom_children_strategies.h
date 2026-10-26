@@ -62,6 +62,8 @@ class WorkspaceEditorChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
   std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
+
+  mvvm::SessionItem* GetViewParent(mvvm::SessionItem* item) const override;
 };
 
 /**
@@ -74,6 +76,8 @@ class InstructionAttributeChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
   std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
+
+  mvvm::SessionItem* GetViewParent(mvvm::SessionItem* item) const override;
 };
 
 }  // namespace oac_tree_gui

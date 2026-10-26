@@ -118,6 +118,20 @@ TEST_F(CustomChildrenStrategiesTest, WorkspaceEditorChildrenStrategy)
             std::vector<mvvm::SessionItem*>({file, variable0->GetAnyValueItem()}));
 }
 
+TEST_F(CustomChildrenStrategiesTest, WorkspaceEditorChildrenStrategyViewParent)
+{
+  const WorkspaceEditorChildrenStrategy strategy;
+
+  WorkspaceItem workspace;
+  auto variable = InsertVariable(domainconstants::kFileVariableType, &workspace);
+  auto* file = variable->GetAttributes()->FindItem(domainconstants::kFileNameAttribute);
+
+  // attributes are shown beneath the variable
+  EXPECT_EQ(strategy.GetViewParent(file), variable);
+  EXPECT_EQ(strategy.GetViewParent(variable->GetAnyValueItem()), variable);
+  EXPECT_EQ(strategy.GetViewParent(variable), &workspace);
+}
+
 TEST_F(CustomChildrenStrategiesTest, InstructionNodeChildrenStrategy)
 {
   InstructionContainerItem container;
@@ -148,6 +162,21 @@ TEST_F(CustomChildrenStrategiesTest, InstructionAttributeChildrenStrategy)
   ASSERT_EQ(children.size(), 2);
   EXPECT_EQ(children.at(0)->GetTagIndex().GetTag(), domainconstants::kShowCollapsedAttribute);
   EXPECT_EQ(children.at(1)->GetTagIndex().GetTag(), itemconstants::kBehaviorTag);
+}
+
+TEST_F(CustomChildrenStrategiesTest, InstructionAttributeChildrenStrategyViewParent)
+{
+  InstructionContainerItem container;
+  auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+
+  const InstructionAttributeChildrenStrategy strategy;
+
+  // domain attributes and GUI properties are shown beneath the instruction
+  const auto children = strategy.GetChildren(sequence);
+  ASSERT_EQ(children.size(), 2);
+  EXPECT_EQ(strategy.GetViewParent(children.at(0)), sequence);
+  EXPECT_EQ(strategy.GetViewParent(children.at(1)), sequence);
+  EXPECT_EQ(strategy.GetViewParent(sequence), &container);
 }
 
 }  // namespace oac_tree_gui::test
