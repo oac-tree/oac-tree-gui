@@ -22,6 +22,7 @@
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
@@ -106,6 +107,25 @@ TEST_F(XmlPanelControllerTest, XmlUpdateOnItemInsert)
   EXPECT_CALL(m_mock_send_xml, Call(expected_xml)).Times(1);
   InsertInstruction(domainconstants::kSequenceInstructionType,
                     m_procedure_item->GetInstructionContainer());
+}
+
+TEST_F(XmlPanelControllerTest, XmlUpdateOnAttributeText)
+{
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType,
+                                m_procedure_item->GetInstructionContainer());
+
+  EXPECT_CALL(m_mock_send_xml, Call(::testing::_)).Times(1);
+  auto controller = CreateController();
+
+  const std::string expected_xml(R"RAW(<?xml version="1.0" encoding="UTF-8"?>
+<Procedure>
+  <Wait timeout="$par"/>
+  <Workspace/>
+</Procedure>
+)RAW");
+
+  EXPECT_CALL(m_mock_send_xml, Call(expected_xml)).Times(1);
+  wait->SetAttributeText(domainconstants::kTimeoutAttribute, "$par");
 }
 
 TEST_F(XmlPanelControllerTest, XmlUpdateOnTwoVariableInsert)

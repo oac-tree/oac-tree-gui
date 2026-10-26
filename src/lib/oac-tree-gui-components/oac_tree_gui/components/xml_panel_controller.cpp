@@ -51,6 +51,13 @@ std::string XmlPanelController::GenerateText()
 
 void XmlPanelController::OnDataChangedEvent(const mvvm::DataChangedEvent& event)
 {
+  // attribute text goes to the XML in place of the value
+  if (event.data_role == itemconstants::kAttributeTextRole)
+  {
+    UpdateText();
+    return;
+  }
+
   const auto tag = event.item->GetTagIndex().GetTag();
 
   //   instruction node coordinates are not relevant for the XML of the procedure
