@@ -163,7 +163,10 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
 
   EXPECT_EQ(second_widget->GetCurrentItem(), procedure);
 
+  // focus moves to the empty panel
   editor.GetController()->SetFocusWidget(third_widget);
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(signal_spy), mvvm::ItemSelection());
 
   EXPECT_EQ(third_widget->GetCurrentItem(), nullptr);
   editor.SetProcedure(procedure);
@@ -172,8 +175,37 @@ TEST_F(ProcedureSplittableEditorWidgetTest, SetProcedureToWidgetInFocus)
   EXPECT_EQ(second_widget->GetCurrentItem(), procedure);
   EXPECT_EQ(third_widget->GetCurrentItem(), procedure);
 
-  // we do not emit signal then same procedure is selected in another focus widget
-  ASSERT_EQ(signal_spy.count(), 0);
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(signal_spy), mvvm::ItemSelection(procedure));
+
+  // focus moves to the panel with the same procedure, no signal
+  editor.GetController()->SetFocusWidget(second_widget);
+  EXPECT_EQ(signal_spy.count(), 0);
+}
+
+TEST_F(ProcedureSplittableEditorWidgetTest, FocusRequestEmitsProcedureOfFocusPanel)
+{
+  auto procedure0 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+  auto procedure1 = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+
+  ProcedureSplittableEditorWidget editor(m_context);
+  editor.SetModel(&m_model);
+  editor.CreatePanel();
+
+  auto panels = editor.GetController()->GetPanels();
+  ASSERT_EQ(panels.size(), 2);
+  panels.at(0)->SetItem(procedure0);
+  panels.at(1)->SetItem(procedure1);
+  ASSERT_EQ(editor.GetController()->GetFocusWidget(), panels.at(1));
+
+  QSignalSpy signal_spy(&editor,
+                        &ProcedureSplittableEditorWidget::focusWidgetProcedureSelectionChanged);
+
+  // a click in the panel emits the focus request
+  emit panels.at(0)->focusPanelRequest();
+  ASSERT_EQ(signal_spy.count(), 1);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(signal_spy),
+            mvvm::ItemSelection(procedure0));
 }
 
 TEST_F(ProcedureSplittableEditorWidgetTest, CheckSameProcedureInNewlyCreatedWidget)
