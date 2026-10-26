@@ -139,7 +139,8 @@ bool AttributeItem::OnSetData(mvvm::SessionItem* item, const mvvm::variant_t& va
     {
       return false;
     }
-    const bool is_empty = !mvvm::utils::IsValid(value) || std::get<std::string>(value).empty();
+    const auto* text = std::get_if<std::string>(&value);
+    const bool is_empty = (text == nullptr) || text->empty();
     return mvvm::utils::SetData(*item, is_empty ? mvvm::variant_t{} : value, role);
   }
 

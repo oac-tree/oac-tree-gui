@@ -43,12 +43,11 @@ bool AttributeEditorActionHandler::CanSetPlaceholderType() const
 
 void AttributeEditorActionHandler::OnSetPlaceholderType()
 {
-  if (!CanSetPlaceholderType())
+  if (auto* attribute = GetSelectedAttribute();
+      (attribute != nullptr) && attribute->IsTextAllowed())
   {
-    return;
+    (void)attribute->SetText(itemconstants::kDefaultPlaceholderAttributeValue);
   }
-
-  (void)GetSelectedAttribute()->SetText(itemconstants::kDefaultPlaceholderAttributeValue);
 }
 
 bool AttributeEditorActionHandler::CanEditAnyValue() const

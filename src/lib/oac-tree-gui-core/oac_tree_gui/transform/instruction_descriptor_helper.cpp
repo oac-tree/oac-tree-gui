@@ -68,10 +68,10 @@ InstructionNode CreateInstructionNode(const std::string& domain_type)
 
 InstructionNode CreateInstructionNodeTree(const instruction_t& instruction)
 {
-  InstructionNode result;
+  InstructionNode result{};
   std::uint32_t next_index{0};
   std::stack<std::pair<const instruction_t*, InstructionNode*>> stack;
-  stack.emplace(&instruction, &result);
+  stack.push({&instruction, &result});
 
   while (!stack.empty())
   {
@@ -88,7 +88,7 @@ InstructionNode CreateInstructionNodeTree(const instruction_t& instruction)
     for (auto index = children.size(); index > 0; --index)
     {
       // reverse order, so the first child gets the next index
-      stack.emplace(children[index - 1], &node->children[index - 1]);
+      stack.push({children[index - 1], &node->children[index - 1]});
     }
   }
   return result;
@@ -96,7 +96,7 @@ InstructionNode CreateInstructionNodeTree(const instruction_t& instruction)
 
 InstructionNode CreateInstructionNodeTree(const sup::oac_tree::InstructionInfo& info)
 {
-  InstructionNode result;
+  InstructionNode result{};
   std::stack<std::pair<const sup::oac_tree::InstructionInfo*, InstructionNode*>> stack;
   stack.push({&info, &result});
 
@@ -111,8 +111,9 @@ InstructionNode CreateInstructionNodeTree(const sup::oac_tree::InstructionInfo& 
 
     // the vector is not resized later, so node pointers stay valid
     const auto children = current->Children();
-    node->children.resize(children.size());
-    for (std::size_t index = 0; index < children.size(); ++index)
+    const std::size_t children_count = children.size();
+    node->children.resize(children_count);
+    for (std::size_t index = 0; index < children_count; ++index)
     {
       stack.push({children[index], &node->children[index]});
     }

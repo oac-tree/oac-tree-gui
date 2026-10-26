@@ -40,7 +40,7 @@ namespace
 {
 
 //! Returns the presentation of the attribute value: a checkbox for a non-nullable bool.
-std::unique_ptr<mvvm::AbstractPresentationItem> CreateValuePresentation(AttributeItem* item)
+std::unique_ptr<mvvm::DefaultDataPresentationItem> CreateValuePresentation(AttributeItem* item)
 {
   if ((item != nullptr) && (mvvm::GetTypeCode(item->Data()) == mvvm::TypeCode::Bool)
       && !item->HasFlag(mvvm::Appearance::kNullable))

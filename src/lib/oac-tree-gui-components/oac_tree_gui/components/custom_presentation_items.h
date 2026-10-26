@@ -72,7 +72,7 @@ private:
   bool HasText() const;
 
   AttributeItem* m_attribute{nullptr};
-  std::unique_ptr<mvvm::AbstractPresentationItem> m_value_presentation;
+  std::unique_ptr<mvvm::DefaultDataPresentationItem> m_value_presentation;
 };
 
 /**

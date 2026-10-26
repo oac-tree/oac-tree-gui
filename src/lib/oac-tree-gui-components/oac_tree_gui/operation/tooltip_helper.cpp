@@ -67,12 +67,13 @@ std::vector<std::pair<std::string, std::string>> CollectToolTipAttributes(
 {
   std::vector<std::pair<std::string, std::string>> result;
   const auto* instruction = dynamic_cast<const InstructionItem*>(item);
-  if ((instruction == nullptr) || (instruction->GetAttributes() == nullptr))
+  const auto* attributes = (instruction != nullptr) ? instruction->GetAttributes() : nullptr;
+  if (attributes == nullptr)
   {
     return result;
   }
 
-  for (auto property : mvvm::utils::SinglePropertyItems(*instruction->GetAttributes()))
+  for (auto property : mvvm::utils::SinglePropertyItems(*attributes))
   {
     // not set attributes and empty strings don't go to the domain
     const auto* attribute = dynamic_cast<const AttributeItem*>(property);

@@ -169,17 +169,38 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
   }
 }
 
+//! Sets the AnyValue of the item from the type and value attributes of the node.
+void SetAnyValueAttributes(const InstructionNode& node, InstructionItem& item)
+{
+  std::string type_json;
+  std::string value_json;
+  for (const auto& [name, value] : node.attributes)
+  {
+    if (name == domainconstants::kTypeAttribute)
+    {
+      type_json = value;
+    }
+    else if (name == domainconstants::kValueAttribute)
+    {
+      value_json = value;
+    }
+  }
+
+  if (!type_json.empty() && !value_json.empty())
+  {
+    SetAnyValueFromJsonString(type_json, value_json, item);
+  }
+}
+
 //! Sets attribute values of the node to the item.
 void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
 {
   auto& attributes = *item.GetAttributes();
   const bool has_anyvalue_tag = mvvm::utils::HasTag(attributes, itemconstants::kAnyValueTag);
-  std::string type_json;
-  std::string value_json;
 
   for (const auto& [name, value] : node.attributes)
   {
-    if (IsAttributeProperty(name) && FindAttributeDescriptor(node.descriptor, name))
+    if (IsAttributeProperty(name) && (FindAttributeDescriptor(node.descriptor, name) != nullptr))
     {
       SetAttributeFromString(value, *attributes.FindItem<AttributeItem>(name));
     }
@@ -190,23 +211,16 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
         (void)item.SetDisplayName(value);
       }
     }
-    else if (has_anyvalue_tag && name == domainconstants::kTypeAttribute)
+    else if (!has_anyvalue_tag || IsAttributeProperty(name))
     {
-      type_json = value;
-    }
-    else if (has_anyvalue_tag && name == domainconstants::kValueAttribute)
-    {
-      value_json = value;
-    }
-    else
-    {
+      // type and value attributes go to the AnyValueItem, if the item has the tag
       AddStringAttribute(name, value, attributes);
     }
   }
 
-  if (!type_json.empty() && !value_json.empty())
+  if (has_anyvalue_tag)
   {
-    SetAnyValueFromJsonString(type_json, value_json, item);
+    SetAnyValueAttributes(node, item);
   }
 }
 
@@ -226,20 +240,20 @@ InstructionTree CreateInstructionItemTree(const InstructionNode& node)
   auto root = CreateItem(node);
   std::vector<std::pair<std::uint32_t, InstructionItem*>> items;
   std::stack<std::pair<const InstructionNode*, InstructionItem*>> stack;
-  stack.emplace(&node, root.get());
+  stack.push({&node, root.get()});
 
   while (!stack.empty())
   {
     auto [current, item] = stack.top();
     stack.pop();
-    items.emplace_back(current->index, item);
+    items.push_back({current->index, item});
 
     for (const auto& child : current->children)
     {
       auto child_item = CreateItem(child);
       auto* child_item_ptr = child_item.get();
       (void)item->InsertItem(std::move(child_item), mvvm::TagIndex::Append());
-      stack.emplace(&child, child_item_ptr);
+      stack.push({&child, child_item_ptr});
     }
   }
 
