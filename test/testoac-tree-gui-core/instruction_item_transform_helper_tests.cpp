@@ -764,7 +764,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
     EXPECT_EQ(anyvalue_item->GetType(), mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
     EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
     EXPECT_TRUE(anyvalue_item->IsEnabled());
-    EXPECT_TRUE(anyvalue_item->IsEditable());
+    EXPECT_FALSE(anyvalue_item->IsEditable());
   }
 }
 
