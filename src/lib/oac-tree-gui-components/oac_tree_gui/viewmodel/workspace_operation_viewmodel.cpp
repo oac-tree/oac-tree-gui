@@ -22,20 +22,39 @@
 
 #include <oac_tree_gui/components/custom_children_strategies.h>
 #include <oac_tree_gui/components/custom_row_strategies.h>
+#include <oac_tree_gui/model/variable_item.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/providers/viewmodel_controller.h>
 
 namespace oac_tree_gui
 {
 
+namespace
+{
+
+//! Returns the variable owning the AnyValueItem at the given position, or nullptr.
+VariableItem* FindVariableOfAnyValueItem(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
+{
+  if (parent->FindItem<sup::gui::AnyValueItem>(tag_index) == nullptr)
+  {
+    return nullptr;
+  }
+  return mvvm::utils::FindItemUp<VariableItem>(parent);
+}
+
+}  // namespace
+
 /**
  * @brief The WorkspaceOperationViewModelController class serves viewmodel to present
  * Workspace variables in a table.
+ *
+ * The row of a variable depends on its AnyValueItem branch. Any insert or remove in this branch
+ * rebuilds the variable row.
  */
-
 class WorkspaceOperationViewModelController : public mvvm::ViewModelController
 {
 public:
@@ -47,36 +66,17 @@ public:
   }
 
   /**
-   * @brief Processes AboutToRemoveItemEvent.
-   *
-   * @details If AnyValueItem is removed, we have to update the whole branch related to its parent,
-   * VariableItem.
-   */
-  void OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event) override
-  {
-    auto [parent, tag_index] = event;
-    if (parent->FindItem<sup::gui::AnyValueItem>(tag_index) != nullptr)
-    {
-      UpdateBranch(parent);  // update VariableItem row
-    }
-    else
-    {
-      mvvm::ViewModelController::OnAboutToRemoveItemEvent(event);
-    }
-  }
-
-  /**
    * @brief Processes ItemInsertedEvent.
    *
-   * @details If AnyValueItem is inserted, we have to update the whole branch related to its parent,
-   * VariableItem.
+   * @details An AnyValueItem inserted into a variable branch rebuilds the variable row.
    */
   void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event) override
   {
     auto [parent, tag_index] = event;
-    if (parent->FindItem<sup::gui::AnyValueItem>(tag_index) != nullptr)
+    if (auto* variable = FindVariableOfAnyValueItem(parent, tag_index); variable != nullptr)
     {
-      UpdateBranch(parent);  // update VariableItem row
+      RemoveVariableRow(*variable);
+      InsertVariableRow(*variable);
     }
     else
     {
@@ -85,23 +85,51 @@ public:
   }
 
   /**
-   * @brief Special update which regenerate the whole branch releated to the given item.
+   * @brief Processes AboutToRemoveItemEvent.
    *
-   *@details It is used for the case when AnyValueItem on board of VariableItem was created after
-   *the table was already constructed. We ask the WorkspaceItem to regenerate the whole branch
-   *related to VariableItem.
+   * @details An AnyValueItem about to be removed from a variable branch removes the variable row.
+   * The row is restored in OnItemRemovedEvent.
    */
-  void UpdateBranch(mvvm::SessionItem* item)
+  void OnAboutToRemoveItemEvent(const mvvm::AboutToRemoveItemEvent& event) override
   {
-    auto tag_index = item->GetTagIndex();
-    auto parent = item->GetParent();
+    auto [parent, tag_index] = event;
+    if (auto* variable = FindVariableOfAnyValueItem(parent, tag_index); variable != nullptr)
+    {
+      RemoveVariableRow(*variable);
+    }
+    else
+    {
+      mvvm::ViewModelController::OnAboutToRemoveItemEvent(event);
+    }
+  }
 
-    // we pretend that this item was removed
+  /**
+   * @brief Processes ItemRemovedEvent.
+   *
+   * @details Restores the row of a variable, removed in OnAboutToRemoveItemEvent.
+   */
+  void OnItemRemovedEvent(const mvvm::ItemRemovedEvent& event) override
+  {
+    auto* variable = mvvm::utils::FindItemUp<VariableItem>(event.item);
+    if ((variable != nullptr) && (GetViewItemMap().FindView(variable) == nullptr))
+    {
+      InsertVariableRow(*variable);
+    }
+  }
+
+private:
+  //! Removes the row of the variable.
+  void RemoveVariableRow(VariableItem& variable)
+  {
     mvvm::ViewModelController::OnAboutToRemoveItemEvent(
-        mvvm::AboutToRemoveItemEvent{parent, tag_index});
+        mvvm::AboutToRemoveItemEvent{variable.GetParent(), variable.GetTagIndex()});
+  }
 
-    // we pretend that this item was inserted
-    mvvm::ViewModelController::OnItemInsertedEvent(mvvm::ItemInsertedEvent{parent, tag_index});
+  //! Inserts the row of the variable.
+  void InsertVariableRow(VariableItem& variable)
+  {
+    mvvm::ViewModelController::OnItemInsertedEvent(
+        mvvm::ItemInsertedEvent{variable.GetParent(), variable.GetTagIndex()});
   }
 };
 

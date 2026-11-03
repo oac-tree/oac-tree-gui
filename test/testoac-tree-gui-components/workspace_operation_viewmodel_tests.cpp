@@ -28,6 +28,9 @@
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
 
 #include <sup/dto/anyvalue.h>
@@ -43,6 +46,19 @@ namespace oac_tree_gui::test
 //! Tests for WorkspaceOperationViewModel class.
 class WorkspaceOperationViewModelTest : public ::testing::Test
 {
+public:
+  //! Returns a struct with two int32 fields.
+  static sup::dto::AnyValue CreateStruct(std::int32_t a, std::int32_t b)
+  {
+    return {{{"a", {sup::dto::SignedInteger32Type, a}}, {"b", {sup::dto::SignedInteger32Type, b}}}};
+  }
+
+  //! Returns the display value of the cell.
+  static QVariant GetData(const WorkspaceOperationViewModel& viewmodel, int row, int column,
+                          const QModelIndex& parent = QModelIndex())
+  {
+    return viewmodel.data(viewmodel.index(row, column, parent), Qt::DisplayRole);
+  }
 };
 
 //! Testing model layout when there is LocalVariable without AnyValueItem on board.
@@ -190,6 +206,143 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 
   EXPECT_EQ(viewmodel.data(variable_type_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Local"));
+}
+
+//! Struct replaced by a scalar, and back. The variable row and its branch follow.
+TEST_F(WorkspaceOperationViewModelTest, StructReplacedByScalar)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  SetAnyValue(CreateStruct(1, 2), *variable_item);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+
+  // variable with struct beneath
+  auto variable_index = viewmodel.index(0, 0, QModelIndex());
+  ASSERT_EQ(viewmodel.rowCount(variable_index), 1);
+  auto struct_index = viewmodel.index(0, 0, variable_index);
+  EXPECT_EQ(viewmodel.rowCount(struct_index), 2);
+  EXPECT_EQ(GetData(viewmodel, 0, 1), QVariant(QString("---")));
+  EXPECT_EQ(GetData(viewmodel, 1, 1, struct_index).toInt(), 2);
+
+  // scalar in the variable row
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *variable_item);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  variable_index = viewmodel.index(0, 0, QModelIndex());
+  EXPECT_EQ(viewmodel.rowCount(variable_index), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 1).toInt(), 42);
+
+  // struct again
+  SetAnyValue(CreateStruct(3, 4), *variable_item);
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  variable_index = viewmodel.index(0, 0, QModelIndex());
+  ASSERT_EQ(viewmodel.rowCount(variable_index), 1);
+  struct_index = viewmodel.index(0, 0, variable_index);
+  EXPECT_EQ(viewmodel.rowCount(struct_index), 2);
+  EXPECT_EQ(GetData(viewmodel, 0, 1), QVariant(QString("---")));
+  EXPECT_EQ(GetData(viewmodel, 0, 1, struct_index).toInt(), 3);
+}
+
+//! AnyValueItem removed with no insert after. The variable row stays, without a branch.
+TEST_F(WorkspaceOperationViewModelTest, AnyValueRemoved)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  variable_item->SetName("abc");
+  SetAnyValue(CreateStruct(1, 2), *variable_item);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+  ASSERT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 1);
+
+  model.RemoveItem(variable_item->GetAnyValueItem());
+
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 0).toString(), QString("abc"));
+  EXPECT_TRUE(GetData(viewmodel, 0, 1).toString().isEmpty());
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(viewmodel.index(0, 0, QModelIndex())), variable_item);
+}
+
+//! AnyValueItem replaced as in WorkspaceEditorActionHandler::EditAnyValue, then undo and redo.
+TEST_F(WorkspaceOperationViewModelTest, AnyValueReplacedWithUndo)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  SetAnyValue(CreateStruct(1, 2), *variable_item);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+
+  model.SetUndoEnabled(true);
+
+  // replacing struct with a scalar
+  model.RemoveItem(variable_item->GetAnyValueItem());
+  auto scalar_item = std::make_unique<sup::gui::AnyValueScalarItem>();
+  scalar_item->SetAnyTypeName(sup::dto::kInt32TypeName);
+  (void)scalar_item->SetData(std::int32_t{42});
+  (void)model.InsertItem(std::move(scalar_item), variable_item, {});
+
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 1).toInt(), 42);
+
+  // undo the insert: no AnyValueItem
+  model.GetCommandStack()->Undo();
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_TRUE(GetData(viewmodel, 0, 1).toString().isEmpty());
+
+  // undo the remove: struct is back
+  model.GetCommandStack()->Undo();
+  auto variable_index = viewmodel.index(0, 0, QModelIndex());
+  ASSERT_EQ(viewmodel.rowCount(variable_index), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, variable_index)), 2);
+  EXPECT_EQ(GetData(viewmodel, 0, 1), QVariant(QString("---")));
+
+  // redo both
+  model.GetCommandStack()->Redo();
+  model.GetCommandStack()->Redo();
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 1).toInt(), 42);
+}
+
+//! Fields inserted into and removed from a struct in place. The branch follows.
+TEST_F(WorkspaceOperationViewModelTest, StructFieldInsertedAndRemoved)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  SetAnyValue(CreateStruct(1, 2), *variable_item);
+  auto struct_item = dynamic_cast<sup::gui::AnyValueStructItem*>(variable_item->GetAnyValueItem());
+  ASSERT_NE(struct_item, nullptr);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+
+  auto field_item = struct_item->AddScalarField("c", std::int32_t{3});
+
+  auto variable_index = viewmodel.index(0, 0, QModelIndex());
+  ASSERT_EQ(viewmodel.rowCount(variable_index), 1);
+  auto struct_index = viewmodel.index(0, 0, variable_index);
+  ASSERT_EQ(viewmodel.rowCount(struct_index), 3);
+  EXPECT_EQ(GetData(viewmodel, 2, 0, struct_index).toString(), QString("c"));
+  EXPECT_EQ(GetData(viewmodel, 2, 1, struct_index).toInt(), 3);
+
+  model.RemoveItem(field_item);
+
+  variable_index = viewmodel.index(0, 0, QModelIndex());
+  ASSERT_EQ(viewmodel.rowCount(variable_index), 1);
+  struct_index = viewmodel.index(0, 0, variable_index);
+  EXPECT_EQ(viewmodel.rowCount(struct_index), 2);
 }
 
 //! Validating how IsAvailable status change is notified. 4th column in a model is a tricky one, it
