@@ -69,7 +69,6 @@ ProcedureSplittableEditorWidget::ProcedureSplittableEditorWidget(
     : QWidget(parent_widget)
     , m_context(context)
     , m_splitter(new QSplitter)
-    // , m_focus_handler(std::make_unique<WidgetFocusHandler<ProcedureComposerComboPanel>>())
     , m_splitter_controller(CreateSplitterController())
 {
   auto layout = new QVBoxLayout(this);
