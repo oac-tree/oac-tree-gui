@@ -95,8 +95,14 @@ WorkspaceVariableTreeView::WorkspaceVariableTreeView(WorkspacePresentationType p
 
   SetupTree();
 
-  auto on_subscribe = [this]() { SetWorkspaceItemIntern(m_workspace_item); };
-  auto on_unsubscribe = [this]() { SetWorkspaceItemIntern(nullptr); };
+  auto on_subscribe = [this]()
+  {
+    if (m_component_provider->GetItem() != m_workspace_item)
+    {
+      SetWorkspaceItemIntern(m_workspace_item);
+    }
+  };
+  auto on_unsubscribe = []() {};
   m_visibility_agent =
       std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
   m_visibility_agent->SetTarget(this);
@@ -121,10 +127,8 @@ void WorkspaceVariableTreeView::SetWorkspaceItem(WorkspaceItem* workspace_item)
 
   m_workspace_item = workspace_item;
 
-  if ((m_workspace_item != nullptr) && isVisible())
-  {
-    SetWorkspaceItemIntern(m_workspace_item);
-  }
+  // hidden widget is populated on next show
+  SetWorkspaceItemIntern(isVisible() ? m_workspace_item : nullptr);
 }
 
 void WorkspaceVariableTreeView::SetEditable(bool value)

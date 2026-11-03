@@ -109,8 +109,14 @@ InstructionEditorWidget::InstructionEditorWidget(const sup::gui::AppViewContext&
   // Add toolbar actions to the list of widget's actions to use in ItemStackWidget context.
   addActions(m_editor_actions->GetActions(GetToolBarActionKeys()));
 
-  auto on_subscribe = [this]() { SetInstructionContainerIntern(m_instruction_container); };
-  auto on_unsubscribe = [this]() { SetInstructionContainerIntern(nullptr); };
+  auto on_subscribe = [this]()
+  {
+    if (m_component_provider->GetItem() != m_instruction_container)
+    {
+      SetInstructionContainerIntern(m_instruction_container);
+    }
+  };
+  auto on_unsubscribe = []() {};
   m_visibility_agent =
       std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
   m_visibility_agent->SetTarget(this);
@@ -138,10 +144,8 @@ void InstructionEditorWidget::SetInstructionContainer(
 
   m_instruction_container = instruction_container;
 
-  if ((m_instruction_container != nullptr) && isVisible())
-  {
-    SetInstructionContainerIntern(m_instruction_container);
-  }
+  // hidden widget is populated on next show
+  SetInstructionContainerIntern(isVisible() ? m_instruction_container : nullptr);
 }
 
 void InstructionEditorWidget::SetSelectedInstructions(
