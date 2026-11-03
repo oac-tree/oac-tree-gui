@@ -20,6 +20,8 @@
 
 #include "custom_children_strategies.h"
 
+#include "component_helper.h"
+
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/item_constants.h>
@@ -30,7 +32,6 @@
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/session_item.h>
-#include <mvvm/utils/container_utils.h>
 
 #include <algorithm>
 
@@ -71,18 +72,18 @@ std::vector<mvvm::SessionItem*> VariableTableChildrenStrategy::GetChildren(
     return mvvm::utils::SinglePropertyItems(*item);
   }
 
-  // remaining items are variables, let's allow them to show struct and arrays beneath
-  static const std::vector<std::string> allowed_variable_children_types = {
-      mvvm::GetTypeName<sup::gui::AnyValueStructItem>(),
-      mvvm::GetTypeName<sup::gui::AnyValueArrayItem>()};
+  // variables show struct and arrays beneath, unless the value is shown in the variable row
+  if (auto* variable = dynamic_cast<VariableItem*>(item); variable != nullptr)
+  {
+    auto* anyvalue_item = variable->GetAnyValueItem();
+    if ((anyvalue_item != nullptr) && (anyvalue_item->IsStruct() || anyvalue_item->IsArray())
+        && (GetInlineValueItem(*variable) == nullptr))
+    {
+      return {anyvalue_item};
+    }
+  }
 
-  std::vector<mvvm::SessionItem*> result;
-  auto children = item->GetAllItems();
-  auto is_correct_type = [](const auto* child)
-  { return mvvm::utils::Contains(allowed_variable_children_types, child->GetType()); };
-  (void)std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
-                     is_correct_type);
-  return result;
+  return {};
 }
 
 std::vector<mvvm::SessionItem*> WorkspaceEditorChildrenStrategy::GetChildren(

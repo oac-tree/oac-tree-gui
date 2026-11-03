@@ -20,6 +20,7 @@
 
 #include "custom_row_strategies.h"
 
+#include "component_helper.h"
 #include "custom_viewitem_factory.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
@@ -68,10 +69,10 @@ std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(VariableItem& item)
     return mvvm::CreateLabelViewItem(&item, kEmptyPlaceholder);
   }
 
-  // if it is a scalar, create ViewItem looking at scalar's value
-  if (anyvalue_item->IsScalar())
+  // if it is a scalar, or a struct with a single scalar field, look at the scalar's value
+  if (auto* value_item = GetInlineValueItem(item); value_item != nullptr)
   {
-    return mvvm::CreateDataViewItem(anyvalue_item);
+    return mvvm::CreateDataViewItem(value_item);
   }
 
   // if it is a struct or array, create "see below" placeholder
@@ -216,10 +217,14 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRowIm
 // For local variable with scalar on board we build row of 4 elements:
 // | var0       | 42      | Local   |                |
 
-// For local variable with struct on board we build row of 4 elements:
-// | var0       |         | Local   |                |
+// For local variable with struct with single scalar field we build row of 4 elements:
+// | var0       | 42      | Local   |                |
+
+// For local variable with other struct on board we build row of 4 elements:
+// | var0       | ---     | Local   |                |
 // |   struct   |         |         |                |
-// |      value | 42      |         |                |
+// |      x     | 42      |         |                |
+// |      y     | 43      |         |                |
 
 // For channel access variable with scalar on board
 // | var0       | 42      | CA      | [x] PV_CHANNEL0 |

@@ -34,6 +34,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/providers/viewitem.h>
+#include <mvvm/providers/viewmodel_utils.h>
 
 #include <sup/dto/anyvalue.h>
 
@@ -157,7 +158,8 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
 
   {  // single local variable with a struct
     auto item = CreateVariableItem(domainconstants::kLocalVariableType);
-    const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+    const sup::dto::AnyValue anyvalue = {
+        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"flag", {sup::dto::BooleanType, true}}}};
     SetAnyValue(anyvalue, *item);
     item->SetName("abc");
 
@@ -188,6 +190,24 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
     EXPECT_EQ(scalar_view_items.at(3)->Data(Qt::DisplayRole).toString(), QString(""));
   }
 
+  {  // single local variable with a struct with single scalar field
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+    const sup::dto::AnyValue anyvalue = {{{"value", {sup::dto::SignedInteger32Type, 42}}}};
+    SetAnyValue(anyvalue, *item);
+    item->SetName("abc");
+
+    VariableTableRowStrategy strategy;
+    auto view_items = strategy.ConstructRow(item.get());
+    ASSERT_EQ(view_items.size(), 4);
+    EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("abc"));
+    // value column looks at the field
+    EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toInt(), 42);
+    EXPECT_EQ(mvvm::utils::GetItemFromView<mvvm::SessionItem>(view_items.at(1).get()),
+              item->GetAnyValueItem()->GetChildren().at(0));
+    EXPECT_EQ(view_items.at(2)->Data(Qt::DisplayRole).toString(), QString("Local"));
+    EXPECT_EQ(view_items.at(3)->Data(Qt::DisplayRole).toString(), QString(""));
+  }
+
   {  // single local variable with empty value
     auto item = CreateVariableItem(domainconstants::kLocalVariableType);
     const sup::dto::AnyValue anyvalue;
@@ -208,7 +228,8 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
   {  // single local variable with a struct (constructed as VariableInfo)
     auto item = CreateJobVariableItem(domainconstants::kLocalVariableType);
 
-    const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+    const sup::dto::AnyValue anyvalue = {
+        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"flag", {sup::dto::BooleanType, true}}}};
     SetAnyValue(anyvalue, *item);
     item->SetName("abc");
 

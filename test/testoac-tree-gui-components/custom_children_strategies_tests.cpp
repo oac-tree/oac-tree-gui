@@ -74,10 +74,25 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
     ASSERT_TRUE(children.empty());
   }
 
-  {  // single local variable with structure
+  {  // single local variable with structure with single scalar field
     auto item = CreateVariableItem(domainconstants::kLocalVariableType);
 
     const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+    SetAnyValue(anyvalue, *item);
+    item->SetName("abc");
+
+    const VariableTableChildrenStrategy strategy;
+    auto children = strategy.GetChildren(item.get());
+
+    // the value is shown in the variable row
+    ASSERT_TRUE(children.empty());
+  }
+
+  {  // single local variable with structure with two fields
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+
+    const sup::dto::AnyValue anyvalue = {
+        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"flag", {sup::dto::BooleanType, true}}}};
     SetAnyValue(anyvalue, *item);
     item->SetName("abc");
 
@@ -88,9 +103,21 @@ TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
     ASSERT_EQ(children.size(), 1);
     EXPECT_EQ(children.at(0)->GetType(), mvvm::GetTypeName<sup::gui::AnyValueStructItem>());
 
-    // struct has to contain only one child (no additional items representing a type
+    // struct has to contain only its fields (no additional items representing a type)
     children = strategy.GetChildren(item->GetAnyValueItem());
+    ASSERT_EQ(children.size(), 2);
+  }
+
+  {  // single local variable with array
+    auto item = CreateVariableItem(domainconstants::kLocalVariableType);
+
+    SetAnyValue(sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}}), *item);
+
+    const VariableTableChildrenStrategy strategy;
+    auto children = strategy.GetChildren(item.get());
+
     ASSERT_EQ(children.size(), 1);
+    EXPECT_EQ(children.at(0)->GetType(), mvvm::GetTypeName<sup::gui::AnyValueArrayItem>());
   }
 }
 

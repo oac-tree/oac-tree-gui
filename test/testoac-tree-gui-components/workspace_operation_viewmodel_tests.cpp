@@ -53,6 +53,12 @@ public:
     return {{{"a", {sup::dto::SignedInteger32Type, a}}, {"b", {sup::dto::SignedInteger32Type, b}}}};
   }
 
+  //! Returns a struct with a single int32 field.
+  static sup::dto::AnyValue CreateSingleFieldStruct(std::int32_t value)
+  {
+    return {{{"value", {sup::dto::SignedInteger32Type, value}}}};
+  }
+
   //! Returns the display value of the cell.
   static QVariant GetData(const WorkspaceOperationViewModel& viewmodel, int row, int column,
                           const QModelIndex& parent = QModelIndex())
@@ -345,6 +351,94 @@ TEST_F(WorkspaceOperationViewModelTest, StructFieldInsertedAndRemoved)
   EXPECT_EQ(viewmodel.rowCount(struct_index), 2);
 }
 
+//! Struct with a single scalar field is shown in the variable row.
+TEST_F(WorkspaceOperationViewModelTest, SingleFieldStruct)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  variable_item->SetName("abc");
+  SetAnyValue(CreateSingleFieldStruct(42), *variable_item);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 0).toString(), QString("abc"));
+  EXPECT_EQ(GetData(viewmodel, 0, 1).toInt(), 42);
+  EXPECT_EQ(GetData(viewmodel, 0, 2).toString(), QString("Local"));
+
+  auto field_item = variable_item->GetAnyValueItem()->GetChildren().at(0);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(viewmodel.index(0, 1, QModelIndex())), field_item);
+
+  // value update notifies the value cell of the variable row
+  QSignalSpy spy_data_changed(&viewmodel, &WorkspaceOperationViewModel::dataChanged);
+  UpdateAnyValue(CreateSingleFieldStruct(43), *variable_item);
+
+  ASSERT_EQ(spy_data_changed.count(), 1);
+  const QList<QVariant> arguments = spy_data_changed.takeFirst();
+  EXPECT_EQ(arguments.at(0).value<QModelIndex>(), viewmodel.index(0, 1, QModelIndex()));
+  EXPECT_EQ(arguments.at(1).value<QModelIndex>(), viewmodel.index(0, 1, QModelIndex()));
+  EXPECT_EQ(GetData(viewmodel, 0, 1).toInt(), 43);
+}
+
+//! Struct with a single scalar field replaced by a struct with two fields, and back.
+TEST_F(WorkspaceOperationViewModelTest, SingleFieldStructReplacedByStruct)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  SetAnyValue(CreateSingleFieldStruct(42), *variable_item);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+
+  SetAnyValue(CreateStruct(1, 2), *variable_item);
+
+  auto variable_index = viewmodel.index(0, 0, QModelIndex());
+  ASSERT_EQ(viewmodel.rowCount(variable_index), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, variable_index)), 2);
+  EXPECT_EQ(GetData(viewmodel, 0, 1), QVariant(QString("---")));
+
+  SetAnyValue(CreateSingleFieldStruct(43), *variable_item);
+
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 1).toInt(), 43);
+}
+
+//! Field added to a struct with a single scalar field, then removed.
+TEST_F(WorkspaceOperationViewModelTest, FieldAddedToSingleFieldStruct)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  auto variable_item = InsertVariable(domainconstants::kLocalVariableType, workspace_item);
+  SetAnyValue(CreateSingleFieldStruct(42), *variable_item);
+  auto struct_item = dynamic_cast<sup::gui::AnyValueStructItem*>(variable_item->GetAnyValueItem());
+  ASSERT_NE(struct_item, nullptr);
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+
+  auto field_item = struct_item->AddScalarField("c", std::int32_t{3});
+
+  auto variable_index = viewmodel.index(0, 0, QModelIndex());
+  ASSERT_EQ(viewmodel.rowCount(variable_index), 1);
+  auto struct_index = viewmodel.index(0, 0, variable_index);
+  EXPECT_EQ(viewmodel.rowCount(struct_index), 2);
+  EXPECT_EQ(GetData(viewmodel, 0, 1), QVariant(QString("---")));
+  EXPECT_EQ(GetData(viewmodel, 0, 1, struct_index).toInt(), 42);
+
+  model.RemoveItem(field_item);
+
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 1).toInt(), 42);
+}
+
 //! Validating how IsAvailable status change is notified. 4th column in a model is a tricky one, it
 //! contains the channel name and green/gray color box, denoting IsAvailable status. This test
 //! checks, that the model emits dataChanged event on corresponding changes.
@@ -465,6 +559,46 @@ TEST_F(WorkspaceOperationViewModelTest, ChannelAccessIsAvailableStatusInfoItemCa
 
   EXPECT_EQ(viewmodel.data(variable_channel_index, Qt::DecorationRole).value<QColor>(),
             GetDisonnectedVariableColor());
+}
+
+//! PvAccessServer job variable with a struct with a single scalar field.
+TEST_F(WorkspaceOperationViewModelTest, PvAccessServerSingleFieldStructInfoItemCase)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  const std::string expected_datatype(
+      R"RAW({"type":"demo::Value/v1.0","attributes":[{"value":{"type":"float64"}}]})RAW");
+  const attribute_list_t attributes = {{domainconstants::kNameAttribute, "abc"},
+                                       {domainconstants::kChannelAttribute, "CHANNEL"},
+                                       {domainconstants::kTypeAttribute, expected_datatype}};
+
+  auto variable_item =
+      CreateJobVariableItem(domainconstants::kPvAccessServerVariableType, 0, attributes);
+  auto variable_item_ptr = variable_item.get();
+
+  mvvm::ApplicationModel model;
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+  (void)model.InsertItem(std::move(variable_item), workspace_item, mvvm::TagIndex::Append());
+
+  WorkspaceOperationViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+
+  EXPECT_EQ(viewmodel.rowCount(QModelIndex()), 1);
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_EQ(GetData(viewmodel, 0, 0).toString(), QString("abc"));
+  EXPECT_DOUBLE_EQ(GetData(viewmodel, 0, 1).toDouble(), 0.0);
+  EXPECT_EQ(GetData(viewmodel, 0, 2).toString(), QString("PVA-S"));
+  EXPECT_EQ(GetData(viewmodel, 0, 3).toString(), QString("CHANNEL"));
+
+  // value update from the domain, as during job execution
+  const sup::dto::AnyValue new_value({{"value", {sup::dto::Float64Type, 1.5}}}, "demo::Value/v1.0");
+  UpdateAnyValue(new_value, *variable_item_ptr);
+
+  EXPECT_EQ(viewmodel.rowCount(viewmodel.index(0, 0, QModelIndex())), 0);
+  EXPECT_DOUBLE_EQ(GetData(viewmodel, 0, 1).toDouble(), 1.5);
 }
 
 }  // namespace oac_tree_gui::test
