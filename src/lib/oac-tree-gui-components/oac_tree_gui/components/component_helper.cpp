@@ -20,6 +20,10 @@
 
 #include "component_helper.h"
 
+#include <oac_tree_gui/model/variable_item.h>
+
+#include <sup/gui/model/anyvalue_item.h>
+
 namespace oac_tree_gui
 {
 
@@ -38,6 +42,28 @@ QColor GetDisonnectedVariableColor()
 QColor GetReadOnlyDomainTypeColor()
 {
   return QColor(Qt::gray);
+}
+
+sup::gui::AnyValueItem* GetInlineValueItem(VariableItem& item)
+{
+  auto* anyvalue_item = item.GetAnyValueItem();
+  if (anyvalue_item == nullptr)
+  {
+    return nullptr;
+  }
+
+  if (anyvalue_item->IsScalar())
+  {
+    return anyvalue_item;
+  }
+
+  if (anyvalue_item->IsStruct() && (anyvalue_item->GetChildrenCount() == 1U))
+  {
+    auto* field_item = anyvalue_item->GetChildren().at(0);
+    return field_item->IsScalar() ? field_item : nullptr;
+  }
+
+  return nullptr;
 }
 
 }  // namespace oac_tree_gui

@@ -15,6 +15,7 @@ target_sources(${test} PRIVATE
   breakpoint_helper_tests.cpp
   connectable_instruction_adapter_tests.cpp
   connectable_shape_factory_tests.cpp
+  component_helper_tests.cpp
   copy_and_paste_helper_tests.cpp
   custom_children_strategies_tests.cpp
   custom_presentation_item_tests.cpp

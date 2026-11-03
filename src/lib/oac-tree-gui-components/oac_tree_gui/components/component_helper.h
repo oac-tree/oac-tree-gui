@@ -22,12 +22,19 @@
 #define OAC_TREE_GUI_COMPONENTS_COMPONENT_HELPER_H_
 
 //! @file
-//! Collection of helper function to retrieve values of presentation-related constants.
+//! Collection of presentation-related helper functions.
 
 #include <QColor>
 
+namespace sup::gui
+{
+class AnyValueItem;
+}
+
 namespace oac_tree_gui
 {
+
+class VariableItem;
 
 namespace constants
 {
@@ -49,6 +56,21 @@ QColor GetDisonnectedVariableColor();
  * @brief Returns color for the decoration used to display read-only types.
  */
 QColor GetReadOnlyDomainTypeColor();
+
+/**
+ * @brief Returns the scalar shown in the value cell of the variable table row.
+ *
+ * If variable contains a single scalar AnyValueItem, the method will return this item.
+ * If variable contains a struct with single scalar field, the method will return AnyValueItem
+ * representing this field. In all other cases will return nullptr.
+ *
+ * The method is used to create variable table without showing simple underlying AnyValueItem
+ * in a dedicated branch. Such scalar items will be shown in a "value" column next to variable name.
+ *
+ * @param item The variable.
+ * @return The scalar item, or nullptr.
+ */
+sup::gui::AnyValueItem* GetInlineValueItem(VariableItem& item);
 
 }  // namespace oac_tree_gui
 
