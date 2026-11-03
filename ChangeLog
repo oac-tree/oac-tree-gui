@@ -1,5 +1,7 @@
 Changes for 2.5.0:
 
+- struct variables with a single scalar field are shown in one row in the workspace table
+
 Changes for 2.4.0:
 
 - Represent all variables with one generic item; job variables show their value after the first update
