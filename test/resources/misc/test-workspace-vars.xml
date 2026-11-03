@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/oac-tree" version="1.0"
+           name="Workspace demo"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/oac-tree oac-tree.xsd">
+    <Plugin>liboac-tree-pvxs.so</Plugin>
+    <Plugin>liboac-tree-ca.so</Plugin>
+    <RegisterType jsontype='{"type":"demo::Value/v1.0","attributes":[{"value":{"type":"float64"}}]}'/>
+    <Repeat maxCount="-1">
+        <Sequence>
+            <Wait timeout="0.5"/>
+            <Increment varName="counter"/>
+            <Copy inputVar="counter" outputVar="point.x"/>
+            <Copy inputVar="counter" outputVar="samples[1]"/>
+            <Copy inputVar="counter" outputVar="pv_server.value"/>
+        </Sequence>
+    </Repeat>
+    <Workspace>
+        <Local name="counter" type='{"type":"uint32"}' value='0'/>
+        <Local name="point" type='{"type":"point","attributes":[{"x":{"type":"uint32"}},{"y":{"type":"float64"}}]}' value='{"x":0,"y":1.5}'/>
+        <Local name="samples" type='{"type":"","multiplicity":3,"element":{"type":"uint32"}}' value='[10,20,30]'/>
+        <Local name="label" type='{"type":"string"}' value='"workspace demo"'/>
+        <PvAccessServer name="pv_server" channel="OAC-TREE-MONITOR:DEMO:VALUE"
+                        type='{"type":"demo::Value/v1.0"}' value='{"value":0.0}'/>
+        <PvAccessClient name="pv_client" channel="OAC-TREE-MONITOR:DEMO:VALUE"
+                        type='{"type":"demo::Value/v1.0"}'/>
+        <ChannelAccessClient name="ca_missing" channel="OAC-TREE-MONITOR:DEMO:MISSING"
+                             type='{"type":"float64"}'/>
+    </Workspace>
+</Procedure>
