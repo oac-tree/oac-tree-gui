@@ -43,11 +43,13 @@ std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
 
   (void)result->SetDisplayName(job_info.GetProcedureName());
 
-  auto instruction_tree =
-      CreateInstructionItemTree(CreateInstructionNodeTree(*job_info.GetRootInstructionInfo()));
-  m_index_to_instruction = std::move(instruction_tree.indexes);
-  (void)result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
-                                                      mvvm::TagIndex::Append());
+  if (auto instruction_info = job_info.GetRootInstructionInfo(); instruction_info != nullptr)
+  {
+    auto instruction_tree = CreateInstructionItemTree(CreateInstructionNodeTree(*instruction_info));
+    m_index_to_instruction = std::move(instruction_tree.indexes);
+    (void)result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
+                                                        mvvm::TagIndex::Append());
+  }
 
   m_index_to_variable = PopulateWorkspaceItem(job_info.GetWorkspaceInfo(), result->GetWorkspace());
 

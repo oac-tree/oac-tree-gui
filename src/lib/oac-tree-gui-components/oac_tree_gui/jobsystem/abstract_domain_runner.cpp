@@ -149,9 +149,14 @@ const sup::oac_tree::JobInfo& AbstractDomainRunner::GetJobInfo() const
 void AbstractDomainRunner::SetDomainJob(std::unique_ptr<sup::oac_tree::IJob> job)
 {
   m_domain_job = std::move(job);
-  const auto filter =
-      CreateInstructionAncestorFilter(*m_domain_job->GetInfo().GetRootInstructionInfo());
-  m_domain_job_service->SetInstructionActiveFilter(filter);
+
+  if (auto instruction_info = m_domain_job->GetInfo().GetRootInstructionInfo();
+      instruction_info != nullptr)
+  {
+    // procedure can be without instructions
+    const auto filter = CreateInstructionAncestorFilter(*instruction_info);
+    m_domain_job_service->SetInstructionActiveFilter(filter);
+  }
 }
 
 void AbstractDomainRunner::ValidateJob() const
