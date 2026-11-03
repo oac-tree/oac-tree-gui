@@ -40,6 +40,7 @@
 
 #include <sup/oac-tree/instruction.h>
 
+#include <sstream>
 #include <stack>
 
 namespace oac_tree_gui
@@ -276,7 +277,18 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 
 std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& item)
 {
-  auto result = CreateDomainInstruction(item.GetDomainType());
+  std::unique_ptr<instruction_t> result;
+  try
+  {
+    result = CreateDomainInstruction(item.GetDomainType());
+  }
+  catch (const std::exception& ex)
+  {
+    std::ostringstream ostr;
+    ostr << "Can't create domain instruction, message ";
+    ostr << "[" << ex.what() << "]";
+    throw InvalidOperationException(ostr.str());
+  }
 
   // all attributes, visible or not
   const auto properties = item.GetAttributes()->GetAllItems();

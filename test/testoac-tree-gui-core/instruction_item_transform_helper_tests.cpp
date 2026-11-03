@@ -124,6 +124,13 @@ public:
   sup::oac_tree::Procedure m_procedure;
 };
 
+TEST_F(InstructionItemTransformHelperTest,
+       CreateDomainInstructionFromDefautConstructedInstructionItem)
+{
+  const InstructionItem item;
+  EXPECT_THROW(CreateDomainInstruction(item), InvalidOperationException);
+}
+
 TEST_F(InstructionItemTransformHelperTest, CreateStandardInstructionItem)
 {
   EXPECT_TRUE(CanCreateInstruction(domainconstants::kIncludeInstructionType));
