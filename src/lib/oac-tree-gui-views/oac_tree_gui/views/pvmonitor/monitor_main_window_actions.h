@@ -71,12 +71,18 @@ public:
 
   void UpdateProjectNames();
 
+  /**
+   * @brief Disables actions that change the project while monitoring is running.
+   */
+  void SetIsRunning(bool is_running);
+
 private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menu_bar);
 
   QAction* m_exit_action{nullptr};
   QMenu* m_recent_project_menu{nullptr};
+  QList<QAction*> m_project_change_actions;
 
   std::unique_ptr<mvvm::ProjectHandler> m_project_handler;
 };

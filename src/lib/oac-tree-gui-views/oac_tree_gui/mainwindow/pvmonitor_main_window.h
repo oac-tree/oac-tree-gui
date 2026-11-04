@@ -29,8 +29,8 @@
 namespace oac_tree_gui
 {
 
+class ApplicationModels;
 class MonitorWidget;
-class PvMonitorProject;
 class MonitorMainWindowActions;
 class SequencerMainWindowContext;
 
@@ -67,10 +67,10 @@ private:
 
   void UpdateProjectNames();
 
-  std::unique_ptr<PvMonitorProject> CreateProject();
+  std::unique_ptr<ApplicationModels> CreateProject();
 
   SequencerMainWindowContext& m_context;
-  std::unique_ptr<PvMonitorProject> m_project;
+  std::unique_ptr<ApplicationModels> m_project;
   MonitorWidget* m_monitor_widget{nullptr};
   MonitorMainWindowActions* m_actions{nullptr};
   sup::gui::ScopedCallback m_window_settings_connection;

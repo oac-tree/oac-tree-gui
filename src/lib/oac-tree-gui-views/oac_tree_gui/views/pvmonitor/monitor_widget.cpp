@@ -23,16 +23,19 @@
 #include "monitor_widget_actions.h"
 
 #include <oac_tree_gui/composer/workspace_editor_helper.h>
-#include <oac_tree_gui/pvmonitor/monitor_model.h>
-#include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
-#include <oac_tree_gui/pvmonitor/workspace_synchronizer.h>
+#include <oac_tree_gui/jobsystem/objects/job_manager.h>
+#include <oac_tree_gui/jobsystem/objects/local_job_handler.h>
+#include <oac_tree_gui/jobsystem/user_context.h>
+#include <oac_tree_gui/model/application_models.h>
+#include <oac_tree_gui/model/job_model.h>
+#include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/model/sequencer_model.h>
+#include <oac_tree_gui/model/standard_job_items.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/composer/workspace_editor_widget.h>
 
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/message_helper.h>
-
-#include <sup/oac-tree/workspace.h>
 
 #include <QTabWidget>
 #include <QToolBar>
@@ -43,6 +46,9 @@ namespace oac_tree_gui
 
 MonitorWidget::MonitorWidget(const sup::gui::AppViewContext& context, QWidget* parent_widget)
     : QWidget(parent_widget)
+    , m_job_manager(new JobManager(
+          [](JobItem& item) { return std::make_unique<LocalJobHandler>(&item, UserContext{}); },
+          this))
     , m_monitor_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_workspace_tree(
@@ -70,12 +76,26 @@ MonitorWidget::MonitorWidget(const sup::gui::AppViewContext& context, QWidget* p
   SetupConnections();  // should be after tree view got its model
 }
 
-void MonitorWidget::SetModel(MonitorModel* model)
+MonitorWidget::~MonitorWidget() = default;
+
+void MonitorWidget::SetModels(ApplicationModels* models)
 {
-  SetWorkspaceItem(model->GetWorkspaceItem());
+  m_models = models;
+
+  auto sequencer_model = m_models->GetSequencerModel();
+  if (sequencer_model->GetProcedures().empty())
+  {
+    sequencer_model->CreateUntitledProcedure();
+  }
+  m_procedure = sequencer_model->GetProcedures().at(0);
+
+  SetWorkspaceItem(m_procedure->GetWorkspace());
 }
 
-MonitorWidget::~MonitorWidget() = default;
+WorkspaceItem* MonitorWidget::GetWorkspaceItem() const
+{
+  return m_workspace_item;
+}
 
 void MonitorWidget::SetWorkspaceItem(WorkspaceItem* item)
 {
@@ -95,32 +115,35 @@ void MonitorWidget::SetupConnections()
 
 void MonitorWidget::OnStartMonitoringRequest()
 {
+  auto job_item = m_models->GetJobModel()->InsertItem<LocalJobItem>();
+  job_item->SetProcedure(m_procedure);
+
   try
   {
-    m_workspace = std::make_unique<workspace_t>();
-
-    PopulateDomainWorkspace(*m_workspace_item, *m_workspace);
-
-    m_workspace_synchronizer =
-        std::make_unique<WorkspaceSynchronizer>(m_workspace_item, m_workspace.get());
-
-    m_workspace->Setup();
-
-    SetIsRunning(true);
+    m_job_manager->SubmitJob(job_item);
   }
   catch (std::exception& ex)
   {
+    m_models->GetJobModel()->RemoveItem(job_item);
     sup::gui::SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what(), ""});
-    OnStopMonitoringRequest();
+    return;
   }
+
+  m_job_item = job_item;
+  SetIsRunning(true);
 }
 
 void MonitorWidget::OnStopMonitoringRequest()
 {
+  if (m_job_item == nullptr)
+  {
+    return;
+  }
+
   SetIsRunning(false);
-  // first synchronizer to unsubscribe drom domain
-  m_workspace_synchronizer.reset();
-  m_workspace.reset();
+  m_job_manager->RemoveJobHandler(m_job_item, RemovalPolicy::kForce);
+  m_models->GetJobModel()->RemoveItem(m_job_item);
+  m_job_item = nullptr;
 }
 
 QList<QAction*> MonitorWidget::GetEditorActions()
@@ -136,11 +159,14 @@ QList<QAction*> MonitorWidget::GetControlActions()
 
 void MonitorWidget::SetIsRunning(bool is_running)
 {
-  // when running, disable editor actions, and enable control actions
+  // when running, show the job's workspace, disable editor actions, and enable control actions
+  SetWorkspaceItem(is_running ? m_job_item->GetExpandedProcedure()->GetWorkspace()
+                              : m_procedure->GetWorkspace());
   auto edit_type = is_running ? WorkspaceEditType::kValuesOnly : WorkspaceEditType::kEditorEnabled;
   m_workspace_tree->SetWorkspaceEditType(edit_type);
   m_workspace_table->SetWorkspaceEditType(edit_type);
   m_monitor_actions->SetIsRunning(is_running);
   UpdateVariableEditableProperty(is_running, *m_workspace_item);
+  emit RunningStatusChanged(is_running);
 }
 }  // namespace oac_tree_gui

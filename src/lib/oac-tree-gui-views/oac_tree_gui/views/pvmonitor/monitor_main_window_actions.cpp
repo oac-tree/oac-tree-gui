@@ -53,6 +53,14 @@ void MonitorMainWindowActions::UpdateProjectNames()
   m_project_handler->UpdateNames();
 }
 
+void MonitorMainWindowActions::SetIsRunning(bool is_running)
+{
+  for (auto action : m_project_change_actions)
+  {
+    action->setEnabled(!is_running);
+  }
+}
+
 void MonitorMainWindowActions::CreateActions(QMainWindow* mainwindow)
 {
   m_exit_action = new QAction("E&xit Application", this);
@@ -73,6 +81,9 @@ void MonitorMainWindowActions::SetupMenus(QMenuBar* menu_bar)
   mvvm::AddOpenExistingProjectAction(file_menu, *m_project_handler);
 
   m_recent_project_menu = file_menu->addMenu("Recent Projects");
+
+  // new, open, and recent projects
+  m_project_change_actions = file_menu->actions();
 
   file_menu->addSeparator();
   mvvm::AddSaveCurrentProjectAction(file_menu, *m_project_handler);

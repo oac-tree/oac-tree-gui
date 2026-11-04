@@ -20,9 +20,9 @@
 
 #include "pvmonitor_main_window.h"
 
-#include "pvmonitor_project.h"
 #include "sequencer_main_window_context.h"
 
+#include <oac_tree_gui/model/application_models.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_main_window_actions.h>
 #include <oac_tree_gui/views/pvmonitor/monitor_widget.h>
 
@@ -70,6 +70,9 @@ void PvMonitorMainWindow::InitApplication()
 
   m_monitor_widget = new MonitorWidget(m_context.GetViewContext());
   setCentralWidget(m_monitor_widget);
+
+  connect(m_monitor_widget, &MonitorWidget::RunningStatusChanged, m_actions,
+          &MonitorMainWindowActions::SetIsRunning);
 }
 
 void PvMonitorMainWindow::ReadSettings()
@@ -93,7 +96,7 @@ void PvMonitorMainWindow::WriteSettings()
 
 void PvMonitorMainWindow::OnProjectLoad()
 {
-  m_monitor_widget->SetModel(m_project->GetMonitorModel());
+  m_monitor_widget->SetModels(m_project.get());
   UpdateProjectNames();
 }
 
@@ -102,14 +105,14 @@ void PvMonitorMainWindow::UpdateProjectNames()
   m_actions->UpdateProjectNames();
 }
 
-std::unique_ptr<PvMonitorProject> PvMonitorMainWindow::CreateProject()
+std::unique_ptr<ApplicationModels> PvMonitorMainWindow::CreateProject()
 {
   mvvm::ProjectContext context;
   context.loaded_callback = [this]() { OnProjectLoad(); };
   context.modified_callback = [this]() { UpdateProjectNames(); };
   context.saved_callback = [this]() { UpdateProjectNames(); };
-  context.application_type = PvMonitorProject::kApplicationType;
-  return std::make_unique<PvMonitorProject>(context);
+  context.application_type = ApplicationModels::kApplicationType;
+  return std::make_unique<ApplicationModels>(context);
 }
 
 }  // namespace oac_tree_gui

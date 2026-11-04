@@ -21,10 +21,7 @@
 #ifndef OAC_TREE_GUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
 #define OAC_TREE_GUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
 
-#include <oac_tree_gui/domain/sequencer_types_fwd.h>
-
 #include <QWidget>
-#include <memory>
 
 class QTabWidget;
 class QToolBar;
@@ -38,12 +35,20 @@ struct AppViewContext;
 namespace oac_tree_gui
 {
 
-class MonitorModel;
-class WorkspaceSynchronizer;
+class ApplicationModels;
+class JobItem;
+class JobManager;
+class ProcedureItem;
 class WorkspaceItem;
 class MonitorWidgetActions;
 class WorkspaceEditorWidget;
 
+/**
+ * @brief The MonitorWidget class shows and monitors the workspace of the first procedure.
+ *
+ * Monitoring runs the procedure as a local job. While monitoring, the widget shows the workspace of
+ * the job's expanded procedure.
+ */
 class MonitorWidget : public QWidget
 {
   Q_OBJECT
@@ -57,27 +62,43 @@ public:
   MonitorWidget(MonitorWidget&&) = delete;
   MonitorWidget& operator=(MonitorWidget&&) = delete;
 
-  void SetModel(MonitorModel* model);
+  /**
+   * @brief Sets the models and shows the workspace of the first procedure.
+   *
+   * Creates an untitled procedure if there is none. Monitoring must be stopped.
+   */
+  void SetModels(ApplicationModels* models);
 
-  void SetWorkspaceItem(WorkspaceItem* item);
+  /**
+   * @brief Returns the workspace shown in the widget.
+   */
+  WorkspaceItem* GetWorkspaceItem() const;
 
   void OnStartMonitoringRequest();
   void OnStopMonitoringRequest();
+
+signals:
+  void RunningStatusChanged(bool is_running);
 
 private:
   void SetupConnections();
   QList<QAction*> GetEditorActions();
   QList<QAction*> GetControlActions();
 
+  //! Shows the given workspace in the tree and the table.
+  void SetWorkspaceItem(WorkspaceItem* item);
+
   /**
    * @brief Sets widget's actions in a state corresponding to the given running status.
    */
   void SetIsRunning(bool is_running);
 
+  ApplicationModels* m_models{nullptr};
+  ProcedureItem* m_procedure{nullptr};
+  JobItem* m_job_item{nullptr};
   WorkspaceItem* m_workspace_item{nullptr};
-  std::unique_ptr<workspace_t> m_workspace;
-  std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 
+  JobManager* m_job_manager{nullptr};
   MonitorWidgetActions* m_monitor_actions{nullptr};
 
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
