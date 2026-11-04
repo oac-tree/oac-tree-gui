@@ -76,6 +76,7 @@ public:
     auto result =
         std::make_unique<OperationActionHandler>(&m_job_manager, m_mock_context.CreateContext());
     result->SetJobContainer(GetJobModel()->GetRootItem());
+    result->OnSetTickTimeoutRequest(nullptr, msec(0));  // no GUI delay between ticks
     return result;
   }
 

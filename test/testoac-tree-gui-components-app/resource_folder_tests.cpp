@@ -50,6 +50,7 @@ public:
   {
     m_models.CreateEmpty();
     m_job_item = m_models.GetJobModel()->InsertItem<LocalJobItem>();
+    m_job_item->SetTickTimeout(std::chrono::milliseconds(0));  // no GUI delay between ticks
   }
 
   /**
