@@ -23,7 +23,9 @@
 #include <oac_tree_gui/domain/domain_automation_helper.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
+#include <oac_tree_gui/jobsystem/i_job_handler.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/transform/variable_descriptor_helper.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
@@ -217,6 +219,73 @@ std::unique_ptr<VariableItem> CreateJobVariableItem(const std::string& domain_ty
   auto info = ::oac_tree_gui::CreateVariableInfo(*domain, index);
 
   return CreateVariableItem(CreateVariableNode(info));
+}
+
+::testing::AssertionResult WaitForCompletion(IJobHandler& job_handler, RunnerStatus expected,
+                                             std::chrono::milliseconds timeout)
+{
+  const auto* job_item = job_handler.GetJobItem();
+  auto predicate = [&job_handler, job_item, expected]()
+  { return !job_handler.IsRunning() && job_item->GetStatus() == expected; };
+  if (WaitQtFor(predicate, timeout))
+  {
+    return ::testing::AssertionSuccess();
+  }
+  return ::testing::AssertionFailure()
+         << "job status '" << ToString(job_item->GetStatus()) << "', expected '"
+         << ToString(expected) << "', running " << std::boolalpha << job_handler.IsRunning();
+}
+
+::testing::AssertionResult WaitForRunning(const IJobHandler& job_handler,
+                                          std::chrono::milliseconds timeout)
+{
+  if (WaitQtFor([&job_handler]() { return job_handler.IsRunning(); }, timeout))
+  {
+    return ::testing::AssertionSuccess();
+  }
+  return ::testing::AssertionFailure()
+         << "job is not running, runner status '" << ToString(job_handler.GetRunnerStatus()) << "'";
+}
+
+::testing::AssertionResult WaitForJobStatus(const JobItem& job_item, RunnerStatus expected,
+                                            std::chrono::milliseconds timeout)
+{
+  if (WaitQtFor([&job_item, expected]() { return job_item.GetStatus() == expected; }, timeout))
+  {
+    return ::testing::AssertionSuccess();
+  }
+  return ::testing::AssertionFailure() << "job status '" << ToString(job_item.GetStatus())
+                                       << "', expected '" << ToString(expected) << "'";
+}
+
+::testing::AssertionResult WaitForInstructionStatus(const InstructionItem& instruction,
+                                                    InstructionStatus expected,
+                                                    std::chrono::milliseconds timeout)
+{
+  if (WaitQtFor([&instruction, expected]() { return instruction.GetStatus() == expected; },
+                timeout))
+  {
+    return ::testing::AssertionSuccess();
+  }
+  return ::testing::AssertionFailure()
+         << instruction.GetDomainType() << " status '" << ToString(instruction.GetStatus())
+         << "', expected '" << ToString(expected) << "'";
+}
+
+::testing::AssertionResult WaitForValue(const VariableItem& variable,
+                                        const sup::dto::AnyValue& expected,
+                                        std::chrono::milliseconds timeout)
+{
+  if (WaitQtFor([&variable, &expected]() { return IsEqual(variable, expected); }, timeout))
+  {
+    return ::testing::AssertionSuccess();
+  }
+  auto anyvalue_item = variable.GetAnyValueItem();
+  const auto actual = (anyvalue_item != nullptr)
+                          ? sup::gui::ValuesToJSONString(sup::gui::CreateAnyValue(*anyvalue_item))
+                          : std::string("no value");
+  return ::testing::AssertionFailure() << "variable '" << variable.GetName() << "' value " << actual
+                                       << ", expected " << sup::gui::ValuesToJSONString(expected);
 }
 
 }  // namespace oac_tree_gui::test

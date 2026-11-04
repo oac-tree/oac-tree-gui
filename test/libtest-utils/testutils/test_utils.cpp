@@ -20,6 +20,7 @@
 
 #include "test_utils.h"
 
+#include <QTest>
 #include <string>
 #include <thread>
 
@@ -51,6 +52,11 @@ bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout)
     std::this_thread::sleep_for(timeout_precision_msec);
   }
   return false;
+}
+
+bool WaitQtFor(const std::function<bool()>& predicate, std::chrono::milliseconds timeout)
+{
+  return QTest::qWaitFor(predicate, static_cast<int>(timeout.count()));
 }
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout)

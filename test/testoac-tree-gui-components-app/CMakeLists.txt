@@ -20,6 +20,8 @@ target_sources(${test} PRIVATE
   operation_action_handler_tests.cpp
   resource_folder_tests.cpp
   sequencer_align_utils_tests.cpp
+  sequencer_test_utils_tests.cpp
+  test_utils_tests.cpp
   text_edit_controller_tests.cpp
   tooltip_helper_tests.cpp
   user_choice_provider_tests.cpp

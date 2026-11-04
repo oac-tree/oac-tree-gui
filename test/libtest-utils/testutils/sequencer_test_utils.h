@@ -25,9 +25,15 @@
 //! Collection of utils to test sequencer.
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
+#include <oac_tree_gui/model/instruction_status.h>
+#include <oac_tree_gui/model/runner_status.h>
 
 #include <mvvm/model/tagindex.h>
 
+#include <gtest/gtest.h>
+#include <testutils/test_utils.h>
+
+#include <chrono>
 #include <memory>
 #include <string>
 #include <vector>
@@ -43,6 +49,8 @@ namespace oac_tree_gui
 
 class VariableItem;
 class InstructionItem;
+class IJobHandler;
+class JobItem;
 
 namespace test
 {
@@ -119,6 +127,41 @@ std::vector<InstructionItem*> FindInstructions(mvvm::ISessionModel& model,
 std::unique_ptr<VariableItem> CreateJobVariableItem(const std::string& domain_type,
                                                     sup::dto::uint32 index = 0U,
                                                     const attribute_list_t& attributes = {});
+
+/**
+ * @brief Processes Qt events until the job is not running and its JobItem has the expected status.
+ *
+ * For a local job, all earlier instruction, variable and log events have reached the model too.
+ */
+::testing::AssertionResult WaitForCompletion(IJobHandler& job_handler,
+                                             RunnerStatus expected = RunnerStatus::kSucceeded,
+                                             std::chrono::milliseconds timeout = kWaitTimeout);
+
+/**
+ * @brief Processes Qt events until the domain job is running.
+ */
+::testing::AssertionResult WaitForRunning(const IJobHandler& job_handler,
+                                          std::chrono::milliseconds timeout = kWaitTimeout);
+
+/**
+ * @brief Processes Qt events until the JobItem has the expected status.
+ */
+::testing::AssertionResult WaitForJobStatus(const JobItem& job_item, RunnerStatus expected,
+                                            std::chrono::milliseconds timeout = kWaitTimeout);
+
+/**
+ * @brief Processes Qt events until the instruction has the expected status.
+ */
+::testing::AssertionResult WaitForInstructionStatus(
+    const InstructionItem& instruction, InstructionStatus expected,
+    std::chrono::milliseconds timeout = kWaitTimeout);
+
+/**
+ * @brief Processes Qt events until the variable holds the expected value.
+ */
+::testing::AssertionResult WaitForValue(const VariableItem& variable,
+                                        const sup::dto::AnyValue& expected,
+                                        std::chrono::milliseconds timeout = kWaitTimeout);
 
 }  // namespace test
 

@@ -26,15 +26,40 @@
 
 #include <chrono>
 #include <functional>
+#include <future>
 #include <string>
 
 namespace oac_tree_gui::test
 {
 
+//! Default timeout for waits in the Qt event loop.
+constexpr std::chrono::milliseconds kWaitTimeout{20000};
+
 /**
  * @brief Wait for timeout in milisseconds or until predicate returns true.
  */
 bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout);
+
+/**
+ * @brief Processes Qt events until the predicate returns true or the timeout expires.
+ *
+ * @return True if the predicate returned true.
+ */
+bool WaitQtFor(const std::function<bool()>& predicate,
+               std::chrono::milliseconds timeout = kWaitTimeout);
+
+/**
+ * @brief Processes Qt events until the future is ready or the timeout expires.
+ *
+ * @return True if the future is ready.
+ */
+template <typename T>
+bool WaitForReady(const std::future<T>& future, std::chrono::milliseconds timeout = kWaitTimeout)
+{
+  return WaitQtFor(
+      [&future]() { return future.wait_for(std::chrono::seconds(0)) == std::future_status::ready; },
+      timeout);
+}
 
 /**
  * @brief Converts milliseconds in timeout as expected by Wait instruction.
