@@ -1,5 +1,8 @@
 Changes for 2.5.0:
 
+- Refactor unit test machinery for unified waiting helpers and speed-up test execution
+- Fix to allow empty procedure execution following domain change
+- Introduce InstructionBehavior enum to replace string constants
 - struct variables with a single scalar field are shown in one row in the workspace table
 
 Changes for 2.4.0:
