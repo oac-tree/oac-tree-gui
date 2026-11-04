@@ -31,8 +31,6 @@
 
 #include <testutils/test_utils.h>
 
-#include <thread>
-
 namespace oac_tree_gui::test
 {
 
@@ -66,16 +64,19 @@ bool TestAutomationServer::Start(const AutomationServerInfo& server_info,
                                  const std::string& procedure_string,
                                  std::chrono::milliseconds timeout)
 {
+  m_stop = std::promise<void>();
+
   // std::async decay-copies its arguments, so temporaries passed to Start() remain valid
   m_future = std::async(std::launch::async, &TestAutomationServer::RunServer, this, server_info,
-                        procedure_string);
+                        procedure_string, m_stop.get_future());
 
   // A connection that succeeds is the definition of ready, so retry one until it does.
   RemoteConnectionService probe(GetAutomationClientFactoryFunc(), {});
   return WaitFor([&probe, &server_info]() { return probe.Connect(server_info); }, timeout);
 }
 
-void TestAutomationServer::RunServer(AutomationServerInfo server_info, std::string procedure_string)
+void TestAutomationServer::RunServer(AutomationServerInfo server_info, std::string procedure_string,
+                                     std::future<void> stop)
 {
   auto procedure =
       sup::oac_tree::ParseProcedureString(test::CreateProcedureString(procedure_string));
@@ -88,15 +89,12 @@ void TestAutomationServer::RunServer(AutomationServerInfo server_info, std::stri
   // Instantiate main server for obtaining job information and control
   auto main_server = server_protocol_factory->CreateMainServer(auto_server);
 
-  while (m_continue)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  }
+  stop.wait();
 }
 
 void TestAutomationServer::Stop()
 {
-  m_continue = false;
+  m_stop.set_value();
   m_future.wait();
 }
 

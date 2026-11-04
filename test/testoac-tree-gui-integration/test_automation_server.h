@@ -21,7 +21,6 @@
 #ifndef LIBTEST_UTILS_TEST_AUTOMATION_SERVER_H_
 #define LIBTEST_UTILS_TEST_AUTOMATION_SERVER_H_
 
-#include <atomic>
 #include <chrono>
 #include <future>
 #include <string>
@@ -55,10 +54,11 @@ public:
   void WaitForResult();
 
 private:
-  void RunServer(AutomationServerInfo server_info, std::string procedure_string);
+  void RunServer(AutomationServerInfo server_info, std::string procedure_string,
+                 std::future<void> stop);
 
   std::future<void> m_future;
-  std::atomic<bool> m_continue{true};
+  std::promise<void> m_stop;
 };
 
 }  // namespace oac_tree_gui::test
