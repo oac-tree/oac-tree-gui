@@ -59,7 +59,7 @@ struct InstructionStackNode
 /**
  * @brief Creates domain instruction from the given item with possible behavior adjustment.
  *
- * Depending on the flag, stored on board of the item, the real domain instruction can be replaced
+ * Depending on the flag stored on board of the item, the real domain instruction can be replaced
  * by a dummy instruction with succeed or fail behavior.
  *
  */
@@ -82,8 +82,13 @@ std::unique_ptr<instruction_t> CreateAdjustedDomainInstruction(const Instruction
     return CreateDomainInstruction(domainconstants::kFailedInstructionType);
   }
 
-  // kInvisibleBehavior, or any other unsupported behavior returns empty domain instruction
-  return {};
+  if (behavior == itemconstants::kHiddenBehavior)
+  {
+    // we simply do not create domain counterpart for InstructionItem with hidden behavior
+    return {};
+  }
+
+  throw RuntimeException("Instruction item reports unknown behavior [" + behavior + "]");
 }
 
 }  // namespace
@@ -148,8 +153,7 @@ void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_it
   if (!procedure_item.GetDescription().empty())
   {
     // do not generate attribute for empty name
-    (void)procedure.AddAttribute(domainconstants::kNameAttribute,
-                                 procedure_item.GetDescription());
+    (void)procedure.AddAttribute(domainconstants::kNameAttribute, procedure_item.GetDescription());
   }
 
   if (!mvvm::utils::AreAlmostEqual(procedure_item.GetTickTimeout(),

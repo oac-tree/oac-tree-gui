@@ -190,7 +190,7 @@ TEST_F(LocalJobHandlerTest, InvalidProcedure)
   auto procedure = test::CreateInvalidProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_THROW(LocalJobHandler(m_job_item, UserContext{}), sup::oac_tree::ProcedureSetupException);
+  EXPECT_THROW(LocalJobHandler(m_job_item, UserContext{}), RuntimeException);
 }
 
 //! Delete JobHanlder after procedure start.
@@ -263,10 +263,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
 
   EXPECT_TRUE(QTest::qWaitFor(
       [this, &job_handler]
-      {
-        return !job_handler.IsRunning()
-               && m_job_item->GetStatus() == RunnerStatus::kSucceeded;
-      },
+      { return !job_handler.IsRunning() && m_job_item->GetStatus() == RunnerStatus::kSucceeded; },
       20000));
 
   EXPECT_FALSE(job_handler.IsRunning());
@@ -303,9 +300,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   // We are testing here queued signals, need special waiting
   EXPECT_TRUE(QTest::qWaitFor(
       [var_inside0, var_inside1, &anyvalue0]
-      {
-        return test::IsEqual(*var_inside0, anyvalue0) && test::IsEqual(*var_inside1, anyvalue0);
-      },
+      { return test::IsEqual(*var_inside0, anyvalue0) && test::IsEqual(*var_inside1, anyvalue0); },
       20000));
 
   EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
@@ -323,9 +318,9 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
 
   job_handler.Start();
   // We are testing here queued signals, need special waiting
-  EXPECT_TRUE(QTest::qWaitFor(
-      [&job_handler, &counter] { return !job_handler.IsRunning() && counter.GetCount() == 8; },
-      20000));
+  EXPECT_TRUE(QTest::qWaitFor([&job_handler, &counter]
+                              { return !job_handler.IsRunning() && counter.GetCount() == 8; },
+                              20000));
 
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(counter.GetCount(), 8);  // Repeat, Include, Sequence, Wait x 2
@@ -489,8 +484,8 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
   auto instructions = FindExpandedInstructions(domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kHalted);
 
-  EXPECT_TRUE(
-      QTest::qWaitFor([this]() { return m_job_item->GetStatus() == RunnerStatus::kHalted; }, 20000));
+  EXPECT_TRUE(QTest::qWaitFor([this]() { return m_job_item->GetStatus() == RunnerStatus::kHalted; },
+                              20000));
 
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kHalted);
   EXPECT_FALSE(job_handler.IsRunning());
@@ -511,9 +506,9 @@ TEST_F(LocalJobHandlerTest, LogEvents)
   job_handler.GetJobLog()->Append({});
 
   job_handler.Start();
-  EXPECT_TRUE(QTest::qWaitFor(
-      [&job_handler, &counter] { return !job_handler.IsRunning() && counter.GetCount() == 2; },
-      20000));
+  EXPECT_TRUE(QTest::qWaitFor([&job_handler, &counter]
+                              { return !job_handler.IsRunning() && counter.GetCount() == 2; },
+                              20000));
 
   EXPECT_FALSE(job_handler.IsRunning());
 
