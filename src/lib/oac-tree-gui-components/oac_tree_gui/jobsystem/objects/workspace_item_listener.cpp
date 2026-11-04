@@ -21,9 +21,9 @@
 #include "workspace_item_listener.h"
 
 #include <oac_tree_gui/core/exceptions.h>
+#include <oac_tree_gui/jobsystem/workspace_event_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>

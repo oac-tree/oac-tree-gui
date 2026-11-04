@@ -23,15 +23,10 @@
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/domain/domain_helper.h>
-#include <oac_tree_gui/jobsystem/domain_events.h>
-#include <oac_tree_gui/model/item_constants.h>
-#include <oac_tree_gui/model/sequencer_item_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
-#include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -100,108 +95,6 @@ TEST_F(WorkspaceMonitorHelperTest, FindItemUp)
   EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(var_item0), &workspace_item);
   EXPECT_EQ(mvvm::utils::FindItemUp<VariableItem>(var_item0->GetAnyValueItem()), var_item0);
   EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(var_item0->GetAnyValueItem()), &workspace_item);
-}
-
-TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
-{
-  if (!IsSequencerPluginEpicsAvailable())
-  {
-    GTEST_SKIP();
-  }
-
-  WorkspaceItem workspace_item;
-  const sup::oac_tree::Workspace workspace;
-
-  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
-  auto var_item1 = InsertVariable(domainconstants::kPvAccessServerVariableType, &workspace_item);
-
-  EXPECT_TRUE(GetChannelItem(*var_item1)->IsEditable());
-
-  UpdateVariableEditableProperty(/*is_running*/ true, workspace_item);
-  EXPECT_FALSE(GetChannelItem(*var_item1)->IsEditable());
-
-  UpdateVariableEditableProperty(/*is_running*/ false, workspace_item);
-  EXPECT_TRUE(GetChannelItem(*var_item1)->IsEditable());
-}
-
-//! Validating helper method SetupNewVariable.
-TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
-{
-  WorkspaceItem workspace_item;
-  auto var_item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
-  SetupNewVariable(var_item0, workspace_item.GetVariableCount());
-
-  EXPECT_EQ(var_item0->GetAnyValueItem()->GetDisplayName(),
-            itemconstants::kAnyValueDefaultDisplayName);
-
-  auto var_item1 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
-  SetupNewVariable(var_item1, workspace_item.GetVariableCount());
-
-  EXPECT_EQ(var_item0->GetName(), "var1");
-  EXPECT_EQ(var_item1->GetName(), "var2");
-
-  const sup::dto::AnyValue expected_value(sup::dto::SignedInteger32Type, 0);
-
-  ASSERT_TRUE(var_item0->GetAnyValueItem());
-  EXPECT_EQ(sup::gui::CreateAnyValue(*var_item0->GetAnyValueItem()), expected_value);
-
-  ASSERT_TRUE(var_item1->GetAnyValueItem());
-  EXPECT_EQ(sup::gui::CreateAnyValue(*var_item1->GetAnyValueItem()), expected_value);
-
-  if (!IsSequencerPluginEpicsAvailable())
-  {
-    GTEST_SKIP();
-  }
-
-  auto var_item2 = InsertVariable(domainconstants::kPvAccessClientVariableType, &workspace_item);
-  EXPECT_FALSE(GetIsAvailableItem(*var_item2)->IsVisible());
-  SetupNewVariable(var_item2, workspace_item.GetVariableCount());
-
-  // "connected" property should be invisible, when variable is constructed via editor
-  EXPECT_FALSE(GetIsAvailableItem(*var_item2)->IsVisible());
-
-  // PvAccessClient variable is different, it shouldn't have just empty AnyValue
-  EXPECT_EQ(var_item2->GetName(), "var3");
-  ASSERT_NE(var_item2->GetAnyValueItem(), nullptr);
-  EXPECT_TRUE(sup::dto::IsEmptyValue(sup::gui::CreateAnyValue(*var_item2->GetAnyValueItem())));
-  EXPECT_EQ(var_item2->GetAnyValueItem()->GetDisplayName(),
-            itemconstants::kAnyValueDefaultDisplayName);
-}
-
-TEST_F(WorkspaceMonitorHelperTest, AreMatchingWorkspaces)
-{
-  sup::oac_tree::Workspace workspace;
-  WorkspaceItem workspace_item;
-
-  EXPECT_TRUE(AreMatchingWorkspaces(workspace_item, workspace));
-
-  auto item0 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
-  item0->SetDisplayName("abc");
-  auto item1 = InsertVariable(domainconstants::kLocalVariableType, &workspace_item);
-  item1->SetDisplayName("def");
-
-  PopulateDomainWorkspace(workspace_item, workspace);
-  EXPECT_TRUE(AreMatchingWorkspaces(workspace_item, workspace));
-
-  item0->SetDisplayName("qwe");
-  EXPECT_FALSE(AreMatchingWorkspaces(workspace_item, workspace));
-}
-
-TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
-{
-  const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
-
-  auto variable_item = CreateVariableItem(domainconstants::kLocalVariableType);
-
-  // initially VariableItem has an empty AnyValueItem
-  EXPECT_EQ(variable_item->GetAnyValueItem()->GetType(),
-            mvvm::GetTypeName<sup::gui::AnyValueEmptyItem>());
-
-  const std::size_t unused_variable_index{0};
-  UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, *variable_item);
-
-  EXPECT_TRUE(variable_item->IsAvailable());
-  EXPECT_EQ(value, GetAnyValue(*variable_item));
 }
 
 }  // namespace oac_tree_gui::test

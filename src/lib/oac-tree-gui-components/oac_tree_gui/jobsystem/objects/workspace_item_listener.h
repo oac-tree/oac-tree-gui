@@ -18,8 +18,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef OAC_TREE_GUI_PVMONITOR_WORKSPACE_ITEM_LISTENER_H_
-#define OAC_TREE_GUI_PVMONITOR_WORKSPACE_ITEM_LISTENER_H_
+#ifndef OAC_TREE_GUI_JOBSYSTEM_OBJECTS_WORKSPACE_ITEM_LISTENER_H_
+#define OAC_TREE_GUI_JOBSYSTEM_OBJECTS_WORKSPACE_ITEM_LISTENER_H_
 
 #include <oac_tree_gui/domain/sequencer_types_fwd.h>
 #include <oac_tree_gui/jobsystem/domain_events.h>
@@ -93,4 +93,4 @@ private:
 
 }  // namespace oac_tree_gui
 
-#endif  // OAC_TREE_GUI_PVMONITOR_WORKSPACE_ITEM_LISTENER_H_
+#endif  // OAC_TREE_GUI_JOBSYSTEM_OBJECTS_WORKSPACE_ITEM_LISTENER_H_

@@ -35,6 +35,8 @@ target_sources(${library_name} PRIVATE
   request_handler_queue.h
   request_types.cpp
   user_context.h
+  workspace_event_helper.cpp
+  workspace_event_helper.h
 )
 
 add_subdirectory(objects)

@@ -20,8 +20,7 @@
 
 #include "workspace_synchronizer.h"
 
-#include "workspace_item_listener.h"
-
+#include <oac_tree_gui/jobsystem/objects/workspace_item_listener.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
 #include <oac_tree_gui/pvmonitor/objects/domain_workspace_listener.h>

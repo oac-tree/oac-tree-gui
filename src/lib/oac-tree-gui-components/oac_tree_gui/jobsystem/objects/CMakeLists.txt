@@ -19,4 +19,6 @@ target_sources(${library_name} PRIVATE
   user_choice_provider.h
   user_input_provider.cpp
   user_input_provider.h
+  workspace_item_listener.cpp
+  workspace_item_listener.h
 )

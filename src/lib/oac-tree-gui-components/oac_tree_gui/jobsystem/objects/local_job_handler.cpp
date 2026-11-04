@@ -20,6 +20,8 @@
 
 #include "local_job_handler.h"
 
+#include "workspace_item_listener.h"
+
 #include <oac_tree_gui/jobsystem/domain_event_dispatcher_context.h>  // IWYU pragma: keep
 #include <oac_tree_gui/jobsystem/local_domain_runner.h>
 #include <oac_tree_gui/jobsystem/user_context.h>
@@ -27,7 +29,6 @@
 #include <oac_tree_gui/model/job_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/operation/operation_action_helper.h>
-#include <oac_tree_gui/pvmonitor/workspace_item_listener.h>
 
 #include <mvvm/signals/item_listener.h>
 

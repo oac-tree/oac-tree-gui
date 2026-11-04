@@ -67,7 +67,9 @@ target_sources(${test} PRIVATE
   workspace_editor_action_handler_copyandpaste_tests.cpp
   workspace_editor_action_handler_tests.cpp
   workspace_editor_action_handler_undo_tests.cpp
+  workspace_editor_helper_tests.cpp
   workspace_editor_viewmodel_tests.cpp
+  workspace_event_helper_tests.cpp
   workspace_filter_viewmodel_tests.cpp
   workspace_item_listener_tests.cpp
   workspace_monitor_helper_tests.cpp

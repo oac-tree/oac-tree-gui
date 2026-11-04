@@ -18,7 +18,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "oac_tree_gui/pvmonitor/workspace_item_listener.h"
+#include "oac_tree_gui/jobsystem/objects/workspace_item_listener.h"
 
 #include <oac_tree_gui/core/exceptions.h>
 #include <oac_tree_gui/domain/domain_constants.h>

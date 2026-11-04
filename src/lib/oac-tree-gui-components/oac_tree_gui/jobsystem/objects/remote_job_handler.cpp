@@ -22,8 +22,8 @@
 
 #include <oac_tree_gui/jobsystem/domain_event_dispatcher_context.h>  // IWYU pragma: keep
 #include <oac_tree_gui/jobsystem/remote_domain_runner.h>
+#include <oac_tree_gui/jobsystem/workspace_event_helper.h>
 #include <oac_tree_gui/model/variable_item.h>
-#include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/procedure_item_job_info_builder.h>
 
 namespace oac_tree_gui
