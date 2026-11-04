@@ -47,8 +47,6 @@
 #include <testutils/standard_procedure_items.h>
 #include <testutils/test_utils.h>
 
-#include <QTest>
-
 namespace oac_tree_gui::test
 {
 
@@ -120,7 +118,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   // starting procedure
   manager.Start(m_job_item);
-  QTest::qWait(2000);
+  EXPECT_TRUE(test::WaitForCompletion(*job_handler));
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<VariableItem>(*GetJobModel());
@@ -129,16 +127,6 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
-  auto predicate = [&manager, var_inside0, var_inside1, &anyvalue0, &anyvalue1]
-  {
-    const bool is_completed = !manager.HasRunningJobs();
-    const bool var0_updated = test::IsEqual(*var_inside0, anyvalue0);
-    const bool var1_updated = test::IsEqual(*var_inside1, anyvalue0);
-    return is_completed && var0_updated && var1_updated;
-  };
-
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 20000));
-
   EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));
 

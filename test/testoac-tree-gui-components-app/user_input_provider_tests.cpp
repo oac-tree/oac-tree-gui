@@ -23,8 +23,8 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
-#include <QTest>
 #include <future>
 
 namespace oac_tree_gui::test
@@ -72,9 +72,8 @@ TEST_F(UserInputProviderTest, SingleThreadAsksForUserInput)
   ready_for_test.get_future().wait();
 
   // processing event loop to make queued connection passing in UserChoiceProvider
-  QTest::qWait(2000);
+  ASSERT_TRUE(WaitForReady(future_result));
 
-  // making sure the thread has finished
   auto result = future_result.get();
 
   // validating

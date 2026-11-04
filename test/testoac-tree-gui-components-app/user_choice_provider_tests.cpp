@@ -21,8 +21,8 @@
 #include "oac_tree_gui/jobsystem/objects/user_choice_provider.h"
 
 #include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
-#include <QTest>
 #include <future>
 
 namespace oac_tree_gui::test
@@ -64,9 +64,8 @@ TEST_F(UserChoiceProviderTest, SingleThreadAsksForUserChoice)
   ready_for_test.get_future().wait();
 
   // processing event loop to make queued connection passing in UserChoiceProvider
-  QTest::qWait(2000);
+  ASSERT_TRUE(WaitForReady(future_result));
 
-  // making sure the thread has finished
   auto result = future_result.get();
 
   // validating
@@ -113,9 +112,9 @@ TEST_F(UserChoiceProviderTest, TwoThreadsAskForUserChoice)
   ready_for_test2.get_future().wait();
 
   // processing event loop to make queued connection passing in UserChoiceProvider
-  QTest::qWait(2000);
+  ASSERT_TRUE(WaitForReady(future_result1));
+  ASSERT_TRUE(WaitForReady(future_result2));
 
-  // making sure the thread has finished
   auto result1 = future_result1.get();
   auto result2 = future_result2.get();
 

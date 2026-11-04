@@ -39,6 +39,7 @@
 #include <testutils/folder_test.h>
 #include <testutils/mock_operation_action_context.h>
 #include <testutils/mock_remote_connection_service.h>
+#include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
 #include <testutils/test_utils.h>
 
@@ -274,16 +275,12 @@ TEST_F(OperationActionHandlerExtendedTest, DeclineRemovalOfLongRunningJob)
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
   EXPECT_CALL(m_mock_context, OnConfirmJobRemoval(::testing::_)).WillOnce(::testing::Return(false));
   EXPECT_FALSE(handler->OnRemoveJobRequest());
-  QTest::qWait(2000);
 
   EXPECT_EQ(GetJobItems().size(), 1);
 
   handler->OnStopJobRequest(job_item);
-  QTest::qWait(2000);
 
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 20000));
-
-  EXPECT_FALSE(job_handler->IsRunning());
+  EXPECT_TRUE(test::WaitForCompletion(*job_handler, RunnerStatus::kHalted));
 }
 
 //! Confirming the removal removes a running job (its handler is destroyed, halting it).
@@ -412,27 +409,17 @@ TEST_F(OperationActionHandlerExtendedTest, ExecuteSameJobTwice)
 
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
-  EXPECT_TRUE(m_job_manager.GetJobHandler(job_item));
+  auto job_handler = m_job_manager.GetJobHandler(job_item);
+  ASSERT_TRUE(job_handler);
 
   // starting the given job
   handler->OnStartJobRequest(job_item);
+  EXPECT_TRUE(test::WaitForCompletion(*job_handler));
 
-  // check that JobItem got correct state via queued connection
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
-  // check that JobManager sees correct state from async runner
-  EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 20000));
-
-  QTest::qWait(2000);
-
-  // starting same job again
+  // starting same job again, after resetting the status left by the first run
+  job_item->SetStatus(RunnerStatus::kUndefined);
   handler->OnStartJobRequest(job_item);
-
-  // check that JobItem got correct state via queued connection
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
-  // check that JobManager sees correct state from async runner
-  EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 20000));
+  EXPECT_TRUE(test::WaitForCompletion(*job_handler));
 }
 
 //! Submit file based job. First submit a file with the error in XML. Then make a fix of XML, and

@@ -31,7 +31,6 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-#include <QTest>
 #include <thread>
 
 namespace oac_tree_gui
@@ -75,15 +74,13 @@ TEST_F(RemoteJobHandlerTest, SimpleProcedure)
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kInitial);
 
   job_handler.Start();
-  QTest::qWait(2000);
-  EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
+  EXPECT_TRUE(test::WaitForCompletion(job_handler));
 
   auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
 
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 3};
-  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::WaitForValue(*variables.at(0), expected_value));
 
   server.Stop();
 }
