@@ -14,6 +14,7 @@ target_sources(${test} PRIVATE
   job_manager_extended_tests.cpp
   local_domain_runner_tests.cpp
   local_job_handler_tests.cpp
+  local_job_handler_workspace_tests.cpp
   main.cpp
   node_graphics_scene_tests.cpp
   operation_action_handler_extended_tests.cpp

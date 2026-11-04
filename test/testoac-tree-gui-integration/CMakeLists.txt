@@ -6,6 +6,7 @@ add_executable(${test})
 
 target_sources(${test} PRIVATE
   job_manager_remote_scenario_tests.cpp
+  local_job_handler_pvaccess_tests.cpp
   main.cpp
   operation_action_handler_remote_scenario_tests.cpp
   remote_job_handler_tests.cpp
