@@ -85,7 +85,6 @@ const std::string kProcedureBodyText{
       <Output fromVar="var0" description="Variable is"/>
       <Increment varName="var0"/>
       <Message text="Variable was incremented"/>
-      <Wait timeout="0.01"/>
     </Sequence>
   </Repeat>
   <Workspace>

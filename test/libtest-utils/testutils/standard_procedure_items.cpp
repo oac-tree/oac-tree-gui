@@ -43,6 +43,9 @@ namespace oac_tree_gui
 namespace
 {
 
+//! Domain tick timeout in seconds for procedures waiting for the user.
+const double kShortTickTimeout = 0.01;
+
 /**
  * @brief Creates procedure in a model.
  *
@@ -157,6 +160,7 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateInputProcedureItem(
     const sup::dto::AnyValue& initial_value)
 {
   auto result = std::make_unique<ProcedureItem>();
+  result->SetTickTimeout(kShortTickTimeout);
   auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType,
                                     result->GetInstructionContainer());
   sequence->SetName("MySequence");
@@ -186,6 +190,7 @@ std::unique_ptr<oac_tree_gui::ProcedureItem> CreateUserChoiceProcedureItem()
   // 0) Wait instruction
   // 1) Copy instruction
   auto result = std::make_unique<ProcedureItem>();
+  result->SetTickTimeout(kShortTickTimeout);
   auto userchoice = InsertInstruction(domainconstants::kUserChoiceInstructionType,
                                       result->GetInstructionContainer());
   auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, userchoice);
