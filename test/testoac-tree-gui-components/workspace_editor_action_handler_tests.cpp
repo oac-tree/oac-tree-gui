@@ -26,10 +26,11 @@
 #include <oac_tree_gui/model/item_constants.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
 
 #include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/application_model.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/exceptions.h>
@@ -49,9 +50,9 @@ namespace oac_tree_gui::test
 class WorkspaceEditorActionHandlerTest : public ::testing::Test
 {
 public:
-  WorkspaceEditorActionHandlerTest() { m_model.InsertItem<WorkspaceItem>(); }
+  WorkspaceEditorActionHandlerTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
-  WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
+  WorkspaceItem* GetWorkspaceItem() { return m_workspace_item; }
 
   /**
    * @brief Creates action handler.
@@ -59,17 +60,18 @@ public:
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
       const std::vector<mvvm::SessionItem*>& selection)
   {
-    return m_mock_context.CreateActionHandler(m_model.GetWorkspaceItem(), selection);
+    return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
   }
 
-  MonitorModel m_model;
+  mvvm::ApplicationModel m_model;
+  WorkspaceItem* m_workspace_item{nullptr};
   test::MockWorkspaceEditorContext m_mock_context;
 };
 
 //! Checking exceptions depending on how many callbacks left undefined.
 TEST_F(WorkspaceEditorActionHandlerTest, AttemptToCreateWhenNoContextIsInitialised)
 {
-  EXPECT_TRUE(m_model.GetWorkspaceItem()->GetVariables().empty());
+  EXPECT_TRUE(GetWorkspaceItem()->GetVariables().empty());
 
   {
     const WorkspaceEditorContext context{};

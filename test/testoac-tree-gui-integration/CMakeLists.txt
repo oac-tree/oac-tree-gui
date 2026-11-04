@@ -12,7 +12,6 @@ target_sources(${test} PRIVATE
   remote_job_handler_tests.cpp
   test_automation_server.cpp
   test_automation_server.h
-  workspace_synchronizer_pvaccess_tests.cpp
 )
 
 target_link_libraries(${test} PRIVATE oac-tree-gui-components oac-tree-gui-test-utils)

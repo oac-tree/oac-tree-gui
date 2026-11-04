@@ -24,11 +24,12 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/pvmonitor/monitor_model.h>
 #include <oac_tree_gui/transform/variable_item_transform_helper.h>
 
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/application_model.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_workspace_editor_context.h>
@@ -45,9 +46,12 @@ namespace oac_tree_gui::test
 class WorkspaceEditorActionHandlerCopyAndPasteTest : public ::testing::Test
 {
 public:
-  WorkspaceEditorActionHandlerCopyAndPasteTest() { m_model.InsertItem<WorkspaceItem>(); }
+  WorkspaceEditorActionHandlerCopyAndPasteTest()
+  {
+    m_workspace_item = m_model.InsertItem<WorkspaceItem>();
+  }
 
-  WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
+  WorkspaceItem* GetWorkspaceItem() { return m_workspace_item; }
 
   /**
    * @brief Creates action handler.
@@ -62,7 +66,8 @@ public:
     return m_mock_context.CreateActionHandler(GetWorkspaceItem(), selection);
   }
 
-  MonitorModel m_model;
+  mvvm::ApplicationModel m_model;
+  WorkspaceItem* m_workspace_item{nullptr};
   test::MockWorkspaceEditorContext m_mock_context;
 };
 

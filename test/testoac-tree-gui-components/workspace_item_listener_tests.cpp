@@ -24,8 +24,8 @@
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/variable_item.h>
 #include <oac_tree_gui/model/workspace_item.h>
-#include <oac_tree_gui/pvmonitor/workspace_monitor_helper.h>
 #include <oac_tree_gui/transform/anyvalue_item_transform_helper.h>
+#include <oac_tree_gui/transform/domain_workspace_builder.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -76,7 +76,7 @@ TEST_F(WorkspaceItemListenerTest, SetScalarData)
   variable_item->SetName(var_name);
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(value, *variable_item);
-  PopulateDomainWorkspace(*m_workspace_item, m_workspace);
+  DomainWorkspaceBuilder().PopulateDomainWorkspace(m_workspace_item, &m_workspace);
 
   const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
 
@@ -103,7 +103,7 @@ TEST_F(WorkspaceItemListenerTest, ProcessEventFromDomain)
   variable_item->SetName(var_name);
   const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(value, *variable_item);
-  PopulateDomainWorkspace(*m_workspace_item, m_workspace);
+  DomainWorkspaceBuilder().PopulateDomainWorkspace(m_workspace_item, &m_workspace);
 
   WorkspaceItemListener listener(m_workspace_item, &m_workspace);
 
@@ -134,7 +134,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyAnyValueFromModelViaInsert)
   variable_item->SetName("abc");
   SetAnyValue(value, *variable_item);
 
-  PopulateDomainWorkspace(*m_workspace_item, m_workspace);
+  DomainWorkspaceBuilder().PopulateDomainWorkspace(m_workspace_item, &m_workspace);
 
   const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
 
@@ -171,7 +171,7 @@ TEST_F(WorkspaceItemListenerTest, ModifyTwoVariablesViaInserts)
   SetAnyValue(value1, *variable_item1);
   variable_item1->SetName(var_name1);
 
-  PopulateDomainWorkspace(*m_workspace_item, m_workspace);
+  DomainWorkspaceBuilder().PopulateDomainWorkspace(m_workspace_item, &m_workspace);
 
   const WorkspaceItemListener listener(m_workspace_item, &m_workspace);
   MockDomainWorkspaceListener domain_listener(m_workspace);
@@ -210,8 +210,8 @@ TEST_F(WorkspaceItemListenerTest, TwoWorkspaceScenario)
 
   auto variable_item0 = InsertVariable(domainconstants::kLocalVariableType, workspace_item0);
 
-  PopulateDomainWorkspace(*workspace_item0, domain_workspace0);
-  PopulateDomainWorkspace(*workspace_item1, domain_workspace1);
+  DomainWorkspaceBuilder().PopulateDomainWorkspace(workspace_item0, &domain_workspace0);
+  DomainWorkspaceBuilder().PopulateDomainWorkspace(workspace_item1, &domain_workspace1);
 
   const WorkspaceItemListener listener0(workspace_item0, &domain_workspace0);
   const WorkspaceItemListener listener1(workspace_item1, &domain_workspace1);
@@ -229,7 +229,7 @@ TEST_F(WorkspaceItemListenerTest, WorkspaceItemChangeLayoutAfterSetup)
   sup::oac_tree::Workspace domain_workspace0;
   auto workspace_item0 = m_model.InsertItem<WorkspaceItem>();
 
-  PopulateDomainWorkspace(*workspace_item0, domain_workspace0);
+  DomainWorkspaceBuilder().PopulateDomainWorkspace(workspace_item0, &domain_workspace0);
 
   const WorkspaceItemListener listener0(workspace_item0, &domain_workspace0);
 

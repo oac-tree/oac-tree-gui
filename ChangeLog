@@ -4,6 +4,8 @@ Changes for 2.5.0:
 - Fix to allow empty procedure execution (following recent change in the domain)
 - Introduce InstructionBehavior enum to replace string constants
 - struct variables with a single scalar field are shown in one row in the workspace table
+- sup-pvmonitor runs the workspace as a local job and uses oac-tree-gui project files; old
+  sup-pvmonitor project files can't be opened
 
 Changes for 2.4.0:
 

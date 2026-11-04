@@ -6,11 +6,9 @@ set(test testoac-tree-gui-softioc)
 add_executable(${test})
 
 target_sources(${test} PRIVATE
-  domain_workspace_listener_softioc_tests.cpp
   global_ioc_environment.cpp
   local_job_handler_softioc_tests.cpp
   main.cpp
-  workspace_synchronizer_softioc_tests.cpp
 )
 
 target_link_libraries(${test} PRIVATE oac-tree-gui-components oac-tree-gui-test-utils sup-epics::sup-epics-test)

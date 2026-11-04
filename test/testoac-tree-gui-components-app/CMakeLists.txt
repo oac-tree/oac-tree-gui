@@ -6,8 +6,6 @@ add_executable(${test})
 
 target_sources(${test} PRIVATE
   domain_job_service_tests.cpp
-  domain_workspace_listener_pvaccess_tests.cpp
-  domain_workspace_listener_tests.cpp
   graphics_scene_component_provider_scene_tests.cpp
   graphics_scene_component_provider_tests.cpp
   instruction_tree_expand_controller_tests.cpp
@@ -27,7 +25,6 @@ target_sources(${test} PRIVATE
   tooltip_helper_tests.cpp
   user_choice_provider_tests.cpp
   user_input_provider_tests.cpp
-  workspace_synchronizer_tests.cpp
   workspace_view_component_provider_tests.cpp
 )
 

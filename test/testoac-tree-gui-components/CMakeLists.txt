@@ -51,7 +51,6 @@ target_sources(${test} PRIVATE
   json_style_factory_tests.cpp
   log_event_tests.cpp
   main.cpp
-  monitor_model_tests.cpp
   operation_action_helper_tests.cpp
   procedure_list_action_handler_tests.cpp
   procedure_list_viewmodel_tests.cpp
@@ -72,7 +71,6 @@ target_sources(${test} PRIVATE
   workspace_event_helper_tests.cpp
   workspace_filter_viewmodel_tests.cpp
   workspace_item_listener_tests.cpp
-  workspace_monitor_helper_tests.cpp
   workspace_operation_viewmodel_tests.cpp
   xml_panel_controller_extended_tests.cpp
   xml_panel_controller_tests.cpp
