@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   attribute_item.h
   component_types.cpp
   component_types.h
+  instruction_behavior.cpp
+  instruction_behavior.h
   instruction_container_item.cpp
   instruction_container_item.h
   instruction_item.cpp
