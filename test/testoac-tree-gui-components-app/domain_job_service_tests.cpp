@@ -26,8 +26,8 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>
 #include <testutils/mock_user_context.h>
+#include <testutils/test_utils.h>
 
-#include <QTest>
 #include <future>
 
 namespace oac_tree_gui::test
@@ -61,7 +61,7 @@ public:
   {
     // gives time for the queue to be emptied by mock event listeners
     auto predicate = [&service]() { return service.GetEventCount() == 0; };
-    return QTest::qWaitFor(predicate, static_cast<int>(timeout.count()));
+    return WaitQtFor(predicate, timeout);
   }
 
   mock_event_listener_t m_event_listener;
@@ -173,10 +173,7 @@ TEST_F(DomainJobServiceTest, GetUserValue)
   // waiting for threads being prepared for racing
   ready_for_test.get_future().wait();
 
-  // waiting for the future, and still allowing event loop to function
-  auto predicate = [&future_result]()
-  { return future_result.wait_for(std::chrono::seconds(0)) == std::future_status::ready; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+  EXPECT_TRUE(WaitForReady(future_result));
 
   EXPECT_TRUE(future_result.get());
   EXPECT_EQ(initial_value, expected_value);
@@ -213,10 +210,7 @@ TEST_F(DomainJobServiceTest, GetUserChoice)
   // waiting for threads being prepared for racing
   ready_for_test.get_future().wait();
 
-  // waiting for the future, and still allowing event loop to function
-  auto predicate = [&future_result]()
-  { return future_result.wait_for(std::chrono::seconds(0)) == std::future_status::ready; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+  EXPECT_TRUE(WaitForReady(future_result));
 
   EXPECT_EQ(future_result.get(), user_index_choice);
 }

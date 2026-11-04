@@ -30,8 +30,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
-
-#include <QTest>
+#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -100,7 +99,7 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
 
   // let event loop do its job
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   // setting expectation for second value change
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
@@ -118,7 +117,7 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
 
   EXPECT_EQ(listener.GetEventCount(), 1);
 
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 }
 
 }  // namespace oac_tree_gui::test

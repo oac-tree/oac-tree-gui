@@ -29,8 +29,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
-
-#include <QTest>
+#include <testutils/test_utils.h>
 
 namespace
 {
@@ -88,8 +87,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
 
   // let event loop do its job and trigger expectations
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
-  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   // preparing new expectations
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
@@ -100,8 +98,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVaria
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // let event loop do its job
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
-  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 }
 
 //! Single struct variable in a workspace. The same as before, except that a scalar is wrapped
@@ -131,8 +128,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
 
   // let event loop do its job and trigger expectations
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
-  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   // preparing new expectations
   const sup::dto::AnyValue new_value({{"value", {sup::dto::SignedInteger32Type, 43}}});
@@ -143,8 +139,7 @@ TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVaria
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // let event loop do its job
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
-  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 }
 
 }  // namespace oac_tree_gui::test

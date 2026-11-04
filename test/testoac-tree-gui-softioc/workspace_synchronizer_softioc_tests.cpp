@@ -39,8 +39,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
-
-#include <QTest>
+#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -139,7 +138,7 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   EXPECT_EQ(domain_value, softioc_initial_value);
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   // checking the value on GUI side
   EXPECT_TRUE(variable_item->IsAvailable());
@@ -157,9 +156,7 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   m_softioc_service.Stop();
 
   auto predicate = [variable_item]() { return !variable_item->IsAvailable(); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));  // letting event loop to work
-
-  EXPECT_FALSE(variable_item->IsAvailable());
+  EXPECT_TRUE(WaitQtFor(predicate));
   EXPECT_EQ(variable_item->GetAnyValueItem()->GetChildren().at(1)->Data<bool>(), false);
 }
 

@@ -40,8 +40,7 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/sequencer_test_utils.h>
-
-#include <QTest>
+#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -113,7 +112,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
   EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 20.0));
 
@@ -204,7 +203,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
   EXPECT_TRUE(m_workspace.SetValue(var_name, expected_value));
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   // validating the data in the domain and the GUI
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), expected_value);
@@ -274,9 +273,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   EXPECT_TRUE(m_workspace.WaitForVariable(server_var_name, 20.0));
   EXPECT_TRUE(m_workspace.WaitForVariable(client_var_name, 20.0));
 
-  // queued connection toward the GUI requires special waiting with qWaitFor
-  EXPECT_TRUE(QTest::qWaitFor([server_item]() { return server_item->IsAvailable(); }, 20000));
-  EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 20000));
+  EXPECT_TRUE(WaitQtFor([server_item]() { return server_item->IsAvailable(); }));
+  EXPECT_TRUE(WaitQtFor([client_item]() { return client_item->IsAvailable(); }));
 
   ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
   EXPECT_TRUE(test::IsEqual(*client_item, initial_value));
@@ -347,9 +345,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   EXPECT_TRUE(m_workspace.WaitForVariable(server_var_name, 20.0));
   EXPECT_TRUE(m_workspace.WaitForVariable(client_var_name, 20.0));
 
-  // queued connection toward the GUI requires special waiting with qWaitFor
-  EXPECT_TRUE(QTest::qWaitFor([server_item]() { return server_item->IsAvailable(); }, 20000));
-  EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 20000));
+  EXPECT_TRUE(WaitQtFor([server_item]() { return server_item->IsAvailable(); }));
+  EXPECT_TRUE(WaitQtFor([client_item]() { return client_item->IsAvailable(); }));
 
   ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
   EXPECT_TRUE(test::IsEqual(*client_item, initial_value));

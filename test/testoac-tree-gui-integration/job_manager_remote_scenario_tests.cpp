@@ -35,7 +35,6 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 
-#include <QTest>
 #include <chrono>
 #include <thread>
 
@@ -134,9 +133,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
   // validating that connection service has established client connection
   EXPECT_TRUE(m_remote_connection_service.HasClient(GetEpicsServerInfo()));
 
-  // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kInitial; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+  EXPECT_TRUE(test::WaitForJobStatus(*m_job_item, RunnerStatus::kInitial));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = m_job_item->GetExpandedProcedure();
@@ -145,11 +142,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJob)
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 0};
 
-  auto predicate2 = [this, &variables, &expected_value]()
-  { return test::IsEqual(*variables.at(0), expected_value); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
-
-  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::WaitForValue(*variables.at(0), expected_value));
 }
 
 TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
@@ -160,11 +153,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
 
   job_manager->Start(m_job_item);
 
-  // after queued connection processed all event, JobItem should get its status
-  auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
-
-  EXPECT_FALSE(job_manager->GetJobHandler(m_job_item)->IsRunning());
+  EXPECT_TRUE(test::WaitForCompletion(*job_manager->GetJobHandler(m_job_item)));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = m_job_item->GetExpandedProcedure();
@@ -172,7 +161,7 @@ TEST_F(JobManagerRemoteScenarioTest, SubmitJobAndStart)
   auto variables = m_job_item->GetExpandedProcedure()->GetWorkspace()->GetVariables();
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 3};
-  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::WaitForValue(*variables.at(0), expected_value));
 }
 
 }  // namespace oac_tree_gui

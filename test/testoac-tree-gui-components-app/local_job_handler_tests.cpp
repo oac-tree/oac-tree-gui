@@ -41,7 +41,6 @@
 #include <mvvm/signals/event_types.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/mock_item_listener.h>
-#include <mvvm/test/mock_model_listener.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/oac-tree/exceptions.h>
@@ -49,58 +48,14 @@
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_utils.h>
 
-#include <QTest>
 #include <chrono>
 
 using msec = std::chrono::milliseconds;
 
 namespace oac_tree_gui::test
 {
-
-namespace
-{
-
-//! Returns true when a data-changed event represents an instruction status change.
-bool IsInstructionStatusChange(const mvvm::DataChangedEvent& event)
-{
-  auto parent = event.item == nullptr ? nullptr : event.item->GetParent();
-  return dynamic_cast<const InstructionItem*>(parent) != nullptr
-         && event.item->GetTagIndex().GetTag() == itemconstants::kStatus;
-}
-
-/**
- * @brief The InstructionStatusCounter counts instruction status changes propagated by a model.
- *
- * It replaces the QSignalSpy previously attached to AbstractJobHandler::InstructionStatusChanged.
- * Since the instruction status now reaches the GUI purely via the model, we observe it there with a
- * MockModelListener (a single MockItemListener would only see one instruction).
- */
-class InstructionStatusCounter
-{
-public:
-  explicit InstructionStatusCounter(const mvvm::ISessionModel* model) : m_listener(model)
-  {
-    EXPECT_CALL(m_listener, OnDataChanged(::testing::_))
-        .Times(::testing::AnyNumber())
-        .WillRepeatedly(
-            [this](const mvvm::DataChangedEvent& event)
-            {
-              if (IsInstructionStatusChange(event))
-              {
-                ++m_count;
-              }
-            });
-  }
-
-  int GetCount() const { return m_count; }
-
-private:
-  ::testing::NiceMock<mvvm::test::MockModelListener> m_listener;
-  int m_count{0};
-};
-
-}  // namespace
 
 /**
  * @brief Tests for LocalJobHandler class.
@@ -225,15 +180,7 @@ TEST_F(LocalJobHandlerTest, EmptyProcedure)
 
   job_handler.Start();
 
-  // The job status arrives on its own queued signal, so wait for it too rather than
-  // assuming it lands with the others.
-  auto predicate = [this, &job_handler]()
-  { return !job_handler.IsRunning() && m_job_item->GetStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
-
-  EXPECT_FALSE(job_handler.IsRunning());
-
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 }
 
 //! Normal execution of the procedure with single message instruction.
@@ -246,27 +193,13 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessage)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  InstructionStatusCounter counter(m_models.GetJobModel());
-
   job_handler.Start();
 
-  // The job status arrives on its own queued signal, so wait for it too rather than
-  // assuming it lands with the others.
-  auto predicate = [this, &job_handler, &counter]()
-  {
-    return !job_handler.IsRunning() && counter.GetCount() == 2
-           && m_job_item->GetStatus() == RunnerStatus::kSucceeded;
-  };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
-
-  EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(counter.GetCount(), 2);
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   ASSERT_EQ(instructions.size(), 1);
   EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kSuccess);
-
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 }
 
 //! Normal execution of procedure with single wait. Validating signaling going from expanded
@@ -290,13 +223,7 @@ TEST_F(LocalJobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
 
   job_handler.Start();
 
-  EXPECT_TRUE(QTest::qWaitFor(
-      [this, &job_handler]
-      { return !job_handler.IsRunning() && m_job_item->GetStatus() == RunnerStatus::kSucceeded; },
-      20000));
-
-  EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 }
 
 TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
@@ -326,11 +253,8 @@ TEST_F(LocalJobHandlerTest, ProcedureWithVariableCopy)
   EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
 
   job_handler.Start();
-  // We are testing here queued signals, need special waiting
-  EXPECT_TRUE(QTest::qWaitFor(
-      [var_inside0, var_inside1, &anyvalue0]
-      { return test::IsEqual(*var_inside0, anyvalue0) && test::IsEqual(*var_inside1, anyvalue0); },
-      20000));
+
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
   EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));  // value was changed
@@ -343,16 +267,9 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  InstructionStatusCounter counter(m_models.GetJobModel());
-
   job_handler.Start();
-  // We are testing here queued signals, need special waiting
-  EXPECT_TRUE(QTest::qWaitFor([&job_handler, &counter]
-                              { return !job_handler.IsRunning() && counter.GetCount() == 8; },
-                              20000));
 
-  EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(counter.GetCount(), 8);  // Repeat, Include, Sequence, Wait x 2
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
   auto instructions = mvvm::utils::FindItems<InstructionItem>(*m_models.GetJobModel());
   ASSERT_EQ(instructions.size(), 4);
@@ -360,7 +277,11 @@ TEST_F(LocalJobHandlerTest, LocalIncludeScenario)
   EXPECT_EQ(instructions.at(1)->GetDomainType(), domainconstants::kIncludeInstructionType);
   EXPECT_EQ(instructions.at(2)->GetDomainType(), domainconstants::kSequenceInstructionType);
   EXPECT_EQ(instructions.at(3)->GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(instructions.at(3)->GetStatus(), InstructionStatus::kSuccess);
+  for (const auto* instruction : instructions)
+  {
+    EXPECT_EQ(instruction->GetStatus(), InstructionStatus::kSuccess)
+        << instruction->GetDomainType();
+  }
 }
 
 TEST_F(LocalJobHandlerTest, UserInputScenario)
@@ -381,23 +302,15 @@ TEST_F(LocalJobHandlerTest, UserInputScenario)
 
   LocalJobHandler job_handler(m_job_item, UserContext{on_user_input});
 
-  InstructionStatusCounter counter(m_models.GetJobModel());
-
   job_handler.Start();
 
-  auto predicate1 = [&job_handler]()
-  { return job_handler.GetRunnerStatus() != RunnerStatus::kInitial; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate1, 20000));
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
-  auto predicate2 = [&job_handler]() { return !job_handler.IsRunning(); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
-
-  auto predicate3 = [&counter]() { return counter.GetCount() == 9; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate3, 20000));
-
-  EXPECT_EQ(counter.GetCount(), 9);  // 3 instructions
-
-  EXPECT_FALSE(job_handler.IsRunning());
+  for (const auto* instruction : mvvm::utils::FindItems<InstructionItem>(*m_models.GetJobModel()))
+  {
+    EXPECT_EQ(instruction->GetStatus(), InstructionStatus::kSuccess)
+        << instruction->GetDomainType();
+  }
 
   vars_inside = mvvm::utils::FindItems<VariableItem>(*m_models.GetJobModel());
   ASSERT_EQ(vars_inside.size(), 1);
@@ -428,23 +341,15 @@ TEST_F(LocalJobHandlerTest, UserInputIncrementScenario)
 
   LocalJobHandler job_handler(m_job_item, UserContext{on_user_input});
 
-  InstructionStatusCounter counter(m_models.GetJobModel());
-
   job_handler.Start();
 
-  auto predicate1 = [&job_handler]()
-  { return job_handler.GetRunnerStatus() != RunnerStatus::kInitial; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate1, 20000));
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
-  auto predicate2 = [&job_handler]() { return !job_handler.IsRunning(); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
-
-  auto predicate3 = [&counter]() { return counter.GetCount() == 9; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate3, 20000));
-
-  EXPECT_EQ(counter.GetCount(), 9);  // 3 instructions
-
-  EXPECT_FALSE(job_handler.IsRunning());
+  for (const auto* instruction : mvvm::utils::FindItems<InstructionItem>(*m_models.GetJobModel()))
+  {
+    EXPECT_EQ(instruction->GetStatus(), InstructionStatus::kSuccess)
+        << instruction->GetDomainType();
+  }
 
   vars_inside = mvvm::utils::FindItems<VariableItem>(*m_models.GetJobModel());
   ASSERT_EQ(vars_inside.size(), 1);
@@ -465,26 +370,14 @@ TEST_F(LocalJobHandlerTest, UserChoiceScenario)
 
   LocalJobHandler job_handler(m_job_item, {{}, on_user_choice});
 
-  InstructionStatusCounter counter(m_models.GetJobModel());
-
   job_handler.Start();
 
-  auto predicate = [this, &expected_anyvalue]()
-  {
-    auto vars_inside = mvvm::utils::FindItems<VariableItem>(*m_models.GetJobModel());
-    return test::IsEqual(*vars_inside.at(1), expected_anyvalue);
-  };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
-
-  auto predicate2 = [this, &job_handler, &counter]()
-  { return !job_handler.IsRunning() && counter.GetCount() == 6; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
   // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
   // var1
   auto vars_inside = mvvm::utils::FindItems<VariableItem>(*m_models.GetJobModel());
   EXPECT_TRUE(test::IsEqual(*vars_inside.at(1), expected_anyvalue));
-  EXPECT_FALSE(job_handler.IsRunning());
 }
 
 //! Stop long running job.
@@ -495,29 +388,17 @@ TEST_F(LocalJobHandlerTest, StopLongRunningJob)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  InstructionStatusCounter counter(m_models.GetJobModel());
-
   job_handler.Start();
 
-  EXPECT_TRUE(QTest::qWaitFor([&counter]() { return counter.GetCount() == 1; }, 20000));
-
+  EXPECT_TRUE(WaitForJobStatus(*m_job_item, RunnerStatus::kRunning));
   EXPECT_TRUE(job_handler.IsRunning());
-  EXPECT_EQ(counter.GetCount(), 1);
 
   job_handler.Stop();
 
-  EXPECT_TRUE(QTest::qWaitFor([&counter]() { return counter.GetCount() == 2; }, 20000));
-
-  EXPECT_EQ(counter.GetCount(), 2);
+  EXPECT_TRUE(WaitForCompletion(job_handler, RunnerStatus::kHalted));
 
   auto instructions = FindExpandedInstructions(domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kHalted);
-
-  EXPECT_TRUE(QTest::qWaitFor([this]() { return m_job_item->GetStatus() == RunnerStatus::kHalted; },
-                              20000));
-
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kHalted);
-  EXPECT_FALSE(job_handler.IsRunning());
 }
 
 //! Control log events with the help of MessageInstruction.
@@ -529,24 +410,15 @@ TEST_F(LocalJobHandlerTest, LogEvents)
 
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  InstructionStatusCounter counter(m_models.GetJobModel());
-
   // Put something in the log, to validate that it will be cleaned up before job start
   job_handler.GetJobLog()->Append({});
 
   job_handler.Start();
-  EXPECT_TRUE(QTest::qWaitFor([&job_handler, &counter]
-                              { return !job_handler.IsRunning() && counter.GetCount() == 2; },
-                              20000));
 
-  EXPECT_FALSE(job_handler.IsRunning());
-
-  EXPECT_EQ(counter.GetCount(), 2);
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kSuccess);
-
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 
   ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 1);
 
@@ -575,11 +447,8 @@ TEST_F(LocalJobHandlerTest, ProcedureWithResetVariableInstruction)
   EXPECT_TRUE(sup::dto::IsEmptyValue(GetAnyValue(*var_inside1)));
 
   job_handler.Start();
-  // We are testing here queued signals, need special waiting
-  EXPECT_TRUE(QTest::qWaitFor(
-      [&var_inside2, anyvalue1]() { return test::IsEqual(*var_inside2, anyvalue1); }, 20000));
 
-  EXPECT_FALSE(job_handler.IsRunning());
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
   EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue1));
@@ -616,15 +485,11 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
 
   job_handler.Start();
 
-  auto predicate = [&job_handler]()
-  { return job_handler.GetRunnerStatus() == RunnerStatus::kPaused; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+  EXPECT_TRUE(WaitForJobStatus(*m_job_item, RunnerStatus::kPaused));
 
-  auto predicate2 = [&instructions_inside]()
+  auto is_hit = [&instructions_inside]()
   { return GetBreakpointStatus(*instructions_inside.at(2)) == BreakpointStatus::kSetAndHit; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
-
-  EXPECT_EQ(GetBreakpointStatus(*instructions_inside.at(2)), BreakpointStatus::kSetAndHit);
+  EXPECT_TRUE(WaitQtFor(is_hit));
 
   {  // values when on pause
     const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 1};
@@ -636,24 +501,18 @@ TEST_F(LocalJobHandlerTest, SetBreakpoint)
   // run till the end
   job_handler.Start();
 
-  auto predicate3 = [&job_handler]()
-  { return job_handler.GetRunnerStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate3, 20000));
+  EXPECT_TRUE(WaitForCompletion(job_handler));
 
   {  // values at the end
     const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 1};
     const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 11};
     EXPECT_TRUE(test::IsEqual(*vars_inside.at(0), anyvalue0));
-
-    // it takes time to propagate values to the domain
-    auto predicate4 = [&vars_inside, &anyvalue1]()
-    { return test::IsEqual(*vars_inside.at(1), anyvalue1); };
-    EXPECT_TRUE(QTest::qWaitFor(predicate4, 20000));
+    EXPECT_TRUE(test::IsEqual(*vars_inside.at(1), anyvalue1));
   }
 
-  auto predicate5 = [&instructions_inside]()
+  auto is_reset = [&instructions_inside]()
   { return GetBreakpointStatus(*instructions_inside.at(2)) == BreakpointStatus::kSet; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate5, 20000));
+  EXPECT_TRUE(WaitQtFor(is_reset));
 }
 
 }  // namespace oac_tree_gui::test

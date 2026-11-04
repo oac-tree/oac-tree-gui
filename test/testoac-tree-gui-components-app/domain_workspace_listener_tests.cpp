@@ -29,8 +29,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
-
-#include <QTest>
+#include <testutils/test_utils.h>
 
 using testing::_;
 
@@ -90,8 +89,7 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
 
   // let event loop do its job
   auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
-  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   // preparing new expectations
   const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
@@ -114,8 +112,7 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
   EXPECT_EQ(listener.GetEventCount(), 2);
 
   // let event loop do its job
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
-  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 }
 
 TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
@@ -140,8 +137,7 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
 
   // let event loop do its job
   auto empty_queue_predicate = [&listener]() { return listener->GetEventCount() == 0; };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
-  EXPECT_EQ(listener->GetEventCount(), 0);
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   // resetting listener, expecting no events from the model
   listener.reset();

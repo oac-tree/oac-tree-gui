@@ -42,8 +42,8 @@
 #include <testutils/mock_remote_connection_service.h>
 #include <testutils/sequencer_test_utils.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_utils.h>
 
-#include <QTest>
 #include <chrono>
 
 using msec = std::chrono::milliseconds;
@@ -162,15 +162,7 @@ TEST_F(JobManagerExtendedTest, SetCurrentJobAndExecute)
   auto var_inside0 = vars_inside.at(0);
   auto var_inside1 = vars_inside.at(1);
 
-  auto predicate = [&job_handler, var_inside0, var_inside1, &anyvalue0]
-  {
-    const bool is_completed = !job_handler->IsRunning();
-    const bool var0_updated = test::IsEqual(*var_inside0, anyvalue0);
-    const bool var1_updated = test::IsEqual(*var_inside1, anyvalue0);
-    return is_completed && var0_updated && var1_updated;
-  };
-
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+  EXPECT_TRUE(test::WaitForCompletion(*job_handler));
 
   EXPECT_TRUE(test::IsEqual(*var_inside0, anyvalue0));
   EXPECT_TRUE(test::IsEqual(*var_inside1, anyvalue0));
@@ -216,9 +208,7 @@ TEST_F(JobManagerExtendedTest, AttemptToRemoveLongRunningJob)
   manager.Start(m_job_item);
 
   auto job_handler = manager.GetJobHandler(m_job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 20000));
-
-  EXPECT_TRUE(job_handler->IsRunning());
+  EXPECT_TRUE(test::WaitForRunning(*job_handler));
   EXPECT_TRUE(manager.HasRunningJobs());
 
   // it shouldn't be possible to remove running job without first stopping it
@@ -226,9 +216,7 @@ TEST_F(JobManagerExtendedTest, AttemptToRemoveLongRunningJob)
                RuntimeException);
 
   manager.Stop(m_job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 20000));
-
-  EXPECT_FALSE(job_handler->IsRunning());
+  EXPECT_TRUE(test::WaitForCompletion(*job_handler, RunnerStatus::kHalted));
   EXPECT_FALSE(manager.HasRunningJobs());
 }
 
@@ -245,7 +233,7 @@ TEST_F(JobManagerExtendedTest, ForceRemoveLongRunningJob)
   manager.Start(m_job_item);
 
   auto job_handler = manager.GetJobHandler(m_job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 20000));
+  EXPECT_TRUE(test::WaitForRunning(*job_handler));
   EXPECT_TRUE(manager.HasRunningJobs());
 
   // forced removal succeeds even though the job is running
@@ -277,14 +265,10 @@ TEST_F(JobManagerExtendedTest, StopAllJobs)
 
   manager.Start(job_item1);
 
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return manager.HasRunningJobs(); }, 20000));
-
-  EXPECT_TRUE(manager.HasRunningJobs());
+  EXPECT_TRUE(test::WaitQtFor([&manager]() { return manager.HasRunningJobs(); }));
 
   manager.StopJobs(StopScope::kAll);
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 20000));
-
-  EXPECT_FALSE(manager.HasRunningJobs());
+  EXPECT_TRUE(test::WaitQtFor([&manager]() { return !manager.HasRunningJobs(); }));
 }
 
 //! StopJobs with kLocalOnly stops running local jobs (remote preservation is covered by
@@ -299,12 +283,10 @@ TEST_F(JobManagerExtendedTest, StopLocalJobs)
   manager.SubmitJob(m_job_item);
   manager.Start(m_job_item);
 
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return manager.HasRunningJobs(); }, 20000));
+  EXPECT_TRUE(test::WaitQtFor([&manager]() { return manager.HasRunningJobs(); }));
 
   manager.StopJobs(StopScope::kLocalOnly);
-  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 20000));
-
-  EXPECT_FALSE(manager.HasRunningJobs());
+  EXPECT_TRUE(test::WaitQtFor([&manager]() { return !manager.HasRunningJobs(); }));
 }
 
 }  // namespace oac_tree_gui::test

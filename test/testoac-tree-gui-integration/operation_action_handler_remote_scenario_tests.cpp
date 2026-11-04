@@ -40,7 +40,6 @@
 #include <testutils/mock_operation_action_context.h>
 #include <testutils/sequencer_test_utils.h>
 
-#include <QTest>
 #include <chrono>
 #include <thread>
 
@@ -198,9 +197,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   // validating that connection service has established client connection
   EXPECT_TRUE(this->m_remote_connection_service.HasClient(TestFixture::GetServerInfo()));
 
-  // after queued connection processed all event, JobItem should get its status
-  auto predicate = [job_item]() { return job_item->GetStatus() == RunnerStatus::kInitial; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+  EXPECT_TRUE(test::WaitForJobStatus(*job_item, RunnerStatus::kInitial));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = job_item->GetExpandedProcedure();
@@ -209,11 +206,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, OnImportRemoteJobRequest)
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 42};
 
-  auto predicate2 = [&expected_value, &variables]()
-  { return test::IsEqual(*variables.at(0), expected_value); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
-
-  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::WaitForValue(*variables.at(0), expected_value));
 }
 
 TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
@@ -238,11 +231,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
 
   handler->OnStartJobRequest(job_item);
 
-  // after queued connection processed all event, JobItem should get its status
-  auto predicate = [job_item]() { return job_item->GetStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
-
-  EXPECT_FALSE(this->m_job_manager.GetJobHandler(job_item)->IsRunning());
+  EXPECT_TRUE(test::WaitForCompletion(*this->m_job_manager.GetJobHandler(job_item)));
 
   // validating internal expanded ProcedureItem
   auto procedure_item = job_item->GetExpandedProcedure();
@@ -251,11 +240,7 @@ TYPED_TEST(OperationActionHandlerRemoteScenarioTest, ImportRemoteJobAndStart)
   ASSERT_EQ(variables.size(), 1);
   const sup::dto::AnyValue expected_value{sup::dto::UnsignedInteger32Type, 45};
 
-  auto predicate2 = [&expected_value, &variables]()
-  { return test::IsEqual(*variables.at(0), expected_value); };
-  EXPECT_TRUE(QTest::qWaitFor(predicate2, 20000));
-
-  EXPECT_TRUE(test::IsEqual(*variables.at(0), expected_value));
+  EXPECT_TRUE(test::WaitForValue(*variables.at(0), expected_value));
 }
 
 //! Removing the last remote job for a server drops the corresponding remote connection.

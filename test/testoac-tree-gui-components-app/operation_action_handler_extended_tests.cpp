@@ -44,7 +44,6 @@
 #include <testutils/test_utils.h>
 
 #include <QSignalSpy>
-#include <QTest>
 
 Q_DECLARE_METATYPE(const oac_tree_gui::JobItem*)
 
@@ -84,11 +83,6 @@ public:
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
   std::vector<JobItem*> GetJobItems() { return mvvm::utils::GetTopItems<JobItem>(*GetJobModel()); }
-
-  static bool IsCompleted(JobItem* job_item)
-  {
-    return job_item->GetStatus() == RunnerStatus::kSucceeded;
-  }
 
   ApplicationModels m_models;
   UserContext m_user_context;
@@ -210,22 +204,14 @@ TEST_F(OperationActionHandlerExtendedTest, OnStartJobRequest)
   // starting the given job
   handler->OnStartJobRequest(job_item);
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
-
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);
+  EXPECT_TRUE(test::WaitForCompletion(*m_job_manager.GetJobHandler(job_item)));
 
   // starting second time, jobHandler should be the same as before
   auto prev_job_handler = m_job_manager.GetJobHandler(job_item);
 
+  job_item->SetStatus(RunnerStatus::kUndefined);
   handler->OnStartJobRequest(job_item);
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
-
-  EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return !m_job_manager.GetJobHandler(job_item)->IsRunning(); }, 20000));
-
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);
+  EXPECT_TRUE(test::WaitForCompletion(*m_job_manager.GetJobHandler(job_item)));
 
   EXPECT_EQ(m_job_manager.GetJobHandler(job_item), prev_job_handler);
 }
@@ -269,8 +255,7 @@ TEST_F(OperationActionHandlerExtendedTest, DeclineRemovalOfLongRunningJob)
   handler->OnStartJobRequest(job_item);
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 20000));
-  EXPECT_TRUE(job_handler->IsRunning());
+  EXPECT_TRUE(test::WaitForRunning(*job_handler));
 
   // removing a running job requires confirmation; the user declines, so the job stays
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -300,7 +285,7 @@ TEST_F(OperationActionHandlerExtendedTest, ConfirmRemovalOfLongRunningJob)
   handler->OnStartJobRequest(job_item);
 
   auto job_handler = m_job_manager.GetJobHandler(job_item);
-  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 20000));
+  EXPECT_TRUE(test::WaitForRunning(*job_handler));
 
   // the user confirms, so the running job is force-removed
   EXPECT_CALL(m_mock_context, OnSelectedJob()).Times(1);
@@ -465,10 +450,7 @@ TEST_F(OperationActionHandlerExtendedTest, SubmitMalFormedFileBasedJobThenResubm
   // sarting the job
   handler->OnStartJobRequest(job_item);
 
-  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 20000));
-
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(job_item->GetStatus(), RunnerStatus::kSucceeded);
+  EXPECT_TRUE(test::WaitForCompletion(*m_job_manager.GetJobHandler(job_item)));
 }
 
 }  // namespace oac_tree_gui

@@ -38,8 +38,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
-
-#include <QTest>
+#include <testutils/test_utils.h>
 
 namespace oac_tree_gui::test
 {
@@ -98,7 +97,7 @@ TEST_F(WorkspaceSynchronizerTest, InitialState)
   m_workspace.Setup();
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   EXPECT_EQ(GetAnyValue(*variable_item_ptr), initial_value);
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), initial_value);
@@ -129,7 +128,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
   m_workspace.Setup();
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   EXPECT_EQ(GetAnyValue(*variable_item_ptr), initial_value);
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), initial_value);
@@ -145,7 +144,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
   const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   EXPECT_TRUE(m_workspace.SetValue(var_name, new_value));
 
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   EXPECT_EQ(variable_item_ptr->GetAnyValueItem(), prev_anyvalue_item);
   EXPECT_EQ(GetAnyValue(*variable_item_ptr), new_value);
@@ -173,7 +172,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
   m_workspace.Setup();
 
   auto empty_queue_predicate = [&synchronizer]() { return synchronizer->IsEmptyQueue(); };
-  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 20000));
+  EXPECT_TRUE(WaitQtFor(empty_queue_predicate));
 
   mock_listener_t model_listener(&m_model);
   test::MockDomainWorkspaceListener domain_listener(m_workspace);

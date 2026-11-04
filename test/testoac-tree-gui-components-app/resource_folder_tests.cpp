@@ -35,8 +35,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
-
-#include <QTest>
+#include <testutils/sequencer_test_utils.h>
 
 namespace oac_tree_gui
 {
@@ -85,14 +84,10 @@ TEST_P(ResourceFolderTest, RunProcedure)
   m_job_item->SetProcedure(procedure_ptr);
   LocalJobHandler job_handler(m_job_item, UserContext{});
 
-  // starting procedure and waiting for completion
   job_handler.Start();
 
-  auto predicate = [this]() { return m_job_item->GetStatus() == RunnerStatus::kSucceeded; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+  EXPECT_TRUE(test::WaitForCompletion(job_handler));
 
-  // validating some of parameters after job is complet
-  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kSucceeded);
   auto instructions = mvvm::utils::FindItems<InstructionItem>(*m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), InstructionStatus::kSuccess);

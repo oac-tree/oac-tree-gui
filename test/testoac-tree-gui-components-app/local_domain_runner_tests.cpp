@@ -35,7 +35,6 @@
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
 
-#include <QTest>
 #include <thread>
 
 namespace oac_tree_gui::test
@@ -85,7 +84,7 @@ public:
   {
     auto predicate = [this, &runner, job_state]()
     { return runner.GetJobState() == job_state && runner.GetEventCount() == 0; };
-    return QTest::qWaitFor(predicate, static_cast<int>(msec_value.count()));
+    return WaitQtFor(predicate, msec_value);
   }
 
   mock_event_listener_t m_event_listener;
@@ -432,7 +431,7 @@ TEST_F(LocalDomainRunnerTest, StepAndRunTillTheEnd)
     variable->GetValue(counter_value);
     return counter_value == 1U && runner->GetEventCount() == 0;
   };
-  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 20000));
+  EXPECT_TRUE(WaitQtFor(is_incremented));
 
   // JobState: running, success
   EXPECT_CALL(m_event_listener, OnJobStateChanged(_)).Times(2);
@@ -498,7 +497,7 @@ TEST_F(LocalDomainRunnerTest, RunPauseRun)
     counter_var->GetValue(counter_value);
     return counter_value.As<int>() > 1U;
   };
-  EXPECT_TRUE(QTest::qWaitFor(is_incremented, 20000));
+  EXPECT_TRUE(WaitQtFor(is_incremented));
 
   // pause
   EXPECT_TRUE(runner->Pause());
