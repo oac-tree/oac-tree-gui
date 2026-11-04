@@ -39,6 +39,7 @@
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/signals/event_types.h>
+#include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/mock_item_listener.h>
 #include <mvvm/test/mock_model_listener.h>
 
@@ -205,6 +206,33 @@ TEST_F(LocalJobHandlerTest, PrematureDeletion)
   }
 
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kUndefined);
+}
+
+//! Empty procedures (no instructions, now variables) are valid, and they execution succeeds.
+TEST_F(LocalJobHandlerTest, EmptyProcedure)
+{
+  auto procedure = std::make_unique<ProcedureItem>();
+  auto procedure_ptr = procedure.get();
+  auto model = m_models.GetSequencerModel();
+  model->InsertItem(std::move(procedure), model->GetProcedureContainer(), mvvm::TagIndex::Append());
+
+  m_job_item->SetProcedure(procedure_ptr);
+
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kUndefined);
+
+  LocalJobHandler job_handler(m_job_item, UserContext{});
+
+  job_handler.Start();
+
+  // The job status arrives on its own queued signal, so wait for it too rather than
+  // assuming it lands with the others.
+  auto predicate = [this, &job_handler]()
+  { return !job_handler.IsRunning() && m_job_item->GetStatus() == RunnerStatus::kSucceeded; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 20000));
+
+  EXPECT_FALSE(job_handler.IsRunning());
+
+  EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kSucceeded);
 }
 
 //! Normal execution of the procedure with single message instruction.
