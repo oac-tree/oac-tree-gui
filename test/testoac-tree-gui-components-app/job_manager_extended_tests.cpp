@@ -127,7 +127,7 @@ TEST_F(JobManagerExtendedTest, AttemptToSubmitMalformedProcedure)
 
   JobManager manager(GetContext());
 
-  EXPECT_THROW(manager.SubmitJob(m_job_item), RuntimeException);
+  EXPECT_THROW(manager.SubmitJob(m_job_item), InvalidOperationException);
 }
 
 //! Set first procedure to the JobManager and execute it.

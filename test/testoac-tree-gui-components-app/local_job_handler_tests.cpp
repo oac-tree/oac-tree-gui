@@ -147,7 +147,7 @@ TEST_F(LocalJobHandlerTest, InvalidProcedure)
   auto procedure = test::CreateInvalidProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_THROW(LocalJobHandler(m_job_item, UserContext{}), RuntimeException);
+  EXPECT_THROW(LocalJobHandler(m_job_item, UserContext{}), InvalidOperationException);
 }
 
 //! Delete JobHanlder after procedure start.

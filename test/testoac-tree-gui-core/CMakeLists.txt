@@ -22,6 +22,7 @@ target_sources(${test} PRIVATE
   exceptions_tests.cpp
   factory_tests.cpp
   instruction_attribute_presets_tests.cpp
+  instruction_behavior_tests.cpp
   instruction_container_item_tests.cpp
   instruction_descriptor_helper_tests.cpp
   instruction_item_helper_tests.cpp

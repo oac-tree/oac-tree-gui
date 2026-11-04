@@ -59,10 +59,6 @@ constexpr auto kTickTimeout = "kTickTimeout";
 constexpr std::int32_t kDefaultTickTimeoutMsec = 20;
 
 constexpr auto kBehaviorTag = "Behavior";
-constexpr auto kNativeBehavior = "Native";
-constexpr auto kHiddenBehavior = "Hidden";
-constexpr auto kSucceedBehavior = "Succeed";
-constexpr auto kFailBehavior = "Fail";
 
 }  // namespace oac_tree_gui::itemconstants
 

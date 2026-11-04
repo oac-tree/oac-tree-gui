@@ -317,13 +317,13 @@ TEST_F(DomainProcedureBuilderTest, SequenceWIthFourChildrenAndAdjustedBehavior)
 
   auto sequence = InsertInstruction(domainconstants::kSequenceInstructionType, container);
   auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
-  wait0->SetBehavior(itemconstants::kFailBehavior);
+  wait0->SetBehavior(InstructionBehavior::kFail);
   auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
-  wait1->SetBehavior(itemconstants::kSucceedBehavior);
+  wait1->SetBehavior(InstructionBehavior::kSucceed);
   auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
-  wait2->SetBehavior(itemconstants::kHiddenBehavior);
+  wait2->SetBehavior(InstructionBehavior::kHidden);
   auto wait3 = InsertInstruction(domainconstants::kWaitInstructionType, sequence);
-  wait3->SetBehavior(itemconstants::kNativeBehavior);
+  wait3->SetBehavior(InstructionBehavior::kNative);
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;

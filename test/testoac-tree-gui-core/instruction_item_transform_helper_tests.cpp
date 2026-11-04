@@ -599,7 +599,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
   {
     EXPECT_TRUE(mvvm::utils::HasTag(*item, tag)) << tag;
   }
-  EXPECT_EQ(item->GetBehavior(), itemconstants::kNativeBehavior);
+  EXPECT_EQ(item->GetBehavior(), InstructionBehavior::kNative);
 
   ASSERT_EQ(item->GetInstructions().size(), 1);
   auto* child = item->GetInstructions().at(0);

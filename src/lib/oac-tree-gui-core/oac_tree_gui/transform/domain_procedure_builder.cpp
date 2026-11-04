@@ -65,30 +65,22 @@ struct InstructionStackNode
  */
 std::unique_ptr<instruction_t> CreateAdjustedDomainInstruction(const InstructionItem& item)
 {
-  const auto behavior = item.GetBehavior();
-
-  if (behavior == itemconstants::kNativeBehavior)
+  switch (item.GetBehavior())
   {
+  case InstructionBehavior::kNative:
     return CreateDomainInstruction(item);
-  }
-
-  if (behavior == itemconstants::kSucceedBehavior)
-  {
+  case InstructionBehavior::kSucceed:
     return CreateDomainInstruction(domainconstants::kSucceedInstructionType);
-  }
-
-  if (behavior == itemconstants::kFailBehavior)
-  {
+  case InstructionBehavior::kFail:
     return CreateDomainInstruction(domainconstants::kFailedInstructionType);
-  }
-
-  if (behavior == itemconstants::kHiddenBehavior)
-  {
+  case InstructionBehavior::kHidden:
     // we simply do not create domain counterpart for InstructionItem with hidden behavior
     return {};
+  default:
+    break;
   }
 
-  throw RuntimeException("Instruction item reports unknown behavior [" + behavior + "]");
+  throw RuntimeException("Instruction item reports unknown behavior");
 }
 
 }  // namespace

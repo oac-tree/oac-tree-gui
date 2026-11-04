@@ -22,6 +22,7 @@
 #define OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_H_
 
 #include <oac_tree_gui/model/attribute_container_helper.h>
+#include <oac_tree_gui/model/instruction_behavior.h>
 #include <oac_tree_gui/model/instruction_status.h>
 
 #include <mvvm/model/compound_item.h>
@@ -166,15 +167,15 @@ public:
 
   /**
    * @brief Sets instruction behavior to the given value.
-   *
-   * The value must be one from kNativeBehavior, kHiddenBehavior, kSucceedBehavior or kFailBehavior.
    */
-  void SetBehavior(const std::string& behavior_name);
+  void SetBehavior(InstructionBehavior behavior);
 
   /**
-   * @brief Returns the vlue of behavior property.
+   * @brief Returns instruction behavior.
+   *
+   * Returns kNative if the item has no behavior property.
    */
-  std::string GetBehavior() const;
+  InstructionBehavior GetBehavior() const;
 };
 
 template <typename T>

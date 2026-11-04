@@ -150,21 +150,22 @@ void InstructionItem::SetY(double value)
   (void)SetProperty(itemconstants::kYpos, value);
 }
 
-void InstructionItem::SetBehavior(const std::string& behavior_name)
+void InstructionItem::SetBehavior(InstructionBehavior behavior)
 {
   auto property = Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag);
-  property.SetValue(behavior_name);
+  property.SetValue(ToString(behavior));
   (void)SetProperty(itemconstants::kBehaviorTag, property);
 }
 
-std::string InstructionItem::GetBehavior() const
+InstructionBehavior InstructionItem::GetBehavior() const
 {
   if (mvvm::utils::HasTag(*this, itemconstants::kBehaviorTag))
   {
-    return Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag).GetValue();
+    return GetInstructionBehavior(
+        Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag).GetValue());
   }
 
-  return {};
+  return InstructionBehavior::kNative;
 }
 
 }  // namespace oac_tree_gui

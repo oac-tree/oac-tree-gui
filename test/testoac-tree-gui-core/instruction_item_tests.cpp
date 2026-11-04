@@ -65,6 +65,7 @@ TEST_F(InstructionItemTest, InitialState)
   EXPECT_TRUE(item.GetDomainType().empty());
   EXPECT_TRUE(item.GetInstructions().empty());
   EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
+  EXPECT_EQ(item.GetBehavior(), InstructionBehavior::kNative);
 
   const std::string expected_domain_type = "SomeDomainInstruction";
   item.SetDomainType(expected_domain_type);
@@ -90,8 +91,23 @@ TEST_F(InstructionItemTest, GuiProperties)
   EXPECT_EQ(item->GetY(), 1.2);
 
   EXPECT_EQ(item->GetStatus(), InstructionStatus::kUndefined);
-  EXPECT_EQ(item->GetBehavior(), itemconstants::kNativeBehavior);
+  EXPECT_EQ(item->GetBehavior(), InstructionBehavior::kNative);
   EXPECT_TRUE(item->GetInstructions().empty());
+}
+
+//! Testing SetBehavior and GetBehavior members.
+TEST_F(InstructionItemTest, SetAndGetBehavior)
+{
+  auto item = CreateTestItem({});
+
+  for (auto behavior : {InstructionBehavior::kHidden, InstructionBehavior::kSucceed,
+                        InstructionBehavior::kFail, InstructionBehavior::kNative})
+  {
+    item->SetBehavior(behavior);
+    EXPECT_EQ(item->GetBehavior(), behavior);
+    EXPECT_EQ(item->Property<mvvm::ComboProperty>(itemconstants::kBehaviorTag).GetValue(),
+              ToString(behavior));
+  }
 }
 
 //! Testing SetAttribute and GetAttribute members.

@@ -63,8 +63,9 @@ bool IsAttributeProperty(const std::string& name)
 //! Returns the combo property with instruction behaviors.
 mvvm::ComboProperty CreateBehaviorProperty()
 {
-  mvvm::ComboProperty result({itemconstants::kNativeBehavior, itemconstants::kHiddenBehavior,
-                              itemconstants::kSucceedBehavior, itemconstants::kFailBehavior});
+  mvvm::ComboProperty result(
+      {ToString(InstructionBehavior::kNative), ToString(InstructionBehavior::kHidden),
+       ToString(InstructionBehavior::kSucceed), ToString(InstructionBehavior::kFail)});
   result.SetToolTips({"Instruction behaves according to the implementation",
                       "Instruction will be invisible and will not be executed",
                       "Instruction will always succeed", "Instruction will always fail"});
