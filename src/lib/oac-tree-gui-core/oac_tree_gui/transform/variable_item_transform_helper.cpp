@@ -43,6 +43,8 @@
 #include <sup/oac-tree/workspace.h>
 #include <sup/oac-tree/workspace_info.h>
 
+#include <sstream>
+
 namespace oac_tree_gui
 {
 
@@ -169,7 +171,19 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 
 std::unique_ptr<variable_t> CreateDomainVariable(const VariableItem& item)
 {
-  auto result = CreateDomainVariable(item.GetDomainType());
+  std::unique_ptr<variable_t> result;
+  try
+  {
+    result = CreateDomainVariable(item.GetDomainType());
+  }
+  catch (const std::exception& ex)
+  {
+    std::ostringstream ostr;
+    ostr << "Can't create domain variable, message ";
+    ostr << "[" << ex.what() << "]";
+    throw InvalidOperationException(ostr.str());
+  }
+
   for (const auto* property : GetAttributeProperties(item))
   {
     SetDomainAttribute(*property, property->GetTagIndex().GetTag(), *result);
@@ -185,7 +199,7 @@ std::unique_ptr<variable_t> CreateDomainVariable(const VariableItem& item)
 }
 
 std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::WorkspaceInfo& info,
-                                                       WorkspaceItem* workspace_item)
+                                                 WorkspaceItem* workspace_item)
 {
   std::vector<VariableItem*> index_to_variable_item;
 
@@ -209,8 +223,8 @@ std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::WorkspaceI
 }
 
 std::vector<VariableItem*> PopulateWorkspaceItem(const sup::oac_tree::Workspace& workspace,
-                                                       const anytype_registry_t* registry,
-                                                       WorkspaceItem* workspace_item)
+                                                 const anytype_registry_t* registry,
+                                                 WorkspaceItem* workspace_item)
 {
   std::vector<VariableItem*> result;
 

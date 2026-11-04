@@ -55,6 +55,13 @@ class VariableItemTransformHelperTest : public ::testing::Test
 {
 };
 
+//! Domain variable from an item without domain type.
+TEST_F(VariableItemTransformHelperTest, CreateDomainVariableFromBareItem)
+{
+  const VariableItem item; // undefined domain type
+  EXPECT_THROW(CreateDomainVariable(item), InvalidOperationException);
+}
+
 //! Item from variable info, as for jobs.
 TEST_F(VariableItemTransformHelperTest, CreateVariableItemFromInfo)
 {
@@ -240,13 +247,6 @@ TEST_F(VariableItemTransformHelperTest, CreateVariableItemWithUnknownAttribute)
 
   auto domain_variable = CreateDomainVariable(*item);
   EXPECT_EQ(domain_variable->GetAttributeString("custom"), "abc");
-}
-
-//! Domain variable from an item without domain type.
-TEST_F(VariableItemTransformHelperTest, CreateDomainVariableFromBareItem)
-{
-  const VariableItem item;
-  EXPECT_THROW(CreateDomainVariable(item), sup::oac_tree::InvalidOperationException);
 }
 
 //! Domain variable from an item: attributes with a value, name, JSON type and value.

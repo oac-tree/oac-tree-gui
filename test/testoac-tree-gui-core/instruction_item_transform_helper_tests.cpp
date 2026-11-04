@@ -124,10 +124,9 @@ public:
   sup::oac_tree::Procedure m_procedure;
 };
 
-TEST_F(InstructionItemTransformHelperTest,
-       CreateDomainInstructionFromDefautConstructedInstructionItem)
+TEST_F(InstructionItemTransformHelperTest, CreateDomainInstructionFromBareItem)
 {
-  const InstructionItem item;
+  const InstructionItem item;  // undefined domain type
   EXPECT_THROW(CreateDomainInstruction(item), InvalidOperationException);
 }
 

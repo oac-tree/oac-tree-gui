@@ -208,7 +208,7 @@ TEST_F(LocalJobHandlerTest, PrematureDeletion)
   EXPECT_EQ(m_job_item->GetStatus(), RunnerStatus::kUndefined);
 }
 
-//! Empty procedures (no instructions, now variables) are valid, and they execution succeeds.
+//! Empty procedures (no instructions, no variables) are valid, and they execution succeeds.
 TEST_F(LocalJobHandlerTest, EmptyProcedure)
 {
   auto procedure = std::make_unique<ProcedureItem>();
