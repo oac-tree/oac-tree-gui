@@ -48,7 +48,6 @@ namespace oac_tree_gui
 
 class SequencerModel;
 class ProcedureItem;
-class InstructionItem;
 class ProcedureComposerTabWidget;
 
 //! Settings group of composer panels.
@@ -134,7 +133,7 @@ private:
 
   //! Forwards the selection to other panels showing the same procedure.
   void OnInstructionSelectionChanged(const ProcedureComposerTabWidget* source,
-                                     const std::vector<InstructionItem*>& instructions);
+                                     const mvvm::ItemSelection& selection);
 
   //! Creates panels from application settings, or one panel if none are stored.
   void CreateInitialPanelsFromSettings();

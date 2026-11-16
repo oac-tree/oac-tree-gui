@@ -23,6 +23,8 @@
 
 #include <oac_tree_gui/model/component_types.h>
 
+#include <mvvm/model/item_selection.h>
+
 #include <QWidget>
 
 namespace sup::gui
@@ -68,7 +70,10 @@ public:
   void SetSelectedInstructions(const std::vector<const InstructionItem *> &instructions) const;
 
 signals:
-  void selectionChanged();
+  /**
+   * @brief Notifies that the instruction selection on the graphics scene has changed.
+   */
+  void instructionSelectionChanged(const mvvm::ItemSelection& selection);
 
 private:
   void SetupConnections();

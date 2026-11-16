@@ -22,6 +22,7 @@
 
 #include "procedure_composer_tab_widget.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/model/sequencer_model.h>
 
@@ -179,7 +180,7 @@ sup::gui::SplittableEditorController* ProcedureSplittableEditorWidget::GetContro
 }
 
 void ProcedureSplittableEditorWidget::OnInstructionSelectionChanged(
-    const ProcedureComposerTabWidget* source, const std::vector<InstructionItem*>& instructions)
+    const ProcedureComposerTabWidget* source, const mvvm::ItemSelection& selection)
 {
   // blocks re-entry from receiving panels
   if (m_block_selection_propagation || (source->GetItem() == nullptr))
@@ -188,6 +189,7 @@ void ProcedureSplittableEditorWidget::OnInstructionSelectionChanged(
   }
 
   m_block_selection_propagation = true;
+  const auto instructions = selection.GetItems<InstructionItem>();
   for (auto panel : m_splitter_controller->GetPanels())
   {
     auto tab_widget = panel->GetMainEditor<ProcedureComposerTabWidget>();
@@ -206,8 +208,8 @@ ProcedureSplittableEditorWidget::CreateSplitterController()
   {
     auto main_editor = std::make_unique<ProcedureComposerTabWidget>(m_context);
     connect(main_editor.get(), &ProcedureComposerTabWidget::instructionSelectionChanged, this,
-            [this, source = main_editor.get()](const auto& instructions)
-            { OnInstructionSelectionChanged(source, instructions); });
+            [this, source = main_editor.get()](const auto& selection)
+            { OnInstructionSelectionChanged(source, selection); });
 
     auto item_list_callback = [this]() -> std::vector<mvvm::SessionItem*>
     {

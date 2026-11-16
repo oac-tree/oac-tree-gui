@@ -213,8 +213,8 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider(NodeEditorMode editor_mod
       message_callback, m_graphics_scene.get(), m_procedure_item->GetInstructionContainer());
 
   // forward instruction selection from graphics scene
-  connect(result.get(), &GraphicsSceneComponentProvider::selectionChanged, this,
-          &NodeEditorWidget::selectionChanged);
+  connect(result.get(), &GraphicsSceneComponentProvider::selectionChanged, this, [this]()
+          { emit instructionSelectionChanged(mvvm::ItemSelection(GetSelectedInstructions())); });
 
   if (editor_mode == NodeEditorMode::kNodeEditor)
   {

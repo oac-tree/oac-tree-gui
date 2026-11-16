@@ -235,7 +235,7 @@ void InstructionEditorWidget::SetupConnections()
   auto on_selected_instruction_changed = [this](const mvvm::ItemSelection& selection)
   {
     m_attribute_editor->SetInstruction(GetSelectedInstruction());
-    emit InstructionSelected(selection);
+    emit instructionSelectionChanged(selection);
   };
   connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectionChanged, this,
           on_selected_instruction_changed);

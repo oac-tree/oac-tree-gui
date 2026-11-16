@@ -35,12 +35,19 @@
 #include <sup/gui/views/dtoeditor/splittable_combo_panel.h>
 #include <sup/gui/views/dtoeditor/splittable_editor_controller.h>
 
+#include <mvvm/model/item_selection.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_settings_manager.h>
 
 #include <QApplication>
+#include <QSignalSpy>
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+Q_DECLARE_METATYPE(mvvm::ItemSelection)
+#endif
 
 namespace oac_tree_gui::test
 {
@@ -162,16 +169,31 @@ TEST_F(ProcedureSplittableEditorWidgetSelectionTest, OneEmissionPerChange)
                {ProcedureEditorType::kNodeEditor, procedure}});
   const auto waits = GetWaits(procedure);
 
-  int emission_count{0};
-  QObject::connect(GetTabWidget(0), &ProcedureComposerTabWidget::instructionSelectionChanged,
-                   [&emission_count](const auto&) { ++emission_count; });
+  QSignalSpy spy(GetTabWidget(0), &ProcedureComposerTabWidget::instructionSelectionChanged);
 
   GetTree(0)->SetSelectedInstructions({waits.at(0)});
-  EXPECT_EQ(emission_count, 1);
+  ASSERT_EQ(spy.count(), 1);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy), mvvm::ItemSelection(waits.at(0)));
 
   GetTree(0)->SetSelectedInstructions({waits.at(0), waits.at(1)});
-  EXPECT_EQ(emission_count, 2);
+  ASSERT_EQ(spy.count(), 1);
+  EXPECT_EQ(mvvm::test::TakeValue<mvvm::ItemSelection>(spy), mvvm::ItemSelection(waits));
   EXPECT_EQ(GetNodeEditor(1)->GetSelectedInstructions().size(), 2);
+}
+
+//! The node editor reports the selection with the signal.
+TEST_F(ProcedureSplittableEditorWidgetSelectionTest, NodeEditorSignalCarriesSelection)
+{
+  auto procedure = CreateProcedure();
+  SetupPanels({{ProcedureEditorType::kNodeEditor, procedure}});
+  const auto waits = GetWaits(procedure);
+
+  QSignalSpy spy(GetTabWidget(0), &ProcedureComposerTabWidget::instructionSelectionChanged);
+
+  GetNodeEditor(0)->SetSelectedInstructions({waits.at(1)});
+
+  ASSERT_FALSE(spy.empty());
+  EXPECT_EQ(spy.last().at(0).value<mvvm::ItemSelection>(), mvvm::ItemSelection(waits.at(1)));
 }
 
 //! Hiding the node editor destroys its shapes. The other panel keeps its selection.

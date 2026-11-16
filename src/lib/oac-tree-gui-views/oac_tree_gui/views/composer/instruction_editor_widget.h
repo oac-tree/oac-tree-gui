@@ -94,7 +94,10 @@ public:
   void InsertInstructionFromToolBox(const QString& name);
 
 signals:
-  void InstructionSelected(const mvvm::ItemSelection& selection);
+  /**
+   * @brief Notifies that the instruction selection has changed.
+   */
+  void instructionSelectionChanged(const mvvm::ItemSelection& selection);
 
 protected:
   void resizeEvent(QResizeEvent* event) override;

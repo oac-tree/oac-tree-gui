@@ -25,6 +25,8 @@
 
 #include <sup/gui/mainwindow/session_item_widget.h>
 
+#include <mvvm/model/item_selection.h>
+
 #include <QWidget>
 #include <vector>
 
@@ -87,7 +89,7 @@ signals:
    * @brief Notifies that the instruction selection has changed in the Instruction Tree or the node
    * editor.
    */
-  void instructionSelectionChanged(const std::vector<oac_tree_gui::InstructionItem*>& instructions);
+  void instructionSelectionChanged(const mvvm::ItemSelection& selection);
 
 private:
   void UpdateToolbarButtons();
