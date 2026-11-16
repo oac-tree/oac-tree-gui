@@ -26,6 +26,7 @@
 #include <sup/gui/mainwindow/session_item_widget.h>
 
 #include <QWidget>
+#include <vector>
 
 class QTabWidget;
 class QToolBar;
@@ -39,6 +40,7 @@ namespace oac_tree_gui
 {
 
 class ProcedureItem;
+class InstructionItem;
 class InstructionEditorWidget;
 class WorkspaceEditorWidget;
 class XmlPanel;
@@ -72,6 +74,20 @@ public:
    * @brief Insert instruction from toolbox to the instruction container.
    */
   void InsertInstructionFromToolBox(const QString& name);
+
+  /**
+   * @brief Selects the given instructions in the Instruction Tree and the node editor.
+   *
+   * A hidden editor ignores the call.
+   */
+  void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
+
+signals:
+  /**
+   * @brief Notifies that the instruction selection has changed in the Instruction Tree or the node
+   * editor.
+   */
+  void instructionSelectionChanged(const std::vector<oac_tree_gui::InstructionItem*>& instructions);
 
 private:
   void UpdateToolbarButtons();

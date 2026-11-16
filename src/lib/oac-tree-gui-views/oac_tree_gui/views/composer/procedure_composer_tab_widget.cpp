@@ -25,6 +25,7 @@
 #include "workspace_editor_widget.h"
 #include "xml_panel.h"
 
+#include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/style/style_helper.h>
 #include <oac_tree_gui/views/nodeeditor/node_editor_widget.h>
@@ -76,6 +77,12 @@ ProcedureComposerTabWidget::ProcedureComposerTabWidget(const sup::gui::AppViewCo
 
   connect(m_tab_widget, &QTabWidget::currentChanged, this, [this](int) { UpdateToolbarButtons(); });
   UpdateToolbarButtons();
+
+  connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,
+          [this](const mvvm::ItemSelection& selection)
+          { emit instructionSelectionChanged(selection.GetItems<InstructionItem>()); });
+  connect(m_node_editor, &NodeEditorWidget::selectionChanged, this,
+          [this]() { emit instructionSelectionChanged(m_node_editor->GetSelectedInstructions()); });
 }
 
 ProcedureComposerTabWidget::~ProcedureComposerTabWidget() = default;
@@ -115,6 +122,14 @@ void ProcedureComposerTabWidget::SetEditorType(ProcedureEditorType edit_type)
 void ProcedureComposerTabWidget::InsertInstructionFromToolBox(const QString& name)
 {
   m_instruction_editor_widget->InsertInstructionFromToolBox(name);
+}
+
+void ProcedureComposerTabWidget::SetSelectedInstructions(
+    const std::vector<InstructionItem*>& instructions)
+{
+  m_instruction_editor_widget->SetSelectedInstructions(instructions);
+  m_node_editor->SetSelectedInstructions(
+      std::vector<const InstructionItem*>(instructions.begin(), instructions.end()));
 }
 
 void ProcedureComposerTabWidget::UpdateToolbarButtons()

@@ -23,6 +23,7 @@ target_sources(${test} PRIVATE
   operation_tab_widget_tests.cpp
   procedure_list_actions_test.cpp
   procedure_list_widget_tests.cpp
+  procedure_splittable_editor_widget_selection_tests.cpp
   procedure_splittable_editor_widget_tests.cpp
   sequencer_explorer_view_tests.cpp
   sequencer_main_window_context_tests.cpp

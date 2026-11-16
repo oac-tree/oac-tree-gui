@@ -178,12 +178,36 @@ sup::gui::SplittableEditorController* ProcedureSplittableEditorWidget::GetContro
   return m_splitter_controller.get();
 }
 
+void ProcedureSplittableEditorWidget::OnInstructionSelectionChanged(
+    const ProcedureComposerTabWidget* source, const std::vector<InstructionItem*>& instructions)
+{
+  // blocks re-entry from receiving panels
+  if (m_block_selection_propagation || (source->GetItem() == nullptr))
+  {
+    return;
+  }
+
+  m_block_selection_propagation = true;
+  for (auto panel : m_splitter_controller->GetPanels())
+  {
+    auto tab_widget = panel->GetMainEditor<ProcedureComposerTabWidget>();
+    if ((tab_widget != source) && (tab_widget->GetItem() == source->GetItem()))
+    {
+      tab_widget->SetSelectedInstructions(instructions);
+    }
+  }
+  m_block_selection_propagation = false;
+}
+
 std::unique_ptr<sup::gui::SplittableEditorController>
-ProcedureSplittableEditorWidget::CreateSplitterController() const
+ProcedureSplittableEditorWidget::CreateSplitterController()
 {
   auto factory_func = [this]() -> std::unique_ptr<sup::gui::SplittableComboPanel>
   {
     auto main_editor = std::make_unique<ProcedureComposerTabWidget>(m_context);
+    connect(main_editor.get(), &ProcedureComposerTabWidget::instructionSelectionChanged, this,
+            [this, source = main_editor.get()](const auto& instructions)
+            { OnInstructionSelectionChanged(source, instructions); });
 
     auto item_list_callback = [this]() -> std::vector<mvvm::SessionItem*>
     {

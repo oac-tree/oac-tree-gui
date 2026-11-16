@@ -48,12 +48,16 @@ namespace oac_tree_gui
 
 class SequencerModel;
 class ProcedureItem;
+class InstructionItem;
+class ProcedureComposerTabWidget;
 
 //! Settings group of composer panels.
 constexpr auto kComposerPanelsSettingsGroup = "ProcedureSplittableEditorWidget";
 
 /**
  * @brief The ProcedureSplittableEditorWidget holds multiple splittable ProcedureComposerTabWidgets.
+ *
+ * Instruction selection in one panel is propagated to other panels showing the same procedure.
  *
  * Panels are restored from application settings on construction, and from project settings on
  * project notification. Their state is provided to the settings manager on Collect of both scopes.
@@ -126,7 +130,11 @@ signals:
   void focusWidgetProcedureSelectionChanged(const mvvm::ItemSelection& selection);
 
 private:
-  std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController() const;
+  std::unique_ptr<sup::gui::SplittableEditorController> CreateSplitterController();
+
+  //! Forwards the selection to other panels showing the same procedure.
+  void OnInstructionSelectionChanged(const ProcedureComposerTabWidget* source,
+                                     const std::vector<InstructionItem*>& instructions);
 
   //! Creates panels from application settings, or one panel if none are stored.
   void CreateInitialPanelsFromSettings();
@@ -139,6 +147,7 @@ private:
   SequencerModel* m_model{nullptr};
   std::unique_ptr<sup::gui::SplittableEditorController> m_splitter_controller;
   std::vector<sup::gui::ScopedCallback> m_settings_connections;
+  bool m_block_selection_propagation{false};
 };
 
 }  // namespace oac_tree_gui
