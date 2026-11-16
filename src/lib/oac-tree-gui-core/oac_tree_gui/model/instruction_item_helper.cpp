@@ -33,6 +33,10 @@
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/utils/container_utils.h>
 
+#include <sup/oac-tree/constants.h>
+
+#include <algorithm>
+
 namespace oac_tree_gui
 {
 
@@ -46,6 +50,27 @@ std::vector<std::string> GetDomainDecoratorNames()
       domainconstants::kListenInstructionType, domainconstants::kRepeatInstructionType,
       domainconstants::kInverterInstructionType};
   return result;
+}
+
+//! Splits the path at the first delimiter into the first name and the rest.
+std::pair<std::string, std::string> SplitPath(const std::string& path)
+{
+  const auto pos = path.find(sup::oac_tree::DefaultSettings::PATH_DELIMITER);
+  if (pos == std::string::npos)
+  {
+    return {path, {}};
+  }
+  return {path.substr(0, pos), path.substr(pos + 1)};
+}
+
+//! Returns the first instruction with the given name, or nullptr.
+const InstructionItem* FindByName(const std::vector<const InstructionItem*>& instructions,
+                                  const std::string& name)
+{
+  auto iter =
+      std::find_if(instructions.begin(), instructions.end(),
+                   [&name](const auto* instruction) { return instruction->GetName() == name; });
+  return (iter == instructions.end()) ? nullptr : *iter;
 }
 
 }  // namespace
@@ -178,6 +203,62 @@ bool IsPotentialRootInstruction(const InstructionItem& instruction)
     }
   }
   return false;
+}
+
+bool IsLocalInclude(const InstructionItem& instruction)
+{
+  return (instruction.GetDomainType() == domainconstants::kIncludeInstructionType)
+         && instruction.GetAttribute<std::string>(domainconstants::kFileNameAttribute).empty();
+}
+
+const InstructionItem* FindIncludeTarget(const InstructionItem& include,
+                                         const InstructionContainerItem& container)
+{
+  if (!IsLocalInclude(include))
+  {
+    return nullptr;
+  }
+
+  auto candidates = container.GetInstructions();
+  auto remaining = include.GetAttribute<std::string>(domainconstants::kPathAttribute);
+  while (!remaining.empty())
+  {
+    auto [name, rest] = SplitPath(remaining);
+    const auto* found = FindByName(candidates, name);
+    if ((found == nullptr) || rest.empty())
+    {
+      return found;
+    }
+    candidates = found->GetInstructions();
+    remaining = std::move(rest);
+  }
+  return nullptr;
+}
+
+const InstructionItem* GetTopLevelInstruction(const InstructionItem& instruction)
+{
+  const auto* current = &instruction;
+  while ((current != nullptr) && !IsPotentialRootInstruction(*current))
+  {
+    current = dynamic_cast<const InstructionItem*>(current->GetParent());
+  }
+  return current;
+}
+
+const InstructionItem* FindRootInstruction(const InstructionContainerItem& container)
+{
+  const auto instructions = container.GetInstructions();
+  if (instructions.empty())
+  {
+    return nullptr;
+  }
+  if (instructions.size() == 1)
+  {
+    return instructions.front();
+  }
+  auto iter = std::find_if(instructions.begin(), instructions.end(),
+                           [](const auto* instruction) { return instruction->IsRoot(); });
+  return (iter == instructions.end()) ? instructions.front() : *iter;
 }
 
 }  // namespace oac_tree_gui

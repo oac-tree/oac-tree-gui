@@ -41,6 +41,24 @@ namespace oac_tree_gui::test
  */
 class InstructionItemHelperTest : public ::testing::Test
 {
+public:
+  //! Inserts an instruction with the given name.
+  static InstructionItem* InsertNamed(const std::string& domain_type, const std::string& name,
+                                      mvvm::SessionItem* parent)
+  {
+    auto result = InsertInstruction(domain_type, parent);
+    result->SetName(name);
+    return result;
+  }
+
+  //! Inserts an Include with the given name and path.
+  static InstructionItem* InsertInclude(const std::string& name, const std::string& path,
+                                        mvvm::SessionItem* parent)
+  {
+    auto result = InsertNamed(domainconstants::kIncludeInstructionType, name, parent);
+    result->SetAttribute(domainconstants::kPathAttribute, path);
+    return result;
+  }
 };
 
 TEST_F(InstructionItemHelperTest, AddKnownInstructionToSequencerModel)
@@ -206,6 +224,133 @@ TEST_F(InstructionItemHelperTest, GetInstructionFromProperty)
 
   const mvvm::SessionItem item;
   EXPECT_EQ(GetInstructionFromProperty(item), nullptr);
+}
+
+TEST_F(InstructionItemHelperTest, IsLocalInclude)
+{
+  InstructionContainerItem container;
+  auto include0 = InsertInclude("Local", "Target", &container);
+  EXPECT_TRUE(IsLocalInclude(*include0));
+
+  auto include1 = InsertInclude("External", "Target", &container);
+  include1->SetAttribute(domainconstants::kFileNameAttribute, std::string("other.xml"));
+  EXPECT_FALSE(IsLocalInclude(*include1));
+
+  auto include_procedure0 =
+      InsertInstruction(domainconstants::kIncludeProcedureInstructionType, &container);
+  EXPECT_FALSE(IsLocalInclude(*include_procedure0));
+
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, &container);
+  EXPECT_FALSE(IsLocalInclude(*wait0));
+}
+
+//! Layout of oac-tree test/resources/local_include.xml.
+TEST_F(InstructionItemHelperTest, FindIncludeTarget)
+{
+  InstructionContainerItem container;
+  auto wait0 = InsertNamed(domainconstants::kWaitInstructionType, "SingleWait", &container);
+  auto sequence0 =
+      InsertNamed(domainconstants::kSequenceInstructionType, "WaitLongEnough", &container);
+  auto include0 = InsertInclude("FirstWait", "SingleWait", sequence0);
+  (void)InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto include1 = InsertInclude("Wait Sequence", "WaitLongEnough", sequence1);
+  auto include2 = InsertInclude("Wait one second", "WaitLongEnough.FirstWait", sequence1);
+
+  EXPECT_EQ(FindIncludeTarget(*include0, container), wait0);
+  EXPECT_EQ(FindIncludeTarget(*include1, container), sequence0);
+
+  // nested target, which is an Include itself
+  EXPECT_EQ(FindIncludeTarget(*include2, container), include0);
+
+  // trailing delimiter is ignored, as in oac-tree
+  auto include3 = InsertInclude("Trailing", "WaitLongEnough.", sequence1);
+  EXPECT_EQ(FindIncludeTarget(*include3, container), sequence0);
+}
+
+TEST_F(InstructionItemHelperTest, FindIncludeTargetNotResolved)
+{
+  InstructionContainerItem container;
+  auto sequence0 = InsertNamed(domainconstants::kSequenceInstructionType, "Top", &container);
+  (void)InsertNamed(domainconstants::kWaitInstructionType, "Child", sequence0);
+
+  auto include0 = InsertInclude("MissingName", "Missing", sequence0);
+  EXPECT_EQ(FindIncludeTarget(*include0, container), nullptr);
+
+  auto include1 = InsertInclude("MissingChild", "Top.Missing", sequence0);
+  EXPECT_EQ(FindIncludeTarget(*include1, container), nullptr);
+
+  auto include2 = InsertInclude("EmptyPath", "", sequence0);
+  EXPECT_EQ(FindIncludeTarget(*include2, container), nullptr);
+
+  auto include3 = InsertInclude("External", "Top", sequence0);
+  include3->SetAttribute(domainconstants::kFileNameAttribute, std::string("other.xml"));
+  EXPECT_EQ(FindIncludeTarget(*include3, container), nullptr);
+
+  auto include_procedure0 =
+      InsertInstruction(domainconstants::kIncludeProcedureInstructionType, sequence0);
+  include_procedure0->SetAttribute(domainconstants::kPathAttribute, std::string("Top"));
+  EXPECT_EQ(FindIncludeTarget(*include_procedure0, container), nullptr);
+
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  EXPECT_EQ(FindIncludeTarget(*wait0, container), nullptr);
+}
+
+//! The first name match wins at each level, without backtracking.
+TEST_F(InstructionItemHelperTest, FindIncludeTargetDuplicateNames)
+{
+  InstructionContainerItem container;
+  auto sequence0 = InsertNamed(domainconstants::kSequenceInstructionType, "A", &container);
+  auto sequence1 = InsertNamed(domainconstants::kSequenceInstructionType, "A", &container);
+  (void)InsertNamed(domainconstants::kWaitInstructionType, "B", sequence1);
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+
+  auto include0 = InsertInclude("First", "A", sequence2);
+  EXPECT_EQ(FindIncludeTarget(*include0, container), sequence0);
+
+  // only the second "A" has "B"
+  auto include1 = InsertInclude("Nested", "A.B", sequence2);
+  EXPECT_EQ(FindIncludeTarget(*include1, container), nullptr);
+}
+
+TEST_F(InstructionItemHelperTest, GetTopLevelInstruction)
+{
+  InstructionContainerItem container;
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+
+  EXPECT_EQ(GetTopLevelInstruction(*sequence0), sequence0);
+  EXPECT_EQ(GetTopLevelInstruction(*sequence1), sequence0);
+  EXPECT_EQ(GetTopLevelInstruction(*wait0), sequence0);
+
+  // outside of a container
+  auto sequence2 = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence2.get());
+  EXPECT_EQ(GetTopLevelInstruction(*sequence2), nullptr);
+  EXPECT_EQ(GetTopLevelInstruction(*wait1), nullptr);
+}
+
+TEST_F(InstructionItemHelperTest, FindRootInstruction)
+{
+  InstructionContainerItem container;
+  EXPECT_EQ(FindRootInstruction(container), nullptr);
+
+  // single instruction without isRoot
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  EXPECT_EQ(FindRootInstruction(container), sequence0);
+
+  // no isRoot: the first one
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  EXPECT_EQ(FindRootInstruction(container), sequence0);
+
+  sequence1->SetIsRootFlag(true);
+  EXPECT_EQ(FindRootInstruction(container), sequence1);
+
+  // the first one with isRoot
+  sequence2->SetIsRootFlag(true);
+  EXPECT_EQ(FindRootInstruction(container), sequence1);
 }
 
 }  // namespace oac_tree_gui::test

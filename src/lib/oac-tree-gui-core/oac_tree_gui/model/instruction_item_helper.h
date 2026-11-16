@@ -132,6 +132,43 @@ InstructionItem* GetInstructionFromProperty(mvvm::SessionItem& property);
  */
 bool IsPotentialRootInstruction(const InstructionItem& instruction);
 
+/**
+ * @brief Checks if the instruction is an Include without the file attribute.
+ */
+bool IsLocalInclude(const InstructionItem& instruction);
+
+/**
+ * @brief Finds the instruction a local Include points at.
+ *
+ * Resolves the path like oac-tree: dot-separated names, starting at the top-level instructions.
+ * The first name match wins at each level.
+ *
+ * @param include The Include instruction.
+ * @param container The instruction container of the procedure.
+ * @return The target instruction, or nullptr if the Include is not local, its path is empty or
+ * doesn't resolve.
+ */
+const InstructionItem* FindIncludeTarget(const InstructionItem& include,
+                                         const InstructionContainerItem& container);
+
+/**
+ * @brief Returns the ancestor of the instruction which is a child of the instruction container.
+ *
+ * @return The top-level instruction, the instruction itself if it is top-level, or nullptr if it is
+ * not inside an instruction container.
+ */
+const InstructionItem* GetTopLevelInstruction(const InstructionItem& instruction);
+
+/**
+ * @brief Returns the root instruction of the container.
+ *
+ * Follows the oac-tree rule: a single top-level instruction, otherwise the first one with isRoot.
+ * If there is no root, returns the first top-level instruction.
+ *
+ * @return The root instruction, or nullptr if the container is empty.
+ */
+const InstructionItem* FindRootInstruction(const InstructionContainerItem& container);
+
 }  // namespace oac_tree_gui
 
 #endif  // OAC_TREE_GUI_MODEL_INSTRUCTION_ITEM_HELPER_H_
