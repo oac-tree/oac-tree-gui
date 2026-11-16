@@ -75,6 +75,11 @@ public:
 
   void SetInstructionContainer(InstructionContainerItem* instruction_container);
 
+  /**
+   * @brief Selects the given instructions and scrolls to the first one.
+   *
+   * Collapsed parents of the first instruction are expanded. Does nothing when hidden.
+   */
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
@@ -105,6 +110,9 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> CreateProvider();
 
   void OnContextMenuRequest(const QPoint& point);
+
+  //! Expands the parents of the instruction and scrolls the tree to it.
+  void ScrollToInstruction(const InstructionItem* instruction);
 
   sup::gui::AppViewContext m_context;
 

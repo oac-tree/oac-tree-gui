@@ -156,6 +156,10 @@ void InstructionEditorWidget::SetSelectedInstructions(
     return;
   }
   m_component_provider->SetSelection(mvvm::ItemSelection(instructions));
+  if (!instructions.empty())
+  {
+    ScrollToInstruction(instructions.front());
+  }
 }
 
 std::vector<InstructionItem*> InstructionEditorWidget::GetSelectedInstructions() const
@@ -287,6 +291,22 @@ void InstructionEditorWidget::OnContextMenuRequest(const QPoint& point)
   auto collapse_menu = menu.addMenu("Tree settings");
   sup::gui::SetupCollapseExpandMenu(point, *collapse_menu, *m_tree_view);
   menu.exec(m_tree_view->mapToGlobal(point));
+}
+
+void InstructionEditorWidget::ScrollToInstruction(const InstructionItem* instruction)
+{
+  const auto indexes = m_component_provider->GetViewIndexes(instruction);
+  if (indexes.empty())
+  {
+    return;
+  }
+
+  const auto& index = indexes.front();
+  for (auto parent = index.parent(); parent.isValid(); parent = parent.parent())
+  {
+    m_tree_view->expand(parent);
+  }
+  sup::gui::ScrollTreeViewportToIndex(index, *m_tree_view);
 }
 
 }  // namespace oac_tree_gui
