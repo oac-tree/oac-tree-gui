@@ -43,7 +43,7 @@ std::unique_ptr<InstructionItem> CreateTestItem(const std::vector<AttributeDescr
 {
   const InstructionNode node{
       {"SomeDomainInstruction", sup::oac_tree::Instruction::kAction, attributes}, {}, 0, {}};
-  return CreateInstructionItemTree(node).root;
+  return CreateInstructionItemTree(node, InstructionItemMode::kEditor).root;
 }
 
 }  // namespace

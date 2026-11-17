@@ -71,7 +71,8 @@ void PopulateInstructionContainerItem(const procedure_t& procedure,
 {
   for (auto instruction : procedure.GetTopInstructions())
   {
-    auto instruction_tree = CreateInstructionItemTree(CreateInstructionNodeTree(*instruction));
+    auto instruction_tree = CreateInstructionItemTree(CreateInstructionNodeTree(*instruction),
+                                                      InstructionItemMode::kEditor);
     (void)container.InsertItem(std::move(instruction_tree.root), mvvm::TagIndex::Append());
   }
 }

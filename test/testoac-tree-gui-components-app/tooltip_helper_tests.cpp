@@ -47,7 +47,9 @@ TEST_F(ToolTipHelperTest, CollectToolTipAttributes)
                                             {{domainconstants::kTimeoutAttribute, "42"},
                                              {domainconstants::kNameAttribute, expected_name}});
 
-  auto item = CreateInstructionItemTree(CreateInstructionNodeTree(info)).root;
+  auto item =
+      CreateInstructionItemTree(CreateInstructionNodeTree(info), InstructionItemMode::kOperation)
+          .root;
 
   auto tooltip_attributes = CollectToolTipAttributes(item.get());
 
@@ -104,7 +106,9 @@ TEST_F(ToolTipHelperTest, GetInstructionToolTipText)
                                             {{domainconstants::kTimeoutAttribute, "42"},
                                              {domainconstants::kNameAttribute, expected_name}});
 
-  auto item = CreateInstructionItemTree(CreateInstructionNodeTree(info)).root;
+  auto item =
+      CreateInstructionItemTree(CreateInstructionNodeTree(info), InstructionItemMode::kOperation)
+          .root;
 
   auto tooltip = GetInstructionToolTipText(item.get());
   EXPECT_FALSE(tooltip.isEmpty());

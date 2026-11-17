@@ -45,7 +45,8 @@ std::unique_ptr<ProcedureItem> ProcedureItemJobInfoBuilder::CreateProcedureItem(
 
   if (auto instruction_info = job_info.GetRootInstructionInfo(); instruction_info != nullptr)
   {
-    auto instruction_tree = CreateInstructionItemTree(CreateInstructionNodeTree(*instruction_info));
+    auto instruction_tree = CreateInstructionItemTree(CreateInstructionNodeTree(*instruction_info),
+                                                      InstructionItemMode::kOperation);
     m_index_to_instruction = std::move(instruction_tree.indexes);
     (void)result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
                                                         mvvm::TagIndex::Append());

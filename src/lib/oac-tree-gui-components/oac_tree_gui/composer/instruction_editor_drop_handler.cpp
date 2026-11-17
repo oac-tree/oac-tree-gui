@@ -23,25 +23,11 @@
 #include <oac_tree_gui/components/mime_constants.h>
 #include <oac_tree_gui/components/drag_and_drop_helper.h>
 #include <oac_tree_gui/core/exceptions.h>
-#include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/instruction_item_helper.h>
 
 #include <mvvm/providers/viewmodel_utils.h>
 
 namespace oac_tree_gui
 {
-
-namespace
-{
-
-//! Checks if the drop parent is an instruction which takes no children.
-bool IsIncludeParent(const mvvm::SessionItem& parent)
-{
-  const auto* instruction = dynamic_cast<const InstructionItem*>(&parent);
-  return (instruction != nullptr) && IsIncludeInstruction(*instruction);
-}
-
-}  // namespace
 
 InstructionEditorDropHandler::InstructionEditorDropHandler(
     const container_callback_t& container_callback)
@@ -65,10 +51,6 @@ bool InstructionEditorDropHandler::CanDropMimeData(const QMimeData* data, Qt::Dr
   }
 
   auto parent_item = GetParentItem(parent);
-  if (IsIncludeParent(*parent_item))
-  {
-    return false;
-  }
 
   // Mime object might content various data on board. We will try to handle all supported formats,
   // and if some of them can be handled, we consider potential drop as successful.
@@ -102,10 +84,6 @@ bool InstructionEditorDropHandler::DropMimeData(const QMimeData* data, Qt::DropA
   }
 
   auto parent_item = GetParentItem(parent);
-  if (IsIncludeParent(*parent_item))
-  {
-    return false;
-  }
 
   // Mime object might content various data on board. We will try to handle all supported formats,
   // and if some of them is handled, we will consider drop successful.

@@ -156,6 +156,7 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToAddSecondChildToRepeat)
   EXPECT_EQ(repeat_item->GetInstructions().size(), 1U);
 }
 
+//! Include has no input port in the editor, so nothing can be connected to it.
 TEST_F(GraphicsSceneActionHandlerTest, AttemptToConnectWaitToInclude)
 {
   auto action_handler = CreateGraphicsSceneActionHandler();
@@ -170,14 +171,15 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToConnectWaitToInclude)
     auto include_shape = m_shape_factory.CreateShape(include_item);
     auto wait_shape = m_shape_factory.CreateShape(wait_item);
 
-    EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(1);
+    EXPECT_EQ(mvvm::GetInputPort(*include_shape), nullptr);
+
+    EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(0);
 
     action_handler->ConnectPorts(mvvm::GetInputPort(*include_shape),
                                  mvvm::GetOutputPort(*wait_shape));
 
     EXPECT_EQ(wait_item->GetParent(), m_model.GetRootItem());
     EXPECT_TRUE(include_item->GetInstructions().empty());
-    ::testing::Mock::VerifyAndClearExpectations(&m_mock_send_message);
   }
 }
 

@@ -29,6 +29,7 @@
 
 #include <sup/oac-tree/instruction.h>
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -58,18 +59,29 @@ struct InstructionTree
 };
 
 /**
+ * @brief Defines where instruction items are used.
+ */
+enum class InstructionItemMode : std::uint8_t
+{
+  kEditor,    //!< composer, Include and IncludeProcedure take no children
+  kOperation  //!< expanded procedure of a job, Include holds the included tree
+};
+
+/**
  * @brief Creates an instruction item tree from the given node tree.
  *
  * No domain objects are created and no plugin is needed.
  *
  * @param node The root node.
+ * @param mode Where the items are used.
  * @return The root item and the items by automation index.
  * @throw RuntimeException if a node index is out of range.
+ * @throw mvvm::InvalidOperationException in editor mode, if an Include node has children.
  */
-InstructionTree CreateInstructionItemTree(const InstructionNode& node);
+InstructionTree CreateInstructionItemTree(const InstructionNode& node, InstructionItemMode mode);
 
 /**
- * @brief Creates an instruction item for the given domain type.
+ * @brief Creates an instruction item for the given domain type, in editor mode.
  *
  * A temporary domain instruction provides the attribute definitions.
  *

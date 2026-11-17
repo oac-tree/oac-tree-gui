@@ -59,14 +59,6 @@ void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort* start_port,
     return;
   }
 
-  if (IsIncludeInstruction(*parent))
-  {
-    m_send_message(sup::gui::CreateInvalidOperationMessage(
-        "Can't connect ports", "Failed to connect ports",
-        parent->GetDomainType() + " takes no children. Its child is the included instruction."));
-    return;
-  }
-
   const auto& model = *parent->GetModel();
   mvvm::utils::BeginMacro(model, "Connect instructions");
   try

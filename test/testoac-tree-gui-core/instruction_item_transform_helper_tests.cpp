@@ -110,7 +110,8 @@ bool CanCreateInstruction(const std::string& domain_type)
 //! Builds an item tree from the domain instruction with the item builder.
 InstructionTree CreateItemTreeFromDomain(const sup::oac_tree::Instruction& instruction)
 {
-  return CreateInstructionItemTree(CreateInstructionNodeTree(instruction));
+  return CreateInstructionItemTree(CreateInstructionNodeTree(instruction),
+                                   InstructionItemMode::kEditor);
 }
 
 }  // namespace
@@ -173,7 +174,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromWaitInfo)
                                             sup::oac_tree::Instruction::Category::kAction, 0,
                                             {{domainconstants::kTimeoutAttribute, "42"}});
 
-  auto item_tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
+  auto item_tree =
+      CreateInstructionItemTree(CreateInstructionNodeTree(info), InstructionItemMode::kOperation);
   ASSERT_EQ(item_tree.indexes.size(), 1);
 
   auto* wait_item = item_tree.root.get();
@@ -196,7 +198,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromSequenceInfo)
       domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 2,
       std::vector<sup::oac_tree::AttributeInfo>({{domainconstants::kTimeoutAttribute, "43"}})));
 
-  auto item_tree = CreateInstructionItemTree(CreateInstructionNodeTree(sequence_info));
+  auto item_tree = CreateInstructionItemTree(CreateInstructionNodeTree(sequence_info),
+                                             InstructionItemMode::kOperation);
   ASSERT_EQ(item_tree.indexes.size(), 3);
 
   auto* sequence_item = item_tree.root.get();
@@ -255,7 +258,11 @@ TEST_F(InstructionItemTransformHelperTest, CreateInstructionTreeFromRootInstruct
 TEST_F(InstructionItemTransformHelperTest, ItemTreeChildrenTag)
 {
   auto create_item = [](sup::oac_tree::Instruction::Category category)
-  { return CreateInstructionItemTree({{"UnknownInstruction", category, {}}, {}, 0, {}}).root; };
+  {
+    return CreateInstructionItemTree({{"UnknownInstruction", category, {}}, {}, 0, {}},
+                                     InstructionItemMode::kEditor)
+        .root;
+  };
 
   auto get_children_taginfo = [](const InstructionItem& item)
   {
@@ -286,6 +293,42 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeChildrenTag)
   EXPECT_EQ(decorator_taginfo.GetName(), itemconstants::kChildInstructions);
   EXPECT_EQ(decorator_taginfo.GetMin(), 0);
   EXPECT_EQ(decorator_taginfo.GetMax(), 1);
+}
+
+//! In editor mode, Include and IncludeProcedure have no children tag. Other decorators have it.
+TEST_F(InstructionItemTransformHelperTest, EditorIncludeHasNoChildrenTag)
+{
+  for (const auto& domain_type : {domainconstants::kIncludeInstructionType,
+                                  domainconstants::kIncludeProcedureInstructionType})
+  {
+    auto item = CreateInstructionItem(domain_type);
+    EXPECT_FALSE(mvvm::utils::HasTag(*item, itemconstants::kChildInstructions)) << domain_type;
+  }
+
+  auto repeat = CreateInstructionItem(domainconstants::kRepeatInstructionType);
+  EXPECT_TRUE(mvvm::utils::HasTag(*repeat, itemconstants::kChildInstructions));
+}
+
+//! Include with a child, as reported by the server. Operation mode keeps the child, editor mode
+//! throws.
+TEST_F(InstructionItemTransformHelperTest, IncludeWithChildFromInfo)
+{
+  sup::oac_tree::InstructionInfo include_info(domainconstants::kIncludeInstructionType,
+                                              sup::oac_tree::Instruction::Category::kDecorator, 0,
+                                              {{domainconstants::kPathAttribute, "Target"}});
+  (void)include_info.AppendChild(std::make_unique<sup::oac_tree::InstructionInfo>(
+      domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::Category::kAction, 1,
+      std::vector<sup::oac_tree::AttributeInfo>{}));
+
+  auto item_tree = CreateInstructionItemTree(CreateInstructionNodeTree(include_info),
+                                             InstructionItemMode::kOperation);
+  ASSERT_EQ(item_tree.root->GetInstructions().size(), 1);
+  EXPECT_EQ(item_tree.root->GetInstructions().at(0)->GetDomainType(),
+            domainconstants::kWaitInstructionType);
+
+  EXPECT_THROW(CreateInstructionItemTree(CreateInstructionNodeTree(include_info),
+                                         InstructionItemMode::kEditor),
+               mvvm::InvalidOperationException);
 }
 
 //! Include with a custom attribute, domain to item.
@@ -560,7 +603,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
 
   const InstructionNode node{descriptor, attribute_info, 1, {{child_descriptor, {}, 0, {}}}};
 
-  auto tree = CreateInstructionItemTree(node);
+  auto tree = CreateInstructionItemTree(node, InstructionItemMode::kEditor);
   auto* item = tree.root.get();
 
   EXPECT_EQ(item->GetType(), mvvm::GetTypeName<InstructionItem>());
@@ -613,7 +656,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromHandWrittenNode)
 TEST_F(InstructionItemTransformHelperTest, ItemTreeIndexOutOfRange)
 {
   const InstructionNode node{{"UnknownAction", sup::oac_tree::Instruction::kAction, {}}, {}, 1, {}};
-  EXPECT_THROW(CreateInstructionItemTree(node), RuntimeException);
+  EXPECT_THROW(CreateInstructionItemTree(node, InstructionItemMode::kEditor), RuntimeException);
 }
 
 //! Placeholders and references are stored as text.
@@ -623,7 +666,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeWithPlaceholderAndReference)
   node.attributes = {{domainconstants::kTimeoutAttribute, "$par"},
                      {domainconstants::kBlockingAttribute, "@var"}};
 
-  auto tree = CreateInstructionItemTree(node);
+  auto tree = CreateInstructionItemTree(node, InstructionItemMode::kEditor);
   auto* timeout =
       tree.root->GetAttributes()->FindItem<AttributeItem>(domainconstants::kTimeoutAttribute);
   ASSERT_NE(timeout, nullptr);
@@ -650,7 +693,7 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeWithTextInRootAndCollapsed)
     node.attributes = {{domainconstants::kIsRootAttribute, "$par"},
                        {domainconstants::kShowCollapsedAttribute, "@var"}};
 
-    auto tree = CreateInstructionItemTree(node);
+    auto tree = CreateInstructionItemTree(node, InstructionItemMode::kEditor);
     EXPECT_FALSE(tree.root->IsRoot()) << domain_type;
     EXPECT_EQ(IsCollapsed(*tree.root), domain_type == domainconstants::kIncludeInstructionType)
         << domain_type;
@@ -668,7 +711,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromInfoNode)
     const sup::oac_tree::InstructionInfo info(domainconstants::kIncludeInstructionType,
                                               sup::oac_tree::Instruction::kDecorator, 0,
                                               {{domainconstants::kPathAttribute, "abc"}});
-    auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
+    auto tree =
+        CreateInstructionItemTree(CreateInstructionNodeTree(info), InstructionItemMode::kOperation);
     EXPECT_TRUE(IsCollapsed(*tree.root));
     auto* path =
         tree.root->GetAttributes()->FindItem<AttributeItem>(domainconstants::kPathAttribute);
@@ -682,7 +726,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromInfoNode)
                                               sup::oac_tree::Instruction::kDecorator, 0,
                                               {{domainconstants::kShowCollapsedAttribute, "false"},
                                                {domainconstants::kIsRootAttribute, "true"}});
-    auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
+    auto tree =
+        CreateInstructionItemTree(CreateInstructionNodeTree(info), InstructionItemMode::kOperation);
     EXPECT_FALSE(IsCollapsed(*tree.root));
     EXPECT_TRUE(tree.root->IsRoot());
   }
@@ -692,7 +737,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeFromInfoNode)
     const sup::oac_tree::InstructionInfo info(
         domainconstants::kPvAccessWriteInstructionType, sup::oac_tree::Instruction::kAction, 0,
         {{domainconstants::kTypeAttribute, type_json}, {domainconstants::kValueAttribute, "42"}});
-    auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(info));
+    auto tree =
+        CreateInstructionItemTree(CreateInstructionNodeTree(info), InstructionItemMode::kOperation);
     EXPECT_FALSE(mvvm::utils::HasTag(*tree.root, itemconstants::kAnyValueTag));
     EXPECT_EQ(tree.root->GetAttributes()->Property<std::string>(domainconstants::kTypeAttribute),
               type_json);
@@ -722,15 +768,15 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAttributeContainer)
   auto include = CreateInstructionItem(domainconstants::kIncludeInstructionType);
   EXPECT_TRUE(
       mvvm::utils::HasTag(*include->GetAttributes(), domainconstants::kShowCollapsedAttribute));
-  EXPECT_TRUE(mvvm::utils::HasTag(*include, itemconstants::kChildInstructions));
+  EXPECT_FALSE(mvvm::utils::HasTag(*include, itemconstants::kChildInstructions));  // editor mode
   EXPECT_FALSE(mvvm::utils::HasTag(*include, domainconstants::kShowCollapsedAttribute));
 }
 
 //! Repeat gets maxCount from the attribute presets. The preset goes to the domain.
 TEST_F(InstructionItemTransformHelperTest, ItemTreeRepeatPreset)
 {
-  auto tree =
-      CreateInstructionItemTree(CreateInstructionNode(domainconstants::kRepeatInstructionType));
+  auto tree = CreateInstructionItemTree(
+      CreateInstructionNode(domainconstants::kRepeatInstructionType), InstructionItemMode::kEditor);
   auto* item = tree.root.get();
 
   EXPECT_EQ(item->GetAttribute<mvvm::int32>(domainconstants::kMaxCountAttribute), -1);
@@ -747,8 +793,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeRepeatPreset)
 TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
 {
   {
-    auto tree =
-        CreateInstructionItemTree(CreateInstructionNode(domainconstants::kWaitInstructionType));
+    auto tree = CreateInstructionItemTree(
+        CreateInstructionNode(domainconstants::kWaitInstructionType), InstructionItemMode::kEditor);
     EXPECT_FALSE(mvvm::utils::HasTag(*tree.root->GetAttributes(), itemconstants::kAnyValueTag));
     EXPECT_EQ(GetAnyValueItem(*tree.root), nullptr);
   }
@@ -762,7 +808,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeAnyValueTag)
        {domainconstants::kChannelAccessWriteInstructionType,
         domainconstants::kPvAccessWriteInstructionType, domainconstants::kRPCClientInstructionType})
   {
-    auto tree = CreateInstructionItemTree(CreateInstructionNode(domain_type));
+    auto tree =
+        CreateInstructionItemTree(CreateInstructionNode(domain_type), InstructionItemMode::kEditor);
     EXPECT_TRUE(mvvm::utils::HasTag(*tree.root->GetAttributes(), itemconstants::kAnyValueTag))
         << domain_type;
     auto* anyvalue_item = GetAnyValueItem(*tree.root);
@@ -816,7 +863,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeIncludeProcedureCollapsed)
 
   // collapsed without showCollapsed, nothing is written
   auto item_tree = CreateInstructionItemTree(
-      CreateInstructionNode(domainconstants::kIncludeProcedureInstructionType));
+      CreateInstructionNode(domainconstants::kIncludeProcedureInstructionType),
+      InstructionItemMode::kEditor);
   EXPECT_TRUE(IsCollapsed(*item_tree.root));
   EXPECT_FALSE(CreateDomainInstruction(*item_tree.root)
                    ->HasAttribute(domainconstants::kShowCollapsedAttribute));
@@ -830,8 +878,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreeIncludeProcedureCollapsed)
 //! Wait with name and attributes: item to domain to item.
 TEST_F(InstructionItemTransformHelperTest, ItemTreeWaitRoundTrip)
 {
-  auto tree =
-      CreateInstructionItemTree(CreateInstructionNode(domainconstants::kWaitInstructionType));
+  auto tree = CreateInstructionItemTree(
+      CreateInstructionNode(domainconstants::kWaitInstructionType), InstructionItemMode::kEditor);
   auto* item = tree.root.get();
   item->SetName("First");
   item->SetAttribute(domainconstants::kTimeoutAttribute, 42.0);
@@ -857,7 +905,8 @@ TEST_F(InstructionItemTransformHelperTest, ItemTreePvAccessWriteRoundTrip)
 
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   auto tree = CreateInstructionItemTree(
-      CreateInstructionNode(domainconstants::kPvAccessWriteInstructionType));
+      CreateInstructionNode(domainconstants::kPvAccessWriteInstructionType),
+      InstructionItemMode::kEditor);
   auto* item = tree.root.get();
   item->SetAttribute(domainconstants::kChannelAttribute, std::string("def"));
   SetAnyValue(expected_anyvalue, *item);

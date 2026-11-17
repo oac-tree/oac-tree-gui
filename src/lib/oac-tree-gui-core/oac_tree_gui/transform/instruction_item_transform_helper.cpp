@@ -96,9 +96,15 @@ void AddAnyValueTag(mvvm::CompoundItem& item)
   (void)item.InsertItem(CreateEmptyAnyValueItem(), mvvm::TagIndex::Append());
 }
 
-//! Registers the tag for child instructions, according to the category.
-void RegisterChildrenTag(instruction_t::Category category, InstructionItem& item)
+//! Registers the tag for child instructions, according to the category and the mode.
+void RegisterChildrenTag(instruction_t::Category category, InstructionItemMode mode,
+                         InstructionItem& item)
 {
+  if ((mode == InstructionItemMode::kEditor) && IsIncludeInstruction(item))
+  {
+    return;  // the included tree is the child, oac-tree sets it at Setup
+  }
+
   if (category == sup::oac_tree::Instruction::kCompound)
   {
     item.RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
@@ -125,7 +131,8 @@ void AddStringAttribute(const std::string& name, const std::string& value, mvvm:
 }
 
 //! Sets up the item for the given descriptor: domain type, attributes, tags, GUI properties.
-void PopulateInstructionItem(const InstructionDescriptor& descriptor, InstructionItem& item)
+void PopulateInstructionItem(const InstructionDescriptor& descriptor, InstructionItemMode mode,
+                             InstructionItem& item)
 {
   item.SetDomainType(descriptor.domain_type);
   (void)item.SetDisplayName(descriptor.domain_type);
@@ -155,7 +162,7 @@ void PopulateInstructionItem(const InstructionDescriptor& descriptor, Instructio
     }
   }
 
-  RegisterChildrenTag(descriptor.category, item);
+  RegisterChildrenTag(descriptor.category, mode, item);
   AddGuiProperties(item);
 
   if (auto property = attributes.FindItem(domainconstants::kShowCollapsedAttribute); property)
@@ -227,19 +234,19 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
 }
 
 //! Creates an item for the given node, without children.
-std::unique_ptr<InstructionItem> CreateItem(const InstructionNode& node)
+std::unique_ptr<InstructionItem> CreateItem(const InstructionNode& node, InstructionItemMode mode)
 {
   auto result = std::make_unique<InstructionItem>();
-  PopulateInstructionItem(node.descriptor, *result);
+  PopulateInstructionItem(node.descriptor, mode, *result);
   SetAttributeValues(node, *result);
   return result;
 }
 
 }  // namespace
 
-InstructionTree CreateInstructionItemTree(const InstructionNode& node)
+InstructionTree CreateInstructionItemTree(const InstructionNode& node, InstructionItemMode mode)
 {
-  auto root = CreateItem(node);
+  auto root = CreateItem(node, mode);
   std::vector<std::pair<std::uint32_t, InstructionItem*>> items;
   std::stack<std::pair<const InstructionNode*, InstructionItem*>> stack;
   stack.push({&node, root.get()});
@@ -252,7 +259,7 @@ InstructionTree CreateInstructionItemTree(const InstructionNode& node)
 
     for (const auto& child : current->children)
     {
-      auto child_item = CreateItem(child);
+      auto child_item = CreateItem(child, mode);
       auto* child_item_ptr = child_item.get();
       (void)item->InsertItem(std::move(child_item), mvvm::TagIndex::Append());
       stack.push({&child, child_item_ptr});
@@ -273,7 +280,8 @@ InstructionTree CreateInstructionItemTree(const InstructionNode& node)
 
 std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type)
 {
-  return CreateInstructionItemTree(CreateInstructionNode(domain_type)).root;
+  return CreateInstructionItemTree(CreateInstructionNode(domain_type), InstructionItemMode::kEditor)
+      .root;
 }
 
 std::unique_ptr<instruction_t> CreateDomainInstruction(const InstructionItem& item)

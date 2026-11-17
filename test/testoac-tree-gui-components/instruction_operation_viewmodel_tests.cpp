@@ -141,7 +141,8 @@ TEST_F(InstructionOperationViewModelTest, ItemTreeFromInfo)
       domainconstants::kWaitInstructionType, sup::oac_tree::Instruction::kAction, 2,
       std::vector<sup::oac_tree::AttributeInfo>{}));
 
-  auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(sequence_info));
+  auto tree = CreateInstructionItemTree(CreateInstructionNodeTree(sequence_info),
+                                        InstructionItemMode::kOperation);
   auto* wait0 = tree.indexes.at(1);
   auto* wait1 = tree.indexes.at(2);
   (void)model.InsertItem(std::move(tree.root), model.GetRootItem(), mvvm::TagIndex::Append());
