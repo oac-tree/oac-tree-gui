@@ -142,6 +142,38 @@ std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
   return mvvm::utils::TopLevelItems(*item);
 }
 
+ScopedInstructionNodeChildrenStrategy::ScopedInstructionNodeChildrenStrategy(
+    std::set<std::string> hidden_identifiers)
+    : m_hidden_identifiers(std::move(hidden_identifiers))
+{
+}
+
+std::vector<mvvm::SessionItem*> ScopedInstructionNodeChildrenStrategy::GetChildren(
+    mvvm::SessionItem* item) const
+{
+  if (auto* instruction_item = dynamic_cast<InstructionItem*>(item); instruction_item != nullptr)
+  {
+    const auto* top_level = GetTopLevelInstruction(*instruction_item);
+    if ((top_level != nullptr) && IsHidden(*top_level))
+    {
+      return {};
+    }
+    return m_instruction_strategy.GetChildren(item);
+  }
+
+  // instruction container
+  std::vector<mvvm::SessionItem*> result;
+  const auto children = m_instruction_strategy.GetChildren(item);
+  (void)std::copy_if(children.begin(), children.end(), std::back_inserter(result),
+                     [this](const mvvm::SessionItem* child) { return !IsHidden(*child); });
+  return result;
+}
+
+bool ScopedInstructionNodeChildrenStrategy::IsHidden(const mvvm::SessionItem& item) const
+{
+  return m_hidden_identifiers.find(item.GetIdentifier()) != m_hidden_identifiers.end();
+}
+
 std::vector<mvvm::SessionItem*> InstructionAttributeChildrenStrategy::GetChildren(
     mvvm::SessionItem* item) const
 {

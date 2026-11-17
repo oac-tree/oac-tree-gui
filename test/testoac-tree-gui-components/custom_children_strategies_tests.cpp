@@ -176,6 +176,60 @@ TEST_F(CustomChildrenStrategiesTest, InstructionNodeChildrenStrategy)
   EXPECT_EQ(strategy.GetChildren(sequence0), std::vector<mvvm::SessionItem*>({}));
 }
 
+//! Nothing is hidden. Children are reported as by InstructionNodeChildrenStrategy.
+TEST_F(CustomChildrenStrategiesTest, ScopedInstructionNodeChildrenStrategyNothingHidden)
+{
+  InstructionContainerItem container;
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, &container);
+
+  const ScopedInstructionNodeChildrenStrategy strategy({});
+  EXPECT_EQ(strategy.GetChildren(&container), std::vector<mvvm::SessionItem*>({sequence0, wait1}));
+  EXPECT_EQ(strategy.GetChildren(sequence0), std::vector<mvvm::SessionItem*>({wait0}));
+  EXPECT_EQ(strategy.GetChildren(wait0), std::vector<mvvm::SessionItem*>({}));
+}
+
+//! Hidden top-level instructions and everything inside them report no children.
+TEST_F(CustomChildrenStrategiesTest, ScopedInstructionNodeChildrenStrategyHiddenTree)
+{
+  InstructionContainerItem container;
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, sequence2);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, &container);
+
+  const ScopedInstructionNodeChildrenStrategy strategy({sequence1->GetIdentifier()});
+
+  // visible trees, and a loose instruction
+  EXPECT_EQ(strategy.GetChildren(&container), std::vector<mvvm::SessionItem*>({sequence0, wait2}));
+  EXPECT_EQ(strategy.GetChildren(sequence0), std::vector<mvvm::SessionItem*>({wait0}));
+
+  // hidden tree, at any depth
+  EXPECT_EQ(strategy.GetChildren(sequence1), std::vector<mvvm::SessionItem*>({}));
+  EXPECT_EQ(strategy.GetChildren(sequence2), std::vector<mvvm::SessionItem*>({}));
+  EXPECT_EQ(strategy.GetChildren(wait1), std::vector<mvvm::SessionItem*>({}));
+}
+
+//! A collapsed instruction in a visible tree reports no children.
+TEST_F(CustomChildrenStrategiesTest, ScopedInstructionNodeChildrenStrategyCollapsed)
+{
+  InstructionContainerItem container;
+  auto sequence0 = InsertInstruction(domainconstants::kSequenceInstructionType, &container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+  auto wait1 = InsertInstruction(domainconstants::kWaitInstructionType, &container);
+
+  const ScopedInstructionNodeChildrenStrategy strategy({wait1->GetIdentifier()});
+  EXPECT_EQ(strategy.GetChildren(sequence1), std::vector<mvvm::SessionItem*>({wait0}));
+
+  SetCollapsed(true, *sequence1);
+  EXPECT_EQ(strategy.GetChildren(sequence0), std::vector<mvvm::SessionItem*>({sequence1}));
+  EXPECT_EQ(strategy.GetChildren(sequence1), std::vector<mvvm::SessionItem*>({}));
+}
+
 TEST_F(CustomChildrenStrategiesTest, InstructionAttributeChildrenStrategy)
 {
   InstructionContainerItem container;

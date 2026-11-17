@@ -26,6 +26,9 @@
 
 #include <mvvm/providers/i_children_strategy.h>
 
+#include <set>
+#include <string>
+
 namespace oac_tree_gui
 {
 
@@ -52,6 +55,32 @@ class InstructionNodeChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
   std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
+};
+
+/**
+ * @brief The ScopedInstructionNodeChildrenStrategy class reports children of InstructionItem,
+ * except hidden top-level instructions and their children.
+ *
+ * Instructions in visible top-level trees are reported as by InstructionNodeChildrenStrategy.
+ */
+class ScopedInstructionNodeChildrenStrategy : public mvvm::IChildrenStrategy
+{
+public:
+  /**
+   * @brief Main c-tor.
+   *
+   * @param hidden_identifiers Identifiers of hidden top-level instructions. An empty set shows all.
+   */
+  explicit ScopedInstructionNodeChildrenStrategy(std::set<std::string> hidden_identifiers);
+
+  std::vector<mvvm::SessionItem*> GetChildren(mvvm::SessionItem* item) const override;
+
+private:
+  //! Returns true if the item is a hidden top-level instruction.
+  bool IsHidden(const mvvm::SessionItem& item) const;
+
+  std::set<std::string> m_hidden_identifiers;
+  InstructionNodeChildrenStrategy m_instruction_strategy;
 };
 
 /**
