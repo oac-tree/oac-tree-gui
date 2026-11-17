@@ -122,6 +122,35 @@ TEST_F(InstructionEditorDropHandlerTest, InsertNewType)
   }
 }
 
+//! Include takes no children: new type, move and copy drops onto it are refused.
+TEST_F(InstructionEditorDropHandlerTest, AttemptToDropIntoInclude)
+{
+  auto include0 =
+      InsertInstruction(domainconstants::kIncludeInstructionType, m_model.GetRootItem());
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
+
+  auto include_index = m_view_model.index(0, 0, QModelIndex());
+  auto wait_index = m_view_model.index(1, 0, QModelIndex());
+
+  auto handler = CreateDefaultDropHandler();
+  const std::int32_t drop_indicator = -1;
+
+  auto new_type_mime = CreateNewInstructionMimeData(domainconstants::kWaitInstructionType);
+  EXPECT_FALSE(
+      handler->CanDropMimeData(new_type_mime.get(), Qt::CopyAction, drop_indicator, include_index));
+  EXPECT_FALSE(
+      handler->DropMimeData(new_type_mime.get(), Qt::CopyAction, drop_indicator, include_index));
+
+  const std::unique_ptr<QMimeData> move_mime(m_view_model.mimeData({wait_index}));
+  EXPECT_FALSE(
+      handler->CanDropMimeData(move_mime.get(), Qt::MoveAction, drop_indicator, include_index));
+  EXPECT_FALSE(
+      handler->DropMimeData(move_mime.get(), Qt::MoveAction, drop_indicator, include_index));
+
+  EXPECT_TRUE(include0->GetInstructions().empty());
+  EXPECT_EQ(wait0->GetParent(), m_model.GetRootItem());
+}
+
 TEST_F(InstructionEditorDropHandlerTest, DropInstructionIdentifierMimeDataBetweenItems)
 {
   // [0 ]  --------------   row_col=( 0,  0)    QModelIndex(-1, -1)   Container

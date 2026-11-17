@@ -39,7 +39,7 @@ namespace oac_tree_gui
  *
  * Used in the context of InstructionTreeView, JobListView, ProcedureListView and similar.
  *
- * COntains the logic to handle drag-copy and drag-move operations from internal source (within the
+ * Contains the logic to handle drag-copy and drag-move operations from internal source (within the
  * same view) and from external source.
  */
 class InstructionEditorDropHandler : public IItemDropHandler
