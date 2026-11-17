@@ -61,10 +61,12 @@ public:
   /**
    * @brief Creates provider instance for testing.
    */
-  std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider()
+  std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider(
+      std::set<std::string> hidden_identifiers = {})
   {
     auto result = std::make_unique<GraphicsSceneComponentProvider>(
-        m_mock_message.AsStdFunction(), &m_graphics_scene, m_instruction_container);
+        m_mock_message.AsStdFunction(), &m_graphics_scene, m_instruction_container,
+        std::move(hidden_identifiers));
 
     // connection which is in NodeEditorWidget
     QObject::connect(&m_graphics_scene, &NodeGraphicsScene::portDoubleClick, result.get(),
@@ -388,6 +390,48 @@ TEST_F(GraphicsSceneComponentProviderSceneTest, CollapseExpandWhenDoubleClickOnI
                      viewport_click_coordinate);
 
   EXPECT_FALSE(IsCollapsed(*sequence));
+}
+
+//! A dropped instruction gets a shape, when a hidden tree exists.
+TEST_F(GraphicsSceneComponentProviderSceneTest, DropInstructionWithHiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+
+  auto provider = CreateProvider({sequence0->GetIdentifier()});
+  ASSERT_TRUE(FindSceneInstructions().empty());
+
+  ASSERT_EQ(m_instruction_container->GetInstructionCount(), 1);
+
+  provider->DropInstruction(domainconstants::kWaitInstructionType, {42.0, 43.0});
+
+  ASSERT_EQ(m_instruction_container->GetInstructionCount(), 2);
+  auto dropped = m_instruction_container->GetInstructions().at(1);
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({dropped}));
+}
+
+//! A disconnected child keeps its shape, when a hidden tree exists.
+TEST_F(GraphicsSceneComponentProviderSceneTest, DeleteSelectedConnectionWithHiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+
+  auto provider = CreateProvider({sequence1->GetIdentifier()});
+
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 1U);
+  connections.at(0)->setSelected(true);
+
+  provider->OnDeleteSelected();
+
+  EXPECT_EQ(wait0->GetParent(), m_instruction_container);
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0, wait0}));
+  EXPECT_TRUE(FindSceneShapes<mvvm::NodeConnectionShape>().empty());
 }
 
 }  // namespace oac_tree_gui::test

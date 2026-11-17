@@ -65,10 +65,12 @@ public:
   /**
    * @brief Creates provider instance for testing.
    */
-  std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider()
+  std::unique_ptr<GraphicsSceneComponentProvider> CreateProvider(
+      std::set<std::string> hidden_identifiers = {})
   {
     return std::make_unique<GraphicsSceneComponentProvider>(
-        m_mock_message.AsStdFunction(), &m_graphics_scene, m_instruction_container);
+        m_mock_message.AsStdFunction(), &m_graphics_scene, m_instruction_container,
+        std::move(hidden_identifiers));
   }
 
   /**
@@ -538,6 +540,125 @@ TEST_F(GraphicsSceneComponentProviderTest, SelectInstructionBranch)
       mvvm::utils::HaveSameElements(provider->GetSelectedInstructions(), expected_selection2));
 
   EXPECT_EQ(spy_provider_selected.count(), 6);
+}
+
+//! Hidden top-level instructions and their children get no shapes.
+TEST_F(GraphicsSceneComponentProviderTest, HiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+  auto wait2 = InsertInstruction(domainconstants::kWaitInstructionType, m_instruction_container);
+
+  auto provider = CreateProvider({sequence1->GetIdentifier()});
+
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0, wait0, wait2}));
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 1U);
+  EXPECT_TRUE(mvvm::IsParentChildConnection(shapes.at(0), shapes.at(1), connections.at(0)));
+}
+
+//! Removing a hidden top-level instruction does not touch the scene.
+TEST_F(GraphicsSceneComponentProviderTest, RemoveHiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence0);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+
+  auto provider = CreateProvider({sequence1->GetIdentifier()});
+  const auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  const auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+
+  m_model.RemoveItem(sequence1);
+
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0, wait0}));
+  EXPECT_EQ(FindSceneShapes<mvvm::ConnectableShape>(), shapes);
+  EXPECT_EQ(FindSceneShapes<mvvm::NodeConnectionShape>(), connections);
+}
+
+//! Inserting into a hidden tree, at any depth, creates no shapes.
+TEST_F(GraphicsSceneComponentProviderTest, InsertIntoHiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+
+  auto provider = CreateProvider({sequence1->GetIdentifier()});
+  ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0}));
+
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence2);
+
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0}));
+  EXPECT_TRUE(FindSceneShapes<mvvm::NodeConnectionShape>().empty());
+}
+
+//! Moving an instruction from a hidden tree into the visible tree creates connected shapes.
+TEST_F(GraphicsSceneComponentProviderTest, MoveFromHiddenTreeToVisibleTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto sequence2 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence1);
+  auto wait0 = InsertInstruction(domainconstants::kWaitInstructionType, sequence2);
+
+  auto provider = CreateProvider({sequence1->GetIdentifier()});
+  ASSERT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0}));
+
+  m_model.MoveItem(sequence2, sequence0, mvvm::TagIndex::Append(itemconstants::kChildInstructions));
+
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0, sequence2, wait0}));
+  auto shapes = FindSceneShapes<mvvm::ConnectableShape>();
+  auto connections = FindSceneShapes<mvvm::NodeConnectionShape>();
+  ASSERT_EQ(connections.size(), 2U);
+  EXPECT_TRUE(mvvm::IsParentChildConnection(shapes.at(0), shapes.at(1), connections.at(0)));
+  EXPECT_TRUE(mvvm::IsParentChildConnection(shapes.at(1), shapes.at(2), connections.at(1)));
+}
+
+//! Moving an instruction from the visible tree into a hidden tree removes its shapes.
+TEST_F(GraphicsSceneComponentProviderTest, MoveFromVisibleTreeToHiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+  auto sequence2 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+
+  auto provider = CreateProvider({sequence2->GetIdentifier()});
+  ASSERT_EQ(FindSceneInstructions().size(), 3U);
+
+  m_model.MoveItem(sequence1, sequence2, mvvm::TagIndex::Append(itemconstants::kChildInstructions));
+
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0}));
+  EXPECT_TRUE(FindSceneShapes<mvvm::NodeConnectionShape>().empty());
+}
+
+//! Changing the collapse state inside a hidden tree creates no shapes.
+TEST_F(GraphicsSceneComponentProviderTest, CollapseInsideHiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+
+  auto provider = CreateProvider({sequence1->GetIdentifier()});
+
+  SetCollapsed(true, *sequence1);
+  SetCollapsed(false, *sequence1);
+
+  EXPECT_EQ(FindSceneInstructions(), std::vector<InstructionItem*>({sequence0}));
+  EXPECT_TRUE(FindSceneShapes<mvvm::NodeConnectionShape>().empty());
 }
 
 }  // namespace oac_tree_gui::test

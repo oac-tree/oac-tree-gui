@@ -27,6 +27,8 @@
 
 #include <QObject>
 #include <memory>
+#include <set>
+#include <string>
 
 namespace mvvm
 {
@@ -62,9 +64,19 @@ class GraphicsSceneComponentProvider : public QObject
 public:
   using position_t = std::pair<double, double>;
 
+  /**
+   * @brief Main c-tor.
+   *
+   * @param send_message_callback Callback to report errors.
+   * @param scene The scene to populate.
+   * @param instruction_container The container with instructions to show.
+   * @param hidden_identifiers Identifiers of top-level instructions not shown. An empty set shows
+   * all.
+   */
   explicit GraphicsSceneComponentProvider(
       std::function<void(const sup::gui::MessageEvent&)> send_message_callback,
-      QGraphicsScene* scene, mvvm::SessionItem* instruction_container);
+      QGraphicsScene* scene, mvvm::SessionItem* instruction_container,
+      std::set<std::string> hidden_identifiers);
   ~GraphicsSceneComponentProvider() override;
 
   GraphicsSceneComponentProvider(const GraphicsSceneComponentProvider&) = delete;
@@ -141,7 +153,8 @@ private:
   /**
    * @brief Creates view model controller.
    */
-  std::unique_ptr<mvvm::ConnectableViewModelController> CreateViewModelController();
+  std::unique_ptr<mvvm::ConnectableViewModelController> CreateViewModelController(
+      std::set<std::string> hidden_identifiers);
 
   /**
    * @brief Creates scene action handler.

@@ -44,13 +44,13 @@ namespace oac_tree_gui
 
 GraphicsSceneComponentProvider::GraphicsSceneComponentProvider(
     std::function<void(const sup::gui::MessageEvent&)> send_message_callback, QGraphicsScene* scene,
-    mvvm::SessionItem* instruction_container)
+    mvvm::SessionItem* instruction_container, std::set<std::string> hidden_identifiers)
     : QObject(nullptr)
     , m_send_message_callback(send_message_callback)
     , m_scene(scene)
     , m_instruction_container(instruction_container)
     , m_connection_guide(std::make_unique<mvvm::NodeConnectionGuide>(m_scene))
-    , m_viewmodel_controller(CreateViewModelController())
+    , m_viewmodel_controller(CreateViewModelController(std::move(hidden_identifiers)))
     , m_graphics_scene_action_handler(CreateSceneActionHandler())
     , m_instruction_editor_action_handler(CreateInstructionEditorActionHandler())
 {
@@ -157,10 +157,11 @@ void GraphicsSceneComponentProvider::OnDataChanged(const mvvm::DataChangedEvent&
 }
 
 std::unique_ptr<mvvm::ConnectableViewModelController>
-GraphicsSceneComponentProvider::CreateViewModelController()
+GraphicsSceneComponentProvider::CreateViewModelController(std::set<std::string> hidden_identifiers)
 {
   auto factory = std::make_unique<ConnectableShapeFactory>();
-  auto children_strategy = std::make_unique<InstructionNodeChildrenStrategy>();
+  auto children_strategy =
+      std::make_unique<ScopedInstructionNodeChildrenStrategy>(std::move(hidden_identifiers));
   auto result = std::make_unique<mvvm::ConnectableViewModelController>(
       std::move(factory), std::move(children_strategy), m_scene);
 
