@@ -53,6 +53,13 @@ public:
   void FitView();
 
   /**
+   * @brief Sets the scene rect around all items with a margin, and fits them in the view.
+   *
+   * The zoom is capped at 100%. Without items, the scene rect of the scene is used.
+   */
+  void FocusOnItems();
+
+  /**
    * @brief Returns current operation mode.
    */
   GraphicsViewOperationMode GetOperationMode();

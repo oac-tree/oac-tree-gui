@@ -316,7 +316,7 @@ void NodeEditorWidget::UpdateView()
   if (m_fit_required)
   {
     m_fit_required = false;
-    FitScope();
+    m_graphics_view->FocusOnItems();
   }
 }
 
@@ -332,24 +332,6 @@ void NodeEditorWidget::AlignInstructions()
   // alignment reference point slightly above the center of the scene
   const QPointF reference_point{center.x(), center.y() - (3 * ConnectableViewRectangle().height())};
   algorithm::AlignInstructionTreeWalker(reference_point, instructions);
-}
-
-void NodeEditorWidget::FitScope()
-{
-  auto rect = m_graphics_scene->sceneRect();
-  if (!m_graphics_scene->items().isEmpty())
-  {
-    const double margin = GetGraphicsViewportSize().width() / 2.0;
-    rect = m_graphics_scene->itemsBoundingRect().adjusted(-margin, -margin, margin, margin);
-  }
-  m_graphics_view->setSceneRect(rect);
-
-  m_graphics_view->FitView();
-  if (m_graphics_view->GetZoomFactor() > 1.0)
-  {
-    m_graphics_view->SetZoomFactor(1.0);
-    m_graphics_view->CenterView();
-  }
 }
 
 void NodeEditorWidget::ValidateScope()

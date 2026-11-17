@@ -117,9 +117,6 @@ private:
   //! Aligns the visible instructions if they all are at the origin.
   void AlignInstructions();
 
-  //! Sets the view's scene rect around the shapes, and fits them, with zoom capped at 100%.
-  void FitScope();
-
   //! Falls back to the top-level ancestor, or to the root, if the scope is no longer top-level.
   void ValidateScope();
 

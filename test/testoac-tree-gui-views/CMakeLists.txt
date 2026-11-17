@@ -18,6 +18,7 @@ target_sources(${test} PRIVATE
   main_window_helper_tests.cpp
   monitor_widget_tests.cpp
   node_editor_widget_tests.cpp
+  node_graphics_view_tests.cpp
   operation_monitor_view_tests.cpp
   operation_splittable_widget_tests.cpp
   operation_tab_widget_tests.cpp

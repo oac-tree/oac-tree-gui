@@ -99,6 +99,24 @@ void NodeGraphicsView::FitView()
   }
 }
 
+void NodeGraphicsView::FocusOnItems()
+{
+  auto rect = scene()->sceneRect();
+  if (!scene()->items().isEmpty())
+  {
+    const double margin = GetGraphicsViewportSize().width() / 2.0;
+    rect = scene()->itemsBoundingRect().adjusted(-margin, -margin, margin, margin);
+  }
+  setSceneRect(rect);
+
+  FitView();
+  if (GetZoomFactor() > 1.0)
+  {
+    SetZoomFactor(1.0);
+    CenterView();
+  }
+}
+
 GraphicsViewOperationMode NodeGraphicsView::GetOperationMode()
 {
   return m_operation_mode;
