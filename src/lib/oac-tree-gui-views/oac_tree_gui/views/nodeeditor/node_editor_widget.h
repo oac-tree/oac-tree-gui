@@ -28,8 +28,6 @@
 #include <QWidget>
 #include <memory>
 
-class QMenu;
-
 namespace sup::gui
 {
 class IMessageHandler;
@@ -46,6 +44,7 @@ class NodeGraphicsViewActions;
 class ProcedureItem;
 class NodeEditorNavigationToolBar;
 class NodeEditorSceneController;
+class SubTreeNavigationActions;
 
 /**
  * @brief The NodeEditorWidget class is a main widget with node editor for sequence composition.
@@ -91,12 +90,6 @@ signals:
 private:
   void SetupConnections();
 
-  //! Fills the SubTree selector menu.
-  void FillSubTreeMenu(QMenu* menu);
-
-  //! Updates the text of the SubTree selector.
-  void UpdateSubTreeText();
-
   NodeEditorMode m_editor_mode;
   NodeGraphicsViewActions* m_view_actions{nullptr};
   std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
@@ -104,6 +97,7 @@ private:
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
   std::unique_ptr<sup::gui::IMessageHandler> m_graphics_view_message_handler;
   std::unique_ptr<NodeEditorSceneController> m_scene_controller;
+  SubTreeNavigationActions* m_navigation_actions{nullptr};  //!< editor mode only
   std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
 };
 

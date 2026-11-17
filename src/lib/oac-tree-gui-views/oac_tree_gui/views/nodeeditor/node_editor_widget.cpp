@@ -23,17 +23,15 @@
 #include "node_editor_navigation_toolbar.h"
 #include "node_graphics_view.h"
 #include "node_graphics_view_actions.h"
+#include "sub_tree_navigation_actions.h"
 
-#include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
-#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/nodeeditor/objects/node_editor_scene_controller.h>
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
-#include <QMenu>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -44,15 +42,10 @@ namespace
 
 constexpr std::chrono::milliseconds kMessageDurationTime{5000};
 
-//! Returns toolbar actions for the given editor mode.
-QList<QAction*> GetToolBarActions(NodeGraphicsViewActions* actions, NodeEditorMode editor_mode)
+//! Returns toolbar actions of the node graphics view.
+QList<QAction*> GetToolBarActions(NodeGraphicsViewActions* actions)
 {
   using ActionKey = NodeGraphicsViewActions::ActionKey;
-  if (editor_mode == NodeEditorMode::kNodeEditor)
-  {
-    return actions->GetActions(
-        {ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign, ActionKey::kSubTree});
-  }
   return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign});
 }
 
@@ -87,8 +80,12 @@ NodeEditorWidget::NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_w
       std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
   m_visibility_agent->SetTarget(this);
 
-  addActions(GetToolBarActions(m_view_actions, m_editor_mode));
-  UpdateSubTreeText();
+  addActions(GetToolBarActions(m_view_actions));
+  if (m_editor_mode == NodeEditorMode::kNodeEditor)
+  {
+    m_navigation_actions = new SubTreeNavigationActions(m_scene_controller.get(), this);
+    addActions(m_navigation_actions->GetActions());
+  }
 }
 
 NodeEditorWidget::~NodeEditorWidget()
@@ -176,79 +173,7 @@ void NodeEditorWidget::SetupConnections()
     // fit the view to a new scope
     connect(m_scene_controller.get(), &NodeEditorSceneController::scopeShown, m_graphics_view,
             &NodeGraphicsView::FocusOnItems);
-
-    // SubTree selector
-    connect(m_scene_controller.get(), &NodeEditorSceneController::scopeChanged, this,
-            &NodeEditorWidget::UpdateSubTreeText);
-    connect(m_view_actions, &NodeGraphicsViewActions::subTreeMenuAboutToShow, this,
-            &NodeEditorWidget::FillSubTreeMenu);
   }
-}
-
-void NodeEditorWidget::FillSubTreeMenu(QMenu* menu)
-{
-  menu->clear();
-  UpdateSubTreeText();
-
-  const auto* container = m_scene_controller->GetInstructionContainer();
-  if (container == nullptr)
-  {
-    return;
-  }
-
-  const auto* root = FindRootInstruction(*container);
-  const auto* scope = m_scene_controller->GetScope();
-
-  auto add_action = [this, menu, scope](const InstructionItem& instruction)
-  {
-    auto action = menu->addAction(QString::fromStdString(instruction.GetDisplayName()));
-    action->setCheckable(true);
-    action->setChecked(&instruction == scope);
-    connect(action, &QAction::triggered, this,
-            [this, identifier = instruction.GetIdentifier()]()
-            {
-              // the model might have changed while the menu was open
-              const auto* container = m_scene_controller->GetInstructionContainer();
-              if (container == nullptr)
-              {
-                return;
-              }
-              for (const auto* top_level : container->GetInstructions())
-              {
-                if (top_level->GetIdentifier() == identifier)
-                {
-                  m_scene_controller->SetScope(top_level);
-                  return;
-                }
-              }
-            });
-    return action;
-  };
-
-  if (root != nullptr)
-  {
-    // root first, in bold
-    auto action = add_action(*root);
-    auto font = action->font();
-    font.setBold(true);
-    action->setFont(font);
-    (void)menu->addSeparator();
-  }
-
-  for (const auto* instruction : container->GetInstructions())
-  {
-    if (instruction != root)
-    {
-      (void)add_action(*instruction);
-    }
-  }
-}
-
-void NodeEditorWidget::UpdateSubTreeText()
-{
-  const auto* scope = m_scene_controller->GetScope();
-  m_view_actions->SetSubTreeText(
-      (scope != nullptr) ? QString::fromStdString(scope->GetDisplayName()) : QString("(none)"));
 }
 
 }  // namespace oac_tree_gui

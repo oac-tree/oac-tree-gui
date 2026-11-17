@@ -50,8 +50,7 @@ public:
   {
     kPointer,
     kPan,
-    kAlign,
-    kSubTree
+    kAlign
   };
 
   explicit NodeGraphicsViewActions(QWidget* parent_widget = nullptr);
@@ -69,19 +68,9 @@ public:
    */
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
-  /**
-   * @brief Sets the text of the SubTree selector button.
-   */
-  void SetSubTreeText(const QString& text);
-
 signals:
   void OperationModeChangeRequest(oac_tree_gui::GraphicsViewOperationMode);
   void alignSelectedRequest();
-
-  /**
-   * @brief Notifies that the SubTree selector menu is about to show. The receiver fills the menu.
-   */
-  void subTreeMenuAboutToShow(QMenu* menu);
 
 private:
   std::unique_ptr<QMenu> CreateZoomMenu();
@@ -92,9 +81,6 @@ private:
   QToolButton* m_pan_button{nullptr};
   QWidgetAction* m_pan_action{nullptr};
   QAction* m_align_action{nullptr};
-  QToolButton* m_subtree_button{nullptr};
-  QWidgetAction* m_subtree_action{nullptr};
-  std::unique_ptr<QMenu> m_subtree_menu;
 
   sup::gui::ActionMap<ActionKey> m_action_map;
 };

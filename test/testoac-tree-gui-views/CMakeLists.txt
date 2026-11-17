@@ -31,6 +31,7 @@ target_sources(${test} PRIVATE
   server_settings_widget_tests.cpp
   short_lived_settings_tests.cpp
   status_indicator_helper_tests.cpp
+  sub_tree_navigation_actions_tests.cpp
   task_widget_tests.cpp
   zoom_factor_converter_tests.cpp
 )
