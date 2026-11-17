@@ -492,6 +492,13 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertDomainTypeIntoCur
         {kFailedActionTitle, kFailedActionText, "No instruction selected", ""});
   }
 
+  if (IsIncludeInstruction(*selected_instruction))
+  {
+    return sup::gui::QueryResult::Failure(
+        {kFailedActionTitle, kFailedActionText,
+         selected_instruction->GetDomainType() + " takes no children", ""});
+  }
+
   // Checking if there is a selection inside another parent. To paste after this selection, the
   // parent should have the room for more items.
   if (auto selected_item = GetSelectedInstruction(); selected_item)

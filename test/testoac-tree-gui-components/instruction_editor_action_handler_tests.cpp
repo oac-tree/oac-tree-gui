@@ -317,6 +317,26 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionIntoFullDec
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
 
+//! Include and IncludeProcedure take no children.
+TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionIntoInclude)
+{
+  for (const auto& domain_type :
+       {domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType})
+  {
+    auto include = InsertInstruction(domain_type, m_procedure->GetInstructionContainer());
+
+    auto handler = CreateActionHandler({include});
+
+    EXPECT_FALSE(handler->CanInsertInstructionInto(domainconstants::kWaitInstructionType));
+    EXPECT_TRUE(handler->CanInsertInstructionAfter(domainconstants::kWaitInstructionType));
+
+    EXPECT_CALL(m_mock_context, OnMessage(::testing::_)).Times(1);
+    EXPECT_NO_THROW(handler->InsertInstructionInto(domainconstants::kWaitInstructionType));
+    EXPECT_TRUE(include->GetInstructions().empty());
+    ::testing::Mock::VerifyAndClearExpectations(&m_mock_context);
+  }
+}
+
 //! An empty domain type can't be inserted.
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertEmptyDomainType)
 {

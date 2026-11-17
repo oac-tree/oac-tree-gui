@@ -195,6 +195,23 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
     // it is possible to paste into a sequence1 itself
     EXPECT_TRUE(handler->CanPasteInto());
   }
+
+  {  // empty Include instruction
+    const auto item_to_paste = CreateInstructionItem(domainconstants::kWaitInstructionType);
+    auto mime_data = CreateInstructionTreeCopyMimeData({item_to_paste.get()});
+
+    auto include = InsertInstruction(domainconstants::kIncludeInstructionType,
+                                     m_procedure->GetInstructionContainer());
+
+    EXPECT_CALL(m_mock_context, OnGetMimeData()).Times(2);
+
+    auto handler = CreateActionHandler({include}, std::move(mime_data));
+
+    EXPECT_TRUE(handler->CanPasteAfter());
+
+    // Include takes no children
+    EXPECT_FALSE(handler->CanPasteInto());
+  }
 }
 
 //! Testing PasteAfter for the following scenario: empty model, nothing is selected, pasted item
