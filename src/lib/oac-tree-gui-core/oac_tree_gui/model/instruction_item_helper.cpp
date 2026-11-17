@@ -205,6 +205,13 @@ bool IsPotentialRootInstruction(const InstructionItem& instruction)
   return false;
 }
 
+bool IsIncludeInstruction(const InstructionItem& instruction)
+{
+  const auto& domain_type = instruction.GetDomainType();
+  return (domain_type == domainconstants::kIncludeInstructionType)
+         || (domain_type == domainconstants::kIncludeProcedureInstructionType);
+}
+
 bool IsLocalInclude(const InstructionItem& instruction)
 {
   return (instruction.GetDomainType() == domainconstants::kIncludeInstructionType)

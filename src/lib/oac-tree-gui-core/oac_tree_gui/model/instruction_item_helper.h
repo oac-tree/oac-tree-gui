@@ -133,6 +133,13 @@ InstructionItem* GetInstructionFromProperty(mvvm::SessionItem& property);
 bool IsPotentialRootInstruction(const InstructionItem& instruction);
 
 /**
+ * @brief Checks if the instruction is an Include or an IncludeProcedure.
+ *
+ * Such instructions take no children in the composer.
+ */
+bool IsIncludeInstruction(const InstructionItem& instruction);
+
+/**
  * @brief Checks if the instruction is an Include without the file attribute.
  */
 bool IsLocalInclude(const InstructionItem& instruction);

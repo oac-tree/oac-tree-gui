@@ -226,6 +226,24 @@ TEST_F(InstructionItemHelperTest, GetInstructionFromProperty)
   EXPECT_EQ(GetInstructionFromProperty(item), nullptr);
 }
 
+TEST_F(InstructionItemHelperTest, IsIncludeInstruction)
+{
+  InstructionContainerItem container;
+  auto include0 = InsertInclude("Local", "Target", &container);
+  EXPECT_TRUE(IsIncludeInstruction(*include0));
+
+  auto include1 = InsertInclude("External", "Target", &container);
+  include1->SetAttribute(domainconstants::kFileNameAttribute, std::string("other.xml"));
+  EXPECT_TRUE(IsIncludeInstruction(*include1));
+
+  auto include_procedure0 =
+      InsertInstruction(domainconstants::kIncludeProcedureInstructionType, &container);
+  EXPECT_TRUE(IsIncludeInstruction(*include_procedure0));
+
+  auto repeat0 = InsertInstruction(domainconstants::kRepeatInstructionType, &container);
+  EXPECT_FALSE(IsIncludeInstruction(*repeat0));
+}
+
 TEST_F(InstructionItemHelperTest, IsLocalInclude)
 {
   InstructionContainerItem container;
