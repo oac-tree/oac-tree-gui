@@ -24,6 +24,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/nodeeditor/i_node_connection.h>
 #include <mvvm/nodeeditor/i_node_port.h>
 #include <mvvm/nodeeditor/node_editor_helper.h>
@@ -51,19 +52,38 @@ GraphicsSceneActionHandler::GraphicsSceneActionHandler(mvvm::SessionItem* contai
 void GraphicsSceneActionHandler::ConnectPorts(const mvvm::INodePort* start_port,
                                               const mvvm::INodePort* end_port)
 {
+  // nullptr if ports are absent or incompatible
+  auto* parent = dynamic_cast<InstructionItem*>(mvvm::GetConnectableParent(start_port, end_port));
+  if ((parent == nullptr) || (parent->GetModel() == nullptr))
+  {
+    return;
+  }
+
+  if (IsIncludeInstruction(*parent))
+  {
+    m_send_message(sup::gui::CreateInvalidOperationMessage(
+        "Can't connect ports", "Failed to connect ports",
+        parent->GetDomainType() + " takes no children. Its child is the included instruction."));
+    return;
+  }
+
+  const auto& model = *parent->GetModel();
+  mvvm::utils::BeginMacro(model, "Connect instructions");
   try
   {
-    auto succeeded = mvvm::ConnectPorts(start_port, end_port);
-    (void)succeeded;
-    // In current implementation ConnectPorts returns false if ports are absent, or incopmpatible.
-    // The throw will happen if ports are compatible, but item doesn't allow connection due to model
-    // constraints (i.e. Repeat can have only one child).
+    // The throw will happen if item doesn't allow connection due to model constraints (i.e. Repeat
+    // can have only one child).
+    if (mvvm::ConnectPorts(start_port, end_port) && IsCollapsed(*parent))
+    {
+      SetCollapsed(false, *parent);
+    }
   }
   catch (const std::exception& ex)
   {
     m_send_message(sup::gui::CreateInvalidOperationMessage("Can't connect ports",
                                                            "Failed to connect ports", ex.what()));
   }
+  mvvm::utils::EndMacro(model);
 }
 
 void GraphicsSceneActionHandler::Disconnect(mvvm::INodeConnection* connection)

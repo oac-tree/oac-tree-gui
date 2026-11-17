@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/nodeeditor/connectable_shape_factory.h>
 
+#include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
@@ -153,6 +154,59 @@ TEST_F(GraphicsSceneActionHandlerTest, AttemptToAddSecondChildToRepeat)
   // No connection happened.
   EXPECT_EQ(wait_item->GetParent(), m_model.GetRootItem());
   EXPECT_EQ(repeat_item->GetInstructions().size(), 1U);
+}
+
+TEST_F(GraphicsSceneActionHandlerTest, AttemptToConnectWaitToInclude)
+{
+  auto action_handler = CreateGraphicsSceneActionHandler();
+
+  for (const auto& domain_type :
+       {domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType})
+  {
+    auto include_item = InsertInstruction(domain_type, m_model.GetRootItem());
+    auto wait_item =
+        InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
+
+    auto include_shape = m_shape_factory.CreateShape(include_item);
+    auto wait_shape = m_shape_factory.CreateShape(wait_item);
+
+    EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(1);
+
+    action_handler->ConnectPorts(mvvm::GetInputPort(*include_shape),
+                                 mvvm::GetOutputPort(*wait_shape));
+
+    EXPECT_EQ(wait_item->GetParent(), m_model.GetRootItem());
+    EXPECT_TRUE(include_item->GetInstructions().empty());
+    ::testing::Mock::VerifyAndClearExpectations(&m_mock_send_message);
+  }
+}
+
+TEST_F(GraphicsSceneActionHandlerTest, ConnectWaitToCollapsedSequence)
+{
+  m_model.SetUndoEnabled(true);
+  auto action_handler = CreateGraphicsSceneActionHandler();
+
+  auto sequence_item =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_model.GetRootItem());
+  auto wait_item = InsertInstruction(domainconstants::kWaitInstructionType, m_model.GetRootItem());
+  SetCollapsed(true, *sequence_item);
+
+  auto sequence_shape = m_shape_factory.CreateShape(sequence_item);
+  auto wait_shape = m_shape_factory.CreateShape(wait_item);
+
+  EXPECT_CALL(m_mock_send_message, Call(::testing::_)).Times(0);
+
+  action_handler->ConnectPorts(mvvm::GetInputPort(*sequence_shape),
+                               mvvm::GetOutputPort(*wait_shape));
+
+  EXPECT_EQ(wait_item->GetParent(), sequence_item);
+  EXPECT_FALSE(IsCollapsed(*sequence_item));
+
+  // a single undo restores both, undo of the move recreates the wait item
+  m_model.GetCommandStack()->Undo();
+  EXPECT_TRUE(sequence_item->GetInstructions().empty());
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 2);
+  EXPECT_TRUE(IsCollapsed(*sequence_item));
 }
 
 TEST_F(GraphicsSceneActionHandlerTest, DisconnectWaitFromSequence)
