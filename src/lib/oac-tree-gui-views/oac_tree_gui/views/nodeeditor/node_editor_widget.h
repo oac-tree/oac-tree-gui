@@ -26,6 +26,16 @@
 #include <mvvm/model/item_selection.h>
 
 #include <QWidget>
+#include <map>
+#include <set>
+#include <string>
+
+class QMenu;
+
+namespace mvvm
+{
+class ModelListener;
+}  // namespace mvvm
 
 namespace sup::gui
 {
@@ -69,6 +79,21 @@ public:
 
   void SetSelectedInstructions(const std::vector<const InstructionItem *> &instructions) const;
 
+  /**
+   * @brief Shows the SubTree of the given top-level instruction.
+   *
+   * Loose instructions of the current SubTree are recorded and shown again on return. Editor mode
+   * only.
+   *
+   * @param top_level The top-level instruction, or nullptr to show no SubTree.
+   */
+  void SetScope(const InstructionItem* top_level);
+
+  /**
+   * @brief Returns the top-level instruction of the current SubTree, or nullptr.
+   */
+  const InstructionItem* GetScope() const;
+
 signals:
   /**
    * @brief Notifies that the instruction selection on the graphics scene has changed.
@@ -79,7 +104,31 @@ private:
   void SetupConnections();
   void OnAlignRequest();
   void SetupSceneComponentProvider();
+
+  //! Sets the scope and its hidden set, and rebuilds the provider.
+  void ApplyScope(const InstructionItem* top_level);
+
+  //! Returns the top-level instructions not in the hidden set.
+  std::vector<InstructionItem*> GetVisibleTopLevelInstructions() const;
+
+  //! Aligns the visible instructions if required. Fits the view after a scope switch.
+  void UpdateView();
+
+  //! Aligns the visible instructions if they all are at the origin.
   void AlignInstructions();
+
+  //! Sets the view's scene rect around the shapes, and fits them, with zoom capped at 100%.
+  void FitScope();
+
+  //! Falls back to the top-level ancestor, or to the root, if the scope is no longer top-level.
+  void ValidateScope();
+
+  //! Fills the SubTree selector menu.
+  void FillSubTreeMenu(QMenu* menu);
+
+  //! Updates the text of the SubTree selector.
+  void UpdateSubTreeText();
+
   static std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
   std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider(
       NodeEditorMode editor_mode);
@@ -94,9 +143,25 @@ private:
   std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
 
   ProcedureItem* m_procedure_item{nullptr};
+  std::unique_ptr<mvvm::ModelListener> m_listener;
 
-  //!< true when a deferred initial alignment has already been posted to the event loop
-  bool m_alignment_scheduled{false};
+  //!< identifier of the top-level instruction of the current SubTree, empty if none
+  std::string m_scope_identifier;
+
+  //!< identifiers of top-level instructions not shown
+  std::set<std::string> m_hidden_identifiers;
+
+  //!< loose top-level instructions of each SubTree, recorded on leaving it
+  std::map<std::string, std::set<std::string>> m_loose_identifiers;
+
+  //!< true when a deferred view update has already been posted to the event loop
+  bool m_view_update_scheduled{false};
+
+  //!< true when the view should be fitted to the scope on the next view update
+  bool m_fit_required{false};
+
+  //!< true when a deferred scope validation has already been posted to the event loop
+  bool m_scope_validation_scheduled{false};
 };
 
 }  // namespace oac_tree_gui

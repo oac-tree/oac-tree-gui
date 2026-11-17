@@ -24,6 +24,7 @@
 #include <oac_tree_gui/style/style_helper.h>
 
 #include <QButtonGroup>
+#include <QMenu>
 #include <QToolButton>
 #include <QWidgetAction>
 
@@ -38,6 +39,9 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget* parent_widget)
     , m_pan_button(new QToolButton)
     , m_pan_action(new QWidgetAction(this))
     , m_align_action(new QAction(this))
+    , m_subtree_button(new QToolButton)
+    , m_subtree_action(new QWidgetAction(this))
+    , m_subtree_menu(std::make_unique<QMenu>())
 {
   m_pointer_button->setText("Select");
   m_pointer_button->setIcon(FindIcon("arrow-top-left"));
@@ -76,6 +80,17 @@ NodeGraphicsViewActions::NodeGraphicsViewActions(QWidget* parent_widget)
   connect(m_align_action, &QAction::triggered, this,
           &NodeGraphicsViewActions::alignSelectedRequest);
   m_action_map.Add(ActionKey::kAlign, m_align_action);
+
+  m_subtree_button->setIcon(FindIcon("file-tree-outline"));
+  m_subtree_button->setToolTip("Top-level instruction shown in the node editor");
+  m_subtree_button->setPopupMode(QToolButton::InstantPopup);
+  m_subtree_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_subtree_button->setMenu(m_subtree_menu.get());
+  connect(m_subtree_menu.get(), &QMenu::aboutToShow, this,
+          [this]() { emit subTreeMenuAboutToShow(m_subtree_menu.get()); });
+  m_subtree_action->setText("SubTree");
+  m_subtree_action->setDefaultWidget(m_subtree_button);
+  m_action_map.Add(ActionKey::kSubTree, m_subtree_action);
 }
 
 NodeGraphicsViewActions::~NodeGraphicsViewActions() = default;
@@ -92,6 +107,11 @@ void NodeGraphicsViewActions::UpdateButtonsToOperationMode(GraphicsViewOperation
 QList<QAction*> NodeGraphicsViewActions::GetActions(const std::vector<ActionKey>& action_keys) const
 {
   return m_action_map.GetActions(action_keys);
+}
+
+void NodeGraphicsViewActions::SetSubTreeText(const QString& text)
+{
+  m_subtree_button->setText(text);
 }
 
 }  // namespace oac_tree_gui

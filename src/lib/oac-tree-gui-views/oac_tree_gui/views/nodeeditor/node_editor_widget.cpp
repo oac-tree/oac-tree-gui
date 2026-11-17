@@ -26,6 +26,7 @@
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
+#include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/nodeeditor/objects/graphics_scene_component_provider.h>
 #include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
@@ -35,28 +36,50 @@
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
+#include <mvvm/model/i_session_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
 #include <mvvm/nodeeditor/i_node_port.h>
+#include <mvvm/signals/model_listener.h>
 
+#include <QMenu>
 #include <QPointF>
 #include <QTimer>
 #include <QVBoxLayout>
-
-namespace
-{
-QList<QAction*> GetToolBarActions(oac_tree_gui::NodeGraphicsViewActions* actions)
-{
-  using ActionKey = oac_tree_gui::NodeGraphicsViewActions::ActionKey;
-  return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign});
-}
-
-constexpr std::chrono::milliseconds kMessageDurationTime{5000};
-
-}  // namespace
+#include <algorithm>
 
 namespace oac_tree_gui
 {
+
+namespace
+{
+
+constexpr std::chrono::milliseconds kMessageDurationTime{5000};
+
+//! Returns toolbar actions for the given editor mode.
+QList<QAction*> GetToolBarActions(NodeGraphicsViewActions* actions, NodeEditorMode editor_mode)
+{
+  using ActionKey = NodeGraphicsViewActions::ActionKey;
+  if (editor_mode == NodeEditorMode::kNodeEditor)
+  {
+    return actions->GetActions(
+        {ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign, ActionKey::kSubTree});
+  }
+  return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kAlign});
+}
+
+//! Returns the top-level instruction with the given identifier, or nullptr.
+const InstructionItem* FindTopLevelInstruction(const InstructionContainerItem& container,
+                                               const std::string& identifier)
+{
+  const auto instructions = container.GetInstructions();
+  auto iter = std::find_if(instructions.begin(), instructions.end(),
+                           [&identifier](const InstructionItem* instruction)
+                           { return instruction->GetIdentifier() == identifier; });
+  return iter == instructions.end() ? nullptr : *iter;
+}
+
+}  // namespace
 
 NodeEditorWidget::NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_widget)
     : QWidget(parent_widget)
@@ -84,7 +107,8 @@ NodeEditorWidget::NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_w
       std::make_unique<sup::gui::VisibilityAgentBase>(on_subscribe, on_unsubscribe);
   m_visibility_agent->SetTarget(this);
 
-  addActions(GetToolBarActions(m_view_actions));
+  addActions(GetToolBarActions(m_view_actions, m_editor_mode));
+  UpdateSubTreeText();
 }
 
 NodeEditorWidget::~NodeEditorWidget()
@@ -102,13 +126,40 @@ void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
   }
 
   m_procedure_item = procedure;
+  m_listener.reset();
+  m_loose_identifiers.clear();
 
   if (m_procedure_item == nullptr)
   {
+    m_scope_identifier.clear();
+    m_hidden_identifiers.clear();
+    UpdateSubTreeText();
     return;
   }
 
-  SetupSceneComponentProvider();
+  const InstructionItem* scope{nullptr};
+  if (m_editor_mode == NodeEditorMode::kNodeEditor)
+  {
+    scope = FindRootInstruction(*m_procedure_item->GetInstructionContainer());
+
+    if (m_procedure_item->GetModel() != nullptr)
+    {
+      // validate the scope when a top-level instruction is removed
+      m_listener = std::make_unique<mvvm::ModelListener>(m_procedure_item->GetModel());
+      m_listener->Connect<mvvm::ItemRemovedEvent>(
+          [this](const mvvm::ItemRemovedEvent& event)
+          {
+            if ((event.item == m_procedure_item->GetInstructionContainer())
+                && !m_scope_validation_scheduled)
+            {
+              m_scope_validation_scheduled = true;
+              QTimer::singleShot(0, this, &NodeEditorWidget::ValidateScope);
+            }
+          });
+    }
+  }
+
+  ApplyScope(scope);
 }
 
 std::vector<InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
@@ -128,6 +179,42 @@ void NodeEditorWidget::SetSelectedInstructions(
   {
     m_scene_component_provider->SetSelectedInstructions(instructions);
   }
+}
+
+void NodeEditorWidget::SetScope(const InstructionItem* top_level)
+{
+  if ((m_procedure_item == nullptr) || (m_editor_mode != NodeEditorMode::kNodeEditor))
+  {
+    return;
+  }
+
+  const auto identifier = (top_level != nullptr) ? top_level->GetIdentifier() : std::string();
+  if (identifier == m_scope_identifier)
+  {
+    return;
+  }
+
+  // record loose instructions of the SubTree we are leaving
+  auto& loose = m_loose_identifiers[m_scope_identifier];
+  loose.clear();
+  for (const auto* instruction : GetVisibleTopLevelInstructions())
+  {
+    if (instruction->GetIdentifier() != m_scope_identifier)
+    {
+      (void)loose.insert(instruction->GetIdentifier());
+    }
+  }
+
+  ApplyScope(top_level);
+}
+
+const InstructionItem* NodeEditorWidget::GetScope() const
+{
+  if ((m_procedure_item == nullptr) || m_scope_identifier.empty())
+  {
+    return nullptr;
+  }
+  return FindTopLevelInstruction(*m_procedure_item->GetInstructionContainer(), m_scope_identifier);
 }
 
 //! Provides node alignment on graphics view.
@@ -152,50 +239,201 @@ void NodeEditorWidget::SetupSceneComponentProvider()
     return;
   }
 
-  auto container = m_procedure_item->GetInstructionContainer();
-
   m_scene_component_provider.reset();
 
   const bool requires_alignment =
-      algorithm::RequiresInitialAlignment(container->GetInstructions());
+      algorithm::RequiresInitialAlignment(GetVisibleTopLevelInstructions());
 
   // The provider is created first (a read-only operation on the model); shapes appear at the
   // instructions' current coordinates and follow later coordinate changes on their own.
   m_scene_component_provider = CreateGraphicsSceneComponentProvider(m_editor_mode);
 
-  if (requires_alignment && !m_alignment_scheduled)
+  if ((requires_alignment || m_fit_required) && !m_view_update_scheduled)
   {
     // Initial alignment mutates instruction X/Y coordinates, i.e. it creates a model command. This
     // method can be reached synchronously from a model notification (e.g. when the expanded
     // procedure is regenerated on board of a JobItem while the node editor is visible), and the
     // undo/redo framework forbids starting a command from inside a running one. We therefore post
     // the alignment to the next event-loop cycle, once the triggering command has finished.
-    m_alignment_scheduled = true;
-    QTimer::singleShot(0, this, &NodeEditorWidget::AlignInstructions);
+    m_view_update_scheduled = true;
+    QTimer::singleShot(0, this, &NodeEditorWidget::UpdateView);
   }
 }
 
-void NodeEditorWidget::AlignInstructions()
+void NodeEditorWidget::ApplyScope(const InstructionItem* top_level)
 {
-  m_alignment_scheduled = false;
+  m_scope_identifier = (top_level != nullptr) ? top_level->GetIdentifier() : std::string();
+  m_hidden_identifiers.clear();
 
-  // preconditions may have changed while the alignment was queued
+  if (m_editor_mode == NodeEditorMode::kNodeEditor)
+  {
+    const auto& loose = m_loose_identifiers[m_scope_identifier];
+    for (const auto* instruction : m_procedure_item->GetInstructionContainer()->GetInstructions())
+    {
+      const auto& identifier = instruction->GetIdentifier();
+      if ((identifier != m_scope_identifier) && (loose.find(identifier) == loose.end()))
+      {
+        (void)m_hidden_identifiers.insert(identifier);
+      }
+    }
+    m_fit_required = true;
+  }
+
+  UpdateSubTreeText();
+  SetupSceneComponentProvider();
+}
+
+std::vector<InstructionItem*> NodeEditorWidget::GetVisibleTopLevelInstructions() const
+{
+  std::vector<InstructionItem*> result;
+  if (m_procedure_item == nullptr)
+  {
+    return result;
+  }
+
+  const auto instructions = m_procedure_item->GetInstructionContainer()->GetInstructions();
+  (void)std::copy_if(instructions.begin(), instructions.end(), std::back_inserter(result),
+                     [this](const InstructionItem* instruction)
+                     {
+                       return m_hidden_identifiers.find(instruction->GetIdentifier())
+                              == m_hidden_identifiers.end();
+                     });
+  return result;
+}
+
+void NodeEditorWidget::UpdateView()
+{
+  m_view_update_scheduled = false;
+
+  // preconditions may have changed while the update was queued
   if ((m_procedure_item == nullptr) || !isVisible())
   {
     return;
   }
 
-  auto container = m_procedure_item->GetInstructionContainer();
-  if (!algorithm::RequiresInitialAlignment(container->GetInstructions()))
+  AlignInstructions();
+
+  if (m_fit_required)
+  {
+    m_fit_required = false;
+    FitScope();
+  }
+}
+
+void NodeEditorWidget::AlignInstructions()
+{
+  const auto instructions = GetVisibleTopLevelInstructions();
+  if (!algorithm::RequiresInitialAlignment(instructions))
   {
     return;
   }
 
-  const auto scene_center = m_graphics_view->sceneRect().center();
+  const auto center = GetGraphicsViewportCenter();
   // alignment reference point slightly above the center of the scene
-  const QPointF reference_point{scene_center.x(),
-                                scene_center.y() - (3 * ConnectableViewRectangle().height())};
-  algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
+  const QPointF reference_point{center.x(), center.y() - (3 * ConnectableViewRectangle().height())};
+  algorithm::AlignInstructionTreeWalker(reference_point, instructions);
+}
+
+void NodeEditorWidget::FitScope()
+{
+  auto rect = m_graphics_scene->sceneRect();
+  if (!m_graphics_scene->items().isEmpty())
+  {
+    const double margin = GetGraphicsViewportSize().width() / 2.0;
+    rect = m_graphics_scene->itemsBoundingRect().adjusted(-margin, -margin, margin, margin);
+  }
+  m_graphics_view->setSceneRect(rect);
+
+  m_graphics_view->FitView();
+  if (m_graphics_view->GetZoomFactor() > 1.0)
+  {
+    m_graphics_view->SetZoomFactor(1.0);
+    m_graphics_view->CenterView();
+  }
+}
+
+void NodeEditorWidget::ValidateScope()
+{
+  m_scope_validation_scheduled = false;
+
+  if ((m_procedure_item == nullptr) || (m_procedure_item->GetModel() == nullptr)
+      || m_scope_identifier.empty() || (GetScope() != nullptr))
+  {
+    return;
+  }
+
+  // the scope instruction was moved into another tree, or removed
+  const auto* container = m_procedure_item->GetInstructionContainer();
+  const auto* new_scope = FindRootInstruction(*container);
+  const auto* item =
+      dynamic_cast<InstructionItem*>(m_procedure_item->GetModel()->FindItem(m_scope_identifier));
+  if (item != nullptr)
+  {
+    const auto* top_level = GetTopLevelInstruction(*item);
+    if ((top_level != nullptr) && (top_level->GetParent() == container))
+    {
+      new_scope = top_level;
+    }
+  }
+
+  SetScope(new_scope);
+}
+
+void NodeEditorWidget::FillSubTreeMenu(QMenu* menu)
+{
+  menu->clear();
+  UpdateSubTreeText();
+
+  if (m_procedure_item == nullptr)
+  {
+    return;
+  }
+
+  const auto* container = m_procedure_item->GetInstructionContainer();
+  const auto* root = FindRootInstruction(*container);
+
+  auto add_action = [this, menu](const InstructionItem& instruction)
+  {
+    auto action = menu->addAction(QString::fromStdString(instruction.GetDisplayName()));
+    action->setCheckable(true);
+    action->setChecked(instruction.GetIdentifier() == m_scope_identifier);
+    connect(action, &QAction::triggered, this,
+            [this, identifier = instruction.GetIdentifier()]()
+            {
+              const auto* container = m_procedure_item->GetInstructionContainer();
+              if (const auto* top_level = FindTopLevelInstruction(*container, identifier);
+                  top_level != nullptr)
+              {
+                SetScope(top_level);
+              }
+            });
+    return action;
+  };
+
+  if (root != nullptr)
+  {
+    // root first, in bold
+    auto action = add_action(*root);
+    auto font = action->font();
+    font.setBold(true);
+    action->setFont(font);
+    (void)menu->addSeparator();
+  }
+
+  for (const auto* instruction : container->GetInstructions())
+  {
+    if (instruction != root)
+    {
+      (void)add_action(*instruction);
+    }
+  }
+}
+
+void NodeEditorWidget::UpdateSubTreeText()
+{
+  const auto* scope = GetScope();
+  m_view_actions->SetSubTreeText(
+      (scope != nullptr) ? QString::fromStdString(scope->GetDisplayName()) : QString("(none)"));
 }
 
 std::unique_ptr<NodeGraphicsScene> NodeEditorWidget::CreateGraphicsScene()
@@ -211,7 +449,7 @@ NodeEditorWidget::CreateGraphicsSceneComponentProvider(NodeEditorMode editor_mod
 
   auto result = std::make_unique<GraphicsSceneComponentProvider>(
       message_callback, m_graphics_scene.get(), m_procedure_item->GetInstructionContainer(),
-      std::set<std::string>{});
+      m_hidden_identifiers);
 
   // forward instruction selection from graphics scene
   connect(result.get(), &GraphicsSceneComponentProvider::selectionChanged, this, [this]()
@@ -278,6 +516,10 @@ void NodeEditorWidget::SetupConnections()
   // Propagate selection mode change from GraphicsView to a toolBar
   connect(m_graphics_view, &NodeGraphicsView::OperationModeChanged, m_view_actions,
           &NodeGraphicsViewActions::UpdateButtonsToOperationMode);
+
+  // SubTree selector
+  connect(m_view_actions, &NodeGraphicsViewActions::subTreeMenuAboutToShow, this,
+          &NodeEditorWidget::FillSubTreeMenu);
 }
 
 }  // namespace oac_tree_gui
