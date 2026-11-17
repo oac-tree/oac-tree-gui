@@ -14,6 +14,7 @@ target_sources(${test} PRIVATE
   local_job_handler_tests.cpp
   local_job_handler_workspace_tests.cpp
   main.cpp
+  node_editor_scene_controller_tests.cpp
   node_graphics_scene_tests.cpp
   operation_action_handler_extended_tests.cpp
   operation_action_handler_tests.cpp

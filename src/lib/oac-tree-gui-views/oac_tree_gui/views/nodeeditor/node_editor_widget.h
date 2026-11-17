@@ -26,16 +26,9 @@
 #include <mvvm/model/item_selection.h>
 
 #include <QWidget>
-#include <map>
-#include <set>
-#include <string>
+#include <memory>
 
 class QMenu;
-
-namespace mvvm
-{
-class ModelListener;
-}  // namespace mvvm
 
 namespace sup::gui
 {
@@ -52,7 +45,7 @@ class InstructionItem;
 class NodeGraphicsViewActions;
 class ProcedureItem;
 class NodeEditorNavigationToolBar;
-class GraphicsSceneComponentProvider;
+class NodeEditorSceneController;
 
 /**
  * @brief The NodeEditorWidget class is a main widget with node editor for sequence composition.
@@ -77,15 +70,10 @@ public:
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
-  void SetSelectedInstructions(const std::vector<const InstructionItem *> &instructions) const;
+  void SetSelectedInstructions(const std::vector<const InstructionItem*>& instructions) const;
 
   /**
-   * @brief Shows the SubTree of the given top-level instruction.
-   *
-   * Loose instructions of the current SubTree are recorded and shown again on return. Editor mode
-   * only.
-   *
-   * @param top_level The top-level instruction, or nullptr to show no SubTree.
+   * @brief Shows the SubTree of the given top-level instruction. Editor mode only.
    */
   void SetScope(const InstructionItem* top_level);
 
@@ -102,23 +90,6 @@ signals:
 
 private:
   void SetupConnections();
-  void OnAlignRequest();
-  void SetupSceneComponentProvider();
-
-  //! Sets the scope and its hidden set, and rebuilds the provider.
-  void ApplyScope(const InstructionItem* top_level);
-
-  //! Returns the top-level instructions not in the hidden set.
-  std::vector<InstructionItem*> GetVisibleTopLevelInstructions() const;
-
-  //! Aligns the visible instructions if required. Fits the view after a scope switch.
-  void UpdateView();
-
-  //! Aligns the visible instructions if they all are at the origin.
-  void AlignInstructions();
-
-  //! Falls back to the top-level ancestor, or to the root, if the scope is no longer top-level.
-  void ValidateScope();
 
   //! Fills the SubTree selector menu.
   void FillSubTreeMenu(QMenu* menu);
@@ -126,39 +97,14 @@ private:
   //! Updates the text of the SubTree selector.
   void UpdateSubTreeText();
 
-  static std::unique_ptr<NodeGraphicsScene> CreateGraphicsScene();
-  std::unique_ptr<GraphicsSceneComponentProvider> CreateGraphicsSceneComponentProvider(
-      NodeEditorMode editor_mode);
-
   NodeEditorMode m_editor_mode;
   NodeGraphicsViewActions* m_view_actions{nullptr};
   std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
-  std::unique_ptr<GraphicsSceneComponentProvider> m_scene_component_provider;
   NodeGraphicsView* m_graphics_view{nullptr};
   NodeEditorNavigationToolBar* m_navigation_toolbar{nullptr};
   std::unique_ptr<sup::gui::IMessageHandler> m_graphics_view_message_handler;
+  std::unique_ptr<NodeEditorSceneController> m_scene_controller;
   std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
-
-  ProcedureItem* m_procedure_item{nullptr};
-  std::unique_ptr<mvvm::ModelListener> m_listener;
-
-  //!< identifier of the top-level instruction of the current SubTree, empty if none
-  std::string m_scope_identifier;
-
-  //!< identifiers of top-level instructions not shown
-  std::set<std::string> m_hidden_identifiers;
-
-  //!< loose top-level instructions of each SubTree, recorded on leaving it
-  std::map<std::string, std::set<std::string>> m_loose_identifiers;
-
-  //!< true when a deferred view update has already been posted to the event loop
-  bool m_view_update_scheduled{false};
-
-  //!< true when the view should be fitted to the scope on the next view update
-  bool m_fit_required{false};
-
-  //!< true when a deferred scope validation has already been posted to the event loop
-  bool m_scope_validation_scheduled{false};
 };
 
 }  // namespace oac_tree_gui
