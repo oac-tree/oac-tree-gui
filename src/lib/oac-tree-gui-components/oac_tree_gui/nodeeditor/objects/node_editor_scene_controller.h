@@ -139,6 +139,13 @@ public:
   void OpenSubTree(const InstructionItem& include);
 
   /**
+   * @brief Shows the SubTree of the given instruction, selects the instruction and centers it.
+   *
+   * Editor mode only. A switch is added to the history and starts a new trail.
+   */
+  void GoToInstruction(const InstructionItem& instruction);
+
+  /**
    * @brief Returns the history of shown SubTrees. Empty in viewer mode.
    */
   const SubTreeHistory& GetHistory() const;
@@ -223,7 +230,7 @@ signals:
   void scopeShown();
 
   /**
-   * @brief Requests the view to center on the selection set by OpenSubTree.
+   * @brief Requests the view to center on the selection set by OpenSubTree or GoToInstruction.
    */
   void centerOnSelectionRequested();
 

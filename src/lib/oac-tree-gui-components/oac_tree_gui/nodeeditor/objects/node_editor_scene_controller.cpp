@@ -193,6 +193,20 @@ void NodeEditorSceneController::OpenSubTree(const InstructionItem& include)
   }
 }
 
+void NodeEditorSceneController::GoToInstruction(const InstructionItem& instruction)
+{
+  const auto* top_level = GetTopLevelInstruction(instruction);
+  if ((m_editor_mode != NodeEditorMode::kNodeEditor) || (top_level == nullptr)
+      || (top_level->GetParent() != GetInstructionContainer()))
+  {
+    return;
+  }
+
+  SetScope(top_level);
+  SetSelectedInstructions({&instruction});
+  emit centerOnSelectionRequested();
+}
+
 const SubTreeHistory& NodeEditorSceneController::GetHistory() const
 {
   return m_history;
