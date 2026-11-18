@@ -26,6 +26,7 @@
 #include <oac_tree_gui/nodeeditor/objects/node_editor_scene_controller.h>
 #include <oac_tree_gui/style/style_helper.h>
 
+#include <QAction>
 #include <QMenu>
 #include <QToolButton>
 #include <QWidgetAction>
@@ -40,6 +41,7 @@ SubTreeNavigationActions::SubTreeNavigationActions(NodeEditorSceneController* co
     , m_subtree_menu(std::make_unique<QMenu>())
     , m_subtree_button(new QToolButton)
     , m_subtree_action(new QWidgetAction(this))
+    , m_follow_selection_action(new QAction(this))
 {
   m_subtree_button->setIcon(FindIcon("file-tree-outline"));
   m_subtree_button->setToolTip("Top-level instruction shown in the node editor");
@@ -48,6 +50,13 @@ SubTreeNavigationActions::SubTreeNavigationActions(NodeEditorSceneController* co
   m_subtree_button->setMenu(m_subtree_menu.get());
   m_subtree_action->setText("SubTree");
   m_subtree_action->setDefaultWidget(m_subtree_button);
+
+  m_follow_selection_action->setText("Follow selection");
+  m_follow_selection_action->setIcon(FindIcon("link"));
+  m_follow_selection_action->setToolTip(
+      "Follow selection from other panels: switch SubTree and center selected instructions");
+  m_follow_selection_action->setCheckable(true);
+  m_follow_selection_action->setChecked(true);
 
   connect(m_subtree_menu.get(), &QMenu::aboutToShow, this,
           &SubTreeNavigationActions::FillSubTreeMenu);
@@ -61,7 +70,12 @@ SubTreeNavigationActions::~SubTreeNavigationActions() = default;
 
 QList<QAction*> SubTreeNavigationActions::GetActions() const
 {
-  return {m_subtree_action};
+  return {m_subtree_action, m_follow_selection_action};
+}
+
+bool SubTreeNavigationActions::IsFollowSelectionEnabled() const
+{
+  return m_follow_selection_action->isChecked();
 }
 
 void SubTreeNavigationActions::FillSubTreeMenu()

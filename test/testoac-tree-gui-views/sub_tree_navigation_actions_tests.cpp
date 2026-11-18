@@ -80,10 +80,22 @@ public:
 
 TEST_F(SubTreeNavigationActionsTest, InitialState)
 {
-  EXPECT_EQ(m_actions.GetActions().size(), 1);
+  EXPECT_EQ(m_actions.GetActions().size(), 2);
   ASSERT_NE(GetButton(), nullptr);
   EXPECT_EQ(GetButton()->text(), QString("(none)"));
   EXPECT_TRUE(ShowMenu()->actions().empty());
+}
+
+//! "Follow selection" is checkable and on by default.
+TEST_F(SubTreeNavigationActionsTest, FollowSelection)
+{
+  auto action = m_actions.GetActions().at(1);
+  EXPECT_TRUE(action->isCheckable());
+  EXPECT_TRUE(action->isChecked());
+  EXPECT_TRUE(m_actions.IsFollowSelectionEnabled());
+
+  action->setChecked(false);
+  EXPECT_FALSE(m_actions.IsFollowSelectionEnabled());
 }
 
 //! The root comes first, in bold, followed by a separator. The current SubTree is checked.

@@ -41,7 +41,8 @@ class NodeEditorSceneController;
  * SubTrees.
  *
  * The SubTree selector is a tool button with a menu of top-level instructions. The root comes
- * first, in bold. The current SubTree is checked.
+ * first, in bold. The current SubTree is checked. "Follow selection" is a checkable action, on by
+ * default. It controls how the node editor reacts to a selection made in another panel.
  */
 class SubTreeNavigationActions : public QObject
 {
@@ -68,6 +69,11 @@ public:
    */
   QList<QAction*> GetActions() const;
 
+  /**
+   * @brief Checks if "Follow selection" is on.
+   */
+  bool IsFollowSelectionEnabled() const;
+
 private:
   //! Fills the selector menu with top-level instructions.
   void FillSubTreeMenu();
@@ -82,6 +88,7 @@ private:
   std::unique_ptr<QMenu> m_subtree_menu;
   QToolButton* m_subtree_button{nullptr};
   QWidgetAction* m_subtree_action{nullptr};
+  QAction* m_follow_selection_action{nullptr};
 };
 
 }  // namespace oac_tree_gui
