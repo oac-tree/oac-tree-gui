@@ -24,12 +24,15 @@
 #include "node_graphics_scene.h"
 #include "sub_tree_scope.h"
 
+#include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
+
+#include <sup/gui/core/message_event.h>
 
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
@@ -129,6 +132,58 @@ void NodeEditorSceneController::ShowInstruction(const InstructionItem& instructi
   if (hidden.find(top_level->GetIdentifier()) != hidden.end())
   {
     SetScope(top_level);
+  }
+}
+
+std::string NodeEditorSceneController::GetOpenSubTreeError(const InstructionItem& instruction) const
+{
+  if (!IsIncludeInstruction(instruction))
+  {
+    return "Not an Include instruction.";
+  }
+
+  if (instruction.GetDomainType() == domainconstants::kIncludeProcedureInstructionType)
+  {
+    return "IncludeProcedure refers to another procedure file.";
+  }
+
+  if (!IsLocalInclude(instruction))
+  {
+    return "Include refers to another file.";
+  }
+
+  const auto* container = GetInstructionContainer();
+  if ((container == nullptr) || (FindIncludeTarget(instruction, *container) == nullptr))
+  {
+    const auto path = instruction.GetAttribute<std::string>(domainconstants::kPathAttribute);
+    return path.empty() ? std::string("Include path is empty.")
+                        : "Include path '" + path + "' is not found.";
+  }
+
+  return {};
+}
+
+void NodeEditorSceneController::OpenSubTree(const InstructionItem& include)
+{
+  if (m_editor_mode != NodeEditorMode::kNodeEditor)
+  {
+    return;
+  }
+
+  if (const auto error = GetOpenSubTreeError(include); !error.empty())
+  {
+    m_send_message_callback(sup::gui::CreateInvalidOperationMessage("Can't open SubTree", error));
+    return;
+  }
+
+  const auto* target = FindIncludeTarget(include, *GetInstructionContainer());
+  const auto* top_level = GetTopLevelInstruction(*target);
+  SetScope(top_level);
+
+  if (target != top_level)
+  {
+    SetSelectedInstructions({target});
+    emit centerOnSelectionRequested();
   }
 }
 
@@ -270,13 +325,7 @@ void NodeEditorSceneController::SetupSceneConnections()
           });
 
   connect(m_scene, &NodeGraphicsScene::instructionDoubleClick, this,
-          [this](const InstructionItem* instruction)
-          {
-            if (m_provider)
-            {
-              m_provider->SelectInstructionBranch(instruction);
-            }
-          });
+          &NodeEditorSceneController::OnInstructionDoubleClick);
 
   connect(m_scene, &NodeGraphicsScene::portDoubleClick, this,
           [this](const mvvm::INodePort* port)
@@ -286,6 +335,18 @@ void NodeEditorSceneController::SetupSceneConnections()
               m_provider->DoubleClickPort(port);
             }
           });
+}
+
+void NodeEditorSceneController::OnInstructionDoubleClick(const InstructionItem* instruction)
+{
+  if ((instruction != nullptr) && IsIncludeInstruction(*instruction))
+  {
+    OpenSubTree(*instruction);
+  }
+  else if (m_provider)
+  {
+    m_provider->SelectInstructionBranch(instruction);
+  }
 }
 
 }  // namespace oac_tree_gui

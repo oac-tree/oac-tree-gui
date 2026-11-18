@@ -28,6 +28,7 @@
 #include <QObject>
 #include <functional>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace oac_tree_gui
@@ -111,6 +112,23 @@ public:
   void ShowInstruction(const InstructionItem& instruction);
 
   /**
+   * @brief Returns why the SubTree of the given instruction can't be opened.
+   *
+   * Only a local Include whose path resolves can be opened.
+   *
+   * @return The reason, or an empty string if it can be opened.
+   */
+  std::string GetOpenSubTreeError(const InstructionItem& instruction) const;
+
+  /**
+   * @brief Shows the SubTree that the given Include points to. Editor mode only.
+   *
+   * Switches to the top-level instruction of the target. A nested target is selected. If the
+   * Include can't be opened, sends a message instead.
+   */
+  void OpenSubTree(const InstructionItem& include);
+
+  /**
    * @brief Returns the top-level instructions shown on the scene.
    */
   std::vector<InstructionItem*> GetVisibleTopLevelInstructions() const;
@@ -153,6 +171,11 @@ signals:
    */
   void scopeShown();
 
+  /**
+   * @brief Requests the view to center on the selection set by OpenSubTree.
+   */
+  void centerOnSelectionRequested();
+
 private:
   //! Creates the provider if active, and posts the view update if required.
   void SetupProvider();
@@ -165,6 +188,9 @@ private:
 
   //! Connects scene signals to the provider.
   void SetupSceneConnections();
+
+  //! Opens the SubTree of an Include, selects the branch of other instructions.
+  void OnInstructionDoubleClick(const InstructionItem* instruction);
 
   NodeEditorMode m_editor_mode;
   NodeGraphicsScene* m_scene{nullptr};

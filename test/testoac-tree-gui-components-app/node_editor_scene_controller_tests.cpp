@@ -31,6 +31,7 @@
 
 #include <mvvm/commands/i_command_stack.h>
 #include <mvvm/model/application_model.h>
+#include <mvvm/utils/container_utils.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -68,6 +69,39 @@ public:
     auto result = InsertInstruction(domain_type, parent);
     result->SetX(x);
     result->SetY(y);
+    return result;
+  }
+
+  //! A procedure with a root "Main" holding Includes, and a SubTree "Sub" with a child "Inner".
+  struct SubTreeProcedure
+  {
+    ProcedureItem* procedure{nullptr};
+    InstructionItem* main{nullptr};
+    InstructionItem* sub{nullptr};
+    InstructionItem* inner{nullptr};
+  };
+
+  //! Creates SubTreeProcedure.
+  SubTreeProcedure CreateSubTreeProcedure()
+  {
+    SubTreeProcedure result;
+    result.procedure = m_model.InsertItem<ProcedureItem>();
+    auto container = result.procedure->GetInstructionContainer();
+    result.main = InsertAt(domainconstants::kSequenceInstructionType, container, 10.0, 10.0);
+    result.main->SetName("Main");
+    result.main->SetIsRootFlag(true);
+    result.sub = InsertAt(domainconstants::kSequenceInstructionType, container, 20.0, 20.0);
+    result.sub->SetName("Sub");
+    result.inner = InsertAt(domainconstants::kWaitInstructionType, result.sub, 20.0, 30.0);
+    result.inner->SetName("Inner");
+    return result;
+  }
+
+  //! Inserts an Include with the given path into the parent.
+  static InstructionItem* InsertInclude(const std::string& path, mvvm::SessionItem* parent)
+  {
+    auto result = InsertAt(domainconstants::kIncludeInstructionType, parent, 10.0, 20.0);
+    result->SetAttribute(domainconstants::kPathAttribute, path);
     return result;
   }
 
@@ -402,6 +436,106 @@ TEST_F(NodeEditorSceneControllerTest, DropInstruction)
   ASSERT_EQ(container->GetInstructionCount(), 2);
   auto dropped = container->GetInstructions().at(1);
   EXPECT_EQ(GetSceneInstructions(), std::vector<InstructionItem*>({sequence0, dropped}));
+}
+
+//! Opening an Include switches to the SubTree of its target. A nested target is selected.
+TEST_F(NodeEditorSceneControllerTest, OpenSubTree)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+  auto include_sub = InsertInclude("Sub", main);
+  auto include_inner = InsertInclude("Sub.Inner", main);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  controller->SetProcedure(procedure);
+  ASSERT_EQ(controller->GetScope(), main);
+  const QSignalSpy spy_center(controller.get(),
+                              &NodeEditorSceneController::centerOnSelectionRequested);
+
+  EXPECT_TRUE(controller->GetOpenSubTreeError(*include_sub).empty());
+  controller->OpenSubTree(*include_sub);
+  EXPECT_EQ(controller->GetScope(), sub);
+  EXPECT_TRUE(controller->GetSelectedInstructions().empty());
+  EXPECT_EQ(spy_center.count(), 0);
+
+  controller->SetScope(main);
+  controller->OpenSubTree(*include_inner);
+  EXPECT_EQ(controller->GetScope(), sub);
+  EXPECT_EQ(controller->GetSelectedInstructions(), std::vector<InstructionItem*>({inner}));
+  EXPECT_EQ(spy_center.count(), 1);
+
+  // the target is in the current SubTree: no switch, selected again
+  controller->SetSelectedInstructions({});
+  controller->OpenSubTree(*include_inner);
+  EXPECT_EQ(controller->GetScope(), sub);
+  EXPECT_EQ(controller->GetSelectedInstructions(), std::vector<InstructionItem*>({inner}));
+  EXPECT_EQ(spy_center.count(), 2);
+}
+
+//! External Include, IncludeProcedure and a path that doesn't resolve can't be opened.
+TEST_F(NodeEditorSceneControllerTest, OpenSubTreeErrors)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+  auto include_external = InsertInclude("Sub", main);
+  include_external->SetAttribute(domainconstants::kFileNameAttribute, std::string("other.xml"));
+  auto include_procedure =
+      InsertAt(domainconstants::kIncludeProcedureInstructionType, main, 10.0, 20.0);
+  include_procedure->SetAttribute(domainconstants::kFileNameAttribute, std::string("other.xml"));
+  auto include_missing = InsertInclude("Sub.Missing", main);
+  auto include_empty = InsertInclude("", main);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  controller->SetProcedure(procedure);
+
+  EXPECT_EQ(controller->GetOpenSubTreeError(*main), std::string("Not an Include instruction."));
+  EXPECT_EQ(controller->GetOpenSubTreeError(*include_external),
+            std::string("Include refers to another file."));
+  EXPECT_EQ(controller->GetOpenSubTreeError(*include_procedure),
+            std::string("IncludeProcedure refers to another procedure file."));
+  EXPECT_EQ(controller->GetOpenSubTreeError(*include_missing),
+            std::string("Include path 'Sub.Missing' is not found."));
+  EXPECT_EQ(controller->GetOpenSubTreeError(*include_empty), std::string("Include path is empty."));
+
+  EXPECT_CALL(m_mock_message, Call(::testing::_)).Times(4);
+  for (const auto* include : {include_external, include_procedure, include_missing, include_empty})
+  {
+    controller->OpenSubTree(*include);
+  }
+  EXPECT_EQ(controller->GetScope(), main);
+}
+
+//! A double-click on an Include opens its SubTree. On other instructions it selects the branch.
+TEST_F(NodeEditorSceneControllerTest, DoubleClick)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+  auto include_sub = InsertInclude("Sub", main);
+  auto include_missing = InsertInclude("Missing", main);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  controller->SetProcedure(procedure);
+
+  EXPECT_CALL(m_mock_message, Call(::testing::_)).Times(1);
+  emit m_scene.instructionDoubleClick(include_missing);
+  EXPECT_EQ(controller->GetScope(), main);
+
+  emit m_scene.instructionDoubleClick(include_sub);
+  EXPECT_EQ(controller->GetScope(), sub);
+
+  emit m_scene.instructionDoubleClick(sub);
+  EXPECT_TRUE(mvvm::utils::HaveSameElements(controller->GetSelectedInstructions(),
+                                            std::vector<InstructionItem*>({sub, inner})));
+}
+
+//! The viewer doesn't open SubTrees.
+TEST_F(NodeEditorSceneControllerTest, ViewerDoesNotOpenSubTree)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+  auto include_sub = InsertInclude("Sub", main);
+
+  auto controller = CreateController(NodeEditorMode::kNodeViewer);
+  controller->SetProcedure(procedure);
+  controller->OpenSubTree(*include_sub);
+  EXPECT_EQ(controller->GetScope(), nullptr);
+  EXPECT_EQ(GetSceneInstructions().size(), 4);
 }
 
 }  // namespace oac_tree_gui::test
