@@ -30,6 +30,7 @@
 #include <mvvm/nodeeditor/node_port_shape.h>
 #include <mvvm/style/mvvm_style_helper.h>
 
+#include <QGraphicsSceneContextMenuEvent>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 
@@ -101,12 +102,28 @@ void NodeGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     return;
   }
 
-  // process double clicks on connectable shapes
-  auto shapes = mvvm::GetShapes<mvvm::ConnectableShape>(*this, area);
-  for (auto shape : shapes)
+  // one signal only: a receiver may rebuild the scene
+  if (const auto* instruction = FindInstructionAt(event->scenePos()); instruction != nullptr)
   {
-    emit instructionDoubleClick(mvvm::GetUnderlyingItem<InstructionItem>(shape));
+    emit instructionDoubleClick(instruction);
   }
+}
+
+void NodeGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
+{
+  emit contextMenuRequested(FindInstructionAt(event->scenePos()), event->screenPos());
+  event->accept();
+}
+
+const InstructionItem* NodeGraphicsScene::FindInstructionAt(const QPointF& pos) const
+{
+  const double size = mvvm::style::UnitSize();
+  QRectF area(0, 0, size, size);
+  area.moveCenter(pos);
+
+  // shapes are in the order of addition, the last one is on top
+  auto shapes = mvvm::GetShapes<mvvm::ConnectableShape>(*this, area);
+  return shapes.empty() ? nullptr : mvvm::GetUnderlyingItem<InstructionItem>(shapes.back());
 }
 
 }  // namespace oac_tree_gui

@@ -48,10 +48,24 @@ signals:
   void instructionDoubleClick(const oac_tree_gui::InstructionItem* instruction);
   void portDoubleClick(const mvvm::INodePort* port);
 
+  /**
+   * @brief Notifies that a context menu is requested.
+   *
+   * @param instruction The instruction under the cursor, or nullptr on empty space.
+   * @param screen_pos The cursor position on the screen.
+   */
+  void contextMenuRequested(const oac_tree_gui::InstructionItem* instruction,
+                            const QPoint& screen_pos);
+
 protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;
   void dropEvent(QGraphicsSceneDragDropEvent* event) override;
   void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+  void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+
+private:
+  //! Returns the topmost instruction near the given scene position, or nullptr.
+  const InstructionItem* FindInstructionAt(const QPointF& pos) const;
 };
 
 }  // namespace oac_tree_gui

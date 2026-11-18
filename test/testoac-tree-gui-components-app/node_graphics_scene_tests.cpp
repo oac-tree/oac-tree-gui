@@ -35,6 +35,7 @@
 #include <testutils/test_node_editor_helper.h>
 
 #include <QApplication>
+#include <QGraphicsSceneContextMenuEvent>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 #include <QSignalSpy>
@@ -133,6 +134,46 @@ TEST_F(NodeGraphicsSceneTest, DoubleClickOnInstructionPort)
 
   EXPECT_EQ(mvvm::test::TakeValue<const mvvm::INodePort*>(spy_port_clicks),
             mvvm::GetInputPort(*shape_ptr));
+}
+
+//! The context menu request carries the instruction under the cursor and the screen position.
+TEST_F(NodeGraphicsSceneTest, ContextMenuOnInstruction)
+{
+  const ConnectableShapeFactory factory;
+
+  NodeGraphicsScene scene;
+
+  auto item = CreateInstructionItem(domainconstants::kSequenceInstructionType);
+  item->SetX(1.0);
+  item->SetY(2.0);
+  scene.addItem(factory.CreateShape(item.get()).release());
+
+  QGraphicsSceneContextMenuEvent event(QEvent::GraphicsSceneContextMenu);
+  event.setScenePos(QPointF(10, 10));
+  event.setScreenPos(QPoint(100, 200));
+
+  QSignalSpy spy(&scene, &NodeGraphicsScene::contextMenuRequested);
+  QApplication::sendEvent(&scene, &event);
+
+  ASSERT_EQ(spy.count(), 1);
+  auto args = spy.takeFirst();
+  EXPECT_EQ(args.at(0).value<const InstructionItem*>(), item.get());
+  EXPECT_EQ(args.at(1).toPoint(), QPoint(100, 200));
+}
+
+//! On empty space, the context menu request carries no instruction.
+TEST_F(NodeGraphicsSceneTest, ContextMenuOnEmptySpace)
+{
+  NodeGraphicsScene scene;
+
+  QGraphicsSceneContextMenuEvent event(QEvent::GraphicsSceneContextMenu);
+  event.setScenePos(QPointF(10, 10));
+
+  QSignalSpy spy(&scene, &NodeGraphicsScene::contextMenuRequested);
+  QApplication::sendEvent(&scene, &event);
+
+  ASSERT_EQ(spy.count(), 1);
+  EXPECT_EQ(spy.takeFirst().at(0).value<const InstructionItem*>(), nullptr);
 }
 
 }  // namespace oac_tree_gui::test
