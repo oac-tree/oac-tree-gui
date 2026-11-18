@@ -106,6 +106,11 @@ public:
   const InstructionItem* GetScope() const;
 
   /**
+   * @brief Switches to the SubTree of the given instruction if this SubTree is hidden.
+   */
+  void ShowInstruction(const InstructionItem& instruction);
+
+  /**
    * @brief Returns the top-level instructions shown on the scene.
    */
   std::vector<InstructionItem*> GetVisibleTopLevelInstructions() const;
@@ -117,6 +122,9 @@ public:
 
   /**
    * @brief Selects the shapes of the given instructions.
+   *
+   * An instruction without a shape (inside a collapsed parent) selects its nearest ancestor with a
+   * shape. Instructions in hidden SubTrees are not selected.
    */
   void SetSelectedInstructions(const std::vector<const InstructionItem*>& instructions);
 

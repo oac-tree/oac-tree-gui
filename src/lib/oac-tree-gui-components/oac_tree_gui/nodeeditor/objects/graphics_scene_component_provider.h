@@ -108,7 +108,8 @@ public:
   /**
    * @brief Sets selected instructions.
    *
-   * Converts instructions to shapes and selects them on the scene.
+   * Converts instructions to shapes and selects them on the scene. An instruction without a shape
+   * (inside a collapsed parent) selects its nearest ancestor with a shape.
    */
   void SetSelectedInstructions(const std::vector<const InstructionItem*>& to_select);
 

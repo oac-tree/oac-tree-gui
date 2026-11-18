@@ -117,6 +117,21 @@ const InstructionItem* NodeEditorSceneController::GetScope() const
   return m_scope->GetScope();
 }
 
+void NodeEditorSceneController::ShowInstruction(const InstructionItem& instruction)
+{
+  const auto* top_level = GetTopLevelInstruction(instruction);
+  if ((top_level == nullptr) || (top_level->GetParent() != GetInstructionContainer()))
+  {
+    return;
+  }
+
+  const auto& hidden = m_scope->GetHiddenIdentifiers();
+  if (hidden.find(top_level->GetIdentifier()) != hidden.end())
+  {
+    SetScope(top_level);
+  }
+}
+
 std::vector<InstructionItem*> NodeEditorSceneController::GetVisibleTopLevelInstructions() const
 {
   std::vector<InstructionItem*> result;

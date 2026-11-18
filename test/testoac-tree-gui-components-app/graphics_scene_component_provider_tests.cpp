@@ -187,6 +187,39 @@ TEST_F(GraphicsSceneComponentProviderTest, SetTwoSelectedViaProvider)
   EXPECT_EQ(spy_provider_selected.count(), 2);
 }
 
+//! An instruction inside a collapsed parent selects its nearest ancestor with a shape.
+TEST_F(GraphicsSceneComponentProviderTest, SetSelectedInsideCollapsedParent)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto sequence1 = InsertInstruction(domainconstants::kSequenceInstructionType, sequence0);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+  SetCollapsed(true, *sequence0);
+
+  auto provider = CreateProvider();
+  provider->SetSelectedInstructions({wait});
+  EXPECT_EQ(provider->GetSelectedInstructions(), std::vector<InstructionItem*>({sequence0}));
+}
+
+//! An instruction in a hidden SubTree selects nothing.
+TEST_F(GraphicsSceneComponentProviderTest, SetSelectedInHiddenTree)
+{
+  auto sequence0 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto sequence1 =
+      InsertInstruction(domainconstants::kSequenceInstructionType, m_instruction_container);
+  auto wait = InsertInstruction(domainconstants::kWaitInstructionType, sequence1);
+
+  // provider is looking at sequence0
+  auto provider = CreateProvider({sequence1->GetIdentifier()});
+
+  provider->SetSelectedInstructions({sequence0});
+  EXPECT_EQ(provider->GetSelectedInstructions(), std::vector<InstructionItem*>({sequence0}));
+
+  provider->SetSelectedInstructions({wait});
+  EXPECT_TRUE(provider->GetSelectedInstructions().empty());
+}
+
 TEST_F(GraphicsSceneComponentProviderTest, SetSelectedViaScene)
 {
   auto sequence =

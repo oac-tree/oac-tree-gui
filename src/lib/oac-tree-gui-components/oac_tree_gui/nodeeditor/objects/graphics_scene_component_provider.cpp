@@ -94,11 +94,18 @@ void GraphicsSceneComponentProvider::SetSelectedInstructions(
     const std::vector<const InstructionItem*>& to_select)
 {
   m_scene->clearSelection();
+  // selecting parent if child is intended for selection, and it is hidden
   for (auto instruction : to_select)
   {
-    if (auto view = m_viewmodel_controller->FindShapeForItem(*instruction); view)
+    const mvvm::SessionItem* current = instruction;
+    while (current != nullptr)
     {
-      view->setSelected(true);
+      if (auto view = m_viewmodel_controller->FindShapeForItem(*current); view)
+      {
+        view->setSelected(true);
+        break;
+      }
+      current = current->GetParent();
     }
   }
 }

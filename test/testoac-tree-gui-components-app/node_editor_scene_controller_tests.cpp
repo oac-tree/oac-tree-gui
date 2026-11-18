@@ -267,6 +267,46 @@ TEST_F(NodeEditorSceneControllerTest, MoveScopeIntoHiddenTree)
   EXPECT_EQ(GetSceneInstructions(), std::vector<InstructionItem*>({sequence2, sequence1}));
 }
 
+//! ShowInstruction switches to the SubTree of an instruction only if this SubTree is hidden.
+TEST_F(NodeEditorSceneControllerTest, ShowInstruction)
+{
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto sequence0 = InsertAt(domainconstants::kSequenceInstructionType, container, 10.0, 10.0);
+  auto sequence1 = InsertAt(domainconstants::kSequenceInstructionType, container, 20.0, 20.0);
+  auto wait1 = InsertAt(domainconstants::kWaitInstructionType, sequence1, 20.0, 30.0);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  controller->SetProcedure(procedure);
+  ASSERT_EQ(controller->GetScope(), sequence0);
+  QCoreApplication::processEvents();
+  const QSignalSpy spy_shown(controller.get(), &NodeEditorSceneController::scopeShown);
+
+  // a loose instruction is visible: no switch
+  auto loose = InsertAt(domainconstants::kWaitInstructionType, container, 30.0, 30.0);
+  controller->ShowInstruction(*loose);
+  EXPECT_EQ(controller->GetScope(), sequence0);
+
+  // a child in a hidden SubTree: switch to its top-level
+  controller->ShowInstruction(*wait1);
+  EXPECT_EQ(controller->GetScope(), sequence1);
+  EXPECT_EQ(GetSceneInstructions(), std::vector<InstructionItem*>({sequence1, wait1}));
+  QCoreApplication::processEvents();
+  EXPECT_EQ(spy_shown.count(), 1);
+
+  // already shown: no switch
+  controller->ShowInstruction(*wait1);
+  QCoreApplication::processEvents();
+  EXPECT_EQ(spy_shown.count(), 1);
+
+  // instruction of another procedure: ignored
+  auto other_procedure = m_model.InsertItem<ProcedureItem>();
+  auto other = InsertAt(domainconstants::kSequenceInstructionType,
+                        other_procedure->GetInstructionContainer(), 10.0, 10.0);
+  controller->ShowInstruction(*other);
+  EXPECT_EQ(controller->GetScope(), sequence1);
+}
+
 //! In an empty procedure, an inserted instruction is shown.
 TEST_F(NodeEditorSceneControllerTest, EmptyProcedure)
 {
