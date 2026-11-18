@@ -17,6 +17,8 @@ target_sources(${library_name} PRIVATE
   scene_utils.h
   sequencer_align_utils.cpp
   sequencer_align_utils.h
+  sub_tree_history.cpp
+  sub_tree_history.h
 )
 
 add_subdirectory(objects)
