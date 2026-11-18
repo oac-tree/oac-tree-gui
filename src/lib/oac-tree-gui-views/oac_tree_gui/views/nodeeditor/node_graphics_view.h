@@ -60,6 +60,17 @@ public:
   void FocusOnItems();
 
   /**
+   * @brief Sets the scene rect around all items as FocusOnItems does, then the given zoom and
+   * center.
+   */
+  void RestoreView(double zoom_factor, const QPointF& center);
+
+  /**
+   * @brief Returns the scene point in the center of the viewport.
+   */
+  QPointF GetViewCenter() const;
+
+  /**
    * @brief Centers the view on selected items if they are not fully visible. Zoom is unchanged.
    */
   void CenterOnSelection();
@@ -107,6 +118,9 @@ private:
    * @brief If zoom factor can be smaller.
    */
   bool CanZoomOut() const;
+
+  //! Sets the scene rect around all items with a margin.
+  void UpdateSceneRect();
 
   /**
    * @brief Draws grid with the given step.

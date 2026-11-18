@@ -102,13 +102,7 @@ void NodeGraphicsView::FitView()
 
 void NodeGraphicsView::FocusOnItems()
 {
-  auto rect = scene()->sceneRect();
-  if (!scene()->items().isEmpty())
-  {
-    const double margin = GetGraphicsViewportSize().width() / 2.0;
-    rect = scene()->itemsBoundingRect().adjusted(-margin, -margin, margin, margin);
-  }
-  setSceneRect(rect);
+  UpdateSceneRect();
 
   FitView();
   if (GetZoomFactor() > 1.0)
@@ -116,6 +110,18 @@ void NodeGraphicsView::FocusOnItems()
     SetZoomFactor(1.0);
     CenterView();
   }
+}
+
+void NodeGraphicsView::RestoreView(double zoom_factor, const QPointF& center)
+{
+  UpdateSceneRect();
+  SetZoomFactor(zoom_factor);
+  centerOn(center);
+}
+
+QPointF NodeGraphicsView::GetViewCenter() const
+{
+  return mapToScene(viewport()->rect().center());
 }
 
 void NodeGraphicsView::CenterOnSelection()
@@ -257,6 +263,17 @@ bool NodeGraphicsView::CanZoomIn() const
 bool NodeGraphicsView::CanZoomOut() const
 {
   return GetZoomFactor() > constants::kMinZoomFactor;
+}
+
+void NodeGraphicsView::UpdateSceneRect()
+{
+  auto rect = scene()->sceneRect();
+  if (!scene()->items().isEmpty())
+  {
+    const double margin = GetGraphicsViewportSize().width() / 2.0;
+    rect = scene()->itemsBoundingRect().adjusted(-margin, -margin, margin, margin);
+  }
+  setSceneRect(rect);
 }
 
 void NodeGraphicsView::DrawGrid(double grid_step, QPainter* painter)
