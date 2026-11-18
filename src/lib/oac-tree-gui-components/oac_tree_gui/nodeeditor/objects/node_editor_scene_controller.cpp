@@ -22,6 +22,7 @@
 
 #include "graphics_scene_component_provider.h"
 #include "node_graphics_scene.h"
+#include "sub_tree_scope.h"
 
 #include <oac_tree_gui/model/instruction_container_item.h>
 #include <oac_tree_gui/model/instruction_item.h>
@@ -30,10 +31,8 @@
 #include <oac_tree_gui/nodeeditor/scene_utils.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 
-#include <mvvm/model/i_session_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
-#include <mvvm/signals/model_listener.h>
 
 #include <QPointF>
 #include <QTimer>
@@ -48,7 +47,11 @@ NodeEditorSceneController::NodeEditorSceneController(NodeEditorMode editor_mode,
     : m_editor_mode(editor_mode)
     , m_scene(scene)
     , m_send_message_callback(std::move(send_message_callback))
+    , m_scope(std::make_unique<SubTreeScope>())
 {
+  connect(m_scope.get(), &SubTreeScope::scopeChanged, this,
+          &NodeEditorSceneController::scopeChanged);
+
   if (m_editor_mode == NodeEditorMode::kNodeEditor)
   {
     SetupSceneConnections();
@@ -65,32 +68,19 @@ void NodeEditorSceneController::SetProcedure(ProcedureItem* procedure)
   }
 
   m_procedure_item = procedure;
-  m_listener.reset();
-  m_loose_identifiers.clear();
 
-  if (m_procedure_item == nullptr)
+  if ((m_procedure_item == nullptr) || (m_editor_mode == NodeEditorMode::kNodeViewer))
   {
-    m_scope_identifier.clear();
-    m_hidden_identifiers.clear();
-    UpdateResolvedScope();
-    return;
+    m_scope->Clear();
+  }
+  else
+  {
+    auto container = GetInstructionContainer();
+    m_scope->Reset(container, FindRootInstruction(*container));
+    m_scope_shown_required = true;
   }
 
-  const InstructionItem* scope{nullptr};
-  if (m_editor_mode == NodeEditorMode::kNodeEditor)
-  {
-    scope = FindRootInstruction(*GetInstructionContainer());
-
-    if (m_procedure_item->GetModel() != nullptr)
-    {
-      // the scope may change when instructions are inserted, moved or removed
-      m_listener = std::make_unique<mvvm::ModelListener>(m_procedure_item->GetModel());
-      m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto&) { UpdateResolvedScope(); });
-      m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto&) { UpdateResolvedScope(); });
-    }
-  }
-
-  ApplyScope(scope);
+  SetupProvider();
 }
 
 InstructionContainerItem* NodeEditorSceneController::GetInstructionContainer() const
@@ -114,56 +104,16 @@ void NodeEditorSceneController::SetActive(bool value)
 
 void NodeEditorSceneController::SetScope(const InstructionItem* top_level)
 {
-  if ((m_procedure_item == nullptr) || (m_editor_mode != NodeEditorMode::kNodeEditor))
+  if (m_scope->SetScope(top_level))
   {
-    return;
+    m_scope_shown_required = true;
+    SetupProvider();
   }
-
-  const auto* current = GetScope();
-  const auto current_identifier =
-      (current != nullptr) ? current->GetIdentifier() : m_scope_identifier;
-  const auto identifier = (top_level != nullptr) ? top_level->GetIdentifier() : std::string();
-  if (identifier == current_identifier)
-  {
-    return;
-  }
-
-  // record loose instructions of the SubTree we are leaving
-  auto& loose = m_loose_identifiers[current_identifier];
-  loose.clear();
-  for (const auto* instruction : GetVisibleTopLevelInstructions())
-  {
-    if (instruction->GetIdentifier() != current_identifier)
-    {
-      (void)loose.insert(instruction->GetIdentifier());
-    }
-  }
-
-  ApplyScope(top_level);
 }
 
 const InstructionItem* NodeEditorSceneController::GetScope() const
 {
-  if ((m_procedure_item == nullptr) || (m_procedure_item->GetModel() == nullptr)
-      || m_scope_identifier.empty())
-  {
-    return nullptr;
-  }
-
-  const auto* anchor = dynamic_cast<const InstructionItem*>(
-      m_procedure_item->GetModel()->FindItem(m_scope_identifier));
-  if (anchor == nullptr)
-  {
-    return nullptr;
-  }
-
-  const auto* top_level = GetTopLevelInstruction(*anchor);
-  if ((top_level == nullptr) || (top_level->GetParent() != GetInstructionContainer())
-      || (m_hidden_identifiers.find(top_level->GetIdentifier()) != m_hidden_identifiers.end()))
-  {
-    return nullptr;
-  }
-  return top_level;
+  return m_scope->GetScope();
 }
 
 std::vector<InstructionItem*> NodeEditorSceneController::GetVisibleTopLevelInstructions() const
@@ -174,13 +124,11 @@ std::vector<InstructionItem*> NodeEditorSceneController::GetVisibleTopLevelInstr
     return result;
   }
 
+  const auto& hidden = m_scope->GetHiddenIdentifiers();
   const auto instructions = GetInstructionContainer()->GetInstructions();
   (void)std::copy_if(instructions.begin(), instructions.end(), std::back_inserter(result),
-                     [this](const InstructionItem* instruction)
-                     {
-                       return m_hidden_identifiers.find(instruction->GetIdentifier())
-                              == m_hidden_identifiers.end();
-                     });
+                     [&hidden](const InstructionItem* instruction)
+                     { return hidden.find(instruction->GetIdentifier()) == hidden.end(); });
   return result;
 }
 
@@ -219,29 +167,6 @@ void NodeEditorSceneController::AlignSelected()
                                         mvvm::GetUnderlyingItem<InstructionItem>(shape));
 }
 
-void NodeEditorSceneController::ApplyScope(const InstructionItem* top_level)
-{
-  m_scope_identifier = (top_level != nullptr) ? top_level->GetIdentifier() : std::string();
-  m_hidden_identifiers.clear();
-
-  if (m_editor_mode == NodeEditorMode::kNodeEditor)
-  {
-    const auto& loose = m_loose_identifiers[m_scope_identifier];
-    for (const auto* instruction : GetInstructionContainer()->GetInstructions())
-    {
-      const auto& identifier = instruction->GetIdentifier();
-      if ((identifier != m_scope_identifier) && (loose.find(identifier) == loose.end()))
-      {
-        (void)m_hidden_identifiers.insert(identifier);
-      }
-    }
-    m_scope_shown_required = true;
-  }
-
-  UpdateResolvedScope();
-  SetupProvider();
-}
-
 void NodeEditorSceneController::SetupProvider()
 {
   if ((m_procedure_item == nullptr) || !m_active)
@@ -273,7 +198,7 @@ void NodeEditorSceneController::SetupProvider()
 std::unique_ptr<GraphicsSceneComponentProvider> NodeEditorSceneController::CreateProvider()
 {
   auto result = std::make_unique<GraphicsSceneComponentProvider>(
-      m_send_message_callback, m_scene, GetInstructionContainer(), m_hidden_identifiers);
+      m_send_message_callback, m_scene, GetInstructionContainer(), m_scope->GetHiddenIdentifiers());
 
   connect(result.get(), &GraphicsSceneComponentProvider::selectionChanged, this,
           &NodeEditorSceneController::selectionChanged);
@@ -314,17 +239,6 @@ void NodeEditorSceneController::UpdateView()
   {
     m_scope_shown_required = false;
     emit scopeShown();
-  }
-}
-
-void NodeEditorSceneController::UpdateResolvedScope()
-{
-  const auto* scope = GetScope();
-  const auto identifier = (scope != nullptr) ? scope->GetIdentifier() : std::string();
-  if (identifier != m_resolved_scope_identifier)
-  {
-    m_resolved_scope_identifier = identifier;
-    emit scopeChanged();
   }
 }
 

@@ -7,4 +7,6 @@ target_sources(${library_name} PRIVATE
   graphics_scene_component_provider.h
   node_editor_scene_controller.cpp
   node_editor_scene_controller.h
+  sub_tree_scope.cpp
+  sub_tree_scope.h
 )

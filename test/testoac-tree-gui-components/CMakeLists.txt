@@ -63,6 +63,7 @@ target_sources(${test} PRIVATE
   settings_info_visit_tests.cpp
   settings_model_helper_tests.cpp
   style_helper_tests.cpp
+  sub_tree_scope_tests.cpp
   workspace_editor_action_handler_copyandpaste_tests.cpp
   workspace_editor_action_handler_tests.cpp
   workspace_editor_action_handler_undo_tests.cpp

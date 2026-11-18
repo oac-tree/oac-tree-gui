@@ -100,6 +100,8 @@ TEST_F(NodeEditorSceneControllerTest, ViewerShowsAllTopLevelInstructions)
   QCoreApplication::processEvents();
 
   EXPECT_EQ(controller->GetScope(), nullptr);
+  EXPECT_EQ(controller->GetVisibleTopLevelInstructions(),
+            std::vector<InstructionItem*>({sequence0, sequence1}));
   EXPECT_EQ(GetSceneInstructions(), std::vector<InstructionItem*>({sequence0, sequence1}));
   EXPECT_EQ(spy_shown.count(), 0);
 

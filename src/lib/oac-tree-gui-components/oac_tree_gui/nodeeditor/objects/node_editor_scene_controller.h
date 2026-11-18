@@ -27,16 +27,8 @@
 
 #include <QObject>
 #include <functional>
-#include <map>
 #include <memory>
-#include <set>
-#include <string>
 #include <vector>
-
-namespace mvvm
-{
-class ModelListener;
-}  // namespace mvvm
 
 namespace oac_tree_gui
 {
@@ -46,13 +38,14 @@ class InstructionContainerItem;
 class InstructionItem;
 class NodeGraphicsScene;
 class ProcedureItem;
+class SubTreeScope;
 
 /**
  * @brief The NodeEditorSceneController class controls what the node editor scene shows.
  *
  * It owns GraphicsSceneComponentProvider and rebuilds it on scope switch. In editor mode the scene
- * shows one SubTree (a top-level instruction) with its loose instructions. In viewer mode it shows
- * all top-level instructions, read-only.
+ * shows one SubTree (a top-level instruction) with its loose instructions, as held by SubTreeScope.
+ * In viewer mode it shows all top-level instructions, read-only.
  */
 class NodeEditorSceneController : public QObject
 {
@@ -153,9 +146,6 @@ signals:
   void scopeShown();
 
 private:
-  //! Sets the scope and its hidden set, and rebuilds the provider.
-  void ApplyScope(const InstructionItem* top_level);
-
   //! Creates the provider if active, and posts the view update if required.
   void SetupProvider();
 
@@ -164,9 +154,6 @@ private:
 
   //! Aligns the visible instructions if required, and emits scopeShown after a scope switch.
   void UpdateView();
-
-  //! Emits scopeChanged if the result of GetScope has changed.
-  void UpdateResolvedScope();
 
   //! Connects scene signals to the provider.
   void SetupSceneConnections();
@@ -177,19 +164,7 @@ private:
   ProcedureItem* m_procedure_item{nullptr};
   bool m_active{false};
   std::unique_ptr<GraphicsSceneComponentProvider> m_provider;
-  std::unique_ptr<mvvm::ModelListener> m_listener;
-
-  //!< identifier of the instruction given to SetScope, empty if none
-  std::string m_scope_identifier;
-
-  //!< identifier of the last result of GetScope, empty if none
-  std::string m_resolved_scope_identifier;
-
-  //!< identifiers of top-level instructions not shown
-  std::set<std::string> m_hidden_identifiers;
-
-  //!< loose top-level instructions of each SubTree, recorded on leaving it
-  std::map<std::string, std::set<std::string>> m_loose_identifiers;
+  std::unique_ptr<SubTreeScope> m_scope;
 
   //!< true when a deferred view update has already been posted to the event loop
   bool m_view_update_scheduled{false};
