@@ -159,6 +159,16 @@ const InstructionItem* FindIncludeTarget(const InstructionItem& include,
                                          const InstructionContainerItem& container);
 
 /**
+ * @brief Finds local Includes pointing at the given instruction or inside it.
+ *
+ * @param target The instruction pointed at, for example a top-level instruction.
+ * @param container The instruction container of the procedure.
+ * @return Includes in container order, depth first.
+ */
+std::vector<const InstructionItem*> FindIncludesOf(const InstructionItem& target,
+                                                   const InstructionContainerItem& container);
+
+/**
  * @brief Returns the ancestor of the instruction which is a child of the instruction container.
  *
  * @return The top-level instruction, the instruction itself if it is top-level, or nullptr if it is

@@ -331,6 +331,37 @@ TEST_F(InstructionItemHelperTest, FindIncludeTargetDuplicateNames)
   EXPECT_EQ(FindIncludeTarget(*include1, container), nullptr);
 }
 
+//! Includes pointing at the target or inside it are found, in container order. Others are not.
+TEST_F(InstructionItemHelperTest, FindIncludesOf)
+{
+  InstructionContainerItem container;
+  auto main = InsertNamed(domainconstants::kSequenceInstructionType, "Main", &container);
+  auto sub = InsertNamed(domainconstants::kSequenceInstructionType, "Sub", &container);
+  auto inner = InsertNamed(domainconstants::kSequenceInstructionType, "Inner", sub);
+  auto other = InsertNamed(domainconstants::kSequenceInstructionType, "Other", &container);
+
+  auto include_sub = InsertInclude("IncludeSub", "Sub", main);
+  auto include_inner = InsertInclude("IncludeInner", "Sub.Inner", main);
+  auto include_other = InsertInclude("IncludeOther", "Other", main);
+  (void)InsertInclude("Missing", "Missing", main);
+  auto external = InsertInclude("External", "Sub", main);
+  external->SetAttribute(domainconstants::kFileNameAttribute, std::string("other.xml"));
+
+  // an Include inside the target, pointing back at it
+  auto include_self = InsertInclude("IncludeSelf", "Sub", inner);
+  // an Include inside a hidden tree
+  auto include_nested = InsertInclude("IncludeNested", "Sub.Inner", other);
+
+  EXPECT_EQ(FindIncludesOf(*sub, container),
+            std::vector<const InstructionItem*>(
+                {include_sub, include_inner, include_self, include_nested}));
+  EXPECT_EQ(FindIncludesOf(*inner, container),
+            std::vector<const InstructionItem*>({include_inner, include_nested}));
+  EXPECT_EQ(FindIncludesOf(*other, container),
+            std::vector<const InstructionItem*>({include_other}));
+  EXPECT_TRUE(FindIncludesOf(*main, container).empty());
+}
+
 TEST_F(InstructionItemHelperTest, GetTopLevelInstruction)
 {
   InstructionContainerItem container;

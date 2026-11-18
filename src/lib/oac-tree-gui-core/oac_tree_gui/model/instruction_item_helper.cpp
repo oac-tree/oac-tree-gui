@@ -242,6 +242,25 @@ const InstructionItem* FindIncludeTarget(const InstructionItem& include,
   return nullptr;
 }
 
+std::vector<const InstructionItem*> FindIncludesOf(const InstructionItem& target,
+                                                   const InstructionContainerItem& container)
+{
+  std::vector<const InstructionItem*> result;
+
+  auto func = [&result, &target, &container](const InstructionItem* item)
+  {
+    const auto* found = FindIncludeTarget(*item, container);
+    if ((found != nullptr) && ((found == &target) || mvvm::utils::IsItemAncestor(found, &target)))
+    {
+      result.push_back(item);
+    }
+  };
+
+  IterateInstructionContainer<const InstructionItem*>(container.GetInstructions(), func);
+
+  return result;
+}
+
 const InstructionItem* GetTopLevelInstruction(const InstructionItem& instruction)
 {
   const auto* current = &instruction;
