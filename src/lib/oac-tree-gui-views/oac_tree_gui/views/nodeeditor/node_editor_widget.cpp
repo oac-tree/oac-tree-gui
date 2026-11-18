@@ -32,6 +32,7 @@
 #include <sup/gui/widgets/message_handler_factory.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
+#include <QMenu>
 #include <QVBoxLayout>
 
 namespace oac_tree_gui
@@ -182,6 +183,14 @@ void NodeEditorWidget::SetupConnections()
     connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, m_scene_controller.get(),
             &NodeEditorSceneController::OnDeleteSelected);
 
+    // context menu on the scene
+    connect(m_graphics_scene.get(), &NodeGraphicsScene::contextMenuRequested, this,
+            &NodeEditorWidget::ShowContextMenu);
+
+    // center on the target of an opened Include
+    connect(m_scene_controller.get(), &NodeEditorSceneController::centerOnSelectionRequested,
+            m_graphics_view, &NodeGraphicsView::CenterOnSelection);
+
     // fit the view to a new scope, keep the selection from another panel in view
     connect(m_scene_controller.get(), &NodeEditorSceneController::scopeShown, m_graphics_view,
             [this]()
@@ -189,6 +198,16 @@ void NodeEditorWidget::SetupConnections()
               m_graphics_view->FocusOnItems();
               m_graphics_view->CenterOnSelection();
             });
+  }
+}
+
+void NodeEditorWidget::ShowContextMenu(const InstructionItem* instruction, const QPoint& screen_pos)
+{
+  QMenu menu;
+  m_navigation_actions->AddContextMenuActions(instruction, menu);
+  if (!menu.isEmpty())
+  {
+    (void)menu.exec(screen_pos);
   }
 }
 

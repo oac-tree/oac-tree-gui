@@ -26,6 +26,7 @@
 #include <oac_tree_gui/model/instruction_item.h>
 #include <oac_tree_gui/model/instruction_item_helper.h>
 #include <oac_tree_gui/model/procedure_item.h>
+#include <oac_tree_gui/nodeeditor/objects/node_graphics_scene.h>
 #include <oac_tree_gui/nodeeditor/sequencer_align_utils.h>
 
 #include <mvvm/model/application_model.h>
@@ -243,6 +244,53 @@ TEST_F(NodeEditorWidgetTest, FollowSelection)
   SetCollapsed(true, *sequence1);
   widget.SetSelectedInstructions({wait1});
   EXPECT_EQ(widget.GetSelectedInstructions(), std::vector<InstructionItem*>({sequence1}));
+}
+
+//! A double-click on an Include with a nested target selects the target and keeps it in view,
+//! within the current SubTree and in another one.
+TEST_F(NodeEditorWidgetTest, DoubleClickIncludeWithNestedTarget)
+{
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto main = InsertAt(domainconstants::kSequenceInstructionType, container, -5000.0, 1000.0);
+  main->SetName("Main");
+  auto far = InsertAt(domainconstants::kWaitInstructionType, main, -2000.0, 1000.0);
+  far->SetName("Far");
+  auto include_far = InsertAt(domainconstants::kIncludeInstructionType, main, -5000.0, 1200.0);
+  include_far->SetAttribute(domainconstants::kPathAttribute, std::string("Main.Far"));
+  auto include_inner = InsertAt(domainconstants::kIncludeInstructionType, main, -4800.0, 1200.0);
+  include_inner->SetAttribute(domainconstants::kPathAttribute, std::string("Sub.Inner"));
+  auto sub = InsertAt(domainconstants::kSequenceInstructionType, container, 5000.0, 9000.0);
+  sub->SetName("Sub");
+  auto inner = InsertAt(domainconstants::kWaitInstructionType, sub, 8000.0, 9000.0);
+  inner->SetName("Inner");
+
+  NodeEditorWidget widget(NodeEditorMode::kNodeEditor);
+  widget.resize(800, 600);
+  widget.show();
+  QApplication::processEvents();
+  widget.SetProcedure(procedure);
+  QApplication::processEvents();
+
+  auto view = widget.findChild<NodeGraphicsView*>();
+  auto scene = dynamic_cast<NodeGraphicsScene*>(view->scene());
+  ASSERT_EQ(widget.GetScope(), main);
+
+  // the target is in the current SubTree, outside the viewport
+  widget.SetSelectedInstructions({include_far});
+  view->SetZoomFactor(1.0);
+  view->centerOn(scene->selectedItems().at(0));
+  emit scene->instructionDoubleClick(include_far);
+  EXPECT_EQ(widget.GetScope(), main);
+  EXPECT_EQ(widget.GetSelectedInstructions(), std::vector<InstructionItem*>({far}));
+  EXPECT_TRUE(IsSelectionVisible(*view));
+
+  // the target is in another SubTree
+  emit scene->instructionDoubleClick(include_inner);
+  EXPECT_EQ(widget.GetScope(), sub);
+  EXPECT_EQ(widget.GetSelectedInstructions(), std::vector<InstructionItem*>({inner}));
+  QApplication::processEvents();
+  EXPECT_TRUE(IsSelectionVisible(*view));
 }
 
 }  // namespace oac_tree_gui::test

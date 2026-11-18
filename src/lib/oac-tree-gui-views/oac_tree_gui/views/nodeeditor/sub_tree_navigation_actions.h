@@ -34,6 +34,7 @@ class QWidgetAction;
 namespace oac_tree_gui
 {
 
+class InstructionItem;
 class NodeEditorSceneController;
 
 /**
@@ -73,6 +74,17 @@ public:
    * @brief Checks if "Follow selection" is on.
    */
   bool IsFollowSelectionEnabled() const;
+
+  /**
+   * @brief Adds actions for the given instruction to a context menu.
+   *
+   * For an Include or IncludeProcedure: "Open SubTree", disabled with the reason as tooltip if it
+   * can't be opened. Nothing for other instructions.
+   *
+   * @param instruction The instruction under the cursor, or nullptr. Must outlive the menu.
+   * @param menu The menu to fill.
+   */
+  void AddContextMenuActions(const InstructionItem* instruction, QMenu& menu);
 
 private:
   //! Fills the selector menu with top-level instructions.

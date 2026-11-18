@@ -158,4 +158,39 @@ TEST_F(SubTreeNavigationActionsTest, TextFollowsModel)
   EXPECT_EQ(GetButton()->text(), QString("(none)"));
 }
 
+//! "Open SubTree" is added for an Include only. It is disabled, with the reason as tooltip, if the
+//! Include can't be opened. Triggering it opens the SubTree.
+TEST_F(SubTreeNavigationActionsTest, ContextMenu)
+{
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto main = InsertNamed("Main", container);
+  auto sub = InsertNamed("Sub", container);
+  auto include_sub = InsertInstruction(domainconstants::kIncludeInstructionType, main);
+  include_sub->SetAttribute(domainconstants::kPathAttribute, std::string("Sub"));
+  auto include_missing = InsertInstruction(domainconstants::kIncludeInstructionType, main);
+  include_missing->SetAttribute(domainconstants::kPathAttribute, std::string("Missing"));
+  m_controller.SetProcedure(procedure);
+
+  QMenu empty_menu;
+  m_actions.AddContextMenuActions(nullptr, empty_menu);
+  m_actions.AddContextMenuActions(main, empty_menu);
+  EXPECT_TRUE(empty_menu.isEmpty());
+
+  QMenu missing_menu;
+  m_actions.AddContextMenuActions(include_missing, missing_menu);
+  ASSERT_EQ(missing_menu.actions().size(), 1);
+  auto missing_action = missing_menu.actions().at(0);
+  EXPECT_EQ(missing_action->text(), QString("Open SubTree"));
+  EXPECT_FALSE(missing_action->isEnabled());
+  EXPECT_EQ(missing_action->toolTip(), QString("Include path 'Missing' is not found."));
+
+  QMenu menu;
+  m_actions.AddContextMenuActions(include_sub, menu);
+  ASSERT_EQ(menu.actions().size(), 1);
+  EXPECT_TRUE(menu.actions().at(0)->isEnabled());
+  menu.actions().at(0)->trigger();
+  EXPECT_EQ(m_controller.GetScope(), sub);
+}
+
 }  // namespace oac_tree_gui::test

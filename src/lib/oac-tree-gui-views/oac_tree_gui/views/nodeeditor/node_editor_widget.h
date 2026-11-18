@@ -96,6 +96,9 @@ signals:
 private:
   void SetupConnections();
 
+  //! Shows the context menu for the instruction under the cursor. Editor mode only.
+  void ShowContextMenu(const InstructionItem* instruction, const QPoint& screen_pos);
+
   NodeEditorMode m_editor_mode;
   NodeGraphicsViewActions* m_view_actions{nullptr};
   std::unique_ptr<NodeGraphicsScene> m_graphics_scene;

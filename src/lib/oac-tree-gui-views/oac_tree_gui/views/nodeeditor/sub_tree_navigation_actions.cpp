@@ -78,6 +78,24 @@ bool SubTreeNavigationActions::IsFollowSelectionEnabled() const
   return m_follow_selection_action->isChecked();
 }
 
+void SubTreeNavigationActions::AddContextMenuActions(const InstructionItem* instruction,
+                                                     QMenu& menu)
+{
+  if ((instruction == nullptr) || !IsIncludeInstruction(*instruction))
+  {
+    return;
+  }
+
+  auto action = menu.addAction("Open SubTree");
+  const auto error = m_controller->GetOpenSubTreeError(*instruction);
+  action->setEnabled(error.empty());
+  action->setToolTip(error.empty() ? QString("Show the instruction tree this Include points to")
+                                   : QString::fromStdString(error));
+  menu.setToolTipsVisible(true);
+  connect(action, &QAction::triggered, this,
+          [this, instruction]() { m_controller->OpenSubTree(*instruction); });
+}
+
 void SubTreeNavigationActions::FillSubTreeMenu()
 {
   m_subtree_menu->clear();
