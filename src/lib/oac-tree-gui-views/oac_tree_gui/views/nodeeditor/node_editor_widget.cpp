@@ -23,6 +23,7 @@
 #include "node_editor_navigation_toolbar.h"
 #include "node_graphics_view.h"
 #include "node_graphics_view_actions.h"
+#include "sub_tree_breadcrumb.h"
 #include "sub_tree_navigation_actions.h"
 
 #include <oac_tree_gui/model/instruction_item.h>
@@ -86,6 +87,8 @@ NodeEditorWidget::NodeEditorWidget(NodeEditorMode editor_mode, QWidget* parent_w
   {
     m_navigation_actions = new SubTreeNavigationActions(m_scene_controller.get(), this);
     addActions(m_navigation_actions->GetActions());
+    m_breadcrumb = new SubTreeBreadcrumb(m_scene_controller.get());
+    layout->insertWidget(0, m_breadcrumb);
   }
 }
 
@@ -98,6 +101,11 @@ NodeEditorWidget::~NodeEditorWidget()
 
 void NodeEditorWidget::SetProcedure(ProcedureItem* procedure)
 {
+  if (procedure != m_scene_controller->GetProcedure())
+  {
+    m_shown_scope_identifier.clear();
+    m_view_states.clear();
+  }
   m_scene_controller->SetProcedure(procedure);
 }
 
@@ -191,13 +199,11 @@ void NodeEditorWidget::SetupConnections()
     connect(m_scene_controller.get(), &NodeEditorSceneController::centerOnSelectionRequested,
             m_graphics_view, &NodeGraphicsView::CenterOnSelection);
 
-    // fit the view to a new scope, keep the selection from another panel in view
-    connect(m_scene_controller.get(), &NodeEditorSceneController::scopeShown, m_graphics_view,
-            [this]()
-            {
-              m_graphics_view->FocusOnItems();
-              m_graphics_view->CenterOnSelection();
-            });
+    // the scene still shows the previous SubTree when the scope changes
+    connect(m_scene_controller.get(), &NodeEditorSceneController::scopeChanged, this,
+            &NodeEditorWidget::SaveViewState);
+    connect(m_scene_controller.get(), &NodeEditorSceneController::scopeShown, this,
+            &NodeEditorWidget::OnScopeShown);
   }
 }
 
@@ -209,6 +215,34 @@ void NodeEditorWidget::ShowContextMenu(const InstructionItem* instruction, const
   {
     (void)menu.exec(screen_pos);
   }
+}
+
+void NodeEditorWidget::SaveViewState()
+{
+  if (!m_shown_scope_identifier.empty())
+  {
+    m_view_states[m_shown_scope_identifier] = {m_graphics_view->GetZoomFactor(),
+                                               m_graphics_view->GetViewCenter()};
+  }
+}
+
+void NodeEditorWidget::OnScopeShown()
+{
+  const auto* scope = m_scene_controller->GetScope();
+  m_shown_scope_identifier = (scope != nullptr) ? scope->GetIdentifier() : std::string();
+
+  const auto iter = m_view_states.find(m_shown_scope_identifier);
+  if (iter != m_view_states.end())
+  {
+    m_graphics_view->RestoreView(iter->second.zoom_factor, iter->second.center);
+  }
+  else
+  {
+    m_graphics_view->FocusOnItems();
+  }
+
+  // keep the selection from another panel or an Include target in view
+  m_graphics_view->CenterOnSelection();
 }
 
 }  // namespace oac_tree_gui

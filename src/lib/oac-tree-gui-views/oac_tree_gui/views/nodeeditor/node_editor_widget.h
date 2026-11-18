@@ -25,8 +25,11 @@
 
 #include <mvvm/model/item_selection.h>
 
+#include <QPointF>
 #include <QWidget>
+#include <map>
 #include <memory>
+#include <string>
 
 namespace sup::gui
 {
@@ -44,13 +47,15 @@ class NodeGraphicsViewActions;
 class ProcedureItem;
 class NodeEditorNavigationToolBar;
 class NodeEditorSceneController;
+class SubTreeBreadcrumb;
 class SubTreeNavigationActions;
 
 /**
  * @brief The NodeEditorWidget class is a main widget with node editor for sequence composition.
  *
  * Contains graphics scene with nodes, graphics view, and all action buttons. It is a central
- * part of SequencerComposerView.
+ * part of SequencerComposerView. In editor mode, zoom and center are remembered per SubTree until
+ * the procedure changes.
  */
 class NodeEditorWidget : public QWidget
 {
@@ -99,6 +104,19 @@ private:
   //! Shows the context menu for the instruction under the cursor. Editor mode only.
   void ShowContextMenu(const InstructionItem* instruction, const QPoint& screen_pos);
 
+  //! Remembers zoom and center of the SubTree on the scene.
+  void SaveViewState();
+
+  //! Restores zoom and center of a new scope, or fits it on the first visit.
+  void OnScopeShown();
+
+  //! Zoom and center of a SubTree.
+  struct ViewState
+  {
+    double zoom_factor{1.0};
+    QPointF center;
+  };
+
   NodeEditorMode m_editor_mode;
   NodeGraphicsViewActions* m_view_actions{nullptr};
   std::unique_ptr<NodeGraphicsScene> m_graphics_scene;
@@ -107,6 +125,13 @@ private:
   std::unique_ptr<sup::gui::IMessageHandler> m_graphics_view_message_handler;
   std::unique_ptr<NodeEditorSceneController> m_scene_controller;
   SubTreeNavigationActions* m_navigation_actions{nullptr};  //!< editor mode only
+  SubTreeBreadcrumb* m_breadcrumb{nullptr};                 //!< editor mode only
+
+  //!< identifier of the SubTree on the scene, empty if none
+  std::string m_shown_scope_identifier;
+
+  //!< zoom and center of visited SubTrees, by identifier
+  std::map<std::string, ViewState> m_view_states;
   std::unique_ptr<sup::gui::VisibilityAgentBase> m_visibility_agent;
 };
 

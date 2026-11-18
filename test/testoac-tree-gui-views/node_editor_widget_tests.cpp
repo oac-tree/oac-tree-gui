@@ -20,6 +20,7 @@
 
 #include "oac_tree_gui/views/nodeeditor/node_editor_widget.h"
 #include "oac_tree_gui/views/nodeeditor/node_graphics_view.h"
+#include "oac_tree_gui/views/nodeeditor/sub_tree_breadcrumb.h"
 
 #include <oac_tree_gui/domain/domain_constants.h>
 #include <oac_tree_gui/model/instruction_container_item.h>
@@ -291,6 +292,68 @@ TEST_F(NodeEditorWidgetTest, DoubleClickIncludeWithNestedTarget)
   EXPECT_EQ(widget.GetSelectedInstructions(), std::vector<InstructionItem*>({inner}));
   QApplication::processEvents();
   EXPECT_TRUE(IsSelectionVisible(*view));
+}
+
+//! Zoom and center are restored on return to a SubTree, and forgotten on a procedure change.
+TEST_F(NodeEditorWidgetTest, ViewStatePerSubTree)
+{
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto sequence0 = InsertAt(domainconstants::kSequenceInstructionType, container, -5000.0, 1000.0);
+  auto sequence1 = InsertAt(domainconstants::kSequenceInstructionType, container, 5000.0, 9000.0);
+
+  NodeEditorWidget widget(NodeEditorMode::kNodeEditor);
+  widget.resize(800, 600);
+  widget.show();
+  QApplication::processEvents();
+  widget.SetProcedure(procedure);
+  QApplication::processEvents();
+
+  auto view = widget.findChild<NodeGraphicsView*>();
+  ASSERT_EQ(widget.GetScope(), sequence0);
+  ASSERT_DOUBLE_EQ(view->GetZoomFactor(), 1.0);
+
+  view->SetZoomFactor(0.5);
+  view->centerOn(view->GetViewCenter() + QPointF(40.0, 20.0));
+  const auto center0 = view->GetViewCenter();
+
+  widget.SetScope(sequence1);
+  QApplication::processEvents();
+  EXPECT_DOUBLE_EQ(view->GetZoomFactor(), 1.0);
+  view->SetZoomFactor(0.7);
+
+  widget.SetScope(sequence0);
+  QApplication::processEvents();
+  EXPECT_DOUBLE_EQ(view->GetZoomFactor(), 0.5);
+  EXPECT_NEAR(view->GetViewCenter().x(), center0.x(), 2.0);
+  EXPECT_NEAR(view->GetViewCenter().y(), center0.y(), 2.0);
+
+  // the zoom slider rounds the zoom
+  widget.SetScope(sequence1);
+  QApplication::processEvents();
+  EXPECT_NEAR(view->GetZoomFactor(), 0.7, 0.01);
+
+  // the same procedure again keeps the states, another procedure forgets them
+  widget.SetProcedure(procedure);
+  widget.SetScope(sequence0);
+  QApplication::processEvents();
+  EXPECT_DOUBLE_EQ(view->GetZoomFactor(), 0.5);
+
+  widget.SetProcedure(nullptr);
+  widget.SetProcedure(procedure);
+  QApplication::processEvents();
+  ASSERT_EQ(widget.GetScope(), sequence0);
+  EXPECT_DOUBLE_EQ(view->GetZoomFactor(), 1.0);
+}
+
+//! The breadcrumb is shown in editor mode only.
+TEST_F(NodeEditorWidgetTest, Breadcrumb)
+{
+  const NodeEditorWidget editor(NodeEditorMode::kNodeEditor);
+  EXPECT_NE(editor.findChild<SubTreeBreadcrumb*>(), nullptr);
+
+  const NodeEditorWidget viewer(NodeEditorMode::kNodeViewer);
+  EXPECT_EQ(viewer.findChild<SubTreeBreadcrumb*>(), nullptr);
 }
 
 }  // namespace oac_tree_gui::test
