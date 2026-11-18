@@ -69,7 +69,13 @@ public:
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
-  void SetSelectedInstructions(const std::vector<const InstructionItem*>& instructions) const;
+  /**
+   * @brief Selects the given instructions. Ignored when hidden.
+   *
+   * With "Follow selection" on, switches to the SubTree of the first instruction if it is hidden,
+   * and centers the selection. Off, selects the shapes already shown.
+   */
+  void SetSelectedInstructions(const std::vector<const InstructionItem*>& instructions);
 
   /**
    * @brief Shows the SubTree of the given top-level instruction. Editor mode only.

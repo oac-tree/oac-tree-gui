@@ -27,6 +27,7 @@
 
 #include <mvvm/nodeeditor/i_node_port.h>
 
+#include <QGraphicsItem>
 #include <QKeyEvent>
 #include <cmath>
 
@@ -114,6 +115,26 @@ void NodeGraphicsView::FocusOnItems()
   {
     SetZoomFactor(1.0);
     CenterView();
+  }
+}
+
+void NodeGraphicsView::CenterOnSelection()
+{
+  QRectF rect;
+  for (const auto* item : scene()->selectedItems())
+  {
+    rect |= item->sceneBoundingRect();
+  }
+
+  if (rect.isNull())
+  {
+    return;
+  }
+
+  const auto visible_rect = mapToScene(viewport()->rect()).boundingRect();
+  if (!visible_rect.contains(rect))
+  {
+    centerOn(rect.center());
   }
 }
 

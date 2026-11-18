@@ -33,7 +33,9 @@
 
 #include <gtest/gtest.h>
 
+#include <QAction>
 #include <QApplication>
+#include <QGraphicsItem>
 #include <QScrollBar>
 
 namespace oac_tree_gui::test
@@ -61,6 +63,36 @@ public:
     result->SetX(x);
     result->SetY(y);
     return result;
+  }
+
+  //! Returns the "Follow selection" action of the widget.
+  static QAction* FindFollowSelectionAction(const NodeEditorWidget& widget)
+  {
+    for (auto action : widget.actions())
+    {
+      if (action->text() == QString("Follow selection"))
+      {
+        return action;
+      }
+    }
+    return nullptr;
+  }
+
+  //! Returns the scene point in the center of the viewport.
+  static QPointF GetViewportCenter(const NodeGraphicsView& view)
+  {
+    return view.mapToScene(view.viewport()->rect().center());
+  }
+
+  //! Checks if selected shapes are inside the viewport.
+  static bool IsSelectionVisible(const NodeGraphicsView& view)
+  {
+    QRectF rect;
+    for (const auto* item : view.scene()->selectedItems())
+    {
+      rect |= item->sceneBoundingRect();
+    }
+    return !rect.isNull() && view.mapToScene(view.viewport()->rect()).boundingRect().contains(rect);
   }
 
   mvvm::ApplicationModel m_model;
@@ -153,6 +185,64 @@ TEST_F(NodeEditorWidgetTest, SceneRectPerSubTree)
   EXPECT_EQ(view->sceneRect().center(), view->scene()->itemsBoundingRect().center());
   EXPECT_DOUBLE_EQ(view->GetZoomFactor(), 1.0);
   EXPECT_EQ(range(), range0);
+}
+
+//! With "Follow selection" on, a selection in a hidden SubTree switches the scope, and the
+//! selection is centered. Off, only shown shapes are selected and the view doesn't move. An
+//! instruction inside a collapsed parent selects the parent.
+TEST_F(NodeEditorWidgetTest, FollowSelection)
+{
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto sequence0 = InsertAt(domainconstants::kSequenceInstructionType, container, -5000.0, 1000.0);
+  auto wait0 = InsertAt(domainconstants::kWaitInstructionType, sequence0, -2000.0, 1000.0);
+  auto sequence1 = InsertAt(domainconstants::kSequenceInstructionType, container, 5000.0, 9000.0);
+  auto wait1 = InsertAt(domainconstants::kWaitInstructionType, sequence1, 8000.0, 9000.0);
+
+  NodeEditorWidget widget(NodeEditorMode::kNodeEditor);
+  widget.resize(800, 600);
+  widget.show();
+  QApplication::processEvents();
+  widget.SetProcedure(procedure);
+  QApplication::processEvents();
+
+  auto view = widget.findChild<NodeGraphicsView*>();
+  auto follow_action = FindFollowSelectionAction(widget);
+  ASSERT_NE(follow_action, nullptr);
+  ASSERT_TRUE(follow_action->isChecked());
+  ASSERT_EQ(widget.GetScope(), sequence0);
+
+  // a hidden SubTree: switch, select, and keep the selection in view after the fit
+  widget.SetSelectedInstructions({wait1});
+  EXPECT_EQ(widget.GetScope(), sequence1);
+  EXPECT_EQ(widget.GetSelectedInstructions(), std::vector<InstructionItem*>({wait1}));
+  QApplication::processEvents();
+  EXPECT_TRUE(IsSelectionVisible(*view));
+
+  // the shown SubTree: an instruction outside the viewport is centered
+  view->SetZoomFactor(1.0);
+  view->centerOn(view->scene()->selectedItems().at(0));
+  const auto center = GetViewportCenter(*view);
+  widget.SetSelectedInstructions({sequence1});
+  EXPECT_TRUE(IsSelectionVisible(*view));
+  EXPECT_NE(GetViewportCenter(*view), center);
+
+  // off: no switch, no view move
+  follow_action->setChecked(false);
+  const auto center_off = GetViewportCenter(*view);
+  widget.SetSelectedInstructions({wait0});
+  EXPECT_EQ(widget.GetScope(), sequence1);
+  EXPECT_TRUE(widget.GetSelectedInstructions().empty());
+
+  widget.SetSelectedInstructions({wait1});
+  EXPECT_EQ(widget.GetSelectedInstructions(), std::vector<InstructionItem*>({wait1}));
+  EXPECT_FALSE(IsSelectionVisible(*view));
+  EXPECT_EQ(GetViewportCenter(*view), center_off);
+
+  // a collapsed parent is selected instead of its child
+  SetCollapsed(true, *sequence1);
+  widget.SetSelectedInstructions({wait1});
+  EXPECT_EQ(widget.GetSelectedInstructions(), std::vector<InstructionItem*>({sequence1}));
 }
 
 }  // namespace oac_tree_gui::test

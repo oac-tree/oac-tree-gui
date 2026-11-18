@@ -60,6 +60,11 @@ public:
   void FocusOnItems();
 
   /**
+   * @brief Centers the view on selected items if they are not fully visible. Zoom is unchanged.
+   */
+  void CenterOnSelection();
+
+  /**
    * @brief Returns current operation mode.
    */
   GraphicsViewOperationMode GetOperationMode();

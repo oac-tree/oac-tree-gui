@@ -106,14 +106,26 @@ std::vector<InstructionItem*> NodeEditorWidget::GetSelectedInstructions() const
 }
 
 void NodeEditorWidget::SetSelectedInstructions(
-    const std::vector<const InstructionItem*>& instructions) const
+    const std::vector<const InstructionItem*>& instructions)
 {
   if (isHidden())
   {
     return;
   }
 
+  const bool follow =
+      (m_navigation_actions != nullptr) && m_navigation_actions->IsFollowSelectionEnabled();
+  if (follow && !instructions.empty())
+  {
+    m_scene_controller->ShowInstruction(*instructions.front());
+  }
+
   m_scene_controller->SetSelectedInstructions(instructions);
+
+  if (follow)
+  {
+    m_graphics_view->CenterOnSelection();
+  }
 }
 
 void NodeEditorWidget::SetScope(const InstructionItem* top_level)
@@ -170,9 +182,13 @@ void NodeEditorWidget::SetupConnections()
     connect(m_graphics_view, &NodeGraphicsView::deleteSelectedRequest, m_scene_controller.get(),
             &NodeEditorSceneController::OnDeleteSelected);
 
-    // fit the view to a new scope
+    // fit the view to a new scope, keep the selection from another panel in view
     connect(m_scene_controller.get(), &NodeEditorSceneController::scopeShown, m_graphics_view,
-            &NodeGraphicsView::FocusOnItems);
+            [this]()
+            {
+              m_graphics_view->FocusOnItems();
+              m_graphics_view->CenterOnSelection();
+            });
   }
 }
 
