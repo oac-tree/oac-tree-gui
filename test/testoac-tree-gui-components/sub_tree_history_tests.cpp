@@ -102,6 +102,8 @@ TEST_F(SubTreeHistoryTest, FindPreviousAndNext)
   history.Push({"deleted", ""});
   history.Push({"c", ""});
 
+  EXPECT_EQ(history.GetCurrentIndex(), 4);
+
   auto is_valid = [](const SubTreeHistoryEntry& entry)
   { return entry.scope_identifier != "deleted"; };
 
