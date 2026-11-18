@@ -538,4 +538,130 @@ TEST_F(NodeEditorSceneControllerTest, ViewerDoesNotOpenSubTree)
   EXPECT_EQ(GetSceneInstructions().size(), 4);
 }
 
+//! Scope switches are recorded. A switch by SetScope starts a trail, an Include extends it.
+//! SetProcedure resets the history to the root.
+TEST_F(NodeEditorSceneControllerTest, History)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+  auto include_sub = InsertInclude("Sub", main);
+  auto other = InsertAt(domainconstants::kSequenceInstructionType,
+                        procedure->GetInstructionContainer(), 30.0, 30.0);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  const QSignalSpy spy_history(controller.get(), &NodeEditorSceneController::historyChanged);
+  controller->SetProcedure(procedure);
+  EXPECT_EQ(spy_history.count(), 1);
+
+  const auto& history = controller->GetHistory();
+  ASSERT_EQ(history.GetEntries().size(), 1);
+  EXPECT_EQ(history.GetEntries().at(0).scope_identifier, main->GetIdentifier());
+  EXPECT_FALSE(controller->CanGoBack());
+  EXPECT_FALSE(controller->CanGoForward());
+
+  controller->OpenSubTree(*include_sub);
+  ASSERT_EQ(history.GetEntries().size(), 2);
+  EXPECT_EQ(history.GetEntries().at(1).scope_identifier, sub->GetIdentifier());
+  EXPECT_EQ(history.GetEntries().at(1).include_identifier, include_sub->GetIdentifier());
+  EXPECT_EQ(history.GetTrailStart(), 0);
+  EXPECT_EQ(spy_history.count(), 2);
+
+  // the current SubTree again: not recorded
+  controller->SetScope(sub);
+  EXPECT_EQ(history.GetEntries().size(), 2);
+  EXPECT_EQ(spy_history.count(), 2);
+
+  controller->SetScope(other);
+  ASSERT_EQ(history.GetEntries().size(), 3);
+  EXPECT_TRUE(history.GetEntries().at(2).include_identifier.empty());
+  EXPECT_EQ(history.GetTrailStart(), 2);
+  EXPECT_TRUE(controller->CanGoBack());
+
+  controller->SetProcedure(nullptr);
+  EXPECT_TRUE(history.GetEntries().empty());
+  controller->SetProcedure(procedure);
+  EXPECT_EQ(history.GetEntries().size(), 1);
+}
+
+//! Back and Forward walk the history without changing it.
+TEST_F(NodeEditorSceneControllerTest, BackAndForward)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+  auto include_sub = InsertInclude("Sub", main);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  controller->SetProcedure(procedure);
+  controller->OpenSubTree(*include_sub);
+  const QSignalSpy spy_history(controller.get(), &NodeEditorSceneController::historyChanged);
+
+  controller->GoBack();
+  EXPECT_EQ(controller->GetScope(), main);
+  EXPECT_EQ(controller->GetHistory().GetCurrentIndex(), 0);
+  EXPECT_EQ(controller->GetHistory().GetEntries().size(), 2);
+  EXPECT_FALSE(controller->CanGoBack());
+  EXPECT_TRUE(controller->CanGoForward());
+  EXPECT_EQ(spy_history.count(), 1);
+
+  controller->GoBack();
+  EXPECT_EQ(controller->GetScope(), main);
+  EXPECT_EQ(spy_history.count(), 1);
+
+  controller->GoForward();
+  EXPECT_EQ(controller->GetScope(), sub);
+  EXPECT_FALSE(controller->CanGoForward());
+
+  controller->GoToHistoryEntry(0);
+  EXPECT_EQ(controller->GetScope(), main);
+  EXPECT_EQ(controller->GetHistory().GetCurrentIndex(), 0);
+
+  // a new switch drops forward entries
+  controller->SetScope(sub);
+  EXPECT_EQ(controller->GetHistory().GetEntries().size(), 2);
+  EXPECT_TRUE(controller->GetHistory().GetEntries().at(1).include_identifier.empty());
+}
+
+//! Back and Forward skip deleted SubTrees and entries of the current SubTree.
+TEST_F(NodeEditorSceneControllerTest, BackSkipsDeletedAndCurrent)
+{
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto sequence0 = InsertAt(domainconstants::kSequenceInstructionType, container, 10.0, 10.0);
+  auto sequence1 = InsertAt(domainconstants::kSequenceInstructionType, container, 20.0, 20.0);
+  auto sequence2 = InsertAt(domainconstants::kSequenceInstructionType, container, 30.0, 30.0);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  controller->SetProcedure(procedure);
+  controller->SetScope(sequence1);
+  controller->SetScope(sequence2);
+  controller->SetScope(sequence1);
+
+  // history: sequence0, sequence1, sequence2 (deleted), sequence1 (current)
+  m_model.RemoveItem(sequence2);
+  EXPECT_EQ(controller->GetScope(), sequence1);
+  controller->GoBack();
+  EXPECT_EQ(controller->GetScope(), sequence0);
+  EXPECT_EQ(controller->GetHistory().GetCurrentIndex(), 0);
+  EXPECT_TRUE(controller->CanGoForward());
+
+  // the deleted entry is not shown
+  controller->GoToHistoryEntry(2);
+  EXPECT_EQ(controller->GetScope(), sequence0);
+  EXPECT_EQ(controller->GetHistory().GetCurrentIndex(), 0);
+
+  controller->GoForward();
+  EXPECT_EQ(controller->GetScope(), sequence1);
+  EXPECT_EQ(controller->GetHistory().GetCurrentIndex(), 1);
+}
+
+//! The viewer has no history.
+TEST_F(NodeEditorSceneControllerTest, ViewerHasNoHistory)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+
+  auto controller = CreateController(NodeEditorMode::kNodeViewer);
+  controller->SetProcedure(procedure);
+  EXPECT_TRUE(controller->GetHistory().GetEntries().empty());
+  EXPECT_FALSE(controller->CanGoBack());
+  EXPECT_FALSE(controller->CanGoForward());
+}
+
 }  // namespace oac_tree_gui::test

@@ -22,10 +22,12 @@
 #define OAC_TREE_GUI_NODEEDITOR_OBJECTS_NODE_EDITOR_SCENE_CONTROLLER_H_
 
 #include <oac_tree_gui/model/component_types.h>
+#include <oac_tree_gui/nodeeditor/sub_tree_history.h>
 
 #include <sup/gui/core/message_event.h>
 
 #include <QObject>
+#include <cstddef>
 #include <functional>
 #include <memory>
 #include <string>
@@ -46,7 +48,8 @@ class SubTreeScope;
  *
  * It owns GraphicsSceneComponentProvider and rebuilds it on scope switch. In editor mode the scene
  * shows one SubTree (a top-level instruction) with its loose instructions, as held by SubTreeScope.
- * In viewer mode it shows all top-level instructions, read-only.
+ * In viewer mode it shows all top-level instructions, read-only. Scope switches made by the user
+ * are recorded in SubTreeHistory for Back/Forward.
  */
 class NodeEditorSceneController : public QObject
 {
@@ -72,9 +75,14 @@ public:
   NodeEditorSceneController& operator=(NodeEditorSceneController&&) = delete;
 
   /**
-   * @brief Sets the procedure. Shows the root SubTree and forgets loose instructions.
+   * @brief Sets the procedure. Shows the root SubTree, forgets loose instructions and the history.
    */
   void SetProcedure(ProcedureItem* procedure);
+
+  /**
+   * @brief Returns the procedure, or nullptr.
+   */
+  ProcedureItem* GetProcedure() const;
 
   /**
    * @brief Returns the instruction container of the procedure, or nullptr.
@@ -89,7 +97,8 @@ public:
   /**
    * @brief Shows the SubTree of the given top-level instruction. Editor mode only.
    *
-   * Loose instructions of the current SubTree are recorded and shown again on return.
+   * Loose instructions of the current SubTree are recorded and shown again on return. The switch
+   * is added to the history and starts a new trail.
    *
    * @param top_level The top-level instruction, or nullptr to show no SubTree.
    */
@@ -124,9 +133,51 @@ public:
    * @brief Shows the SubTree that the given Include points to. Editor mode only.
    *
    * Switches to the top-level instruction of the target. A nested target is selected. If the
-   * Include can't be opened, sends a message instead.
+   * Include can't be opened, sends a message instead. The switch is added to the history and
+   * extends the current trail.
    */
   void OpenSubTree(const InstructionItem& include);
+
+  /**
+   * @brief Returns the history of shown SubTrees. Empty in viewer mode.
+   */
+  const SubTreeHistory& GetHistory() const;
+
+  /**
+   * @brief Returns the top-level instruction of the given history entry.
+   *
+   * @return The top-level ancestor of the entry's instruction, or nullptr if it was deleted.
+   */
+  const InstructionItem* FindHistoryScope(const SubTreeHistoryEntry& entry) const;
+
+  /**
+   * @brief Checks if there is an earlier SubTree to go back to.
+   *
+   * Entries of deleted SubTrees and of the current one are skipped.
+   */
+  bool CanGoBack() const;
+
+  /**
+   * @brief Checks if there is a later SubTree to go forward to.
+   */
+  bool CanGoForward() const;
+
+  /**
+   * @brief Shows the previous SubTree of the history.
+   */
+  void GoBack();
+
+  /**
+   * @brief Shows the next SubTree of the history.
+   */
+  void GoForward();
+
+  /**
+   * @brief Shows the SubTree of the history entry with the given index, and makes it current.
+   *
+   * Does nothing if the SubTree of the entry was deleted. The index must be in range.
+   */
+  void GoToHistoryEntry(std::size_t index);
 
   /**
    * @brief Returns the top-level instructions shown on the scene.
@@ -176,6 +227,11 @@ signals:
    */
   void centerOnSelectionRequested();
 
+  /**
+   * @brief Notifies that the history or its current entry has changed.
+   */
+  void historyChanged();
+
 private:
   //! Creates the provider if active, and posts the view update if required.
   void SetupProvider();
@@ -189,6 +245,15 @@ private:
   //! Connects scene signals to the provider.
   void SetupSceneConnections();
 
+  //! Shows the SubTree of the given top-level instruction. Returns false if nothing changed.
+  bool SwitchScope(const InstructionItem* top_level);
+
+  //! Switches the scope and adds it to the history.
+  void NavigateTo(const InstructionItem* top_level, const std::string& include_identifier);
+
+  //! Checks if the entry's SubTree exists and is not the current one.
+  bool IsHistoryTarget(const SubTreeHistoryEntry& entry) const;
+
   //! Opens the SubTree of an Include, selects the branch of other instructions.
   void OnInstructionDoubleClick(const InstructionItem* instruction);
 
@@ -199,6 +264,7 @@ private:
   bool m_active{false};
   std::unique_ptr<GraphicsSceneComponentProvider> m_provider;
   std::unique_ptr<SubTreeScope> m_scope;
+  SubTreeHistory m_history;
 
   //!< true when a deferred view update has already been posted to the event loop
   bool m_view_update_scheduled{false};

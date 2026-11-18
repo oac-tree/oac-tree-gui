@@ -34,6 +34,7 @@
 
 #include <sup/gui/core/message_event.h>
 
+#include <mvvm/model/i_session_model.h>
 #include <mvvm/nodeeditor/connectable_shape.h>
 #include <mvvm/nodeeditor/graphics_scene_helper.h>
 #include <mvvm/nodeeditor/i_node_port.h>
@@ -76,15 +77,24 @@ void NodeEditorSceneController::SetProcedure(ProcedureItem* procedure)
   if ((m_procedure_item == nullptr) || (m_editor_mode == NodeEditorMode::kNodeViewer))
   {
     m_scope->Clear();
+    m_history.Clear();
   }
   else
   {
     auto container = GetInstructionContainer();
-    m_scope->Reset(container, FindRootInstruction(*container));
+    const auto* root = FindRootInstruction(*container);
+    m_scope->Reset(container, root);
+    m_history.Reset({(root != nullptr) ? root->GetIdentifier() : std::string(), {}});
     m_scope_shown_required = true;
   }
 
   SetupProvider();
+  emit historyChanged();
+}
+
+ProcedureItem* NodeEditorSceneController::GetProcedure() const
+{
+  return m_procedure_item;
 }
 
 InstructionContainerItem* NodeEditorSceneController::GetInstructionContainer() const
@@ -108,11 +118,7 @@ void NodeEditorSceneController::SetActive(bool value)
 
 void NodeEditorSceneController::SetScope(const InstructionItem* top_level)
 {
-  if (m_scope->SetScope(top_level))
-  {
-    m_scope_shown_required = true;
-    SetupProvider();
-  }
+  NavigateTo(top_level, {});
 }
 
 const InstructionItem* NodeEditorSceneController::GetScope() const
@@ -178,13 +184,84 @@ void NodeEditorSceneController::OpenSubTree(const InstructionItem& include)
 
   const auto* target = FindIncludeTarget(include, *GetInstructionContainer());
   const auto* top_level = GetTopLevelInstruction(*target);
-  SetScope(top_level);
+  NavigateTo(top_level, include.GetIdentifier());
 
   if (target != top_level)
   {
     SetSelectedInstructions({target});
     emit centerOnSelectionRequested();
   }
+}
+
+const SubTreeHistory& NodeEditorSceneController::GetHistory() const
+{
+  return m_history;
+}
+
+const InstructionItem* NodeEditorSceneController::FindHistoryScope(
+    const SubTreeHistoryEntry& entry) const
+{
+  const auto* container = GetInstructionContainer();
+  if ((container == nullptr) || (container->GetModel() == nullptr)
+      || entry.scope_identifier.empty())
+  {
+    return nullptr;
+  }
+
+  const auto* instruction =
+      dynamic_cast<const InstructionItem*>(container->GetModel()->FindItem(entry.scope_identifier));
+  if (instruction == nullptr)
+  {
+    return nullptr;
+  }
+
+  const auto* top_level = GetTopLevelInstruction(*instruction);
+  return ((top_level != nullptr) && (top_level->GetParent() == container)) ? top_level : nullptr;
+}
+
+bool NodeEditorSceneController::CanGoBack() const
+{
+  return m_history.FindPrevious([this](const auto& entry) { return IsHistoryTarget(entry); })
+      .has_value();
+}
+
+bool NodeEditorSceneController::CanGoForward() const
+{
+  return m_history.FindNext([this](const auto& entry) { return IsHistoryTarget(entry); })
+      .has_value();
+}
+
+void NodeEditorSceneController::GoBack()
+{
+  const auto index =
+      m_history.FindPrevious([this](const auto& entry) { return IsHistoryTarget(entry); });
+  if (index.has_value())
+  {
+    GoToHistoryEntry(index.value());
+  }
+}
+
+void NodeEditorSceneController::GoForward()
+{
+  const auto index =
+      m_history.FindNext([this](const auto& entry) { return IsHistoryTarget(entry); });
+  if (index.has_value())
+  {
+    GoToHistoryEntry(index.value());
+  }
+}
+
+void NodeEditorSceneController::GoToHistoryEntry(std::size_t index)
+{
+  const auto* top_level = FindHistoryScope(m_history.GetEntries().at(index));
+  if (top_level == nullptr)
+  {
+    return;
+  }
+
+  m_history.SetCurrentIndex(index);
+  (void)SwitchScope(top_level);
+  emit historyChanged();
 }
 
 std::vector<InstructionItem*> NodeEditorSceneController::GetVisibleTopLevelInstructions() const
@@ -335,6 +412,35 @@ void NodeEditorSceneController::SetupSceneConnections()
               m_provider->DoubleClickPort(port);
             }
           });
+}
+
+bool NodeEditorSceneController::SwitchScope(const InstructionItem* top_level)
+{
+  if (!m_scope->SetScope(top_level))
+  {
+    return false;
+  }
+
+  m_scope_shown_required = true;
+  SetupProvider();
+  return true;
+}
+
+void NodeEditorSceneController::NavigateTo(const InstructionItem* top_level,
+                                           const std::string& include_identifier)
+{
+  if (SwitchScope(top_level))
+  {
+    m_history.Push(
+        {(top_level != nullptr) ? top_level->GetIdentifier() : std::string(), include_identifier});
+    emit historyChanged();
+  }
+}
+
+bool NodeEditorSceneController::IsHistoryTarget(const SubTreeHistoryEntry& entry) const
+{
+  const auto* top_level = FindHistoryScope(entry);
+  return (top_level != nullptr) && (top_level != GetScope());
 }
 
 void NodeEditorSceneController::OnInstructionDoubleClick(const InstructionItem* instruction)
