@@ -33,6 +33,8 @@
 #include <gtest/gtest.h>
 
 #include <QLabel>
+#include <QMenu>
+#include <QToolButton>
 
 namespace oac_tree_gui::test
 {
@@ -124,6 +126,53 @@ TEST_F(SubTreeBreadcrumbTest, DeletedInstructions)
   m_controller.OpenSubTree(*include_other);
   EXPECT_EQ(m_breadcrumb.GetText(), QString("(deleted) › (deleted) → <a href=\"1\">Sub</a> › "
                                             "other → <b>Other</b>"));
+}
+
+//! "Included by" lists Includes pointing at the current SubTree, grouped by top-level instruction.
+//! A click shows and selects the Include.
+TEST_F(SubTreeBreadcrumbTest, IncludedBy)
+{
+  m_controller.SetActive(true);  // a provider, to select on the scene
+  auto button = m_breadcrumb.findChild<QToolButton*>();
+  ASSERT_NE(button, nullptr);
+  EXPECT_TRUE(button->isHidden());
+
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto main = InsertNamed(domainconstants::kSequenceInstructionType, "Main", container);
+  main->SetIsRootFlag(true);
+  auto include_a = InsertInclude("a", "Sub", main);
+  auto other = InsertNamed(domainconstants::kSequenceInstructionType, "Other", container);
+  (void)InsertInclude("b", "Sub.Inner", other);
+  auto sub = InsertNamed(domainconstants::kSequenceInstructionType, "Sub", container);
+  (void)InsertNamed(domainconstants::kWaitInstructionType, "Inner", sub);
+  (void)InsertInclude("c", "Sub", main);
+
+  m_controller.SetProcedure(procedure);
+  EXPECT_FALSE(button->isHidden());
+
+  auto menu = button->menu();
+  emit menu->aboutToShow();
+  ASSERT_EQ(menu->actions().size(), 1);
+  EXPECT_EQ(menu->actions().at(0)->text(), QString("No Includes point here"));
+  EXPECT_FALSE(menu->actions().at(0)->isEnabled());
+
+  m_controller.SetScope(sub);
+  emit menu->aboutToShow();
+  auto actions = menu->actions();
+  ASSERT_EQ(actions.size(), 6);
+  EXPECT_EQ(actions.at(0)->text(), QString("Main"));
+  EXPECT_FALSE(actions.at(0)->isEnabled());
+  EXPECT_TRUE(actions.at(0)->font().bold());
+  EXPECT_EQ(actions.at(1)->text(), QString("a (Sub)"));
+  EXPECT_EQ(actions.at(2)->text(), QString("c (Sub)"));
+  EXPECT_TRUE(actions.at(3)->isSeparator());
+  EXPECT_EQ(actions.at(4)->text(), QString("Other"));
+  EXPECT_EQ(actions.at(5)->text(), QString("b (Sub.Inner)"));
+
+  actions.at(1)->trigger();
+  EXPECT_EQ(m_controller.GetScope(), main);
+  EXPECT_EQ(m_controller.GetSelectedInstructions(), std::vector<InstructionItem*>({include_a}));
 }
 
 }  // namespace oac_tree_gui::test

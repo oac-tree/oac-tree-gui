@@ -664,4 +664,38 @@ TEST_F(NodeEditorSceneControllerTest, ViewerHasNoHistory)
   EXPECT_FALSE(controller->CanGoForward());
 }
 
+//! GoToInstruction shows the SubTree of the instruction, selects it and requests centering. A
+//! switch starts a new trail.
+TEST_F(NodeEditorSceneControllerTest, GoToInstruction)
+{
+  auto [procedure, main, sub, inner] = CreateSubTreeProcedure();
+  auto include_sub = InsertInclude("Sub", main);
+
+  auto controller = CreateController(NodeEditorMode::kNodeEditor);
+  controller->SetProcedure(procedure);
+  controller->OpenSubTree(*include_sub);
+  ASSERT_EQ(controller->GetScope(), sub);
+  const QSignalSpy spy_center(controller.get(),
+                              &NodeEditorSceneController::centerOnSelectionRequested);
+
+  controller->GoToInstruction(*include_sub);
+  EXPECT_EQ(controller->GetScope(), main);
+  EXPECT_EQ(controller->GetSelectedInstructions(), std::vector<InstructionItem*>({include_sub}));
+  EXPECT_EQ(spy_center.count(), 1);
+  EXPECT_EQ(controller->GetHistory().GetEntries().size(), 3);
+  EXPECT_EQ(controller->GetHistory().GetTrailStart(), 2);
+
+  // in the current SubTree: no switch
+  controller->GoToInstruction(*main);
+  EXPECT_EQ(controller->GetScope(), main);
+  EXPECT_EQ(controller->GetSelectedInstructions(), std::vector<InstructionItem*>({main}));
+  EXPECT_EQ(controller->GetHistory().GetEntries().size(), 3);
+  EXPECT_EQ(spy_center.count(), 2);
+
+  auto viewer = CreateController(NodeEditorMode::kNodeViewer);
+  viewer->SetProcedure(procedure);
+  viewer->GoToInstruction(*inner);
+  EXPECT_TRUE(viewer->GetSelectedInstructions().empty());
+}
+
 }  // namespace oac_tree_gui::test

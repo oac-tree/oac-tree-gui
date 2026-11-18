@@ -24,6 +24,8 @@
 #include <QWidget>
 
 class QLabel;
+class QMenu;
+class QToolButton;
 
 namespace oac_tree_gui
 {
@@ -35,7 +37,8 @@ class NodeEditorSceneController;
  *
  * For example "Main › dispatch → Dispatch › init → DoInit", where "dispatch" and "init" are
  * Includes. The trail starts at the last SubTree chosen otherwise. A click on an earlier SubTree
- * goes back to it.
+ * goes back to it. The "Included by" menu lists Includes pointing at the current SubTree, grouped
+ * by their top-level instruction. A click shows and selects the Include.
  */
 class SubTreeBreadcrumb : public QWidget
 {
@@ -66,8 +69,13 @@ private:
   //! Builds the trail from the controller's history.
   void UpdateText();
 
+  //! Fills the "Included by" menu for the current SubTree.
+  void FillIncludedByMenu();
+
   NodeEditorSceneController* m_controller{nullptr};
   QLabel* m_label{nullptr};
+  QToolButton* m_included_by_button{nullptr};
+  QMenu* m_included_by_menu{nullptr};
 };
 
 }  // namespace oac_tree_gui
