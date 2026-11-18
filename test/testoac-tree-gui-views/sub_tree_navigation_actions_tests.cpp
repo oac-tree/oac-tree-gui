@@ -52,9 +52,15 @@ public:
   //! Returns the selector button.
   QToolButton* GetButton() const
   {
-    auto action = dynamic_cast<QWidgetAction*>(m_actions.GetActions().at(0));
+    auto action = dynamic_cast<QWidgetAction*>(m_actions.GetActions().at(2));
     return dynamic_cast<QToolButton*>(action->defaultWidget());
   }
+
+  //! Returns the Back action.
+  QAction* GetBackAction() const { return m_actions.GetActions().at(0); }
+
+  //! Returns the Forward action.
+  QAction* GetForwardAction() const { return m_actions.GetActions().at(1); }
 
   //! Fills the selector menu, as on opening, and returns it.
   QMenu* ShowMenu() const
@@ -80,7 +86,9 @@ public:
 
 TEST_F(SubTreeNavigationActionsTest, InitialState)
 {
-  EXPECT_EQ(m_actions.GetActions().size(), 2);
+  EXPECT_EQ(m_actions.GetActions().size(), 4);
+  EXPECT_FALSE(GetBackAction()->isEnabled());
+  EXPECT_FALSE(GetForwardAction()->isEnabled());
   ASSERT_NE(GetButton(), nullptr);
   EXPECT_EQ(GetButton()->text(), QString("(none)"));
   EXPECT_TRUE(ShowMenu()->actions().empty());
@@ -89,7 +97,7 @@ TEST_F(SubTreeNavigationActionsTest, InitialState)
 //! "Follow selection" is checkable and on by default.
 TEST_F(SubTreeNavigationActionsTest, FollowSelection)
 {
-  auto action = m_actions.GetActions().at(1);
+  auto action = m_actions.GetActions().at(3);
   EXPECT_TRUE(action->isCheckable());
   EXPECT_TRUE(action->isChecked());
   EXPECT_TRUE(m_actions.IsFollowSelectionEnabled());
@@ -191,6 +199,35 @@ TEST_F(SubTreeNavigationActionsTest, ContextMenu)
   EXPECT_TRUE(menu.actions().at(0)->isEnabled());
   menu.actions().at(0)->trigger();
   EXPECT_EQ(m_controller.GetScope(), sub);
+}
+
+//! Back and Forward are enabled by the history and walk it.
+TEST_F(SubTreeNavigationActionsTest, BackAndForward)
+{
+  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto container = procedure->GetInstructionContainer();
+  auto first = InsertNamed("first", container);
+  auto second = InsertNamed("second", container);
+
+  m_controller.SetProcedure(procedure);
+  EXPECT_FALSE(GetBackAction()->isEnabled());
+
+  m_controller.SetScope(second);
+  EXPECT_TRUE(GetBackAction()->isEnabled());
+  EXPECT_FALSE(GetForwardAction()->isEnabled());
+
+  GetBackAction()->trigger();
+  EXPECT_EQ(m_controller.GetScope(), first);
+  EXPECT_FALSE(GetBackAction()->isEnabled());
+  EXPECT_TRUE(GetForwardAction()->isEnabled());
+
+  GetForwardAction()->trigger();
+  EXPECT_EQ(m_controller.GetScope(), second);
+
+  // history: first, second (deleted), first (current), nothing to go back to
+  m_model.RemoveItem(second);
+  m_controller.SetScope(first);
+  EXPECT_FALSE(GetBackAction()->isEnabled());
 }
 
 }  // namespace oac_tree_gui::test

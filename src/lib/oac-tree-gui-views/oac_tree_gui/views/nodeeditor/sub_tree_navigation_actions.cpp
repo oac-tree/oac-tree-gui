@@ -38,11 +38,27 @@ SubTreeNavigationActions::SubTreeNavigationActions(NodeEditorSceneController* co
                                                    QObject* parent_object)
     : QObject(parent_object)
     , m_controller(controller)
+    , m_back_action(new QAction(this))
+    , m_forward_action(new QAction(this))
     , m_subtree_menu(std::make_unique<QMenu>())
     , m_subtree_button(new QToolButton)
     , m_subtree_action(new QWidgetAction(this))
     , m_follow_selection_action(new QAction(this))
 {
+  m_back_action->setText("Back");
+  m_back_action->setIcon(FindIcon("arrow-left"));
+  m_back_action->setToolTip("Show the previous SubTree");
+  m_back_action->setShortcut(QKeySequence::Back);
+  m_back_action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+  m_back_action->setPriority(QAction::LowPriority);  // icon only beside text buttons
+
+  m_forward_action->setText("Forward");
+  m_forward_action->setIcon(FindIcon("arrow-right"));
+  m_forward_action->setToolTip("Show the next SubTree");
+  m_forward_action->setShortcut(QKeySequence::Forward);
+  m_forward_action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+  m_forward_action->setPriority(QAction::LowPriority);
+
   m_subtree_button->setIcon(FindIcon("file-tree-outline"));
   m_subtree_button->setToolTip("Top-level instruction shown in the node editor");
   m_subtree_button->setPopupMode(QToolButton::InstantPopup);
@@ -63,14 +79,23 @@ SubTreeNavigationActions::SubTreeNavigationActions(NodeEditorSceneController* co
   connect(m_controller, &NodeEditorSceneController::scopeChanged, this,
           &SubTreeNavigationActions::UpdateSubTreeText);
 
+  connect(m_back_action, &QAction::triggered, m_controller, &NodeEditorSceneController::GoBack);
+  connect(m_forward_action, &QAction::triggered, m_controller,
+          &NodeEditorSceneController::GoForward);
+  connect(m_controller, &NodeEditorSceneController::historyChanged, this,
+          &SubTreeNavigationActions::UpdateHistoryActions);
+  connect(m_controller, &NodeEditorSceneController::scopeChanged, this,
+          &SubTreeNavigationActions::UpdateHistoryActions);
+
   UpdateSubTreeText();
+  UpdateHistoryActions();
 }
 
 SubTreeNavigationActions::~SubTreeNavigationActions() = default;
 
 QList<QAction*> SubTreeNavigationActions::GetActions() const
 {
-  return {m_subtree_action, m_follow_selection_action};
+  return {m_back_action, m_forward_action, m_subtree_action, m_follow_selection_action};
 }
 
 bool SubTreeNavigationActions::IsFollowSelectionEnabled() const
@@ -161,6 +186,12 @@ void SubTreeNavigationActions::SetScope(const std::string& identifier)
       return;
     }
   }
+}
+
+void SubTreeNavigationActions::UpdateHistoryActions()
+{
+  m_back_action->setEnabled(m_controller->CanGoBack());
+  m_forward_action->setEnabled(m_controller->CanGoForward());
 }
 
 }  // namespace oac_tree_gui

@@ -41,9 +41,10 @@ class NodeEditorSceneController;
  * @brief The SubTreeNavigationActions class holds node editor actions to navigate between
  * SubTrees.
  *
- * The SubTree selector is a tool button with a menu of top-level instructions. The root comes
- * first, in bold. The current SubTree is checked. "Follow selection" is a checkable action, on by
- * default. It controls how the node editor reacts to a selection made in another panel.
+ * Back and Forward walk the history of shown SubTrees. The SubTree selector is a tool button with
+ * a menu of top-level instructions. The root comes first, in bold. The current SubTree is checked.
+ * "Follow selection" is a checkable action, on by default. It controls how the node editor reacts
+ * to a selection made in another panel.
  */
 class SubTreeNavigationActions : public QObject
 {
@@ -96,7 +97,12 @@ private:
   //! Switches to the top-level instruction with the given identifier, if it still exists.
   void SetScope(const std::string& identifier);
 
+  //! Enables Back and Forward according to the history.
+  void UpdateHistoryActions();
+
   NodeEditorSceneController* m_controller{nullptr};
+  QAction* m_back_action{nullptr};
+  QAction* m_forward_action{nullptr};
   std::unique_ptr<QMenu> m_subtree_menu;
   QToolButton* m_subtree_button{nullptr};
   QWidgetAction* m_subtree_action{nullptr};
