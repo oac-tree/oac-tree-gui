@@ -47,7 +47,7 @@ void SubTreeHistory::Push(const SubTreeHistoryEntry& entry)
   m_current_index = m_entries.size() - 1;
 }
 
-const std::vector<SubTreeHistoryEntry>& SubTreeHistory::GetEntries() const
+const std::vector<SubTreeHistoryEntry>& SubTreeHistory::GetEntries() const&
 {
   return m_entries;
 }
@@ -80,7 +80,8 @@ std::optional<std::size_t> SubTreeHistory::FindPrevious(const predicate_t& predi
 
 std::optional<std::size_t> SubTreeHistory::FindNext(const predicate_t& predicate) const
 {
-  for (auto index = m_current_index + 1; index < m_entries.size(); ++index)
+  const std::size_t entry_count = m_entries.size();
+  for (auto index = m_current_index + 1; index < entry_count; ++index)
   {
     if (predicate(m_entries[index]))
     {

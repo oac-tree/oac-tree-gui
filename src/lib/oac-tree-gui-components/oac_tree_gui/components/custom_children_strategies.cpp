@@ -144,7 +144,9 @@ std::vector<mvvm::SessionItem*> InstructionNodeChildrenStrategy::GetChildren(
 
 ScopedInstructionNodeChildrenStrategy::ScopedInstructionNodeChildrenStrategy(
     std::set<std::string> hidden_identifiers)
-    : m_hidden_identifiers(std::move(hidden_identifiers))
+    : mvvm::IChildrenStrategy()
+    , m_hidden_identifiers(std::move(hidden_identifiers))
+    , m_instruction_strategy()
 {
 }
 

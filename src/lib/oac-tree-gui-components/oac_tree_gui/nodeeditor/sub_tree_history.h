@@ -68,7 +68,7 @@ public:
   /**
    * @brief Returns all entries.
    */
-  const std::vector<SubTreeHistoryEntry>& GetEntries() const;
+  const std::vector<SubTreeHistoryEntry>& GetEntries() const&;
 
   /**
    * @brief Returns the index of the current entry, 0 if empty.

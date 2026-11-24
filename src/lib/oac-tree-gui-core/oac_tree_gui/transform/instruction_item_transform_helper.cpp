@@ -193,6 +193,10 @@ void SetAnyValueAttributes(const InstructionNode& node, InstructionItem& item)
     {
       value_json = value;
     }
+    else
+    {
+      // other attributes are not part of the AnyValue
+    }
   }
 
   if (!type_json.empty() && !value_json.empty())
@@ -224,6 +228,10 @@ void SetAttributeValues(const InstructionNode& node, InstructionItem& item)
     {
       // type and value attributes go to the AnyValueItem, if the item has the tag
       AddStringAttribute(name, value, attributes);
+    }
+    else
+    {
+      // type and value attributes are set by SetAnyValueAttributes
     }
   }
 

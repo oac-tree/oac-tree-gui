@@ -214,8 +214,11 @@ bool IsIncludeInstruction(const InstructionItem& instruction)
 
 bool IsLocalInclude(const InstructionItem& instruction)
 {
-  return (instruction.GetDomainType() == domainconstants::kIncludeInstructionType)
-         && instruction.GetAttribute<std::string>(domainconstants::kFileNameAttribute).empty();
+  if (instruction.GetDomainType() != domainconstants::kIncludeInstructionType)
+  {
+    return false;
+  }
+  return instruction.GetAttribute<std::string>(domainconstants::kFileNameAttribute).empty();
 }
 
 const InstructionItem* FindIncludeTarget(const InstructionItem& include,
