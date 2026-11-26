@@ -83,7 +83,6 @@ private:
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {}) const;
 
-  WorkspaceItem* m_workspace{nullptr};
   WorkspaceEditorContext m_context;
 };
 

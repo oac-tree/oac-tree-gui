@@ -43,7 +43,7 @@ class JobManager;
 class OperationSplittableWidget;
 class OperationJobPanel;
 class OperationActionHandler;
-class OperationActionContext;
+struct OperationActionContext;
 class IRemoteConnectionService;
 
 /**
