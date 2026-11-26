@@ -180,15 +180,22 @@ ExclusiveCheckStatePresentationItem::ExclusiveCheckStatePresentationItem(mvvm::S
 
 bool ExclusiveCheckStatePresentationItem::SetData(const QVariant& data, mvvm::role_t qt_role)
 {
+  // root instruction can't be unchecked, only replaced by checking another one
+  const bool is_check_request = (qt_role == mvvm::GetQtRole(Qt::CheckStateRole))
+                                    ? (data.toInt() == Qt::Checked)
+                                    : data.toBool();
+  if (!is_check_request)
+  {
+    return false;
+  }
+
   BeginMacro();
   auto result = BooleanDataPresentationItem::SetData(data, qt_role);
   if (result)
   {
-    // the base class has already converted the check state into the boolean data role
-    const bool changed_to_checked = GetItem()->Data<bool>();
     for (auto instruction : GetSiblings())
     {
-      instruction->SetIsRootFlag(!changed_to_checked);
+      instruction->SetIsRootFlag(false);
     }
   }
   EndMacro();

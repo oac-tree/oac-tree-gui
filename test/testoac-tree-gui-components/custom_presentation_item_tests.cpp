@@ -218,6 +218,19 @@ TEST_F(CustomPresentationItemTest, ExclusiveCheckStatePresentationItem)
   EXPECT_FALSE(sequence0->IsRoot());
   EXPECT_FALSE(sequence1->IsRoot());
   EXPECT_TRUE(sequence2->IsRoot());
+
+  // unchecking the root item is rejected
+  EXPECT_FALSE(presentation2.SetData(QVariant(Qt::Unchecked), Qt::CheckStateRole));
+  EXPECT_FALSE(presentation2.SetData(QVariant(false), Qt::EditRole));
+  EXPECT_FALSE(sequence0->IsRoot());
+  EXPECT_FALSE(sequence1->IsRoot());
+  EXPECT_TRUE(sequence2->IsRoot());
+
+  // unchecking a non-root item is rejected too
+  EXPECT_FALSE(presentation0.SetData(QVariant(Qt::Unchecked), Qt::CheckStateRole));
+  EXPECT_FALSE(sequence0->IsRoot());
+  EXPECT_FALSE(sequence1->IsRoot());
+  EXPECT_TRUE(sequence2->IsRoot());
 }
 
 TEST_F(CustomPresentationItemTest, ExclusiveCheckStateInUndoScenario)
@@ -271,6 +284,12 @@ TEST_F(CustomPresentationItemTest, ExclusiveCheckStateInUndoScenario)
   EXPECT_EQ(presentation0.Data(Qt::CheckStateRole).toInt(), Qt::Checked);
   EXPECT_EQ(presentation1.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
   EXPECT_EQ(presentation2.Data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+  // rejected uncheck leaves no command in the stack
+  const auto command_count = model.GetCommandStack()->GetCommandCount();
+  EXPECT_FALSE(presentation0.SetData(QVariant(Qt::Unchecked), Qt::CheckStateRole));
+  EXPECT_EQ(model.GetCommandStack()->GetCommandCount(), command_count);
+  EXPECT_EQ(presentation0.Data(Qt::CheckStateRole).toInt(), Qt::Checked);
 }
 
 }  // namespace oac_tree_gui::test

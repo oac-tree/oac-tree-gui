@@ -104,7 +104,8 @@ private:
  * InstructionItem.
  *
  * This item is exclusive because only one instruction in procedure can be root, so it has to reset
- * other root checkboxes when set.
+ * other root checkboxes when set. Unchecking is rejected: the root can only be moved to another
+ * instruction by checking it.
  *
  * It is assumed that all instructions for which this presentation is constructed,
  * are direct children of the same instruction container.
